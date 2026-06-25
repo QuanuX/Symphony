@@ -32,6 +32,3 @@ Every module is expected to be individually installable without assuming a monol
 
 ## Owner Ratification Boundaries
 Any structural or doctrinal shift at the root level requires explicit transition owner ratification.
-
-## Disclaimer
-This is a planning document only. No canonical import authorization is granted.
