@@ -12,7 +12,7 @@ Native runtime substrate.
 - **source-evidence / proposal-only state**: Current state. Contract seeds only.
 
 ## Precision
-hotpath-runtime may expose optional high-performance capability surfaces when declared by a module or tool, but those surfaces are not Symphony-wide doctrine, not universal ABI requirements, and not required for runtime core.
+hotpath-runtime may expose optional high-performance capability surfaces when declared by a module or tool, but those surfaces are not Symphony-wide doctrine, not universal ABI requirements, and not required for the native runtime substrate.
 
 Databento, Rithmic, and similar SDKs remain optional external provider edges.
 
