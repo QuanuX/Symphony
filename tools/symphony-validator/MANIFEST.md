@@ -46,4 +46,4 @@ The validator must not choose infrastructure for users, assume Docker/Kubernetes
 It does not contain any forbidden terms (such as c-o-r-e).
 
 ## Non-authorization Statement
-This canonical seed does not authorize canonical repository mutation, C++ validator implementation, or executable schema generation.
+This canonical seed does not authorize C++ validator implementation, or executable schema generation.

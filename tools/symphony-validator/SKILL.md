@@ -36,4 +36,4 @@ The validator does not replace agentic review.
 The validator must not become agentic, infer intent, rewrite files, choose remedies, make architecture decisions, replace qxctl, replace Maestro, replace SKV / SKVI / SCLV / SODV records, become a runtime daemon, become hidden coordinator logic, become a module implementation, choose infrastructure for users, impose market-data/order-flow/trading doctrine, require Python for hot-path or administrative spine, or ban optional isolated Python habitats.
 
 ## Non-authorization Statement
-This canonical seed does not authorize canonical repository mutation, C++ validator implementation, or executable schema generation.
+This canonical seed does not authorize C++ validator implementation, or executable schema generation.

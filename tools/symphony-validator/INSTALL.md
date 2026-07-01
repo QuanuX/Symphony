@@ -26,4 +26,4 @@ Choosing C++ for the validator does not ban optional isolated Python habitats.
 It prevents Python from becoming required validator infrastructure for the administrative spine.
 
 ## Non-authorization Statement
-This canonical seed does not authorize canonical repository mutation, C++ validator implementation, or executable schema generation.
+This canonical seed does not authorize C++ validator implementation, or executable schema generation.

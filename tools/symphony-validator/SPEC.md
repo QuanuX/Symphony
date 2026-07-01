@@ -88,7 +88,7 @@ The validator must not choose infrastructure for users, assume Docker/Kubernetes
 Active project term c-o-r-e is absent except inside explicit forbidden-term scan descriptions.
 
 ## Non-authorization Statement
-This canonical seed does not authorize canonical repository mutation, C++ validator implementation, or executable schema generation.
+This canonical seed does not authorize C++ validator implementation, or executable schema generation.
 
 
 ## Troll Doctrine
