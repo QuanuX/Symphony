@@ -1,6 +1,6 @@
 # Symphony Validator Intent
 
-**Candidate planning draft only. Not canonical. Not imported.**
+****
 
 ## Purpose
 Declare the exact declarative boundaries and expected non-agentic behavior of the C++ validator before implementation begins.
@@ -41,4 +41,22 @@ Choosing C++ for the validator does not ban optional isolated Python habitats.
 It prevents Python from becoming required validator infrastructure for the administrative spine.
 
 ## Non-authorization Statement
-This candidate does not authorize canonical repository mutation, C++ validator implementation, or executable schema generation.
+This canonical seed does not authorize canonical repository mutation, C++ validator implementation, or executable schema generation.
+
+
+## Troll Doctrine
+trolls are the local residents.
+A troll is a bounded local resident of a Symphony runtime domain.
+A troll is not an AI agent.
+
+node-troll represents the node.
+bus-troll manages bus residency and bus compatibility.
+hotpath-runtime owns the native hot path.
+hotpath-runtime is not a troll; it is the native hot-path runtime substrate.
+
+
+## Bus-Troll Optionality
+bus-troll is first-class and individually installable.
+bus-troll is required only for deployments that use a managed bus boundary.
+Bus bypass remains valid when declared by deployment constraints.
+The existence of bus-troll does not make bus traversal mandatory.

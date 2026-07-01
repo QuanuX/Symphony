@@ -1,11 +1,11 @@
 # Symphony Validator Manifest
 
-**Candidate planning draft only. Not canonical. Not imported.**
+****
 
 ## Tool Identity
 Symphony Validator
 
-## Path Candidate
+## Path canonical seed
 `tools/symphony-validator/`
 
 ## Classification
@@ -46,4 +46,4 @@ The validator must not choose infrastructure for users, assume Docker/Kubernetes
 It does not contain any forbidden terms (such as c-o-r-e).
 
 ## Non-authorization Statement
-This candidate does not authorize canonical repository mutation, C++ validator implementation, or executable schema generation.
+This canonical seed does not authorize canonical repository mutation, C++ validator implementation, or executable schema generation.
