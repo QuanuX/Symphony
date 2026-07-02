@@ -43,10 +43,10 @@ SCLV records change truth; it does not create source truth. SKVI indexes source 
 SCLV records architectural change truth. SODV governs the publication of that truth.
 
 ## How SCLV Relates to NotebookLM
-NotebookLM aligns corpus context. NotebookLM is  authority.
+NotebookLM aligns corpus context. NotebookLM is not canonical authority.
 
 ## How SCLV Relates to Mintlify
-Mintlify publishes derived official documentation. Mintlify is  authority.
+Mintlify publishes derived official documentation. Mintlify is not canonical authority.
 
 ## Safe-Use Rules
 SCLV records change truth; it does not create source truth. It does not replace PR reviews or Git history.
