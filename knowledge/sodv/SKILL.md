@@ -46,10 +46,10 @@ SODV governs publication truth; it does not create source truth. Canonical repos
 Public documentation is a derived projection. Public documentation is not source truth.
 
 ## How SODV Relates to Mintlify
-Mintlify may later publish derived official documentation. Mintlify is  authority.
+Mintlify may later publish derived official documentation. Mintlify is not canonical authority.
 
 ## How SODV Relates to NotebookLM
-NotebookLM aligns corpus context. NotebookLM is  authority.
+NotebookLM aligns corpus context. NotebookLM is not canonical authority.
 
 ## How SODV Relates to Git History
 Git history is version-control evidence, acting as a substrate for publication context.

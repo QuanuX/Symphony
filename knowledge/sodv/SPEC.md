@@ -111,10 +111,10 @@ Canonical repository knowledge files are source truth.
 Published documentation is a derived public projection.
 
 ## Relationship to Mintlify
-Mintlify is a publication surface,  authority.
+Mintlify is a publication surface, not canonical authority.
 
 ## Relationship to NotebookLM
-NotebookLM is a corpus alignment and context tool,  authority.
+NotebookLM is a corpus alignment and context tool, not canonical authority.
 
 ## Relationship to symphony-validator Evidence
 symphony-validator produces deterministic evidence. Future validators may check structure based on SODV rules.
