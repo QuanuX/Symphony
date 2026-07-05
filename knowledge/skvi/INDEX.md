@@ -52,7 +52,7 @@ Graph views are visual relationship projections.
 All projections are derived, disposable, and rebuildable.
 No projection is canonical authority.
 
-Task 010B authorizes no generated projection.
+This index authorizes no generated projection.
 
 ## Graph Projection Doctrine
 SKVI INDEX.md declares nodes and relationships.
@@ -480,7 +480,7 @@ Future validator checks may verify SKVI structure.
 No deferred projections, generated indexes, graphs, DuckDB, JSON, HDF5 outputs, qxctl integrations, validator implementations, or publication pipelines are canonically indexed here. They remain entirely deferred and are not canonical authority.
 
 ## Non-Authorized Artifacts
-Task 010B authorizes none of the following:
+This index authorizes none of the following:
 - generated index
 - generated graph
 - graph database
@@ -508,5 +508,3 @@ Task 010B authorizes none of the following:
 
 Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 
-## Future Canonicalization Notes
-This candidate file is designed to be easily transformable in Task 010C into canonical form by removing the "Candidate status" block at the top and adjusting path references as required, establishing the first human-authored declarative SKVI routing table.
