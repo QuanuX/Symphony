@@ -21,6 +21,7 @@ struct SkviEntry {
 struct SkviCheckResult {
     bool success;
     std::vector<std::string> messages;
+    std::vector<std::string> indexed_paths;
 };
 
 SkviCheckResult check_skvi_index(const std::string& index_path);

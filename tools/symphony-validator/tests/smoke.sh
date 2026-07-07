@@ -70,4 +70,22 @@ if ./build/symphony-validator check --repo ./tests/fixtures_sclv_malformed > /de
 fi
 echo "malformed SCLV fixture failed as expected"
 
+# Verify skvi_references path not indexed
+if ./build/symphony-validator check --repo ./tests/fixtures_skvi_ref_unindexed > /dev/null 2>&1; then
+    echo "error: skvi_ref_unindexed fixture should fail"
+    exit 1
+fi
+echo "skvi_ref_unindexed fixture failed as expected"
+
+# Verify affected_surfaces path absent
+if ./build/symphony-validator check --repo ./tests/fixtures_affected_surface_absent > /dev/null 2>&1; then
+    echo "error: affected_surface_absent fixture should fail"
+    exit 1
+fi
+echo "affected_surface_absent fixture failed as expected"
+
+# Verify affected_surfaces path existing but unindexed
+./build/symphony-validator check --repo ./tests/fixtures_affected_surface_unindexed > /dev/null
+echo "affected_surface_unindexed fixture passed with warning"
+
 echo "All smoke tests passed."

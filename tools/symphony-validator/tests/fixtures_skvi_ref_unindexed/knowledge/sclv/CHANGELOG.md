@@ -9,9 +9,9 @@
 - related_pr: `https://github.com/QuanuX/Symphony/pull/10`
 - merge_commit: `f2d65890`
 - affected_surfaces:
-  - `README.md`
+  - `knowledge/skvi/INDEX.md`
 - skvi_references:
-  - `README.md`
+  - `missing/path.md`
 - change_summary: `summary`
 - relationship_changes: `none`
 - doctrine_changes: `none`
