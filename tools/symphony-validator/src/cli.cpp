@@ -1,5 +1,6 @@
 #include "cli.hpp"
 #include "paths.hpp"
+#include "skvi_index.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -28,10 +29,20 @@ int run_cli(const std::vector<std::string>& args) {
         if (args.size() == 3 && args[1] == "--repo") {
             PathCheckResult result = check_repository_path(args[2]);
             std::cout << result.message << "\n";
-            if (result.is_valid_directory) {
+            if (!result.is_valid_directory) {
+                return 2;
+            }
+
+            std::string index_path = args[2] + "/knowledge/skvi/INDEX.md";
+            SkviCheckResult skvi_result = check_skvi_index(index_path);
+            for (const auto& msg : skvi_result.messages) {
+                std::cout << msg << "\n";
+            }
+
+            if (skvi_result.success) {
                 return 0;
             } else {
-                return 2;
+                return 3;
             }
         } else {
             std::cerr << "error: check requires --repo <path>\n";

@@ -9,6 +9,7 @@ add_executable(symphony-validator
     src/cli.cpp
     src/evidence.cpp
     src/paths.cpp
+    src/skvi_index.cpp
 )
 
 target_include_directories(symphony-validator PRIVATE src)
