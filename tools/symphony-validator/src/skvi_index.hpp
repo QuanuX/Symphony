@@ -10,6 +10,7 @@ struct SkviEntry {
     bool has_owner = false;
     bool has_scope = false;
     bool has_status = false;
+    std::string status;
     
     // Optional fields just for tracking if needed
     bool has_relationships = false;
@@ -22,6 +23,7 @@ struct SkviCheckResult {
     bool success;
     std::vector<std::string> messages;
     std::vector<std::string> indexed_paths;
+    std::vector<SkviEntry> entries;
 };
 
 SkviCheckResult check_skvi_index(const std::string& index_path);

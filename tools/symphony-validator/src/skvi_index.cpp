@@ -82,7 +82,10 @@ SkviCheckResult check_skvi_index(const std::string& index_path) {
             else if (trimmed.find("truth_role:") == 0) current_entry.has_truth_role = true;
             else if (trimmed.find("owner:") == 0) current_entry.has_owner = true;
             else if (trimmed.find("scope:") == 0) current_entry.has_scope = true;
-            else if (trimmed.find("status:") == 0) current_entry.has_status = true;
+            else if (trimmed.find("status:") == 0) {
+                current_entry.has_status = true;
+                current_entry.status = extract_value(line, "status:");
+            }
             else if (trimmed.find("relationships:") == 0) current_entry.has_relationships = true;
             else if (trimmed.find("consumers:") == 0) current_entry.has_consumers = true;
             else if (trimmed.find("deferred_projections:") == 0) current_entry.has_deferred_projections = true;
@@ -92,6 +95,7 @@ SkviCheckResult check_skvi_index(const std::string& index_path) {
 
     if (in_entry) {
         validate_entry(current_entry);
+        result.entries.push_back(current_entry);
     }
 
     if (entry_count == 0) {

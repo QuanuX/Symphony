@@ -3,6 +3,7 @@
 #include "skvi_index.hpp"
 #include "sclv_changelog.hpp"
 #include "cross_reference.hpp"
+#include "vocabulary.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -60,10 +61,19 @@ int run_cli(const std::vector<std::string>& args) {
                 std::cout << msg << "\n";
             }
 
-            if (cross_result.success) {
+            if (!cross_result.success) {
+                return 5;
+            }
+
+            VocabularyCheckResult vocab_result = check_vocabulary(skvi_result, sclv_result);
+            for (const auto& msg : vocab_result.messages) {
+                std::cout << msg << "\n";
+            }
+
+            if (vocab_result.success) {
                 return 0;
             } else {
-                return 5;
+                return 6;
             }
         } else {
             std::cerr << "error: check requires --repo <path>\n";
