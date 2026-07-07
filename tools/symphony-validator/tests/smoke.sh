@@ -54,4 +54,20 @@ if ./build/symphony-validator check --repo ./tests/fixtures_relationships > /dev
 fi
 echo "malformed fixture missing relationships failed as expected"
 
+# Verify repo path missing knowledge/sclv/CHANGELOG.md
+# We can use fixtures_valid but remove CHANGELOG.md temporarily, or create a new fixture.
+# Actually, fixtures_notes has SKVI but no SCLV CHANGELOG!
+if ./build/symphony-validator check --repo ./tests/fixtures_notes > /dev/null 2>&1; then
+    echo "error: repo missing CHANGELOG.md should fail"
+    exit 1
+fi
+echo "repo missing CHANGELOG.md failed as expected"
+
+# Verify malformed SCLV fixture
+if ./build/symphony-validator check --repo ./tests/fixtures_sclv_malformed > /dev/null 2>&1; then
+    echo "error: malformed SCLV fixture should fail"
+    exit 1
+fi
+echo "malformed SCLV fixture failed as expected"
+
 echo "All smoke tests passed."
