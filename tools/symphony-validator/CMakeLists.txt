@@ -14,6 +14,7 @@ add_executable(symphony-validator
     src/cross_reference.cpp
     src/vocabulary.cpp
     src/sclv_shape.cpp
+    src/artifacts.cpp
 )
 
 target_include_directories(symphony-validator PRIVATE src)

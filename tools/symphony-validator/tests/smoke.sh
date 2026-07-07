@@ -121,4 +121,39 @@ if ./build/symphony-validator check --repo ./tests/fixtures_invalid_sclv_merge_c
 fi
 echo "invalid_sclv_merge_commit fixture failed as expected"
 
+# Verify unauthorized docs/ fixture
+if ./build/symphony-validator check --repo ./tests/fixtures_unauthorized_docs > /dev/null 2>&1; then
+    echo "error: unauthorized_docs fixture should fail"
+    exit 1
+fi
+echo "unauthorized_docs fixture failed as expected"
+
+# Verify unauthorized mint.json fixture
+if ./build/symphony-validator check --repo ./tests/fixtures_unauthorized_mint_json > /dev/null 2>&1; then
+    echo "error: unauthorized_mint_json fixture should fail"
+    exit 1
+fi
+echo "unauthorized_mint_json fixture failed as expected"
+
+# Verify unauthorized projection file
+if ./build/symphony-validator check --repo ./tests/fixtures_unauthorized_projection > /dev/null 2>&1; then
+    echo "error: unauthorized_projection fixture should fail"
+    exit 1
+fi
+echo "unauthorized_projection fixture failed as expected"
+
+# Verify unauthorized qxctl integration
+if ./build/symphony-validator check --repo ./tests/fixtures_unauthorized_qxctl > /dev/null 2>&1; then
+    echo "error: unauthorized_qxctl fixture should fail"
+    exit 1
+fi
+echo "unauthorized_qxctl fixture failed as expected"
+
+# Verify unauthorized schema/template fixture
+if ./build/symphony-validator check --repo ./tests/fixtures_unauthorized_schema > /dev/null 2>&1; then
+    echo "error: unauthorized_schema fixture should fail"
+    exit 1
+fi
+echo "unauthorized_schema fixture failed as expected"
+
 echo "All smoke tests passed."

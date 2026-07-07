@@ -5,6 +5,7 @@
 #include "cross_reference.hpp"
 #include "vocabulary.hpp"
 #include "sclv_shape.hpp"
+#include "artifacts.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -80,10 +81,19 @@ int run_cli(const std::vector<std::string>& args) {
                 std::cout << msg << "\n";
             }
 
-            if (shape_result.success) {
+            if (!shape_result.success) {
+                return 7;
+            }
+
+            ArtifactCheckResult artifact_result = check_unauthorized_artifacts(args[2]);
+            for (const auto& msg : artifact_result.messages) {
+                std::cout << msg << "\n";
+            }
+
+            if (artifact_result.success) {
                 return 0;
             } else {
-                return 7;
+                return 8;
             }
         } else {
             std::cerr << "error: check requires --repo <path>\n";
