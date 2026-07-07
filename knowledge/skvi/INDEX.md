@@ -435,6 +435,42 @@ Future validator checks may verify SKVI structure.
 - consumers: humans, future implementations
 - status: canonical
 
+##### CHANGELOG.md
+- path: `knowledge/sclv/CHANGELOG.md`
+  title: `Symphony Change Log Vector Ledger`
+  surface_type: `sclv_change_ledger`
+  truth_role: `canonical change truth ledger`
+  owner: `SCLV`
+  scope: |
+    Human-authored declarative ledger for canonical SCLV records. Records canonical change truth against SKVI-indexed surfaces and preserves evidence, relationship changes, doctrine changes, compatibility consequences, publication consequences, projection consequences, and non-authorizations.
+  relationships: |
+    records change truth for canonical repository surfaces
+    references SKVI-indexed paths
+    depends_on `knowledge/sclv/SPEC.md`
+    may inform `knowledge/sodv/SPEC.md` publication governance
+    may be checked by future `tools/symphony-validator/SPEC.md` rules
+    may be consumed by future qxctl-derived evidence projections
+    does not replace Git history
+    does not replace PR review
+    does not replace SSCG interpretation
+  consumers:
+    - `maintainers`
+    - `agentic reviewers`
+    - `NotebookLM corpus alignment`
+    - `future deterministic validator checks`
+    - `future qxctl-derived evidence consumers`
+    - `future SODV publication governance`
+  deferred_projections:
+    - `JSON / JSONL portable evidence`
+    - `DuckDB analytical projection`
+    - `HDF5 dense quantitative / vector / compatibility substrate`
+    - `graph view relationship projection`
+    - `qxctl-readable evidence projection`
+    - `human-readable Markdown report`
+  status: `canonical`
+  notes: |
+    Added because knowledge/sclv/CHANGELOG.md was canonicalized after the initial SKVI declarative index. This closes expected post-bootstrap SKVI/SCLV index drift without creating generated projections or implementation.
+
 #### SODV
 ##### INTENT.md
 - path: `knowledge/sodv/INTENT.md`
