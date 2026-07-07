@@ -12,6 +12,7 @@ add_executable(symphony-validator
     src/skvi_index.cpp
     src/sclv_changelog.cpp
     src/cross_reference.cpp
+    src/vocabulary.cpp
 )
 
 target_include_directories(symphony-validator PRIVATE src)

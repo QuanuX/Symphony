@@ -6,8 +6,10 @@ struct SclvRecord {
     std::string record_id;
     bool has_title = false;
     bool has_status = false;
+    std::string status;
     bool has_date = false;
     bool has_change_type = false;
+    std::string change_type;
     bool has_related_pr = false;
     bool has_merge_commit = false;
     bool has_affected_surfaces = false;

@@ -88,4 +88,25 @@ echo "affected_surface_absent fixture failed as expected"
 ./build/symphony-validator check --repo ./tests/fixtures_affected_surface_unindexed > /dev/null
 echo "affected_surface_unindexed fixture passed with warning"
 
+# Verify invalid SKVI status
+if ./build/symphony-validator check --repo ./tests/fixtures_invalid_skvi_status > /dev/null 2>&1; then
+    echo "error: invalid_skvi_status fixture should fail"
+    exit 1
+fi
+echo "invalid_skvi_status fixture failed as expected"
+
+# Verify invalid SCLV status
+if ./build/symphony-validator check --repo ./tests/fixtures_invalid_sclv_status > /dev/null 2>&1; then
+    echo "error: invalid_sclv_status fixture should fail"
+    exit 1
+fi
+echo "invalid_sclv_status fixture failed as expected"
+
+# Verify invalid SCLV change_type
+if ./build/symphony-validator check --repo ./tests/fixtures_invalid_sclv_change_type > /dev/null 2>&1; then
+    echo "error: invalid_sclv_change_type fixture should fail"
+    exit 1
+fi
+echo "invalid_sclv_change_type fixture failed as expected"
+
 echo "All smoke tests passed."
