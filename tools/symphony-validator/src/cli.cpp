@@ -4,6 +4,7 @@
 #include "sclv_changelog.hpp"
 #include "cross_reference.hpp"
 #include "vocabulary.hpp"
+#include "sclv_shape.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -70,10 +71,19 @@ int run_cli(const std::vector<std::string>& args) {
                 std::cout << msg << "\n";
             }
 
-            if (vocab_result.success) {
+            if (!vocab_result.success) {
+                return 6;
+            }
+
+            SclvShapeCheckResult shape_result = check_sclv_shapes(sclv_result);
+            for (const auto& msg : shape_result.messages) {
+                std::cout << msg << "\n";
+            }
+
+            if (shape_result.success) {
                 return 0;
             } else {
-                return 6;
+                return 7;
             }
         } else {
             std::cerr << "error: check requires --repo <path>\n";
