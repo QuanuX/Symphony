@@ -1,6 +1,7 @@
 #include "cli.hpp"
 #include "paths.hpp"
 #include "skvi_index.hpp"
+#include "sclv_changelog.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -39,10 +40,20 @@ int run_cli(const std::vector<std::string>& args) {
                 std::cout << msg << "\n";
             }
 
-            if (skvi_result.success) {
+            if (!skvi_result.success) {
+                return 3;
+            }
+
+            std::string changelog_path = args[2] + "/knowledge/sclv/CHANGELOG.md";
+            SclvCheckResult sclv_result = check_sclv_changelog(changelog_path);
+            for (const auto& msg : sclv_result.messages) {
+                std::cout << msg << "\n";
+            }
+
+            if (sclv_result.success) {
                 return 0;
             } else {
-                return 3;
+                return 4;
             }
         } else {
             std::cerr << "error: check requires --repo <path>\n";
