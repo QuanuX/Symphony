@@ -57,6 +57,7 @@ SkviCheckResult check_skvi_index(const std::string& index_path) {
 
         if (missing.empty()) {
             result.messages.push_back("evidence pass skvi.entry.shape path=" + entry.path);
+            result.indexed_paths.push_back(entry.path);
         } else {
             result.success = false;
             for (const auto& m : missing) {

@@ -75,8 +75,11 @@ SclvCheckResult check_sclv_changelog(const std::string& changelog_path) {
 
         if (rec.record_id == "SCLV-PR-010") found_pr10 = true;
         if (rec.record_id == "SCLV-PR-011") found_pr11 = true;
+
+        result.records.push_back(rec);
     };
 
+    std::string active_list = "";
     while (std::getline(file, line)) {
         std::string trimmed = trim_list_prefix(line);
         if (trimmed.find("record_id:") == 0) {
@@ -88,23 +91,48 @@ SclvCheckResult check_sclv_changelog(const std::string& changelog_path) {
             current_record = SclvRecord();
             current_record.record_id = extract_value(line, "record_id:");
         } else if (in_record) {
-            if (trimmed.find("title:") == 0) current_record.has_title = true;
-            else if (trimmed.find("status:") == 0) current_record.has_status = true;
-            else if (trimmed.find("date:") == 0) current_record.has_date = true;
-            else if (trimmed.find("change_type:") == 0) current_record.has_change_type = true;
-            else if (trimmed.find("related_pr:") == 0) current_record.has_related_pr = true;
-            else if (trimmed.find("merge_commit:") == 0) current_record.has_merge_commit = true;
-            else if (trimmed.find("affected_surfaces:") == 0) current_record.has_affected_surfaces = true;
-            else if (trimmed.find("skvi_references:") == 0) current_record.has_skvi_references = true;
-            else if (trimmed.find("change_summary:") == 0) current_record.has_change_summary = true;
-            else if (trimmed.find("relationship_changes:") == 0) current_record.has_relationship_changes = true;
-            else if (trimmed.find("doctrine_changes:") == 0) current_record.has_doctrine_changes = true;
-            else if (trimmed.find("compatibility_consequences:") == 0) current_record.has_compatibility_consequences = true;
-            else if (trimmed.find("publication_consequences:") == 0) current_record.has_publication_consequences = true;
-            else if (trimmed.find("projection_consequences:") == 0) current_record.has_projection_consequences = true;
-            else if (trimmed.find("evidence:") == 0) current_record.has_evidence = true;
-            else if (trimmed.find("non_authorizations:") == 0) current_record.has_non_authorizations = true;
-            else if (trimmed.find("notes:") == 0) current_record.has_notes = true;
+            std::string current_key = "";
+            if (trimmed.find("title:") == 0) { current_record.has_title = true; active_list = ""; }
+            else if (trimmed.find("status:") == 0) { current_record.has_status = true; active_list = ""; }
+            else if (trimmed.find("date:") == 0) { current_record.has_date = true; active_list = ""; }
+            else if (trimmed.find("change_type:") == 0) { current_record.has_change_type = true; active_list = ""; }
+            else if (trimmed.find("related_pr:") == 0) { current_record.has_related_pr = true; active_list = ""; }
+            else if (trimmed.find("merge_commit:") == 0) { current_record.has_merge_commit = true; active_list = ""; }
+            else if (trimmed.find("affected_surfaces:") == 0) {
+                current_record.has_affected_surfaces = true;
+                active_list = "affected_surfaces";
+                std::string val = extract_value(line, "affected_surfaces:");
+                if (!val.empty() && val != "none") current_record.affected_surfaces.push_back(val);
+            }
+            else if (trimmed.find("skvi_references:") == 0) {
+                current_record.has_skvi_references = true;
+                active_list = "skvi_references";
+                std::string val = extract_value(line, "skvi_references:");
+                if (!val.empty() && val != "none") current_record.skvi_references.push_back(val);
+            }
+            else if (trimmed.find("change_summary:") == 0) { current_record.has_change_summary = true; active_list = ""; }
+            else if (trimmed.find("relationship_changes:") == 0) { current_record.has_relationship_changes = true; active_list = ""; }
+            else if (trimmed.find("doctrine_changes:") == 0) { current_record.has_doctrine_changes = true; active_list = ""; }
+            else if (trimmed.find("compatibility_consequences:") == 0) { current_record.has_compatibility_consequences = true; active_list = ""; }
+            else if (trimmed.find("publication_consequences:") == 0) { current_record.has_publication_consequences = true; active_list = ""; }
+            else if (trimmed.find("projection_consequences:") == 0) { current_record.has_projection_consequences = true; active_list = ""; }
+            else if (trimmed.find("evidence:") == 0) { current_record.has_evidence = true; active_list = ""; }
+            else if (trimmed.find("non_authorizations:") == 0) { current_record.has_non_authorizations = true; active_list = ""; }
+            else if (trimmed.find("notes:") == 0) { current_record.has_notes = true; active_list = ""; }
+            else if (active_list == "affected_surfaces" || active_list == "skvi_references") {
+                // Not a new field, could be a list item
+                if (line.find("-") != std::string::npos || line.find("`") != std::string::npos) {
+                    size_t start = trimmed.find_first_not_of(" \t\r\n`\"");
+                    size_t end = trimmed.find_last_not_of(" \t\r\n`\"");
+                    if (start != std::string::npos && end != std::string::npos) {
+                        std::string val = trimmed.substr(start, end - start + 1);
+                        if (!val.empty() && val != "none") {
+                            if (active_list == "affected_surfaces") current_record.affected_surfaces.push_back(val);
+                            if (active_list == "skvi_references") current_record.skvi_references.push_back(val);
+                        }
+                    }
+                }
+            }
         }
     }
 

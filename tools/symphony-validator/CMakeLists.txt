@@ -11,6 +11,7 @@ add_executable(symphony-validator
     src/paths.cpp
     src/skvi_index.cpp
     src/sclv_changelog.cpp
+    src/cross_reference.cpp
 )
 
 target_include_directories(symphony-validator PRIVATE src)

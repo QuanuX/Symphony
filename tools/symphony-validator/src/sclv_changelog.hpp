@@ -21,11 +21,14 @@ struct SclvRecord {
     bool has_evidence = false;
     bool has_non_authorizations = false;
     bool has_notes = false;
+    std::vector<std::string> affected_surfaces;
+    std::vector<std::string> skvi_references;
 };
 
 struct SclvCheckResult {
     bool success;
     std::vector<std::string> messages;
+    std::vector<SclvRecord> records;
 };
 
 SclvCheckResult check_sclv_changelog(const std::string& changelog_path);

@@ -2,6 +2,7 @@
 #include "paths.hpp"
 #include "skvi_index.hpp"
 #include "sclv_changelog.hpp"
+#include "cross_reference.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -50,10 +51,19 @@ int run_cli(const std::vector<std::string>& args) {
                 std::cout << msg << "\n";
             }
 
-            if (sclv_result.success) {
+            if (!sclv_result.success) {
+                return 4;
+            }
+
+            CrossReferenceResult cross_result = check_cross_references(args[2], skvi_result, sclv_result);
+            for (const auto& msg : cross_result.messages) {
+                std::cout << msg << "\n";
+            }
+
+            if (cross_result.success) {
                 return 0;
             } else {
-                return 4;
+                return 5;
             }
         } else {
             std::cerr << "error: check requires --repo <path>\n";
