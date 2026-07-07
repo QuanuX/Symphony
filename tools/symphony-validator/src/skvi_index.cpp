@@ -49,7 +49,11 @@ SkviCheckResult check_skvi_index(const std::string& index_path) {
         if (!entry.has_truth_role) missing.push_back("truth_role");
         if (!entry.has_owner) missing.push_back("owner");
         if (!entry.has_scope) missing.push_back("scope");
+        if (!entry.has_relationships) missing.push_back("relationships");
+        if (!entry.has_consumers) missing.push_back("consumers");
+        if (!entry.has_deferred_projections) missing.push_back("deferred_projections");
         if (!entry.has_status) missing.push_back("status");
+        if (!entry.has_notes) missing.push_back("notes");
 
         if (missing.empty()) {
             result.messages.push_back("evidence pass skvi.entry.shape path=" + entry.path);
