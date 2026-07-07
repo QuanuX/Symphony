@@ -166,6 +166,8 @@ Future validator checks may verify SKVI structure.
 - relationships:
   - declares -> `modules/node-troll/MANIFEST.md`
 - consumers: humans, future validators
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### MANIFEST.md
@@ -178,6 +180,8 @@ Future validator checks may verify SKVI structure.
 - relationships:
   - depends_on -> `modules/node-troll/INTENT.md`
 - consumers: humans, future validators, future qxctl
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### INSTALL.md
@@ -188,6 +192,9 @@ Future validator checks may verify SKVI structure.
 - owner: node-troll maintainer
 - scope: Instructions and constraints for deployment.
 - consumers: humans, future tools
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### SKILL.md
@@ -198,6 +205,9 @@ Future validator checks may verify SKVI structure.
 - owner: node-troll maintainer
 - scope: Tools and skills for operating the node.
 - consumers: humans, agentic tools
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 #### bus-troll
@@ -211,6 +221,8 @@ Future validator checks may verify SKVI structure.
 - relationships:
   - declares -> `modules/bus-troll/MANIFEST.md`
 - consumers: humans, future validators
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### MANIFEST.md
@@ -221,6 +233,9 @@ Future validator checks may verify SKVI structure.
 - owner: bus-troll maintainer
 - scope: Contractual dependencies and capability boundaries.
 - consumers: humans, future validators, future qxctl
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### INSTALL.md
@@ -231,6 +246,9 @@ Future validator checks may verify SKVI structure.
 - owner: bus-troll maintainer
 - scope: Instructions and constraints for deployment.
 - consumers: humans, future tools
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### SKILL.md
@@ -241,6 +259,9 @@ Future validator checks may verify SKVI structure.
 - owner: bus-troll maintainer
 - scope: Tools and skills for operating the bus-troll.
 - consumers: humans, agentic tools
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 #### hotpath-runtime
@@ -254,6 +275,8 @@ Future validator checks may verify SKVI structure.
 - relationships:
   - declares -> `modules/hotpath-runtime/MANIFEST.md`
 - consumers: humans, future validators
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### MANIFEST.md
@@ -264,6 +287,9 @@ Future validator checks may verify SKVI structure.
 - owner: hotpath-runtime maintainer
 - scope: Contractual dependencies and hot-path execution boundaries.
 - consumers: humans, future validators, future qxctl
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### INSTALL.md
@@ -274,6 +300,9 @@ Future validator checks may verify SKVI structure.
 - owner: hotpath-runtime maintainer
 - scope: Instructions and constraints for deployment.
 - consumers: humans, future tools
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### SKILL.md
@@ -284,6 +313,9 @@ Future validator checks may verify SKVI structure.
 - owner: hotpath-runtime maintainer
 - scope: Tools and skills for operating the hotpath-runtime.
 - consumers: humans, agentic tools
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ### Validator Declarative Tool Contract Seed
@@ -298,6 +330,8 @@ Future validator checks may verify SKVI structure.
   - declares -> `tools/symphony-validator/MANIFEST.md`
   - declares -> `tools/symphony-validator/SPEC.md`
 - consumers: humans, future implementations
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### MANIFEST.md
@@ -308,6 +342,9 @@ Future validator checks may verify SKVI structure.
 - owner: validator maintainer
 - scope: Contractual definitions.
 - consumers: humans, future qxctl
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### INSTALL.md
@@ -318,6 +355,9 @@ Future validator checks may verify SKVI structure.
 - owner: validator maintainer
 - scope: Instructions and constraints for installation.
 - consumers: humans
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### SKILL.md
@@ -328,6 +368,9 @@ Future validator checks may verify SKVI structure.
 - owner: validator maintainer
 - scope: Usage and operation.
 - consumers: humans, agentic tools
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### SPEC.md
@@ -338,6 +381,9 @@ Future validator checks may verify SKVI structure.
 - owner: validator maintainer
 - scope: Deterministic validation rules.
 - consumers: humans, future implementations
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ### Knowledge Vector Surfaces
@@ -351,6 +397,9 @@ Future validator checks may verify SKVI structure.
 - owner: knowledge maintainer
 - scope: Root definition of knowledge vector domains.
 - consumers: humans, future validators
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 #### SKVI
@@ -362,6 +411,9 @@ Future validator checks may verify SKVI structure.
 - owner: SKVI maintainer
 - scope: Define SKVI boundaries.
 - consumers: humans, future validators
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### MANIFEST.md
@@ -372,6 +424,9 @@ Future validator checks may verify SKVI structure.
 - owner: SKVI maintainer
 - scope: Contractual requirements.
 - consumers: humans, future validators
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### SKILL.md
@@ -382,6 +437,9 @@ Future validator checks may verify SKVI structure.
 - owner: SKVI maintainer
 - scope: Usage and interaction.
 - consumers: humans, agentic tools
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### SPEC.md
@@ -392,6 +450,9 @@ Future validator checks may verify SKVI structure.
 - owner: SKVI maintainer
 - scope: Formatting and structure definitions.
 - consumers: humans, future implementations
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 #### SCLV
@@ -403,6 +464,9 @@ Future validator checks may verify SKVI structure.
 - owner: SCLV maintainer
 - scope: SCLV records change truth.
 - consumers: humans, future validators
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### MANIFEST.md
@@ -413,6 +477,9 @@ Future validator checks may verify SKVI structure.
 - owner: SCLV maintainer
 - scope: Contractual requirements.
 - consumers: humans, future validators
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### SKILL.md
@@ -423,6 +490,9 @@ Future validator checks may verify SKVI structure.
 - owner: SCLV maintainer
 - scope: Usage and interaction.
 - consumers: humans, agentic tools
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### SPEC.md
@@ -433,6 +503,9 @@ Future validator checks may verify SKVI structure.
 - owner: SCLV maintainer
 - scope: Structuring change records.
 - consumers: humans, future implementations
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### CHANGELOG.md
@@ -480,6 +553,9 @@ Future validator checks may verify SKVI structure.
 - owner: SODV maintainer
 - scope: SODV governs publication truth.
 - consumers: humans, future validators
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### MANIFEST.md
@@ -490,6 +566,9 @@ Future validator checks may verify SKVI structure.
 - owner: SODV maintainer
 - scope: Contractual requirements for publication.
 - consumers: humans, future validators
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### SKILL.md
@@ -500,6 +579,9 @@ Future validator checks may verify SKVI structure.
 - owner: SODV maintainer
 - scope: Usage and interaction.
 - consumers: humans, agentic tools
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ##### SPEC.md
@@ -510,6 +592,9 @@ Future validator checks may verify SKVI structure.
 - owner: SODV maintainer
 - scope: Formatting for publication.
 - consumers: humans, future implementations
+- relationships: none defined
+- deferred_projections: strictly deferred
+- notes: none
 - status: canonical
 
 ## Deferred Projections
