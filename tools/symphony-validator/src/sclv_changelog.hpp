@@ -11,7 +11,9 @@ struct SclvRecord {
     bool has_change_type = false;
     std::string change_type;
     bool has_related_pr = false;
+    std::string related_pr;
     bool has_merge_commit = false;
+    std::string merge_commit;
     bool has_affected_surfaces = false;
     bool has_skvi_references = false;
     bool has_change_summary = false;

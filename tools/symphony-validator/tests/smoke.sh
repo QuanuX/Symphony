@@ -107,6 +107,18 @@ if ./build/symphony-validator check --repo ./tests/fixtures_invalid_sclv_change_
     echo "error: invalid_sclv_change_type fixture should fail"
     exit 1
 fi
-echo "invalid_sclv_change_type fixture failed as expected"
+# Verify invalid SCLV related_pr shape
+if ./build/symphony-validator check --repo ./tests/fixtures_invalid_sclv_related_pr > /dev/null 2>&1; then
+    echo "error: invalid_sclv_related_pr fixture should fail"
+    exit 1
+fi
+echo "invalid_sclv_related_pr fixture failed as expected"
+
+# Verify invalid SCLV merge_commit shape
+if ./build/symphony-validator check --repo ./tests/fixtures_invalid_sclv_merge_commit > /dev/null 2>&1; then
+    echo "error: invalid_sclv_merge_commit fixture should fail"
+    exit 1
+fi
+echo "invalid_sclv_merge_commit fixture failed as expected"
 
 echo "All smoke tests passed."

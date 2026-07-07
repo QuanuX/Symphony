@@ -104,8 +104,16 @@ SclvCheckResult check_sclv_changelog(const std::string& changelog_path) {
                 current_record.change_type = extract_value(line, "change_type:");
                 active_list = "";
             }
-            else if (trimmed.find("related_pr:") == 0) { current_record.has_related_pr = true; active_list = ""; }
-            else if (trimmed.find("merge_commit:") == 0) { current_record.has_merge_commit = true; active_list = ""; }
+            else if (trimmed.find("related_pr:") == 0) {
+                current_record.has_related_pr = true;
+                current_record.related_pr = extract_value(line, "related_pr:");
+                active_list = "";
+            }
+            else if (trimmed.find("merge_commit:") == 0) {
+                current_record.has_merge_commit = true;
+                current_record.merge_commit = extract_value(line, "merge_commit:");
+                active_list = "";
+            }
             else if (trimmed.find("affected_surfaces:") == 0) {
                 current_record.has_affected_surfaces = true;
                 active_list = "affected_surfaces";

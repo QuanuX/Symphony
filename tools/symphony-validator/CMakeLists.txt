@@ -13,6 +13,7 @@ add_executable(symphony-validator
     src/sclv_changelog.cpp
     src/cross_reference.cpp
     src/vocabulary.cpp
+    src/sclv_shape.cpp
 )
 
 target_include_directories(symphony-validator PRIVATE src)

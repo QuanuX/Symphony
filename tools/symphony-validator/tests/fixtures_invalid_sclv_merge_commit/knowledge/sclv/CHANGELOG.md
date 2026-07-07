@@ -5,9 +5,9 @@
 - title: `Title`
 - status: `canonical`
 - date: `2026-07-05`
-- change_type: `invalid_change_type`
+- change_type: `canonical_addition`
 - related_pr: `https://github.com/QuanuX/Symphony/pull/10`
-- merge_commit: `f2d65890f679107fdd114e51c5c8a22ab6eb2af2`
+- merge_commit: `f2d65890f679107fdd114e51c5c8a`
 - affected_surfaces:
   - `README.md`
 - skvi_references:
