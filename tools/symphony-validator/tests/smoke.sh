@@ -15,12 +15,9 @@ echo "--version passed"
 ./build/symphony-validator check --repo ./tests/fixtures_valid > /dev/null
 echo "valid fixture passed"
 
-# Verify current repo (fails due to incomplete entries)
-if ./build/symphony-validator check --repo ../.. > /dev/null 2>&1; then
-    echo "error: current repo unexpectedly passed strict validation"
-    exit 1
-fi
-echo "current repo failed strict validation as expected"
+# Verify current repo
+./build/symphony-validator check --repo ../.. > /dev/null
+echo "current repo passed strict validation"
 
 # Verify invalid repo
 if ./build/symphony-validator check --repo /definitely/missing/symphony-validator-path > /dev/null 2>&1; then
