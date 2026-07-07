@@ -7,7 +7,6 @@ CrossReferenceResult check_cross_references(const std::string& repo_path, const 
     result.success = true;
 
     auto is_indexed = [&](const std::string& path) {
-        if (path == "knowledge/skvi/INDEX.md") return true; // Implicitly indexed
         return std::find(skvi_result.indexed_paths.begin(), skvi_result.indexed_paths.end(), path) != skvi_result.indexed_paths.end();
     };
 

@@ -13,3 +13,16 @@
 - deferred_projections: JSON portable evidence
 - status: canonical
 - notes: none
+
+#### INDEX.md
+- path: `knowledge/skvi/INDEX.md`
+- title: SKVI Index
+- surface_type: skvi_index
+- truth_role: index
+- owner: skvi
+- scope: index
+- relationships: none
+- consumers: humans
+- deferred_projections: none
+- status: canonical
+- notes: none

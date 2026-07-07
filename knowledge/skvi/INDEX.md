@@ -403,6 +403,39 @@ Future validator checks may verify SKVI structure.
 - status: canonical
 
 #### SKVI
+##### INDEX.md
+- path: `knowledge/skvi/INDEX.md`
+- title: Symphony Knowledge Vector Index
+- surface_type: skvi_index
+- truth_role: canonical knowledge routing table
+- owner: SKVI
+- scope: Human-authored declarative index of canonical Symphony knowledge-vector surfaces, their truth roles, ownership boundaries, relationships, consumers, deferred projections, and status.
+- relationships:
+  - indexes -> canonical repository knowledge surfaces
+  - declares -> knowledge routing relationships
+  - depends_on -> `knowledge/skvi/SPEC.md`
+  - may_consume -> `knowledge/skvi/MANIFEST.md`
+  - may_consume -> `knowledge/skvi/SKILL.md`
+  - may_check -> future tools/symphony-validator/SPEC.md rules
+  - interprets -> SCLV cross-reference validation
+  - interprets -> SODV publication governance
+- consumers:
+  - maintainers
+  - agentic reviewers
+  - NotebookLM corpus alignment
+  - future deterministic validator checks
+  - future qxctl-derived evidence consumers
+  - future SODV publication governance
+- deferred_projections:
+  - JSON / JSONL portable evidence
+  - DuckDB analytical projection
+  - HDF5 dense quantitative / vector / compatibility substrate
+  - graph view relationship projection
+  - qxctl-readable evidence projection
+  - human-readable Markdown report
+- status: canonical
+- notes: Added to make SKVI self-indexing explicit rather than implicit in validator behavior. The validator must consume declared SKVI truth, not invent canonical index membership.
+
 ##### INTENT.md
 - path: `knowledge/skvi/INTENT.md`
 - title: SKVI Intent
