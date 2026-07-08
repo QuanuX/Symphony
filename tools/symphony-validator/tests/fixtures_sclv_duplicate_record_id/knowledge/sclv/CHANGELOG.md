@@ -22,8 +22,8 @@
 - non_authorizations: `none`
 - notes: `notes`
 
-### SCLV-PR-011
-- record_id: `SCLV-PR-011`
+### SCLV-PR-010
+- record_id: `SCLV-PR-010`
 - title: `Title 2`
 - status: `canonical`
 - date: `2026-07-05`

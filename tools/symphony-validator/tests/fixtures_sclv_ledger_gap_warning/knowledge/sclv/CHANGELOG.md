@@ -22,13 +22,13 @@
 - non_authorizations: `none`
 - notes: `notes`
 
-### SCLV-PR-011
-- record_id: `SCLV-PR-011`
+### SCLV-PR-033
+- record_id: `SCLV-PR-033`
 - title: `Title 2`
 - status: `canonical`
 - date: `2026-07-05`
 - change_type: `canonical_addition`
-- related_pr: `https://github.com/QuanuX/Symphony/pull/11`
+- related_pr: `https://github.com/QuanuX/Symphony/pull/33`
 - merge_commit: `8b92a843e15652d1eab07978fcbb459cd840a318`
 - affected_surfaces: `none`
 - skvi_references: `none`

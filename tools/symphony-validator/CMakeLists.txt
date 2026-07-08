@@ -17,6 +17,7 @@ add_executable(symphony-validator
     src/runtime_contracts.cpp
     src/knowledge_contracts.cpp
     src/root_contracts.cpp
+    src/sclv_ledger.cpp
 )
 
 target_include_directories(symphony-validator PRIVATE src)

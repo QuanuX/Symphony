@@ -28,7 +28,7 @@
 - status: `canonical`
 - date: `2026-07-05`
 - change_type: `canonical_addition`
-- related_pr: `https://github.com/QuanuX/Symphony/pull/11`
+- related_pr: `https://github.com/QuanuX/Symphony/pull/10`
 - merge_commit: `8b92a843e15652d1eab07978fcbb459cd840a318`
 - affected_surfaces: `none`
 - skvi_references: `none`
