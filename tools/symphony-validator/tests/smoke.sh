@@ -143,6 +143,42 @@ if ./build/symphony-validator check --repo ./tests/fixtures_sclv_malformed > /de
 fi
 echo "malformed SCLV fixture failed as expected"
 
+# Verify SCLV record_id/related_pr mismatch
+if ./build/symphony-validator check --repo ./tests/fixtures_sclv_record_pr_mismatch > /dev/null 2>&1; then
+    echo "error: fixtures_sclv_record_pr_mismatch should fail"
+    exit 1
+fi
+echo "fixtures_sclv_record_pr_mismatch failed as expected"
+
+# Verify SCLV duplicate record_id
+if ./build/symphony-validator check --repo ./tests/fixtures_sclv_duplicate_record_id > /dev/null 2>&1; then
+    echo "error: fixtures_sclv_duplicate_record_id should fail"
+    exit 1
+fi
+echo "fixtures_sclv_duplicate_record_id failed as expected"
+
+# Verify SCLV duplicate related_pr
+if ./build/symphony-validator check --repo ./tests/fixtures_sclv_duplicate_related_pr > /dev/null 2>&1; then
+    echo "error: fixtures_sclv_duplicate_related_pr should fail"
+    exit 1
+fi
+echo "fixtures_sclv_duplicate_related_pr failed as expected"
+
+# Verify SCLV duplicate merge_commit
+if ./build/symphony-validator check --repo ./tests/fixtures_sclv_duplicate_merge_commit > /dev/null 2>&1; then
+    echo "error: fixtures_sclv_duplicate_merge_commit should fail"
+    exit 1
+fi
+echo "fixtures_sclv_duplicate_merge_commit failed as expected"
+
+# Verify SCLV ledger gap warning only
+OUT_WARN_GAP=$(./build/symphony-validator check --repo ./tests/fixtures_sclv_ledger_gap_warning)
+if ! echo "$OUT_WARN_GAP" | grep -qE "summary pass=.* warning=[1-9][0-9]* violation=0 exit=0"; then
+    echo "error: fixtures_sclv_ledger_gap_warning missing warning > 0 or exit=0"
+    exit 1
+fi
+echo "fixtures_sclv_ledger_gap_warning passed with warning"
+
 # Verify skvi_references path not indexed
 if ./build/symphony-validator check --repo ./tests/fixtures_skvi_ref_unindexed > /dev/null 2>&1; then
     echo "error: skvi_ref_unindexed fixture should fail"

@@ -11,6 +11,7 @@
 #include "runtime_contracts.hpp"
 #include "knowledge_contracts.hpp"
 #include "root_contracts.hpp"
+#include "sclv_ledger.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -122,6 +123,14 @@ int run_cli(const std::vector<std::string>& args) {
             process_messages(sclv_result.messages);
             if (!sclv_result.success) {
                 final_exit = 4;
+                print_summary();
+                return final_exit;
+            }
+
+            SclvLedgerContinuityResult ledger_result = check_sclv_ledger_continuity(sclv_result);
+            process_messages(ledger_result.messages);
+            if (!ledger_result.success) {
+                final_exit = 14;
                 print_summary();
                 return final_exit;
             }
