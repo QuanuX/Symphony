@@ -65,6 +65,7 @@ SkviCheckResult check_skvi_index(const std::string& index_path) {
                 result.messages.push_back(format_evidence(EvidenceCategory::Violation, "skvi.entry.missing_field", "path=" + entry.path + " field=" + m));
             }
         }
+        result.entries.push_back(entry);
     };
 
     while (std::getline(file, line)) {
@@ -96,7 +97,6 @@ SkviCheckResult check_skvi_index(const std::string& index_path) {
 
     if (in_entry) {
         validate_entry(current_entry);
-        result.entries.push_back(current_entry);
     }
 
     if (entry_count == 0) {

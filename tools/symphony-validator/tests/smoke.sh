@@ -344,4 +344,33 @@ if ./build/symphony-validator check --repo ./tests/fixtures_skvi_coverage_duplic
     exit 1
 fi
 echo "fixtures_skvi_coverage_duplicate failed as expected"
+
+# Verify SKVI paths missing entry
+if ./build/symphony-validator check --repo ./tests/fixtures_skvi_paths_missing > /dev/null 2>&1; then
+    echo "error: fixtures_skvi_paths_missing should fail"
+    exit 1
+fi
+echo "fixtures_skvi_paths_missing failed as expected"
+
+# Verify SKVI paths absolute entry
+if ./build/symphony-validator check --repo ./tests/fixtures_skvi_paths_absolute > /dev/null 2>&1; then
+    echo "error: fixtures_skvi_paths_absolute should fail"
+    exit 1
+fi
+echo "fixtures_skvi_paths_absolute failed as expected"
+
+# Verify SKVI paths traversal entry
+if ./build/symphony-validator check --repo ./tests/fixtures_skvi_paths_traversal > /dev/null 2>&1; then
+    echo "error: fixtures_skvi_paths_traversal should fail"
+    exit 1
+fi
+echo "fixtures_skvi_paths_traversal failed as expected"
+
+# Verify SKVI paths directory entry
+if ./build/symphony-validator check --repo ./tests/fixtures_skvi_paths_directory > /dev/null 2>&1; then
+    echo "error: fixtures_skvi_paths_directory should fail"
+    exit 1
+fi
+echo "fixtures_skvi_paths_directory failed as expected"
+
 echo "All smoke tests passed."
