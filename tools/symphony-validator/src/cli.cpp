@@ -32,69 +32,91 @@ int run_cli(const std::vector<std::string>& args) {
 
     if (command == "check") {
         if (args.size() == 3 && args[1] == "--repo") {
+            int pass_count = 0;
+            int warning_count = 0;
+            int violation_count = 0;
+            int final_exit = 0;
+
+            auto process_msg = [&](const std::string& msg) {
+                std::cout << msg << "\n";
+                if (msg.find("evidence pass") == 0) pass_count++;
+                else if (msg.find("evidence warning") == 0) warning_count++;
+                else if (msg.find("evidence violation") == 0 || msg.find("evidence absent") == 0) violation_count++;
+            };
+
+            auto process_messages = [&](const std::vector<std::string>& messages) {
+                for (const auto& msg : messages) {
+                    process_msg(msg);
+                }
+            };
+
+            auto print_summary = [&]() {
+                std::cout << "summary pass=" << pass_count << " warning=" << warning_count << " violation=" << violation_count << " exit=" << final_exit << "\n";
+            };
+
             PathCheckResult result = check_repository_path(args[2]);
-            std::cout << result.message << "\n";
+            if (!result.message.empty()) {
+                std::cout << result.message << "\n";
+            }
             if (!result.is_valid_directory) {
-                return 2;
+                final_exit = 2;
+                print_summary();
+                return final_exit;
             }
 
             std::string index_path = args[2] + "/knowledge/skvi/INDEX.md";
             SkviCheckResult skvi_result = check_skvi_index(index_path);
-            for (const auto& msg : skvi_result.messages) {
-                std::cout << msg << "\n";
-            }
-
+            process_messages(skvi_result.messages);
             if (!skvi_result.success) {
-                return 3;
+                final_exit = 3;
+                print_summary();
+                return final_exit;
             }
 
             std::string changelog_path = args[2] + "/knowledge/sclv/CHANGELOG.md";
             SclvCheckResult sclv_result = check_sclv_changelog(changelog_path);
-            for (const auto& msg : sclv_result.messages) {
-                std::cout << msg << "\n";
-            }
-
+            process_messages(sclv_result.messages);
             if (!sclv_result.success) {
-                return 4;
+                final_exit = 4;
+                print_summary();
+                return final_exit;
             }
 
             CrossReferenceResult cross_result = check_cross_references(args[2], skvi_result, sclv_result);
-            for (const auto& msg : cross_result.messages) {
-                std::cout << msg << "\n";
-            }
-
+            process_messages(cross_result.messages);
             if (!cross_result.success) {
-                return 5;
+                final_exit = 5;
+                print_summary();
+                return final_exit;
             }
 
             VocabularyCheckResult vocab_result = check_vocabulary(skvi_result, sclv_result);
-            for (const auto& msg : vocab_result.messages) {
-                std::cout << msg << "\n";
-            }
-
+            process_messages(vocab_result.messages);
             if (!vocab_result.success) {
-                return 6;
+                final_exit = 6;
+                print_summary();
+                return final_exit;
             }
 
             SclvShapeCheckResult shape_result = check_sclv_shapes(sclv_result);
-            for (const auto& msg : shape_result.messages) {
-                std::cout << msg << "\n";
-            }
-
+            process_messages(shape_result.messages);
             if (!shape_result.success) {
-                return 7;
+                final_exit = 7;
+                print_summary();
+                return final_exit;
             }
 
             ArtifactCheckResult artifact_result = check_unauthorized_artifacts(args[2]);
-            for (const auto& msg : artifact_result.messages) {
-                std::cout << msg << "\n";
+            process_messages(artifact_result.messages);
+            if (!artifact_result.success) {
+                final_exit = 8;
+                print_summary();
+                return final_exit;
             }
 
-            if (artifact_result.success) {
-                return 0;
-            } else {
-                return 8;
-            }
+            final_exit = 0;
+            print_summary();
+            return final_exit;
         } else {
             std::cerr << "error: check requires --repo <path>\n";
             return 1;

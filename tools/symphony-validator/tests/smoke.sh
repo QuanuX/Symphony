@@ -12,16 +12,40 @@ echo "--help passed"
 echo "--version passed"
 
 # Verify perfectly valid fixture
-./build/symphony-validator check --repo ./tests/fixtures_valid > /dev/null
+OUT=$(./build/symphony-validator check --repo ./tests/fixtures_valid)
+if ! echo "$OUT" | grep -q "violation=0 exit=0"; then
+    echo "error: valid fixture missing violation=0 exit=0 in summary"
+    exit 1
+fi
+if [ $(echo "$OUT" | grep -c "^summary ") -ne 1 ]; then
+    echo "error: valid fixture should have exactly one summary footer"
+    exit 1
+fi
 echo "valid fixture passed"
 
 # Verify current repo
-./build/symphony-validator check --repo ../.. > /dev/null
+OUT_REPO=$(./build/symphony-validator check --repo ../..)
+if [ $(echo "$OUT_REPO" | grep -c "^summary ") -ne 1 ]; then
+    echo "error: current repo should have exactly one summary footer"
+    exit 1
+fi
 echo "current repo passed strict validation"
 
 # Verify invalid repo
-if ./build/symphony-validator check --repo /definitely/missing/symphony-validator-path > /dev/null 2>&1; then
+set +e
+OUT_INV=$(./build/symphony-validator check --repo /definitely/missing/symphony-validator-path 2>&1)
+EXIT_CODE=$?
+set -e
+if [ $EXIT_CODE -eq 0 ]; then
     echo "error: invalid repo should fail"
+    exit 1
+fi
+if ! echo "$OUT_INV" | grep -q "summary pass="; then
+    echo "error: invalid repo missing summary footer"
+    exit 1
+fi
+if [ $(echo "$OUT_INV" | grep -c "^summary ") -ne 1 ]; then
+    echo "error: invalid repo should have exactly one summary footer"
     exit 1
 fi
 echo "invalid repo passed"
@@ -85,7 +109,11 @@ fi
 echo "affected_surface_absent fixture failed as expected"
 
 # Verify affected_surfaces path existing but unindexed
-./build/symphony-validator check --repo ./tests/fixtures_affected_surface_unindexed > /dev/null
+OUT_WARN=$(./build/symphony-validator check --repo ./tests/fixtures_affected_surface_unindexed)
+if ! echo "$OUT_WARN" | grep -qE "summary pass=.* warning=[1-9][0-9]* violation=0 exit=0"; then
+    echo "error: affected_surface_unindexed missing warning > 0 or exit=0"
+    exit 1
+fi
 echo "affected_surface_unindexed fixture passed with warning"
 
 # Verify invalid SKVI status
