@@ -92,6 +92,13 @@ if ./build/symphony-validator check --repo ./tests/fixtures_missing_validator_an
 fi
 echo "fixture missing validator anchor failed as expected"
 
+# Verify fixture missing runtime anchor
+if ./build/symphony-validator check --repo ./tests/fixtures_missing_runtime_anchor > /dev/null 2>&1; then
+    echo "error: fixture missing runtime anchor should fail"
+    exit 1
+fi
+echo "fixture missing runtime anchor failed as expected"
+
 # Verify malformed SKVI fixture (missing title, owner, etc.)
 if ./build/symphony-validator check --repo ./tests/fixtures > /dev/null 2>&1; then
     echo "error: malformed fixture should fail"

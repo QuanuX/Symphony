@@ -8,6 +8,7 @@
 #include "artifacts.hpp"
 #include "canonical_surfaces.hpp"
 #include "validator_contracts.hpp"
+#include "runtime_contracts.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -77,6 +78,14 @@ int run_cli(const std::vector<std::string>& args) {
             process_messages(validator_contract_result.messages);
             if (!validator_contract_result.success) {
                 final_exit = 10;
+                print_summary();
+                return final_exit;
+            }
+
+            RuntimeContractShapeResult runtime_contract_result = check_runtime_contract_shapes(args[2]);
+            process_messages(runtime_contract_result.messages);
+            if (!runtime_contract_result.success) {
+                final_exit = 11;
                 print_summary();
                 return final_exit;
             }
