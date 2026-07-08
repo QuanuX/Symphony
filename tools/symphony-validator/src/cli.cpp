@@ -207,14 +207,14 @@ int run_cli(const std::vector<std::string>& args) {
             process_messages(skvi_paths_result.messages);
             if (!skvi_paths_result.success) {
                 final_exit = 17;
-            SclvSkviReferencesCheckResult sclv_skvi_ref_result = check_sclv_skvi_references(skvi_result, sclv_result);
-            process_messages(sclv_skvi_ref_result.messages);
-            if (!sclv_skvi_ref_result.success) {
-                final_exit = 19;
                 print_summary();
                 return final_exit;
             }
 
+            SclvSkviReferencesCheckResult sclv_skvi_ref_result = check_sclv_skvi_references(skvi_result, sclv_result);
+            process_messages(sclv_skvi_ref_result.messages);
+            if (!sclv_skvi_ref_result.success) {
+                final_exit = 19;
                 print_summary();
                 return final_exit;
             }
