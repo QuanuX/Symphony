@@ -8,6 +8,7 @@ add_executable(symphony-validator
     src/paths.cpp
     src/skvi_index.cpp
     src/skvi_coverage.cpp
+    src/skvi_paths.cpp
     src/sclv_changelog.cpp
     src/cross_reference.cpp
     src/vocabulary.cpp

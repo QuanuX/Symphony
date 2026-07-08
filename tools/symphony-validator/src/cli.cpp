@@ -14,6 +14,7 @@
 #include "root_contracts.hpp"
 #include "sclv_ledger.hpp"
 #include "doctrine_vocab.hpp"
+#include "skvi_paths.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -188,6 +189,14 @@ int run_cli(const std::vector<std::string>& args) {
             process_messages(skvi_coverage_result.messages);
             if (!skvi_coverage_result.success) {
                 final_exit = 16;
+                print_summary();
+                return final_exit;
+            }
+
+            SkviPathsCheckResult skvi_paths_result = check_skvi_paths(args[2], skvi_result);
+            process_messages(skvi_paths_result.messages);
+            if (!skvi_paths_result.success) {
+                final_exit = 17;
                 print_summary();
                 return final_exit;
             }
