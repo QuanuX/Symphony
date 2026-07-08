@@ -9,6 +9,7 @@
 #include "canonical_surfaces.hpp"
 #include "validator_contracts.hpp"
 #include "runtime_contracts.hpp"
+#include "knowledge_contracts.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -86,6 +87,14 @@ int run_cli(const std::vector<std::string>& args) {
             process_messages(runtime_contract_result.messages);
             if (!runtime_contract_result.success) {
                 final_exit = 11;
+                print_summary();
+                return final_exit;
+            }
+
+            KnowledgeContractShapeResult knowledge_result = check_knowledge_contract_shapes(args[2]);
+            process_messages(knowledge_result.messages);
+            if (!knowledge_result.success) {
+                final_exit = 12;
                 print_summary();
                 return final_exit;
             }

@@ -15,6 +15,7 @@ add_executable(symphony-validator
     src/canonical_surfaces.cpp
     src/validator_contracts.cpp
     src/runtime_contracts.cpp
+    src/knowledge_contracts.cpp
 )
 
 target_include_directories(symphony-validator PRIVATE src)
