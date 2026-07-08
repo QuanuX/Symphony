@@ -386,6 +386,19 @@ Future validator checks may verify SKVI structure.
 - notes: none
 - status: canonical
 
+##### CMakeLists.txt
+- path: `tools/symphony-validator/CMakeLists.txt`
+- title: symphony-validator Build Contract
+- surface_type: tool_build_contract
+- truth_role: implementation_build_contract
+- owner: symphony-validator
+- scope: Declares the local C++26 build contract for the validator implementation.
+- relationships: supports tools/symphony-validator/INSTALL.md; builds validator source surfaces
+- consumers: maintainers; local build tooling; validator developers
+- deferred_projections: none
+- status: canonical
+- notes: C++26 build contract surface; not a generated projection.
+
 ### Knowledge Vector Surfaces
 
 #### Knowledge Root
