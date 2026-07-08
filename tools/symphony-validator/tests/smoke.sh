@@ -373,4 +373,39 @@ if ./build/symphony-validator check --repo ./tests/fixtures_skvi_paths_directory
 fi
 echo "fixtures_skvi_paths_directory failed as expected"
 
+# Verify SCLV reference missing affected path
+if ./build/symphony-validator check --repo ./tests/fixtures_sclv_reference_missing_affected > /dev/null 2>&1; then
+    echo "error: fixtures_sclv_reference_missing_affected should fail"
+    exit 1
+fi
+echo "fixtures_sclv_reference_missing_affected failed as expected"
+
+# Verify SCLV reference missing skvi path
+if ./build/symphony-validator check --repo ./tests/fixtures_sclv_reference_missing_skvi > /dev/null 2>&1; then
+    echo "error: fixtures_sclv_reference_missing_skvi should fail"
+    exit 1
+fi
+echo "fixtures_sclv_reference_missing_skvi failed as expected"
+
+# Verify SCLV reference absolute path
+if ./build/symphony-validator check --repo ./tests/fixtures_sclv_reference_absolute > /dev/null 2>&1; then
+    echo "error: fixtures_sclv_reference_absolute should fail"
+    exit 1
+fi
+echo "fixtures_sclv_reference_absolute failed as expected"
+
+# Verify SCLV reference traversal path
+if ./build/symphony-validator check --repo ./tests/fixtures_sclv_reference_traversal > /dev/null 2>&1; then
+    echo "error: fixtures_sclv_reference_traversal should fail"
+    exit 1
+fi
+echo "fixtures_sclv_reference_traversal failed as expected"
+
+# Verify SCLV reference directory path
+if ./build/symphony-validator check --repo ./tests/fixtures_sclv_reference_directory > /dev/null 2>&1; then
+    echo "error: fixtures_sclv_reference_directory should fail"
+    exit 1
+fi
+echo "fixtures_sclv_reference_directory failed as expected"
+
 echo "All smoke tests passed."
