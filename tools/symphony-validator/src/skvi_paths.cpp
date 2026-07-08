@@ -1,6 +1,6 @@
 #include "skvi_paths.hpp"
 #include "evidence.hpp"
-#include <sys/stat.h>
+#include <filesystem>
 
 SkviPathsCheckResult check_skvi_paths(const std::string& repo_root, const SkviCheckResult& skvi_result) {
     SkviPathsCheckResult result;
@@ -24,15 +24,15 @@ SkviPathsCheckResult check_skvi_paths(const std::string& repo_root, const SkviCh
             continue;
         }
 
-        std::string full_path = repo_root + "/" + path;
-        struct stat path_stat;
-        if (stat(full_path.c_str(), &path_stat) != 0) {
+        std::filesystem::path full_path = std::filesystem::path(repo_root) / path;
+        
+        if (!std::filesystem::exists(full_path)) {
             result.success = false;
             result.messages.push_back(format_evidence(EvidenceCategory::Violation, "skvi_path.indexed_path_missing", "path=" + path));
             continue;
         }
 
-        if (!S_ISREG(path_stat.st_mode)) {
+        if (!std::filesystem::is_regular_file(full_path)) {
             result.success = false;
             result.messages.push_back(format_evidence(EvidenceCategory::Violation, "skvi_path.indexed_path_not_file", "path=" + path));
             continue;
