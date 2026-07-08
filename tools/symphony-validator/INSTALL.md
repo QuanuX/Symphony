@@ -2,8 +2,45 @@
 
 ****
 
-## Installation Status
-Not yet implemented.
+## Requirements
+
+The Symphony Validator requires:
+* C++26 compatible toolchain
+* CMake 3.20+
+* On macOS: Xcode Command Line Tools (or full Xcode) with Homebrew LLVM 18+
+
+## macOS Build Instructions
+
+Due to limited C++26 support in AppleClang, building on macOS requires a specific LLVM toolchain from Homebrew:
+
+```bash
+brew install llvm lld cmake
+```
+
+Then configure and build using the Homebrew LLVM compiler and the explicit LLD Mach-O linker:
+
+```bash
+cd tools/symphony-validator
+rm -rf build
+SDKROOT="$(xcrun --show-sdk-path)" \
+CXX=/usr/local/opt/llvm/bin/clang++ \
+LDFLAGS="-fuse-ld=$(brew --prefix lld)/bin/ld64.lld" \
+cmake -S . -B build
+cmake --build build
+```
+
+## Running the Validator
+
+```bash
+./build/symphony-validator check --repo /path/to/symphony
+```
+
+## Smoke Tests
+
+```bash
+cd tools/symphony-validator
+./tests/smoke.sh
+```
 
 ## Future Installation Intent
 The validator will be an individually installable native tool built with a portable C++ build model (CMake or Make).
@@ -14,16 +51,8 @@ Invoked as a standalone tool during local development and preflight checks.
 ## Production Posture
 Invoked by CI systems and the administrative spine for structural and doctrinal verification.
 
-## Non-requirements
-This canonical seed does not provide install commands.
-This canonical seed does not provide build commands.
-This canonical seed authorizes no validator implementation, no C++ source files, no headers, no build files, no CI files, no executable schemas, no JSON schema files, no Markdown template files, no generated reports, no runtime artifacts, and no binary assets.
-
 ## Python Doctrine
 Python must not be required for remote native hot-path execution or the administrative spine.
 Optional isolated Python habitats may exist only when explicitly declared by a module or tool.
 Choosing C++ for the validator does not ban optional isolated Python habitats.
 It prevents Python from becoming required validator infrastructure for the administrative spine.
-
-## Non-authorization Statement
-This canonical seed does not authorize C++ validator implementation, or executable schema generation.
