@@ -57,6 +57,34 @@ if ./build/symphony-validator check --repo . > /dev/null 2>&1; then
 fi
 echo "repo missing INDEX.md failed as expected"
 
+# Verify fixture missing root surface
+if ./build/symphony-validator check --repo ./tests/fixtures_missing_root_surface > /dev/null 2>&1; then
+    echo "error: fixture missing root surface should fail"
+    exit 1
+fi
+echo "fixture missing root surface failed as expected"
+
+# Verify fixture missing runtime module surface
+if ./build/symphony-validator check --repo ./tests/fixtures_missing_runtime_module_surface > /dev/null 2>&1; then
+    echo "error: fixture missing runtime module surface should fail"
+    exit 1
+fi
+echo "fixture missing runtime module surface failed as expected"
+
+# Verify fixture missing knowledge surface
+if ./build/symphony-validator check --repo ./tests/fixtures_missing_knowledge_surface > /dev/null 2>&1; then
+    echo "error: fixture missing knowledge surface should fail"
+    exit 1
+fi
+echo "fixture missing knowledge surface failed as expected"
+
+# Verify fixture missing validator surface
+if ./build/symphony-validator check --repo ./tests/fixtures_missing_validator_surface > /dev/null 2>&1; then
+    echo "error: fixture missing validator surface should fail"
+    exit 1
+fi
+echo "fixture missing validator surface failed as expected"
+
 # Verify malformed SKVI fixture (missing title, owner, etc.)
 if ./build/symphony-validator check --repo ./tests/fixtures > /dev/null 2>&1; then
     echo "error: malformed fixture should fail"

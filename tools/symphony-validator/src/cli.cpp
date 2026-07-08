@@ -6,6 +6,7 @@
 #include "vocabulary.hpp"
 #include "sclv_shape.hpp"
 #include "artifacts.hpp"
+#include "canonical_surfaces.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -60,6 +61,13 @@ int run_cli(const std::vector<std::string>& args) {
             }
             if (!result.is_valid_directory) {
                 final_exit = 2;
+                print_summary();
+                return final_exit;
+            }
+            CanonicalSurfaceCheckResult canonical_result = check_required_canonical_surfaces(args[2]);
+            process_messages(canonical_result.messages);
+            if (!canonical_result.success) {
+                final_exit = 9;
                 print_summary();
                 return final_exit;
             }
