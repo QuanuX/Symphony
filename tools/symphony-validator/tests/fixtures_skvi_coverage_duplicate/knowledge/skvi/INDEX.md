@@ -675,3 +675,16 @@ This index authorizes none of the following:
 
 Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 
+
+##### README.md
+- path: `README.md`
+- title: Symphony
+- surface_type: root_readme
+- truth_role: core_identity
+- owner: root
+- scope: The root identity and top-level architecture for the Symphony project.
+- relationships: contains doctrine; governs runtime and knowledge surfaces
+- consumers: developers; automated tools; end-users
+- deferred_projections: none
+- status: canonical
+- notes: none
