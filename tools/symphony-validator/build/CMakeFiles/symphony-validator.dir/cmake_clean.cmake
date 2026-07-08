@@ -15,6 +15,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/symphony-validator.dir/src/main.cpp.o.d"
   "CMakeFiles/symphony-validator.dir/src/paths.cpp.o"
   "CMakeFiles/symphony-validator.dir/src/paths.cpp.o.d"
+  "CMakeFiles/symphony-validator.dir/src/root_contracts.cpp.o"
+  "CMakeFiles/symphony-validator.dir/src/root_contracts.cpp.o.d"
   "CMakeFiles/symphony-validator.dir/src/runtime_contracts.cpp.o"
   "CMakeFiles/symphony-validator.dir/src/runtime_contracts.cpp.o.d"
   "CMakeFiles/symphony-validator.dir/src/sclv_changelog.cpp.o"

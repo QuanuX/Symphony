@@ -85,12 +85,12 @@ clean: CMakeFiles/symphony-validator.dir/clean
 CMakeFiles/symphony-validator.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/symphony-validator.dir/build.make CMakeFiles/symphony-validator.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/symphony-validator.dir/build.make CMakeFiles/symphony-validator.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 "Built target symphony-validator"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 "Built target symphony-validator"
 .PHONY : CMakeFiles/symphony-validator.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/symphony-validator.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles 15
+	$(CMAKE_COMMAND) -E cmake_progress_start /tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles 16
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/symphony-validator.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles 0
 .PHONY : CMakeFiles/symphony-validator.dir/rule
@@ -102,7 +102,7 @@ symphony-validator: CMakeFiles/symphony-validator.dir/rule
 # codegen rule for target.
 CMakeFiles/symphony-validator.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/symphony-validator.dir/build.make CMakeFiles/symphony-validator.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 "Finished codegen for target symphony-validator"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 "Finished codegen for target symphony-validator"
 .PHONY : CMakeFiles/symphony-validator.dir/codegen
 
 # clean rule for target.

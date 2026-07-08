@@ -551,6 +551,7 @@ CMakeFiles/symphony-validator.dir/src/cli.cpp.o: \
   /tmp/QuanuX_Symphony_014N/tools/symphony-validator/src/validator_contracts.hpp \
   /tmp/QuanuX_Symphony_014N/tools/symphony-validator/src/runtime_contracts.hpp \
   /tmp/QuanuX_Symphony_014N/tools/symphony-validator/src/knowledge_contracts.hpp \
+  /tmp/QuanuX_Symphony_014N/tools/symphony-validator/src/root_contracts.hpp \
   /usr/local/Cellar/llvm/22.1.8/bin/../include/c++/v1/iostream \
   /usr/local/Cellar/llvm/22.1.8/bin/../include/c++/v1/ios \
   /usr/local/Cellar/llvm/22.1.8/bin/../include/c++/v1/__ios/fpos.h \

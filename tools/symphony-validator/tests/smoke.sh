@@ -64,6 +64,13 @@ if ./build/symphony-validator check --repo ./tests/fixtures_missing_root_surface
 fi
 echo "fixture missing root surface failed as expected"
 
+# Verify fixture missing root anchor
+if ./build/symphony-validator check --repo ./tests/fixtures_missing_root_anchor > /dev/null 2>&1; then
+    echo "error: fixture missing root anchor should fail"
+    exit 1
+fi
+echo "fixture missing root anchor failed as expected"
+
 # Verify fixture missing runtime module surface
 if ./build/symphony-validator check --repo ./tests/fixtures_missing_runtime_module_surface > /dev/null 2>&1; then
     echo "error: fixture missing runtime module surface should fail"

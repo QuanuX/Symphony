@@ -1402,8 +1402,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles/CMakeScratch/TryCompile-FoQ7Cr"
-      binary: "/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles/CMakeScratch/TryCompile-FoQ7Cr"
+      source: "/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles/CMakeScratch/TryCompile-Q1Oi8S"
+      binary: "/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles/CMakeScratch/TryCompile-Q1Oi8S"
     cmakeVariables:
       CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/usr/local/Cellar/llvm/22.1.8/bin/clang-scan-deps"
       CMAKE_CXX_FLAGS: ""
@@ -1417,12 +1417,12 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: '/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles/CMakeScratch/TryCompile-FoQ7Cr'
+        Change Dir: '/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles/CMakeScratch/TryCompile-Q1Oi8S'
         
-        Run Build Command(s): /opt/anaconda3/lib/python3.12/site-packages/cmake/data/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_33299/fast
-        /Applications/Xcode.app/Contents/Developer/usr/bin/make  -f CMakeFiles/cmTC_33299.dir/build.make CMakeFiles/cmTC_33299.dir/build
-        Building CXX object CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o
-        /usr/local/opt/llvm/bin/clang++   -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk   -v -Wl,-v -MD -MT CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o -c /opt/anaconda3/lib/python3.12/site-packages/cmake/data/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp
+        Run Build Command(s): /opt/anaconda3/lib/python3.12/site-packages/cmake/data/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_acc8c/fast
+        /Applications/Xcode.app/Contents/Developer/usr/bin/make  -f CMakeFiles/cmTC_acc8c.dir/build.make CMakeFiles/cmTC_acc8c.dir/build
+        Building CXX object CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o
+        /usr/local/opt/llvm/bin/clang++   -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk   -v -Wl,-v -MD -MT CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o -c /opt/anaconda3/lib/python3.12/site-packages/cmake/data/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp
         Homebrew clang version 22.1.8
         Target: x86_64-apple-darwin25.5.0
         Thread model: posix
@@ -1432,7 +1432,7 @@ events:
         User configuration file directory: /Users/Duncan/.config/clang
         clang++: warning: -Wl,-v: 'linker' input unused [-Wunused-command-line-argument]
          (in-process)
-         "/usr/local/Cellar/llvm/22.1.8/bin/clang-22" -cc1 -triple x86_64-apple-macosx26.0.0 -Wundef-prefix=TARGET_OS_ -Werror=undef-prefix -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model pic -pic-level 2 -mframe-pointer=all -ffp-contract=on -fno-rounding-math -funwind-tables=2 -target-sdk-version=26.5 -fcompatibility-qualified-id-block-type-checking -fvisibility-inlines-hidden-static-local-var -fdefine-target-os-macros -fno-modulemap-allow-subdirectory-search -target-cpu penryn -tune-cpu generic -debugger-tuning=lldb -fdebug-compilation-dir=/private/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles/CMakeScratch/TryCompile-FoQ7Cr -target-linker-version 1115.7.3 -v -fcoverage-compilation-dir=/private/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles/CMakeScratch/TryCompile-FoQ7Cr -resource-dir /usr/local/Cellar/llvm/22.1.8/lib/clang/22 -dependency-file CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o.d -MT CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -internal-isystem /usr/local/Cellar/llvm/22.1.8/bin/../include/c++/v1 -internal-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/local/include -internal-isystem /usr/local/Cellar/llvm/22.1.8/lib/clang/22/include -internal-externc-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/SubFrameworks -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/Library/Frameworks -fdeprecated-macro -ferror-limit 19 -stack-protector 1 -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fcxx-exceptions -fexceptions -fmax-type-align=16 -fdwarf2-cfi-asm -o CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o -x c++ /opt/anaconda3/lib/python3.12/site-packages/cmake/data/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp
+         "/usr/local/Cellar/llvm/22.1.8/bin/clang-22" -cc1 -triple x86_64-apple-macosx26.0.0 -Wundef-prefix=TARGET_OS_ -Werror=undef-prefix -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model pic -pic-level 2 -mframe-pointer=all -ffp-contract=on -fno-rounding-math -funwind-tables=2 -target-sdk-version=26.5 -fcompatibility-qualified-id-block-type-checking -fvisibility-inlines-hidden-static-local-var -fdefine-target-os-macros -fno-modulemap-allow-subdirectory-search -target-cpu penryn -tune-cpu generic -debugger-tuning=lldb -fdebug-compilation-dir=/private/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles/CMakeScratch/TryCompile-Q1Oi8S -target-linker-version 1115.7.3 -v -fcoverage-compilation-dir=/private/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles/CMakeScratch/TryCompile-Q1Oi8S -resource-dir /usr/local/Cellar/llvm/22.1.8/lib/clang/22 -dependency-file CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o.d -MT CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -internal-isystem /usr/local/Cellar/llvm/22.1.8/bin/../include/c++/v1 -internal-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/local/include -internal-isystem /usr/local/Cellar/llvm/22.1.8/lib/clang/22/include -internal-externc-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/SubFrameworks -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/Library/Frameworks -fdeprecated-macro -ferror-limit 19 -stack-protector 1 -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fcxx-exceptions -fexceptions -fmax-type-align=16 -fdwarf2-cfi-asm -o CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o -x c++ /opt/anaconda3/lib/python3.12/site-packages/cmake/data/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp
         clang -cc1 version 22.1.8 based upon LLVM 22.1.8 default target x86_64-apple-darwin25.5.0
         ignoring nonexistent directory "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/local/include"
         ignoring nonexistent directory "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/Library/Frameworks"
@@ -1444,8 +1444,8 @@ events:
          /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks (framework directory)
          /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/SubFrameworks (framework directory)
         End of search list.
-        Linking CXX executable cmTC_33299
-        /opt/anaconda3/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_link_script CMakeFiles/cmTC_33299.dir/link.txt --verbose=1
+        Linking CXX executable cmTC_acc8c
+        /opt/anaconda3/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_link_script CMakeFiles/cmTC_acc8c.dir/link.txt --verbose=1
         Homebrew clang version 22.1.8
         Target: x86_64-apple-darwin25.5.0
         Thread model: posix
@@ -1453,13 +1453,13 @@ events:
         Configuration file: /usr/local/Cellar/llvm/22.1.8/etc/clang/x86_64-apple-darwin25.cfg
         System configuration file directory: /usr/local/Cellar/llvm/22.1.8/etc/clang
         User configuration file directory: /Users/Duncan/.config/clang
-         "/usr/local/opt/lld/bin/ld64.lld" -demangle -lto_library /usr/local/Cellar/llvm/22.1.8/lib/libLTO.dylib -dynamic -arch x86_64 -platform_version macos 26.0.0 26.5 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mllvm -enable-linkonceodr-outlining -o cmTC_33299 -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o -lc++ -lSystem /usr/local/Cellar/llvm/22.1.8/lib/clang/22/lib/darwin/libclang_rt.osx.a
+         "/usr/local/opt/lld/bin/ld64.lld" -demangle -lto_library /usr/local/Cellar/llvm/22.1.8/lib/libLTO.dylib -dynamic -arch x86_64 -platform_version macos 26.0.0 26.5 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mllvm -enable-linkonceodr-outlining -o cmTC_acc8c -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o -lc++ -lSystem /usr/local/Cellar/llvm/22.1.8/lib/clang/22/lib/darwin/libclang_rt.osx.a
         Homebrew LLD 22.1.8
         Library search paths:
         	/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib
         Framework search paths:
         	/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks
-        /usr/local/opt/llvm/bin/clang++  -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names -fuse-ld=/usr/local/opt/lld/bin/ld64.lld -v -Wl,-v CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_33299
+        /usr/local/opt/llvm/bin/clang++  -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names -fuse-ld=/usr/local/opt/lld/bin/ld64.lld -v -Wl,-v CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_acc8c
         
       exitCode: 0
   -
@@ -1501,12 +1501,12 @@ events:
       Parsed CXX implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|"|[0-9]+>[ 	-]*Build:[ 	0-9]+ ms[ 	]*)?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
-        ignore line: [Change Dir: '/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles/CMakeScratch/TryCompile-FoQ7Cr']
+        ignore line: [Change Dir: '/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles/CMakeScratch/TryCompile-Q1Oi8S']
         ignore line: []
-        ignore line: [Run Build Command(s): /opt/anaconda3/lib/python3.12/site-packages/cmake/data/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_33299/fast]
-        ignore line: [/Applications/Xcode.app/Contents/Developer/usr/bin/make  -f CMakeFiles/cmTC_33299.dir/build.make CMakeFiles/cmTC_33299.dir/build]
-        ignore line: [Building CXX object CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o]
-        ignore line: [/usr/local/opt/llvm/bin/clang++   -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk   -v -Wl -v -MD -MT CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o -c /opt/anaconda3/lib/python3.12/site-packages/cmake/data/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Run Build Command(s): /opt/anaconda3/lib/python3.12/site-packages/cmake/data/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_acc8c/fast]
+        ignore line: [/Applications/Xcode.app/Contents/Developer/usr/bin/make  -f CMakeFiles/cmTC_acc8c.dir/build.make CMakeFiles/cmTC_acc8c.dir/build]
+        ignore line: [Building CXX object CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o]
+        ignore line: [/usr/local/opt/llvm/bin/clang++   -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk   -v -Wl -v -MD -MT CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o -c /opt/anaconda3/lib/python3.12/site-packages/cmake/data/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp]
         ignore line: [Homebrew clang version 22.1.8]
         ignore line: [Target: x86_64-apple-darwin25.5.0]
         ignore line: [Thread model: posix]
@@ -1516,7 +1516,7 @@ events:
         ignore line: [User configuration file directory: /Users/Duncan/.config/clang]
         ignore line: [clang++: warning: -Wl -v: 'linker' input unused [-Wunused-command-line-argument]]
         ignore line: [ (in-process)]
-        ignore line: [ "/usr/local/Cellar/llvm/22.1.8/bin/clang-22" -cc1 -triple x86_64-apple-macosx26.0.0 -Wundef-prefix=TARGET_OS_ -Werror=undef-prefix -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model pic -pic-level 2 -mframe-pointer=all -ffp-contract=on -fno-rounding-math -funwind-tables=2 -target-sdk-version=26.5 -fcompatibility-qualified-id-block-type-checking -fvisibility-inlines-hidden-static-local-var -fdefine-target-os-macros -fno-modulemap-allow-subdirectory-search -target-cpu penryn -tune-cpu generic -debugger-tuning=lldb -fdebug-compilation-dir=/private/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles/CMakeScratch/TryCompile-FoQ7Cr -target-linker-version 1115.7.3 -v -fcoverage-compilation-dir=/private/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles/CMakeScratch/TryCompile-FoQ7Cr -resource-dir /usr/local/Cellar/llvm/22.1.8/lib/clang/22 -dependency-file CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o.d -MT CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -internal-isystem /usr/local/Cellar/llvm/22.1.8/bin/../include/c++/v1 -internal-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/local/include -internal-isystem /usr/local/Cellar/llvm/22.1.8/lib/clang/22/include -internal-externc-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/SubFrameworks -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/Library/Frameworks -fdeprecated-macro -ferror-limit 19 -stack-protector 1 -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fcxx-exceptions -fexceptions -fmax-type-align=16 -fdwarf2-cfi-asm -o CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o -x c++ /opt/anaconda3/lib/python3.12/site-packages/cmake/data/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [ "/usr/local/Cellar/llvm/22.1.8/bin/clang-22" -cc1 -triple x86_64-apple-macosx26.0.0 -Wundef-prefix=TARGET_OS_ -Werror=undef-prefix -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model pic -pic-level 2 -mframe-pointer=all -ffp-contract=on -fno-rounding-math -funwind-tables=2 -target-sdk-version=26.5 -fcompatibility-qualified-id-block-type-checking -fvisibility-inlines-hidden-static-local-var -fdefine-target-os-macros -fno-modulemap-allow-subdirectory-search -target-cpu penryn -tune-cpu generic -debugger-tuning=lldb -fdebug-compilation-dir=/private/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles/CMakeScratch/TryCompile-Q1Oi8S -target-linker-version 1115.7.3 -v -fcoverage-compilation-dir=/private/tmp/QuanuX_Symphony_014N/tools/symphony-validator/build/CMakeFiles/CMakeScratch/TryCompile-Q1Oi8S -resource-dir /usr/local/Cellar/llvm/22.1.8/lib/clang/22 -dependency-file CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o.d -MT CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -internal-isystem /usr/local/Cellar/llvm/22.1.8/bin/../include/c++/v1 -internal-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/local/include -internal-isystem /usr/local/Cellar/llvm/22.1.8/lib/clang/22/include -internal-externc-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/SubFrameworks -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/Library/Frameworks -fdeprecated-macro -ferror-limit 19 -stack-protector 1 -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fcxx-exceptions -fexceptions -fmax-type-align=16 -fdwarf2-cfi-asm -o CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o -x c++ /opt/anaconda3/lib/python3.12/site-packages/cmake/data/share/cmake-4.2/Modules/CMakeCXXCompilerABI.cpp]
         ignore line: [clang -cc1 version 22.1.8 based upon LLVM 22.1.8 default target x86_64-apple-darwin25.5.0]
         ignore line: [ignoring nonexistent directory "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/local/include"]
         ignore line: [ignoring nonexistent directory "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/Library/Frameworks"]
@@ -1528,8 +1528,8 @@ events:
         ignore line: [ /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks (framework directory)]
         ignore line: [ /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/SubFrameworks (framework directory)]
         ignore line: [End of search list.]
-        ignore line: [Linking CXX executable cmTC_33299]
-        ignore line: [/opt/anaconda3/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_link_script CMakeFiles/cmTC_33299.dir/link.txt --verbose=1]
+        ignore line: [Linking CXX executable cmTC_acc8c]
+        ignore line: [/opt/anaconda3/lib/python3.12/site-packages/cmake/data/bin/cmake -E cmake_link_script CMakeFiles/cmTC_acc8c.dir/link.txt --verbose=1]
         ignore line: [Homebrew clang version 22.1.8]
         ignore line: [Target: x86_64-apple-darwin25.5.0]
         ignore line: [Thread model: posix]
@@ -1537,7 +1537,7 @@ events:
         ignore line: [Configuration file: /usr/local/Cellar/llvm/22.1.8/etc/clang/x86_64-apple-darwin25.cfg]
         ignore line: [System configuration file directory: /usr/local/Cellar/llvm/22.1.8/etc/clang]
         ignore line: [User configuration file directory: /Users/Duncan/.config/clang]
-        link line: [ "/usr/local/opt/lld/bin/ld64.lld" -demangle -lto_library /usr/local/Cellar/llvm/22.1.8/lib/libLTO.dylib -dynamic -arch x86_64 -platform_version macos 26.0.0 26.5 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mllvm -enable-linkonceodr-outlining -o cmTC_33299 -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o -lc++ -lSystem /usr/local/Cellar/llvm/22.1.8/lib/clang/22/lib/darwin/libclang_rt.osx.a]
+        link line: [ "/usr/local/opt/lld/bin/ld64.lld" -demangle -lto_library /usr/local/Cellar/llvm/22.1.8/lib/libLTO.dylib -dynamic -arch x86_64 -platform_version macos 26.0.0 26.5 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -mllvm -enable-linkonceodr-outlining -o cmTC_acc8c -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o -lc++ -lSystem /usr/local/Cellar/llvm/22.1.8/lib/clang/22/lib/darwin/libclang_rt.osx.a]
           arg [/usr/local/opt/lld/bin/ld64.lld] ==> ignore
           arg [-demangle] ==> ignore
           arg [-lto_library] ==> ignore, skip following value
@@ -1554,11 +1554,11 @@ events:
           arg [-mllvm] ==> ignore
           arg [-enable-linkonceodr-outlining] ==> ignore
           arg [-o] ==> ignore
-          arg [cmTC_33299] ==> ignore
+          arg [cmTC_acc8c] ==> ignore
           arg [-search_paths_first] ==> ignore
           arg [-headerpad_max_install_names] ==> ignore
           arg [-v] ==> ignore
-          arg [CMakeFiles/cmTC_33299.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [CMakeFiles/cmTC_acc8c.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
           arg [-lc++] ==> lib [c++]
           arg [-lSystem] ==> lib [System]
           arg [/usr/local/Cellar/llvm/22.1.8/lib/clang/22/lib/darwin/libclang_rt.osx.a] ==> lib [/usr/local/Cellar/llvm/22.1.8/lib/clang/22/lib/darwin/libclang_rt.osx.a]
