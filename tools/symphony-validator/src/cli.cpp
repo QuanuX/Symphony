@@ -15,6 +15,7 @@
 #include "sclv_ledger.hpp"
 #include "doctrine_vocab.hpp"
 #include "skvi_paths.hpp"
+#include "sclv_references.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -181,6 +182,14 @@ int run_cli(const std::vector<std::string>& args) {
             process_messages(artifact_result.messages);
             if (!artifact_result.success) {
                 final_exit = 8;
+                print_summary();
+                return final_exit;
+            }
+
+            SclvReferencesCheckResult sclv_ref_result = check_sclv_references(args[2], sclv_result);
+            process_messages(sclv_ref_result.messages);
+            if (!sclv_ref_result.success) {
+                final_exit = 18;
                 print_summary();
                 return final_exit;
             }

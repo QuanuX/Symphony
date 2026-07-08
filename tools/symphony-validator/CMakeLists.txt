@@ -10,16 +10,17 @@ add_executable(symphony-validator
     src/skvi_coverage.cpp
     src/skvi_paths.cpp
     src/sclv_changelog.cpp
+    src/sclv_shape.cpp
+    src/sclv_ledger.cpp
+    src/sclv_references.cpp
     src/cross_reference.cpp
     src/vocabulary.cpp
-    src/sclv_shape.cpp
     src/artifacts.cpp
     src/canonical_surfaces.cpp
     src/validator_contracts.cpp
     src/runtime_contracts.cpp
     src/knowledge_contracts.cpp
     src/root_contracts.cpp
-    src/sclv_ledger.cpp
     src/doctrine_vocab.cpp
 )
 
