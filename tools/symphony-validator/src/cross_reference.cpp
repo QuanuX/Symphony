@@ -1,4 +1,5 @@
 #include "cross_reference.hpp"
+#include "evidence.hpp"
 #include <fstream>
 #include <algorithm>
 
@@ -19,10 +20,10 @@ CrossReferenceResult check_cross_references(const std::string& repo_path, const 
         // Rule 1: skvi_references must be indexed
         for (const auto& ref : rec.skvi_references) {
             if (is_indexed(ref)) {
-                result.messages.push_back("evidence pass sclv.skvi_reference.indexed record_id=" + rec.record_id + " path=" + ref);
+                result.messages.push_back(format_evidence(EvidenceCategory::Pass, "sclv.skvi_reference.indexed", "record_id=" + rec.record_id + " path=" + ref));
             } else {
                 result.success = false;
-                result.messages.push_back("evidence violation sclv.skvi_reference.unindexed record_id=" + rec.record_id + " path=" + ref);
+                result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv.skvi_reference.unindexed", "record_id=" + rec.record_id + " path=" + ref));
             }
         }
 
@@ -30,13 +31,13 @@ CrossReferenceResult check_cross_references(const std::string& repo_path, const 
         for (const auto& surface : rec.affected_surfaces) {
             if (file_exists(surface)) {
                 if (is_indexed(surface)) {
-                    result.messages.push_back("evidence pass sclv.affected_surface.exists record_id=" + rec.record_id + " path=" + surface);
+                    result.messages.push_back(format_evidence(EvidenceCategory::Pass, "sclv.affected_surface.exists", "record_id=" + rec.record_id + " path=" + surface));
                 } else {
-                    result.messages.push_back("evidence warning sclv.affected_surface.unindexed record_id=" + rec.record_id + " path=" + surface);
+                    result.messages.push_back(format_evidence(EvidenceCategory::Warning, "sclv.affected_surface.unindexed", "record_id=" + rec.record_id + " path=" + surface));
                 }
             } else {
                 result.success = false;
-                result.messages.push_back("evidence violation sclv.affected_surface.absent record_id=" + rec.record_id + " path=" + surface);
+                result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv.affected_surface.absent", "record_id=" + rec.record_id + " path=" + surface));
             }
         }
     }

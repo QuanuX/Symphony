@@ -1,4 +1,5 @@
 #include "skvi_index.hpp"
+#include "evidence.hpp"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -31,11 +32,11 @@ SkviCheckResult check_skvi_index(const std::string& index_path) {
     std::ifstream file(index_path);
     if (!file.is_open()) {
         result.success = false;
-        result.messages.push_back("evidence absent skvi.index.exists " + index_path + " not found");
+        result.messages.push_back(format_evidence(EvidenceCategory::Absent, "skvi.index.exists", index_path + " not found"));
         return result;
     }
 
-    result.messages.push_back("evidence pass skvi.index.exists " + index_path + " exists");
+    result.messages.push_back(format_evidence(EvidenceCategory::Pass, "skvi.index.exists", index_path + " exists"));
 
     std::string line;
     SkviEntry current_entry;
@@ -56,12 +57,12 @@ SkviCheckResult check_skvi_index(const std::string& index_path) {
         if (!entry.has_notes) missing.push_back("notes");
 
         if (missing.empty()) {
-            result.messages.push_back("evidence pass skvi.entry.shape path=" + entry.path);
+            result.messages.push_back(format_evidence(EvidenceCategory::Pass, "skvi.entry.shape", "path=" + entry.path));
             result.indexed_paths.push_back(entry.path);
         } else {
             result.success = false;
             for (const auto& m : missing) {
-                result.messages.push_back("evidence violation skvi.entry.missing_field path=" + entry.path + " field=" + m);
+                result.messages.push_back(format_evidence(EvidenceCategory::Violation, "skvi.entry.missing_field", "path=" + entry.path + " field=" + m));
             }
         }
     };
@@ -100,7 +101,7 @@ SkviCheckResult check_skvi_index(const std::string& index_path) {
 
     if (entry_count == 0) {
         result.success = false;
-        result.messages.push_back("evidence violation skvi.entry.count no SKVI entries detected");
+        result.messages.push_back(format_evidence(EvidenceCategory::Violation, "skvi.entry.count", "no SKVI entries detected"));
     }
 
     return result;

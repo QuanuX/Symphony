@@ -41,7 +41,7 @@ int run_cli(const std::vector<std::string>& args) {
                 std::cout << msg << "\n";
                 if (msg.find("evidence pass") == 0) pass_count++;
                 else if (msg.find("evidence warning") == 0) warning_count++;
-                else if (msg.find("evidence violation") == 0 || msg.find("evidence absent") == 0) violation_count++;
+                else if (msg.find("evidence violation") == 0) violation_count++;
             };
 
             auto process_messages = [&](const std::vector<std::string>& messages) {

@@ -1,4 +1,5 @@
 #include "sclv_changelog.hpp"
+#include "evidence.hpp"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -31,11 +32,11 @@ SclvCheckResult check_sclv_changelog(const std::string& changelog_path) {
     std::ifstream file(changelog_path);
     if (!file.is_open()) {
         result.success = false;
-        result.messages.push_back("evidence violation sclv.changelog.absent path=" + changelog_path);
+        result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv.changelog.absent", "path=" + changelog_path));
         return result;
     }
 
-    result.messages.push_back("evidence pass sclv.changelog.exists " + changelog_path + " exists");
+    result.messages.push_back(format_evidence(EvidenceCategory::Pass, "sclv.changelog.exists", changelog_path + " exists"));
 
     std::string line;
     SclvRecord current_record;
@@ -65,11 +66,11 @@ SclvCheckResult check_sclv_changelog(const std::string& changelog_path) {
         if (!rec.has_notes) missing.push_back("notes");
 
         if (missing.empty()) {
-            result.messages.push_back("evidence pass sclv.record.shape record_id=" + rec.record_id);
+            result.messages.push_back(format_evidence(EvidenceCategory::Pass, "sclv.record.shape", "record_id=" + rec.record_id));
         } else {
             result.success = false;
             for (const auto& m : missing) {
-                result.messages.push_back("evidence violation sclv.record.missing_field record_id=" + rec.record_id + " field=" + m);
+                result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv.record.missing_field", "record_id=" + rec.record_id + " field=" + m));
             }
         }
 
@@ -158,7 +159,7 @@ SclvCheckResult check_sclv_changelog(const std::string& changelog_path) {
 
     if (record_count == 0 || !found_pr10 || !found_pr11) {
         result.success = false;
-        result.messages.push_back("evidence violation sclv.record.none no SCLV records detected or missing required records");
+        result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv.record.none", "no SCLV records detected or missing required records"));
     }
 
     return result;
