@@ -11,7 +11,15 @@ SclvReferencesCheckResult check_sclv_references(const std::string& repo_root, co
         for (const auto& path : rec.affected_surfaces) {
             std::string field = "affected_surfaces";
             
-            if (path.empty() || path[0] == '/' || path.find("..") != std::string::npos) {
+            bool is_traversal = false;
+            std::filesystem::path test_path(path);
+            for (const auto& comp : test_path) {
+                if (comp == "..") {
+                    is_traversal = true;
+                    break;
+                }
+            }
+            if (path.empty() || path[0] == '/' || is_traversal) {
                 result.success = false;
                 result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv_reference.invalid_relative_path", "record_id=" + rec.record_id + " field=" + field + " path=" + path));
                 continue;
@@ -34,7 +42,15 @@ SclvReferencesCheckResult check_sclv_references(const std::string& repo_root, co
         for (const auto& path : rec.skvi_references) {
             std::string field = "skvi_references";
             
-            if (path.empty() || path[0] == '/' || path.find("..") != std::string::npos) {
+            bool is_traversal = false;
+            std::filesystem::path test_path(path);
+            for (const auto& comp : test_path) {
+                if (comp == "..") {
+                    is_traversal = true;
+                    break;
+                }
+            }
+            if (path.empty() || path[0] == '/' || is_traversal) {
                 result.success = false;
                 result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv_reference.invalid_relative_path", "record_id=" + rec.record_id + " field=" + field + " path=" + path));
                 continue;
