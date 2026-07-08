@@ -139,6 +139,14 @@ int run_cli(const std::vector<std::string>& args) {
                 return final_exit;
             }
 
+            SclvReferencesCheckResult sclv_ref_result = check_sclv_references(args[2], sclv_result);
+            process_messages(sclv_ref_result.messages);
+            if (!sclv_ref_result.success) {
+                final_exit = 18;
+                print_summary();
+                return final_exit;
+            }
+
             CrossReferenceResult cross_result = check_cross_references(args[2], skvi_result, sclv_result);
             process_messages(cross_result.messages);
             if (!cross_result.success) {
@@ -182,14 +190,6 @@ int run_cli(const std::vector<std::string>& args) {
             process_messages(artifact_result.messages);
             if (!artifact_result.success) {
                 final_exit = 8;
-                print_summary();
-                return final_exit;
-            }
-
-            SclvReferencesCheckResult sclv_ref_result = check_sclv_references(args[2], sclv_result);
-            process_messages(sclv_ref_result.messages);
-            if (!sclv_ref_result.success) {
-                final_exit = 18;
                 print_summary();
                 return final_exit;
             }
