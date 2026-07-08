@@ -13,3 +13,11 @@ std::string evidence_category_to_string(EvidenceCategory category) {
     }
     return "unknown";
 }
+
+std::string format_evidence(EvidenceCategory category, const std::string& check_id, const std::string& message) {
+    std::string result = "evidence " + evidence_category_to_string(category) + " " + check_id;
+    if (!message.empty()) {
+        result += " " + message;
+    }
+    return result;
+}

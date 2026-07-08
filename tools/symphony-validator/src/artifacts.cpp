@@ -5,14 +5,16 @@
 
 namespace fs = std::filesystem;
 
+#include "evidence.hpp"
+
 bool check_path_absence(const fs::path& repo_root, const std::string& relative_path, const std::string& reason, ArtifactCheckResult& result) {
     fs::path p = repo_root / relative_path;
     if (fs::exists(p)) {
         result.success = false;
-        result.messages.push_back("evidence violation artifact.unauthorized path=" + relative_path + " reason=" + reason);
+        result.messages.push_back(format_evidence(EvidenceCategory::Violation, "artifact.unauthorized", "path=" + relative_path + " reason=" + reason));
         return false;
     } else {
-        result.messages.push_back("evidence pass artifact.absent path=" + relative_path);
+        result.messages.push_back(format_evidence(EvidenceCategory::Pass, "artifact.absent", "path=" + relative_path));
         return true;
     }
 }
@@ -59,7 +61,7 @@ ArtifactCheckResult check_unauthorized_artifacts(const std::string& repo_root) {
                         found_projection = true;
                         result.success = false;
                         std::string rel_path = fs::relative(dir_entry.path(), root).string();
-                        result.messages.push_back("evidence violation artifact.unauthorized path=" + rel_path + " reason=projection_file_not_authorized");
+                        result.messages.push_back(format_evidence(EvidenceCategory::Violation, "artifact.unauthorized", "path=" + rel_path + " reason=projection_file_not_authorized"));
                         break;
                     }
                 }
@@ -68,7 +70,7 @@ ArtifactCheckResult check_unauthorized_artifacts(const std::string& repo_root) {
     }
     
     if (!found_projection) {
-        result.messages.push_back("evidence pass artifact.projection_files_absent root=knowledge");
+        result.messages.push_back(format_evidence(EvidenceCategory::Pass, "artifact.projection_files_absent", "root=knowledge"));
     }
 
     // D. qxctl integration surfaces
