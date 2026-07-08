@@ -10,6 +10,7 @@
 #include "validator_contracts.hpp"
 #include "runtime_contracts.hpp"
 #include "knowledge_contracts.hpp"
+#include "root_contracts.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -95,6 +96,14 @@ int run_cli(const std::vector<std::string>& args) {
             process_messages(knowledge_result.messages);
             if (!knowledge_result.success) {
                 final_exit = 12;
+                print_summary();
+                return final_exit;
+            }
+
+            RootContractShapeResult root_result = check_root_contract_shapes(args[2]);
+            process_messages(root_result.messages);
+            if (!root_result.success) {
+                final_exit = 13;
                 print_summary();
                 return final_exit;
             }

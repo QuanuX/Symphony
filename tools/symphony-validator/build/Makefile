@@ -321,6 +321,30 @@ src/paths.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/symphony-validator.dir/build.make CMakeFiles/symphony-validator.dir/src/paths.cpp.s
 .PHONY : src/paths.cpp.s
 
+src/root_contracts.o: src/root_contracts.cpp.o
+.PHONY : src/root_contracts.o
+
+# target to build an object file
+src/root_contracts.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/symphony-validator.dir/build.make CMakeFiles/symphony-validator.dir/src/root_contracts.cpp.o
+.PHONY : src/root_contracts.cpp.o
+
+src/root_contracts.i: src/root_contracts.cpp.i
+.PHONY : src/root_contracts.i
+
+# target to preprocess a source file
+src/root_contracts.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/symphony-validator.dir/build.make CMakeFiles/symphony-validator.dir/src/root_contracts.cpp.i
+.PHONY : src/root_contracts.cpp.i
+
+src/root_contracts.s: src/root_contracts.cpp.s
+.PHONY : src/root_contracts.s
+
+# target to generate assembly for a file
+src/root_contracts.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/symphony-validator.dir/build.make CMakeFiles/symphony-validator.dir/src/root_contracts.cpp.s
+.PHONY : src/root_contracts.cpp.s
+
 src/runtime_contracts.o: src/runtime_contracts.cpp.o
 .PHONY : src/runtime_contracts.o
 
@@ -498,6 +522,9 @@ help:
 	@echo "... src/paths.o"
 	@echo "... src/paths.i"
 	@echo "... src/paths.s"
+	@echo "... src/root_contracts.o"
+	@echo "... src/root_contracts.i"
+	@echo "... src/root_contracts.s"
 	@echo "... src/runtime_contracts.o"
 	@echo "... src/runtime_contracts.i"
 	@echo "... src/runtime_contracts.s"

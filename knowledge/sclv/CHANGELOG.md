@@ -309,3 +309,54 @@ This PR authorizes none of the following:
 - source files
 - build files
 - CI files
+
+- record_id: `SCLV-PR-033`
+- title: `Knowledge vector contract surface shape checks`
+- status: `canonical`
+- date: `2026-07-08`
+- change_type: `canonical_addition`
+- related_pr: `https://github.com/QuanuX/Symphony/pull/33`
+- merge_commit: `949b32bdf1ed1f2ce46c32a32b2e790f490bf0f1`
+- affected_surfaces:
+  - `tools/symphony-validator/CMakeLists.txt`
+  - `tools/symphony-validator/src/cli.cpp`
+  - `tools/symphony-validator/src/knowledge_contracts.cpp`
+  - `tools/symphony-validator/src/knowledge_contracts.hpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `tools/symphony-validator/INTENT.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SKILL.md`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    PR #33 added deterministic anchor-presence checks for the knowledge vector contract surfaces (SKVI, SCLV, SODV).
+    Patched all test fixtures to include required knowledge anchors.
+- relationship_changes: |
+    The validator now explicitly checks for the shape of knowledge contract surfaces, establishing a firmer baseline of confidence.
+- doctrine_changes: |
+    No new architectural truth was invented.
+- compatibility_consequences: |
+    No runtime compatibility state is changed by this record.
+- publication_consequences: |
+    No public documentation is authorized.
+- projection_consequences: |
+    No generated projections authorized.
+- evidence:
+  - `PR #33`
+  - `PR #33 merge commit`
+- non_authorizations:
+  - `generated changelog`
+  - `generated index`
+  - `generated report`
+  - `graph projection`
+  - `JSON / JSONL projection`
+  - `DuckDB projection`
+  - `HDF5 projection`
+  - `qxctl integration`
+  - `parser implementation`
+  - `projector implementation`
+  - `public documentation`
+  - `Mintlify configuration`
+  - `publication pipeline`
+- notes: |
+    This completes Task 014N and prepares the repository for Task 014O (root contract shape checks).
