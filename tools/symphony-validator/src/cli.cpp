@@ -1,6 +1,7 @@
 #include "cli.hpp"
 #include "paths.hpp"
 #include "skvi_index.hpp"
+#include "skvi_coverage.hpp"
 #include "sclv_changelog.hpp"
 #include "cross_reference.hpp"
 #include "vocabulary.hpp"
@@ -179,6 +180,14 @@ int run_cli(const std::vector<std::string>& args) {
             process_messages(artifact_result.messages);
             if (!artifact_result.success) {
                 final_exit = 8;
+                print_summary();
+                return final_exit;
+            }
+
+            SkviCoverageCheckResult skvi_coverage_result = check_skvi_coverage(skvi_result);
+            process_messages(skvi_coverage_result.messages);
+            if (!skvi_coverage_result.success) {
+                final_exit = 16;
                 print_summary();
                 return final_exit;
             }

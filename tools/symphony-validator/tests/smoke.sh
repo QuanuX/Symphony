@@ -330,4 +330,18 @@ if ./build/symphony-validator check --repo ./tests/fixtures_vocab_seeds_3 > /dev
 fi
 echo "fixtures_vocab_seeds_3 failed as expected"
 
+
+# Verify SKVI coverage missing entry
+if ./build/symphony-validator check --repo ./tests/fixtures_skvi_coverage_missing > /dev/null 2>&1; then
+    echo "error: fixtures_skvi_coverage_missing should fail"
+    exit 1
+fi
+echo "fixtures_skvi_coverage_missing failed as expected"
+
+# Verify SKVI coverage duplicate entry
+if ./build/symphony-validator check --repo ./tests/fixtures_skvi_coverage_duplicate > /dev/null 2>&1; then
+    echo "error: fixtures_skvi_coverage_duplicate should fail"
+    exit 1
+fi
+echo "fixtures_skvi_coverage_duplicate failed as expected"
 echo "All smoke tests passed."

@@ -386,8 +386,6 @@ Future validator checks may verify SKVI structure.
 - notes: none
 - status: canonical
 
-##### CMakeLists.txt
-- path: `tools/symphony-validator/CMakeLists.txt`
 - title: symphony-validator Build Contract
 - surface_type: tool_build_contract
 - truth_role: implementation_build_contract
