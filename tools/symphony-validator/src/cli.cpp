@@ -7,6 +7,7 @@
 #include "sclv_shape.hpp"
 #include "artifacts.hpp"
 #include "canonical_surfaces.hpp"
+#include "validator_contracts.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -68,6 +69,14 @@ int run_cli(const std::vector<std::string>& args) {
             process_messages(canonical_result.messages);
             if (!canonical_result.success) {
                 final_exit = 9;
+                print_summary();
+                return final_exit;
+            }
+
+            ValidatorContractShapeResult validator_contract_result = check_validator_contract_shapes(args[2]);
+            process_messages(validator_contract_result.messages);
+            if (!validator_contract_result.success) {
+                final_exit = 10;
                 print_summary();
                 return final_exit;
             }
