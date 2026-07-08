@@ -66,7 +66,7 @@ Status reflects the deterministic outcome of a rule check.
 `0` to `5`, mapping to passes, errors, blockers, malformed repositories, or internal failures.
 
 ## Historical/Migration Exception Behavior
-Stale names (e.g. `execution-node`, `native-execution`, `bus-agent`) are rejected except in historical contexts or rename records.
+Stale names (e.g. `legacy node execution label`, `legacy native hot-path label`, `legacy bus residency label`) are rejected except in historical contexts or rename records.
 
 ## Allowlist Behavior
 Allowlists must never become silent bypasses. Every allowlist entry must produce evidence in JSON and Markdown.
