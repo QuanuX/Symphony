@@ -12,3 +12,9 @@
 - deferred_projections: JSON portable evidence
 - status: canonical
 - notes: some notes
+
+Symphony Knowledge Vector Index
+## Purpose
+## Entry Model
+## Relationship Model
+## Projection Doctrine

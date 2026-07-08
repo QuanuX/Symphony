@@ -41,3 +41,9 @@
 - evidence: `PR`
 - non_authorizations: `none`
 - notes: `notes`
+
+Symphony Change Log Vector Ledger
+## Source-Truth Doctrine
+## Record Model
+## Canonical Change Records
+## Non-Authorized Artifacts

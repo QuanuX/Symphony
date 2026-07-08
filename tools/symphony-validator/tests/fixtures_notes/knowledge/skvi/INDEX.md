@@ -12,3 +12,9 @@
 - consumers: humans
 - deferred_projections: JSON portable evidence
 - status: canonical
+
+Symphony Knowledge Vector Index
+## Purpose
+## Entry Model
+## Relationship Model
+## Projection Doctrine

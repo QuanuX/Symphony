@@ -40,3 +40,9 @@
 - projection_consequences: `none`
 - evidence: `PR`
 - non_authorizations: `none`
+
+Symphony Change Log Vector Ledger
+## Source-Truth Doctrine
+## Record Model
+## Canonical Change Records
+## Non-Authorized Artifacts

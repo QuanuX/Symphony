@@ -18,3 +18,9 @@
 - owner: skvi
 - scope: index
 - status: canonical
+
+Symphony Knowledge Vector Index
+## Purpose
+## Entry Model
+## Relationship Model
+## Projection Doctrine
