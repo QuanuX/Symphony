@@ -12,6 +12,7 @@
 #include "knowledge_contracts.hpp"
 #include "root_contracts.hpp"
 #include "sclv_ledger.hpp"
+#include "doctrine_vocab.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -139,6 +140,21 @@ int run_cli(const std::vector<std::string>& args) {
             process_messages(cross_result.messages);
             if (!cross_result.success) {
                 final_exit = 5;
+                print_summary();
+                return final_exit;
+            }
+
+            std::vector<std::string> doctrine_messages;
+            check_doctrine_vocabulary(args[2], doctrine_messages);
+            process_messages(doctrine_messages);
+            bool doctrine_success = true;
+            for (const auto& msg : doctrine_messages) {
+                if (msg.find("evidence violation") == 0) {
+                    doctrine_success = false;
+                }
+            }
+            if (!doctrine_success) {
+                final_exit = 15;
                 print_summary();
                 return final_exit;
             }

@@ -269,4 +269,65 @@ if ./build/symphony-validator check --repo ./tests/fixtures_unauthorized_schema 
 fi
 echo "unauthorized_schema fixture failed as expected"
 
+# Verify doctrine vocabulary drift checks
+if ./build/symphony-validator check --repo ./tests/fixtures_vocab_execution_node > /dev/null 2>&1; then
+    echo "error: fixtures_vocab_execution_node should fail"
+    exit 1
+fi
+echo "fixtures_vocab_execution_node failed as expected"
+
+if ./build/symphony-validator check --repo ./tests/fixtures_vocab_native_execution > /dev/null 2>&1; then
+    echo "error: fixtures_vocab_native_execution should fail"
+    exit 1
+fi
+echo "fixtures_vocab_native_execution failed as expected"
+
+if ./build/symphony-validator check --repo ./tests/fixtures_vocab_bus_agent > /dev/null 2>&1; then
+    echo "error: fixtures_vocab_bus_agent should fail"
+    exit 1
+fi
+echo "fixtures_vocab_bus_agent failed as expected"
+
+if ./build/symphony-validator check --repo ./tests/fixtures_vocab_core > /dev/null 2>&1; then
+    echo "error: fixtures_vocab_core should fail"
+    exit 1
+fi
+echo "fixtures_vocab_core failed as expected"
+
+if ! ./build/symphony-validator check --repo ./tests/fixtures_vocab_score > /dev/null 2>&1; then
+    echo "error: fixtures_vocab_score should pass"
+    exit 1
+fi
+echo "fixtures_vocab_score passed as expected"
+
+if ! ./build/symphony-validator check --repo ./tests/fixtures_vocab_c_o_r_e > /dev/null 2>&1; then
+    echo "error: fixtures_vocab_c_o_r_e should pass"
+    exit 1
+fi
+echo "fixtures_vocab_c_o_r_e passed as expected"
+
+if ./build/symphony-validator check --repo ./tests/fixtures_vocab_markdown_wins > /dev/null 2>&1; then
+    echo "error: fixtures_vocab_markdown_wins should fail"
+    exit 1
+fi
+echo "fixtures_vocab_markdown_wins failed as expected"
+
+if ./build/symphony-validator check --repo ./tests/fixtures_vocab_seeds_1 > /dev/null 2>&1; then
+    echo "error: fixtures_vocab_seeds_1 should fail"
+    exit 1
+fi
+echo "fixtures_vocab_seeds_1 failed as expected"
+
+if ./build/symphony-validator check --repo ./tests/fixtures_vocab_seeds_2 > /dev/null 2>&1; then
+    echo "error: fixtures_vocab_seeds_2 should fail"
+    exit 1
+fi
+echo "fixtures_vocab_seeds_2 failed as expected"
+
+if ./build/symphony-validator check --repo ./tests/fixtures_vocab_seeds_3 > /dev/null 2>&1; then
+    echo "error: fixtures_vocab_seeds_3 should fail"
+    exit 1
+fi
+echo "fixtures_vocab_seeds_3 failed as expected"
+
 echo "All smoke tests passed."
