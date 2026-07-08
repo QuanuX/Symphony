@@ -676,3 +676,13 @@ This index authorizes none of the following:
 Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 
 - path: ../traversal_path.md
+- title: Test Entry
+- surface_type: test
+- truth_role: test
+- owner: test
+- scope: test
+- status: canonical
+- relationships: none
+- consumers: none
+- deferred_projections: none
+- notes: none
