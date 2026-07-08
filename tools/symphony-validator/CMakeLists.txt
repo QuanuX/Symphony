@@ -13,6 +13,7 @@ add_executable(symphony-validator
     src/sclv_shape.cpp
     src/artifacts.cpp
     src/canonical_surfaces.cpp
+    src/validator_contracts.cpp
 )
 
 target_include_directories(symphony-validator PRIVATE src)
