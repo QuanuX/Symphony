@@ -41,4 +41,7 @@ go run ./cmd/qxctl inventory [--json]
 
 # Emit deterministic runtime inventory SHA-256 digest
 go run ./cmd/qxctl inventory digest [--json]
+
+# Report consolidated administrative status
+go run ./cmd/qxctl status [--json]
 ```

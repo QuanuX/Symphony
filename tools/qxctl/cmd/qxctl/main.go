@@ -9,6 +9,7 @@ import (
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/inventory"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/modules"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/repository"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/status"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/version"
 )
 
@@ -56,6 +57,21 @@ func main() {
 		} else if len(os.Args) == 4 && os.Args[2] == "digest" && os.Args[3] == "--json" {
 			if err := runInventoryDigest(true); err != nil {
 				fmt.Printf("inventory digest failed: %v\n", err)
+				os.Exit(1)
+			}
+		} else {
+			printUsage()
+			os.Exit(1)
+		}
+	case "status":
+		if len(os.Args) == 2 {
+			if err := runStatus(false); err != nil {
+				fmt.Printf("status failed: %v\n", err)
+				os.Exit(1)
+			}
+		} else if len(os.Args) == 3 && os.Args[2] == "--json" {
+			if err := runStatus(true); err != nil {
+				fmt.Printf("status failed: %v\n", err)
 				os.Exit(1)
 			}
 		} else {
@@ -138,6 +154,7 @@ func printUsage() {
 	fmt.Println("  module metadata <module-name> [--json] Extract contract metadata for a module")
 	fmt.Println("  inventory [--json]                Emit deterministic runtime inventory snapshot")
 	fmt.Println("  inventory digest [--json]         Emit deterministic runtime inventory SHA-256 digest")
+	fmt.Println("  status [--json]                   Report consolidated administrative status")
 }
 
 func runDoctor() error {
@@ -401,6 +418,36 @@ func runInventoryDigest(jsonOutput bool) error {
 	}
 
 	output, err := inventory.Digest(repoRoot)
+	if err != nil {
+		return err
+	}
+	for _, line := range output {
+		fmt.Println(line)
+	}
+	return nil
+}
+
+func runStatus(jsonOutput bool) error {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("could not get current working directory: %w", err)
+	}
+
+	repoRoot, err := repository.FindRoot(cwd)
+	if err != nil {
+		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+
+	if jsonOutput {
+		outputBytes, err := status.ReportJSON(repoRoot)
+		if err != nil {
+			return err
+		}
+		fmt.Println(string(outputBytes))
+		return nil
+	}
+
+	output, err := status.Report(repoRoot)
 	if err != nil {
 		return err
 	}
