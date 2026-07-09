@@ -38,4 +38,7 @@ go run ./cmd/qxctl module metadata <module-name> [--json]
 
 # Emit deterministic runtime inventory snapshot
 go run ./cmd/qxctl inventory [--json]
+
+# Emit deterministic runtime inventory SHA-256 digest
+go run ./cmd/qxctl inventory digest [--json]
 ```

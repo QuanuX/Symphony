@@ -48,6 +48,16 @@ func main() {
 				fmt.Printf("inventory failed: %v\n", err)
 				os.Exit(1)
 			}
+		} else if len(os.Args) == 3 && os.Args[2] == "digest" {
+			if err := runInventoryDigest(false); err != nil {
+				fmt.Printf("inventory digest failed: %v\n", err)
+				os.Exit(1)
+			}
+		} else if len(os.Args) == 4 && os.Args[2] == "digest" && os.Args[3] == "--json" {
+			if err := runInventoryDigest(true); err != nil {
+				fmt.Printf("inventory digest failed: %v\n", err)
+				os.Exit(1)
+			}
 		} else {
 			printUsage()
 			os.Exit(1)
@@ -127,6 +137,7 @@ func printUsage() {
 	fmt.Println("  module check <module-name>        Verify contract shape for a module")
 	fmt.Println("  module metadata <module-name> [--json] Extract contract metadata for a module")
 	fmt.Println("  inventory [--json]                Emit deterministic runtime inventory snapshot")
+	fmt.Println("  inventory digest [--json]         Emit deterministic runtime inventory SHA-256 digest")
 }
 
 func runDoctor() error {
@@ -360,6 +371,36 @@ func runInventory(jsonOutput bool) error {
 	}
 
 	output, err := inventory.Snapshot(repoRoot)
+	if err != nil {
+		return err
+	}
+	for _, line := range output {
+		fmt.Println(line)
+	}
+	return nil
+}
+
+func runInventoryDigest(jsonOutput bool) error {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("could not get current working directory: %w", err)
+	}
+
+	repoRoot, err := repository.FindRoot(cwd)
+	if err != nil {
+		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+
+	if jsonOutput {
+		outputBytes, err := inventory.DigestJSON(repoRoot)
+		if err != nil {
+			return err
+		}
+		fmt.Println(string(outputBytes))
+		return nil
+	}
+
+	output, err := inventory.Digest(repoRoot)
 	if err != nil {
 		return err
 	}

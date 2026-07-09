@@ -1,6 +1,8 @@
 package inventory
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"path/filepath"
@@ -22,6 +24,13 @@ type RuntimeInventory struct {
 	ModuleCount   int               `json:"module_count"`
 	ContractCount int               `json:"contract_count"`
 	Modules       []InventoryModule `json:"modules"`
+}
+
+type RuntimeInventoryDigest struct {
+	Schema       string `json:"schema"`
+	SourceSchema string `json:"source_schema"`
+	Algorithm    string `json:"algorithm"`
+	Digest       string `json:"digest"`
 }
 
 // Snapshot generates a plaintext inventory of the first runtime-set module state.
@@ -108,4 +117,44 @@ func SnapshotJSON(repoRoot string) ([]byte, error) {
 	}
 
 	return json.MarshalIndent(inv, "", "  ")
+}
+
+// Digest generates a plaintext inventory digest.
+func Digest(repoRoot string) ([]string, error) {
+	jsonBytes, err := SnapshotJSON(repoRoot)
+	if err != nil {
+		return nil, err
+	}
+
+	hash := sha256.Sum256(jsonBytes)
+	hexStr := hex.EncodeToString(hash[:])
+
+	var output []string
+	output = append(output, "inventory digest: schema qxctl.runtime_inventory_digest.v1")
+	output = append(output, "inventory digest: source_schema qxctl.runtime_inventory.v1")
+	output = append(output, "inventory digest: algorithm sha256")
+	output = append(output, fmt.Sprintf("inventory digest: %s", hexStr))
+	output = append(output, "inventory digest: checks passed")
+
+	return output, nil
+}
+
+// DigestJSON generates a JSON inventory digest.
+func DigestJSON(repoRoot string) ([]byte, error) {
+	jsonBytes, err := SnapshotJSON(repoRoot)
+	if err != nil {
+		return nil, err
+	}
+
+	hash := sha256.Sum256(jsonBytes)
+	hexStr := hex.EncodeToString(hash[:])
+
+	digest := RuntimeInventoryDigest{
+		Schema:       "qxctl.runtime_inventory_digest.v1",
+		SourceSchema: "qxctl.runtime_inventory.v1",
+		Algorithm:    "sha256",
+		Digest:       hexStr,
+	}
+
+	return json.MarshalIndent(digest, "", "  ")
 }
