@@ -15,3 +15,10 @@ qxctl is seeded against Go 1.26.5 as the current scripted baseline.
 qxctl intentionally uses the Go standard library only.
 Symphony intends to migrate qxctl to Go 1.27 after Go 1.27 is released and available in the local toolchain.
 Until that migration PR, qxctl must avoid Go 1.27-only language features and standard-library APIs.
+
+## Commands
+
+- `qxctl doctor`: Perform local repository/admin-spine checks.
+- `qxctl contracts`: Verify first runtime-set module contract surfaces.
+- `qxctl modules`: List deterministic runtime modules.
+- `qxctl module inspect <module-name>`: Inspect a specific runtime module.
