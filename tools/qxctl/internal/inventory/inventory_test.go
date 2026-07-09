@@ -202,7 +202,7 @@ func TestDigest_Success(t *testing.T) {
 	if output[2] != "inventory digest: algorithm sha256" {
 		t.Errorf("expected algorithm line, got %q", output[2])
 	}
-	
+
 	digestLine := output[3]
 	if !strings.HasPrefix(digestLine, "inventory digest: ") {
 		t.Errorf("expected digest line prefix, got %q", digestLine)
