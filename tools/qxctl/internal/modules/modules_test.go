@@ -289,3 +289,58 @@ func TestCheckAll_Failure(t *testing.T) {
 		t.Fatal("expected error, got nil")
 	}
 }
+
+func TestMetadata_Success(t *testing.T) {
+	tempDir := t.TempDir()
+
+	mod := CanonicalModules[0]
+	modPath := filepath.Join(tempDir, "modules", mod)
+	if err := os.MkdirAll(modPath, 0755); err != nil {
+		t.Fatalf("failed to create module dir: %v", err)
+	}
+
+	for _, file := range ExpectedFiles {
+		filePath := filepath.Join(modPath, file)
+		if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
+			t.Fatalf("failed to write contract file: %v", err)
+		}
+	}
+
+	output, err := Metadata(tempDir, mod)
+	if err != nil {
+		t.Fatalf("expected success, got error: %v", err)
+	}
+
+	lastLine := output[len(output)-1]
+	if lastLine != "module metadata: checks passed" {
+		t.Errorf("expected last line to be success, got %q", lastLine)
+	}
+}
+
+func TestMetadataAll_Success(t *testing.T) {
+	tempDir := t.TempDir()
+
+	for _, mod := range CanonicalModules {
+		modPath := filepath.Join(tempDir, "modules", mod)
+		if err := os.MkdirAll(modPath, 0755); err != nil {
+			t.Fatalf("failed to create module dir: %v", err)
+		}
+
+		for _, file := range ExpectedFiles {
+			filePath := filepath.Join(modPath, file)
+			if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
+				t.Fatalf("failed to write contract file: %v", err)
+			}
+		}
+	}
+
+	output, err := MetadataAll(tempDir)
+	if err != nil {
+		t.Fatalf("expected success, got error: %v", err)
+	}
+
+	lastLine := output[len(output)-1]
+	if lastLine != "modules metadata: checks passed" {
+		t.Errorf("expected last line to be success, got %q", lastLine)
+	}
+}

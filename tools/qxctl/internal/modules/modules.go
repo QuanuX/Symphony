@@ -2,7 +2,10 @@ package modules
 
 import (
 	"bufio"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -155,6 +158,124 @@ func CheckAll(repoRoot string) ([]string, error) {
 	}
 
 	output = append(output, "modules check: checks passed")
+	return output, nil
+}
+
+// Metadata extracts deterministic metadata from the contract files for a module.
+func Metadata(repoRoot, moduleName string) ([]string, error) {
+	isKnown := false
+	for _, mod := range CanonicalModules {
+		if mod == moduleName {
+			isKnown = true
+			break
+		}
+	}
+
+	if !isKnown {
+		return nil, fmt.Errorf("unknown module: %s", moduleName)
+	}
+
+	var output []string
+	output = append(output, fmt.Sprintf("module metadata: %s", moduleName))
+
+	modRelPath := filepath.Join("modules", moduleName)
+	modPath := filepath.Join(repoRoot, modRelPath)
+
+	if !repository.IsDir(modPath) {
+		output = append(output, fmt.Sprintf("module metadata: missing directory %s", modRelPath))
+		return output, fmt.Errorf("missing module directory: %s", modRelPath)
+	}
+
+	for _, file := range ExpectedFiles {
+		filePath := filepath.Join(modPath, file)
+		relPath := filepath.Join(modRelPath, file)
+		
+		if !repository.IsFile(filePath) {
+			output = append(output, fmt.Sprintf("metadata: missing contract %s", relPath))
+			return output, fmt.Errorf("missing contract file: %s in %s", file, modRelPath)
+		}
+
+		meta, err := getFileMetadata(repoRoot, relPath)
+		if err != nil {
+			output = append(output, fmt.Sprintf("metadata: error reading %s: %v", relPath, err))
+			return output, err
+		}
+		output = append(output, meta...)
+	}
+
+	output = append(output, "module metadata: checks passed")
+	return output, nil
+}
+
+// MetadataAll validates the metadata for all canonical modules.
+func MetadataAll(repoRoot string) ([]string, error) {
+	var output []string
+
+	for _, mod := range CanonicalModules {
+		_, err := Metadata(repoRoot, mod)
+		if err != nil {
+			output = append(output, fmt.Sprintf("modules metadata: %s failed", mod))
+			return output, err
+		}
+		output = append(output, fmt.Sprintf("modules metadata: %s ok", mod))
+	}
+
+	output = append(output, "modules metadata: checks passed")
+	return output, nil
+}
+
+func getFileMetadata(repoRoot, relPath string) ([]string, error) {
+	absPath := filepath.Join(repoRoot, relPath)
+	file, err := os.Open(absPath)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	info, err := file.Stat()
+	if err != nil {
+		return nil, err
+	}
+	if info.Size() == 0 {
+		return nil, fmt.Errorf("empty contract file: %s", relPath)
+	}
+	byteCount := info.Size()
+
+	hasher := sha256.New()
+	if _, err := io.Copy(hasher, file); err != nil {
+		return nil, err
+	}
+	hashHex := hex.EncodeToString(hasher.Sum(nil))
+
+	if _, err := file.Seek(0, 0); err != nil {
+		return nil, err
+	}
+
+	scanner := bufio.NewScanner(file)
+	var firstH1 string
+	lineCount := 0
+	for scanner.Scan() {
+		lineCount++
+		line := scanner.Text()
+		if firstH1 == "" && strings.HasPrefix(line, "# ") {
+			firstH1 = line
+		}
+	}
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	if firstH1 == "" {
+		return nil, fmt.Errorf("missing H1 in %s", relPath)
+	}
+
+	var output []string
+	output = append(output, fmt.Sprintf("metadata: %s", relPath))
+	output = append(output, fmt.Sprintf("title: %s", firstH1))
+	output = append(output, fmt.Sprintf("bytes: %d", byteCount))
+	output = append(output, fmt.Sprintf("lines: %d", lineCount))
+	output = append(output, fmt.Sprintf("sha256: %s", hashHex))
+
 	return output, nil
 }
 

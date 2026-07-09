@@ -29,4 +29,10 @@ go run ./cmd/qxctl module inspect <module-name>
 
 # Verify contract shape for a specific module
 go run ./cmd/qxctl module check <module-name>
+
+# Extract contract metadata for all modules
+go run ./cmd/qxctl modules metadata
+
+# Extract contract metadata for a specific module
+go run ./cmd/qxctl module metadata <module-name>
 ```

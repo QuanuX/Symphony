@@ -47,6 +47,11 @@ func main() {
 				fmt.Printf("modules check failed: %v\n", err)
 				os.Exit(1)
 			}
+		} else if len(os.Args) == 3 && os.Args[2] == "metadata" {
+			if err := runModulesMetadata(); err != nil {
+				fmt.Printf("modules metadata failed: %v\n", err)
+				os.Exit(1)
+			}
 		} else {
 			printUsage()
 			os.Exit(1)
@@ -60,6 +65,11 @@ func main() {
 		} else if len(os.Args) == 4 && os.Args[2] == "check" {
 			if err := runModuleCheck(os.Args[3]); err != nil {
 				fmt.Printf("module check failed: %v\n", err)
+				os.Exit(1)
+			}
+		} else if len(os.Args) == 4 && os.Args[2] == "metadata" {
+			if err := runModuleMetadata(os.Args[3]); err != nil {
+				fmt.Printf("module metadata failed: %v\n", err)
 				os.Exit(1)
 			}
 		} else {
@@ -86,8 +96,10 @@ func printUsage() {
 	fmt.Println("  contracts                         Verify first runtime-set module contract surfaces")
 	fmt.Println("  modules                           List deterministic runtime modules")
 	fmt.Println("  modules check                     Verify contract shape for all modules")
+	fmt.Println("  modules metadata                  Extract contract metadata for all modules")
 	fmt.Println("  module inspect <module-name>      Inspect a specific runtime module")
 	fmt.Println("  module check <module-name>        Verify contract shape for a module")
+	fmt.Println("  module metadata <module-name>     Extract contract metadata for a module")
 }
 
 func runDoctor() error {
@@ -231,6 +243,50 @@ func runContracts() error {
 	}
 	if err != nil {
 		fmt.Println("contracts: checks failed")
+		return err
+	}
+	return nil
+}
+
+func runModuleMetadata(moduleName string) error {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("could not get current working directory: %w", err)
+	}
+
+	repoRoot, err := repository.FindRoot(cwd)
+	if err != nil {
+		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+
+	output, err := modules.Metadata(repoRoot, moduleName)
+	for _, line := range output {
+		fmt.Println(line)
+	}
+	if err != nil {
+		fmt.Println("module metadata: checks failed")
+		return err
+	}
+	return nil
+}
+
+func runModulesMetadata() error {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("could not get current working directory: %w", err)
+	}
+
+	repoRoot, err := repository.FindRoot(cwd)
+	if err != nil {
+		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+
+	output, err := modules.MetadataAll(repoRoot)
+	for _, line := range output {
+		fmt.Println(line)
+	}
+	if err != nil {
+		fmt.Println("modules metadata: checks failed")
 		return err
 	}
 	return nil
