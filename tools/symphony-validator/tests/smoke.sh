@@ -413,6 +413,53 @@ if ./build/symphony-validator check --repo ./tests/fixtures_sclv_reference_direc
     echo "error: fixtures_sclv_reference_directory should fail"
     exit 1
 fi
-echo "fixtures_sclv_reference_directory failed as expected"
+# Verify SCLV-SKVI unindexed reference
+if ./build/symphony-validator check --repo ./tests/fixtures_sclv_skvi_reference_unindexed > /dev/null 2>&1; then
+    echo "error: fixtures_sclv_skvi_reference_unindexed should fail"
+    exit 1
+fi
+echo "fixtures_sclv_skvi_reference_unindexed failed as expected"
+
+# Verify validator_build duplicate source
+if ./build/symphony-validator check --repo ./tests/fixtures_validator_build_duplicate_source > /dev/null 2>&1; then
+    echo "error: fixtures_validator_build_duplicate_source should fail"
+    exit 1
+fi
+echo "fixtures_validator_build_duplicate_source failed as expected"
+
+# Verify validator_build missing source
+if ./build/symphony-validator check --repo ./tests/fixtures_validator_build_missing_source > /dev/null 2>&1; then
+    echo "error: fixtures_validator_build_missing_source should fail"
+    exit 1
+fi
+echo "fixtures_validator_build_missing_source failed as expected"
+
+# Verify validator_build unlisted source
+if ./build/symphony-validator check --repo ./tests/fixtures_validator_build_unlisted_source > /dev/null 2>&1; then
+    echo "error: fixtures_validator_build_unlisted_source should fail"
+    exit 1
+fi
+echo "fixtures_validator_build_unlisted_source failed as expected"
+
+# Verify validator_build outside src
+if ./build/symphony-validator check --repo ./tests/fixtures_validator_build_outside_src > /dev/null 2>&1; then
+    echo "error: fixtures_validator_build_outside_src should fail"
+    exit 1
+fi
+echo "fixtures_validator_build_outside_src failed as expected"
+
+# Verify validator_build invalid extension
+if ./build/symphony-validator check --repo ./tests/fixtures_validator_build_invalid_extension > /dev/null 2>&1; then
+    echo "error: fixtures_validator_build_invalid_extension should fail"
+    exit 1
+fi
+echo "fixtures_validator_build_invalid_extension failed as expected"
+
+# Verify validator_build traversal
+if ./build/symphony-validator check --repo ./tests/fixtures_validator_build_traversal > /dev/null 2>&1; then
+    echo "error: fixtures_validator_build_traversal should fail"
+    exit 1
+fi
+echo "fixtures_validator_build_traversal failed as expected"
 
 echo "All smoke tests passed."
