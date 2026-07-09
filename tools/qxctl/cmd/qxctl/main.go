@@ -13,51 +13,67 @@ import (
 
 func main() {
 	if len(os.Args) < 2 {
-		printHelp()
+		printUsage()
 		os.Exit(1)
 	}
 
-	command := os.Args[1]
+	cmd := os.Args[1]
 
-	switch command {
+	switch cmd {
 	case "--help":
-		printHelp()
+		printUsage()
+		os.Exit(0)
 	case "--version":
-		fmt.Println(version.Version)
+		fmt.Printf("qxctl version %s\n", version.Version)
+		os.Exit(0)
 	case "doctor":
 		if err := runDoctor(); err != nil {
-			fmt.Fprintf(os.Stderr, "doctor failed: %v\n", err)
+			fmt.Printf("doctor failed: %v\n", err)
 			os.Exit(1)
 		}
-		fmt.Println("doctor checks passed")
 	case "contracts":
 		if err := runContracts(); err != nil {
-			fmt.Fprintf(os.Stderr, "contracts failed: %v\n", err)
+			fmt.Printf("contracts failed: %v\n", err)
 			os.Exit(1)
 		}
 	case "modules":
-		if err := runModules(); err != nil {
-			fmt.Fprintf(os.Stderr, "modules failed: %v\n", err)
+		if len(os.Args) == 2 {
+			if err := runModules(); err != nil {
+				fmt.Printf("modules failed: %v\n", err)
+				os.Exit(1)
+			}
+		} else if len(os.Args) == 3 && os.Args[2] == "check" {
+			if err := runModulesCheck(); err != nil {
+				fmt.Printf("modules check failed: %v\n", err)
+				os.Exit(1)
+			}
+		} else {
+			printUsage()
 			os.Exit(1)
 		}
 	case "module":
-		if len(os.Args) < 4 || os.Args[2] != "inspect" {
-			fmt.Fprintf(os.Stderr, "usage: qxctl module inspect <module-name>\n")
-			os.Exit(1)
-		}
-		moduleName := os.Args[3]
-		if err := runModuleInspect(moduleName); err != nil {
-			fmt.Fprintf(os.Stderr, "module inspect failed: %v\n", err)
+		if len(os.Args) == 4 && os.Args[2] == "inspect" {
+			if err := runModuleInspect(os.Args[3]); err != nil {
+				fmt.Printf("module inspect failed: %v\n", err)
+				os.Exit(1)
+			}
+		} else if len(os.Args) == 4 && os.Args[2] == "check" {
+			if err := runModuleCheck(os.Args[3]); err != nil {
+				fmt.Printf("module check failed: %v\n", err)
+				os.Exit(1)
+			}
+		} else {
+			printUsage()
 			os.Exit(1)
 		}
 	default:
-		fmt.Fprintf(os.Stderr, "unknown command: %s\n", command)
-		printHelp()
+		fmt.Printf("unknown command: %s\n", cmd)
+		printUsage()
 		os.Exit(1)
 	}
 }
 
-func printHelp() {
+func printUsage() {
 	fmt.Println("qxctl - Symphony administrative spine")
 	fmt.Println()
 	fmt.Println("Usage:")
@@ -69,7 +85,45 @@ func printHelp() {
 	fmt.Println("  doctor                            Perform local repository/admin-spine checks")
 	fmt.Println("  contracts                         Verify first runtime-set module contract surfaces")
 	fmt.Println("  modules                           List deterministic runtime modules")
+	fmt.Println("  modules check                     Verify contract shape for all modules")
 	fmt.Println("  module inspect <module-name>      Inspect a specific runtime module")
+	fmt.Println("  module check <module-name>        Verify contract shape for a module")
+}
+
+func runDoctor() error {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("could not get current working directory: %w", err)
+	}
+
+	repoRoot, err := repository.FindRoot(cwd)
+	if err != nil {
+		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+	fmt.Printf("found repository root: %s\n", repoRoot)
+
+	expectedModules := []string{
+		"node-troll",
+		"bus-troll",
+		"hotpath-runtime",
+	}
+
+	for _, mod := range expectedModules {
+		modPath := filepath.Join(repoRoot, "modules", mod)
+		if !repository.IsDir(modPath) {
+			return fmt.Errorf("missing expected module directory: modules/%s", mod)
+		}
+		fmt.Printf("verified module exists: modules/%s\n", mod)
+	}
+
+	validatorPath := filepath.Join(repoRoot, "tools", "symphony-validator")
+	if !repository.IsDir(validatorPath) {
+		return fmt.Errorf("missing validator directory: tools/symphony-validator")
+	}
+	fmt.Println("verified validator exists: tools/symphony-validator")
+
+	fmt.Println("doctor checks passed")
+	return nil
 }
 
 func runModules() error {
@@ -89,6 +143,28 @@ func runModules() error {
 	}
 	if err != nil {
 		fmt.Println("modules: checks failed")
+		return err
+	}
+	return nil
+}
+
+func runModulesCheck() error {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("could not get current working directory: %w", err)
+	}
+
+	repoRoot, err := repository.FindRoot(cwd)
+	if err != nil {
+		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+
+	output, err := modules.CheckAll(repoRoot)
+	for _, line := range output {
+		fmt.Println(line)
+	}
+	if err != nil {
+		fmt.Println("modules check: checks failed")
 		return err
 	}
 	return nil
@@ -116,6 +192,28 @@ func runModuleInspect(moduleName string) error {
 	return nil
 }
 
+func runModuleCheck(moduleName string) error {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("could not get current working directory: %w", err)
+	}
+
+	repoRoot, err := repository.FindRoot(cwd)
+	if err != nil {
+		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+
+	output, err := modules.Check(repoRoot, moduleName)
+	for _, line := range output {
+		fmt.Println(line)
+	}
+	if err != nil {
+		fmt.Println("module check: checks failed")
+		return err
+	}
+	return nil
+}
+
 func runContracts() error {
 	cwd, err := os.Getwd()
 	if err != nil {
@@ -135,41 +233,5 @@ func runContracts() error {
 		fmt.Println("contracts: checks failed")
 		return err
 	}
-	return nil
-}
-
-func runDoctor() error {
-	cwd, err := os.Getwd()
-	if err != nil {
-		return fmt.Errorf("could not get current working directory: %w", err)
-	}
-
-	repoRoot, err := repository.FindRoot(cwd)
-	if err != nil {
-		return fmt.Errorf("could not find Symphony repository root: %w", err)
-	}
-
-	fmt.Printf("found repository root: %s\n", repoRoot)
-
-	modules := []string{
-		"modules/node-troll",
-		"modules/bus-troll",
-		"modules/hotpath-runtime",
-	}
-
-	for _, mod := range modules {
-		path := filepath.Join(repoRoot, mod)
-		if !repository.IsDir(path) {
-			return fmt.Errorf("missing required module directory: %s", mod)
-		}
-		fmt.Printf("verified module exists: %s\n", mod)
-	}
-
-	validatorPath := filepath.Join(repoRoot, "tools/symphony-validator")
-	if !repository.IsDir(validatorPath) {
-		return fmt.Errorf("missing required validator directory: tools/symphony-validator")
-	}
-	fmt.Printf("verified validator exists: tools/symphony-validator\n")
-
 	return nil
 }
