@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"io"
 	"os"
@@ -24,6 +25,25 @@ var ExpectedFiles = []string{
 	"MANIFEST.md",
 	"INSTALL.md",
 	"SKILL.md",
+}
+
+type ContractMetadata struct {
+	Path   string `json:"path"`
+	Title  string `json:"title"`
+	Bytes  int64  `json:"bytes"`
+	Lines  int    `json:"lines"`
+	Sha256 string `json:"sha256"`
+}
+
+type ModuleMetadata struct {
+	Schema    string             `json:"schema,omitempty"`
+	Module    string             `json:"module"`
+	Contracts []ContractMetadata `json:"contracts"`
+}
+
+type ModulesMetadata struct {
+	Schema  string           `json:"schema"`
+	Modules []ModuleMetadata `json:"modules"`
 }
 
 // List verifies the presence of all canonical modules and returns their status.
@@ -224,6 +244,87 @@ func MetadataAll(repoRoot string) ([]string, error) {
 	return output, nil
 }
 
+func MetadataJSON(repoRoot, moduleName string) ([]byte, error) {
+	isKnown := false
+	for _, mod := range CanonicalModules {
+		if mod == moduleName {
+			isKnown = true
+			break
+		}
+	}
+
+	if !isKnown {
+		return nil, fmt.Errorf("unknown module: %s", moduleName)
+	}
+
+	modRelPath := filepath.Join("modules", moduleName)
+	modPath := filepath.Join(repoRoot, modRelPath)
+
+	if !repository.IsDir(modPath) {
+		return nil, fmt.Errorf("missing module directory: %s", modRelPath)
+	}
+
+	moduleMeta := ModuleMetadata{
+		Schema: "qxctl.contract_metadata.v1",
+		Module: moduleName,
+	}
+
+	for _, file := range ExpectedFiles {
+		filePath := filepath.Join(modPath, file)
+		relPath := filepath.Join(modRelPath, file)
+		
+		if !repository.IsFile(filePath) {
+			return nil, fmt.Errorf("missing contract file: %s in %s", file, modRelPath)
+		}
+
+		meta, err := getFileMetadataStruct(repoRoot, relPath)
+		if err != nil {
+			return nil, err
+		}
+		moduleMeta.Contracts = append(moduleMeta.Contracts, meta)
+	}
+
+	return json.MarshalIndent(moduleMeta, "", "  ")
+}
+
+func MetadataAllJSON(repoRoot string) ([]byte, error) {
+	modulesMeta := ModulesMetadata{
+		Schema: "qxctl.modules_contract_metadata.v1",
+	}
+
+	for _, mod := range CanonicalModules {
+		modRelPath := filepath.Join("modules", mod)
+		modPath := filepath.Join(repoRoot, modRelPath)
+
+		if !repository.IsDir(modPath) {
+			return nil, fmt.Errorf("missing module directory: %s", modRelPath)
+		}
+
+		moduleMeta := ModuleMetadata{
+			Module: mod,
+		}
+
+		for _, file := range ExpectedFiles {
+			filePath := filepath.Join(modPath, file)
+			relPath := filepath.Join(modRelPath, file)
+			
+			if !repository.IsFile(filePath) {
+				return nil, fmt.Errorf("missing contract file: %s in %s", file, modRelPath)
+			}
+
+			meta, err := getFileMetadataStruct(repoRoot, relPath)
+			if err != nil {
+				return nil, err
+			}
+			moduleMeta.Contracts = append(moduleMeta.Contracts, meta)
+		}
+
+		modulesMeta.Modules = append(modulesMeta.Modules, moduleMeta)
+	}
+
+	return json.MarshalIndent(modulesMeta, "", "  ")
+}
+
 func getFileMetadata(repoRoot, relPath string) ([]string, error) {
 	absPath := filepath.Join(repoRoot, relPath)
 	file, err := os.Open(absPath)
@@ -277,6 +378,57 @@ func getFileMetadata(repoRoot, relPath string) ([]string, error) {
 	output = append(output, fmt.Sprintf("sha256: %s", hashHex))
 
 	return output, nil
+}
+
+func getFileMetadataStruct(repoRoot, relPath string) (ContractMetadata, error) {
+	var meta ContractMetadata
+	meta.Path = relPath
+
+	absPath := filepath.Join(repoRoot, relPath)
+	file, err := os.Open(absPath)
+	if err != nil {
+		return meta, err
+	}
+	defer file.Close()
+
+	info, err := file.Stat()
+	if err != nil {
+		return meta, err
+	}
+	if info.Size() == 0 {
+		return meta, fmt.Errorf("empty contract file: %s", relPath)
+	}
+	meta.Bytes = info.Size()
+
+	hasher := sha256.New()
+	if _, err := io.Copy(hasher, file); err != nil {
+		return meta, err
+	}
+	meta.Sha256 = hex.EncodeToString(hasher.Sum(nil))
+
+	if _, err := file.Seek(0, 0); err != nil {
+		return meta, err
+	}
+
+	scanner := bufio.NewScanner(file)
+	lineCount := 0
+	for scanner.Scan() {
+		lineCount++
+		line := scanner.Text()
+		if meta.Title == "" && strings.HasPrefix(line, "# ") {
+			meta.Title = line
+		}
+	}
+	if err := scanner.Err(); err != nil {
+		return meta, err
+	}
+
+	if meta.Title == "" {
+		return meta, fmt.Errorf("missing H1 in %s", relPath)
+	}
+	meta.Lines = lineCount
+
+	return meta, nil
 }
 
 func extractH1(path string) (string, error) {

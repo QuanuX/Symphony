@@ -48,7 +48,12 @@ func main() {
 				os.Exit(1)
 			}
 		} else if len(os.Args) == 3 && os.Args[2] == "metadata" {
-			if err := runModulesMetadata(); err != nil {
+			if err := runModulesMetadata(false); err != nil {
+				fmt.Printf("modules metadata failed: %v\n", err)
+				os.Exit(1)
+			}
+		} else if len(os.Args) == 4 && os.Args[2] == "metadata" && os.Args[3] == "--json" {
+			if err := runModulesMetadata(true); err != nil {
 				fmt.Printf("modules metadata failed: %v\n", err)
 				os.Exit(1)
 			}
@@ -68,7 +73,12 @@ func main() {
 				os.Exit(1)
 			}
 		} else if len(os.Args) == 4 && os.Args[2] == "metadata" {
-			if err := runModuleMetadata(os.Args[3]); err != nil {
+			if err := runModuleMetadata(os.Args[3], false); err != nil {
+				fmt.Printf("module metadata failed: %v\n", err)
+				os.Exit(1)
+			}
+		} else if len(os.Args) == 5 && os.Args[2] == "metadata" && os.Args[4] == "--json" {
+			if err := runModuleMetadata(os.Args[3], true); err != nil {
 				fmt.Printf("module metadata failed: %v\n", err)
 				os.Exit(1)
 			}
@@ -96,10 +106,10 @@ func printUsage() {
 	fmt.Println("  contracts                         Verify first runtime-set module contract surfaces")
 	fmt.Println("  modules                           List deterministic runtime modules")
 	fmt.Println("  modules check                     Verify contract shape for all modules")
-	fmt.Println("  modules metadata                  Extract contract metadata for all modules")
+	fmt.Println("  modules metadata [--json]         Extract contract metadata for all modules")
 	fmt.Println("  module inspect <module-name>      Inspect a specific runtime module")
 	fmt.Println("  module check <module-name>        Verify contract shape for a module")
-	fmt.Println("  module metadata <module-name>     Extract contract metadata for a module")
+	fmt.Println("  module metadata <module-name> [--json] Extract contract metadata for a module")
 }
 
 func runDoctor() error {
@@ -248,7 +258,7 @@ func runContracts() error {
 	return nil
 }
 
-func runModuleMetadata(moduleName string) error {
+func runModuleMetadata(moduleName string, jsonOutput bool) error {
 	cwd, err := os.Getwd()
 	if err != nil {
 		return fmt.Errorf("could not get current working directory: %w", err)
@@ -257,6 +267,16 @@ func runModuleMetadata(moduleName string) error {
 	repoRoot, err := repository.FindRoot(cwd)
 	if err != nil {
 		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+
+	if jsonOutput {
+		outputBytes, err := modules.MetadataJSON(repoRoot, moduleName)
+		if err != nil {
+			fmt.Printf("module metadata failed: %v\n", err)
+			return err
+		}
+		fmt.Println(string(outputBytes))
+		return nil
 	}
 
 	output, err := modules.Metadata(repoRoot, moduleName)
@@ -270,7 +290,7 @@ func runModuleMetadata(moduleName string) error {
 	return nil
 }
 
-func runModulesMetadata() error {
+func runModulesMetadata(jsonOutput bool) error {
 	cwd, err := os.Getwd()
 	if err != nil {
 		return fmt.Errorf("could not get current working directory: %w", err)
@@ -279,6 +299,16 @@ func runModulesMetadata() error {
 	repoRoot, err := repository.FindRoot(cwd)
 	if err != nil {
 		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+
+	if jsonOutput {
+		outputBytes, err := modules.MetadataAllJSON(repoRoot)
+		if err != nil {
+			fmt.Printf("modules metadata failed: %v\n", err)
+			return err
+		}
+		fmt.Println(string(outputBytes))
+		return nil
 	}
 
 	output, err := modules.MetadataAll(repoRoot)
