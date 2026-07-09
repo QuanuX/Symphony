@@ -31,8 +31,8 @@ go run ./cmd/qxctl module inspect <module-name>
 go run ./cmd/qxctl module check <module-name>
 
 # Extract contract metadata for all modules
-go run ./cmd/qxctl modules metadata
+go run ./cmd/qxctl modules metadata [--json]
 
 # Extract contract metadata for a specific module
-go run ./cmd/qxctl module metadata <module-name>
+go run ./cmd/qxctl module metadata <module-name> [--json]
 ```

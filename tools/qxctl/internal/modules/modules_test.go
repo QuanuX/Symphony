@@ -344,3 +344,85 @@ func TestMetadataAll_Success(t *testing.T) {
 		t.Errorf("expected last line to be success, got %q", lastLine)
 	}
 }
+
+func TestMetadataJSON_Success(t *testing.T) {
+	tempDir := t.TempDir()
+
+	mod := CanonicalModules[0]
+	modPath := filepath.Join(tempDir, "modules", mod)
+	if err := os.MkdirAll(modPath, 0755); err != nil {
+		t.Fatalf("failed to create module dir: %v", err)
+	}
+
+	for _, file := range ExpectedFiles {
+		filePath := filepath.Join(modPath, file)
+		if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
+			t.Fatalf("failed to write contract file: %v", err)
+		}
+	}
+
+	outputBytes, err := MetadataJSON(tempDir, mod)
+	if err != nil {
+		t.Fatalf("expected success, got error: %v", err)
+	}
+
+	output := string(outputBytes)
+	if !strings.Contains(output, `"schema": "qxctl.contract_metadata.v1"`) {
+		t.Errorf("expected JSON to contain correct schema, got %s", output)
+	}
+	if !strings.Contains(output, `"module": "node-troll"`) {
+		t.Errorf("expected JSON to contain module node-troll")
+	}
+	if !strings.Contains(output, `"path": "modules/node-troll/INTENT.md"`) {
+		t.Errorf("expected JSON to contain relative paths without absolute prefix")
+	}
+}
+
+func TestMetadataAllJSON_Success(t *testing.T) {
+	tempDir := t.TempDir()
+
+	for _, mod := range CanonicalModules {
+		modPath := filepath.Join(tempDir, "modules", mod)
+		if err := os.MkdirAll(modPath, 0755); err != nil {
+			t.Fatalf("failed to create module dir: %v", err)
+		}
+
+		for _, file := range ExpectedFiles {
+			filePath := filepath.Join(modPath, file)
+			if err := os.WriteFile(filePath, []byte("# Title\nContent"), 0644); err != nil {
+				t.Fatalf("failed to write contract file: %v", err)
+			}
+		}
+	}
+
+	outputBytes, err := MetadataAllJSON(tempDir)
+	if err != nil {
+		t.Fatalf("expected success, got error: %v", err)
+	}
+
+	output := string(outputBytes)
+	if !strings.Contains(output, `"schema": "qxctl.modules_contract_metadata.v1"`) {
+		t.Errorf("expected JSON to contain correct schema")
+	}
+	if !strings.Contains(output, `"module": "node-troll"`) {
+		t.Errorf("expected JSON to contain module node-troll")
+	}
+	if !strings.Contains(output, `"module": "bus-troll"`) {
+		t.Errorf("expected JSON to contain module bus-troll")
+	}
+	if !strings.Contains(output, `"module": "hotpath-runtime"`) {
+		t.Errorf("expected JSON to contain module hotpath-runtime")
+	}
+	if !strings.Contains(output, `"path": "modules/node-troll/INTENT.md"`) {
+		t.Errorf("expected JSON to contain relative paths without absolute prefix")
+	}
+}
+
+func TestMetadataJSON_UnknownModule(t *testing.T) {
+	tempDir := t.TempDir()
+
+	_, err := MetadataJSON(tempDir, "unknown-module")
+	if err == nil {
+		t.Fatal("expected error for unknown module, got nil")
+	}
+}
