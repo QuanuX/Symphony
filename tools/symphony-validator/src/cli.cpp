@@ -17,6 +17,7 @@
 #include "doctrine_vocab.hpp"
 #include "skvi_paths.hpp"
 #include "sclv_references.hpp"
+#include "validator_build.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -191,6 +192,14 @@ int run_cli(const std::vector<std::string>& args) {
             process_messages(artifact_result.messages);
             if (!artifact_result.success) {
                 final_exit = 8;
+                print_summary();
+                return final_exit;
+            }
+
+            ValidatorBuildCheckResult build_result = check_validator_build(args[2]);
+            process_messages(build_result.messages);
+            if (!build_result.success) {
+                final_exit = 20;
                 print_summary();
                 return final_exit;
             }

@@ -23,6 +23,7 @@ add_executable(symphony-validator
     src/knowledge_contracts.cpp
     src/root_contracts.cpp
     src/doctrine_vocab.cpp
+    src/validator_build.cpp
 )
 
 target_include_directories(symphony-validator PRIVATE src)
