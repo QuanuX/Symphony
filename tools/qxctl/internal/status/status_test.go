@@ -28,6 +28,19 @@ func createValidTestRepo(t *testing.T) string {
 			}
 		}
 	}
+
+	qxctlPath := filepath.Join(tempDir, "tools", "qxctl")
+	if err := os.MkdirAll(qxctlPath, 0755); err != nil {
+		t.Fatalf("failed to create qxctl dir: %v", err)
+	}
+	for _, f := range files {
+		filePath := filepath.Join(qxctlPath, f)
+		content := "# " + f + "\n\nvalid tool content\n"
+		if err := os.WriteFile(filePath, []byte(content), 0644); err != nil {
+			t.Fatalf("failed to write tool contract file: %v", err)
+		}
+	}
+
 	return tempDir
 }
 
@@ -41,6 +54,7 @@ func TestReport_ValidRepo(t *testing.T) {
 
 	expectedLines := []string{
 		"status: schema qxctl.status.v1",
+		"status: tool qxctl ok",
 		"status: repository ok",
 		"status: modules ok",
 		"status: contracts ok",
@@ -106,6 +120,10 @@ func TestReportJSON_ValidRepo(t *testing.T) {
 
 	if status.GoBaseline != "go1.26.5" {
 		t.Errorf("expected go_baseline go1.26.5, got %q", status.GoBaseline)
+	}
+
+	if !status.Tool.Ok || status.Tool.Name != "qxctl" || status.Tool.Path != "tools/qxctl" || status.Tool.Contracts != 4 {
+		t.Errorf("expected tool ok=true name=qxctl path=tools/qxctl contracts=4, got ok=%v name=%s path=%s contracts=%d", status.Tool.Ok, status.Tool.Name, status.Tool.Path, status.Tool.Contracts)
 	}
 
 	if !status.Modules.Ok || status.Modules.Count != 3 {
@@ -174,6 +192,48 @@ func TestReport_ContractLacksH1(t *testing.T) {
 	}
 	if !strings.Contains(err.Error(), "invalid contract file") {
 		t.Errorf("expected invalid contract error, got: %v", err)
+	}
+}
+
+func TestReport_MissingToolContract(t *testing.T) {
+	repoPath := createValidTestRepo(t)
+	// Remove a tool contract file
+	os.Remove(filepath.Join(repoPath, "tools", "qxctl", "INTENT.md"))
+
+	_, err := Report(repoPath)
+	if err == nil {
+		t.Fatal("expected error for missing tool contract, got nil")
+	}
+	if !strings.Contains(err.Error(), "missing tool contract file") {
+		t.Errorf("expected missing tool contract error, got: %v", err)
+	}
+}
+
+func TestReport_EmptyToolContract(t *testing.T) {
+	repoPath := createValidTestRepo(t)
+	// Empty a tool contract file
+	os.WriteFile(filepath.Join(repoPath, "tools", "qxctl", "MANIFEST.md"), []byte(""), 0644)
+
+	_, err := Report(repoPath)
+	if err == nil {
+		t.Fatal("expected error for empty tool contract, got nil")
+	}
+	if !strings.Contains(err.Error(), "invalid tool contract file") {
+		t.Errorf("expected invalid tool contract error, got: %v", err)
+	}
+}
+
+func TestReport_ToolContractLacksH1(t *testing.T) {
+	repoPath := createValidTestRepo(t)
+	// Modify a tool contract file to lack an H1
+	os.WriteFile(filepath.Join(repoPath, "tools", "qxctl", "SKILL.md"), []byte("invalid content\nno h1 here"), 0644)
+
+	_, err := Report(repoPath)
+	if err == nil {
+		t.Fatal("expected error for tool contract lacking H1, got nil")
+	}
+	if !strings.Contains(err.Error(), "invalid tool contract file") {
+		t.Errorf("expected invalid tool contract error, got: %v", err)
 	}
 }
 
