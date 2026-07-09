@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/contracts"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/inventory"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/modules"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/repository"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/version"
@@ -34,6 +35,21 @@ func main() {
 	case "contracts":
 		if err := runContracts(); err != nil {
 			fmt.Printf("contracts failed: %v\n", err)
+			os.Exit(1)
+		}
+	case "inventory":
+		if len(os.Args) == 2 {
+			if err := runInventory(false); err != nil {
+				fmt.Printf("inventory failed: %v\n", err)
+				os.Exit(1)
+			}
+		} else if len(os.Args) == 3 && os.Args[2] == "--json" {
+			if err := runInventory(true); err != nil {
+				fmt.Printf("inventory failed: %v\n", err)
+				os.Exit(1)
+			}
+		} else {
+			printUsage()
 			os.Exit(1)
 		}
 	case "modules":
@@ -110,6 +126,7 @@ func printUsage() {
 	fmt.Println("  module inspect <module-name>      Inspect a specific runtime module")
 	fmt.Println("  module check <module-name>        Verify contract shape for a module")
 	fmt.Println("  module metadata <module-name> [--json] Extract contract metadata for a module")
+	fmt.Println("  inventory [--json]                Emit deterministic runtime inventory snapshot")
 }
 
 func runDoctor() error {
@@ -318,6 +335,36 @@ func runModulesMetadata(jsonOutput bool) error {
 	if err != nil {
 		fmt.Println("modules metadata: checks failed")
 		return err
+	}
+	return nil
+}
+
+func runInventory(jsonOutput bool) error {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("could not get current working directory: %w", err)
+	}
+
+	repoRoot, err := repository.FindRoot(cwd)
+	if err != nil {
+		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+
+	if jsonOutput {
+		outputBytes, err := inventory.SnapshotJSON(repoRoot)
+		if err != nil {
+			return err
+		}
+		fmt.Println(string(outputBytes))
+		return nil
+	}
+
+	output, err := inventory.Snapshot(repoRoot)
+	if err != nil {
+		return err
+	}
+	for _, line := range output {
+		fmt.Println(line)
 	}
 	return nil
 }

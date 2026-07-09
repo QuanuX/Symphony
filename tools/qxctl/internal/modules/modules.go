@@ -277,7 +277,7 @@ func MetadataJSON(repoRoot, moduleName string) ([]byte, error) {
 			return nil, fmt.Errorf("missing contract file: %s in %s", file, modRelPath)
 		}
 
-		meta, err := getFileMetadataStruct(repoRoot, relPath)
+		meta, err := GetFileMetadataStruct(repoRoot, relPath)
 		if err != nil {
 			return nil, err
 		}
@@ -312,7 +312,7 @@ func MetadataAllJSON(repoRoot string) ([]byte, error) {
 				return nil, fmt.Errorf("missing contract file: %s in %s", file, modRelPath)
 			}
 
-			meta, err := getFileMetadataStruct(repoRoot, relPath)
+			meta, err := GetFileMetadataStruct(repoRoot, relPath)
 			if err != nil {
 				return nil, err
 			}
@@ -380,7 +380,7 @@ func getFileMetadata(repoRoot, relPath string) ([]string, error) {
 	return output, nil
 }
 
-func getFileMetadataStruct(repoRoot, relPath string) (ContractMetadata, error) {
+func GetFileMetadataStruct(repoRoot, relPath string) (ContractMetadata, error) {
 	var meta ContractMetadata
 	meta.Path = relPath
 
