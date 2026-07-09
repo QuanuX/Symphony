@@ -38,9 +38,17 @@ type StatusDigest struct {
 	Value     string `json:"value"`
 }
 
+type StatusTool struct {
+	Ok        bool   `json:"ok"`
+	Name      string `json:"name"`
+	Path      string `json:"path"`
+	Contracts int    `json:"contracts"`
+}
+
 type AdministrativeStatus struct {
 	Schema     string          `json:"schema"`
 	GoBaseline string          `json:"go_baseline"`
+	Tool       StatusTool      `json:"tool"`
 	Repository StatusCheck     `json:"repository"`
 	Modules    StatusModules   `json:"modules"`
 	Contracts  StatusContracts `json:"contracts"`
@@ -59,6 +67,32 @@ func GetStatus(repoRoot string) (AdministrativeStatus, error) {
 		return status, fmt.Errorf("invalid repository root")
 	}
 	status.Repository.Ok = true
+
+	// 1b. Tool
+	qxctlPath := filepath.Join("tools", "qxctl")
+	toolContracts := []string{"INTENT.md", "MANIFEST.md", "INSTALL.md", "SKILL.md"}
+	
+	if !repository.IsDir(filepath.Join(repoRoot, qxctlPath)) {
+		return status, fmt.Errorf("missing qxctl directory: %s", qxctlPath)
+	}
+
+	for _, file := range toolContracts {
+		relPath := filepath.Join(qxctlPath, file)
+		if !repository.IsFile(filepath.Join(repoRoot, relPath)) {
+			return status, fmt.Errorf("missing tool contract file: %s", relPath)
+		}
+		meta, err := modules.GetFileMetadataStruct(repoRoot, relPath)
+		if err != nil {
+			return status, fmt.Errorf("invalid tool contract file: %s", relPath)
+		}
+		if meta.Lines == 0 || meta.Title == "" {
+			return status, fmt.Errorf("invalid tool contract file: %s", relPath)
+		}
+	}
+	status.Tool.Ok = true
+	status.Tool.Name = "qxctl"
+	status.Tool.Path = "tools/qxctl"
+	status.Tool.Contracts = len(toolContracts)
 
 	// 2. Modules
 	for _, mod := range modules.CanonicalModules {
@@ -118,6 +152,9 @@ func Report(repoRoot string) ([]string, error) {
 
 	var output []string
 	output = append(output, "status: schema qxctl.status.v1")
+	if status.Tool.Ok {
+		output = append(output, "status: tool qxctl ok")
+	}
 	if status.Repository.Ok {
 		output = append(output, "status: repository ok")
 	}

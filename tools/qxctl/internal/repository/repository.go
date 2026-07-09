@@ -12,8 +12,9 @@ func FindRoot(start string) (string, error) {
 	for {
 		hasReadme := IsFile(filepath.Join(current, "README.md"))
 		hasIntent := IsFile(filepath.Join(current, "INTENT.md"))
+		hasModules := IsDir(filepath.Join(current, "modules"))
 
-		if hasReadme && hasIntent {
+		if hasReadme && hasIntent && hasModules {
 			return current, nil
 		}
 
@@ -23,7 +24,7 @@ func FindRoot(start string) (string, error) {
 		}
 		current = parent
 	}
-	return "", fmt.Errorf("README.md and INTENT.md not found in any parent directory")
+	return "", fmt.Errorf("Symphony repository root not found in any parent directory")
 }
 
 // IsFile checks if the given path is a regular file.
