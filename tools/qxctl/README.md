@@ -1,24 +1,32 @@
 # qxctl
 
-`qxctl` is the Go-based administrative spine for Symphony.
+Symphony's Go-based administrative spine.
 
-It provides a headless command-center for interacting with Symphony nodes, the bus, and the native hot path.
+This tool is seeded with `Go 1.26.5` as the deterministic scripted baseline. It is written to exclusively use the Go standard library, ensuring zero third-party dependencies are required for core repository validation.
 
-## Design
-* Go-based
-* Zero provider/cloud/Kubernetes assumptions
-* Modular boundaries
+**Future Posture:** `qxctl` will migrate to Go 1.27 once released and officially adopted as the system baseline. It does not currently require or use unreleased features.
 
-## Go version posture
+## Usage
 
-qxctl is seeded against Go 1.26.5 as the current scripted baseline.
-qxctl intentionally uses the Go standard library only.
-Symphony intends to migrate qxctl to Go 1.27 after Go 1.27 is released and available in the local toolchain.
-Until that migration PR, qxctl must avoid Go 1.27-only language features and standard-library APIs.
+```bash
+# Print help
+go run ./cmd/qxctl --help
 
-## Commands
+# Perform local repository checks
+go run ./cmd/qxctl doctor
 
-- `qxctl doctor`: Perform local repository/admin-spine checks.
-- `qxctl contracts`: Verify first runtime-set module contract surfaces.
-- `qxctl modules`: List deterministic runtime modules.
-- `qxctl module inspect <module-name>`: Inspect a specific runtime module.
+# Verify the first runtime-set module contract surfaces
+go run ./cmd/qxctl contracts
+
+# List canonical runtime modules
+go run ./cmd/qxctl modules
+
+# Verify contract shape for all modules
+go run ./cmd/qxctl modules check
+
+# Inspect a specific runtime module
+go run ./cmd/qxctl module inspect <module-name>
+
+# Verify contract shape for a specific module
+go run ./cmd/qxctl module check <module-name>
+```
