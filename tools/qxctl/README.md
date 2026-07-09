@@ -35,4 +35,7 @@ go run ./cmd/qxctl modules metadata [--json]
 
 # Extract contract metadata for a specific module
 go run ./cmd/qxctl module metadata <module-name> [--json]
+
+# Emit deterministic runtime inventory snapshot
+go run ./cmd/qxctl inventory [--json]
 ```
