@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/contracts"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/repository"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/version"
 )
 
@@ -27,6 +29,11 @@ func main() {
 			os.Exit(1)
 		}
 		fmt.Println("doctor checks passed")
+	case "contracts":
+		if err := runContracts(); err != nil {
+			fmt.Fprintf(os.Stderr, "contracts failed: %v\n", err)
+			os.Exit(1)
+		}
 	default:
 		fmt.Fprintf(os.Stderr, "unknown command: %s\n", command)
 		printHelp()
@@ -44,6 +51,29 @@ func printHelp() {
 	fmt.Println("  --help     Print concise usage")
 	fmt.Println("  --version  Print version")
 	fmt.Println("  doctor     Perform local repository/admin-spine checks")
+	fmt.Println("  contracts  Verify first runtime-set module contract surfaces")
+}
+
+func runContracts() error {
+	cwd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("could not get current working directory: %w", err)
+	}
+
+	repoRoot, err := repository.FindRoot(cwd)
+	if err != nil {
+		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+
+	output, err := contracts.Verify(repoRoot)
+	for _, line := range output {
+		fmt.Println(line)
+	}
+	if err != nil {
+		fmt.Println("contracts: checks failed")
+		return err
+	}
+	return nil
 }
 
 func runDoctor() error {
@@ -52,7 +82,7 @@ func runDoctor() error {
 		return fmt.Errorf("could not get current working directory: %w", err)
 	}
 
-	repoRoot, err := findRepoRoot(cwd)
+	repoRoot, err := repository.FindRoot(cwd)
 	if err != nil {
 		return fmt.Errorf("could not find Symphony repository root: %w", err)
 	}
@@ -67,52 +97,17 @@ func runDoctor() error {
 
 	for _, mod := range modules {
 		path := filepath.Join(repoRoot, mod)
-		if !isDir(path) {
+		if !repository.IsDir(path) {
 			return fmt.Errorf("missing required module directory: %s", mod)
 		}
 		fmt.Printf("verified module exists: %s\n", mod)
 	}
 
 	validatorPath := filepath.Join(repoRoot, "tools/symphony-validator")
-	if !isDir(validatorPath) {
+	if !repository.IsDir(validatorPath) {
 		return fmt.Errorf("missing required validator directory: tools/symphony-validator")
 	}
 	fmt.Printf("verified validator exists: tools/symphony-validator\n")
 
 	return nil
-}
-
-func findRepoRoot(start string) (string, error) {
-	current := start
-	for {
-		hasReadme := isFile(filepath.Join(current, "README.md"))
-		hasIntent := isFile(filepath.Join(current, "INTENT.md"))
-
-		if hasReadme && hasIntent {
-			return current, nil
-		}
-
-		parent := filepath.Dir(current)
-		if parent == current {
-			break
-		}
-		current = parent
-	}
-	return "", fmt.Errorf("README.md and INTENT.md not found in any parent directory")
-}
-
-func isFile(path string) bool {
-	info, err := os.Stat(path)
-	if err != nil {
-		return false
-	}
-	return !info.IsDir()
-}
-
-func isDir(path string) bool {
-	info, err := os.Stat(path)
-	if err != nil {
-		return false
-	}
-	return info.IsDir()
 }
