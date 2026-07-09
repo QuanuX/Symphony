@@ -186,6 +186,13 @@ if ./build/symphony-validator check --repo ./tests/fixtures_skvi_ref_unindexed >
 fi
 echo "skvi_ref_unindexed fixture failed as expected"
 
+# Verify SCLV skvi_reference is indexed in SKVI
+if ./build/symphony-validator check --repo ./tests/fixtures_sclv_skvi_reference_unindexed > /dev/null 2>&1; then
+    echo "error: fixtures_sclv_skvi_reference_unindexed fixture should fail"
+    exit 1
+fi
+echo "fixtures_sclv_skvi_reference_unindexed fixture failed as expected"
+
 # Verify affected_surfaces path absent
 if ./build/symphony-validator check --repo ./tests/fixtures_affected_surface_absent > /dev/null 2>&1; then
     echo "error: affected_surface_absent fixture should fail"

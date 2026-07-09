@@ -13,6 +13,7 @@ add_executable(symphony-validator
     src/sclv_shape.cpp
     src/sclv_ledger.cpp
     src/sclv_references.cpp
+    src/sclv_skvi_references.cpp
     src/cross_reference.cpp
     src/vocabulary.cpp
     src/artifacts.cpp

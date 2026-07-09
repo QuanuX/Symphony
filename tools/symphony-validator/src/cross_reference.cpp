@@ -17,16 +17,6 @@ CrossReferenceResult check_cross_references(const std::string& repo_path, const 
     };
 
     for (const auto& rec : sclv_result.records) {
-        // Rule 1: skvi_references must be indexed
-        for (const auto& ref : rec.skvi_references) {
-            if (is_indexed(ref)) {
-                result.messages.push_back(format_evidence(EvidenceCategory::Pass, "sclv.skvi_reference.indexed", "record_id=" + rec.record_id + " path=" + ref));
-            } else {
-                result.success = false;
-                result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv.skvi_reference.unindexed", "record_id=" + rec.record_id + " path=" + ref));
-            }
-        }
-
         // Rule 2 & 3: affected_surfaces must exist
         for (const auto& surface : rec.affected_surfaces) {
             if (file_exists(surface)) {
