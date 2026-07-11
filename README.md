@@ -35,3 +35,11 @@ The root repository establishes platform invariants and guarantees modular sover
 ## Python Doctrine
 Python must not be required for remote native hot-path execution or the administrative spine.
 Optional isolated Python habitats may exist only when explicitly declared by a module or tool.
+
+## License
+
+Symphony is licensed under the GNU Affero General Public License v3.0 only.
+SPDX-License-Identifier: AGPL-3.0-only.
+Commercial licensing options are being prepared for agents, professional users, institutions, and funds.
+Cloud providers or infrastructure vendors wishing to offer Symphony as closed-source SaaS/PaaS should contact QuanuX directly at licensing@quanux.org for custom agreements.
+Without a separate written agreement, use, modification, distribution, and network deployment are governed by AGPL-3.0-only.
