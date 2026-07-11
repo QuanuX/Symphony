@@ -70,18 +70,13 @@ func TestFindRoot(t *testing.T) {
 			t.Errorf("expected %q, got %q", tempDir, root)
 		}
 	})
-	
+
 	t.Run("FindRoot succeeds with current working directory inside tools/qxctl", func(t *testing.T) {
-		orig, err := os.Getwd()
+		t.Chdir(toolDir)
+		wd, err := os.Getwd()
 		if err != nil {
 			t.Fatalf("Getwd failed: %v", err)
 		}
-		if err := os.Chdir(toolDir); err != nil {
-			t.Fatalf("Chdir failed: %v", err)
-		}
-		defer os.Chdir(orig)
-		
-		wd, _ := os.Getwd()
 		root, err := FindRoot(wd)
 		if err != nil {
 			t.Fatalf("FindRoot failed: %v", err)
@@ -94,30 +89,46 @@ func TestFindRoot(t *testing.T) {
 
 func TestFindRootNotFound(t *testing.T) {
 	t.Run("FindRoot fails outside a repository root", func(t *testing.T) {
-		tempDir, _ := filepath.EvalSymlinks(t.TempDir())
-		_, err := FindRoot(tempDir)
+		tempDir, err := filepath.EvalSymlinks(t.TempDir())
+		if err != nil {
+			t.Fatalf("failed to eval symlinks: %v", err)
+		}
+		_, err = FindRoot(tempDir)
 		if err == nil {
 			t.Error("expected error, got nil")
 		}
 	})
 
 	t.Run("FindRoot fails when README.md and INTENT.md exist but modules/ is absent", func(t *testing.T) {
-		tempDir, _ := filepath.EvalSymlinks(t.TempDir())
-		os.WriteFile(filepath.Join(tempDir, "README.md"), []byte("readme"), 0644)
-		os.WriteFile(filepath.Join(tempDir, "INTENT.md"), []byte("intent"), 0644)
-		_, err := FindRoot(tempDir)
+		tempDir, err := filepath.EvalSymlinks(t.TempDir())
+		if err != nil {
+			t.Fatalf("failed to eval symlinks: %v", err)
+		}
+		if err := os.WriteFile(filepath.Join(tempDir, "README.md"), []byte("readme"), 0644); err != nil {
+			t.Fatalf("failed to write README.md: %v", err)
+		}
+		if err := os.WriteFile(filepath.Join(tempDir, "INTENT.md"), []byte("intent"), 0644); err != nil {
+			t.Fatalf("failed to write INTENT.md: %v", err)
+		}
+		_, err = FindRoot(tempDir)
 		if err == nil {
 			t.Error("expected error, got nil")
 		}
 	})
 
 	t.Run("FindRoot does not treat tools/qxctl as a repository root merely because qxctl has INTENT.md", func(t *testing.T) {
-		tempDir, _ := filepath.EvalSymlinks(t.TempDir())
+		tempDir, err := filepath.EvalSymlinks(t.TempDir())
+		if err != nil {
+			t.Fatalf("failed to eval symlinks: %v", err)
+		}
 		toolDir := filepath.Join(tempDir, "tools", "qxctl")
-		os.MkdirAll(toolDir, 0755)
-		os.WriteFile(filepath.Join(toolDir, "INTENT.md"), []byte("intent"), 0644)
-		
-		_, err := FindRoot(toolDir)
+		if err := os.MkdirAll(toolDir, 0755); err != nil {
+			t.Fatalf("failed to create tool dir: %v", err)
+		}
+		if err := os.WriteFile(filepath.Join(toolDir, "INTENT.md"), []byte("intent"), 0644); err != nil {
+			t.Fatalf("failed to write tool INTENT.md: %v", err)
+		}
+		_, err = FindRoot(toolDir)
 		if err == nil {
 			t.Error("expected error, got nil")
 		}
