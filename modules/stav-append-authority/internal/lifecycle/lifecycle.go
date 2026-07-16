@@ -24,13 +24,18 @@ func Install(source string, scope stavpaths.Scope, force bool) (Result, error) {
 	if err != nil {
 		return Result{}, err
 	}
-	source, sourceDigest, err := sourceFile(source)
+	source, _, err = sourceFile(source)
 	if err != nil {
 		return Result{}, err
 	}
 	if err := ensureDirectory(filepath.Dir(layout.Binary)); err != nil {
 		return Result{}, err
 	}
+	staged, sourceDigest, err := stageExecutable(source, layout.Binary, 0755)
+	if err != nil {
+		return Result{}, err
+	}
+	defer os.Remove(staged)
 
 	existingDigest, exists, err := regularFileDigest(layout.Binary)
 	if err != nil {
@@ -42,7 +47,7 @@ func Install(source string, scope stavpaths.Scope, force bool) (Result, error) {
 	if exists && !force {
 		return Result{}, fmt.Errorf("installed binary differs; use --force to replace it")
 	}
-	if err := copyAtomic(source, layout.Binary, 0755); err != nil {
+	if err := activateExecutable(staged, layout.Binary); err != nil {
 		return Result{}, err
 	}
 	return Result{Scope: scope, Binary: layout.Binary, Changed: true}, nil
@@ -163,16 +168,25 @@ func ensureDirectory(path string) error {
 	return nil
 }
 
-func copyAtomic(source, target string, mode os.FileMode) (err error) {
+// stageExecutable hashes the same bytes it stages so the comparison and the
+// activated executable cannot diverge if the source path changes mid-install.
+func stageExecutable(source, target string, mode os.FileMode) (staged string, digest string, err error) {
 	in, err := os.Open(source)
 	if err != nil {
-		return fmt.Errorf("open source executable: %w", err)
+		return "", "", fmt.Errorf("open source executable: %w", err)
 	}
 	defer in.Close()
+	info, err := in.Stat()
+	if err != nil {
+		return "", "", fmt.Errorf("inspect open source executable: %w", err)
+	}
+	if !info.Mode().IsRegular() {
+		return "", "", fmt.Errorf("source executable is not a regular file")
+	}
 
 	temp, err := os.CreateTemp(filepath.Dir(target), ".symphony-stav-append-authority-*")
 	if err != nil {
-		return fmt.Errorf("create temporary executable: %w", err)
+		return "", "", fmt.Errorf("create temporary executable: %w", err)
 	}
 	tempName := temp.Name()
 	defer func() {
@@ -182,18 +196,23 @@ func copyAtomic(source, target string, mode os.FileMode) (err error) {
 		}
 	}()
 	if err = temp.Chmod(mode); err != nil {
-		return fmt.Errorf("set executable permissions: %w", err)
+		return "", "", fmt.Errorf("set executable permissions: %w", err)
 	}
-	if _, err = io.Copy(temp, in); err != nil {
-		return fmt.Errorf("copy executable: %w", err)
+	hash := sha256.New()
+	if _, err = io.Copy(io.MultiWriter(temp, hash), in); err != nil {
+		return "", "", fmt.Errorf("copy executable: %w", err)
 	}
 	if err = temp.Sync(); err != nil {
-		return fmt.Errorf("sync executable: %w", err)
+		return "", "", fmt.Errorf("sync executable: %w", err)
 	}
 	if err = temp.Close(); err != nil {
-		return fmt.Errorf("close executable: %w", err)
+		return "", "", fmt.Errorf("close executable: %w", err)
 	}
-	if err = os.Rename(tempName, target); err != nil {
+	return tempName, hex.EncodeToString(hash.Sum(nil)), nil
+}
+
+func activateExecutable(staged, target string) error {
+	if err := os.Rename(staged, target); err != nil {
 		return fmt.Errorf("activate executable: %w", err)
 	}
 	return syncDirectory(filepath.Dir(target))

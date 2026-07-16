@@ -112,29 +112,49 @@ func validateExactShape(v jsonValue, t reflect.Type) error {
 		if !ok {
 			return fmt.Errorf("stav: object required")
 		}
-		fields := make(map[string]reflect.Type)
+		type jsonField struct {
+			typeOf   reflect.Type
+			required bool
+		}
+		fields := make(map[string]jsonField)
 		for i := 0; i < t.NumField(); i++ {
 			f := t.Field(i)
 			if f.PkgPath != "" {
 				continue
 			}
 			tag := f.Tag.Get("json")
-			name := strings.Split(tag, ",")[0]
+			parts := strings.Split(tag, ",")
+			name := parts[0]
 			if name == "-" {
 				continue
 			}
 			if name == "" {
 				name = f.Name
 			}
-			fields[name] = f.Type
+			required := true
+			for _, option := range parts[1:] {
+				if option == "omitempty" {
+					required = false
+				}
+			}
+			fields[name] = jsonField{typeOf: f.Type, required: required}
 		}
+		seen := make(map[string]struct{}, len(o))
 		for name, child := range o {
-			fieldType, exists := fields[name]
+			field, exists := fields[name]
 			if !exists {
 				return fmt.Errorf("stav: unknown or case-mismatched member")
 			}
-			if err := validateExactShape(child, fieldType); err != nil {
+			seen[name] = struct{}{}
+			if err := validateExactShape(child, field.typeOf); err != nil {
 				return err
+			}
+		}
+		for name, field := range fields {
+			if field.required {
+				if _, exists := seen[name]; !exists {
+					return fmt.Errorf("stav: required member %q missing", name)
+				}
 			}
 		}
 	case reflect.Slice, reflect.Array:

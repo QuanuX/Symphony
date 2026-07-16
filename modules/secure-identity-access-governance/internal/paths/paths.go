@@ -63,6 +63,9 @@ func ValidateTOPSID(value string) error {
 			}
 		}
 	}
+	if value == "00000000-0000-0000-0000-000000000000" || value[14] < '1' || value[14] > '8' || !strings.Contains("89ab", value[19:20]) {
+		return fmt.Errorf("TOPS ID must be a non-nil RFC UUID with version 1 through 8")
+	}
 	return nil
 }
 

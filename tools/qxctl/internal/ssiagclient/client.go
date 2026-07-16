@@ -95,6 +95,9 @@ func validateTOPSID(value string) error {
 			}
 		}
 	}
+	if value == "00000000-0000-0000-0000-000000000000" || value[14] < '1' || value[14] > '8' || !strings.Contains("89ab", value[19:20]) {
+		return fmt.Errorf("TOPS ID must be a non-nil RFC UUID with version 1 through 8")
+	}
 	return nil
 }
 
@@ -153,6 +156,7 @@ func (c *Client) get(ctx context.Context, path string, target any) error {
 		return fmt.Errorf("SSIAG response exceeds %d bytes", maxResponseBytes)
 	}
 	decoder := json.NewDecoder(bytes.NewReader(payload))
+	decoder.DisallowUnknownFields()
 	if err := decoder.Decode(target); err != nil {
 		return fmt.Errorf("decode SSIAG response: %w", err)
 	}

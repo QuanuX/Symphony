@@ -36,6 +36,13 @@ func installTestBinary(t *testing.T, home string) InstallRecord {
 func TestInstallIsIdempotentAndUninstallPreservesTOPS(t *testing.T) {
 	home := setupUser(t)
 	first := installTestBinary(t, home)
+	installedDigest, err := fileDigest(first.Binary)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if installedDigest != first.BinarySHA256 {
+		t.Fatal("installation manifest digest does not bind the installed bytes")
+	}
 	second := installTestBinary(t, home)
 	if first.BinarySHA256 != second.BinarySHA256 {
 		t.Fatal("idempotent install changed digest")

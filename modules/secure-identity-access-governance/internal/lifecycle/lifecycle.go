@@ -45,16 +45,17 @@ func Install(source string, scope ssiagpaths.Scope, force bool) (InstallRecord, 
 	if !info.Mode().IsRegular() {
 		return InstallRecord{}, fmt.Errorf("source executable is not a regular file")
 	}
-	sourceDigest, err := fileDigest(source)
-	if err != nil {
-		return InstallRecord{}, err
-	}
 	if err := ensureDirectories(filepath.Dir(layout.Binary), layout.StateDir); err != nil {
 		return InstallRecord{}, err
 	}
 	if err := requireAbsentOrRegular(layout.InstallManifest, "installation manifest"); err != nil {
 		return InstallRecord{}, err
 	}
+	staged, sourceDigest, err := stageExecutable(source, layout.Binary, 0755)
+	if err != nil {
+		return InstallRecord{}, err
+	}
+	defer os.Remove(staged)
 
 	existingDigest, exists, err := regularFileDigest(layout.Binary)
 	if err != nil {
@@ -64,7 +65,7 @@ func Install(source string, scope ssiagpaths.Scope, force bool) (InstallRecord, 
 		return InstallRecord{}, fmt.Errorf("installed binary differs; use --force to replace it")
 	}
 	if !exists || existingDigest != sourceDigest {
-		if err := copyAtomic(source, layout.Binary, 0755); err != nil {
+		if err := activateExecutable(staged, layout.Binary); err != nil {
 			return InstallRecord{}, err
 		}
 	}
@@ -391,38 +392,71 @@ func regularFileDigest(path string) (string, bool, error) {
 	return digest, true, err
 }
 
-func copyAtomic(source, destination string, mode os.FileMode) error {
+// stageExecutable hashes the same bytes it stages, binding the manifest digest
+// to the executable that will be activated even if the source path changes.
+func stageExecutable(source, destination string, mode os.FileMode) (string, string, error) {
 	if err := validateDirectoryChain(filepath.Dir(destination)); err != nil {
-		return err
+		return "", "", err
 	}
 	input, err := os.Open(source)
 	if err != nil {
-		return fmt.Errorf("open source executable: %w", err)
+		return "", "", fmt.Errorf("open source executable: %w", err)
 	}
 	defer input.Close()
+	info, err := input.Stat()
+	if err != nil {
+		return "", "", fmt.Errorf("inspect open source executable: %w", err)
+	}
+	if !info.Mode().IsRegular() {
+		return "", "", fmt.Errorf("source executable is not a regular file")
+	}
 	temp, err := os.CreateTemp(filepath.Dir(destination), ".symphony-ssiag-*")
 	if err != nil {
-		return fmt.Errorf("create temporary binary: %w", err)
+		return "", "", fmt.Errorf("create temporary binary: %w", err)
 	}
 	tempPath := temp.Name()
-	defer os.Remove(tempPath)
-	if _, err := io.Copy(temp, input); err != nil {
+	complete := false
+	defer func() {
+		if !complete {
+			_ = temp.Close()
+			_ = os.Remove(tempPath)
+		}
+	}()
+	hash := sha256.New()
+	if _, err := io.Copy(io.MultiWriter(temp, hash), input); err != nil {
 		temp.Close()
-		return fmt.Errorf("copy executable: %w", err)
+		return "", "", fmt.Errorf("copy executable: %w", err)
 	}
 	if err := temp.Chmod(mode); err != nil {
 		temp.Close()
-		return fmt.Errorf("set executable permissions: %w", err)
+		return "", "", fmt.Errorf("set executable permissions: %w", err)
 	}
 	if err := temp.Sync(); err != nil {
 		temp.Close()
-		return fmt.Errorf("sync executable: %w", err)
+		return "", "", fmt.Errorf("sync executable: %w", err)
 	}
 	if err := temp.Close(); err != nil {
-		return fmt.Errorf("close executable: %w", err)
+		return "", "", fmt.Errorf("close executable: %w", err)
 	}
-	if err := os.Rename(tempPath, destination); err != nil {
+	complete = true
+	return tempPath, hex.EncodeToString(hash.Sum(nil)), nil
+}
+
+func activateExecutable(staged, destination string) error {
+	if err := os.Rename(staged, destination); err != nil {
 		return fmt.Errorf("install executable: %w", err)
+	}
+	return syncDirectory(filepath.Dir(destination))
+}
+
+func syncDirectory(path string) error {
+	directory, err := os.Open(path)
+	if err != nil {
+		return fmt.Errorf("open installation directory for sync: %w", err)
+	}
+	defer directory.Close()
+	if err := directory.Sync(); err != nil {
+		return fmt.Errorf("sync installation directory: %w", err)
 	}
 	return nil
 }

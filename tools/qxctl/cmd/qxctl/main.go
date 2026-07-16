@@ -286,6 +286,9 @@ func runSSIAG(args []string) error {
 	if err := set.Parse(args[1:]); err != nil {
 		return err
 	}
+	if set.NArg() != 0 {
+		return fmt.Errorf("unexpected SSIAG arguments: %v", set.Args())
+	}
 	if *topsID == "" {
 		*topsID = os.Getenv("SYMPHONY_SSIAG_TOPS_ID")
 	}
@@ -302,22 +305,19 @@ func runSSIAG(args []string) error {
 
 	switch args[0] {
 	case "status":
-		status, err := client.Status(ctx)
+		status, err := requireSSIAGStatus(ctx, client, *topsID, *scope)
 		if err != nil {
 			return err
 		}
 		if *jsonOutput {
 			return printSSIAGJSON(status)
 		}
-		if status.TOPSID != *topsID {
-			return fmt.Errorf("SSIAG response TOPS ID does not match requested identity")
-		}
 		fmt.Printf("SSIAG: %s version=%s ready=%t tops_id=%s tops_name=%q mode=%s providers=%d\n", status.Name, status.Version, status.Ready, status.TOPSID, status.TOPSName, status.Mode, status.ProviderCount)
-		if !status.Ready {
-			return fmt.Errorf("SSIAG is not ready")
-		}
 		return nil
 	case "providers":
+		if _, err := requireSSIAGStatus(ctx, client, *topsID, *scope); err != nil {
+			return err
+		}
 		providers, err := client.Providers(ctx)
 		if err != nil {
 			return err
@@ -337,15 +337,9 @@ func runSSIAG(args []string) error {
 		if *jsonOutput {
 			return fmt.Errorf("SSIAG doctor does not support --json")
 		}
-		status, err := client.Status(ctx)
+		status, err := requireSSIAGStatus(ctx, client, *topsID, *scope)
 		if err != nil {
 			return err
-		}
-		if !status.Ready {
-			return fmt.Errorf("SSIAG is not ready")
-		}
-		if status.TOPSID != *topsID {
-			return fmt.Errorf("SSIAG response TOPS ID does not match requested identity")
 		}
 		providers, err := client.Providers(ctx)
 		if err != nil {
@@ -357,6 +351,23 @@ func runSSIAG(args []string) error {
 	default:
 		return fmt.Errorf("unknown SSIAG subcommand %q", args[0])
 	}
+}
+
+func requireSSIAGStatus(ctx context.Context, client *ssiagclient.Client, topsID, scope string) (ssiagclient.Status, error) {
+	status, err := client.Status(ctx)
+	if err != nil {
+		return ssiagclient.Status{}, err
+	}
+	if status.TOPSID != topsID {
+		return ssiagclient.Status{}, fmt.Errorf("SSIAG response TOPS ID does not match requested identity")
+	}
+	if status.Mode != scope {
+		return ssiagclient.Status{}, fmt.Errorf("SSIAG response mode does not match requested scope")
+	}
+	if !status.Ready {
+		return ssiagclient.Status{}, fmt.Errorf("SSIAG is not ready")
+	}
+	return status, nil
 }
 
 func printSSIAGJSON(value any) error {

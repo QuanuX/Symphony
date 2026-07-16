@@ -19,8 +19,9 @@ import (
 )
 
 const (
-	maxHeaderBytes  = 16 << 10
-	shutdownTimeout = 5 * time.Second
+	maxHeaderBytes           = 16 << 10
+	shutdownTimeout          = 5 * time.Second
+	activeSocketProbeTimeout = 250 * time.Millisecond
 )
 
 type Server struct {
@@ -216,6 +217,11 @@ func removeStaleSocket(path string) error {
 	}
 	if info.Mode()&os.ModeSocket == 0 {
 		return fmt.Errorf("refusing to replace non-socket path: %s", path)
+	}
+	connection, dialErr := net.DialTimeout("unix", path, activeSocketProbeTimeout)
+	if dialErr == nil {
+		_ = connection.Close()
+		return fmt.Errorf("refusing to replace active SSIAG socket: %s", path)
 	}
 	if err := os.Remove(path); err != nil {
 		return fmt.Errorf("remove stale SSIAG socket: %w", err)

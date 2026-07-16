@@ -60,8 +60,26 @@ func TestSocketOverrideMustBeAbsolute(t *testing.T) {
 }
 
 func TestSocketRejectsDisplayNameIdentity(t *testing.T) {
-	if _, err := SocketForTOPS("user", "trading-desk"); err == nil {
-		t.Fatal("expected non-UUID identity error")
+	for _, invalid := range []string{
+		"trading-desk",
+		"00000000-0000-0000-0000-000000000000",
+		"018f0c3a-7b2d-0e11-8c12-0242ac120002",
+		"018f0c3a-7b2d-7e11-7c12-0242ac120002",
+	} {
+		if _, err := SocketForTOPS("user", invalid); err == nil {
+			t.Fatalf("expected identity %q to be rejected", invalid)
+		}
+	}
+}
+
+func TestClientRejectsUnknownResponseMembers(t *testing.T) {
+	transport := roundTripFunc(func(request *http.Request) (*http.Response, error) {
+		payload := `{"schema":"symphony.ssiag.status.v1","name":"secure-identity-access-governance","version":"dev","ready":true,"mode":"user","tops_id":"018f0c3a-7b2d-7e11-8c12-0242ac120002","tops_name":"Desk","transport":"unix","provider_count":0,"credential":"must-not-be-ignored"}`
+		return &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(strings.NewReader(payload)), Request: request}, nil
+	})
+	client := &Client{httpClient: &http.Client{Transport: transport}, baseURL: "http://unix"}
+	if _, err := client.Status(context.Background()); err == nil || !strings.Contains(err.Error(), "unknown field") {
+		t.Fatalf("expected unknown-member error, got %v", err)
 	}
 }
 

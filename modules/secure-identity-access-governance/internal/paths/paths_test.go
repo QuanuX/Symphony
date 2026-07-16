@@ -52,7 +52,16 @@ func TestFallbackRuntimeRemainsTOPSIsolated(t *testing.T) {
 }
 
 func TestTOPSIDValidation(t *testing.T) {
-	for _, invalid := range []string{"", "desk", "018F0C3A-7B2D-7E11-8C12-0242AC120002", "../018f0c3a-7b2d-7e11-8c12-0242ac120002"} {
+	for _, invalid := range []string{
+		"",
+		"desk",
+		"018F0C3A-7B2D-7E11-8C12-0242AC120002",
+		"../018f0c3a-7b2d-7e11-8c12-0242ac120002",
+		"00000000-0000-0000-0000-000000000000",
+		"018f0c3a-7b2d-0e11-8c12-0242ac120002",
+		"018f0c3a-7b2d-9e11-8c12-0242ac120002",
+		"018f0c3a-7b2d-7e11-7c12-0242ac120002",
+	} {
 		if err := ValidateTOPSID(invalid); err == nil {
 			t.Fatalf("expected %q to be rejected", invalid)
 		}

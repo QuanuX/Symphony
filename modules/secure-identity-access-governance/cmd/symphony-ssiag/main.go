@@ -15,6 +15,7 @@ import (
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/client"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/lifecycle"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/model"
 	ssiagpaths "github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/paths"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/provider"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/server"
@@ -122,20 +123,14 @@ func runStatus(args []string) error {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
 	defer cancel()
-	status, err := ssiagClient.Status(ctx)
+	status, err := requireStatus(ctx, ssiagClient, scope, topsID)
 	if err != nil {
 		return err
-	}
-	if status.TOPSID != topsID {
-		return fmt.Errorf("SSIAG response TOPS ID does not match requested identity")
 	}
 	if jsonOutput {
 		return printJSON(status)
 	}
 	fmt.Printf("SSIAG: %s version=%s ready=%t tops_id=%s tops_name=%q mode=%s providers=%d\n", status.Name, status.Version, status.Ready, status.TOPSID, status.TOPSName, status.Mode, status.ProviderCount)
-	if !status.Ready {
-		return errors.New("SSIAG is not ready")
-	}
 	return nil
 }
 
@@ -150,6 +145,9 @@ func runProviders(args []string) error {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
 	defer cancel()
+	if _, err := requireStatus(ctx, ssiagClient, scope, topsID); err != nil {
+		return err
+	}
 	providers, err := ssiagClient.Providers(ctx)
 	if err != nil {
 		return err
@@ -165,6 +163,23 @@ func runProviders(args []string) error {
 		fmt.Printf("SSIAG provider: %s kind=%s status=%s\n", item.Name, item.Kind, item.Status)
 	}
 	return nil
+}
+
+func requireStatus(ctx context.Context, ssiagClient *client.Client, scope ssiagpaths.Scope, topsID string) (model.Status, error) {
+	status, err := ssiagClient.Status(ctx)
+	if err != nil {
+		return model.Status{}, err
+	}
+	if status.TOPSID != topsID {
+		return model.Status{}, fmt.Errorf("SSIAG response TOPS ID does not match requested identity")
+	}
+	if status.Mode != string(scope) {
+		return model.Status{}, fmt.Errorf("SSIAG response mode does not match requested scope")
+	}
+	if !status.Ready {
+		return model.Status{}, errors.New("SSIAG is not ready")
+	}
+	return status, nil
 }
 
 func runInstall(args []string) error {
@@ -264,6 +279,9 @@ func parseQueryFlags(name string, args []string) (ssiagpaths.Scope, string, bool
 	jsonOutput := set.Bool("json", false, "emit JSON")
 	if err := set.Parse(args); err != nil {
 		return "", "", false, err
+	}
+	if set.NArg() != 0 {
+		return "", "", false, fmt.Errorf("unexpected %s arguments: %v", name, set.Args())
 	}
 	scope, err := ssiagpaths.ParseScope(*scopeValue)
 	if err != nil {

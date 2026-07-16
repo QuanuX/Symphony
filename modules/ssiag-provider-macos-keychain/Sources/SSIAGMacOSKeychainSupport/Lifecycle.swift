@@ -85,16 +85,20 @@ public enum ProviderLifecycle {
         try ensureDirectory(layout.stateDirectory)
         try requireAbsentOrRegular(layout.manifest)
 
-        let sourceDigest = try digest(source)
+        // Read once, then hash and stage these exact bytes. This prevents a
+        // source-path replacement from separating the manifest digest from the
+        // executable that is installed.
+        let sourceData = try Data(contentsOf: source)
+        let sourceDigest = digest(sourceData)
         if manager.fileExists(atPath: layout.binary.path) {
             guard try regularFile(layout.binary) else { throw LifecycleError.destinationNotRegular }
             if try digest(layout.binary) != sourceDigest {
                 guard force else { throw LifecycleError.changedBinary }
                 try manager.removeItem(at: layout.binary)
-                try copyAtomically(source: source, destination: layout.binary)
+                try copyAtomically(data: sourceData, destination: layout.binary)
             }
         } else {
-            try copyAtomically(source: source, destination: layout.binary)
+            try copyAtomically(data: sourceData, destination: layout.binary)
         }
 
         let record = InstallRecord(
@@ -135,7 +139,11 @@ public enum ProviderLifecycle {
     private static func digest(_ url: URL) throws -> String {
         // Avoid memory-mapped executable data: lifecycle tests replace the
         // destination after hashing, and an outstanding mapping can fault.
-        let hash = SHA256.hash(data: try Data(contentsOf: url))
+        return digest(try Data(contentsOf: url))
+    }
+
+    private static func digest(_ data: Data) -> String {
+        let hash = SHA256.hash(data: data)
         return hash.map { String(format: "%02x", $0) }.joined()
     }
 
@@ -190,11 +198,11 @@ public enum ProviderLifecycle {
         return destination == wanted
     }
 
-    private static func copyAtomically(source: URL, destination: URL) throws {
+    private static func copyAtomically(data: Data, destination: URL) throws {
         let manager = FileManager.default
         let temporary = destination.deletingLastPathComponent().appending(path: ".ssiag-provider-\(UUID().uuidString)")
         defer { try? manager.removeItem(at: temporary) }
-        try manager.copyItem(at: source, to: temporary)
+        try data.write(to: temporary)
         try manager.setAttributes([.posixPermissions: 0o755], ofItemAtPath: temporary.path)
         try manager.moveItem(at: temporary, to: destination)
     }

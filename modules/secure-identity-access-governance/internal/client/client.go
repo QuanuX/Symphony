@@ -71,6 +71,7 @@ func (c *Client) get(ctx context.Context, path string, target any) error {
 		return fmt.Errorf("SSIAG response exceeds %d bytes", maxResponseBytes)
 	}
 	decoder := json.NewDecoder(bytes.NewReader(payload))
+	decoder.DisallowUnknownFields()
 	if err := decoder.Decode(target); err != nil {
 		return fmt.Errorf("decode SSIAG response: %w", err)
 	}

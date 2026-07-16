@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -98,6 +99,34 @@ func TestRefusesRegularFileAtSocketPath(t *testing.T) {
 	}
 	if err := server.Run(context.Background()); err == nil {
 		t.Fatal("expected non-socket collision error")
+	}
+}
+
+func TestRefusesActiveSocketPath(t *testing.T) {
+	socket := filepath.Join(t.TempDir(), "ssiag.sock")
+	listener, err := net.Listen("unix", socket)
+	if err != nil {
+		t.Skipf("unix sockets are unavailable in this test environment: %v", err)
+	}
+	defer listener.Close()
+
+	cfg := config.Config{
+		Schema:    "symphony.ssiag.config.v1",
+		Mode:      "development",
+		TOPS:      config.TOPSConfig{ID: testTOPSID, Name: "Test TOPS"},
+		Listen:    config.ListenConfig{Network: "unix", Address: socket},
+		Providers: []config.ProviderConfig{},
+	}
+	registry, _ := provider.New(nil)
+	server, err := New(cfg, registry)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := server.Run(context.Background()); err == nil || !strings.Contains(err.Error(), "active SSIAG socket") {
+		t.Fatalf("expected active-socket collision error, got %v", err)
+	}
+	if info, err := os.Lstat(socket); err != nil || info.Mode()&os.ModeSocket == 0 {
+		t.Fatalf("active socket was removed: info=%v error=%v", info, err)
 	}
 }
 

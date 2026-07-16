@@ -68,6 +68,26 @@ func TestTypedDecodeRejectsCaseFoldedMember(t *testing.T) {
 	}
 }
 
+func TestTypedDecodeRejectsMissingRequiredZeroValueMembers(t *testing.T) {
+	tests := map[string]func() error{
+		"query after sequence": func() error {
+			_, err := DecodeQuery([]byte(`{"event_classes":[],"limit":100,"outcomes":[],"schema":"symphony.stav.query.v1","tops_id":"3f6f2a0e-44fb-4b08-8e84-d0f8f3e1de34"}`))
+			return err
+		},
+		"verification events checked": func() error {
+			_, err := DecodeVerification([]byte(`{"after_sequence":0,"result":{"state":"verified"},"schema":"symphony.stav.verification.v1","through_sequence":0,"tops_id":"3f6f2a0e-44fb-4b08-8e84-d0f8f3e1de34"}`))
+			return err
+		},
+	}
+	for name, decode := range tests {
+		t.Run(name, func(t *testing.T) {
+			if err := decode(); err == nil {
+				t.Fatal("expected missing required member rejection")
+			}
+		})
+	}
+}
+
 func TestCanonicalizeRejectsExcessiveDepth(t *testing.T) {
 	input := bytes.Repeat([]byte{'['}, maxJSONDepth+1)
 	input = append(input, '0')
