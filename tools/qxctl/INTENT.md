@@ -12,7 +12,7 @@ The initial secure-identity-access-governance integration is local and read-only
 
 Every SSIAG query is scoped by immutable TOPS ID. `knowledge/ssiag/` owns SSIAG protocol truth; qxctl only implements its administrative/query projection. Future administrative change separates deterministic `propose` from authorized local `apply`; AI agents may never apply.
 
-The owner-ratified `qxctl stav status|verify|query|doctor` grammar is present as an explicit fail-closed reservation. It validates TOPS identity and path scope; query also validates the ratified bounded filters through `libraries/stav-protocol-go`. It opens no socket until local envelopes, status semantics, reader authentication/authorization, and runtime contracts are ratified. qxctl has no `stav append`, does not edit STAV ledgers, and does not own `knowledge/stav/` schemas. qxctl grammar is not governed by OpenAPI.
+The Architect-ratified `qxctl stav status|verify|query|doctor` grammar is operational. It loads the selected per-TOPS STAV contract, authenticates the authority endpoint from kernel credentials, submits strict local envelopes, and displays only classification-authorized projections. qxctl has no `stav append`, does not edit STAV ledgers, and does not own `knowledge/stav/` schemas. qxctl grammar is not governed by OpenAPI.
 
 ## Non-goals
 - qxctl does not execute hotpath-runtime workloads.

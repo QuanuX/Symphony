@@ -30,6 +30,27 @@ func EventDigest(v Event) (string, error) {
 	return digestDomain(eventDigestDomain, b), nil
 }
 
+// CandidateFromEvent reconstructs the exact producer-proposed candidate
+// portion of an authority-assigned event for durable idempotency recovery.
+func CandidateFromEvent(v Event) (Candidate, error) {
+	if err := v.Validate(); err != nil {
+		return Candidate{}, err
+	}
+	return Candidate{
+		Actor: CandidateActor{
+			Authentication: v.Actor.Authentication,
+			Principal:      v.Actor.Principal,
+		},
+		Configuration: v.Configuration,
+		Correlation:   v.Correlation,
+		Operation:     v.Operation,
+		Redaction:     v.Redaction,
+		Result:        v.Result,
+		Schema:        SchemaCandidate,
+		Topology:      v.Topology,
+	}, nil
+}
+
 // GenesisDigest derives the per-TOPS predecessor value for the first event.
 func GenesisDigest(topsID string) (string, error) {
 	if err := ValidateTOPSID(topsID); err != nil {

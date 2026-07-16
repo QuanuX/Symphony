@@ -2,7 +2,7 @@
 
 ## Status
 
-Metadata-only API scaffold implementing the owner-ratified architecture in `knowledge/ssiag/SPEC.md`. Kernel caller authentication is enabled for accepted Darwin/Linux connections, but no mutation, credential, provider-operation, supervision, or STAV-writing phase is enabled. Canonical relationship and provider semantics remain owned by that Knowledge Vector.
+Metadata-only API plus safe STAV producer foundation implementing the Architect-ratified architecture in `knowledge/ssiag/SPEC.md`. Kernel caller authentication and mutually authenticated, typed STAV submission are implemented. No mutation, credential delivery, provider operation, or supervision installer is enabled. Canonical relationship and provider semantics remain owned by that Knowledge Vector.
 
 ## Invariants
 
@@ -43,7 +43,7 @@ TCP binding and mutation routes are prohibited. Socket paths are absolute, restr
 
 ## qxctl Contract
 
-`qxctl ssiag status|providers|doctor --tops-id UUID [--scope user|system]` resolves the same TOPS-isolated socket, rejects unsupported schemas, bounds responses, and verifies returned TOPS identity for status/doctor. It accepts and prints no secret values.
+`qxctl ssiag status|providers|doctor --tops-id UUID [--scope user|system]` resolves the same TOPS-isolated socket, rejects unsupported schemas, bounds responses, and binds every operation to a ready status response with the requested TOPS identity and scope before output. It accepts and prints no secret values.
 
 ## Provider Contract
 
@@ -51,8 +51,8 @@ Foundation provider entries are descriptive only. Operational adapters require m
 
 ## STAV Contract
 
-SSIAG may submit only the safe outcome classes defined by `knowledge/stav/SPEC.md` to the dedicated per-TOPS Go append authority after that authority passes its implementation gates. It never edits ledgers. The current scaffold implements no STAV producer or writer.
+SSIAG submits only the closed safe outcome vocabulary defined by `knowledge/ssiag/SPEC.md` to the dedicated per-TOPS Go append authority. The producer authenticates the authority endpoint, constructs no trusted ledger fields, requires a committed receipt, and never edits or spools ledger data.
 
 ## Implemented and Disabled Gates
 
-Local peer authentication and exact UID/GID subject resolution are implemented. Proposal/apply mutation, administrative authorization, replay protection, lease issuance, credential delivery, operational provider calls, STAV submission, endpoint identity verification, and service supervision remain disabled. Remote access and agent apply authority are unauthorized.
+Local peer authentication, exact UID/GID subject resolution, STAV endpoint identity verification, and typed SSIAG STAV submission are implemented. Proposal/apply mutation, administrative authorization, lease issuance, credential delivery, operational provider calls, and service supervision remain disabled. Remote access and agent apply authority are unauthorized.

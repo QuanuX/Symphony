@@ -398,7 +398,7 @@ Future validator checks may verify SKVI structure.
 - surface_type: module specification
 - truth_role: normative SSIAG behavior and protocol boundaries
 - owner: secure-identity-access-governance maintainer
-- scope: Defines invariants, domain models, kernel-authenticated local metadata API, provider contract, installation, observability, and compatibility.
+- scope: Defines invariants, domain models, kernel-authenticated local metadata API, typed STAV producer, provider contract, installation, observability, and compatibility.
 - relationships:
   - depends_on -> `modules/secure-identity-access-governance/MANIFEST.md`
   - depends_on -> `modules/secure-identity-access-governance/REQUIREMENTS.md`
@@ -608,9 +608,9 @@ Future validator checks may verify SKVI structure.
 - path: `modules/stav-append-authority/IMPLEMENTATION.md`
 - title: STAV Append Authority Implementation Guide
 - surface_type: module implementation guide
-- truth_role: phased procedure from namespace scaffold through separately gated producer integration
+- truth_role: phased procedure from namespace scaffold through operational SSIAG producer integration
 - owner: STAV append-authority maintainer
-- scope: Defines the completed namespace increment and blocked content, durability, IPC, qxctl, and producer phases.
+- scope: Records completed canonical content, durability, IPC, qxctl, and SSIAG producer phases plus deferred node-troll and Go 1.27 work.
 - relationships:
   - depends_on -> `modules/stav-append-authority/REQUIREMENTS.md`
   - depends_on -> `modules/stav-append-authority/THREAT-MODEL.md`
@@ -624,9 +624,9 @@ Future validator checks may verify SKVI structure.
 - path: `modules/stav-append-authority/README.md`
 - title: STAV Append Authority
 - surface_type: module orientation
-- truth_role: concise scaffold status and contributor entrypoint
+- truth_role: concise operational status and contributor entrypoint
 - owner: STAV append-authority maintainer
-- scope: Directs readers to the Contract Quad and states the absence of an operational writer.
+- scope: Directs readers to the Contract Quad and summarizes the operational single-writer boundary.
 - relationships:
   - derives_from -> `modules/stav-append-authority/MANIFEST.md`
   - derives_from -> `modules/stav-append-authority/ARCHITECTURE.md`
@@ -656,9 +656,9 @@ Future validator checks may verify SKVI structure.
 - surface_type: first-party shared Go implementation library
 - truth_role: implementation truth for ratified STAV v1 protocol mechanics
 - owner: STAV protocol-kernel maintainer
-- scope: Implements strict I-JSON/JCS, typed validation, identifiers, SHA-256 domains, and bounded local framing without runtime authority.
+- scope: Implements strict I-JSON/JCS, typed semantic/operational envelopes, identifiers, SHA-256 domains, and bounded local framing without runtime authority.
 - relationships: depends_on -> `knowledge/stav/SPEC.md`; may_check -> `tools/symphony-validator/SPEC.md`
-- consumers: `modules/stav-append-authority/`, `tools/qxctl/`, implementers, reviewers, agentic tools
+- consumers: `modules/stav-append-authority/`, `modules/secure-identity-access-governance/`, `tools/qxctl/`, implementers, reviewers, agentic tools
 - deferred_projections: versioned library release and conformance evidence
 - notes: No binary, installer, resident, socket, state, authentication, authorization, or ledger behavior.
 - status: canonical

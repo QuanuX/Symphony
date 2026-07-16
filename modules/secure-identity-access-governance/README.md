@@ -2,7 +2,7 @@
 
 SSIAG is Symphony's Go-only, independently installable identity, authentication, authorization, capability, credential-reference, lease, and provider-operation foundation.
 
-The current scaffold is deliberately safe and limited: it installs one host binary, enrolls multiple isolated TOPS instances, authenticates every accepted Darwin/Linux Unix-socket connection from kernel peer credentials, serves metadata, and integrates read-only status/provider inspection with qxctl. Explicit UID/GID mappings can resolve canonical subjects for later gated phases, but the module does not release, store, or exercise credentials.
+The current foundation is deliberately safe and limited: it installs one host binary, enrolls multiple isolated TOPS instances, authenticates every accepted Darwin/Linux Unix-socket connection from kernel peer credentials, serves metadata, integrates read-only status/provider inspection with qxctl, and provides a closed typed producer for durable STAV security outcomes. It does not release, store, or exercise credentials.
 
 ## Quick Start
 

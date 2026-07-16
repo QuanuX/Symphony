@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 bool is_authorized_canonical_json(const std::string& relative_path) {
     // Exact, owner-ratified STAV v1 contract artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 18> authorized_paths = {
+    static const std::array<std::string, 28> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -19,17 +19,27 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/stav/schemas/v1/query.schema.json",
         "knowledge/stav/schemas/v1/query-page.schema.json",
         "knowledge/stav/schemas/v1/verification.schema.json",
+        "knowledge/stav/schemas/v1/append-authority-config.schema.json",
+        "knowledge/stav/schemas/v1/append-authority-status.schema.json",
+        "knowledge/stav/schemas/v1/local-request.schema.json",
+        "knowledge/stav/schemas/v1/local-response.schema.json",
         "knowledge/stav/fixtures/v1/valid/candidate.json",
         "knowledge/stav/fixtures/v1/valid/event.json",
         "knowledge/stav/fixtures/v1/valid/receipt-rejected.json",
         "knowledge/stav/fixtures/v1/valid/query.json",
         "knowledge/stav/fixtures/v1/valid/query-page.json",
         "knowledge/stav/fixtures/v1/valid/verification.json",
+        "knowledge/stav/fixtures/v1/valid/append-authority-config.json",
+        "knowledge/stav/fixtures/v1/valid/append-authority-status.json",
+        "knowledge/stav/fixtures/v1/valid/local-request-status.json",
+        "knowledge/stav/fixtures/v1/valid/local-response-status.json",
         "knowledge/stav/fixtures/v1/invalid/candidate-duplicate-key.json",
         "knowledge/stav/fixtures/v1/invalid/candidate-null.json",
         "knowledge/stav/fixtures/v1/invalid/query-float.json",
         "knowledge/stav/fixtures/v1/invalid/query-unsafe-integer.json",
-        "knowledge/stav/fixtures/v1/invalid/query-unknown-field.json"
+        "knowledge/stav/fixtures/v1/invalid/query-unknown-field.json",
+        "knowledge/stav/fixtures/v1/invalid/local-request-multiple-payloads.json",
+        "knowledge/stav/fixtures/v1/invalid/local-response-wrong-payload.json"
     };
     return std::find(authorized_paths.begin(), authorized_paths.end(), relative_path) != authorized_paths.end();
 }

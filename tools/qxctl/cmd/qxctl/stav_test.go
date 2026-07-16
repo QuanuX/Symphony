@@ -7,11 +7,12 @@ import (
 
 const stavTestTOPSID = "01234567-89ab-4def-8123-456789abcdef"
 
-func TestSTAVReadCommandsRemainGated(t *testing.T) {
+func TestSTAVReadCommandsRequireEnrollment(t *testing.T) {
+	t.Setenv("HOME", t.TempDir())
 	for _, command := range []string{"status", "verify", "query", "doctor"} {
 		err := runSTAV([]string{command, "--tops-id", stavTestTOPSID})
-		if err == nil || !strings.Contains(err.Error(), "reserved but unavailable") {
-			t.Fatalf("%s gate error = %v", command, err)
+		if err == nil || !strings.Contains(err.Error(), "STAV config") {
+			t.Fatalf("%s enrollment error = %v", command, err)
 		}
 	}
 }
@@ -39,15 +40,15 @@ func TestSTAVRejectsUnknownQueryFilters(t *testing.T) {
 	}
 }
 
-func TestSTAVQueryAcceptsRatifiedScopeAndBoundedFiltersBeforeGate(t *testing.T) {
+func TestSTAVQueryAcceptsRatifiedScopeAndBoundedFiltersBeforeConnection(t *testing.T) {
 	err := runSTAV([]string{
 		"query", "--tops-id", stavTestTOPSID, "--scope", "system",
 		"--after-sequence", "4", "--through-sequence", "9",
 		"--event-class", "symphony.stav.fixture.event",
 		"--outcome", "allowed", "--limit", "10",
 	})
-	if err == nil || !strings.Contains(err.Error(), "reserved but unavailable") {
-		t.Fatalf("query gate error = %v", err)
+	if err == nil || !strings.Contains(err.Error(), "STAV config") {
+		t.Fatalf("query enrollment error = %v", err)
 	}
 }
 

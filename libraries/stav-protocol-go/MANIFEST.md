@@ -15,6 +15,7 @@
 
 - `modules/stav-append-authority/`
 - `tools/qxctl/`
+- `modules/secure-identity-access-governance/`
 
 ## Constraints
 

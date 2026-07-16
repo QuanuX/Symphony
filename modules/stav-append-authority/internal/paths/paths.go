@@ -17,25 +17,24 @@ const (
 
 const BinaryName = "symphony-stav-append-authority"
 
-// InstallLayout contains the single host-level artifact owned by the current
-// lifecycle scaffold. No installation manifest is created because its schema
-// has not been ratified.
+// InstallLayout contains the independently installed host executable.
 type InstallLayout struct {
 	Scope  Scope
 	Binary string
 }
 
-// InstanceLayout resolves the owner-ratified per-TOPS namespace without
-// creating it. Schema content, enrollment, listeners, and ledger storage remain
-// separately gated.
+// InstanceLayout resolves the Architect-ratified per-TOPS namespace.
 type InstanceLayout struct {
-	Scope      Scope
-	TOPSID     string
-	ConfigDir  string
-	ConfigFile string
-	StateDir   string
-	RuntimeDir string
-	Socket     string
+	Scope          Scope
+	TOPSID         string
+	ConfigDir      string
+	ConfigFile     string
+	EnrollmentFile string
+	StateDir       string
+	LedgerFile     string
+	RecoveryDir    string
+	RuntimeDir     string
+	Socket         string
 }
 
 func ParseScope(value string) (Scope, error) {
@@ -106,26 +105,32 @@ func ResolveInstance(scope Scope, topsID string) (InstanceLayout, error) {
 			runtimeDir = filepath.Join(runtimeBase, "symphony", topsID, "stav")
 		}
 		return cleanInstance(InstanceLayout{
-			Scope:      scope,
-			TOPSID:     topsID,
-			ConfigDir:  configDir,
-			ConfigFile: filepath.Join(configDir, "append-authority.json"),
-			StateDir:   stateDir,
-			RuntimeDir: runtimeDir,
-			Socket:     filepath.Join(runtimeDir, "append.sock"),
+			Scope:          scope,
+			TOPSID:         topsID,
+			ConfigDir:      configDir,
+			ConfigFile:     filepath.Join(configDir, "append-authority.json"),
+			EnrollmentFile: filepath.Join(configDir, "enrollment.json"),
+			StateDir:       stateDir,
+			LedgerFile:     filepath.Join(stateDir, "ledger-v1.stavlog"),
+			RecoveryDir:    filepath.Join(stateDir, "recovery"),
+			RuntimeDir:     runtimeDir,
+			Socket:         filepath.Join(runtimeDir, "append.sock"),
 		})
 	case ScopeSystem:
 		configDir := filepath.Join("/etc/symphony", topsID, "stav")
 		stateDir := filepath.Join("/var/lib/symphony", topsID, "stav")
 		runtimeDir := filepath.Join("/run/symphony", topsID, "stav")
 		return cleanInstance(InstanceLayout{
-			Scope:      scope,
-			TOPSID:     topsID,
-			ConfigDir:  configDir,
-			ConfigFile: filepath.Join(configDir, "append-authority.json"),
-			StateDir:   stateDir,
-			RuntimeDir: runtimeDir,
-			Socket:     filepath.Join(runtimeDir, "append.sock"),
+			Scope:          scope,
+			TOPSID:         topsID,
+			ConfigDir:      configDir,
+			ConfigFile:     filepath.Join(configDir, "append-authority.json"),
+			EnrollmentFile: filepath.Join(configDir, "enrollment.json"),
+			StateDir:       stateDir,
+			LedgerFile:     filepath.Join(stateDir, "ledger-v1.stavlog"),
+			RecoveryDir:    filepath.Join(stateDir, "recovery"),
+			RuntimeDir:     runtimeDir,
+			Socket:         filepath.Join(runtimeDir, "append.sock"),
 		})
 	default:
 		return InstanceLayout{}, fmt.Errorf("unsupported scope %q", scope)
@@ -140,7 +145,7 @@ func cleanInstall(layout InstallLayout) (InstallLayout, error) {
 }
 
 func cleanInstance(layout InstanceLayout) (InstanceLayout, error) {
-	values := []*string{&layout.ConfigDir, &layout.ConfigFile, &layout.StateDir, &layout.RuntimeDir, &layout.Socket}
+	values := []*string{&layout.ConfigDir, &layout.ConfigFile, &layout.EnrollmentFile, &layout.StateDir, &layout.LedgerFile, &layout.RecoveryDir, &layout.RuntimeDir, &layout.Socket}
 	for _, value := range values {
 		if err := cleanAbsolute(value); err != nil {
 			return InstanceLayout{}, err

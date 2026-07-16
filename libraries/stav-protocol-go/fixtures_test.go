@@ -70,6 +70,34 @@ func TestValidFixturesRoundTrip(t *testing.T) {
 			}
 			return EncodeVerification(v)
 		}},
+		{"append-authority-config.json", func(b []byte) ([]byte, error) {
+			v, err := DecodeAppendAuthorityConfig(b)
+			if err != nil {
+				return nil, err
+			}
+			return EncodeAppendAuthorityConfig(v)
+		}},
+		{"append-authority-status.json", func(b []byte) ([]byte, error) {
+			v, err := DecodeAppendAuthorityStatus(b)
+			if err != nil {
+				return nil, err
+			}
+			return EncodeAppendAuthorityStatus(v)
+		}},
+		{"local-request-status.json", func(b []byte) ([]byte, error) {
+			v, err := DecodeLocalRequest(b)
+			if err != nil {
+				return nil, err
+			}
+			return EncodeLocalRequest(v)
+		}},
+		{"local-response-status.json", func(b []byte) ([]byte, error) {
+			v, err := DecodeLocalResponse(b)
+			if err != nil {
+				return nil, err
+			}
+			return EncodeLocalResponse(v)
+		}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -102,6 +130,16 @@ func TestInvalidFixtures(t *testing.T) {
 	t.Run("query-unknown-field.json", func(t *testing.T) {
 		if _, err := DecodeQuery(readFixture(t, "invalid", "query-unknown-field.json")); err == nil {
 			t.Fatal("expected typed unknown-field rejection")
+		}
+	})
+	t.Run("local-request-multiple-payloads.json", func(t *testing.T) {
+		if _, err := DecodeLocalRequest(readFixture(t, "invalid", "local-request-multiple-payloads.json")); err == nil {
+			t.Fatal("expected local request union rejection")
+		}
+	})
+	t.Run("local-response-wrong-payload.json", func(t *testing.T) {
+		if _, err := DecodeLocalResponse(readFixture(t, "invalid", "local-response-wrong-payload.json")); err == nil {
+			t.Fatal("expected local response union rejection")
 		}
 	})
 }

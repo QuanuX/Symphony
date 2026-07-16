@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/QuanuX/Symphony/knowledge/stav/schemas/v1/append-authority-config.schema.json",
+  "title": "symphony.stav.append-authority.config.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["authentication", "ledger", "listen", "mode", "schema", "tops_id"],
+  "properties": {
+    "authentication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authority", "mechanism", "producers", "readers"],
+      "properties": {
+        "authority": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["gid", "subject", "uid"],
+          "properties": {
+            "gid": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+            "subject": { "$ref": "common.schema.json#/$defs/safeReference" },
+            "uid": { "type": "integer", "minimum": 0, "maximum": 4294967295 }
+          }
+        },
+        "mechanism": { "const": "kernel-peer-credentials" },
+        "producers": {
+          "type": "array",
+          "maxItems": 128,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["gid", "permissions", "producer", "subject", "uid"],
+            "properties": {
+              "gid": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+              "permissions": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 128,
+                "uniqueItems": true,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["event_class", "operation_id"],
+                  "properties": {
+                    "event_class": { "$ref": "common.schema.json#/$defs/registeredIdentifier" },
+                    "operation_id": { "$ref": "common.schema.json#/$defs/registeredIdentifier" }
+                  }
+                }
+              },
+              "producer": { "$ref": "common.schema.json#/$defs/safeReference" },
+              "subject": { "$ref": "common.schema.json#/$defs/safeReference" },
+              "uid": { "type": "integer", "minimum": 0, "maximum": 4294967295 }
+            }
+          }
+        },
+        "readers": {
+          "type": "array",
+          "maxItems": 128,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["classifications", "gid", "subject", "uid"],
+            "properties": {
+              "classifications": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 2,
+                "uniqueItems": true,
+                "items": { "$ref": "common.schema.json#/$defs/redactionClassification" }
+              },
+              "gid": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+              "subject": { "$ref": "common.schema.json#/$defs/safeReference" },
+              "uid": { "type": "integer", "minimum": 0, "maximum": 4294967295 }
+            }
+          }
+        }
+      }
+    },
+    "ledger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["durability", "max_bytes", "path", "recovery", "retention", "rotation"],
+      "properties": {
+        "durability": { "const": "fsync-before-receipt" },
+        "max_bytes": { "type": "integer", "minimum": 1048576, "maximum": 9007199254740991 },
+        "path": { "type": "string", "minLength": 1, "maxLength": 4096, "pattern": "^/" },
+        "recovery": { "const": "preserve-incomplete-tail" },
+        "retention": { "const": "preserve_all" },
+        "rotation": { "const": "disabled" }
+      }
+    },
+    "listen": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["address", "network"],
+      "properties": {
+        "address": { "type": "string", "minLength": 1, "maxLength": 4096, "pattern": "^/" },
+        "network": { "const": "unix" }
+      }
+    },
+    "mode": { "enum": ["user", "system"] },
+    "schema": { "const": "symphony.stav.append-authority.config.v1" },
+    "tops_id": { "$ref": "common.schema.json#/$defs/topsId" }
+  }
+}

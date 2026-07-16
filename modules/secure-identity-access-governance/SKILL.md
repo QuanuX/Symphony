@@ -25,4 +25,4 @@
 
 ## Do Not Use For
 
-Kernel peer authentication is enabled automatically for the read-only local metadata API; never substitute a caller-supplied identity or socket permissions for it. Do not use this scaffold for credential access, policy mutation, supervision, STAV appends, plaintext development providers, or hot-path authorization. Those capabilities are not enabled.
+Kernel peer authentication is enabled automatically for the read-only local metadata API; never substitute a caller-supplied identity or socket permissions for it. Safe runtime outcomes may use only the internal closed STAV producer and must require a committed receipt. Agents must never submit arbitrary STAV events. Do not use this foundation for credential access, policy mutation, supervision, plaintext development providers, or hot-path authorization; those capabilities are not enabled.

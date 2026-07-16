@@ -360,3 +360,76 @@ This PR authorizes none of the following:
   - `publication pipeline`
 - notes: |
     This completes Task 014N and prepares the repository for Task 014O (root contract shape checks).
+
+- record_id: `SCLV-PR-058`
+- title: `SSIAG, STAV, and SACV foundations canonicalized`
+- status: `canonical`
+- date: `2026-07-16`
+- change_type: `canonical_addition`
+- related_pr: `https://github.com/QuanuX/Symphony/pull/58`
+- merge_commit: `baa75027f8b46adc364894dfe4eb3946249e5409`
+- affected_surfaces:
+  - `go.work`
+  - `knowledge/sacv/SPEC.md`
+  - `knowledge/sacv/REGISTRY.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/stav/SPEC.md`
+  - `knowledge/stav/schemas/v1/MANIFEST.md`
+  - `knowledge/stav/registries/v1/base.md`
+  - `knowledge/stav/fixtures/v1/MANIFEST.md`
+  - `libraries/stav-protocol-go/MANIFEST.md`
+  - `libraries/stav-protocol-go/GO_1_27_MIGRATION.md`
+  - `modules/secure-identity-access-governance/MANIFEST.md`
+  - `modules/secure-identity-access-governance/IMPLEMENTATION.md`
+  - `modules/stav-append-authority/MANIFEST.md`
+  - `modules/stav-append-authority/IMPLEMENTATION.md`
+  - `modules/ssiag-provider-macos-keychain/MANIFEST.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/symphony-validator/CMakeLists.txt`
+- skvi_references:
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/sacv/SPEC.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/stav/SPEC.md`
+  - `libraries/stav-protocol-go/MANIFEST.md`
+  - `modules/secure-identity-access-governance/MANIFEST.md`
+  - `modules/stav-append-authority/MANIFEST.md`
+  - `modules/ssiag-provider-macos-keychain/MANIFEST.md`
+- change_summary: |
+    Under the Architect's direction, PR #58 established the canonical SACV, SSIAG, and STAV knowledge surfaces; the Go SSIAG metadata foundation; the authority-free STAV protocol kernel; the STAV append-authority lifecycle namespace; the independently built macOS Keychain adapter boundary; and fail-closed qxctl integration.
+    The merge also hardened required STAV field presence, TOPS UUID validation, SSIAG endpoint binding, active-socket handling, and digest-bound executable installation.
+- relationship_changes: |
+    SACV now governs HTTP API-contract policy while endpoint semantics remain with their canonical owners.
+    SSIAG is defined as a future safe-metadata STAV producer and never a ledger writer.
+    The STAV protocol kernel implements canonical protocol mechanics without runtime authority.
+    qxctl remains an administrative and query projection rather than schema, provider, or ledger authority.
+- doctrine_changes: |
+    The merge preserved the monorepo as an agentic context surface without transferring runtime authority.
+    It established fail-closed local identity, provider, audit, and publication boundaries under Architect ratification.
+- compatibility_consequences: |
+    Go 1.26.5 remains the production baseline and Go 1.27 remains a separately gated migration.
+    The STAV kernel was composed through the root workspace at merge and was subsequently published from the merge tree as `libraries/stav-protocol-go/v0.1.0`.
+    No operational credential or ledger compatibility is claimed by this foundation merge.
+- publication_consequences: |
+    No API, SDK, Mintlify surface, live playground, or public documentation was authorized.
+    SODV remains the sole publication authority.
+- projection_consequences: |
+    No generated API bundle, SDK, graph database, STAV ledger projection, DuckDB projection, or HDF5 projection was authorized.
+    Any later projection remains derived, disposable, and rebuildable from canonical truth.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/58`
+  - `baa75027f8b46adc364894dfe4eb3946249e5409`
+  - `d9e5b06478b9b3fe84b6f0f7fe1f34f8242f0ddd`
+- non_authorizations:
+  - `credential release`
+  - `operational Keychain access`
+  - `remote SSIAG access`
+  - `agent apply authority`
+  - `STAV listener or ledger writer`
+  - `provider fallback`
+  - `plaintext secret handling`
+  - `OpenAPI publication`
+  - `SDK publication`
+- notes: |
+    This record was authored only after the real PR URL and merge commit existed. Runtime audit events remain outside SCLV and belong only to the operational STAV ledger once enabled.

@@ -29,8 +29,8 @@ if [ $(echo "$OUT_REPO" | grep -c "^summary ") -ne 1 ]; then
     echo "error: current repo should have exactly one summary footer"
     exit 1
 fi
-if [ $(echo "$OUT_REPO" | grep -c "artifact.canonical_json_authorized") -ne 18 ]; then
-    echo "error: current repo should authorize exactly the 18 ratified STAV JSON artifacts"
+if [ $(echo "$OUT_REPO" | grep -c "artifact.canonical_json_authorized") -ne 28 ]; then
+    echo "error: current repo should authorize exactly the 28 ratified STAV JSON artifacts"
     exit 1
 fi
 echo "current repo passed strict validation"

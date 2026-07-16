@@ -60,6 +60,11 @@ func GenerateUUIDv4() (string, error) {
 		b[0:4], b[4:6], b[6:8], b[8:10], b[10:16]), nil
 }
 
+// FormatTimestamp returns the exact STAV v1 UTC nanosecond timestamp form.
+func FormatTimestamp(t time.Time) string {
+	return t.UTC().Format(timestampLayout)
+}
+
 func validateRegisteredIdentifier(s string) error {
 	if len(s) < 3 || len(s) > 128 || !registeredPattern.MatchString(s) {
 		return fmt.Errorf("stav: invalid registered identifier")

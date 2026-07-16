@@ -176,10 +176,10 @@ func printUsage() {
 	fmt.Println("  ssiag status --tops-id UUID [--scope user|system] [--json] Read safe SSIAG status")
 	fmt.Println("  ssiag providers --tops-id UUID [--scope user|system] [--json] List safe provider metadata")
 	fmt.Println("  ssiag doctor --tops-id UUID [--scope user|system] Verify local SSIAG availability")
-	fmt.Println("  stav status --tops-id UUID [--scope user|system] [--json] Reserved read-only STAV status")
-	fmt.Println("  stav verify --tops-id UUID [--scope user|system] [--json] Reserved read-only STAV verification")
-	fmt.Println("  stav query --tops-id UUID [--scope user|system] [bounded filters] [--json] Reserved bounded STAV query")
-	fmt.Println("  stav doctor --tops-id UUID [--scope user|system] Reserved STAV diagnostics")
+	fmt.Println("  stav status --tops-id UUID [--scope user|system] [--json] Read authenticated STAV status")
+	fmt.Println("  stav verify --tops-id UUID [--scope user|system] [--json] Verify the STAV digest chain")
+	fmt.Println("  stav query --tops-id UUID [--scope user|system] [bounded filters] [--json] Query authorized STAV projections")
+	fmt.Println("  stav doctor --tops-id UUID [--scope user|system] Run authenticated STAV diagnostics")
 }
 
 func runSTAV(args []string) error {
@@ -199,11 +199,14 @@ func runSTAV(args []string) error {
 	set := flag.NewFlagSet("stav "+subcommand, flag.ContinueOnError)
 	topsID := set.String("tops-id", "", "immutable TOPS UUID")
 	scope := set.String("scope", "user", "STAV scope: user or system")
+	jsonOutput := false
 	if subcommand != "doctor" {
-		_ = set.Bool("json", false, "emit JSON")
+		set.BoolVar(&jsonOutput, "json", false, "emit JSON")
 	}
 	var query stavprotocol.Query
 	var throughSequence optionalUint64
+	var verifyAfter uint64
+	var verifyThrough optionalUint64
 	if subcommand == "query" {
 		query.Schema = stavprotocol.SchemaQuery
 		query.EventClasses = make([]string, 0)
@@ -218,6 +221,10 @@ func runSTAV(args []string) error {
 		set.StringVar(&query.CorrelationID, "correlation-id", "", "optional correlation UUID")
 		set.StringVar(&query.RequestID, "request-id", "", "optional request UUID")
 		set.Uint64Var(&query.Limit, "limit", 100, "page size from 1 through 1000")
+	}
+	if subcommand == "verify" {
+		set.Uint64Var(&verifyAfter, "after-sequence", 0, "exclusive verification cursor")
+		set.Var(&verifyThrough, "through-sequence", "optional inclusive verification ceiling")
 	}
 	if err := set.Parse(args[1:]); err != nil {
 		return err
@@ -241,7 +248,105 @@ func runSTAV(args []string) error {
 			return fmt.Errorf("invalid bounded STAV query: %w", err)
 		}
 	}
-	return fmt.Errorf("STAV %s is reserved but unavailable until local envelope content, reader authentication/authorization, and required runtime contracts are ratified; no socket was opened", subcommand)
+	if subcommand == "verify" && verifyThrough.set && verifyThrough.value <= verifyAfter {
+		return fmt.Errorf("verification through-sequence must follow after-sequence")
+	}
+	client, err := stavclient.NewForTOPS(*scope, *topsID)
+	if err != nil {
+		return err
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	requestID, err := stavprotocol.GenerateUUIDv4()
+	if err != nil {
+		return err
+	}
+	request := stavprotocol.LocalRequest{
+		Operation: subcommand,
+		RequestID: requestID,
+		Schema:    stavprotocol.SchemaLocalRequest,
+		TOPSID:    *topsID,
+	}
+	switch subcommand {
+	case "query":
+		request.Query = &query
+	case "verify":
+		verify := stavprotocol.VerifyRequest{AfterSequence: verifyAfter}
+		if verifyThrough.set {
+			value := verifyThrough.value
+			verify.ThroughSequence = &value
+		}
+		request.Verify = &verify
+	case "doctor":
+		request.Operation = stavprotocol.LocalOperationStatus
+	}
+	response, err := client.Do(ctx, request)
+	if err != nil {
+		return err
+	}
+	if response.Disposition != stavprotocol.LocalDispositionSucceeded {
+		return fmt.Errorf("STAV %s rejected: %s", subcommand, response.ReasonCode)
+	}
+	switch subcommand {
+	case "status":
+		if jsonOutput {
+			return printSTAVJSON(response.Status)
+		}
+		fmt.Printf("STAV: ready=%t tops_id=%s mode=%s events=%d ledger_bytes=%d storage=%s\n", response.Status.Ready, response.Status.TOPSID, response.Status.Mode, response.Status.Events, response.Status.LedgerBytes, response.Status.StorageState)
+		return nil
+	case "verify":
+		if jsonOutput {
+			return printSTAVJSON(response.Verification)
+		}
+		fmt.Printf("STAV verification: state=%s tops_id=%s after=%d through=%d checked=%d\n", response.Verification.Result.State, response.Verification.TOPSID, response.Verification.AfterSequence, response.Verification.ThroughSequence, response.Verification.EventsChecked)
+		if response.Verification.Result.State != "verified" {
+			return fmt.Errorf("STAV verification failed at sequence %d: %s", response.Verification.Result.AtSequence, response.Verification.Result.ReasonCode)
+		}
+		return nil
+	case "query":
+		if jsonOutput {
+			return printSTAVJSON(response.Page)
+		}
+		for _, entry := range response.Page.Entries {
+			fmt.Printf("STAV event: sequence=%d timestamp=%s class=%s operation=%s outcome=%s reason=%s request_id=%s\n", entry.Sequence, entry.Projection.Timestamp, entry.Projection.EventClass, entry.Projection.OperationID, entry.Projection.Outcome, entry.Projection.ReasonCode, entry.Projection.RequestID)
+		}
+		fmt.Printf("STAV query: entries=%d next=%s\n", len(response.Page.Entries), response.Page.Next.State)
+		return nil
+	case "doctor":
+		if !response.Status.Ready {
+			return fmt.Errorf("STAV append authority is not ready")
+		}
+		verifyID, err := stavprotocol.GenerateUUIDv4()
+		if err != nil {
+			return err
+		}
+		verificationResponse, err := client.Do(ctx, stavprotocol.LocalRequest{
+			Operation: stavprotocol.LocalOperationVerify,
+			RequestID: verifyID,
+			Schema:    stavprotocol.SchemaLocalRequest,
+			TOPSID:    *topsID,
+			Verify:    &stavprotocol.VerifyRequest{AfterSequence: 0},
+		})
+		if err != nil {
+			return err
+		}
+		if verificationResponse.Disposition != stavprotocol.LocalDispositionSucceeded || verificationResponse.Verification.Result.State != "verified" {
+			return fmt.Errorf("STAV doctor chain verification failed")
+		}
+		fmt.Printf("STAV doctor: tops_id=%s ready=true events=%d storage=%s chain=verified endpoint=authenticated\n", response.Status.TOPSID, response.Status.Events, response.Status.StorageState)
+		fmt.Println("STAV doctor: checks passed")
+		return nil
+	}
+	return fmt.Errorf("unsupported STAV command")
+}
+
+func printSTAVJSON(value any) error {
+	data, err := json.MarshalIndent(value, "", "  ")
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(data))
+	return nil
 }
 
 type stringList []string

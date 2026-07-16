@@ -13,7 +13,8 @@ STAV owns its event envelope, presence rules, integrity rules, append-authority 
 - `knowledge/stav/`: canonical protocol and schema truth;
 - `libraries/stav-protocol-go/`: pure-Go, build-time implementation of serialization, validation, digest, identifier, and frame mechanics with no runtime authority;
 - `modules/stav-append-authority/`: independently installable Go implementation of the dedicated per-TOPS append-authority role;
-- SSIAG and node-troll: initially authorized producer classes;
+- SSIAG: first implemented producer class through an explicit per-installation grant;
+- node-troll: future producer class requiring separate review and grant;
 - qxctl: canonical administrative and query interface implementing the protocol;
 - agents: query and proposal authority only.
 
@@ -28,4 +29,4 @@ Operational state is never stored under `knowledge/stav/`. DuckDB, HDF5, JSONL e
 
 ## Status
 
-Owner-ratified append-authority architecture, canonical candidate/event/receipt/read schemas, strict I-JSON/JCS profile, digest domains, local frame mechanics, protocol-kernel namespace, and bounded read-only qxctl grammar. No operational listener or ledger writer is enabled until local envelopes, authentication/authorization, durability, recovery, retention, rotation, repair, and producer/reader contracts pass.
+Architect-ratified operational v1. Canonical schemas, protocol kernel, per-TOPS append authority, mutual Unix peer authentication, exact producer/reader grants, fsync-before-receipt ledger, restart recovery/idempotency, qxctl read interface, and SSIAG producer are implemented. Signed checkpoints, remote export, non-repudiation, automatic rotation, general repair, and node-troll producer authority remain deferred.

@@ -9,9 +9,13 @@ This collection is canonical protocol truth owned by `knowledge/stav/`. JSON Sch
 - `common.schema.json`: shared scalar and tagged-value definitions.
 - `candidate.schema.json`: untrusted producer-proposed candidate content.
 - `event.schema.json`: canonical ten-group event content.
-- `receipt.schema.json`: rejected and future committed receipt representation.
+- `receipt.schema.json`: rejected and durably committed receipt representation.
 - `query.schema.json`: bounded forward-only query parameters.
 - `query-page.schema.json`: redacted verification-aware result page.
 - `verification.schema.json`: bounded chain-verification result.
+- `append-authority-config.schema.json`: per-TOPS storage, IPC, and peer-grant contract.
+- `append-authority-status.schema.json`: safe operational status projection.
+- `local-request.schema.json`: authenticated local operation envelope.
+- `local-response.schema.json`: authenticated local result envelope.
 
-Configuration, status, local request, and local response schemas are intentionally absent and remain owner gates.
+All v1 operational schemas listed above are Architect-ratified. Signed checkpoints and remote transport remain outside v1.

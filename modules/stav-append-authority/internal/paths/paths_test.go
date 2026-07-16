@@ -30,6 +30,9 @@ func TestResolveUserInstanceUsesStateFallback(t *testing.T) {
 	if layout.ConfigFile != wantConfig {
 		t.Fatalf("config = %q, want %q", layout.ConfigFile, wantConfig)
 	}
+	if layout.LedgerFile != filepath.Join(wantState, "ledger-v1.stavlog") || layout.RecoveryDir != filepath.Join(wantState, "recovery") {
+		t.Fatalf("unexpected ledger layout: %#v", layout)
+	}
 }
 
 func TestResolveUserInstanceUsesXDGRuntime(t *testing.T) {

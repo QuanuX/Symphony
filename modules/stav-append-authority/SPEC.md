@@ -2,38 +2,38 @@
 
 ## Status
 
-Owner-ratified namespace scaffold. Operational append behavior is not enabled.
+Architect-ratified operational v1 implementation of `knowledge/stav/SPEC.md`.
 
 ## Namespace
 
-- executable: `symphony-stav-append-authority`;
-- environment prefix reservation: `SYMPHONY_STAV_`;
-- user install target: `${HOME}/.local/bin/symphony-stav-append-authority`;
-- system install target: `/usr/local/bin/symphony-stav-append-authority`.
-
-For canonical lowercase TOPS ID `<tops-id>`:
+For canonical TOPS ID `<tops-id>`:
 
 | Surface | User scope | System scope |
 |---|---|---|
 | configuration | `${XDG_CONFIG_HOME:-${HOME}/.config}/symphony/<tops-id>/stav/append-authority.json` | `/etc/symphony/<tops-id>/stav/append-authority.json` |
 | state | `${XDG_STATE_HOME:-${HOME}/.local/state}/symphony/<tops-id>/stav/` | `/var/lib/symphony/<tops-id>/stav/` |
+| ledger | `<state>/ledger-v1.stavlog` | `<state>/ledger-v1.stavlog` |
+| recovery evidence | `<state>/recovery/` | `<state>/recovery/` |
 | socket | `${XDG_RUNTIME_DIR}/symphony/<tops-id>/stav/append.sock` | `/run/symphony/<tops-id>/stav/append.sock` |
-| socket fallback | `${XDG_STATE_HOME:-${HOME}/.local/state}/symphony/<tops-id>/stav/run/append.sock` | not applicable |
+| socket fallback | `<state>/run/append.sock` | not applicable |
 
-Path resolution is pure in this increment: it creates none of these per-TOPS surfaces.
+## Lifecycle
 
-## Binary Lifecycle
+`install` and `uninstall` own only the host executable. `enroll` writes a strict per-TOPS configuration and enrollment marker with an explicit authority identity and empty producer/reader arrays. `unenroll` removes only the marker by default. `unenroll --purge` refuses an active listener and removes only the selected TOPS configuration and state.
 
-Install copies the invoking regular executable atomically to the selected target with executable permissions. It rejects non-regular targets and differing binaries unless `--force` is explicit. Uninstall removes only the selected regular executable, is idempotent when absent, and rejects a digest mismatch unless `--force` is explicit.
+## Authentication and Authorization
 
-No installation manifest is emitted because no such schema has been ratified. No directory is removed during uninstall.
+The authority verifies its configured effective UID/GID before listening. Every accepted Darwin/Linux Unix connection is authenticated from kernel peer credentials. Append requires an exact producer grant and permission tuple; status, verify, and query require an exact reader grant. Clients verify the connected authority UID/GID before sending. Socket ownership and modes remain defense in depth.
 
-## Protocol Dependency
+## Durability
 
-Canonical candidate, event, receipt, query, query-page, and verification schemas are owned by `knowledge/stav/`. Their pure-Go mechanics are implemented by `libraries/stav-protocol-go`. This module currently imports only shared TOPS-ID validation and does not decode candidates or emit events or receipts.
+The authority holds a non-blocking exclusive file lock, verifies the entire ledger before readiness, writes one `length || canonical event || checksum` frame, calls file sync, then returns a committed receipt. It reconstructs request-ID idempotency from events. Only an incomplete final frame is preserved as evidence and truncated automatically; complete corruption prevents startup.
 
-`symphony.stav.append-authority.config.v1`, `symphony.stav.append-authority.status.v1`, `symphony.stav.local.request.v1`, and `symphony.stav.local.response.v1` remain name reservations only.
+## Command Surface
 
-## Fail-Closed Command Surface
+- `install`, `uninstall`;
+- `enroll`, `unenroll`;
+- `serve`;
+- `help`, `--version`.
 
-The executable accepts lifecycle/help/version commands only. Any operational command is rejected. It has no raw append surface.
+There is no raw append, repair, truncate, rotate, export, HTTP, or remote command. Producers use the authenticated typed client; readers use qxctl.

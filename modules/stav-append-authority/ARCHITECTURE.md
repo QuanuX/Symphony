@@ -1,32 +1,21 @@
 # STAV Append Authority Architecture
 
-## Current Component Boundary
-
 ```text
-knowledge/stav/                 canonical protocol and gate authority
+knowledge/stav/                    canonical protocol truth
         |
-        v
-libraries/stav-protocol-go/     authority-free protocol mechanics
+libraries/stav-protocol-go/       strict types, JCS, digests, frames
         |
-        v
-stav-append-authority module    namespace, path resolver, binary lifecycle
-        |
-        +-- no socket
-        +-- no active codec or candidate ingestion
-        +-- no producer client
-        +-- no ledger
+        +--> SSIAG producer ------+ authenticated append
+        |                         v
+        +--> qxctl reader --> local append authority --> locked STAV ledger
+                                      |
+                                      +--> read projection / verification
 ```
 
-The current executable is intentionally not a daemon. It cannot create a serialization domain because the content and durability contracts that make such a domain safe remain gated.
+One process serves one TOPS serialization domain. Startup loads the strict configuration, verifies the process service identity, opens and exclusively locks the ledger, scans every frame, verifies the canonical event and linear digest chain, reconstructs receipts, and becomes ready only after those checks pass.
 
-## Future Ratified Shape
+The accept loop captures kernel peer credentials before dispatch. Producer credentials resolve to one configured producer identity and exact permission tuples. Reader credentials resolve to one safe subject and classification allowlist. The public client authenticates the server peer before transmitting.
 
-After later contracts pass, one process will serve one per-TOPS serialization domain over authenticated local IPC. The authority—not producers or qxctl—will validate candidate metadata, assign trusted order and integrity fields, durably append, and return a safe receipt. This statement records the ratified architecture; it does not activate it.
+Append assignment and durable storage occur under one mutex. A partial write or sync failure poisons the running ledger instance; retry is resolved after restart from the persisted event/idempotency index. Queries operate over verified in-memory entries and omit ungranted classifications.
 
-## Source-Truth Direction
-
-Dependencies flow from canonical knowledge through the shared protocol kernel to runtime implementations. No implementation struct, annotation, or kernel behavior may become the source of protocol truth.
-
-## Isolation
-
-Every future configuration, runtime, socket, state root, sequence, and digest chain is keyed by an immutable canonical lowercase TOPS UUID. Human-readable names never participate in a security path.
+Canonical direction is always knowledge → protocol kernel → implementation. Runtime types and code never become schema truth.

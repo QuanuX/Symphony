@@ -1,0 +1,1 @@
+{"events":0,"genesis_digest":"sha256:4f1f8e1abdb7d183c6d6d113a47b7d2f0ca1f490751e5dfaa4c6d4563b032996","last_sequence":0,"ledger_bytes":0,"max_ledger_bytes":1073741824,"mode":"system","ready":true,"recovered_tail":false,"schema":"symphony.stav.append-authority.status.v1","storage_state":"clean","tops_id":"123e4567-e89b-42d3-a456-426614174000"}

@@ -6,7 +6,7 @@
 - Intended target: Go 1.27 after general availability.
 - Wire contract: unchanged by the toolchain migration.
 
-The root `go.work` currently composes the unreleased kernel and its two consumers without pretending a public `v0.0.0` exists. Before qxctl or the append-authority module is published for independent source installation, tag the kernel and add that real compatible version to each consumer `go.mod`. The Go 1.27 pin change and the first kernel release are separate gates.
+The root `go.work` composes the kernel and its consumers from one reviewed source tree. The operational durability/IPC increment declares kernel `v0.2.0` and append-authority `v0.1.0` as coordinated release tags; qxctl and SSIAG pin those real module versions for independent source installation. Publish the tags only from the reviewed merge tree, then verify each module once with `GOWORK=off`. The Go 1.27 pin change remains a separate gate.
 
 Draft Go 1.27 documentation may inform experiments but is not an implementation dependency. No draft package or behavior is exposed through the kernel API.
 

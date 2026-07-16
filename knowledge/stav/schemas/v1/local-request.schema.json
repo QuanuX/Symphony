@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/QuanuX/Symphony/knowledge/stav/schemas/v1/local-request.schema.json",
+  "title": "symphony.stav.local.request.v1",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate", "operation", "request_id", "schema", "tops_id"],
+      "properties": {
+        "candidate": { "$ref": "candidate.schema.json" },
+        "operation": { "const": "append" },
+        "request_id": { "$ref": "common.schema.json#/$defs/uuid" },
+        "schema": { "const": "symphony.stav.local.request.v1" },
+        "tops_id": { "$ref": "common.schema.json#/$defs/topsId" }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation", "request_id", "schema", "tops_id"],
+      "properties": {
+        "operation": { "const": "status" },
+        "request_id": { "$ref": "common.schema.json#/$defs/uuid" },
+        "schema": { "const": "symphony.stav.local.request.v1" },
+        "tops_id": { "$ref": "common.schema.json#/$defs/topsId" }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation", "query", "request_id", "schema", "tops_id"],
+      "properties": {
+        "operation": { "const": "query" },
+        "query": { "$ref": "query.schema.json" },
+        "request_id": { "$ref": "common.schema.json#/$defs/uuid" },
+        "schema": { "const": "symphony.stav.local.request.v1" },
+        "tops_id": { "$ref": "common.schema.json#/$defs/topsId" }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation", "request_id", "schema", "tops_id", "verify"],
+      "properties": {
+        "operation": { "const": "verify" },
+        "request_id": { "$ref": "common.schema.json#/$defs/uuid" },
+        "schema": { "const": "symphony.stav.local.request.v1" },
+        "tops_id": { "$ref": "common.schema.json#/$defs/topsId" },
+        "verify": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["after_sequence"],
+          "properties": {
+            "after_sequence": { "$ref": "common.schema.json#/$defs/safeInteger" },
+            "through_sequence": { "$ref": "common.schema.json#/$defs/safeInteger" }
+          }
+        }
+      }
+    }
+  ]
+}
