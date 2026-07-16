@@ -1,7 +1,7 @@
 # Symphony Secure Identity and Access Governance Requirements
 
 ## Status
-Owner-ratified architecture with phased implementation requirements. “Must” statements remain release gates for the phase that implements them; ratification alone does not enable runtime behavior.
+Architect-ratified architecture with phased implementation requirements. “Must” statements remain release gates for the phase that implements them; ratification alone does not enable runtime behavior.
 
 ## Product Goals
 - Provide one safe command surface for identity proof, authorization, and credential use across TOPS nodes.
@@ -98,7 +98,7 @@ Owner-ratified architecture with phased implementation requirements. “Must” 
 - **SSIAG-O-005**: Rotation must support overlapping credential versions and rollback.
 - **SSIAG-O-006**: Backup guidance must exclude provider-held secret values unless the provider's own supported backup mechanism is used.
 - **SSIAG-O-007**: Per-TOPS purge must be explicit and independently auditable.
-- **SSIAG-O-008**: Safe SSIAG security outcomes must be submitted only through the dedicated per-TOPS Go STAV append authority after its remaining implementation gates pass.
+- **SSIAG-O-008**: Safe SSIAG security outcomes must be submitted only through the implemented dedicated per-TOPS Go STAV append authority and its closed typed producer vocabulary.
 - **SSIAG-O-009**: Security, provider, credential, policy, and configuration apply operations must fail closed when their required STAV append cannot be accepted.
 - **SSIAG-O-010**: Supervision must own liveness only and must not confer SSIAG policy, provider, apply, or STAV ledger authority.
 
@@ -138,7 +138,7 @@ Owner-ratified architecture with phased implementation requirements. “Must” 
 
 ## Remaining Detail Gates Before Operational Provider Work
 1. Define launchd/service-manager identities, ownership, restart bounds, direct-run bootstrap behavior, and qxctl-to-server endpoint trust.
-2. Scaffold the ratified dedicated Go STAV append-authority namespace, then separately ratify schema content, serialization, durability, recovery, retention, rotation, and repair before enabling it.
+2. Preserve the implemented dedicated Go STAV append-authority boundary, canonical schemas, durability/recovery contract, exact peer grants, and closed SSIAG producer vocabulary.
 3. Freeze mutation proposal/apply schemas, replay/idempotency bounds, expiry/skew, and expected-state conflict behavior.
 4. Freeze provider mutual executable trust, signing requirements, secret-channel framing, memory handling, and crash-dump policy.
 5. Define the macOS Keychain item namespace, item/operation catalog, access-control matrix, entitlements, notarization, and provider-owned provisioning experience.

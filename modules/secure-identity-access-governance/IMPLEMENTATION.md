@@ -4,7 +4,7 @@
 
 Complete phases in order. A phase may start only when its entry decisions are ratified and all prior exit gates pass. “Implemented” below describes scaffold behavior, not production readiness. Do not enable a later capability merely because its interface appears in a contract.
 
-## Phase 0 — Canonicalize Names and Authority (implemented as draft)
+## Phase 0 — Canonicalize Names and Authority (implemented and ratified)
 
 1. Use the long name “Symphony Secure Identity and Access Governance” and acronym SSIAG.
 2. Use the foundation namespace `modules/secure-identity-access-governance/`, binary `symphony-ssiag`, qxctl group `ssiag`, schemas `symphony.ssiag.*`, and environment prefix `SYMPHONY_SSIAG_*`.
@@ -12,9 +12,9 @@ Complete phases in order. A phase may start only when its entry decisions are ra
 4. Remove the trading-ambiguous predecessor term from active SSIAG command, schema, path, and contract surfaces.
 5. Keep the earlier handoff as coordination history; do not treat it as repository source truth.
 
-Exit gate: one namespace map, no mixed executable/API grammar, and owner review still visible as DRAFT.
+Exit gate: one Architect-ratified namespace map, no mixed executable/API grammar, and canonical merge evidence recorded.
 
-## Phase 1 — Establish Knowledge Contracts (implemented as draft)
+## Phase 1 — Establish Knowledge Contracts (implemented and ratified)
 
 1. Define SSIAG's full decision chain and graph-like relationships in `knowledge/ssiag/`.
 2. Define extension rules without authorizing a graph database.
@@ -135,9 +135,9 @@ Exit gate: no unauthenticated local process can reach a mutation or adapter oper
 
 Ratified architecture: one dedicated Go process per TOPS serialization domain, authenticated local producer IPC, no qxctl/producer/agent file writes, and fail-closed security/configuration apply when required audit is unavailable.
 
-Ratified namespace: `modules/stav-append-authority/`, `symphony-stav-append-authority`, nested per-TOPS `stav/append.sock`, reserved `symphony.stav.*` identifiers, and read-only `qxctl stav` grammar.
+Implemented namespace: `modules/stav-append-authority/`, `symphony-stav-append-authority`, nested per-TOPS `stav/append.sock`, canonical `symphony.stav.*` contracts, and read-only `qxctl stav` grammar.
 
-Remaining entry details: schema content, exact canonical serialization, genesis digest, file segmentation, durability/fsync policy, crash recovery, retention, rotation, and repair governance.
+Implemented entry details: exact canonical serialization, genesis digest, append-only record framing, fsync-before-receipt, startup verification, incomplete-tail evidence recovery, preserve-all retention, disabled rotation, mutual peer authentication, exact grants, and bounded read projection.
 
 Implementation procedure:
 

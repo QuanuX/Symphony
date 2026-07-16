@@ -11,14 +11,16 @@ Agents should use `qxctl` as the primary local administrative spine to verify re
 - `go run ./cmd/qxctl ssiag doctor --tops-id UUID`
 - `go run ./cmd/qxctl ssiag status --tops-id UUID --json`
 - `go run ./cmd/qxctl ssiag providers --tops-id UUID --json`
-- `go run ./cmd/qxctl stav status --tops-id UUID` (expected to fail closed until the read protocol is ratified)
+- `go run ./cmd/qxctl stav status --tops-id UUID`
+- `go run ./cmd/qxctl stav verify --tops-id UUID`
+- `go run ./cmd/qxctl stav query --tops-id UUID --limit 100`
 
 ## Constraints
-- Use the Go standard library and ratified first-party pure-Go libraries only; do not add third-party dependencies.
+- Use the Go standard library, ratified first-party Go libraries, and only their approved cgo-free platform dependencies.
 - Run commands synchronously in the active execution session.
 - SSIAG commands may read safe metadata only. Never pass secret values through qxctl arguments, input, output, logs, or fixtures.
 - When proposal support exists, agents may create and inspect proposals only. Never invoke, emulate, or bypass apply authority.
-- STAV commands verify the reserved grammar and identity/path boundary; query also validates the ratified bounded filter contract. Treat the runtime gate error as expected; never bypass it or add raw append behavior.
+- STAV commands require an enrolled, running authority and an explicit reader grant. Never bypass endpoint authentication, reader classification, or add raw append behavior.
 
 ## Do-Not-Use-For List
 - Do not use qxctl for managing NATS directly.
@@ -36,3 +38,4 @@ Agents should use `qxctl` as the primary local administrative spine to verify re
 4. `go run ./cmd/qxctl inventory digest`
 5. `go run ./cmd/qxctl status`
 6. `go run ./cmd/qxctl ssiag doctor --tops-id UUID` when the selected SSIAG enrollment is running
+7. `go run ./cmd/qxctl stav doctor --tops-id UUID` when the selected STAV enrollment is running

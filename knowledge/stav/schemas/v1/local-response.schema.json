@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/QuanuX/Symphony/knowledge/stav/schemas/v1/local-response.schema.json",
+  "title": "symphony.stav.local.response.v1",
+  "$defs": {
+    "base": {
+      "type": "object",
+      "required": ["disposition", "operation", "reason_code", "request_id", "schema", "tops_id"],
+      "properties": {
+        "operation": { "enum": ["append", "query", "status", "verify"] },
+        "reason_code": { "$ref": "common.schema.json#/$defs/registeredIdentifier" },
+        "request_id": { "$ref": "common.schema.json#/$defs/uuid" },
+        "schema": { "const": "symphony.stav.local.response.v1" },
+        "tops_id": { "$ref": "common.schema.json#/$defs/topsId" }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["disposition", "operation", "reason_code", "receipt", "request_id", "schema", "tops_id"],
+          "properties": {
+            "disposition": { "const": "succeeded" },
+            "operation": { "const": "append" },
+            "reason_code": { "$ref": "common.schema.json#/$defs/registeredIdentifier" },
+            "receipt": { "$ref": "receipt.schema.json" },
+            "request_id": { "$ref": "common.schema.json#/$defs/uuid" },
+            "schema": { "const": "symphony.stav.local.response.v1" },
+            "tops_id": { "$ref": "common.schema.json#/$defs/topsId" }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["disposition", "operation", "page", "reason_code", "request_id", "schema", "tops_id"],
+          "properties": {
+            "disposition": { "const": "succeeded" },
+            "operation": { "const": "query" },
+            "page": { "$ref": "query-page.schema.json" },
+            "reason_code": { "$ref": "common.schema.json#/$defs/registeredIdentifier" },
+            "request_id": { "$ref": "common.schema.json#/$defs/uuid" },
+            "schema": { "const": "symphony.stav.local.response.v1" },
+            "tops_id": { "$ref": "common.schema.json#/$defs/topsId" }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["disposition", "operation", "reason_code", "request_id", "schema", "status", "tops_id"],
+          "properties": {
+            "disposition": { "const": "succeeded" },
+            "operation": { "const": "status" },
+            "reason_code": { "$ref": "common.schema.json#/$defs/registeredIdentifier" },
+            "request_id": { "$ref": "common.schema.json#/$defs/uuid" },
+            "schema": { "const": "symphony.stav.local.response.v1" },
+            "status": { "$ref": "append-authority-status.schema.json" },
+            "tops_id": { "$ref": "common.schema.json#/$defs/topsId" }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["disposition", "operation", "reason_code", "request_id", "schema", "tops_id", "verification"],
+          "properties": {
+            "disposition": { "const": "succeeded" },
+            "operation": { "const": "verify" },
+            "reason_code": { "$ref": "common.schema.json#/$defs/registeredIdentifier" },
+            "request_id": { "$ref": "common.schema.json#/$defs/uuid" },
+            "schema": { "const": "symphony.stav.local.response.v1" },
+            "tops_id": { "$ref": "common.schema.json#/$defs/topsId" },
+            "verification": { "$ref": "verification.schema.json" }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["disposition", "operation", "reason_code", "request_id", "schema", "tops_id"],
+          "properties": {
+            "disposition": { "const": "rejected" },
+            "operation": { "enum": ["append", "query", "status", "verify"] },
+            "reason_code": { "$ref": "common.schema.json#/$defs/registeredIdentifier" },
+            "request_id": { "$ref": "common.schema.json#/$defs/uuid" },
+            "schema": { "const": "symphony.stav.local.response.v1" },
+            "tops_id": { "$ref": "common.schema.json#/$defs/topsId" }
+          }
+        }
+      ]
+    }
+  ]
+}

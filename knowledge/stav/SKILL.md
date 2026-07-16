@@ -26,8 +26,8 @@ Agents must never:
 
 ## Stop Conditions
 
-The dedicated Go process architecture, append-authority namespace, canonical candidate/event/receipt/query/query-page/verification schemas, strict JCS profile, SHA-256 domains, local frame mechanics, `libraries/stav-protocol-go`, and bounded read-only `qxctl stav query` grammar are owner-ratified. Safe-integer sequences are limited to `2^53-1`. The protocol kernel has no runtime authority.
+The dedicated Go process architecture, operational schemas, strict JCS profile, SHA-256 domains, local and ledger framing, mutual peer authentication, exact grants, fsync-before-receipt, incomplete-tail recovery, `libraries/stav-protocol-go`, SSIAG producer vocabulary, and bounded read-only qxctl grammar are Architect-ratified and implemented. Safe-integer sequences are limited to `2^53-1`. The protocol kernel has no runtime authority.
 
-Stop and obtain owner approval before defining configuration, status, or local request/response schema content; enabling a writer or socket listener; authenticating or authorizing a producer/reader; adding a producer class; choosing storage framing, durability, acknowledgement, recovery, idempotency retention, retention, rotation, or repair behavior; changing the envelope or canonical bytes; adding remote export or Merkle/checkpoint authority; or allowing an agent mutation path.
+Stop and obtain Architect approval before changing canonical schemas or bytes; expanding a grant or producer class; changing storage framing, acknowledgement, recovery, retention, rotation, or repair; adding remote export or Merkle/checkpoint authority; or allowing an agent mutation path. Operational ledgers and grants are never agent-editable.
 
 Go 1.27 work may be experimental before release but must not change the production Go 1.26.5 pin. After general availability, follow the differential migration gate in `libraries/stav-protocol-go/GO_1_27_MIGRATION.md`; a new standard-library API is never permission to change the protocol.

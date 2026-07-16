@@ -2,6 +2,7 @@ package stavprotocol
 
 import (
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -439,6 +440,282 @@ func (v Verification) Validate() error {
 		}
 	default:
 		return fmt.Errorf("stav: invalid verification state")
+	}
+	return nil
+}
+
+func (p PeerPermission) validate() error {
+	if err := validateRegisteredIdentifier(p.EventClass); err != nil {
+		return err
+	}
+	return validateRegisteredIdentifier(p.OperationID)
+}
+
+func validatePeer(uid, gid uint64) error {
+	if uid > 4294967295 || gid > 4294967295 {
+		return fmt.Errorf("stav: peer credential outside uint32 range")
+	}
+	return nil
+}
+
+func (c AppendAuthorityConfig) Validate() error {
+	if c.Schema != SchemaAppendAuthorityConfig {
+		return fmt.Errorf("stav: invalid append-authority config schema")
+	}
+	if err := ValidateTOPSID(c.TOPSID); err != nil {
+		return err
+	}
+	if c.Mode != "user" && c.Mode != "system" {
+		return fmt.Errorf("stav: invalid append-authority mode")
+	}
+	if c.Listen.Network != "unix" || !strings.HasPrefix(c.Listen.Address, "/") || len(c.Listen.Address) > 4096 {
+		return fmt.Errorf("stav: invalid append-authority listener")
+	}
+	if c.Ledger.Durability != "fsync-before-receipt" || c.Ledger.Recovery != "preserve-incomplete-tail" || c.Ledger.Retention != "preserve_all" || c.Ledger.Rotation != "disabled" {
+		return fmt.Errorf("stav: invalid append-authority ledger policy")
+	}
+	if !strings.HasPrefix(c.Ledger.Path, "/") || len(c.Ledger.Path) > 4096 || c.Ledger.MaxBytes < 1_048_576 || c.Ledger.MaxBytes > MaxSafeInteger {
+		return fmt.Errorf("stav: invalid append-authority ledger")
+	}
+	if c.Authentication.Mechanism != "kernel-peer-credentials" || c.Authentication.Producers == nil || c.Authentication.Readers == nil || len(c.Authentication.Producers) > 128 || len(c.Authentication.Readers) > 128 {
+		return fmt.Errorf("stav: invalid append-authority authentication")
+	}
+	if err := validatePeer(c.Authentication.Authority.UID, c.Authentication.Authority.GID); err != nil {
+		return err
+	}
+	if err := c.Authentication.Authority.Subject.validate(); err != nil {
+		return err
+	}
+	producerPeers := make(map[[2]uint64]struct{}, len(c.Authentication.Producers))
+	for _, grant := range c.Authentication.Producers {
+		if err := validatePeer(grant.UID, grant.GID); err != nil {
+			return err
+		}
+		peer := [2]uint64{grant.UID, grant.GID}
+		if _, exists := producerPeers[peer]; exists {
+			return fmt.Errorf("stav: ambiguous producer peer grant")
+		}
+		producerPeers[peer] = struct{}{}
+		if err := grant.Subject.validate(); err != nil {
+			return err
+		}
+		if err := grant.Producer.validate(); err != nil {
+			return err
+		}
+		if len(grant.Permissions) == 0 || len(grant.Permissions) > 128 {
+			return fmt.Errorf("stav: invalid producer permissions")
+		}
+		seen := make(map[[2]string]struct{}, len(grant.Permissions))
+		for _, permission := range grant.Permissions {
+			if err := permission.validate(); err != nil {
+				return err
+			}
+			key := [2]string{permission.EventClass, permission.OperationID}
+			if _, exists := seen[key]; exists {
+				return fmt.Errorf("stav: duplicate producer permission")
+			}
+			seen[key] = struct{}{}
+		}
+	}
+	readerPeers := make(map[[2]uint64]struct{}, len(c.Authentication.Readers))
+	for _, grant := range c.Authentication.Readers {
+		if err := validatePeer(grant.UID, grant.GID); err != nil {
+			return err
+		}
+		peer := [2]uint64{grant.UID, grant.GID}
+		if _, exists := readerPeers[peer]; exists {
+			return fmt.Errorf("stav: ambiguous reader peer grant")
+		}
+		readerPeers[peer] = struct{}{}
+		if err := grant.Subject.validate(); err != nil {
+			return err
+		}
+		if len(grant.Classifications) == 0 || len(grant.Classifications) > 2 {
+			return fmt.Errorf("stav: invalid reader classifications")
+		}
+		seen := make(map[string]struct{}, len(grant.Classifications))
+		for _, classification := range grant.Classifications {
+			if err := (Redaction{Classification: classification}).validate(); err != nil {
+				return err
+			}
+			if _, exists := seen[classification]; exists {
+				return fmt.Errorf("stav: duplicate reader classification")
+			}
+			seen[classification] = struct{}{}
+		}
+	}
+	return nil
+}
+
+func (s AppendAuthorityStatus) Validate() error {
+	if s.Schema != SchemaAppendAuthorityStatus {
+		return fmt.Errorf("stav: invalid append-authority status schema")
+	}
+	if err := ValidateTOPSID(s.TOPSID); err != nil {
+		return err
+	}
+	if s.Mode != "user" && s.Mode != "system" {
+		return fmt.Errorf("stav: invalid append-authority status mode")
+	}
+	if s.Events != s.LastSequence || s.Events > MaxSafeInteger || s.LedgerBytes > MaxSafeInteger || s.MaxLedgerBytes < 1_048_576 || s.MaxLedgerBytes > MaxSafeInteger || s.LedgerBytes > s.MaxLedgerBytes {
+		return fmt.Errorf("stav: inconsistent append-authority status")
+	}
+	if err := validateDigest(s.GenesisDigest); err != nil {
+		return err
+	}
+	if s.LastSequence == 0 {
+		if s.LastEventDigest != "" {
+			return fmt.Errorf("stav: empty ledger cannot have last event digest")
+		}
+	} else if err := validateDigest(s.LastEventDigest); err != nil {
+		return err
+	}
+	switch s.StorageState {
+	case "clean":
+		if s.RecoveredTail {
+			return fmt.Errorf("stav: clean storage cannot report recovered tail")
+		}
+	case "recovered_incomplete_tail":
+		if !s.RecoveredTail {
+			return fmt.Errorf("stav: recovered storage must report recovered tail")
+		}
+	default:
+		return fmt.Errorf("stav: invalid storage state")
+	}
+	return nil
+}
+
+func (v VerifyRequest) validate() error {
+	if err := validateSafeInteger(v.AfterSequence); err != nil {
+		return err
+	}
+	if v.ThroughSequence != nil {
+		if err := validateSafeInteger(*v.ThroughSequence); err != nil {
+			return err
+		}
+		if *v.ThroughSequence <= v.AfterSequence {
+			return fmt.Errorf("stav: verification ceiling must follow cursor")
+		}
+	}
+	return nil
+}
+
+func (r LocalRequest) Validate() error {
+	if r.Schema != SchemaLocalRequest {
+		return fmt.Errorf("stav: invalid local request schema")
+	}
+	if err := ValidateTOPSID(r.TOPSID); err != nil {
+		return err
+	}
+	if err := ValidateRequestUUID(r.RequestID); err != nil {
+		return err
+	}
+	switch r.Operation {
+	case LocalOperationAppend:
+		if r.Candidate == nil || r.Query != nil || r.Verify != nil {
+			return fmt.Errorf("stav: invalid append request payload")
+		}
+		if err := r.Candidate.Validate(); err != nil {
+			return err
+		}
+		if r.Candidate.Topology.TOPSID != r.TOPSID || r.Candidate.Correlation.RequestID != r.RequestID {
+			return fmt.Errorf("stav: append request binding mismatch")
+		}
+	case LocalOperationStatus:
+		if r.Candidate != nil || r.Query != nil || r.Verify != nil {
+			return fmt.Errorf("stav: invalid status request payload")
+		}
+	case LocalOperationQuery:
+		if r.Candidate != nil || r.Query == nil || r.Verify != nil {
+			return fmt.Errorf("stav: invalid query request payload")
+		}
+		if err := r.Query.Validate(); err != nil {
+			return err
+		}
+		if r.Query.TOPSID != r.TOPSID {
+			return fmt.Errorf("stav: query request binding mismatch")
+		}
+	case LocalOperationVerify:
+		if r.Candidate != nil || r.Query != nil || r.Verify == nil {
+			return fmt.Errorf("stav: invalid verify request payload")
+		}
+		return r.Verify.validate()
+	default:
+		return fmt.Errorf("stav: invalid local operation")
+	}
+	return nil
+}
+
+func (r LocalResponse) Validate() error {
+	if r.Schema != SchemaLocalResponse {
+		return fmt.Errorf("stav: invalid local response schema")
+	}
+	if err := ValidateTOPSID(r.TOPSID); err != nil {
+		return err
+	}
+	if err := ValidateRequestUUID(r.RequestID); err != nil {
+		return err
+	}
+	if err := validateRegisteredIdentifier(r.ReasonCode); err != nil {
+		return err
+	}
+	if r.Disposition == LocalDispositionRejected {
+		if r.Receipt != nil || r.Page != nil || r.Status != nil || r.Verification != nil {
+			return fmt.Errorf("stav: rejected response cannot contain payload")
+		}
+		switch r.Operation {
+		case LocalOperationAppend, LocalOperationQuery, LocalOperationStatus, LocalOperationVerify:
+			return nil
+		default:
+			return fmt.Errorf("stav: invalid rejected response operation")
+		}
+	}
+	if r.Disposition != LocalDispositionSucceeded || r.ReasonCode != ReasonResponseSucceeded {
+		return fmt.Errorf("stav: invalid successful response disposition")
+	}
+	switch r.Operation {
+	case LocalOperationAppend:
+		if r.Receipt == nil || r.Page != nil || r.Status != nil || r.Verification != nil {
+			return fmt.Errorf("stav: invalid append response payload")
+		}
+		if err := r.Receipt.Validate(); err != nil {
+			return err
+		}
+		if r.Receipt.RequestID != r.RequestID || r.Receipt.TOPSID != r.TOPSID {
+			return fmt.Errorf("stav: append response binding mismatch")
+		}
+	case LocalOperationQuery:
+		if r.Receipt != nil || r.Page == nil || r.Status != nil || r.Verification != nil {
+			return fmt.Errorf("stav: invalid query response payload")
+		}
+		if err := r.Page.Validate(); err != nil {
+			return err
+		}
+		if r.Page.TOPSID != r.TOPSID {
+			return fmt.Errorf("stav: query response binding mismatch")
+		}
+	case LocalOperationStatus:
+		if r.Receipt != nil || r.Page != nil || r.Status == nil || r.Verification != nil {
+			return fmt.Errorf("stav: invalid status response payload")
+		}
+		if err := r.Status.Validate(); err != nil {
+			return err
+		}
+		if r.Status.TOPSID != r.TOPSID {
+			return fmt.Errorf("stav: status response binding mismatch")
+		}
+	case LocalOperationVerify:
+		if r.Receipt != nil || r.Page != nil || r.Status != nil || r.Verification == nil {
+			return fmt.Errorf("stav: invalid verification response payload")
+		}
+		if err := r.Verification.Validate(); err != nil {
+			return err
+		}
+		if r.Verification.TOPSID != r.TOPSID {
+			return fmt.Errorf("stav: verification response binding mismatch")
+		}
+	default:
+		return fmt.Errorf("stav: invalid successful response operation")
 	}
 	return nil
 }

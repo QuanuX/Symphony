@@ -2,7 +2,7 @@
 
 ## Phase 0 — Namespace Scaffold (Implemented)
 
-1. Record the owner-ratified module, executable, socket, schema reservations, and qxctl grammar in `knowledge/stav/`.
+1. Record the Architect-ratified module, executable, socket, schema reservations, and qxctl grammar in `knowledge/stav/`.
 2. Create the independent Go module and Contract Quad.
 3. Implement canonical TOPS UUID validation and pure user/system path resolution.
 4. Implement atomic, digest-guarded executable install and uninstall without a manifest or per-TOPS state.
@@ -21,36 +21,38 @@ Exit gate: no socket, configuration, state directory, schema type, listener, eve
 
 Exit gate: the schemas and codec exist, but this executable still cannot listen, ingest, assign trusted fields, emit a committed receipt, or write state.
 
-## Phase 2 — Integrity and Durability (Blocked Pending Ratification)
+## Phase 2 — Integrity and Durability (Implemented)
 
-1. Ratify digest algorithm identifiers and genesis representation.
-2. Ratify framing, file segmentation, fsync/commit semantics, crash recovery, retention, rotation, and evidence-preserving repair.
+1. Implement the ratified SHA-256 digest domains and per-TOPS genesis representation.
+2. Record and implement the exact ledger framing, fsync/commit semantics, deterministic crash recovery, retention posture, rotation posture, and evidence-preserving repair boundary.
 3. Implement a single-writer storage engine with partial-write and concurrent-submission tests.
 
-## Phase 3 — Authenticated Local IPC (Blocked Pending Ratification)
+## Phase 3 — Authenticated Local IPC (Implemented)
 
-1. Ratify producer subjects, enrollment, permissions, and provider-specific service identities.
+1. Record and implement exact producer subjects, enrollment, permissions, and provider-specific service identities.
 2. Reuse the Go-only kernel peer-credential posture established by SSIAG.
 3. Bind one listener to one TOPS serialization domain and reject scope mismatch before decoding a candidate.
 4. Keep ingestion outside HTTP, OpenAPI, NATS, and qxctl.
 
-## Phase 4 — Read-Only Administration (Partially Specified; Runtime Blocked)
+## Phase 4 — Read-Only Administration (Implemented)
 
 1. Use the ratified query, query-page, and verification content and bounded qxctl query grammar.
-2. Ratify status and local request/response envelope content after storage/recovery and reader-auth semantics are known.
+2. Record and implement status and local request/response envelope content atomically with storage/recovery and reader-auth semantics.
 3. Activate `qxctl stav status|verify|query|doctor` only against the authenticated local interface.
-3. Apply TOPS authorization and redaction before output; never expose raw secret-bearing material.
+4. Apply TOPS authorization and redaction before output; never expose raw secret-bearing material.
 
-## Phase 5 — Producer Integration (Blocked Pending Ratification)
+## Phase 5 — Producer Integration (SSIAG Implemented)
 
 1. Integrate SSIAG first with explicit event-class allowlists.
 2. Add node-troll only through a separately reviewed producer authorization.
 3. Fail security and configuration mutations closed when the required audit event cannot be committed.
 4. Never add a producer-side spool or secondary writer.
 
+Implemented evidence includes strict operational schemas/fixtures, exclusive-lock and restart tests, identical/conflicting request tests, incomplete-tail and corruption tests, authenticated endpoint/caller integration tests, qxctl activation, and the closed SSIAG producer mapping. node-troll remains a separate future producer review.
+
 ## Go 1.27 Migration (Confirmed Release Only)
 
 1. Keep `go.mod` and the root workspace pinned to Go 1.26.5 while 1.27 is unreleased.
 2. After general availability, run the kernel's differential fixture/digest gate and this module's lifecycle/path/race/cross-build tests under both toolchains.
 3. Permit JSON/UUID implementation substitutions only inside the shared kernel and only when protocol bytes and rejections remain identical.
-4. Update all workspace module pins atomically. A toolchain change does not unlock any blocked phase above.
+4. Update all workspace module pins atomically. A toolchain change does not alter any operational contract above.

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/QuanuX/Symphony/knowledge/stav/schemas/v1/append-authority-status.schema.json",
+  "title": "symphony.stav.append-authority.status.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["events", "genesis_digest", "ledger_bytes", "last_sequence", "max_ledger_bytes", "mode", "ready", "recovered_tail", "schema", "storage_state", "tops_id"],
+  "properties": {
+    "events": { "$ref": "common.schema.json#/$defs/safeInteger" },
+    "genesis_digest": { "$ref": "common.schema.json#/$defs/digest" },
+    "last_event_digest": { "$ref": "common.schema.json#/$defs/digest" },
+    "ledger_bytes": { "$ref": "common.schema.json#/$defs/safeInteger" },
+    "last_sequence": { "$ref": "common.schema.json#/$defs/safeInteger" },
+    "max_ledger_bytes": { "$ref": "common.schema.json#/$defs/safeInteger" },
+    "mode": { "enum": ["user", "system"] },
+    "ready": { "type": "boolean" },
+    "recovered_tail": { "type": "boolean" },
+    "schema": { "const": "symphony.stav.append-authority.status.v1" },
+    "storage_state": { "enum": ["clean", "recovered_incomplete_tail"] },
+    "tops_id": { "$ref": "common.schema.json#/$defs/topsId" }
+  }
+}

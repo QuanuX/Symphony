@@ -58,6 +58,38 @@ func DecodeVerification(data []byte) (Verification, error) {
 	return decodeTyped[Verification](data, MaxResponseBytes, func(v Verification) error { return v.Validate() })
 }
 
+func EncodeAppendAuthorityConfig(v AppendAuthorityConfig) ([]byte, error) {
+	return encodeTyped(v, MaxResponseBytes, v.Validate)
+}
+
+func DecodeAppendAuthorityConfig(data []byte) (AppendAuthorityConfig, error) {
+	return decodeTyped[AppendAuthorityConfig](data, MaxResponseBytes, func(v AppendAuthorityConfig) error { return v.Validate() })
+}
+
+func EncodeAppendAuthorityStatus(v AppendAuthorityStatus) ([]byte, error) {
+	return encodeTyped(v, MaxResponseBytes, v.Validate)
+}
+
+func DecodeAppendAuthorityStatus(data []byte) (AppendAuthorityStatus, error) {
+	return decodeTyped[AppendAuthorityStatus](data, MaxResponseBytes, func(v AppendAuthorityStatus) error { return v.Validate() })
+}
+
+func EncodeLocalRequest(v LocalRequest) ([]byte, error) {
+	return encodeTyped(v, MaxRequestBytes, v.Validate)
+}
+
+func DecodeLocalRequest(data []byte) (LocalRequest, error) {
+	return decodeTyped[LocalRequest](data, MaxRequestBytes, func(v LocalRequest) error { return v.Validate() })
+}
+
+func EncodeLocalResponse(v LocalResponse) ([]byte, error) {
+	return encodeTyped(v, MaxResponseBytes, v.Validate)
+}
+
+func DecodeLocalResponse(data []byte) (LocalResponse, error) {
+	return decodeTyped[LocalResponse](data, MaxResponseBytes, func(v LocalResponse) error { return v.Validate() })
+}
+
 func encodeTyped[T any](v T, max int, validate func() error) ([]byte, error) {
 	if err := validate(); err != nil {
 		return nil, err

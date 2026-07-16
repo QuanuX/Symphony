@@ -227,9 +227,9 @@ STAV v1 detects tampering but does not provide non-repudiation. Agents, qxctl, a
 - Excessive provider SDK permissions.
 
 ## Implemented and Unimplemented Controls
-The scaffold does not expose credential mutation/use endpoints or STAV appends. Kernel peer authentication is implemented on accepted Darwin/Linux connections, including exact UID/GID subject resolution and fail-closed ambiguous mapping. Foundational supervision, qxctl-to-server endpoint authentication, provider mutual executable trust, per-user Keychain access, control/secret channel separation, proposal/apply mutation, and the dedicated Go STAV append authority remain ratified but unimplemented controls.
+The module does not expose credential mutation/use endpoints. Kernel peer authentication is implemented on accepted Darwin/Linux connections, including exact UID/GID subject resolution and fail-closed ambiguous mapping. SSIAG's typed STAV producer authenticates the authority endpoint, exposes no secret-bearing field, and requires a committed receipt. Foundational SSIAG supervision, qxctl-to-SSIAG endpoint authentication, provider mutual executable trust, per-user Keychain access, control/secret channel separation, and proposal/apply mutation remain ratified but unimplemented controls.
 
-Configured production subjects, service identities, signing requirements, Keychain item policy, secret buffers, lease replay, channel framing, append serialization/durability/recovery/retention/rotation, and repair remain release blockers, not accepted residual risks.
+Configured production subjects, SSIAG service identity, signing requirements, Keychain item policy, secret buffers, lease replay, and provider channel framing remain release blockers for those later capabilities, not accepted residual risks.
 
 ## Security Test Gates
 - Verify no secret-shaped fixture value appears in stdout, stderr, JSON, logs, or audit output.

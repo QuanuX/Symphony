@@ -1,7 +1,7 @@
 # STAV Append Authority
 
-This independently buildable Go module holds the owner-ratified implementation namespace for Symphony's per-TOPS STAV append authority.
+This independently buildable Go module is Symphony's durable, single-writer STAV authority for one immutable TOPS identity per process.
 
-The current increment is intentionally limited to executable lifecycle, pure namespace resolution, and shared protocol-kernel identity validation. Canonical STAV semantic/read schemas now live under `knowledge/stav/`, but this executable does not run a service, open `append.sock`, accept producer traffic, emit events/receipts, or create or mutate a ledger.
+It installs one host executable, enrolls isolated per-TOPS instances, mutually authenticates Darwin/Linux Unix-socket peers from kernel credentials, authorizes exact producer tuples and reader classifications, appends fsync-backed canonical events, reconstructs idempotency on restart, verifies the digest chain, preserves incomplete-tail evidence, and serves the read-only qxctl STAV interface.
 
-Start with `INTENT.md`, `MANIFEST.md`, `INSTALL.md`, and `SKILL.md`. `IMPLEMENTATION.md` records the gated sequence toward an operational authority.
+`knowledge/stav/` remains protocol truth. Producers, qxctl, agents, and supervisors never edit the ledger. Start with `INTENT.md`, `MANIFEST.md`, `INSTALL.md`, and `SKILL.md`.

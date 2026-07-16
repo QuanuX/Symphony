@@ -9,13 +9,15 @@
 5. Validate every required event group and every tagged-union presence rule.
 6. Bound candidates, events, requests, and responses before allocation or emission.
 7. Keep candidate, event, and genesis digest domains distinct.
+8. Implement exact configuration, status, local request, and local response unions without opening a transport.
+9. Reconstruct the candidate portion of a canonical event for idempotency recovery without changing bytes.
 
 ## Security
 
 - Standard library only; pure Go; no cgo.
 - No network or filesystem side effects.
 - No free-form native error or secret-bearing field.
-- Unknown enum or registry value fails closed.
+- Unknown closed-enum values fail closed; producer-specific registered identifiers remain subject to runtime grant/producer contracts.
 - The protocol kernel never makes an authorization decision.
 
 ## Compatibility

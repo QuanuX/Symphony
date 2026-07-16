@@ -2,7 +2,7 @@
 
 ## Status
 
-Owner-ratified v1 canonical content, read-message content, framing mechanics, append-authority architecture, and implementation namespaces. No runtime listener or writer is enabled until its remaining implementation gates pass.
+Architect-ratified v1 canonical content, read-message content, framing mechanics, append-authority architecture, operational durability, authenticated local IPC, and producer/reader authorization contracts. Runtime enablement requires a conforming implementation and verification evidence.
 
 ## Ratified Implementation Namespace
 
@@ -28,10 +28,12 @@ The following identifiers and JSON Schema Draft 2020-12 documents are ratified:
 | `symphony.stav.query.v1` | `schemas/v1/query.schema.json` |
 | `symphony.stav.query-page.v1` | `schemas/v1/query-page.schema.json` |
 | `symphony.stav.verification.v1` | `schemas/v1/verification.schema.json` |
+| `symphony.stav.append-authority.config.v1` | `schemas/v1/append-authority-config.schema.json` |
+| `symphony.stav.append-authority.status.v1` | `schemas/v1/append-authority-status.schema.json` |
+| `symphony.stav.local.request.v1` | `schemas/v1/local-request.schema.json` |
+| `symphony.stav.local.response.v1` | `schemas/v1/local-response.schema.json` |
 
 `schemas/v1/common.schema.json`, `registries/v1/base.md`, and `fixtures/v1/` are also canonical. Canonical artifacts under `knowledge/stav/` outrank Go types, generated output, qxctl, or module code.
-
-The following names remain reservations only and have no v1 content schema: `symphony.stav.append-authority.config.v1`, `symphony.stav.append-authority.status.v1`, `symphony.stav.local.request.v1`, and `symphony.stav.local.response.v1`. Their absence is intentional. Nothing may infer their fields or activate a listener from their names.
 
 ## Canonical Serialization Profile
 
@@ -68,15 +70,35 @@ The exact field maps and tagged-union variants are defined by the canonical v1 s
 
 A candidate contains producer-proposed topology, domain principal/authentication context, operation, correlation, result, configuration presence, and redaction classification. It never contains authoritative event identity, producer identity, timestamp, sequence, predecessor digest, or event digest. Its maximum canonical size is 61,440 bytes; a canonical event and request frame are limited to 65,536 bytes.
 
-A receipt binds the request ID to the candidate digest. A rejected receipt carries only a safe registered reason and an explicit `not_committed` result. The schema describes the future committed form, but operational code MUST NOT emit `committed` until durability, acknowledgement, recovery, and idempotency retention are ratified and implemented.
+A receipt binds the request ID to the candidate digest. A rejected receipt carries only a safe registered reason and an explicit `not_committed` result. A committed receipt may be emitted only after the complete ledger frame has been written and synchronized to durable storage. A repeated request ID with byte-equivalent candidate content returns the original committed receipt; the same request ID with different candidate content fails closed as an idempotency conflict.
 
 ## Append Protocol
 
 Producers submit candidate events without a trusted ledger event ID, timestamp, sequence, or chain digest. One dedicated Go append-authority process per TOPS serialization domain authenticates the local producer, validates authorization, schema, presence, redaction, TOPS scope, reason codes, and size; assigns the trusted ledger identity and ordering values; writes atomically and durably; then returns a safe receipt. Concurrent submissions MUST serialize deterministically. Failure MUST NOT leave a valid-looking partial event.
 
-The producer-to-authority transport is authenticated local IPC and is not HTTP or OpenAPI. Kernel-attested peer identity MUST map to an authorized producer subject. Socket permissions are defense in depth. The append authority's supervisor owns liveness only and MUST NOT gain producer or ledger authority.
+The producer-to-authority transport is mutually authenticated local IPC and is not HTTP or OpenAPI. On Darwin and Linux, the accepted Unix-socket connection's kernel-attested UID and GID MUST map exactly to a configured producer or reader grant. A producer grant binds one canonical subject and producer identity to an explicit allowlist of `(event_class, operation_id)` tuples. A reader grant binds one canonical subject to an explicit allowlist of redaction classifications. The same contract names the append authority's expected canonical subject and UID/GID: the authority verifies its effective identity before listening, and qxctl or a producer verifies the connected server's kernel-attested identity before sending a request. Unknown, ambiguous, duplicate, or mismatched mappings fail closed. Socket permissions are defense in depth. A production producer and authority SHOULD run under distinct operating-system service identities; sharing a user identity intentionally shares that kernel-authenticated authority. The append authority's supervisor owns liveness only and MUST NOT gain producer or ledger authority.
 
-Direct file mutation is prohibited for qxctl, producers, and agents. Recovery and repair require a separately ratified administrative procedure and must preserve evidence of the original failure.
+Direct file mutation is prohibited for qxctl, producers, and agents. Enrollment creates no producer or reader grant; grants require explicit operator configuration. Recovery is limited to the evidence-preserving incomplete-tail procedure below. Any other repair remains a separately authorized administrative operation.
+
+The configuration contains endpoint trust and grant metadata but no secrets. Its final path component MUST NOT be a symbolic link and it MUST NOT be writable by group or other. User enrollment writes it as `0600`. System enrollment writes it as administrator-owned `0644` so separately identified producers and readers can obtain the authority identity and public grants without gaining configuration mutation authority.
+
+## Durable Ledger
+
+STAV v1 uses one append-only ledger file per TOPS serialization domain. It has no automatic retention or rotation: the ratified policies are `preserve_all` and `disabled`. A configured finite maximum byte size is mandatory; append fails closed before exceeding it.
+
+Each ledger record is exactly:
+
+```text
+uint32_be(event_length) || JCS(event) || SHA-256(JCS(event))
+```
+
+`event_length` is non-zero and no greater than 65,536 bytes. The final digest is 32 raw bytes and protects record framing; it is distinct from the domain-separated canonical event digest. The writer holds an exclusive non-blocking operating-system lock for the life of the open ledger, writes one complete frame, synchronizes the file, and only then emits a committed receipt. The empty file is a valid ledger with sequence zero and the per-TOPS genesis digest.
+
+The authority creates the ledger as `0600`, refuses symbolic-link or non-regular ledger targets, and refuses an existing ledger with any group or other permission bits. The file lock serializes conforming authorities; restrictive filesystem permissions remain mandatory because an advisory lock cannot stop a non-conforming process that already has write access.
+
+Startup scans every complete frame before accepting IPC. Each frame MUST pass its length, checksum, strict canonical event decoding, immutable TOPS ID, sequence, predecessor, and digest-chain checks. A complete malformed or inconsistent frame is corruption and prevents startup. Only an incomplete final frame caused by an interrupted append may be recovered automatically: its exact bytes are copied to a uniquely named recovery evidence file, the evidence file and containing directory are synchronized, the ledger is truncated to the last verified frame, and the ledger is synchronized before readiness. Status records that recovery occurred without exposing evidence contents. No middle-frame salvage, resynchronization search, or silent byte discard is permitted.
+
+Startup reconstructs the request-ID idempotency index from canonical events. The candidate portion is re-derived from each event and its candidate digest recalculated; duplicate historical request IDs with different candidate digests are corruption.
 
 ## Integrity
 
@@ -104,13 +126,13 @@ Queries MUST be scoped to an authorized TOPS and apply redaction before output. 
 
 Query pages are ascending redacted projections and identify source event ID, sequence, event digest, verification state, and redaction state. A projection is never hashed as though it were the canonical event. The response ceiling is 4,194,304 bytes and may reduce the page below the requested limit.
 
-qxctl implements the ratified grammar `qxctl stav query --tops-id UUID [--scope user|system] [bounded filters] [--json]` but opens no socket until reader authentication/authorization and local envelope content are ratified. `doctor` remains a client-side composition rather than a distinct server operation.
+The authority applies query filters only after authenticating the reader and enforcing its classification allowlist. Events whose classification is not granted are omitted rather than partially redacted into misleading records. `qxctl` implements `stav status`, `stav verify`, `stav query`, and the client-side `stav doctor` composition through this read-only interface; it never gains append or direct-file authority.
 
 ## Local Frame Mechanics
 
-The ratified local IPC frame is a four-byte unsigned big-endian payload length followed by exact canonical JSON bytes. Zero length is invalid. Requests are limited to 65,536 bytes and responses to 4,194,304 bytes; the length is validated before allocation. One request receives one response.
+The ratified local IPC frame is a four-byte unsigned big-endian payload length followed by exact canonical JSON bytes. Zero length is invalid. Requests are limited to 65,536 bytes and responses to 4,194,304 bytes; the length is validated before allocation. One request receives one response. Request operations are `append`, `status`, `query`, and `verify`, with exact payload unions defined by the canonical local-envelope schemas. `doctor` is intentionally not a server operation.
 
-This ratifies reusable framing mechanics only. It does not authorize a listener, define the local request/response envelope, select peer authentication, or choose ledger file framing. STAV append/query IPC is not HTTP and is outside SACV/OpenAPI.
+The listener accepts only authenticated local Unix-socket peers on supported Darwin and Linux TOPS nodes. The listener resolves the peer grant before dispatch, enforces a bounded per-request deadline, and returns only registered safe reason codes. STAV append/query IPC is not HTTP and is outside SACV/OpenAPI.
 
 ## Mutation Availability Policy
 
@@ -118,9 +140,7 @@ Security, credential, provider, policy, and configuration mutations MUST fail cl
 
 ## Remaining Implementation Gates
 
-Canonical candidate/event/receipt/query/query-page/verification content, serialization, SHA-256 domains, genesis construction, bounded query grammar, and local stream framing are ratified and implemented in the authority-free protocol kernel.
-
-Configuration/status/local-envelope content, peer authentication, producer and reader subjects, authorization, listener activation, storage/ledger framing, fsync and acknowledgement semantics, crash recovery, idempotency retention, retention, rotation, evidence-preserving repair, and runtime projection policy remain gated before enablement.
+Canonical candidate/event/receipt/query/query-page/verification content, serialization, SHA-256 domains, genesis construction, bounded query grammar, local stream framing, configuration/status/local-envelope content, peer authentication, producer and reader grants, authorization, listener activation, storage framing, fsync-before-receipt, crash recovery, idempotency reconstruction, preserve-all retention, disabled rotation, and runtime projection policy are Architect-ratified. Operational implementation and verification are active.
 
 Signed checkpoints, remote export, and non-repudiation remain deferred.
 

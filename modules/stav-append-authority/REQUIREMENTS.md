@@ -1,32 +1,37 @@
 # STAV Append Authority Requirements
 
-## Namespace and Build
+## Build and Lifecycle
 
-- **STAV-AA-N-001**: The module must live at `modules/stav-append-authority/`.
-- **STAV-AA-N-002**: The executable must be named `symphony-stav-append-authority`.
-- **STAV-AA-N-003**: Symphony-authored foundation source must be Go and must not use cgo.
-- **STAV-AA-N-004**: The module must remain its own Go module and independently installable. Monorepo development may use the root workspace; a published source build must require a real tagged kernel version and must not rely on a relative `replace` directive.
-- **STAV-AA-N-005**: Shared STAV protocol mechanics must come from the first-party pure-Go kernel and must not be reimplemented divergently.
+- **STAV-AA-N-001**: The module and executable names must remain canonical.
+- **STAV-AA-N-002**: Symphony-authored foundation code must be Go and cgo-free.
+- **STAV-AA-N-003**: The module must remain independently buildable and use tagged shared-module dependencies outside `go.work`.
+- **STAV-AA-L-001**: Install must be atomic and identical-install idempotent; differing replacement/removal requires `--force`.
+- **STAV-AA-L-002**: Host uninstall must preserve all per-TOPS configuration and state.
+- **STAV-AA-L-003**: Enrollment must create zero implicit producer or reader grants.
+- **STAV-AA-L-004**: Unenrollment preserves state unless one-TOPS purge is explicit and the listener is inactive.
 
-## Lifecycle
+## Identity and IPC
 
-- **STAV-AA-L-001**: User and system installation must target the ratified paths.
-- **STAV-AA-L-002**: Installation must be atomic and idempotent for an identical executable.
-- **STAV-AA-L-003**: Replacement or removal of a differing executable must require explicit `--force`.
-- **STAV-AA-L-004**: Lifecycle operations must reject non-regular executable targets.
-- **STAV-AA-L-005**: Uninstall must remove only the executable and must preserve all configuration, state, runtime artifacts, ledgers, and projections.
-- **STAV-AA-L-006**: The lifecycle scaffold must not invent an installation-manifest schema.
+- **STAV-AA-I-001**: Every instance path and protocol scope uses one canonical immutable TOPS UUID.
+- **STAV-AA-I-002**: The authority must verify its configured effective UID/GID before listening.
+- **STAV-AA-I-003**: Server and client must mutually authenticate Unix peers from kernel credentials on Darwin/Linux.
+- **STAV-AA-I-004**: Producer grants must authorize exact event-class/operation tuples; reader grants must authorize exact classifications.
+- **STAV-AA-I-005**: Unknown, ambiguous, mismatched, or ungranted identities fail closed.
+- **STAV-AA-I-006**: Frames and connection time are bounded before allocation or dispatch.
 
-## Identity and Paths
+## Ledger
 
-- **STAV-AA-P-001**: Instance resolution must accept only canonical lowercase TOPS UUIDs.
-- **STAV-AA-P-002**: User and system configuration, state, runtime, and socket paths must match `knowledge/stav/SPEC.md`.
-- **STAV-AA-P-003**: User runtime fallback must resolve to the per-TOPS state `stav/run/append.sock` path only when `XDG_RUNTIME_DIR` is absent.
-- **STAV-AA-P-004**: Path resolution must not create per-TOPS files or directories.
+- **STAV-AA-D-001**: One non-blocking exclusive lock protects one ledger for the process lifetime.
+- **STAV-AA-D-002**: Every startup verifies frame length, checksum, canonical event, TOPS, sequence, and predecessor chain.
+- **STAV-AA-D-003**: A committed receipt is returned only after the complete frame is synchronized.
+- **STAV-AA-D-004**: Request-ID idempotency is reconstructed from canonical events; conflicting reuse fails closed.
+- **STAV-AA-D-005**: Only an incomplete final frame may be recovered automatically, with exact evidence preserved and synchronized first.
+- **STAV-AA-D-006**: Complete corruption, middle-frame damage, or chain mismatch prevents readiness.
+- **STAV-AA-D-007**: v1 retention is preserve-all, rotation is disabled, and a finite maximum ledger size is mandatory.
 
-## Closed Gates
+## Administration and Producers
 
-- **STAV-AA-G-001**: No configuration, status, or local-envelope schema content may be inferred from a reserved identifier.
-- **STAV-AA-G-002**: Ratified codec availability does not authorize a listener, producer enrollment, candidate ingestion, committed receipt, trusted-field assignment, or ledger mutation.
-- **STAV-AA-G-003**: No `append` or implicit repair command may exist in the executable or qxctl.
-- **STAV-AA-G-004**: HTTP and OpenAPI must not govern producer ingestion.
+- **STAV-AA-A-001**: qxctl exposes only status, verify, bounded query, and doctor composition.
+- **STAV-AA-A-002**: Projection filtering and redaction authorization occur before output.
+- **STAV-AA-A-003**: SSIAG uses a closed typed safe-metadata vocabulary and treats any non-committed receipt as failure.
+- **STAV-AA-A-004**: No producer spool, secondary writer, raw append, general repair, HTTP, OpenAPI, or remote transport may exist in v1.

@@ -8,4 +8,4 @@
 4. Domain validation applies schema identifiers, tagged unions, closed registries, limits, and cross-field constraints.
 5. Digest and framing helpers operate only on already validated data or caller-provided streams.
 
-No layer opens a socket or touches runtime state. Transport authentication and runtime mutation remain append-authority gates.
+No layer opens a socket or touches runtime state. Transport authentication, authorization, and ledger mutation belong only to the append-authority implementation.

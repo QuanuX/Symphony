@@ -36,6 +36,29 @@ func SocketForTOPS(scope, topsID string) (string, error) {
 	}
 }
 
+// ConfigForTOPS resolves the canonical per-TOPS append-authority contract.
+func ConfigForTOPS(scope, topsID string) (string, error) {
+	if err := stavprotocol.ValidateTOPSID(topsID); err != nil {
+		return "", err
+	}
+	switch scope {
+	case "user":
+		home, err := os.UserHomeDir()
+		if err != nil {
+			return "", fmt.Errorf("resolve user home: %w", err)
+		}
+		configBase := os.Getenv("XDG_CONFIG_HOME")
+		if configBase == "" {
+			configBase = filepath.Join(home, ".config")
+		}
+		return cleanAbsolute(filepath.Join(configBase, "symphony", topsID, "stav", "append-authority.json"))
+	case "system":
+		return filepath.Join("/etc/symphony", topsID, "stav", "append-authority.json"), nil
+	default:
+		return "", fmt.Errorf("unsupported scope %q: expected user or system", scope)
+	}
+}
+
 func cleanAbsolute(value string) (string, error) {
 	value = filepath.Clean(value)
 	if !filepath.IsAbs(value) || value == string(filepath.Separator) {

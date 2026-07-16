@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Owner-ratified v1 architecture and relationship contract. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related capability is implemented. A ratified architecture does not become operational merely because its contract is described.
+Architect-ratified v1 architecture and relationship contract. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related capability is implemented. A ratified architecture does not become operational merely because its contract is described.
 
 ## Canonical Relationship Types
 
@@ -94,8 +94,32 @@ Where it meets the use case, non-exportable key creation and sign/assert/decrypt
 
 SSIAG MAY submit safe metadata for authentication and policy results, provider-operation lifecycle, credential rotation, enrollment, provider unavailability, and lease lifecycle. It MUST NOT submit proofs, assertions, tokens, credential values, provider payloads, secret-bearing errors, or routine heartbeat events.
 
+The SSIAG v1 producer vocabulary is closed to the following event and operation pairs:
+
+| Meaning | Event class | Operation ID | Intent ID |
+|---|---|---|---|
+| authentication decision | `symphony.ssiag.authentication.decision` | `symphony.ssiag.authenticate` | `symphony.ssiag.authentication.evaluate` |
+| policy decision | `symphony.ssiag.policy.decision` | `symphony.ssiag.authorize` | `symphony.ssiag.policy.evaluate` |
+| provider operation | `symphony.ssiag.provider.operation` | `symphony.ssiag.provider.execute` | `symphony.ssiag.provider.execute` |
+| credential rotation | `symphony.ssiag.credential.rotation` | `symphony.ssiag.credential.rotate` | `symphony.ssiag.credential.rotate` |
+| enrollment lifecycle | `symphony.ssiag.enrollment.lifecycle` | `symphony.ssiag.enrollment.change` | `symphony.ssiag.enrollment.change` |
+| lease issuance | `symphony.ssiag.lease.lifecycle` | `symphony.ssiag.lease.issue` | `symphony.ssiag.lease.issue` |
+| lease revocation | `symphony.ssiag.lease.lifecycle` | `symphony.ssiag.lease.revoke` | `symphony.ssiag.lease.revoke` |
+
+The corresponding v1 outcome-to-reason mappings are also closed:
+
+- authentication: `allowed`, `denied`, `failed`, or `unavailable` maps to `symphony.ssiag.authentication.<outcome>`;
+- policy: `allowed`, `denied`, `failed`, or `unavailable` maps to `symphony.ssiag.policy.<outcome>`;
+- provider: `succeeded`, `failed`, or `unavailable` maps to `symphony.ssiag.provider.<outcome>`;
+- credential rotation: `succeeded`, `failed`, or `unavailable` maps to `symphony.ssiag.credential.rotation.<outcome>`;
+- enrollment: `succeeded` or `failed` maps to `symphony.ssiag.enrollment.<outcome>`;
+- lease issuance: `succeeded` maps to `symphony.ssiag.lease.issued`, while `failed` maps to `symphony.ssiag.lease.failed`;
+- lease revocation: `succeeded` maps to `symphony.ssiag.lease.revoked`, while `failed` maps to `symphony.ssiag.lease.failed`.
+
+The SSIAG producer constructs the candidate from typed safe references and closed outcome/reason mappings, never accepts arbitrary event class or operation values, and never assigns producer identity, event identity, ordering, or integrity. The STAV append authority authenticates the SSIAG operating-system identity, assigns the configured producer identity, enforces the exact pair allowlist, and returns a durable receipt. A caller requiring audit MUST treat a transport failure, endpoint-identity mismatch, local rejection, or non-committed receipt as failure; it MUST NOT spool or write the ledger directly.
+
 ## Remaining Operational Gates
 
-Architecture is ratified for local peer authentication, foundational supervision, proposal/apply mutation, provider mutual trust, protected secret delivery, and per-user macOS Keychain use. Darwin/Linux peer extraction and exact UID/GID subject mapping are implemented for accepted SSIAG connections, with unmapped peers restricted to the existing read-only metadata surface. Runtime mutation and provider enablement still require service identities, client-side endpoint trust, request schemas, replay/idempotency limits, code-signing policy, Keychain namespace and operation policy, secret-channel framing, broader negative tests, lifecycle tests, and release evidence.
+Architecture is ratified for local peer authentication, foundational supervision, proposal/apply mutation, provider mutual trust, protected secret delivery, and per-user macOS Keychain use. Darwin/Linux peer extraction and exact UID/GID subject mapping are implemented for accepted SSIAG connections, with unmapped peers restricted to the existing read-only metadata surface. Mutually authenticated STAV submission and the closed SSIAG producer vocabulary are implemented as the audit dependency for future operations. Runtime mutation and provider enablement still require their request schemas, policy execution, replay limits, code-signing policy, Keychain namespace and operation policy, secret-channel framing, broader negative tests, lifecycle tests, and release evidence.
 
 Remote SSIAG access, a network gateway, generic SSIAG tokens, implicit provider fallback, agent apply authority, and graph-database deployment remain unauthorized.
