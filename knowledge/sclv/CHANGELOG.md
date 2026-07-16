@@ -433,3 +433,92 @@ This PR authorizes none of the following:
   - `SDK publication`
 - notes: |
     This record was authored only after the real PR URL and merge commit existed. Runtime audit events remain outside SCLV and belong only to the operational STAV ledger once enabled.
+
+- record_id: `SCLV-PR-059`
+- title: `STAV durability, authenticated IPC, and SSIAG producer operationalized`
+- status: `canonical`
+- date: `2026-07-16`
+- change_type: `canonical_update`
+- related_pr: `https://github.com/QuanuX/Symphony/pull/59`
+- merge_commit: `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`
+- affected_surfaces:
+  - `go.work`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssiag/MANIFEST.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/stav/MANIFEST.md`
+  - `knowledge/stav/SKILL.md`
+  - `knowledge/stav/SPEC.md`
+  - `knowledge/stav/registries/v1/base.md`
+  - `knowledge/stav/schemas/v1/MANIFEST.md`
+  - `knowledge/stav/schemas/v1/append-authority-config.schema.json`
+  - `knowledge/stav/schemas/v1/append-authority-status.schema.json`
+  - `knowledge/stav/schemas/v1/local-request.schema.json`
+  - `knowledge/stav/schemas/v1/local-response.schema.json`
+  - `libraries/stav-protocol-go/MANIFEST.md`
+  - `libraries/stav-protocol-go/GO_1_27_MIGRATION.md`
+  - `modules/secure-identity-access-governance/IMPLEMENTATION.md`
+  - `modules/secure-identity-access-governance/SPEC.md`
+  - `modules/secure-identity-access-governance/internal/stavproducer/producer.go`
+  - `modules/stav-append-authority/MANIFEST.md`
+  - `modules/stav-append-authority/IMPLEMENTATION.md`
+  - `modules/stav-append-authority/SPEC.md`
+  - `modules/stav-append-authority/client/client.go`
+  - `modules/stav-append-authority/internal/server/server.go`
+  - `modules/stav-append-authority/internal/storage/ledger.go`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/symphony-validator/src/artifacts.cpp`
+- skvi_references:
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/stav/SPEC.md`
+  - `knowledge/stav/schemas/v1/MANIFEST.md`
+  - `libraries/stav-protocol-go/MANIFEST.md`
+  - `modules/secure-identity-access-governance/MANIFEST.md`
+  - `modules/secure-identity-access-governance/SPEC.md`
+  - `modules/secure-identity-access-governance/IMPLEMENTATION.md`
+  - `modules/stav-append-authority/MANIFEST.md`
+  - `modules/stav-append-authority/SPEC.md`
+  - `modules/stav-append-authority/IMPLEMENTATION.md`
+  - `tools/symphony-validator/MANIFEST.md`
+- change_summary: |
+    Under the Architect's direction, PR #59 completed the ratified STAV durability, authenticated local IPC, read-only administration, and closed SSIAG producer sequence.
+    It added the first operational per-TOPS append authority, strict configuration and local-envelope contracts, durable receipt semantics, startup verification and evidence-preserving final-tail recovery, exact producer and reader grants, mutually authenticated Darwin/Linux Unix-socket IPC, bounded qxctl projections, and SSIAG safe-metadata submission.
+- relationship_changes: |
+    `knowledge/stav/` remains the canonical protocol and schema authority; the Go protocol kernel implements canonical mechanics without runtime authority.
+    The per-TOPS append authority is the sole conforming ledger writer and assigns producer identity, event identity, ordering, and integrity fields.
+    SSIAG is an authenticated typed candidate producer with a closed event vocabulary, while qxctl is an authenticated read-only client and cannot append or edit the ledger.
+- doctrine_changes: |
+    A committed receipt now means the complete ledger frame was synchronized before acknowledgement.
+    Only an incomplete final frame may be recovered automatically, with exact evidence synchronized before truncation; complete corruption prevents readiness.
+    Kernel-attested endpoint and caller identities, exact UID/GID grants, restrictive ledger permissions, and fail-closed audit availability remain mandatory. Agents retain no ledger-write or administrative-apply authority.
+- compatibility_consequences: |
+    Go 1.26.5 remains the production baseline; Go 1.27 remains a separately gated confirmed-release migration and cannot alter canonical bytes or command grammar.
+    The operational increment declares STAV kernel `v0.2.0` and append authority `v0.1.0` as coordinated future module tags. Consumers pin those versions and their reproducible module hashes, but tag publication is not authorized by this record.
+    The v1 ledger framing is the first operational on-disk format. No migration from an earlier operational Symphony ledger is claimed. Preserve-all retention and disabled automatic rotation are compatibility constraints.
+- publication_consequences: |
+    No module tag, release artifact, OpenAPI surface, SDK, Mintlify page, live playground, or public documentation is authorized.
+    SODV remains the sole publication authority and must separately approve any coordinated module-tag publication from the reviewed merge tree.
+- projection_consequences: |
+    qxctl may render only authenticated, classification-authorized STAV status, verification, and redacted query projections.
+    Those projections are derived and disposable; they do not replace canonical events, direct ledger verification, or SKV source truth.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/59`
+  - `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`
+  - `e1871624902f912eb9bad42ff5e400cce243f772`
+- non_authorizations:
+  - `STAV kernel or append-authority tag publication`
+  - `Go 1.27 production pin`
+  - `qxctl append authority`
+  - `agent ledger access or administrative apply authority`
+  - `node-troll producer authority`
+  - `remote STAV access or export`
+  - `signed checkpoints or non-repudiation claims`
+  - `automatic retention, rotation, or general ledger repair`
+  - `operational SSIAG credential, policy, provider, or mutation endpoints`
+  - `OpenAPI, SDK, Mintlify, or public documentation publication`
+- notes: |
+    This record was authored only after PR #59 merged and its 40-character merge commit was verified to contain the exact reviewed head tree. Runtime audit events belong only to the per-installation STAV ledger and must never be authored into SCLV.
