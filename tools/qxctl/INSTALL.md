@@ -6,6 +6,8 @@
 - No remote runtime requirement
 - No provider/cloud/Docker/Kubernetes requirement
 
+qxctl has no third-party dependency. Its STAV grammar uses Symphony's first-party pure-Go protocol kernel. The monorepo `go.work` resolves the unreleased kernel during development; before qxctl is published for independent source installation, the kernel must be tagged and qxctl must require that real compatible version.
+
 ## Build and Run
 qxctl can be run locally using the Go toolchain:
 ```bash
@@ -18,4 +20,4 @@ go build -o qxctl ./cmd/qxctl
 ```
 
 ## Migration Note
-qxctl preserves a future migration posture for Go 1.27 after release/toolchain availability.
+qxctl targets Go 1.27 only after general availability and the differential fixture/digest, default-vs-`nojsonv2`, vet, race, and supported-platform cross-build gates pass. The workspace and module pins change atomically, and the migration cannot alter qxctl grammar or STAV bytes.

@@ -5,7 +5,7 @@
 To establish declarative boundaries for the Symphony Knowledge Vector layer and formally map the relationships between truth surfaces, indexes, changes, and publication governance.
 
 ### Scope
-Defines the overarching knowledge framework structure (`knowledge/`) and houses the primary governance models for derived sub-vectors (SKVI, SCLV, SODV).
+Defines the overarching knowledge framework structure (`knowledge/`) and houses autonomous vector surfaces including SKVI, SCLV, SODV, SACV, SSIAG, and STAV.
 
 ### Non-scope
 It does not house implementation logic, build systems, deployment orchestration, or runtime modules.
@@ -24,6 +24,15 @@ SCLV records the changes made to the surfaces within the SKV framework over time
 ### Relationship to SODV
 SODV governs how knowledge within the SKV framework becomes official public documentation.
 
+### Relationship to SACV
+`knowledge/sacv/` owns cross-cutting API-contract governance, the OpenAPI 3.2.0 profile, and the API-contract registry. Endpoint semantics remain with their domain-owning vector or module. SODV governs any public projection.
+
+### Relationship to SSIAG
+`knowledge/ssiag/` owns canonical secure identity and access governance vocabulary, relationships, extensions, provider protocol, and authority boundaries. Runtime code implements that truth but does not replace it.
+
+### Relationship to STAV
+`knowledge/stav/` owns canonical TOPS audit protocol truth. Per-TOPS operational ledgers live outside the repository and are not SKV content.
+
 ### Relationship to Module Contracts
 Module contracts (`MANIFEST.md`, etc.) are distinct domains. SKV maps them but does not replace them.
 
@@ -41,7 +50,7 @@ NotebookLM is a corpus alignment and context tool, not canonical authority.
 ### Relationship to Mintlify
 Mintlify publishes derived official documentation.
 Mintlify is a publication surface, not canonical authority.
-No documentation publication pipeline is authorized by this task.
+No documentation publication pipeline is authorized by this contract.
 
 ### Truth Hierarchy
 MANIFEST.md is declared contract truth.
@@ -57,4 +66,4 @@ SODV governs publication truth.
 Published documentation is a derived public projection.
 
 ### Non-authorization Statement
-This canonical seed authorizes no implementation files, no generated indexes, no generated reports, no schemas, no templates, no CI files, no documentation publication configuration, no Mintlify configuration, no qxctl integration, no validator implementation, no NotebookLM automation, no publication pipeline, no database files, no service files, no runtime processes, no deployment scripts, no installer scripts, no binary assets, and no binary renames.
+This canonical surface recognizes SACV governance but authorizes no endpoint document by itself. It authorizes no implementation files, generated indexes, generated reports, templates, CI files, documentation publication configuration, Mintlify configuration, qxctl integration, validator implementation, NotebookLM automation, publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.

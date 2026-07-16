@@ -36,6 +36,9 @@ qxctl may later consume SODV, but qxctl integration is not authorized here.
 ## How SODV Relates to SKVI
 SKVI indexes source truth; SODV defines how those indexes may be published.
 
+## How SODV Relates to SACV
+SACV governs API contracts. Before publishing an API, verify its SACV registry entry, owner, OpenAPI 3.2.0 compatibility, audience, server policy, interactive-request decision, SDK state, and MCP exposure decision.
+
 ## How SODV Relates to SCLV
 SCLV records change truth; SODV dictates how changes are reflected in public release documentation.
 

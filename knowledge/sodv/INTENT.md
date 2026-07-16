@@ -29,6 +29,9 @@ SCLV records change. SODV relies on SCLV to understand when canonical truth has 
 ### Relationship to Mintlify
 Mintlify publishes derived official documentation. SODV governs what Mintlify projects. 
 
+### Relationship to SACV
+SACV governs canonical API contracts and their registry. SODV alone decides whether a SACV-registered API may be projected into Mintlify, SDK documentation, a live playground, or MCP tooling.
+
 ### Relationship to NotebookLM
 NotebookLM aligns corpus context. 
 

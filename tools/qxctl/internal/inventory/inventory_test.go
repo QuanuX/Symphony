@@ -75,12 +75,6 @@ func TestSnapshotJSON_Success(t *testing.T) {
 	if !strings.Contains(output, `"go_baseline": "go1.26.5"`) {
 		t.Errorf("expected JSON to contain go_baseline")
 	}
-	if !strings.Contains(output, `"module_count": 3`) {
-		t.Errorf("expected JSON to contain module_count 3")
-	}
-	if !strings.Contains(output, `"contract_count": 12`) {
-		t.Errorf("expected JSON to contain contract_count 12")
-	}
 	if !strings.Contains(output, `"module": "node-troll"`) {
 		t.Errorf("expected JSON to contain module node-troll")
 	}
@@ -95,6 +89,13 @@ func TestSnapshotJSON_Success(t *testing.T) {
 	var data RuntimeInventory
 	if err := json.Unmarshal(outputBytes, &data); err != nil {
 		t.Fatalf("failed to unmarshal generated JSON: %v", err)
+	}
+	if data.ModuleCount != len(modules.CanonicalModules) {
+		t.Errorf("expected module_count %d, got %d", len(modules.CanonicalModules), data.ModuleCount)
+	}
+	expectedContracts := len(modules.CanonicalModules) * len(modules.ExpectedFiles)
+	if data.ContractCount != expectedContracts {
+		t.Errorf("expected contract_count %d, got %d", expectedContracts, data.ContractCount)
 	}
 }
 

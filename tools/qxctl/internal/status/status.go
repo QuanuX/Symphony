@@ -71,7 +71,7 @@ func GetStatus(repoRoot string) (AdministrativeStatus, error) {
 	// 1b. Tool
 	qxctlPath := filepath.Join("tools", "qxctl")
 	toolContracts := []string{"INTENT.md", "MANIFEST.md", "INSTALL.md", "SKILL.md"}
-	
+
 	if !repository.IsDir(filepath.Join(repoRoot, qxctlPath)) {
 		return status, fmt.Errorf("missing qxctl directory: %s", qxctlPath)
 	}
@@ -170,7 +170,7 @@ func Report(repoRoot string) ([]string, error) {
 	if status.Digest.Ok {
 		output = append(output, fmt.Sprintf("status: digest %s %s", status.Digest.Algorithm, status.Digest.Value))
 	}
-	
+
 	output = append(output, "status: checks passed")
 	return output, nil
 }

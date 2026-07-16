@@ -18,6 +18,9 @@ var CanonicalModules = []string{
 	"node-troll",
 	"bus-troll",
 	"hotpath-runtime",
+	"secure-identity-access-governance",
+	"ssiag-provider-macos-keychain",
+	"stav-append-authority",
 }
 
 var ExpectedFiles = []string{
@@ -209,7 +212,7 @@ func Metadata(repoRoot, moduleName string) ([]string, error) {
 	for _, file := range ExpectedFiles {
 		filePath := filepath.Join(modPath, file)
 		relPath := filepath.Join(modRelPath, file)
-		
+
 		if !repository.IsFile(filePath) {
 			output = append(output, fmt.Sprintf("metadata: missing contract %s", relPath))
 			return output, fmt.Errorf("missing contract file: %s in %s", file, modRelPath)
@@ -272,7 +275,7 @@ func MetadataJSON(repoRoot, moduleName string) ([]byte, error) {
 	for _, file := range ExpectedFiles {
 		filePath := filepath.Join(modPath, file)
 		relPath := filepath.Join(modRelPath, file)
-		
+
 		if !repository.IsFile(filePath) {
 			return nil, fmt.Errorf("missing contract file: %s in %s", file, modRelPath)
 		}
@@ -307,7 +310,7 @@ func MetadataAllJSON(repoRoot string) ([]byte, error) {
 		for _, file := range ExpectedFiles {
 			filePath := filepath.Join(modPath, file)
 			relPath := filepath.Join(modRelPath, file)
-			
+
 			if !repository.IsFile(filePath) {
 				return nil, fmt.Errorf("missing contract file: %s in %s", file, modRelPath)
 			}

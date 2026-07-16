@@ -14,8 +14,20 @@ The first runtime set is currently privately staged, not canonically imported:
 - `bus-troll`
 - `hotpath-runtime`
 
+## Additional Canonical Modules
+
+- `secure-identity-access-governance`: independently installable Go-only SSIAG foundation with per-TOPS enrollment.
+- `ssiag-provider-macos-keychain`: optional, independently installable Swift adapter scaffold for the future macOS Keychain boundary.
+- `stav-append-authority`: independently installable Go namespace and lifecycle scaffold for the future per-TOPS serialized STAV writer.
+
+Their canonical protocol surfaces are `knowledge/ssiag/` and `knowledge/stav/`. `knowledge/sacv/` governs API contracts and targets OpenAPI 3.2.0 without authorizing a remote API or public endpoint. The Keychain adapter is metadata-only. The STAV module installs only its executable and resolves ratified paths; the authority-free protocol codec is a shared library, while no operational credential access, STAV listener, candidate ingestion, or ledger writer is enabled.
+
+## First-Party Libraries
+
+`libraries/` contains shared, independently testable Go implementation code for canonical contracts. Libraries are build-time dependencies rather than installable modules: they have no binary, resident, service identity, socket, state, or runtime authority. `libraries/stav-protocol-go` implements STAV v1 serialization and validation rules owned by `knowledge/stav/`.
+
 ## Root-Level Governance Role
-The root repository establishes platform invariants and guarantees modular sovereignty. It does not dictate implementation code. No implementation import has occurred yet.
+The root repository establishes platform invariants and guarantees modular sovereignty. It does not dictate implementation code. Implemented modules remain subordinate to their canonical contracts and independently installable.
 
 ## Doctrine
 - trolls are the local residents.

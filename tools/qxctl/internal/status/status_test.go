@@ -6,13 +6,15 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	qxmodules "github.com/QuanuX/Symphony/tools/qxctl/internal/modules"
 )
 
 func createValidTestRepo(t *testing.T) string {
 	t.Helper()
 	tempDir := t.TempDir()
 
-	modules := []string{"node-troll", "bus-troll", "hotpath-runtime"}
+	modules := qxmodules.CanonicalModules
 	files := []string{"INTENT.md", "MANIFEST.md", "INSTALL.md", "SKILL.md"}
 
 	for _, mod := range modules {
@@ -126,12 +128,13 @@ func TestReportJSON_ValidRepo(t *testing.T) {
 		t.Errorf("expected tool ok=true name=qxctl path=tools/qxctl contracts=4, got ok=%v name=%s path=%s contracts=%d", status.Tool.Ok, status.Tool.Name, status.Tool.Path, status.Tool.Contracts)
 	}
 
-	if !status.Modules.Ok || status.Modules.Count != 3 {
-		t.Errorf("expected modules ok=true count=3, got ok=%v count=%d", status.Modules.Ok, status.Modules.Count)
+	if !status.Modules.Ok || status.Modules.Count != len(qxmodules.CanonicalModules) {
+		t.Errorf("expected modules ok=true count=%d, got ok=%v count=%d", len(qxmodules.CanonicalModules), status.Modules.Ok, status.Modules.Count)
 	}
 
-	if !status.Contracts.Ok || status.Contracts.Count != 12 {
-		t.Errorf("expected contracts ok=true count=12, got ok=%v count=%d", status.Contracts.Ok, status.Contracts.Count)
+	expectedContracts := len(qxmodules.CanonicalModules) * len(qxmodules.ExpectedFiles)
+	if !status.Contracts.Ok || status.Contracts.Count != expectedContracts {
+		t.Errorf("expected contracts ok=true count=%d, got ok=%v count=%d", expectedContracts, status.Contracts.Ok, status.Contracts.Count)
 	}
 
 	if !status.Digest.Ok || status.Digest.Algorithm != "sha256" || len(status.Digest.Value) != 64 {
