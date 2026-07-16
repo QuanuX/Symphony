@@ -1,15 +1,23 @@
 package main
 
 import (
+	"context"
+	"encoding/json"
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
+	"time"
 
+	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/contracts"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/inventory"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/modules"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/repository"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/ssiagclient"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/status"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/stavclient"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/version"
 )
 
@@ -36,6 +44,16 @@ func main() {
 	case "contracts":
 		if err := runContracts(); err != nil {
 			fmt.Printf("contracts failed: %v\n", err)
+			os.Exit(1)
+		}
+	case "ssiag":
+		if err := runSSIAG(os.Args[2:]); err != nil {
+			fmt.Printf("ssiag failed: %v\n", err)
+			os.Exit(1)
+		}
+	case "stav":
+		if err := runSTAV(os.Args[2:]); err != nil {
+			fmt.Printf("stav failed: %v\n", err)
 			os.Exit(1)
 		}
 	case "inventory":
@@ -155,6 +173,210 @@ func printUsage() {
 	fmt.Println("  inventory [--json]                Emit deterministic runtime inventory snapshot")
 	fmt.Println("  inventory digest [--json]         Emit deterministic runtime inventory SHA-256 digest")
 	fmt.Println("  status [--json]                   Report consolidated administrative status")
+	fmt.Println("  ssiag status --tops-id UUID [--scope user|system] [--json] Read safe SSIAG status")
+	fmt.Println("  ssiag providers --tops-id UUID [--scope user|system] [--json] List safe provider metadata")
+	fmt.Println("  ssiag doctor --tops-id UUID [--scope user|system] Verify local SSIAG availability")
+	fmt.Println("  stav status --tops-id UUID [--scope user|system] [--json] Reserved read-only STAV status")
+	fmt.Println("  stav verify --tops-id UUID [--scope user|system] [--json] Reserved read-only STAV verification")
+	fmt.Println("  stav query --tops-id UUID [--scope user|system] [bounded filters] [--json] Reserved bounded STAV query")
+	fmt.Println("  stav doctor --tops-id UUID [--scope user|system] Reserved STAV diagnostics")
+}
+
+func runSTAV(args []string) error {
+	if len(args) == 0 {
+		return fmt.Errorf("STAV subcommand is required: status, verify, query, or doctor")
+	}
+	subcommand := args[0]
+	if subcommand == "append" {
+		return fmt.Errorf("qxctl stav append is prohibited; qxctl never submits arbitrary events or edits ledgers")
+	}
+	switch subcommand {
+	case "status", "verify", "query", "doctor":
+	default:
+		return fmt.Errorf("unknown STAV subcommand %q", subcommand)
+	}
+
+	set := flag.NewFlagSet("stav "+subcommand, flag.ContinueOnError)
+	topsID := set.String("tops-id", "", "immutable TOPS UUID")
+	scope := set.String("scope", "user", "STAV scope: user or system")
+	if subcommand != "doctor" {
+		_ = set.Bool("json", false, "emit JSON")
+	}
+	var query stavprotocol.Query
+	var throughSequence optionalUint64
+	if subcommand == "query" {
+		query.Schema = stavprotocol.SchemaQuery
+		query.EventClasses = make([]string, 0)
+		query.Outcomes = make([]string, 0)
+		query.Limit = 100
+		set.Uint64Var(&query.AfterSequence, "after-sequence", 0, "exclusive sequence cursor")
+		set.Var(&throughSequence, "through-sequence", "optional inclusive sequence ceiling")
+		set.StringVar(&query.FromTime, "from-time", "", "optional inclusive UTC timestamp")
+		set.StringVar(&query.ThroughTime, "through-time", "", "optional inclusive UTC timestamp")
+		set.Var((*stringList)(&query.EventClasses), "event-class", "registered event class; repeat up to 16 times")
+		set.Var((*stringList)(&query.Outcomes), "outcome", "generic outcome; repeat up to 5 times")
+		set.StringVar(&query.CorrelationID, "correlation-id", "", "optional correlation UUID")
+		set.StringVar(&query.RequestID, "request-id", "", "optional request UUID")
+		set.Uint64Var(&query.Limit, "limit", 100, "page size from 1 through 1000")
+	}
+	if err := set.Parse(args[1:]); err != nil {
+		return err
+	}
+	if set.NArg() != 0 {
+		return fmt.Errorf("unexpected STAV arguments: %v", set.Args())
+	}
+	if *topsID == "" {
+		return fmt.Errorf("--tops-id is required")
+	}
+	if _, err := stavclient.SocketForTOPS(*scope, *topsID); err != nil {
+		return err
+	}
+	if subcommand == "query" {
+		query.TOPSID = *topsID
+		if throughSequence.set {
+			value := throughSequence.value
+			query.ThroughSequence = &value
+		}
+		if _, err := stavprotocol.EncodeQuery(query); err != nil {
+			return fmt.Errorf("invalid bounded STAV query: %w", err)
+		}
+	}
+	return fmt.Errorf("STAV %s is reserved but unavailable until local envelope content, reader authentication/authorization, and required runtime contracts are ratified; no socket was opened", subcommand)
+}
+
+type stringList []string
+
+func (s *stringList) String() string { return fmt.Sprint([]string(*s)) }
+
+func (s *stringList) Set(value string) error {
+	*s = append(*s, value)
+	return nil
+}
+
+type optionalUint64 struct {
+	set   bool
+	value uint64
+}
+
+func (v *optionalUint64) String() string {
+	if !v.set {
+		return ""
+	}
+	return strconv.FormatUint(v.value, 10)
+}
+
+func (v *optionalUint64) Set(value string) error {
+	parsed, err := strconv.ParseUint(value, 10, 64)
+	if err != nil {
+		return fmt.Errorf("invalid non-negative integer: %w", err)
+	}
+	v.set = true
+	v.value = parsed
+	return nil
+}
+
+func runSSIAG(args []string) error {
+	if len(args) == 0 {
+		return fmt.Errorf("SSIAG subcommand is required: status, providers, or doctor")
+	}
+	set := flag.NewFlagSet("ssiag "+args[0], flag.ContinueOnError)
+	jsonOutput := set.Bool("json", false, "emit JSON")
+	scope := set.String("scope", "user", "SSIAG scope: user or system")
+	topsID := set.String("tops-id", "", "immutable TOPS UUID")
+	if err := set.Parse(args[1:]); err != nil {
+		return err
+	}
+	if set.NArg() != 0 {
+		return fmt.Errorf("unexpected SSIAG arguments: %v", set.Args())
+	}
+	if *topsID == "" {
+		*topsID = os.Getenv("SYMPHONY_SSIAG_TOPS_ID")
+	}
+	if *topsID == "" {
+		return fmt.Errorf("--tops-id or SYMPHONY_SSIAG_TOPS_ID is required")
+	}
+	socket, err := ssiagclient.SocketForTOPS(*scope, *topsID)
+	if err != nil {
+		return err
+	}
+	client := ssiagclient.New(socket, 4*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
+	defer cancel()
+
+	switch args[0] {
+	case "status":
+		status, err := requireSSIAGStatus(ctx, client, *topsID, *scope)
+		if err != nil {
+			return err
+		}
+		if *jsonOutput {
+			return printSSIAGJSON(status)
+		}
+		fmt.Printf("SSIAG: %s version=%s ready=%t tops_id=%s tops_name=%q mode=%s providers=%d\n", status.Name, status.Version, status.Ready, status.TOPSID, status.TOPSName, status.Mode, status.ProviderCount)
+		return nil
+	case "providers":
+		if _, err := requireSSIAGStatus(ctx, client, *topsID, *scope); err != nil {
+			return err
+		}
+		providers, err := client.Providers(ctx)
+		if err != nil {
+			return err
+		}
+		if *jsonOutput {
+			return printSSIAGJSON(providers)
+		}
+		if len(providers.Providers) == 0 {
+			fmt.Println("SSIAG providers: none declared")
+			return nil
+		}
+		for _, provider := range providers.Providers {
+			fmt.Printf("SSIAG provider: %s kind=%s status=%s\n", provider.Name, provider.Kind, provider.Status)
+		}
+		return nil
+	case "doctor":
+		if *jsonOutput {
+			return fmt.Errorf("SSIAG doctor does not support --json")
+		}
+		status, err := requireSSIAGStatus(ctx, client, *topsID, *scope)
+		if err != nil {
+			return err
+		}
+		providers, err := client.Providers(ctx)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("SSIAG doctor: schema=%s tops_id=%s ready=true providers=%d\n", status.Schema, status.TOPSID, len(providers.Providers))
+		fmt.Println("SSIAG doctor: checks passed")
+		return nil
+	default:
+		return fmt.Errorf("unknown SSIAG subcommand %q", args[0])
+	}
+}
+
+func requireSSIAGStatus(ctx context.Context, client *ssiagclient.Client, topsID, scope string) (ssiagclient.Status, error) {
+	status, err := client.Status(ctx)
+	if err != nil {
+		return ssiagclient.Status{}, err
+	}
+	if status.TOPSID != topsID {
+		return ssiagclient.Status{}, fmt.Errorf("SSIAG response TOPS ID does not match requested identity")
+	}
+	if status.Mode != scope {
+		return ssiagclient.Status{}, fmt.Errorf("SSIAG response mode does not match requested scope")
+	}
+	if !status.Ready {
+		return ssiagclient.Status{}, fmt.Errorf("SSIAG is not ready")
+	}
+	return status, nil
+}
+
+func printSSIAGJSON(value any) error {
+	data, err := json.MarshalIndent(value, "", "  ")
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(data))
+	return nil
 }
 
 func runDoctor() error {

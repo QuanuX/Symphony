@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/QuanuX/Symphony/knowledge/stav/schemas/v1/verification.schema.json",
+  "title": "symphony.stav.verification.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["after_sequence", "events_checked", "result", "schema", "through_sequence", "tops_id"],
+  "properties": {
+    "after_sequence": { "$ref": "common.schema.json#/$defs/safeInteger" },
+    "events_checked": { "$ref": "common.schema.json#/$defs/safeInteger" },
+    "result": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["state"],
+          "properties": { "state": { "const": "verified" } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["at_sequence", "reason_code", "state"],
+          "properties": {
+            "at_sequence": { "allOf": [{ "$ref": "common.schema.json#/$defs/safeInteger" }, { "minimum": 1 }] },
+            "reason_code": { "$ref": "common.schema.json#/$defs/registeredIdentifier" },
+            "state": { "const": "failed" }
+          }
+        }
+      ]
+    },
+    "schema": { "const": "symphony.stav.verification.v1" },
+    "through_sequence": { "$ref": "common.schema.json#/$defs/safeInteger" },
+    "tops_id": { "$ref": "common.schema.json#/$defs/topsId" }
+  }
+}

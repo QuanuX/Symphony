@@ -33,7 +33,7 @@ type RuntimeInventoryDigest struct {
 	Digest       string `json:"digest"`
 }
 
-// Snapshot generates a plaintext inventory of the first runtime-set module state.
+// Snapshot generates a plaintext inventory of the canonical module state.
 func Snapshot(repoRoot string) ([]string, error) {
 	var output []string
 	output = append(output, "inventory: schema qxctl.runtime_inventory.v1")
@@ -72,7 +72,7 @@ func Snapshot(repoRoot string) ([]string, error) {
 	return output, nil
 }
 
-// SnapshotJSON generates a JSON inventory of the first runtime-set module state.
+// SnapshotJSON generates a JSON inventory of the canonical module state.
 func SnapshotJSON(repoRoot string) ([]byte, error) {
 	inv := RuntimeInventory{
 		Schema:        "qxctl.runtime_inventory.v1",

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/QuanuX/Symphony/knowledge/stav/schemas/v1/query-page.schema.json",
+  "title": "symphony.stav.query-page.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["after_sequence", "entries", "next", "schema", "tops_id"],
+  "properties": {
+    "after_sequence": { "$ref": "common.schema.json#/$defs/safeInteger" },
+    "entries": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["event_digest", "event_id", "projection", "redaction_state", "sequence", "verification_state"],
+        "properties": {
+          "event_digest": { "$ref": "common.schema.json#/$defs/digest" },
+          "event_id": { "$ref": "common.schema.json#/$defs/uuidV4" },
+          "projection": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["actor", "correlation_id", "event_class", "operation_id", "outcome", "reason_code", "request_id", "target", "timestamp"],
+            "properties": {
+              "actor": { "$ref": "common.schema.json#/$defs/safeReference" },
+              "correlation_id": { "$ref": "common.schema.json#/$defs/uuid" },
+              "event_class": { "$ref": "common.schema.json#/$defs/registeredIdentifier" },
+              "operation_id": { "$ref": "common.schema.json#/$defs/registeredIdentifier" },
+              "outcome": { "$ref": "common.schema.json#/$defs/outcome" },
+              "reason_code": { "$ref": "common.schema.json#/$defs/registeredIdentifier" },
+              "request_id": { "$ref": "common.schema.json#/$defs/uuid" },
+              "target": { "$ref": "common.schema.json#/$defs/safeReference" },
+              "timestamp": { "$ref": "common.schema.json#/$defs/timestamp" }
+            }
+          },
+          "redaction_state": { "enum": ["allowlisted", "restricted"] },
+          "sequence": { "allOf": [{ "$ref": "common.schema.json#/$defs/safeInteger" }, { "minimum": 1 }] },
+          "verification_state": { "enum": ["verified", "unverified"] }
+        }
+      }
+    },
+    "next": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["after_sequence", "state"],
+          "properties": {
+            "after_sequence": { "allOf": [{ "$ref": "common.schema.json#/$defs/safeInteger" }, { "minimum": 1 }] },
+            "state": { "const": "available" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["state"],
+          "properties": {
+            "state": { "const": "complete" }
+          }
+        }
+      ]
+    },
+    "schema": { "const": "symphony.stav.query-page.v1" },
+    "tops_id": { "$ref": "common.schema.json#/$defs/topsId" }
+  }
+}

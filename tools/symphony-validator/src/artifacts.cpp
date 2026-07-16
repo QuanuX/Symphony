@@ -2,10 +2,37 @@
 #include <filesystem>
 #include <iostream>
 #include <array>
+#include <algorithm>
 
 namespace fs = std::filesystem;
 
 #include "evidence.hpp"
+
+bool is_authorized_canonical_json(const std::string& relative_path) {
+    // Exact, owner-ratified STAV v1 contract artifacts. Directory-prefix
+    // allowlisting would silently admit unreviewed JSON and is prohibited.
+    static const std::array<std::string, 18> authorized_paths = {
+        "knowledge/stav/schemas/v1/common.schema.json",
+        "knowledge/stav/schemas/v1/candidate.schema.json",
+        "knowledge/stav/schemas/v1/event.schema.json",
+        "knowledge/stav/schemas/v1/receipt.schema.json",
+        "knowledge/stav/schemas/v1/query.schema.json",
+        "knowledge/stav/schemas/v1/query-page.schema.json",
+        "knowledge/stav/schemas/v1/verification.schema.json",
+        "knowledge/stav/fixtures/v1/valid/candidate.json",
+        "knowledge/stav/fixtures/v1/valid/event.json",
+        "knowledge/stav/fixtures/v1/valid/receipt-rejected.json",
+        "knowledge/stav/fixtures/v1/valid/query.json",
+        "knowledge/stav/fixtures/v1/valid/query-page.json",
+        "knowledge/stav/fixtures/v1/valid/verification.json",
+        "knowledge/stav/fixtures/v1/invalid/candidate-duplicate-key.json",
+        "knowledge/stav/fixtures/v1/invalid/candidate-null.json",
+        "knowledge/stav/fixtures/v1/invalid/query-float.json",
+        "knowledge/stav/fixtures/v1/invalid/query-unsafe-integer.json",
+        "knowledge/stav/fixtures/v1/invalid/query-unknown-field.json"
+    };
+    return std::find(authorized_paths.begin(), authorized_paths.end(), relative_path) != authorized_paths.end();
+}
 
 bool check_path_absence(const fs::path& repo_root, const std::string& relative_path, const std::string& reason, ArtifactCheckResult& result) {
     fs::path p = repo_root / relative_path;
@@ -58,9 +85,13 @@ ArtifactCheckResult check_unauthorized_artifacts(const std::string& repo_root) {
                 std::string ext = dir_entry.path().extension().string();
                 for (const auto& proj_ext : proj_exts) {
                     if (ext == proj_ext) {
+                        std::string rel_path = fs::relative(dir_entry.path(), root).string();
+                        if (ext == ".json" && is_authorized_canonical_json(rel_path)) {
+                            result.messages.push_back(format_evidence(EvidenceCategory::Pass, "artifact.canonical_json_authorized", "path=" + rel_path + " authority=knowledge/stav/SPEC.md"));
+                            break;
+                        }
                         found_projection = true;
                         result.success = false;
-                        std::string rel_path = fs::relative(dir_entry.path(), root).string();
                         result.messages.push_back(format_evidence(EvidenceCategory::Violation, "artifact.unauthorized", "path=" + rel_path + " reason=projection_file_not_authorized"));
                         break;
                     }

@@ -1,0 +1,8 @@
+go 1.26.5
+
+use (
+	./libraries/stav-protocol-go
+	./modules/secure-identity-access-governance
+	./modules/stav-append-authority
+	./tools/qxctl
+)

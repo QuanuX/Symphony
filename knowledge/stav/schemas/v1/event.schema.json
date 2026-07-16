@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/QuanuX/Symphony/knowledge/stav/schemas/v1/event.schema.json",
+  "title": "symphony.stav.event.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["actor", "configuration", "correlation", "identity", "integrity", "operation", "ordering", "redaction", "result", "topology"],
+  "properties": {
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authentication", "principal", "producer"],
+      "properties": {
+        "authentication": { "$ref": "common.schema.json#/$defs/authentication" },
+        "principal": { "$ref": "common.schema.json#/$defs/safeReference" },
+        "producer": { "$ref": "common.schema.json#/$defs/safeReference" }
+      }
+    },
+    "configuration": { "$ref": "common.schema.json#/$defs/configuration" },
+    "correlation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["correlation_id", "request_id"],
+      "properties": {
+        "correlation_id": { "$ref": "common.schema.json#/$defs/uuid" },
+        "request_id": { "$ref": "common.schema.json#/$defs/uuid" }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "schema"],
+      "properties": {
+        "event_id": { "$ref": "common.schema.json#/$defs/uuidV4" },
+        "schema": { "const": "symphony.stav.event.v1" }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["preceding_event_digest"],
+      "properties": {
+        "preceding_event_digest": { "$ref": "common.schema.json#/$defs/digest" }
+      }
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_class", "operation_id", "target"],
+      "properties": {
+        "event_class": { "$ref": "common.schema.json#/$defs/registeredIdentifier" },
+        "operation_id": { "$ref": "common.schema.json#/$defs/registeredIdentifier" },
+        "target": { "$ref": "common.schema.json#/$defs/safeReference" }
+      }
+    },
+    "ordering": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sequence", "timestamp"],
+      "properties": {
+        "sequence": { "allOf": [{ "$ref": "common.schema.json#/$defs/safeInteger" }, { "minimum": 1 }] },
+        "timestamp": { "$ref": "common.schema.json#/$defs/timestamp" }
+      }
+    },
+    "redaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification"],
+      "properties": {
+        "classification": { "$ref": "common.schema.json#/$defs/redactionClassification" }
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["intent_id", "outcome", "reason_code"],
+      "properties": {
+        "intent_id": { "$ref": "common.schema.json#/$defs/registeredIdentifier" },
+        "outcome": { "$ref": "common.schema.json#/$defs/outcome" },
+        "reason_code": { "$ref": "common.schema.json#/$defs/registeredIdentifier" }
+      }
+    },
+    "topology": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tops_id", "trog"],
+      "properties": {
+        "tops_id": { "$ref": "common.schema.json#/$defs/topsId" },
+        "trog": { "$ref": "common.schema.json#/$defs/trog" }
+      }
+    }
+  }
+}

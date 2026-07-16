@@ -153,6 +153,19 @@ Future validator checks may verify SKVI structure.
 - status: canonical
 - notes: None.
 
+#### go.work
+- path: `go.work`
+- title: Symphony Go Workspace
+- surface_type: monorepo development composition
+- truth_role: Go module workspace implementation truth
+- owner: Symphony root governance
+- scope: Composes SSIAG, the STAV protocol kernel, the STAV append authority, and qxctl at the production Go 1.26.5 pin without creating runtime coupling.
+- relationships: depends_on -> `libraries/stav-protocol-go/MANIFEST.md`; depends_on -> `modules/stav-append-authority/MANIFEST.md`; depends_on -> `tools/qxctl/MANIFEST.md`
+- consumers: Go tooling, maintainers, CI, agentic tools
+- deferred_projections: Go 1.27 dual-toolchain conformance evidence
+- notes: Before an independent consumer release, the protocol kernel receives a real tag and the consumer records that version; the workspace is not a runtime dependency.
+- status: canonical
+
 ### Runtime Module Contract Seeds
 
 #### node-troll
@@ -318,6 +331,671 @@ Future validator checks may verify SKVI structure.
 - notes: none
 - status: canonical
 
+#### secure-identity-access-governance
+##### INTENT.md
+- path: `modules/secure-identity-access-governance/INTENT.md`
+- title: Symphony Secure Identity and Access Governance Intent
+- surface_type: module intent
+- truth_role: intent and authority boundaries for the node-local SSIAG foundation
+- owner: secure-identity-access-governance maintainer
+- scope: Defines purpose, monorepo relationship, security scope, non-scope, and owner-ratification boundaries.
+- relationships:
+  - declares -> `modules/secure-identity-access-governance/MANIFEST.md`
+  - depends_on -> `INTENT.md`
+- consumers: humans, reviewers, agentic tools, future validators, qxctl maintainers
+- deferred_projections: JSON / JSONL portable evidence, graph relationship projection
+- notes: Monorepo visibility does not grant runtime authority.
+- status: canonical
+
+##### MANIFEST.md
+- path: `modules/secure-identity-access-governance/MANIFEST.md`
+- title: Symphony Secure Identity and Access Governance Manifest
+- surface_type: module contract truth
+- truth_role: declared capabilities, contamination boundaries, dependencies, and installability
+- owner: secure-identity-access-governance maintainer
+- scope: Declares Go runtime surfaces, qxctl surfaces, provider posture, and independent lifecycle.
+- relationships:
+  - depends_on -> `modules/secure-identity-access-governance/INTENT.md`
+  - declares -> `modules/secure-identity-access-governance/INSTALL.md`
+  - declares -> `modules/secure-identity-access-governance/SPEC.md`
+- consumers: humans, reviewers, qxctl, agentic tools, future validators
+- deferred_projections: JSON / JSONL portable evidence, graph relationship projection
+- notes: No credential-releasing provider is enabled by the scaffold.
+- status: canonical
+
+##### INSTALL.md
+- path: `modules/secure-identity-access-governance/INSTALL.md`
+- title: Symphony Secure Identity and Access Governance Install
+- surface_type: module install guidance
+- truth_role: command-line installation and uninstallation contract
+- owner: secure-identity-access-governance maintainer
+- scope: Defines user/system paths, build, verification, uninstall, purge, and configuration precedence.
+- relationships:
+  - depends_on -> `modules/secure-identity-access-governance/MANIFEST.md`
+- consumers: humans, TOPS operators, qxctl maintainers, agentic tools
+- deferred_projections: derived installation runbook
+- notes: Service-manager enrollment remains separately ratified.
+- status: canonical
+
+##### SKILL.md
+- path: `modules/secure-identity-access-governance/SKILL.md`
+- title: Symphony Secure Identity and Access Governance Skill
+- surface_type: module skill guidance
+- truth_role: safe operational and agentic usage guidance
+- owner: secure-identity-access-governance maintainer
+- scope: Defines safe-use rules, prohibited uses, and verification sequence.
+- relationships:
+  - depends_on -> `modules/secure-identity-access-governance/MANIFEST.md`
+  - interprets -> `modules/secure-identity-access-governance/THREAT-MODEL.md`
+- consumers: humans, maintainers, agentic tools
+- deferred_projections: none
+- notes: qxctl and Knowledge Vector surfaces must remain secret-free.
+- status: canonical
+
+##### SPEC.md
+- path: `modules/secure-identity-access-governance/SPEC.md`
+- title: Symphony Secure Identity and Access Governance Specification
+- surface_type: module specification
+- truth_role: normative SSIAG behavior and protocol boundaries
+- owner: secure-identity-access-governance maintainer
+- scope: Defines invariants, domain models, kernel-authenticated local metadata API, provider contract, installation, observability, and compatibility.
+- relationships:
+  - depends_on -> `modules/secure-identity-access-governance/MANIFEST.md`
+  - depends_on -> `modules/secure-identity-access-governance/REQUIREMENTS.md`
+- consumers: implementers, reviewers, agentic tools, future validators
+- deferred_projections: protocol schema, conformance evidence
+- notes: Mutation endpoints remain disabled pending security gates.
+- status: canonical
+
+##### ARCHITECTURE.md
+- path: `modules/secure-identity-access-governance/ARCHITECTURE.md`
+- title: Symphony Secure Identity and Access Governance Architecture
+- surface_type: module architecture
+- truth_role: component, trust-boundary, provider, qxctl, and SKV design
+- owner: secure-identity-access-governance maintainer
+- scope: Preserves monorepo agent context and module-bounded install/runtime authority.
+- relationships:
+  - depends_on -> `modules/secure-identity-access-governance/INTENT.md`
+  - interprets -> `knowledge/INTENT.md`
+  - interprets -> `tools/qxctl/INTENT.md`
+- consumers: humans, implementers, reviewers, agentic tools
+- deferred_projections: architecture diagram, graph relationship projection
+- notes: Identity/authorization and credential-use planes remain distinct.
+- status: canonical
+
+##### REQUIREMENTS.md
+- path: `modules/secure-identity-access-governance/REQUIREMENTS.md`
+- title: Symphony Secure Identity and Access Governance Requirements
+- surface_type: module requirements
+- truth_role: traceable functional, security, operational, portability, and SKV requirements
+- owner: secure-identity-access-governance maintainer
+- scope: Defines numbered release gates and owner decisions.
+- relationships:
+  - depends_on -> `modules/secure-identity-access-governance/ARCHITECTURE.md`
+  - depends_on -> `modules/secure-identity-access-governance/THREAT-MODEL.md`
+- consumers: implementers, reviewers, testers, agentic tools, future validators
+- deferred_projections: requirements traceability matrix, conformance evidence
+- notes: Requirements apply when their related capability is implemented.
+- status: canonical
+
+##### THREAT-MODEL.md
+- path: `modules/secure-identity-access-governance/THREAT-MODEL.md`
+- title: Symphony Secure Identity and Access Governance Threat Model
+- surface_type: module security analysis
+- truth_role: assets, actors, trust boundaries, threats, and required controls
+- owner: secure-identity-access-governance maintainer
+- scope: Covers SSIAG and planned provider risks without storing secret examples.
+- relationships:
+  - governs -> `modules/secure-identity-access-governance/SPEC.md`
+  - governs -> `modules/secure-identity-access-governance/IMPLEMENTATION.md`
+- consumers: security reviewers, implementers, operators, agentic tools
+- deferred_projections: provider-specific threat reviews, security test evidence
+- notes: Each operational provider requires an additional review.
+- status: canonical
+
+##### IMPLEMENTATION.md
+- path: `modules/secure-identity-access-governance/IMPLEMENTATION.md`
+- title: Symphony Secure Identity and Access Governance Procedural Implementation Guide
+- surface_type: module implementation guide
+- truth_role: phased implementation, verification, rollback, and release procedure
+- owner: secure-identity-access-governance maintainer
+- scope: Defines ordered phases from ratification through providers, TOPS integration, SCLV, and publication.
+- relationships:
+  - depends_on -> `modules/secure-identity-access-governance/REQUIREMENTS.md`
+  - depends_on -> `modules/secure-identity-access-governance/THREAT-MODEL.md`
+  - may_check -> `tools/symphony-validator/SPEC.md`
+- consumers: implementers, reviewers, operators, agentic tools
+- deferred_projections: release checklist, requirements traceability evidence
+- notes: SCLV recording waits for real PR and merge evidence.
+- status: canonical
+
+##### README.md
+- path: `modules/secure-identity-access-governance/README.md`
+- title: Symphony Secure Identity and Access Governance README
+- surface_type: module orientation
+- truth_role: concise implementation status and contributor entrypoint
+- owner: secure-identity-access-governance maintainer
+- scope: Summarizes scaffold behavior and directs readers to canonical design surfaces.
+- relationships:
+  - derives_from -> `modules/secure-identity-access-governance/MANIFEST.md`
+  - derives_from -> `modules/secure-identity-access-governance/ARCHITECTURE.md`
+- consumers: humans, contributors, agentic tools
+- deferred_projections: SODV-governed public module page
+- notes: Repository source truth; not an independently authorized publication pipeline.
+- status: canonical
+
+#### stav-append-authority
+##### INTENT.md
+- path: `modules/stav-append-authority/INTENT.md`
+- title: STAV Append Authority Intent
+- surface_type: module intent
+- truth_role: implementation purpose and canonical-authority boundary
+- owner: STAV append-authority maintainer
+- scope: Defines the independently installable Go role and its namespace-only implementation status.
+- relationships:
+  - depends_on -> `knowledge/stav/INTENT.md`
+  - declares -> `modules/stav-append-authority/MANIFEST.md`
+- consumers: humans, reviewers, agentic tools, qxctl maintainers
+- deferred_projections: operational append service
+- notes: The module implements STAV and never owns STAV protocol truth.
+- status: canonical
+
+##### MANIFEST.md
+- path: `modules/stav-append-authority/MANIFEST.md`
+- title: STAV Append Authority Manifest
+- surface_type: module contract truth
+- truth_role: capability, dependency, contamination, and absent-surface declaration
+- owner: STAV append-authority maintainer
+- scope: Declares the Go/cgo boundary, pure path resolver, reversible lifecycle, and closed operational gates.
+- relationships:
+  - depends_on -> `modules/stav-append-authority/INTENT.md`
+  - depends_on -> `knowledge/stav/MANIFEST.md`
+  - declares -> `modules/stav-append-authority/SPEC.md`
+- consumers: humans, reviewers, qxctl, agentic tools, future validators
+- deferred_projections: release and conformance evidence
+- notes: No listener, schema codec, producer, or ledger exists.
+- status: canonical
+
+##### INSTALL.md
+- path: `modules/stav-append-authority/INSTALL.md`
+- title: STAV Append Authority Installation
+- surface_type: module install guidance
+- truth_role: independent executable build, installation, and uninstallation contract
+- owner: STAV append-authority maintainer
+- scope: Defines user/system binary lifecycle and explicit state-preservation behavior.
+- relationships: depends_on -> `modules/stav-append-authority/MANIFEST.md`
+- consumers: humans, TOPS operators, release tooling, agentic tools
+- deferred_projections: packaging and service-manager artifacts
+- notes: Installation does not enroll a TOPS or start a service.
+- status: canonical
+
+##### SKILL.md
+- path: `modules/stav-append-authority/SKILL.md`
+- title: STAV Append Authority Skill
+- surface_type: module skill guidance
+- truth_role: safe agent interaction and implementation stop conditions
+- owner: STAV append-authority maintainer
+- scope: Permits inspection and verification while prohibiting schema invention, listeners, and ledger mutation.
+- relationships:
+  - depends_on -> `knowledge/stav/SKILL.md`
+  - interprets -> `modules/stav-append-authority/THREAT-MODEL.md`
+- consumers: humans, reviewers, agentic tools
+- deferred_projections: none
+- notes: Agent lifecycle actions still require explicit user authorization.
+- status: canonical
+
+##### SPEC.md
+- path: `modules/stav-append-authority/SPEC.md`
+- title: STAV Append Authority Specification
+- surface_type: module specification
+- truth_role: ratified namespace, path, and binary-lifecycle behavior
+- owner: STAV append-authority maintainer
+- scope: Defines install targets, per-TOPS path resolution, schema-name reservations, and fail-closed command behavior.
+- relationships:
+  - depends_on -> `modules/stav-append-authority/MANIFEST.md`
+  - implements -> `knowledge/stav/SPEC.md`
+- consumers: implementers, reviewers, qxctl, agentic tools, future validators
+- deferred_projections: schema codecs and operational append protocol
+- notes: Reserved protocol identifiers have no content definition.
+- status: canonical
+
+##### ARCHITECTURE.md
+- path: `modules/stav-append-authority/ARCHITECTURE.md`
+- title: STAV Append Authority Architecture
+- surface_type: module architecture
+- truth_role: source-truth direction, current boundary, future process shape, and TOPS isolation
+- owner: STAV append-authority maintainer
+- scope: Separates the present lifecycle scaffold from the later authenticated single-writer service.
+- relationships:
+  - depends_on -> `modules/stav-append-authority/INTENT.md`
+  - interprets -> `knowledge/stav/SPEC.md`
+- consumers: humans, implementers, reviewers, agentic tools
+- deferred_projections: runtime trust-boundary diagram
+- notes: The current executable is intentionally not a daemon.
+- status: canonical
+
+##### REQUIREMENTS.md
+- path: `modules/stav-append-authority/REQUIREMENTS.md`
+- title: STAV Append Authority Requirements
+- surface_type: module requirements
+- truth_role: traceable namespace, lifecycle, path, and closed-gate requirements
+- owner: STAV append-authority maintainer
+- scope: Defines numbered requirements for the ratified increment and future stop conditions.
+- relationships:
+  - depends_on -> `modules/stav-append-authority/ARCHITECTURE.md`
+  - depends_on -> `modules/stav-append-authority/THREAT-MODEL.md`
+- consumers: implementers, reviewers, testers, agentic tools, future validators
+- deferred_projections: requirements traceability evidence
+- notes: Operational requirements remain blocked until canonical content contracts pass.
+- status: canonical
+
+##### THREAT-MODEL.md
+- path: `modules/stav-append-authority/THREAT-MODEL.md`
+- title: STAV Append Authority Threat Model
+- surface_type: module security analysis
+- truth_role: current lifecycle controls and future operational threat gates
+- owner: STAV append-authority maintainer
+- scope: Covers executable lifecycle, TOPS isolation, future producer, ordering, durability, redaction, and repair threats.
+- relationships:
+  - governs -> `modules/stav-append-authority/SPEC.md`
+  - governs -> `modules/stav-append-authority/IMPLEMENTATION.md`
+- consumers: security reviewers, implementers, operators, agentic tools
+- deferred_projections: producer-specific and storage-specific security reviews
+- notes: Operational controls may not be invented below the canonical vector.
+- status: canonical
+
+##### IMPLEMENTATION.md
+- path: `modules/stav-append-authority/IMPLEMENTATION.md`
+- title: STAV Append Authority Implementation Guide
+- surface_type: module implementation guide
+- truth_role: phased procedure from namespace scaffold through separately gated producer integration
+- owner: STAV append-authority maintainer
+- scope: Defines the completed namespace increment and blocked content, durability, IPC, qxctl, and producer phases.
+- relationships:
+  - depends_on -> `modules/stav-append-authority/REQUIREMENTS.md`
+  - depends_on -> `modules/stav-append-authority/THREAT-MODEL.md`
+  - may_check -> `tools/symphony-validator/SPEC.md`
+- consumers: implementers, reviewers, operators, agentic tools
+- deferred_projections: release checklist and conformance evidence
+- notes: SCLV recording waits for real PR and merge evidence.
+- status: canonical
+
+##### README.md
+- path: `modules/stav-append-authority/README.md`
+- title: STAV Append Authority
+- surface_type: module orientation
+- truth_role: concise scaffold status and contributor entrypoint
+- owner: STAV append-authority maintainer
+- scope: Directs readers to the Contract Quad and states the absence of an operational writer.
+- relationships:
+  - derives_from -> `modules/stav-append-authority/MANIFEST.md`
+  - derives_from -> `modules/stav-append-authority/ARCHITECTURE.md`
+- consumers: humans, contributors, agentic tools
+- deferred_projections: SODV-governed public module page
+- notes: Repository source truth; no public publication is authorized here.
+- status: canonical
+
+### First-Party Shared Libraries
+
+#### Libraries README
+- path: `libraries/README.md`
+- title: Symphony First-Party Libraries
+- surface_type: shared-library topology doctrine
+- truth_role: implementation placement and runtime-authority boundary
+- owner: Symphony root governance
+- scope: Defines build-time shared code as distinct from independently installed runtime modules.
+- relationships: depends_on -> `INTENT.md`; governs -> `libraries/stav-protocol-go/MANIFEST.md`
+- consumers: implementers, reviewers, agentic tools, future validators
+- deferred_projections: dependency graph and release evidence
+- notes: Libraries own no canonical protocol truth or operational identity.
+- status: canonical
+
+#### STAV Protocol Kernel
+- path: `libraries/stav-protocol-go/MANIFEST.md`
+- title: STAV Protocol Kernel for Go
+- surface_type: first-party shared Go implementation library
+- truth_role: implementation truth for ratified STAV v1 protocol mechanics
+- owner: STAV protocol-kernel maintainer
+- scope: Implements strict I-JSON/JCS, typed validation, identifiers, SHA-256 domains, and bounded local framing without runtime authority.
+- relationships: depends_on -> `knowledge/stav/SPEC.md`; may_check -> `tools/symphony-validator/SPEC.md`
+- consumers: `modules/stav-append-authority/`, `tools/qxctl/`, implementers, reviewers, agentic tools
+- deferred_projections: versioned library release and conformance evidence
+- notes: No binary, installer, resident, socket, state, authentication, authorization, or ledger behavior.
+- status: canonical
+
+#### STAV Protocol Kernel Go 1.27 Migration
+- path: `libraries/stav-protocol-go/GO_1_27_MIGRATION.md`
+- title: Go 1.27 Confirmed-Release Migration
+- surface_type: toolchain migration procedure
+- truth_role: compatibility and conformance gate
+- owner: STAV protocol-kernel maintainer
+- scope: Keeps Go 1.26.5 in production until Go 1.27 GA and byte-identical differential validation pass.
+- relationships: depends_on -> `knowledge/stav/SPEC.md`; governs -> `libraries/stav-protocol-go/`
+- consumers: maintainers, release engineers, reviewers, agentic tools
+- deferred_projections: dual-toolchain CI evidence and release record
+- notes: Toolchain adoption cannot change STAV wire bytes, digests, public APIs, or authority boundaries.
+- status: canonical
+
+### SACV Canonical Knowledge Vector
+
+#### SACV INTENT.md
+- path: `knowledge/sacv/INTENT.md`
+- title: Symphony API Contract Vector Intent
+- surface_type: knowledge-vector intent
+- truth_role: canonical API-contract governance intent
+- owner: SACV maintainer
+- scope: Defines API-first source truth, OpenAPI 3.2.0 targeting, distributed semantic ownership, and security/publication boundaries.
+- relationships: declares -> `knowledge/sacv/MANIFEST.md`; depends_on -> `knowledge/sodv/SPEC.md`
+- consumers: humans, reviewers, API owners, agentic tools, future validators
+- deferred_projections: OpenAPI validation evidence, documentation, SDK, and graph projections
+- notes: Authorizes governance only, not an endpoint or remote listener.
+- status: canonical
+
+#### SACV MANIFEST.md
+- path: `knowledge/sacv/MANIFEST.md`
+- title: Symphony API Contract Vector Manifest
+- surface_type: knowledge-vector manifest
+- truth_role: canonical API ownership and placement contract
+- owner: SACV maintainer
+- scope: Declares SACV-owned policy and registry truth while retaining endpoint semantics with domain owners.
+- relationships: depends_on -> `knowledge/sacv/INTENT.md`; declares -> `knowledge/sacv/SPEC.md`; declares -> `knowledge/sacv/REGISTRY.md`
+- consumers: humans, reviewers, module and vector owners, SKVI, SODV
+- deferred_projections: validator and publication evidence
+- notes: OpenAPI is a conditional typed artifact, not a mandatory fifth Contract Quad file.
+- status: canonical
+
+#### SACV SKILL.md
+- path: `knowledge/sacv/SKILL.md`
+- title: Symphony API Contract Vector Skill
+- surface_type: knowledge-vector skill guidance
+- truth_role: safe API-contract authoring and review procedure
+- owner: SACV maintainer
+- scope: Guides agents and humans without authorizing endpoints, publication, live requests, or MCP exposure.
+- relationships: depends_on -> `knowledge/sacv/SPEC.md`; interprets -> `knowledge/sodv/SPEC.md`
+- consumers: humans, API maintainers, security reviewers, agentic tools
+- deferred_projections: conformance workflow automation
+- notes: Security schemes and server URLs may not be invented.
+- status: canonical
+
+#### SACV SPEC.md
+- path: `knowledge/sacv/SPEC.md`
+- title: Symphony API Contract Vector Specification
+- surface_type: knowledge-vector specification
+- truth_role: normative API-contract governance
+- owner: SACV maintainer
+- scope: Defines OpenAPI versioning, ownership, registry, compatibility, security, derivation, and publication boundaries.
+- relationships: depends_on -> `knowledge/sacv/MANIFEST.md`; governs -> future owner-controlled OpenAPI descriptions; depends_on -> `knowledge/sodv/SPEC.md`
+- consumers: API owners, implementers, reviewers, future validators and generators
+- deferred_projections: generated bindings, SDKs, Mintlify documentation, MCP tools
+- notes: Canonical descriptions target OpenAPI 3.2.0; none are registered yet.
+- status: canonical
+
+#### SACV REGISTRY.md
+- path: `knowledge/sacv/REGISTRY.md`
+- title: Symphony API Contract Registry
+- surface_type: canonical API-contract registry
+- truth_role: routing and ownership map for HTTP API entry documents
+- owner: SACV maintainer
+- scope: Registers owner, path, versions, audience, transport, security, publication, SDK, and lifecycle state.
+- relationships: depends_on -> `knowledge/sacv/SPEC.md`; indexes -> future canonical owner API descriptions
+- consumers: humans, SKVI, SODV, future validators and generators
+- deferred_projections: machine-readable registry evidence
+- notes: The empty registry is intentional; placeholder endpoint documents are prohibited.
+- status: canonical
+
+#### SACV OpenAPI 3.2 Profile
+- path: `knowledge/sacv/profiles/openapi-3.2.md`
+- title: SACV OpenAPI 3.2 Profile
+- surface_type: API-contract standards profile
+- truth_role: normative OpenAPI 3.2.0 authoring and compatibility policy
+- owner: SACV maintainer
+- scope: Defines required posture, reference handling, compatibility gates, and exclusions for canonical descriptions.
+- relationships: depends_on -> `knowledge/sacv/SPEC.md`; governs -> future canonical owner OpenAPI descriptions
+- consumers: API owners, implementers, reviewers, future validators and generators
+- deferred_projections: lint and compatibility evidence
+- notes: A lagging consumer must defer or fail, not silently downgrade.
+- status: canonical
+
+#### SACV Mintlify Publication Profile
+- path: `knowledge/sacv/profiles/mintlify-publication.md`
+- title: SACV Mintlify Publication Profile
+- surface_type: API publication profile
+- truth_role: SACV-to-SODV publication boundary
+- owner: SACV and SODV maintainers
+- scope: Defines preconditions and default-deny controls for Mintlify, SDK examples, live requests, and MCP projections.
+- relationships: depends_on -> `knowledge/sacv/SPEC.md`; depends_on -> `knowledge/sodv/SPEC.md`
+- consumers: documentation maintainers, API owners, security reviewers, agentic tools
+- deferred_projections: Mintlify configuration, MDX, SDK examples, MCP tools
+- notes: Vendor configuration is derived and currently unauthorized.
+- status: canonical
+
+### SSIAG Canonical Knowledge Vector
+
+#### SSIAG INTENT.md
+- path: `knowledge/ssiag/INTENT.md`
+- title: Symphony Secure Identity and Access Governance Intent
+- surface_type: knowledge-vector intent
+- truth_role: canonical SSIAG purpose and complete decision-chain authority
+- owner: SSIAG knowledge maintainer
+- scope: Defines SSIAG source truth, relationship intent, security boundaries, and deferred decisions.
+- relationships: declares -> `knowledge/ssiag/MANIFEST.md`; governs -> `modules/secure-identity-access-governance/INTENT.md`
+- consumers: humans, reviewers, agentic tools, qxctl and SSIAG implementers
+- deferred_projections: graph relationship projection
+- notes: Graph-like semantics do not authorize a graph database.
+- status: canonical
+
+#### SSIAG MANIFEST.md
+- path: `knowledge/ssiag/MANIFEST.md`
+- title: Symphony Secure Identity and Access Governance Manifest
+- surface_type: knowledge-vector manifest
+- truth_role: canonical SSIAG authority and language-boundary declaration
+- owner: SSIAG knowledge maintainer
+- scope: Declares protocol ownership, identity separation, provider boundaries, and non-authorizations.
+- relationships: depends_on -> `knowledge/ssiag/INTENT.md`; declares -> `knowledge/ssiag/SPEC.md`
+- consumers: humans, reviewers, provider and foundation implementers, SKVI
+- deferred_projections: JSON / JSONL portable evidence
+- notes: The indexed surface is canonical source truth while its internal protocol status remains draft pending ratification.
+- status: canonical
+
+#### SSIAG SKILL.md
+- path: `knowledge/ssiag/SKILL.md`
+- title: Symphony Secure Identity and Access Governance Skill
+- surface_type: knowledge-vector skill guidance
+- truth_role: safe human and agent procedure for SSIAG changes
+- owner: SSIAG knowledge maintainer
+- scope: Defines reading order, agent authority, change procedure, and stop conditions.
+- relationships: depends_on -> `knowledge/ssiag/SPEC.md`; interprets -> `knowledge/stav/SPEC.md`
+- consumers: humans, maintainers, reviewers, agentic tools
+- deferred_projections: none
+- notes: Agents may query and propose but not bypass policy or handle credentials.
+- status: canonical
+
+#### SSIAG SPEC.md
+- path: `knowledge/ssiag/SPEC.md`
+- title: Symphony Secure Identity and Access Governance Specification
+- surface_type: knowledge-vector specification
+- truth_role: canonical SSIAG vocabulary, relationship, extension, and provider protocol truth
+- owner: SSIAG knowledge maintainer
+- scope: Defines graph-like nodes/edges, immutable IDs, Go-only foundation, provider boundary, qxctl, and STAV projection.
+- relationships: depends_on -> `knowledge/ssiag/MANIFEST.md`; governs -> `modules/secure-identity-access-governance/SPEC.md`; governs -> `modules/ssiag-provider-macos-keychain/SPEC.md`
+- consumers: implementers, reviewers, qxctl, provider modules, agentic tools
+- deferred_projections: graph view, conformance schema after ratification
+- notes: Accepted-connection caller authentication and exact UID/GID subject mapping are implemented; endpoint trust, mutation, credential delivery, and supervision remain gated.
+- status: canonical
+
+### STAV Canonical Knowledge Vector
+
+#### STAV INTENT.md
+- path: `knowledge/stav/INTENT.md`
+- title: Symphony TOPS Audit Vector Intent
+- surface_type: knowledge-vector intent
+- truth_role: canonical audit-vector purpose and privacy posture
+- owner: STAV knowledge maintainer
+- scope: Separates protocol truth from per-TOPS operational ledgers and establishes tamper-evident intent.
+- relationships: declares -> `knowledge/stav/MANIFEST.md`; depends_on -> `knowledge/ssiag/INTENT.md`
+- consumers: humans, reviewers, SSIAG, node-troll, qxctl, agentic tools
+- deferred_projections: redacted query projection
+- notes: V1 is tamper-evident, not non-repudiable.
+- status: canonical
+
+#### STAV MANIFEST.md
+- path: `knowledge/stav/MANIFEST.md`
+- title: Symphony TOPS Audit Vector Manifest
+- surface_type: knowledge-vector manifest
+- truth_role: canonical STAV authority, writer, storage, and projection boundaries
+- owner: STAV knowledge maintainer
+- scope: Declares schema authority, append authority, producers, qxctl, agents, and operational storage.
+- relationships: depends_on -> `knowledge/stav/INTENT.md`; declares -> `knowledge/stav/SPEC.md`; governs -> `modules/stav-append-authority/MANIFEST.md`
+- consumers: humans, reviewers, append-authority and producer implementers, SKVI
+- deferred_projections: JSONL, DuckDB, HDF5, redacted graph projections
+- notes: No operational ledger belongs in the repository.
+- status: canonical
+
+#### STAV SKILL.md
+- path: `knowledge/stav/SKILL.md`
+- title: Symphony TOPS Audit Vector Skill
+- surface_type: knowledge-vector skill guidance
+- truth_role: safe agent and implementation procedure for audit events
+- owner: STAV knowledge maintainer
+- scope: Defines allowed queries/proposals, prohibited direct writes, review procedure, and stop conditions.
+- relationships: depends_on -> `knowledge/stav/SPEC.md`; governs -> `tools/qxctl/cmd/qxctl/main.go`; governs -> `modules/stav-append-authority/SKILL.md`
+- consumers: humans, reviewers, operators, agentic tools
+- deferred_projections: none
+- notes: Agents never edit, repair, reorder, or append ledger files.
+- status: canonical
+
+#### STAV SPEC.md
+- path: `knowledge/stav/SPEC.md`
+- title: Symphony TOPS Audit Vector Specification
+- surface_type: knowledge-vector specification
+- truth_role: canonical ten-group envelope, append protocol, integrity, and redaction truth
+- owner: STAV knowledge maintainer
+- scope: Defines per-TOPS sequence isolation, field presence, serialized append authority, SSIAG outcome classes, and exclusions.
+- relationships: depends_on -> `knowledge/stav/MANIFEST.md`; governs -> `modules/stav-append-authority/SPEC.md`; interprets -> `knowledge/ssiag/SPEC.md`
+- consumers: SSIAG, node-troll, qxctl, append-authority implementers, reviewers, agents
+- deferred_projections: signed checkpoints, verifier evidence, query stores
+- notes: Canonical semantic/read schemas, strict JCS, safe integers, SHA-256 domains, and local frame mechanics are ratified; runtime listener and durability remain gated.
+- status: canonical
+
+#### STAV v1 Schemas
+- path: `knowledge/stav/schemas/v1/MANIFEST.md`
+- title: STAV v1 Canonical JSON Schemas
+- surface_type: JSON Schema Draft 2020-12 contract directory
+- truth_role: canonical STAV semantic and read-message structure truth
+- owner: STAV knowledge maintainer
+- scope: Defines common values plus candidate, event, receipt, query, query-page, and verification structures.
+- relationships: depends_on -> `knowledge/stav/SPEC.md`; governs -> `libraries/stav-protocol-go/`
+- consumers: protocol-kernel, append-authority, qxctl, producer implementers, reviewers, future validators
+- deferred_projections: generated documentation and conformance reports
+- notes: Configuration, status, and local request/response schemas are intentionally absent.
+- status: canonical
+
+#### STAV v1 Registries
+- path: `knowledge/stav/registries/v1/base.md`
+- title: STAV v1 Closed Registries
+- surface_type: canonical protocol registry directory
+- truth_role: generic outcome, redaction, and protocol-reason truth
+- owner: STAV knowledge maintainer
+- scope: Defines closed generic values and reserves producer-specific assignments for producer integration.
+- relationships: depends_on -> `knowledge/stav/SPEC.md`; governs -> `libraries/stav-protocol-go/`
+- consumers: protocol-kernel, producer integrators, reviewers, agentic tools
+- deferred_projections: machine-readable registry evidence
+- notes: SSIAG event-class assignments are not guessed here.
+- status: canonical
+
+#### STAV v1 Fixtures
+- path: `knowledge/stav/fixtures/v1/MANIFEST.md`
+- title: STAV v1 Conformance Fixtures
+- surface_type: valid and invalid protocol corpus
+- truth_role: canonical interoperability and rejection evidence
+- owner: STAV knowledge maintainer
+- scope: Exercises canonical documents, duplicate/null/number/unknown-field rejection, and stable digest inputs.
+- relationships: depends_on -> `knowledge/stav/schemas/v1/`; governs -> `libraries/stav-protocol-go/GO_1_27_MIGRATION.md`
+- consumers: protocol-kernel tests, toolchain migration, future validators and language implementations
+- deferred_projections: cross-language conformance reports
+- notes: Invalid UTF-8 and partial-input cases are constructed in kernel tests where text files cannot safely represent them.
+- status: canonical
+
+### SSIAG macOS Keychain Provider Module
+
+#### macOS Provider INTENT.md
+- path: `modules/ssiag-provider-macos-keychain/INTENT.md`
+- title: SSIAG macOS Keychain Provider Intent
+- surface_type: provider module intent
+- truth_role: independent Swift adapter purpose and process boundary
+- owner: SSIAG macOS provider maintainer
+- scope: Defines optional Apple Keychain boundary and metadata-only scaffold status.
+- relationships: depends_on -> `knowledge/ssiag/SPEC.md`; declares -> `modules/ssiag-provider-macos-keychain/MANIFEST.md`
+- consumers: humans, reviewers, provider implementers, agentic tools
+- deferred_projections: platform integration evidence
+- notes: No operational Keychain access is enabled.
+- status: canonical
+
+#### macOS Provider MANIFEST.md
+- path: `modules/ssiag-provider-macos-keychain/MANIFEST.md`
+- title: SSIAG macOS Keychain Provider Manifest
+- surface_type: provider module contract truth
+- truth_role: language, binary, protocol, capability, and lifecycle declaration
+- owner: SSIAG macOS provider maintainer
+- scope: Declares Swift executable identity, metadata IPC, independent installability, and prohibited claims.
+- relationships: depends_on -> `modules/ssiag-provider-macos-keychain/INTENT.md`; declares -> `modules/ssiag-provider-macos-keychain/SPEC.md`
+- consumers: humans, reviewers, SSIAG implementers, future validators
+- deferred_projections: compatibility evidence
+- notes: Native Swift code remains outside the Go-only foundation.
+- status: canonical
+
+#### macOS Provider INSTALL.md
+- path: `modules/ssiag-provider-macos-keychain/INSTALL.md`
+- title: SSIAG macOS Keychain Provider Installation
+- surface_type: provider module installation guidance
+- truth_role: independent build, test, install, upgrade, verify, and uninstall procedure
+- owner: SSIAG macOS provider maintainer
+- scope: Defines macOS prerequisites and digest-safe user/system lifecycle.
+- relationships: depends_on -> `modules/ssiag-provider-macos-keychain/MANIFEST.md`
+- consumers: TOPS operators, maintainers, reviewers, agentic tools
+- deferred_projections: release runbook
+- notes: Uninstall never deletes Keychain items or TOPS state.
+- status: canonical
+
+#### macOS Provider SKILL.md
+- path: `modules/ssiag-provider-macos-keychain/SKILL.md`
+- title: SSIAG macOS Keychain Provider Skill
+- surface_type: provider module skill guidance
+- truth_role: safe build, test, install, and operational-gate procedure
+- owner: SSIAG macOS provider maintainer
+- scope: Defines agent restrictions and ratification required before Apple Security access.
+- relationships: depends_on -> `modules/ssiag-provider-macos-keychain/SPEC.md`; interprets -> `knowledge/stav/SPEC.md`
+- consumers: humans, maintainers, security reviewers, agentic tools
+- deferred_projections: provider security review checklist
+- notes: The `security` CLI may not become a hidden fallback.
+- status: canonical
+
+#### macOS Provider SPEC.md
+- path: `modules/ssiag-provider-macos-keychain/SPEC.md`
+- title: SSIAG macOS Keychain Provider Specification
+- surface_type: provider module specification
+- truth_role: normative metadata IPC and independent lifecycle behavior
+- owner: SSIAG macOS provider maintainer
+- scope: Defines bounded JSON-lines metadata operations, descriptor truth, installation, and future operational gate.
+- relationships: depends_on -> `knowledge/ssiag/SPEC.md`; governs -> `modules/ssiag-provider-macos-keychain/README.md`
+- consumers: implementers, reviewers, SSIAG foundation, future validators
+- deferred_projections: operational provider protocol conformance
+- notes: Operational access must report false until a separate review enables it.
+- status: canonical
+
+#### macOS Provider README.md
+- path: `modules/ssiag-provider-macos-keychain/README.md`
+- title: SSIAG macOS Keychain Provider README
+- surface_type: provider module orientation
+- truth_role: concise contributor entrypoint
+- owner: SSIAG macOS provider maintainer
+- scope: Directs readers to contracts and states metadata-only status.
+- relationships: derives_from -> `modules/ssiag-provider-macos-keychain/MANIFEST.md`
+- consumers: humans, contributors, agentic tools
+- deferred_projections: SODV-governed public module page
+- notes: Repository source truth; not a publication pipeline.
+- status: canonical
+
 ### Validator Declarative Tool Contract Seed
 ##### INTENT.md
 - path: `tools/symphony-validator/INTENT.md`
@@ -408,9 +1086,9 @@ Future validator checks may verify SKVI structure.
 - surface_type: vector intent seed
 - truth_role: intent and purpose for knowledge vectors
 - owner: knowledge maintainer
-- scope: Root definition of knowledge vector domains.
-- consumers: humans, future validators
-- relationships: none defined
+- scope: Root definition of SKVI, SCLV, SODV, SACV, SSIAG, and STAV vector domains.
+- consumers: humans, reviewers, agentic tools, future validators
+- relationships: declares -> `knowledge/sacv/INTENT.md`; declares -> `knowledge/ssiag/INTENT.md`; declares -> `knowledge/stav/INTENT.md`
 - deferred_projections: strictly deferred
 - notes: none
 - status: canonical
@@ -644,7 +1322,7 @@ Future validator checks may verify SKVI structure.
 - status: canonical
 
 ## Deferred Projections
-No deferred projections, generated indexes, graphs, DuckDB, JSON, HDF5 outputs, qxctl integrations, validator implementations, or publication pipelines are canonically indexed here. They remain entirely deferred and are not canonical authority.
+Unless a surface is explicitly indexed above, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, new qxctl integrations, validator implementations, and publication pipelines remain deferred and are not canonical authority. The indexed STAV JSON Schemas and fixtures are human-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following:
@@ -659,7 +1337,7 @@ This index authorizes none of the following:
 - validator implementation
 - parser implementation
 - projector implementation
-- schemas
+- unregistered or generated schemas
 - templates
 - docs directory
 - mint.json
@@ -674,4 +1352,3 @@ This index authorizes none of the following:
 - CI files
 
 Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
-

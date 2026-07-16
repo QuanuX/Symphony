@@ -25,12 +25,20 @@ The scope of the structural map spans four layers.
 ## Layer 0 Canonical Surfaces
 - `README.md`
 - `INTENT.md`
+- `go.work`
 - `modules/node-troll/`
 - `modules/bus-troll/`
 - `modules/hotpath-runtime/`
+- `modules/secure-identity-access-governance/`
+- `modules/ssiag-provider-macos-keychain/`
+- `libraries/`
+- `libraries/stav-protocol-go/`
 - `tools/symphony-validator/`
 - `knowledge/`
 - `knowledge/skvi/`
+- `knowledge/sacv/`
+- `knowledge/ssiag/`
+- `knowledge/stav/`
 - `knowledge/sclv/`
 - `knowledge/sodv/`
 
@@ -41,6 +49,9 @@ Where present:
 - `INSTALL.md`
 - `SKILL.md`
 - `SPEC.md`
+- `REQUIREMENTS.md`
+- `IMPLEMENTATION.md`
+- `THREAT-MODEL.md`
 
 ## Layer 2 Relationship Descriptors
 Relationship descriptors among:
@@ -50,6 +61,7 @@ Relationship descriptors among:
 - knowledge-vector contracts
 - SCLV records
 - SODV publication governance
+- SACV API-contract governance and registry
 - validator evidence
 - future qxctl consumption
 - NotebookLM corpus alignment
