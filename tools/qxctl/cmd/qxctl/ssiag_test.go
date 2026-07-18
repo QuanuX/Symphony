@@ -20,7 +20,7 @@ func TestSSIAGStatusJSONFailsClosed(t *testing.T) {
 	for name, status := range tests {
 		t.Run(name, func(t *testing.T) {
 			serveSSIAGTestSocket(t, status)
-			if err := runSSIAG([]string{"status", "--tops-id", ssiagTestTOPSID, "--json"}); err == nil {
+			if err := executeCommand([]string{"ssiag", "status", "--tops-id", ssiagTestTOPSID, "--json"}); err == nil {
 				t.Fatal("expected status validation error")
 			}
 		})
@@ -30,13 +30,13 @@ func TestSSIAGStatusJSONFailsClosed(t *testing.T) {
 func TestSSIAGProvidersBindsServerIdentityBeforeQuery(t *testing.T) {
 	status := `{"schema":"symphony.ssiag.status.v1","name":"secure-identity-access-governance","version":"dev","ready":true,"mode":"user","tops_id":"018f0c3a-7b2d-7e11-8c12-0242ac120003","tops_name":"Wrong","transport":"unix","provider_count":0}`
 	serveSSIAGTestSocket(t, status)
-	if err := runSSIAG([]string{"providers", "--tops-id", ssiagTestTOPSID, "--json"}); err == nil || !strings.Contains(err.Error(), "does not match") {
+	if err := executeCommand([]string{"ssiag", "providers", "--tops-id", ssiagTestTOPSID, "--json"}); err == nil || !strings.Contains(err.Error(), "does not match") {
 		t.Fatalf("expected identity mismatch, got %v", err)
 	}
 }
 
 func TestSSIAGRejectsTrailingArguments(t *testing.T) {
-	if err := runSSIAG([]string{"status", "--tops-id", ssiagTestTOPSID, "extra"}); err == nil || !strings.Contains(err.Error(), "unexpected SSIAG arguments") {
+	if err := executeCommand([]string{"ssiag", "status", "--tops-id", ssiagTestTOPSID, "extra"}); err == nil || !strings.Contains(err.Error(), "unexpected SSIAG arguments") {
 		t.Fatalf("expected trailing-argument error, got %v", err)
 	}
 }

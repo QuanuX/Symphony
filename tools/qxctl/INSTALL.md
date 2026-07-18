@@ -6,7 +6,11 @@
 - No remote runtime requirement
 - No provider/cloud/Docker/Kubernetes requirement
 
-qxctl has no third-party dependency. Its STAV grammar uses Symphony's first-party pure-Go protocol kernel. The monorepo `go.work` resolves the unreleased kernel during development; before qxctl is published for independent source installation, the kernel must be tagged and qxctl must require that real compatible version.
+qxctl uses the Architect-ratified Cobra command framework and a constrained Viper mapper, plus their pinned cgo-free Go dependencies. Its STAV grammar uses Symphony's first-party pure-Go protocol kernel. The module remains independently buildable with `GOWORK=off`; it does not require Python, C bindings, a remote configuration backend, or a configuration daemon.
+
+The direct CLI dependency pins are Cobra `v1.10.2` and Viper `v1.21.0`. `go.mod` and `go.sum` are the authoritative dependency lock surfaces.
+
+Viper is not an SSIAG/STAV trust loader. qxctl creates private instances, binds only declared command keys and environment variables, and does not enable automatic environment discovery, configuration-file discovery, remote providers, watch/reload, or write-back.
 
 ## Build and Run
 qxctl can be run locally using the Go toolchain:

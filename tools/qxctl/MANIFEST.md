@@ -3,7 +3,7 @@
 ## Identity
 - Declared tool name: qxctl
 - Path: tools/qxctl
-- Language/Runtime: Go 1.26.5 (first-party STAV protocol/authority client plus cgo-free `golang.org/x/sys` peer credentials)
+- Language/Runtime: Go 1.26.5 with Cobra command grammar, constrained Viper configuration mapping, first-party STAV protocol/authority clients, and cgo-free platform dependencies
 
 ## Expected Files
 - `INTENT.md`
@@ -12,6 +12,7 @@
 - `SKILL.md`
 - `README.md`
 - `cmd/qxctl/main.go`
+- `cmd/qxctl/commands.go`
 
 ## Supported Commands
 - `qxctl doctor`
@@ -36,6 +37,8 @@
 ## Installability Posture
 qxctl is installable via standard `go build` or executable directly via `go run` using the Go standard toolchain. It does not require remote runtimes, providers, Docker, Kubernetes, or cloud infrastructure.
 
+Cobra owns the command tree and flag grammar. Viper is restricted to a new private instance for each command configuration: keys and environment variables are bound explicitly, and automatic environment discovery, remote providers, file discovery, watch/reload, write-back, and secret values are prohibited. Viper does not load SSIAG or STAV trust configuration. Endpoint configuration, filesystem trust, and kernel peer verification remain in their dedicated clients.
+
 The SSIAG command group is a cgo-free client for a local Unix domain socket. It loads scope-exact per-TOPS endpoint trust, rejects unsafe configuration/socket metadata, and verifies the connected service through native kernel peer credentials before HTTP exchange. Provider implementations remain inside the independently installed SSIAG module.
 
 `knowledge/ssiag/` owns SSIAG protocol truth and `knowledge/stav/` owns STAV protocol truth. qxctl implements administrative and query interfaces; it does not own either schema, edit ledgers, or hold runtime security state.
@@ -47,6 +50,6 @@ Future mutation support must expose distinct proposal and apply paths. Proposal 
 `knowledge/sacv/` governs HTTP API contracts. It does not govern qxctl CLI grammar, and qxctl does not own or generate canonical OpenAPI descriptions.
 
 ## Non-authorizations
-qxctl is not authorized to write generated artifacts. It is not authorized to introduce Cobra, Python, or unrelated third-party dependencies. The cgo-free peer-credential dependency is inherited from the ratified STAV local client. First-party Symphony libraries remain subordinate to their canonical knowledge vectors.
+qxctl is not authorized to write generated artifacts. The Architect-ratified Cobra and Viper libraries and their required cgo-free Go dependencies are authorized only for command grammar and constrained configuration mapping; Python, C bindings, remote configuration backends, execution engines, and unrelated third-party dependencies remain prohibited. First-party Symphony libraries remain subordinate to their canonical knowledge vectors.
 qxctl is not authorized to accept, store, or print secret values.
 qxctl is not authorized to grant apply authority to an AI agent or to bypass STAV availability for a security/configuration mutation.

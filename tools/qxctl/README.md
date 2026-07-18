@@ -2,7 +2,7 @@
 
 Symphony's Go-based administrative spine.
 
-This tool is seeded with `Go 1.26.5` as the deterministic scripted baseline. It uses the Go standard library plus Symphony's first-party pure-Go STAV protocol kernel and has no third-party dependencies.
+This tool is seeded with `Go 1.26.5` as the deterministic scripted baseline. Its administrative command grammar uses Cobra and its explicitly bound command configuration uses private Viper instances. SSIAG/STAV trust loading remains outside Viper in dedicated cgo-free clients.
 
 **Future Posture:** `qxctl` will migrate to Go 1.27 after general availability and the differential conformance/cross-build gate passes. It does not currently require or use unreleased features, and the migration cannot alter STAV wire bytes or CLI grammar.
 

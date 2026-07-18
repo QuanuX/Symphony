@@ -17,6 +17,8 @@ Agents should use `qxctl` as the primary local administrative spine to verify re
 
 ## Constraints
 - Use the Go standard library, ratified first-party Go libraries, and only their approved cgo-free platform dependencies.
+- Treat Cobra as the command grammar and Viper only as a private, explicitly bound command-configuration mapper. Do not enable `AutomaticEnv`, configuration-file discovery, remote providers, watch/reload, or write-back.
+- Keep SSIAG/STAV trust configuration and endpoint authentication outside Viper in their dedicated clients.
 - Run commands synchronously in the active execution session.
 - SSIAG commands may read safe metadata only. Never pass secret values through qxctl arguments, input, output, logs, or fixtures.
 - When proposal support exists, agents may create and inspect proposals only. Never invoke, emulate, or bypass apply authority.
