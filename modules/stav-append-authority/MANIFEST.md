@@ -4,8 +4,12 @@
 
 - module: `modules/stav-append-authority/`
 - Go module: `github.com/QuanuX/Symphony/modules/stav-append-authority`
+- current source release: `v0.2.0`
+- historical source release: `v0.1.0` (pre-supervision boundary)
 - executable: `symphony-stav-append-authority`
 - implementation: Go, `CGO_ENABLED=0`
+
+The published versions are immutable public Go source modules, not GitHub binary releases. SODV owns their authorization and completion truth.
 
 ## Canonical Dependencies
 

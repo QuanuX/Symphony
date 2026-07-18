@@ -34,15 +34,14 @@ Mintlify publishes derived official documentation. SODV governs what Mintlify pr
 SACV governs canonical API contracts and their registry. SODV alone decides whether a SACV-registered API may be projected into Mintlify, SDK documentation, a live playground, or MCP tooling.
 
 ### Relationship to NotebookLM
-NotebookLM aligns corpus context. 
+NotebookLM aligns corpus context but is not canonical authority. Append-only release records must be interpreted under the corpus interpretation rule in `knowledge/INTENT.md`.
 
 ### Relationship to Validator
-symphony-validator produces deterministic evidence.
-The validator may later check knowledge-vector structure, but validator implementation is not part of this task.
+The checked-in `tools/symphony-validator/` implementation produces deterministic, read-only evidence for required SODV contract anchors and indexed-path presence. It does not currently interpret release-transaction semantics or prove publication completion; `RELEASES.md`, immutable Git state, public-proxy resolution, and human review carry those roles.
 
 ### Relationship to qxctl
 qxctl may later read or invoke knowledge-vector operations, but qxctl integration is not part of this task.
 No documentation publication pipeline is authorized by this task.
 
 ### Non-authorization Statement
-This canonical seed authorizes no implementation files, no generated indexes, no generated reports, no schemas, no templates, no CI files, no documentation publication configuration, no Mintlify configuration, no qxctl integration, no validator implementation, no NotebookLM automation, no publication pipeline, no database files, no service files, no runtime processes, no deployment scripts, no installer scripts, no binary assets, and no binary renames.
+This canonical surface authorizes no new implementation files, generated indexes, generated reports, schemas, templates, CI files, documentation publication configuration, Mintlify configuration, qxctl integration, validator capability beyond the separately bounded `tools/symphony-validator/` contract, NotebookLM automation, general publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.

@@ -7,9 +7,12 @@
 ## Go Namespace
 
 - module: `github.com/QuanuX/Symphony/libraries/stav-protocol-go`
+- current source release: `v0.2.0`
 - package: `stavprotocol`
 - binary: none
 - runtime state: none
+
+The version is published as an immutable public Go source module. It is not a binary release and grants no runtime authority.
 
 ## Consumers
 

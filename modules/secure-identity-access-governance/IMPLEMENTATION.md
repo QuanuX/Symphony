@@ -2,7 +2,7 @@
 
 ## Operating Rule
 
-Complete phases in order. A phase may start only when its entry decisions are ratified and all prior exit gates pass. “Implemented” below describes scaffold behavior, not production readiness. Do not enable a later capability merely because its interface appears in a contract.
+Complete phases in order. A phase may start only when its entry decisions are ratified and all prior exit gates pass. “Implemented” below describes the current bounded foundation, not overall production readiness. Do not enable a later capability merely because its interface appears in a contract.
 
 ## Phase 0 — Canonicalize Names and Authority (implemented and ratified)
 
@@ -51,7 +51,7 @@ Exit gate: two TOPS UUIDs produce distinct configuration, state, and socket path
 ## Phase 3 — Build the Go-Only Metadata Foundation (implemented)
 
 1. Keep the Go module independently buildable.
-2. Use only the Go standard library in the scaffold.
+2. Keep the foundation cgo-free and dependency-bounded to the Go standard library, the ratified `golang.org/x/sys` peer-credential boundary, and first-party STAV modules.
 3. compile and test with `CGO_ENABLED=0`.
 4. Keep domain types in separate identity, policy, credential, and provider packages.
 5. Reject unknown configuration fields and multiple JSON values.
@@ -74,7 +74,7 @@ Exit gate: the binary contains no mutation route, secret storage, cgo linkage, n
 
 ## Phase 4 — Integrate qxctl Read-Only Administration (implemented)
 
-1. Keep qxctl free of third-party dependencies; ratified first-party pure-Go protocol libraries remain allowed and authority-free.
+1. Keep qxctl dependencies bounded to the ratified Cobra/Viper command and configuration stack, cgo-free platform support, and first-party pure-Go protocol clients; never import a provider dependency.
 2. Add `qxctl ssiag status`, `providers`, and `doctor`.
 3. Require `--tops-id` or `SYMPHONY_SSIAG_TOPS_ID`.
 4. Resolve the same per-TOPS socket layout as the foundation.
@@ -130,7 +130,7 @@ Implementation procedure:
 
 Exit gate: no unauthenticated local process can reach a mutation or adapter operation, and supervision does not silently expand authority.
 
-## Phase 7 — Implement the Ratified STAV Append Authority Architecture
+## Phase 7 — Implement the Ratified STAV Append Authority Architecture (implemented)
 
 Ratified architecture: one dedicated Go process per TOPS serialization domain, authenticated local producer IPC, no qxctl/producer/agent file writes, and fail-closed security/configuration apply when required audit is unavailable.
 

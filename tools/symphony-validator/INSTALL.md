@@ -6,18 +6,25 @@
 
 The Symphony Validator requires:
 * C++26 compatible toolchain
-* CMake 3.20+
-* On macOS: Xcode Command Line Tools (or full Xcode) with Homebrew LLVM 18+
+* CMake 3.25+
+* On macOS: Xcode Command Line Tools or full Xcode with a C++26-capable compiler
 
 ## macOS Build Instructions
 
-Due to limited C++26 support in AppleClang, building on macOS requires a specific LLVM toolchain from Homebrew:
+The current source has been built and smoke-tested with AppleClang 21 from Xcode. Use the native toolchain first:
+
+```bash
+cmake -S tools/symphony-validator -B tools/symphony-validator/build
+cmake --build tools/symphony-validator/build
+```
+
+If an older installed AppleClang cannot satisfy the C++26 build contract, install a current Homebrew LLVM, LLD, and CMake toolchain:
 
 ```bash
 brew install llvm lld cmake
 ```
 
-Then configure and build using the Homebrew LLVM compiler and the explicit LLD Mach-O linker:
+Then configure and build using that compiler and the explicit LLD Mach-O linker:
 
 ```bash
 cd tools/symphony-validator

@@ -1,5 +1,17 @@
 # STAV Append Authority Installation
 
+## Install the Current Public Source Release
+
+Install the current supervised executable through the public Go module and checksum database:
+
+```text
+GOWORK=off go install github.com/QuanuX/Symphony/modules/stav-append-authority/cmd/symphony-stav-append-authority@v0.2.0
+symphony-stav-append-authority --version
+symphony-stav-append-authority install --scope user
+```
+
+The exact `go install` path was verified from an empty module cache through `proxy.golang.org` and `sum.golang.org`. It builds from source into `GOBIN`; Symphony does not currently publish a GitHub binary release. Use the checkout workflow below for development or reviewed local modifications.
+
 ## Build and Install
 
 ```text

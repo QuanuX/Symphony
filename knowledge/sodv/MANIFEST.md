@@ -23,9 +23,7 @@ SODV governs official documentation publication, including how internal canonica
 `RELEASES.md` is the append-only module-publication ledger. It separates merged authorization from completed publication so a local package cache or planned checksum can never be mistaken for a public release.
 
 ## Installability Considerations
-SODV has no executable install surface in this canonical seed.
-SODV installability is declarative only until future tooling is authorized.
-No public documentation files, docs directory, Mintlify configuration, generated documentation, documentation templates, schemas, qxctl integration, validator implementation, or publication pipeline are authorized by this canonical seed.
+SODV has no executable install surface. Its module-release protocol is operational as a human-ratified, append-only repository transaction, while public-documentation generation, Mintlify configuration, qxctl integration, and a general publication pipeline remain deferred.
 
 ## Scope
 SODV governs publication truth. It manages the boundaries between internal declarative truth and external public presentation or distribution.
@@ -42,7 +40,7 @@ SODV governs publication truth. It manages the boundaries between internal decla
 ## Non-Scope
 SODV is not public documentation. SODV is not a docs site. SODV is not Mintlify. SODV is not NotebookLM. SODV is not a publication pipeline. SODV is not a generated documentation system yet. SODV is not a generated index yet. SODV is not a documentation template system yet. SODV is not a schema system. SODV is not qxctl. SODV is not symphony-validator. SODV is not SKVI. SODV is not SCLV. SODV is not SSCG. SODV does not replace canonical repository knowledge files. SODV does not replace module contracts. SODV does not replace tool contracts. SODV does not replace PR review. SODV does not create runtime behavior. SODV does not enforce runtime behavior.
 
-## Future SODV Governance Scope Summary
+## SODV Governance Scope Summary
 Layer 0 canonical publication sources, Layer 1 publication relationships, Layer 2 publication evidence. Layer 3 future publication projections are strictly deferred.
 
 ## Relationship to SKV
@@ -73,7 +71,7 @@ Mintlify is a publication surface, not canonical authority.
 NotebookLM is a corpus alignment and context tool, not canonical authority.
 
 ## Relationship to symphony-validator
-symphony-validator produces deterministic evidence. Future validators may check structure based on SODV rules.
+The checked-in validator checks required SODV contract anchors and SKVI-indexed path presence. It does not currently validate `RELEASES.md` transaction semantics, remote tag state, public-proxy propagation, or checksums.
 
 ## Relationship to qxctl
 qxctl may later consume SODV, but qxctl integration is not authorized here.
@@ -85,4 +83,4 @@ Git history is version-control evidence.
 PR history is review and merge evidence.
 
 ## Non-Authorization Statement
-This canonical seed authorizes no public documentation files, no docs directory, no mint.json, no Mintlify configuration, no documentation publication configuration, no generated documentation, no generated documentation indexes, no generated changelogs, no generated indexes, no generated reports, no implementation files, no source files, no schemas, no templates, no CI files, no qxctl integration, no validator implementation, no NotebookLM automation, no publication pipeline, no database files, no service files, no runtime processes, no deployment scripts, no installer scripts, no binary assets, and no binary renames.
+This canonical surface authorizes no public documentation files, docs directory, `mint.json`, Mintlify configuration, documentation publication configuration, generated documentation, generated documentation indexes, generated changelogs, generated indexes, generated reports, new implementation or source files, schemas, templates, CI files, qxctl integration, validator capability beyond the separately bounded `tools/symphony-validator/` contract, NotebookLM automation, general publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.

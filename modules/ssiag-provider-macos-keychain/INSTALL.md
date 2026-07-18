@@ -43,7 +43,7 @@ symphony-ssiag-provider-macos-keychain status
 printf '%s\n' '{"schema":"symphony.ssiag.provider.request.v1","request_id":"verify-1","operation":"hello"}' | symphony-ssiag-provider-macos-keychain serve
 ```
 
-Verification MUST report `operational_access_enabled: false`. The operational architecture is ratified, but exact platform contracts, implementation, and security verification have not passed.
+Verification MUST report `operational_access_enabled: false`. The metadata protocol, fail-closed lifecycle, and disabled-operation behavior are implemented and tested. Operational Keychain access remains gated until its exact namespace, operation, code-signing, protected-delivery, lifecycle, and security contracts are implemented and verified.
 
 ## Upgrade
 

@@ -62,7 +62,7 @@ The graph is not canonical authority.
 The graph must be rebuildable from canonical Markdown.
 Obsidian-like graph behavior is an inspiration for visual navigation, not a source-truth model.
 
-## Future Tool Boundary
+## Tool Boundary
 Markdown declares.
 C++ detects.
 C++ checks.
@@ -70,12 +70,12 @@ C++ projects.
 Humans ratify.
 Agents assist.
 
-Future C++ tooling may read, check, and project SKVI entries.
-Future C++ tooling must not autonomously author canonical truth.
-Future C++ tooling may identify missing or stale entries as evidence.
-Future C++ tooling must not decide architectural truth.
+The checked-in C++26 validator reads and checks SKVI entries and produces deterministic, read-only evidence. Structured C++ projectors remain deferred.
+C++ tooling must not autonomously author canonical truth.
+C++ tooling may identify missing or stale entries as evidence.
+C++ tooling must not decide architectural truth.
 Future qxctl may query derived SKVI projections.
-Future validator checks may verify SKVI structure.
+Future validator increments may add separately ratified deterministic checks without changing SKVI ownership.
 
 ## Entry Model
 - **path**: (Required) The relative path to the canonical surface. Expected to be a string.
@@ -98,6 +98,7 @@ Future validator checks may verify SKVI structure.
 - **derives_from**: Points to the canonical authority this surface projects from. Acceptable sources: Projections. Acceptable targets: Canonical markdown. Canonical relation. May become graph edge.
 - **may_publish**: Points to a deferred projection or publication pipeline. Acceptable sources: SODV. Acceptable targets: Any projection. Deferred relation. May become graph edge.
 - **may_check**: Points to a validator or tool that will inspect this surface. Acceptable sources: Any. Acceptable targets: Validator. Deferred relation. May become graph edge.
+- **checked_by**: Points to a validator that currently checks some declared property of this surface. Acceptable sources: Any canonical surface. Acceptable targets: Validator. Canonical relation. The target remains evidence-only and gains no authorship authority.
 - **may_consume**: Points to an external tool or projection pipeline. Acceptable sources: Any. Acceptable targets: Tools/qxctl. Deferred relation. May become graph edge.
 - **depends_on**: Points to a required upstream canonical surface. Acceptable sources: Any. Acceptable targets: Canonical markdown. Canonical relation. May become graph edge.
 - **interprets**: Points to a capability that reads this surface for logic. Acceptable sources: Tools/Runtime. Acceptable targets: Canonical markdown. Canonical relation. May become graph edge.
@@ -124,7 +125,7 @@ Future validator checks may verify SKVI structure.
   - reviewers
   - agentic tools
   - future qxctl
-  - future validators
+  - symphony-validator and future validator extensions
 - deferred_projections:
   - JSON / JSONL portable evidence
   - DuckDB analytical projection
@@ -145,7 +146,7 @@ Future validator checks may verify SKVI structure.
   - humans
   - reviewers
   - agentic tools
-  - future validators
+  - symphony-validator and future validator extensions
 - deferred_projections:
   - JSON / JSONL portable evidence
   - DuckDB analytical projection
@@ -178,7 +179,7 @@ Future validator checks may verify SKVI structure.
 - scope: node-troll represents the node.
 - relationships:
   - declares -> `modules/node-troll/MANIFEST.md`
-- consumers: humans, future validators
+- consumers: humans, symphony-validator and future validator extensions
 - deferred_projections: strictly deferred
 - notes: none
 - status: canonical
@@ -192,7 +193,7 @@ Future validator checks may verify SKVI structure.
 - scope: Contractual dependencies, assumptions, capabilities. Python must not be required for remote native hot-path execution or the administrative spine. Optional isolated Python habitats may exist only when explicitly declared by a module or tool.
 - relationships:
   - depends_on -> `modules/node-troll/INTENT.md`
-- consumers: humans, future validators, future qxctl
+- consumers: humans, symphony-validator and future validator extensions, future qxctl
 - deferred_projections: strictly deferred
 - notes: none
 - status: canonical
@@ -233,7 +234,7 @@ Future validator checks may verify SKVI structure.
 - scope: bus-troll manages bus residency and bus compatibility. bus-troll is required only for deployments that use a managed bus boundary. Bus bypass remains valid when declared by deployment constraints. The existence of bus-troll does not make bus traversal mandatory.
 - relationships:
   - declares -> `modules/bus-troll/MANIFEST.md`
-- consumers: humans, future validators
+- consumers: humans, symphony-validator and future validator extensions
 - deferred_projections: strictly deferred
 - notes: none
 - status: canonical
@@ -245,7 +246,7 @@ Future validator checks may verify SKVI structure.
 - truth_role: declared contract truth for bus-troll
 - owner: bus-troll maintainer
 - scope: Contractual dependencies and capability boundaries.
-- consumers: humans, future validators, future qxctl
+- consumers: humans, symphony-validator and future validator extensions, future qxctl
 - relationships: none defined
 - deferred_projections: strictly deferred
 - notes: none
@@ -287,7 +288,7 @@ Future validator checks may verify SKVI structure.
 - scope: hotpath-runtime owns the native hot path. hotpath-runtime is not a troll; it is the native hot-path runtime substrate.
 - relationships:
   - declares -> `modules/hotpath-runtime/MANIFEST.md`
-- consumers: humans, future validators
+- consumers: humans, symphony-validator and future validator extensions
 - deferred_projections: strictly deferred
 - notes: none
 - status: canonical
@@ -299,7 +300,7 @@ Future validator checks may verify SKVI structure.
 - truth_role: declared contract truth for hotpath-runtime
 - owner: hotpath-runtime maintainer
 - scope: Contractual dependencies and hot-path execution boundaries.
-- consumers: humans, future validators, future qxctl
+- consumers: humans, symphony-validator and future validator extensions, future qxctl
 - relationships: none defined
 - deferred_projections: strictly deferred
 - notes: none
@@ -342,7 +343,7 @@ Future validator checks may verify SKVI structure.
 - relationships:
   - declares -> `modules/secure-identity-access-governance/MANIFEST.md`
   - depends_on -> `INTENT.md`
-- consumers: humans, reviewers, agentic tools, future validators, qxctl maintainers
+- consumers: humans, reviewers, agentic tools, symphony-validator and future validator extensions, qxctl maintainers
 - deferred_projections: JSON / JSONL portable evidence, graph relationship projection
 - notes: Monorepo visibility does not grant runtime authority.
 - status: canonical
@@ -358,7 +359,7 @@ Future validator checks may verify SKVI structure.
   - depends_on -> `modules/secure-identity-access-governance/INTENT.md`
   - declares -> `modules/secure-identity-access-governance/INSTALL.md`
   - declares -> `modules/secure-identity-access-governance/SPEC.md`
-- consumers: humans, reviewers, qxctl, agentic tools, future validators
+- consumers: humans, reviewers, qxctl, agentic tools, symphony-validator and future validator extensions
 - deferred_projections: JSON / JSONL portable evidence, graph relationship projection
 - notes: No credential-releasing provider is enabled by the scaffold.
 - status: canonical
@@ -402,7 +403,7 @@ Future validator checks may verify SKVI structure.
 - relationships:
   - depends_on -> `modules/secure-identity-access-governance/MANIFEST.md`
   - depends_on -> `modules/secure-identity-access-governance/REQUIREMENTS.md`
-- consumers: implementers, reviewers, agentic tools, future validators
+- consumers: implementers, reviewers, agentic tools, symphony-validator and future validator extensions
 - deferred_projections: protocol schema, conformance evidence
 - notes: Mutation endpoints remain disabled pending security gates.
 - status: canonical
@@ -433,7 +434,7 @@ Future validator checks may verify SKVI structure.
 - relationships:
   - depends_on -> `modules/secure-identity-access-governance/ARCHITECTURE.md`
   - depends_on -> `modules/secure-identity-access-governance/THREAT-MODEL.md`
-- consumers: implementers, reviewers, testers, agentic tools, future validators
+- consumers: implementers, reviewers, testers, agentic tools, symphony-validator and future validator extensions
 - deferred_projections: requirements traceability matrix, conformance evidence
 - notes: Requirements apply when their related capability is implemented.
 - status: canonical
@@ -511,7 +512,7 @@ Future validator checks may verify SKVI structure.
   - depends_on -> `modules/stav-append-authority/INTENT.md`
   - depends_on -> `knowledge/stav/MANIFEST.md`
   - declares -> `modules/stav-append-authority/SPEC.md`
-- consumers: humans, reviewers, qxctl, agentic tools, future validators
+- consumers: humans, reviewers, qxctl, agentic tools, symphony-validator and future validator extensions
 - deferred_projections: release and conformance evidence
 - notes: Operational listener, durability, read projection, SSIAG producer, and native supervision are implemented.
 - status: canonical
@@ -554,7 +555,7 @@ Future validator checks may verify SKVI structure.
 - relationships:
   - depends_on -> `modules/stav-append-authority/MANIFEST.md`
   - implements -> `knowledge/stav/SPEC.md`
-- consumers: implementers, reviewers, qxctl, agentic tools, future validators
+- consumers: implementers, reviewers, qxctl, agentic tools, symphony-validator and future validator extensions
 - deferred_projections: release conformance evidence
 - notes: Canonical protocol content remains owned by knowledge/stav.
 - status: canonical
@@ -584,7 +585,7 @@ Future validator checks may verify SKVI structure.
 - relationships:
   - depends_on -> `modules/stav-append-authority/ARCHITECTURE.md`
   - depends_on -> `modules/stav-append-authority/THREAT-MODEL.md`
-- consumers: implementers, reviewers, testers, agentic tools, future validators
+- consumers: implementers, reviewers, testers, agentic tools, symphony-validator and future validator extensions
 - deferred_projections: requirements traceability evidence
 - notes: Operational v1 and supervision requirements are active; deferred capabilities retain explicit gates.
 - status: canonical
@@ -645,7 +646,7 @@ Future validator checks may verify SKVI structure.
 - owner: Symphony root governance
 - scope: Defines build-time shared code as distinct from independently installed runtime modules.
 - relationships: depends_on -> `INTENT.md`; governs -> `libraries/stav-protocol-go/MANIFEST.md`
-- consumers: implementers, reviewers, agentic tools, future validators
+- consumers: implementers, reviewers, agentic tools, symphony-validator and future validator extensions
 - deferred_projections: dependency graph and release evidence
 - notes: Libraries own no canonical protocol truth or operational identity.
 - status: canonical
@@ -686,7 +687,7 @@ Future validator checks may verify SKVI structure.
 - owner: SACV maintainer
 - scope: Defines API-first source truth, OpenAPI 3.2.0 targeting, distributed semantic ownership, and security/publication boundaries.
 - relationships: declares -> `knowledge/sacv/MANIFEST.md`; depends_on -> `knowledge/sodv/SPEC.md`
-- consumers: humans, reviewers, API owners, agentic tools, future validators
+- consumers: humans, reviewers, API owners, agentic tools, symphony-validator and future validator extensions
 - deferred_projections: OpenAPI validation evidence, documentation, SDK, and graph projections
 - notes: Authorizes governance only, not an endpoint or remote listener.
 - status: canonical
@@ -725,7 +726,7 @@ Future validator checks may verify SKVI structure.
 - owner: SACV maintainer
 - scope: Defines OpenAPI versioning, ownership, registry, compatibility, security, derivation, and publication boundaries.
 - relationships: depends_on -> `knowledge/sacv/MANIFEST.md`; governs -> future owner-controlled OpenAPI descriptions; depends_on -> `knowledge/sodv/SPEC.md`
-- consumers: API owners, implementers, reviewers, future validators and generators
+- consumers: API owners, implementers, reviewers, symphony-validator and future validator/generator extensions
 - deferred_projections: generated bindings, SDKs, Mintlify documentation, MCP tools
 - notes: Canonical descriptions target OpenAPI 3.2.0; none are registered yet.
 - status: canonical
@@ -738,7 +739,7 @@ Future validator checks may verify SKVI structure.
 - owner: SACV maintainer
 - scope: Registers owner, path, versions, audience, transport, security, publication, SDK, and lifecycle state.
 - relationships: depends_on -> `knowledge/sacv/SPEC.md`; indexes -> future canonical owner API descriptions
-- consumers: humans, SKVI, SODV, future validators and generators
+- consumers: humans, SKVI, SODV, symphony-validator and future validator/generator extensions
 - deferred_projections: machine-readable registry evidence
 - notes: The empty registry is intentional; placeholder endpoint documents are prohibited.
 - status: canonical
@@ -751,7 +752,7 @@ Future validator checks may verify SKVI structure.
 - owner: SACV maintainer
 - scope: Defines required posture, reference handling, compatibility gates, and exclusions for canonical descriptions.
 - relationships: depends_on -> `knowledge/sacv/SPEC.md`; governs -> future canonical owner OpenAPI descriptions
-- consumers: API owners, implementers, reviewers, future validators and generators
+- consumers: API owners, implementers, reviewers, symphony-validator and future validator/generator extensions
 - deferred_projections: lint and compatibility evidence
 - notes: A lagging consumer must defer or fail, not silently downgrade.
 - status: canonical
@@ -885,7 +886,7 @@ Future validator checks may verify SKVI structure.
 - owner: STAV knowledge maintainer
 - scope: Defines common values plus candidate, event, receipt, query, query-page, and verification structures.
 - relationships: depends_on -> `knowledge/stav/SPEC.md`; governs -> `libraries/stav-protocol-go/`
-- consumers: protocol-kernel, append-authority, qxctl, producer implementers, reviewers, future validators
+- consumers: protocol-kernel, append-authority, qxctl, producer implementers, reviewers, symphony-validator and future validator extensions
 - deferred_projections: generated documentation and conformance reports
 - notes: Configuration, status, and local request/response schemas are intentionally absent.
 - status: canonical
@@ -911,7 +912,7 @@ Future validator checks may verify SKVI structure.
 - owner: STAV knowledge maintainer
 - scope: Exercises canonical documents, duplicate/null/number/unknown-field rejection, and stable digest inputs.
 - relationships: depends_on -> `knowledge/stav/schemas/v1/`; governs -> `libraries/stav-protocol-go/GO_1_27_MIGRATION.md`
-- consumers: protocol-kernel tests, toolchain migration, future validators and language implementations
+- consumers: protocol-kernel tests, toolchain migration, symphony-validator, future validator extensions, and language implementations
 - deferred_projections: cross-language conformance reports
 - notes: Invalid UTF-8 and partial-input cases are constructed in kernel tests where text files cannot safely represent them.
 - status: canonical
@@ -939,7 +940,7 @@ Future validator checks may verify SKVI structure.
 - owner: SSIAG macOS provider maintainer
 - scope: Declares Swift executable identity, metadata IPC, independent installability, and prohibited claims.
 - relationships: depends_on -> `modules/ssiag-provider-macos-keychain/INTENT.md`; declares -> `modules/ssiag-provider-macos-keychain/SPEC.md`
-- consumers: humans, reviewers, SSIAG implementers, future validators
+- consumers: humans, reviewers, SSIAG implementers, symphony-validator and future validator extensions
 - deferred_projections: compatibility evidence
 - notes: Native Swift code remains outside the Go-only foundation.
 - status: canonical
@@ -978,7 +979,7 @@ Future validator checks may verify SKVI structure.
 - owner: SSIAG macOS provider maintainer
 - scope: Defines bounded JSON-lines metadata operations, descriptor truth, installation, and future operational gate.
 - relationships: depends_on -> `knowledge/ssiag/SPEC.md`; governs -> `modules/ssiag-provider-macos-keychain/README.md`
-- consumers: implementers, reviewers, SSIAG foundation, future validators
+- consumers: implementers, reviewers, SSIAG foundation, symphony-validator and future validator extensions
 - deferred_projections: operational provider protocol conformance
 - notes: Operational access must report false until a separate review enables it.
 - status: canonical
@@ -1087,8 +1088,8 @@ Future validator checks may verify SKVI structure.
 - truth_role: intent and purpose for knowledge vectors
 - owner: knowledge maintainer
 - scope: Root definition of SKVI, SCLV, SODV, SACV, SSIAG, and STAV vector domains.
-- consumers: humans, reviewers, agentic tools, future validators
-- relationships: declares -> `knowledge/sacv/INTENT.md`; declares -> `knowledge/ssiag/INTENT.md`; declares -> `knowledge/stav/INTENT.md`
+- consumers: humans, reviewers, agentic tools, symphony-validator and future validator extensions
+- relationships: declares -> `knowledge/sacv/INTENT.md`; declares -> `knowledge/ssiag/INTENT.md`; declares -> `knowledge/stav/INTENT.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - deferred_projections: strictly deferred
 - notes: none
 - status: canonical
@@ -1107,14 +1108,14 @@ Future validator checks may verify SKVI structure.
   - depends_on -> `knowledge/skvi/SPEC.md`
   - may_consume -> `knowledge/skvi/MANIFEST.md`
   - may_consume -> `knowledge/skvi/SKILL.md`
-  - may_check -> future tools/symphony-validator/SPEC.md rules
+  - checked_by -> `tools/symphony-validator/SPEC.md`
   - interprets -> SCLV cross-reference validation
   - interprets -> SODV publication governance
 - consumers:
   - maintainers
   - agentic reviewers
   - NotebookLM corpus alignment
-  - future deterministic validator checks
+  - symphony-validator
   - future qxctl-derived evidence consumers
   - future SODV publication governance
 - deferred_projections:
@@ -1134,8 +1135,8 @@ Future validator checks may verify SKVI structure.
 - truth_role: intent and purpose for SKVI
 - owner: SKVI maintainer
 - scope: Define SKVI boundaries.
-- consumers: humans, future validators
-- relationships: none defined
+- consumers: humans, symphony-validator and future validator extensions
+- relationships: checked_by -> `tools/symphony-validator/SPEC.md`
 - deferred_projections: strictly deferred
 - notes: none
 - status: canonical
@@ -1147,8 +1148,8 @@ Future validator checks may verify SKVI structure.
 - truth_role: declared contract truth for SKVI
 - owner: SKVI maintainer
 - scope: Contractual requirements.
-- consumers: humans, future validators
-- relationships: none defined
+- consumers: humans, symphony-validator and future validator extensions
+- relationships: checked_by -> `tools/symphony-validator/SPEC.md`
 - deferred_projections: strictly deferred
 - notes: none
 - status: canonical
@@ -1174,7 +1175,7 @@ Future validator checks may verify SKVI structure.
 - owner: SKVI maintainer
 - scope: Formatting and structure definitions.
 - consumers: humans, future implementations
-- relationships: none defined
+- relationships: checked_by -> `tools/symphony-validator/SPEC.md`
 - deferred_projections: strictly deferred
 - notes: none
 - status: canonical
@@ -1187,7 +1188,7 @@ Future validator checks may verify SKVI structure.
 - truth_role: intent and purpose for SCLV
 - owner: SCLV maintainer
 - scope: SCLV records change truth.
-- consumers: humans, future validators
+- consumers: humans, symphony-validator and future validator extensions
 - relationships: none defined
 - deferred_projections: strictly deferred
 - notes: none
@@ -1200,7 +1201,7 @@ Future validator checks may verify SKVI structure.
 - truth_role: declared contract truth for SCLV
 - owner: SCLV maintainer
 - scope: Contractual requirements.
-- consumers: humans, future validators
+- consumers: humans, symphony-validator and future validator extensions
 - relationships: none defined
 - deferred_projections: strictly deferred
 - notes: none
@@ -1245,7 +1246,7 @@ Future validator checks may verify SKVI structure.
     references SKVI-indexed paths
     depends_on `knowledge/sclv/SPEC.md`
     may inform `knowledge/sodv/SPEC.md` publication governance
-    may be checked by future `tools/symphony-validator/SPEC.md` rules
+    checked by current `tools/symphony-validator/SPEC.md` rules for record shape, vocabulary, continuity, and SKVI references
     may be consumed by future qxctl-derived evidence projections
     does not replace Git history
     does not replace PR review
@@ -1254,7 +1255,7 @@ Future validator checks may verify SKVI structure.
     - `maintainers`
     - `agentic reviewers`
     - `NotebookLM corpus alignment`
-    - `future deterministic validator checks`
+    - `symphony-validator`
     - `future qxctl-derived evidence consumers`
     - `future SODV publication governance`
   deferred_projections:
@@ -1279,7 +1280,7 @@ Future validator checks may verify SKVI structure.
 - consumers: `Architect, maintainers, reviewers, agentic tools, symphony-validator maintainers`
 - deferred_projections: `future read-only qxctl recovery-status projection`
 - status: `canonical`
-- notes: `Ephemeral session state remains under .git and is never canonical.`
+- notes: `Ephemeral session state remains under .git and is never canonical. The runbook also distinguishes a stale temporary-proxy module cache from immutable public release state and requires empty-cache verification.`
 
 #### SODV
 ##### INTENT.md
@@ -1289,8 +1290,8 @@ Future validator checks may verify SKVI structure.
 - truth_role: intent and purpose for SODV
 - owner: SODV maintainer
 - scope: SODV governs publication truth.
-- consumers: humans, future validators
-- relationships: none defined
+- consumers: humans, symphony-validator and future validator extensions
+- relationships: checked_by -> `tools/symphony-validator/SPEC.md`
 - deferred_projections: strictly deferred
 - notes: none
 - status: canonical
@@ -1302,8 +1303,8 @@ Future validator checks may verify SKVI structure.
 - truth_role: declared contract truth for SODV
 - owner: SODV maintainer
 - scope: Contractual requirements for publication.
-- consumers: humans, future validators
-- relationships: none defined
+- consumers: humans, symphony-validator and future validator extensions
+- relationships: checked_by -> `tools/symphony-validator/SPEC.md`
 - deferred_projections: strictly deferred
 - notes: none
 - status: canonical
@@ -1329,7 +1330,7 @@ Future validator checks may verify SKVI structure.
 - owner: SODV maintainer
 - scope: Formatting for publication.
 - consumers: humans, future implementations
-- relationships: none defined
+- relationships: checked_by -> `tools/symphony-validator/SPEC.md`
 - deferred_projections: strictly deferred
 - notes: none
 - status: canonical
@@ -1341,11 +1342,11 @@ Future validator checks may verify SKVI structure.
 - truth_role: `canonical module-publication authorization and completion truth`
 - owner: `SODV maintainer`
 - scope: `Binds module versions to immutable source commits before publication and records clean-cache completion evidence afterward.`
-- relationships: `depends_on -> knowledge/sodv/SPEC.md; depends_on -> knowledge/sclv/CHANGELOG.md; records -> module release publication`
-- consumers: `Architect, release maintainers, reviewers, agentic tools, future validators`
+- relationships: `depends_on -> knowledge/sodv/SPEC.md; depends_on -> knowledge/sclv/CHANGELOG.md; records -> module release publication; checked_by -> tools/symphony-validator/SPEC.md for indexed-path presence only`
+- consumers: `Architect, release maintainers, reviewers, agentic tools, symphony-validator and future validator extensions`
 - deferred_projections: `release notes, package index, public documentation`
 - status: `canonical`
-- notes: `Authorization never implies completion; pending transaction state is noncanonical.`
+- notes: `Authorization never implies completion; pending transaction state is noncanonical. Current validator coverage does not interpret release-transaction semantics.`
 
 ## Deferred Projections
 Unless a surface is explicitly indexed above, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, new qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. The indexed STAV JSON Schemas and fixtures are human-ratified protocol truth, not generated projections.

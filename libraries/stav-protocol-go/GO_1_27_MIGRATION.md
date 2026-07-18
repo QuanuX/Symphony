@@ -6,7 +6,7 @@
 - Intended target: Go 1.27 after general availability.
 - Wire contract: unchanged by the toolchain migration.
 
-The root `go.work` composes the kernel and its consumers from one reviewed source tree. SODV release record `SODV-REL-001` authorizes recovery of kernel `v0.2.0` and append-authority `v0.1.0` from the exact PR #59 merge commit, followed by supervised append-authority `v0.2.0` from the PR #64 merge commit. After publication, qxctl and SSIAG move to append-authority `v0.2.0` and regenerate checksums from the public proxy with `GOWORK=off` and an empty module cache. The Go 1.27 pin change remains a separate gate and changes none of these historical version bindings.
+The root `go.work` composes the kernel and its consumers from one reviewed source tree. SODV record `SODV-REL-001`, corrected by `SODV-REL-002` and completed by `SODV-REL-003`, governs publication of kernel `v0.2.0` and append-authority `v0.1.0` from the exact PR #59 merge commit, followed by supervised append-authority `v0.2.0` from the PR #64 merge commit. Those source modules are now publicly resolvable through the Go proxy and checksum database. qxctl and SSIAG require append-authority `v0.2.0`, and their checksums were regenerated from public artifacts with `GOWORK=off` and empty module caches. The Go 1.27 pin change remains a separate gate and changes none of these historical version bindings.
 
 Draft Go 1.27 documentation may inform experiments but is not an implementation dependency. No draft package or behavior is exposed through the kernel API.
 

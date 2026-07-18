@@ -37,8 +37,7 @@ SODV governs how knowledge within the SKV framework becomes official public docu
 Module contracts (`MANIFEST.md`, etc.) are distinct domains. SKV maps them but does not replace them.
 
 ### Relationship to symphony-validator
-symphony-validator produces deterministic evidence.
-The validator may later check knowledge-vector structure, but validator implementation is not part of this task.
+The checked-in `tools/symphony-validator/` implementation produces deterministic, read-only evidence. It currently checks required Knowledge Vector contract anchors, SKVI structure, SKVI coverage and paths, SCLV record shape and continuity, and bounded repository doctrine. It does not create canonical truth, validate SODV release-transaction semantics, publish documentation, or remediate files.
 
 ### Relationship to qxctl
 qxctl may later read or invoke knowledge-vector operations, but qxctl integration is not part of this task.
@@ -46,6 +45,13 @@ qxctl may later read or invoke knowledge-vector operations, but qxctl integratio
 ### Relationship to NotebookLM
 NotebookLM aligns corpus context.
 NotebookLM is a corpus alignment and context tool, not canonical authority.
+
+### Corpus Interpretation Rule
+Current contract surfaces state present posture. Append-only SCLV and SODV records state what was known, authorized, or completed at the recorded point in time and must remain unchanged as historical evidence.
+
+Corpus consumers, including NotebookLM and agentic tools, must interpret an append-only record together with later correction, recovery, supersession, and completion records. The latest applicable canonical record and current contract surface govern present-state answers; an older record remains valid history but must not be presented as current posture after a later canonical record changes its active interpretation.
+
+When current contracts, implementation evidence, and the latest applicable record disagree, the disagreement is drift to be surfaced for review. Corpus tooling must not silently invent a reconciliation.
 
 ### Relationship to Mintlify
 Mintlify publishes derived official documentation.
@@ -66,4 +72,4 @@ SODV governs publication truth.
 Published documentation is a derived public projection.
 
 ### Non-authorization Statement
-This canonical surface recognizes SACV governance but authorizes no endpoint document by itself. It authorizes no implementation files, generated indexes, generated reports, templates, CI files, documentation publication configuration, Mintlify configuration, qxctl integration, validator implementation, NotebookLM automation, publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.
+This canonical surface recognizes SACV governance but authorizes no endpoint document by itself. It authorizes no new implementation files, generated indexes, generated reports, templates, CI files, documentation publication configuration, Mintlify configuration, qxctl integration, validator capability beyond the separately bounded `tools/symphony-validator/` contract, NotebookLM automation, publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.
