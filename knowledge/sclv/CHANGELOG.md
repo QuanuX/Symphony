@@ -522,3 +522,146 @@ This PR authorizes none of the following:
   - `OpenAPI, SDK, Mintlify, or public documentation publication`
 - notes: |
     This record was authored only after PR #59 merged and its 40-character merge commit was verified to contain the exact reviewed head tree. Runtime audit events belong only to the per-installation STAV ledger and must never be authored into SCLV.
+
+- record_id: `SCLV-PR-061`
+- title: `SSIAG local endpoint trust hardened`
+- status: `canonical`
+- date: `2026-07-18`
+- change_type: `canonical_update`
+- related_pr: `https://github.com/QuanuX/Symphony/pull/61`
+- merge_commit: `00d26a62988da8f03eebae21ea878706a8903247`
+- affected_surfaces:
+  - `knowledge/ssiag/SPEC.md`
+  - `modules/secure-identity-access-governance/ARCHITECTURE.md`
+  - `modules/secure-identity-access-governance/IMPLEMENTATION.md`
+  - `modules/secure-identity-access-governance/INSTALL.md`
+  - `modules/secure-identity-access-governance/MANIFEST.md`
+  - `modules/secure-identity-access-governance/README.md`
+  - `modules/secure-identity-access-governance/REQUIREMENTS.md`
+  - `modules/secure-identity-access-governance/SPEC.md`
+  - `modules/secure-identity-access-governance/THREAT-MODEL.md`
+  - `modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go`
+  - `modules/secure-identity-access-governance/internal/client/client.go`
+  - `modules/secure-identity-access-governance/internal/client/client_test.go`
+  - `modules/secure-identity-access-governance/internal/client/socket_owner_unix.go`
+  - `modules/secure-identity-access-governance/internal/client/socket_owner_unsupported.go`
+  - `modules/secure-identity-access-governance/internal/config/config.go`
+  - `modules/secure-identity-access-governance/internal/config/config_test.go`
+  - `modules/secure-identity-access-governance/internal/config/open_nofollow_unix.go`
+  - `modules/secure-identity-access-governance/internal/config/open_nofollow_unsupported.go`
+  - `modules/secure-identity-access-governance/internal/config/owner_unix.go`
+  - `modules/secure-identity-access-governance/internal/config/owner_unsupported.go`
+  - `modules/secure-identity-access-governance/internal/config/trusted.go`
+  - `modules/secure-identity-access-governance/internal/lifecycle/lifecycle.go`
+  - `modules/secure-identity-access-governance/internal/lifecycle/lifecycle_test.go`
+  - `modules/secure-identity-access-governance/internal/server/server.go`
+  - `modules/secure-identity-access-governance/internal/server/server_test.go`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/go.mod`
+  - `tools/qxctl/internal/ssiagclient/client.go`
+  - `tools/qxctl/internal/ssiagclient/client_test.go`
+  - `tools/qxctl/internal/ssiagclient/peerauth_darwin.go`
+  - `tools/qxctl/internal/ssiagclient/peerauth_linux.go`
+  - `tools/qxctl/internal/ssiagclient/peerauth_unsupported.go`
+  - `tools/qxctl/internal/ssiagclient/trust_unix.go`
+  - `tools/qxctl/internal/ssiagclient/trust_unsupported.go`
+- skvi_references:
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `modules/secure-identity-access-governance/MANIFEST.md`
+  - `modules/secure-identity-access-governance/SPEC.md`
+  - `modules/secure-identity-access-governance/IMPLEMENTATION.md`
+- change_summary: |
+    Under the Architect's direction, PR #61 implemented the SSIAG phase-6 endpoint-trust foundation for Darwin and Linux without enabling mutation, provider execution, credential delivery, or supervision.
+    It separated the canonical service identity from caller subjects, bound enrollment to presence-safe UID/GID rules, enforced trusted per-TOPS configuration ownership and permissions, verified server process identity before socket mutation, and required clients to verify the configured kernel-attested peer before sending HTTP bytes.
+- relationship_changes: |
+    `knowledge/ssiag/` remains the canonical identity and trust authority; the SSIAG foundation and qxctl independently implement its local endpoint checks without creating an installation dependency between them.
+    Socket ownership and permissions control reachability only. Exact connected-peer UID/GID agreement with the configured service identity is authoritative.
+- doctrine_changes: |
+    Caller-supplied identities cannot authenticate a local SSIAG connection, and a socket-path override changes location only, never expected identity.
+    The phase-6 endpoint-trust foundation does not claim supervisor installation, service-account provisioning, authorization, mutation, provider trust, or operational Keychain access.
+- compatibility_consequences: |
+    Legacy metadata configuration remains structurally readable but cannot start or reach a trusted SSIAG service until safely re-enrolled with a canonical service mapping.
+    User enrollment binds the effective UID/GID. New system enrollment requires explicit service UID/GID values and administrator execution. Go 1.26.5 remains the production baseline.
+- publication_consequences: |
+    No OpenAPI surface, SDK, Mintlify page, release artifact, or public documentation was authorized. SODV remains the sole publication authority.
+- projection_consequences: |
+    qxctl continues to expose only authenticated safe metadata. It remains a projection of SSIAG truth and gains no provider, policy, credential, mutation, or STAV-ledger authority.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/61`
+  - `00d26a62988da8f03eebae21ea878706a8903247`
+  - `7690ecb81a20214d56fd6677d8409315dcd742c8`
+- non_authorizations:
+  - `phase-6 supervision closure`
+  - `service-account or runtime-directory provisioning`
+  - `administrative apply or mutation endpoints`
+  - `deny-by-default policy execution`
+  - `provider executable activation`
+  - `secret-delivery channels`
+  - `operational Keychain access`
+  - `remote SSIAG access`
+  - `agent apply authority`
+- notes: |
+    This record was authored only after PR #61 merged and its 40-character merge commit was verified to contain the reviewed head tree. It records a phase-6 foundation increment, not phase-6 completion.
+
+- record_id: `SCLV-PR-062`
+- title: `qxctl command tooling migrated to Cobra and Viper`
+- status: `canonical`
+- date: `2026-07-18`
+- change_type: `canonical_update`
+- related_pr: `https://github.com/QuanuX/Symphony/pull/62`
+- merge_commit: `3383ddf1b4f590738b1412df6a0d18d13cc86f34`
+- affected_surfaces:
+  - `tools/qxctl/INSTALL.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/ssiag_test.go`
+  - `tools/qxctl/cmd/qxctl/stav_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/go.mod`
+  - `tools/qxctl/go.sum`
+- skvi_references:
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/stav/SPEC.md`
+- change_summary: |
+    Under the Architect's direction, PR #62 replaced qxctl's hand-written command dispatcher with a Cobra command tree and tightly bounded private Viper instances.
+    The migration preserved the documented command grammar, help and version text, output and JSON formats, error prefixes, exit behavior, SSIAG endpoint trust, STAV transport trust, and agent authority boundaries.
+- relationship_changes: |
+    Cobra owns command parsing and dispatch inside qxctl only. Viper binds only explicitly declared SSIAG command keys and `SYMPHONY_SSIAG_TOPS_ID`; it does not become a general configuration, endpoint-trust, provider, or secret-loading authority.
+    qxctl remains the administrative/query projection implementing canonical SSIAG and STAV contracts rather than owning either schema.
+- doctrine_changes: |
+    The qxctl administrative tool may use Cobra and Viper without creating platform-wide language or execution doctrine and without constraining future C++ runtime or trading-node architecture.
+    Automatic environment discovery, configuration-file discovery, remote providers, watch/reload, write-back, and secret-valued configuration remain prohibited.
+- compatibility_consequences: |
+    Supported command grammar and observable CLI behavior remain compatible across the migration. Cobra v1.10.2 and Viper v1.21.0 are scoped dependencies of qxctl only.
+    Go 1.26.5 remains the production baseline, with Go 1.27 adoption separately gated and unable to alter command grammar or STAV wire bytes.
+- publication_consequences: |
+    No OpenAPI entry, SDK, Mintlify page, release artifact, or public documentation was authorized. SODV remains the sole publication authority.
+- projection_consequences: |
+    qxctl text and versioned JSON output remain derived administrative projections. The tooling migration does not grant canonical knowledge, runtime mutation, provider, credential, or ledger authority.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/62`
+  - `3383ddf1b4f590738b1412df6a0d18d13cc86f34`
+  - `dbb68fc7935c6fc3f993e39fd1c4fce0e7d8865d`
+- non_authorizations:
+  - `automatic configuration-file discovery`
+  - `automatic environment binding`
+  - `remote configuration providers`
+  - `configuration watch, reload, or write-back`
+  - `secret-valued qxctl configuration`
+  - `qxctl mutation or apply authority`
+  - `qxctl provider or credential authority`
+  - `qxctl STAV append or ledger-file authority`
+  - `trading-node, hot-path, binary-execution, or OS-bypass doctrine`
+  - `Go 1.27 production pin`
+- notes: |
+    This record was authored only after PR #62 merged and its 40-character merge commit was verified to contain the exact reviewed head tree. The migration changes qxctl's implementation tooling without changing its canonical authority.
