@@ -892,3 +892,86 @@ This PR authorizes none of the following:
   - `new SSIAG, STAV, qxctl, provider, or trading-node authority`
 - notes: |
     This record was authored only after PR #66 merged and its exact merge/head evidence was verified. PR #67 is a pure closure carrier for this completed change and does not recursively require its own SCLV record.
+
+- record_id: `SCLV-PR-068`
+- record_version: `2`
+- title: `Documentation corpus aligned with implemented architecture and release state`
+- status: `canonical`
+- date: `2026-07-18`
+- change_started_at: `2026-07-18T15:21:17Z`
+- change_completed_at: `2026-07-18T15:21:43Z`
+- recorded_at: `2026-07-18T15:22:28Z`
+- recording_disposition: `post_merge`
+- change_type: `canonical_update`
+- related_pr: `https://github.com/QuanuX/Symphony/pull/68`
+- merge_commit: `f494d8c6e9c0f7d7b299d8f5cd766e938ec7ec81`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/sclv/RECOVERY.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/skvi/INTENT.md`
+  - `knowledge/skvi/MANIFEST.md`
+  - `knowledge/skvi/SKILL.md`
+  - `knowledge/skvi/SPEC.md`
+  - `knowledge/sodv/INTENT.md`
+  - `knowledge/sodv/MANIFEST.md`
+  - `knowledge/sodv/SKILL.md`
+  - `knowledge/sodv/SPEC.md`
+  - `libraries/stav-protocol-go/GO_1_27_MIGRATION.md`
+  - `libraries/stav-protocol-go/MANIFEST.md`
+  - `libraries/stav-protocol-go/README.md`
+  - `modules/secure-identity-access-governance/IMPLEMENTATION.md`
+  - `modules/ssiag-provider-macos-keychain/INSTALL.md`
+  - `modules/stav-append-authority/INSTALL.md`
+  - `modules/stav-append-authority/MANIFEST.md`
+  - `modules/stav-append-authority/README.md`
+  - `tools/symphony-validator/INSTALL.md`
+- skvi_references:
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/sclv/RECOVERY.md`
+  - `knowledge/sodv/SPEC.md`
+  - `knowledge/sodv/RELEASES.md`
+  - `libraries/stav-protocol-go/MANIFEST.md`
+  - `modules/secure-identity-access-governance/MANIFEST.md`
+  - `modules/ssiag-provider-macos-keychain/MANIFEST.md`
+  - `modules/stav-append-authority/MANIFEST.md`
+  - `tools/symphony-validator/MANIFEST.md`
+- change_summary: |
+    Under the Architect's direction, PR #68 swept the established documentation corpus and reconciled bootstrap-era claims with checked-in architecture and verified release state.
+    It established the current-versus-historical corpus interpretation rule, described the validator's actual SKVI/SCLV/SODV evidence boundaries, recorded the narrow public Go source-module set, verified the append-authority public install path, aligned dependency and toolchain guidance, and documented the reproducible PR #59 local-cache contamination symptom without rewriting history.
+- relationship_changes: |
+    Current contract surfaces and the latest applicable forward-only SCLV/SODV records now govern present-state corpus answers. Older records retain historical authority but no longer masquerade as active posture after a correction or completion record.
+    SKVI now distinguishes a current `checked_by` relationship from deferred `may_check` work. The validator remains deterministic and read-only; NotebookLM remains a derived corpus consumer with no ratification authority.
+- doctrine_changes: |
+    Corpus drift must be surfaced rather than silently reconciled. Append-only history is never rewritten merely to make present state easier to summarize.
+    A public Go source module is not a GitHub binary release, platform launch, SDK, container, or published documentation site. Empty-cache public-proxy verification outranks a contaminated workstation cache.
+- compatibility_consequences: |
+    No source implementation, wire byte, schema, qxctl grammar, runtime authority, dependency version, module tag, or TOPS state changed.
+    Kernel v0.2.0 and append-authority v0.2.0 remain the current public source modules; append-authority v0.1.0 remains immutable historical evidence. Go 1.26.5 remains the production baseline and Go 1.27 remains separately gated.
+- publication_consequences: |
+    The repository landing page now identifies the exact published source-module set and explicitly excludes unreleased binaries, qxctl, SSIAG, provider adapters, SDKs, containers, and proposal-only modules.
+    PR #68 published no new tag, binary, container, SDK, OpenAPI description, Mintlify site, NotebookLM automation, or launch documentation.
+- projection_consequences: |
+    NotebookLM and other corpus tools should refresh from the merged main branch and apply `knowledge/INTENT.md` when resolving current posture from historical records. Corpus refresh remains an external derived operation and is not automated by this change.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/68`
+  - `f494d8c6e9c0f7d7b299d8f5cd766e938ec7ec81`
+  - `669805f1b05d46fee6f6d02b254fbd39775224df`
+  - `symphony-validator: 1218 pass, 75 advisory, 0 violations`
+  - `full symphony-validator smoke suite passed`
+  - `all four Go module suites passed with GOWORK=off and fresh public-proxy caches`
+  - `public append-authority v0.2.0 go install passed from an empty cache`
+  - `SSIAG macOS provider Swift tests: 5 passed`
+- non_authorizations:
+  - `NotebookLM automation or canonical authority`
+  - `public documentation pipeline or Mintlify configuration`
+  - `new or moved module tag, binary release, container, or SDK`
+  - `new OpenAPI description or remote HTTP surface`
+  - `SSIAG mutation, provider execution, secret delivery, or operational Keychain access`
+  - `proposal-only module implementation`
+  - `Go 1.27 production pin`
+- notes: |
+    This record was authored only after PR #68 merged and its exact merge/head evidence was verified. The closure carrier for this record is non-recursive unless it makes an independently significant architectural change.
