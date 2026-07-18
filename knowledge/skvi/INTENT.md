@@ -30,8 +30,7 @@ SCLV is one of the knowledge surfaces indexed by SKVI. SKVI tracks SCLV's locati
 SODV uses SKVI to discover the canonical source truth necessary for deriving public documentation.
 
 ### Relationship to Validator
-symphony-validator produces deterministic evidence.
-The validator may later check knowledge-vector structure, but validator implementation is not part of this task.
+The checked-in `tools/symphony-validator/` implementation consumes SKVI as declared routing truth and produces deterministic, read-only evidence for entry shape, required-surface coverage, indexed-path safety and existence, and SCLV cross-references. SKVI does not grant the validator authority to create or rewrite canonical entries.
 
 ### Relationship to qxctl
 qxctl may later read or invoke knowledge-vector operations, but qxctl integration is not part of this task.
@@ -42,4 +41,4 @@ Mintlify publishes derived official documentation.
 SKVI provides the structural roadmap that NotebookLM and Mintlify consume as derived projections. No documentation publication pipeline is authorized by this task.
 
 ### Non-authorization Statement
-This canonical seed authorizes no implementation files, no generated indexes, no generated reports, no schemas, no templates, no CI files, no documentation publication configuration, no Mintlify configuration, no qxctl integration, no validator implementation, no NotebookLM automation, no publication pipeline, no database files, no service files, no runtime processes, no deployment scripts, no installer scripts, no binary assets, and no binary renames.
+This canonical surface authorizes no new implementation files, generated indexes, generated reports, schemas, templates, CI files, documentation publication configuration, Mintlify configuration, qxctl integration, validator capability beyond the separately bounded `tools/symphony-validator/` contract, NotebookLM automation, publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.

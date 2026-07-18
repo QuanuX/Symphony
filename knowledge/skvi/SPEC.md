@@ -11,7 +11,7 @@
 - not a Markdown template
 - not CI configuration
 - not qxctl integration
-- not validator implementation
+- interpreted by the separately bounded validator implementation
 
 ## Purpose
 To define the behavioral and structural specification for how SKVI maps the Symphony repository.
@@ -101,7 +101,7 @@ SODV governs publication truth based on the index mapped by SKVI.
 SSCG interprets compatibility across the structural contracts that SKVI indexes.
 
 ## Relationship to symphony-validator Evidence
-symphony-validator produces deterministic evidence. Future validators may check structure against SKVI.
+The checked-in `tools/symphony-validator/` implementation parses this human-authored index and checks entry shape, required-surface coverage, indexed paths, uniqueness, and SCLV references. Its evidence does not create canonical membership or authorize remediation.
 
 ## Relationship to qxctl
 qxctl may later consume SKVI, but qxctl integration is not authorized here.
@@ -113,9 +113,8 @@ NotebookLM aligns corpus context.
 Mintlify publishes derived official documentation.
 
 ## Deferred Surfaces
-- `INDEX.md`
 - Generated indexes
 - Publication pipelines
 
 ## Non-Authorization Statement
-this canonical seed authorizes no generated indexes, no generated reports, no implementation files, no source files, no schemas, no templates, no CI files, no documentation publication configuration, no Mintlify configuration, no qxctl integration, no validator implementation, no NotebookLM automation, no publication pipeline, no database files, no service files, no runtime processes, no deployment scripts, no installer scripts, no binary assets, and no binary renames.
+This canonical surface authorizes no generated indexes, generated reports, new implementation or source files, schemas, templates, CI files, documentation publication configuration, Mintlify configuration, qxctl integration, validator capability beyond the separately bounded `tools/symphony-validator/` contract, NotebookLM automation, publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.

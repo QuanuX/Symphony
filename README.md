@@ -36,6 +36,14 @@ SSIAG submits only typed, security-relevant safe metadata to the STAV append aut
 
 Symphony releases will roll out module by module rather than waiting for a monolithic platform release. Each published module will carry its own version, compatibility boundary, and evidence; only artifacts actually published from the repository are releases.
 
+The currently published source-module set is intentionally narrow:
+
+- STAV Protocol for Go `v0.2.0` is the current public protocol-kernel source module;
+- STAV Append Authority `v0.2.0` is the current public supervised service source module;
+- STAV Append Authority `v0.1.0` remains immutable historical release evidence for the pre-supervision boundary.
+
+These are public Go source-module versions, not GitHub binary releases or a platform launch. qxctl, SSIAG, provider adapters, proposal-only runtime modules, SDKs, containers, and documentation sites are not claimed as released.
+
 Repository contracts and implementation notes document the current development state. Robust operator, security, API, integration, and module documentation will accompany the official launch.
 
 ## Root-Level Governance Role

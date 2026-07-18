@@ -12,7 +12,7 @@ To provide operational guidance for consuming and interacting with the declarati
 - reviewers
 - validators
 - CI systems
-- qxctl in the future
+- future qxctl consumers
 - agentic tools consuming canonical knowledge
 
 ## How Humans Should Read SODV
@@ -36,8 +36,8 @@ Reviewers verify that changes to SKV structures are accurately permitted by SODV
 
 An interrupted session resumes from `.git/symphony/releases/pending/` and reconciles observed external state. Never move a tag, rewrite authorization, or claim completion from a warm local cache.
 
-## How Validators May Later Check SODV
-symphony-validator may later check SODV structure, but validator implementation is not authorized here.
+## How the Validator Checks SODV
+The checked-in validator checks required SODV contract anchors and indexed-path presence. It does not currently parse the release ledger, contact Git hosting or package proxies, validate checksums, or declare a release complete.
 
 ## How Agentic Tools May Consume SODV
 Agentic tools may consume SODV to understand publication-governance context, but SODV does not make architectural decisions.
@@ -65,6 +65,7 @@ Mintlify may later publish derived official documentation. Mintlify is not canon
 
 ## How SODV Relates to NotebookLM
 NotebookLM aligns corpus context. NotebookLM is not canonical authority.
+NotebookLM must read authorization, correction, recovery, and completion records as one forward-only history. An earlier `not published` or `completion required` statement remains historical evidence and is not current posture after a later canonical completion record.
 
 ## How SODV Relates to Git History
 Git history is version-control evidence, acting as a substrate for publication context.
@@ -75,9 +76,10 @@ PR history is review and merge evidence.
 ## Safe-Use Rules
 Do not treat SODV as a documentation generation engine. Treat it as a declarative governance boundary.
 Do not treat release authorization as release completion.
+Do not rewrite historical release records to make them read like the present. Append a forward record and use the latest applicable record for current-state answers.
 
 ## Non-Scope
 SODV is not public documentation. SODV is not a docs site. SODV is not Mintlify. SODV is not NotebookLM. SODV is not a publication pipeline. SODV is not a generated documentation system yet. SODV is not a generated index yet. SODV is not a documentation template system yet. SODV is not a schema system. SODV is not qxctl. SODV is not symphony-validator. SODV is not SKVI. SODV is not SCLV. SODV is not SSCG. SODV does not replace canonical repository knowledge files. SODV does not replace module contracts. SODV does not replace tool contracts. SODV does not replace PR review. SODV does not create runtime behavior. SODV does not enforce runtime behavior.
 
 ## Non-Authorization Statement
-This canonical seed authorizes no public documentation files, no docs directory, no mint.json, no Mintlify configuration, no documentation publication configuration, no generated documentation, no generated documentation indexes, no generated changelogs, no generated indexes, no generated reports, no implementation files, no source files, no schemas, no templates, no CI files, no qxctl integration, no validator implementation, no NotebookLM automation, no publication pipeline, no database files, no service files, no runtime processes, no deployment scripts, no installer scripts, no binary assets, and no binary renames.
+This canonical surface authorizes no public documentation files, docs directory, `mint.json`, Mintlify configuration, documentation publication configuration, generated documentation, generated documentation indexes, generated changelogs, generated indexes, generated reports, new implementation or source files, schemas, templates, CI files, qxctl integration, validator capability beyond the separately bounded `tools/symphony-validator/` contract, NotebookLM automation, general publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.

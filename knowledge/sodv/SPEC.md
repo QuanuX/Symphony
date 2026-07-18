@@ -16,13 +16,13 @@
 - not a Markdown template
 - not CI configuration
 - not qxctl integration
-- not validator implementation
+- not validator implementation; checked in part by the separately bounded validator
 
 ## Purpose
-To define the declarative behavioral boundaries for future SODV publication governance.
+To define the declarative behavioral boundaries for SODV publication governance.
 
 ## SODV Behavioral Model
-SODV establishes publication boundaries declaratively. Future generators, pipelines, and validators will parse these files to build, verify, and govern the public documentation artifacts.
+SODV establishes publication boundaries declaratively. Its append-only module-release protocol is operational through human-ratified repository records and external-state verification. Future generators and pipelines may build derived public-documentation artifacts only under separately ratified contracts.
 
 SODV also governs independently consumable module publication. `RELEASES.md` is the canonical append-only authorization and completion ledger for that bounded purpose. It does not authorize a general publication pipeline.
 
@@ -51,7 +51,7 @@ The initial SODV scope covers sources, relationships, and evidence. Projections 
 - SKVI files
 - SCLV files
 - SODV files
-- future validator evidence
+- current validator evidence for contract shape and indexed-path presence
 - future generated projections
 - future release documentation inputs
 
@@ -136,7 +136,7 @@ Mintlify is a publication surface, not canonical authority.
 NotebookLM is a corpus alignment and context tool, not canonical authority.
 
 ## Relationship to symphony-validator Evidence
-symphony-validator produces deterministic evidence. Future validators may check structure based on SODV rules.
+The checked-in validator produces deterministic evidence for required SODV contract anchors and indexed-path presence. It does not currently parse `RELEASES.md` transactions or verify Git tags, public-proxy state, checksum-database state, or release completion.
 
 ## Relationship to qxctl
 qxctl may later consume SODV, but qxctl integration is not authorized here.
@@ -153,4 +153,4 @@ PR history is review and merge evidence.
 SODV is not public documentation. SODV is not a docs site. SODV is not Mintlify. SODV is not NotebookLM. SODV is not a publication pipeline. SODV is not a generated documentation system yet. SODV is not a generated index yet. SODV is not a documentation template system yet. SODV is not a schema system. SODV is not qxctl. SODV is not symphony-validator. SODV is not SKVI. SODV is not SCLV. SODV is not SSCG. SODV does not replace canonical repository knowledge files. SODV does not replace module contracts. SODV does not replace tool contracts. SODV does not replace PR review. SODV does not create runtime behavior. SODV does not enforce runtime behavior.
 
 ## Non-Authorization Statement
-This canonical seed authorizes no public documentation files, no docs directory, no mint.json, no Mintlify configuration, no documentation publication configuration, no generated documentation, no generated documentation indexes, no generated changelogs, no generated indexes, no generated reports, no implementation files, no source files, no schemas, no templates, no CI files, no qxctl integration, no validator implementation, no NotebookLM automation, no publication pipeline, no database files, no service files, no runtime processes, no deployment scripts, no installer scripts, no binary assets, and no binary renames.
+This canonical surface authorizes no public documentation files, docs directory, `mint.json`, Mintlify configuration, documentation publication configuration, generated documentation, generated documentation indexes, generated changelogs, generated indexes, generated reports, new implementation or source files, schemas, templates, CI files, qxctl integration, validator capability beyond the separately bounded `tools/symphony-validator/` contract, NotebookLM automation, general publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.

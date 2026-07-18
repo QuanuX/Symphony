@@ -21,12 +21,10 @@ SKVI is not a generated index yet.
 - not generated database
 
 ## Declared Contract Truth Role
-`MANIFEST.md` establishes the definitive boundaries of the SKVI surface, defining knowledge expectations, independent of future implementations.
+`MANIFEST.md` establishes the definitive boundaries of the SKVI surface. Implementations may check or project SKVI only within separately ratified contracts and remain subordinate to this declared knowledge truth.
 
 ## Installability Considerations
-SKVI has no executable install surface in this canonical seed.
-SKVI installability is declarative only until future tooling is authorized.
-No qxctl integration, validator implementation, generated index, schema, template, or publication pipeline is authorized by this canonical seed.
+SKVI has no executable install surface. The checked-in validator reads SKVI directly from a repository checkout; qxctl integration, generated indexes, schemas, templates, and publication pipelines remain deferred.
 
 ## Scope
 SKVI encompasses the mapping of canonical knowledge files and contract descriptors across the Symphony repository.
@@ -47,11 +45,11 @@ SKVI does not replace SSCG.
 SKVI does not create runtime behavior.
 SKVI does not enforce runtime behavior.
 
-## Inputs SKVI May Later Map
-Module contract boundaries, root governance, and other knowledge vector files (SCLV, SODV).
+## Inputs SKVI Maps
+Module contract boundaries, root governance, and other Knowledge Vector files, including SCLV and SODV.
 
-## Outputs SKVI May Later Describe
-Index relationships provided to validators or operational consumers (qxctl).
+## Outputs SKVI Describes
+Human-authored paths, roles, ownership boundaries, relationships, consumers, status, and deferred-projection eligibility. Machine-generated projections remain deferred.
 
 ## Relationship to SKV
 SKVI is an autonomous peer index defining the structural map of the SKV framework.
@@ -66,7 +64,7 @@ SODV governs publication truth; it uses SKVI's structural map to project to the 
 SSCG interprets compatibility. SKVI defines where module boundaries and SSCG rules are documented.
 
 ## Relationship to symphony-validator
-symphony-validator produces deterministic evidence. Future validators may check structure against SKVI.
+The checked-in `tools/symphony-validator/` implementation checks SKVI entry shape, required coverage, relative-path safety, path existence, uniqueness, and SCLV references. It is read-only and does not decide index membership.
 
 ## Relationship to qxctl
 qxctl may later consume SKVI, but qxctl integration is not authorized here.
@@ -80,4 +78,4 @@ Mintlify publishes derived official documentation.
 Mintlify is not canonical authority.
 
 ## Non-Authorization Statement
-this canonical seed authorizes no generated indexes, no generated reports, no implementation files, no source files, no schemas, no templates, no CI files, no documentation publication configuration, no Mintlify configuration, no qxctl integration, no validator implementation, no NotebookLM automation, no publication pipeline, no database files, no service files, no runtime processes, no deployment scripts, no installer scripts, no binary assets, and no binary renames.
+This canonical surface authorizes no generated indexes, generated reports, new implementation or source files, schemas, templates, CI files, documentation publication configuration, Mintlify configuration, qxctl integration, validator capability beyond the separately bounded `tools/symphony-validator/` contract, NotebookLM automation, publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.
