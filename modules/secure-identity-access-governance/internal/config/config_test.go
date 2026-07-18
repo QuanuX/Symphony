@@ -23,7 +23,7 @@ func validConfig(t *testing.T) Config {
 
 func TestDefaultSeparatesTOPSIDAndName(t *testing.T) {
 	layout := ssiagpaths.InstanceLayout{Scope: ssiagpaths.ScopeUser, TOPSID: testTOPSID, Socket: filepath.Join(t.TempDir(), "ssiag.sock")}
-	cfg := Default(layout, "Trading desk")
+	cfg := Default(layout, "Trading desk", nil, nil)
 	if err := cfg.Validate(); err != nil {
 		t.Fatalf("Validate: %v", err)
 	}
@@ -93,6 +93,40 @@ func TestAuthenticationMappingRequiresUIDAndGIDPresence(t *testing.T) {
 	}
 	if err := cfg.Validate(); err == nil {
 		t.Fatal("expected missing gid to be rejected even though gid zero is valid")
+	}
+}
+
+func TestCanonicalServiceIdentityUsesPresenceSafeZeroValues(t *testing.T) {
+	uid, gid := uint32(0), uint32(0)
+	cfg := validConfig(t)
+	cfg.Authentication = &AuthenticationConfig{
+		Mechanism: "unix_peer_credentials",
+		Service: &SubjectConfig{
+			ID: ServiceSubjectID, Kind: ServiceSubjectKind, UID: &uid, GID: &gid,
+		},
+		Subjects: []SubjectConfig{},
+	}
+	if err := cfg.Validate(); err != nil {
+		t.Fatalf("zero-valued service identity must remain explicitly valid: %v", err)
+	}
+	cfg.Authentication.Service.GID = nil
+	if err := cfg.Validate(); err == nil {
+		t.Fatal("missing service GID must not be confused with explicit zero")
+	}
+}
+
+func TestCanonicalServiceIdentityCannotBeRenamedByConfiguration(t *testing.T) {
+	uid, gid := uint32(501), uint32(20)
+	cfg := validConfig(t)
+	cfg.Authentication = &AuthenticationConfig{
+		Mechanism: "unix_peer_credentials",
+		Service: &SubjectConfig{
+			ID: "caller-selected-service", Kind: ServiceSubjectKind, UID: &uid, GID: &gid,
+		},
+		Subjects: []SubjectConfig{},
+	}
+	if err := cfg.Validate(); err == nil {
+		t.Fatal("expected noncanonical service identity to be rejected")
 	}
 }
 

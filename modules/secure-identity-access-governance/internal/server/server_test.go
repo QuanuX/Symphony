@@ -28,14 +28,17 @@ func TestStatusOverUnixSocket(t *testing.T) {
 	if err := probe.Close(); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.Remove(socket); err != nil {
+	if err := os.Remove(socket); err != nil && !os.IsNotExist(err) {
 		t.Fatal(err)
 	}
+	currentUID := uint32(os.Geteuid())
+	currentGID := uint32(os.Getegid())
 	cfg := config.Config{
-		Schema: "symphony.ssiag.config.v1",
-		Mode:   "development",
-		TOPS:   config.TOPSConfig{ID: testTOPSID, Name: "Test TOPS"},
-		Listen: config.ListenConfig{Network: "unix", Address: socket},
+		Schema:         "symphony.ssiag.config.v1",
+		Mode:           "development",
+		TOPS:           config.TOPSConfig{ID: testTOPSID, Name: "Test TOPS"},
+		Listen:         config.ListenConfig{Network: "unix", Address: socket},
+		Authentication: serviceAuthentication(currentUID, currentGID),
 		Providers: []config.ProviderConfig{{
 			Name: "native",
 			Kind: "native-keyring",
@@ -85,12 +88,15 @@ func TestRefusesRegularFileAtSocketPath(t *testing.T) {
 	if err := os.WriteFile(socket, []byte("do not replace"), 0600); err != nil {
 		t.Fatal(err)
 	}
+	currentUID := uint32(os.Geteuid())
+	currentGID := uint32(os.Getegid())
 	cfg := config.Config{
-		Schema:    "symphony.ssiag.config.v1",
-		Mode:      "development",
-		TOPS:      config.TOPSConfig{ID: testTOPSID, Name: "Test TOPS"},
-		Listen:    config.ListenConfig{Network: "unix", Address: socket},
-		Providers: []config.ProviderConfig{},
+		Schema:         "symphony.ssiag.config.v1",
+		Mode:           "development",
+		TOPS:           config.TOPSConfig{ID: testTOPSID, Name: "Test TOPS"},
+		Listen:         config.ListenConfig{Network: "unix", Address: socket},
+		Authentication: serviceAuthentication(currentUID, currentGID),
+		Providers:      []config.ProviderConfig{},
 	}
 	registry, _ := provider.New(nil)
 	server, err := New(cfg, registry)
@@ -110,12 +116,15 @@ func TestRefusesActiveSocketPath(t *testing.T) {
 	}
 	defer listener.Close()
 
+	currentUID := uint32(os.Geteuid())
+	currentGID := uint32(os.Getegid())
 	cfg := config.Config{
-		Schema:    "symphony.ssiag.config.v1",
-		Mode:      "development",
-		TOPS:      config.TOPSConfig{ID: testTOPSID, Name: "Test TOPS"},
-		Listen:    config.ListenConfig{Network: "unix", Address: socket},
-		Providers: []config.ProviderConfig{},
+		Schema:         "symphony.ssiag.config.v1",
+		Mode:           "development",
+		TOPS:           config.TOPSConfig{ID: testTOPSID, Name: "Test TOPS"},
+		Listen:         config.ListenConfig{Network: "unix", Address: socket},
+		Authentication: serviceAuthentication(currentUID, currentGID),
+		Providers:      []config.ProviderConfig{},
 	}
 	registry, _ := provider.New(nil)
 	server, err := New(cfg, registry)
@@ -132,12 +141,15 @@ func TestRefusesActiveSocketPath(t *testing.T) {
 
 func TestHandlerRejectsRequestWithoutKernelPeerContext(t *testing.T) {
 	socket := filepath.Join(t.TempDir(), "ssiag.sock")
+	currentUID := uint32(os.Geteuid())
+	currentGID := uint32(os.Getegid())
 	cfg := config.Config{
-		Schema:    "symphony.ssiag.config.v1",
-		Mode:      "development",
-		TOPS:      config.TOPSConfig{ID: testTOPSID, Name: "Test TOPS"},
-		Listen:    config.ListenConfig{Network: "unix", Address: socket},
-		Providers: []config.ProviderConfig{},
+		Schema:         "symphony.ssiag.config.v1",
+		Mode:           "development",
+		TOPS:           config.TOPSConfig{ID: testTOPSID, Name: "Test TOPS"},
+		Listen:         config.ListenConfig{Network: "unix", Address: socket},
+		Authentication: serviceAuthentication(currentUID, currentGID),
+		Providers:      []config.ProviderConfig{},
 	}
 	registry, _ := provider.New(nil)
 	server, err := New(cfg, registry)
@@ -186,4 +198,39 @@ func shortSocketPath(t *testing.T) string {
 	}
 	t.Cleanup(func() { _ = os.Remove(path) })
 	return path
+}
+
+func TestRunRejectsIdentityMismatch(t *testing.T) {
+	socket := shortSocketPath(t)
+	wrongUID := uint32(os.Geteuid() + 1)
+	wrongGID := uint32(os.Getegid() + 1)
+	cfg := config.Config{
+		Schema:         "symphony.ssiag.config.v1",
+		Mode:           "development",
+		TOPS:           config.TOPSConfig{ID: testTOPSID, Name: "Test TOPS"},
+		Listen:         config.ListenConfig{Network: "unix", Address: socket},
+		Authentication: serviceAuthentication(wrongUID, wrongGID),
+	}
+	registry, _ := provider.New(nil)
+	server, err := New(cfg, registry)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = server.Run(context.Background())
+	if err == nil || !strings.Contains(err.Error(), "process identity mismatch") {
+		t.Fatalf("expected identity mismatch error, got %v", err)
+	}
+	if _, err := os.Lstat(socket); !os.IsNotExist(err) {
+		t.Fatalf("identity-mismatched process changed the socket path: %v", err)
+	}
+}
+
+func serviceAuthentication(uid, gid uint32) *config.AuthenticationConfig {
+	return &config.AuthenticationConfig{
+		Mechanism: "unix_peer_credentials",
+		Service: &config.SubjectConfig{
+			ID: config.ServiceSubjectID, Kind: config.ServiceSubjectKind, UID: &uid, GID: &gid,
+		},
+		Subjects: []config.SubjectConfig{},
+	}
 }

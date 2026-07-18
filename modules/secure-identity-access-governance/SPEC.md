@@ -30,7 +30,19 @@ Metadata-only API plus safe STAV producer foundation implementing the Architect-
 
 ## Configuration
 
-Configuration is strict JSON, bounded to 1 MiB, rejects unknown fields and trailing values, and contains `schema`, `mode`, `tops`, local `listen`, an authentication mapping, and provider descriptors. The authentication mechanism is `unix_peer_credentials`; each entry explicitly binds one UID/GID pair to one unique canonical subject ID and kind. Missing authentication blocks from earlier metadata-only v1 enrollments remain readable but resolve no mutation subject. Configuration MUST NOT contain credential values, assertions, tokens, recovery material, private keys, or provider payloads.
+Configuration is strict JSON, bounded to 1 MiB, rejects unknown fields and trailing values, and contains `schema`, `mode`, `tops`, local `listen`, an authentication mapping, and provider descriptors. The authentication mechanism is `unix_peer_credentials`. Its `service` member separately binds ID `symphony.ssiag.service` and kind `symphony.identity.service` to an explicitly present effective UID/GID pair; `subjects` maps caller identities. Missing authentication/service members from earlier metadata-only v1 enrollments remain structurally readable but cannot start a trusted service or client until safely re-enrolled. Configuration MUST NOT contain credential values, assertions, tokens, recovery material, private keys, or provider payloads.
+
+## Mutual Endpoint Authentication
+
+Before the server (`symphony-ssiag`) changes runtime state or starts listening, it verifies that its process effective UID and GID match `authentication.service.uid` and `authentication.service.gid`. If there is a mismatch, the server fails closed.
+
+On the client side, both the self-client and `qxctl` load the configuration corresponding to the requested TOPS ID and scope, enforcing that:
+1. The configuration file is a regular file (no symlinks).
+2. User-scope trust is owned by the current effective user and owner-only; system-scope trust is administrator-owned and not writable by group or other.
+3. The configuration contains the exact canonical `authentication.service` ID, kind, UID, and GID.
+4. The configured socket belongs to the requested TOPS layout; an explicit absolute socket override changes location only.
+
+Before dialing, the client requires a Unix socket owned by the configured service UID. Upon dialing, it retrieves kernel-attested peer credentials (using Darwin `LOCAL_PEERCRED`/`LOCAL_PEERPID` or Linux `SO_PEERCRED`) and verifies that the connected peer exact UID and GID match the configured service identity. If verification fails, the connection is closed before any HTTP bytes are exchanged. Socket group/mode remains reachability policy and never substitutes for the post-dial check.
 
 ## Metadata API
 

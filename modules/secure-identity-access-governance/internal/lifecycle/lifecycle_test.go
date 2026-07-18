@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
 	ssiagpaths "github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/paths"
 )
 
@@ -47,7 +48,7 @@ func TestInstallIsIdempotentAndUninstallPreservesTOPS(t *testing.T) {
 	if first.BinarySHA256 != second.BinarySHA256 {
 		t.Fatal("idempotent install changed digest")
 	}
-	enrollment, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Trading desk")
+	enrollment, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Trading desk", nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -66,11 +67,11 @@ func TestMultipleTOPSEnrollmentsAreIsolated(t *testing.T) {
 	home := setupUser(t)
 	installTestBinary(t, home)
 	secondID := "018f0c3a-7b2d-7e11-8c12-0242ac120003"
-	first, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Desk one")
+	first, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Desk one", nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	second, err := Enroll(ssiagpaths.ScopeUser, secondID, "Desk two")
+	second, err := Enroll(ssiagpaths.ScopeUser, secondID, "Desk two", nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -79,14 +80,61 @@ func TestMultipleTOPSEnrollmentsAreIsolated(t *testing.T) {
 	}
 }
 
-func TestDisplayNameCanChangeWithoutMovingState(t *testing.T) {
+func TestUserEnrollmentBindsEffectiveServiceIdentityAndRejectsOverride(t *testing.T) {
 	home := setupUser(t)
 	installTestBinary(t, home)
-	first, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Old name")
+	record, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Desk", nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	second, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "New name")
+	cfg, err := config.LoadTrusted(record.ConfigFile, ssiagpaths.ScopeUser)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if cfg.Authentication == nil || cfg.Authentication.Service == nil {
+		t.Fatal("enrollment did not record canonical service identity")
+	}
+	service := cfg.Authentication.Service
+	if service.ID != config.ServiceSubjectID || service.Kind != config.ServiceSubjectKind || *service.UID != uint32(os.Geteuid()) || *service.GID != uint32(os.Getegid()) {
+		t.Fatalf("unexpected service identity: %+v", service)
+	}
+	uid, gid := uint32(os.Geteuid()), uint32(os.Getegid())
+	if _, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Desk", &uid, &gid); err == nil {
+		t.Fatal("user enrollment accepted a service identity override")
+	}
+}
+
+func TestUserReenrollmentPreservesExistingServiceIdentity(t *testing.T) {
+	home := setupUser(t)
+	installTestBinary(t, home)
+	record, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Old name", nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	before, err := config.Load(record.ConfigFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "New name", nil, nil); err != nil {
+		t.Fatal(err)
+	}
+	after, err := config.Load(record.ConfigFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if *before.Authentication.Service.UID != *after.Authentication.Service.UID || *before.Authentication.Service.GID != *after.Authentication.Service.GID {
+		t.Fatal("idempotent re-enrollment changed the configured service identity")
+	}
+}
+
+func TestDisplayNameCanChangeWithoutMovingState(t *testing.T) {
+	home := setupUser(t)
+	installTestBinary(t, home)
+	first, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Old name", nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	second, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "New name", nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -98,7 +146,7 @@ func TestDisplayNameCanChangeWithoutMovingState(t *testing.T) {
 func TestUnenrollPreservesUnlessPurged(t *testing.T) {
 	home := setupUser(t)
 	installTestBinary(t, home)
-	record, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Desk")
+	record, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Desk", nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -108,7 +156,7 @@ func TestUnenrollPreservesUnlessPurged(t *testing.T) {
 	if _, err := os.Stat(record.ConfigFile); err != nil {
 		t.Fatalf("config should be preserved: %v", err)
 	}
-	if _, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Desk"); err != nil {
+	if _, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Desk", nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := Unenroll(ssiagpaths.ScopeUser, testTOPSID, true); err != nil {
@@ -180,7 +228,7 @@ func TestEnrollRejectsChangedInstalledBinary(t *testing.T) {
 	if err := os.WriteFile(record.Binary, []byte("unexpected replacement"), 0755); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Desk"); err == nil {
+	if _, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Desk", nil, nil); err == nil {
 		t.Fatal("expected enrollment to reject changed installed binary")
 	}
 }

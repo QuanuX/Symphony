@@ -9,7 +9,7 @@
 - **environment prefix**: `SYMPHONY_SSIAG_*`
 - **language/runtime**: Go 1.26.5 with pinned `golang.org/x/sys` for cgo-free kernel peer credentials
 - **cgo**: prohibited
-- **status**: DRAFT scaffold; metadata-only runtime
+- **status**: DRAFT foundation; metadata-only runtime
 
 ## Canonical Authority
 
@@ -27,6 +27,7 @@
 - `serve`: one metadata-only Unix-socket API for one TOPS;
 - Darwin/Linux kernel peer authentication on every accepted API connection;
 - exact per-TOPS UID/GID-to-canonical-subject resolution for future subject-gated operations;
+- stable per-TOPS service identity, pre-listen process verification, and client-side exact endpoint verification;
 - `status` / `providers`: safe local inspection;
 - `qxctl ssiag status|providers|doctor`: provider-neutral query interface.
 

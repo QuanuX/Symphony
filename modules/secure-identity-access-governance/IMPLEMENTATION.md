@@ -115,15 +115,15 @@ Ratified architecture:
 3. Supervision owns liveness only and never expands security authority.
 4. qxctl separates proposal from apply; agents may query and propose only.
 
-Implemented increment: build-tagged Darwin `LOCAL_PEERCRED`/`LOCAL_PEERPID` and Linux/WSL `SO_PEERCRED` wrappers; request-context enforcement; exact UID/GID-to-subject mapping; duplicate/ambiguous mapping rejection; unmapped-subject failure; cgo-free amd64/arm64 builds. New enrollments declare `unix_peer_credentials` with an explicit empty subject array, while older metadata-only v1 configuration remains read-compatible and grants no subject authority.
+Implemented increment: build-tagged Darwin `LOCAL_PEERCRED`/`LOCAL_PEERPID` and Linux/WSL `SO_PEERCRED` wrappers; request-context enforcement; exact UID/GID-to-subject mapping; duplicate/ambiguous mapping rejection; unmapped-subject failure; server process self-verification; scope-exact trusted configuration loading; pre-dial socket type/owner checks; and exact client-side kernel endpoint verification before HTTP bytes. New enrollments declare `unix_peer_credentials`, a stable canonical service mapping, and an explicit caller-subject array. Older metadata-only v1 configuration remains structurally readable but cannot start a trusted service/client until re-enrolled.
 
-Remaining entry details: service identities, client-side endpoint trust, launchd/service-manager labels, ownership, restart bounds, direct-run behavior, and negative tests using distinct operating-system accounts.
+Remaining entry details: launchd/service-manager labels, runtime directory and service-account provisioning, restart bounds, direct-run production warnings, and negative integration tests using distinct operating-system accounts. Adapter executable trust and future mutation replay/binding remain later gates.
 
 Implementation procedure:
 
 1. Maintain the implemented accepted-connection credential extraction and exact subject resolver.
-2. Configure explicit canonical subjects for each operator/service identity that may later receive authority.
-3. Authenticate the server endpoint to qxctl and define stable service identities.
+2. Maintain the implemented stable service mapping and configure explicit canonical caller subjects that may later receive authority.
+3. Preserve exact qxctl/self-client server endpoint authentication; socket groups remain reachability-only.
 4. Bind every future mutation request to TOPS ID, subject, request ID, operation, and expiry.
 5. Add replay detection and strict deadlines.
 6. Authenticate the configured adapter executable by exact path, ownership, digest/signature policy, and protocol identity.

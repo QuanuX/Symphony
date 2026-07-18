@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"path/filepath"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -80,7 +80,7 @@ func runServe(args []string) error {
 	if path == "" {
 		path = layout.ConfigFile
 	}
-	cfg, err := config.Load(path)
+	cfg, err := config.LoadTrusted(path, scope)
 	if err != nil {
 		return fmt.Errorf("load enrolled TOPS configuration: %w", err)
 	}
@@ -229,6 +229,8 @@ func runEnroll(args []string) error {
 	scopeValue := set.String("scope", "user", "installation scope: user or system")
 	topsIDValue := set.String("tops-id", "", "immutable TOPS UUID")
 	topsName := set.String("tops-name", "", "mutable TOPS display name")
+	serviceUIDVal := set.String("service-uid", "", "exact service UID (required for new system enrollment)")
+	serviceGIDVal := set.String("service-gid", "", "exact service GID (required for new system enrollment)")
 	if err := set.Parse(args); err != nil {
 		return err
 	}
@@ -240,7 +242,24 @@ func runEnroll(args []string) error {
 	if err != nil {
 		return err
 	}
-	record, err := lifecycle.Enroll(scope, topsID, *topsName)
+	var serviceUID, serviceGID *uint32
+	if *serviceUIDVal != "" {
+		parsed, err := strconv.ParseUint(*serviceUIDVal, 10, 32)
+		if err != nil {
+			return fmt.Errorf("invalid service-uid value %q: must be a non-negative integer", *serviceUIDVal)
+		}
+		val := uint32(parsed)
+		serviceUID = &val
+	}
+	if *serviceGIDVal != "" {
+		parsed, err := strconv.ParseUint(*serviceGIDVal, 10, 32)
+		if err != nil {
+			return fmt.Errorf("invalid service-gid value %q: must be a non-negative integer", *serviceGIDVal)
+		}
+		val := uint32(parsed)
+		serviceGID = &val
+	}
+	record, err := lifecycle.Enroll(scope, topsID, *topsName, serviceUID, serviceGID)
 	if err != nil {
 		return err
 	}
@@ -318,17 +337,7 @@ func requiredTOPSID(value string) (string, error) {
 }
 
 func scopedClient(scope ssiagpaths.Scope, topsID string) (*client.Client, error) {
-	layout, err := ssiagpaths.ResolveInstance(scope, topsID)
-	if err != nil {
-		return nil, err
-	}
-	socket := os.Getenv("SYMPHONY_SSIAG_SOCKET")
-	if socket == "" {
-		socket = layout.Socket
-	} else if !filepath.IsAbs(socket) {
-		return nil, fmt.Errorf("SYMPHONY_SSIAG_SOCKET must be absolute")
-	}
-	return client.New(socket, 4*time.Second), nil
+	return client.NewForTOPS(scope, topsID, 4*time.Second)
 }
 
 func printJSON(value any) error {

@@ -61,12 +61,13 @@ Draft threat model for the scaffold and planned provider phases. It uses assets,
 - absolute canonical socket path;
 - reject non-socket path collisions;
 - restrictive parent-directory and socket permissions;
-- peer-credential authentication before mutation APIs;
-- service-account ownership checks;
+- exact configured service-account self-check before runtime mutation;
+- client pre-dial socket type/owner checks;
+- kernel peer-credential endpoint authentication before application bytes;
 - qxctl status displays SSIAG schema/version;
 - installation manifest digest checks.
 
-Socket permissions alone are not final caller authentication. Mutation remains disabled until the selected peer-authentication design passes review.
+Socket permissions and ownership alone are not endpoint authentication; the post-dial kernel credential check is authoritative. Mutation remains disabled pending policy, replay/binding, adapter trust, and audit gates rather than endpoint-authentication review.
 
 ### Cross-TOPS Identity Confusion
 **Threat:** A request, configuration, socket, provider operation, or event for one TOPS is accepted under another TOPS on the same host.
@@ -227,15 +228,16 @@ STAV v1 detects tampering but does not provide non-repudiation. Agents, qxctl, a
 - Excessive provider SDK permissions.
 
 ## Implemented and Unimplemented Controls
-The module does not expose credential mutation/use endpoints. Kernel peer authentication is implemented on accepted Darwin/Linux connections, including exact UID/GID subject resolution and fail-closed ambiguous mapping. SSIAG's typed STAV producer authenticates the authority endpoint, exposes no secret-bearing field, and requires a committed receipt. Foundational SSIAG supervision, qxctl-to-SSIAG endpoint authentication, provider mutual executable trust, per-user Keychain access, control/secret channel separation, and proposal/apply mutation remain ratified but unimplemented controls.
+The module does not expose credential mutation/use endpoints. Kernel peer authentication is implemented on accepted Darwin/Linux connections, including exact UID/GID subject resolution and fail-closed ambiguous mapping. SSIAG verifies its configured process identity before runtime mutation; qxctl and the self-client load scope-exact trust and verify the exact connected endpoint before sending HTTP bytes. SSIAG's typed STAV producer authenticates the authority endpoint, exposes no secret-bearing field, and requires a committed receipt. Foundational supervisor definitions/runtime provisioning, provider mutual executable trust, per-user Keychain access, control/secret channel separation, and proposal/apply mutation remain ratified but unimplemented controls.
 
-Configured production subjects, SSIAG service identity, signing requirements, Keychain item policy, secret buffers, lease replay, and provider channel framing remain release blockers for those later capabilities, not accepted residual risks.
+Configured production caller subjects, distinct-account integration evidence, signing requirements, Keychain item policy, secret buffers, lease replay, and provider channel framing remain release blockers for those later capabilities, not accepted residual risks.
 
 ## Security Test Gates
 - Verify no secret-shaped fixture value appears in stdout, stderr, JSON, logs, or audit output.
 - Verify socket path collision with a regular file fails closed.
 - Verify requests without accepted-connection credential context fail closed.
 - Verify exact UID/GID mappings resolve once and duplicate/ambiguous mappings are rejected.
+- Verify a wrong endpoint is rejected before application bytes and a socket override cannot replace configured identity.
 - Verify methods other than declared read-only endpoints are rejected.
 - Verify provider duplicates and invalid names fail configuration validation.
 - Verify install/uninstall path and digest protections.

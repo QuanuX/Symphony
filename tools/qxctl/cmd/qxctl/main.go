@@ -400,11 +400,10 @@ func runSSIAG(args []string) error {
 	if *topsID == "" {
 		return fmt.Errorf("--tops-id or SYMPHONY_SSIAG_TOPS_ID is required")
 	}
-	socket, err := ssiagclient.SocketForTOPS(*scope, *topsID)
+	client, err := ssiagclient.NewForTOPS(*scope, *topsID, 4*time.Second)
 	if err != nil {
 		return err
 	}
-	client := ssiagclient.New(socket, 4*time.Second)
 	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
 	defer cancel()
 
