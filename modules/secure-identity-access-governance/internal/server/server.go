@@ -64,6 +64,15 @@ func (s *Server) Handler() http.Handler {
 }
 
 func (s *Server) Run(ctx context.Context) error {
+	if s.config.Authentication == nil || s.config.Authentication.Service == nil {
+		return fmt.Errorf("configuration lacks canonical service identity")
+	}
+	service := s.config.Authentication.Service
+	if uint32(os.Geteuid()) != *service.UID || uint32(os.Getegid()) != *service.GID {
+		return fmt.Errorf("process identity mismatch: effective uid=%d gid=%d, expected config uid=%d gid=%d",
+			os.Geteuid(), os.Getegid(), *service.UID, *service.GID)
+	}
+
 	address := s.config.Listen.Address
 	parent := filepath.Dir(address)
 	if err := ensureRuntimeDir(parent); err != nil {

@@ -8,6 +8,8 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
+	"syscall"
 
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
 	ssiagpaths "github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/paths"
@@ -113,7 +115,16 @@ func Uninstall(scope ssiagpaths.Scope, force bool) (InstallRecord, error) {
 	return record, nil
 }
 
-func Enroll(scope ssiagpaths.Scope, topsID, topsName string) (EnrollmentRecord, error) {
+func Enroll(scope ssiagpaths.Scope, topsID, topsName string, serviceUID, serviceGID *uint32) (EnrollmentRecord, error) {
+	if (serviceUID == nil) != (serviceGID == nil) {
+		return EnrollmentRecord{}, fmt.Errorf("service UID and GID must be supplied together")
+	}
+	if scope == ssiagpaths.ScopeUser && serviceUID != nil {
+		return EnrollmentRecord{}, fmt.Errorf("user enrollment binds the SSIAG service to the enrolling process effective identity and does not accept an override")
+	}
+	if scope == ssiagpaths.ScopeSystem && os.Geteuid() != 0 {
+		return EnrollmentRecord{}, fmt.Errorf("system enrollment requires administrator privileges")
+	}
 	installLayout, err := ssiagpaths.ResolveInstall(scope)
 	if err != nil {
 		return EnrollmentRecord{}, err
@@ -125,11 +136,54 @@ func Enroll(scope ssiagpaths.Scope, topsID, topsName string) (EnrollmentRecord, 
 	if err != nil {
 		return EnrollmentRecord{}, err
 	}
-	defaultConfig := config.Default(layout, topsName)
+
+	var configExists bool
+	if _, err := os.Lstat(layout.ConfigFile); err == nil {
+		configExists = true
+	} else if !os.IsNotExist(err) {
+		return EnrollmentRecord{}, fmt.Errorf("inspect existing configuration: %w", err)
+	}
+
+	var resolvedUID, resolvedGID *uint32
+	var existingConfig config.Config
+	if configExists {
+		existingCfg, err := config.Load(layout.ConfigFile)
+		if err != nil {
+			return EnrollmentRecord{}, err
+		}
+		if existingCfg.TOPS.ID != topsID || existingCfg.Mode != string(scope) {
+			return EnrollmentRecord{}, fmt.Errorf("existing configuration does not match selected TOPS and scope")
+		}
+		existingConfig = existingCfg
+		if existingCfg.Authentication != nil && existingCfg.Authentication.Service != nil {
+			resolvedUID = existingCfg.Authentication.Service.UID
+			resolvedGID = existingCfg.Authentication.Service.GID
+			if serviceUID != nil && (*serviceUID != *resolvedUID || *serviceGID != *resolvedGID) {
+				return EnrollmentRecord{}, fmt.Errorf("explicit system service identity conflicts with the existing enrollment")
+			}
+		}
+	}
+
+	if resolvedUID == nil || resolvedGID == nil {
+		if scope == ssiagpaths.ScopeUser {
+			uidVal := uint32(os.Geteuid())
+			gidVal := uint32(os.Getegid())
+			resolvedUID = &uidVal
+			resolvedGID = &gidVal
+		} else if scope == ssiagpaths.ScopeSystem {
+			if serviceUID == nil || serviceGID == nil {
+				return EnrollmentRecord{}, fmt.Errorf("system enrollment requires explicit service UID and GID flags when no identity is already configured")
+			}
+			resolvedUID = serviceUID
+			resolvedGID = serviceGID
+		}
+	}
+
+	defaultConfig := config.Default(layout, topsName, resolvedUID, resolvedGID)
 	if err := defaultConfig.Validate(); err != nil {
 		return EnrollmentRecord{}, err
 	}
-	if err := ensureDirectories(layout.ConfigDir, layout.StateDir, layout.RuntimeDir); err != nil {
+	if err := ensureEnrollmentDirectories(layout, scope); err != nil {
 		return EnrollmentRecord{}, err
 	}
 	if err := requireAbsentOrRegular(layout.ConfigFile, "configuration"); err != nil {
@@ -140,21 +194,27 @@ func Enroll(scope ssiagpaths.Scope, topsID, topsName string) (EnrollmentRecord, 
 	}
 
 	cfg := defaultConfig
-	if _, err := os.Lstat(layout.ConfigFile); err == nil {
-		cfg, err = config.Load(layout.ConfigFile)
-		if err != nil {
-			return EnrollmentRecord{}, err
-		}
-		if cfg.TOPS.ID != topsID || cfg.Mode != string(scope) {
-			return EnrollmentRecord{}, fmt.Errorf("existing configuration does not match selected TOPS and scope")
-		}
+	if configExists {
+		cfg = existingConfig
 		cfg.TOPS.Name = topsName
+		if cfg.Authentication == nil {
+			cfg.Authentication = &config.AuthenticationConfig{Mechanism: "unix_peer_credentials", Subjects: []config.SubjectConfig{}}
+		}
+		if cfg.Authentication.Service == nil {
+			cfg.Authentication.Service = &config.SubjectConfig{
+				ID: config.ServiceSubjectID, Kind: config.ServiceSubjectKind, UID: resolvedUID, GID: resolvedGID,
+			}
+		}
 	}
 	data, err := config.Marshal(cfg)
 	if err != nil {
 		return EnrollmentRecord{}, err
 	}
-	if err := writeAtomic(layout.ConfigFile, append(data, '\n'), 0600); err != nil {
+	configMode := os.FileMode(0o600)
+	if scope == ssiagpaths.ScopeSystem {
+		configMode = 0o644
+	}
+	if err := writeAtomic(layout.ConfigFile, append(data, '\n'), configMode); err != nil {
 		return EnrollmentRecord{}, err
 	}
 	record := EnrollmentRecord{
@@ -289,6 +349,70 @@ func ensureDirectories(paths ...string) error {
 		if err := ensureDirectory(path); err != nil {
 			return err
 		}
+	}
+	return nil
+}
+
+func ensureEnrollmentDirectories(layout ssiagpaths.InstanceLayout, scope ssiagpaths.Scope) error {
+	if scope == ssiagpaths.ScopeSystem {
+		if err := ensureSystemConfigDirectory(layout.ConfigDir); err != nil {
+			return err
+		}
+	} else if err := ensureDirectory(layout.ConfigDir); err != nil {
+		return err
+	}
+	return ensureDirectories(layout.StateDir, layout.RuntimeDir)
+}
+
+func ensureSystemConfigDirectory(path string) error {
+	if path != "/etc/symphony" && !strings.HasPrefix(path, "/etc/symphony/") {
+		return fmt.Errorf("refusing noncanonical system configuration directory %s", path)
+	}
+	if err := ensureDirectoryMode(path, 0o755); err != nil {
+		return err
+	}
+	for current := filepath.Clean(path); current == "/etc/symphony" || strings.HasPrefix(current, "/etc/symphony/"); current = filepath.Dir(current) {
+		info, err := os.Lstat(current)
+		if err != nil {
+			return fmt.Errorf("inspect system configuration directory %s: %w", current, err)
+		}
+		stat, ok := info.Sys().(*syscall.Stat_t)
+		if !ok || stat.Uid != 0 || info.Mode().Perm()&0o022 != 0 {
+			return fmt.Errorf("system configuration directory is not administrator-owned and protected: %s", current)
+		}
+		if err := os.Chmod(current, 0o755); err != nil {
+			return fmt.Errorf("make system configuration directory traversable %s: %w", current, err)
+		}
+	}
+	return nil
+}
+
+func ensureDirectoryMode(path string, mode os.FileMode) error {
+	path = filepath.Clean(path)
+	if !filepath.IsAbs(path) {
+		return fmt.Errorf("refusing non-absolute directory: %s", path)
+	}
+	parent := filepath.Dir(path)
+	if parent != path {
+		if err := ensureDirectoryMode(parent, mode); err != nil {
+			return err
+		}
+	}
+	info, err := os.Lstat(path)
+	if err == nil {
+		if info.Mode()&os.ModeSymlink != 0 && permittedSystemAlias(path) {
+			return nil
+		}
+		if !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
+			return fmt.Errorf("refusing non-directory or symlink path: %s", path)
+		}
+		return nil
+	}
+	if !os.IsNotExist(err) {
+		return fmt.Errorf("inspect directory %s: %w", path, err)
+	}
+	if err := os.Mkdir(path, mode); err != nil {
+		return fmt.Errorf("create directory %s: %w", path, err)
 	}
 	return nil
 }

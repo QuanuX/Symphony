@@ -13,6 +13,11 @@ import (
 
 const maxConfigBytes = 1 << 20
 
+const (
+	ServiceSubjectID   = "symphony.ssiag.service"
+	ServiceSubjectKind = "symphony.identity.service"
+)
+
 type ListenConfig struct {
 	Network string `json:"network"`
 	Address string `json:"address"`
@@ -41,6 +46,7 @@ type SubjectConfig struct {
 
 type AuthenticationConfig struct {
 	Mechanism string          `json:"mechanism"`
+	Service   *SubjectConfig  `json:"service,omitempty"`
 	Subjects  []SubjectConfig `json:"subjects"`
 }
 
@@ -53,7 +59,16 @@ type Config struct {
 	Providers      []ProviderConfig      `json:"providers"`
 }
 
-func Default(layout ssiagpaths.InstanceLayout, topsName string) Config {
+func Default(layout ssiagpaths.InstanceLayout, topsName string, serviceUID, serviceGID *uint32) Config {
+	var service *SubjectConfig
+	if serviceUID != nil && serviceGID != nil {
+		service = &SubjectConfig{
+			ID:   ServiceSubjectID,
+			Kind: ServiceSubjectKind,
+			UID:  serviceUID,
+			GID:  serviceGID,
+		}
+	}
 	return Config{
 		Schema: "symphony.ssiag.config.v1",
 		Mode:   string(layout.Scope),
@@ -64,6 +79,7 @@ func Default(layout ssiagpaths.InstanceLayout, topsName string) Config {
 		},
 		Authentication: &AuthenticationConfig{
 			Mechanism: "unix_peer_credentials",
+			Service:   service,
 			Subjects:  []SubjectConfig{},
 		},
 		Providers: []ProviderConfig{},
@@ -71,12 +87,15 @@ func Default(layout ssiagpaths.InstanceLayout, topsName string) Config {
 }
 
 func Load(path string) (Config, error) {
-	file, err := os.Open(path)
+	file, err := openNoFollow(path)
 	if err != nil {
 		return Config{}, fmt.Errorf("open config: %w", err)
 	}
 	defer file.Close()
+	return decode(file)
+}
 
+func decode(file *os.File) (Config, error) {
 	info, err := file.Stat()
 	if err != nil {
 		return Config{}, fmt.Errorf("stat config: %w", err)
@@ -164,6 +183,15 @@ func validateAuthentication(authentication *AuthenticationConfig) error {
 	if authentication.Subjects == nil {
 		return fmt.Errorf("authentication subjects must be an explicit array")
 	}
+	if authentication.Service != nil {
+		service := authentication.Service
+		if service.ID != ServiceSubjectID || service.Kind != ServiceSubjectKind {
+			return fmt.Errorf("authentication service must use canonical identity %q kind %q", ServiceSubjectID, ServiceSubjectKind)
+		}
+		if service.UID == nil || service.GID == nil {
+			return fmt.Errorf("authentication service must explicitly declare uid and gid")
+		}
+	}
 	seenSubjects := make(map[string]struct{}, len(authentication.Subjects))
 	type osIdentity struct {
 		uid uint32
@@ -171,6 +199,9 @@ func validateAuthentication(authentication *AuthenticationConfig) error {
 	}
 	seenIdentities := make(map[osIdentity]string, len(authentication.Subjects))
 	for i, subject := range authentication.Subjects {
+		if authentication.Service != nil && subject.ID == authentication.Service.ID {
+			return fmt.Errorf("authentication subject ID %q conflicts with the canonical service identity", subject.ID)
+		}
 		if !validName(subject.ID) {
 			return fmt.Errorf("authentication subject %d has invalid ID %q", i, subject.ID)
 		}

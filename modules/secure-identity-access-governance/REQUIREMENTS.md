@@ -137,7 +137,7 @@ Architect-ratified architecture with phased implementation requirements. “Must
 - Documentation contains the architecture, requirements, threat model, and phased implementation procedure.
 
 ## Remaining Detail Gates Before Operational Provider Work
-1. Define launchd/service-manager identities, ownership, restart bounds, direct-run bootstrap behavior, and qxctl-to-server endpoint trust.
+1. Preserve implemented exact qxctl-to-server endpoint trust; define launchd/service-manager labels, shared runtime ownership, restart bounds, direct-run bootstrap behavior, and distinct-account integration evidence.
 2. Preserve the implemented dedicated Go STAV append-authority boundary, canonical schemas, durability/recovery contract, exact peer grants, and closed SSIAG producer vocabulary.
 3. Freeze mutation proposal/apply schemas, replay/idempotency bounds, expiry/skew, and expected-state conflict behavior.
 4. Freeze provider mutual executable trust, signing requirements, secret-channel framing, memory handling, and crash-dump policy.

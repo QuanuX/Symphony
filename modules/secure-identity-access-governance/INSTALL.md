@@ -134,4 +134,6 @@ Uninstall validates the binary digest, requires `--force` if it changed, and alw
 
 ## Supervision
 
-No launchd, systemd, node-troll, or other supervisor configuration is written by this scaffold. Kernel peer-credential extraction and subject mapping are implemented, but exact launchd/service-manager identities, ownership, restart policy, direct-run behavior, distinct-account negative tests, and qxctl-to-server endpoint trust remain installation gates.
+User enrollment records the effective UID/GID of the enrolling service process. A new system enrollment requires explicit `--service-uid` and `--service-gid`; it never silently selects root. User trust configuration is `0600`. System trust configuration is administrator-owned `0644`, contains no secrets, and is readable without becoming service-writable. The server verifies its effective identity before changing runtime state, and qxctl/self-client verify the exact connected endpoint before sending HTTP bytes.
+
+No launchd, systemd, node-troll, or other supervisor configuration is written by this increment. Exact labels, shared per-TOPS runtime-directory provisioning, restart policy, direct-run production behavior, and distinct-account integration tests remain installation gates; endpoint authentication itself is implemented.
