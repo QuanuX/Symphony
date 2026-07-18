@@ -28,7 +28,7 @@ Reviewers verify that changes to SKV structures are accurately permitted by SODV
 
 1. Append and merge an authorization in `RELEASES.md` that binds every module path and version to an exact commit.
 2. Confirm each proposed tag is absent, or already resolves to the authorized immutable object. Any mismatch fails closed.
-3. Test the module subtree at the authorized commit, not the current checkout by convenience.
+3. Test the module subtree at the authorized commit, not the current checkout by convenience. If simulating its release archive, use VCS-aware module packaging from the repository root; never hand-roll a proxy zip from only the module directory.
 4. Create and push only the authorized annotated tags.
 5. Resolve each version with `GOWORK=off`, the public Go proxy, and an empty module cache.
 6. Append a completion record with tag objects, public checksums, tests, and consumer consequences.

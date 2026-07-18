@@ -741,3 +741,89 @@ This PR authorizes none of the following:
   - `module tag or public documentation publication`
 - notes: |
     This record was authored only after PR #64 merged and its 40-character merge commit was verified to contain the exact reviewed head tree.
+
+- record_id: `SCLV-PR-065`
+- record_version: `2`
+- title: `Established surfaces reconciled and forward-only closure recovery ratified`
+- status: `canonical`
+- date: `2026-07-18`
+- change_started_at: `2026-07-18T06:22:23Z`
+- change_completed_at: `2026-07-18T07:15:24Z`
+- recorded_at: `2026-07-18T07:21:27Z`
+- recording_disposition: `post_merge`
+- change_type: `canonical_update`
+- related_pr: `https://github.com/QuanuX/Symphony/pull/65`
+- merge_commit: `1777c58ea6779cf07c8310292d9f61667efb23bc`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/sclv/INTENT.md`
+  - `knowledge/sclv/MANIFEST.md`
+  - `knowledge/sclv/RECOVERY.md`
+  - `knowledge/sclv/SKILL.md`
+  - `knowledge/sclv/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sodv/INTENT.md`
+  - `knowledge/sodv/MANIFEST.md`
+  - `knowledge/sodv/RELEASES.md`
+  - `knowledge/sodv/SKILL.md`
+  - `knowledge/sodv/SPEC.md`
+  - `knowledge/stav/SPEC.md`
+  - `libraries/stav-protocol-go/GO_1_27_MIGRATION.md`
+  - `modules/secure-identity-access-governance/ARCHITECTURE.md`
+  - `modules/secure-identity-access-governance/THREAT-MODEL.md`
+  - `tools/qxctl/README.md`
+  - `tools/symphony-validator/CMakeLists.txt`
+  - `tools/symphony-validator/INSTALL.md`
+  - `tools/symphony-validator/INTENT.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SKILL.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/cli.cpp`
+  - `tools/symphony-validator/src/sclv_changelog.cpp`
+  - `tools/symphony-validator/src/sclv_changelog.hpp`
+  - `tools/symphony-validator/src/sclv_ledger.cpp`
+  - `tools/symphony-validator/tests/sclv_temporal_test.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/sclv/SPEC.md`
+  - `knowledge/sclv/RECOVERY.md`
+  - `knowledge/sodv/SPEC.md`
+  - `knowledge/sodv/RELEASES.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    Under the Architect's direction, PR #65 completed the established-surface architecture reconciliation, updated the repository landing page to describe only implemented work, and aligned SSIAG, STAV, qxctl, SKVI, SCLV, SODV, and validator contracts with checked-in behavior.
+    It also corrected SCLV's false contiguous-PR assumption, established version-2 temporal records and forward-only late recovery, documented the verified PR #59 incident, and authorized exact-commit module publication through a two-record SODV transaction.
+- relationship_changes: |
+    GitHub PR numbers are now sparse SCLV identifiers rather than ledger sequence numbers. Closure carriers and implementation-only PRs do not recursively require records.
+    SODV now separates immutable release authorization from evidence-backed completion. Ephemeral closure and release state remains outside the canonical tree and is reconciled against Git and GitHub on a later session.
+- doctrine_changes: |
+    Canonical knowledge never carries a mutable pending or permanently active error state. Interrupted work heals forward through factual completion or a reasoned late-recovery record; historical records and tags are not rewritten.
+    A warm Go cache or temporary proxy is preparation evidence only. Independent installation requires canonical packaging and clean-cache external resolution.
+- compatibility_consequences: |
+    Legacy SCLV version-1 records remain valid. New records require strict UTC start, completion, and recording timestamps with monotonic recording order.
+    Go 1.26.5 remains the production baseline. Go 1.27 remains a separate confirmed-release gate.
+- publication_consequences: |
+    PR #65 merged SODV authorization for protocol-kernel v0.2.0, append-authority v0.1.0, and supervised append-authority v0.2.0 at exact historical commits. Authorization alone does not claim tag, public-proxy, SDK, Mintlify, OpenAPI, binary-release, or documentation-publication completion.
+- projection_consequences: |
+    The root README is a public repository orientation surface limited to implemented and active-development truth. SCLV and SODV projections remain derived and read-only.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/65`
+  - `1777c58ea6779cf07c8310292d9f61667efb23bc`
+  - `76f20fbcbc9f83a40b1264010accf0a0c07c904e`
+  - `knowledge/sclv/RECOVERY.md`
+  - `knowledge/sodv/RELEASES.md`
+- non_authorizations:
+  - `autonomous architectural ratification`
+  - `canonical pending or unresolved records`
+  - `moving or replacing module tags`
+  - `public documentation, SDK, OpenAPI, Mintlify, or binary release publication`
+  - `SSIAG mutation, operational Keychain access, or provider secret delivery`
+  - `remote SSIAG or STAV access`
+  - `proposal-only module implementation`
+  - `Go 1.27 production pin`
+- notes: |
+    This record was authored after PR #65 merged and its exact merge/head evidence was verified. Subsequent tag publication and checksum recovery are governed by forward-only SODV records and are not retroactively claimed as PR #65 implementation.

@@ -9,5 +9,5 @@ use (
 
 replace (
 	github.com/QuanuX/Symphony/libraries/stav-protocol-go v0.2.0 => ./libraries/stav-protocol-go
-	github.com/QuanuX/Symphony/modules/stav-append-authority v0.1.0 => ./modules/stav-append-authority
+	github.com/QuanuX/Symphony/modules/stav-append-authority v0.2.0 => ./modules/stav-append-authority
 )

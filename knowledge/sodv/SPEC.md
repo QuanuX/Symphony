@@ -37,6 +37,8 @@ Authorization and completion are immutable records. Pending state is noncanonica
 
 For Go modules, a workspace-composed test or warm module cache is insufficient completion evidence. The completion gate requires `GOWORK=off`, an empty `GOMODCACHE`, and resolution through the public module proxy or its documented authoritative fallback.
 
+Any pre-publication Go archive or checksum simulation for a module nested in the monorepo must use the VCS-aware module-zip algorithm against the repository root, exact revision, and module subdirectory, equivalent to `golang.org/x/mod/zip.CreateFromVCS`. A raw subdirectory archive, `git archive` limited to the module subtree, or directory-only proxy builder is not canonical packaging evidence. In particular, VCS-aware packaging must preserve Go's repository-root `LICENSE` inheritance and all nested-module, vendor, symlink, path, and size rules.
+
 ## Initial SODV Governance Scope
 The initial SODV scope covers sources, relationships, and evidence. Projections are deferred.
 
