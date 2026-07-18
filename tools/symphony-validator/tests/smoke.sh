@@ -3,6 +3,9 @@ set -e
 
 echo "Running smoke tests..."
 
+./build/sclv-temporal-tests
+echo "SCLV temporal tests passed"
+
 # Verify --help
 ./build/symphony-validator --help > /dev/null
 echo "--help passed"
@@ -175,13 +178,17 @@ if ./build/symphony-validator check --repo ./tests/fixtures_sclv_duplicate_merge
 fi
 echo "fixtures_sclv_duplicate_merge_commit failed as expected"
 
-# Verify SCLV ledger gap warning only
-OUT_WARN_GAP=$(./build/symphony-validator check --repo ./tests/fixtures_sclv_ledger_gap_warning)
-if ! echo "$OUT_WARN_GAP" | grep -qE "summary pass=.* warning=[1-9][0-9]* violation=0 exit=0"; then
-    echo "error: fixtures_sclv_ledger_gap_warning missing warning > 0 or exit=0"
+# Verify sparse SCLV PR-number namespace
+OUT_SPARSE=$(./build/symphony-validator check --repo ./tests/fixtures_sclv_ledger_gap_warning)
+if ! echo "$OUT_SPARSE" | grep -q "sclv_ledger.sparse_pr_namespace"; then
+    echo "error: sparse SCLV fixture missing sparse namespace evidence"
     exit 1
 fi
-echo "fixtures_sclv_ledger_gap_warning passed with warning"
+if echo "$OUT_SPARSE" | grep -q "sclv_ledger.record_gap"; then
+    echo "error: sparse SCLV fixture emitted a false record-gap warning"
+    exit 1
+fi
+echo "sparse SCLV PR-number namespace passed"
 
 # Verify skvi_references path not indexed
 if ./build/symphony-validator check --repo ./tests/fixtures_skvi_ref_unindexed > /dev/null 2>&1; then

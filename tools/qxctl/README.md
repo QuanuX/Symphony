@@ -54,7 +54,7 @@ go run ./cmd/qxctl ssiag providers --tops-id UUID [--json] [--scope user|system]
 # Verify local SSIAG availability
 go run ./cmd/qxctl ssiag doctor --tops-id UUID [--scope user|system]
 
-# Exercise the ratified STAV read-only grammar gate
+# Query the authenticated local STAV append authority
 go run ./cmd/qxctl stav status --tops-id UUID [--scope user|system] [--json]
 go run ./cmd/qxctl stav verify --tops-id UUID [--scope user|system] [--json]
 go run ./cmd/qxctl stav query --tops-id UUID [--scope user|system] [--after-sequence N] [--through-sequence N] [--from-time UTC] [--through-time UTC] [--event-class ID]... [--outcome VALUE]... [--correlation-id UUID] [--request-id UUID] [--limit 1..1000] [--json]
@@ -65,4 +65,4 @@ SSIAG commands require an immutable TOPS UUID through `--tops-id` or `SYMPHONY_S
 
 The ratified future administrative model separates non-mutating proposal from authorized local apply. The current qxctl implementation remains read-only. AI agents will be limited to query and proposal, and qxctl will never write STAV ledger files directly.
 
-The four STAV command names currently return a deliberate runtime-contract gate error after validating the immutable TOPS identity and selected path scope. Query also validates the ratified bounded filter model through the shared protocol kernel. No command opens a socket. Local request/response envelopes, reader authentication/authorization, status semantics, and the relevant runtime contracts must be ratified before these commands become operational; `qxctl stav append` will not be introduced.
+The four STAV commands use mutually authenticated, TOPS-scoped Unix-socket IPC to the local append authority. `status`, `verify`, and bounded `query` return only classification-authorized read projections; `doctor` composes client-side availability and verification checks. qxctl verifies the configured authority identity before sending application bytes and never opens the ledger file. `qxctl stav append` is intentionally absent.

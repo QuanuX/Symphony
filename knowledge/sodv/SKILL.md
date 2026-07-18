@@ -24,6 +24,18 @@ Documentation maintainers must reference SODV to ensure generated docs and Mintl
 ## How Reviewers Should Use SODV
 Reviewers verify that changes to SKV structures are accurately permitted by SODV publication boundaries before being merged.
 
+## How to Publish a Module Release
+
+1. Append and merge an authorization in `RELEASES.md` that binds every module path and version to an exact commit.
+2. Confirm each proposed tag is absent, or already resolves to the authorized immutable object. Any mismatch fails closed.
+3. Test the module subtree at the authorized commit, not the current checkout by convenience.
+4. Create and push only the authorized annotated tags.
+5. Resolve each version with `GOWORK=off`, the public Go proxy, and an empty module cache.
+6. Append a completion record with tag objects, public checksums, tests, and consumer consequences.
+7. Update consumers only from public artifacts and record the closure through SCLV when architecturally significant.
+
+An interrupted session resumes from `.git/symphony/releases/pending/` and reconciles observed external state. Never move a tag, rewrite authorization, or claim completion from a warm local cache.
+
 ## How Validators May Later Check SODV
 symphony-validator may later check SODV structure, but validator implementation is not authorized here.
 
@@ -62,6 +74,7 @@ PR history is review and merge evidence.
 
 ## Safe-Use Rules
 Do not treat SODV as a documentation generation engine. Treat it as a declarative governance boundary.
+Do not treat release authorization as release completion.
 
 ## Non-Scope
 SODV is not public documentation. SODV is not a docs site. SODV is not Mintlify. SODV is not NotebookLM. SODV is not a publication pipeline. SODV is not a generated documentation system yet. SODV is not a generated index yet. SODV is not a documentation template system yet. SODV is not a schema system. SODV is not qxctl. SODV is not symphony-validator. SODV is not SKVI. SODV is not SCLV. SODV is not SSCG. SODV does not replace canonical repository knowledge files. SODV does not replace module contracts. SODV does not replace tool contracts. SODV does not replace PR review. SODV does not create runtime behavior. SODV does not enforce runtime behavior.

@@ -1,138 +1,82 @@
 # Symphony Change Log Vector Specification
 
-## Canonical Target
-`knowledge/sclv/SPEC.md`
+## Status and Authority
 
-## Specification Status
-- declarative only
-- non-executable
-- not a generated changelog
-- not a generated index
-- not a JSON schema
-- not a Markdown template
-- not CI configuration
-- not qxctl integration
-- not validator implementation
+This specification is the canonical SCLV behavioral contract. `knowledge/sclv/CHANGELOG.md` is the human-authored canonical record surface. `tools/symphony-validator/` implements deterministic, read-only checks of this contract.
 
 ## Purpose
-To establish the declarative behavioral specification for future SCLV change records.
 
-## SCLV Behavioral Model
-Canonical repository knowledge files are source truth.
-SKVI indexes source truth.
-SCLV records change truth.
-SODV governs publication truth.
-Published documentation is a derived public projection.
+Define which completed changes belong in SCLV, how their immutable records are shaped and ordered, and how interrupted closure sessions recover without rewriting canonical history.
 
-MANIFEST.md is declared contract truth.
-Code is implementation truth.
-Generated JSON is a derived projection.
-SSCG state is the compatibility interpretation.
+## Record Selection
 
-## Initial SCLV Record Scope
-SCLV records are organized conceptually into layers defining canonical change events, relationships, supporting evidence, and (deferred) generated projections.
+An SCLV record is required for a completed, human-ratified change that materially alters canonical architecture, contracts, doctrine, compatibility, namespaces, publication boundaries, governed tooling behavior, or another indexed knowledge surface.
 
-## Layer 0 Canonical Change Events
-- root governance changes
-- module contract seed changes
-- tool contract seed changes
-- Knowledge Vector changes
-- SKVI changes
-- SCLV changes
-- SODV changes
-- doctrine changes
-- naming migrations
-- compatibility-affecting changes
+SCLV is intentionally sparse. A GitHub pull request may be implementation-only, a closure carrier, or unrelated to SCLV scope. The absence of an SCLV record for such a PR is correct. A record named `SCLV-PR-NNN` must align with PR `NNN` when present, but adjacent records need not have adjacent PR numbers.
 
-## Layer 1 Change Relationships
-- source PRs
-- merge commits
-- affected canonical files
-- affected modules
-- affected tools
-- affected knowledge-vector surfaces
-- dependency consequences
-- compatibility consequences
-- follow-up tasks
-- rollback considerations
+## Append-Only Semantics
 
-## Layer 2 Supporting Evidence
-- Git history
-- PR history
-- validator evidence
-- SKVI mappings
-- SSCG compatibility interpretations
-- NotebookLM corpus alignment
-- SODV publication decisions
+Records are appended after their source change is complete. Physical file order is canonical recording order. It does not claim PR creation order, merge order, or runtime-event order. Existing records must not be reordered, deleted, or rewritten to disguise concurrency or late recording.
 
-## Layer 3 Future Generated Projections
-- generated changelogs
-- generated change indexes
-- generated JSON projections
-- generated Markdown projections
-- published documentation projections
+Corrections are new records that reference the earlier evidence. Derived views may sort by `change_completed_at`, but a projection must never rewrite canonical file order.
 
-Future generated projections are not authorized by this canonical seed.
-Future generated changelogs are not authorized by this canonical seed.
-Future generated indexes are not authorized by this canonical seed.
-Future JSON schemas are not authorized by this canonical seed.
-Future Markdown templates are not authorized by this canonical seed.
+## Version 1 Compatibility
 
-## Change Truth versus Supporting Evidence Boundaries
-SCLV is the change truth. Git history is version-control evidence, not SCLV itself. PR history is review and merge evidence, not SCLV itself.
+Records without `record_version` are legacy version-1 records. Their historical shape remains valid. Temporal metadata must not be partially added to a version-1 record.
 
-## What Future SCLV Records May Claim
-SCLV records canonical changes, relationships, dependencies, migration events, compatibility consequences, and architectural deltas.
+## Layer 0 Canonical Record Shape
 
-## What Future SCLV Records Must Not Claim
-SCLV is not a generated changelog yet.
-SCLV is not a generated index yet.
-SCLV is not a database.
-SCLV is not Git history.
-SCLV is not PR history.
-SCLV is not a replacement for PR review.
-SCLV is not a replacement for SKVI.
-SCLV is not a replacement for SODV.
-SCLV is not a replacement for SSCG.
-SCLV is not NotebookLM.
-SCLV is not Mintlify.
-SCLV is not a docs site.
-SCLV is not qxctl.
-SCLV is not symphony-validator.
-SCLV does not create runtime behavior.
-SCLV does not enforce runtime behavior.
+Every new record uses `record_version: 2` and retains the established SCLV fields:
 
-## Relationship to SKVI
-SKVI indexes source truth. SCLV records change truth.
+- `record_id`, `title`, `status`, `date`, `change_type`
+- `related_pr`, `merge_commit`
+- `affected_surfaces`, `skvi_references`
+- `change_summary`, `relationship_changes`, `doctrine_changes`
+- `compatibility_consequences`, `publication_consequences`, `projection_consequences`
+- `evidence`, `non_authorizations`, `notes`
 
-## Relationship to SODV
-SODV governs publication truth.
+Version 2 additionally requires:
 
-## Relationship to SSCG
-SSCG interprets compatibility.
+- `change_started_at`: strict UTC time when the source change operation began, normally PR creation.
+- `change_completed_at`: strict UTC time when the source change became complete, normally merge time.
+- `recorded_at`: strict UTC time when the closure or recovery record was authored.
+- `recording_disposition`: `post_merge` or `late_recovery`.
+- `recovery_reason`: required and non-empty only for `late_recovery`.
 
-## Relationship to Git history
-Git history is version-control evidence, not SCLV itself.
+Strict UTC time has shape `YYYY-MM-DDTHH:MM:SSZ`. Leap years and calendar ranges must be valid. Each record must satisfy:
 
-## Relationship to PR history
-PR history is review and merge evidence, not SCLV itself.
+`change_started_at <= change_completed_at <= recorded_at`
 
-## Relationship to symphony-validator evidence
-symphony-validator produces deterministic evidence.
+Version-2 `recorded_at` values must be nondecreasing in physical file order.
 
-## Relationship to qxctl
-qxctl may later consume SCLV, but qxctl integration is not authorized here.
+## Canonical State Rule
 
-## Relationship to NotebookLM
-NotebookLM aligns corpus context.
+The only canonical record status is `canonical`. Pending, interrupted, unresolved, abandoned, or failed work is session state and must not be appended to `CHANGELOG.md`. A recovered canonical record explains the interruption through `late_recovery`; it does not preserve a permanently active error flag.
 
-## Relationship to Mintlify
-Mintlify publishes derived official documentation.
+## Ephemeral Session Journal
 
-## Deferred Surfaces
-Future generated changelogs are not authorized yet.
-Future generated indexes are not authorized yet.
-Future public documentation is not authorized yet.
+Tools that coordinate change closure may maintain repository-local state under:
+
+`.git/symphony/sclv/pending/<session-id>.json`
+
+The journal is explicitly noncanonical and uncommitted. A marker should contain its format version, session ID, source operation, base commit, intended surfaces, `started_at`, known PR URL and head commit when available, and current local state. Secrets, credentials, provider payloads, and runtime STAV events are prohibited.
+
+On clean closure, delete the marker after the canonical record is committed. On a later session, reconcile a stale marker against GitHub and Git:
+
+- still open: resume or explicitly abandon;
+- closed without merge: confirm abandonment and delete the marker;
+- merged and already recorded: verify alignment and delete the marker;
+- merged but unrecorded: append a `late_recovery` record, validate, commit it, then delete the marker;
+- indeterminate evidence: fail closed and request human review.
+
+This is recovery by forward correction. It is never permission to edit history or fabricate evidence.
 
 ## Non-Authorization Statement
-This canonical seed authorizes no CHANGELOG.md, no INDEX.md, no INSTALL.md, no generated changelogs, no generated indexes, no generated reports, no implementation files, no source files, no schemas, no templates, no CI files, no documentation publication configuration, no Mintlify configuration, no qxctl integration, no validator implementation, no NotebookLM automation, no publication pipeline, no database files, no service files, no runtime processes, no deployment scripts, no installer scripts, no binary assets, and no binary renames.
+
+SKVI indexes SCLV surfaces. SODV consumes SCLV change truth when governing release or documentation publication. SSCG interprets compatibility. STAV owns per-installation runtime audit truth. Git and GitHub provide evidence only.
+
+Agents may query and propose. Humans ratify. symphony-validator may parse and check, but never mutate or self-heal canonical files. Automated self-healing is limited to reconciling ephemeral state and preparing a forward-only recovery proposal.
+
+## Explicit Non-Authorizations
+
+SCLV does not authorize autonomous ratification, canonical pending records, rewriting or reordering existing records, fabricated evidence, tag publication, runtime audit mutation, generated canonical projections, or qxctl mutation authority.

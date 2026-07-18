@@ -38,7 +38,7 @@ int run_cli(const std::vector<std::string>& args) {
     }
 
     if (command == "--version") {
-        std::cout << "symphony-validator 0.1.0-seed\n";
+        std::cout << "symphony-validator 0.1.0-dev\n";
         return 0;
     }
 

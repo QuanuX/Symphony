@@ -3,16 +3,16 @@
 ****
 
 ## Specification Status
-- declarative only
-- non-executable
+- normative contract for the checked-in deterministic C++26 parser/checker
+- implementation authorized within the bounded source/build surfaces
 - not a JSON schema
 - not a Markdown template
 - not CI configuration
 - not build logic
-- not implementation authorization
+- not projector, qxctl-integration, or publication authorization
 
 ## Purpose
-Declare the exact declarative boundaries and expected non-agentic behavior of the C++ validator before implementation begins.
+Define the exact behavior and authority boundaries of the implemented C++ validator.
 
 ## Non-agentic Validator Doctrine
 The validator is deterministic, explainable, and non-agentic. It produces structured evidence for humans, CI systems, qxctl, and agentic tools, but it does not perform interpretation, remediation, or architectural decision-making.
@@ -33,10 +33,10 @@ Markdown is the agent/human ingestion projection.
 Markdown must not introduce claims, conclusions, or remediation steps that are not present in the source evidence model.
 
 ## JSON Evidence Projection
-Provides structured machine-readable evidence for the administrative spine and CI.
+A future structured machine-readable projection may support the administrative spine and CI. It is not implemented or authorized by this contract increment.
 
 ## Markdown Agent/Human Ingestion Projection
-Provides a stable, context-friendly ingestion surface without requiring agents to context-switch into raw JSON parsing.
+A future Markdown projection may provide a stable, context-friendly ingestion surface. It is not implemented or authorized by this contract increment.
 
 ## Synchronization Rules
 JSON and Markdown must share the same run ID.
@@ -77,10 +77,10 @@ The owner-ratified STAV v1 JSON Schema and conformance-fixture files are canonic
 The validator may report failures and identify expected/observed conditions. It must not rewrite files or choose remedies.
 
 ## Relationship to qxctl
-The validator declares the tool boundary that `qxctl` will eventually mediate.
+The validator is currently invoked directly. `qxctl` mediation remains deferred.
 
 ## Relationship to CI / PR gates
-Provides deterministic exit codes and structured JSON/Markdown artifacts for gates.
+The implementation provides deterministic line-oriented evidence, a summary, and exit status. CI/PR-gate wiring and structured artifacts remain deferred.
 
 ## Relationship to SKV / SKVI / SCLV / SODV
 The validator does not replace SKV / SKVI / SCLV / SODV records. It provides evidence to support them.
@@ -89,8 +89,8 @@ The validator does not replace SKV / SKVI / SCLV / SODV records. It provides evi
 The validator must not choose infrastructure for users, assume Docker/Kubernetes/cloud providers, impose market-data/order-flow/trading doctrine, require Python for hot-path or administrative spine, ban optional isolated Python habitats, treat contract seeds as runtime implementation, convert monorepo modularity into microservices doctrine, absorb module sovereignty into root-level logic, become a runtime daemon, become a hidden coordinator, replace qxctl, replace Maestro, replace SKV / SKVI / SCLV / SODV records, become agentic, infer intent, auto-remediate files, or make architecture decisions.
 Active project term c-o-r-e is absent except inside explicit forbidden-term scan descriptions.
 
-## Non-authorization Statement
-This canonical seed does not authorize C++ validator implementation, or executable schema generation.
+## Implemented Authorization Boundary
+This specification authorizes the checked-in C++26 command-line parser/checker, its CMake build contract, and smoke fixtures. The implementation may read repository surfaces, emit deterministic evidence, and return deterministic exit status. It remains non-agentic and read-only.
 
 
 ## Troll Doctrine
@@ -114,7 +114,7 @@ The existence of bus-troll does not make bus traversal mandatory.
 
 ### Parser Boundary
 
-Future validator parser behavior may read canonical Markdown surfaces including:
+The implemented validator parser may read canonical Markdown surfaces including:
 - `knowledge/skvi/INDEX.md`
 - `knowledge/skvi/SPEC.md`
 - `knowledge/sclv/CHANGELOG.md`
@@ -169,7 +169,7 @@ The parser must not:
 
 ### Checker Boundary
 
-Future validator checks may produce deterministic evidence for:
+The implemented validator checks may produce deterministic evidence for:
 - canonical path existence
 - SKVI entry shape
 - SCLV record shape
@@ -252,7 +252,6 @@ Mintlify is a publication surface, not canonical authority.
 ### Explicit Non-Authorizations
 
 This contract does not authorize:
-- implementation
 - generated changelog
 - generated index
 - generated report
@@ -263,8 +262,6 @@ This contract does not authorize:
 - DuckDB projection
 - HDF5 projection
 - qxctl integration
-- validator implementation
-- parser implementation
 - projector implementation
 - schemas
 - templates
@@ -274,6 +271,4 @@ This contract does not authorize:
 - Mintlify configuration
 - publication pipeline
 - NotebookLM automation
-- source files
-- build files
 - CI files

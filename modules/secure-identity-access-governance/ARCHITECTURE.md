@@ -34,7 +34,7 @@ TOPS host
 │   ├── config/<id>/ssiag/config.json
 │   ├── state/<id>/ssiag/
 │   ├── runtime/<id>/ssiag/ssiag.sock
-│   └── state/<id>/stav/                  future independent ledger
+│   └── state/<id>/stav/                  independent STAV ledger
 ├── TOPS 018f...0003
 │   ├── config/<id>/ssiag/config.json
 │   ├── state/<id>/ssiag/
@@ -114,7 +114,7 @@ The preferred order is provider-executed non-exportable operation, short-lived a
 
 ### SSIAG to STAV
 
-SSIAG will be a candidate-event producer, never a ledger writer. One dedicated Go append-authority process per TOPS serialization domain authenticates producers and assigns ledger identity, timestamp, sequence, and preceding digest. Only safe result metadata crosses the boundary; execution context stays private.
+SSIAG is an authenticated candidate-event producer, never a ledger writer. One dedicated Go append-authority process per TOPS serialization domain authenticates producers and assigns ledger identity, timestamp, sequence, and preceding digest. SSIAG uses a closed typed vocabulary, submits only safe result metadata, and requires a committed receipt; execution context stays private.
 
 ## qxctl Integration
 
@@ -126,7 +126,7 @@ qxctl ssiag providers --tops-id UUID [--scope user|system] [--json]
 qxctl ssiag doctor --tops-id UUID [--scope user|system]
 ```
 
-qxctl has no third-party dependencies and is provider-neutral. It uses the authority-free first-party STAV protocol kernel only for STAV contract mechanics. It verifies status responses are for the requested TOPS. It must not bypass SSIAG, accept secret flags, call Keychain APIs, edit STAV files, or own schemas.
+qxctl is provider-neutral. Cobra owns its command grammar and tightly bounded private Viper instances bind only explicitly declared command configuration; SSIAG/STAV trust loading remains in dedicated cgo-free clients. It uses the authority-free first-party STAV protocol kernel only for STAV contract mechanics. It verifies status responses are for the requested TOPS. It must not bypass SSIAG, accept secret flags, call Keychain APIs, edit STAV files, or own schemas.
 
 ## Failure Model
 

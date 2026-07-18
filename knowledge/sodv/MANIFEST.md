@@ -20,13 +20,24 @@ SODV is the Symphony Official Documentation Vector.
 ## Declared Contract Truth Role
 SODV governs official documentation publication, including how internal canonical knowledge becomes public-facing documentation. SODV supports future Mintlify publication without making Mintlify the source of truth. SODV is not the public documentation itself. SODV does not authorize a documentation publication pipeline. SODV does not authorize Mintlify configuration.
 
+`RELEASES.md` is the append-only module-publication ledger. It separates merged authorization from completed publication so a local package cache or planned checksum can never be mistaken for a public release.
+
 ## Installability Considerations
 SODV has no executable install surface in this canonical seed.
 SODV installability is declarative only until future tooling is authorized.
 No public documentation files, docs directory, Mintlify configuration, generated documentation, documentation templates, schemas, qxctl integration, validator implementation, or publication pipeline are authorized by this canonical seed.
 
 ## Scope
-SODV governs publication truth. It manages the boundaries between internal declarative truth and external public presentation. 
+SODV governs publication truth. It manages the boundaries between internal declarative truth and external public presentation or distribution.
+
+## Module Release Invariants
+
+- authorization binds module path and version to an immutable source commit before tag publication;
+- completion is a separate forward-only record after public, clean-cache resolution;
+- canonical release records never use a mutable pending state;
+- existing tags are never moved or replaced;
+- local module caches and temporary proxies are preparation evidence, not publication evidence;
+- an interrupted transaction is reconciled against actual Git and proxy state and then completed forward or failed closed.
 
 ## Non-Scope
 SODV is not public documentation. SODV is not a docs site. SODV is not Mintlify. SODV is not NotebookLM. SODV is not a publication pipeline. SODV is not a generated documentation system yet. SODV is not a generated index yet. SODV is not a documentation template system yet. SODV is not a schema system. SODV is not qxctl. SODV is not symphony-validator. SODV is not SKVI. SODV is not SCLV. SODV is not SSCG. SODV does not replace canonical repository knowledge files. SODV does not replace module contracts. SODV does not replace tool contracts. SODV does not replace PR review. SODV does not create runtime behavior. SODV does not enforce runtime behavior.

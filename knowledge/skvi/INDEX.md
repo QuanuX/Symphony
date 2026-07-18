@@ -996,20 +996,20 @@ Future validator checks may verify SKVI structure.
 - notes: Repository source truth; not a publication pipeline.
 - status: canonical
 
-### Validator Declarative Tool Contract Seed
+### Symphony Validator Tool Contract and Implementation Boundary
 ##### INTENT.md
 - path: `tools/symphony-validator/INTENT.md`
 - title: Validator Intent
-- surface_type: tool intent seed
+- surface_type: tool intent
 - truth_role: intent and purpose for symphony-validator
 - owner: validator maintainer
-- scope: Define validator boundaries. The validator is deterministic, explainable, and non-agentic. It produces structured evidence for humans, CI systems, qxctl, and agentic tools. It does not perform interpretation, remediation, or architectural decision-making. Evidence model is truth. JSON is the structured evidence projection. Markdown is the agent/human ingestion projection.
+- scope: Defines the implemented deterministic, explainable, non-agentic C++26 parser/checker boundary. Current output is line-oriented evidence plus a summary and exit status; structured projectors and integration surfaces remain deferred.
 - relationships:
   - declares -> `tools/symphony-validator/MANIFEST.md`
   - declares -> `tools/symphony-validator/SPEC.md`
-- consumers: humans, future implementations
-- deferred_projections: strictly deferred
-- notes: none
+- consumers: humans, validator maintainers, local preflight automation
+- deferred_projections: JSON/Markdown evidence, qxctl mediation, CI/PR-gate integration
+- notes: Implementation authority is bounded by the validator Contract Quad and CMake build contract.
 - status: canonical
 
 ##### MANIFEST.md
@@ -1019,10 +1019,10 @@ Future validator checks may verify SKVI structure.
 - truth_role: declared contract truth for symphony-validator
 - owner: validator maintainer
 - scope: Contractual definitions.
-- consumers: humans, future qxctl
-- relationships: none defined
-- deferred_projections: strictly deferred
-- notes: none
+- consumers: humans, validator maintainers, future qxctl integration
+- relationships: governs -> `tools/symphony-validator/CMakeLists.txt`
+- deferred_projections: installation packaging and integration surfaces
+- notes: The checked-in parser/checker is authorized; runtime residency is not.
 - status: canonical
 
 ##### INSTALL.md
@@ -1034,8 +1034,8 @@ Future validator checks may verify SKVI structure.
 - scope: Instructions and constraints for installation.
 - consumers: humans
 - relationships: none defined
-- deferred_projections: strictly deferred
-- notes: none
+- deferred_projections: portable installation packaging
+- notes: Documents the current local C++26 build and direct invocation path.
 - status: canonical
 
 ##### SKILL.md
@@ -1047,21 +1047,21 @@ Future validator checks may verify SKVI structure.
 - scope: Usage and operation.
 - consumers: humans, agentic tools
 - relationships: none defined
-- deferred_projections: strictly deferred
-- notes: none
+- deferred_projections: qxctl/CI invocation and structured evidence projectors
+- notes: Current use is direct, deterministic, and read-only.
 - status: canonical
 
 ##### SPEC.md
 - path: `tools/symphony-validator/SPEC.md`
 - title: Validator Specification
 - surface_type: tool specification
-- truth_role: declarative specification behavior
+- truth_role: normative parser/checker behavior and authority boundary
 - owner: validator maintainer
 - scope: Deterministic validation rules.
-- consumers: humans, future implementations
-- relationships: none defined
-- deferred_projections: strictly deferred
-- notes: none
+- consumers: humans, validator implementation, reviewers
+- relationships: governs -> `tools/symphony-validator/src/`; constrains -> future projectors and integrations
+- deferred_projections: JSON/Markdown, graph, analytical, and qxctl-readable projections
+- notes: Authorizes the checked-in deterministic parser/checker but not projectors, qxctl/CI integration, publication, or remediation.
 - status: canonical
 
 ##### CMakeLists.txt
@@ -1268,6 +1268,19 @@ Future validator checks may verify SKVI structure.
   notes: |
     Added because knowledge/sclv/CHANGELOG.md was canonicalized after the initial SKVI declarative index. This closes expected post-bootstrap SKVI/SCLV index drift without creating generated projections or implementation.
 
+##### RECOVERY.md
+- path: `knowledge/sclv/RECOVERY.md`
+- title: `SCLV Recovery and PR #59 Incident Record`
+- surface_type: `sclv_recovery_runbook`
+- truth_role: `canonical recovery procedure and incident evidence`
+- owner: `SCLV`
+- scope: `Defines forward-only reconciliation for interrupted closure sessions and records the verified PR #59 failure analysis.`
+- relationships: `depends_on -> knowledge/sclv/SPEC.md; may_consume -> knowledge/sodv/RELEASES.md`
+- consumers: `Architect, maintainers, reviewers, agentic tools, symphony-validator maintainers`
+- deferred_projections: `future read-only qxctl recovery-status projection`
+- status: `canonical`
+- notes: `Ephemeral session state remains under .git and is never canonical.`
+
 #### SODV
 ##### INTENT.md
 - path: `knowledge/sodv/INTENT.md`
@@ -1321,8 +1334,21 @@ Future validator checks may verify SKVI structure.
 - notes: none
 - status: canonical
 
+##### RELEASES.md
+- path: `knowledge/sodv/RELEASES.md`
+- title: `SODV Release Publication Ledger`
+- surface_type: `release_publication_ledger`
+- truth_role: `canonical module-publication authorization and completion truth`
+- owner: `SODV maintainer`
+- scope: `Binds module versions to immutable source commits before publication and records clean-cache completion evidence afterward.`
+- relationships: `depends_on -> knowledge/sodv/SPEC.md; depends_on -> knowledge/sclv/CHANGELOG.md; records -> module release publication`
+- consumers: `Architect, release maintainers, reviewers, agentic tools, future validators`
+- deferred_projections: `release notes, package index, public documentation`
+- status: `canonical`
+- notes: `Authorization never implies completion; pending transaction state is noncanonical.`
+
 ## Deferred Projections
-Unless a surface is explicitly indexed above, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, new qxctl integrations, validator implementations, and publication pipelines remain deferred and are not canonical authority. The indexed STAV JSON Schemas and fixtures are human-ratified protocol truth, not generated projections.
+Unless a surface is explicitly indexed above, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, new qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. The indexed STAV JSON Schemas and fixtures are human-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following:
@@ -1334,7 +1360,7 @@ This index authorizes none of the following:
 - DuckDB projection
 - HDF5 projection
 - qxctl integration
-- validator implementation
+- validator implementation outside the bounded `tools/symphony-validator/` contract
 - parser implementation
 - projector implementation
 - unregistered or generated schemas

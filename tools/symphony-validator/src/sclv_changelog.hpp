@@ -4,10 +4,22 @@
 
 struct SclvRecord {
     std::string record_id;
+    bool has_record_version = false;
+    int record_version = 1;
     bool has_title = false;
     bool has_status = false;
     std::string status;
     bool has_date = false;
+    bool has_change_started_at = false;
+    std::string change_started_at;
+    bool has_change_completed_at = false;
+    std::string change_completed_at;
+    bool has_recorded_at = false;
+    std::string recorded_at;
+    bool has_recording_disposition = false;
+    std::string recording_disposition;
+    bool has_recovery_reason = false;
+    std::string recovery_reason;
     bool has_change_type = false;
     std::string change_type;
     bool has_related_pr = false;

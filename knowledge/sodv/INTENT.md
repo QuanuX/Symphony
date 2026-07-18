@@ -5,7 +5,7 @@
 To declare knowledge expectations and publication rules for how internal canonical knowledge becomes public-facing documentation.
 
 ### Scope
-Governing the mapping between internal structured knowledge and public consumption.
+Governing the mapping between internal structured knowledge and published artifacts, including official documentation and independently consumable module releases.
 
 ### Non-scope
 Implementation of the actual publication pipeline, deployment tools, or CI workflows.
@@ -16,6 +16,7 @@ SODV supports future Mintlify publication without making Mintlify the source of 
 SODV is not the public documentation itself.
 SODV does not authorize a documentation publication pipeline.
 SODV does not authorize Mintlify configuration.
+SODV authorizes module publication only through an immutable authorization record followed by an evidence-backed completion record.
 
 ### Relationship to SKV
 SODV is an autonomous peer vector within the overarching SKV framework responsible for publication.
