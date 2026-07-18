@@ -4,7 +4,7 @@
 
 Agents may inspect, build, test, verify configuration shape, and use qxctl read-only commands when the Architect or operator authorizes access. Agents may propose administrative configuration changes but must not apply them without explicit authority.
 
-Install, enroll, serve, unenroll, and purge are state-changing operator actions and require explicit user direction. Purge is destructive even though it is scoped to one TOPS.
+Install, enroll, supervisor install/uninstall, serve, unenroll, and purge are state-changing operator actions and require explicit user direction. Purge is destructive even though it is scoped to one TOPS.
 
 ## Prohibited Actions
 
@@ -22,7 +22,7 @@ Agents must never:
 ## Review Procedure
 
 1. Read `knowledge/stav/SPEC.md`, registry, schemas, and this module's Contract Quad.
-2. Confirm the change preserves one TOPS, one lock, one writer, and exact peer grants.
+2. Confirm the change preserves one TOPS, separate socket/ledger locks, one writer, exact peer grants, and liveness-only supervision.
 3. Run protocol fixtures, storage/recovery tests, authenticated-socket tests, race tests, and cgo-disabled builds.
 4. Verify qxctl remains read-only and SSIAG emits only its closed vocabulary.
 5. Stop on any new recovery behavior, writer, transport, secret field, or authority expansion without Architect ratification.

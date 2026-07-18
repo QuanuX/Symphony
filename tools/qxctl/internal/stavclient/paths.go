@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 )
@@ -30,10 +31,17 @@ func SocketForTOPS(scope, topsID string) (string, error) {
 		}
 		return cleanAbsolute(filepath.Join(stateBase, "symphony", topsID, "stav", "run", "append.sock"))
 	case "system":
-		return filepath.Join("/run/symphony", topsID, "stav", "append.sock"), nil
+		return filepath.Join(systemRuntimeRoot(), topsID, "stav", "append.sock"), nil
 	default:
 		return "", fmt.Errorf("unsupported scope %q: expected user or system", scope)
 	}
+}
+
+func systemRuntimeRoot() string {
+	if runtime.GOOS == "darwin" {
+		return "/var/run/symphony"
+	}
+	return "/run/symphony"
 }
 
 // ConfigForTOPS resolves the canonical per-TOPS append-authority contract.

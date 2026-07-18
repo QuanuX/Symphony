@@ -9,7 +9,7 @@
 - **environment prefix**: `SYMPHONY_SSIAG_*`
 - **language/runtime**: Go 1.26.5 with pinned `golang.org/x/sys` for cgo-free kernel peer credentials
 - **cgo**: prohibited
-- **status**: DRAFT foundation; metadata-only runtime
+- **status**: DRAFT foundation; supervised metadata-only runtime
 
 ## Canonical Authority
 
@@ -25,9 +25,11 @@
 - `install` / `uninstall`: one host binary and digest-bearing install manifest;
 - `enroll` / `unenroll`: isolated per-TOPS configuration and state;
 - `serve`: one metadata-only Unix-socket API for one TOPS;
+- `supervisor install` / `supervisor uninstall`: per-TOPS launchd or systemd liveness profile with conservative state preservation;
 - Darwin/Linux kernel peer authentication on every accepted API connection;
 - exact per-TOPS UID/GID-to-canonical-subject resolution for future subject-gated operations;
 - stable per-TOPS service identity, pre-listen process verification, and client-side exact endpoint verification;
+- owner-provisioned system identity validation, distinct service-owned state/runtime children, bounded restart/shutdown, and serialized stale-socket recovery;
 - `status` / `providers`: safe local inspection;
 - `qxctl ssiag status|providers|doctor`: provider-neutral query interface.
 

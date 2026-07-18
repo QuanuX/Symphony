@@ -66,8 +66,21 @@ Draft threat model for the scaffold and planned provider phases. It uses assets,
 - kernel peer-credential endpoint authentication before application bytes;
 - qxctl status displays SSIAG schema/version;
 - installation manifest digest checks.
+- persistent no-follow socket lifecycle lock acquired after service-identity verification;
+- conservative stale-socket proof and lock-last shutdown cleanup;
 
 Socket permissions and ownership alone are not endpoint authentication; the post-dial kernel credential check is authoritative. Mutation remains disabled pending policy, replay/binding, adapter trust, and audit gates rather than endpoint-authentication review.
+
+### Supervisor Authority or Restart Abuse
+**Threat:** A service manager grants itself application authority, tightly couples bootstrap services, restarts in a hot loop, or leaves a second process racing the endpoint.
+
+**Controls:**
+- per-TOPS launchd/systemd labels with no SSIAG-to-STAV dependency;
+- owner-provisioned numeric service identity checked by the process itself;
+- liveness-only descriptors containing no credential, policy, grant, or ledger material;
+- bounded restart cadence and ten-second SIGTERM drain;
+- exclusive socket lifecycle lock and refusal of live/foreign endpoints;
+- descriptor-only `--no-start`/`--no-stop` support for owner-provided equivalents.
 
 ### Cross-TOPS Identity Confusion
 **Threat:** A request, configuration, socket, provider operation, or event for one TOPS is accepted under another TOPS on the same host.

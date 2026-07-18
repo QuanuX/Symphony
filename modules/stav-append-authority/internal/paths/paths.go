@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 )
@@ -119,7 +120,7 @@ func ResolveInstance(scope Scope, topsID string) (InstanceLayout, error) {
 	case ScopeSystem:
 		configDir := filepath.Join("/etc/symphony", topsID, "stav")
 		stateDir := filepath.Join("/var/lib/symphony", topsID, "stav")
-		runtimeDir := filepath.Join("/run/symphony", topsID, "stav")
+		runtimeDir := filepath.Join(systemRuntimeRoot(), topsID, "stav")
 		return cleanInstance(InstanceLayout{
 			Scope:          scope,
 			TOPSID:         topsID,
@@ -135,6 +136,13 @@ func ResolveInstance(scope Scope, topsID string) (InstanceLayout, error) {
 	default:
 		return InstanceLayout{}, fmt.Errorf("unsupported scope %q", scope)
 	}
+}
+
+func systemRuntimeRoot() string {
+	if runtime.GOOS == "darwin" {
+		return "/var/run/symphony"
+	}
+	return "/run/symphony"
 }
 
 func cleanInstall(layout InstallLayout) (InstallLayout, error) {

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 )
 
@@ -107,10 +108,12 @@ func ResolveInstance(scope Scope, topsID string) (InstanceLayout, error) {
 		}
 		configDir := filepath.Join(configBase, "symphony", topsID, "ssiag")
 		stateDir := filepath.Join(stateBase, "symphony", topsID, "ssiag")
+		var runtimeDir string
 		if runtimeBase == "" {
-			runtimeBase = filepath.Join(stateDir, "run")
+			runtimeDir = filepath.Join(stateDir, "run")
+		} else {
+			runtimeDir = filepath.Join(runtimeBase, "symphony", topsID, "ssiag")
 		}
-		runtimeDir := filepath.Join(runtimeBase, "symphony", topsID)
 		return cleanInstance(InstanceLayout{
 			Scope:              scope,
 			TOPSID:             topsID,
@@ -124,7 +127,7 @@ func ResolveInstance(scope Scope, topsID string) (InstanceLayout, error) {
 	case ScopeSystem:
 		configDir := filepath.Join("/etc/symphony", topsID, "ssiag")
 		stateDir := filepath.Join("/var/lib/symphony", topsID, "ssiag")
-		runtimeDir := filepath.Join("/run/symphony", topsID)
+		runtimeDir := filepath.Join(systemRuntimeRoot(), topsID, "ssiag")
 		return cleanInstance(InstanceLayout{
 			Scope:              scope,
 			TOPSID:             topsID,
@@ -138,6 +141,13 @@ func ResolveInstance(scope Scope, topsID string) (InstanceLayout, error) {
 	default:
 		return InstanceLayout{}, fmt.Errorf("unsupported scope %q", scope)
 	}
+}
+
+func systemRuntimeRoot() string {
+	if runtime.GOOS == "darwin" {
+		return "/var/run/symphony"
+	}
+	return "/run/symphony"
 }
 
 func userBases() (home, stateBase, configBase, runtimeBase string, err error) {

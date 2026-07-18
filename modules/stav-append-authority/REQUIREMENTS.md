@@ -9,6 +9,7 @@
 - **STAV-AA-L-002**: Host uninstall must preserve all per-TOPS configuration and state.
 - **STAV-AA-L-003**: Enrollment must create zero implicit producer or reader grants.
 - **STAV-AA-L-004**: Unenrollment preserves state unless one-TOPS purge is explicit and the listener is inactive.
+- **STAV-AA-L-005**: Supervisor install/uninstall must be per-TOPS and preserve configuration, ledgers, and recovery evidence.
 
 ## Identity and IPC
 
@@ -18,6 +19,9 @@
 - **STAV-AA-I-004**: Producer grants must authorize exact event-class/operation tuples; reader grants must authorize exact classifications.
 - **STAV-AA-I-005**: Unknown, ambiguous, mismatched, or ungranted identities fail closed.
 - **STAV-AA-I-006**: Frames and connection time are bounded before allocation or dispatch.
+- **STAV-AA-I-007**: Socket inspection, stale removal, binding, and cleanup must be serialized by a persistent adjacent exclusive lifecycle lock.
+- **STAV-AA-I-008**: System state/runtime ownership must match the explicitly configured, owner-provisioned authority UID/GID.
+- **STAV-AA-I-009**: Native supervision must own liveness only, have bounded restart/shutdown, and contain no SSIAG startup dependency.
 
 ## Ledger
 

@@ -19,6 +19,7 @@ import (
 	ssiagpaths "github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/paths"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/provider"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/server"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/supervision"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/version"
 )
 
@@ -55,6 +56,8 @@ func run(args []string) error {
 		return runEnroll(args[1:])
 	case "unenroll":
 		return runUnenroll(args[1:])
+	case "supervisor":
+		return runSupervisor(args[1:])
 	default:
 		return fmt.Errorf("unknown command %q", args[0])
 	}
@@ -65,6 +68,7 @@ func runServe(args []string) error {
 	scopeValue := set.String("scope", "user", "installation scope: user or system")
 	topsIDValue := set.String("tops-id", "", "immutable TOPS UUID")
 	configPath := set.String("config", "", "explicit config path")
+	supervised := set.Bool("supervised", false, "assert invocation by the installed native supervisor")
 	if err := set.Parse(args); err != nil {
 		return err
 	}
@@ -72,7 +76,12 @@ func runServe(args []string) error {
 	if err != nil {
 		return err
 	}
-	_ = scope
+	if scope == ssiagpaths.ScopeSystem && !*supervised {
+		return fmt.Errorf("system-scope serve requires the installed supervisor; use --supervised only from an owner-controlled equivalent")
+	}
+	if scope == ssiagpaths.ScopeUser && !*supervised {
+		fmt.Fprintln(os.Stderr, "symphony-ssiag: direct user-scope serve is a development/diagnostic mode; production uses supervisor install")
+	}
 	path := *configPath
 	if path == "" {
 		path = os.Getenv("SYMPHONY_SSIAG_CONFIG")
@@ -291,6 +300,72 @@ func runUnenroll(args []string) error {
 	return nil
 }
 
+func runSupervisor(args []string) error {
+	if len(args) == 0 || (args[0] != "install" && args[0] != "uninstall") {
+		return fmt.Errorf("supervisor requires install or uninstall")
+	}
+	operation := args[0]
+	set := flag.NewFlagSet("supervisor "+operation, flag.ContinueOnError)
+	scopeValue := set.String("scope", "user", "installation scope: user or system")
+	topsIDValue := set.String("tops-id", "", "immutable TOPS UUID")
+	force := set.Bool("force", false, "replace or remove a differing supervisor descriptor")
+	noStart := set.Bool("no-start", false, "install the descriptor without registering or starting it")
+	noStop := set.Bool("no-stop", false, "remove the descriptor without asking the native manager to stop it")
+	if err := set.Parse(args[1:]); err != nil {
+		return err
+	}
+	if set.NArg() != 0 {
+		return fmt.Errorf("unexpected supervisor arguments: %v", set.Args())
+	}
+	if operation == "uninstall" && *noStart {
+		return fmt.Errorf("--no-start is valid only for supervisor install")
+	}
+	if operation == "install" && *noStop {
+		return fmt.Errorf("--no-stop is valid only for supervisor uninstall")
+	}
+	scope, topsID, layout, err := resolveInstance(*scopeValue, *topsIDValue)
+	if err != nil {
+		return err
+	}
+	cfg, err := config.LoadTrusted(layout.ConfigFile, scope)
+	if err != nil {
+		return fmt.Errorf("load enrolled TOPS configuration: %w", err)
+	}
+	install, err := ssiagpaths.ResolveInstall(scope)
+	if err != nil {
+		return err
+	}
+	if operation == "install" {
+		info, statErr := os.Lstat(install.Binary)
+		if statErr != nil || !info.Mode().IsRegular() {
+			return fmt.Errorf("installed SSIAG binary is required before supervisor installation")
+		}
+	}
+	spec, err := supervision.SpecFromConfig(scope, topsID, install.Binary, cfg)
+	if err != nil {
+		return err
+	}
+	if operation == "install" {
+		record, err := supervision.Install(spec, *force)
+		if err != nil {
+			return err
+		}
+		if !*noStart {
+			if err := supervision.Start(record); err != nil {
+				return fmt.Errorf("descriptor installed at %s but activation failed: %w", record.Descriptor, err)
+			}
+		}
+		fmt.Printf("installed SSIAG supervisor manager=%s name=%s tops_id=%s descriptor=%s started=%t\n", record.Manager, record.Name, topsID, record.Descriptor, !*noStart)
+		return nil
+	}
+	record, err := supervision.Uninstall(spec, *force, !*noStop)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("uninstalled SSIAG supervisor manager=%s name=%s tops_id=%s; configuration and state preserved\n", record.Manager, record.Name, topsID)
+	return nil
+}
+
 func parseQueryFlags(name string, args []string) (ssiagpaths.Scope, string, bool, error) {
 	set := flag.NewFlagSet(name, flag.ContinueOnError)
 	scopeValue := set.String("scope", "user", "installation scope: user or system")
@@ -360,6 +435,7 @@ func printUsage() {
 	fmt.Println("  uninstall   Remove the host binary; preserve all TOPS state")
 	fmt.Println("  enroll      Create or update one TOPS enrollment")
 	fmt.Println("  unenroll    Remove one TOPS enrollment; preserve data unless --purge")
+	fmt.Println("  supervisor  Install/uninstall one TOPS native liveness service")
 	fmt.Println("  serve       Run the local metadata-only SSIAG API for one TOPS")
 	fmt.Println("  status      Read safe SSIAG status for one TOPS")
 	fmt.Println("  providers   List safe provider descriptors for one TOPS")

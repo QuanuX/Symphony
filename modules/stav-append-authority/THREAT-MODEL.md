@@ -11,6 +11,8 @@
 ## Principal Threats and Controls
 
 - **Socket impersonation**: clients verify the connected authority UID/GID; the server verifies its own configured identity.
+- **Socket lifecycle race**: a persistent no-follow exclusive lock serializes stale inspection, unlink, bind, shutdown cleanup, and restart; live/foreign endpoints are refused.
+- **Supervisor authority confusion**: per-TOPS launchd/systemd profiles contain liveness policy only, consume the configured owner-provisioned identity, and have no SSIAG dependency or ledger/producer grant.
 - **Caller spoofing**: the server uses kernel peer credentials, never request-supplied identity or process ancestry.
 - **Over-broad producer access**: grants contain exact event-class/operation pairs and an assigned producer identity.
 - **Unauthorized reads**: query omits events outside the reader's classification grant.

@@ -2,6 +2,7 @@ package stavclient
 
 import (
 	"path/filepath"
+	"runtime"
 	"testing"
 )
 
@@ -43,5 +44,20 @@ func TestSocketForTOPSRejectsInvalidInput(t *testing.T) {
 	}
 	if _, err := SocketForTOPS("host", testTOPSID); err == nil {
 		t.Fatal("invalid scope unexpectedly accepted")
+	}
+}
+
+func TestSocketForTOPSSystemUsesNativeRoot(t *testing.T) {
+	got, err := SocketForTOPS("system", testTOPSID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	root := "/run/symphony"
+	if runtime.GOOS == "darwin" {
+		root = "/var/run/symphony"
+	}
+	want := filepath.Join(root, testTOPSID, "stav", "append.sock")
+	if got != want {
+		t.Fatalf("socket = %q, want %q", got, want)
 	}
 }

@@ -42,6 +42,7 @@ Architect-ratified architecture with phased implementation requirements. “Must
 - **SSIAG-F-012**: The server must expose versioned status and provider-discovery endpoints.
 - **SSIAG-F-013**: The server must use bounded header, read, write, and idle timeouts.
 - **SSIAG-F-014**: The server must shut down gracefully on process termination signals.
+- **SSIAG-F-015**: The process must exclusively serialize socket inspection, stale removal, binding, and cleanup with a persistent adjacent lifecycle lock.
 
 ### qxctl
 - **SSIAG-F-020**: qxctl must discover the SSIAG socket from an explicit environment override or the selected scope and TOPS ID.
@@ -101,6 +102,9 @@ Architect-ratified architecture with phased implementation requirements. “Must
 - **SSIAG-O-008**: Safe SSIAG security outcomes must be submitted only through the implemented dedicated per-TOPS Go STAV append authority and its closed typed producer vocabulary.
 - **SSIAG-O-009**: Security, provider, credential, policy, and configuration apply operations must fail closed when their required STAV append cannot be accepted.
 - **SSIAG-O-010**: Supervision must own liveness only and must not confer SSIAG policy, provider, apply, or STAV ledger authority.
+- **SSIAG-O-011**: Native launchd/systemd descriptors must be per-TOPS, independently restart-bounded, and free of SSIAG-to-STAV startup coupling.
+- **SSIAG-O-012**: System service identities must be owner-provisioned and must exactly match enrollment UID/GID; no installer may infer root or silently create an account.
+- **SSIAG-O-013**: Supervisor uninstall must stop the selected service by default and preserve all configuration/state; owner-provided managers may explicitly use descriptor-only no-start/no-stop operation.
 
 ## Portability Requirements
 - **SSIAG-P-001**: All Symphony-authored SSIAG foundation source must be Go and must compile without cgo.
@@ -137,7 +141,7 @@ Architect-ratified architecture with phased implementation requirements. “Must
 - Documentation contains the architecture, requirements, threat model, and phased implementation procedure.
 
 ## Remaining Detail Gates Before Operational Provider Work
-1. Preserve implemented exact qxctl-to-server endpoint trust; define launchd/service-manager labels, shared runtime ownership, restart bounds, direct-run bootstrap behavior, and distinct-account integration evidence.
+1. Preserve implemented exact endpoint trust, launchd/systemd supervision, runtime ownership, restart bounds, direct-run policy, and distinct-identity gates.
 2. Preserve the implemented dedicated Go STAV append-authority boundary, canonical schemas, durability/recovery contract, exact peer grants, and closed SSIAG producer vocabulary.
 3. Freeze mutation proposal/apply schemas, replay/idempotency bounds, expiry/skew, and expected-state conflict behavior.
 4. Freeze provider mutual executable trust, signing requirements, secret-channel framing, memory handling, and crash-dump policy.

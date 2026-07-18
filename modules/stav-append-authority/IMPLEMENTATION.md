@@ -50,6 +50,15 @@ Exit gate: the schemas and codec exist, but this executable still cannot listen,
 
 Implemented evidence includes strict operational schemas/fixtures, exclusive-lock and restart tests, identical/conflicting request tests, incomplete-tail and corruption tests, authenticated endpoint/caller integration tests, qxctl activation, and the closed SSIAG producer mapping. node-troll remains a separate future producer review.
 
+## Phase 6 — Foundation Supervision (Implemented)
+
+1. Install deterministic per-TOPS launchd jobs or systemd units without coupling STAV startup to SSIAG.
+2. Consume the owner-provisioned numeric authority identity from configuration; never create accounts or infer root.
+3. Give only the selected state/recovery/runtime children to that authority identity while preserving administrator-owned trust configuration and shared parents.
+4. Require native/owner-controlled supervision for system scope and retain warned foreground user scope for diagnostics.
+5. Acquire a persistent no-follow exclusive socket lifecycle lock after identity verification and release it only after graceful drain and socket cleanup.
+6. Bound native restart cadence and SIGTERM shutdown; preserve descriptor-only no-start/no-stop integration for other owner-provided supervisors.
+
 ## Go 1.27 Migration (Confirmed Release Only)
 
 1. Keep `go.mod` and the root workspace pinned to Go 1.26.5 while 1.27 is unreleased.

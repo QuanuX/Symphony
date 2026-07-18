@@ -106,7 +106,7 @@ swift build -c release
 
 Exit gate: the adapter is independently installable and removable, while the Go foundation remains Swift-free, Apple-framework-free, and cgo-free.
 
-## Phase 6 — Implement Ratified Caller Authentication and Supervision
+## Phase 6 — Implement Ratified Caller Authentication and Supervision (implemented)
 
 Ratified architecture:
 
@@ -115,19 +115,18 @@ Ratified architecture:
 3. Supervision owns liveness only and never expands security authority.
 4. qxctl separates proposal from apply; agents may query and propose only.
 
-Implemented increment: build-tagged Darwin `LOCAL_PEERCRED`/`LOCAL_PEERPID` and Linux/WSL `SO_PEERCRED` wrappers; request-context enforcement; exact UID/GID-to-subject mapping; duplicate/ambiguous mapping rejection; unmapped-subject failure; server process self-verification; scope-exact trusted configuration loading; pre-dial socket type/owner checks; and exact client-side kernel endpoint verification before HTTP bytes. New enrollments declare `unix_peer_credentials`, a stable canonical service mapping, and an explicit caller-subject array. Older metadata-only v1 configuration remains structurally readable but cannot start a trusted service/client until re-enrolled.
-
-Remaining entry details: launchd/service-manager labels, runtime directory and service-account provisioning, restart bounds, direct-run production warnings, and negative integration tests using distinct operating-system accounts. Adapter executable trust and future mutation replay/binding remain later gates.
+Implemented: build-tagged Darwin `LOCAL_PEERCRED`/`LOCAL_PEERPID` and Linux/WSL `SO_PEERCRED`; exact UID/GID subject and service mapping; scope-exact trusted configuration; client endpoint authentication before HTTP; per-TOPS launchd/systemd installation; owner-provisioned system identities; distinct service-owned runtime/state children; bounded restart and shutdown; supervisor-independent SSIAG/STAV startup; explicit direct-run policy; and exclusive socket lifecycle locks with conservative stale recovery. Older metadata-only v1 configuration remains structurally readable but cannot start a trusted service/client until re-enrolled.
 
 Implementation procedure:
 
 1. Maintain the implemented accepted-connection credential extraction and exact subject resolver.
 2. Maintain the implemented stable service mapping and configure explicit canonical caller subjects that may later receive authority.
 3. Preserve exact qxctl/self-client server endpoint authentication; socket groups remain reachability-only.
-4. Bind every future mutation request to TOPS ID, subject, request ID, operation, and expiry.
-5. Add replay detection and strict deadlines.
-6. Authenticate the configured adapter executable by exact path, ownership, digest/signature policy, and protocol identity.
-7. Add negative tests for fake sockets, wrong users, stale sessions, changed binaries, replay, and cross-TOPS requests.
+4. Preserve the implemented native/owner-provided liveness-only supervision and socket lock ordering.
+5. Bind every future mutation request to TOPS ID, subject, request ID, operation, and expiry.
+6. Add replay detection and strict deadlines with the mutation schema.
+7. Authenticate the configured adapter executable by exact path, ownership, digest/signature policy, and protocol identity in Phase 9.
+8. Add mutation/provider negative tests for replay, stale sessions, changed binaries, and cross-TOPS requests when those surfaces exist.
 
 Exit gate: no unauthenticated local process can reach a mutation or adapter operation, and supervision does not silently expand authority.
 
