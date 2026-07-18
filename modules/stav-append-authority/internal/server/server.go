@@ -47,18 +47,32 @@ func New(cfg stavprotocol.AppendAuthorityConfig) (*Server, error) {
 }
 
 func (s *Server) Run(ctx context.Context) error {
-	if err := prepareSocket(s.config.Listen.Address); err != nil {
+	address := s.config.Listen.Address
+	if err := ensureDirectory(filepath.Dir(address)); err != nil {
 		return err
 	}
-	listener, err := net.Listen("unix", s.config.Listen.Address)
+	lease, err := acquireSocketLease(address)
+	if err != nil {
+		return err
+	}
+	defer lease.Close()
+	if err := prepareSocket(address); err != nil {
+		return err
+	}
+	listener, err := net.Listen("unix", address)
 	if err != nil {
 		return fmt.Errorf("stav server: listen: %w", err)
 	}
-	if err := os.Chmod(s.config.Listen.Address, 0o660); err != nil {
+	if err := os.Chmod(address, 0o660); err != nil {
 		_ = listener.Close()
 		return fmt.Errorf("stav server: set socket mode: %w", err)
 	}
-	defer listener.Close()
+	defer func() {
+		_ = listener.Close()
+		if err := os.Remove(address); err == nil || os.IsNotExist(err) {
+			_ = syncDirectory(filepath.Dir(address))
+		}
+	}()
 
 	done := make(chan struct{})
 	go func() {
@@ -243,9 +257,6 @@ func rejected(request stavprotocol.LocalRequest, topsID, reason string) stavprot
 func prepareSocket(path string) error {
 	if !filepath.IsAbs(path) {
 		return fmt.Errorf("stav server: socket path is not absolute")
-	}
-	if err := ensureDirectory(filepath.Dir(path)); err != nil {
-		return err
 	}
 	info, err := os.Lstat(path)
 	if os.IsNotExist(err) {

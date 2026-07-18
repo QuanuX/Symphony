@@ -30,9 +30,9 @@ Agents may inspect canonical contracts, query safe SSIAG metadata through qxctl,
 
 ## Ratified Implementation Sequence
 
-1. Maintain the implemented build-tagged local peer-credential authentication and exact UID/GID canonical subject mapping; complete endpoint-trust and service-identity gates before mutation.
-2. Implement foundational bootstrap supervision without granting the supervisor policy authority.
-3. Integrate the dedicated per-TOPS STAV append authority.
+1. Maintain the implemented build-tagged local peer-credential authentication, exact UID/GID mapping, and endpoint trust.
+2. Maintain the implemented foundational bootstrap supervision without granting the supervisor policy authority.
+3. Maintain the implemented dedicated per-TOPS STAV append authority integration.
 4. Implement local proposal/apply mutation with replay, idempotency, expected-state, and audit gates.
 5. Implement provider mutual executable trust and separate control/secret channels.
 6. Enable per-user macOS Keychain operations beginning with non-exportable capability where suitable.

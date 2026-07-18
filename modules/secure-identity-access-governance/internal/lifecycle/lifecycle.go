@@ -183,7 +183,7 @@ func Enroll(scope ssiagpaths.Scope, topsID, topsName string, serviceUID, service
 	if err := defaultConfig.Validate(); err != nil {
 		return EnrollmentRecord{}, err
 	}
-	if err := ensureEnrollmentDirectories(layout, scope); err != nil {
+	if err := ensureEnrollmentDirectories(layout, scope, *resolvedUID, *resolvedGID); err != nil {
 		return EnrollmentRecord{}, err
 	}
 	if err := requireAbsentOrRegular(layout.ConfigFile, "configuration"); err != nil {
@@ -353,15 +353,72 @@ func ensureDirectories(paths ...string) error {
 	return nil
 }
 
-func ensureEnrollmentDirectories(layout ssiagpaths.InstanceLayout, scope ssiagpaths.Scope) error {
+func ensureEnrollmentDirectories(layout ssiagpaths.InstanceLayout, scope ssiagpaths.Scope, serviceUID, serviceGID uint32) error {
 	if scope == ssiagpaths.ScopeSystem {
 		if err := ensureSystemConfigDirectory(layout.ConfigDir); err != nil {
 			return err
 		}
+		if err := ensureSystemSharedDirectory(filepath.Dir(layout.StateDir), "/var/lib/symphony"); err != nil {
+			return err
+		}
+		runtimeRoot := "/run/symphony"
+		if strings.HasPrefix(layout.RuntimeDir, "/var/run/symphony/") {
+			runtimeRoot = "/var/run/symphony"
+		}
+		if err := ensureSystemSharedDirectory(filepath.Dir(layout.RuntimeDir), runtimeRoot); err != nil {
+			return err
+		}
+		for _, path := range []string{layout.StateDir, layout.RuntimeDir} {
+			if err := ensureOwnedPrivateDirectory(path, serviceUID, serviceGID); err != nil {
+				return err
+			}
+		}
+		return nil
 	} else if err := ensureDirectory(layout.ConfigDir); err != nil {
 		return err
 	}
 	return ensureDirectories(layout.StateDir, layout.RuntimeDir)
+}
+
+func ensureSystemSharedDirectory(path, root string) error {
+	path = filepath.Clean(path)
+	root = filepath.Clean(root)
+	if path != root && !strings.HasPrefix(path, root+string(filepath.Separator)) {
+		return fmt.Errorf("refusing noncanonical shared system directory %s", path)
+	}
+	if err := ensureDirectoryMode(path, 0o755); err != nil {
+		return err
+	}
+	for current := path; current == root || strings.HasPrefix(current, root+string(filepath.Separator)); current = filepath.Dir(current) {
+		info, err := os.Lstat(current)
+		if err != nil {
+			return fmt.Errorf("inspect shared system directory %s: %w", current, err)
+		}
+		stat, ok := info.Sys().(*syscall.Stat_t)
+		if !ok || stat.Uid != 0 || info.Mode().Perm()&0o022 != 0 {
+			return fmt.Errorf("shared system directory is not administrator-owned and protected: %s", current)
+		}
+		if err := os.Chmod(current, 0o755); err != nil {
+			return fmt.Errorf("make shared system directory traversable %s: %w", current, err)
+		}
+		if current == root {
+			break
+		}
+	}
+	return nil
+}
+
+func ensureOwnedPrivateDirectory(path string, uid, gid uint32) error {
+	if err := ensureDirectory(path); err != nil {
+		return err
+	}
+	if err := os.Chown(path, int(uid), int(gid)); err != nil {
+		return fmt.Errorf("assign service ownership to %s: %w", path, err)
+	}
+	if err := os.Chmod(path, 0o700); err != nil {
+		return fmt.Errorf("restrict service directory %s: %w", path, err)
+	}
+	return nil
 }
 
 func ensureSystemConfigDirectory(path string) error {

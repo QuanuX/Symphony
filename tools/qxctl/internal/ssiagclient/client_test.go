@@ -52,7 +52,7 @@ func TestSocketIsTOPSIsolated(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if path != filepath.Join(home, "runtime", "symphony", testTOPSID, "ssiag.sock") {
+	if path != filepath.Join(home, "runtime", "symphony", testTOPSID, "ssiag", "ssiag.sock") {
 		t.Fatalf("unexpected socket %q", path)
 	}
 }

@@ -2,6 +2,7 @@ package paths
 
 import (
 	"path/filepath"
+	"runtime"
 	"testing"
 )
 
@@ -31,7 +32,7 @@ func TestUserLayoutsSeparateInstallAndTOPSState(t *testing.T) {
 	if instance.ConfigFile != filepath.Join(config, "symphony", testTOPSID, "ssiag", "config.json") {
 		t.Fatalf("unexpected config path %q", instance.ConfigFile)
 	}
-	if instance.Socket != filepath.Join(runtime, "symphony", testTOPSID, "ssiag.sock") {
+	if instance.Socket != filepath.Join(runtime, "symphony", testTOPSID, "ssiag", "ssiag.sock") {
 		t.Fatalf("unexpected socket path %q", instance.Socket)
 	}
 }
@@ -45,9 +46,24 @@ func TestFallbackRuntimeRemainsTOPSIsolated(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want := filepath.Join(home, "state", "symphony", testTOPSID, "ssiag", "run", "symphony", testTOPSID, "ssiag.sock")
+	want := filepath.Join(home, "state", "symphony", testTOPSID, "ssiag", "run", "ssiag.sock")
 	if layout.Socket != want {
 		t.Fatalf("unexpected fallback socket %q", layout.Socket)
+	}
+}
+
+func TestSystemRuntimeUsesNativeRoot(t *testing.T) {
+	layout, err := ResolveInstance(ScopeSystem, testTOPSID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	root := "/run/symphony"
+	if runtime.GOOS == "darwin" {
+		root = "/var/run/symphony"
+	}
+	want := filepath.Join(root, testTOPSID, "ssiag", "ssiag.sock")
+	if layout.Socket != want {
+		t.Fatalf("system socket = %q, want %q", layout.Socket, want)
 	}
 }
 

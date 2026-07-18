@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"time"
 )
@@ -66,7 +67,7 @@ func SocketForTOPS(scope, topsID string) (string, error) {
 	}
 	switch scope {
 	case "system":
-		return filepath.Join("/run/symphony", topsID, "ssiag.sock"), nil
+		return filepath.Join(systemRuntimeRoot(), topsID, "ssiag", "ssiag.sock"), nil
 	case "user":
 		home, err := os.UserHomeDir()
 		if err != nil {
@@ -77,7 +78,7 @@ func SocketForTOPS(scope, topsID string) (string, error) {
 			if !filepath.IsAbs(runtimeBase) {
 				return "", fmt.Errorf("XDG_RUNTIME_DIR must be absolute")
 			}
-			return filepath.Join(runtimeBase, "symphony", topsID, "ssiag.sock"), nil
+			return filepath.Join(runtimeBase, "symphony", topsID, "ssiag", "ssiag.sock"), nil
 		}
 		stateBase := os.Getenv("XDG_STATE_HOME")
 		if stateBase == "" {
@@ -85,7 +86,7 @@ func SocketForTOPS(scope, topsID string) (string, error) {
 		} else if !filepath.IsAbs(stateBase) {
 			return "", fmt.Errorf("XDG_STATE_HOME must be absolute")
 		}
-		return filepath.Join(stateBase, "symphony", topsID, "ssiag", "run", "symphony", topsID, "ssiag.sock"), nil
+		return filepath.Join(stateBase, "symphony", topsID, "ssiag", "run", "ssiag.sock"), nil
 	default:
 		return "", fmt.Errorf("unsupported SSIAG scope %q", scope)
 	}
@@ -304,7 +305,7 @@ func verifyPeer(conn net.Conn, expectedUID, expectedGID uint32) error {
 func canonicalSocketForTOPS(scope, topsID string) (string, error) {
 	switch scope {
 	case "system":
-		return filepath.Join("/run/symphony", topsID, "ssiag.sock"), nil
+		return filepath.Join(systemRuntimeRoot(), topsID, "ssiag", "ssiag.sock"), nil
 	case "user":
 		home, err := os.UserHomeDir()
 		if err != nil {
@@ -315,7 +316,7 @@ func canonicalSocketForTOPS(scope, topsID string) (string, error) {
 			if !filepath.IsAbs(runtimeBase) {
 				return "", fmt.Errorf("XDG_RUNTIME_DIR must be absolute")
 			}
-			return filepath.Join(runtimeBase, "symphony", topsID, "ssiag.sock"), nil
+			return filepath.Join(runtimeBase, "symphony", topsID, "ssiag", "ssiag.sock"), nil
 		}
 		stateBase := os.Getenv("XDG_STATE_HOME")
 		if stateBase == "" {
@@ -323,10 +324,17 @@ func canonicalSocketForTOPS(scope, topsID string) (string, error) {
 		} else if !filepath.IsAbs(stateBase) {
 			return "", fmt.Errorf("XDG_STATE_HOME must be absolute")
 		}
-		return filepath.Join(stateBase, "symphony", topsID, "ssiag", "run", "symphony", topsID, "ssiag.sock"), nil
+		return filepath.Join(stateBase, "symphony", topsID, "ssiag", "run", "ssiag.sock"), nil
 	default:
 		return "", fmt.Errorf("unsupported SSIAG scope %q", scope)
 	}
+}
+
+func systemRuntimeRoot() string {
+	if runtime.GOOS == "darwin" {
+		return "/var/run/symphony"
+	}
+	return "/run/symphony"
 }
 
 func (c *Client) Status(ctx context.Context) (Status, error) {

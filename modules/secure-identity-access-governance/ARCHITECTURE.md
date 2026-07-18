@@ -33,12 +33,12 @@ TOPS host
 ├── TOPS 018f...0002
 │   ├── config/<id>/ssiag/config.json
 │   ├── state/<id>/ssiag/
-│   ├── runtime/<id>/ssiag.sock
+│   ├── runtime/<id>/ssiag/ssiag.sock
 │   └── state/<id>/stav/                  future independent ledger
 ├── TOPS 018f...0003
 │   ├── config/<id>/ssiag/config.json
 │   ├── state/<id>/ssiag/
-│   ├── runtime/<id>/ssiag.sock
+│   ├── runtime/<id>/ssiag/ssiag.sock
 │   └── state/<id>/stav/
 └── symphony-ssiag-provider-macos-keychain optional shared adapter binary
 ```
@@ -56,6 +56,8 @@ Host installation owns only the SSIAG executable and install manifest. TOPS enro
 - display-name updates do not move files.
 
 SSIAG and the STAV append authority occupy a foundational bootstrap stratum. A native OS supervisor or explicit owner-provided equivalent anchors them in production; direct-run remains a separate development mode. Supervision owns liveness only. It does not confer policy, provider, apply, producer, or ledger authority, and node-troll does not inherit authority by supervising another component.
+
+macOS uses per-TOPS launchd jobs under the `io.github.quanux.symphony.*` namespace. Linux uses per-TOPS systemd units. The two jobs are loosely coupled: neither starts or requires the other. Each Go process owns its socket and an adjacent persistent lifecycle lock; supervisor socket activation is intentionally absent. System state/runtime children are owned by the exact pre-provisioned identity recorded in configuration, while shared parents and trust configuration remain administrator-owned.
 
 ## Process Components
 

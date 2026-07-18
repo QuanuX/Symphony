@@ -28,6 +28,8 @@
 - incomplete-final-frame evidence preservation and fail-closed complete corruption;
 - `qxctl stav status|verify|query|doctor` integration;
 - typed SSIAG producer integration.
+- per-TOPS launchd/systemd liveness installation with owner-provisioned system identity and conservative uninstall;
+- persistent socket lifecycle lock, bounded restart/SIGTERM drain, and stale-socket recovery without socket activation;
 
 ## Deliberately Absent
 
@@ -36,6 +38,6 @@
 - automatic retention deletion, rotation, middle-frame salvage, or general repair;
 - signed checkpoints, non-repudiation, and remote export;
 - secret values, assertions, tokens, provider payloads, or routine telemetry;
-- service-manager definitions or inherited supervisor authority.
+- inherited supervisor authority, supervisor socket activation, or SSIAG startup coupling.
 
 Host uninstall always preserves per-TOPS configuration and ledgers. Purge requires the selected TOPS ID and refuses an active listener.

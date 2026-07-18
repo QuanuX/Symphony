@@ -7,6 +7,7 @@ import (
 	"net"
 	"os"
 	"path/filepath"
+	"strings"
 	"syscall"
 	"time"
 
@@ -26,6 +27,9 @@ type EnrollmentRecord struct {
 }
 
 func Enroll(scope stavpaths.Scope, topsID string, authorityUID, authorityGID uint64) (EnrollmentRecord, error) {
+	if scope == stavpaths.ScopeSystem && os.Geteuid() != 0 {
+		return EnrollmentRecord{}, fmt.Errorf("system enrollment requires administrator privileges")
+	}
 	install, err := stavpaths.ResolveInstall(scope)
 	if err != nil {
 		return EnrollmentRecord{}, err
@@ -38,10 +42,12 @@ func Enroll(scope stavpaths.Scope, topsID string, authorityUID, authorityGID uin
 	if err != nil {
 		return EnrollmentRecord{}, err
 	}
-	for _, directory := range []string{layout.ConfigDir, layout.StateDir, layout.RecoveryDir, layout.RuntimeDir} {
-		if err := ensurePrivateDirectory(directory); err != nil {
+	if scope == stavpaths.ScopeSystem {
+		if err := ensureSystemSharedDirectory(layout.ConfigDir, "/etc/symphony"); err != nil {
 			return EnrollmentRecord{}, err
 		}
+	} else if err := ensurePrivateDirectory(layout.ConfigDir); err != nil {
+		return EnrollmentRecord{}, err
 	}
 	cfg := config.Default(layout, authorityUID, authorityGID)
 	if info, err := os.Lstat(layout.ConfigFile); err == nil {
@@ -55,8 +61,37 @@ func Enroll(scope stavpaths.Scope, topsID string, authorityUID, authorityGID uin
 		if err := config.ValidateLayout(cfg, layout); err != nil {
 			return EnrollmentRecord{}, err
 		}
+		if cfg.Authentication.Authority.UID != authorityUID || cfg.Authentication.Authority.GID != authorityGID {
+			return EnrollmentRecord{}, fmt.Errorf("explicit authority identity conflicts with the existing STAV enrollment")
+		}
 	} else if !os.IsNotExist(err) {
 		return EnrollmentRecord{}, fmt.Errorf("inspect STAV configuration: %w", err)
+	}
+	if cfg.Authentication.Authority.UID > uint64(^uint32(0)) || cfg.Authentication.Authority.GID > uint64(^uint32(0)) {
+		return EnrollmentRecord{}, fmt.Errorf("configured STAV authority identity exceeds platform UID/GID range")
+	}
+	if scope == stavpaths.ScopeSystem {
+		if err := ensureSystemSharedDirectory(filepath.Dir(layout.StateDir), "/var/lib/symphony"); err != nil {
+			return EnrollmentRecord{}, err
+		}
+		runtimeRoot := "/run/symphony"
+		if strings.HasPrefix(layout.RuntimeDir, "/var/run/symphony/") {
+			runtimeRoot = "/var/run/symphony"
+		}
+		if err := ensureSystemSharedDirectory(filepath.Dir(layout.RuntimeDir), runtimeRoot); err != nil {
+			return EnrollmentRecord{}, err
+		}
+		for _, directory := range []string{layout.StateDir, layout.RecoveryDir, layout.RuntimeDir} {
+			if err := ensureOwnedPrivateDirectory(directory, uint32(cfg.Authentication.Authority.UID), uint32(cfg.Authentication.Authority.GID)); err != nil {
+				return EnrollmentRecord{}, err
+			}
+		}
+	} else {
+		for _, directory := range []string{layout.StateDir, layout.RecoveryDir, layout.RuntimeDir} {
+			if err := ensurePrivateDirectory(directory); err != nil {
+				return EnrollmentRecord{}, err
+			}
+		}
 	}
 	data, err := config.Marshal(cfg)
 	if err != nil {
@@ -193,6 +228,47 @@ func ensurePrivateDirectory(path string) error {
 	}
 	if err := os.Mkdir(path, 0o700); err != nil {
 		return fmt.Errorf("create STAV directory: %w", err)
+	}
+	return nil
+}
+
+func ensureSystemSharedDirectory(path, root string) error {
+	path = filepath.Clean(path)
+	root = filepath.Clean(root)
+	if path != root && !strings.HasPrefix(path, root+string(filepath.Separator)) {
+		return fmt.Errorf("refusing noncanonical shared STAV system directory %s", path)
+	}
+	if err := ensurePrivateDirectory(path); err != nil {
+		return err
+	}
+	for current := path; current == root || strings.HasPrefix(current, root+string(filepath.Separator)); current = filepath.Dir(current) {
+		info, err := os.Lstat(current)
+		if err != nil {
+			return err
+		}
+		stat, ok := info.Sys().(*syscall.Stat_t)
+		if !ok || stat.Uid != 0 || info.Mode().Perm()&0o022 != 0 {
+			return fmt.Errorf("shared STAV system directory is not administrator-owned and protected: %s", current)
+		}
+		if err := os.Chmod(current, 0o755); err != nil {
+			return err
+		}
+		if current == root {
+			break
+		}
+	}
+	return nil
+}
+
+func ensureOwnedPrivateDirectory(path string, uid, gid uint32) error {
+	if err := ensurePrivateDirectory(path); err != nil {
+		return err
+	}
+	if err := os.Chown(path, int(uid), int(gid)); err != nil {
+		return fmt.Errorf("assign STAV authority ownership to %s: %w", path, err)
+	}
+	if err := os.Chmod(path, 0o700); err != nil {
+		return fmt.Errorf("restrict STAV authority directory %s: %w", path, err)
 	}
 	return nil
 }

@@ -374,7 +374,7 @@ Future validator checks may verify SKVI structure.
   - depends_on -> `modules/secure-identity-access-governance/MANIFEST.md`
 - consumers: humans, TOPS operators, qxctl maintainers, agentic tools
 - deferred_projections: derived installation runbook
-- notes: Service-manager enrollment remains separately ratified.
+- notes: Per-TOPS launchd/systemd supervision and descriptor-only owner-provided integration are implemented.
 - status: canonical
 
 ##### SKILL.md
@@ -491,7 +491,7 @@ Future validator checks may verify SKVI structure.
 - surface_type: module intent
 - truth_role: implementation purpose and canonical-authority boundary
 - owner: STAV append-authority maintainer
-- scope: Defines the independently installable Go role and its namespace-only implementation status.
+- scope: Defines the independently installable Go append-authority role and canonical-authority boundary.
 - relationships:
   - depends_on -> `knowledge/stav/INTENT.md`
   - declares -> `modules/stav-append-authority/MANIFEST.md`
@@ -506,14 +506,14 @@ Future validator checks may verify SKVI structure.
 - surface_type: module contract truth
 - truth_role: capability, dependency, contamination, and absent-surface declaration
 - owner: STAV append-authority maintainer
-- scope: Declares the Go/cgo boundary, pure path resolver, reversible lifecycle, and closed operational gates.
+- scope: Declares the Go/cgo boundary, authenticated append authority, reversible lifecycle, native supervision, and closed operational gates.
 - relationships:
   - depends_on -> `modules/stav-append-authority/INTENT.md`
   - depends_on -> `knowledge/stav/MANIFEST.md`
   - declares -> `modules/stav-append-authority/SPEC.md`
 - consumers: humans, reviewers, qxctl, agentic tools, future validators
 - deferred_projections: release and conformance evidence
-- notes: No listener, schema codec, producer, or ledger exists.
+- notes: Operational listener, durability, read projection, SSIAG producer, and native supervision are implemented.
 - status: canonical
 
 ##### INSTALL.md
@@ -522,11 +522,11 @@ Future validator checks may verify SKVI structure.
 - surface_type: module install guidance
 - truth_role: independent executable build, installation, and uninstallation contract
 - owner: STAV append-authority maintainer
-- scope: Defines user/system binary lifecycle and explicit state-preservation behavior.
+- scope: Defines user/system binary and per-TOPS supervisor lifecycle with explicit state preservation.
 - relationships: depends_on -> `modules/stav-append-authority/MANIFEST.md`
 - consumers: humans, TOPS operators, release tooling, agentic tools
-- deferred_projections: packaging and service-manager artifacts
-- notes: Installation does not enroll a TOPS or start a service.
+- deferred_projections: release packaging artifacts
+- notes: Host installation remains separate from TOPS enrollment and supervisor installation.
 - status: canonical
 
 ##### SKILL.md
@@ -535,7 +535,7 @@ Future validator checks may verify SKVI structure.
 - surface_type: module skill guidance
 - truth_role: safe agent interaction and implementation stop conditions
 - owner: STAV append-authority maintainer
-- scope: Permits inspection and verification while prohibiting schema invention, listeners, and ledger mutation.
+- scope: Permits inspection and verification while prohibiting schema invention and unauthorized ledger mutation.
 - relationships:
   - depends_on -> `knowledge/stav/SKILL.md`
   - interprets -> `modules/stav-append-authority/THREAT-MODEL.md`
@@ -548,15 +548,15 @@ Future validator checks may verify SKVI structure.
 - path: `modules/stav-append-authority/SPEC.md`
 - title: STAV Append Authority Specification
 - surface_type: module specification
-- truth_role: ratified namespace, path, and binary-lifecycle behavior
+- truth_role: operational append-authority, supervision, path, and lifecycle behavior
 - owner: STAV append-authority maintainer
-- scope: Defines install targets, per-TOPS path resolution, schema-name reservations, and fail-closed command behavior.
+- scope: Defines install targets, per-TOPS path resolution, authenticated append behavior, native supervision, and fail-closed commands.
 - relationships:
   - depends_on -> `modules/stav-append-authority/MANIFEST.md`
   - implements -> `knowledge/stav/SPEC.md`
 - consumers: implementers, reviewers, qxctl, agentic tools, future validators
-- deferred_projections: schema codecs and operational append protocol
-- notes: Reserved protocol identifiers have no content definition.
+- deferred_projections: release conformance evidence
+- notes: Canonical protocol content remains owned by knowledge/stav.
 - status: canonical
 
 ##### ARCHITECTURE.md
@@ -565,13 +565,13 @@ Future validator checks may verify SKVI structure.
 - surface_type: module architecture
 - truth_role: source-truth direction, current boundary, future process shape, and TOPS isolation
 - owner: STAV append-authority maintainer
-- scope: Separates the present lifecycle scaffold from the later authenticated single-writer service.
+- scope: Describes the implemented authenticated single-writer, durability, query, and liveness boundaries.
 - relationships:
   - depends_on -> `modules/stav-append-authority/INTENT.md`
   - interprets -> `knowledge/stav/SPEC.md`
 - consumers: humans, implementers, reviewers, agentic tools
-- deferred_projections: runtime trust-boundary diagram
-- notes: The current executable is intentionally not a daemon.
+- deferred_projections: rendered runtime trust-boundary diagram
+- notes: Supervision owns liveness only and grants no ledger or producer authority.
 - status: canonical
 
 ##### REQUIREMENTS.md
@@ -586,7 +586,7 @@ Future validator checks may verify SKVI structure.
   - depends_on -> `modules/stav-append-authority/THREAT-MODEL.md`
 - consumers: implementers, reviewers, testers, agentic tools, future validators
 - deferred_projections: requirements traceability evidence
-- notes: Operational requirements remain blocked until canonical content contracts pass.
+- notes: Operational v1 and supervision requirements are active; deferred capabilities retain explicit gates.
 - status: canonical
 
 ##### THREAT-MODEL.md
@@ -610,7 +610,7 @@ Future validator checks may verify SKVI structure.
 - surface_type: module implementation guide
 - truth_role: phased procedure from namespace scaffold through operational SSIAG producer integration
 - owner: STAV append-authority maintainer
-- scope: Records completed canonical content, durability, IPC, qxctl, and SSIAG producer phases plus deferred node-troll and Go 1.27 work.
+- scope: Records completed canonical content, durability, IPC, native supervision, qxctl, and SSIAG producer phases plus deferred node-troll and Go 1.27 work.
 - relationships:
   - depends_on -> `modules/stav-append-authority/REQUIREMENTS.md`
   - depends_on -> `modules/stav-append-authority/THREAT-MODEL.md`
@@ -820,7 +820,7 @@ Future validator checks may verify SKVI structure.
 - relationships: depends_on -> `knowledge/ssiag/MANIFEST.md`; governs -> `modules/secure-identity-access-governance/SPEC.md`; governs -> `modules/ssiag-provider-macos-keychain/SPEC.md`
 - consumers: implementers, reviewers, qxctl, provider modules, agentic tools
 - deferred_projections: graph view, conformance schema after ratification
-- notes: Accepted-connection caller authentication and exact UID/GID subject mapping are implemented; endpoint trust, mutation, credential delivery, and supervision remain gated.
+- notes: Caller authentication, endpoint trust, native supervision/runtime ownership, and STAV producer integration are implemented; mutation and credential delivery remain gated.
 - status: canonical
 
 ### STAV Canonical Knowledge Vector
@@ -874,7 +874,7 @@ Future validator checks may verify SKVI structure.
 - relationships: depends_on -> `knowledge/stav/MANIFEST.md`; governs -> `modules/stav-append-authority/SPEC.md`; interprets -> `knowledge/ssiag/SPEC.md`
 - consumers: SSIAG, node-troll, qxctl, append-authority implementers, reviewers, agents
 - deferred_projections: signed checkpoints, verifier evidence, query stores
-- notes: Canonical semantic/read schemas, strict JCS, safe integers, SHA-256 domains, and local frame mechanics are ratified; runtime listener and durability remain gated.
+- notes: Canonical semantic/operational schemas, strict JCS, durability, authenticated listener, read projection, and native supervision are implemented.
 - status: canonical
 
 #### STAV v1 Schemas

@@ -2,6 +2,7 @@ package paths
 
 import (
 	"path/filepath"
+	"runtime"
 	"testing"
 )
 
@@ -62,7 +63,11 @@ func TestResolveSystemInstance(t *testing.T) {
 	if layout.StateDir != filepath.Join("/var/lib/symphony", testTOPSID, "stav") {
 		t.Fatalf("unexpected state path %q", layout.StateDir)
 	}
-	if layout.Socket != filepath.Join("/run/symphony", testTOPSID, "stav", "append.sock") {
+	runtimeRoot := "/run/symphony"
+	if runtime.GOOS == "darwin" {
+		runtimeRoot = "/var/run/symphony"
+	}
+	if layout.Socket != filepath.Join(runtimeRoot, testTOPSID, "stav", "append.sock") {
 		t.Fatalf("unexpected socket path %q", layout.Socket)
 	}
 }

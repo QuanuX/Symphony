@@ -26,7 +26,7 @@ Agents must never:
 
 ## Stop Conditions
 
-The dedicated Go process architecture, operational schemas, strict JCS profile, SHA-256 domains, local and ledger framing, mutual peer authentication, exact grants, fsync-before-receipt, incomplete-tail recovery, `libraries/stav-protocol-go`, SSIAG producer vocabulary, and bounded read-only qxctl grammar are Architect-ratified and implemented. Safe-integer sequences are limited to `2^53-1`. The protocol kernel has no runtime authority.
+The dedicated Go process architecture, operational schemas, strict JCS profile, SHA-256 domains, local and ledger framing, mutual peer authentication, exact grants, fsync-before-receipt, incomplete-tail recovery, liveness-only native supervision, `libraries/stav-protocol-go`, SSIAG producer vocabulary, and bounded read-only qxctl grammar are Architect-ratified and implemented. Safe-integer sequences are limited to `2^53-1`. The protocol kernel has no runtime authority.
 
 Stop and obtain Architect approval before changing canonical schemas or bytes; expanding a grant or producer class; changing storage framing, acknowledgement, recovery, retention, rotation, or repair; adding remote export or Merkle/checkpoint authority; or allowing an agent mutation path. Operational ledgers and grants are never agent-editable.
 

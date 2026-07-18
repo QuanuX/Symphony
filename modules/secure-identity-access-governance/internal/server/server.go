@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"syscall"
 	"time"
 
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
@@ -78,6 +79,11 @@ func (s *Server) Run(ctx context.Context) error {
 	if err := ensureRuntimeDir(parent); err != nil {
 		return err
 	}
+	lease, err := acquireSocketLease(address)
+	if err != nil {
+		return err
+	}
+	defer lease.Close()
 	if err := removeStaleSocket(address); err != nil {
 		return err
 	}
@@ -88,7 +94,9 @@ func (s *Server) Run(ctx context.Context) error {
 	}
 	defer func() {
 		_ = listener.Close()
-		_ = os.Remove(address)
+		if err := os.Remove(address); err == nil || os.IsNotExist(err) {
+			_ = syncDirectory(filepath.Dir(address))
+		}
 	}()
 	if err := os.Chmod(address, 0600); err != nil {
 		return fmt.Errorf("restrict SSIAG socket permissions: %w", err)
@@ -232,8 +240,23 @@ func removeStaleSocket(path string) error {
 		_ = connection.Close()
 		return fmt.Errorf("refusing to replace active SSIAG socket: %s", path)
 	}
+	if !errors.Is(dialErr, syscall.ECONNREFUSED) && !errors.Is(dialErr, syscall.ENOENT) {
+		return fmt.Errorf("cannot prove SSIAG socket is stale: %w", dialErr)
+	}
 	if err := os.Remove(path); err != nil {
 		return fmt.Errorf("remove stale SSIAG socket: %w", err)
+	}
+	return syncDirectory(filepath.Dir(path))
+}
+
+func syncDirectory(path string) error {
+	directory, err := os.Open(path)
+	if err != nil {
+		return fmt.Errorf("open SSIAG runtime directory for sync: %w", err)
+	}
+	defer directory.Close()
+	if err := directory.Sync(); err != nil {
+		return fmt.Errorf("sync SSIAG runtime directory: %w", err)
 	}
 	return nil
 }

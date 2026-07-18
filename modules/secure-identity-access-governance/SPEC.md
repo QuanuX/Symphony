@@ -2,7 +2,7 @@
 
 ## Status
 
-Metadata-only API plus safe STAV producer foundation implementing the Architect-ratified architecture in `knowledge/ssiag/SPEC.md`. Kernel caller authentication and mutually authenticated, typed STAV submission are implemented. No mutation, credential delivery, provider operation, or supervision installer is enabled. Canonical relationship and provider semantics remain owned by that Knowledge Vector.
+Metadata-only API plus safe STAV producer foundation implementing the Architect-ratified architecture in `knowledge/ssiag/SPEC.md`. Kernel caller authentication, native foundation supervision, and mutually authenticated typed STAV submission are implemented. No mutation, credential delivery, or provider operation is enabled. Canonical relationship and provider semantics remain owned by that Knowledge Vector.
 
 ## Invariants
 
@@ -53,6 +53,12 @@ The scaffold listens on one Unix socket for one TOPS and exposes only:
 
 TCP binding and mutation routes are prohibited. Socket paths are absolute, restrictive, and collision-safe. The runtime rejects non-socket objects rather than replacing them. Every request must carry connection context produced from Darwin `LOCAL_PEERCRED`/`LOCAL_PEERPID` or Linux/WSL `SO_PEERCRED`; missing or invalid kernel credentials return a safe authentication failure. Unmapped peers remain limited to these read-only routes and cannot resolve a canonical subject.
 
+## Supervision and Socket Lifecycle
+
+`supervisor install|uninstall --tops-id UUID --scope user|system` manages one per-TOPS launchd job or systemd unit without touching configuration or state. User services run as the invoking user. System service accounts are provisioned by the owner/package manager; the descriptor consumes the exact numeric UID/GID already recorded during enrollment. SSIAG and STAV units are deliberately independent.
+
+The Go server verifies its service identity, locks the persistent adjacent `ssiag.sock.lock`, proves any existing socket stale, binds the socket, and releases the lock only after graceful SIGTERM drain and socket removal. Native restart rate and shutdown time are bounded. System `serve` requires `--supervised`; direct user `serve` remains an explicit development diagnostic.
+
 ## qxctl Contract
 
 `qxctl ssiag status|providers|doctor --tops-id UUID [--scope user|system]` resolves the same TOPS-isolated socket, rejects unsupported schemas, bounds responses, and binds every operation to a ready status response with the requested TOPS identity and scope before output. It accepts and prints no secret values.
@@ -67,4 +73,4 @@ SSIAG submits only the closed safe outcome vocabulary defined by `knowledge/ssia
 
 ## Implemented and Disabled Gates
 
-Local peer authentication, exact UID/GID subject resolution, STAV endpoint identity verification, and typed SSIAG STAV submission are implemented. Proposal/apply mutation, administrative authorization, lease issuance, credential delivery, operational provider calls, and service supervision remain disabled. Remote access and agent apply authority are unauthorized.
+Local peer authentication, exact UID/GID subject resolution, endpoint verification, native supervision/runtime ownership, serialized socket recovery, and typed SSIAG STAV submission are implemented. Proposal/apply mutation, administrative authorization, lease issuance, credential delivery, and operational provider calls remain disabled. Remote access and agent apply authority are unauthorized.

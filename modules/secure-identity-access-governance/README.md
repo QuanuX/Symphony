@@ -2,7 +2,7 @@
 
 SSIAG is Symphony's Go-only, independently installable identity, authentication, authorization, capability, credential-reference, lease, and provider-operation foundation.
 
-The current foundation is deliberately safe and limited: it installs one host binary, enrolls multiple isolated TOPS instances, authenticates every accepted Darwin/Linux Unix-socket connection from kernel peer credentials, verifies the configured service identity on both sides of each client connection, serves metadata, integrates read-only status/provider inspection with qxctl, and provides a closed typed producer for durable STAV security outcomes. It does not release, store, or exercise credentials.
+The current foundation is deliberately safe and limited: it installs one host binary, enrolls multiple isolated TOPS instances, authenticates every accepted Darwin/Linux Unix-socket connection from kernel peer credentials, verifies the configured service identity on both sides, installs bounded per-TOPS launchd/systemd liveness profiles, serves metadata, integrates read-only qxctl inspection, and provides a closed typed producer for durable STAV security outcomes. It does not release, store, or exercise credentials.
 
 ## Quick Start
 
@@ -15,7 +15,7 @@ CGO_ENABLED=0 go build -trimpath -o symphony-ssiag ./cmd/symphony-ssiag
 ./symphony-ssiag enroll --scope user \
   --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 \
   --tops-name "Local TOPS"
-./symphony-ssiag serve --scope user \
+./symphony-ssiag supervisor install --scope user \
   --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002
 ```
 

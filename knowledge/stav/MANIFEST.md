@@ -29,4 +29,4 @@ Operational state is never stored under `knowledge/stav/`. DuckDB, HDF5, JSONL e
 
 ## Status
 
-Architect-ratified operational v1. Canonical schemas, protocol kernel, per-TOPS append authority, mutual Unix peer authentication, exact producer/reader grants, fsync-before-receipt ledger, restart recovery/idempotency, qxctl read interface, and SSIAG producer are implemented. Signed checkpoints, remote export, non-repudiation, automatic rotation, general repair, and node-troll producer authority remain deferred.
+Architect-ratified operational v1. Canonical schemas, protocol kernel, per-TOPS append authority, mutual Unix peer authentication, exact producer/reader grants, fsync-before-receipt ledger, restart recovery/idempotency, native per-TOPS supervision/runtime ownership, qxctl read interface, and SSIAG producer are implemented. Signed checkpoints, remote export, non-repudiation, automatic rotation, general repair, and node-troll producer authority remain deferred.

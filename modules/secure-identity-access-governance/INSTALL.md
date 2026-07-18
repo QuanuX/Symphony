@@ -2,7 +2,7 @@
 
 ## Status and Requirements
 
-The host installer, per-TOPS enrollment lifecycle, and metadata-only API are implemented. Service supervision and operational providers are intentionally not installed or enabled.
+The host installer, per-TOPS enrollment lifecycle, native supervision, and metadata-only API are implemented. Operational providers remain intentionally disabled.
 
 Requirements: a supported TOPS operating system and Go 1.26.5 for source builds. Python, cgo, containers, Kubernetes, NATS, and cloud infrastructure are not required.
 
@@ -13,6 +13,8 @@ cd modules/secure-identity-access-governance
 go test ./...
 go vet ./...
 CGO_ENABLED=0 go build -trimpath -o symphony-ssiag ./cmd/symphony-ssiag
+# On a disposable privileged host, exercise the real distinct-account startup gate:
+sudo go test -tags=integration ./internal/server
 ```
 
 ## Install the Shared Host Binary
@@ -51,8 +53,8 @@ User instance paths:
 ```text
 config: ${XDG_CONFIG_HOME:-$HOME/.config}/symphony/<tops_id>/ssiag/config.json
 state:  ${XDG_STATE_HOME:-$HOME/.local/state}/symphony/<tops_id>/ssiag/
-socket: ${XDG_RUNTIME_DIR}/symphony/<tops_id>/ssiag.sock
-        or <state>/run/symphony/<tops_id>/ssiag.sock when XDG_RUNTIME_DIR is absent
+socket: ${XDG_RUNTIME_DIR}/symphony/<tops_id>/ssiag/ssiag.sock
+        or <state>/run/ssiag.sock when XDG_RUNTIME_DIR is absent
 ```
 
 System instance paths:
@@ -60,7 +62,8 @@ System instance paths:
 ```text
 config: /etc/symphony/<tops_id>/ssiag/config.json
 state:  /var/lib/symphony/<tops_id>/ssiag/
-socket: /run/symphony/<tops_id>/ssiag.sock
+Linux socket: /run/symphony/<tops_id>/ssiag/ssiag.sock
+macOS socket: /var/run/symphony/<tops_id>/ssiag/ssiag.sock
 ```
 
 Repeat enrollment with the same ID and a different `--tops-name` to update display metadata without moving state.
@@ -92,11 +95,23 @@ Every accepted Darwin/Linux connection is kernel-authenticated even when this ar
 
 Use numeric effective identities obtained from the operating system; do not derive them from a display name or accept a request-supplied subject. Subject IDs and UID/GID pairs must both be unique. Ambiguous mappings prevent SSIAG from starting. The current endpoints are read-only, so a mapping reserves identity but grants no credential, provider, policy, or apply capability.
 
-## Run and Verify One Enrollment
+## Install Native Supervision and Verify One Enrollment
 
 ```bash
-symphony-ssiag serve --scope user --tops-id "$TOPS_ID"
+symphony-ssiag supervisor install --scope user --tops-id "$TOPS_ID"
 ```
+
+This writes and starts `io.github.quanux.symphony.ssiag.<tops-id>` through a per-user launchd agent on macOS or `symphony-ssiag@<tops-id>.service` through a systemd user unit on Linux. The unit owns liveness only and has no STAV dependency. Use `--no-start` when an owner-provided supervisor will consume the generated descriptor. Direct user-scope `serve` remains available only as a foreground development/diagnostic mode and emits a warning.
+
+For system scope, provision the service account through the owner or package manager first, then enroll with its numeric UID/GID. Enrollment makes only the selected TOPS state/runtime children service-owned and `0700`; shared parents remain root-owned and traversable. It never creates an account or infers root:
+
+```bash
+sudo symphony-ssiag enroll --scope system --tops-id "$TOPS_ID" \
+  --tops-name "System TOPS" --service-uid <uid> --service-gid <gid>
+sudo symphony-ssiag supervisor install --scope system --tops-id "$TOPS_ID"
+```
+
+System-scope `serve` accepts `--supervised` only as an explicit assertion from the installed native profile or an owner-controlled equivalent. It is not authorization evidence.
 
 In another terminal:
 
@@ -113,8 +128,11 @@ qxctl ssiag providers --json --scope user --tops-id "$TOPS_ID"
 Default unenrollment removes only its enrollment marker and preserves recovery data:
 
 ```bash
+symphony-ssiag supervisor uninstall --scope user --tops-id "$TOPS_ID"
 symphony-ssiag unenroll --scope user --tops-id "$TOPS_ID"
 ```
+
+Supervisor uninstall stops the selected job and removes only its descriptor. It preserves configuration and state. `--no-stop` supports a separately controlled owner-provided manager.
 
 Explicitly remove that TOPS configuration and SSIAG state:
 
@@ -132,8 +150,8 @@ symphony-ssiag uninstall --scope user
 
 Uninstall validates the binary digest, requires `--force` if it changed, and always preserves every TOPS enrollment. Unenroll/purge instances separately before or after binary uninstall when that is the owner's intent.
 
-## Supervision
+## Supervision Security Contract
 
 User enrollment records the effective UID/GID of the enrolling service process. A new system enrollment requires explicit `--service-uid` and `--service-gid`; it never silently selects root. User trust configuration is `0600`. System trust configuration is administrator-owned `0644`, contains no secrets, and is readable without becoming service-writable. The server verifies its effective identity before changing runtime state, and qxctl/self-client verify the exact connected endpoint before sending HTTP bytes.
 
-No launchd, systemd, node-troll, or other supervisor configuration is written by this increment. Exact labels, shared per-TOPS runtime-directory provisioning, restart policy, direct-run production behavior, and distinct-account integration tests remain installation gates; endpoint authentication itself is implemented.
+The process owns socket creation. It acquires `ssiag.sock.lock` before stale inspection, refuses live/foreign endpoints, drains on SIGTERM, removes `ssiag.sock`, and releases the persistent lock last. launchd retries failed exits no faster than ten seconds. systemd retries after five seconds and stops after five starts in one minute. Both allow ten seconds for graceful shutdown. Neither supervisor grants SSIAG or STAV authority.
