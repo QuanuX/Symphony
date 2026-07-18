@@ -827,3 +827,68 @@ This PR authorizes none of the following:
   - `Go 1.27 production pin`
 - notes: |
     This record was authored after PR #65 merged and its exact merge/head evidence was verified. Subsequent tag publication and checksum recovery are governed by forward-only SODV records and are not retroactively claimed as PR #65 implementation.
+
+- record_id: `SCLV-PR-066`
+- record_version: `2`
+- title: `PR #59 module release recovery completed through canonical Go artifacts`
+- status: `canonical`
+- date: `2026-07-18`
+- change_started_at: `2026-07-18T07:29:07Z`
+- change_completed_at: `2026-07-18T07:34:36Z`
+- recorded_at: `2026-07-18T07:34:53Z`
+- recording_disposition: `post_merge`
+- change_type: `canonical_update`
+- related_pr: `https://github.com/QuanuX/Symphony/pull/66`
+- merge_commit: `98608fe559bc1779471fc2a3febc18d111dae802`
+- affected_surfaces:
+  - `go.work`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/sclv/RECOVERY.md`
+  - `knowledge/sodv/RELEASES.md`
+  - `knowledge/sodv/SKILL.md`
+  - `knowledge/sodv/SPEC.md`
+  - `modules/secure-identity-access-governance/go.mod`
+  - `modules/secure-identity-access-governance/go.sum`
+  - `modules/stav-append-authority/go.sum`
+  - `tools/qxctl/go.mod`
+  - `tools/qxctl/go.sum`
+- skvi_references:
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/sclv/RECOVERY.md`
+  - `knowledge/sodv/RELEASES.md`
+  - `knowledge/sodv/SPEC.md`
+  - `modules/secure-identity-access-governance/MANIFEST.md`
+  - `modules/stav-append-authority/MANIFEST.md`
+- change_summary: |
+    Under the Architect's direction, PR #66 completed the PR #59 release recovery without moving tags, rewriting history, or forcing the temporary-proxy checksums.
+    It recorded why canonical Go VCS archives inherit the monorepo root LICENSE, corrected the checksum expectations forward, completed public proxy and checksum-database verification for three exact-commit module tags, and moved qxctl and SSIAG to supervised append-authority v0.2.0.
+- relationship_changes: |
+    qxctl and SSIAG now consume append-authority v0.2.0 for independent installation. The root workspace replacement uses the same version while preserving local monorepo composition.
+    SODV-REL-003 closes SODV-REL-001 as corrected by SODV-REL-002. The prior temporary-proxy error remains historical evidence, not active release state.
+- doctrine_changes: |
+    Pre-publication module-zip simulation for nested Go modules must be VCS-aware and equivalent to `golang.org/x/mod/zip.CreateFromVCS`. A raw subdirectory archive or warm cache is not canonical publication evidence.
+    Release errors recover through new immutable authorization-correction and completion records; existing tags and historical records remain unchanged.
+- compatibility_consequences: |
+    Protocol-kernel v0.2.0, append-authority v0.1.0, and supervised append-authority v0.2.0 are now independently resolvable public Go module versions at their historical source commits.
+    qxctl and SSIAG now require append-authority v0.2.0. STAV wire bytes, schemas, qxctl grammar, SSIAG authority, and the Go 1.26.5 production baseline are unchanged.
+- publication_consequences: |
+    The three authorized Go module tags are published and authenticated by the public Go proxy and checksum database. This completion publishes source modules only; it does not create GitHub binary releases, containers, SDKs, OpenAPI projections, Mintlify pages, or public launch documentation.
+- projection_consequences: |
+    SODV release records and SCLV closure truth remain canonical Markdown. Any future qxctl release view or public release page is a derived read-only projection.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/66`
+  - `98608fe559bc1779471fc2a3febc18d111dae802`
+  - `29fe261184eb3e8e963d502f7e31a6a998349cbe`
+  - `knowledge/sclv/RECOVERY.md`
+  - `knowledge/sodv/RELEASES.md`
+  - `https://proxy.golang.org/`
+  - `https://sum.golang.org/`
+- non_authorizations:
+  - `moving or replacing published tags`
+  - `binary or container release publication`
+  - `SDK, OpenAPI, Mintlify, or public documentation publication`
+  - `Go 1.27 production pin`
+  - `new SSIAG, STAV, qxctl, provider, or trading-node authority`
+- notes: |
+    This record was authored only after PR #66 merged and its exact merge/head evidence was verified. PR #67 is a pure closure carrier for this completed change and does not recursively require its own SCLV record.
