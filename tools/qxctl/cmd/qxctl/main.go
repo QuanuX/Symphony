@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -18,139 +17,10 @@ import (
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/ssiagclient"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/status"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/stavclient"
-	"github.com/QuanuX/Symphony/tools/qxctl/internal/version"
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		printUsage()
-		os.Exit(1)
-	}
-
-	cmd := os.Args[1]
-
-	switch cmd {
-	case "--help":
-		printUsage()
-		os.Exit(0)
-	case "--version":
-		fmt.Printf("qxctl version %s\n", version.Version)
-		os.Exit(0)
-	case "doctor":
-		if err := runDoctor(); err != nil {
-			fmt.Printf("doctor failed: %v\n", err)
-			os.Exit(1)
-		}
-	case "contracts":
-		if err := runContracts(); err != nil {
-			fmt.Printf("contracts failed: %v\n", err)
-			os.Exit(1)
-		}
-	case "ssiag":
-		if err := runSSIAG(os.Args[2:]); err != nil {
-			fmt.Printf("ssiag failed: %v\n", err)
-			os.Exit(1)
-		}
-	case "stav":
-		if err := runSTAV(os.Args[2:]); err != nil {
-			fmt.Printf("stav failed: %v\n", err)
-			os.Exit(1)
-		}
-	case "inventory":
-		if len(os.Args) == 2 {
-			if err := runInventory(false); err != nil {
-				fmt.Printf("inventory failed: %v\n", err)
-				os.Exit(1)
-			}
-		} else if len(os.Args) == 3 && os.Args[2] == "--json" {
-			if err := runInventory(true); err != nil {
-				fmt.Printf("inventory failed: %v\n", err)
-				os.Exit(1)
-			}
-		} else if len(os.Args) == 3 && os.Args[2] == "digest" {
-			if err := runInventoryDigest(false); err != nil {
-				fmt.Printf("inventory digest failed: %v\n", err)
-				os.Exit(1)
-			}
-		} else if len(os.Args) == 4 && os.Args[2] == "digest" && os.Args[3] == "--json" {
-			if err := runInventoryDigest(true); err != nil {
-				fmt.Printf("inventory digest failed: %v\n", err)
-				os.Exit(1)
-			}
-		} else {
-			printUsage()
-			os.Exit(1)
-		}
-	case "status":
-		if len(os.Args) == 2 {
-			if err := runStatus(false); err != nil {
-				fmt.Printf("status failed: %v\n", err)
-				os.Exit(1)
-			}
-		} else if len(os.Args) == 3 && os.Args[2] == "--json" {
-			if err := runStatus(true); err != nil {
-				fmt.Printf("status failed: %v\n", err)
-				os.Exit(1)
-			}
-		} else {
-			printUsage()
-			os.Exit(1)
-		}
-	case "modules":
-		if len(os.Args) == 2 {
-			if err := runModules(); err != nil {
-				fmt.Printf("modules failed: %v\n", err)
-				os.Exit(1)
-			}
-		} else if len(os.Args) == 3 && os.Args[2] == "check" {
-			if err := runModulesCheck(); err != nil {
-				fmt.Printf("modules check failed: %v\n", err)
-				os.Exit(1)
-			}
-		} else if len(os.Args) == 3 && os.Args[2] == "metadata" {
-			if err := runModulesMetadata(false); err != nil {
-				fmt.Printf("modules metadata failed: %v\n", err)
-				os.Exit(1)
-			}
-		} else if len(os.Args) == 4 && os.Args[2] == "metadata" && os.Args[3] == "--json" {
-			if err := runModulesMetadata(true); err != nil {
-				fmt.Printf("modules metadata failed: %v\n", err)
-				os.Exit(1)
-			}
-		} else {
-			printUsage()
-			os.Exit(1)
-		}
-	case "module":
-		if len(os.Args) == 4 && os.Args[2] == "inspect" {
-			if err := runModuleInspect(os.Args[3]); err != nil {
-				fmt.Printf("module inspect failed: %v\n", err)
-				os.Exit(1)
-			}
-		} else if len(os.Args) == 4 && os.Args[2] == "check" {
-			if err := runModuleCheck(os.Args[3]); err != nil {
-				fmt.Printf("module check failed: %v\n", err)
-				os.Exit(1)
-			}
-		} else if len(os.Args) == 4 && os.Args[2] == "metadata" {
-			if err := runModuleMetadata(os.Args[3], false); err != nil {
-				fmt.Printf("module metadata failed: %v\n", err)
-				os.Exit(1)
-			}
-		} else if len(os.Args) == 5 && os.Args[2] == "metadata" && os.Args[4] == "--json" {
-			if err := runModuleMetadata(os.Args[3], true); err != nil {
-				fmt.Printf("module metadata failed: %v\n", err)
-				os.Exit(1)
-			}
-		} else {
-			printUsage()
-			os.Exit(1)
-		}
-	default:
-		fmt.Printf("unknown command: %s\n", cmd)
-		printUsage()
-		os.Exit(1)
-	}
+	os.Exit(execute(os.Args[1:]))
 }
 
 func printUsage() {
@@ -182,56 +52,14 @@ func printUsage() {
 	fmt.Println("  stav doctor --tops-id UUID [--scope user|system] Run authenticated STAV diagnostics")
 }
 
-func runSTAV(args []string) error {
-	if len(args) == 0 {
-		return fmt.Errorf("STAV subcommand is required: status, verify, query, or doctor")
-	}
-	subcommand := args[0]
-	if subcommand == "append" {
-		return fmt.Errorf("qxctl stav append is prohibited; qxctl never submits arbitrary events or edits ledgers")
-	}
-	switch subcommand {
-	case "status", "verify", "query", "doctor":
-	default:
-		return fmt.Errorf("unknown STAV subcommand %q", subcommand)
-	}
-
-	set := flag.NewFlagSet("stav "+subcommand, flag.ContinueOnError)
-	topsID := set.String("tops-id", "", "immutable TOPS UUID")
-	scope := set.String("scope", "user", "STAV scope: user or system")
-	jsonOutput := false
-	if subcommand != "doctor" {
-		set.BoolVar(&jsonOutput, "json", false, "emit JSON")
-	}
-	var query stavprotocol.Query
-	var throughSequence optionalUint64
-	var verifyAfter uint64
-	var verifyThrough optionalUint64
-	if subcommand == "query" {
-		query.Schema = stavprotocol.SchemaQuery
-		query.EventClasses = make([]string, 0)
-		query.Outcomes = make([]string, 0)
-		query.Limit = 100
-		set.Uint64Var(&query.AfterSequence, "after-sequence", 0, "exclusive sequence cursor")
-		set.Var(&throughSequence, "through-sequence", "optional inclusive sequence ceiling")
-		set.StringVar(&query.FromTime, "from-time", "", "optional inclusive UTC timestamp")
-		set.StringVar(&query.ThroughTime, "through-time", "", "optional inclusive UTC timestamp")
-		set.Var((*stringList)(&query.EventClasses), "event-class", "registered event class; repeat up to 16 times")
-		set.Var((*stringList)(&query.Outcomes), "outcome", "generic outcome; repeat up to 5 times")
-		set.StringVar(&query.CorrelationID, "correlation-id", "", "optional correlation UUID")
-		set.StringVar(&query.RequestID, "request-id", "", "optional request UUID")
-		set.Uint64Var(&query.Limit, "limit", 100, "page size from 1 through 1000")
-	}
-	if subcommand == "verify" {
-		set.Uint64Var(&verifyAfter, "after-sequence", 0, "exclusive verification cursor")
-		set.Var(&verifyThrough, "through-sequence", "optional inclusive verification ceiling")
-	}
-	if err := set.Parse(args[1:]); err != nil {
-		return err
-	}
-	if set.NArg() != 0 {
-		return fmt.Errorf("unexpected STAV arguments: %v", set.Args())
-	}
+func runSTAV(subcommand string, options stavOptions) error {
+	topsID := &options.topsID
+	scope := &options.scope
+	jsonOutput := options.jsonOutput
+	query := options.query
+	throughSequence := options.throughSequence
+	verifyAfter := options.verifyAfter
+	verifyThrough := options.verifyThrough
 	if *topsID == "" {
 		return fmt.Errorf("--tops-id is required")
 	}
@@ -349,15 +177,6 @@ func printSTAVJSON(value any) error {
 	return nil
 }
 
-type stringList []string
-
-func (s *stringList) String() string { return fmt.Sprint([]string(*s)) }
-
-func (s *stringList) Set(value string) error {
-	*s = append(*s, value)
-	return nil
-}
-
 type optionalUint64 struct {
 	set   bool
 	value uint64
@@ -370,6 +189,8 @@ func (v *optionalUint64) String() string {
 	return strconv.FormatUint(v.value, 10)
 }
 
+func (*optionalUint64) Type() string { return "uint64" }
+
 func (v *optionalUint64) Set(value string) error {
 	parsed, err := strconv.ParseUint(value, 10, 64)
 	if err != nil {
@@ -380,23 +201,10 @@ func (v *optionalUint64) Set(value string) error {
 	return nil
 }
 
-func runSSIAG(args []string) error {
-	if len(args) == 0 {
-		return fmt.Errorf("SSIAG subcommand is required: status, providers, or doctor")
-	}
-	set := flag.NewFlagSet("ssiag "+args[0], flag.ContinueOnError)
-	jsonOutput := set.Bool("json", false, "emit JSON")
-	scope := set.String("scope", "user", "SSIAG scope: user or system")
-	topsID := set.String("tops-id", "", "immutable TOPS UUID")
-	if err := set.Parse(args[1:]); err != nil {
-		return err
-	}
-	if set.NArg() != 0 {
-		return fmt.Errorf("unexpected SSIAG arguments: %v", set.Args())
-	}
-	if *topsID == "" {
-		*topsID = os.Getenv("SYMPHONY_SSIAG_TOPS_ID")
-	}
+func runSSIAG(subcommand string, options ssiagOptions) error {
+	jsonOutput := &options.jsonOutput
+	scope := &options.scope
+	topsID := &options.topsID
 	if *topsID == "" {
 		return fmt.Errorf("--tops-id or SYMPHONY_SSIAG_TOPS_ID is required")
 	}
@@ -407,7 +215,7 @@ func runSSIAG(args []string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
 	defer cancel()
 
-	switch args[0] {
+	switch subcommand {
 	case "status":
 		status, err := requireSSIAGStatus(ctx, client, *topsID, *scope)
 		if err != nil {
@@ -453,7 +261,7 @@ func runSSIAG(args []string) error {
 		fmt.Println("SSIAG doctor: checks passed")
 		return nil
 	default:
-		return fmt.Errorf("unknown SSIAG subcommand %q", args[0])
+		return fmt.Errorf("unknown SSIAG subcommand %q", subcommand)
 	}
 }
 

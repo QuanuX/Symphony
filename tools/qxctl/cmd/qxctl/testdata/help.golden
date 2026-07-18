@@ -1,0 +1,26 @@
+qxctl - Symphony administrative spine
+
+Usage:
+  qxctl <command>
+
+Commands:
+  --help                            Print concise usage
+  --version                         Print version
+  doctor                            Perform local repository/admin-spine checks
+  contracts                         Verify first runtime-set module contract surfaces
+  modules                           List deterministic runtime modules
+  modules check                     Verify contract shape for all modules
+  modules metadata [--json]         Extract contract metadata for all modules
+  module inspect <module-name>      Inspect a specific runtime module
+  module check <module-name>        Verify contract shape for a module
+  module metadata <module-name> [--json] Extract contract metadata for a module
+  inventory [--json]                Emit deterministic runtime inventory snapshot
+  inventory digest [--json]         Emit deterministic runtime inventory SHA-256 digest
+  status [--json]                   Report consolidated administrative status
+  ssiag status --tops-id UUID [--scope user|system] [--json] Read safe SSIAG status
+  ssiag providers --tops-id UUID [--scope user|system] [--json] List safe provider metadata
+  ssiag doctor --tops-id UUID [--scope user|system] Verify local SSIAG availability
+  stav status --tops-id UUID [--scope user|system] [--json] Read authenticated STAV status
+  stav verify --tops-id UUID [--scope user|system] [--json] Verify the STAV digest chain
+  stav query --tops-id UUID [--scope user|system] [bounded filters] [--json] Query authorized STAV projections
+  stav doctor --tops-id UUID [--scope user|system] Run authenticated STAV diagnostics

@@ -8,6 +8,8 @@ qxctl is a repository and module inspection/control surface. It is a determinist
 ## Scope
 qxctl operates as a local utility to verify modules, aggregate contracts, digest runtime inventory, and query metadata-only module control APIs. It uses Go 1.26.5 as the current scripted baseline and targets Go 1.27 after general availability and differential conformance. A toolchain migration cannot change protocol bytes or command grammar.
 
+The command tree and flag grammar use Cobra. Viper is a constrained command-configuration mapper: each command configuration that maps an environment value receives a private instance, all keys and environment variables are bound explicitly, and no automatic environment discovery, remote provider, configuration-file discovery, watch/reload, write-back, or secret value is permitted. Dedicated SSIAG and STAV clients retain exclusive responsibility for trusted configuration loading and endpoint authentication.
+
 The initial secure-identity-access-governance integration is local and read-only. qxctl reads SSIAG health and safe provider descriptors over a Unix domain socket. qxctl does not receive or persist credential values.
 
 Every SSIAG query is scoped by immutable TOPS ID. `knowledge/ssiag/` owns SSIAG protocol truth; qxctl only implements its administrative/query projection. Future administrative change separates deterministic `propose` from authorized local `apply`; AI agents may never apply.
