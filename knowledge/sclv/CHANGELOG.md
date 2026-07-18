@@ -9,10 +9,10 @@ Git history is version-control evidence.
 PR history is review and merge evidence.
 SCLV records may reference SKVI-indexed surfaces.
 SCLV records may inform SODV publication governance.
-SCLV records may later be checked by validator rules.
+SCLV records are checked by deterministic validator rules.
 SCLV records may later be queried through qxctl-derived projections.
 
-This ledger is not merely a chronological changelog. It does not authorize generated changelogs, generated indexes, generated reports, projections, qxctl integration, validator implementation, parser implementation, projector implementation, public documentation, Mintlify configuration, or publication pipeline.
+This ledger is not merely a chronological changelog. It does not authorize generated changelogs, generated indexes, generated reports, projections, qxctl integration, projector implementation, public documentation, Mintlify configuration, or a publication pipeline.
 
 ## Source-Truth Doctrine
 
@@ -26,8 +26,7 @@ Code is implementation truth.
 Generated JSON is a derived projection.
 SSCG state is the compatibility interpretation.
 
-Local `sclv-drafts/` records are transition evidence and staging records only.
-Local `sclv-drafts/` records are not canonical SCLV records unless explicitly authored into a canonical repository surface.
+Local drafts and `.git/symphony/sclv/pending/` session journals are transition evidence only. They are not canonical SCLV records unless the completed truth is explicitly ratified and appended here.
 
 ## Projection Doctrine
 
@@ -49,10 +48,10 @@ C++ projects.
 Humans ratify.
 Agents assist.
 
-Future C++ tooling may read, check, and project SCLV records.
-Future C++ tooling must not autonomously author canonical change truth.
-Future C++ tooling may identify missing or stale change records as evidence.
-Future C++ tooling must not decide architectural truth.
+C++ tooling may read and check SCLV records.
+C++ tooling must not autonomously author canonical change truth.
+C++ tooling may identify missing or stale change records as evidence.
+C++ tooling must not decide architectural truth.
 Future qxctl may query derived SCLV projections.
 Future validator checks may verify SCLV structure.
 
@@ -88,10 +87,18 @@ Git history, PR history, and merge commits are not SCLV themselves.
 
 ## Record Model
 
+GitHub pull-request numbers are sparse identifiers, not an SCLV sequence. Physical record order is immutable recording order. Records without `record_version` are legacy version 1. Every new record uses version 2 and the temporal fields below.
+
 - `record_id`: Unique identifier (e.g., SCLV-PR-010). Purpose: identify the record deterministically. Shape: String. Required.
+- `record_version`: Record-contract version. Shape: Integer. Required for new records; omitted means legacy version 1.
 - `title`: Short human-readable summary. Purpose: easy identification. Shape: String. Required.
 - `status`: Current status of the change. Purpose: state tracking. Shape: String. Required.
 - `date`: Date of canonical record addition. Purpose: chronological sorting. Shape: ISO 8601 string. Required.
+- `change_started_at`: Source operation start. Shape: strict UTC timestamp. Required in version 2.
+- `change_completed_at`: Source operation completion. Shape: strict UTC timestamp. Required in version 2.
+- `recorded_at`: Closure or recovery authoring time. Shape: strict UTC timestamp. Required in version 2 and nondecreasing in file order.
+- `recording_disposition`: `post_merge` or `late_recovery`. Required in version 2.
+- `recovery_reason`: Factual interruption explanation. Required only for `late_recovery`.
 - `change_type`: Categorization of the change. Purpose: classify the action. Shape: vocabulary string. Required.
 - `related_pr`: URL to supporting PR evidence. Purpose: review traceability. Shape: URL string. Optional.
 - `merge_commit`: Git merge commit SHA evidence. Purpose: code state traceability. Shape: SHA string. Optional.
@@ -667,9 +674,14 @@ This PR authorizes none of the following:
     This record was authored only after PR #62 merged and its 40-character merge commit was verified to contain the exact reviewed head tree. The migration changes qxctl's implementation tooling without changing its canonical authority.
 
 - record_id: `SCLV-PR-064`
+- record_version: `2`
 - title: `SSIAG and STAV native supervision foundation completed`
 - status: `canonical`
 - date: `2026-07-18`
+- change_started_at: `2026-07-18T04:56:28Z`
+- change_completed_at: `2026-07-18T06:08:22Z`
+- recorded_at: `2026-07-18T06:20:59Z`
+- recording_disposition: `post_merge`
 - change_type: `canonical_update`
 - related_pr: `https://github.com/QuanuX/Symphony/pull/64`
 - merge_commit: `ed7484d70607aa96e64916dd4e59d3972a61980b`

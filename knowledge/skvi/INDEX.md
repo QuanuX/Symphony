@@ -1268,6 +1268,19 @@ Future validator checks may verify SKVI structure.
   notes: |
     Added because knowledge/sclv/CHANGELOG.md was canonicalized after the initial SKVI declarative index. This closes expected post-bootstrap SKVI/SCLV index drift without creating generated projections or implementation.
 
+##### RECOVERY.md
+- path: `knowledge/sclv/RECOVERY.md`
+- title: `SCLV Recovery and PR #59 Incident Record`
+- surface_type: `sclv_recovery_runbook`
+- truth_role: `canonical recovery procedure and incident evidence`
+- owner: `SCLV`
+- scope: `Defines forward-only reconciliation for interrupted closure sessions and records the verified PR #59 failure analysis.`
+- relationships: `depends_on -> knowledge/sclv/SPEC.md; may_consume -> knowledge/sodv/RELEASES.md`
+- consumers: `Architect, maintainers, reviewers, agentic tools, symphony-validator maintainers`
+- deferred_projections: `future read-only qxctl recovery-status projection`
+- status: `canonical`
+- notes: `Ephemeral session state remains under .git and is never canonical.`
+
 #### SODV
 ##### INTENT.md
 - path: `knowledge/sodv/INTENT.md`
@@ -1320,6 +1333,19 @@ Future validator checks may verify SKVI structure.
 - deferred_projections: strictly deferred
 - notes: none
 - status: canonical
+
+##### RELEASES.md
+- path: `knowledge/sodv/RELEASES.md`
+- title: `SODV Release Publication Ledger`
+- surface_type: `release_publication_ledger`
+- truth_role: `canonical module-publication authorization and completion truth`
+- owner: `SODV maintainer`
+- scope: `Binds module versions to immutable source commits before publication and records clean-cache completion evidence afterward.`
+- relationships: `depends_on -> knowledge/sodv/SPEC.md; depends_on -> knowledge/sclv/CHANGELOG.md; records -> module release publication`
+- consumers: `Architect, release maintainers, reviewers, agentic tools, future validators`
+- deferred_projections: `release notes, package index, public documentation`
+- status: `canonical`
+- notes: `Authorization never implies completion; pending transaction state is noncanonical.`
 
 ## Deferred Projections
 Unless a surface is explicitly indexed above, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, new qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. The indexed STAV JSON Schemas and fixtures are human-ratified protocol truth, not generated projections.

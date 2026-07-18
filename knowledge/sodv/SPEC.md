@@ -24,6 +24,19 @@ To define the declarative behavioral boundaries for future SODV publication gove
 ## SODV Behavioral Model
 SODV establishes publication boundaries declaratively. Future generators, pipelines, and validators will parse these files to build, verify, and govern the public documentation artifacts.
 
+SODV also governs independently consumable module publication. `RELEASES.md` is the canonical append-only authorization and completion ledger for that bounded purpose. It does not authorize a general publication pipeline.
+
+## Module Publication Protocol
+
+A module release is a transaction with two canonical stages:
+
+- authorization: merged before publication and binding module path, semantic version, tag name, source commit, source PR, expected evidence, completion gates, and explicit exclusions;
+- completion: appended only after immutable tag publication and clean-cache public resolution, recording actual tag objects, checksums, verification, and consumer consequences.
+
+Authorization and completion are immutable records. Pending state is noncanonical and may exist only under `.git/symphony/releases/pending/`. A resumed session must compare the authorization with actual repository and package-proxy state. A mismatched existing tag blocks publication and requires human review. A matching published tag may be verified and completed forward. Tags must never be moved to repair a ledger.
+
+For Go modules, a workspace-composed test or warm module cache is insufficient completion evidence. The completion gate requires `GOWORK=off`, an empty `GOMODCACHE`, and resolution through the public module proxy or its documented authoritative fallback.
+
 ## Initial SODV Governance Scope
 The initial SODV scope covers sources, relationships, and evidence. Projections are deferred.
 

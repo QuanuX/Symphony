@@ -33,3 +33,18 @@ set_target_properties(symphony-validator PROPERTIES
   CXX_STANDARD_REQUIRED ON
   CXX_EXTENSIONS OFF
 )
+
+add_executable(sclv-temporal-tests
+    tests/sclv_temporal_test.cpp
+    src/evidence.cpp
+    src/sclv_changelog.cpp
+    src/sclv_ledger.cpp
+)
+
+target_include_directories(sclv-temporal-tests PRIVATE src)
+
+set_target_properties(sclv-temporal-tests PROPERTIES
+  CXX_STANDARD 26
+  CXX_STANDARD_REQUIRED ON
+  CXX_EXTENSIONS OFF
+)

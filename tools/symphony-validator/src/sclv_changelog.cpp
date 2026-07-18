@@ -65,6 +65,16 @@ SclvCheckResult check_sclv_changelog(const std::string& changelog_path) {
         if (!rec.has_non_authorizations) missing.push_back("non_authorizations");
         if (!rec.has_notes) missing.push_back("notes");
 
+        if (rec.has_record_version && rec.record_version == 2) {
+            if (!rec.has_change_started_at) missing.push_back("change_started_at");
+            if (!rec.has_change_completed_at) missing.push_back("change_completed_at");
+            if (!rec.has_recorded_at) missing.push_back("recorded_at");
+            if (!rec.has_recording_disposition) missing.push_back("recording_disposition");
+            if (rec.recording_disposition == "late_recovery" && !rec.has_recovery_reason) {
+                missing.push_back("recovery_reason");
+            }
+        }
+
         if (missing.empty()) {
             result.messages.push_back(format_evidence(EvidenceCategory::Pass, "sclv.record.shape", "record_id=" + rec.record_id));
         } else {
@@ -93,13 +103,47 @@ SclvCheckResult check_sclv_changelog(const std::string& changelog_path) {
             current_record.record_id = extract_value(line, "record_id:");
         } else if (in_record) {
             std::string current_key = "";
-            if (trimmed.find("title:") == 0) { current_record.has_title = true; active_list = ""; }
+            if (trimmed.find("record_version:") == 0) {
+                current_record.has_record_version = true;
+                try {
+                    current_record.record_version = std::stoi(extract_value(line, "record_version:"));
+                } catch (...) {
+                    current_record.record_version = 0;
+                }
+                active_list = "";
+            }
+            else if (trimmed.find("title:") == 0) { current_record.has_title = true; active_list = ""; }
             else if (trimmed.find("status:") == 0) {
                 current_record.has_status = true;
                 current_record.status = extract_value(line, "status:");
                 active_list = "";
             }
             else if (trimmed.find("date:") == 0) { current_record.has_date = true; active_list = ""; }
+            else if (trimmed.find("change_started_at:") == 0) {
+                current_record.has_change_started_at = true;
+                current_record.change_started_at = extract_value(line, "change_started_at:");
+                active_list = "";
+            }
+            else if (trimmed.find("change_completed_at:") == 0) {
+                current_record.has_change_completed_at = true;
+                current_record.change_completed_at = extract_value(line, "change_completed_at:");
+                active_list = "";
+            }
+            else if (trimmed.find("recorded_at:") == 0) {
+                current_record.has_recorded_at = true;
+                current_record.recorded_at = extract_value(line, "recorded_at:");
+                active_list = "";
+            }
+            else if (trimmed.find("recording_disposition:") == 0) {
+                current_record.has_recording_disposition = true;
+                current_record.recording_disposition = extract_value(line, "recording_disposition:");
+                active_list = "";
+            }
+            else if (trimmed.find("recovery_reason:") == 0) {
+                current_record.has_recovery_reason = true;
+                current_record.recovery_reason = extract_value(line, "recovery_reason:");
+                active_list = "";
+            }
             else if (trimmed.find("change_type:") == 0) {
                 current_record.has_change_type = true;
                 current_record.change_type = extract_value(line, "change_type:");
