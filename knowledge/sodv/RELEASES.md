@@ -69,6 +69,52 @@ There is no canonical `pending` release record. Local preparation state belongs 
   - `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`
   - `ed7484d70607aa96e64916dd4e59d3972a61980b`
 
+## Correction Records
+
+- release_record_id: `SODV-REL-002`
+- record_version: `1`
+- record_type: `authorization_correction`
+- status: `canonical`
+- disposition: `forward_recovery`
+- corrects: `SODV-REL-001 checksum expectations only`
+- discovered_at: `2026-07-18T07:21:27Z`
+- ratified_by: `Architect`
+- finding: |
+    The exact temporary-proxy archives used during PR #59 contained the complete nested module subtrees, but they omitted the repository-root `LICENSE`. Canonical Go VCS module packaging automatically adds that file to nested modules. The immutable source commits and published tag targets are correct; the two temporary-proxy content checksums in SODV-REL-001 are not canonical release checksums and cannot be satisfied without publishing a noncanonical archive.
+- corrected_publication_units:
+  - module_path: `github.com/QuanuX/Symphony/libraries/stav-protocol-go`
+    version: `v0.2.0`
+    tag_object: `f1274b6971941f8b60f991eb9b4422cc15703bb3`
+    source_commit: `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`
+    canonical_go_sum: `h1:DGVd771sqzeRpEkTUuuF+9TOK1JVQtyMh2GYR840g70=`
+    go_mod_sum: `h1:kYeJSvzp7ezK+0CJzHD4v2euyRqXuAfXocYxRACrxoM=`
+  - module_path: `github.com/QuanuX/Symphony/modules/stav-append-authority`
+    version: `v0.1.0`
+    tag_object: `dfa637080cf7e3b21cdd0b7e45fd5b0010a7fd5f`
+    source_commit: `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`
+    canonical_go_sum: `h1:iijcegHcZ8EXfKJ8v/ToZWvBuf2y81UDWpAjj+g8OpI=`
+    go_mod_sum: `h1:pRWSy0nSQu5dYtiKpvTEmYTFrgf1O0bAqtmU3MDowlc=`
+  - module_path: `github.com/QuanuX/Symphony/modules/stav-append-authority`
+    version: `v0.2.0`
+    tag_object: `aeb61f13c7e306a45818cde972307209d070dc28`
+    source_commit: `ed7484d70607aa96e64916dd4e59d3972a61980b`
+    canonical_go_sum: `h1:DvWWrt7MbJFfEA/ROnTCDJYwoVWRgXSzy6IkTEpkMPI=`
+    go_mod_sum: `h1:pRWSy0nSQu5dYtiKpvTEmYTFrgf1O0bAqtmU3MDowlc=`
+- unchanged_authorization: |
+    SODV-REL-001 remains authoritative for module paths, semantic versions, tag names, exact source commits, and non-authorizations. This correction supersedes only its temporary-proxy checksum expectations and the requirement that public checksums equal those noncanonical values.
+- completion_gate: |
+    Completion still requires public-proxy and checksum-database propagation, empty-cache `GOWORK=off` resolution, consumer regeneration against append-authority v0.2.0, and a separate immutable completion record.
+- non_authorizations:
+  - `moving or replacing any published tag`
+  - `constructing an archive that omits canonical Go packaging behavior`
+  - `editing SODV-REL-001 or PR #59 history`
+  - `claiming public-proxy completion before it is observed`
+- evidence:
+  - `knowledge/sclv/RECOVERY.md`
+  - `git VCS Origin metadata for all three tagged versions`
+  - `archive comparison showing LICENSE as the only temporary-proxy/VCS difference`
+  - `https://go.dev/ref/mod#module-zip-files`
+
 ## Completion Records
 
 No completion record exists yet. Authorization is not evidence that a tag or public module is available.

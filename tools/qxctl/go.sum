@@ -1,7 +1,7 @@
-github.com/QuanuX/Symphony/libraries/stav-protocol-go v0.2.0 h1:nC5yAA3CnaLzQoryEJTyU3SFDLYA2svVh3U57vNNjac=
+github.com/QuanuX/Symphony/libraries/stav-protocol-go v0.2.0 h1:DGVd771sqzeRpEkTUuuF+9TOK1JVQtyMh2GYR840g70=
 github.com/QuanuX/Symphony/libraries/stav-protocol-go v0.2.0/go.mod h1:kYeJSvzp7ezK+0CJzHD4v2euyRqXuAfXocYxRACrxoM=
-github.com/QuanuX/Symphony/modules/stav-append-authority v0.1.0 h1:r4IzwWGKj6llzWzy8IVzsRIW4QfNsy33slz3o7IimM0=
-github.com/QuanuX/Symphony/modules/stav-append-authority v0.1.0/go.mod h1:pRWSy0nSQu5dYtiKpvTEmYTFrgf1O0bAqtmU3MDowlc=
+github.com/QuanuX/Symphony/modules/stav-append-authority v0.2.0 h1:DvWWrt7MbJFfEA/ROnTCDJYwoVWRgXSzy6IkTEpkMPI=
+github.com/QuanuX/Symphony/modules/stav-append-authority v0.2.0/go.mod h1:pRWSy0nSQu5dYtiKpvTEmYTFrgf1O0bAqtmU3MDowlc=
 github.com/cpuguy83/go-md2man/v2 v2.0.6/go.mod h1:oOW0eioCTA6cOiMLiUPZOpcVxMig6NIQQ7OS05n1F4g=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

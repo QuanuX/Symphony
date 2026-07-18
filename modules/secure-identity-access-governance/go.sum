@@ -1,6 +1,6 @@
-github.com/QuanuX/Symphony/libraries/stav-protocol-go v0.2.0 h1:nC5yAA3CnaLzQoryEJTyU3SFDLYA2svVh3U57vNNjac=
+github.com/QuanuX/Symphony/libraries/stav-protocol-go v0.2.0 h1:DGVd771sqzeRpEkTUuuF+9TOK1JVQtyMh2GYR840g70=
 github.com/QuanuX/Symphony/libraries/stav-protocol-go v0.2.0/go.mod h1:kYeJSvzp7ezK+0CJzHD4v2euyRqXuAfXocYxRACrxoM=
-github.com/QuanuX/Symphony/modules/stav-append-authority v0.1.0 h1:r4IzwWGKj6llzWzy8IVzsRIW4QfNsy33slz3o7IimM0=
-github.com/QuanuX/Symphony/modules/stav-append-authority v0.1.0/go.mod h1:pRWSy0nSQu5dYtiKpvTEmYTFrgf1O0bAqtmU3MDowlc=
+github.com/QuanuX/Symphony/modules/stav-append-authority v0.2.0 h1:DvWWrt7MbJFfEA/ROnTCDJYwoVWRgXSzy6IkTEpkMPI=
+github.com/QuanuX/Symphony/modules/stav-append-authority v0.2.0/go.mod h1:pRWSy0nSQu5dYtiKpvTEmYTFrgf1O0bAqtmU3MDowlc=
 golang.org/x/sys v0.47.0 h1:o7XGOvZQCADBQQ4Y7VNq2dRWQR7JmOUW8Kxx4ZsNgWs=
 golang.org/x/sys v0.47.0/go.mod h1:4GL1E5IUh+htKOUEOaiffhrAeqysfVGipDYzABqnCmw=
