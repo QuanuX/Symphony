@@ -3,13 +3,13 @@
 ****
 
 ## Purpose
-Declare the exact declarative boundaries and expected non-agentic behavior of the C++ validator before implementation begins.
+Define the exact authority boundaries and non-agentic behavior of the implemented C++ validator.
 
 ## Scope
 Defines the tool contract and behavioral specification for the Symphony validator.
 
 ## Non-scope
-This seed does not contain C++ source files, headers, build files, CMake files, Makefiles, CI files, executable schemas, JSON schema files, Markdown template files, generated reports, implementation logic, service files, installer scripts, deployment scripts, runtime scaffolding, binary assets, or binary renames.
+The implemented boundary contains a C++26 command-line parser/checker, a CMake build contract, and smoke fixtures. It does not contain a runtime service, deployment system, CI integration, qxctl mediation, executable schema generator, JSON/Markdown projector, auto-remediation path, or publication pipeline.
 
 ## Role
 The validator is deterministic, explainable, and non-agentic. It produces structured evidence for humans, CI systems, qxctl, and agentic tools, but it does not perform interpretation, remediation, or architectural decision-making.
@@ -23,10 +23,10 @@ The validator does not replace human review.
 The validator does not replace agentic review.
 
 ## Relationship to qxctl
-The validator declares the tool boundary that `qxctl` will eventually mediate.
+The validator is currently invoked directly. Any `qxctl`-mediated invocation requires a separate contract and implementation increment.
 
 ## Relationship to CI / PR gates
-The validator will provide deterministic exit codes and structured evidence for CI and PR gates.
+The validator provides deterministic exit codes and line-oriented evidence suitable for local preflight. CI and PR-gate wiring remain separate integration work.
 
 ## Relationship to SKV / SKVI / SCLV / SODV
 The validator does not replace SKV / SKVI / SCLV / SODV records. It provides evidence to support them.
@@ -41,7 +41,7 @@ Choosing C++ for the validator does not ban optional isolated Python habitats.
 It prevents Python from becoming required validator infrastructure for the administrative spine.
 
 ## Non-authorization Statement
-This canonical seed does not authorize C++ validator implementation, or executable schema generation.
+This contract authorizes the checked-in deterministic C++26 parser/checker, its CMake build, and smoke fixtures. It does not authorize executable schema generation, JSON/Markdown projection, qxctl integration, CI mutation, publication, or remediation.
 
 
 ## Troll Doctrine

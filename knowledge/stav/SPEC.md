@@ -140,11 +140,11 @@ The listener accepts only authenticated local Unix-socket peers on supported Dar
 
 Security, credential, provider, policy, and configuration mutations MUST fail closed when the append authority cannot accept the required audit event. A denied request remains denied when audit is unavailable; v1 MUST NOT create an ungoverned producer-side spool or secondary writer as a fallback.
 
-## Remaining Implementation Gates
+## Operational v1 Boundary and Deferred Gates
 
-Canonical candidate/event/receipt/query/query-page/verification content, serialization, SHA-256 domains, genesis construction, bounded query grammar, local stream framing, configuration/status/local-envelope content, peer authentication, producer and reader grants, authorization, listener activation, storage framing, fsync-before-receipt, crash recovery, idempotency reconstruction, preserve-all retention, disabled rotation, and runtime projection policy are Architect-ratified. Operational implementation and verification are active.
+Canonical candidate/event/receipt/query/query-page/verification content, serialization, SHA-256 domains, genesis construction, bounded query grammar, local stream framing, configuration/status/local-envelope content, peer authentication, producer and reader grants, authorization, listener activation, storage framing, fsync-before-receipt, crash recovery, idempotency reconstruction, preserve-all retention, disabled rotation, runtime projection policy, and native supervision are implemented and verified in the operational Go v1 foundation.
 
-Signed checkpoints, remote export, and non-repudiation remain deferred.
+Signed checkpoints, remote export, non-repudiation, automatic retention or rotation, and general ledger repair remain deferred.
 
 ## Go Toolchain Migration
 

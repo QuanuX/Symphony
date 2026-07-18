@@ -665,3 +665,67 @@ This PR authorizes none of the following:
   - `Go 1.27 production pin`
 - notes: |
     This record was authored only after PR #62 merged and its 40-character merge commit was verified to contain the exact reviewed head tree. The migration changes qxctl's implementation tooling without changing its canonical authority.
+
+- record_id: `SCLV-PR-064`
+- title: `SSIAG and STAV native supervision foundation completed`
+- status: `canonical`
+- date: `2026-07-18`
+- change_type: `canonical_update`
+- related_pr: `https://github.com/QuanuX/Symphony/pull/64`
+- merge_commit: `ed7484d70607aa96e64916dd4e59d3972a61980b`
+- affected_surfaces:
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/stav/SPEC.md`
+  - `modules/secure-identity-access-governance/ARCHITECTURE.md`
+  - `modules/secure-identity-access-governance/IMPLEMENTATION.md`
+  - `modules/secure-identity-access-governance/INSTALL.md`
+  - `modules/secure-identity-access-governance/internal/lifecycle/lifecycle.go`
+  - `modules/secure-identity-access-governance/internal/server/server.go`
+  - `modules/secure-identity-access-governance/internal/supervision/supervision.go`
+  - `modules/stav-append-authority/ARCHITECTURE.md`
+  - `modules/stav-append-authority/IMPLEMENTATION.md`
+  - `modules/stav-append-authority/INSTALL.md`
+  - `modules/stav-append-authority/internal/lifecycle/enrollment.go`
+  - `modules/stav-append-authority/internal/server/server.go`
+  - `modules/stav-append-authority/internal/supervision/supervision.go`
+  - `tools/qxctl/internal/ssiagclient/client.go`
+  - `tools/qxctl/internal/stavclient/paths.go`
+- skvi_references:
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/stav/SPEC.md`
+  - `modules/secure-identity-access-governance/MANIFEST.md`
+  - `modules/stav-append-authority/MANIFEST.md`
+- change_summary: |
+    Under the Architect's direction, PR #64 completed the ratified phase-6 native supervision foundation for SSIAG and STAV on macOS and Linux.
+    It added per-TOPS launchd/systemd definitions, install-time runtime provisioning, exact owner validation, socket lifecycle locks, stale-socket handling, graceful shutdown, and enforced separation between direct development runs and supervised production service mode.
+- relationship_changes: |
+    Native supervisors own process liveness only. SSIAG retains identity/policy boundaries, the STAV append authority remains the sole ledger writer, and neither supervisor inherits producer, reader, provider, credential, mutation, or ledger authority.
+    SSIAG and STAV remain loosely coupled services with independent jobs and no supervisor dependency edge.
+- doctrine_changes: |
+    System enrollment consumes explicit pre-provisioned identities; Symphony does not create or infer operating-system accounts.
+    Each process owns its socket and persistent adjacent lifecycle lock. Supervisor socket activation remains prohibited.
+- compatibility_consequences: |
+    launchd labels and systemd unit names are stable per-TOPS identities. Direct-run remains available only as an explicit development mode.
+    Go 1.26.5 remains the production baseline; the Go 1.27 migration gate is unchanged.
+- publication_consequences: |
+    No module tag, OpenAPI surface, SDK, Mintlify page, or public documentation was published by PR #64.
+- projection_consequences: |
+    qxctl continues to expose only authenticated safe metadata and read-only STAV projections. Supervision adds no new projection or mutation authority.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/64`
+  - `ed7484d70607aa96e64916dd4e59d3972a61980b`
+  - `77e21ddf92f3494b760769c46fdd591ed0d7c304`
+- non_authorizations:
+  - `service-account creation or identity inference`
+  - `supervisor socket activation`
+  - `SSIAG policy or administrative mutation`
+  - `provider executable activation or secret delivery`
+  - `operational Keychain access`
+  - `node-troll producer or supervision authority`
+  - `remote SSIAG or STAV access`
+  - `signed checkpoints or non-repudiation`
+  - `module tag or public documentation publication`
+- notes: |
+    This record was authored only after PR #64 merged and its 40-character merge commit was verified to contain the exact reviewed head tree.

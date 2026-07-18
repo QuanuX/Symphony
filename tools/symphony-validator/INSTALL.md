@@ -42,14 +42,14 @@ cd tools/symphony-validator
 ./tests/smoke.sh
 ```
 
-## Future Installation Intent
-The validator will be an individually installable native tool built with a portable C++ build model (CMake or Make).
+## Installation Packaging
+The validator is locally buildable as a native tool through CMake. A portable host installer and uninstall manifest remain to be implemented before distribution as an independently packaged tool.
 
 ## Development Posture
 Invoked as a standalone tool during local development and preflight checks.
 
-## Production Posture
-Invoked by CI systems and the administrative spine for structural and doctrinal verification.
+## Intended Production Posture
+Future CI and administrative-spine integrations may invoke the same deterministic checker for structural and doctrinal verification after those integrations are separately authorized.
 
 ## Python Doctrine
 Python must not be required for remote native hot-path execution or the administrative spine.
