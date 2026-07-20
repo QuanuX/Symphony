@@ -975,3 +975,122 @@ This PR authorizes none of the following:
   - `Go 1.27 production pin`
 - notes: |
     This record was authored only after PR #68 merged and its exact merge/head evidence was verified. The closure carrier for this record is non-recursive unless it makes an independently significant architectural change.
+
+- record_id: `SCLV-PR-070`
+- record_version: `2`
+- title: `Caller-class-neutral host authority established across Symphony governance`
+- status: `canonical`
+- date: `2026-07-20`
+- change_started_at: `2026-07-20T15:16:16Z`
+- change_completed_at: `2026-07-20T15:21:53Z`
+- recorded_at: `2026-07-20T15:23:40Z`
+- recording_disposition: `post_merge`
+- change_type: `canonical_update`
+- related_pr: `https://github.com/QuanuX/Symphony/pull/70`
+- merge_commit: `e6933980f61fcdf3d599622ae16aea4f3bf957ea`
+- affected_surfaces:
+  - `INTENT.md`
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/sacv/SKILL.md`
+  - `knowledge/sacv/SPEC.md`
+  - `knowledge/sacv/profiles/mintlify-publication.md`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/sclv/INTENT.md`
+  - `knowledge/sclv/MANIFEST.md`
+  - `knowledge/sclv/SKILL.md`
+  - `knowledge/sclv/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/skvi/MANIFEST.md`
+  - `knowledge/skvi/SPEC.md`
+  - `knowledge/sodv/INTENT.md`
+  - `knowledge/sodv/MANIFEST.md`
+  - `knowledge/sodv/RELEASES.md`
+  - `knowledge/sodv/SPEC.md`
+  - `knowledge/ssiag/INTENT.md`
+  - `knowledge/ssiag/MANIFEST.md`
+  - `knowledge/ssiag/SKILL.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/stav/INTENT.md`
+  - `knowledge/stav/MANIFEST.md`
+  - `knowledge/stav/SKILL.md`
+  - `knowledge/stav/SPEC.md`
+  - `modules/bus-troll/INTENT.md`
+  - `modules/bus-troll/MANIFEST.md`
+  - `modules/node-troll/INTENT.md`
+  - `modules/node-troll/MANIFEST.md`
+  - `modules/secure-identity-access-governance/ARCHITECTURE.md`
+  - `modules/secure-identity-access-governance/IMPLEMENTATION.md`
+  - `modules/secure-identity-access-governance/INTENT.md`
+  - `modules/secure-identity-access-governance/REQUIREMENTS.md`
+  - `modules/secure-identity-access-governance/SKILL.md`
+  - `modules/secure-identity-access-governance/SPEC.md`
+  - `modules/secure-identity-access-governance/THREAT-MODEL.md`
+  - `modules/ssiag-provider-macos-keychain/SKILL.md`
+  - `modules/stav-append-authority/INTENT.md`
+  - `modules/stav-append-authority/MANIFEST.md`
+  - `modules/stav-append-authority/README.md`
+  - `modules/stav-append-authority/SKILL.md`
+  - `modules/stav-append-authority/THREAT-MODEL.md`
+  - `modules/stav-append-authority/internal/config/config.go`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/symphony-validator/INTENT.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SKILL.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/validator_contracts.cpp`
+  - `tools/symphony-validator/tests/fixtures_valid/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_valid/tools/symphony-validator/SKILL.md`
+- skvi_references:
+  - `knowledge/INTENT.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/sacv/SPEC.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/stav/SPEC.md`
+  - `modules/secure-identity-access-governance/MANIFEST.md`
+  - `modules/stav-append-authority/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    Under the Architect's direction, PR #70 replaced active human/AI/agent-class authorization doctrine with one caller-class-neutral rule based on target-host ownership or granted permission, operation/resource context, proposal and expected state, and owner-configured safeguards.
+    The change aligned root and SKV doctrine, qxctl, SSIAG, STAV, SCLV, SODV, SACV, SKVI, provider guidance, proposal-only troll contracts, the C++ validator terminology, and copied validator fixtures. No implemented Go, C++, or Swift authorization branch evaluated caller type before or after the change.
+- relationship_changes: |
+    Target-host ownership and granted permission now anchor the relationship between qxctl, SSIAG, callers, and governed operations. SSIAG verifies and projects effective authority but is not superior to the target-host administrator; qxctl implements supported administration without granting authority.
+    STAV reader and producer grants remain exact and caller-neutral. SCLV/SODV ratification and review are permission-backed. SACV requires HTTP authorization contracts to preserve the same rule. symphony-validator remains deterministic, non-autonomous, read-only evidence rather than a ratification authority.
+- doctrine_changes: |
+    Caller classifications such as human, AI, agent, service, workload, organization, or future actor are descriptive facts and consumer labels, never authorization inputs. Callers with equal effective host permission and operation context receive the same supported operation.
+    Confirmations, quorum, delays, budgets, step-up assurance, executable trust, workload attestation, and similar interlocks are configurable safeguards; path safety, bounded parsing, atomic writes, expected-state validation, ledger framing, and secret exclusion remain non-optional protocol integrity.
+    The target-host administrator controls configurable safeguards, including a future direct profile. Ordinary audited mutation remains fail-closed when required STAV evidence is unavailable, while any future audit-deferred administrator recovery must be explicit, durably journaled, and reconciled forward. Symphony does not decide external legal or financial capacity by caller type.
+- compatibility_consequences: |
+    No runtime command, route, wire byte, JSON schema, local IPC frame, ledger format, module version, provider capability, installation behavior, or Go toolchain pin changed.
+    qxctl and SSIAG remain read-only/metadata-only for every caller. Operational Keychain access, credential delivery, provider execution, general mutation, safeguard administration, and audit-deferred recovery remain unimplemented.
+- publication_consequences: |
+    PR #70 published no module tag, binary, container, SDK, OpenAPI description, Mintlify surface, NotebookLM automation, or public launch documentation.
+    Its merged contract truth is eligible for a provenance-bound NotebookLM corpus refresh only as a derived external projection.
+- projection_consequences: |
+    NotebookLM and other corpus consumers must refresh from merged `main` and interpret prior caller-class statements through the current-contract and forward-supersession rule in `knowledge/INTENT.md`.
+    Graph, search, JSON, and other knowledge projections remain derived, disposable, and unauthorized as canonical mutation sources.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/70`
+  - `e6933980f61fcdf3d599622ae16aea4f3bf957ea`
+  - `3a48a65863d4dc418d700ca28afed396086fef3d`
+  - `135 changed files; 449 additions; 413 deletions`
+  - `complete symphony-validator positive/negative smoke suite passed`
+  - `qxctl, SSIAG, STAV append-authority, and STAV protocol Go test suites passed`
+  - `tracked active-doctrine scan found zero superseded caller-class authority phrases`
+- non_authorizations:
+  - `caller-type authorization or caller-class-specific apply policy`
+  - `qxctl apply or safeguard-management implementation`
+  - `SSIAG mutation, credential delivery, provider execution, or remote access`
+  - `audit-deferred recovery implementation or silent STAV bypass`
+  - `operational macOS Keychain access`
+  - `direct STAV ledger mutation or arbitrary append`
+  - `vector-engine implementation or generated canonical mutation`
+  - `rewriting historical SCLV or SODV records`
+  - `Go 1.27 production pin`
+  - `module, SDK, API, documentation, or binary publication`
+- notes: |
+    This record was authored only after PR #70 merged and its exact 40-character merge/head evidence was verified. The closure-carrier PR for this record is non-recursive unless it makes an independently significant architectural change.
