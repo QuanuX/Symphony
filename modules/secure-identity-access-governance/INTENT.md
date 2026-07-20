@@ -40,7 +40,7 @@ One installed host binary may serve several TOPS instances. Every TOPS configura
 - plaintext, environment, or implicit fallback providers;
 - qxctl schema ownership or provider SDK behavior;
 - runtime events in SKV or SCLV;
-- direct agent ledger edits or arbitrary appends;
+- direct ledger edits or arbitrary appends by any caller;
 - hot-path calls;
 - mandatory bus, container, cloud, Python, vendor, or telemetry infrastructure;
 - operational credential access in the present scaffold.
@@ -49,4 +49,4 @@ One installed host binary may serve several TOPS instances. Every TOPS configura
 
 Local peer-credential authentication, foundational supervision, proposal/apply separation, a dedicated per-TOPS Go STAV append authority, provider mutual executable trust, protected one-shot secret delivery, and per-user macOS Keychain operation are ratified architectural directions.
 
-Their operational code remains disabled until the exact schemas, platform identities, lifecycle rules, and negative-test gates in `REQUIREMENTS.md` pass. Remote SSIAG, agent apply authority, implicit fallback, and network listeners remain unauthorized.
+Their operational code remains disabled for every caller until the exact schemas, platform identities, lifecycle rules, and negative-test gates in `REQUIREMENTS.md` pass. Remote SSIAG, implicit fallback, network listeners, and any apply path that is not based on target-host permission remain unauthorized.

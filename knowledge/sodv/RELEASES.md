@@ -11,7 +11,7 @@ A release transaction has two immutable records:
 1. `authorization` names the exact module path, semantic version, source commit, source PR, expected evidence, and completion gates. No tag may be pushed before this record is ratified and merged.
 2. `completion` records the actual tag object, public module checksum, clean-cache verification, and consumer consequence. It is appended after publication.
 
-There is no canonical `pending` release record. Local preparation state belongs under `.git/symphony/releases/pending/`. If a session is interrupted, the next session reconciles actual tags and proxy state against the merged authorization. It either completes the authorized transaction, records a forward recovery, or fails closed for human review. It never moves an existing tag or edits an earlier record.
+There is no canonical `pending` release record. Local preparation state belongs under `.git/symphony/releases/pending/`. If a session is interrupted, the next session reconciles actual tags and proxy state against the merged authorization. It either completes the authorized transaction, records a forward recovery, or fails closed for review by a caller holding the applicable release permission. It never moves an existing tag or edits an earlier record.
 
 ## Release Records
 

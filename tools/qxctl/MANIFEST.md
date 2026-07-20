@@ -45,11 +45,13 @@ The SSIAG command group is a cgo-free client for a local Unix domain socket. It 
 
 The STAV commands use canonical local envelopes and a mutually authenticated Unix-socket client. The append authority enforces reader identity and classifications before projection. Raw `qxctl stav append` is prohibited.
 
-Future mutation support must expose distinct proposal and apply paths. Proposal is deterministic and non-mutating. Apply is local-only, peer-authenticated, SSIAG-authorized, replay/idempotency/expected-state bound, STAV-gated, and unavailable to AI agents. No mutation command is implemented by the present read-only SSIAG client.
+Future mutation support must expose distinct proposal and apply paths. Proposal is deterministic and non-mutating. Apply is local-only, peer-authenticated, permission-backed through SSIAG, replay/idempotency/expected-state bound, and governed by the applicable STAV availability or explicit audit-deferred recovery contract. Authorization evaluates target-host ownership or granted permission and owner-configured safeguards, never caller type. No mutation command or audit-deferred recovery path is implemented by the present read-only SSIAG client.
+
+Future safeguard administration must provide the same supported inspection and control surface to every caller holding target-host administrator permission. A conservative default profile may enable confirmations, quorum, delays, budgets, step-up assurance, or similar governance interlocks. The administrator may disable or replace those optional controls, including selecting a direct profile. Path safety, bounded parsing, atomic writes, expected-state validation, ledger framing, and secret exclusion are protocol integrity rather than optional safeguards.
 
 `knowledge/sacv/` governs HTTP API contracts. It does not govern qxctl CLI grammar, and qxctl does not own or generate canonical OpenAPI descriptions.
 
 ## Non-authorizations
 qxctl is not authorized to write generated artifacts. The Architect-ratified Cobra and Viper libraries and their required cgo-free Go dependencies are authorized only for command grammar and constrained configuration mapping; Python, C bindings, remote configuration backends, execution engines, and unrelated third-party dependencies remain prohibited. First-party Symphony libraries remain subordinate to their canonical knowledge vectors.
 qxctl is not authorized to accept, store, or print secret values.
-qxctl is not authorized to grant apply authority to an AI agent or to bypass STAV availability for a security/configuration mutation.
+qxctl is not authorized to grant host permission, classify callers, silently bypass STAV, or present protocol-integrity requirements as optional safeguards. Any future audit-deferred administrator recovery path requires its own explicit contract, durable local recovery evidence, and later STAV reconciliation.

@@ -63,6 +63,8 @@ go run ./cmd/qxctl stav doctor --tops-id UUID [--scope user|system]
 
 SSIAG commands require an immutable TOPS UUID through `--tops-id` or `SYMPHONY_SSIAG_TOPS_ID`. They use `SYMPHONY_SSIAG_SOCKET` only as an explicit override; otherwise the selected scope and TOPS ID determine the isolated socket. They never accept or print credential values.
 
-The ratified future administrative model separates non-mutating proposal from authorized local apply. The current qxctl implementation remains read-only. AI agents will be limited to query and proposal, and qxctl will never write STAV ledger files directly.
+The ratified future administrative model separates non-mutating proposal from permission-backed local apply. Authorization will use target-host ownership or granted permission and caller-neutral, owner-configured safeguards; qxctl will not request or evaluate caller type. The current qxctl implementation remains read-only for every caller, and qxctl will never write STAV ledger files directly.
+
+Future safeguard administration will let a target-host administrator inspect and change optional governance interlocks through supported qxctl commands, including selecting a direct profile. That future surface does not make parser bounds, path safety, atomic writes, expected-state validation, ledger framing, or secret exclusion optional. No safeguard-management, apply, or audit-deferred recovery command is implemented today.
 
 The four STAV commands use mutually authenticated, TOPS-scoped Unix-socket IPC to the local append authority. `status`, `verify`, and bounded `query` return only classification-authorized read projections; `doctor` composes client-side availability and verification checks. qxctl verifies the configured authority identity before sending application bytes and never opens the ledger file. `qxctl stav append` is intentionally absent.

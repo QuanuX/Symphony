@@ -22,7 +22,7 @@
 To define the declarative behavioral boundaries for SODV publication governance.
 
 ## SODV Behavioral Model
-SODV establishes publication boundaries declaratively. Its append-only module-release protocol is operational through human-ratified repository records and external-state verification. Future generators and pipelines may build derived public-documentation artifacts only under separately ratified contracts.
+SODV establishes publication boundaries declaratively. Its append-only module-release protocol is operational through permission-backed ratified repository records and external-state verification. Future generators and pipelines may build derived public-documentation artifacts only under separately ratified contracts.
 
 SODV also governs independently consumable module publication. `RELEASES.md` is the canonical append-only authorization and completion ledger for that bounded purpose. It does not authorize a general publication pipeline.
 
@@ -33,7 +33,7 @@ A module release is a transaction with two canonical stages:
 - authorization: merged before publication and binding module path, semantic version, tag name, source commit, source PR, expected evidence, completion gates, and explicit exclusions;
 - completion: appended only after immutable tag publication and clean-cache public resolution, recording actual tag objects, checksums, verification, and consumer consequences.
 
-Authorization and completion are immutable records. Pending state is noncanonical and may exist only under `.git/symphony/releases/pending/`. A resumed session must compare the authorization with actual repository and package-proxy state. A mismatched existing tag blocks publication and requires human review. A matching published tag may be verified and completed forward. Tags must never be moved to repair a ledger.
+Authorization and completion are immutable records. Pending state is noncanonical and may exist only under `.git/symphony/releases/pending/`. A resumed session must compare the authorization with actual repository and package-proxy state. A mismatched existing tag blocks publication and requires review by a caller holding the applicable release permission. A matching published tag may be verified and completed forward. Tags must never be moved to repair a ledger.
 
 For Go modules, a workspace-composed test or warm module cache is insufficient completion evidence. The completion gate requires `GOWORK=off`, an empty `GOMODCACHE`, and resolution through the public module proxy or its documented authoritative fallback.
 

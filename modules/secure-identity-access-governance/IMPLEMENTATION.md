@@ -20,7 +20,7 @@ Exit gate: one Architect-ratified namespace map, no mixed executable/API grammar
 2. Define extension rules without authorizing a graph database.
 3. Define STAV authority, storage, ten-group envelope, append behavior, and exclusions in `knowledge/stav/`.
 4. State that qxctl implements but does not own either schema.
-5. State that agents query/propose only and never edit a ledger.
+5. State that caller type does not determine authority, the current administrative surface is read-only for every caller, and no caller edits a ledger through a supported interface.
 6. Add every new canonical Markdown surface to SKVI.
 7. Do not create SCLV merge evidence before a real PR and merge commit exist.
 
@@ -113,7 +113,7 @@ Ratified architecture:
 1. Local v1 uses kernel-attested Unix-socket peer credentials mapped to canonical SSIAG subjects.
 2. SSIAG and STAV occupy a foundational bootstrap stratum anchored by a native OS supervisor or explicit owner-provided equivalent.
 3. Supervision owns liveness only and never expands security authority.
-4. qxctl separates proposal from apply; agents may query and propose only.
+4. qxctl separates proposal from permission-backed apply; caller type is not an authorization input, and no apply route is currently implemented for any caller.
 
 Implemented: build-tagged Darwin `LOCAL_PEERCRED`/`LOCAL_PEERPID` and Linux/WSL `SO_PEERCRED`; exact UID/GID subject and service mapping; scope-exact trusted configuration; client endpoint authentication before HTTP; per-TOPS launchd/systemd installation; owner-provisioned system identities; distinct service-owned runtime/state children; bounded restart and shutdown; supervisor-independent SSIAG/STAV startup; explicit direct-run policy; and exclusive socket lifecycle locks with conservative stale recovery. Older metadata-only v1 configuration remains structurally readable but cannot start a trusted service/client until re-enrolled.
 
@@ -132,7 +132,7 @@ Exit gate: no unauthenticated local process can reach a mutation or adapter oper
 
 ## Phase 7 — Implement the Ratified STAV Append Authority Architecture (implemented)
 
-Ratified architecture: one dedicated Go process per TOPS serialization domain, authenticated local producer IPC, no qxctl/producer/agent file writes, and fail-closed security/configuration apply when required audit is unavailable.
+Ratified architecture: one dedicated Go process per TOPS serialization domain, authenticated local producer IPC, no direct ledger writes by qxctl, producers, or other callers, and fail-closed ordinary security/configuration apply when required audit is unavailable. A future explicit target-host-administrator recovery path must journal audit-deferred evidence durably and reconcile forward without writing the ledger directly.
 
 Implemented namespace: `modules/stav-append-authority/`, `symphony-stav-append-authority`, nested per-TOPS `stav/append.sock`, canonical `symphony.stav.*` contracts, and read-only `qxctl stav` grammar.
 
@@ -151,7 +151,7 @@ Implementation procedure:
 9. Expose qxctl queries/proposals without file access.
 10. Test concurrent producers, crashes at each write boundary, deletion/insertion/reordering/modification, cross-TOPS injection, redaction, and projection rebuild.
 
-Exit gate: agents, qxctl, SSIAG, and node-troll cannot write the ledger file directly; v1 claims tamper evidence but not non-repudiation.
+Exit gate: qxctl, SSIAG, node-troll, producers, and all other callers cannot write the ledger file directly through a supported interface; v1 claims tamper evidence but not non-repudiation.
 
 ## Phase 8 — Implement Deny-by-Default Policy
 
@@ -233,4 +233,4 @@ Rollback order:
 
 ## Production-Ready Definition
 
-Production readiness requires ratified authentication, authorization, supervision, provider IPC, STAV durability/recovery/retention, at least one operational provider, platform-specific security review, secret-leakage tests, install/upgrade/rollback/uninstall tests, signed release provenance, and zero weakening of qxctl/SKV/agent boundaries.
+Production readiness requires ratified authentication, caller-class-neutral authorization, supervision, provider IPC, STAV durability/recovery/retention, at least one operational provider, platform-specific security review, secret-leakage tests, install/upgrade/rollback/uninstall tests, signed release provenance, and zero weakening of qxctl, SKV, host-authority, or protocol-integrity boundaries.

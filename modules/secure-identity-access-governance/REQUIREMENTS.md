@@ -60,8 +60,9 @@ Architect-ratified architecture with phased implementation requirements. “Must
 - **SSIAG-F-034**: User-presence and interaction requirements must remain visible in capability metadata.
 - **SSIAG-F-035**: Local v1 must derive operating-system caller identity from kernel-attested Unix-socket peer credentials and map it to a canonical per-TOPS subject.
 - **SSIAG-F-036**: Caller-supplied subject identifiers must not be accepted as identity evidence.
-- **SSIAG-F-037**: Administrative change must separate non-mutating proposal from authorized apply; AI agents must never receive apply authority.
+- **SSIAG-F-037**: Administrative change must separate non-mutating proposal from permission-backed apply; caller type must not be requested or evaluated.
 - **SSIAG-F-038**: Apply requests must bind TOPS, subject, operation, target, request/correlation identifiers, intent, expiry, idempotency, and expected prior-state digest.
+- **SSIAG-F-039**: Callers with the same effective target-host permission and operation context must receive the same supported authorization result, and the target-host administrator must be able to control caller-neutral configurable safeguards through qxctl once that surface is implemented.
 
 ### Credential Use
 - **SSIAG-F-040**: Credential references must be opaque outside the SSIAG/provider boundary.
@@ -85,7 +86,7 @@ Architect-ratified architecture with phased implementation requirements. “Must
 - **SSIAG-S-011**: Provider manifests and adapter executables must be authenticated before use.
 - **SSIAG-S-012**: Rate limits and replay protection must precede any remotely reachable mutation API.
 - **SSIAG-S-013**: Plaintext files, environment values, `pass`, and a locally invented vault must never be implicit provider fallbacks.
-- **SSIAG-S-014**: AI agents must not edit STAV ledgers or submit arbitrary ledger events.
+- **SSIAG-S-014**: No caller may edit STAV ledgers directly or submit arbitrary ledger events outside an authenticated, authorized producer contract.
 - **SSIAG-S-015**: Socket permissions must remain defense in depth and must not substitute for peer-credential authentication.
 - **SSIAG-S-016**: Provider control messages must not carry secret bytes.
 - **SSIAG-S-017**: An explicitly exportable secret must use a request-bound, bounded, one-shot protected local descriptor/channel and must never traverse qxctl, OpenAPI, STAV, arguments, environment variables, or logs.
@@ -94,17 +95,19 @@ Architect-ratified architecture with phased implementation requirements. “Must
 ## Operational Requirements
 - **SSIAG-O-001**: Every provider must report declared, ready, degraded, locked, unavailable, or disabled status without revealing sensitive detail.
 - **SSIAG-O-002**: Health must distinguish process liveness from provider readiness.
-- **SSIAG-O-003**: Audit sinks must fail according to declared policy: fail-closed for high-risk operations and configurable for read-only inspection.
+- **SSIAG-O-003**: Ordinary audited mutation must fail closed when its required STAV append is unavailable; read-only inspection remains governed by its declared policy.
 - **SSIAG-O-004**: Clock skew assumptions must be explicit for leases and federated tokens.
 - **SSIAG-O-005**: Rotation must support overlapping credential versions and rollback.
 - **SSIAG-O-006**: Backup guidance must exclude provider-held secret values unless the provider's own supported backup mechanism is used.
 - **SSIAG-O-007**: Per-TOPS purge must be explicit and independently auditable.
 - **SSIAG-O-008**: Safe SSIAG security outcomes must be submitted only through the implemented dedicated per-TOPS Go STAV append authority and its closed typed producer vocabulary.
-- **SSIAG-O-009**: Security, provider, credential, policy, and configuration apply operations must fail closed when their required STAV append cannot be accepted.
+- **SSIAG-O-009**: Security, provider, credential, policy, and configuration apply operations must fail closed when their required STAV append cannot be accepted, except through a separately implemented target-host-administrator audit-deferred recovery contract.
 - **SSIAG-O-010**: Supervision must own liveness only and must not confer SSIAG policy, provider, apply, or STAV ledger authority.
 - **SSIAG-O-011**: Native launchd/systemd descriptors must be per-TOPS, independently restart-bounded, and free of SSIAG-to-STAV startup coupling.
 - **SSIAG-O-012**: System service identities must be owner-provisioned and must exactly match enrollment UID/GID; no installer may infer root or silently create an account.
 - **SSIAG-O-013**: Supervisor uninstall must stop the selected service by default and preserve all configuration/state; owner-provided managers may explicitly use descriptor-only no-start/no-stop operation.
+- **SSIAG-O-014**: Audit-deferred recovery must never be implicit; it must preserve protocol integrity, durably journal exact permission/operation/expected-state/outcome evidence before completion, mark the outcome audit-deferred, and reconcile forward into STAV when available.
+- **SSIAG-O-015**: Host administrators must be able to select a direct safeguard profile without optional governance interlocks while path safety, bounded parsing, atomic writes, expected-state validation, ledger framing, and secret exclusion remain mandatory.
 
 ## Portability Requirements
 - **SSIAG-P-001**: All Symphony-authored SSIAG foundation source must be Go and must compile without cgo.

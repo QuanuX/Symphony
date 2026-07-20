@@ -40,11 +40,17 @@ SSIAG has graph-like nodes and relationships and may later support derived graph
 
 SSIAG performs no tracking, telemetry aggregation, or phone-home behavior by default. Its host and surrounding operating environment are secured by the installing owner or organization.
 
+## Host-Authority Posture
+
+SSIAG authenticates subjects and projects effective target-host permissions without classifying a caller as human, AI, agent, service, workload, organization, or another actor type. The target host's ownership and administrator controls are the root of local authority; SSIAG does not require a superior Symphony registration and cannot permanently veto that administrator.
+
+Enhanced identity assurance and governance interlocks are optional, caller-neutral safeguards selected by the host owner. Protocol-integrity requirements remain mandatory within supported interfaces. External providers, counterparties, owners, and applicable law—not SSIAG—determine legal or financial capacity.
+
 ## Ratified Local Architecture
 
 - Local v1 caller identity comes from kernel-attested Unix-socket peer credentials mapped to canonical SSIAG subjects.
 - Foundational SSIAG and STAV services use an explicit bootstrap supervision stratum; supervision owns liveness and does not confer authorization.
-- Administrative change uses separate proposal and apply authority. Agents may query and propose only.
+- Administrative change uses separate proposal and permission-backed apply authority. Caller type is not an authorization input. The current foundation exposes only read-only metadata operations for every caller.
 - Provider control and secret delivery are distinct channels. Non-exportable operations remain inside the provider.
 - The first operational macOS Keychain topology is per-user and session-aware; system/headless use never falls back implicitly.
 - Remote SSIAG access is not part of local v1.

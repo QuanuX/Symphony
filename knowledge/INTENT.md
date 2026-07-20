@@ -15,6 +15,13 @@ The SKV is the living knowledge framework of Symphony. It preserves architectura
 The SKV is the whole knowledge-vector framework, not merely a folder.
 SKV is not a replacement for module contracts.
 
+### Caller Authority Rule
+Every SKV contract and its implementation must be caller-class neutral. Human, AI, agent, service, workload, organizational, and future actor classifications are valid descriptive facts and consumer labels, but none is an authorization input.
+
+Supported authority derives from target-host ownership or granted permission, the requested operation and resource, proposal and expected state, and owner-configured safeguards. A target-host administrator remains sovereign over configurable governance and receives the same supported qxctl controls regardless of caller type. An engine, validator, adapter, or proposal does not manufacture permission merely by producing evidence.
+
+Optional governance safeguards may be conservative by default and administrator-removable. Protocol-integrity requirements remain mandatory within supported tooling. When an applicable contract permits audit-deferred administrator recovery, the interruption must be explicit, durably journaled, and reconciled forward; it is never a silent ledger bypass. Symphony does not decide external legal or financial capacity by caller type.
+
 ### Relationship to SKVI
 SKVI indexes the knowledge surfaces declared by the SKV framework.
 

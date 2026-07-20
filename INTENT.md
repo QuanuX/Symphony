@@ -35,5 +35,12 @@ Every module is expected to be individually installable without assuming a monol
 
 Shared implementation may live under `libraries/` only when it has no runtime identity or authority and does not weaken consumer installability. Canonical knowledge vectors, not libraries, own protocol truth.
 
+## Caller-Class Neutrality and Host Authority
+Symphony does not classify a caller as human, AI, agent, service, workload, organization, or another actor type when deciding authority. Supported authorization decisions use the target host's ownership or granted permissions, the requested operation and resource, expected state, and owner-configured safeguards.
+
+The target host's administrator is sovereign over configurable Symphony governance. SSIAG may verify and project effective host authority, but it does not create a superior registration authority or permanently veto that administrator. Enhanced identity assurance and governance interlocks are caller-neutral, owner-configured safeguards. Protocol-integrity requirements remain mandatory within supported tooling.
+
+Symphony does not decide whether an actor may own property, open an account, sign a contract, assume liability, or act for another entity. Those facts belong to the relevant owner, provider, counterparty, and applicable law.
+
 ## Owner Ratification Boundaries
-Any structural or doctrinal shift at the root level requires explicit transition owner ratification.
+Any structural or doctrinal shift at the root level requires explicit ratification by a caller holding the required transition-owner permission.

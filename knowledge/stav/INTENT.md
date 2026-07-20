@@ -2,7 +2,7 @@
 
 ## Purpose
 
-STAV defines the canonical, agent-facing protocol for safe, per-TOPS administrative and security audit events.
+STAV defines the canonical, system-facing protocol for safe, per-TOPS administrative and security audit events. It is directly usable by authorized human, AI, service, workload, and other caller types through the same governed interfaces.
 
 ## Canonical and Operational Separation
 
@@ -14,7 +14,7 @@ STAV v1 is tamper-evident through a monotonic sequence and preceding-event diges
 
 ## Authority Intent
 
-One dedicated Go append-authority process per TOPS serialization domain validates and serializes events over authenticated local IPC. Authorized runtime components submit candidate events. qxctl administers and queries. Agents may query and propose actions through qxctl but may never edit a ledger or perform arbitrary appends.
+One dedicated Go append-authority process per TOPS serialization domain validates and serializes events over authenticated local IPC. Authorized runtime components submit candidate events. qxctl administers and queries. Caller type does not determine authority: direct ledger mutation and arbitrary append are unsupported for every caller, while configured producer and reader grants determine protocol access.
 
 The independently installable implementation lives at `modules/stav-append-authority/` and implements this vector; it does not own or redefine STAV protocol truth.
 

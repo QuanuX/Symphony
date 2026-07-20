@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Guide humans and agents in safely reading, reviewing, configuring, and implementing SSIAG contracts.
+Guide every authorized caller in safely reading, reviewing, configuring, and implementing SSIAG contracts.
 
 ## Required Reading Order
 
@@ -13,9 +13,9 @@ Guide humans and agents in safely reading, reviewing, configuring, and implement
 5. the selected provider module contracts
 6. `knowledge/stav/SPEC.md` before changing audit output
 
-## Agent Authority
+## Caller Authority
 
-Agents may inspect canonical contracts, query safe SSIAG metadata through qxctl, and propose administrative changes. They must not request, print, persist, or infer credential values; bypass policy; edit operational STAV ledgers; invent fallback providers; or promote a draft relationship or schema to canonical status without owner review.
+Caller type is not an authorization input. A caller may inspect canonical contracts, query safe SSIAG metadata, propose administrative changes, or use a future apply operation only to the extent permitted by the target host and its caller-neutral safeguards. No supported operation may request, print, persist, or infer excluded credential values; bypass effective permission; edit operational STAV ledgers; invent fallback providers; or promote a draft relationship or schema without permission-backed ratification.
 
 ## Change Procedure
 
@@ -39,4 +39,4 @@ Agents may inspect canonical contracts, query safe SSIAG metadata through qxctl,
 
 ## Stop Conditions
 
-Stop and obtain owner approval before choosing an unrecorded namespace, enabling remote access, allowing agents to apply, weakening peer authentication, exporting a non-exportable credential, adding a provider fallback, changing the provider IPC major version, publishing an API, or weakening safe metadata exclusions. Do not mark a ratified capability operational until its exact contract and tests pass.
+Stop and obtain permission-backed owner approval before choosing an unrecorded namespace, enabling remote access, enabling the unimplemented apply surface, weakening peer authentication, exporting a non-exportable credential, adding a provider fallback, changing the provider IPC major version, publishing an API, or weakening safe metadata exclusions. Do not mark a ratified capability operational until its exact contract and tests pass.

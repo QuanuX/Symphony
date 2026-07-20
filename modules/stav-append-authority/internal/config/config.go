@@ -37,7 +37,7 @@ func Default(layout stavpaths.InstanceLayout, authorityUID, authorityGID uint64)
 	}
 }
 
-// Load accepts human-formatted strict JSON, canonicalizes it, and then applies
+// Load accepts operator-formatted strict JSON, canonicalizes it, and then applies
 // the exact typed protocol contract.
 func Load(path string) (stavprotocol.AppendAuthorityConfig, error) {
 	file, err := openNoFollow(path)

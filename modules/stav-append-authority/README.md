@@ -6,4 +6,4 @@ The current public source release is `github.com/QuanuX/Symphony/modules/stav-ap
 
 It installs one host executable, enrolls isolated per-TOPS instances, installs bounded per-TOPS launchd/systemd liveness profiles, mutually authenticates Darwin/Linux Unix-socket peers from kernel credentials, authorizes exact producer tuples and reader classifications, appends fsync-backed canonical events, reconstructs idempotency on restart, verifies the digest chain, preserves incomplete-tail evidence, and serves the read-only qxctl STAV interface.
 
-`knowledge/stav/` remains protocol truth. Producers, qxctl, agents, and supervisors never edit the ledger. Start with `INTENT.md`, `MANIFEST.md`, `INSTALL.md`, and `SKILL.md`.
+`knowledge/stav/` remains protocol truth. No producer, qxctl client, supervisor, or other caller edits the ledger through a supported interface. Start with `INTENT.md`, `MANIFEST.md`, `INSTALL.md`, and `SKILL.md`.

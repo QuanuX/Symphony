@@ -2,7 +2,7 @@
 
 ### Purpose
 
-SCLV preserves human-ratified change truth for architectural, contractual, compatibility, and publication-significant changes to Symphony.
+SCLV preserves permission-backed, ratified change truth for architectural, contractual, compatibility, and publication-significant changes to Symphony.
 
 ### Scope
 
@@ -30,4 +30,4 @@ SCLV is not Git history, PR history, a runtime audit ledger, a release artifact 
 
 ### Non-authorization Statement
 
-This surface does not authorize agents or validators to ratify architecture, edit prior SCLV records, manufacture merge evidence, publish releases, mutate STAV ledgers, or expose public documentation. Humans ratify; tools detect, check, reconcile evidence, and propose bounded changes.
+This surface does not grant ratification permission to a caller merely because it generated a proposal or validation result. A caller holding the required repository/transition-owner permission ratifies; authority-free tools detect, check, reconcile evidence, and propose bounded changes. No caller may use SCLV to edit prior records, manufacture merge evidence, publish releases, mutate STAV ledgers, or expose public documentation.

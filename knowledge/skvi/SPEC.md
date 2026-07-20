@@ -101,7 +101,7 @@ SODV governs publication truth based on the index mapped by SKVI.
 SSCG interprets compatibility across the structural contracts that SKVI indexes.
 
 ## Relationship to symphony-validator Evidence
-The checked-in `tools/symphony-validator/` implementation parses this human-authored index and checks entry shape, required-surface coverage, indexed paths, uniqueness, and SCLV references. Its evidence does not create canonical membership or authorize remediation.
+The checked-in `tools/symphony-validator/` implementation parses this repository-maintained index and checks entry shape, required-surface coverage, indexed paths, uniqueness, and SCLV references. Its evidence does not create canonical membership, manufacture ratification, or authorize remediation.
 
 ## Relationship to qxctl
 qxctl may later consume SKVI, but qxctl integration is not authorized here.

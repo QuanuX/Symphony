@@ -16,7 +16,7 @@ Draft threat model for the scaffold and planned provider phases. It uses assets,
 - Availability of legitimate credential operations.
 
 ## Actors
-- Authorized local operator.
+- Authorized local caller, regardless of caller type.
 - Authorized TOPS workload.
 - qxctl process.
 - SSIAG service account.
@@ -30,7 +30,7 @@ Draft threat model for the scaffold and planned provider phases. It uses assets,
 - Misconfigured administrator.
 
 ## Trust Boundaries
-1. Operator or agentic tool to qxctl.
+1. Authorized or unauthorized caller to qxctl.
 2. qxctl to local SSIAG socket.
 3. SSIAG identity plane to policy plane.
 4. Policy plane to credential/provider plane.
@@ -170,9 +170,10 @@ Socket permissions and ownership alone are not endpoint authentication; the post
 - safe field allowlist;
 - separate runtime audit vector from SCLV;
 - restricted permissions and retention;
-- fail-closed policy for high-risk operations when audit integrity is unavailable.
+- fail-closed policy for ordinary high-risk operations when audit integrity is unavailable;
+- an explicit, permission-backed administrator recovery path that durably records audit-deferred evidence for later reconciliation without weakening protocol integrity.
 
-STAV v1 detects tampering but does not provide non-repudiation. Agents, qxctl, and event producers never edit ledger files directly.
+STAV v1 detects tampering but does not provide non-repudiation. No caller, qxctl client, or event producer edits ledger files directly through a supported interface.
 
 ### Denial of Service
 **Threat:** Requests exhaust goroutines, file descriptors, provider sessions, interaction prompts, or rate limits.

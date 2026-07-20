@@ -60,7 +60,7 @@ ValidatorContractShapeResult check_validator_contract_shapes(const std::string& 
                 {"Purpose", "## Skill Purpose"},
                 {"Inputs", "## Planned Skill Surface"},
                 {"Outputs", "## Output Consumption Behavior"},
-                {"Boundaries", "## Non-agentic Behavior"}
+                {"Boundaries", "## Deterministic, Non-Autonomous Behavior"}
             }
         },
         {

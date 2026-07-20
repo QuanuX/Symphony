@@ -37,7 +37,7 @@ SACV governs canonical API contracts and their registry. SODV alone decides whet
 NotebookLM aligns corpus context but is not canonical authority. Append-only release records must be interpreted under the corpus interpretation rule in `knowledge/INTENT.md`.
 
 ### Relationship to Validator
-The checked-in `tools/symphony-validator/` implementation produces deterministic, read-only evidence for required SODV contract anchors and indexed-path presence. It does not currently interpret release-transaction semantics or prove publication completion; `RELEASES.md`, immutable Git state, public-proxy resolution, and human review carry those roles.
+The checked-in `tools/symphony-validator/` implementation produces deterministic, read-only evidence for required SODV contract anchors and indexed-path presence. It does not currently interpret release-transaction semantics or prove publication completion; `RELEASES.md`, immutable Git state, public-proxy resolution, and permission-backed review carry those roles.
 
 ### Relationship to qxctl
 qxctl may later read or invoke knowledge-vector operations, but qxctl integration is not part of this task.

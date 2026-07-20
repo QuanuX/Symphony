@@ -1,6 +1,6 @@
 # Symphony Change Log Vector Ledger
 
-This file is a human-authored structured declarative SCLV change ledger.
+This file is a repository-maintained structured declarative SCLV change ledger.
 SCLV records change truth.
 SCLV does not create source truth.
 SCLV does not replace Git history.
@@ -45,8 +45,8 @@ Markdown declares.
 C++ detects.
 C++ checks.
 C++ projects.
-Humans ratify.
-Agents assist.
+Permission holders ratify.
+Authority-free tools and callers assist.
 
 C++ tooling may read and check SCLV records.
 C++ tooling must not autonomously author canonical change truth.

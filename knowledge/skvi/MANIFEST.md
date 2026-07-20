@@ -49,7 +49,7 @@ SKVI does not enforce runtime behavior.
 Module contract boundaries, root governance, and other Knowledge Vector files, including SCLV and SODV.
 
 ## Outputs SKVI Describes
-Human-authored paths, roles, ownership boundaries, relationships, consumers, status, and deferred-projection eligibility. Machine-generated projections remain deferred.
+Repository-maintained paths, roles, ownership boundaries, relationships, consumers, status, and deferred-projection eligibility. Machine-generated projections remain deferred.
 
 ## Relationship to SKV
 SKVI is an autonomous peer index defining the structural map of the SKV framework.

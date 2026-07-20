@@ -32,4 +32,4 @@ Use this guidance when reviewing, recording, validating, or recovering a canonic
 
 ## Non-Authorization Statement
 
-symphony-validator detects and reports. It never edits. An agent may draft a recovery record, but the Architect or designated human reviewer ratifies it. qxctl may later expose read-only derived evidence only.
+symphony-validator detects and reports. It never edits. Any caller may draft a recovery record within its effective permissions, but only the Architect or another caller holding the applicable ratification permission may ratify it. Caller type is not evaluated. qxctl may later expose read-only derived evidence only.

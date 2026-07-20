@@ -12,7 +12,7 @@ The command tree and flag grammar use Cobra. Viper is a constrained command-conf
 
 The initial secure-identity-access-governance integration is local and read-only. qxctl reads SSIAG health and safe provider descriptors over a Unix domain socket. qxctl does not receive or persist credential values.
 
-Every SSIAG query is scoped by immutable TOPS ID. `knowledge/ssiag/` owns SSIAG protocol truth; qxctl only implements its administrative/query projection. Future administrative change separates deterministic `propose` from authorized local `apply`; AI agents may never apply.
+Every SSIAG query is scoped by immutable TOPS ID. `knowledge/ssiag/` owns SSIAG protocol truth; qxctl only implements its administrative/query projection. Future administrative change separates deterministic `propose` from permission-backed local `apply`. Authorization depends on target-host ownership or granted permission, the requested operation and resource, expected state, and owner-configured safeguards; qxctl does not request or evaluate caller type.
 
 The Architect-ratified `qxctl stav status|verify|query|doctor` grammar is operational. It loads the selected per-TOPS STAV contract, authenticates the authority endpoint from kernel credentials, submits strict local envelopes, and displays only classification-authorized projections. qxctl has no `stav append`, does not edit STAV ledgers, and does not own `knowledge/stav/` schemas. qxctl grammar is not governed by OpenAPI.
 
@@ -33,6 +33,7 @@ The Architect-ratified `qxctl stav status|verify|query|doctor` grammar is operat
 - qxctl does not enforce runtime behavior.
 - qxctl does not implement identity-provider, keyring, or secret-provider SDK behavior.
 - qxctl does not accept or print secret values through SSIAG commands.
+- qxctl does not grant target-host authority or make caller-class policy.
 
 ## Relationship
 qxctl reads and reports Symphony repository state. It relates to node-troll, bus-troll, hotpath-runtime, and secure-identity-access-governance as an administrative command and inspection surface, not as an owner of their workloads or security state.

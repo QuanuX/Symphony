@@ -5,7 +5,7 @@ Status:
   Canonical declarative SKVI index.
 
 ## Purpose
-A human-authored declarative knowledge routing table.
+A repository-maintained declarative knowledge routing table.
 
 ## Scope
 SKVI indexes source truth.
@@ -18,7 +18,7 @@ SKVI maps relationships.
 SKVI maps future derived projection eligibility.
 
 ## What This Index Is
-A human-authored declarative knowledge routing table.
+A repository-maintained declarative knowledge routing table.
 
 ## What This Index Is Not
 SKVI is not a generated database.
@@ -67,8 +67,8 @@ Markdown declares.
 C++ detects.
 C++ checks.
 C++ projects.
-Humans ratify.
-Agents assist.
+Permission holders ratify.
+Authority-free tools and callers assist.
 
 The checked-in C++26 validator reads and checks SKVI entries and produces deterministic, read-only evidence. Structured C++ projectors remain deferred.
 C++ tooling must not autonomously author canonical truth.
@@ -414,7 +414,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: module architecture
 - truth_role: component, trust-boundary, provider, qxctl, and SKV design
 - owner: secure-identity-access-governance maintainer
-- scope: Preserves monorepo agent context and module-bounded install/runtime authority.
+- scope: Preserves monorepo-wide caller context and module-bounded install/runtime authority.
 - relationships:
   - depends_on -> `modules/secure-identity-access-governance/INTENT.md`
   - interprets -> `knowledge/INTENT.md`
@@ -534,7 +534,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - path: `modules/stav-append-authority/SKILL.md`
 - title: STAV Append Authority Skill
 - surface_type: module skill guidance
-- truth_role: safe agent interaction and implementation stop conditions
+- truth_role: safe caller interaction and implementation stop conditions
 - owner: STAV append-authority maintainer
 - scope: Permits inspection and verification while prohibiting schema invention and unauthorized ledger mutation.
 - relationships:
@@ -542,7 +542,7 @@ Future validator increments may add separately ratified deterministic checks wit
   - interprets -> `modules/stav-append-authority/THREAT-MODEL.md`
 - consumers: humans, reviewers, agentic tools
 - deferred_projections: none
-- notes: Agent lifecycle actions still require explicit user authorization.
+- notes: Lifecycle actions require the applicable target-host permission; caller type is not evaluated.
 - status: canonical
 
 ##### SPEC.md
@@ -711,7 +711,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: knowledge-vector skill guidance
 - truth_role: safe API-contract authoring and review procedure
 - owner: SACV maintainer
-- scope: Guides agents and humans without authorizing endpoints, publication, live requests, or MCP exposure.
+- scope: Guides all callers without authorizing endpoints, publication, live requests, or MCP exposure.
 - relationships: depends_on -> `knowledge/sacv/SPEC.md`; interprets -> `knowledge/sodv/SPEC.md`
 - consumers: humans, API maintainers, security reviewers, agentic tools
 - deferred_projections: conformance workflow automation
@@ -802,13 +802,13 @@ Future validator increments may add separately ratified deterministic checks wit
 - path: `knowledge/ssiag/SKILL.md`
 - title: Symphony Secure Identity and Access Governance Skill
 - surface_type: knowledge-vector skill guidance
-- truth_role: safe human and agent procedure for SSIAG changes
+- truth_role: safe caller procedure for SSIAG changes
 - owner: SSIAG knowledge maintainer
-- scope: Defines reading order, agent authority, change procedure, and stop conditions.
+- scope: Defines reading order, caller-neutral host authority, change procedure, and stop conditions.
 - relationships: depends_on -> `knowledge/ssiag/SPEC.md`; interprets -> `knowledge/stav/SPEC.md`
 - consumers: humans, maintainers, reviewers, agentic tools
 - deferred_projections: none
-- notes: Agents may query and propose but not bypass policy or handle credentials.
+- notes: Callers may query, propose, or use a future apply operation only within effective host permissions; no supported operation may bypass policy or expose credentials.
 - status: canonical
 
 #### SSIAG SPEC.md
@@ -845,7 +845,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: knowledge-vector manifest
 - truth_role: canonical STAV authority, writer, storage, and projection boundaries
 - owner: STAV knowledge maintainer
-- scope: Declares schema authority, append authority, producers, qxctl, agents, and operational storage.
+- scope: Declares schema authority, append authority, producers, qxctl, callers, and operational storage.
 - relationships: depends_on -> `knowledge/stav/INTENT.md`; declares -> `knowledge/stav/SPEC.md`; governs -> `modules/stav-append-authority/MANIFEST.md`
 - consumers: humans, reviewers, append-authority and producer implementers, SKVI
 - deferred_projections: JSONL, DuckDB, HDF5, redacted graph projections
@@ -862,7 +862,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/stav/SPEC.md`; governs -> `tools/qxctl/cmd/qxctl/main.go`; governs -> `modules/stav-append-authority/SKILL.md`
 - consumers: humans, reviewers, operators, agentic tools
 - deferred_projections: none
-- notes: Agents never edit, repair, reorder, or append ledger files.
+- notes: No supported caller interface edits, repairs, reorders, or directly appends ledger files.
 - status: canonical
 
 #### STAV SPEC.md
@@ -964,7 +964,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: provider module skill guidance
 - truth_role: safe build, test, install, and operational-gate procedure
 - owner: SSIAG macOS provider maintainer
-- scope: Defines agent restrictions and ratification required before Apple Security access.
+- scope: Defines the caller-neutral capability boundary and ratification required before Apple Security access.
 - relationships: depends_on -> `modules/ssiag-provider-macos-keychain/SPEC.md`; interprets -> `knowledge/stav/SPEC.md`
 - consumers: humans, maintainers, security reviewers, agentic tools
 - deferred_projections: provider security review checklist
@@ -1004,7 +1004,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: tool intent
 - truth_role: intent and purpose for symphony-validator
 - owner: validator maintainer
-- scope: Defines the implemented deterministic, explainable, non-agentic C++26 parser/checker boundary. Current output is line-oriented evidence plus a summary and exit status; structured projectors and integration surfaces remain deferred.
+- scope: Defines the implemented deterministic, explainable, non-autonomous C++26 parser/checker boundary. Current output is line-oriented evidence plus a summary and exit status; structured projectors and integration surfaces remain deferred.
 - relationships:
   - declares -> `tools/symphony-validator/MANIFEST.md`
   - declares -> `tools/symphony-validator/SPEC.md`
@@ -1101,7 +1101,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: skvi_index
 - truth_role: canonical knowledge routing table
 - owner: SKVI
-- scope: Human-authored declarative index of canonical Symphony knowledge-vector surfaces, their truth roles, ownership boundaries, relationships, consumers, deferred projections, and status.
+- scope: Repository-maintained declarative index of canonical Symphony knowledge-vector surfaces, their truth roles, ownership boundaries, relationships, consumers, deferred projections, and status.
 - relationships:
   - indexes -> canonical repository knowledge surfaces
   - declares -> knowledge routing relationships
@@ -1124,7 +1124,7 @@ Future validator increments may add separately ratified deterministic checks wit
   - HDF5 dense quantitative / vector / compatibility substrate
   - graph view relationship projection
   - qxctl-readable evidence projection
-  - human-readable Markdown report
+  - readable Markdown report
 - status: canonical
 - notes: Added to make SKVI self-indexing explicit rather than implicit in validator behavior. The validator must consume declared SKVI truth, not invent canonical index membership.
 
@@ -1240,7 +1240,7 @@ Future validator increments may add separately ratified deterministic checks wit
   truth_role: `canonical change truth ledger`
   owner: `SCLV`
   scope: |
-    Human-authored declarative ledger for canonical SCLV records. Records canonical change truth against SKVI-indexed surfaces and preserves evidence, relationship changes, doctrine changes, compatibility consequences, publication consequences, projection consequences, and non-authorizations.
+    Repository-maintained declarative ledger for canonical SCLV records. Records canonical change truth against SKVI-indexed surfaces and preserves evidence, relationship changes, doctrine changes, compatibility consequences, publication consequences, projection consequences, and non-authorizations.
   relationships: |
     records change truth for canonical repository surfaces
     references SKVI-indexed paths
@@ -1264,7 +1264,7 @@ Future validator increments may add separately ratified deterministic checks wit
     - `HDF5 dense quantitative / vector / compatibility substrate`
     - `graph view relationship projection`
     - `qxctl-readable evidence projection`
-    - `human-readable Markdown report`
+    - `readable Markdown report`
   status: `canonical`
   notes: |
     Added because knowledge/sclv/CHANGELOG.md was canonicalized after the initial SKVI declarative index. This closes expected post-bootstrap SKVI/SCLV index drift without creating generated projections or implementation.
@@ -1349,7 +1349,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: `Authorization never implies completion; pending transaction state is noncanonical. Current validator coverage does not interpret release-transaction semantics.`
 
 ## Deferred Projections
-Unless a surface is explicitly indexed above, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, new qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. The indexed STAV JSON Schemas and fixtures are human-ratified protocol truth, not generated projections.
+Unless a surface is explicitly indexed above, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, new qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. The indexed STAV JSON Schemas and fixtures are permission-backed ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following:
