@@ -23,7 +23,7 @@ SODV governs official documentation publication, including how internal canonica
 `RELEASES.md` is the append-only module-publication ledger. It separates merged authorization from completed publication so a local package cache or planned checksum can never be mistaken for a public release.
 
 ## Installability Considerations
-SODV has no executable install surface. Its module-release protocol is operational as a human-ratified, append-only repository transaction, while public-documentation generation, Mintlify configuration, qxctl integration, and a general publication pipeline remain deferred.
+SODV has no executable install surface. Its module-release protocol is operational as a permission-backed, append-only repository transaction, while public-documentation generation, Mintlify configuration, qxctl integration, and a general publication pipeline remain deferred.
 
 ## Scope
 SODV governs publication truth. It manages the boundaries between internal declarative truth and external public presentation or distribution.

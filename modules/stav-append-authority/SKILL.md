@@ -1,19 +1,19 @@
 # STAV Append Authority Skill
 
-## Safe Agent Actions
+## Safe Caller Actions
 
-Agents may inspect, build, test, verify configuration shape, and use qxctl read-only commands when the Architect or operator authorizes access. Agents may propose administrative configuration changes but must not apply them without explicit authority.
+A caller may inspect, build, test, verify configuration shape, use qxctl read-only commands, propose administrative configuration changes, or perform an available state-changing operation only when its target-host permissions authorize that operation. Caller type is not evaluated. The current qxctl STAV commands remain read-only for every caller.
 
-Install, enroll, supervisor install/uninstall, serve, unenroll, and purge are state-changing operator actions and require explicit user direction. Purge is destructive even though it is scoped to one TOPS.
+Install, enroll, supervisor install/uninstall, serve, unenroll, and purge are state-changing operations. The caller must hold the applicable target-host permission and explicitly invoke the exact operation. Purge is destructive even though it is scoped to one TOPS.
 
 ## Prohibited Actions
 
-Agents must never:
+No supported caller operation may:
 
 - edit, append, truncate, rotate, replace, or repair a ledger file;
 - invoke or create a raw append surface;
-- grant themselves producer/reader permissions or treat socket access as authorization;
-- make qxctl, SSIAG, node-troll, a supervisor, or an agent a secondary writer;
+- manufacture producer/reader permissions or treat socket access as authorization;
+- make qxctl, SSIAG, node-troll, a supervisor, or any other component a secondary writer;
 - record proofs, assertions, tokens, credentials, provider payloads, or secret-bearing errors;
 - bypass endpoint/caller authentication, fsync-before-receipt, or evidence preservation;
 - introduce HTTP/OpenAPI or remote producer ingestion;

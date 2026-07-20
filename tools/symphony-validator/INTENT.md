@@ -3,7 +3,7 @@
 ****
 
 ## Purpose
-Define the exact authority boundaries and non-agentic behavior of the implemented C++ validator.
+Define the exact authority boundaries and deterministic, non-autonomous behavior of the implemented C++ validator.
 
 ## Scope
 Defines the tool contract and behavioral specification for the Symphony validator.
@@ -12,15 +12,14 @@ Defines the tool contract and behavioral specification for the Symphony validato
 The implemented boundary contains a C++26 command-line parser/checker, a CMake build contract, and smoke fixtures. It does not contain a runtime service, deployment system, CI integration, qxctl mediation, executable schema generator, JSON/Markdown projector, auto-remediation path, or publication pipeline.
 
 ## Role
-The validator is deterministic, explainable, and non-agentic. It produces structured evidence for humans, CI systems, qxctl, and agentic tools, but it does not perform interpretation, remediation, or architectural decision-making.
+The validator is deterministic, explainable, and non-autonomous. It produces structured evidence for every caller, CI systems, qxctl, and agentic tools, but it does not perform interpretation, remediation, or architectural decision-making.
 
-## Non-Agentic Doctrine
+## Deterministic, Non-Autonomous Doctrine
 The validator does not infer intent.
 The validator does not rewrite files.
 The validator does not choose remedies.
 The validator does not make architecture decisions.
-The validator does not replace human review.
-The validator does not replace agentic review.
+The validator does not replace permission-backed ratification or semantic review.
 
 ## Relationship to qxctl
 The validator is currently invoked directly. Any `qxctl`-mediated invocation requires a separate contract and implementation increment.
@@ -47,7 +46,7 @@ This contract authorizes the checked-in deterministic C++26 parser/checker, its 
 ## Troll Doctrine
 trolls are the local residents.
 A troll is a bounded local resident of a Symphony runtime domain.
-A troll is not an AI agent.
+A troll is a runtime-residency role, not a caller identity or authorization class.
 
 node-troll represents the node.
 bus-troll manages bus residency and bus compatibility.

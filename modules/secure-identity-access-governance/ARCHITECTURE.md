@@ -19,7 +19,7 @@ The monorepo is intentional: agents and humans can inspect doctrine, runtime mod
 | Go SSIAG module | foundation implementation and per-TOPS metadata API | native framework host or canonical source truth |
 | provider module | reviewed platform operation implementation | policy authority or fallback selector |
 | `knowledge/stav/` | audit envelope and append protocol truth | operational ledger |
-| append authority | event validation, sequencing, durable append | schema author or agent endpoint |
+| append authority | event validation, sequencing, durable append | schema author or general caller endpoint |
 | qxctl | administrative/query interface | provider, schema owner, ledger editor, secret holder |
 | SKVI | relationship index | source-truth creator |
 
@@ -102,7 +102,7 @@ The planned sequence is macOS Keychain, Linux Secret Service, an explicit headle
 
 ### qxctl to SSIAG
 
-The socket is local and permission-restricted, and every accepted connection is authenticated using kernel-attested Unix-socket peer credentials. Explicit per-TOPS UID/GID mappings resolve canonical subjects; absent or ambiguous mappings cannot yield mutation authority. The service verifies its configured process identity before runtime mutation, while qxctl and the self-client verify the configured kernel-attested server identity before application exchange. Permissions remain defense in depth. Status and provider metadata are the only enabled operations. Future administrative change separates proposal from apply. Agents may query and propose only. Apply still waits for a mapped subject, authorization, replay protection, idempotency, expected-state binding, and audit.
+The socket is local and permission-restricted, and every accepted connection is authenticated using kernel-attested Unix-socket peer credentials. Explicit per-TOPS UID/GID mappings resolve canonical subjects; absent or ambiguous mappings cannot yield mutation authority. The service verifies its configured process identity before runtime mutation, while qxctl and the self-client verify the configured kernel-attested server identity before application exchange. Permissions remain defense in depth. Status and provider metadata are the only enabled operations for every caller. Future administrative change separates proposal from apply. Apply still waits for a mapped subject, effective target-host permission, replay protection, idempotency, proposal and expected-state binding, caller-neutral safeguards, and the applicable STAV or audit-deferred recovery contract. Caller type is not evaluated.
 
 ### SSIAG to Adapter
 

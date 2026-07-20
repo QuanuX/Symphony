@@ -80,7 +80,7 @@ The producer-to-authority transport is mutually authenticated local IPC and is n
 
 The append authority owns socket creation and never uses supervisor socket activation. After verifying its configured process identity, it acquires an exclusive non-blocking lock on the persistent adjacent `append.sock.lock` regular file before inspecting or removing the socket. It refuses a live or foreign endpoint, removes only a provably stale socket, drains accepted bounded requests on SIGTERM, removes the socket, and releases the lifecycle lock last. The native profiles use launchd label `io.github.quanux.symphony.stav.<tops-id>` or systemd unit `symphony-stav@<tops-id>.service`, have no SSIAG dependency, and consume the configured numeric authority identity rather than creating or inferring one. System state and runtime children are owned by that authority identity; configuration remains administrator-owned and readable trust metadata. Linux uses `/run/symphony/<tops-id>/stav`; macOS uses `/var/run/symphony/<tops-id>/stav`.
 
-Direct file mutation is prohibited for qxctl, producers, and agents. Enrollment creates no producer or reader grant; grants require explicit operator configuration. Recovery is limited to the evidence-preserving incomplete-tail procedure below. Any other repair remains a separately authorized administrative operation.
+Direct file mutation is prohibited through supported interfaces for every caller, including qxctl clients and producers. Enrollment creates no producer or reader grant; grants require explicit host-administrator configuration and do not vary by caller type. Recovery is limited to the evidence-preserving incomplete-tail procedure below. Any other repair remains a separately authorized administrative operation.
 
 The configuration contains endpoint trust and grant metadata but no secrets. Its final path component MUST NOT be a symbolic link and it MUST NOT be writable by group or other. User enrollment writes it as `0600`. System enrollment writes it as administrator-owned `0644` so separately identified producers and readers can obtain the authority identity and public grants without gaining configuration mutation authority.
 
@@ -138,7 +138,9 @@ The listener accepts only authenticated local Unix-socket peers on supported Dar
 
 ## Mutation Availability Policy
 
-Security, credential, provider, policy, and configuration mutations MUST fail closed when the append authority cannot accept the required audit event. A denied request remains denied when audit is unavailable; v1 MUST NOT create an ungoverned producer-side spool or secondary writer as a fallback.
+Security, credential, provider, policy, and configuration mutations using the ordinary audited path MUST fail closed when the append authority cannot accept the required audit event. A denied request remains denied when audit is unavailable; v1 MUST NOT create an ungoverned producer-side spool or secondary writer as a fallback.
+
+No audit-deferred mutation path is implemented in STAV v1. A future target-host-administrator recovery protocol MUST be explicit rather than automatic, permission-backed without evaluating caller type, expected-state bound, and protocol-integrity preserving. It MUST durably record a local recovery journal before completing the operation, mark the result audit-deferred, and reconcile forward through the append authority when STAV returns. It MUST NOT edit the ledger, impersonate the original event time, hide the interruption, or permit a permanent unreconciled record.
 
 ## Operational v1 Boundary and Deferred Gates
 

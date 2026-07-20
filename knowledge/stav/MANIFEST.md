@@ -16,9 +16,9 @@ STAV owns its event envelope, presence rules, integrity rules, append-authority 
 - SSIAG: first implemented producer class through an explicit per-installation grant;
 - node-troll: future producer class requiring separate review and grant;
 - qxctl: canonical administrative and query interface implementing the protocol;
-- agents: query and proposal authority only.
+- callers: reader or producer authority only through exact configured grants; caller type is not evaluated.
 
-qxctl does not own the schema. Producers do not choose sequence numbers or edit ledger files. Agents do not append directly.
+qxctl does not own the schema. Producers do not choose sequence numbers or edit ledger files. No caller appends directly outside an authenticated producer grant and the serialized authority.
 
 ## Operational Storage
 

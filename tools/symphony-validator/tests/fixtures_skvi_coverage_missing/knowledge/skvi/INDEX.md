@@ -5,7 +5,7 @@ Status:
   Canonical declarative SKVI index.
 
 ## Purpose
-A human-authored declarative knowledge routing table.
+A repository-maintained declarative knowledge routing table.
 
 ## Scope
 SKVI indexes source truth.
@@ -18,7 +18,7 @@ SKVI maps relationships.
 SKVI maps future derived projection eligibility.
 
 ## What This Index Is
-A human-authored declarative knowledge routing table.
+A repository-maintained declarative knowledge routing table.
 
 ## What This Index Is Not
 SKVI is not a generated database.
@@ -67,8 +67,8 @@ Markdown declares.
 C++ detects.
 C++ checks.
 C++ projects.
-Humans ratify.
-Agents assist.
+Permission holders ratify.
+Authority-free tools and callers assist.
 
 Future C++ tooling may read, check, and project SKVI entries.
 Future C++ tooling must not autonomously author canonical truth.
@@ -325,7 +325,7 @@ Future validator checks may verify SKVI structure.
 - surface_type: tool intent seed
 - truth_role: intent and purpose for symphony-validator
 - owner: validator maintainer
-- scope: Define validator boundaries. The validator is deterministic, explainable, and non-agentic. It produces structured evidence for humans, CI systems, qxctl, and agentic tools. It does not perform interpretation, remediation, or architectural decision-making. Evidence model is truth. JSON is the structured evidence projection. Markdown is the agent/human ingestion projection.
+- scope: Define validator boundaries. The validator is deterministic, explainable, and non-autonomous. It produces structured evidence for every caller, CI systems, qxctl, and agentic tools. It does not perform interpretation, remediation, or architectural decision-making. Evidence model is truth. JSON is the structured evidence projection. Markdown is the caller-ingestion projection.
 - relationships:
   - declares -> `tools/symphony-validator/MANIFEST.md`
   - declares -> `tools/symphony-validator/SPEC.md`
@@ -420,7 +420,7 @@ Future validator checks may verify SKVI structure.
 - surface_type: skvi_index
 - truth_role: canonical knowledge routing table
 - owner: SKVI
-- scope: Human-authored declarative index of canonical Symphony knowledge-vector surfaces, their truth roles, ownership boundaries, relationships, consumers, deferred projections, and status.
+- scope: Repository-maintained declarative index of canonical Symphony knowledge-vector surfaces, their truth roles, ownership boundaries, relationships, consumers, deferred projections, and status.
 - relationships:
   - indexes -> canonical repository knowledge surfaces
   - declares -> knowledge routing relationships
@@ -443,7 +443,7 @@ Future validator checks may verify SKVI structure.
   - HDF5 dense quantitative / vector / compatibility substrate
   - graph view relationship projection
   - qxctl-readable evidence projection
-  - human-readable Markdown report
+  - readable Markdown report
 - status: canonical
 - notes: Added to make SKVI self-indexing explicit rather than implicit in validator behavior. The validator must consume declared SKVI truth, not invent canonical index membership.
 
@@ -559,7 +559,7 @@ Future validator checks may verify SKVI structure.
   truth_role: `canonical change truth ledger`
   owner: `SCLV`
   scope: |
-    Human-authored declarative ledger for canonical SCLV records. Records canonical change truth against SKVI-indexed surfaces and preserves evidence, relationship changes, doctrine changes, compatibility consequences, publication consequences, projection consequences, and non-authorizations.
+    Repository-maintained declarative ledger for canonical SCLV records. Records canonical change truth against SKVI-indexed surfaces and preserves evidence, relationship changes, doctrine changes, compatibility consequences, publication consequences, projection consequences, and non-authorizations.
   relationships: |
     records change truth for canonical repository surfaces
     references SKVI-indexed paths
@@ -583,7 +583,7 @@ Future validator checks may verify SKVI structure.
     - `HDF5 dense quantitative / vector / compatibility substrate`
     - `graph view relationship projection`
     - `qxctl-readable evidence projection`
-    - `human-readable Markdown report`
+    - `readable Markdown report`
   status: `canonical`
   notes: |
     Added because knowledge/sclv/CHANGELOG.md was canonicalized after the initial SKVI declarative index. This closes expected post-bootstrap SKVI/SCLV index drift without creating generated projections or implementation.

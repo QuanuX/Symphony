@@ -37,7 +37,7 @@ Immutable opaque IDs and mutable display names are separate fields. Paths, socke
 
 Local peer-credential authentication, foundational supervision, proposal/apply separation, provider mutual executable trust, protected one-shot secret delivery, and per-user macOS Keychain operation are ratified architectural directions. The Go foundation implements kernel credential extraction and exact UID/GID-to-subject mapping for accepted Darwin/Linux connections; this does not enable mutation or provider operations.
 
-Kernel peer authentication, endpoint trust, native per-TOPS supervision/runtime ownership, and the typed mutually authenticated SSIAG-to-STAV producer are implemented. Credential release, provider mutation, and operational Keychain behavior remain disabled until their exact contracts and verification gates pass. Provider fallback, network listeners, graph-database deployment, and agent access to secret-bearing operations remain unauthorized.
+Kernel peer authentication, endpoint trust, native per-TOPS supervision/runtime ownership, and the typed mutually authenticated SSIAG-to-STAV producer are implemented. Credential release, provider mutation, and operational Keychain behavior remain disabled for every caller until their exact contracts and verification gates pass. Provider fallback, network listeners, graph-database deployment, and secret-bearing general administrative surfaces remain unauthorized.
 
 ## Status
 

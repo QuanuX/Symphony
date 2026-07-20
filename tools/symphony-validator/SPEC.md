@@ -14,28 +14,27 @@
 ## Purpose
 Define the exact behavior and authority boundaries of the implemented C++ validator.
 
-## Non-agentic Validator Doctrine
-The validator is deterministic, explainable, and non-agentic. It produces structured evidence for humans, CI systems, qxctl, and agentic tools, but it does not perform interpretation, remediation, or architectural decision-making.
+## Deterministic, Non-Autonomous Validator Doctrine
+The validator is deterministic, explainable, and non-autonomous. It produces structured evidence for every caller, CI systems, qxctl, and agentic tools, but it does not perform interpretation, remediation, or architectural decision-making.
 The validator does not infer intent.
 The validator does not rewrite files.
 The validator does not choose remedies.
 The validator does not make architecture decisions.
-The validator does not replace human review.
-The validator does not replace agentic review.
+The validator does not replace permission-backed ratification or semantic review.
 
 ## Evidence Model
-Evidence model is truth. JSON is the structured evidence projection. Markdown is the agent/human ingestion projection.
+Evidence model is truth. JSON is the structured evidence projection. Markdown is the caller-ingestion projection.
 
 ## Dual Output Model
 Evidence model is truth.
 JSON is the structured evidence projection.
-Markdown is the agent/human ingestion projection.
+Markdown is the caller-ingestion projection.
 Markdown must not introduce claims, conclusions, or remediation steps that are not present in the source evidence model.
 
 ## JSON Evidence Projection
 A future structured machine-readable projection may support the administrative spine and CI. It is not implemented or authorized by this contract increment.
 
-## Markdown Agent/Human Ingestion Projection
+## Markdown Caller-Ingestion Projection
 A future Markdown projection may provide a stable, context-friendly ingestion surface. It is not implemented or authorized by this contract increment.
 
 ## Synchronization Rules
@@ -44,14 +43,14 @@ Markdown must mirror rule IDs from JSON.
 Markdown must preserve severity, path, status, and reason.
 Markdown must not invent interpretation.
 Markdown must not suggest architecture unless the rule itself encodes the expected condition.
-Agents may consume Markdown, but validator authority remains deterministic evidence only.
+Any caller may consume Markdown, but validator authority remains deterministic evidence only.
 
 ## Output Modes
 - Default local mode
 - CI mode
 - Agent mode
 - Strict machine mode
-- Human review mode
+- Permission-backed review mode
 
 ## Rule ID Taxonomy
 Families including `REPO.*`, `MODULE.*`, `INSTALL.*`, `NAMESPACE.*`, `TROLL.*`, `BUS.*`, `PYTHON.*`, `DOMAIN.*`, `INFRA.*`, `TERMS.*`, `LEAKAGE.*`, `PR.*`.
@@ -86,17 +85,17 @@ The implementation provides deterministic line-oriented evidence, a summary, and
 The validator does not replace SKV / SKVI / SCLV / SODV records. It provides evidence to support them.
 
 ## Behavioral Non-goals
-The validator must not choose infrastructure for users, assume Docker/Kubernetes/cloud providers, impose market-data/order-flow/trading doctrine, require Python for hot-path or administrative spine, ban optional isolated Python habitats, treat contract seeds as runtime implementation, convert monorepo modularity into microservices doctrine, absorb module sovereignty into root-level logic, become a runtime daemon, become a hidden coordinator, replace qxctl, replace Maestro, replace SKV / SKVI / SCLV / SODV records, become agentic, infer intent, auto-remediate files, or make architecture decisions.
+The validator must not choose infrastructure for users, assume Docker/Kubernetes/cloud providers, impose market-data/order-flow/trading doctrine, require Python for hot-path or administrative spine, ban optional isolated Python habitats, treat contract seeds as runtime implementation, convert monorepo modularity into microservices doctrine, absorb module sovereignty into root-level logic, become a runtime daemon, become a hidden coordinator, replace qxctl, replace Maestro, replace SKV / SKVI / SCLV / SODV records, perform autonomous semantic decisions, infer intent, auto-remediate files, or make architecture decisions.
 Active project term c-o-r-e is absent except inside explicit forbidden-term scan descriptions.
 
 ## Implemented Authorization Boundary
-This specification authorizes the checked-in C++26 command-line parser/checker, its CMake build contract, and smoke fixtures. The implementation may read repository surfaces, emit deterministic evidence, and return deterministic exit status. It remains non-agentic and read-only.
+This specification authorizes the checked-in C++26 command-line parser/checker, its CMake build contract, and smoke fixtures. The implementation may read repository surfaces, emit deterministic evidence, and return deterministic exit status. It remains non-autonomous and read-only.
 
 
 ## Troll Doctrine
 trolls are the local residents.
 A troll is a bounded local resident of a Symphony runtime domain.
-A troll is not an AI agent.
+A troll is a runtime-residency role, not a caller identity or authorization class.
 
 node-troll represents the node.
 bus-troll manages bus residency and bus compatibility.
@@ -200,7 +199,7 @@ Checks must not:
 - decide architecture
 - decide compatibility state
 - replace SSCG interpretation
-- replace human review
+- replace permission-backed ratification or semantic review
 - replace NotebookLM alignment
 - replace SODV publication governance
 
@@ -214,7 +213,7 @@ Future projection targets may include:
 - HDF5 dense quantitative / vector / compatibility substrate
 - graph view relationship projection
 - qxctl-readable evidence projection
-- human-readable Markdown report
+- readable Markdown report
 
 No projection is canonical authority.
 All projections are derived, disposable, and rebuildable.
@@ -224,7 +223,7 @@ Future projection formats require separate planning and canonical authorization.
 ### Evidence Categories
 
 - pass: Indicates successful alignment with canonical truth. Applies when structural, vocabulary, and path checks meet expectations.
-- warning: Indicates a non-blocking anomaly or potential drift. Applies when human review is needed but deterministic evidence does not require blocking.
+- warning: Indicates a non-blocking anomaly or potential drift. Applies when permission-backed review is needed but deterministic evidence does not require blocking.
 - violation: Indicates a strict defect or architectural break. Applies when path existence, required shape, or vocabulary rules definitively fail.
 - deferred: Indicates a condition that is known but intentionally not checked yet. Applies when a rule or boundary is planned but unimplemented.
 - absent: Indicates missing expected canonical files or fields. Applies when a required artifact or structured entry cannot be found.
@@ -234,10 +233,10 @@ Future projection formats require separate planning and canonical authorization.
 
 ### Authority Boundaries
 
-The validator is deterministic, explainable, and non-agentic.
+The validator is deterministic, explainable, and non-autonomous.
 Evidence model is truth.
 JSON is the structured evidence projection.
-Markdown is the agent/human ingestion projection.
+Markdown is the caller-ingestion projection.
 MANIFEST.md is declared contract truth.
 Code is implementation truth.
 Generated JSON is a derived projection.

@@ -1,7 +1,7 @@
 # qxctl Skill
 
-## How Agents Should Use qxctl
-Agents should use `qxctl` as the primary local administrative spine to verify repository status, module integrity, and runtime inventory.
+## How Callers Should Use qxctl
+Any caller operating within its effective target-host permission should use `qxctl` as the primary local administrative spine to verify repository status, module integrity, and runtime inventory. Caller type does not expand or reduce authority.
 
 ## Command Examples
 - `go run ./cmd/qxctl status`
@@ -21,7 +21,7 @@ Agents should use `qxctl` as the primary local administrative spine to verify re
 - Keep SSIAG/STAV trust configuration and endpoint authentication outside Viper in their dedicated clients.
 - Run commands synchronously in the active execution session.
 - SSIAG commands may read safe metadata only. Never pass secret values through qxctl arguments, input, output, logs, or fixtures.
-- When proposal support exists, agents may create and inspect proposals only. Never invoke, emulate, or bypass apply authority.
+- The current implementation is read-only for every caller. When proposal and apply support exists, use only operations permitted by the target host and satisfy the configured safeguards; never emulate, manufacture, or bypass host authority.
 - STAV commands require an enrolled, running authority and an explicit reader grant. Never bypass endpoint authentication, reader classification, or add raw append behavior.
 
 ## Do-Not-Use-For List

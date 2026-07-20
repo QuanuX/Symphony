@@ -59,7 +59,7 @@ The OpenAPI Specification version and the Symphony API contract version are inde
 
 Within one API major version, an owner MUST NOT remove operations, remove or narrow accepted values, make optional input required, reinterpret existing fields, weaken security, change error semantics incompatibly, or change identifier meaning. Deprecation MUST precede removal and MUST identify the replacement or terminal reason.
 
-Compatibility checks are evidence. Human review and the owning contracts decide whether a change is accepted.
+Compatibility checks are evidence. Permission-backed review and the owning contracts decide whether a change is accepted; caller type is not an acceptance criterion.
 
 ## Transport Scope
 
@@ -77,7 +77,7 @@ OpenAPI MUST NOT govern:
 
 Protected operations MUST reference a ratified authentication and authorization profile. A security scheme MUST NOT be invented merely because documentation or a generator requires one. In particular, no generic “SSIAG token” exists unless SSIAG separately ratifies its format, issuer, audience, lifecycle, and threat model.
 
-Caller identity claimed in a request body is untrusted. Authorization is an implementation obligation bound to the authenticated channel and SSIAG policy.
+Caller identity claimed in a request body is untrusted. Authorization is an implementation obligation bound to the authenticated channel, effective target-host permission, SSIAG policy, operation context, and owner-configured caller-neutral safeguards. An API contract MUST NOT assign different authority because a caller is human, AI, agentic, a service, a workload, an organization, or another actor type.
 
 Canonical descriptions and examples MUST NOT contain credentials, tokens, assertions, proofs, private keys, provider payloads, secret-bearing native errors, production hostnames, or realistic secret-shaped fixtures.
 

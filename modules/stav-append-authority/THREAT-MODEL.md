@@ -22,7 +22,7 @@
 - **Crash ambiguity**: startup preserves an incomplete tail, truncates only after evidence sync, and rebuilds idempotency.
 - **Silent repair**: complete corruption and chain mismatch prevent startup; no resynchronization or middle salvage exists.
 - **Secret leakage**: schemas carry only safe references and closed metadata; SSIAG exposes no secret-bearing producer field.
-- **Agent escalation**: qxctl and agents have no append or ledger-file surface.
+- **Caller escalation**: qxctl and ungranted callers have no append or ledger-file surface; caller type is not an authority input.
 
 ## Residual Risk
 

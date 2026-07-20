@@ -18,7 +18,7 @@ SCLV has no independently installed runtime. The repository validator is its bou
 
 ## Core Invariants
 
-- Canonical records describe completed, human-ratified change truth.
+- Canonical records describe completed, permission-backed ratified change truth.
 - Historical records are never reordered, deleted, or rewritten to conceal an interruption.
 - GitHub PR identifiers form a sparse namespace.
 - Record file order is recording order, not PR-number order.
@@ -29,7 +29,7 @@ SCLV has no independently installed runtime. The repository validator is its bou
 
 ## Non-Authorization Statement
 
-The Architect and designated human reviewers ratify canonical truth. Agents may assist with evidence collection and draft changes. symphony-validator is read-only and cannot repair, ratify, append, reorder, or publish. qxctl has no SCLV mutation authority.
+The Architect and any caller granted the applicable review/ratification permission may ratify canonical truth. Any caller or tool may assist with evidence collection and draft changes within its effective permissions. symphony-validator is authority-free and read-only; it cannot repair, ratify, append, reorder, or publish. qxctl has no implemented SCLV mutation surface.
 
 ## Relationships
 
@@ -37,4 +37,4 @@ SKVI indexes source truth. SCLV records change truth. SODV governs publication t
 
 ## Explicit Non-Authorizations
 
-This manifest authorizes the current human-authored ledger and deterministic validator checks only. It does not authorize autonomous ratification, generated canonical records, public publication, a database projection, or runtime audit mutation.
+This manifest authorizes the current repository-maintained ledger and deterministic validator checks only. It does not let an authority-free process manufacture ratification, generated canonical records, public publication, a database projection, or runtime audit mutation.

@@ -9,9 +9,9 @@
 5. Configure the SSIAG foundation to invoke the exact installed binary only after provider compatibility support exists.
 6. Verify version, protocol, binary permissions, manifest digest, bounded IPC, and fail-closed behavior.
 
-## Agent Restrictions
+## Current Capability Boundary
 
-Agents may inspect metadata, build, test, and propose configuration. They must not request Keychain values, type secret values into IPC fixtures, use `security` CLI as a hidden fallback, weaken prompts or access controls, add silent provider fallback, or claim operational Keychain access from the scaffold.
+Any caller may inspect metadata, build, test, and propose configuration within its effective target-host permission. Caller type does not affect capability. Operational Keychain access is disabled for every caller, so no supported operation may request Keychain values, place secret values in IPC fixtures, use `security` CLI as a hidden fallback, weaken prompts or access controls, add silent provider fallback, or claim operational access from the scaffold.
 
 ## Ratified Architecture
 

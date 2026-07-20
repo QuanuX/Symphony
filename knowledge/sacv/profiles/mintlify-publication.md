@@ -34,4 +34,4 @@ If Mintlify or an SDK integration requires a combined specification, that combin
 
 ## SDK Boundary
 
-SDK generation and publication are separate approvals. Generated SDKs MUST NOT embed credentials, default to an unratified server, bypass SSIAG, or expand an agent's authority. SDK examples are documentation projections, not protocol truth.
+SDK generation and publication are separate approvals. Generated SDKs MUST NOT embed credentials, default to an unratified server, bypass SSIAG, or expand any caller's effective authority. SDK examples are documentation projections, not protocol truth.

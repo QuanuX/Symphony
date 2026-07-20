@@ -2,7 +2,7 @@
 
 ## Status and Authority
 
-This specification is the canonical SCLV behavioral contract. `knowledge/sclv/CHANGELOG.md` is the human-authored canonical record surface. `tools/symphony-validator/` implements deterministic, read-only checks of this contract.
+This specification is the canonical SCLV behavioral contract. `knowledge/sclv/CHANGELOG.md` is the repository-maintained canonical record surface. `tools/symphony-validator/` implements deterministic, read-only checks of this contract.
 
 ## Purpose
 
@@ -10,7 +10,7 @@ Define which completed changes belong in SCLV, how their immutable records are s
 
 ## Record Selection
 
-An SCLV record is required for a completed, human-ratified change that materially alters canonical architecture, contracts, doctrine, compatibility, namespaces, publication boundaries, governed tooling behavior, or another indexed knowledge surface.
+An SCLV record is required for a completed, permission-backed ratified change that materially alters canonical architecture, contracts, doctrine, compatibility, namespaces, publication boundaries, governed tooling behavior, or another indexed knowledge surface.
 
 SCLV is intentionally sparse. A GitHub pull request may be implementation-only, a closure carrier, or unrelated to SCLV scope. The absence of an SCLV record for such a PR is correct. A record named `SCLV-PR-NNN` must align with PR `NNN` when present, but adjacent records need not have adjacent PR numbers.
 
@@ -67,7 +67,7 @@ On clean closure, delete the marker after the canonical record is committed. On 
 - closed without merge: confirm abandonment and delete the marker;
 - merged and already recorded: verify alignment and delete the marker;
 - merged but unrecorded: append a `late_recovery` record, validate, commit it, then delete the marker;
-- indeterminate evidence: fail closed and request human review.
+- indeterminate evidence: fail closed and request review by a caller holding the applicable permission.
 
 This is recovery by forward correction. It is never permission to edit history or fabricate evidence.
 
@@ -75,8 +75,8 @@ This is recovery by forward correction. It is never permission to edit history o
 
 SKVI indexes SCLV surfaces. SODV consumes SCLV change truth when governing release or documentation publication. SSCG interprets compatibility. STAV owns per-installation runtime audit truth. Git and GitHub provide evidence only.
 
-Agents may query and propose. Humans ratify. symphony-validator may parse and check, but never mutate or self-heal canonical files. Automated self-healing is limited to reconciling ephemeral state and preparing a forward-only recovery proposal.
+Callers may query or propose within their effective permissions. A caller holding the required repository/transition-owner permission ratifies, regardless of caller type. symphony-validator may parse and check, but never mutate or self-heal canonical files. Automated self-healing is limited to reconciling ephemeral state and preparing a forward-only recovery proposal; generation does not manufacture authority.
 
 ## Explicit Non-Authorizations
 
-SCLV does not authorize autonomous ratification, canonical pending records, rewriting or reordering existing records, fabricated evidence, tag publication, runtime audit mutation, generated canonical projections, or qxctl mutation authority.
+SCLV does not grant ratification to an authority-free process, authorize canonical pending records, permit rewriting or reordering existing records, accept fabricated evidence, publish tags, mutate runtime audit data, create canonical projections, or create qxctl mutation authority.

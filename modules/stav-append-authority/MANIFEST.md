@@ -37,7 +37,7 @@ The published versions are immutable public Go source modules, not GitHub binary
 
 ## Deliberately Absent
 
-- qxctl or agent append authority;
+- raw qxctl or ungranted caller append authority;
 - HTTP, OpenAPI, NATS, TCP, or remote STAV transport;
 - automatic retention deletion, rotation, middle-frame salvage, or general repair;
 - signed checkpoints, non-repudiation, and remote export;

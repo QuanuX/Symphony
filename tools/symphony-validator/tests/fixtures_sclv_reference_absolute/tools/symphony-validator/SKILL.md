@@ -2,4 +2,4 @@
 ## Skill Purpose
 ## Planned Skill Surface
 ## Output Consumption Behavior
-## Non-agentic Behavior
+## Deterministic, Non-Autonomous Behavior

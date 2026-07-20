@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Guide humans and agents in creating, reviewing, registering, validating, and publishing Symphony HTTP API contracts without displacing domain ownership or security authority.
+Guide every authorized caller in creating, reviewing, registering, validating, and publishing Symphony HTTP API contracts without displacing domain ownership or security authority.
 
 ## Required Reading Order
 
@@ -14,11 +14,11 @@ Guide humans and agents in creating, reviewing, registering, validating, and pub
 6. the owning domain vector or module contracts
 7. `knowledge/sodv/SPEC.md` before proposing publication
 
-## Agent Authority
+## Caller Authority
 
-Agents may inspect API governance, compare implementations with canonical contracts, propose contract changes, and produce non-authoritative validation evidence.
+Any caller may inspect API governance, compare implementations with canonical contracts, propose contract changes, and produce non-authoritative validation evidence within its effective permissions. Caller type does not grant or remove authority.
 
-Agents must not:
+No supported caller operation may:
 
 - invent an endpoint, security scheme, server URL, scope, or token format;
 - register an API without an identified semantic owner;
@@ -42,8 +42,8 @@ Agents must not:
 
 ## Stop Conditions
 
-Stop and obtain owner ratification before selecting a new API transport, adding a remote SSIAG gateway, weakening security, publishing an administrative API, enabling live requests or MCP exposure, changing the SACV OpenAPI target, or moving endpoint truth between owners.
+Stop and obtain permission-backed owner ratification before selecting a new API transport, adding a remote SSIAG gateway, weakening security, publishing an administrative API, enabling live requests or MCP exposure, changing the SACV OpenAPI target, or moving endpoint truth between owners.
 
 ## Non-Authorization Statement
 
-This skill is procedural guidance. It authorizes no endpoint, listener, schema generation, SDK publication, Mintlify configuration, public documentation, or agent mutation path.
+This skill is procedural guidance. It authorizes no endpoint, listener, schema generation, SDK publication, Mintlify configuration, public documentation, or caller mutation path.

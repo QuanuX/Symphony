@@ -7,7 +7,7 @@
 ## Troll Doctrine
 trolls are the local residents.
 A troll is a bounded local resident of a Symphony runtime domain.
-A troll is not an AI agent.
+A troll is a runtime-residency role, not a caller identity or authorization class.
 A troll is not a global coordinator.
 A troll is not the domain itself.
 
@@ -31,7 +31,7 @@ owning the native hot path
 owning global coordination
 replacing Maestro
 replacing node-troll
-acting as an AI agent
+acting as a caller identity, authorization authority, or autonomous architectural decision-maker
 
 ## Installability
 - **module install status**: PROPOSED

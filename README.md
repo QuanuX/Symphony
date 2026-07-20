@@ -52,10 +52,12 @@ The repository root establishes platform invariants and guarantees modular sover
 
 ## Doctrine
 
-- A troll is a bounded local resident of a Symphony runtime domain; it is not an AI agent.
+- A troll is a bounded local resident of a Symphony runtime domain; the term describes runtime residency, not caller identity, intelligence, or authorization.
 - `node-troll` represents the node and `bus-troll` manages an optional managed-bus residency boundary at the contract level only today.
 - `hotpath-runtime` is the proposed native hot-path runtime substrate and is not a troll.
 - Bus bypass remains valid when declared by deployment constraints; the presence of a bus contract does not make bus traversal mandatory.
+
+Symphony authorizes supported operations from target-host ownership or granted permission, not from whether a caller is human, AI, a service, or another actor type. The host administrator controls configurable safeguards; protocol-integrity rules remain mandatory within supported tooling.
 
 These statements describe the current canonical contract seeds, not implemented runtime capability.
 

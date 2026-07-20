@@ -73,4 +73,4 @@ SSIAG submits only the closed safe outcome vocabulary defined by `knowledge/ssia
 
 ## Implemented and Disabled Gates
 
-Local peer authentication, exact UID/GID subject resolution, endpoint verification, native supervision/runtime ownership, serialized socket recovery, and typed SSIAG STAV submission are implemented. Proposal/apply mutation, administrative authorization, lease issuance, credential delivery, and operational provider calls remain disabled. Remote access and agent apply authority are unauthorized.
+Local peer authentication, exact UID/GID subject resolution, endpoint verification, native supervision/runtime ownership, serialized socket recovery, and typed SSIAG STAV submission are implemented. Proposal/apply mutation, safeguard administration, audit-deferred recovery, lease issuance, credential delivery, and operational provider calls remain disabled for every caller. Future apply authority must derive from effective target-host permission without evaluating caller type. Remote access and any non-permission-backed apply path are unauthorized.

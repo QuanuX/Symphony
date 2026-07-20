@@ -1,10 +1,10 @@
 # Symphony TOPS Audit Vector Skill
 
-## Safe Agent Use
+## Safe Caller Use
 
-Agents may read canonical STAV contracts, query safe ledger projections through qxctl, correlate events by allowlisted identifiers, and propose administrative actions through qxctl.
+Any caller may read canonical STAV contracts and, when its target-host permissions and reader grant allow, query safe ledger projections through qxctl, correlate events by allowlisted identifiers, and propose administrative actions. Caller type does not expand or reduce authority.
 
-Agents must never:
+No supported caller operation may:
 
 - edit, repair, truncate, reorder, or append operational ledger files;
 - write runtime events under `knowledge/stav/` or another repository path;
@@ -28,6 +28,6 @@ Agents must never:
 
 The dedicated Go process architecture, operational schemas, strict JCS profile, SHA-256 domains, local and ledger framing, mutual peer authentication, exact grants, fsync-before-receipt, incomplete-tail recovery, liveness-only native supervision, `libraries/stav-protocol-go`, SSIAG producer vocabulary, and bounded read-only qxctl grammar are Architect-ratified and implemented. Safe-integer sequences are limited to `2^53-1`. The protocol kernel has no runtime authority.
 
-Stop and obtain Architect approval before changing canonical schemas or bytes; expanding a grant or producer class; changing storage framing, acknowledgement, recovery, retention, rotation, or repair; adding remote export or Merkle/checkpoint authority; or allowing an agent mutation path. Operational ledgers and grants are never agent-editable.
+Stop and obtain permission-backed Architect approval before changing canonical schemas or bytes; expanding a grant or producer role; changing storage framing, acknowledgement, recovery, retention, rotation, or repair; adding remote export or Merkle/checkpoint authority; or adding a new mutation path. Operational ledgers and grants are never directly editable through a supported caller interface.
 
 Go 1.27 work may be experimental before release but must not change the production Go 1.26.5 pin. After general availability, follow the differential migration gate in `libraries/stav-protocol-go/GO_1_27_MIGRATION.md`; a new standard-library API is never permission to change the protocol.
