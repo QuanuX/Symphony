@@ -36,7 +36,7 @@ Deferred integration surfaces are `qxctl` mediation and CI/PR-gate invocation.
 
 ## Output Surfaces
 - Deterministic line-oriented evidence
-- Deterministic summary and exit status
+- Deterministic summary and exit status (including `21` for caller-authority regression)
 
 Structured JSON and Markdown projections remain deferred.
 

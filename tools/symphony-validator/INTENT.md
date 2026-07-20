@@ -43,6 +43,9 @@ It prevents Python from becoming required validator infrastructure for the admin
 This contract authorizes the checked-in deterministic C++26 parser/checker, its CMake build, and smoke fixtures. It does not authorize executable schema generation, JSON/Markdown projection, qxctl integration, CI mutation, publication, or remediation.
 
 
+## Caller-Authority Checking
+The validator enforces deterministic caller-authority validation on active doctrine, returning exit code 21 upon regression. It ensures that no caller is denied or assigned authority based on a class (e.g., human, AI, agent, service caller) while visibly exempting immutable SCLV/SODV record bodies without broad allowlists. The checker detects bounded constructions and does not claim arbitrary semantic understanding or perform remediation. Caller types remain descriptive, not authority inputs.
+
 ## Troll Doctrine
 trolls are the local residents.
 A troll is a bounded local resident of a Symphony runtime domain.

@@ -6,6 +6,11 @@ echo "Running smoke tests..."
 ./build/sclv-temporal-tests
 echo "SCLV temporal tests passed"
 
+# Verify caller authority
+./build/caller-authority-tests
+echo "Caller authority tests passed"
+
+
 # Verify --help
 ./build/symphony-validator --help > /dev/null
 echo "--help passed"
@@ -26,10 +31,39 @@ if [ $(echo "$OUT" | grep -c "^summary ") -ne 1 ]; then
 fi
 echo "valid fixture passed"
 
+# Verify caller-authority regression (exit 21)
+TEMP_FIXTURE=$(mktemp -d)
+trap 'rm -rf "$TEMP_FIXTURE"' EXIT
+cp -a ./tests/fixtures_valid/* "$TEMP_FIXTURE/"
+echo "AI agents may never apply." >> "$TEMP_FIXTURE/README.md"
+set +e
+OUT_AUTH=$(./build/symphony-validator check --repo "$TEMP_FIXTURE" 2>&1)
+EXIT_CODE=$?
+set -e
+if [ $EXIT_CODE -ne 21 ]; then
+    echo "error: caller authority violation should exit 21, got $EXIT_CODE"
+    exit 1
+fi
+if ! echo "$OUT_AUTH" | grep -q "evidence violation caller_authority.class_subject_modal path=README.md line="; then
+    echo "error: missing expected class_subject_modal evidence"
+    exit 1
+fi
+if [ $(echo "$OUT_AUTH" | grep -c "^summary ") -ne 1 ]; then
+    echo "error: invalid auth fixture should have exactly one summary footer"
+    exit 1
+fi
+rm -rf "$TEMP_FIXTURE"
+trap - EXIT
+echo "caller authority validation passed"
+
 # Verify current repo
 OUT_REPO=$(./build/symphony-validator check --repo ../..)
 if [ $(echo "$OUT_REPO" | grep -c "^summary ") -ne 1 ]; then
     echo "error: current repo should have exactly one summary footer"
+    exit 1
+fi
+if ! echo "$OUT_REPO" | grep -q "caller_authority.scan_complete files=94 .* findings=0"; then
+    echo "error: current repo missing expected caller_authority.scan_complete status or findings=0"
     exit 1
 fi
 if [ $(echo "$OUT_REPO" | grep -c "artifact.canonical_json_authorized") -ne 28 ]; then

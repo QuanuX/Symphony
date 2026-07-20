@@ -16,6 +16,7 @@
 #include "sclv_skvi_references.hpp"
 #include "doctrine_vocab.hpp"
 #include "skvi_paths.hpp"
+#include "caller_authority.hpp"
 #include "sclv_references.hpp"
 #include "validator_build.hpp"
 #include <iostream>
@@ -168,6 +169,14 @@ int run_cli(const std::vector<std::string>& args) {
             }
             if (!doctrine_success) {
                 final_exit = 15;
+                print_summary();
+                return final_exit;
+            }
+
+            CallerAuthorityCheckResult caller_auth_result = check_caller_authority(args[2]);
+            process_messages(caller_auth_result.messages);
+            if (!caller_auth_result.success) {
+                final_exit = 21;
                 print_summary();
                 return final_exit;
             }

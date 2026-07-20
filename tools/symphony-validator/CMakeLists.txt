@@ -23,6 +23,7 @@ add_executable(symphony-validator
     src/knowledge_contracts.cpp
     src/root_contracts.cpp
     src/doctrine_vocab.cpp
+    src/caller_authority.cpp
     src/validator_build.cpp
 )
 
@@ -44,6 +45,20 @@ add_executable(sclv-temporal-tests
 target_include_directories(sclv-temporal-tests PRIVATE src)
 
 set_target_properties(sclv-temporal-tests PROPERTIES
+  CXX_STANDARD 26
+  CXX_STANDARD_REQUIRED ON
+  CXX_EXTENSIONS OFF
+)
+
+add_executable(caller-authority-tests
+    tests/caller_authority_test.cpp
+    src/caller_authority.cpp
+    src/evidence.cpp
+)
+
+target_include_directories(caller-authority-tests PRIVATE src)
+
+set_target_properties(caller-authority-tests PROPERTIES
   CXX_STANDARD 26
   CXX_STANDARD_REQUIRED ON
   CXX_EXTENSIONS OFF

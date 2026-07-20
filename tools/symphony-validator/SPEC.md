@@ -62,7 +62,30 @@ Families including `REPO.*`, `MODULE.*`, `INSTALL.*`, `NAMESPACE.*`, `TROLL.*`, 
 Status reflects the deterministic outcome of a rule check.
 
 ## Exit-code Model
-`0` to `5`, mapping to passes, errors, blockers, malformed repositories, or internal failures.
+`0` to `21`, mapping to passes, errors, blockers, malformed repositories, or internal failures. The exact mapping is:
+
+- `0`: success;
+- `1`: invalid CLI usage or unknown command;
+- `2`: invalid repository path;
+- `3`: SKVI parsing/shape;
+- `4`: SCLV parsing/shape prerequisite;
+- `5`: SKVI/SCLV cross-reference;
+- `6`: status/change-type vocabulary;
+- `7`: SCLV record shape;
+- `8`: unauthorized artifacts;
+- `9`: required canonical surfaces;
+- `10`: validator contract shape;
+- `11`: runtime contract shape;
+- `12`: knowledge contract shape;
+- `13`: root contract shape;
+- `14`: SCLV ledger continuity;
+- `15`: doctrine vocabulary;
+- `16`: SKVI coverage;
+- `17`: SKVI path safety/existence;
+- `18`: SCLV referenced surfaces;
+- `19`: SCLV/SKVI membership;
+- `20`: validator build-source integrity;
+- `21`: caller-authority regression.
 
 ## Historical/Migration Exception Behavior
 Stale names (e.g. `legacy node execution label`, `legacy native hot-path label`, `legacy bus residency label`) are rejected except in historical contexts or rename records.

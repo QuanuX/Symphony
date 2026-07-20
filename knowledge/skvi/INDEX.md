@@ -1058,7 +1058,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: tool specification
 - truth_role: normative parser/checker behavior and authority boundary
 - owner: validator maintainer
-- scope: Deterministic validation rules.
+- scope: Deterministic validation rules, including caller-authority regression checking (exit code 21).
 - consumers: humans, validator implementation, reviewers
 - relationships: governs -> `tools/symphony-validator/src/`; constrains -> future projectors and integrations
 - deferred_projections: JSON/Markdown, graph, analytical, and qxctl-readable projections

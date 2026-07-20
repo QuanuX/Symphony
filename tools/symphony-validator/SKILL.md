@@ -16,10 +16,10 @@ The implemented skill surface is direct execution through `symphony-validator ch
 
 ## Deterministic, Non-Autonomous Behavior
 The validator is deterministic, explainable, and non-autonomous.
-The validator produces evidence.
+The validator produces evidence, including caller-authority regression findings (exit code 21).
 The validator does not fix the repository.
 The validator does not choose remedies.
-Agentic tools may consume the Markdown projection, but the validator itself remains non-autonomous and authority-free.
+Agentic tools may consume the Markdown projection, but the validator itself remains non-autonomous and authority-free. Caller types remain descriptive.
 
 ## Output Consumption Behavior
 Evidence lines and the final summary are the current implementation output. Any future JSON or Markdown projection must derive from one evidence model, share stable rule identifiers, and introduce no claims, conclusions, or remediation steps absent from that model.
