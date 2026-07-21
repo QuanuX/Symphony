@@ -1478,3 +1478,129 @@ This PR authorizes none of the following:
   - `Go 1.27 production pin`
 - notes: |
     This record was authored only after PR #77 merged and its exact merge/head evidence and timestamps were verified. All 48 changed files are listed as affected surfaces. Implementation and test files that are not feature-worthy SKVI entries remain explicit `sclv.affected_surface.unindexed` advisories rather than being hidden through selective omission or artificial index expansion. The closure-carrier PR for this record is non-recursive unless it makes an independently significant architectural change.
+
+- record_id: `SCLV-CHG-20260721-SCLV-V3-ENGINE`
+- record_version: `3`
+- title: `SCLV v3 engine and exact-installation qxctl integration implemented`
+- status: `canonical`
+- date: `2026-07-21`
+- change_started_at: `2026-07-21T21:20:44Z`
+- change_completed_at: `2026-07-21T21:22:28Z`
+- recorded_at: `2026-07-21T21:23:59Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#79`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/79`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `b5c880fa2135c78f797a1fc41aba342f1c1d275b`
+- tree_digest: `sha256:2d1931f025a9687dbd04d5aaaac79fac4a3050d9e1fd4ac20f706e3a2c50b63b`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/79`
+- ratification_evidence_digest: `sha256:930899a3901040ab82ecb0a5a594b727391d989d0e4332e6fbba963289a63051`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/provider-evidence.schema.json`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/sclv/INTENT.md`
+  - `knowledge/sclv/MANIFEST.md`
+  - `knowledge/sclv/SKILL.md`
+  - `knowledge/sclv/SPEC.md`
+  - `knowledge/sclv/schemas/v3/MANIFEST.md`
+  - `knowledge/sclv/schemas/v3/check-result.schema.json`
+  - `knowledge/sclv/schemas/v3/projection.schema.json`
+  - `knowledge/sclv/schemas/v3/proposal-input.schema.json`
+  - `knowledge/sclv/schemas/v3/record.schema.json`
+  - `knowledge/sclv/schemas/v3/recovery-input.schema.json`
+  - `knowledge/sclv/templates/v3/record.md`
+  - `knowledge/skvi/INDEX.md`
+  - `modules/sclv-engine/CMakeLists.txt`
+  - `modules/sclv-engine/INSTALL.md`
+  - `modules/sclv-engine/INTENT.md`
+  - `modules/sclv-engine/MANIFEST.md`
+  - `modules/sclv-engine/SKILL.md`
+  - `modules/sclv-engine/SPEC.md`
+  - `modules/sclv-engine/cmake/install-receipt.json.in`
+  - `modules/sclv-engine/cmake/uninstall.cmake.in`
+  - `modules/sclv-engine/src/airgap_main.cpp`
+  - `modules/sclv-engine/src/local_git.cpp`
+  - `modules/sclv-engine/src/local_git.hpp`
+  - `modules/sclv-engine/src/local_git_main.cpp`
+  - `modules/sclv-engine/src/main.cpp`
+  - `modules/sclv-engine/src/provider.cpp`
+  - `modules/sclv-engine/src/provider.hpp`
+  - `modules/sclv-engine/src/sclv.cpp`
+  - `modules/sclv-engine/src/sclv.hpp`
+  - `modules/sclv-engine/tests/process_smoke.sh`
+  - `modules/sclv-engine/tests/sclv_test.cpp`
+  - `tools/qxctl/INSTALL.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/sclv_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/qxctl/internal/knowledgeengine/client_test.go`
+  - `tools/symphony-validator/CMakeLists.txt`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/src/sclv_changelog.cpp`
+  - `tools/symphony-validator/src/sclv_changelog.hpp`
+  - `tools/symphony-validator/src/sclv_ledger.cpp`
+  - `tools/symphony-validator/src/sclv_shape.cpp`
+  - `tools/symphony-validator/tests/fixtures_valid/knowledge/sclv/CHANGELOG.md`
+  - `tools/symphony-validator/tests/sclv_temporal_test.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/provider-evidence.schema.json`
+  - `knowledge/sclv/SPEC.md`
+  - `knowledge/sclv/schemas/v3/MANIFEST.md`
+  - `knowledge/sclv/schemas/v3/record.schema.json`
+  - `modules/sclv-engine/MANIFEST.md`
+  - `modules/sclv-engine/SPEC.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    Implemented the independently installable C++26 SCLV engine, provider-neutral v3 contracts, local-Git and air-gapped evidence adapters, exact-receipt qxctl administration, v3 ledger validation, non-mutating recovery, and disposable projections.
+- relationship_changes: |
+    SCLV now consumes the common C++ knowledge-engine foundation, qxctl administers only an exact installed receipt, and symphony-validator enforces the v3 canonical record shape while preserving v1/v2 history.
+- doctrine_changes: |
+    Activated provider-neutral SCLV v3 application behavior while preserving caller-class-neutral host authority: evidence normalization does not grant permission, ratify, or apply a proposal.
+- compatibility_consequences: |
+    Immutable v1 and v2 records remain accepted and project through explicit legacy normalization; new canonical closure records use the stable SCLV-CHG identifier and v3 evidence fields.
+- publication_consequences: |
+    No module release, version activation, package publication, or Git tag is authorized by this record.
+- projection_consequences: |
+    The engine can emit a deterministic provider-neutral JSON projection that is explicitly noncanonical and rebuildable from the ledger.
+- evidence:
+  - `PR #79 merged into main at 2026-07-21T21:22:28Z by quantDIY as b5c880fa2135c78f797a1fc41aba342f1c1d275b`
+  - `local-Git adapter evidence digest sha256:a52d1fe30cb5f66b6b4544f630870a77e7c3952ae26753a8212d8b66677122b4 bound tree digest sha256:2d1931f025a9687dbd04d5aaaac79fac4a3050d9e1fd4ac20f706e3a2c50b63b`
+  - `air-gap adapter evidence digest sha256:809203801648c082fd22b1cff6216edb62796e989023b82b88f4adb2b1712112 bound change-request and ratification claims`
+  - `ratification metadata canonical JSON: {"baseRefName":"main","headRefName":"agent/sclv-engine-v3","headRefOid":"57d10f12b82255da4196c8da86e1a3151917d996","mergeCommit":{"oid":"b5c880fa2135c78f797a1fc41aba342f1c1d275b"},"mergedAt":"2026-07-21T21:22:28Z","mergedBy":{"id":"U_kgDOC1s9vw","is_bot":false,"login":"quantDIY","name":"Duncan Parker"},"number":79,"state":"MERGED","title":"Implement the SCLV v3 engine and exact-installation qxctl integration","url":"https://github.com/QuanuX/Symphony/pull/79"}`
+  - `SCLV Debug and Release unit/process suites, all Go workspace module tests, qxctl installed-engine integration, exact install/uninstall proof, and the validator smoke matrix passed`
+  - `live validator result pass=2201 warning=107 violation=0 exit=0; all warnings remained historical sclv.affected_surface.unindexed findings`
+- non_authorizations:
+  - `canonical proposal apply or direct SCLV append`
+  - `ephemeral journal mutation or deletion`
+  - `version activation or Maestro docking`
+  - `module release publication or Git tagging`
+  - `provider trust beyond the normalized evidence`
+  - `hot-path or warm-path participation`
+- notes: |
+    This post-merge closure records the implementation merged by PR #79. The closure record itself is appended separately so the implementation revision and its evidence remain immutable and independently verifiable.
