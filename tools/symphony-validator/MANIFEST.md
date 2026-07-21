@@ -40,6 +40,10 @@ Deferred integration surfaces are `qxctl` mediation and CI/PR-gate invocation.
 
 Structured JSON and Markdown projections remain deferred. Runtime source/AST caller-authority analysis and auto-remediation are strictly deferred and unauthorized.
 
+## Canonical JSON Boundary
+
+The artifact checker recognizes exactly 32 canonical JSON paths: 28 STAV v1 schemas/fixtures and four common SKV process/descriptor/receipt schemas. It does not authorize a directory prefix, generated projection, or new JSON artifact by extension.
+
 ## Caller-Authority Capability
 The implemented checker reads active Markdown from the bounded repository surfaces defined in `SPEC.md`. It emits lexical-path evidence for configured caller-class authority constructions and for fail-visible discovery, stream, symlink, and resource-limit conditions. It does not follow symlink targets or modify scanned content.
 

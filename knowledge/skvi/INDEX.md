@@ -644,11 +644,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: shared-library topology doctrine
 - truth_role: implementation placement and runtime-authority boundary
 - owner: Symphony root governance
-- scope: Defines build-time shared code as distinct from independently installed runtime modules.
-- relationships: depends_on -> `INTENT.md`; governs -> `libraries/stav-protocol-go/MANIFEST.md`
+- scope: Defines build-time shared code and versioned native development packages as distinct from independently installed resident runtime modules.
+- relationships: depends_on -> `INTENT.md`; governs -> `libraries/stav-protocol-go/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
 - consumers: implementers, reviewers, agentic tools, symphony-validator and future validator extensions
 - deferred_projections: dependency graph and release evidence
-- notes: Libraries own no canonical protocol truth or operational identity.
+- notes: Libraries own no canonical protocol truth or resident operational identity; a native development package may still be independently installed and removed through a receipt.
 - status: canonical
 
 #### STAV Protocol Kernel
@@ -675,6 +675,97 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: maintainers, release engineers, reviewers, agentic tools
 - deferred_projections: dual-toolchain CI evidence and release record
 - notes: Toolchain adoption cannot change STAV wire bytes, digests, public APIs, or authority boundaries.
+- status: canonical
+
+#### Knowledge Vector Engine C++ Foundation INTENT.md
+- path: `libraries/knowledge-vector-engine-cpp/INTENT.md`
+- title: Knowledge Vector Engine C++ Foundation Intent
+- surface_type: first-party shared-library intent
+- truth_role: implemented authority-free foundation purpose and boundary
+- owner: SKV foundation maintainers
+- scope: Defines bounded JSON, digest, path, snapshot, and process mechanics without semantic authority.
+- relationships: depends_on -> `knowledge/SPEC.md`; declares -> `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
+- consumers: coordinator and future vector-engine implementers, reviewers, agentic tools
+- deferred_projections: dependency and conformance evidence
+- notes: No executable or canonical mutation authority belongs to the library.
+- status: canonical
+
+#### Knowledge Vector Engine C++ Foundation MANIFEST.md
+- path: `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
+- title: Knowledge Vector Engine C++ Foundation Manifest
+- surface_type: first-party native library manifest
+- truth_role: implemented component, dependency, installability, and authority boundary
+- owner: SKV foundation maintainers
+- scope: Declares the C++26 static target, `0.1.0-dev` components, pinned JSON dependency, and versioned install paths.
+- relationships: depends_on -> `libraries/knowledge-vector-engine-cpp/INTENT.md`; implements -> `knowledge/SPEC.md`
+- consumers: coordinator and future vector engines, packagers, reviewers, agentic tools
+- deferred_projections: package inventory and SBOM evidence
+- notes: nlohmann/json is vendored and has no runtime download or validator linkage.
+- status: canonical
+
+#### Knowledge Vector Engine C++ Foundation INSTALL.md
+- path: `libraries/knowledge-vector-engine-cpp/INSTALL.md`
+- title: Knowledge Vector Engine C++ Foundation Installation
+- surface_type: native library installation contract
+- truth_role: versioned build, test, install, consumer, and uninstall procedure
+- owner: SKV foundation maintainers
+- scope: Defines CMake build and receipt-owned prefix lifecycle without runtime activation.
+- relationships: depends_on -> `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
+- consumers: implementers, packagers, reviewers, agentic tools
+- deferred_projections: qxctl lifecycle evidence
+- notes: The development package is not a resident module or shared runtime dependency.
+- status: canonical
+
+#### Knowledge Vector Engine C++ Foundation SKILL.md
+- path: `libraries/knowledge-vector-engine-cpp/SKILL.md`
+- title: Knowledge Vector Engine C++ Foundation Skill
+- surface_type: native foundation skill guidance
+- truth_role: safe implementation and review procedure
+- owner: SKV foundation maintainers
+- scope: Guides limits, strict parsing, path safety, response framing, and authority separation.
+- relationships: depends_on -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; depends_on -> `knowledge/SKILL.md`
+- consumers: C++ implementers, reviewers, agentic tools
+- deferred_projections: conformance checklist
+- notes: Vector semantics and host permissions never belong in the shared library.
+- status: canonical
+
+#### Knowledge Vector Engine C++ Foundation SPEC.md
+- path: `libraries/knowledge-vector-engine-cpp/SPEC.md`
+- title: Knowledge Vector Engine C++ Foundation Specification
+- surface_type: native foundation specification
+- truth_role: exact implemented limits, digest, path, snapshot, and dependency contract
+- owner: SKV foundation maintainers
+- scope: Defines `0.1.0-dev` mechanics and adversarial rejection requirements.
+- relationships: depends_on -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
+- consumers: coordinator and future vector engines, testers, reviewers
+- deferred_projections: protocol conformance report
+- notes: The version is developmental and not published.
+- status: canonical
+
+#### Knowledge Vector Engine C++ Foundation CMakeLists.txt
+- path: `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
+- title: Knowledge Vector Engine C++ Foundation Build Contract
+- surface_type: native build and install contract
+- truth_role: implementation build, static-link, test, package, receipt, and uninstall truth
+- owner: SKV foundation maintainers
+- scope: Builds and installs the versioned `Symphony::KnowledgeVectorEngine` CMake package.
+- relationships: implements -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; consumed_by -> `modules/knowledge-session-coordinator/CMakeLists.txt`
+- consumers: CMake, implementers, packagers, reviewers
+- deferred_projections: reproducible build provenance
+- notes: No runtime dependency download is permitted.
+- status: canonical
+
+#### Knowledge Vector Engine C++ Dependency Record
+- path: `libraries/knowledge-vector-engine-cpp/third_party/README.md`
+- title: Knowledge Vector Engine Third-Party Source Record
+- surface_type: dependency provenance record
+- truth_role: pinned upstream, checksum, license, and linkage evidence
+- owner: SKV foundation maintainers
+- scope: Records nlohmann/json `v3.12.0` and its official release checksum.
+- relationships: depends_on -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; informs -> `knowledge/sodv/SPEC.md`
+- consumers: dependency reviewers, packagers, SODV maintainers, agentic tools
+- deferred_projections: SBOM and license report
+- notes: Upgrades require a new reviewed dependency and release-evidence increment.
 - status: canonical
 
 ### SACV Canonical Knowledge Vector
@@ -1145,6 +1236,86 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Implementation claims must remain synchronized with the manifest.
 - status: canonical
 
+### Knowledge Session Coordinator Module
+
+#### Knowledge Session Coordinator INTENT.md
+- path: `modules/knowledge-session-coordinator/INTENT.md`
+- title: Knowledge Session Coordinator Intent
+- surface_type: coordinator module intent
+- truth_role: domain-neutral session/reconciliation purpose and implemented boundary
+- owner: SKV coordinator maintainers
+- scope: Declares the read-only `0.1.0-dev` slice and the deferred authenticated-session lifecycle.
+- relationships: depends_on -> `knowledge/SPEC.md`; declares -> `modules/knowledge-session-coordinator/MANIFEST.md`
+- consumers: qxctl and vector-engine implementers, reviewers, administrators, agentic tools
+- deferred_projections: session and worktree reconciliation evidence
+- notes: Successful inspect/check does not establish authentication or a session.
+- status: canonical
+
+#### Knowledge Session Coordinator MANIFEST.md
+- path: `modules/knowledge-session-coordinator/MANIFEST.md`
+- title: Knowledge Session Coordinator Manifest
+- surface_type: independently installable coordinator manifest
+- truth_role: executable, protocol, operation, dependency, and lifecycle truth
+- owner: SKV coordinator maintainers
+- scope: Declares implemented inspect/check, reserved session operations, disabled apply, and installed-undocked state.
+- relationships: depends_on -> `modules/knowledge-session-coordinator/INTENT.md`; implements -> `knowledge/SPEC.md`; statically_links -> `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
+- consumers: qxctl planners, packagers, implementers, reviewers, agentic tools
+- deferred_projections: installed-engine inventory and Maestro presence evidence
+- notes: No default receptor or unversioned active alias is selected.
+- status: canonical
+
+#### Knowledge Session Coordinator INSTALL.md
+- path: `modules/knowledge-session-coordinator/INSTALL.md`
+- title: Knowledge Session Coordinator Installation
+- surface_type: module installation contract
+- truth_role: build, test, versioned install, and receipt-owned uninstall procedure
+- owner: SKV coordinator maintainers
+- scope: Defines monorepo and installed-foundation builds plus isolated prefix lifecycle.
+- relationships: depends_on -> `modules/knowledge-session-coordinator/MANIFEST.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/INSTALL.md`
+- consumers: implementers, administrators, packagers, reviewers
+- deferred_projections: qxctl install/rollback/uninstall evidence
+- notes: Installation leaves the coordinator undocked and inactive.
+- status: canonical
+
+#### Knowledge Session Coordinator SKILL.md
+- path: `modules/knowledge-session-coordinator/SKILL.md`
+- title: Knowledge Session Coordinator Skill
+- surface_type: coordinator skill guidance
+- truth_role: safe direct diagnostics and process invocation procedure
+- owner: SKV coordinator maintainers
+- scope: Guides descriptor, inspect, check, deadline, stdout, and stop-condition handling.
+- relationships: depends_on -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/SKILL.md`
+- consumers: administrators, implementers, reviewers, agentic tools
+- deferred_projections: qxctl command procedure
+- notes: Reserved and disabled descriptor states must be reported literally.
+- status: canonical
+
+#### Knowledge Session Coordinator SPEC.md
+- path: `modules/knowledge-session-coordinator/SPEC.md`
+- title: Knowledge Session Coordinator Specification
+- surface_type: coordinator module specification
+- truth_role: exact read-only operation, exit, descriptor, install, and non-authorization contract
+- owner: SKV coordinator maintainers
+- scope: Defines process inspect/check and explicitly excludes authenticated session mutation and apply.
+- relationships: depends_on -> `knowledge/SPEC.md`; implements -> `knowledge/schemas/v1/engine-process-request.schema.json`; implements -> `knowledge/schemas/v1/engine-process-response.schema.json`
+- consumers: C++ implementers, qxctl planners, testers, reviewers
+- deferred_projections: authenticated-session and reconciliation conformance evidence
+- notes: System/TOPS provisioning, qxctl, SSIAG/STAV, and Maestro remain unimplemented.
+- status: canonical
+
+#### Knowledge Session Coordinator CMakeLists.txt
+- path: `modules/knowledge-session-coordinator/CMakeLists.txt`
+- title: Knowledge Session Coordinator Build Contract
+- surface_type: module build and install contract
+- truth_role: static-link, test, package receipt, and uninstall implementation truth
+- owner: SKV coordinator maintainers
+- scope: Builds the exact versioned executable and supports source or installed foundation consumption.
+- relationships: implements -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
+- consumers: CMake, implementers, packagers, reviewers
+- deferred_projections: reproducible build and receipt evidence
+- notes: No global executable alias or active binding is installed.
+- status: canonical
+
 ### Knowledge Vector Surfaces
 
 #### Knowledge Root
@@ -1167,11 +1338,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: SKV umbrella manifest
 - truth_role: common vector-engine identity, namespace, installability, and authority boundary
 - owner: Symphony Knowledge Vector maintainers
-- scope: Declares independently installed C++ engines, the coordinator, shared mechanics, qxctl administration, Linux-first delivery, Maestro readiness, and proposal-only initial state.
-- relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; governs -> future cleared vector-engine module paths
+- scope: Declares independently installed C++ engines, the implemented shared mechanics/read-only coordinator slice, qxctl administration, Linux-first delivery, Maestro readiness, and proposal-only initial state.
+- relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/`; governs -> `modules/knowledge-session-coordinator/`; governs -> future cleared vector-engine module paths
 - consumers: vector maintainers, engine implementers, qxctl, Maestro planners, reviewers, agentic tools
 - deferred_projections: engine inventory, install receipts, Maestro presence graph
-- notes: No vector-engine implementation existed when this contract was ratified; canonical apply and SSFV remain gated.
+- notes: Foundation `0.1.0-dev` and coordinator inspect/check now exist; every vector engine, session mutation, canonical apply, live docking, and SSFV remain gated.
 - status: canonical
 
 ##### SPEC.md
@@ -1181,10 +1352,10 @@ Future validator increments may add separately ratified deterministic checks wit
 - truth_role: normative cross-vector engine, session, proposal, projection, installation, and isolation contract
 - owner: Symphony Knowledge Vector maintainers
 - scope: Defines process identifiers, authenticated authority epochs, worktree reconciliation, proposal/apply separation, provider neutrality, qxctl grammar, install receipts, Maestro docking readiness, and hot/warm isolation.
-- relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> future vector-engine implementations; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
+- relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
 - consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
-- deferred_projections: protocol schemas, conformance evidence, engine inventory, docking graph
-- notes: Authorizes proposal/read implementation after merge; programmatic apply is disabled.
+- deferred_projections: proposal/session/provider/docking schemas, conformance evidence, engine inventory, docking graph
+- notes: Four common schemas and the read-only foundation slice are implemented; programmatic apply is disabled.
 - status: canonical
 
 ##### SKILL.md
@@ -1198,6 +1369,71 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: implementers, maintainers, reviewers, qxctl contributors, agentic tools
 - deferred_projections: conformance checklist and requirements traceability evidence
 - notes: Does not authorize canonical mutation or self-ratification.
+- status: canonical
+
+##### Common v1 Schema Manifest
+- path: `knowledge/schemas/v1/MANIFEST.md`
+- title: Symphony Knowledge Vector Common Schemas v1
+- surface_type: common protocol schema manifest
+- truth_role: canonical inventory and boundary for exact common JSON schemas
+- owner: Symphony Knowledge Vector maintainers
+- scope: Declares process request/response, descriptor, and install-receipt schemas.
+- relationships: depends_on -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`
+- consumers: C++ foundation and engine implementers, qxctl planners, validator, reviewers
+- deferred_projections: generated schema documentation and conformance evidence
+- notes: Operation-specific payload/result schemas remain with the applicable coordinator or vector.
+- status: canonical
+
+##### Engine Process Request Schema
+- path: `knowledge/schemas/v1/engine-process-request.schema.json`
+- title: Symphony Knowledge Engine Process Request v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical local process request envelope truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes request fields and binds protocol, IDs, operation, target, deadline, and payload object.
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `libraries/knowledge-vector-engine-cpp/SPEC.md`
+- consumers: coordinator and vector engines, qxctl process client, conformance tests, validator
+- deferred_projections: rendered protocol documentation
+- notes: The process protocol is local standard I/O, not OpenAPI or HTTP.
+- status: canonical
+
+##### Engine Process Response Schema
+- path: `knowledge/schemas/v1/engine-process-response.schema.json`
+- title: Symphony Knowledge Engine Process Response v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical local process response envelope truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes success/error result shape and binds engine identity and response digest.
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `libraries/knowledge-vector-engine-cpp/SPEC.md`
+- consumers: coordinator and vector engines, qxctl process client, conformance tests, validator
+- deferred_projections: rendered protocol documentation
+- notes: Exactly one compact response is emitted in process mode.
+- status: canonical
+
+##### Engine Descriptor Schema
+- path: `knowledge/schemas/v1/engine-descriptor.schema.json`
+- title: Symphony Knowledge Engine Descriptor v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical engine identity, capability, limit, scope, and disabled-state truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Defines installed identity, operations, bounds, thermal placement, scope, docking state, and mutation flags.
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `modules/knowledge-session-coordinator/SPEC.md`
+- consumers: qxctl lifecycle planner, coordinator and vector engines, packagers, reviewers
+- deferred_projections: installed engine inventory and Maestro presence graph
+- notes: A descriptor reports capability; it does not grant permission or activate a version.
+- status: canonical
+
+##### Install Receipt Schema
+- path: `knowledge/schemas/v1/install-receipt.schema.json`
+- title: Symphony Knowledge Module Install Receipt v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical prefix-relative package ownership and docking-state truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Defines module/version, scope, prefix interpretation, state, activation, receptor, and exact owned files.
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`; implemented_by -> `modules/knowledge-session-coordinator/CMakeLists.txt`
+- consumers: qxctl lifecycle planner, installers, uninstallers, packagers, reviewers
+- deferred_projections: lifecycle inventory and rollback evidence
+- notes: A receipt does not authorize activation, canonical writes, or live docking.
 - status: canonical
 
 #### SKVI
@@ -1455,7 +1691,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: `Authorization never implies completion; pending transaction state is noncanonical. Current validator coverage does not interpret release-transaction semantics.`
 
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas and fixtures are permission-backed ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures and the four common SKV JSON Schemas are permission-backed ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

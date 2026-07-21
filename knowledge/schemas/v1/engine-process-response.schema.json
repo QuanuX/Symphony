@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:engine-process:response:v1",
+  "title": "Symphony knowledge engine process response v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "request_id",
+    "correlation_id",
+    "operation",
+    "engine_id",
+    "engine_version",
+    "outcome",
+    "result",
+    "error",
+    "response_digest"
+  ],
+  "properties": {
+    "protocol": {
+      "const": "symphony.knowledge.engine-process.v1"
+    },
+    "request_id": {
+      "$ref": "#/$defs/token"
+    },
+    "correlation_id": {
+      "$ref": "#/$defs/token"
+    },
+    "operation": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "engine_id": {
+      "$ref": "#/$defs/token"
+    },
+    "engine_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
+    },
+    "outcome": {
+      "enum": ["ok", "error"]
+    },
+    "result": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "maxProperties": 16384,
+          "propertyNames": {"maxLength": 65536},
+          "additionalProperties": {"$ref": "#/$defs/value"}
+        }
+      ]
+    },
+    "error": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/error"}
+      ]
+    },
+    "response_digest": {
+      "$ref": "#/$defs/digest"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"outcome": {"const": "ok"}},
+        "required": ["outcome"]
+      },
+      "then": {
+        "properties": {
+          "result": {"type": "object"},
+          "error": {"type": "null"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"outcome": {"const": "error"}},
+        "required": ["outcome"]
+      },
+      "then": {
+        "properties": {
+          "result": {"type": "null"},
+          "error": {"$ref": "#/$defs/error"}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9._:-]+$"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      }
+    },
+    "value": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "boolean"},
+        {"type": "integer", "minimum": -9007199254740991, "maximum": 9007199254740991},
+        {"type": "string", "maxLength": 65536},
+        {
+          "type": "array",
+          "maxItems": 16384,
+          "items": {"$ref": "#/$defs/value"}
+        },
+        {
+          "type": "object",
+          "maxProperties": 16384,
+          "propertyNames": {"maxLength": 65536},
+          "additionalProperties": {"$ref": "#/$defs/value"}
+        }
+      ]
+    }
+  }
+}

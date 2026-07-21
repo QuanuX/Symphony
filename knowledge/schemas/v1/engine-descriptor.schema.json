@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:engine-descriptor:v1",
+  "title": "Symphony knowledge engine descriptor v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "module_id",
+    "engine_id",
+    "vector_id",
+    "engine_version",
+    "process_protocols",
+    "contract_versions",
+    "operations",
+    "limits",
+    "supported_scopes",
+    "language",
+    "thermal_path",
+    "install_state",
+    "default_receptor",
+    "canonical_apply_enabled",
+    "session_mutation_enabled",
+    "network_listener"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.engine-descriptor.v1"},
+    "module_id": {"$ref": "#/$defs/token"},
+    "engine_id": {"$ref": "#/$defs/token"},
+    "vector_id": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/token"}
+      ]
+    },
+    "engine_version": {"$ref": "#/$defs/version"},
+    "process_protocols": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/token"}
+    },
+    "contract_versions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1, "maxLength": 256}
+    },
+    "operations": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {"$ref": "#/$defs/operation"}
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_bytes",
+        "response_bytes",
+        "json_depth",
+        "json_values",
+        "path_bytes",
+        "snapshot_files",
+        "snapshot_file_bytes",
+        "deadline_ahead_ms"
+      ],
+      "properties": {
+        "request_bytes": {"type": "integer", "minimum": 1},
+        "response_bytes": {"type": "integer", "minimum": 1},
+        "json_depth": {"type": "integer", "minimum": 1},
+        "json_values": {"type": "integer", "minimum": 1},
+        "path_bytes": {"type": "integer", "minimum": 1},
+        "snapshot_files": {"type": "integer", "minimum": 1},
+        "snapshot_file_bytes": {"type": "integer", "minimum": 1},
+        "deadline_ahead_ms": {"type": "integer", "minimum": 1}
+      }
+    },
+    "supported_scopes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"enum": ["user", "system", "tops"]}
+    },
+    "language": {"const": "C++26"},
+    "thermal_path": {"const": "freezing"},
+    "install_state": {"enum": ["installed", "installed_undocked", "docked"]},
+    "default_receptor": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/token"}
+      ]
+    },
+    "canonical_apply_enabled": {"type": "boolean"},
+    "session_mutation_enabled": {"type": "boolean"},
+    "network_listener": {"type": "boolean"}
+  },
+  "$defs": {
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "availability", "mutates_canonical"],
+      "properties": {
+        "name": {"$ref": "#/$defs/token"},
+        "availability": {"enum": ["implemented", "reserved", "disabled"]},
+        "mutates_canonical": {"type": "boolean"}
+      }
+    }
+  }
+}

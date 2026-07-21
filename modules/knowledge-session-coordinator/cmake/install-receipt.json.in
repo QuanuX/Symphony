@@ -1,0 +1,21 @@
+{
+  "protocol": "symphony.knowledge.install-receipt.v1",
+  "module_id": "knowledge-session-coordinator",
+  "version": "0.1.0-dev",
+  "install_scope": "prefix",
+  "prefix_mode": "installation_prefix",
+  "state": "installed_undocked",
+  "active": false,
+  "default_receptor": null,
+  "files": [
+    "@CMAKE_INSTALL_LIBEXECDIR@/symphony/knowledge-session-coordinator/0.1.0-dev/symphony-knowledge-session",
+    "@CMAKE_INSTALL_DATADIR@/symphony/receipts/knowledge-session-coordinator/0.1.0-dev/install-receipt.json",
+    "@CMAKE_INSTALL_DATADIR@/doc/symphony/knowledge-session-coordinator/0.1.0-dev/INTENT.md",
+    "@CMAKE_INSTALL_DATADIR@/doc/symphony/knowledge-session-coordinator/0.1.0-dev/MANIFEST.md",
+    "@CMAKE_INSTALL_DATADIR@/doc/symphony/knowledge-session-coordinator/0.1.0-dev/INSTALL.md",
+    "@CMAKE_INSTALL_DATADIR@/doc/symphony/knowledge-session-coordinator/0.1.0-dev/SKILL.md",
+    "@CMAKE_INSTALL_DATADIR@/doc/symphony/knowledge-session-coordinator/0.1.0-dev/SPEC.md",
+    "@CMAKE_INSTALL_DATADIR@/licenses/symphony-knowledge-session/0.1.0-dev/LICENSE-AGPL-3.0",
+    "@CMAKE_INSTALL_DATADIR@/licenses/symphony-knowledge-session/0.1.0-dev/nlohmann-json-LICENSE.MIT"
+  ]
+}
