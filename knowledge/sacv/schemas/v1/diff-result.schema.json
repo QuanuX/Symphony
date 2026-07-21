@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sacv:diff-result:v1",
+  "title": "SACV Diff Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "baseline", "candidate", "state", "changes", "summary", "read_only", "noncanonical", "result_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sacv.diff-result.v1"},
+    "baseline": {"$ref": "#/$defs/file"},
+    "candidate": {"$ref": "#/$defs/file"},
+    "state": {"enum": ["identical", "compatible_additive", "breaking", "review_required"]},
+    "changes": {"type": "array", "maxItems": 2048, "items": {"$ref": "#/$defs/change"}},
+    "summary": {"$ref": "#/$defs/summary"},
+    "read_only": {"const": true},
+    "noncanonical": {"const": true},
+    "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "file": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "size", "digest"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "size": {"type": "integer", "minimum": 0, "maximum": 4194304},
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "change": {
+      "type": "object", "additionalProperties": false,
+      "required": ["classification", "code", "operation", "detail"],
+      "properties": {
+        "classification": {"enum": ["additive", "breaking", "review_required"]},
+        "code": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9._:-]+$"},
+        "operation": {"type": "string", "minLength": 1, "maxLength": 8192},
+        "detail": {"type": "string", "minLength": 1, "maxLength": 65536}
+      }
+    },
+    "summary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["additive", "breaking", "review_required"],
+      "properties": {
+        "additive": {"type": "integer", "minimum": 0, "maximum": 2048},
+        "breaking": {"type": "integer", "minimum": 0, "maximum": 2048},
+        "review_required": {"type": "integer", "minimum": 0, "maximum": 2048}
+      }
+    }
+  }
+}

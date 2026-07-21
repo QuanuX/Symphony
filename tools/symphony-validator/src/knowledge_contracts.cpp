@@ -169,6 +169,26 @@ KnowledgeContractShapeResult check_knowledge_contract_shapes(const std::string& 
         }
     };
 
+    if (fs::exists(root / "go.work") || fs::exists(root / "knowledge/sacv")) {
+        const std::vector<ContractFileTarget> sacv_targets = {
+            {"knowledge/sacv/INTENT.md", {{"Intent", "Intent"}, {"Purpose", "## Purpose"},
+                {"Source_Truth", "## Source-Truth Boundary"}, {"Scope", "## Scope"},
+                {"Boundaries", "## Non-Authorization Statement"}}},
+            {"knowledge/sacv/MANIFEST.md", {{"Manifest", "Manifest"}, {"Identity", "## Identity"},
+                {"Contract", "## Declared Contract Truth Role"}, {"Installability", "## Installability Considerations"},
+                {"Boundaries", "## Non-Authorization Statement"}}},
+            {"knowledge/sacv/SKILL.md", {{"Skill", "Skill"}, {"Purpose", "## Purpose"},
+                {"Authority", "## Caller Authority"}, {"Boundaries", "## Non-Authorization Statement"}}},
+            {"knowledge/sacv/SPEC.md", {{"Specification", "Specification"}, {"Purpose", "## Purpose"},
+                {"Registry", "## Registry Contract"}, {"Operations", "## SACV Engine Operations"},
+                {"Boundaries", "## Non-Authorization Statement"}}},
+            {"knowledge/sacv/REGISTRY.md", {{"Registry", "Registry"}, {"Purpose", "## Purpose"},
+                {"Entry_Model", "## Entry Model"}, {"Entries", "## Canonical Entries"},
+                {"Prohibited", "## Prohibited Entries"}}}
+        };
+        targets.insert(targets.end(), sacv_targets.begin(), sacv_targets.end());
+    }
+
     for (const auto& file_target : targets) {
         fs::path p = root / file_target.path;
         if (!fs::exists(p)) {

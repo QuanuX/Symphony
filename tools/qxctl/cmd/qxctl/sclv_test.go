@@ -36,7 +36,7 @@ func TestValidateSCLVResultRejectsAuthorityAndLifecycleEscalation(t *testing.T) 
 		"proposal_id":"sclv-proposal:test",
 		"proposal_digest":"sha256:1111111111111111111111111111111111111111111111111111111111111111",
 		"canonical_apply_enabled":false,
-		"authority":{"caller_declared_operation":true,"engine_decided_membership":false,"ratified":true},
+		"authority":{"caller_declared_operation":true,"engine_decided_domain_truth":false,"ratified":true},
 		"operations":[{}]
 	}`)
 	if _, err := validateSCLVResult("propose", proposal); err == nil {
@@ -49,7 +49,7 @@ func TestValidateSCLVResultRejectsAuthorityAndLifecycleEscalation(t *testing.T) 
 		"proposal_id":"sclv-proposal:test",
 		"proposal_digest":"sha256:1111111111111111111111111111111111111111111111111111111111111111",
 		"canonical_apply_enabled":false,
-		"authority":{"caller_declared_operation":true,"engine_decided_membership":false,"ratified":false},
+		"authority":{"caller_declared_operation":true,"engine_decided_domain_truth":false,"ratified":false},
 		"write_set":[{"target_path":"README.md"}],
 		"operations":[{"type":"append_record_v3","target_path":"README.md"}]
 	}`)

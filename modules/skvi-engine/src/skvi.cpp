@@ -736,7 +736,7 @@ engine::Json propose(const engine::Json& payload, std::int64_t deadline_unix_ms)
         })},
         {"authority", engine::Json{
             {"caller_declared_operation", true},
-            {"engine_decided_membership", false},
+            {"engine_decided_domain_truth", false},
             {"ratified", false},
         }},
         {"created_at", created_at},

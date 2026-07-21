@@ -61,6 +61,11 @@ func printUsage() {
 	fmt.Println("  sclv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a provider-neutral record proposal")
 	fmt.Println("  sclv recover --prefix PATH --input FILE [--version VERSION] [--json] Reconcile ephemeral SCLV closure evidence")
 	fmt.Println("  sclv project --prefix PATH [--version VERSION] [--json] Build a disposable SCLV projection")
+	fmt.Println("  sacv inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SACV engine")
+	fmt.Println("  sacv check --prefix PATH [--version VERSION] [--json] Check canonical SACV registry and API contracts")
+	fmt.Println("  sacv diff --prefix PATH --input FILE [--version VERSION] [--json] Compare bounded OpenAPI revisions")
+	fmt.Println("  sacv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared registry proposal")
+	fmt.Println("  sacv project --prefix PATH [--version VERSION] [--json] Build a disposable SACV inventory")
 }
 
 func runSKVI(operation string, options skviOptions) error {
@@ -175,9 +180,9 @@ func validateSKVIResult(operation string, result json.RawMessage) (bool, error) 
 			ProposalDigest        string `json:"proposal_digest"`
 			CanonicalApplyEnabled *bool  `json:"canonical_apply_enabled"`
 			Authority             struct {
-				CallerDeclaredOperation *bool `json:"caller_declared_operation"`
-				EngineDecidedMembership *bool `json:"engine_decided_membership"`
-				Ratified                *bool `json:"ratified"`
+				CallerDeclaredOperation  *bool `json:"caller_declared_operation"`
+				EngineDecidedDomainTruth *bool `json:"engine_decided_domain_truth"`
+				Ratified                 *bool `json:"ratified"`
 			} `json:"authority"`
 			Operations []json.RawMessage `json:"operations"`
 		}
@@ -185,7 +190,7 @@ func validateSKVIResult(operation string, result json.RawMessage) (bool, error) 
 			value.ModuleID != "skvi-engine" || value.EngineID != "symphony-skvi" || value.VectorID != "skvi" ||
 			value.ProposalID == "" || !validTaggedDigest(value.ProposalDigest) || len(value.Operations) != 1 ||
 			!explicitTrue(value.Authority.CallerDeclaredOperation) ||
-			!explicitFalse(value.Authority.EngineDecidedMembership) ||
+			!explicitFalse(value.Authority.EngineDecidedDomainTruth) ||
 			!explicitFalse(value.Authority.Ratified) || !explicitFalse(value.CanonicalApplyEnabled) {
 			return false, fmt.Errorf("SKVI proposal result violates the implemented safety contract")
 		}
@@ -324,6 +329,301 @@ func printSKVIResult(operation string, result json.RawMessage) error {
 	}
 }
 
+func runSACV(operation string, options sacvOptions) error {
+	if options.prefix == "" {
+		return fmt.Errorf("--prefix is required")
+	}
+	start := options.repository
+	if start == "" {
+		var err error
+		start, err = os.Getwd()
+		if err != nil {
+			return fmt.Errorf("could not get current working directory: %w", err)
+		}
+	}
+	start, err := filepath.Abs(start)
+	if err != nil {
+		return fmt.Errorf("resolve repository path: %w", err)
+	}
+	info, err := os.Lstat(start)
+	if err != nil || info.Mode()&os.ModeSymlink != 0 || !info.IsDir() {
+		return fmt.Errorf("--repo must identify a no-follow directory")
+	}
+	repoRoot, err := repository.FindRoot(start)
+	if err != nil {
+		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+
+	var payload []byte
+	switch operation {
+	case "inspect":
+		payload = []byte(`{}`)
+	case "check":
+		expected := any(nil)
+		if options.expectedRegistryDigest != "" {
+			expected = options.expectedRegistryDigest
+		}
+		payload, err = json.Marshal(map[string]any{"expected_registry_digest": expected})
+	case "diff", "propose":
+		payload, err = knowledgeengine.ReadPayload(options.input)
+	case "project":
+		payload = []byte(`{"format":"json"}`)
+	default:
+		return fmt.Errorf("unsupported SACV operation")
+	}
+	if err != nil {
+		return err
+	}
+	response, err := knowledgeengine.InvokeSACV(
+		context.Background(), options.prefix, options.version, repoRoot, operation, payload)
+	if err != nil {
+		return err
+	}
+	checkValid, err := validateSACVResult(operation, response.Result)
+	if err != nil {
+		return err
+	}
+	if options.jsonOutput {
+		var output bytes.Buffer
+		if err := json.Indent(&output, response.Result, "", "  "); err != nil {
+			return fmt.Errorf("format SACV result: %w", err)
+		}
+		fmt.Println(output.String())
+		if !checkValid {
+			return fmt.Errorf("SACV registry check reported violations")
+		}
+		return nil
+	}
+	return printSACVResult(operation, response.Result)
+}
+
+func validateSACVResult(operation string, result json.RawMessage) (bool, error) {
+	switch operation {
+	case "inspect":
+		var value struct {
+			Readiness              string `json:"readiness"`
+			EmptyRegistryValid     *bool  `json:"empty_registry_valid"`
+			EngineDecidesOwnership *bool  `json:"engine_decides_ownership"`
+			CanonicalApplyEnabled  *bool  `json:"canonical_apply_enabled"`
+			ParserFormats          struct {
+				JSON string `json:"json"`
+				YAML string `json:"yaml"`
+			} `json:"parser_formats"`
+			Descriptor struct {
+				EngineID               string `json:"engine_id"`
+				OpenAPITarget          string `json:"openapi_target"`
+				CanonicalApplyEnabled  *bool  `json:"canonical_apply_enabled"`
+				SessionMutationEnabled *bool  `json:"session_mutation_enabled"`
+				NetworkListener        *bool  `json:"network_listener"`
+			} `json:"descriptor"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil ||
+			value.Readiness != "read_check_diff_propose_project" ||
+			value.ParserFormats.JSON != "implemented" || value.ParserFormats.YAML != "fail_closed_unavailable" ||
+			value.Descriptor.EngineID != "symphony-sacv" || value.Descriptor.OpenAPITarget != "3.2.0" ||
+			!explicitTrue(value.EmptyRegistryValid) || !explicitFalse(value.EngineDecidesOwnership) ||
+			!explicitFalse(value.CanonicalApplyEnabled) ||
+			!explicitFalse(value.Descriptor.CanonicalApplyEnabled) ||
+			!explicitFalse(value.Descriptor.SessionMutationEnabled) ||
+			!explicitFalse(value.Descriptor.NetworkListener) {
+			return false, fmt.Errorf("SACV inspect result violates the implemented safety contract")
+		}
+		return true, nil
+	case "check":
+		var value struct {
+			Protocol              string `json:"protocol"`
+			ReadOnly              *bool  `json:"read_only"`
+			CanonicalApplyEnabled *bool  `json:"canonical_apply_enabled"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Protocol != "symphony.sacv.check-result.v1" ||
+			!explicitTrue(value.ReadOnly) || !explicitFalse(value.CanonicalApplyEnabled) {
+			return false, fmt.Errorf("SACV check result violates the implemented safety contract")
+		}
+		return sacvCheckValid(result)
+	case "diff":
+		var value struct {
+			Protocol     string            `json:"protocol"`
+			State        string            `json:"state"`
+			Changes      []json.RawMessage `json:"changes"`
+			ReadOnly     *bool             `json:"read_only"`
+			Noncanonical *bool             `json:"noncanonical"`
+			ResultDigest string            `json:"result_digest"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Protocol != "symphony.sacv.diff-result.v1" ||
+			(value.State != "identical" && value.State != "compatible_additive" &&
+				value.State != "breaking" && value.State != "review_required") ||
+			value.Changes == nil || !explicitTrue(value.ReadOnly) || !explicitTrue(value.Noncanonical) ||
+			!validTaggedDigest(value.ResultDigest) {
+			return false, fmt.Errorf("SACV diff result violates the implemented safety contract")
+		}
+		return true, nil
+	case "propose":
+		var value struct {
+			Protocol              string `json:"protocol"`
+			ModuleID              string `json:"module_id"`
+			EngineID              string `json:"engine_id"`
+			VectorID              string `json:"vector_id"`
+			ProposalID            string `json:"proposal_id"`
+			ProposalDigest        string `json:"proposal_digest"`
+			CanonicalApplyEnabled *bool  `json:"canonical_apply_enabled"`
+			Authority             struct {
+				CallerDeclaredOperation  *bool `json:"caller_declared_operation"`
+				EngineDecidedDomainTruth *bool `json:"engine_decided_domain_truth"`
+				Ratified                 *bool `json:"ratified"`
+			} `json:"authority"`
+			WriteSet []struct {
+				TargetPath string `json:"target_path"`
+			} `json:"write_set"`
+			Operations []json.RawMessage `json:"operations"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Protocol != "symphony.knowledge.proposal.v1" ||
+			value.ModuleID != "sacv-engine" || value.EngineID != "symphony-sacv" || value.VectorID != "sacv" ||
+			value.ProposalID == "" || !validTaggedDigest(value.ProposalDigest) || len(value.Operations) != 1 ||
+			len(value.WriteSet) != 1 || value.WriteSet[0].TargetPath != "knowledge/sacv/REGISTRY.md" ||
+			!explicitTrue(value.Authority.CallerDeclaredOperation) ||
+			!explicitFalse(value.Authority.EngineDecidedDomainTruth) ||
+			!explicitFalse(value.Authority.Ratified) || !explicitFalse(value.CanonicalApplyEnabled) {
+			return false, fmt.Errorf("SACV proposal result violates the implemented safety contract")
+		}
+		return true, nil
+	case "project":
+		var value struct {
+			Protocol         string            `json:"protocol"`
+			ModuleID         string            `json:"module_id"`
+			EngineID         string            `json:"engine_id"`
+			VectorID         string            `json:"vector_id"`
+			EntryCount       *uint64           `json:"entry_count"`
+			Entries          []json.RawMessage `json:"entries"`
+			ProjectionDigest string            `json:"projection_digest"`
+			Noncanonical     *bool             `json:"noncanonical"`
+			Rebuildable      *bool             `json:"rebuildable"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Protocol != "symphony.sacv.projection.v1" ||
+			value.ModuleID != "sacv-engine" || value.EngineID != "symphony-sacv" || value.VectorID != "sacv" ||
+			value.EntryCount == nil || value.Entries == nil || *value.EntryCount != uint64(len(value.Entries)) ||
+			!validTaggedDigest(value.ProjectionDigest) ||
+			!explicitTrue(value.Noncanonical) || !explicitTrue(value.Rebuildable) {
+			return false, fmt.Errorf("SACV projection result violates the implemented safety contract")
+		}
+		return true, nil
+	default:
+		return false, fmt.Errorf("unsupported SACV operation")
+	}
+}
+
+func sacvCheckValid(result json.RawMessage) (bool, error) {
+	var value struct {
+		Summary struct {
+			Violation uint64 `json:"violation"`
+			State     string `json:"state"`
+		} `json:"summary"`
+	}
+	if err := json.Unmarshal(result, &value); err != nil || value.Summary.State == "" {
+		return false, fmt.Errorf("SACV check result is incomplete")
+	}
+	return value.Summary.State == "valid" && value.Summary.Violation == 0, nil
+}
+
+func printSACVResult(operation string, result json.RawMessage) error {
+	switch operation {
+	case "inspect":
+		var value struct {
+			Readiness     string `json:"readiness"`
+			ParserFormats struct {
+				JSON string `json:"json"`
+				YAML string `json:"yaml"`
+			} `json:"parser_formats"`
+			Descriptor struct {
+				EngineID      string `json:"engine_id"`
+				EngineVersion string `json:"engine_version"`
+				OpenAPITarget string `json:"openapi_target"`
+			} `json:"descriptor"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Descriptor.EngineID == "" || value.Readiness == "" {
+			return fmt.Errorf("SACV inspect result is incomplete")
+		}
+		fmt.Printf("SACV: engine=%s version=%s readiness=%s openapi=%s json=%s yaml=%s\n",
+			value.Descriptor.EngineID, value.Descriptor.EngineVersion, value.Readiness,
+			value.Descriptor.OpenAPITarget, value.ParserFormats.JSON, value.ParserFormats.YAML)
+		return nil
+	case "check":
+		var value struct {
+			EntriesChecked    uint64 `json:"entries_checked"`
+			DocumentsChecked  uint64 `json:"documents_checked"`
+			OperationsChecked uint64 `json:"operations_checked"`
+			Registry          struct {
+				Digest string `json:"digest"`
+			} `json:"registry"`
+			Summary struct {
+				Pass      uint64 `json:"pass"`
+				Warning   uint64 `json:"warning"`
+				Violation uint64 `json:"violation"`
+				State     string `json:"state"`
+			} `json:"summary"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Summary.State == "" || value.Registry.Digest == "" {
+			return fmt.Errorf("SACV check result is incomplete")
+		}
+		fmt.Printf("SACV check: state=%s entries=%d documents=%d operations=%d pass=%d warning=%d violation=%d registry_digest=%s\n",
+			value.Summary.State, value.EntriesChecked, value.DocumentsChecked, value.OperationsChecked,
+			value.Summary.Pass, value.Summary.Warning, value.Summary.Violation, value.Registry.Digest)
+		if value.Summary.State != "valid" || value.Summary.Violation != 0 {
+			return fmt.Errorf("SACV registry check reported violations")
+		}
+		return nil
+	case "diff":
+		var value struct {
+			State        string `json:"state"`
+			ResultDigest string `json:"result_digest"`
+			Summary      struct {
+				Additive uint64 `json:"additive"`
+				Breaking uint64 `json:"breaking"`
+				Review   uint64 `json:"review_required"`
+			} `json:"summary"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.State == "" || value.ResultDigest == "" {
+			return fmt.Errorf("SACV diff result is incomplete")
+		}
+		fmt.Printf("SACV diff: state=%s additive=%d breaking=%d review_required=%d digest=%s noncanonical=true\n",
+			value.State, value.Summary.Additive, value.Summary.Breaking, value.Summary.Review, value.ResultDigest)
+		return nil
+	case "propose":
+		var value struct {
+			ProposalID     string `json:"proposal_id"`
+			ProposalDigest string `json:"proposal_digest"`
+			Authority      struct {
+				Ratified bool `json:"ratified"`
+			} `json:"authority"`
+			Operations []struct {
+				Type       string `json:"type"`
+				TargetPath string `json:"target_path"`
+			} `json:"operations"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.ProposalID == "" || len(value.Operations) != 1 {
+			return fmt.Errorf("SACV proposal result is incomplete")
+		}
+		fmt.Printf("SACV proposal: id=%s digest=%s operation=%s target=%s ratified=%t apply=false\n",
+			value.ProposalID, value.ProposalDigest, value.Operations[0].Type,
+			value.Operations[0].TargetPath, value.Authority.Ratified)
+		return nil
+	case "project":
+		var value struct {
+			EntryCount       uint64 `json:"entry_count"`
+			ProjectionDigest string `json:"projection_digest"`
+			Noncanonical     bool   `json:"noncanonical"`
+			Rebuildable      bool   `json:"rebuildable"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.ProjectionDigest == "" {
+			return fmt.Errorf("SACV projection result is incomplete")
+		}
+		fmt.Printf("SACV projection: entries=%d digest=%s noncanonical=%t rebuildable=%t\n",
+			value.EntryCount, value.ProjectionDigest, value.Noncanonical, value.Rebuildable)
+		return nil
+	default:
+		return fmt.Errorf("unsupported SACV result")
+	}
+}
+
 func runSCLV(operation string, options sclvOptions) error {
 	if options.prefix == "" {
 		return fmt.Errorf("--prefix is required")
@@ -444,9 +744,9 @@ func validateSCLVResult(operation string, result json.RawMessage) (bool, error) 
 				TargetPath string `json:"target_path"`
 			} `json:"operations"`
 			Authority struct {
-				CallerDeclaredOperation *bool `json:"caller_declared_operation"`
-				EngineDecidedMembership *bool `json:"engine_decided_membership"`
-				Ratified                *bool `json:"ratified"`
+				CallerDeclaredOperation  *bool `json:"caller_declared_operation"`
+				EngineDecidedDomainTruth *bool `json:"engine_decided_domain_truth"`
+				Ratified                 *bool `json:"ratified"`
 			} `json:"authority"`
 		}
 		if err := json.Unmarshal(result, &value); err != nil || value.Protocol != "symphony.knowledge.proposal.v1" ||
@@ -456,7 +756,7 @@ func validateSCLVResult(operation string, result json.RawMessage) (bool, error) 
 			len(value.Operations) != 1 || value.Operations[0].Type != "append_record_v3" ||
 			value.Operations[0].TargetPath != "knowledge/sclv/CHANGELOG.md" ||
 			!explicitTrue(value.Authority.CallerDeclaredOperation) ||
-			!explicitFalse(value.Authority.EngineDecidedMembership) ||
+			!explicitFalse(value.Authority.EngineDecidedDomainTruth) ||
 			!explicitFalse(value.Authority.Ratified) || !explicitFalse(value.CanonicalApplyEnabled) {
 			return false, fmt.Errorf("SCLV proposal result violates the implemented safety contract")
 		}

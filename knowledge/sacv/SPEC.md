@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Owner-ratified API-contract governance. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative. This specification creates no HTTP endpoint by itself.
+Owner-ratified API-contract governance with the bounded `0.1.0-dev` read-only/proposal engine implemented. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative. This specification creates no HTTP endpoint by itself.
 
 ## Purpose
 
@@ -120,6 +120,14 @@ The initial `symphony-sacv` operation set is:
 
 The engine uses `symphony.knowledge.engine-process.v1` and is administered through `qxctl sacv ...`. OpenAPI does not govern this local process protocol. Programmatic canonical apply, generated bindings, and publication remain separately gated.
 
+## Initial Parser Compatibility Boundary
+
+The `0.1.0-dev` engine fully implements bounded JSON syntax, duplicate-key, depth, value, string, file, reference, profile, security, example-safety, registry-alignment, and deterministic compatibility checks for `.openapi.json` entry documents. Valid JSON decimal numbers remain accepted because OpenAPI schema constraints and examples are not restricted by the integer-only administrative process-envelope profile.
+
+YAML remains the preferred canonical authored representation when justified by the owner. The initial engine does not embed, dynamically download, or shell out to an unratified YAML implementation. A registered `.openapi.yaml` document therefore produces explicit `sacv.document.parser_unavailable` evidence and a failed compatibility gate. This reports engine capability absence, not a silent downgrade or a doctrine claim that YAML is invalid. A future YAML parser requires an independently reviewed dependency, preservation, alias/anchor, resource-bound, duplicate-key, and differential-conformance gate.
+
+The initial `project` operation emits only a registry-conformance inventory. It does not bundle or dereference raw OpenAPI source, generate runtime bindings, prepare Mintlify input, or create an SDK.
+
 ## Non-Authorization Statement
 
-This specification authorizes the bounded SACV proposal/projection engine after contract merge. It authorizes no canonical apply, endpoint, listener, remote gateway, provider operation, STAV append path, generated runtime binding, SDK publication, Mintlify configuration, public documentation, live playground, or MCP tool.
+This specification authorizes the implemented bounded SACV proposal/projection engine. It authorizes no canonical apply, endpoint, listener, remote gateway, provider operation, STAV append path, generated runtime binding, SDK publication, Mintlify configuration, public documentation, live playground, or MCP tool.

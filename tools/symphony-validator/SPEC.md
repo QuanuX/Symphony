@@ -62,7 +62,7 @@ Families including `REPO.*`, `MODULE.*`, `INSTALL.*`, `NAMESPACE.*`, `TROLL.*`, 
 Status reflects the deterministic outcome of a rule check.
 
 ## Exit-code Model
-`0` to `21`, mapping to passes, errors, blockers, malformed repositories, or internal failures. The exact mapping is:
+`0` to `22`, mapping to passes, errors, blockers, malformed repositories, or internal failures. The exact mapping is:
 
 - `0`: success;
 - `1`: invalid CLI usage or unknown command;
@@ -86,6 +86,7 @@ Status reflects the deterministic outcome of a rule check.
 - `19`: SCLV/SKVI membership;
 - `20`: validator build-source integrity;
 - `21`: caller-authority regression.
+- `22`: SACV registry grammar, ownership, classification, SKVI coverage, or no-follow document failure.
 
 ## Historical/Migration Exception Behavior
 Stale names (e.g. `legacy node execution label`, `legacy native hot-path label`, `legacy bus residency label`) are rejected except in historical contexts or rename records.
@@ -93,7 +94,11 @@ Stale names (e.g. `legacy node execution label`, `legacy native hot-path label`,
 ## Allowlist Behavior
 Allowlists must never become silent bypasses. Every allowlist entry must produce evidence in JSON and Markdown.
 
-The Architect-ratified STAV v1 JSON Schema/conformance fixtures, six common SKV process/descriptor/receipt/proposal/provider-evidence schemas, four SKVI operation/result schemas, and five SCLV v3 operation/result schemas are canonical protocol truth, not generated projections. The artifact checker may allow only their 43 exact paths and must emit `artifact.canonical_json_authorized` evidence for every encountered file with `knowledge/stav/SPEC.md`, `knowledge/SPEC.md`, `knowledge/skvi/SPEC.md`, or `knowledge/sclv/SPEC.md` authority as applicable. Prefix or extension-wide JSON allowlisting is prohibited; any new canonical JSON artifact requires an explicit contract and validator update.
+The Architect-ratified STAV v1 JSON Schema/conformance fixtures, six common SKV process/descriptor/receipt/proposal/provider-evidence schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, and six SACV v1 operation/result schemas are canonical protocol truth, not generated projections. The artifact checker may allow only their 49 exact paths and must emit `artifact.canonical_json_authorized` evidence for every encountered file with `knowledge/stav/SPEC.md`, `knowledge/SPEC.md`, `knowledge/skvi/SPEC.md`, `knowledge/sclv/SPEC.md`, or `knowledge/sacv/SPEC.md` authority as applicable. Prefix or extension-wide JSON allowlisting is prohibited; any new canonical JSON artifact requires an explicit contract and validator update.
+
+### SACV Registry Boundary
+
+The validator independently checks `knowledge/sacv/REGISTRY.md`. An explicitly empty registry is valid. A nonempty registry requires the exact thirteen-field Markdown grammar, unique safe identities and paths, owner-path containment, OpenAPI 3.2.0 and enumerated classifications, SKVI coverage, and a no-follow regular owner document. Failure returns exit status `22`. The validator does not pretend to be an OpenAPI or YAML parser; registered document semantics, examples, references, operation security, and compatibility remain the bounded responsibility of `symphony-sacv`.
 
 ## Refusal/Non-Remediation Behavior
 The validator may report failures and identify expected/observed conditions. It must not rewrite files or choose remedies.
@@ -104,11 +109,11 @@ The validator is currently invoked directly. `qxctl` mediation remains deferred.
 ## Relationship to CI / PR gates
 The implementation provides deterministic line-oriented evidence, a summary, and exit status. CI/PR-gate wiring and structured artifacts remain deferred.
 
-## Relationship to SKV / SKVI / SCLV / SODV
-The validator does not replace SKV / SKVI / SCLV / SODV records. It provides evidence to support them.
+## Relationship to SKV / SKVI / SCLV / SACV / SODV
+The validator does not replace SKV / SKVI / SCLV / SACV / SODV records. It provides evidence to support them.
 
 ## Behavioral Non-goals
-The validator must not choose infrastructure for users, assume Docker/Kubernetes/cloud providers, impose market-data/order-flow/trading doctrine, require Python for hot-path or administrative spine, ban optional isolated Python habitats, treat contract seeds as runtime implementation, convert monorepo modularity into microservices doctrine, absorb module sovereignty into root-level logic, become a runtime daemon, become a hidden coordinator, replace qxctl, replace Maestro, replace SKV / SKVI / SCLV / SODV records, perform autonomous semantic decisions, infer intent, auto-remediate files, or make architecture decisions.
+The validator must not choose infrastructure for users, assume Docker/Kubernetes/cloud providers, impose market-data/order-flow/trading doctrine, require Python for hot-path or administrative spine, ban optional isolated Python habitats, treat contract seeds as runtime implementation, convert monorepo modularity into microservices doctrine, absorb module sovereignty into root-level logic, become a runtime daemon, become a hidden coordinator, replace qxctl, replace Maestro, replace SKV / SKVI / SCLV / SACV / SODV records, perform autonomous semantic decisions, infer intent, auto-remediate files, or make architecture decisions.
 Active project term c-o-r-e is absent except inside explicit forbidden-term scan descriptions.
 
 ## Implemented Authorization Boundary

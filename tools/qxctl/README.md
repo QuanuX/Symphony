@@ -72,6 +72,13 @@ go run ./cmd/qxctl sclv check --prefix /chosen/prefix [--expected-ledger-digest 
 go run ./cmd/qxctl sclv propose --prefix /chosen/prefix --input proposal-input.json [--json]
 go run ./cmd/qxctl sclv recover --prefix /chosen/prefix --input recovery-input.json [--json]
 go run ./cmd/qxctl sclv project --prefix /chosen/prefix [--json]
+
+# Invoke an exact independently installed SACV engine
+go run ./cmd/qxctl sacv inspect --prefix /chosen/prefix [--version 0.1.0-dev] [--json]
+go run ./cmd/qxctl sacv check --prefix /chosen/prefix [--expected-registry-digest sha256:...] [--json]
+go run ./cmd/qxctl sacv diff --prefix /chosen/prefix --input diff-input.json [--json]
+go run ./cmd/qxctl sacv propose --prefix /chosen/prefix --input proposal-input.json [--json]
+go run ./cmd/qxctl sacv project --prefix /chosen/prefix [--json]
 ```
 
 SSIAG commands require an immutable TOPS UUID through `--tops-id` or `SYMPHONY_SSIAG_TOPS_ID`. They use `SYMPHONY_SSIAG_SOCKET` only as an explicit override; otherwise the selected scope and TOPS ID determine the isolated socket. They never accept or print credential values.
@@ -82,4 +89,4 @@ Future safeguard administration will let a target-host administrator inspect and
 
 The four STAV commands use mutually authenticated, TOPS-scoped Unix-socket IPC to the local append authority. `status`, `verify`, and bounded `query` return only classification-authorized read projections; `doctor` composes client-side availability and verification checks. qxctl verifies the configured authority identity before sending application bytes and never opens the ledger file. `qxctl stav append` is intentionally absent.
 
-The SKVI and SCLV commands are cold/freezing-path local process operations. qxctl validates the exact inactive-undocked receipt and all package-owned files, invokes only the versioned engine path with an empty environment, enforces a hard deadline, and verifies response identity, digest, and safety assertions. Secure local receipt traversal is implemented on Linux and the macOS development path; other native operating systems fail closed rather than substituting a weaker file-open routine. Proposal and recovery input comes from one bounded no-follow JSON file. SKVI cannot decide membership. SCLV cannot grant permission, ratify, append, commit, mutate or delete journals, or treat a projection as canonical. No command selects an active version, docks with Maestro, or writes canonical knowledge.
+The SKVI, SCLV, and SACV commands are cold/freezing-path local process operations. qxctl validates the exact inactive-undocked receipt and all package-owned files, invokes only the versioned engine path with an empty environment, enforces a hard deadline, and verifies response identity, digest, and safety assertions. Secure local receipt traversal is implemented on Linux and the macOS development path; other native operating systems fail closed rather than substituting a weaker file-open routine. Proposal, diff, and recovery input comes from one bounded no-follow JSON file. SKVI cannot decide membership. SCLV cannot grant permission, ratify, append, commit, mutate or delete journals, or treat a projection as canonical. SACV cannot decide semantic ownership, create endpoints, publish, generate bindings, or treat compatibility evidence or a projection as canonical. No command selects an active version, docks with Maestro, or writes canonical knowledge.

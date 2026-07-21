@@ -9,9 +9,9 @@ namespace fs = std::filesystem;
 #include "evidence.hpp"
 
 bool is_authorized_canonical_json(const std::string& relative_path) {
-    // Exact, Architect-ratified STAV v1, common SKV, SKVI, and SCLV protocol artifacts. Directory-prefix
+    // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, and SACV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 43> authorized_paths = {
+    static const std::array<std::string, 49> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -54,7 +54,13 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/sclv/schemas/v3/proposal-input.schema.json",
         "knowledge/sclv/schemas/v3/recovery-input.schema.json",
         "knowledge/sclv/schemas/v3/check-result.schema.json",
-        "knowledge/sclv/schemas/v3/projection.schema.json"
+        "knowledge/sclv/schemas/v3/projection.schema.json",
+        "knowledge/sacv/schemas/v1/registry-entry.schema.json",
+        "knowledge/sacv/schemas/v1/check-result.schema.json",
+        "knowledge/sacv/schemas/v1/diff-input.schema.json",
+        "knowledge/sacv/schemas/v1/diff-result.schema.json",
+        "knowledge/sacv/schemas/v1/proposal-input.schema.json",
+        "knowledge/sacv/schemas/v1/projection.schema.json"
     };
     return std::find(authorized_paths.begin(), authorized_paths.end(), relative_path) != authorized_paths.end();
 }
@@ -85,11 +91,12 @@ ArtifactCheckResult check_unauthorized_artifacts(const std::string& repo_root) {
     }
 
     // B. Generated projection directories
-    const std::array<std::string, 12> gen_paths = {
+    const std::array<std::string, 14> gen_paths = {
         "generated", "projections",
         "knowledge/generated", "knowledge/projections",
         "knowledge/skvi/generated", "knowledge/skvi/projections",
         "knowledge/sclv/generated", "knowledge/sclv/projections",
+        "knowledge/sacv/generated", "knowledge/sacv/projections",
         "knowledge/sodv/generated", "knowledge/sodv/projections",
         "tools/symphony-validator/generated", "tools/symphony-validator/projections"
     };
@@ -118,6 +125,8 @@ ArtifactCheckResult check_unauthorized_artifacts(const std::string& repo_root) {
                                     ? "knowledge/skvi/SPEC.md"
                                     : rel_path.starts_with("knowledge/sclv/")
                                         ? "knowledge/sclv/SPEC.md"
+                                    : rel_path.starts_with("knowledge/sacv/")
+                                        ? "knowledge/sacv/SPEC.md"
                                     : "knowledge/SPEC.md";
                             result.messages.push_back(format_evidence(EvidenceCategory::Pass, "artifact.canonical_json_authorized", "path=" + rel_path + " authority=" + authority));
                             break;

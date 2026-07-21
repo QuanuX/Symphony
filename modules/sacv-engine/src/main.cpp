@@ -1,0 +1,71 @@
+#include "sacv.hpp"
+
+#include "symphony/knowledge/engine/error.hpp"
+#include "symphony/knowledge/engine/limits.hpp"
+#include "symphony/knowledge/engine/protocol.hpp"
+
+#include <exception>
+#include <iostream>
+#include <string>
+#include <utility>
+
+namespace sacv = symphony::knowledge::sacv;
+namespace engine = symphony::knowledge::engine;
+
+namespace {
+
+int emit_error(const engine::Error& error) {
+    try {
+        std::cout << engine::serialize_response(engine::error_response(
+            "unavailable", "unavailable", "unavailable", sacv::engine_id,
+            sacv::engine_version, error.code(), error.what()));
+    } catch (const std::exception&) {
+        return 5;
+    }
+    return error.exit_status();
+}
+
+}
+
+int main(int argc, char** argv) {
+    if (argc == 2) {
+        const std::string argument = argv[1];
+        if (argument == "--help") {
+            std::cout << "Usage: symphony-sacv [--help|--version|--descriptor]\n"
+                         "Without arguments, reads one bounded process request from standard input.\n";
+            return 0;
+        }
+        if (argument == "--version") {
+            std::cout << sacv::engine_id << ' ' << sacv::engine_version << '\n';
+            return 0;
+        }
+        if (argument == "--descriptor") {
+            std::cout << sacv::descriptor().dump() << '\n';
+            return 0;
+        }
+        return emit_error(engine::Error("argument.unsupported", "unsupported argument", 2));
+    }
+    if (argc != 1) {
+        return emit_error(engine::Error("argument.count", "unexpected argument count", 2));
+    }
+
+    try {
+        const auto input = engine::read_bounded(std::cin, engine::Limits::max_request_bytes);
+        const auto request = engine::parse_request(input, sacv::engine_id, engine::unix_time_ms());
+        try {
+            auto result = sacv::handle_request(request);
+            std::cout << engine::serialize_response(engine::success_response(
+                request, sacv::engine_id, sacv::engine_version, std::move(result)));
+            return 0;
+        } catch (const engine::Error& error) {
+            std::cout << engine::serialize_response(engine::error_response(
+                request.request_id, request.correlation_id, request.operation,
+                sacv::engine_id, sacv::engine_version, error.code(), error.what()));
+            return error.exit_status();
+        }
+    } catch (const engine::Error& error) {
+        return emit_error(error);
+    } catch (const std::exception&) {
+        return emit_error(engine::Error("internal.failure", "bounded request processing failed", 5));
+    }
+}

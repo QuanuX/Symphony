@@ -33,3 +33,8 @@ Commands:
   sclv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a provider-neutral record proposal
   sclv recover --prefix PATH --input FILE [--version VERSION] [--json] Reconcile ephemeral SCLV closure evidence
   sclv project --prefix PATH [--version VERSION] [--json] Build a disposable SCLV projection
+  sacv inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SACV engine
+  sacv check --prefix PATH [--version VERSION] [--json] Check canonical SACV registry and API contracts
+  sacv diff --prefix PATH --input FILE [--version VERSION] [--json] Compare bounded OpenAPI revisions
+  sacv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared registry proposal
+  sacv project --prefix PATH [--version VERSION] [--json] Build a disposable SACV inventory

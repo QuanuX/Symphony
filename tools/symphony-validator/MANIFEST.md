@@ -36,13 +36,15 @@ Deferred integration surfaces are `qxctl` mediation and CI/PR-gate invocation.
 
 ## Output Surfaces
 - Deterministic line-oriented evidence
-- Deterministic summary and exit status (including `21` for caller-authority regression)
+- Deterministic summary and exit status (including `21` for caller-authority regression and `22` for SACV registry failure)
 
 Structured JSON and Markdown projections remain deferred. Runtime source/AST caller-authority analysis and auto-remediation are strictly deferred and unauthorized.
 
 ## Canonical JSON Boundary
 
-The artifact checker recognizes exactly 43 canonical JSON paths: 28 STAV v1 schemas/fixtures, six common SKV process/descriptor/receipt/proposal/provider-evidence schemas, four SKVI operation/result schemas, and five SCLV v3 operation/result schemas. It does not authorize a directory prefix, generated projection, or new JSON artifact by extension.
+The artifact checker recognizes exactly 49 canonical JSON paths: 28 STAV v1 schemas/fixtures, six common SKV process/descriptor/receipt/proposal/provider-evidence schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, and six SACV v1 operation/result schemas. It does not authorize a directory prefix, generated projection, or new JSON artifact by extension.
+
+The SACV registry checker independently validates the empty marker or exact thirteen-field entry grammar, identity/path uniqueness, owner-path containment, OpenAPI/profile enums, SKVI coverage, and no-follow document presence. OpenAPI semantic validation remains in the independently installed SACV engine rather than being duplicated through an unsafe partial parser.
 
 ## Caller-Authority Capability
 The implemented checker reads active Markdown from the bounded repository surfaces defined in `SPEC.md`. It emits lexical-path evidence for configured caller-class authority constructions and for fail-visible discovery, stream, symlink, and resource-limit conditions. It does not follow symlink targets or modify scanned content.

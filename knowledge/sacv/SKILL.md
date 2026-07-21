@@ -40,7 +40,7 @@ No supported caller operation may:
 8. Obtain SODV approval before creating publication configuration or externally visible projections.
 9. Create SCLV evidence only after actual review and merge evidence exists.
 
-An installed `symphony-sacv` engine may perform bounded inspect, check, diff, proposal, and projection steps through `qxctl sacv ...`. Review its exact input digests and outputs. Never treat a generated proposal, aggregate, or compatibility report as canonical ratification.
+The installed `symphony-sacv` development engine performs bounded inspect, check, diff, proposal, and projection steps through `qxctl sacv ...`. Review its exact input digests and outputs. JSON entry documents receive the implemented v1 profile checks; YAML entries fail closed with explicit parser-unavailable evidence until the separate parser gate is completed. Never treat a generated proposal, aggregate, or compatibility report as canonical ratification.
 
 ## Stop Conditions
 

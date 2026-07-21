@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sacv:diff-input:v1",
+  "title": "SACV Diff Input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["baseline_path", "baseline_digest", "candidate_path", "candidate_digest"],
+  "properties": {
+    "baseline_path": {"$ref": "#/$defs/openapi_json_path"},
+    "baseline_digest": {"$ref": "#/$defs/digest"},
+    "candidate_path": {"$ref": "#/$defs/openapi_json_path"},
+    "candidate_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "openapi_json_path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F]).+\\.openapi\\.json$"
+    }
+  }
+}

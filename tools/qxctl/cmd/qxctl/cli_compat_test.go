@@ -35,6 +35,8 @@ func TestCLICompatibility(t *testing.T) {
 		{name: "SKVI prefix required", args: []string{"skvi", "inspect"}, status: 1, output: "skvi inspect failed: --prefix is required\n"},
 		{name: "missing SCLV subcommand", args: []string{"sclv"}, status: 1, output: "sclv failed: SCLV subcommand is required: inspect, check, propose, recover, or project\n"},
 		{name: "SCLV prefix required", args: []string{"sclv", "inspect"}, status: 1, output: "sclv inspect failed: --prefix is required\n"},
+		{name: "missing SACV subcommand", args: []string{"sacv"}, status: 1, output: "sacv failed: SACV subcommand is required: inspect, check, diff, propose, or project\n"},
+		{name: "SACV prefix required", args: []string{"sacv", "inspect"}, status: 1, output: "sacv inspect failed: --prefix is required\n"},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

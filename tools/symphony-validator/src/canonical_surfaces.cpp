@@ -62,5 +62,26 @@ CanonicalSurfaceCheckResult check_required_canonical_surfaces(const std::string&
         }
     }
 
+    if (fs::exists(root / "go.work")) {
+        const std::array<std::string, 6> sacv_surfaces = {
+            "knowledge/sacv/INTENT.md",
+            "knowledge/sacv/MANIFEST.md",
+            "knowledge/sacv/SKILL.md",
+            "knowledge/sacv/SPEC.md",
+            "knowledge/sacv/REGISTRY.md",
+            "knowledge/sacv/profiles/openapi-3.2.md"
+        };
+        for (const auto& surface : sacv_surfaces) {
+            if (fs::exists(root / surface)) {
+                result.messages.push_back(format_evidence(EvidenceCategory::Pass,
+                    "canonical_surface.exists", "path=" + surface));
+            } else {
+                result.success = false;
+                result.messages.push_back(format_evidence(EvidenceCategory::Violation,
+                    "canonical_surface.missing", "path=" + surface));
+            }
+        }
+    }
+
     return result;
 }

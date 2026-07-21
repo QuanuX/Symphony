@@ -63,4 +63,4 @@ No canonical apply, endpoint document, listener, generated runtime code, public 
 
 ## Status
 
-Owner-ratified governance vector with proposal-engine architecture authorized. No API entry document or engine implementation exists yet.
+Owner-ratified governance vector with an implemented `0.1.0-dev` read-only/proposal engine. The canonical registry remains intentionally empty and no API entry document, endpoint, publication configuration, SDK, or runtime binding exists.

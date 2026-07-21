@@ -24,7 +24,7 @@ Payload is governed by `knowledge/skvi/schemas/v1/operation-payload.schema.json`
 
 The caller explicitly selects `add_entry`, `replace_entry`, or `remove_entry`. Add requires an existing unindexed regular file. Replace/remove require the exact current entry digest. The engine checks the current index before proposing and rejects ambiguous or stale operations.
 
-The result conforms to `knowledge/schemas/v1/proposal.schema.json`, binds the index and SKVI contract read set, records a prospective write set targeting only `knowledge/skvi/INDEX.md`, and states `engine_decided_membership: false`. It does not include a patch or write canonical content.
+The result conforms to `knowledge/schemas/v1/proposal.schema.json`, binds the index and SKVI contract read set, records a prospective write set targeting only `knowledge/skvi/INDEX.md`, and states `engine_decided_domain_truth: false`. It does not include a patch or write canonical content.
 
 ## `project`
 

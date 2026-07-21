@@ -19,6 +19,7 @@
 #include "caller_authority.hpp"
 #include "sclv_references.hpp"
 #include "validator_build.hpp"
+#include "sacv_registry.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -121,6 +122,14 @@ int run_cli(const std::vector<std::string>& args) {
             process_messages(skvi_result.messages);
             if (!skvi_result.success) {
                 final_exit = 3;
+                print_summary();
+                return final_exit;
+            }
+
+            SacvRegistryCheckResult sacv_result = check_sacv_registry(args[2], skvi_result);
+            process_messages(sacv_result.messages);
+            if (!sacv_result.success) {
+                final_exit = 22;
                 print_summary();
                 return final_exit;
             }

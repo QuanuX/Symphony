@@ -861,6 +861,97 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Vendor configuration is derived and currently unauthorized.
 - status: canonical
 
+#### SACV v1 Schema Manifest
+- path: `knowledge/sacv/schemas/v1/MANIFEST.md`
+- title: SACV v1 Schema Manifest
+- surface_type: vector-specific protocol schema manifest
+- truth_role: canonical inventory for exact SACV engine payload and result schemas
+- owner: SACV maintainers
+- scope: Declares the registry-entry, check, diff, proposal-input, and projection schema family.
+- relationships: depends_on -> `knowledge/sacv/SPEC.md`; implemented_by -> `modules/sacv-engine/SPEC.md`
+- consumers: SACV engine, qxctl, symphony-validator, conformance tests, reviewers
+- deferred_projections: rendered protocol reference
+- notes: Schemas govern engine data and create no HTTP endpoint.
+- status: canonical
+
+#### SACV Registry Entry Schema
+- path: `knowledge/sacv/schemas/v1/registry-entry.schema.json`
+- title: SACV Registry Entry v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical normalized API registry entry shape
+- owner: SACV maintainers
+- scope: Closes the exact thirteen-field API identity, ownership, profile, publication, SDK, and lifecycle record.
+- relationships: depends_on -> `knowledge/sacv/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sacv-engine/SPEC.md`
+- consumers: SACV engine, qxctl proposal callers, validator, tests, reviewers
+- deferred_projections: registry forms and reference documentation
+- notes: An entry routes to owner truth and does not centralize endpoint semantics.
+- status: canonical
+
+#### SACV Check Result Schema
+- path: `knowledge/sacv/schemas/v1/check-result.schema.json`
+- title: SACV Check Result v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical registry and API conformance evidence shape
+- owner: SACV maintainers
+- scope: Closes registry/contract digests, counts, findings, valid state, read-only status, and disabled apply.
+- relationships: depends_on -> `knowledge/sacv/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sacv-engine/SPEC.md`
+- consumers: qxctl, SACV engine, validator, tests, reviewers
+- deferred_projections: conformance reports
+- notes: Invalid evidence never authorizes repair.
+- status: canonical
+
+#### SACV Diff Input Schema
+- path: `knowledge/sacv/schemas/v1/diff-input.schema.json`
+- title: SACV Diff Input v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical bounded comparison request shape
+- owner: SACV maintainers
+- scope: Binds baseline and candidate owner-document paths to exact tagged digests.
+- relationships: depends_on -> `knowledge/sacv/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sacv-engine/SPEC.md`
+- consumers: qxctl diff callers, SACV engine, tests, reviewers
+- deferred_projections: compatibility review forms
+- notes: Diff input is evidence-only and contains no remote reference.
+- status: canonical
+
+#### SACV Diff Result Schema
+- path: `knowledge/sacv/schemas/v1/diff-result.schema.json`
+- title: SACV Diff Result v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical deterministic compatibility-evidence shape
+- owner: SACV maintainers
+- scope: Classifies identical, additive, breaking, and review-required operation changes without accepting them.
+- relationships: depends_on -> `knowledge/sacv/schemas/v1/diff-input.schema.json`; implemented_by -> `modules/sacv-engine/SPEC.md`
+- consumers: qxctl, SACV engine, API reviewers, tests
+- deferred_projections: compatibility reports
+- notes: Compatibility evidence is noncanonical and cannot ratify a change.
+- status: canonical
+
+#### SACV Proposal Input Schema
+- path: `knowledge/sacv/schemas/v1/proposal-input.schema.json`
+- title: SACV Proposal Input v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical caller-declared registry proposal input shape
+- owner: SACV maintainers
+- scope: Binds provider-neutral repository/session context and one register or replace operation to expected state.
+- relationships: depends_on -> `knowledge/sacv/schemas/v1/registry-entry.schema.json`; depends_on -> `knowledge/schemas/v1/proposal.schema.json`; implemented_by -> `modules/sacv-engine/SPEC.md`
+- consumers: qxctl proposal callers, SACV engine, tests, reviewers
+- deferred_projections: proposal forms
+- notes: Caller declares semantic ownership; the engine validates but does not decide it.
+- status: canonical
+
+#### SACV Projection Schema
+- path: `knowledge/sacv/schemas/v1/projection.schema.json`
+- title: SACV Registry Inventory Projection v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical disposable projection-result shape
+- owner: SACV maintainers
+- scope: Closes normalized registry inventory, contract digests, operation counts, and noncanonical rebuildable status.
+- relationships: depends_on -> `knowledge/sacv/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sacv-engine/SPEC.md`
+- consumers: qxctl, SACV engine, tests, graph/search planners
+- deferred_projections: analytical and graph inventory projections
+- notes: It contains no raw bundle, runtime binding, SDK, or publication artifact.
+- status: canonical
+
 ### SSIAG Canonical Knowledge Vector
 
 #### SSIAG INTENT.md
@@ -1242,7 +1333,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: administrative CLI implementation surface
 - truth_role: local operation dispatch, process-client invocation, and presentation implementation truth
 - owner: qxctl maintainers
-- scope: Implements current repository, module, SSIAG, STAV, SKVI, and SCLV administrative operation handlers.
+- scope: Implements current repository, module, SSIAG, STAV, SKVI, SCLV, and SACV administrative operation handlers.
 - relationships: implements -> `tools/qxctl/MANIFEST.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`
 - consumers: qxctl executable, tests, maintainers, reviewers
 - deferred_projections: generated CLI reference and operation evidence
@@ -1255,7 +1346,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: administrative CLI implementation surface
 - truth_role: implemented command tree, flag grammar, and failure routing
 - owner: qxctl maintainers
-- scope: Implements current repository, SSIAG, STAV, and exact-installation SKVI/SCLV command grammar without owning domain semantics.
+- scope: Implements current repository, SSIAG, STAV, and exact-installation SKVI/SCLV/SACV command grammar without owning domain semantics.
 - relationships: implements -> `tools/qxctl/MANIFEST.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`
 - consumers: qxctl executable, compatibility tests, maintainers, reviewers
 - deferred_projections: generated CLI reference documentation
@@ -1268,9 +1359,9 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: bounded Go process-client implementation
 - truth_role: trusted receipt resolution, child-process bounds, and response verification implementation truth
 - owner: qxctl maintainers
-- scope: Resolves exact installed SKVI and SCLV versions, validates their inactive-undocked receipts and owned paths, invokes them with an empty environment and hard deadline, and verifies response identity and digest.
-- relationships: implements -> `knowledge/SPEC.md`; implements -> `knowledge/skvi/SPEC.md`; implements -> `knowledge/sclv/SPEC.md`; called_by -> `tools/qxctl/cmd/qxctl/commands.go`
-- consumers: qxctl SKVI/SCLV commands, tests, reviewers, future compatible vector clients
+- scope: Resolves exact installed SKVI, SCLV, and SACV versions, validates their inactive-undocked receipts and owned paths, invokes them with an empty environment and hard deadline, and verifies response identity and digest.
+- relationships: implements -> `knowledge/SPEC.md`; implements -> `knowledge/skvi/SPEC.md`; implements -> `knowledge/sclv/SPEC.md`; implements -> `knowledge/sacv/SPEC.md`; called_by -> `tools/qxctl/cmd/qxctl/commands.go`
+- consumers: qxctl SKVI/SCLV/SACV commands, tests, reviewers, future compatible vector clients
 - deferred_projections: additional compatible vector clients
 - notes: It does not install, activate, dock, infer membership, grant permission, ratify, mutate journals, or apply.
 - status: canonical
@@ -1510,6 +1601,86 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SCLV engine maintainers
 - scope: Builds and tests the exact engine and adapters and supports source or installed foundation consumption.
 - relationships: implements -> `modules/sclv-engine/SPEC.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
+- consumers: CMake, implementers, packagers, reviewers
+- deferred_projections: reproducible build, install, and receipt evidence
+- notes: No global executable alias or active binding is installed.
+- status: canonical
+
+### SACV Engine Module
+
+#### SACV Engine INTENT.md
+- path: `modules/sacv-engine/INTENT.md`
+- title: SACV Engine Intent
+- surface_type: vector-engine module intent
+- truth_role: subordinate API contract check, diff, proposal, and projection purpose
+- owner: SACV engine maintainers
+- scope: Declares deterministic OpenAPI 3.2.0 governance operations without endpoint, ownership, publication, or mutation authority.
+- relationships: depends_on -> `knowledge/sacv/INTENT.md`; declares -> `modules/sacv-engine/MANIFEST.md`
+- consumers: qxctl, implementers, administrators, reviewers, agentic tools
+- deferred_projections: installed-engine inventory and conformance evidence
+- notes: The engine implements SACV truth but does not own it.
+- status: canonical
+
+#### SACV Engine MANIFEST.md
+- path: `modules/sacv-engine/MANIFEST.md`
+- title: SACV Engine Manifest
+- surface_type: independently installable vector-engine manifest
+- truth_role: executable, operation, protocol, dependency, and lifecycle truth
+- owner: SACV engine maintainers
+- scope: Declares the C++26 executable, five read/proposal operations, exact package, disabled apply, and inactive installed-undocked state.
+- relationships: depends_on -> `modules/sacv-engine/INTENT.md`; implements -> `knowledge/sacv/SPEC.md`; statically_links -> `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
+- consumers: qxctl, packagers, implementers, reviewers, agentic tools
+- deferred_projections: engine inventory and Maestro presence evidence
+- notes: No endpoint, default receptor, active alias, canonical write, generator, or publication route exists.
+- status: canonical
+
+#### SACV Engine INSTALL.md
+- path: `modules/sacv-engine/INSTALL.md`
+- title: SACV Engine Installation
+- surface_type: module installation contract
+- truth_role: build, test, versioned install, qxctl invocation, and receipt-owned uninstall procedure
+- owner: SACV engine maintainers
+- scope: Defines exact prefix installation of one binary, contracts, receipt, and licenses plus receipt-owned removal.
+- relationships: depends_on -> `modules/sacv-engine/MANIFEST.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/INSTALL.md`; consumed_by -> `tools/qxctl/internal/knowledgeengine/client.go`
+- consumers: implementers, administrators, packagers, qxctl, reviewers
+- deferred_projections: lifecycle administration evidence
+- notes: Installation leaves the version inactive and undocked.
+- status: canonical
+
+#### SACV Engine SKILL.md
+- path: `modules/sacv-engine/SKILL.md`
+- title: SACV Engine Skill
+- surface_type: vector-engine skill guidance
+- truth_role: safe direct and qxctl operation procedure
+- owner: SACV engine maintainers
+- scope: Guides JSON checks, YAML fail-closed interpretation, compatibility evidence, proposals, and projections.
+- relationships: depends_on -> `modules/sacv-engine/SPEC.md`; depends_on -> `knowledge/sacv/SKILL.md`
+- consumers: administrators, implementers, API owners, reviewers, agentic tools
+- deferred_projections: qxctl lifecycle procedure
+- notes: YAML remains canonical-capable; only this development parser is unavailable.
+- status: canonical
+
+#### SACV Engine SPEC.md
+- path: `modules/sacv-engine/SPEC.md`
+- title: SACV Engine Specification
+- surface_type: vector-engine module specification
+- truth_role: exact operation, parser, bound, exit, install, and non-authorization contract
+- owner: SACV engine maintainers
+- scope: Defines inspect/check/diff/propose/project, bounded JSON OpenAPI conformance, YAML fail-closed behavior, and disabled apply.
+- relationships: depends_on -> `knowledge/SPEC.md`; implements -> `knowledge/sacv/SPEC.md`; implements -> `knowledge/sacv/schemas/v1/MANIFEST.md`
+- consumers: C++ implementers, qxctl, tests, validators, API reviewers
+- deferred_projections: independently gated YAML parser and expanded SACV projections
+- notes: It has no session, authentication, network, SSIAG/STAV, lifecycle, ownership, endpoint, publication, generator, or Maestro authority.
+- status: canonical
+
+#### SACV Engine CMakeLists.txt
+- path: `modules/sacv-engine/CMakeLists.txt`
+- title: SACV Engine Build Contract
+- surface_type: module build and install contract
+- truth_role: static-link, test, package receipt, and uninstall implementation truth
+- owner: SACV engine maintainers
+- scope: Builds and tests the exact versioned executable and supports source or installed foundation consumption.
+- relationships: implements -> `modules/sacv-engine/SPEC.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
 - consumers: CMake, implementers, packagers, reviewers
 - deferred_projections: reproducible build, install, and receipt evidence
 - notes: No global executable alias or active binding is installed.
@@ -2072,7 +2243,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: `Authorization never implies completion; pending transaction state is noncanonical. Current validator coverage does not interpret release-transaction semantics.`
 
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, six common SKV JSON Schemas, four SKVI JSON Schemas, and five SCLV JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, six common SKV JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, and six SACV JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

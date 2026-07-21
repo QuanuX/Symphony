@@ -46,6 +46,15 @@ type sclvOptions struct {
 	jsonOutput           bool
 }
 
+type sacvOptions struct {
+	prefix                 string
+	version                string
+	repository             string
+	input                  string
+	expectedRegistryDigest string
+	jsonOutput             bool
+}
+
 func execute(args []string) int {
 	if len(args) == 0 {
 		printUsage()
@@ -124,8 +133,40 @@ func newRootCommand() (*cobra.Command, error) {
 		return nil, err
 	}
 	stav := newSTAVCommand()
-	root.AddCommand(ssiag, stav, newSKVICommand(), newSCLVCommand())
+	root.AddCommand(ssiag, stav, newSKVICommand(), newSCLVCommand(), newSACVCommand())
 	return root, nil
+}
+
+func newSACVCommand() *cobra.Command {
+	command := &cobra.Command{
+		Use:  "sacv",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return fmt.Errorf("SACV subcommand is required: inspect, check, diff, propose, or project")
+		},
+	}
+	for _, operation := range []string{"inspect", "check", "diff", "propose", "project"} {
+		options := sacvOptions{version: "0.1.0-dev"}
+		child := &cobra.Command{
+			Use:  operation,
+			Args: usageOnlyArgs,
+			RunE: func(*cobra.Command, []string) error { return runSACV(operation, options) },
+		}
+		child.Flags().StringVar(&options.prefix, "prefix", "", "exact SACV installation prefix")
+		child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed SACV engine version")
+		child.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
+		child.Flags().BoolVar(&options.jsonOutput, "json", false, "emit operation result JSON")
+		if operation == "check" {
+			child.Flags().StringVar(&options.expectedRegistryDigest, "expected-registry-digest", "", "optional expected tagged SHA-256 registry digest")
+		}
+		if operation == "diff" || operation == "propose" {
+			child.Flags().StringVar(&options.input, "input", "", "no-follow JSON operation payload file")
+		}
+		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+		command.AddCommand(child)
+	}
+	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	return command
 }
 
 func newSCLVCommand() *cobra.Command {
@@ -396,7 +437,7 @@ func exactOneUsageArg(_ *cobra.Command, args []string) error {
 
 func knownTopLevel(value string) bool {
 	switch value {
-	case "--help", "--version", "doctor", "contracts", "inventory", "status", "modules", "module", "ssiag", "stav", "skvi", "sclv":
+	case "--help", "--version", "doctor", "contracts", "inventory", "status", "modules", "module", "ssiag", "stav", "skvi", "sclv", "sacv":
 		return true
 	default:
 		return false
@@ -432,6 +473,13 @@ func failurePrefix(args []string) string {
 			switch args[1] {
 			case "inspect", "check", "propose", "recover", "project":
 				return "sclv " + args[1]
+			}
+		}
+	case "sacv":
+		if len(args) > 1 {
+			switch args[1] {
+			case "inspect", "check", "diff", "propose", "project":
+				return "sacv " + args[1]
 			}
 		}
 	}
