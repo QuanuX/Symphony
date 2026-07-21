@@ -15,6 +15,7 @@ Symphony canonical HTTP API descriptions target OpenAPI Specification 3.2.0.
 - Error bodies MUST use stable, safe reason codes and MUST NOT expose native or secret-bearing errors.
 - Examples MUST be synthetic and secret-free.
 - Protected operations MUST reference a ratified security profile.
+- Every document MUST declare top-level `x-symphony-security-profile` equal to the canonical, SKVI-indexed `security_profile` path in its SACV registry entry. This portable Symphony governance extension binds OpenAPI security requirements to their separately owned authority contract; it does not define a token or authentication mechanism.
 - Internal or administrative documents MUST NOT declare a public production server.
 
 ## References and Bundling
@@ -32,6 +33,10 @@ Before adopting a consumer, generator, linter, Mintlify release, or SDK pipeline
 3. resolves references without network-dependent authority changes;
 4. retains security, error, and presence semantics;
 5. fails visibly rather than downgrading or dropping unsupported fields.
+
+## Current Development Engine Compatibility
+
+`symphony-sacv 0.1.0-dev` implements bounded OpenAPI 3.2.0 JSON validation and deterministic compatibility evidence. It intentionally reports YAML parsing as unavailable until a reviewed parser passes the gate above. This development limitation does not change the canonical YAML preference, permit a downgrade, or authorize a conversion that loses comments, aliases, merge semantics, number precision, or security meaning.
 
 ## Explicit Exclusions
 

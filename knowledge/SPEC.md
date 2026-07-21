@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator read-only slice and SKVI/SCLV proposal/projection slices implemented. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No later session-mutation, other vector-engine, lifecycle, apply, or docking capability may be inferred from these slices.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator read-only slice and SKVI/SCLV/SACV proposal/projection slices implemented. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No later session-mutation, other vector-engine, lifecycle, apply, endpoint, publication, or docking capability may be inferred from these slices.
 
 ## Purpose
 
@@ -53,7 +53,7 @@ The initial exact schemas are:
 
 The process request limit is 1 MiB and the response limit is 4 MiB. JSON depth is at most 64, parsed values/events at most 16,384, one string or key at most 65,536 bytes, integers remain within `[-9007199254740991, 9007199254740991]`, and a request deadline is at most 300 seconds ahead. Unknown fields, duplicate names, invalid UTF-8, trailing data, floating-point values, out-of-range integers, unsupported versions, excessive input, unsafe paths, expired deadlines, and target mismatch fail closed. Standard output is reserved for the single protocol response; bounded diagnostics use standard error. Arguments and environment variables MUST NOT carry secrets or arbitrary executable instructions.
 
-An engine checks the deadline before and between bounded work units and file-read chunks. The invoking process MUST independently enforce the same deadline on child-process lifetime so a blocked operating-system or filesystem call cannot outlive the request. The direct coordinator slice provides cooperative checks; the implemented qxctl SKVI/SCLV client adds a hard child-process timeout around each request deadline.
+An engine checks the deadline before and between bounded work units and file-read chunks. The invoking process MUST independently enforce the same deadline on child-process lifetime so a blocked operating-system or filesystem call cannot outlive the request. The direct coordinator slice provides cooperative checks; the implemented qxctl SKVI/SCLV/SACV client adds a hard child-process timeout around each request deadline.
 
 `response_digest` is the tagged SHA-256 of the compact key-sorted response object before that member is inserted. Operation-specific payload/result schemas remain owned by the applicable coordinator or vector contract.
 
@@ -88,6 +88,8 @@ A proposal is immutable, content-addressed, noncanonical, deterministic for the 
 - creation and expiry semantics.
 
 Proposals MUST NOT contain secrets, credentials, proofs, raw tokens, unbounded provider payloads, environment dumps, absolute portable paths, or arbitrary commands. Proposal generation never establishes permission or ratification.
+
+Every proposal authority object states `engine_decided_domain_truth: false`. This common, vector-neutral assertion means validation and deterministic computation do not let an engine decide membership, semantic ownership, ratification, publication eligibility, feature-worthiness, or another vector-owned fact. Vector-specific validation evidence may name the exact decision boundary but MUST NOT replace or weaken the common assertion.
 
 ## Machine-Managed and Semantic Content
 

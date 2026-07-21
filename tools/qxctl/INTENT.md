@@ -16,7 +16,7 @@ Every SSIAG query is scoped by immutable TOPS ID. `knowledge/ssiag/` owns SSIAG 
 
 The Architect-ratified `qxctl stav status|verify|query|doctor` grammar is operational. It loads the selected per-TOPS STAV contract, authenticates the authority endpoint from kernel credentials, submits strict local envelopes, and displays only classification-authorized projections. qxctl has no `stav append`, does not edit STAV ledgers, and does not own `knowledge/stav/` schemas. qxctl grammar is not governed by OpenAPI.
 
-The SKVI and SCLV vector-engine grammars are operational as `qxctl skvi inspect|check|propose|project` and `qxctl sclv inspect|check|propose|recover|project`. qxctl requires an explicit installation prefix, resolves the exact version from its inactive undocked receipt, validates every receipt-owned path, invokes the independently installed C++ engine through bounded standard I/O with a hard deadline and empty environment, and verifies response identity, digest, and operation-specific safety assertions. `qxctl knowledge ...` remains the cross-vector umbrella for later lifecycle/session coordination; SACV, SODV, SSFV, `knowledge apply`, and lifecycle commands remain unavailable until their separate implementation gates pass.
+The SKVI, SCLV, and SACV vector-engine grammars are operational as `qxctl skvi inspect|check|propose|project`, `qxctl sclv inspect|check|propose|recover|project`, and `qxctl sacv inspect|check|diff|propose|project`. qxctl requires an explicit installation prefix, resolves the exact version from its inactive undocked receipt, validates every receipt-owned path, invokes the independently installed C++ engine through bounded standard I/O with a hard deadline and empty environment, and verifies response identity, digest, and operation-specific safety assertions. `qxctl knowledge ...` remains the cross-vector umbrella for later lifecycle/session coordination; SODV, SSFV, `knowledge apply`, and lifecycle commands remain unavailable until their separate implementation gates pass.
 
 ## Non-goals
 - qxctl does not execute hotpath-runtime workloads.
@@ -31,7 +31,7 @@ The SKVI and SCLV vector-engine grammars are operational as `qxctl skvi inspect|
 - qxctl does not choose infrastructure.
 - qxctl does not assume Docker/Kubernetes/cloud.
 - qxctl does not assume trading, market-data, strategy, provider, or plugin ABI behavior.
-- qxctl does not directly write generated SKVI/SCLV records; it may request noncanonical proposals from ratified engines.
+- qxctl does not directly write generated SKVI/SCLV/SACV records; it may request noncanonical proposals from ratified engines.
 - qxctl does not enforce runtime behavior.
 - qxctl does not implement identity-provider, keyring, or secret-provider SDK behavior.
 - qxctl does not accept or print secret values through SSIAG commands.

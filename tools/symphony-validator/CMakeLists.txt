@@ -11,6 +11,7 @@ add_executable(symphony-validator
     src/skvi_index.cpp
     src/skvi_coverage.cpp
     src/skvi_paths.cpp
+    src/sacv_registry.cpp
     src/sclv_changelog.cpp
     src/sclv_shape.cpp
     src/sclv_ledger.cpp

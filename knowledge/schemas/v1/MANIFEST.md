@@ -10,7 +10,7 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 - `engine-process-response.schema.json`: one bounded local process response envelope.
 - `engine-descriptor.schema.json`: installed engine/coordinator identity and capability truth.
 - `install-receipt.schema.json`: versioned, prefix-relative package ownership and docking state.
-- `proposal.schema.json`: provider-neutral immutable proposal envelope and authority boundary.
+- `proposal.schema.json`: provider-neutral immutable proposal envelope and vector-neutral authority boundary. Its explicit `engine_decided_domain_truth: false` assertion prevents any engine from converting validation into ownership, membership, ratification, publication, or other semantic authority.
 - `provider-evidence.schema.json`: bounded provider-neutral revision, change-request, and ratification evidence normalized by separately discoverable adapters.
 
 All schemas use JSON Schema Draft 2020-12, close every common-governed object with `additionalProperties: false`, and carry no secrets. The proposal operation's bounded `data` object is deliberately governed by the applicable vector schema; operation-specific payload/result schemas remain owned by that engine Contract Quad.

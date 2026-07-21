@@ -787,7 +787,7 @@ engine::Json propose(const engine::Json& payload, std::int64_t deadline_unix_ms)
             engine::Json{{"code", "sclv.provider_evidence.bound"}, {"outcome", "pass"}, {"detail", "revision, change-request, and ratification claims match normalized evidence"}},
         })},
         {"authority", engine::Json{
-            {"caller_declared_operation", true}, {"engine_decided_membership", false},
+            {"caller_declared_operation", true}, {"engine_decided_domain_truth", false},
             {"ratified", false},
         }},
         {"created_at", created_at}, {"expires_at", expires_at},

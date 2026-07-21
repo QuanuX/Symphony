@@ -238,7 +238,7 @@ void test_proposal_semantics() {
     require(first == second, "proposal is not deterministic for declared inputs");
     require(first.at("protocol") == "symphony.knowledge.proposal.v1", "proposal protocol mismatch");
     require(first.at("authority").at("caller_declared_operation") == true, "caller declaration absent");
-    require(first.at("authority").at("engine_decided_membership") == false, "engine decided membership");
+    require(first.at("authority").at("engine_decided_domain_truth") == false, "engine decided domain truth");
     require(first.at("authority").at("ratified") == false, "proposal self-ratified");
     require(first.at("canonical_apply_enabled") == false, "proposal enabled apply");
     require(first.at("operations").size() == 1U, "proposal operation count mismatch");

@@ -60,7 +60,7 @@ func TestValidateSKVIResultRejectsSafetyEscalation(t *testing.T) {
 		"proposal_id":"skvi-proposal:test",
 		"proposal_digest":"sha256:1111111111111111111111111111111111111111111111111111111111111111",
 		"canonical_apply_enabled":false,
-		"authority":{"caller_declared_operation":true,"engine_decided_membership":false,"ratified":true},
+		"authority":{"caller_declared_operation":true,"engine_decided_domain_truth":false,"ratified":true},
 		"operations":[{}]
 	}`)
 	if _, err := validateSKVIResult("propose", proposal); err == nil {

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sacv:registry-entry:v1",
+  "title": "SACV Registry Entry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["api_id", "title", "owner", "path", "openapi", "api_version", "audience", "transport_profile", "security_profile", "publication_state", "sdk_state", "status", "notes"],
+  "properties": {
+    "api_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$"},
+    "title": {"$ref": "#/$defs/field"},
+    "owner": {"type": "string", "pattern": "^(knowledge|modules)/(?!\\.{1,2}$)[^/\\\\\\u0000-\\u001F\\u007F]+$", "maxLength": 4096},
+    "path": {"type": "string", "pattern": "^(knowledge|modules)/(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F]).+\\.openapi\\.(json|yaml)$", "maxLength": 4096},
+    "openapi": {"const": "3.2.0"},
+    "api_version": {"$ref": "#/$defs/token"},
+    "audience": {"enum": ["local_internal", "remote_administrative", "partner", "public"]},
+    "transport_profile": {"$ref": "#/$defs/token"},
+    "security_profile": {"type": "string", "pattern": "^(knowledge|modules)/(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])[^/]+/.+$", "maxLength": 4096},
+    "publication_state": {"enum": ["internal_only", "candidate", "sodv_approved"]},
+    "sdk_state": {"enum": ["not_eligible", "candidate", "approved"]},
+    "status": {"enum": ["draft", "ratified", "deprecated", "retired"]},
+    "notes": {"$ref": "#/$defs/field"}
+  },
+  "$defs": {
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "field": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 65536,
+      "pattern": "^(?![\\s\\S]*[\\u0000-\\u0009\\u000B-\\u001F\\u007F])[\\s\\S]+$"
+    }
+  }
+}

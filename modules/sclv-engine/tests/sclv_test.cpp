@@ -70,7 +70,7 @@ engine::Json repository_evidence() {
 
 engine::Json normalized_evidence() {
     return provider::normalize_airgap(engine::Json{
-        {"observed_at", "2026-07-21T16:00:00Z"},
+        {"observed_at", "2099-01-01T00:10:00Z"},
         {"source_reference", "fixture-airgap-record"},
         {"repository", repository_evidence()},
         {"change_request", change_request()},
@@ -82,8 +82,8 @@ engine::Json record(std::string disposition = "post_merge", std::string reason =
     return engine::Json{
         {"record_id", "SCLV-CHG-FIXTURE-0001"}, {"record_version", 3},
         {"title", "Fixture provider-neutral record"}, {"status", "canonical"},
-        {"date", "2026-07-21"}, {"change_started_at", "2026-07-21T19:40:00Z"},
-        {"change_completed_at", "2026-07-21T19:50:00Z"}, {"recorded_at", "2026-07-21T20:00:00Z"},
+        {"date", "2099-01-01"}, {"change_started_at", "2099-01-01T00:00:00Z"},
+        {"change_completed_at", "2099-01-01T00:20:00Z"}, {"recorded_at", "2099-01-01T00:30:00Z"},
         {"recording_disposition", std::move(disposition)}, {"recovery_reason", std::move(reason)},
         {"change_type", "implementation_change"},
         {"change_request_state", "not_applicable"}, {"change_request_provider", "not_applicable"},
@@ -119,7 +119,7 @@ engine::Json repository() {
 engine::Json proposal_input(engine::Json value) {
     return engine::Json{
         {"repository", repository()}, {"session_ref", "session-1"}, {"context_ref", "context-1"},
-        {"proposal_expires_at", "2026-07-21T21:00:00Z"}, {"record", std::move(value)},
+        {"proposal_expires_at", "2099-01-01T01:00:00Z"}, {"record", std::move(value)},
         {"provider_evidence", engine::Json::array({normalized_evidence()})},
     };
 }
@@ -186,7 +186,7 @@ void test_provider_and_proposal() {
     require(first == second, "proposal is not deterministic");
     require(first.at("protocol") == "symphony.knowledge.proposal.v1", "proposal protocol mismatch");
     require(first.at("authority").at("caller_declared_operation") == true, "caller declaration is absent");
-    require(first.at("authority").at("engine_decided_membership") == false, "engine claimed membership authority");
+    require(first.at("authority").at("engine_decided_domain_truth") == false, "engine claimed domain-truth authority");
     require(first.at("authority").at("ratified") == false, "engine self-ratified");
     require(first.at("canonical_apply_enabled") == false, "proposal enabled apply");
     require(first.at("write_set").size() == 1U, "proposal write-set is not singular");

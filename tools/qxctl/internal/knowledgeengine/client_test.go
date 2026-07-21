@@ -141,6 +141,54 @@ func TestResolveInstalledSCLVRequiresExactElevenFileReceipt(t *testing.T) {
 	}
 }
 
+func TestResolveInstalledSACVRequiresExactNineFileReceipt(t *testing.T) {
+	prefix := t.TempDir()
+	version := "0.1.0-dev"
+	files := expectedSACVFiles(version)
+	for relative := range files {
+		path := filepath.Join(prefix, filepath.FromSlash(relative))
+		if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		mode := os.FileMode(0o644)
+		if strings.HasPrefix(relative, "libexec/") {
+			mode = 0o755
+		}
+		if err := os.WriteFile(path, []byte("fixture\n"), mode); err != nil {
+			t.Fatal(err)
+		}
+	}
+	receiptPath := filepath.Join(prefix, "share/symphony/receipts/sacv-engine", version, "install-receipt.json")
+	listed := make([]string, 0, len(files))
+	for relative := range files {
+		listed = append(listed, relative)
+	}
+	document := map[string]any{
+		"protocol": receiptProtocol, "module_id": sacvModuleID, "version": version,
+		"install_scope": "prefix", "prefix_mode": "installation_prefix",
+		"state": "installed_undocked", "active": false, "default_receptor": nil,
+		"files": listed,
+	}
+	data, err := json.Marshal(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(receiptPath, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	binary, err := resolveInstalledFor(sacvSpec, prefix, version)
+	if err != nil {
+		t.Fatalf("valid SACV installation rejected: %v", err)
+	}
+	canonicalPrefix, err := filepath.EvalSymlinks(prefix)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want := filepath.Join(canonicalPrefix, "libexec/symphony/sacv-engine", version, "symphony-sacv"); binary != want {
+		t.Fatalf("binary = %q, want %q", binary, want)
+	}
+}
+
 func TestInvokeEnforcesCallerDeadlineAroundChildProcess(t *testing.T) {
 	prefix := t.TempDir()
 	createInstalledFixture(t, prefix, "#!/bin/sh\n/bin/sleep 10\n")

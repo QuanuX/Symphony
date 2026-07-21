@@ -55,10 +55,10 @@
     "authority": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["caller_declared_operation", "engine_decided_membership", "ratified"],
+      "required": ["caller_declared_operation", "engine_decided_domain_truth", "ratified"],
       "properties": {
         "caller_declared_operation": {"type": "boolean"},
-        "engine_decided_membership": {"const": false},
+        "engine_decided_domain_truth": {"const": false},
         "ratified": {"const": false}
       }
     },

@@ -26,6 +26,8 @@ const (
 	engineID         = "symphony-skvi"
 	sclvModuleID     = "sclv-engine"
 	sclvEngineID     = "symphony-sclv"
+	sacvModuleID     = "sacv-engine"
+	sacvEngineID     = "symphony-sacv"
 	maxReceiptBytes  = 256 * 1024
 	maxRequestBytes  = 1024 * 1024
 	maxResponseBytes = 4 * 1024 * 1024
@@ -48,6 +50,10 @@ var skviSpec = engineSpec{
 
 var sclvSpec = engineSpec{
 	label: "SCLV", moduleID: sclvModuleID, engineID: sclvEngineID, expectedFiles: expectedSCLVFiles,
+}
+
+var sacvSpec = engineSpec{
+	label: "SACV", moduleID: sacvModuleID, engineID: sacvEngineID, expectedFiles: expectedSACVFiles,
 }
 
 type receipt struct {
@@ -100,6 +106,10 @@ func Invoke(ctx context.Context, prefix, version, repositoryRoot, operation stri
 
 func InvokeSCLV(ctx context.Context, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
 	return invoke(ctx, sclvSpec, prefix, version, repositoryRoot, operation, payload)
+}
+
+func InvokeSACV(ctx context.Context, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
+	return invoke(ctx, sacvSpec, prefix, version, repositoryRoot, operation, payload)
 }
 
 func invoke(ctx context.Context, spec engineSpec, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
@@ -332,6 +342,27 @@ func expectedSCLVFiles(version string) map[string]struct{} {
 		"libexec/symphony/sclv-engine/" + version + "/symphony-sclv-evidence-local-git",
 		"libexec/symphony/sclv-engine/" + version + "/symphony-sclv-evidence-airgap",
 		"share/symphony/receipts/sclv-engine/" + version + "/install-receipt.json",
+		base + "INTENT.md",
+		base + "MANIFEST.md",
+		base + "INSTALL.md",
+		base + "SKILL.md",
+		base + "SPEC.md",
+		license + "LICENSE-AGPL-3.0",
+		license + "nlohmann-json-LICENSE.MIT",
+	}
+	result := make(map[string]struct{}, len(paths))
+	for _, path := range paths {
+		result[path] = struct{}{}
+	}
+	return result
+}
+
+func expectedSACVFiles(version string) map[string]struct{} {
+	base := "share/doc/symphony/sacv-engine/" + version + "/"
+	license := "share/licenses/symphony-sacv-engine/" + version + "/"
+	paths := []string{
+		"libexec/symphony/sacv-engine/" + version + "/symphony-sacv",
+		"share/symphony/receipts/sacv-engine/" + version + "/install-receipt.json",
 		base + "INTENT.md",
 		base + "MANIFEST.md",
 		base + "INSTALL.md",

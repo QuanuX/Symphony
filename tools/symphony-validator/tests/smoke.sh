@@ -66,6 +66,28 @@ rm -rf "$TEMP_FIXTURE"
 trap - EXIT
 echo "caller authority validation passed"
 
+# Verify SACV registry regression (exit 22)
+TEMP_FIXTURE=$(mktemp -d)
+trap 'rm -rf "$TEMP_FIXTURE"' EXIT
+cp -a ./tests/fixtures_valid/* "$TEMP_FIXTURE/"
+cp -a "$REPO_ROOT/knowledge/sacv" "$TEMP_FIXTURE/knowledge/"
+sed 's/None\./- api_id: invalid-only/' "$REPO_ROOT/knowledge/sacv/REGISTRY.md" > "$TEMP_FIXTURE/knowledge/sacv/REGISTRY.md"
+set +e
+OUT_SACV=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" 2>&1)
+EXIT_CODE=$?
+set -e
+if [ $EXIT_CODE -ne 22 ]; then
+    echo "error: SACV registry violation should exit 22, got $EXIT_CODE"
+    exit 1
+fi
+if ! printf '%s\n' "$OUT_SACV" | grep "evidence violation sacv.registry.field_invalid" >/dev/null; then
+    echo "error: missing expected SACV registry field evidence"
+    exit 1
+fi
+rm -rf "$TEMP_FIXTURE"
+trap - EXIT
+echo "SACV registry validation passed"
+
 # Verify current repo
 OUT_REPO=$("$VALIDATOR_BIN" check --repo "$REPO_ROOT")
 if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "^summary ")" -ne 1 ]; then
@@ -80,8 +102,8 @@ if ! printf '%s\n' "$OUT_REPO" | grep "caller_authority.scan_complete " | grep "
     echo "error: current repo missing expected caller_authority.scan_complete status or findings=0"
     exit 1
 fi
-if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 43 ]; then
-    echo "error: current repo should authorize exactly the 28 STAV, 6 common SKV, 4 SKVI, and 5 SCLV JSON artifacts"
+if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 49 ]; then
+    echo "error: current repo should authorize exactly the 28 STAV, 6 common SKV, 4 SKVI, 5 SCLV, and 6 SACV JSON artifacts"
     exit 1
 fi
 echo "current repo passed strict validation"
