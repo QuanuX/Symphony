@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. This specification authorizes the proposal-only foundation implementation after this contract change is reviewed and merged; it does not claim that implementation already exists.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator read-only slice implemented. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No later session-mutation, vector-engine, qxctl, apply, or docking capability may be inferred from that first slice.
 
 ## Purpose
 
@@ -44,7 +44,18 @@ The v1 identifier family is:
 | `symphony.knowledge.install-receipt.v1` | installed-file and lifecycle receipt |
 | `symphony.maestro.knowledge-engine-docking.v1` | Maestro docking projection |
 
-Exact JSON schemas and byte ceilings MUST be added and adversarially tested before a process protocol is called operational. Unknown fields, duplicate names, invalid UTF-8, trailing data, unsupported versions, excessive input, unsafe paths, and timeouts fail closed. Standard output is reserved for the single protocol response; bounded diagnostics use standard error. Arguments and environment variables MUST NOT carry secrets or arbitrary executable instructions.
+The initial exact schemas are:
+
+- `knowledge/schemas/v1/engine-process-request.schema.json`;
+- `knowledge/schemas/v1/engine-process-response.schema.json`;
+- `knowledge/schemas/v1/engine-descriptor.schema.json`;
+- `knowledge/schemas/v1/install-receipt.schema.json`.
+
+The process request limit is 1 MiB and the response limit is 4 MiB. JSON depth is at most 64, parsed values/events at most 16,384, one string or key at most 65,536 bytes, integers remain within `[-9007199254740991, 9007199254740991]`, and a request deadline is at most 300 seconds ahead. Unknown fields, duplicate names, invalid UTF-8, trailing data, floating-point values, out-of-range integers, unsupported versions, excessive input, unsafe paths, expired deadlines, and target mismatch fail closed. Standard output is reserved for the single protocol response; bounded diagnostics use standard error. Arguments and environment variables MUST NOT carry secrets or arbitrary executable instructions.
+
+An engine checks the deadline before and between bounded work units and file-read chunks. The invoking process MUST independently enforce the same deadline on child-process lifetime so a blocked operating-system or filesystem call cannot outlive the request. The current direct coordinator slice provides cooperative checks; qxctl hard-timeout enforcement remains part of its later process-client increment.
+
+`response_digest` is the tagged SHA-256 of the compact key-sorted response object before that member is inserted. Operation-specific payload/result schemas remain owned by the applicable coordinator or vector contract.
 
 ## Authenticated Session Model
 
@@ -175,6 +186,12 @@ The SSFV namespace is reserved, but no SSFV engine or `FEATURES.md` generation i
 
 Append-only SCLV and SODV records remain immutable. A contract transition changes prospective behavior and never rewrites earlier evidence. `symphony-validator` remains an independent, read-only checker. Shared authority-free mechanics may be extracted for static reuse only when the validator's Contract Quad, direct invocation, evidence semantics, and absence of remediation remain intact.
 
+## Implemented Foundation Slice
+
+`libraries/knowledge-vector-engine-cpp/` implements the authority-free bounded parser, framing, digest, no-follow path, file-read, snapshot, versioned CMake package, receipt, and uninstall mechanics. nlohmann/json `v3.12.0` is pinned and vendored with its official release checksum and MIT license; it is not a runtime download and is not linked into `symphony-validator`.
+
+`modules/knowledge-session-coordinator/` implements process `inspect` and read-only snapshot `check` only. It does not yet establish an authenticated session, persist a journal, acquire a reconciliation lock, invoke a vector engine, mutate a worktree, integrate qxctl/SSIAG/STAV, activate an installed version, or dock with Maestro. Descriptor-visible lifecycle operations are reserved and apply is disabled.
+
 ## Non-Authorization Statement
 
-This specification does not claim an implementation exists, enable canonical apply, authorize an external package coordinate, create an HTTP surface, publish an artifact, permit direct ledger mutation, activate Maestro, or authorize SSFV semantics.
+This specification does not claim implementation beyond the explicitly identified foundation slice, enable canonical apply, authorize an external package coordinate, create an HTTP surface, publish a release artifact, permit direct ledger mutation, activate Maestro, or authorize SSFV semantics.

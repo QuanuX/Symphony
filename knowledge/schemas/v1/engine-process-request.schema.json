@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:engine-process:request:v1",
+  "title": "Symphony knowledge engine process request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "request_id",
+    "correlation_id",
+    "operation",
+    "target_engine",
+    "deadline_unix_ms",
+    "payload"
+  ],
+  "properties": {
+    "protocol": {
+      "const": "symphony.knowledge.engine-process.v1"
+    },
+    "request_id": {
+      "$ref": "#/$defs/token"
+    },
+    "correlation_id": {
+      "$ref": "#/$defs/token"
+    },
+    "operation": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "target_engine": {
+      "$ref": "#/$defs/token"
+    },
+    "deadline_unix_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "payload": {
+      "type": "object",
+      "maxProperties": 16384,
+      "propertyNames": {"maxLength": 65536},
+      "additionalProperties": {"$ref": "#/$defs/value"}
+    }
+  },
+  "$defs": {
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "value": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "boolean"},
+        {"type": "integer", "minimum": -9007199254740991, "maximum": 9007199254740991},
+        {"type": "string", "maxLength": 65536},
+        {
+          "type": "array",
+          "maxItems": 16384,
+          "items": {"$ref": "#/$defs/value"}
+        },
+        {
+          "type": "object",
+          "maxProperties": 16384,
+          "propertyNames": {"maxLength": 65536},
+          "additionalProperties": {"$ref": "#/$defs/value"}
+        }
+      ]
+    }
+  }
+}

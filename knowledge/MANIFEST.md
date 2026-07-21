@@ -50,7 +50,9 @@ Symphony is Linux-first. Native Windows engines are not planned. Windows operati
 
 ## Current Delivery State
 
-This contract transition authorizes common foundation and vector proposal-engine implementation only after merge. No engine or coordinator source exists at ratification time. Programmatic canonical apply, live Maestro docking, external package-manager publication, and SSFV implementation remain gated.
+The shared C++ foundation and the coordinator's first read-only development slice are implemented at `0.1.0-dev`. The coordinator implements bounded `inspect` and file-snapshot `check`; session mutation, authentication binding, journals, locks, observers, vector invocation, qxctl integration, programmatic canonical apply, live Maestro docking, external package-manager publication, every vector engine, and SSFV remain unimplemented or gated.
+
+The four exact common v1 schemas under `knowledge/schemas/v1/` govern process requests, process responses, descriptors, and install receipts. The installed coordinator reports `installed_undocked`, creates no active alias, and declares no default receptor until a receptor contract is separately selected.
 
 ## Non-Authorization Statement
 

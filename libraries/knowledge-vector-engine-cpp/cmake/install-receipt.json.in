@@ -1,0 +1,32 @@
+{
+  "protocol": "symphony.knowledge.install-receipt.v1",
+  "module_id": "knowledge-vector-engine-cpp",
+  "version": "0.1.0-dev",
+  "install_scope": "prefix",
+  "prefix_mode": "installation_prefix",
+  "state": "installed",
+  "active": false,
+  "default_receptor": null,
+  "files": [
+    "@CMAKE_INSTALL_LIBDIR@/symphony/knowledge-vector-engine/0.1.0-dev/@CMAKE_STATIC_LIBRARY_PREFIX@symphony-knowledge-vector-engine@CMAKE_STATIC_LIBRARY_SUFFIX@",
+    "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/json.hpp",
+    "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/limits.hpp",
+    "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/error.hpp",
+    "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/digest.hpp",
+    "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/path.hpp",
+    "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/protocol.hpp",
+    "@SYMPHONY_KVE_INCLUDE_DIR@/nlohmann/json.hpp",
+    "@SYMPHONY_KVE_CMAKE_DIR@/SymphonyKnowledgeVectorEngineTargets.cmake",
+    "@SYMPHONY_KVE_CMAKE_DIR@/@SYMPHONY_KVE_EXPORT_CONFIG_FILE@",
+    "@SYMPHONY_KVE_CMAKE_DIR@/SymphonyKnowledgeVectorEngineConfig.cmake",
+    "@SYMPHONY_KVE_CMAKE_DIR@/SymphonyKnowledgeVectorEngineConfigVersion.cmake",
+    "@CMAKE_INSTALL_DATADIR@/symphony/receipts/knowledge-vector-engine-cpp/0.1.0-dev/install-receipt.json",
+    "@CMAKE_INSTALL_DATADIR@/doc/symphony/knowledge-vector-engine-cpp/0.1.0-dev/INTENT.md",
+    "@CMAKE_INSTALL_DATADIR@/doc/symphony/knowledge-vector-engine-cpp/0.1.0-dev/MANIFEST.md",
+    "@CMAKE_INSTALL_DATADIR@/doc/symphony/knowledge-vector-engine-cpp/0.1.0-dev/INSTALL.md",
+    "@CMAKE_INSTALL_DATADIR@/doc/symphony/knowledge-vector-engine-cpp/0.1.0-dev/SKILL.md",
+    "@CMAKE_INSTALL_DATADIR@/doc/symphony/knowledge-vector-engine-cpp/0.1.0-dev/SPEC.md",
+    "@CMAKE_INSTALL_DATADIR@/licenses/symphony-knowledge-vector-engine/0.1.0-dev/LICENSE-AGPL-3.0",
+    "@CMAKE_INSTALL_DATADIR@/licenses/symphony-knowledge-vector-engine/0.1.0-dev/nlohmann-json-LICENSE.MIT"
+  ]
+}

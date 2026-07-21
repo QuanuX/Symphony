@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:install-receipt:v1",
+  "title": "Symphony knowledge module install receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "module_id",
+    "version",
+    "install_scope",
+    "prefix_mode",
+    "state",
+    "active",
+    "default_receptor",
+    "files"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.install-receipt.v1"},
+    "module_id": {"$ref": "#/$defs/token"},
+    "version": {"$ref": "#/$defs/version"},
+    "install_scope": {"enum": ["prefix", "user", "system", "tops"]},
+    "prefix_mode": {"const": "installation_prefix"},
+    "state": {"enum": ["installed", "installed_undocked", "docked"]},
+    "active": {"type": "boolean"},
+    "default_receptor": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/token"}
+      ]
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4096,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/path"}
+    }
+  },
+  "$defs": {
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])[^/]+(?:/[^/]+)*$"
+    }
+  }
+}

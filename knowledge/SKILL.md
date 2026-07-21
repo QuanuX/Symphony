@@ -28,6 +28,8 @@ After this contract transition is merged, authorized implementation work may:
 - expose implemented proposal/read operations through qxctl;
 - prove independent install/uninstall without silently docking or mutating canonical files.
 
+The implemented `0.1.0-dev` foundation slice supports direct coordinator `inspect` and explicit-path read-only `check`. A successful result proves only bounded process and snapshot behavior; it does not prove authentication, an active session, vector availability, qxctl integration, or apply authority.
+
 ## Prohibited Initial Operations
 
 - Do not apply a proposal programmatically.
