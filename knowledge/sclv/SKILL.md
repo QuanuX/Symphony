@@ -20,6 +20,8 @@ Use this guidance when reviewing, recording, validating, or recovering a canonic
 4. If it merged and has no canonical record, append a version-2 record with `recording_disposition: late_recovery` and a factual `recovery_reason`.
 5. Delete the marker only after the canonical recovery record is committed, or after an unmerged operation is confirmed abandoned.
 
+An installed `symphony-sclv` engine may perform the evidence reconciliation in steps 1-4 and emit a bounded proposal. It may not append, ratify, or commit the proposal. If recovery crosses logout, expiry, revocation, or required re-authentication, establish a fresh authenticated session before an authorized operation continues.
+
 ## Review Rules
 
 - Treat PR numbers as sparse identifiers, never a contiguous sequence.
@@ -29,7 +31,9 @@ Use this guidance when reviewing, recording, validating, or recovering a canonic
 - Reject `pending`, `unresolved`, or equivalent states in the canonical ledger.
 - Never synthesize a tag, hash, merge commit, or timestamp to satisfy a checker.
 - Never edit an existing record to make later history appear orderly.
+- Do not emit a canonical version-3 record until its exact schema/template and validator activation increment have merged.
+- Keep GitHub, GitLab, local, air-gapped, and proprietary provider evidence behind the same typed v3 semantics.
 
 ## Non-Authorization Statement
 
-symphony-validator detects and reports. It never edits. Any caller may draft a recovery record within its effective permissions, but only the Architect or another caller holding the applicable ratification permission may ratify it. Caller type is not evaluated. qxctl may later expose read-only derived evidence only.
+symphony-validator detects and reports. It never edits. The SCLV engine may inspect, check, reconcile ephemeral state, propose, and project; it never ratifies or directly appends. Any caller may draft a recovery record within its effective permissions, but only the Architect or another caller holding the applicable ratification permission may ratify it. Caller type is not evaluated. qxctl may invoke proposal/read operations; apply remains disabled.

@@ -21,7 +21,8 @@ Work in progress belongs in an ephemeral session journal outside the canonical k
 - SKVI indexes SCLV canonical surfaces.
 - SODV governs release and documentation publication truth informed by SCLV.
 - symphony-validator checks SCLV shape, identity, sparse-namespace, and temporal invariants.
-- qxctl may later query a derived SCLV projection, but has no canonical mutation authority.
+- the independently installed SCLV engine may inspect, check, propose, recover ephemeral closure state, and build derived projections under `knowledge/SPEC.md`.
+- qxctl administers those proposal-only operations but has no implemented canonical mutation authority.
 - NotebookLM may align corpus context, and Mintlify may publish derived documentation; neither is canonical authority.
 
 ### Non-scope
@@ -30,4 +31,4 @@ SCLV is not Git history, PR history, a runtime audit ledger, a release artifact 
 
 ### Non-authorization Statement
 
-This surface does not grant ratification permission to a caller merely because it generated a proposal or validation result. A caller holding the required repository/transition-owner permission ratifies; authority-free tools detect, check, reconcile evidence, and propose bounded changes. No caller may use SCLV to edit prior records, manufacture merge evidence, publish releases, mutate STAV ledgers, or expose public documentation.
+This surface authorizes a proposal-only C++ SCLV engine at `modules/sclv-engine/` after the common contract transition merges. It does not grant ratification permission merely because an engine or caller generated a proposal or validation result. A caller holding the required repository/transition-owner permission ratifies; authority-free tools detect, check, reconcile evidence, and propose bounded forward changes. No caller may use SCLV to edit prior records, manufacture merge evidence, publish releases, mutate STAV ledgers, or expose public documentation.

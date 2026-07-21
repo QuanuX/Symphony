@@ -16,6 +16,8 @@ Every SSIAG query is scoped by immutable TOPS ID. `knowledge/ssiag/` owns SSIAG 
 
 The Architect-ratified `qxctl stav status|verify|query|doctor` grammar is operational. It loads the selected per-TOPS STAV contract, authenticates the authority endpoint from kernel credentials, submits strict local envelopes, and displays only classification-authorized projections. qxctl has no `stav append`, does not edit STAV ledgers, and does not own `knowledge/stav/` schemas. qxctl grammar is not governed by OpenAPI.
 
+The vector-engine grammar is ratified for implementation after its canonical contract transition merges. `qxctl knowledge ...` is the cross-vector umbrella; `qxctl skvi|sclv|sacv|sodv|ssfv ...` owns vector-specific commands. qxctl invokes exact independently installed C++ engines through the bounded standard-I/O process protocol. Initial implementation is read/query/check/propose/project only. `knowledge apply` and SSFV commands remain reserved and disabled until their separate gates pass.
+
 ## Non-goals
 - qxctl does not execute hotpath-runtime workloads.
 - qxctl does not make bus traversal mandatory.
@@ -29,11 +31,11 @@ The Architect-ratified `qxctl stav status|verify|query|doctor` grammar is operat
 - qxctl does not choose infrastructure.
 - qxctl does not assume Docker/Kubernetes/cloud.
 - qxctl does not assume trading, market-data, strategy, provider, or plugin ABI behavior.
-- qxctl does not write generated SKVI/SCLV records.
+- qxctl does not directly write generated SKVI/SCLV records; it may request noncanonical proposals from ratified engines.
 - qxctl does not enforce runtime behavior.
 - qxctl does not implement identity-provider, keyring, or secret-provider SDK behavior.
 - qxctl does not accept or print secret values through SSIAG commands.
 - qxctl does not grant target-host authority or make caller-class policy.
 
 ## Relationship
-qxctl reads and reports Symphony repository state. It relates to node-troll, bus-troll, hotpath-runtime, and secure-identity-access-governance as an administrative command and inspection surface, not as an owner of their workloads or security state.
+qxctl reads and reports Symphony repository state and administers independently installed modules and vector engines. It relates to node-troll, bus-troll, hotpath-runtime, secure-identity-access-governance, STAV, and SKV engines as an administrative command and inspection surface, not as an owner of their workloads, schemas, semantics, or security state.

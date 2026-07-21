@@ -23,12 +23,15 @@ Any caller operating within its effective target-host permission should use `qxc
 - SSIAG commands may read safe metadata only. Never pass secret values through qxctl arguments, input, output, logs, or fixtures.
 - The current implementation is read-only for every caller. When proposal and apply support exists, use only operations permitted by the target host and satisfy the configured safeguards; never emulate, manufacture, or bypass host authority.
 - STAV commands require an enrolled, running authority and an explicit reader grant. Never bypass endpoint authentication, reader classification, or add raw append behavior.
+- When vector-engine commands are implemented, invoke only the exact installed engine and compatible bounded process protocol. Treat proposal and projection output as noncanonical.
+- Treat the default knowledge session as a login/authentication-to-logout/expiry/revocation authority epoch containing separate worktree reconciliation contexts. Never extend authority across a required re-authentication boundary.
+- Keep vector administration, recovery, and audit reconciliation away from hot and warm paths.
 
 ## Do-Not-Use-For List
 - Do not use qxctl for managing NATS directly.
 - Do not use qxctl for deploying to cloud/Docker/Kubernetes.
 - Do not use qxctl to replace `node-troll`, `bus-troll`, or `hotpath-runtime`.
-- Do not use qxctl to write generated SKVI/SCLV records.
+- Do not use qxctl to write generated SKVI/SCLV records directly; use ratified proposal operations and the separately gated apply path when available.
 - Do not use qxctl to enforce runtime behavior or execute hotpath workloads.
 - Do not use qxctl to implement provider SDK behavior or bypass SSIAG policy.
 - Do not use qxctl to append STAV events or edit ledger files.

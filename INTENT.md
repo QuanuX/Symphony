@@ -20,6 +20,7 @@ Modules retain sovereignty over their own physical bounds, capability declaratio
 - **qxctl**: speaks commands.
 - **Maestro**: coordinates.
 - **SKV**: preserves knowledge.
+- **SKV vector engines**: inspect, validate, propose, and project within vector-owned contracts through independently installed C++ processes administered by qxctl.
 - **SSCG**: interprets compatibility.
 - **SCLV**: records change.
 - **SKVI**: maps knowledge.
@@ -34,6 +35,8 @@ The first runtime set (`node-troll`, `bus-troll`, `hotpath-runtime`) represents 
 Every module is expected to be individually installable without assuming a monolithic platform deployment.
 
 Shared implementation may live under `libraries/` only when it has no runtime identity or authority and does not weaken consumer installability. Canonical knowledge vectors, not libraries, own protocol truth.
+
+Vector engines and their coordinator are administrative cold/freezing-path components. They must not execute inline with, share locks with, or create synchronous dependencies that add jitter or latency to hot or warm execution paths. This isolation rule does not establish broader trading-node doctrine.
 
 ## Caller-Class Neutrality and Host Authority
 Symphony does not classify a caller as human, AI, agent, service, workload, organization, or another actor type when deciding authority. Supported authorization decisions use the target host's ownership or granted permissions, the requested operation and resource, expected state, and owner-configured safeguards.

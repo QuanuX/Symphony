@@ -11,27 +11,26 @@ SKVI maps the locations, scopes, descriptors, ownership boundaries, and relation
 SKVI makes the knowledge layer discoverable without requiring agents or humans to infer structure.
 SKVI is autonomous and discoverable as a peer vector surface.
 SKVI is not hidden inside SKV.
-SKVI is not a generated database yet.
-SKVI is not a generated index yet.
+SKVI canonical truth is the repository-maintained Markdown index; executable outputs remain derived.
 
 ## Classification
 - knowledge-vector contract surface
 - declarative index contract
-- not generated index
-- not generated database
+- source truth for index membership and relationships
+- independently implementable through a subordinate proposal/projection engine
 
 ## Declared Contract Truth Role
 `MANIFEST.md` establishes the definitive boundaries of the SKVI surface. Implementations may check or project SKVI only within separately ratified contracts and remain subordinate to this declared knowledge truth.
 
 ## Installability Considerations
-SKVI has no executable install surface. The checked-in validator reads SKVI directly from a repository checkout; qxctl integration, generated indexes, schemas, templates, and publication pipelines remain deferred.
+The SKVI engine is an independently installable C++ module at `modules/skvi-engine/` with executable `symphony-skvi`. Its initial contract is inspect, check, propose, and project only through the bounded `knowledge/SPEC.md` process protocol. It may install without Maestro as `installed_undocked`. The checked-in validator remains an independent read-only checker.
 
 ## Scope
 SKVI encompasses the mapping of canonical knowledge files and contract descriptors across the Symphony repository.
 
 ## Non-Scope
-SKVI is not a generated database yet.
-SKVI is not a generated index yet.
+SKVI is not a generated database.
+SKVI projections are not canonical indexes.
 SKVI is not a search engine.
 SKVI is not NotebookLM.
 SKVI is not Mintlify.
@@ -42,14 +41,13 @@ SKVI does not replace module contracts.
 SKVI does not replace SCLV.
 SKVI does not replace SODV.
 SKVI does not replace SSCG.
-SKVI does not create runtime behavior.
-SKVI does not enforce runtime behavior.
+SKVI does not execute application workloads or enforce runtime behavior.
 
 ## Inputs SKVI Maps
 Module contract boundaries, root governance, and other Knowledge Vector files, including SCLV and SODV.
 
 ## Outputs SKVI Describes
-Repository-maintained paths, roles, ownership boundaries, relationships, consumers, status, and deferred-projection eligibility. Machine-generated projections remain deferred.
+Repository-maintained paths, roles, ownership boundaries, relationships, consumers, status, and projection eligibility. Authorized machine projections are disposable, digest-bound, and rebuildable.
 
 ## Relationship to SKV
 SKVI is an autonomous peer index defining the structural map of the SKV framework.
@@ -67,7 +65,7 @@ SSCG interprets compatibility. SKVI defines where module boundaries and SSCG rul
 The checked-in `tools/symphony-validator/` implementation checks SKVI entry shape, required coverage, relative-path safety, path existence, uniqueness, and SCLV references. It is read-only and does not decide index membership.
 
 ## Relationship to qxctl
-qxctl may later consume SKVI, but qxctl integration is not authorized here.
+qxctl may invoke implemented SKVI inspect, check, propose, and project operations. qxctl is presentation and administration, never membership authority.
 
 ## Relationship to NotebookLM
 NotebookLM aligns corpus context.
@@ -78,4 +76,4 @@ Mintlify publishes derived official documentation.
 Mintlify is not canonical authority.
 
 ## Non-Authorization Statement
-This canonical surface authorizes no generated indexes, generated reports, new implementation or source files, schemas, templates, CI files, documentation publication configuration, Mintlify configuration, qxctl integration, validator capability beyond the separately bounded `tools/symphony-validator/` contract, NotebookLM automation, publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.
+This manifest authorizes the bounded proposal/projection engine and qxctl surface described above after contract merge. It does not authorize canonical mutation, self-ratification, autonomous membership decisions, public publication, NotebookLM automation, or a projection that competes with `INDEX.md`.

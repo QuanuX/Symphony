@@ -70,11 +70,11 @@ C++ projects.
 Permission holders ratify.
 Authority-free tools and callers assist.
 
-The checked-in C++26 validator reads and checks SKVI entries and produces deterministic, read-only evidence. Structured C++ projectors remain deferred.
+The checked-in C++26 validator reads and checks SKVI entries and produces deterministic, read-only evidence. Separately installed C++ vector engines may produce bounded proposals and vector-authorized disposable projections under `knowledge/SPEC.md`.
 C++ tooling must not autonomously author canonical truth.
 C++ tooling may identify missing or stale entries as evidence.
 C++ tooling must not decide architectural truth.
-Future qxctl may query derived SKVI projections.
+qxctl may invoke implemented vector-engine proposal/read operations; canonical apply remains disabled until its separate gate passes.
 Future validator increments may add separately ratified deterministic checks without changing SKVI ownership.
 
 ## Entry Model
@@ -686,10 +686,10 @@ Future validator increments may add separately ratified deterministic checks wit
 - truth_role: canonical API-contract governance intent
 - owner: SACV maintainer
 - scope: Defines API-first source truth, OpenAPI 3.2.0 targeting, distributed semantic ownership, and security/publication boundaries.
-- relationships: declares -> `knowledge/sacv/MANIFEST.md`; depends_on -> `knowledge/sodv/SPEC.md`
-- consumers: humans, reviewers, API owners, agentic tools, symphony-validator and future validator extensions
+- relationships: declares -> `knowledge/sacv/MANIFEST.md`; depends_on -> `knowledge/sodv/SPEC.md`; depends_on -> `knowledge/SPEC.md`
+- consumers: humans, reviewers, API owners, agentic tools, `symphony-sacv`, qxctl, symphony-validator and future validator extensions
 - deferred_projections: OpenAPI validation evidence, documentation, SDK, and graph projections
-- notes: Authorizes governance only, not an endpoint or remote listener.
+- notes: Authorizes governance and proposal-engine behavior, not canonical apply, an endpoint, or a remote listener.
 - status: canonical
 
 #### SACV MANIFEST.md
@@ -698,8 +698,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: knowledge-vector manifest
 - truth_role: canonical API ownership and placement contract
 - owner: SACV maintainer
-- scope: Declares SACV-owned policy and registry truth while retaining endpoint semantics with domain owners.
-- relationships: depends_on -> `knowledge/sacv/INTENT.md`; declares -> `knowledge/sacv/SPEC.md`; declares -> `knowledge/sacv/REGISTRY.md`
+- scope: Declares SACV-owned policy, registry truth, and independent proposal-engine installability while retaining endpoint semantics with domain owners.
+- relationships: depends_on -> `knowledge/sacv/INTENT.md`; depends_on -> `knowledge/SPEC.md`; declares -> `knowledge/sacv/SPEC.md`; declares -> `knowledge/sacv/REGISTRY.md`
 - consumers: humans, reviewers, module and vector owners, SKVI, SODV
 - deferred_projections: validator and publication evidence
 - notes: OpenAPI is a conditional typed artifact, not a mandatory fifth Contract Quad file.
@@ -711,8 +711,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: knowledge-vector skill guidance
 - truth_role: safe API-contract authoring and review procedure
 - owner: SACV maintainer
-- scope: Guides all callers without authorizing endpoints, publication, live requests, or MCP exposure.
-- relationships: depends_on -> `knowledge/sacv/SPEC.md`; interprets -> `knowledge/sodv/SPEC.md`
+- scope: Guides all callers and proposal-engine users without authorizing canonical apply, endpoints, publication, live requests, or MCP exposure.
+- relationships: depends_on -> `knowledge/sacv/SPEC.md`; depends_on -> `knowledge/SPEC.md`; interprets -> `knowledge/sodv/SPEC.md`
 - consumers: humans, API maintainers, security reviewers, agentic tools
 - deferred_projections: conformance workflow automation
 - notes: Security schemes and server URLs may not be invented.
@@ -724,11 +724,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: knowledge-vector specification
 - truth_role: normative API-contract governance
 - owner: SACV maintainer
-- scope: Defines OpenAPI versioning, ownership, registry, compatibility, security, derivation, and publication boundaries.
-- relationships: depends_on -> `knowledge/sacv/MANIFEST.md`; governs -> future owner-controlled OpenAPI descriptions; depends_on -> `knowledge/sodv/SPEC.md`
-- consumers: API owners, implementers, reviewers, symphony-validator and future validator/generator extensions
+- scope: Defines OpenAPI versioning, ownership, registry, compatibility, security, proposal-engine operations, derivation, and publication boundaries.
+- relationships: depends_on -> `knowledge/sacv/MANIFEST.md`; depends_on -> `knowledge/SPEC.md`; governs -> future owner-controlled OpenAPI descriptions; depends_on -> `knowledge/sodv/SPEC.md`
+- consumers: API owners, implementers, reviewers, `symphony-sacv`, qxctl, symphony-validator and future validator/generator extensions
 - deferred_projections: generated bindings, SDKs, Mintlify documentation, MCP tools
-- notes: Canonical descriptions target OpenAPI 3.2.0; none are registered yet.
+- notes: Canonical descriptions target OpenAPI 3.2.0; none are registered and programmatic apply remains disabled.
 - status: canonical
 
 #### SACV REGISTRY.md
@@ -1078,6 +1078,73 @@ Future validator increments may add separately ratified deterministic checks wit
 - status: canonical
 - notes: C++26 build contract surface; not a generated projection.
 
+### qxctl Tool Contract
+
+#### qxctl INTENT.md
+- path: `tools/qxctl/INTENT.md`
+- title: qxctl Intent
+- surface_type: tool intent
+- truth_role: canonical administrative-spine purpose and authority boundary
+- owner: qxctl maintainer
+- scope: Defines Go/Cobra/Viper administration, local module clients, vector-engine grammar, and non-ownership of module/vector semantics.
+- relationships: declares -> `tools/qxctl/MANIFEST.md`; depends_on -> `knowledge/SPEC.md`; interprets -> vector and module contracts
+- consumers: administrators, implementers, reviewers, agentic tools
+- deferred_projections: command reference and completion metadata
+- notes: Implemented SSIAG/STAV commands and ratified-but-unimplemented vector-engine grammar are explicitly distinguished.
+- status: canonical
+
+#### qxctl MANIFEST.md
+- path: `tools/qxctl/MANIFEST.md`
+- title: qxctl Manifest
+- surface_type: tool manifest
+- truth_role: command, dependency, installation, and non-authorization contract
+- owner: qxctl maintainer
+- scope: Enumerates operational commands, reserved vector-engine grammar, constrained dependencies, and lifecycle boundaries.
+- relationships: depends_on -> `tools/qxctl/INTENT.md`; depends_on -> `knowledge/SPEC.md`; governs -> `tools/qxctl/cmd/qxctl/`
+- consumers: qxctl implementers, module/vector maintainers, reviewers, agentic tools
+- deferred_projections: command registry and module lifecycle evidence
+- notes: Reserved commands must not be presented as implemented.
+- status: canonical
+
+#### qxctl INSTALL.md
+- path: `tools/qxctl/INSTALL.md`
+- title: qxctl Install
+- surface_type: tool installation guidance
+- truth_role: qxctl build and installation procedure
+- owner: qxctl maintainer
+- scope: Defines supported build/install invocation for the Go administrative spine.
+- relationships: depends_on -> `tools/qxctl/MANIFEST.md`
+- consumers: administrators, contributors, packaging maintainers
+- deferred_projections: packaged installation runbook
+- notes: qxctl installation does not install every independently managed module.
+- status: canonical
+
+#### qxctl SKILL.md
+- path: `tools/qxctl/SKILL.md`
+- title: qxctl Skill
+- surface_type: tool skill guidance
+- truth_role: safe caller command and verification procedure
+- owner: qxctl maintainer
+- scope: Guides caller-neutral administration, trust handling, proposal boundaries, sessions, and hot/warm isolation.
+- relationships: depends_on -> `tools/qxctl/MANIFEST.md`; depends_on -> `knowledge/SKILL.md`
+- consumers: administrators, reviewers, agentic tools
+- deferred_projections: command procedure documentation
+- notes: qxctl does not grant authority or directly mutate canonical vector files.
+- status: canonical
+
+#### qxctl README.md
+- path: `tools/qxctl/README.md`
+- title: qxctl README
+- surface_type: tool orientation
+- truth_role: implemented command and contributor overview
+- owner: qxctl maintainer
+- scope: Describes current qxctl use and operational integrations.
+- relationships: depends_on -> `tools/qxctl/MANIFEST.md`
+- consumers: users, contributors, reviewers, agentic tools
+- deferred_projections: SODV-governed public command documentation
+- notes: Implementation claims must remain synchronized with the manifest.
+- status: canonical
+
 ### Knowledge Vector Surfaces
 
 #### Knowledge Root
@@ -1089,9 +1156,48 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: knowledge maintainer
 - scope: Root definition of SKVI, SCLV, SODV, SACV, SSIAG, and STAV vector domains.
 - consumers: humans, reviewers, agentic tools, symphony-validator and future validator extensions
-- relationships: declares -> `knowledge/sacv/INTENT.md`; declares -> `knowledge/ssiag/INTENT.md`; declares -> `knowledge/stav/INTENT.md`; checked_by -> `tools/symphony-validator/SPEC.md`
-- deferred_projections: strictly deferred
-- notes: none
+- relationships: declares -> `knowledge/MANIFEST.md`; declares -> `knowledge/sacv/INTENT.md`; declares -> `knowledge/ssiag/INTENT.md`; declares -> `knowledge/stav/INTENT.md`; checked_by -> `tools/symphony-validator/SPEC.md`
+- deferred_projections: vector-authorized JSON/JSONL, search, graph, analytical, and documentation evidence
+- notes: Owns the cross-vector engine foundation contract without owning vector-specific semantics.
+- status: canonical
+
+##### MANIFEST.md
+- path: `knowledge/MANIFEST.md`
+- title: Symphony Knowledge Vector Manifest
+- surface_type: SKV umbrella manifest
+- truth_role: common vector-engine identity, namespace, installability, and authority boundary
+- owner: Symphony Knowledge Vector maintainers
+- scope: Declares independently installed C++ engines, the coordinator, shared mechanics, qxctl administration, Linux-first delivery, Maestro readiness, and proposal-only initial state.
+- relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; governs -> future cleared vector-engine module paths
+- consumers: vector maintainers, engine implementers, qxctl, Maestro planners, reviewers, agentic tools
+- deferred_projections: engine inventory, install receipts, Maestro presence graph
+- notes: No vector-engine implementation existed when this contract was ratified; canonical apply and SSFV remain gated.
+- status: canonical
+
+##### SPEC.md
+- path: `knowledge/SPEC.md`
+- title: Symphony Knowledge Vector Engine Foundation Specification
+- surface_type: SKV umbrella specification
+- truth_role: normative cross-vector engine, session, proposal, projection, installation, and isolation contract
+- owner: Symphony Knowledge Vector maintainers
+- scope: Defines process identifiers, authenticated authority epochs, worktree reconciliation, proposal/apply separation, provider neutrality, qxctl grammar, install receipts, Maestro docking readiness, and hot/warm isolation.
+- relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> future vector-engine implementations; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
+- consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
+- deferred_projections: protocol schemas, conformance evidence, engine inventory, docking graph
+- notes: Authorizes proposal/read implementation after merge; programmatic apply is disabled.
+- status: canonical
+
+##### SKILL.md
+- path: `knowledge/SKILL.md`
+- title: Symphony Knowledge Vector Engine Skill
+- surface_type: SKV umbrella skill guidance
+- truth_role: safe engine implementation, review, session, and recovery procedure
+- owner: Symphony Knowledge Vector maintainers
+- scope: Guides proposal-only implementation and records stop conditions for apply, namespaces, external packages, networking, SSFV, and hot/warm isolation.
+- relationships: depends_on -> `knowledge/SPEC.md`; governs -> future vector-engine implementation procedure
+- consumers: implementers, maintainers, reviewers, qxctl contributors, agentic tools
+- deferred_projections: conformance checklist and requirements traceability evidence
+- notes: Does not authorize canonical mutation or self-ratification.
 - status: canonical
 
 #### SKVI
@@ -1135,10 +1241,10 @@ Future validator increments may add separately ratified deterministic checks wit
 - truth_role: intent and purpose for SKVI
 - owner: SKVI maintainer
 - scope: Define SKVI boundaries.
-- consumers: humans, symphony-validator and future validator extensions
-- relationships: checked_by -> `tools/symphony-validator/SPEC.md`
-- deferred_projections: strictly deferred
-- notes: none
+- consumers: humans, symphony-validator, `symphony-skvi`, qxctl, and future validator extensions
+- relationships: checked_by -> `tools/symphony-validator/SPEC.md`; depends_on -> `knowledge/SPEC.md`
+- deferred_projections: JSON/JSONL, search, analytical, and graph projections
+- notes: Authorizes proposal/projection engine behavior but no canonical apply.
 - status: canonical
 
 ##### MANIFEST.md
@@ -1147,11 +1253,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: vector contract truth
 - truth_role: declared contract truth for SKVI
 - owner: SKVI maintainer
-- scope: Contractual requirements.
+- scope: Contractual requirements and independent proposal-engine installability.
 - consumers: humans, symphony-validator and future validator extensions
 - relationships: checked_by -> `tools/symphony-validator/SPEC.md`
-- deferred_projections: strictly deferred
-- notes: none
+- deferred_projections: digest-bound SKVI projections
+- notes: `symphony-skvi` remains subordinate to canonical `INDEX.md`.
 - status: canonical
 
 ##### SKILL.md
@@ -1162,9 +1268,9 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SKVI maintainer
 - scope: Usage and interaction.
 - consumers: humans, agentic tools
-- relationships: none defined
-- deferred_projections: strictly deferred
-- notes: none
+- relationships: depends_on -> `knowledge/skvi/SPEC.md`; depends_on -> `knowledge/SPEC.md`
+- deferred_projections: none
+- notes: Guides safe proposal/read engine use.
 - status: canonical
 
 ##### SPEC.md
@@ -1173,11 +1279,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: vector specification
 - truth_role: declarative specification behavior
 - owner: SKVI maintainer
-- scope: Formatting and structure definitions.
-- consumers: humans, future implementations
-- relationships: checked_by -> `tools/symphony-validator/SPEC.md`
-- deferred_projections: strictly deferred
-- notes: none
+- scope: Formatting, structure, engine operations, and projection boundaries.
+- consumers: humans, symphony-validator, `symphony-skvi`, qxctl
+- relationships: checked_by -> `tools/symphony-validator/SPEC.md`; depends_on -> `knowledge/SPEC.md`
+- deferred_projections: JSON/JSONL, search, analytical, and graph projections
+- notes: Initial engine operations are inspect, check, propose, and project.
 - status: canonical
 
 #### SCLV
@@ -1188,10 +1294,10 @@ Future validator increments may add separately ratified deterministic checks wit
 - truth_role: intent and purpose for SCLV
 - owner: SCLV maintainer
 - scope: SCLV records change truth.
-- consumers: humans, symphony-validator and future validator extensions
-- relationships: none defined
-- deferred_projections: strictly deferred
-- notes: none
+- consumers: humans, symphony-validator, `symphony-sclv`, qxctl, and future validator extensions
+- relationships: depends_on -> `knowledge/SPEC.md`
+- deferred_projections: provider-neutral JSON/JSONL, graph, and recovery evidence
+- notes: Proposal-only engine behavior is authorized; canonical append remains gated.
 - status: canonical
 
 ##### MANIFEST.md
@@ -1200,11 +1306,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: vector contract truth
 - truth_role: declared contract truth for SCLV
 - owner: SCLV maintainer
-- scope: Contractual requirements.
+- scope: Contractual requirements, independent proposal-engine installability, and provider-neutral v3 transition.
 - consumers: humans, symphony-validator and future validator extensions
-- relationships: none defined
-- deferred_projections: strictly deferred
-- notes: none
+- relationships: depends_on -> `knowledge/SPEC.md`
+- deferred_projections: provider-neutral ledger projections
+- notes: V3 activation requires its exact schema/template and validator increment.
 - status: canonical
 
 ##### SKILL.md
@@ -1215,9 +1321,9 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SCLV maintainer
 - scope: Usage and interaction.
 - consumers: humans, agentic tools
-- relationships: none defined
-- deferred_projections: strictly deferred
-- notes: none
+- relationships: depends_on -> `knowledge/sclv/SPEC.md`; depends_on -> `knowledge/SPEC.md`
+- deferred_projections: none
+- notes: Guides engine-assisted ephemeral recovery without canonical append.
 - status: canonical
 
 ##### SPEC.md
@@ -1226,11 +1332,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: vector specification
 - truth_role: declarative specification behavior
 - owner: SCLV maintainer
-- scope: Structuring change records.
-- consumers: humans, future implementations
-- relationships: none defined
-- deferred_projections: strictly deferred
-- notes: none
+- scope: Structuring change records, provider-neutral v3 semantics, engine operations, and forward recovery.
+- consumers: humans, symphony-validator, `symphony-sclv`, qxctl
+- relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
+- deferred_projections: provider-neutral JSON/JSONL, graph, and recovery evidence
+- notes: Version 1/2 history remains immutable; programmatic append is disabled.
 - status: canonical
 
 ##### CHANGELOG.md
@@ -1290,10 +1396,10 @@ Future validator increments may add separately ratified deterministic checks wit
 - truth_role: intent and purpose for SODV
 - owner: SODV maintainer
 - scope: SODV governs publication truth.
-- consumers: humans, symphony-validator and future validator extensions
-- relationships: checked_by -> `tools/symphony-validator/SPEC.md`
-- deferred_projections: strictly deferred
-- notes: none
+- consumers: humans, symphony-validator, `symphony-sodv`, qxctl, and future validator extensions
+- relationships: checked_by -> `tools/symphony-validator/SPEC.md`; depends_on -> `knowledge/SPEC.md`
+- deferred_projections: release and publication evidence
+- notes: Proposal/read engine behavior is authorized; publication remains separately permission-backed.
 - status: canonical
 
 ##### MANIFEST.md
@@ -1302,11 +1408,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: vector contract truth
 - truth_role: declared contract truth for SODV
 - owner: SODV maintainer
-- scope: Contractual requirements for publication.
+- scope: Contractual requirements for publication and independent proposal-engine installability.
 - consumers: humans, symphony-validator and future validator extensions
 - relationships: checked_by -> `tools/symphony-validator/SPEC.md`
-- deferred_projections: strictly deferred
-- notes: none
+- deferred_projections: release and publication evidence
+- notes: The engine cannot create tags, publish artifacts, or append canonical records.
 - status: canonical
 
 ##### SKILL.md
@@ -1317,9 +1423,9 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SODV maintainer
 - scope: Usage and interaction.
 - consumers: humans, agentic tools
-- relationships: none defined
-- deferred_projections: strictly deferred
-- notes: none
+- relationships: depends_on -> `knowledge/sodv/SPEC.md`; depends_on -> `knowledge/SPEC.md`
+- deferred_projections: none
+- notes: Guides safe proposal/read engine use without publication authority.
 - status: canonical
 
 ##### SPEC.md
@@ -1328,11 +1434,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: vector specification
 - truth_role: declarative specification behavior
 - owner: SODV maintainer
-- scope: Formatting for publication.
-- consumers: humans, future implementations
-- relationships: checked_by -> `tools/symphony-validator/SPEC.md`
-- deferred_projections: strictly deferred
-- notes: none
+- scope: Publication governance, release transactions, proposal/read engine operations, and derived evidence.
+- consumers: humans, symphony-validator, `symphony-sodv`, qxctl
+- relationships: checked_by -> `tools/symphony-validator/SPEC.md`; depends_on -> `knowledge/SPEC.md`
+- deferred_projections: release and publication evidence
+- notes: Canonical apply, tag publication, Mintlify, and NotebookLM automation remain unauthorized.
 - status: canonical
 
 ##### RELEASES.md
@@ -1349,21 +1455,16 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: `Authorization never implies completion; pending transaction state is noncanonical. Current validator coverage does not interpret release-transaction semantics.`
 
 ## Deferred Projections
-Unless a surface is explicitly indexed above, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, new qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. The indexed STAV JSON Schemas and fixtures are permission-backed ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas and fixtures are permission-backed ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
-This index authorizes none of the following:
-- generated index
-- generated graph
-- graph database
-- graph visualization
-- JSON / JSONL projection
-- DuckDB projection
-- HDF5 projection
-- qxctl integration
+This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:
+- canonical generated index
+- canonical generated graph or graph database
+- projection treated as source truth
+- qxctl canonical mutation before the apply gate
 - validator implementation outside the bounded `tools/symphony-validator/` contract
-- parser implementation
-- projector implementation
+- parser or projector behavior outside an owned engine/tool contract
 - unregistered or generated schemas
 - templates
 - docs directory
@@ -1373,9 +1474,7 @@ This index authorizes none of the following:
 - documentation publication configuration
 - publication pipeline
 - NotebookLM automation
-- implementation files
-- source files
-- build files
+- implementation, source, or build files outside an authorized module/tool/library contract
 - CI files
 
 Note on terminology: The term `c-o-r-e` is forbidden as an active project term.

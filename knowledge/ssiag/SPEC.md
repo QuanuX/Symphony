@@ -58,6 +58,10 @@ Confirmations, quorum, delay, maintenance windows, budgets, step-up assurance, e
 
 Ordinary audited mutation MUST fail closed when its required STAV append is unavailable. A target-host administrator MUST have an explicit audit-deferred recovery operation once that contract is implemented. The recovery operation MUST remain permission-backed, bind the same operation and expected state, preserve protocol integrity, write durable local recovery evidence before completing, mark the outcome audit-deferred, and reconcile that evidence into STAV when service returns. It MUST NOT become a silent fallback or a secondary ledger writer.
 
+The default administrative authority session begins after successful authentication and ends at logout, credential/session expiry, revocation, or required re-authentication. Re-authentication begins a new authority epoch. An administrator MAY select another supported lifecycle policy through qxctl, but SSIAG MUST NOT project authority beyond an invalidated authentication boundary. Repository worktree reconciliation contexts may bind to one authority epoch without becoming identity or permission evidence themselves.
+
+SSIAG authorization for vector engines, qxctl administration, audit-deferred recovery, and later reconciliation is administrative cold/freezing-path work. It MUST NOT execute inline with a hot or warm path, acquire locks shared with hot/warm execution, make hot/warm progress synchronously depend on SSIAG/STAV availability, or otherwise add blocking, jitter, or latency there.
+
 qxctl MUST NOT own SSIAG schemas, provider SDKs, runtime policy, credential material, provider execution, or STAV ledger files.
 
 ## Local Caller Authentication

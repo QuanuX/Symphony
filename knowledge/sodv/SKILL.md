@@ -42,8 +42,8 @@ The checked-in validator checks required SODV contract anchors and indexed-path 
 ## How Agentic Tools May Consume SODV
 Agentic tools may consume SODV to understand publication-governance context, but SODV does not make architectural decisions.
 
-## How qxctl May Later Consume SODV
-qxctl may later consume SODV, but qxctl integration is not authorized here.
+## How qxctl Consumes SODV
+qxctl may invoke installed `symphony-sodv` inspect, check, propose, verify, recover, and project operations. Treat all outputs as evidence or noncanonical proposals until a caller with the required permission completes the separately governed action.
 
 ## How SODV Relates to SKVI
 SKVI indexes source truth; SODV defines how those indexes may be published.
@@ -77,9 +77,10 @@ PR history is review and merge evidence.
 Do not treat SODV as a documentation generation engine. Treat it as a declarative governance boundary.
 Do not treat release authorization as release completion.
 Do not rewrite historical release records to make them read like the present. Append a forward record and use the latest applicable record for current-state answers.
+Do not let the SODV engine create/move tags, upload artifacts, append canonical records, or infer public completion from a local cache.
 
 ## Non-Scope
 SODV is not public documentation. SODV is not a docs site. SODV is not Mintlify. SODV is not NotebookLM. SODV is not a publication pipeline. SODV is not a generated documentation system yet. SODV is not a generated index yet. SODV is not a documentation template system yet. SODV is not a schema system. SODV is not qxctl. SODV is not symphony-validator. SODV is not SKVI. SODV is not SCLV. SODV is not SSCG. SODV does not replace canonical repository knowledge files. SODV does not replace module contracts. SODV does not replace tool contracts. SODV does not replace PR review. SODV does not create runtime behavior. SODV does not enforce runtime behavior.
 
 ## Non-Authorization Statement
-This canonical surface authorizes no public documentation files, docs directory, `mint.json`, Mintlify configuration, documentation publication configuration, generated documentation, generated documentation indexes, generated changelogs, generated indexes, generated reports, new implementation or source files, schemas, templates, CI files, qxctl integration, validator capability beyond the separately bounded `tools/symphony-validator/` contract, NotebookLM automation, general publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.
+This skill guides the bounded SODV proposal/projection engine but authorizes no canonical apply, tag creation, public publication, Mintlify configuration, NotebookLM automation, general publication pipeline, or release-completion claim.

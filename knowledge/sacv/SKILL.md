@@ -40,10 +40,12 @@ No supported caller operation may:
 8. Obtain SODV approval before creating publication configuration or externally visible projections.
 9. Create SCLV evidence only after actual review and merge evidence exists.
 
+An installed `symphony-sacv` engine may perform bounded inspect, check, diff, proposal, and projection steps through `qxctl sacv ...`. Review its exact input digests and outputs. Never treat a generated proposal, aggregate, or compatibility report as canonical ratification.
+
 ## Stop Conditions
 
 Stop and obtain permission-backed owner ratification before selecting a new API transport, adding a remote SSIAG gateway, weakening security, publishing an administrative API, enabling live requests or MCP exposure, changing the SACV OpenAPI target, or moving endpoint truth between owners.
 
 ## Non-Authorization Statement
 
-This skill is procedural guidance. It authorizes no endpoint, listener, schema generation, SDK publication, Mintlify configuration, public documentation, or caller mutation path.
+This skill is procedural guidance for the canonical contracts and bounded proposal engine. It authorizes no canonical apply, endpoint, listener, runtime schema generation, SDK publication, Mintlify configuration, public documentation, or caller mutation path.

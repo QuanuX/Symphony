@@ -8,7 +8,7 @@ To establish declarative boundaries for the Symphony Knowledge Vector layer and 
 Defines the overarching knowledge framework structure (`knowledge/`) and houses autonomous vector surfaces including SKVI, SCLV, SODV, SACV, SSIAG, and STAV.
 
 ### Non-scope
-It does not house implementation logic, build systems, deployment orchestration, or runtime modules.
+It does not house implementation source, build systems, deployment orchestration, or runtime state. It does own the cross-vector contracts that bound independently installed vector engines and their qxctl administration.
 
 ### Role of the SKV
 The SKV is the living knowledge framework of Symphony. It preserves architectural truth, module boundaries, contracts, doctrine, compatibility knowledge, operational knowledge, and publication knowledge in a structure that humans, validators, qxctl, CI, and agentic tools can consume consistently.
@@ -47,7 +47,12 @@ Module contracts (`MANIFEST.md`, etc.) are distinct domains. SKV maps them but d
 The checked-in `tools/symphony-validator/` implementation produces deterministic, read-only evidence. It currently checks required Knowledge Vector contract anchors, SKVI structure, SKVI coverage and paths, SCLV record shape and continuity, and bounded repository doctrine. It does not create canonical truth, validate SODV release-transaction semantics, publish documentation, or remediate files.
 
 ### Relationship to qxctl
-qxctl may later read or invoke knowledge-vector operations, but qxctl integration is not part of this task.
+qxctl is the Go administrative surface for the ratified vector-engine family. `qxctl knowledge ...` owns cross-vector engine, authenticated-session, worktree-reconciliation, proposal, and later apply coordination. `qxctl skvi|sclv|sacv|sodv|ssfv ...` owns vector-specific grammar. qxctl implements these contracts but does not own vector semantics or canonical knowledge truth.
+
+### Vector Engine Foundation
+Each active application-level vector may have an independently installable, out-of-process C++ engine. Shared authority-free C++ mechanics may live under `libraries/`; a separate C++ coordinator owns authenticated-session and worktree-reconciliation mechanics. Engines inspect, validate, project, and propose within vector-owned contracts. They do not acquire authority merely by generating content.
+
+Initial vector-engine releases are read/query/validate/propose only. Programmatic canonical apply remains disabled until its SSIAG permission verification, expected-state transaction, qxctl safeguard, STAV event, recovery, and negative-test contracts are implemented and verified. `knowledge/SPEC.md` owns the common boundary; each vector Contract Quad owns its domain operations.
 
 ### Relationship to NotebookLM
 NotebookLM aligns corpus context.
@@ -79,4 +84,4 @@ SODV governs publication truth.
 Published documentation is a derived public projection.
 
 ### Non-authorization Statement
-This canonical surface recognizes SACV governance but authorizes no endpoint document by itself. It authorizes no new implementation files, generated indexes, generated reports, templates, CI files, documentation publication configuration, Mintlify configuration, qxctl integration, validator capability beyond the separately bounded `tools/symphony-validator/` contract, NotebookLM automation, publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.
+This canonical surface recognizes SACV governance but authorizes no endpoint document by itself. It authorizes the bounded vector-engine architecture, candidate implementation namespaces, proposal-only first release, derived projections, and qxctl grammar defined by `knowledge/MANIFEST.md` and `knowledge/SPEC.md`. It does not authorize canonical apply, an SSFV implementation, a network API, Mintlify configuration, NotebookLM automation, general publication pipeline, database authority, direct STAV mutation, hot/warm-path participation, or any capability outside a vector's own Contract Quad.

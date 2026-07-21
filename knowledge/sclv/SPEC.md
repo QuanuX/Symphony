@@ -24,6 +24,10 @@ Corrections are new records that reference the earlier evidence. Derived views m
 
 Records without `record_version` are legacy version-1 records. Their historical shape remains valid. Temporal metadata must not be partially added to a version-1 record.
 
+## Version 2 Compatibility
+
+Version-2 records and the current validator contract remain valid and immutable. Version 2 is the writable format until the version-3 Markdown schema/template and validator conformance increment are reviewed and merged. Activation of version 3 never rewrites a version-1 or version-2 record.
+
 ## Layer 0 Canonical Record Shape
 
 Every new record uses `record_version: 2` and retains the established SCLV fields:
@@ -49,6 +53,22 @@ Strict UTC time has shape `YYYY-MM-DDTHH:MM:SSZ`. Leap years and calendar ranges
 
 Version-2 `recorded_at` values must be nondecreasing in physical file order.
 
+## Provider-Neutral Version 3 Direction
+
+Version 3 removes GitHub-shaped evidence from the universal record contract. Its exact Markdown schema must be separately checked before the first version-3 record, but every conforming version-3 record must represent these typed facts:
+
+- stable SCLV record identity independent of a pull-request number;
+- provider-neutral change-request reference with provider namespace, opaque identifier, and an explicit absent/not-applicable state when no forge exists;
+- revision scheme and opaque revision value, including Git SHA-1, Git SHA-256, or a registered provider-defined scheme;
+- exact tree/content digest independent of the review provider;
+- permission-backed ratification evidence naming the accountable subject, effective permission, method, and evidence digest/reference;
+- start, completion, and recording timestamps plus post-merge or late-recovery disposition;
+- affected surfaces, relationship/doctrine/compatibility/publication/projection consequences, safe evidence, and non-authorizations.
+
+GitHub, GitLab, Gerrit, local Git, air-gapped host-authority approval, and proprietary review systems are adapters to this model. No provider URL, 40-character SHA-1, or forge object is universally required. Provider payloads, credentials, raw assertions, and unbounded review content remain excluded.
+
+The v3 activation increment must update symphony-validator and its fixtures before any v3 record is accepted. Until that increment merges, an engine may emit a noncanonical v3 migration preview but not claim the preview is ledger-valid.
+
 ## Canonical State Rule
 
 The only canonical record status is `canonical`. Pending, interrupted, unresolved, abandoned, or failed work is session state and must not be appended to `CHANGELOG.md`. A recovered canonical record explains the interruption through `late_recovery`; it does not preserve a permanently active error flag.
@@ -71,6 +91,18 @@ On clean closure, delete the marker after the canonical record is committed. On 
 
 This is recovery by forward correction. It is never permission to edit history or fabricate evidence.
 
+## SCLV Engine Operations
+
+The initial `symphony-sclv` operations are:
+
+- `inspect`: report ledger, contract, and adapter compatibility;
+- `check`: produce deterministic shape, continuity, temporal, and provider-evidence diagnostics;
+- `propose`: create an immutable forward-only record proposal without appending it;
+- `recover`: reconcile an ephemeral closure journal with observed repository/provider state and emit a no-op, abandonment result, or late-recovery proposal;
+- `project`: build a disposable provider-neutral view.
+
+The engine uses `symphony.knowledge.engine-process.v1`; qxctl exposes vector-specific operations under `qxctl sclv ...`. It may update or delete safe ephemeral journal state as defined here, but programmatic canonical append remains disabled until the common apply gate passes.
+
 ## Non-Authorization Statement
 
 SKVI indexes SCLV surfaces. SODV consumes SCLV change truth when governing release or documentation publication. SSCG interprets compatibility. STAV owns per-installation runtime audit truth. Git and GitHub provide evidence only.
@@ -79,4 +111,4 @@ Callers may query or propose within their effective permissions. A caller holdin
 
 ## Explicit Non-Authorizations
 
-SCLV does not grant ratification to an authority-free process, authorize canonical pending records, permit rewriting or reordering existing records, accept fabricated evidence, publish tags, mutate runtime audit data, create canonical projections, or create qxctl mutation authority.
+SCLV does not grant ratification to an authority-free process, authorize canonical pending records, permit rewriting or reordering existing records, accept fabricated evidence, publish tags, mutate runtime audit data, create canonical projections, or enable qxctl apply authority before the common gate passes.

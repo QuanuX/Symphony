@@ -8,7 +8,7 @@ To declare knowledge expectations and publication rules for how internal canonic
 Governing the mapping between internal structured knowledge and published artifacts, including official documentation and independently consumable module releases.
 
 ### Non-scope
-Implementation of the actual publication pipeline, deployment tools, or CI workflows.
+Authority to publish. The independently installed SODV engine may inspect, validate, reconcile noncanonical transaction state, propose, and project; it is not the publication decision or publisher.
 
 ### Role of SODV
 SODV governs official documentation publication, including how internal canonical knowledge becomes public-facing documentation.
@@ -40,8 +40,7 @@ NotebookLM aligns corpus context but is not canonical authority. Append-only rel
 The checked-in `tools/symphony-validator/` implementation produces deterministic, read-only evidence for required SODV contract anchors and indexed-path presence. It does not currently interpret release-transaction semantics or prove publication completion; `RELEASES.md`, immutable Git state, public-proxy resolution, and permission-backed review carry those roles.
 
 ### Relationship to qxctl
-qxctl may later read or invoke knowledge-vector operations, but qxctl integration is not part of this task.
-No documentation publication pipeline is authorized by this task.
+qxctl may invoke implemented SODV inspect, check, propose, verify, and project operations under `qxctl sodv ...`. It does not publish, create tags, append completion records, or own SODV semantics. No documentation publication pipeline is authorized by this contract.
 
 ### Non-authorization Statement
-This canonical surface authorizes no new implementation files, generated indexes, generated reports, schemas, templates, CI files, documentation publication configuration, Mintlify configuration, qxctl integration, validator capability beyond the separately bounded `tools/symphony-validator/` contract, NotebookLM automation, general publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.
+This canonical surface authorizes a proposal-only C++ SODV engine at `modules/sodv-engine/`, bounded derived release/publication evidence, and qxctl invocation after the common contract transition merges. It authorizes no canonical apply, tag creation, external publication, public documentation, Mintlify configuration, NotebookLM automation, general publication pipeline, or release-completion claim.
