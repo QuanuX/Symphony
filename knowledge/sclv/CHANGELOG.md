@@ -1188,3 +1188,144 @@ This PR authorizes none of the following:
   - `Go 1.27 production pin`
 - notes: |
     This record was authored only after PR #73 merged and its exact merge/head evidence and timestamps were verified. The closure-carrier PR for this record is non-recursive unless it makes an independently significant architectural change.
+
+- record_id: `SCLV-PR-075`
+- record_version: `2`
+- title: `SKV C++ foundation and read-only coordinator implemented`
+- status: `canonical`
+- date: `2026-07-21`
+- change_started_at: `2026-07-21T17:40:45Z`
+- change_completed_at: `2026-07-21T17:42:51Z`
+- recorded_at: `2026-07-21T17:46:35Z`
+- recording_disposition: `post_merge`
+- change_type: `implementation_change`
+- related_pr: `https://github.com/QuanuX/Symphony/pull/75`
+- merge_commit: `e05be496a248d1ac815870855fd9f139074bc9a2`
+- affected_surfaces:
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/engine-descriptor.schema.json`
+  - `knowledge/schemas/v1/engine-process-request.schema.json`
+  - `knowledge/schemas/v1/engine-process-response.schema.json`
+  - `knowledge/schemas/v1/install-receipt.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `libraries/README.md`
+  - `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
+  - `libraries/knowledge-vector-engine-cpp/INSTALL.md`
+  - `libraries/knowledge-vector-engine-cpp/INTENT.md`
+  - `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
+  - `libraries/knowledge-vector-engine-cpp/SKILL.md`
+  - `libraries/knowledge-vector-engine-cpp/SPEC.md`
+  - `libraries/knowledge-vector-engine-cpp/cmake/SymphonyKnowledgeVectorEngineConfig.cmake.in`
+  - `libraries/knowledge-vector-engine-cpp/cmake/install-receipt.json.in`
+  - `libraries/knowledge-vector-engine-cpp/cmake/uninstall.cmake.in`
+  - `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/digest.hpp`
+  - `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/error.hpp`
+  - `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/json.hpp`
+  - `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/limits.hpp`
+  - `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/path.hpp`
+  - `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/protocol.hpp`
+  - `libraries/knowledge-vector-engine-cpp/src/digest.cpp`
+  - `libraries/knowledge-vector-engine-cpp/src/error.cpp`
+  - `libraries/knowledge-vector-engine-cpp/src/path.cpp`
+  - `libraries/knowledge-vector-engine-cpp/src/protocol.cpp`
+  - `libraries/knowledge-vector-engine-cpp/tests/foundation_test.cpp`
+  - `libraries/knowledge-vector-engine-cpp/third_party/README.md`
+  - `libraries/knowledge-vector-engine-cpp/third_party/nlohmann/LICENSE.MIT`
+  - `libraries/knowledge-vector-engine-cpp/third_party/nlohmann/json.hpp`
+  - `modules/knowledge-session-coordinator/CMakeLists.txt`
+  - `modules/knowledge-session-coordinator/INSTALL.md`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `modules/knowledge-session-coordinator/MANIFEST.md`
+  - `modules/knowledge-session-coordinator/SKILL.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `modules/knowledge-session-coordinator/cmake/install-receipt.json.in`
+  - `modules/knowledge-session-coordinator/cmake/uninstall.cmake.in`
+  - `modules/knowledge-session-coordinator/src/coordinator.cpp`
+  - `modules/knowledge-session-coordinator/src/coordinator.hpp`
+  - `modules/knowledge-session-coordinator/src/main.cpp`
+  - `modules/knowledge-session-coordinator/tests/coordinator_test.cpp`
+  - `modules/knowledge-session-coordinator/tests/process_smoke.sh`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/engine-descriptor.schema.json`
+  - `knowledge/schemas/v1/engine-process-request.schema.json`
+  - `knowledge/schemas/v1/engine-process-response.schema.json`
+  - `knowledge/schemas/v1/install-receipt.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/skvi/SPEC.md`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/sclv/SPEC.md`
+  - `libraries/README.md`
+  - `libraries/knowledge-vector-engine-cpp/INTENT.md`
+  - `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
+  - `libraries/knowledge-vector-engine-cpp/INSTALL.md`
+  - `libraries/knowledge-vector-engine-cpp/SKILL.md`
+  - `libraries/knowledge-vector-engine-cpp/SPEC.md`
+  - `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
+  - `libraries/knowledge-vector-engine-cpp/third_party/README.md`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `modules/knowledge-session-coordinator/MANIFEST.md`
+  - `modules/knowledge-session-coordinator/INSTALL.md`
+  - `modules/knowledge-session-coordinator/SKILL.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `modules/knowledge-session-coordinator/CMakeLists.txt`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    Under the Architect's direction, PR #75 implemented the first bounded vertical slice of the ratified SKV engine architecture. It added an authority-free C++26 foundation for strict bounded JSON process framing, tagged SHA-256 digests, no-follow POSIX path access, regular-file snapshots, versioned CMake packaging, deterministic install receipts, and receipt-owned uninstall behavior.
+    The change also added the independently installable `knowledge-session-coordinator` development executable with read-only `inspect` and explicit-path `check`, four exact common v1 JSON schemas, SKVI routing for the new surfaces, and exact-path validator authorization for the canonical schemas.
+- relationship_changes: |
+    Canonical common process, descriptor, and receipt truth now lives under `knowledge/schemas/v1/`; the shared C++ library implements authority-free mechanics and statically links into the coordinator. The coordinator remains the future domain-neutral session and reconciliation boundary, while every vector engine retains its own semantics and independent executable identity.
+    `symphony-validator` recognizes exactly the four new canonical JSON paths in addition to the 28 STAV paths. It does not authorize the schema directory by prefix. qxctl, SSIAG, STAV, Maestro, and vector engines remain outside the implemented call graph.
+- doctrine_changes: |
+    A native first-party library may be independently installed as a versioned development package without becoming a resident runtime module or acquiring process authority. Installation, activation, and docking remain distinct lifecycle states; the coordinator installs as `installed_undocked`, creates no unversioned alias, and selects no default Maestro receptor.
+    Strict parsing rejects duplicate keys, invalid UTF-8, trailing bytes, floating-point values, unsafe integers, unknown envelope fields, unsafe paths, excessive input, expired deadlines, target mismatch, symlinks, and special files. Cooperative deadline checks are not claimed to cancel blocked kernel calls; the future qxctl process client must enforce the same hard child lifetime.
+- compatibility_consequences: |
+    This development slice adds C++26, CMake 3.25, single-configuration generator, and POSIX file-descriptor requirements for the new foundation/coordinator path. The supported architecture is Linux-first with a macOS development path; native Windows engine support is not introduced.
+    Existing Go module behavior, qxctl commands, SSIAG/STAV protocols, STAV ledger bytes, authentication policy, installation bindings, and trading-node behavior remain unchanged. The common process identifiers and exact v1 schema shapes are now implemented compatibility surfaces, but no operational release version or active module binding is declared.
+- publication_consequences: |
+    PR #75 published no tag, release, package registry artifact, binary distribution, container, SDK, OpenAPI surface, Mintlify documentation, Maestro receptor, or public launch claim. Versions remain `0.1.0-dev` and are installable from the checked-out source only.
+    nlohmann/json `v3.12.0` is vendored from its official release asset with its MIT license and published SHA-256 recorded. It is compiled into static consumers and creates no runtime download or shared-library dependency.
+- projection_consequences: |
+    The four common JSON Schemas are canonical protocol truth, not disposable projections. Future qxctl inventory, installed-engine graphs, session views, package evidence, and Maestro docking views remain derived and must be rebuilt from canonical contracts plus verified runtime state.
+    No SKVI, SCLV, SACV, SODV, SSFV, graph, NotebookLM, or generated-document projection gains canonical mutation authority through this implementation.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/75`
+  - `e05be496a248d1ac815870855fd9f139074bc9a2`
+  - `c6c9dfb4d85bd04037953b20ac0c489120832408`
+  - `51 changed files; 28464 additions; 24 deletions`
+  - `knowledge-vector foundation CTest: 1 of 1 passed`
+  - `coordinator CTest: 2 of 2 passed in-tree and 2 of 2 passed against the installed foundation package`
+  - `complete symphony-validator positive and negative smoke suite passed against a fresh build`
+  - `qxctl, SSIAG, STAV append-authority, and STAV protocol Go test suites passed`
+  - `install receipts matched 20 of 20 foundation files and 9 of 9 coordinator files; both uninstall procedures left zero owned files`
+  - `symphony-validator before closure: 1753 pass, 71 advisory, 0 violations`
+  - `symphony-validator closure validation: 1897 pass, 96 advisory, 0 violations; the 25-record advisory delta is exclusively SCLV-PR-075 implementation surfaces not yet indexed by SKVI`
+  - `caller-authority scan: 109 files, 2045 paragraphs, 0 findings`
+  - `nlohmann/json header SHA-256: aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63`
+- non_authorizations:
+  - `authenticated or mutable knowledge session lifecycle`
+  - `SKVI, SCLV, SACV, SODV, or SSFV engine implementation`
+  - `qxctl knowledge or vector command implementation`
+  - `programmatic canonical apply, ratification, or self-healing`
+  - `active version selection or unversioned executable alias`
+  - `live Maestro receptor selection, docking, or persistence`
+  - `network listener, remote access, or runtime dependency download`
+  - `operational SSIAG provider access, credential delivery, or new STAV append behavior`
+  - `native Windows engine support`
+  - `hot-path or warm-path dependency`
+  - `module tag, release artifact, package, SDK, API, or public documentation publication`
+  - `Go 1.27 production pin`
+- notes: |
+    This record was authored only after PR #75 merged and its exact merge/head evidence and timestamps were verified. All 51 changed files are listed as affected surfaces; any `sclv.affected_surface.unindexed` findings for implementation files remain explicit advisory evidence rather than being hidden by selective omission. The closure-carrier PR for this record is non-recursive unless it makes an independently significant architectural change.
