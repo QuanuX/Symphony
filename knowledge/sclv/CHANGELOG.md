@@ -1329,3 +1329,150 @@ This PR authorizes none of the following:
   - `Go 1.27 production pin`
 - notes: |
     This record was authored only after PR #75 merged and its exact merge/head evidence and timestamps were verified. All 51 changed files are listed as affected surfaces; any `sclv.affected_surface.unindexed` findings for implementation files remain explicit advisory evidence rather than being hidden by selective omission. The closure-carrier PR for this record is non-recursive unless it makes an independently significant architectural change.
+
+- record_id: `SCLV-PR-077`
+- record_version: `2`
+- title: `SKVI engine and exact-installation qxctl integration implemented`
+- status: `canonical`
+- date: `2026-07-21`
+- change_started_at: `2026-07-21T19:32:23Z`
+- change_completed_at: `2026-07-21T19:33:03Z`
+- recorded_at: `2026-07-21T19:33:57Z`
+- recording_disposition: `post_merge`
+- change_type: `implementation_change`
+- related_pr: `https://github.com/QuanuX/Symphony/pull/77`
+- merge_commit: `c77afbc36fc1a960a6b572a0a40127c848d9a158`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/proposal.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/skvi/INTENT.md`
+  - `knowledge/skvi/MANIFEST.md`
+  - `knowledge/skvi/SKILL.md`
+  - `knowledge/skvi/SPEC.md`
+  - `knowledge/skvi/schemas/v1/MANIFEST.md`
+  - `knowledge/skvi/schemas/v1/check-result.schema.json`
+  - `knowledge/skvi/schemas/v1/entry.schema.json`
+  - `knowledge/skvi/schemas/v1/operation-payload.schema.json`
+  - `knowledge/skvi/schemas/v1/projection.schema.json`
+  - `modules/skvi-engine/CMakeLists.txt`
+  - `modules/skvi-engine/INSTALL.md`
+  - `modules/skvi-engine/INTENT.md`
+  - `modules/skvi-engine/MANIFEST.md`
+  - `modules/skvi-engine/SKILL.md`
+  - `modules/skvi-engine/SPEC.md`
+  - `modules/skvi-engine/cmake/install-receipt.json.in`
+  - `modules/skvi-engine/cmake/uninstall.cmake.in`
+  - `modules/skvi-engine/src/main.cpp`
+  - `modules/skvi-engine/src/skvi.cpp`
+  - `modules/skvi-engine/src/skvi.hpp`
+  - `modules/skvi-engine/tests/process_smoke.sh`
+  - `modules/skvi-engine/tests/skvi_test.cpp`
+  - `tools/qxctl/INSTALL.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/skvi_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/qxctl/internal/knowledgeengine/client_test.go`
+  - `tools/qxctl/internal/knowledgeengine/open_relative_unix.go`
+  - `tools/qxctl/internal/knowledgeengine/open_relative_unsupported.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/proposal.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/skvi/INTENT.md`
+  - `knowledge/skvi/MANIFEST.md`
+  - `knowledge/skvi/SKILL.md`
+  - `knowledge/skvi/SPEC.md`
+  - `knowledge/skvi/schemas/v1/MANIFEST.md`
+  - `knowledge/skvi/schemas/v1/check-result.schema.json`
+  - `knowledge/skvi/schemas/v1/entry.schema.json`
+  - `knowledge/skvi/schemas/v1/operation-payload.schema.json`
+  - `knowledge/skvi/schemas/v1/projection.schema.json`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `modules/skvi-engine/CMakeLists.txt`
+  - `modules/skvi-engine/INSTALL.md`
+  - `modules/skvi-engine/INTENT.md`
+  - `modules/skvi-engine/MANIFEST.md`
+  - `modules/skvi-engine/SKILL.md`
+  - `modules/skvi-engine/SPEC.md`
+  - `tools/qxctl/INSTALL.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    Under the Architect's direction, PR #77 completed the first vector-engine vertical slice. It added the independently installable C++26 `skvi-engine` with deterministic `inspect`, structural `check`, caller-declared immutable `propose`, and disposable digest-bound JSON `project` operations. It also added the common proposal schema, four exact SKVI schemas, canonical index routing, and validator authorization for exactly those new JSON paths.
+    The change connected qxctl to an explicit installation prefix and exact engine version. qxctl validates the inactive undocked receipt and all nine package-owned files, passes one bounded standard-input request with an empty environment, enforces the process deadline independently, and validates response identity, outcome, exit status, digest, and operation-specific safety assertions before presentation.
+- relationship_changes: |
+    `knowledge/skvi/` remains canonical structural truth; `symphony-skvi` implements its bounded semantics but cannot decide membership. The shared C++ foundation supplies authority-free mechanics through static linkage. qxctl owns Cobra/Viper grammar, secure exact-installation resolution, process orchestration, and presentation without absorbing SKVI domain logic.
+    Proposals bind provider-neutral repository identity, tree and contract snapshots, read/write sets, expected entry and index state, and one caller-declared operation. Projections bind canonical input and engine digests and remain noncanonical and rebuildable. The checked-in validator remains a separate read-only repository checker.
+- doctrine_changes: |
+    A vector engine may validate and assemble content-addressed evidence without acquiring authentication, permission, membership, ratification, or apply authority. `engine_decided_membership`, `ratified`, and `canonical_apply_enabled` remain explicitly false and are fail-closed qxctl safety assertions rather than defaulted values.
+    Exact installation, lifecycle activation, and Maestro docking remain separate states. Secure local receipt traversal is implemented with no-follow file-descriptor operations on Linux and the macOS development path. Unsupported native operating systems reject local SKVI installation access rather than substituting a weaker traversal routine.
+- compatibility_consequences: |
+    This slice adds the `qxctl skvi inspect|check|propose|project` command group and the exact `symphony-skvi 0.1.0-dev` process/schema behavior. The engine installs at a versioned `libexec` path with an inactive undocked receipt and no unversioned alias; qxctl currently requires explicit `--prefix` and exact `--version` selection.
+    Existing SSIAG, STAV, qxctl non-SKVI grammar, ledger bytes, provider behavior, trading-node behavior, and Go 1.26.5 pin remain unchanged. Native Windows engines are not introduced; the Windows qxctl compile remains available while local SKVI access fails closed outside supported POSIX paths.
+- publication_consequences: |
+    PR #77 published no tag, binary distribution, package-registry coordinate, container, SDK, OpenAPI description, Mintlify surface, Maestro receptor, or public launch claim. The source-installable development version remains `0.1.0-dev`.
+    The root README now describes only implemented SKVI capability and preserves the repository's active-development, rolling module-release, and future-documentation posture.
+- projection_consequences: |
+    SKVI JSON projections are returned to the caller and never written by the engine. They are deterministic for the same canonical inputs, content-addressed, noncanonical, disposable, and rebuildable. They do not replace `knowledge/skvi/INDEX.md` or authorize graph/database source truth.
+    NotebookLM, Mintlify, search, graph, and Maestro views remain derived external or future projections. SSFV and `FEATURES.md` generation remain separately gated and unimplemented.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/77`
+  - `c77afbc36fc1a960a6b572a0a40127c848d9a158`
+  - `78ec803c1e98e9eecafa16aa08954d6cfcfc92c0`
+  - `48 changed files; 3781 additions; 39 deletions`
+  - `SKVI CTest release build: 2 of 2 passed`
+  - `SKVI ASAN/UBSAN build: 2 of 2 passed with unsupported macOS leak detection disabled`
+  - `SKVI build against the installed shared foundation: 2 of 2 passed`
+  - `qxctl Go tests, vet, race detector, cgo-free Linux amd64/arm64 builds, and Windows amd64 compile check passed`
+  - `all five new Draft 2020-12 schemas compiled under strict Ajv; actual check, proposal, projection, descriptor, receipt, and payload evidence conformed`
+  - `exact install, cross-language qxctl invocation, custom-layout rejection, and receipt-owned uninstall proof passed`
+  - `SKVI canonical check: 126 entries, 236 relationships, 752 pass, 0 warning, 0 violations; index digest sha256:b9e9da1c1f3a8fe0298b0498b910ea2062079af8e74cf542fd4a4f58ee66bd48`
+  - `symphony-validator before closure: 1972 pass, 92 advisory, 0 violations; all advisories were sclv.affected_surface.unindexed`
+  - `symphony-validator closure validation: 2132 pass, 107 advisory, 0 violations; the 15-record advisory delta is exclusively SCLV-PR-077 source, build-template, and test surfaces that are intentionally not SKVI structural entries`
+  - `caller-authority scan: 115 files, 2143 paragraphs, 2 structural exemptions, 0 findings`
+  - `caller-authority closure scan: 115 files, 2144 paragraphs, 2 structural exemptions, 0 findings`
+  - `development-host timing: 10 direct SKVI checks in 0.39 seconds; 10 qxctl checks including receipt validation in 0.93 seconds`
+- non_authorizations:
+  - `programmatic canonical apply, engine-decided membership, or generated ratification`
+  - `authenticated or mutable knowledge-session lifecycle, journal, observer, reconciliation lock, or recovery`
+  - `qxctl engine installation, upgrade, rollback, activation, docking, or uninstall administration`
+  - `live Maestro receptor selection, docking, or persistence`
+  - `SCLV, SACV, SODV, or SSFV engine implementation`
+  - `FEATURES.md generation or SSFV feature-worthiness decisions`
+  - `operational SSIAG provider access, credential delivery, or new STAV append behavior`
+  - `network listener, remote vector access, or runtime dependency download`
+  - `native Windows engine implementation or weaker unsupported-platform file traversal`
+  - `hot-path or warm-path dependency`
+  - `module tag, release artifact, package, SDK, API, or public documentation publication`
+  - `Go 1.27 production pin`
+- notes: |
+    This record was authored only after PR #77 merged and its exact merge/head evidence and timestamps were verified. All 48 changed files are listed as affected surfaces. Implementation and test files that are not feature-worthy SKVI entries remain explicit `sclv.affected_surface.unindexed` advisories rather than being hidden through selective omission or artificial index expansion. The closure-carrier PR for this record is non-recursive unless it makes an independently significant architectural change.
