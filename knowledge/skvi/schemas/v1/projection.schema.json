@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:skvi:projection:v1",
+  "title": "Symphony SKVI structural projection v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "projection_kind", "format", "module_id", "engine_id",
+    "engine_version", "vector_id", "canonical_index", "contract_snapshot",
+    "entry_count", "entries", "noncanonical", "rebuildable", "projection_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.skvi.projection.v1"},
+    "projection_kind": {"const": "structural-index"},
+    "format": {"const": "json"},
+    "module_id": {"const": "skvi-engine"},
+    "engine_id": {"const": "symphony-skvi"},
+    "engine_version": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[0-9A-Za-z.+-]+$"},
+    "vector_id": {"const": "skvi"},
+    "canonical_index": {"$ref": "#/$defs/file"},
+    "contract_snapshot": {"$ref": "#/$defs/snapshot"},
+    "entry_count": {"type": "integer", "minimum": 0, "maximum": 512},
+    "entries": {
+      "type": "array",
+      "maxItems": 512,
+      "items": {"$ref": "urn:symphony:skvi:entry:v1"}
+    },
+    "noncanonical": {"const": true},
+    "rebuildable": {"const": true},
+    "projection_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "size", "digest"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "size": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["digest", "files"],
+      "properties": {
+        "digest": {"$ref": "#/$defs/digest"},
+        "files": {"type": "array", "minItems": 1, "maxItems": 4096, "items": {"$ref": "#/$defs/file"}}
+      }
+    }
+  }
+}

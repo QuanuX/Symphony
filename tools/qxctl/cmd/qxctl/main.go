@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -12,6 +13,7 @@ import (
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/contracts"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/inventory"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgeengine"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/modules"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/repository"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/ssiagclient"
@@ -50,6 +52,271 @@ func printUsage() {
 	fmt.Println("  stav verify --tops-id UUID [--scope user|system] [--json] Verify the STAV digest chain")
 	fmt.Println("  stav query --tops-id UUID [--scope user|system] [bounded filters] [--json] Query authorized STAV projections")
 	fmt.Println("  stav doctor --tops-id UUID [--scope user|system] Run authenticated STAV diagnostics")
+	fmt.Println("  skvi inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SKVI engine")
+	fmt.Println("  skvi check --prefix PATH [--version VERSION] [--json] Check canonical SKVI index truth")
+	fmt.Println("  skvi propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared proposal")
+	fmt.Println("  skvi project --prefix PATH [--version VERSION] [--json] Build a disposable SKVI projection")
+}
+
+func runSKVI(operation string, options skviOptions) error {
+	if options.prefix == "" {
+		return fmt.Errorf("--prefix is required")
+	}
+	start := options.repository
+	if start == "" {
+		var err error
+		start, err = os.Getwd()
+		if err != nil {
+			return fmt.Errorf("could not get current working directory: %w", err)
+		}
+	}
+	start, err := filepath.Abs(start)
+	if err != nil {
+		return fmt.Errorf("resolve repository path: %w", err)
+	}
+	info, err := os.Lstat(start)
+	if err != nil || info.Mode()&os.ModeSymlink != 0 || !info.IsDir() {
+		return fmt.Errorf("--repo must identify a no-follow directory")
+	}
+	repoRoot, err := repository.FindRoot(start)
+	if err != nil {
+		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+
+	var payload []byte
+	switch operation {
+	case "inspect":
+		payload = []byte(`{}`)
+	case "check":
+		expected := any(nil)
+		if options.expectedIndexDigest != "" {
+			expected = options.expectedIndexDigest
+		}
+		payload, err = json.Marshal(map[string]any{"expected_index_digest": expected})
+	case "propose":
+		payload, err = knowledgeengine.ReadPayload(options.input)
+	case "project":
+		payload = []byte(`{"format":"json"}`)
+	default:
+		return fmt.Errorf("unsupported SKVI operation")
+	}
+	if err != nil {
+		return err
+	}
+	response, err := knowledgeengine.Invoke(
+		context.Background(), options.prefix, options.version, repoRoot, operation, payload)
+	if err != nil {
+		return err
+	}
+	checkValid, err := validateSKVIResult(operation, response.Result)
+	if err != nil {
+		return err
+	}
+	if options.jsonOutput {
+		var output bytes.Buffer
+		if err := json.Indent(&output, response.Result, "", "  "); err != nil {
+			return fmt.Errorf("format SKVI result: %w", err)
+		}
+		fmt.Println(output.String())
+		if !checkValid {
+			return fmt.Errorf("SKVI index check reported violations")
+		}
+		return nil
+	}
+	return printSKVIResult(operation, response.Result)
+}
+
+func validateSKVIResult(operation string, result json.RawMessage) (bool, error) {
+	switch operation {
+	case "inspect":
+		var value struct {
+			Readiness               string `json:"readiness"`
+			CanonicalApplyEnabled   *bool  `json:"canonical_apply_enabled"`
+			EngineDecidesMembership *bool  `json:"engine_decides_membership"`
+			Descriptor              struct {
+				EngineID               string `json:"engine_id"`
+				CanonicalApplyEnabled  *bool  `json:"canonical_apply_enabled"`
+				SessionMutationEnabled *bool  `json:"session_mutation_enabled"`
+				NetworkListener        *bool  `json:"network_listener"`
+			} `json:"descriptor"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil ||
+			value.Readiness != "read_check_propose_project" || value.Descriptor.EngineID != "symphony-skvi" ||
+			!explicitFalse(value.CanonicalApplyEnabled) || !explicitFalse(value.EngineDecidesMembership) ||
+			!explicitFalse(value.Descriptor.CanonicalApplyEnabled) ||
+			!explicitFalse(value.Descriptor.SessionMutationEnabled) ||
+			!explicitFalse(value.Descriptor.NetworkListener) {
+			return false, fmt.Errorf("SKVI inspect result violates the implemented safety contract")
+		}
+		return true, nil
+	case "check":
+		var value struct {
+			Protocol              string `json:"protocol"`
+			ReadOnly              *bool  `json:"read_only"`
+			CanonicalApplyEnabled *bool  `json:"canonical_apply_enabled"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Protocol != "symphony.skvi.check-result.v1" ||
+			!explicitTrue(value.ReadOnly) || !explicitFalse(value.CanonicalApplyEnabled) {
+			return false, fmt.Errorf("SKVI check result violates the implemented safety contract")
+		}
+		return skviCheckValid(result)
+	case "propose":
+		var value struct {
+			Protocol              string `json:"protocol"`
+			ModuleID              string `json:"module_id"`
+			EngineID              string `json:"engine_id"`
+			VectorID              string `json:"vector_id"`
+			ProposalID            string `json:"proposal_id"`
+			ProposalDigest        string `json:"proposal_digest"`
+			CanonicalApplyEnabled *bool  `json:"canonical_apply_enabled"`
+			Authority             struct {
+				CallerDeclaredOperation *bool `json:"caller_declared_operation"`
+				EngineDecidedMembership *bool `json:"engine_decided_membership"`
+				Ratified                *bool `json:"ratified"`
+			} `json:"authority"`
+			Operations []json.RawMessage `json:"operations"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Protocol != "symphony.knowledge.proposal.v1" ||
+			value.ModuleID != "skvi-engine" || value.EngineID != "symphony-skvi" || value.VectorID != "skvi" ||
+			value.ProposalID == "" || !validTaggedDigest(value.ProposalDigest) || len(value.Operations) != 1 ||
+			!explicitTrue(value.Authority.CallerDeclaredOperation) ||
+			!explicitFalse(value.Authority.EngineDecidedMembership) ||
+			!explicitFalse(value.Authority.Ratified) || !explicitFalse(value.CanonicalApplyEnabled) {
+			return false, fmt.Errorf("SKVI proposal result violates the implemented safety contract")
+		}
+		return true, nil
+	case "project":
+		var value struct {
+			Protocol         string            `json:"protocol"`
+			ModuleID         string            `json:"module_id"`
+			EngineID         string            `json:"engine_id"`
+			VectorID         string            `json:"vector_id"`
+			EntryCount       *uint64           `json:"entry_count"`
+			Entries          []json.RawMessage `json:"entries"`
+			ProjectionDigest string            `json:"projection_digest"`
+			Noncanonical     *bool             `json:"noncanonical"`
+			Rebuildable      *bool             `json:"rebuildable"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Protocol != "symphony.skvi.projection.v1" ||
+			value.ModuleID != "skvi-engine" || value.EngineID != "symphony-skvi" || value.VectorID != "skvi" ||
+			value.EntryCount == nil || value.Entries == nil || *value.EntryCount != uint64(len(value.Entries)) ||
+			!validTaggedDigest(value.ProjectionDigest) ||
+			!explicitTrue(value.Noncanonical) || !explicitTrue(value.Rebuildable) {
+			return false, fmt.Errorf("SKVI projection result violates the implemented safety contract")
+		}
+		return true, nil
+	default:
+		return false, fmt.Errorf("unsupported SKVI operation")
+	}
+}
+
+func explicitFalse(value *bool) bool { return value != nil && !*value }
+
+func explicitTrue(value *bool) bool { return value != nil && *value }
+
+func validTaggedDigest(value string) bool {
+	if len(value) != 71 || value[:7] != "sha256:" {
+		return false
+	}
+	for _, character := range value[7:] {
+		if (character < '0' || character > '9') && (character < 'a' || character > 'f') {
+			return false
+		}
+	}
+	return true
+}
+
+func skviCheckValid(result json.RawMessage) (bool, error) {
+	var value struct {
+		Summary struct {
+			Violation uint64 `json:"violation"`
+			State     string `json:"state"`
+		} `json:"summary"`
+	}
+	if err := json.Unmarshal(result, &value); err != nil || value.Summary.State == "" {
+		return false, fmt.Errorf("SKVI check result is incomplete")
+	}
+	return value.Summary.State == "valid" && value.Summary.Violation == 0, nil
+}
+
+func printSKVIResult(operation string, result json.RawMessage) error {
+	switch operation {
+	case "inspect":
+		var value struct {
+			Readiness             string `json:"readiness"`
+			CanonicalApplyEnabled bool   `json:"canonical_apply_enabled"`
+			Descriptor            struct {
+				EngineID      string `json:"engine_id"`
+				EngineVersion string `json:"engine_version"`
+			} `json:"descriptor"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Descriptor.EngineID == "" || value.Readiness == "" {
+			return fmt.Errorf("SKVI inspect result is incomplete")
+		}
+		fmt.Printf("SKVI: engine=%s version=%s readiness=%s apply=%t\n",
+			value.Descriptor.EngineID, value.Descriptor.EngineVersion,
+			value.Readiness, value.CanonicalApplyEnabled)
+		return nil
+	case "check":
+		var value struct {
+			EntriesChecked       uint64 `json:"entries_checked"`
+			RelationshipsChecked uint64 `json:"relationships_checked"`
+			Index                struct {
+				Digest string `json:"digest"`
+			} `json:"index"`
+			Summary struct {
+				Pass      uint64 `json:"pass"`
+				Warning   uint64 `json:"warning"`
+				Violation uint64 `json:"violation"`
+				State     string `json:"state"`
+			} `json:"summary"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Summary.State == "" || value.Index.Digest == "" {
+			return fmt.Errorf("SKVI check result is incomplete")
+		}
+		fmt.Printf("SKVI check: state=%s entries=%d relationships=%d pass=%d warning=%d violation=%d index_digest=%s\n",
+			value.Summary.State, value.EntriesChecked, value.RelationshipsChecked,
+			value.Summary.Pass, value.Summary.Warning, value.Summary.Violation, value.Index.Digest)
+		if value.Summary.State != "valid" || value.Summary.Violation != 0 {
+			return fmt.Errorf("SKVI index check reported violations")
+		}
+		return nil
+	case "propose":
+		var value struct {
+			ProposalID            string `json:"proposal_id"`
+			ProposalDigest        string `json:"proposal_digest"`
+			CanonicalApplyEnabled bool   `json:"canonical_apply_enabled"`
+			Authority             struct {
+				Ratified bool `json:"ratified"`
+			} `json:"authority"`
+			Operations []struct {
+				Type       string `json:"type"`
+				TargetPath string `json:"target_path"`
+			} `json:"operations"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.ProposalID == "" || len(value.Operations) != 1 {
+			return fmt.Errorf("SKVI proposal result is incomplete")
+		}
+		fmt.Printf("SKVI proposal: id=%s digest=%s operation=%s target=%s ratified=%t apply=%t\n",
+			value.ProposalID, value.ProposalDigest, value.Operations[0].Type,
+			value.Operations[0].TargetPath, value.Authority.Ratified, value.CanonicalApplyEnabled)
+		return nil
+	case "project":
+		var value struct {
+			EntryCount       uint64 `json:"entry_count"`
+			ProjectionDigest string `json:"projection_digest"`
+			Noncanonical     bool   `json:"noncanonical"`
+			Rebuildable      bool   `json:"rebuildable"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.ProjectionDigest == "" {
+			return fmt.Errorf("SKVI projection result is incomplete")
+		}
+		fmt.Printf("SKVI projection: entries=%d digest=%s noncanonical=%t rebuildable=%t\n",
+			value.EntryCount, value.ProjectionDigest, value.Noncanonical, value.Rebuildable)
+		return nil
+	default:
+		return fmt.Errorf("unsupported SKVI result")
+	}
 }
 
 func runSTAV(subcommand string, options stavOptions) error {

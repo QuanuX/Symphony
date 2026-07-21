@@ -59,6 +59,12 @@ go run ./cmd/qxctl stav status --tops-id UUID [--scope user|system] [--json]
 go run ./cmd/qxctl stav verify --tops-id UUID [--scope user|system] [--json]
 go run ./cmd/qxctl stav query --tops-id UUID [--scope user|system] [--after-sequence N] [--through-sequence N] [--from-time UTC] [--through-time UTC] [--event-class ID]... [--outcome VALUE]... [--correlation-id UUID] [--request-id UUID] [--limit 1..1000] [--json]
 go run ./cmd/qxctl stav doctor --tops-id UUID [--scope user|system]
+
+# Invoke an exact independently installed SKVI engine
+go run ./cmd/qxctl skvi inspect --prefix /chosen/prefix [--version 0.1.0-dev] [--json]
+go run ./cmd/qxctl skvi check --prefix /chosen/prefix [--expected-index-digest sha256:...] [--json]
+go run ./cmd/qxctl skvi propose --prefix /chosen/prefix --input proposal-input.json [--json]
+go run ./cmd/qxctl skvi project --prefix /chosen/prefix [--json]
 ```
 
 SSIAG commands require an immutable TOPS UUID through `--tops-id` or `SYMPHONY_SSIAG_TOPS_ID`. They use `SYMPHONY_SSIAG_SOCKET` only as an explicit override; otherwise the selected scope and TOPS ID determine the isolated socket. They never accept or print credential values.
@@ -68,3 +74,5 @@ The ratified future administrative model separates non-mutating proposal from pe
 Future safeguard administration will let a target-host administrator inspect and change optional governance interlocks through supported qxctl commands, including selecting a direct profile. That future surface does not make parser bounds, path safety, atomic writes, expected-state validation, ledger framing, or secret exclusion optional. No safeguard-management, apply, or audit-deferred recovery command is implemented today.
 
 The four STAV commands use mutually authenticated, TOPS-scoped Unix-socket IPC to the local append authority. `status`, `verify`, and bounded `query` return only classification-authorized read projections; `doctor` composes client-side availability and verification checks. qxctl verifies the configured authority identity before sending application bytes and never opens the ledger file. `qxctl stav append` is intentionally absent.
+
+The four SKVI commands are cold/freezing-path local process operations. qxctl validates the exact inactive-undocked receipt and all package-owned files, invokes only the versioned `symphony-skvi` path with an empty environment, enforces a hard deadline, and verifies the response identity and digest. Secure local receipt traversal is implemented on Linux and the macOS development path; other native operating systems fail closed rather than substituting a weaker file-open routine. `propose` reads one bounded no-follow JSON file and returns an immutable noncanonical proposal; `project` returns a disposable digest-bound projection. No command selects an active version, docks with Maestro, or writes `knowledge/skvi/INDEX.md`.

@@ -23,7 +23,7 @@ SKVI canonical truth is the repository-maintained Markdown index; executable out
 `MANIFEST.md` establishes the definitive boundaries of the SKVI surface. Implementations may check or project SKVI only within separately ratified contracts and remain subordinate to this declared knowledge truth.
 
 ## Installability Considerations
-The SKVI engine is an independently installable C++ module at `modules/skvi-engine/` with executable `symphony-skvi`. Its initial contract is inspect, check, propose, and project only through the bounded `knowledge/SPEC.md` process protocol. It may install without Maestro as `installed_undocked`. The checked-in validator remains an independent read-only checker.
+The implemented SKVI engine is an independently installable C++26 module at `modules/skvi-engine/` with executable `symphony-skvi`. Its `0.1.0-dev` contract is inspect, check, propose, and project only through the bounded `knowledge/SPEC.md` process protocol. It installs without Maestro as inactive `installed_undocked`; qxctl requires an explicit prefix and exact version. The checked-in validator remains an independent read-only checker.
 
 ## Scope
 SKVI encompasses the mapping of canonical knowledge files and contract descriptors across the Symphony repository.
@@ -65,7 +65,7 @@ SSCG interprets compatibility. SKVI defines where module boundaries and SSCG rul
 The checked-in `tools/symphony-validator/` implementation checks SKVI entry shape, required coverage, relative-path safety, path existence, uniqueness, and SCLV references. It is read-only and does not decide index membership.
 
 ## Relationship to qxctl
-qxctl may invoke implemented SKVI inspect, check, propose, and project operations. qxctl is presentation and administration, never membership authority.
+qxctl invokes implemented SKVI inspect, check, propose, and project operations only after exact receipt, owned-file, process-identity, deadline, and response-digest validation. qxctl is presentation and administration, never membership authority.
 
 ## Relationship to NotebookLM
 NotebookLM aligns corpus context.

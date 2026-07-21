@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:skvi:check-result:v1",
+  "title": "Symphony SKVI check result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "index", "contract_snapshot", "expected_index_matches",
+    "entries_checked", "relationships_checked", "evidence", "summary",
+    "read_only", "canonical_apply_enabled"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.skvi.check-result.v1"},
+    "index": {"$ref": "#/$defs/file"},
+    "contract_snapshot": {"$ref": "#/$defs/snapshot"},
+    "expected_index_matches": {"oneOf": [{"type": "null"}, {"type": "boolean"}]},
+    "entries_checked": {"type": "integer", "minimum": 0, "maximum": 512},
+    "relationships_checked": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+    "evidence": {
+      "type": "array",
+      "maxItems": 1024,
+      "items": {"$ref": "#/$defs/evidence"}
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pass", "warning", "violation", "state"],
+      "properties": {
+        "pass": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "warning": {"type": "integer", "minimum": 0, "maximum": 1024},
+        "violation": {"type": "integer", "minimum": 0, "maximum": 1024},
+        "state": {"enum": ["valid", "invalid"]}
+      }
+    },
+    "read_only": {"const": true},
+    "canonical_apply_enabled": {"const": false}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "path": {"type": "string", "minLength": 1, "maxLength": 4096},
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "size", "digest"],
+      "properties": {
+        "path": {"$ref": "#/$defs/path"},
+        "size": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["digest", "files"],
+      "properties": {
+        "digest": {"$ref": "#/$defs/digest"},
+        "files": {"type": "array", "minItems": 1, "maxItems": 4096, "items": {"$ref": "#/$defs/file"}}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["severity", "code", "path", "detail"],
+      "properties": {
+        "severity": {"enum": ["pass", "warning", "violation"]},
+        "code": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9._:-]+$"},
+        "path": {"$ref": "#/$defs/path"},
+        "detail": {"type": "string", "minLength": 1, "maxLength": 65536}
+      }
+    }
+  }
+}

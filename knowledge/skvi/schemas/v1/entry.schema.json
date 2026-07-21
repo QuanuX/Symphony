@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:skvi:entry:v1",
+  "title": "Symphony SKVI normalized entry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "path", "title", "surface_type", "truth_role", "owner", "scope",
+    "relationships", "consumers", "deferred_projections", "notes", "status",
+    "entry_digest"
+  ],
+  "properties": {
+    "path": {"$ref": "#/$defs/path"},
+    "title": {"$ref": "#/$defs/field"},
+    "surface_type": {"$ref": "#/$defs/field"},
+    "truth_role": {"$ref": "#/$defs/field"},
+    "owner": {"$ref": "#/$defs/field"},
+    "scope": {"$ref": "#/$defs/field"},
+    "relationships": {"$ref": "#/$defs/field"},
+    "consumers": {"$ref": "#/$defs/field"},
+    "deferred_projections": {"$ref": "#/$defs/field"},
+    "notes": {"$ref": "#/$defs/field"},
+    "status": {"const": "canonical"},
+    "entry_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "field": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 65536,
+      "pattern": "^(?![\\s\\S]*[\\u0000-\\u0009\\u000B-\\u001F\\u007F])[\\s\\S]+$"
+    },
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])[^/]+(?:/[^/]+)*$"
+    }
+  }
+}

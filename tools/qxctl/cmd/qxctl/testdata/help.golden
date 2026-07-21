@@ -24,3 +24,7 @@ Commands:
   stav verify --tops-id UUID [--scope user|system] [--json] Verify the STAV digest chain
   stav query --tops-id UUID [--scope user|system] [bounded filters] [--json] Query authorized STAV projections
   stav doctor --tops-id UUID [--scope user|system] Run authenticated STAV diagnostics
+  skvi inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SKVI engine
+  skvi check --prefix PATH [--version VERSION] [--json] Check canonical SKVI index truth
+  skvi propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared proposal
+  skvi project --prefix PATH [--version VERSION] [--json] Build a disposable SKVI projection

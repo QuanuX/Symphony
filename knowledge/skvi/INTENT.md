@@ -40,4 +40,4 @@ Mintlify publishes derived official documentation.
 SKVI provides the structural roadmap that NotebookLM and Mintlify consume as derived projections. No documentation publication pipeline is authorized by this task.
 
 ### Non-authorization Statement
-This canonical surface authorizes a proposal-only C++ SKVI engine at `modules/skvi-engine/`, shared foundation use, deterministic derived projections, and bounded qxctl integration after the common contract transition merges. It authorizes no programmatic canonical apply, autonomous membership decision, competing source-truth database, NotebookLM automation, Mintlify/publication pipeline, or SSFV behavior.
+This canonical surface governs the implemented proposal-only C++ SKVI engine at `modules/skvi-engine/`, shared foundation use, deterministic derived projections, and bounded exact-installation qxctl integration. It authorizes no programmatic canonical apply, autonomous membership decision, competing source-truth database, NotebookLM automation, Mintlify/publication pipeline, or SSFV behavior.

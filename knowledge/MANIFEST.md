@@ -50,9 +50,9 @@ Symphony is Linux-first. Native Windows engines are not planned. Windows operati
 
 ## Current Delivery State
 
-The shared C++ foundation and the coordinator's first read-only development slice are implemented at `0.1.0-dev`. The coordinator implements bounded `inspect` and file-snapshot `check`; session mutation, authentication binding, journals, locks, observers, vector invocation, qxctl integration, programmatic canonical apply, live Maestro docking, external package-manager publication, every vector engine, and SSFV remain unimplemented or gated.
+The shared C++ foundation, the coordinator's first read-only development slice, and the independently installable SKVI engine are implemented at `0.1.0-dev`. The SKVI engine implements bounded `inspect`, structural `check`, caller-declared immutable `propose`, and disposable JSON `project`; qxctl invokes an exact version only after validating its inactive undocked receipt and owned files. Session mutation, authentication binding, journals, locks, observers, coordinator-to-vector invocation, lifecycle administration, programmatic canonical apply, live Maestro docking, external package-manager publication, every other vector engine, and SSFV remain unimplemented or gated.
 
-The four exact common v1 schemas under `knowledge/schemas/v1/` govern process requests, process responses, descriptors, and install receipts. The installed coordinator reports `installed_undocked`, creates no active alias, and declares no default receptor until a receptor contract is separately selected.
+The five exact common v1 schemas under `knowledge/schemas/v1/` govern process requests, process responses, descriptors, install receipts, and immutable proposals. Four SKVI-specific v1 schemas govern normalized entries, proposal payloads, check results, and projections. Installed coordinator and SKVI packages report `installed_undocked`, create no active alias, and declare no default receptor until a receptor contract is separately selected.
 
 ## Non-Authorization Statement
 

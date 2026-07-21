@@ -28,7 +28,7 @@ After this contract transition is merged, authorized implementation work may:
 - expose implemented proposal/read operations through qxctl;
 - prove independent install/uninstall without silently docking or mutating canonical files.
 
-The implemented `0.1.0-dev` foundation slice supports direct coordinator `inspect` and explicit-path read-only `check`. A successful result proves only bounded process and snapshot behavior; it does not prove authentication, an active session, vector availability, qxctl integration, or apply authority.
+The implemented `0.1.0-dev` foundation supports direct coordinator `inspect` and explicit-path read-only `check`, plus independently installed SKVI `inspect`, `check`, caller-declared `propose`, and disposable `project`. qxctl validates the exact SKVI receipt, owned paths, process identity, deadline, and response digest before presenting results. Success proves those bounded operations only; it does not prove authentication, an active session, lifecycle activation, docking, ratification, or apply authority.
 
 ## Prohibited Initial Operations
 

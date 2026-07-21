@@ -9,9 +9,9 @@ namespace fs = std::filesystem;
 #include "evidence.hpp"
 
 bool is_authorized_canonical_json(const std::string& relative_path) {
-    // Exact, owner-ratified STAV v1 and SKV common protocol artifacts. Directory-prefix
+    // Exact, Architect-ratified STAV v1, common SKV, and SKVI protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 32> authorized_paths = {
+    static const std::array<std::string, 37> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -43,7 +43,12 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/schemas/v1/engine-process-request.schema.json",
         "knowledge/schemas/v1/engine-process-response.schema.json",
         "knowledge/schemas/v1/engine-descriptor.schema.json",
-        "knowledge/schemas/v1/install-receipt.schema.json"
+        "knowledge/schemas/v1/install-receipt.schema.json",
+        "knowledge/schemas/v1/proposal.schema.json",
+        "knowledge/skvi/schemas/v1/entry.schema.json",
+        "knowledge/skvi/schemas/v1/operation-payload.schema.json",
+        "knowledge/skvi/schemas/v1/check-result.schema.json",
+        "knowledge/skvi/schemas/v1/projection.schema.json"
     };
     return std::find(authorized_paths.begin(), authorized_paths.end(), relative_path) != authorized_paths.end();
 }
@@ -103,7 +108,9 @@ ArtifactCheckResult check_unauthorized_artifacts(const std::string& repo_root) {
                         if (ext == ".json" && is_authorized_canonical_json(rel_path)) {
                             const std::string authority = rel_path.starts_with("knowledge/stav/")
                                 ? "knowledge/stav/SPEC.md"
-                                : "knowledge/SPEC.md";
+                                : rel_path.starts_with("knowledge/skvi/")
+                                    ? "knowledge/skvi/SPEC.md"
+                                    : "knowledge/SPEC.md";
                             result.messages.push_back(format_evidence(EvidenceCategory::Pass, "artifact.canonical_json_authorized", "path=" + rel_path + " authority=" + authority));
                             break;
                         }

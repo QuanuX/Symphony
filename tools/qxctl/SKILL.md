@@ -14,6 +14,9 @@ Any caller operating within its effective target-host permission should use `qxc
 - `go run ./cmd/qxctl stav status --tops-id UUID`
 - `go run ./cmd/qxctl stav verify --tops-id UUID`
 - `go run ./cmd/qxctl stav query --tops-id UUID --limit 100`
+- `go run ./cmd/qxctl skvi check --prefix /chosen/prefix`
+- `go run ./cmd/qxctl skvi project --prefix /chosen/prefix --json`
+- `go run ./cmd/qxctl skvi propose --prefix /chosen/prefix --input proposal-input.json`
 
 ## Constraints
 - Use the Go standard library, ratified first-party Go libraries, and only their approved cgo-free platform dependencies.
@@ -23,7 +26,8 @@ Any caller operating within its effective target-host permission should use `qxc
 - SSIAG commands may read safe metadata only. Never pass secret values through qxctl arguments, input, output, logs, or fixtures.
 - The current implementation is read-only for every caller. When proposal and apply support exists, use only operations permitted by the target host and satisfy the configured safeguards; never emulate, manufacture, or bypass host authority.
 - STAV commands require an enrolled, running authority and an explicit reader grant. Never bypass endpoint authentication, reader classification, or add raw append behavior.
-- When vector-engine commands are implemented, invoke only the exact installed engine and compatible bounded process protocol. Treat proposal and projection output as noncanonical.
+- For implemented SKVI commands, invoke only an explicit installation prefix and exact version. Treat proposal and projection output as noncanonical; `qxctl skvi propose` does not apply its result.
+- Keep SKVI proposal input to the exact nonsecret operation schema. Never place credentials, proofs, raw tokens, provider payloads, environment data, or executable instructions in its semantic fields.
 - Treat the default knowledge session as a login/authentication-to-logout/expiry/revocation authority epoch containing separate worktree reconciliation contexts. Never extend authority across a required re-authentication boundary.
 - Keep vector administration, recovery, and audit reconciliation away from hot and warm paths.
 

@@ -107,6 +107,10 @@ The initial `symphony-skvi` operation set is:
 
 `qxctl skvi ...` invokes these operations through `symphony.knowledge.engine-process.v1`. Direct invocation remains available for diagnostics. Apply is reserved and disabled under `knowledge/SPEC.md`.
 
+The exact common proposal schema is `knowledge/schemas/v1/proposal.schema.json`. SKVI v1 entry, operation-payload, check-result, and projection schemas live under `knowledge/skvi/schemas/v1/`. All five are canonical schema truth rather than generated projections.
+
+The implemented `qxctl skvi` client requires an explicit installation prefix and exact installed version, validates the inactive undocked receipt and every owned file, starts the versioned engine with no inherited environment, enforces a hard process deadline, and checks response identity and digest before presentation. This is exact-version invocation, not lifecycle activation.
+
 ## Relationship to NotebookLM
 NotebookLM aligns corpus context.
 
@@ -119,4 +123,4 @@ Mintlify publishes derived official documentation.
 - autonomous semantic membership decisions
 
 ## Non-Authorization Statement
-This specification authorizes the bounded SKVI proposal/projection engine, its independent installation contract, and qxctl invocation after merge. It does not authorize programmatic canonical mutation, generated ratification, NotebookLM automation, public publication, or replacement of repository-maintained `INDEX.md`.
+This specification governs the implemented bounded SKVI proposal/projection engine, its independent installation contract, and qxctl invocation. It does not authorize programmatic canonical mutation, generated ratification, NotebookLM automation, public publication, or replacement of repository-maintained `INDEX.md`.
