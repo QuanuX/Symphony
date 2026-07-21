@@ -28,3 +28,8 @@ Commands:
   skvi check --prefix PATH [--version VERSION] [--json] Check canonical SKVI index truth
   skvi propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared proposal
   skvi project --prefix PATH [--version VERSION] [--json] Build a disposable SKVI projection
+  sclv inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SCLV engine
+  sclv check --prefix PATH [--version VERSION] [--json] Check canonical SCLV ledger truth
+  sclv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a provider-neutral record proposal
+  sclv recover --prefix PATH --input FILE [--version VERSION] [--json] Reconcile ephemeral SCLV closure evidence
+  sclv project --prefix PATH [--version VERSION] [--json] Build a disposable SCLV projection

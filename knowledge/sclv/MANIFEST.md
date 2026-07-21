@@ -24,7 +24,7 @@ SCLV has an independently installable C++ proposal engine at `modules/sclv-engin
 - Record file order is recording order, not PR-number order.
 - Legacy version-1 records remain valid without temporal fields.
 - Existing version-2 records remain valid and immutable.
-- Provider-neutral version 3 becomes the prospective record format only after its exact Markdown schema/template and validator conformance increment merge; until then version 2 remains the writable format.
+- Provider-neutral version 3 is the prospective writable record format after the engine/validator activation increment merges. Version-1 and version-2 records remain immutable and valid.
 - A late recovery carries a permanent explanation but no permanently active error state.
 - Pending work exists only outside the canonical knowledge tree.
 
@@ -38,4 +38,4 @@ SKVI indexes source truth. SCLV records change truth. SODV governs publication t
 
 ## Explicit Non-Authorizations
 
-This manifest authorizes the repository-maintained ledger, deterministic validator checks, and bounded proposal/projection engine. It does not let an authority-free process manufacture ratification, write generated canonical records, publish publicly, or mutate runtime audit state.
+This manifest authorizes the repository-maintained ledger, deterministic validator checks, bounded proposal/projection engine, and separately discoverable local-Git and air-gapped declaration evidence processes. It does not let an authority-free process manufacture ratification, write generated canonical records, publish publicly, or mutate runtime audit state.

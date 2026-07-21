@@ -10,7 +10,7 @@ PR history is review and merge evidence.
 SCLV records may reference SKVI-indexed surfaces.
 SCLV records may inform SODV publication governance.
 SCLV records are checked by deterministic validator rules.
-SCLV records may later be queried through qxctl-derived projections.
+SCLV records may be queried through the implemented noncanonical qxctl/engine projection without changing ledger truth.
 
 This ledger is not merely a chronological changelog. It does not authorize generated changelogs, generated indexes, generated reports, projections, qxctl integration, projector implementation, public documentation, Mintlify configuration, or a publication pipeline.
 
@@ -52,8 +52,8 @@ C++ tooling may read and check SCLV records.
 C++ tooling must not autonomously author canonical change truth.
 C++ tooling may identify missing or stale change records as evidence.
 C++ tooling must not decide architectural truth.
-Future qxctl may query derived SCLV projections.
-Future validator checks may verify SCLV structure.
+qxctl may invoke the exact installed SCLV engine for bounded checks, proposals, recovery reconciliation, and derived projections.
+The validator verifies SCLV v1/v2/v3 structure, temporal continuity, provider-neutral fields, and SKVI references.
 
 ## Relationship to SKVI
 
@@ -87,7 +87,7 @@ Git history, PR history, and merge commits are not SCLV themselves.
 
 ## Record Model
 
-GitHub pull-request numbers are sparse identifiers, not an SCLV sequence. Physical record order is immutable recording order. Records without `record_version` are legacy version 1. Every new record uses version 2 and the temporal fields below.
+GitHub pull-request numbers are sparse identifiers, not an SCLV sequence. Physical record order is immutable recording order. Records without `record_version` are legacy version 1. Existing version-2 records remain immutable. After the v3 engine/validator activation merges, every new record uses the provider-neutral version-3 template; no earlier record is rewritten.
 
 - `record_id`: Unique identifier (e.g., SCLV-PR-010). Purpose: identify the record deterministically. Shape: String. Required.
 - `record_version`: Record-contract version. Shape: Integer. Required for new records; omitted means legacy version 1.
@@ -113,6 +113,8 @@ GitHub pull-request numbers are sparse identifiers, not an SCLV sequence. Physic
 - `evidence`: Any additional evidence links. Purpose: general traceability. Shape: List of strings/URLs. Optional.
 - `non_authorizations`: Explicit exclusions for clarity. Purpose: doctrine preservation. Shape: List of strings. Optional.
 - `notes`: Any further human notes. Purpose: miscellaneous context. Shape: Multi-line string. Optional.
+
+Version 3 replaces `SCLV-PR-*`, `related_pr`, and `merge_commit` as universal fields with a stable `SCLV-CHG-*` identity, explicit change-request presence, provider namespace and opaque identifier, revision scheme/value, tagged tree/content digest, and permission-backed ratification evidence. The exact prospective shape and field order are governed by `schemas/v3/record.schema.json` and `templates/v3/record.md`.
 
 ## Change Type Vocabulary
 

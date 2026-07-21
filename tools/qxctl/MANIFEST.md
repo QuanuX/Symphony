@@ -40,13 +40,17 @@
 - `qxctl skvi check --prefix PATH [--version VERSION] [--repo PATH] [--expected-index-digest DIGEST] [--json]`
 - `qxctl skvi propose --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
 - `qxctl skvi project --prefix PATH [--version VERSION] [--repo PATH] [--json]`
+- `qxctl sclv inspect --prefix PATH [--version VERSION] [--repo PATH] [--json]`
+- `qxctl sclv check --prefix PATH [--version VERSION] [--repo PATH] [--expected-ledger-digest DIGEST] [--json]`
+- `qxctl sclv propose --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
+- `qxctl sclv recover --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
+- `qxctl sclv project --prefix PATH [--version VERSION] [--repo PATH] [--json]`
 
 ## Ratified Vector-Engine Grammar, Not Yet Implemented
 
 - `qxctl knowledge engines list|inspect|doctor`
 - `qxctl knowledge session begin|status|checkpoint|close|recover`
 - `qxctl knowledge proposals list|show|verify`
-- `qxctl sclv inspect|check|propose|recover|project`
 - `qxctl sacv inspect|check|diff|propose|project`
 - `qxctl sodv inspect|check|propose|verify|recover|project`
 - `qxctl ssfv ...` is namespace-reserved but unavailable until the SSFV Contract Quad gate passes
@@ -73,7 +77,7 @@ Future safeguard administration must provide the same supported inspection and c
 
 `knowledge/SPEC.md` governs the cross-vector process, authenticated-session, worktree-reconciliation, proposal, projection, install-receipt, and docking boundaries. Vector engines are independent C++ processes; qxctl remains Go and does not dynamically link them or absorb their domain logic.
 
-The SKVI client is the first implemented process client. It requires an explicit prefix and exact version, accepts proposal content only from a bounded no-follow regular file, validates the exact inactive-undocked receipt and its nine owned files, provides an empty child environment, enforces the process deadline independently, and validates response identity and digest. It does not select an active version, install, uninstall, dock, or apply.
+The shared knowledge-engine process client has two implemented consumers. SKVI validates an exact inactive-undocked nine-file receipt; SCLV validates an exact inactive-undocked eleven-file receipt containing its engine and two provider-evidence adapters. Both require an explicit prefix and exact version, accept proposal/recovery content only from a bounded no-follow regular file, provide an empty child environment, enforce the process deadline independently, and validate response identity and digest. The SCLV command layer additionally rejects self-ratification, journal mutation, canonical projection status, or apply. Neither client selects an active version, installs, uninstalls, docks, or applies.
 
 ## Non-authorizations
 qxctl is not authorized to write canonical generated artifacts. It may invoke ratified engines to create noncanonical proposals and disposable projections. The Architect-ratified Cobra and Viper libraries and their required cgo-free Go dependencies are authorized only for command grammar and constrained configuration mapping; Python, C bindings, remote configuration backends, in-process vector execution engines, and unrelated third-party dependencies remain prohibited. First-party Symphony libraries remain subordinate to their canonical knowledge vectors.

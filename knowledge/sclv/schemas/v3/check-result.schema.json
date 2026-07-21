@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sclv:check-result:v3",
+  "title": "SCLV deterministic ledger check result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "ledger", "contract_snapshot", "expected_ledger_matches",
+    "records_checked", "version_counts", "evidence", "summary", "read_only",
+    "canonical_apply_enabled"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.sclv.check-result.v1"},
+    "ledger": {"$ref": "#/$defs/file"},
+    "contract_snapshot": {"$ref": "#/$defs/snapshot"},
+    "expected_ledger_matches": {"oneOf": [{"type": "null"}, {"type": "boolean"}]},
+    "records_checked": {"type": "integer", "minimum": 0, "maximum": 4096},
+    "version_counts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["v1", "v2", "v3"],
+      "properties": {
+        "v1": {"type": "integer", "minimum": 0},
+        "v2": {"type": "integer", "minimum": 0},
+        "v3": {"type": "integer", "minimum": 0}
+      }
+    },
+    "evidence": {
+      "type": "array", "maxItems": 1024,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["severity", "code", "record_id", "detail"],
+        "properties": {
+          "severity": {"enum": ["warning", "violation"]},
+          "code": {"$ref": "#/$defs/token"},
+          "record_id": {"type": "string", "minLength": 1, "maxLength": 128},
+          "detail": {"type": "string", "minLength": 1, "maxLength": 4096}
+        }
+      }
+    },
+    "summary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["pass", "warning", "violation", "state"],
+      "properties": {
+        "pass": {"type": "integer", "minimum": 0},
+        "warning": {"type": "integer", "minimum": 0},
+        "violation": {"type": "integer", "minimum": 0},
+        "state": {"enum": ["valid", "invalid"]}
+      }
+    },
+    "read_only": {"const": true},
+    "canonical_apply_enabled": {"const": false}
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "file": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "size", "digest"],
+      "properties": {
+        "path": {"const": "knowledge/sclv/CHANGELOG.md"},
+        "size": {"type": "integer", "minimum": 0, "maximum": 4194304},
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "snapshot": {
+      "type": "object", "additionalProperties": false,
+      "required": ["digest", "files"],
+      "properties": {
+        "digest": {"$ref": "#/$defs/digest"},
+        "files": {"type": "array", "minItems": 4, "maxItems": 16, "items": {"$ref": "#/$defs/snapshotFile"}}
+      }
+    },
+    "snapshotFile": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "size", "digest"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "size": {"type": "integer", "minimum": 0, "maximum": 4194304},
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    }
+  }
+}

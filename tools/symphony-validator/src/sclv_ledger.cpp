@@ -75,6 +75,8 @@ SclvLedgerContinuityResult check_sclv_ledger_continuity(const SclvCheckResult& s
     std::unordered_set<std::string> seen_record_ids;
     std::unordered_set<std::string> seen_related_prs;
     std::unordered_set<std::string> seen_merge_commits;
+    std::unordered_set<std::string> seen_change_requests;
+    std::unordered_set<std::string> seen_revisions;
     std::string previous_recorded_at;
     int aligned_record_count = 0;
 
@@ -110,6 +112,25 @@ SclvLedgerContinuityResult check_sclv_ledger_continuity(const SclvCheckResult& s
             }
         }
 
+        if (record.record_version == 3) {
+            if (record.change_request_state == "present") {
+                const auto identity = record.change_request_provider + ":" + record.change_request_id;
+                if (!seen_change_requests.insert(identity).second) {
+                    result.success = false;
+                    result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv_ledger.change_request_duplicate", "record_id=" + record.record_id + " identity=" + identity));
+                } else {
+                    result.messages.push_back(format_evidence(EvidenceCategory::Pass, "sclv_ledger.change_request_unique", "record_id=" + record.record_id + " identity=" + identity));
+                }
+            }
+            const auto revision_identity = record.revision_scheme + ":" + record.revision_value;
+            if (!seen_revisions.insert(revision_identity).second) {
+                result.success = false;
+                result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv_ledger.revision_duplicate", "record_id=" + record.record_id + " revision=" + revision_identity));
+            } else {
+                result.messages.push_back(format_evidence(EvidenceCategory::Pass, "sclv_ledger.revision_unique", "record_id=" + record.record_id + " revision=" + revision_identity));
+            }
+        }
+
         // Numeric Alignment check
         int rec_num = extract_record_number(record.record_id);
         if (rec_num != -1) {
@@ -134,12 +155,12 @@ SclvLedgerContinuityResult check_sclv_ledger_continuity(const SclvCheckResult& s
             result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv_ledger.temporal_version_absent", "record_id=" + record.record_id));
         }
 
-        if (record.has_record_version && record.record_version != 1 && record.record_version != 2) {
+        if (record.has_record_version && record.record_version != 1 && record.record_version != 2 && record.record_version != 3) {
             result.success = false;
             result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv_ledger.record_version_invalid", "record_id=" + record.record_id + " record_version=" + std::to_string(record.record_version)));
         }
 
-        if (record.has_record_version && record.record_version == 2) {
+        if (record.has_record_version && (record.record_version == 2 || record.record_version == 3)) {
             bool timestamps_valid = true;
             const std::pair<std::string, std::string> timestamps[] = {
                 {"change_started_at", record.change_started_at},
@@ -167,12 +188,27 @@ SclvLedgerContinuityResult check_sclv_ledger_continuity(const SclvCheckResult& s
                     result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv_ledger.recording_order_invalid", "record_id=" + record.record_id + " previous_recorded_at=" + previous_recorded_at));
                 }
                 previous_recorded_at = record.recorded_at;
+
+                if (record.record_version == 3 &&
+                    (!record.has_date || record.date != record.recorded_at.substr(0U, 10U))) {
+                    result.success = false;
+                    result.messages.push_back(format_evidence(
+                        EvidenceCategory::Violation,
+                        "sclv_ledger.record_date_invalid",
+                        "record_id=" + record.record_id + " date=" + record.date));
+                } else if (record.record_version == 3) {
+                    result.messages.push_back(format_evidence(
+                        EvidenceCategory::Pass,
+                        "sclv_ledger.record_date_valid",
+                        "record_id=" + record.record_id));
+                }
             }
 
             if (record.recording_disposition != "post_merge" && record.recording_disposition != "late_recovery") {
                 result.success = false;
                 result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv_ledger.recording_disposition_invalid", "record_id=" + record.record_id + " disposition=" + record.recording_disposition));
-            } else if (record.recording_disposition == "late_recovery" && record.recovery_reason.empty()) {
+            } else if (record.recording_disposition == "late_recovery" &&
+                       (record.recovery_reason.empty() || record.recovery_reason == "not_applicable")) {
                 result.success = false;
                 result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv_ledger.recovery_reason_absent", "record_id=" + record.record_id));
             } else {

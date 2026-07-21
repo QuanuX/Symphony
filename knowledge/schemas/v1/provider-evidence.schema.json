@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:provider-evidence:v1",
+  "title": "Symphony bounded provider evidence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "adapter_id", "adapter_version", "provider_namespace",
+    "evidence_kind", "observed_at", "source_reference", "repository",
+    "change_request", "ratification", "evidence_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.provider-evidence.v1"},
+    "adapter_id": {"$ref": "#/$defs/token"},
+    "adapter_version": {"$ref": "#/$defs/version"},
+    "provider_namespace": {"$ref": "#/$defs/token"},
+    "evidence_kind": {"enum": ["revision", "ratification", "combined"]},
+    "observed_at": {"$ref": "#/$defs/timestamp"},
+    "source_reference": {"$ref": "#/$defs/text"},
+    "repository": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["revision_scheme", "revision_value", "tree_digest"],
+          "properties": {
+            "revision_scheme": {"$ref": "#/$defs/token"},
+            "revision_value": {"$ref": "#/$defs/revision"},
+            "tree_digest": {"$ref": "#/$defs/digest"}
+          }
+        }
+      ]
+    },
+    "change_request": {"$ref": "#/$defs/changeRequest"},
+    "ratification": {"$ref": "#/$defs/ratification"},
+    "evidence_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
+    },
+    "text": {"type": "string", "minLength": 1, "maxLength": 4096},
+    "timestamp": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"
+    },
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "changeRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "provider", "id", "reference", "absence_reason"],
+      "properties": {
+        "state": {"enum": ["present", "not_applicable"]},
+        "provider": {"$ref": "#/$defs/token"},
+        "id": {"$ref": "#/$defs/text"},
+        "reference": {"$ref": "#/$defs/text"},
+        "absence_reason": {"$ref": "#/$defs/text"}
+      }
+    },
+    "revision": {"type": "string", "minLength": 1, "maxLength": 256},
+    "ratification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state", "subject", "effective_permission", "method",
+        "evidence_reference", "evidence_digest", "absence_reason"
+      ],
+      "properties": {
+        "state": {"enum": ["asserted", "not_asserted"]},
+        "subject": {"$ref": "#/$defs/text"},
+        "effective_permission": {"$ref": "#/$defs/text"},
+        "method": {"$ref": "#/$defs/text"},
+        "evidence_reference": {"$ref": "#/$defs/text"},
+        "evidence_digest": {
+          "oneOf": [
+            {"$ref": "#/$defs/digest"},
+            {"const": "not_applicable"}
+          ]
+        },
+        "absence_reason": {"$ref": "#/$defs/text"}
+      }
+    }
+  }
+}

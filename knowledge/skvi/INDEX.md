@@ -1242,7 +1242,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: administrative CLI implementation surface
 - truth_role: local operation dispatch, process-client invocation, and presentation implementation truth
 - owner: qxctl maintainers
-- scope: Implements current repository, module, SSIAG, STAV, and SKVI administrative operation handlers.
+- scope: Implements current repository, module, SSIAG, STAV, SKVI, and SCLV administrative operation handlers.
 - relationships: implements -> `tools/qxctl/MANIFEST.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`
 - consumers: qxctl executable, tests, maintainers, reviewers
 - deferred_projections: generated CLI reference and operation evidence
@@ -1255,24 +1255,24 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: administrative CLI implementation surface
 - truth_role: implemented command tree, flag grammar, and failure routing
 - owner: qxctl maintainers
-- scope: Implements current repository, SSIAG, STAV, and exact-installation SKVI command grammar without owning domain semantics.
+- scope: Implements current repository, SSIAG, STAV, and exact-installation SKVI/SCLV command grammar without owning domain semantics.
 - relationships: implements -> `tools/qxctl/MANIFEST.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`
 - consumers: qxctl executable, compatibility tests, maintainers, reviewers
 - deferred_projections: generated CLI reference documentation
 - notes: Cobra grammar does not authorize lifecycle activation or canonical apply.
 - status: canonical
 
-#### qxctl SKVI Process Client
+#### qxctl Knowledge Engine Process Client
 - path: `tools/qxctl/internal/knowledgeengine/client.go`
 - title: qxctl Knowledge Engine Process Client
 - surface_type: bounded Go process-client implementation
 - truth_role: trusted receipt resolution, child-process bounds, and response verification implementation truth
 - owner: qxctl maintainers
-- scope: Resolves the exact installed SKVI version, validates its inactive-undocked receipt and owned paths, invokes it with an empty environment and hard deadline, and verifies response identity and digest.
-- relationships: implements -> `knowledge/SPEC.md`; implements -> `knowledge/skvi/SPEC.md`; called_by -> `tools/qxctl/cmd/qxctl/commands.go`
-- consumers: qxctl SKVI commands, tests, reviewers, future compatible vector clients
-- deferred_projections: common process-client extraction after multiple proven consumers
-- notes: It does not install, activate, dock, infer membership, ratify, or apply.
+- scope: Resolves exact installed SKVI and SCLV versions, validates their inactive-undocked receipts and owned paths, invokes them with an empty environment and hard deadline, and verifies response identity and digest.
+- relationships: implements -> `knowledge/SPEC.md`; implements -> `knowledge/skvi/SPEC.md`; implements -> `knowledge/sclv/SPEC.md`; called_by -> `tools/qxctl/cmd/qxctl/commands.go`
+- consumers: qxctl SKVI/SCLV commands, tests, reviewers, future compatible vector clients
+- deferred_projections: additional compatible vector clients
+- notes: It does not install, activate, dock, infer membership, grant permission, ratify, mutate journals, or apply.
 - status: canonical
 
 ### Knowledge Session Coordinator Module
@@ -1435,6 +1435,86 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: No global executable alias or active binding is installed.
 - status: canonical
 
+### SCLV Engine Module
+
+#### SCLV Engine INTENT.md
+- path: `modules/sclv-engine/INTENT.md`
+- title: SCLV Engine Intent
+- surface_type: vector-engine module intent
+- truth_role: subordinate provider-neutral change-check, proposal, recovery, and projection purpose
+- owner: SCLV engine maintainers
+- scope: Declares deterministic inspect/check/propose/recover/project behavior and bounded evidence normalization without ratification or mutation authority.
+- relationships: depends_on -> `knowledge/sclv/INTENT.md`; declares -> `modules/sclv-engine/MANIFEST.md`
+- consumers: qxctl, implementers, administrators, reviewers, agentic tools
+- deferred_projections: installed-engine inventory and conformance evidence
+- notes: The engine implements SCLV truth but does not own or append it.
+- status: canonical
+
+#### SCLV Engine MANIFEST.md
+- path: `modules/sclv-engine/MANIFEST.md`
+- title: SCLV Engine Manifest
+- surface_type: independently installable vector-engine manifest
+- truth_role: executable, adapter, operation, protocol, dependency, and lifecycle truth
+- owner: SCLV engine maintainers
+- scope: Declares the C++26 engine, local-Git and air-gapped adapters, eleven-file package, disabled apply, and inactive installed-undocked state.
+- relationships: depends_on -> `modules/sclv-engine/INTENT.md`; implements -> `knowledge/sclv/SPEC.md`; statically_links -> `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
+- consumers: qxctl, packagers, implementers, reviewers, agentic tools
+- deferred_projections: engine inventory and Maestro presence evidence
+- notes: No default receptor, active alias, canonical append, or journal mutation route exists.
+- status: canonical
+
+#### SCLV Engine INSTALL.md
+- path: `modules/sclv-engine/INSTALL.md`
+- title: SCLV Engine Installation
+- surface_type: module installation contract
+- truth_role: build, test, versioned install, qxctl invocation, and receipt-owned uninstall procedure
+- owner: SCLV engine maintainers
+- scope: Defines monorepo and installed-foundation builds plus exact three-executable prefix installation and removal.
+- relationships: depends_on -> `modules/sclv-engine/MANIFEST.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/INSTALL.md`; consumed_by -> `tools/qxctl/internal/knowledgeengine/client.go`
+- consumers: implementers, administrators, packagers, qxctl, reviewers
+- deferred_projections: lifecycle administration evidence
+- notes: Installation leaves the version inactive and undocked and preserves canonical knowledge.
+- status: canonical
+
+#### SCLV Engine SKILL.md
+- path: `modules/sclv-engine/SKILL.md`
+- title: SCLV Engine Skill
+- surface_type: vector-engine skill guidance
+- truth_role: safe direct and qxctl operation procedure
+- owner: SCLV engine maintainers
+- scope: Guides ledger checks, provider-evidence normalization, proposal/recovery review, projection use, and stop conditions.
+- relationships: depends_on -> `modules/sclv-engine/SPEC.md`; depends_on -> `knowledge/sclv/SKILL.md`
+- consumers: administrators, implementers, reviewers, agentic tools
+- deferred_projections: qxctl lifecycle procedure
+- notes: Provider evidence, proposals, recovery results, and projections remain non-authorizing.
+- status: canonical
+
+#### SCLV Engine SPEC.md
+- path: `modules/sclv-engine/SPEC.md`
+- title: SCLV Engine Specification
+- surface_type: vector-engine module specification
+- truth_role: exact operation, evidence-adapter, bound, exit, install, and non-authorization contract
+- owner: SCLV engine maintainers
+- scope: Defines v1/v2/v3 ledger checks, provider-neutral proposals, non-mutating recovery, derived projections, and separate local/air-gapped adapters.
+- relationships: depends_on -> `knowledge/SPEC.md`; implements -> `knowledge/sclv/SPEC.md`; implements -> `knowledge/schemas/v1/provider-evidence.schema.json`; implements -> `knowledge/sclv/schemas/v3/MANIFEST.md`
+- consumers: C++ implementers, qxctl, testers, reviewers
+- deferred_projections: expanded SCLV-authorized projection and evidence formats
+- notes: It has no authentication, network, SSIAG/STAV, lifecycle, ratification, append, commit, journal-mutation, or Maestro authority.
+- status: canonical
+
+#### SCLV Engine CMakeLists.txt
+- path: `modules/sclv-engine/CMakeLists.txt`
+- title: SCLV Engine Build Contract
+- surface_type: module build and install contract
+- truth_role: static-link, multi-executable test, package receipt, and uninstall implementation truth
+- owner: SCLV engine maintainers
+- scope: Builds and tests the exact engine and adapters and supports source or installed foundation consumption.
+- relationships: implements -> `modules/sclv-engine/SPEC.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
+- consumers: CMake, implementers, packagers, reviewers
+- deferred_projections: reproducible build, install, and receipt evidence
+- notes: No global executable alias or active binding is installed.
+- status: canonical
+
 ### Knowledge Vector Surfaces
 
 #### Knowledge Root
@@ -1457,11 +1537,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: SKV umbrella manifest
 - truth_role: common vector-engine identity, namespace, installability, and authority boundary
 - owner: Symphony Knowledge Vector maintainers
-- scope: Declares independently installed C++ engines, the implemented shared mechanics/read-only coordinator/SKVI slices, qxctl administration, Linux-first delivery, Maestro readiness, and proposal-only initial state.
-- relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/`; governs -> `modules/knowledge-session-coordinator/`; governs -> `modules/skvi-engine/`; governs -> future cleared vector-engine module paths
+- scope: Declares independently installed C++ engines, the implemented shared mechanics/read-only coordinator/SKVI/SCLV slices, qxctl administration, Linux-first delivery, Maestro readiness, and proposal-only initial state.
+- relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/`; governs -> `modules/knowledge-session-coordinator/`; governs -> `modules/skvi-engine/`; governs -> `modules/sclv-engine/`; governs -> future cleared vector-engine module paths
 - consumers: vector maintainers, engine implementers, qxctl, Maestro planners, reviewers, agentic tools
 - deferred_projections: engine inventory, install receipts, Maestro presence graph
-- notes: Foundation/coordinator and SKVI `0.1.0-dev` slices now exist; other vector engines, session mutation, canonical apply, live docking, and SSFV remain gated.
+- notes: Foundation/coordinator and SKVI/SCLV `0.1.0-dev` slices now exist; other vector engines, session mutation, canonical apply, live docking, and SSFV remain gated.
 - status: canonical
 
 ##### SPEC.md
@@ -1474,7 +1554,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
 - consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
 - deferred_projections: proposal/session/provider/docking schemas, conformance evidence, engine inventory, docking graph
-- notes: Five common schemas and the foundation/coordinator/SKVI slices are implemented; programmatic apply is disabled.
+- notes: Six common schemas and the foundation/coordinator/SKVI/SCLV slices are implemented; programmatic apply is disabled.
 - status: canonical
 
 ##### SKILL.md
@@ -1496,8 +1576,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: common protocol schema manifest
 - truth_role: canonical inventory and boundary for exact common JSON schemas
 - owner: Symphony Knowledge Vector maintainers
-- scope: Declares process request/response, descriptor, install-receipt, and immutable-proposal schemas.
-- relationships: depends_on -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`
+- scope: Declares process request/response, descriptor, install-receipt, immutable-proposal, and provider-evidence schemas.
+- relationships: depends_on -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; governs -> `modules/skvi-engine/SPEC.md`; governs -> `modules/sclv-engine/SPEC.md`
 - consumers: C++ foundation and engine implementers, qxctl planners, validator, reviewers
 - deferred_projections: generated schema documentation and conformance evidence
 - notes: Operation-specific payload/result schemas remain with the applicable coordinator or vector.
@@ -1536,7 +1616,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - truth_role: canonical engine identity, capability, limit, scope, and disabled-state truth
 - owner: Symphony Knowledge Vector maintainers
 - scope: Defines installed identity, operations, bounds, thermal placement, scope, docking state, and mutation flags.
-- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `modules/knowledge-session-coordinator/SPEC.md`; implemented_by -> `modules/skvi-engine/SPEC.md`
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `modules/knowledge-session-coordinator/SPEC.md`; implemented_by -> `modules/skvi-engine/SPEC.md`; implemented_by -> `modules/sclv-engine/SPEC.md`
 - consumers: qxctl lifecycle planner, coordinator and vector engines, packagers, reviewers
 - deferred_projections: installed engine inventory and Maestro presence graph
 - notes: A descriptor reports capability; it does not grant permission or activate a version.
@@ -1549,7 +1629,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - truth_role: canonical prefix-relative package ownership and docking-state truth
 - owner: Symphony Knowledge Vector maintainers
 - scope: Defines module/version, scope, prefix interpretation, state, activation, receptor, and exact owned files.
-- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`; implemented_by -> `modules/knowledge-session-coordinator/CMakeLists.txt`; implemented_by -> `modules/skvi-engine/CMakeLists.txt`
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`; implemented_by -> `modules/knowledge-session-coordinator/CMakeLists.txt`; implemented_by -> `modules/skvi-engine/CMakeLists.txt`; implemented_by -> `modules/sclv-engine/CMakeLists.txt`
 - consumers: qxctl lifecycle planner, installers, uninstallers, packagers, reviewers
 - deferred_projections: lifecycle inventory and rollback evidence
 - notes: A receipt does not authorize activation, canonical writes, or live docking.
@@ -1562,10 +1642,23 @@ Future validator increments may add separately ratified deterministic checks wit
 - truth_role: canonical provider-neutral immutable proposal envelope truth
 - owner: Symphony Knowledge Vector maintainers
 - scope: Closes proposal identity, repository, read/write sets, operations, validation, authority, expiry, and disabled-apply fields.
-- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `modules/skvi-engine/SPEC.md`
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `modules/skvi-engine/SPEC.md`; implemented_by -> `modules/sclv-engine/SPEC.md`
 - consumers: vector engines, qxctl process clients, conformance tests, validator, reviewers
 - deferred_projections: rendered protocol documentation
 - notes: A conforming proposal is noncanonical and never manufactures ratification.
+- status: canonical
+
+##### Provider Evidence Schema
+- path: `knowledge/schemas/v1/provider-evidence.schema.json`
+- title: Symphony Knowledge Provider Evidence v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical provider-neutral normalized evidence envelope truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes adapter identity, observation, repository revision/tree, change-request presence, ratification claim, and evidence digest fields.
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sclv-engine/SPEC.md`
+- consumers: SCLV evidence adapters, SCLV engine, qxctl proposal callers, conformance tests, validator, reviewers
+- deferred_projections: rendered provider-adapter reference and conformance evidence
+- notes: A well-formed evidence envelope does not grant permission, ratify, or establish provider truth by itself.
 - status: canonical
 
 #### SKVI
@@ -1821,6 +1914,97 @@ Future validator increments may add separately ratified deterministic checks wit
 - status: `canonical`
 - notes: `Ephemeral session state remains under .git and is never canonical. The runbook also distinguishes a stale temporary-proxy module cache from immutable public release state and requires empty-cache verification.`
 
+##### SCLV v3 Schema Manifest
+- path: `knowledge/sclv/schemas/v3/MANIFEST.md`
+- title: SCLV Version 3 Schema Manifest
+- surface_type: vector-specific protocol schema manifest
+- truth_role: canonical inventory and boundary for exact provider-neutral SCLV v3 JSON schemas
+- owner: SCLV maintainers
+- scope: Declares record, proposal-input, recovery-input, check-result, and projection schemas.
+- relationships: depends_on -> `knowledge/sclv/SPEC.md`; implemented_by -> `modules/sclv-engine/SPEC.md`
+- consumers: SCLV engine, qxctl, conformance tests, validator, reviewers
+- deferred_projections: rendered SCLV protocol documentation
+- notes: Schema validity does not grant ratification, append, journal mutation, or apply authority.
+- status: canonical
+
+##### SCLV v3 Record Schema
+- path: `knowledge/sclv/schemas/v3/record.schema.json`
+- title: SCLV Provider-Neutral Record v3
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical normalized provider-neutral change-record shape
+- owner: SCLV maintainers
+- scope: Closes stable identity, time, disposition, change request, revision/tree, ratification, affected surfaces, consequences, evidence, and non-authorizations.
+- relationships: depends_on -> `knowledge/sclv/schemas/v3/MANIFEST.md`; rendered_by -> `knowledge/sclv/templates/v3/record.md`; implemented_by -> `modules/sclv-engine/SPEC.md`
+- consumers: SCLV engine, qxctl proposal callers, symphony-validator, conformance tests, reviewers
+- deferred_projections: rendered record reference and form tooling
+- notes: Version 3 is prospective; v1/v2 records remain immutable.
+- status: canonical
+
+##### SCLV v3 Proposal Input Schema
+- path: `knowledge/sclv/schemas/v3/proposal-input.schema.json`
+- title: SCLV Proposal Input v3
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical caller-declared SCLV proposal input shape
+- owner: SCLV maintainers
+- scope: Closes repository/session/context/expiry fields, one v3 record, and one-to-eight normalized provider-evidence envelopes.
+- relationships: depends_on -> `knowledge/sclv/schemas/v3/record.schema.json`; depends_on -> `knowledge/schemas/v1/provider-evidence.schema.json`; implemented_by -> `modules/sclv-engine/SPEC.md`
+- consumers: qxctl proposal callers, SCLV engine, conformance tests, validator
+- deferred_projections: proposal forms and protocol documentation
+- notes: The engine validates claims but neither grants permission nor ratifies.
+- status: canonical
+
+##### SCLV v3 Recovery Input Schema
+- path: `knowledge/sclv/schemas/v3/recovery-input.schema.json`
+- title: SCLV Recovery Input v3
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical non-mutating ephemeral-journal reconciliation input shape
+- owner: SCLV maintainers
+- scope: Closes the journal snapshot/digest, observed state, optional late proposal input, and factual recovery reason.
+- relationships: depends_on -> `knowledge/sclv/schemas/v3/proposal-input.schema.json`; implemented_by -> `modules/sclv-engine/SPEC.md`
+- consumers: qxctl recovery callers, SCLV engine, conformance tests, validator
+- deferred_projections: recovery-status evidence
+- notes: Recovery output may recommend deletion but never mutates or deletes the journal.
+- status: canonical
+
+##### SCLV Check Result Schema
+- path: `knowledge/sclv/schemas/v3/check-result.schema.json`
+- title: SCLV Check Result v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical deterministic ledger-diagnostic shape
+- owner: SCLV maintainers
+- scope: Closes ledger/contract digests, expected-state match, record/version counts, bounded exceptions, summary, read-only state, and disabled apply.
+- relationships: depends_on -> `knowledge/sclv/schemas/v3/MANIFEST.md`; implemented_by -> `modules/sclv-engine/SPEC.md`
+- consumers: qxctl check presentation, conformance tests, validator, reviewers
+- deferred_projections: check reports and analytical evidence
+- notes: Invalid state is evidence and does not authorize repair.
+- status: canonical
+
+##### SCLV Projection Schema
+- path: `knowledge/sclv/schemas/v3/projection.schema.json`
+- title: SCLV Provider-Neutral Projection v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical disposable projection-result shape
+- owner: SCLV maintainers
+- scope: Closes engine/input identities, normalized legacy and v3 records, projection digest, and noncanonical rebuildable state.
+- relationships: depends_on -> `knowledge/sclv/schemas/v3/MANIFEST.md`; implemented_by -> `modules/sclv-engine/SPEC.md`
+- consumers: qxctl project presentation, conformance tests, graph/search planners, validator
+- deferred_projections: JSONL, search, analytical, and graph projections after separate authorization
+- notes: The v1 implementation returns JSON in the process response and writes no projection file.
+- status: canonical
+
+##### SCLV v3 Record Template
+- path: `knowledge/sclv/templates/v3/record.md`
+- title: SCLV Canonical Record Template v3
+- surface_type: canonical Markdown record template
+- truth_role: exact field order and rendering truth for prospective v3 ledger records
+- owner: SCLV maintainers
+- scope: Defines the complete ordered Markdown representation emitted inside a noncanonical proposal.
+- relationships: depends_on -> `knowledge/sclv/schemas/v3/record.schema.json`; implemented_by -> `modules/sclv-engine/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
+- consumers: SCLV engine, symphony-validator, reviewers, proposal callers
+- deferred_projections: rendered authoring guidance
+- notes: The template is canonical contract truth; an engine-rendered instance remains noncanonical until separately applied.
+- status: canonical
+
 #### SODV
 ##### INTENT.md
 - path: `knowledge/sodv/INTENT.md`
@@ -1888,7 +2072,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: `Authorization never implies completion; pending transaction state is noncanonical. Current validator coverage does not interpret release-transaction semantics.`
 
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, five common SKV JSON Schemas, and four SKVI JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, six common SKV JSON Schemas, four SKVI JSON Schemas, and five SCLV JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:
