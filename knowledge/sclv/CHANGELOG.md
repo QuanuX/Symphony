@@ -1094,3 +1094,97 @@ This PR authorizes none of the following:
   - `module, SDK, API, documentation, or binary publication`
 - notes: |
     This record was authored only after PR #70 merged and its exact 40-character merge/head evidence was verified. The closure-carrier PR for this record is non-recursive unless it makes an independently significant architectural change.
+
+- record_id: `SCLV-PR-073`
+- record_version: `2`
+- title: `SKV vector-engine foundation and lifecycle boundaries ratified`
+- status: `canonical`
+- date: `2026-07-21`
+- change_started_at: `2026-07-21T16:02:46Z`
+- change_completed_at: `2026-07-21T16:03:24Z`
+- recorded_at: `2026-07-21T16:04:17Z`
+- recording_disposition: `post_merge`
+- change_type: `canonical_update`
+- related_pr: `https://github.com/QuanuX/Symphony/pull/73`
+- merge_commit: `9b9ed1a099986d19ff1f1815a1f31d3cd67d9812`
+- affected_surfaces:
+  - `INTENT.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/sacv/INTENT.md`
+  - `knowledge/sacv/MANIFEST.md`
+  - `knowledge/sacv/SKILL.md`
+  - `knowledge/sacv/SPEC.md`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/sclv/INTENT.md`
+  - `knowledge/sclv/MANIFEST.md`
+  - `knowledge/sclv/SKILL.md`
+  - `knowledge/sclv/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/skvi/INTENT.md`
+  - `knowledge/skvi/MANIFEST.md`
+  - `knowledge/skvi/SKILL.md`
+  - `knowledge/skvi/SPEC.md`
+  - `knowledge/sodv/INTENT.md`
+  - `knowledge/sodv/MANIFEST.md`
+  - `knowledge/sodv/SKILL.md`
+  - `knowledge/sodv/SPEC.md`
+  - `knowledge/ssiag/INTENT.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/stav/SPEC.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/SKILL.md`
+- skvi_references:
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/skvi/SPEC.md`
+  - `knowledge/sclv/CHANGELOG.md`
+  - `knowledge/sclv/SPEC.md`
+  - `knowledge/sacv/SPEC.md`
+  - `knowledge/sodv/SPEC.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/stav/SPEC.md`
+  - `tools/qxctl/MANIFEST.md`
+- change_summary: |
+    Under the Architect's direction, PR #73 ratified the common SKV vector-engine foundation before executable implementation. It established the `knowledge/` umbrella Contract Quad, independent C++ proposal-engine identities for SKVI, SCLV, SACV, and SODV, a separate authenticated-session and worktree coordinator, and qxctl as the eventual Go/Cobra/Viper lifecycle and administration surface.
+    The transition also defined provider-neutral repository identity, bounded out-of-process JSON protocol mechanics, configurable session policy, private staging, validation, recovery, independent version selection, Linux-first delivery, freezing-path placement, and versioned Maestro receptor readiness.
+- relationship_changes: |
+    Vector-specific semantic behavior belongs to each vector contract; common process, lifecycle, session, staging, recovery, and docking mechanics belong to the `knowledge/` umbrella. Engines and the coordinator remain independently installable executables rather than in-process plugins or one shared dynamic ABI.
+    qxctl will administer supported lifecycle and policy operations without becoming vector source truth. SSIAG supplies authenticated effective-authority evidence, STAV receives safe runtime audit outcomes when required, Git/review providers remain evidence adapters, and Maestro remains an optional persistence receptor rather than an installation prerequisite.
+- doctrine_changes: |
+    Effective authority derives from authenticated host ownership or granted permission, operation and resource context, expected state, and configured safeguards; caller class is never an authorization input. The default authenticated session spans login through logout or required reauthentication, while an authorized administrator may select a different bounded session policy through qxctl.
+    Programmatic canonical mutation remains fail-closed and gated. Proposal generation cannot manufacture ratification. All engine, coordinator, recovery, audit, projection, and docking work is administrative cold/freezing-path activity and must not create a synchronous dependency, shared lock, jitter, or latency on hot or warm paths.
+- compatibility_consequences: |
+    No executable engine, coordinator, qxctl command, canonical apply route, runtime IPC endpoint, Maestro dock, module receipt, provider adapter, schema byte, STAV ledger behavior, SSIAG grant, or trading-node behavior was added by PR #73.
+    Existing qxctl, SSIAG, STAV, validator, and canonical Markdown behavior remains compatible. Independently selectable future engine versions must advertise protocol, contract, and receptor compatibility and may install in an `installed_undocked` state without changing an active binding.
+- publication_consequences: |
+    PR #73 published no tag, binary, package, container, SDK, OpenAPI description, Mintlify surface, Maestro receptor, or public release. It authorizes a reviewed implementation sequence inside the monorepo only.
+    Windows-native engines remain outside scope; Windows users may later use WSL or qxctl connectivity to a supported Linux host. Go 1.26.5 remains the current production baseline while the separately documented Go 1.27 migration gate remains unchanged.
+- projection_consequences: |
+    SKVI, SCLV, SACV, and SODV engines may eventually emit disposable proposals and read-only projections through the common protocol, but canonical Markdown remains source truth. No graph, JSON, search, NotebookLM, API-documentation, or Maestro projection becomes authoritative through this transition.
+    SSFV remains conceptual and unimplemented; its later contract may consume the common foundation only after its own namespace, schema, relationships, and implementation slate are ratified.
+- evidence:
+  - `https://github.com/QuanuX/Symphony/pull/73`
+  - `9b9ed1a099986d19ff1f1815a1f31d3cd67d9812`
+  - `6cb486b81533c7485854de2588334eada1b50b32`
+  - `symphony-validator: 1570 pass, 71 advisory, 0 violations`
+  - `complete symphony-validator caller-authority unit and smoke suites passed against a fresh build`
+  - `qxctl go test ./... passed`
+- non_authorizations:
+  - `canonical vector apply or programmatic ratification`
+  - `implemented SKVI, SCLV, SACV, SODV, or coordinator runtime capability`
+  - `SSFV contract or implementation`
+  - `live Maestro docking or receptor mutation`
+  - `Windows-native engine implementation`
+  - `hot-path or warm-path dependency`
+  - `module tag, package, binary, container, SDK, API, or documentation publication`
+  - `operational SSIAG provider access, secret delivery, or new STAV append authority`
+  - `Go 1.27 production pin`
+- notes: |
+    This record was authored only after PR #73 merged and its exact merge/head evidence and timestamps were verified. The closure-carrier PR for this record is non-recursive unless it makes an independently significant architectural change.
