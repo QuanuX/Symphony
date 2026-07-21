@@ -42,6 +42,7 @@ add_executable(sclv-temporal-tests
     src/evidence.cpp
     src/sclv_changelog.cpp
     src/sclv_ledger.cpp
+    src/sclv_shape.cpp
 )
 
 target_include_directories(sclv-temporal-tests PRIVATE src)

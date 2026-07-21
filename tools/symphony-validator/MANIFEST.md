@@ -42,7 +42,7 @@ Structured JSON and Markdown projections remain deferred. Runtime source/AST cal
 
 ## Canonical JSON Boundary
 
-The artifact checker recognizes exactly 37 canonical JSON paths: 28 STAV v1 schemas/fixtures, five common SKV process/descriptor/receipt/proposal schemas, and four SKVI operation/result schemas. It does not authorize a directory prefix, generated projection, or new JSON artifact by extension.
+The artifact checker recognizes exactly 43 canonical JSON paths: 28 STAV v1 schemas/fixtures, six common SKV process/descriptor/receipt/proposal/provider-evidence schemas, four SKVI operation/result schemas, and five SCLV v3 operation/result schemas. It does not authorize a directory prefix, generated projection, or new JSON artifact by extension.
 
 ## Caller-Authority Capability
 The implemented checker reads active Markdown from the bounded repository surfaces defined in `SPEC.md`. It emits lexical-path evidence for configured caller-class authority constructions and for fail-visible discovery, stream, symlink, and resource-limit conditions. It does not follow symlink targets or modify scanned content.

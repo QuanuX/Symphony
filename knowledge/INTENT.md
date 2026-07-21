@@ -52,7 +52,7 @@ qxctl is the Go administrative surface for the ratified vector-engine family. `q
 ### Vector Engine Foundation
 Each active application-level vector may have an independently installable, out-of-process C++ engine. Shared authority-free C++ mechanics may live under `libraries/`; a separate C++ coordinator owns authenticated-session and worktree-reconciliation mechanics. Engines inspect, validate, project, and propose within vector-owned contracts. They do not acquire authority merely by generating content.
 
-The implemented `0.1.0-dev` foundation and coordinator slice provides strict local process framing plus read-only inspect/snapshot checking. The first vector slice also implements the independent C++ SKVI engine and exact-installation `qxctl skvi inspect|check|propose|project` invocation. Neither slice establishes an authenticated session or mutates canonical knowledge.
+The implemented `0.1.0-dev` foundation and coordinator slice provides strict local process framing plus read-only inspect/snapshot checking. Independent C++ slices implement SKVI inspect/check/propose/project and SCLV inspect/check/propose/recover/project with provider-neutral evidence adapters. qxctl invokes each only from an exact inactive-undocked installation. None of these slices establishes an authenticated session or mutates canonical knowledge.
 
 Initial vector-engine releases are read/query/validate/propose only. Programmatic canonical apply remains disabled until its SSIAG permission verification, expected-state transaction, qxctl safeguard, STAV event, recovery, and negative-test contracts are implemented and verified. `knowledge/SPEC.md` owns the common boundary; each vector Contract Quad owns its domain operations.
 

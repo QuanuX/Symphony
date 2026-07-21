@@ -1,0 +1,30 @@
+if(NOT DEFINED INSTALL_PREFIX)
+  set(INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@")
+endif()
+
+set(_files
+  "@CMAKE_INSTALL_LIBEXECDIR@/symphony/sclv-engine/0.1.0-dev/symphony-sclv"
+  "@CMAKE_INSTALL_LIBEXECDIR@/symphony/sclv-engine/0.1.0-dev/symphony-sclv-evidence-local-git"
+  "@CMAKE_INSTALL_LIBEXECDIR@/symphony/sclv-engine/0.1.0-dev/symphony-sclv-evidence-airgap"
+  "@CMAKE_INSTALL_DATADIR@/symphony/receipts/sclv-engine/0.1.0-dev/install-receipt.json"
+  "@CMAKE_INSTALL_DATADIR@/doc/symphony/sclv-engine/0.1.0-dev/INTENT.md"
+  "@CMAKE_INSTALL_DATADIR@/doc/symphony/sclv-engine/0.1.0-dev/MANIFEST.md"
+  "@CMAKE_INSTALL_DATADIR@/doc/symphony/sclv-engine/0.1.0-dev/INSTALL.md"
+  "@CMAKE_INSTALL_DATADIR@/doc/symphony/sclv-engine/0.1.0-dev/SKILL.md"
+  "@CMAKE_INSTALL_DATADIR@/doc/symphony/sclv-engine/0.1.0-dev/SPEC.md"
+  "@CMAKE_INSTALL_DATADIR@/licenses/symphony-sclv-engine/0.1.0-dev/LICENSE-AGPL-3.0"
+  "@CMAKE_INSTALL_DATADIR@/licenses/symphony-sclv-engine/0.1.0-dev/nlohmann-json-LICENSE.MIT"
+)
+
+foreach(_relative IN LISTS _files)
+  set(_path "${INSTALL_PREFIX}/${_relative}")
+  if(IS_SYMLINK "${_path}" OR EXISTS "${_path}")
+    if(IS_DIRECTORY "${_path}" AND NOT IS_SYMLINK "${_path}")
+      message(FATAL_ERROR "refusing to uninstall directory: ${_path}")
+    endif()
+    file(REMOVE "${_path}")
+    if(EXISTS "${_path}" OR IS_SYMLINK "${_path}")
+      message(FATAL_ERROR "failed to remove installed file: ${_path}")
+    endif()
+  endif()
+endforeach()

@@ -17,6 +17,10 @@ Any caller operating within its effective target-host permission should use `qxc
 - `go run ./cmd/qxctl skvi check --prefix /chosen/prefix`
 - `go run ./cmd/qxctl skvi project --prefix /chosen/prefix --json`
 - `go run ./cmd/qxctl skvi propose --prefix /chosen/prefix --input proposal-input.json`
+- `go run ./cmd/qxctl sclv check --prefix /chosen/prefix`
+- `go run ./cmd/qxctl sclv propose --prefix /chosen/prefix --input proposal-input.json`
+- `go run ./cmd/qxctl sclv recover --prefix /chosen/prefix --input recovery-input.json`
+- `go run ./cmd/qxctl sclv project --prefix /chosen/prefix --json`
 
 ## Constraints
 - Use the Go standard library, ratified first-party Go libraries, and only their approved cgo-free platform dependencies.
@@ -28,6 +32,8 @@ Any caller operating within its effective target-host permission should use `qxc
 - STAV commands require an enrolled, running authority and an explicit reader grant. Never bypass endpoint authentication, reader classification, or add raw append behavior.
 - For implemented SKVI commands, invoke only an explicit installation prefix and exact version. Treat proposal and projection output as noncanonical; `qxctl skvi propose` does not apply its result.
 - Keep SKVI proposal input to the exact nonsecret operation schema. Never place credentials, proofs, raw tokens, provider payloads, environment data, or executable instructions in its semantic fields.
+- For implemented SCLV commands, invoke only an explicit installation prefix and exact version. Treat checks as evidence and proposals, recovery results, and projections as noncanonical; recovery never updates or deletes the journal.
+- Supply SCLV v3 proposal/recovery input only through bounded no-follow JSON files. Provider evidence must be normalized by an applicable adapter and must never contain credentials, raw proofs, provider payloads, shell fragments, or environment dumps.
 - Treat the default knowledge session as a login/authentication-to-logout/expiry/revocation authority epoch containing separate worktree reconciliation contexts. Never extend authority across a required re-authentication boundary.
 - Keep vector administration, recovery, and audit reconciliation away from hot and warm paths.
 

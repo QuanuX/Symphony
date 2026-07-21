@@ -77,6 +77,70 @@ func TestResolveInstalledRequiresExactReceiptAndNoFollowFiles(t *testing.T) {
 	}
 }
 
+func TestResolveInstalledSCLVRequiresExactElevenFileReceipt(t *testing.T) {
+	prefix := t.TempDir()
+	version := "0.1.0-dev"
+	files := expectedSCLVFiles(version)
+	for relative := range files {
+		path := filepath.Join(prefix, filepath.FromSlash(relative))
+		if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		mode := os.FileMode(0o644)
+		if strings.HasPrefix(relative, "libexec/") {
+			mode = 0o755
+		}
+		if err := os.WriteFile(path, []byte("fixture\n"), mode); err != nil {
+			t.Fatal(err)
+		}
+	}
+	receiptPath := filepath.Join(prefix, "share/symphony/receipts/sclv-engine", version, "install-receipt.json")
+	listed := make([]string, 0, len(files))
+	for relative := range files {
+		listed = append(listed, relative)
+	}
+	document := map[string]any{
+		"protocol": receiptProtocol, "module_id": sclvModuleID, "version": version,
+		"install_scope": "prefix", "prefix_mode": "installation_prefix",
+		"state": "installed_undocked", "active": false, "default_receptor": nil,
+		"files": listed,
+	}
+	data, err := json.Marshal(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(receiptPath, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	binary, err := resolveInstalledFor(sclvSpec, prefix, version)
+	if err != nil {
+		t.Fatalf("valid SCLV installation rejected: %v", err)
+	}
+	canonicalPrefix, err := filepath.EvalSymlinks(prefix)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want := filepath.Join(canonicalPrefix, "libexec/symphony/sclv-engine", version, "symphony-sclv"); binary != want {
+		t.Fatalf("binary = %q, want %q", binary, want)
+	}
+
+	delete(files, "libexec/symphony/sclv-engine/"+version+"/symphony-sclv-evidence-airgap")
+	document["files"] = func() []string {
+		values := make([]string, 0, len(files))
+		for relative := range files {
+			values = append(values, relative)
+		}
+		return values
+	}()
+	data, _ = json.Marshal(document)
+	if err := os.WriteFile(receiptPath, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := resolveInstalledFor(sclvSpec, prefix, version); err == nil {
+		t.Fatal("SCLV receipt missing an adapter was accepted")
+	}
+}
+
 func TestInvokeEnforcesCallerDeadlineAroundChildProcess(t *testing.T) {
 	prefix := t.TempDir()
 	createInstalledFixture(t, prefix, "#!/bin/sh\n/bin/sleep 10\n")

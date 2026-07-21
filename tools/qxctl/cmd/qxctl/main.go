@@ -56,6 +56,11 @@ func printUsage() {
 	fmt.Println("  skvi check --prefix PATH [--version VERSION] [--json] Check canonical SKVI index truth")
 	fmt.Println("  skvi propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared proposal")
 	fmt.Println("  skvi project --prefix PATH [--version VERSION] [--json] Build a disposable SKVI projection")
+	fmt.Println("  sclv inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SCLV engine")
+	fmt.Println("  sclv check --prefix PATH [--version VERSION] [--json] Check canonical SCLV ledger truth")
+	fmt.Println("  sclv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a provider-neutral record proposal")
+	fmt.Println("  sclv recover --prefix PATH --input FILE [--version VERSION] [--json] Reconcile ephemeral SCLV closure evidence")
+	fmt.Println("  sclv project --prefix PATH [--version VERSION] [--json] Build a disposable SCLV projection")
 }
 
 func runSKVI(operation string, options skviOptions) error {
@@ -316,6 +321,316 @@ func printSKVIResult(operation string, result json.RawMessage) error {
 		return nil
 	default:
 		return fmt.Errorf("unsupported SKVI result")
+	}
+}
+
+func runSCLV(operation string, options sclvOptions) error {
+	if options.prefix == "" {
+		return fmt.Errorf("--prefix is required")
+	}
+	start := options.repository
+	if start == "" {
+		var err error
+		start, err = os.Getwd()
+		if err != nil {
+			return fmt.Errorf("could not get current working directory: %w", err)
+		}
+	}
+	start, err := filepath.Abs(start)
+	if err != nil {
+		return fmt.Errorf("resolve repository path: %w", err)
+	}
+	info, err := os.Lstat(start)
+	if err != nil || info.Mode()&os.ModeSymlink != 0 || !info.IsDir() {
+		return fmt.Errorf("--repo must identify a no-follow directory")
+	}
+	repoRoot, err := repository.FindRoot(start)
+	if err != nil {
+		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+
+	var payload []byte
+	switch operation {
+	case "inspect":
+		payload = []byte(`{}`)
+	case "check":
+		expected := any(nil)
+		if options.expectedLedgerDigest != "" {
+			expected = options.expectedLedgerDigest
+		}
+		payload, err = json.Marshal(map[string]any{"expected_ledger_digest": expected})
+	case "propose", "recover":
+		payload, err = knowledgeengine.ReadPayload(options.input)
+	case "project":
+		payload = []byte(`{"format":"json"}`)
+	default:
+		return fmt.Errorf("unsupported SCLV operation")
+	}
+	if err != nil {
+		return err
+	}
+	response, err := knowledgeengine.InvokeSCLV(
+		context.Background(), options.prefix, options.version, repoRoot, operation, payload)
+	if err != nil {
+		return err
+	}
+	checkValid, err := validateSCLVResult(operation, response.Result)
+	if err != nil {
+		return err
+	}
+	if options.jsonOutput {
+		var output bytes.Buffer
+		if err := json.Indent(&output, response.Result, "", "  "); err != nil {
+			return fmt.Errorf("format SCLV result: %w", err)
+		}
+		fmt.Println(output.String())
+		if !checkValid {
+			return fmt.Errorf("SCLV ledger check reported violations")
+		}
+		return nil
+	}
+	return printSCLVResult(operation, response.Result)
+}
+
+func validateSCLVResult(operation string, result json.RawMessage) (bool, error) {
+	switch operation {
+	case "inspect":
+		var value struct {
+			ReadOnly              *bool    `json:"read_only"`
+			CanonicalApplyEnabled *bool    `json:"canonical_apply_enabled"`
+			EvidenceAdapters      []string `json:"evidence_adapters"`
+			Descriptor            struct {
+				EngineID               string `json:"engine_id"`
+				CanonicalApplyEnabled  *bool  `json:"canonical_apply_enabled"`
+				SessionMutationEnabled *bool  `json:"session_mutation_enabled"`
+				NetworkListener        *bool  `json:"network_listener"`
+			} `json:"descriptor"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Descriptor.EngineID != "symphony-sclv" ||
+			!explicitTrue(value.ReadOnly) || !explicitFalse(value.CanonicalApplyEnabled) ||
+			!explicitFalse(value.Descriptor.CanonicalApplyEnabled) ||
+			!explicitFalse(value.Descriptor.SessionMutationEnabled) ||
+			!explicitFalse(value.Descriptor.NetworkListener) || len(value.EvidenceAdapters) != 2 ||
+			value.EvidenceAdapters[0] != "symphony-sclv-evidence-local-git" ||
+			value.EvidenceAdapters[1] != "symphony-sclv-evidence-airgap" {
+			return false, fmt.Errorf("SCLV inspect result violates the implemented safety contract")
+		}
+		return true, nil
+	case "check":
+		var value struct {
+			Protocol              string `json:"protocol"`
+			ReadOnly              *bool  `json:"read_only"`
+			CanonicalApplyEnabled *bool  `json:"canonical_apply_enabled"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Protocol != "symphony.sclv.check-result.v1" ||
+			!explicitTrue(value.ReadOnly) || !explicitFalse(value.CanonicalApplyEnabled) {
+			return false, fmt.Errorf("SCLV check result violates the implemented safety contract")
+		}
+		return sclvCheckValid(result)
+	case "propose":
+		var value struct {
+			Protocol              string `json:"protocol"`
+			ModuleID              string `json:"module_id"`
+			EngineID              string `json:"engine_id"`
+			VectorID              string `json:"vector_id"`
+			ProposalID            string `json:"proposal_id"`
+			ProposalDigest        string `json:"proposal_digest"`
+			CanonicalApplyEnabled *bool  `json:"canonical_apply_enabled"`
+			WriteSet              []struct {
+				TargetPath string `json:"target_path"`
+			} `json:"write_set"`
+			Operations []struct {
+				Type       string `json:"type"`
+				TargetPath string `json:"target_path"`
+			} `json:"operations"`
+			Authority struct {
+				CallerDeclaredOperation *bool `json:"caller_declared_operation"`
+				EngineDecidedMembership *bool `json:"engine_decided_membership"`
+				Ratified                *bool `json:"ratified"`
+			} `json:"authority"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Protocol != "symphony.knowledge.proposal.v1" ||
+			value.ModuleID != "sclv-engine" || value.EngineID != "symphony-sclv" || value.VectorID != "sclv" ||
+			value.ProposalID == "" || !validTaggedDigest(value.ProposalDigest) ||
+			len(value.WriteSet) != 1 || value.WriteSet[0].TargetPath != "knowledge/sclv/CHANGELOG.md" ||
+			len(value.Operations) != 1 || value.Operations[0].Type != "append_record_v3" ||
+			value.Operations[0].TargetPath != "knowledge/sclv/CHANGELOG.md" ||
+			!explicitTrue(value.Authority.CallerDeclaredOperation) ||
+			!explicitFalse(value.Authority.EngineDecidedMembership) ||
+			!explicitFalse(value.Authority.Ratified) || !explicitFalse(value.CanonicalApplyEnabled) {
+			return false, fmt.Errorf("SCLV proposal result violates the implemented safety contract")
+		}
+		return true, nil
+	case "recover":
+		var value struct {
+			Protocol              string          `json:"protocol"`
+			Action                string          `json:"action"`
+			JournalMutated        *bool           `json:"journal_mutated"`
+			CanonicalApplyEnabled *bool           `json:"canonical_apply_enabled"`
+			DeleteRecommended     *bool           `json:"delete_recommended"`
+			Proposal              json.RawMessage `json:"proposal"`
+			ResultDigest          string          `json:"result_digest"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Protocol != "symphony.sclv.recovery-result.v1" ||
+			!explicitFalse(value.JournalMutated) || !explicitFalse(value.CanonicalApplyEnabled) ||
+			value.DeleteRecommended == nil || !validTaggedDigest(value.ResultDigest) {
+			return false, fmt.Errorf("SCLV recovery result violates the implemented safety contract")
+		}
+		switch value.Action {
+		case "resume":
+			if *value.DeleteRecommended {
+				return false, fmt.Errorf("SCLV resumable recovery recommended journal deletion")
+			}
+			if len(value.Proposal) == 0 || string(value.Proposal) != "null" {
+				return false, fmt.Errorf("SCLV recovery result contains an unexpected proposal")
+			}
+		case "abandon", "no_op":
+			if !*value.DeleteRecommended {
+				return false, fmt.Errorf("SCLV terminal recovery omitted its deletion recommendation")
+			}
+			if len(value.Proposal) == 0 || string(value.Proposal) != "null" {
+				return false, fmt.Errorf("SCLV recovery result contains an unexpected proposal")
+			}
+		case "propose_late_recovery":
+			if *value.DeleteRecommended {
+				return false, fmt.Errorf("SCLV late recovery recommended deletion before proposal completion")
+			}
+			if len(value.Proposal) == 0 || string(value.Proposal) == "null" {
+				return false, fmt.Errorf("SCLV late recovery omitted its proposal")
+			}
+			if _, err := validateSCLVResult("propose", value.Proposal); err != nil {
+				return false, fmt.Errorf("SCLV late-recovery proposal is invalid: %w", err)
+			}
+		default:
+			return false, fmt.Errorf("SCLV recovery result has an unknown action")
+		}
+		return true, nil
+	case "project":
+		var value struct {
+			Protocol         string            `json:"protocol"`
+			ModuleID         string            `json:"module_id"`
+			EngineID         string            `json:"engine_id"`
+			VectorID         string            `json:"vector_id"`
+			RecordCount      *uint64           `json:"record_count"`
+			Records          []json.RawMessage `json:"records"`
+			ProjectionDigest string            `json:"projection_digest"`
+			Noncanonical     *bool             `json:"noncanonical"`
+			Rebuildable      *bool             `json:"rebuildable"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Protocol != "symphony.sclv.projection.v1" ||
+			value.ModuleID != "sclv-engine" || value.EngineID != "symphony-sclv" || value.VectorID != "sclv" ||
+			value.RecordCount == nil || value.Records == nil || *value.RecordCount != uint64(len(value.Records)) ||
+			!validTaggedDigest(value.ProjectionDigest) ||
+			!explicitTrue(value.Noncanonical) || !explicitTrue(value.Rebuildable) {
+			return false, fmt.Errorf("SCLV projection result violates the implemented safety contract")
+		}
+		return true, nil
+	default:
+		return false, fmt.Errorf("unsupported SCLV operation")
+	}
+}
+
+func sclvCheckValid(result json.RawMessage) (bool, error) {
+	var value struct {
+		Summary struct {
+			Violation uint64 `json:"violation"`
+			State     string `json:"state"`
+		} `json:"summary"`
+	}
+	if err := json.Unmarshal(result, &value); err != nil || value.Summary.State == "" {
+		return false, fmt.Errorf("SCLV check result is incomplete")
+	}
+	return value.Summary.State == "valid" && value.Summary.Violation == 0, nil
+}
+
+func printSCLVResult(operation string, result json.RawMessage) error {
+	switch operation {
+	case "inspect":
+		var value struct {
+			ReadOnly   bool `json:"read_only"`
+			Descriptor struct {
+				EngineID      string `json:"engine_id"`
+				EngineVersion string `json:"engine_version"`
+				ThermalPath   string `json:"thermal_path"`
+			} `json:"descriptor"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Descriptor.EngineID == "" {
+			return fmt.Errorf("SCLV inspect result is incomplete")
+		}
+		fmt.Printf("SCLV: engine=%s version=%s thermal=%s read_only=%t apply=false\n",
+			value.Descriptor.EngineID, value.Descriptor.EngineVersion, value.Descriptor.ThermalPath, value.ReadOnly)
+		return nil
+	case "check":
+		var value struct {
+			RecordsChecked uint64 `json:"records_checked"`
+			Ledger         struct {
+				Digest string `json:"digest"`
+			} `json:"ledger"`
+			Summary struct {
+				Pass      uint64 `json:"pass"`
+				Warning   uint64 `json:"warning"`
+				Violation uint64 `json:"violation"`
+				State     string `json:"state"`
+			} `json:"summary"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Summary.State == "" || value.Ledger.Digest == "" {
+			return fmt.Errorf("SCLV check result is incomplete")
+		}
+		fmt.Printf("SCLV check: state=%s records=%d pass=%d warning=%d violation=%d ledger_digest=%s\n",
+			value.Summary.State, value.RecordsChecked, value.Summary.Pass,
+			value.Summary.Warning, value.Summary.Violation, value.Ledger.Digest)
+		if value.Summary.State != "valid" || value.Summary.Violation != 0 {
+			return fmt.Errorf("SCLV ledger check reported violations")
+		}
+		return nil
+	case "propose":
+		var value struct {
+			ProposalID            string `json:"proposal_id"`
+			ProposalDigest        string `json:"proposal_digest"`
+			CanonicalApplyEnabled bool   `json:"canonical_apply_enabled"`
+			Authority             struct {
+				Ratified bool `json:"ratified"`
+			} `json:"authority"`
+			Operations []struct {
+				Type       string `json:"type"`
+				TargetPath string `json:"target_path"`
+			} `json:"operations"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.ProposalID == "" || len(value.Operations) != 1 {
+			return fmt.Errorf("SCLV proposal result is incomplete")
+		}
+		fmt.Printf("SCLV proposal: id=%s digest=%s operation=%s target=%s ratified=%t apply=%t\n",
+			value.ProposalID, value.ProposalDigest, value.Operations[0].Type,
+			value.Operations[0].TargetPath, value.Authority.Ratified, value.CanonicalApplyEnabled)
+		return nil
+	case "recover":
+		var value struct {
+			Action            string `json:"action"`
+			JournalDigest     string `json:"journal_digest"`
+			DeleteRecommended bool   `json:"delete_recommended"`
+			JournalMutated    bool   `json:"journal_mutated"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.Action == "" || value.JournalDigest == "" {
+			return fmt.Errorf("SCLV recovery result is incomplete")
+		}
+		fmt.Printf("SCLV recovery: action=%s journal_digest=%s journal_mutated=%t delete_recommended=%t apply=false\n",
+			value.Action, value.JournalDigest, value.JournalMutated, value.DeleteRecommended)
+		return nil
+	case "project":
+		var value struct {
+			RecordCount      uint64 `json:"record_count"`
+			ProjectionDigest string `json:"projection_digest"`
+			Noncanonical     bool   `json:"noncanonical"`
+			Rebuildable      bool   `json:"rebuildable"`
+		}
+		if err := json.Unmarshal(result, &value); err != nil || value.ProjectionDigest == "" {
+			return fmt.Errorf("SCLV projection result is incomplete")
+		}
+		fmt.Printf("SCLV projection: records=%d digest=%s noncanonical=%t rebuildable=%t\n",
+			value.RecordCount, value.ProjectionDigest, value.Noncanonical, value.Rebuildable)
+		return nil
+	default:
+		return fmt.Errorf("unsupported SCLV result")
 	}
 }
 

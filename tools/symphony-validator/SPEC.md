@@ -93,7 +93,7 @@ Stale names (e.g. `legacy node execution label`, `legacy native hot-path label`,
 ## Allowlist Behavior
 Allowlists must never become silent bypasses. Every allowlist entry must produce evidence in JSON and Markdown.
 
-The Architect-ratified STAV v1 JSON Schema/conformance fixtures, five common SKV process/descriptor/receipt/proposal schemas, and four SKVI operation/result schemas are canonical protocol truth, not generated projections. The artifact checker may allow only their 37 exact paths and must emit `artifact.canonical_json_authorized` evidence for every encountered file with `knowledge/stav/SPEC.md`, `knowledge/SPEC.md`, or `knowledge/skvi/SPEC.md` authority as applicable. Prefix or extension-wide JSON allowlisting is prohibited; any new canonical JSON artifact requires an explicit contract and validator update.
+The Architect-ratified STAV v1 JSON Schema/conformance fixtures, six common SKV process/descriptor/receipt/proposal/provider-evidence schemas, four SKVI operation/result schemas, and five SCLV v3 operation/result schemas are canonical protocol truth, not generated projections. The artifact checker may allow only their 43 exact paths and must emit `artifact.canonical_json_authorized` evidence for every encountered file with `knowledge/stav/SPEC.md`, `knowledge/SPEC.md`, `knowledge/skvi/SPEC.md`, or `knowledge/sclv/SPEC.md` authority as applicable. Prefix or extension-wide JSON allowlisting is prohibited; any new canonical JSON artifact requires an explicit contract and validator update.
 
 ## Refusal/Non-Remediation Behavior
 The validator may report failures and identify expected/observed conditions. It must not rewrite files or choose remedies.
