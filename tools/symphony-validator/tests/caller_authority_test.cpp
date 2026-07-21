@@ -1,86 +1,178 @@
 #include "caller_authority.hpp"
-#include <iostream>
+
+#include <algorithm>
+#include <atomic>
+#include <chrono>
 #include <filesystem>
 #include <fstream>
-#include <cstdlib>
+#include <iostream>
+#include <stdexcept>
+#include <string>
 #include <vector>
-#include <chrono>
 
 namespace fs = std::filesystem;
 
-#define REQUIRE(cond) \
+namespace {
+
+constexpr std::size_t MAX_PHYSICAL_LINE = 64 * 1024;
+constexpr std::size_t MAX_NORMALIZED_PARAGRAPH = 256 * 1024;
+constexpr std::size_t MAX_FILE_SIZE = 4 * 1024 * 1024;
+
+[[noreturn]] void fail(const std::string& message) {
+    throw std::runtime_error(message);
+}
+
+#define REQUIRE(condition) \
     do { \
-        if (!(cond)) { \
-            std::cerr << "REQUIRE failed: " << #cond << " at " << __FILE__ << ":" << __LINE__ << "\n"; \
-            std::exit(1); \
+        if (!(condition)) { \
+            fail(std::string("REQUIRE failed: ") + #condition + " at " + __FILE__ + ":" + std::to_string(__LINE__)); \
         } \
-    } while(0)
+    } while (false)
 
-std::string create_temp_dir() {
-    auto now = std::chrono::system_clock::now().time_since_epoch().count();
-    fs::path temp_dir = fs::temp_directory_path() / ("symphony_test_" + std::to_string(now));
-    fs::create_directories(temp_dir);
-    return temp_dir.string();
+class TempDirectory {
+public:
+    explicit TempDirectory(const std::string& prefix = "symphony_caller_authority") {
+        static std::atomic<unsigned long> counter{0};
+        const auto timestamp = std::chrono::steady_clock::now().time_since_epoch().count();
+        path_ = fs::temp_directory_path() /
+            (prefix + "_" + std::to_string(timestamp) + "_" + std::to_string(counter++));
+        std::error_code ec;
+        fs::create_directories(path_, ec);
+        if (ec) fail("unable to create temporary directory: " + ec.message());
+    }
+
+    TempDirectory(const TempDirectory&) = delete;
+    TempDirectory& operator=(const TempDirectory&) = delete;
+
+    ~TempDirectory() {
+        std::error_code ec;
+        fs::permissions(path_, fs::perms::owner_all, fs::perm_options::add, ec);
+        ec.clear();
+        fs::remove_all(path_, ec);
+    }
+
+    const fs::path& path() const { return path_; }
+
+private:
+    fs::path path_;
+};
+
+void write_file(const fs::path& repo_root, const fs::path& relative_path, const std::string& content) {
+    const fs::path path = repo_root / relative_path;
+    std::error_code ec;
+    fs::create_directories(path.parent_path(), ec);
+    if (ec) fail("unable to create fixture directory: " + ec.message());
+
+    std::ofstream output(path, std::ios::binary | std::ios::trunc);
+    if (!output) fail("unable to create fixture file: " + path.string());
+    output.write(content.data(), static_cast<std::streamsize>(content.size()));
+    if (!output) fail("unable to write fixture file: " + path.string());
 }
 
-void write_file(const std::string& repo_root, const std::string& rel_path, const std::string& content) {
-    fs::path p = fs::path(repo_root) / rel_path;
-    fs::create_directories(p.parent_path());
-    std::ofstream out(p);
-    out << content;
+void remove_path(const fs::path& path) {
+    std::error_code ec;
+    fs::remove_all(path, ec);
+    if (ec) fail("unable to remove fixture path: " + ec.message());
 }
 
-int main() {
-    std::string repo_root = create_temp_dir();
-    
-    fs::create_directories(fs::path(repo_root) / "knowledge" / "sclv");
-    fs::create_directories(fs::path(repo_root) / "knowledge" / "sodv");
-    fs::create_directories(fs::path(repo_root) / "tools" / "qxctl");
-    fs::create_directories(fs::path(repo_root) / "tools" / "symphony-validator" / "tests");
-    
-    auto check_case_count = [&](const std::string& content, bool expect_pass, const std::string& expected_evidence, int expected_count) {
-        std::string rel_path = "README.md";
-        write_file(repo_root, rel_path, content);
-        auto result = check_caller_authority(repo_root);
-        
-        int count = 0;
-        for (const auto& msg : result.messages) {
-            if (!expected_evidence.empty() && msg.find(expected_evidence) != std::string::npos) {
-                count++;
-            }
-        }
-        
-        if (result.success != expect_pass || count != expected_count) {
-            std::cerr << "Test failed for content: " << content << "\n";
-            std::cerr << "Expected pass: " << expect_pass << ", Got pass: " << result.success << "\n";
-            std::cerr << "Expected count: " << expected_count << ", Got count: " << count << "\n";
-            std::cerr << "Expected evidence: " << expected_evidence << "\nMessages:\n";
-            for (const auto& msg : result.messages) std::cerr << "  " << msg << "\n";
-            std::exit(1);
-        }
-        fs::remove(fs::path(repo_root) / rel_path);
-    };
+bool contains_exact(const CallerAuthorityCheckResult& result, const std::string& evidence) {
+    return std::find(result.messages.begin(), result.messages.end(), evidence) != result.messages.end();
+}
 
-    auto check_case = [&](const std::string& content, bool expect_pass, const std::string& expected_evidence = "") {
-        std::string rel_path = "README.md";
-        write_file(repo_root, rel_path, content);
-        auto result = check_caller_authority(repo_root);
-        
-        bool found_evidence = expected_evidence.empty();
-        for (const auto& msg : result.messages) {
-            if (!expected_evidence.empty() && msg.find(expected_evidence) != std::string::npos) {
-                found_evidence = true;
-            }
+bool contains_text(const CallerAuthorityCheckResult& result, const std::string& text) {
+    return std::any_of(result.messages.begin(), result.messages.end(), [&](const std::string& message) {
+        return message.find(text) != std::string::npos;
+    });
+}
+
+std::size_t count_exact(const CallerAuthorityCheckResult& result, const std::string& evidence) {
+    return static_cast<std::size_t>(std::count(result.messages.begin(), result.messages.end(), evidence));
+}
+
+std::vector<std::string> violations(const CallerAuthorityCheckResult& result) {
+    std::vector<std::string> found;
+    for (const auto& message : result.messages) {
+        if (message.starts_with("evidence violation ")) found.push_back(message);
+    }
+    return found;
+}
+
+std::string make_paragraph(std::size_t serialized_size) {
+    std::string content;
+    content.reserve(serialized_size);
+
+    std::size_t full_lines = serialized_size / 4096;
+    std::size_t remainder = serialized_size % 4096;
+    if (remainder == 1 && full_lines > 0) {
+        --full_lines;
+        remainder += 4096;
+    }
+
+    for (std::size_t index = 0; index < full_lines; ++index) {
+        content.append(4095, 'a');
+        content.push_back('\n');
+    }
+    if (remainder > 0) {
+        if (remainder <= 4096) {
+            content.append(remainder - 1, 'a');
+            content.push_back('\n');
+        } else {
+            content.append(4094, 'a');
+            content.push_back('\n');
+            content.append(remainder - 4096, 'a');
+            content.push_back('\n');
         }
-        
-        if (result.success != expect_pass || !found_evidence) {
-            std::cerr << "Test failed for content: " << content << "\n";
-            std::cerr << "Expected pass: " << expect_pass << ", Got: " << result.success << "\n";
-            std::cerr << "Expected evidence: " << expected_evidence << "\nMessages:\n";
-            for (const auto& msg : result.messages) std::cerr << "  " << msg << "\n";
-            std::exit(1);
+    }
+
+    REQUIRE(content.size() == serialized_size);
+    return content;
+}
+
+std::string make_safe_file(std::size_t serialized_size) {
+    std::string content;
+    content.reserve(serialized_size);
+    std::size_t lines_in_paragraph = 0;
+    while (content.size() < serialized_size) {
+        const std::size_t remaining = serialized_size - content.size();
+        if (lines_in_paragraph == 100 && remaining > 0) {
+            content.push_back('\n');
+            lines_in_paragraph = 0;
+            continue;
         }
-        fs::remove(fs::path(repo_root) / rel_path);
+        if (remaining == 1) {
+            content.push_back('\n');
+            break;
+        }
+        const std::size_t payload = std::min<std::size_t>(1000, remaining - 1);
+        content.append(payload, 'a');
+        content.push_back('\n');
+        ++lines_in_paragraph;
+    }
+    REQUIRE(content.size() == serialized_size);
+    return content;
+}
+
+void run_tests() {
+    TempDirectory repository;
+    const fs::path repo_root = repository.path();
+
+    fs::create_directories(repo_root / "knowledge/sclv");
+    fs::create_directories(repo_root / "knowledge/sodv");
+    fs::create_directories(repo_root / "tools/qxctl");
+    fs::create_directories(repo_root / "tools/symphony-validator/tests");
+
+    auto check_case = [&](const std::string& content, bool expected_success, const std::string& expected_evidence = "") {
+        write_file(repo_root, "README.md", content);
+        const auto result = check_caller_authority(repo_root.string());
+        if (result.success != expected_success ||
+            (!expected_evidence.empty() && !contains_exact(result, expected_evidence))) {
+            std::cerr << "Case failed: " << content << "\n";
+            std::cerr << "Expected success: " << expected_success << ", actual: " << result.success << "\n";
+            std::cerr << "Expected evidence: " << expected_evidence << "\n";
+            for (const auto& message : result.messages) std::cerr << "  " << message << "\n";
+            fail("caller-authority case failed");
+        }
+        remove_path(repo_root / "README.md");
     };
 
     check_case("Authorization MUST NOT assign different authority because a caller is human, AI, agentic, a service, or a workload.", true);
@@ -95,151 +187,230 @@ int main() {
     check_case("The report is human-readable.", true);
     check_case("Authorization MUST NOT assign different authority\nbecause a caller is human or AI.", true);
 
-    check_case("AI agents may never apply.", false, "caller_authority.class_subject_modal");
-    check_case("AI agents\nmust not ratify.", false, "caller_authority.class_subject_modal");
-    check_case("AI agents are limited to querying and proposing.", false, "caller_authority.class_subject_status");
-    check_case("Apply is unavailable to AI agents.", false, "caller_authority.class_targeted_availability");
-    check_case("Only humans may ratify this record.", false, "caller_authority.class_exclusive_operation");
-    check_case("Humans ratify; agents draft.", false, "caller_authority.human_exclusive_governance");
-    check_case("This is a human-ratified record.", false, "caller_authority.human_exclusive_governance");
-    check_case("Repair requires human review.", false, "caller_authority.human_exclusive_governance");
-    check_case("Service callers may not administer safeguards.", false, "caller_authority.class_subject_modal");
-    check_case("Authorization differs based on whether the caller is an AI agent.", false, "caller_authority.caller_type_decision");
-    check_case("Caller type determines apply authority.", false, "caller_authority.caller_type_decision");
+    check_case("Humans may. Other systems apply.", true);
+    check_case("Agents only document behavior. Operators apply updates.", true);
+    check_case("Apply is documented. This guidance is for agents only.", true);
+    check_case("Caller type is descriptive. Authorization differs based on market conditions.", true);
 
-    // Defect A: Negation scope permits evasion
-    check_case("Caller type is not metadata. Authorization differs based on caller class.", false, "caller_authority.caller_type_decision");
+    check_case("AI agents may never apply.", false,
+        "evidence violation caller_authority.class_subject_modal path=README.md line=1 class=ai_agent");
+    check_case("AI agents\nmust not ratify.", false,
+        "evidence violation caller_authority.class_subject_modal path=README.md line=1-2 class=ai_agent");
+    check_case("AI agents are limited to querying and proposing.", false,
+        "evidence violation caller_authority.class_subject_status path=README.md line=1 class=ai_agent");
+    check_case("Apply is unavailable to AI agents.", false,
+        "evidence violation caller_authority.class_targeted_availability path=README.md line=1 class=ai_agent");
+    check_case("Only humans may ratify this record.", false,
+        "evidence violation caller_authority.class_exclusive_operation path=README.md line=1 class=human");
+    check_case("Humans ratify; agents draft.", false,
+        "evidence violation caller_authority.human_exclusive_governance path=README.md line=1 class=human");
+    check_case("This is a human-ratified record.", false,
+        "evidence violation caller_authority.human_exclusive_governance path=README.md line=1 class=human");
+    check_case("Repair requires human review.", false,
+        "evidence violation caller_authority.human_exclusive_governance path=README.md line=1 class=human");
+    check_case("Authorization differs based on whether the caller is an AI agent.", false,
+        "evidence violation caller_authority.caller_type_decision path=README.md line=1");
+    check_case("Caller type determines apply authority.", false,
+        "evidence violation caller_authority.caller_type_decision path=README.md line=1");
+
+    const std::vector<std::pair<std::string, std::string>> class_cases = {
+        {"AI may apply.", "ai"},
+        {"AI agents may apply.", "ai_agent"},
+        {"Humans may apply.", "human"},
+        {"Human callers may apply.", "human_caller"},
+        {"Agents may apply.", "agent"},
+        {"Agentic callers may apply.", "agentic_caller"},
+        {"Service callers may apply.", "service_caller"},
+        {"Workload callers may apply.", "workload_caller"},
+        {"Organization callers may apply.", "organization_caller"},
+    };
+    for (const auto& [content, class_id] : class_cases) {
+        check_case(content, false,
+            "evidence violation caller_authority.class_subject_modal path=README.md line=1 class=" + class_id);
+    }
+
+    check_case("Caller type is not metadata. Authorization differs based on caller class.", false,
+        "evidence violation caller_authority.caller_type_decision path=README.md line=1");
     check_case("Authorization does not vary by caller type.", true);
-    check_case("Never determine authorization based on caller type.", true);
-    // Defect B: Negated human-review doctrine
+    check_case("Authorization never determines access by caller type.", true);
+    check_case("Authorization is not metadata but depends on caller type.", false,
+        "evidence violation caller_authority.caller_type_decision path=README.md line=1");
     check_case("Repair is not subject to human review.", true);
     check_case("Does not require human approval.", true);
     check_case("Requires no human review.", true);
-    // Defect C: Reverse class-only construction
-    check_case("Apply is for agents only.", false, "caller_authority.class_exclusive_operation");
-    // Defect D: Heading concatenation bypass
-    check_case("## Governance\nHumans should use SKVI.", false, "caller_authority.class_subject_modal");
-    // Defect E: Deduplication
-    check_case_count("Humans may approve.\nAgents may approve.", false, "caller_authority.class_subject_modal", 1);
+    check_case("Apply is for agents only.", false,
+        "evidence violation caller_authority.class_exclusive_operation path=README.md line=1 class=agent");
+    check_case("## Governance\nHumans should use SKVI.", false,
+        "evidence violation caller_authority.class_subject_modal path=README.md line=2 class=human");
 
-    write_file(repo_root, "tools/qxctl/INTENT.md", "AI agents may never apply");
-    auto res1 = check_caller_authority(repo_root);
-    REQUIRE(res1.success == false);
-    fs::remove(fs::path(repo_root) / "tools/qxctl/INTENT.md");
+    write_file(repo_root, "README.md", "Humans may approve.\nAgents may approve.");
+    const auto deduplicated = check_caller_authority(repo_root.string());
+    REQUIRE(!deduplicated.success);
+    REQUIRE(count_exact(
+        deduplicated,
+        "evidence violation caller_authority.class_subject_modal path=README.md line=1 class=human") == 1);
+    REQUIRE(violations(deduplicated).size() == 1);
+    remove_path(repo_root / "README.md");
 
-    write_file(repo_root, "knowledge/sclv/CHANGELOG.md", "AI agents may never apply\n- record_id: 123");
-    auto res2 = check_caller_authority(repo_root);
-    REQUIRE(res2.success == false);
+    write_file(repo_root, "tools/qxctl/INTENT.md", "AI agents may never apply.");
+    const auto qxctl = check_caller_authority(repo_root.string());
+    REQUIRE(contains_exact(
+        qxctl,
+        "evidence violation caller_authority.class_subject_modal path=tools/qxctl/INTENT.md line=1 class=ai_agent"));
+    remove_path(repo_root / "tools/qxctl/INTENT.md");
 
-    write_file(repo_root, "knowledge/sclv/CHANGELOG.md", "Preamble\n- record_id: 123\nAI agents may never apply");
-    auto res3 = check_caller_authority(repo_root);
-    REQUIRE(res3.success == true);
+    write_file(repo_root, "knowledge/sclv/CHANGELOG.md", "AI agents may never apply.\n- record_id: 123");
+    REQUIRE(!check_caller_authority(repo_root.string()).success);
+    write_file(repo_root, "knowledge/sclv/CHANGELOG.md", "Preamble\n- record_id: 123\nAI agents may never apply.");
+    REQUIRE(check_caller_authority(repo_root.string()).success);
+    write_file(repo_root, "knowledge/sodv/RELEASES.md", "Preamble\n- release_record_id: 123\nHuman review is required.");
+    REQUIRE(check_caller_authority(repo_root.string()).success);
 
-    write_file(repo_root, "knowledge/sodv/RELEASES.md", "Preamble\n- release_record_id: 123\nhuman review");
-    auto res4 = check_caller_authority(repo_root);
-    REQUIRE(res4.success == true);
+    write_file(repo_root, "tools/symphony-validator/tests/bad.md", "AI agents may never apply.");
+    REQUIRE(check_caller_authority(repo_root.string()).success);
 
-    write_file(repo_root, "tools/symphony-validator/tests/bad.md", "AI agents may never apply");
-    auto res5 = check_caller_authority(repo_root);
-    REQUIRE(res5.success == true);
-
-    // Byte-for-byte determinism test
     write_file(repo_root, "knowledge/doc1.md", "Humans may approve.\nAgents may ratify.\n");
     write_file(repo_root, "knowledge/doc2.md", "Apply is for agents only.\n");
-    auto run1 = check_caller_authority(repo_root);
-    auto run2 = check_caller_authority(repo_root);
-    REQUIRE(run1.messages == run2.messages);
-    fs::remove(fs::path(repo_root) / "knowledge/doc1.md");
-    fs::remove(fs::path(repo_root) / "knowledge/doc2.md");
+    const auto deterministic_first = check_caller_authority(repo_root.string());
+    const auto deterministic_second = check_caller_authority(repo_root.string());
+    REQUIRE(deterministic_first.messages == deterministic_second.messages);
+    remove_path(repo_root / "knowledge/doc1.md");
+    remove_path(repo_root / "knowledge/doc2.md");
 
-    // Nested build exclusion
-    write_file(repo_root, "modules/x/build/some.md", "AI agents may never apply");
-    auto res_build = check_caller_authority(repo_root);
-    REQUIRE(res_build.success == true);
-    fs::remove_all(fs::path(repo_root) / "modules/x");
+    write_file(repo_root, "modules/x/build/some.md", "AI agents may never apply.");
+    REQUIRE(check_caller_authority(repo_root.string()).success);
+    remove_path(repo_root / "modules/x");
 
-    // STAV fixture inclusion
-    write_file(repo_root, "knowledge/stav/fixtures/some.md", "AI agents may never apply");
-    auto res_stav = check_caller_authority(repo_root);
-    REQUIRE(res_stav.success == false);
-    fs::remove_all(fs::path(repo_root) / "knowledge/stav/fixtures");
+    write_file(repo_root, "knowledge/stav/fixtures/some.md", "AI agents may never apply.");
+    REQUIRE(!check_caller_authority(repo_root.string()).success);
+    remove_path(repo_root / "knowledge/stav");
 
-    // Tellg failure test / Discovery error
-    // We simulate by making a directory unreadable
-    {
-        struct RaiiDir {
-            std::string p;
-            RaiiDir(std::string path) : p(path) { fs::create_directories(p); fs::permissions(p, fs::perms::none); }
-            ~RaiiDir() { fs::permissions(p, fs::perms::all); fs::remove_all(p); }
-        } bad_dir(fs::path(repo_root) / "knowledge" / "skvi" / "bad_dir");
+    write_file(repo_root, "README.md", "Safe metadata.\n");
+    const auto tellg_failure = check_caller_authority_with_test_fault(
+        repo_root.string(), CallerAuthorityTestFault::tellg_failure, "README.md");
+    REQUIRE(contains_exact(tellg_failure, "evidence violation caller_authority.unreadable path=README.md"));
+    remove_path(repo_root / "README.md");
 
-        auto res_err = check_caller_authority(repo_root);
-        REQUIRE(res_err.success == false);
-        bool found_discovery = false;
-        for (const auto& msg : res_err.messages) {
-            if (msg.find("discovery_failed") != std::string::npos) found_discovery = true;
-        }
-        REQUIRE(found_discovery);
+    write_file(repo_root, "knowledge/skvi/metadata.md", "Safe metadata.\n");
+    const auto metadata_failure = check_caller_authority_with_test_fault(
+        repo_root.string(), CallerAuthorityTestFault::metadata_failure, "knowledge/skvi/metadata.md");
+    REQUIRE(contains_exact(
+        metadata_failure,
+        "evidence violation caller_authority.discovery_failed path=knowledge/skvi/metadata.md"));
+    remove_path(repo_root / "knowledge/skvi/metadata.md");
+
+    const auto construction_failure = check_caller_authority_with_test_fault(
+        repo_root.string(), CallerAuthorityTestFault::iterator_construction_failure, "knowledge");
+    REQUIRE(contains_exact(
+        construction_failure,
+        "evidence violation caller_authority.discovery_failed path=knowledge"));
+
+    write_file(repo_root, "modules/increment.md", "Safe metadata.\n");
+    const auto increment_failure = check_caller_authority_with_test_fault(
+        repo_root.string(), CallerAuthorityTestFault::iterator_increment_failure, "modules/increment.md");
+    REQUIRE(contains_exact(
+        increment_failure,
+        "evidence violation caller_authority.discovery_failed path=modules/increment.md"));
+    remove_path(repo_root / "modules/increment.md");
+
+    TempDirectory outside("symphony_caller_authority_outside");
+    write_file(outside.path(), "target.md", "AI agents may never apply.\n");
+    fs::create_directories(repo_root / "knowledge/skvi");
+    std::error_code symlink_error;
+    fs::create_symlink(outside.path() / "target.md", repo_root / "knowledge/skvi/external.md", symlink_error);
+    if (symlink_error) fail("unable to create external symlink fixture: " + symlink_error.message());
+
+    const auto external_symlink = check_caller_authority(repo_root.string());
+    REQUIRE(contains_exact(
+        external_symlink,
+        "evidence violation caller_authority.symlink_unsupported path=knowledge/skvi/external.md"));
+    REQUIRE(!contains_text(external_symlink, "class_subject_modal path=knowledge/skvi/external.md"));
+    REQUIRE(!contains_text(external_symlink, outside.path().generic_string()));
+    remove_path(repo_root / "knowledge/skvi/external.md");
+
+    symlink_error.clear();
+    fs::create_symlink(outside.path() / "missing.md", repo_root / "knowledge/skvi/broken.md", symlink_error);
+    if (symlink_error) fail("unable to create broken symlink fixture: " + symlink_error.message());
+    const auto broken_symlink = check_caller_authority(repo_root.string());
+    REQUIRE(contains_exact(
+        broken_symlink,
+        "evidence violation caller_authority.symlink_unsupported path=knowledge/skvi/broken.md"));
+    remove_path(repo_root / "knowledge/skvi/broken.md");
+
+    write_file(repo_root, "README.md", "AI agents may never apply.\n");
+    symlink_error.clear();
+    fs::create_symlink(outside.path() / "target.md", repo_root / "knowledge/skvi/z.md", symlink_error);
+    if (symlink_error) fail("unable to create deterministic symlink fixture: " + symlink_error.message());
+    symlink_error.clear();
+    fs::create_symlink(outside.path() / "missing.md", repo_root / "knowledge/skvi/a.md", symlink_error);
+    if (symlink_error) fail("unable to create deterministic broken-link fixture: " + symlink_error.message());
+
+    const auto failure_first = check_caller_authority(repo_root.string());
+    const auto failure_second = check_caller_authority(repo_root.string());
+    REQUIRE(failure_first.messages == failure_second.messages);
+    const std::vector<std::string> expected_violations = {
+        "evidence violation caller_authority.symlink_unsupported path=knowledge/skvi/a.md",
+        "evidence violation caller_authority.symlink_unsupported path=knowledge/skvi/z.md",
+        "evidence violation caller_authority.class_subject_modal path=README.md line=1 class=ai_agent",
+    };
+    REQUIRE(violations(failure_first) == expected_violations);
+    remove_path(repo_root / "README.md");
+    remove_path(repo_root / "knowledge/skvi/a.md");
+    remove_path(repo_root / "knowledge/skvi/z.md");
+
+    fs::path cleanup_probe;
+    try {
+        TempDirectory cleanup_test("symphony_caller_authority_cleanup");
+        cleanup_probe = cleanup_test.path();
+        write_file(cleanup_probe, "nested/fixture.md", "fixture\n");
+        throw std::runtime_error("intentional cleanup probe");
+    } catch (const std::runtime_error&) {
     }
+    REQUIRE(!fs::exists(cleanup_probe));
 
-    // Symlink bypass verification
-    std::error_code ec;
-    fs::path target = fs::path(repo_root) / "real.md";
-    write_file(repo_root, "real.md", "some text");
-    {
-        struct RaiiSymlink {
-            std::string p;
-            RaiiSymlink(fs::path target, std::string link) : p(link) { std::error_code e; fs::create_symlink(target, link, e); }
-            ~RaiiSymlink() { std::error_code e; fs::remove(p, e); }
-        } bad_symlink(target, fs::path(repo_root) / "knowledge" / "skvi" / "sym.md");
-
-        auto res6 = check_caller_authority(repo_root);
-        REQUIRE(res6.success == false);
-        bool found_sym = false;
-        for (const auto& msg : res6.messages) {
-            if (msg.find("symlink_unsupported") != std::string::npos) found_sym = true;
-        }
-        REQUIRE(found_sym);
+    fs::create_directories(repo_root / "knowledge/skvi");
+    for (const std::size_t length : {MAX_PHYSICAL_LINE - 1, MAX_PHYSICAL_LINE}) {
+        write_file(repo_root, "knowledge/skvi/line.md", std::string(length, 'a'));
+        REQUIRE(check_caller_authority(repo_root.string()).success);
     }
-    fs::remove(target);
+    write_file(repo_root, "knowledge/skvi/line.md", std::string(MAX_PHYSICAL_LINE + 1, 'a'));
+    const auto long_line = check_caller_authority(repo_root.string());
+    REQUIRE(contains_exact(
+        long_line,
+        "evidence violation caller_authority.line_length_exceeded path=knowledge/skvi/line.md line=1"));
+    remove_path(repo_root / "knowledge/skvi/line.md");
 
-    // Resource limits
-    std::string long_line = std::string(65537, 'a') + "\n";
-    fs::create_directories(fs::path(repo_root) / "knowledge" / "skvi");
-    write_file(repo_root, "knowledge/skvi/long_line.md", long_line);
-    auto res_ll = check_caller_authority(repo_root);
-    REQUIRE(res_ll.success == false);
-    bool found_ll = false;
-    for (const auto& msg : res_ll.messages) {
-        if (msg.find("line_length_exceeded") != std::string::npos) found_ll = true;
+    for (const std::size_t size : {MAX_NORMALIZED_PARAGRAPH - 1, MAX_NORMALIZED_PARAGRAPH}) {
+        write_file(repo_root, "knowledge/skvi/paragraph.md", make_paragraph(size));
+        REQUIRE(check_caller_authority(repo_root.string()).success);
     }
-    REQUIRE(found_ll);
-    fs::remove(fs::path(repo_root) / "knowledge" / "skvi" / "long_line.md");
+    write_file(repo_root, "knowledge/skvi/paragraph.md", make_paragraph(MAX_NORMALIZED_PARAGRAPH + 1));
+    const auto long_paragraph = check_caller_authority(repo_root.string());
+    REQUIRE(contains_exact(
+        long_paragraph,
+        "evidence violation caller_authority.paragraph_size_exceeded path=knowledge/skvi/paragraph.md"));
+    remove_path(repo_root / "knowledge/skvi/paragraph.md");
 
-    std::string long_para = "";
-    for (int i=0; i<5000; i++) long_para += std::string(60, 'a') + "\n";
-    write_file(repo_root, "knowledge/skvi/long_para.md", long_para);
-    auto res_lp = check_caller_authority(repo_root);
-    REQUIRE(res_lp.success == false);
-    bool found_lp = false;
-    for (const auto& msg : res_lp.messages) {
-        if (msg.find("paragraph_size_exceeded") != std::string::npos) found_lp = true;
+    for (const std::size_t size : {MAX_FILE_SIZE - 1, MAX_FILE_SIZE}) {
+        write_file(repo_root, "knowledge/skvi/file.md", make_safe_file(size));
+        REQUIRE(check_caller_authority(repo_root.string()).success);
     }
-    REQUIRE(found_lp);
-    fs::remove(fs::path(repo_root) / "knowledge" / "skvi" / "long_para.md");
+    write_file(repo_root, "knowledge/skvi/file.md", make_safe_file(MAX_FILE_SIZE + 1));
+    const auto large_file = check_caller_authority(repo_root.string());
+    REQUIRE(contains_exact(
+        large_file,
+        "evidence violation caller_authority.file_size_exceeded path=knowledge/skvi/file.md"));
+}
 
-    std::string big_file = std::string(4 * 1024 * 1024 + 1, 'a');
-    write_file(repo_root, "knowledge/skvi/big_file.md", big_file);
-    auto res_bf = check_caller_authority(repo_root);
-    REQUIRE(res_bf.success == false);
-    bool found_bf = false;
-    for (const auto& msg : res_bf.messages) {
-        if (msg.find("file_size_exceeded") != std::string::npos) found_bf = true;
+}
+
+int main() {
+    try {
+        run_tests();
+        std::cout << "All caller-authority tests passed.\n";
+        return 0;
+    } catch (const std::exception& error) {
+        std::cerr << "Caller-authority test failure: " << error.what() << "\n";
+        return 1;
     }
-    REQUIRE(found_bf);
-    fs::remove(fs::path(repo_root) / "knowledge" / "skvi" / "big_file.md");
-
-    fs::remove_all(repo_root);
-    std::cout << "All tests passed.\n";
-    return 0;
 }

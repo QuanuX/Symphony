@@ -38,10 +38,15 @@ Deferred integration surfaces are `qxctl` mediation and CI/PR-gate invocation.
 - Deterministic line-oriented evidence
 - Deterministic summary and exit status (including `21` for caller-authority regression)
 
-Structured JSON and Markdown projections remain deferred.
+Structured JSON and Markdown projections remain deferred. Runtime source/AST caller-authority analysis and auto-remediation are strictly deferred and unauthorized.
+
+## Caller-Authority Capability
+The implemented checker reads active Markdown from the bounded repository surfaces defined in `SPEC.md`. It emits lexical-path evidence for configured caller-class authority constructions and for fail-visible discovery, stream, symlink, and resource-limit conditions. It does not follow symlink targets or modify scanned content.
 
 ## Dependencies
 A conforming C++26 compiler, CMake 3.25 or newer, and the C++ standard library. Runtime validation has no third-party library dependency.
+
+The caller-authority checker depends only on the validator evidence formatter and the C++ standard library. Its direct input is a repository path; its implemented outputs are line-oriented evidence, one summary line, and the process status.
 
 ## Non-goals
 The validator must not choose infrastructure for users, assume Docker/Kubernetes/cloud providers, impose market-data/order-flow/trading doctrine, require Python for hot-path or administrative spine, ban optional isolated Python habitats, treat contract seeds as runtime implementation, convert monorepo modularity into microservices doctrine, absorb module sovereignty into root-level logic, become a runtime daemon, become a hidden coordinator, replace qxctl, replace Maestro, replace SKV / SKVI / SCLV / SODV records, perform autonomous semantic decisions, infer intent, auto-remediate files, or make architecture decisions.

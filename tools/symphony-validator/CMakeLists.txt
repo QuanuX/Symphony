@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.25)
 project(symphony-validator CXX)
 
+include(CTest)
+
 add_executable(symphony-validator
     src/main.cpp
     src/cli.cpp
@@ -58,8 +60,17 @@ add_executable(caller-authority-tests
 
 target_include_directories(caller-authority-tests PRIVATE src)
 
+target_compile_definitions(caller-authority-tests PRIVATE
+  SYMPHONY_VALIDATOR_TESTING=1
+)
+
 set_target_properties(caller-authority-tests PROPERTIES
   CXX_STANDARD 26
   CXX_STANDARD_REQUIRED ON
   CXX_EXTENSIONS OFF
 )
+
+if(BUILD_TESTING)
+  add_test(NAME sclv-temporal-tests COMMAND sclv-temporal-tests)
+  add_test(NAME caller-authority-tests COMMAND caller-authority-tests)
+endif()
