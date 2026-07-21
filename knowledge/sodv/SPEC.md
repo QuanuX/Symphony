@@ -5,7 +5,7 @@
 
 ## Specification Status
 - declarative only
-- non-executable
+- proposal/projection engine architecture authorized
 - not public documentation
 - not a docs site
 - not Mintlify configuration
@@ -15,14 +15,14 @@
 - not a JSON schema
 - not a Markdown template
 - not CI configuration
-- not qxctl integration
+- bounded qxctl proposal/read integration authorized after contract merge
 - not validator implementation; checked in part by the separately bounded validator
 
 ## Purpose
 To define the declarative behavioral boundaries for SODV publication governance.
 
 ## SODV Behavioral Model
-SODV establishes publication boundaries declaratively. Its append-only module-release protocol is operational through permission-backed ratified repository records and external-state verification. Future generators and pipelines may build derived public-documentation artifacts only under separately ratified contracts.
+SODV establishes publication boundaries declaratively. Its append-only module-release protocol is operational through permission-backed ratified repository records and external-state verification. The subordinate SODV engine may inspect, check, propose, verify, reconcile safe noncanonical state, and build disposable projections. Future generators and pipelines may build derived public-documentation artifacts only under separately ratified contracts.
 
 SODV also governs independently consumable module publication. `RELEASES.md` is the canonical append-only authorization and completion ledger for that bounded purpose. It does not authorize a general publication pipeline.
 
@@ -139,7 +139,20 @@ NotebookLM is a corpus alignment and context tool, not canonical authority.
 The checked-in validator produces deterministic evidence for required SODV contract anchors and indexed-path presence. It does not currently parse `RELEASES.md` transactions or verify Git tags, public-proxy state, checksum-database state, or release completion.
 
 ## Relationship to qxctl
-qxctl may later consume SODV, but qxctl integration is not authorized here.
+qxctl may invoke bounded SODV proposal/read operations but does not own release semantics, create tags, publish artifacts, or append canonical records.
+
+## SODV Engine Operations
+
+The initial `symphony-sodv` operation set is:
+
+- `inspect`: report release ledger, provider, and contract compatibility;
+- `check`: produce deterministic authorization/completion and projection-readiness evidence;
+- `propose`: create immutable forward-only authorization, completion, recovery, or documentation-change proposals without writing canonical files;
+- `verify`: compare a bounded authorization with observed immutable Git/package state without declaring publication complete by itself;
+- `recover`: reconcile safe noncanonical pending state and emit a no-op, failure, or forward proposal;
+- `project`: build disposable release and publication evidence.
+
+The engine uses `symphony.knowledge.engine-process.v1` and is administered through `qxctl sodv ...`. It MUST NOT create or move tags, upload artifacts, warm caches to simulate public evidence, append `RELEASES.md`, publish Mintlify content, or automate NotebookLM ingestion in its initial release.
 
 ## Relationship to Git History
 Git history is version-control evidence.
@@ -153,4 +166,4 @@ PR history is review and merge evidence.
 SODV is not public documentation. SODV is not a docs site. SODV is not Mintlify. SODV is not NotebookLM. SODV is not a publication pipeline. SODV is not a generated documentation system yet. SODV is not a generated index yet. SODV is not a documentation template system yet. SODV is not a schema system. SODV is not qxctl. SODV is not symphony-validator. SODV is not SKVI. SODV is not SCLV. SODV is not SSCG. SODV does not replace canonical repository knowledge files. SODV does not replace module contracts. SODV does not replace tool contracts. SODV does not replace PR review. SODV does not create runtime behavior. SODV does not enforce runtime behavior.
 
 ## Non-Authorization Statement
-This canonical surface authorizes no public documentation files, docs directory, `mint.json`, Mintlify configuration, documentation publication configuration, generated documentation, generated documentation indexes, generated changelogs, generated indexes, generated reports, new implementation or source files, schemas, templates, CI files, qxctl integration, validator capability beyond the separately bounded `tools/symphony-validator/` contract, NotebookLM automation, general publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.
+This specification authorizes the bounded SODV proposal/projection engine and qxctl invocation after contract merge. It authorizes no canonical apply, public documentation files, docs directory, `mint.json`, Mintlify configuration, tag creation, external publication, NotebookLM automation, general publication pipeline, or release-completion claim.

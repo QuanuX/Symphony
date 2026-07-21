@@ -4,20 +4,16 @@
 `knowledge/skvi/SPEC.md`
 
 ## Specification Status
-- declarative only
-- non-executable
-- not a generated index
-- not a JSON schema
-- not a Markdown template
-- not CI configuration
-- not qxctl integration
-- interpreted by the separately bounded validator implementation
+- canonical declarative source truth
+- proposal/projection engine authorized after contract merge
+- programmatic canonical apply disabled
+- interpreted independently by the separately bounded validator implementation
 
 ## Purpose
 To define the behavioral and structural specification for how SKVI maps the Symphony repository.
 
 ## SKVI Behavioral Model
-SKVI is a passive index surface. It does not enforce runtime behavior. It maps files, boundaries, and relationships. 
+SKVI maps files, boundaries, and relationships. The canonical Markdown surface remains declarative. The subordinate engine may inspect it, validate it, compute drift evidence, propose bounded entry changes, and build disposable projections. It does not enforce application runtime behavior or decide membership without permission-backed ratification.
 
 ## Initial SKVI Map Scope
 The scope of the structural map spans four layers.
@@ -67,11 +63,8 @@ Relationship descriptors among:
 - NotebookLM corpus alignment
 - Mintlify publication projection
 
-## Layer 3 Future Generated Projections
-Future generated projections are not authorized by this canonical seed.
-Future generated indexes are not authorized by this canonical seed.
-Future JSON schemas are not authorized by this canonical seed.
-Future Markdown templates are not authorized by this canonical seed.
+## Layer 3 Derived Projections
+The SKVI engine may build digest-bound JSON/JSONL, search, analytical, and graph projections whose inputs and engine version are recorded. A projection is disposable, rebuildable, and noncanonical. Publication remains SODV-gated.
 
 ## Source Truth Versus Projection Boundaries
 Canonical repository knowledge files are source truth.
@@ -103,8 +96,16 @@ SSCG interprets compatibility across the structural contracts that SKVI indexes.
 ## Relationship to symphony-validator Evidence
 The checked-in `tools/symphony-validator/` implementation parses this repository-maintained index and checks entry shape, required-surface coverage, indexed paths, uniqueness, and SCLV references. Its evidence does not create canonical membership, manufacture ratification, or authorize remediation.
 
-## Relationship to qxctl
-qxctl may later consume SKVI, but qxctl integration is not authorized here.
+## SKVI Engine Operations
+
+The initial `symphony-skvi` operation set is:
+
+- `inspect`: report canonical surface and engine compatibility;
+- `check`: produce deterministic structural and drift evidence;
+- `propose`: produce an immutable `symphony.knowledge.proposal.v1` without writing canonical files;
+- `project`: build an authorized disposable projection.
+
+`qxctl skvi ...` invokes these operations through `symphony.knowledge.engine-process.v1`. Direct invocation remains available for diagnostics. Apply is reserved and disabled under `knowledge/SPEC.md`.
 
 ## Relationship to NotebookLM
 NotebookLM aligns corpus context.
@@ -113,8 +114,9 @@ NotebookLM aligns corpus context.
 Mintlify publishes derived official documentation.
 
 ## Deferred Surfaces
-- Generated indexes
 - Publication pipelines
+- programmatic canonical apply
+- autonomous semantic membership decisions
 
 ## Non-Authorization Statement
-This canonical surface authorizes no generated indexes, generated reports, new implementation or source files, schemas, templates, CI files, documentation publication configuration, Mintlify configuration, qxctl integration, validator capability beyond the separately bounded `tools/symphony-validator/` contract, NotebookLM automation, publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.
+This specification authorizes the bounded SKVI proposal/projection engine, its independent installation contract, and qxctl invocation after merge. It does not authorize programmatic canonical mutation, generated ratification, NotebookLM automation, public publication, or replacement of repository-maintained `INDEX.md`.

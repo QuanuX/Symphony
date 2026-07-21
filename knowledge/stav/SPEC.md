@@ -142,6 +142,8 @@ Security, credential, provider, policy, and configuration mutations using the or
 
 No audit-deferred mutation path is implemented in STAV v1. A future target-host-administrator recovery protocol MUST be explicit rather than automatic, permission-backed without evaluating caller type, expected-state bound, and protocol-integrity preserving. It MUST durably record a local recovery journal before completing the operation, mark the result audit-deferred, and reconcile forward through the append authority when STAV returns. It MUST NOT edit the ledger, impersonate the original event time, hide the interruption, or permit a permanent unreconciled record.
 
+Audit-deferred recovery and later reconciliation are administrative cold/freezing-path operations. They MUST NOT run inline with hot or warm execution, acquire locks shared with hot/warm paths, make hot/warm progress synchronously depend on STAV availability, or otherwise introduce blocking, jitter, or latency there. No vector-engine event class or producer grant is added by this rule; each requires separate STAV contract review.
+
 ## Operational v1 Boundary and Deferred Gates
 
 Canonical candidate/event/receipt/query/query-page/verification content, serialization, SHA-256 domains, genesis construction, bounded query grammar, local stream framing, configuration/status/local-envelope content, peer authentication, producer and reader grants, authorization, listener activation, storage framing, fsync-before-receipt, crash recovery, idempotency reconstruction, preserve-all retention, disabled rotation, runtime projection policy, and native supervision are implemented and verified in the operational Go v1 foundation.

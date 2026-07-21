@@ -23,8 +23,8 @@ The checked-in `tools/symphony-validator/` implementation may read SKVI to check
 ## How Agentic Tools May Consume SKVI
 Agentic tools may consume SKVI to orient themselves, but SKVI does not make architectural decisions.
 
-## How qxctl May Later Consume SKVI
-qxctl may later consume SKVI, but qxctl integration is not authorized here.
+## How qxctl Consumes SKVI
+qxctl may invoke installed `symphony-skvi` inspect, check, propose, and project operations through the common bounded process protocol. Treat proposals and projections as noncanonical evidence.
 
 ## How SKVI Relates to NotebookLM
 NotebookLM aligns corpus context.
@@ -37,12 +37,13 @@ Mintlify is not canonical authority.
 
 ## Safe-Use Rules
 - SKVI indexes source truth; it does not create source truth.
-- Do not attempt to execute SKVI.
+- Use only the installed SKVI engine operations authorized by `knowledge/skvi/SPEC.md`.
+- Never treat engine output as ratification or write it directly into canonical files through an unratified path.
 - Do not treat an isolated historical SCLV or SODV statement as current when a later canonical record corrects, supersedes, or completes it.
 
 ## Non-Scope
-SKVI is not a generated database yet.
-SKVI is not a generated index yet.
+SKVI is not a generated database.
+SKVI projections are not canonical indexes.
 SKVI is not a search engine.
 SKVI is not NotebookLM.
 SKVI is not Mintlify.
@@ -53,8 +54,7 @@ SKVI does not replace module contracts.
 SKVI does not replace SCLV.
 SKVI does not replace SODV.
 SKVI does not replace SSCG.
-SKVI does not create runtime behavior.
-SKVI does not enforce runtime behavior.
+SKVI does not execute or enforce application runtime behavior.
 
 ## Non-Authorization Statement
-This canonical surface authorizes no generated indexes, generated reports, new implementation or source files, schemas, templates, CI files, documentation publication configuration, Mintlify configuration, qxctl integration, validator capability beyond the separately bounded `tools/symphony-validator/` contract, NotebookLM automation, publication pipeline, database files, service files, runtime processes, deployment scripts, installer scripts, binary assets, or binary renames.
+This skill authorizes no canonical apply or self-ratification. Engine proposals require review by a caller holding the applicable permission; derived projections remain disposable and SODV governs publication.

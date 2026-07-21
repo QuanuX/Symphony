@@ -34,6 +34,20 @@
 - `qxctl stav query --tops-id UUID [--scope user|system] [bounded filters] [--json]`
 - `qxctl stav doctor --tops-id UUID [--scope user|system]`
 
+## Ratified Vector-Engine Grammar, Not Yet Implemented
+
+- `qxctl knowledge engines list|inspect|doctor`
+- `qxctl knowledge session begin|status|checkpoint|close|recover`
+- `qxctl knowledge proposals list|show|verify`
+- `qxctl skvi inspect|check|propose|project`
+- `qxctl sclv inspect|check|propose|recover|project`
+- `qxctl sacv inspect|check|diff|propose|project`
+- `qxctl sodv inspect|check|propose|verify|recover|project`
+- `qxctl ssfv ...` is namespace-reserved but unavailable until the SSFV Contract Quad gate passes
+- `qxctl knowledge apply ...` is namespace-reserved but unavailable until the common apply gate passes
+
+The qxctl lifecycle administrator is also ratified for future implementation: install, upgrade, rollback, receipt inspection, dock, undock, activate, and uninstall. Exact leaf grammar is added only with its reviewed artifact-verification and receipt contract. No current `module` command should imply these operations already exist.
+
 ## Installability Posture
 qxctl is installable via standard `go build` or executable directly via `go run` using the Go standard toolchain. It does not require remote runtimes, providers, Docker, Kubernetes, or cloud infrastructure.
 
@@ -51,7 +65,10 @@ Future safeguard administration must provide the same supported inspection and c
 
 `knowledge/sacv/` governs HTTP API contracts. It does not govern qxctl CLI grammar, and qxctl does not own or generate canonical OpenAPI descriptions.
 
+`knowledge/SPEC.md` governs the cross-vector process, authenticated-session, worktree-reconciliation, proposal, projection, install-receipt, and docking boundaries. Vector engines are independent C++ processes; qxctl remains Go and does not dynamically link them or absorb their domain logic.
+
 ## Non-authorizations
-qxctl is not authorized to write generated artifacts. The Architect-ratified Cobra and Viper libraries and their required cgo-free Go dependencies are authorized only for command grammar and constrained configuration mapping; Python, C bindings, remote configuration backends, execution engines, and unrelated third-party dependencies remain prohibited. First-party Symphony libraries remain subordinate to their canonical knowledge vectors.
+qxctl is not authorized to write canonical generated artifacts. It may invoke ratified engines to create noncanonical proposals and disposable projections. The Architect-ratified Cobra and Viper libraries and their required cgo-free Go dependencies are authorized only for command grammar and constrained configuration mapping; Python, C bindings, remote configuration backends, in-process vector execution engines, and unrelated third-party dependencies remain prohibited. First-party Symphony libraries remain subordinate to their canonical knowledge vectors.
 qxctl is not authorized to accept, store, or print secret values.
 qxctl is not authorized to grant host permission, classify callers, silently bypass STAV, or present protocol-integrity requirements as optional safeguards. Any future audit-deferred administrator recovery path requires its own explicit contract, durable local recovery evidence, and later STAV reconciliation.
+qxctl and every administrative recovery it coordinates are prohibited from executing inline with, sharing locks with, or adding synchronous dependencies, jitter, or latency to hot or warm paths.

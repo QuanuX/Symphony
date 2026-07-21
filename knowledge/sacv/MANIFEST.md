@@ -55,12 +55,12 @@ An OpenAPI document is a conditional typed contract artifact referenced by the o
 
 ## Installability Considerations
 
-SACV has no executable or install surface. Independently installable modules remain independently installable whether or not they declare an HTTP contract.
+SACV has an independently installable C++ proposal engine at `modules/sacv-engine/` with executable `symphony-sacv`. Its initial operations are inspect, check, diff, propose, and project under `knowledge/SPEC.md`. It may install as `installed_undocked`; no endpoint owner depends on the engine being resident.
 
 ## Non-Authorization Statement
 
-No endpoint document, listener, generated code, public documentation, Mintlify configuration, SDK release, MCP tool, remote gateway, or live request playground is authorized by this manifest alone.
+No canonical apply, endpoint document, listener, generated runtime code, public documentation, Mintlify configuration, SDK release, MCP tool, remote gateway, or live request playground is authorized by this manifest alone. Engine output is evidence, proposal, or disposable projection.
 
 ## Status
 
-Owner-ratified governance vector. No API entry document is registered yet.
+Owner-ratified governance vector with proposal-engine architecture authorized. No API entry document or engine implementation exists yet.

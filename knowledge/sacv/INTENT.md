@@ -44,4 +44,4 @@ SODV governs publication approval. SKVI indexes canonical SACV and API-owner sur
 
 ## Non-Authorization Statement
 
-This vector authorizes API-contract governance and registration. It does not authorize a network listener, remote SSIAG access, an endpoint schema, a Mintlify configuration, public documentation, an SDK release, a live playground, MCP exposure, or generated server/client code.
+This vector authorizes API-contract governance, registration, and a proposal-only C++ SACV engine at `modules/sacv-engine/` after the common contract transition merges. The engine may validate, diff, propose, and project registered owner contracts. It does not authorize a network listener, remote SSIAG access, an endpoint schema, canonical registry mutation, Mintlify configuration, public documentation, an SDK release, a live playground, MCP exposure, or generated server/client code.

@@ -108,6 +108,18 @@ The following are derived and disposable:
 
 Derived artifacts MUST identify their canonical inputs and MUST NOT be edited as a competing source of truth.
 
+## SACV Engine Operations
+
+The initial `symphony-sacv` operation set is:
+
+- `inspect`: report SACV profile, registry, owner-contract, and engine compatibility;
+- `check`: validate OpenAPI 3.2.0 syntax/profile, ownership, references, safe examples, and registry alignment;
+- `diff`: produce deterministic behavioral and compatibility evidence between bounded contract revisions;
+- `propose`: create immutable owner/registry change proposals without writing canonical files;
+- `project`: build disposable bundles and conformance evidence, never runtime bindings or published artifacts unless separately authorized.
+
+The engine uses `symphony.knowledge.engine-process.v1` and is administered through `qxctl sacv ...`. OpenAPI does not govern this local process protocol. Programmatic canonical apply, generated bindings, and publication remain separately gated.
+
 ## Non-Authorization Statement
 
-This specification authorizes no endpoint, listener, remote gateway, provider operation, STAV append path, generated binding, SDK publication, Mintlify configuration, public documentation, live playground, or MCP tool.
+This specification authorizes the bounded SACV proposal/projection engine after contract merge. It authorizes no canonical apply, endpoint, listener, remote gateway, provider operation, STAV append path, generated runtime binding, SDK publication, Mintlify configuration, public documentation, live playground, or MCP tool.
