@@ -23,7 +23,7 @@ The validator does not make architecture decisions.
 The validator does not replace permission-backed ratification or semantic review.
 
 ## Evidence Model
-Evidence model is truth. JSON is the structured evidence projection. Markdown is the caller-ingestion projection.
+The evidence model is truth. The implemented projection is deterministic, line-oriented evidence followed by one summary line. JSON and Markdown projections remain future surfaces.
 
 ## Dual Output Model
 Evidence model is truth.
@@ -62,7 +62,30 @@ Families including `REPO.*`, `MODULE.*`, `INSTALL.*`, `NAMESPACE.*`, `TROLL.*`, 
 Status reflects the deterministic outcome of a rule check.
 
 ## Exit-code Model
-`0` to `5`, mapping to passes, errors, blockers, malformed repositories, or internal failures.
+`0` to `21`, mapping to passes, errors, blockers, malformed repositories, or internal failures. The exact mapping is:
+
+- `0`: success;
+- `1`: invalid CLI usage or unknown command;
+- `2`: invalid repository path;
+- `3`: SKVI parsing/shape;
+- `4`: SCLV parsing/shape prerequisite;
+- `5`: SKVI/SCLV cross-reference;
+- `6`: status/change-type vocabulary;
+- `7`: SCLV record shape;
+- `8`: unauthorized artifacts;
+- `9`: required canonical surfaces;
+- `10`: validator contract shape;
+- `11`: runtime contract shape;
+- `12`: knowledge contract shape;
+- `13`: root contract shape;
+- `14`: SCLV ledger continuity;
+- `15`: doctrine vocabulary;
+- `16`: SKVI coverage;
+- `17`: SKVI path safety/existence;
+- `18`: SCLV referenced surfaces;
+- `19`: SCLV/SKVI membership;
+- `20`: validator build-source integrity;
+- `21`: caller-authority regression.
 
 ## Historical/Migration Exception Behavior
 Stale names (e.g. `legacy node execution label`, `legacy native hot-path label`, `legacy bus residency label`) are rejected except in historical contexts or rename records.
@@ -91,6 +114,43 @@ Active project term c-o-r-e is absent except inside explicit forbidden-term scan
 ## Implemented Authorization Boundary
 This specification authorizes the checked-in C++26 command-line parser/checker, its CMake build contract, and smoke fixtures. The implementation may read repository surfaces, emit deterministic evidence, and return deterministic exit status. It remains non-autonomous and read-only.
 
+## Caller-Authority Regression Check
+The checker detects a bounded vocabulary of active Markdown statements that make authority depend on caller class. It is deterministic regression evidence, not natural-language understanding and not proof that every possible semantic expression is safe.
+
+### Discovery scope
+
+The checker scans `README.md` and `INTENT.md` at the repository root when present, plus Markdown files beneath `knowledge/`, `modules/`, `libraries/`, `tools/qxctl/`, and `tools/symphony-validator/`. A directory named `build` is pruned at any depth. `tools/symphony-validator/tests/` is excluded so adversarial fixtures do not become repository findings. Markdown fixtures beneath `knowledge/stav/fixtures/` remain in scope; canonical non-Markdown STAV fixtures are outside this check.
+
+Discovery uses lexical repository-relative paths. It inspects link metadata without following targets. Every in-scope Markdown symlink, including a broken link, produces `caller_authority.symlink_unsupported`; its target is never opened, resolved, or reported as the scanned path. Metadata and directory-iteration failures produce `caller_authority.discovery_failed`. Pending discovery findings are sorted by lexical path, rule ID, and detail before content findings are emitted.
+
+### Historical record boundaries
+
+`knowledge/sclv/CHANGELOG.md` is scanned through the line immediately before its first `- record_id:` boundary. `knowledge/sodv/RELEASES.md` is scanned through the line immediately before its first `- release_record_id:` boundary. The boundary and append-only historical body are not scanned, and the checker emits `caller_authority.historical_region_exempt`. This is a structural exception for the two canonical ledger surfaces, not a phrase allowlist or a general path exemption.
+
+### Matching and evidence
+
+The checker lowercases and tokenizes bounded paragraphs, treats `.`, `!`, and `?` as sentence boundaries, and applies fixed phrase and distance windows. It detects the following rule families:
+
+- `caller_authority.class_subject_modal`;
+- `caller_authority.class_subject_status`;
+- `caller_authority.class_exclusive_operation`;
+- `caller_authority.class_targeted_availability`;
+- `caller_authority.human_exclusive_governance`;
+- `caller_authority.caller_type_decision`.
+
+Negation is evaluated only within the bounded predicate construction that it can negate; unrelated sentence text does not suppress a finding. Evidence uses stable rule IDs, lexical paths, one-line or wrapped line ranges, and canonical class IDs. Duplicate matches of the same rule within one paragraph emit one finding.
+
+This matcher is not an NLP engine, does not parse source code or abstract syntax trees, and does not claim arbitrary semantic coverage. A clean result means only that the implemented bounded rules found no regression in the scanned surfaces.
+
+### Failure and resource behavior
+
+The maximum physical line is 64 KiB, the maximum normalized paragraph is 256 KiB, and the maximum active Markdown file is 4 MiB. The structurally bounded SCLV and SODV ledgers are exempt from the whole-file limit because only their active preambles are scanned; line and paragraph limits still apply to those preambles. Limit violations use `caller_authority.line_length_exceeded`, `caller_authority.paragraph_size_exceeded`, and `caller_authority.file_size_exceeded`. File-open or negative-position failures use `caller_authority.unreadable`. These conditions, symlink findings, discovery failures, and caller-authority findings all fail closed.
+
+### Authority and CLI behavior
+
+The checker is read-only and non-remediating. It does not modify repository content, select a remedy, or make an authorization decision. When execution reaches this checker and it fails, the CLI emits one final summary and exits `21`. Earlier checkers retain their existing fail-fast precedence; exit `21` precedes only the checks that follow caller-authority validation in the CLI sequence.
+
+Runtime source/AST analysis, remediation, `qxctl` mediation, and CI/PR-gate integration are deferred and unauthorized by this increment.
 
 ## Troll Doctrine
 trolls are the local residents.

@@ -16,13 +16,20 @@ The implemented skill surface is direct execution through `symphony-validator ch
 
 ## Deterministic, Non-Autonomous Behavior
 The validator is deterministic, explainable, and non-autonomous.
-The validator produces evidence.
+The validator produces evidence, including caller-authority regression findings (exit code 21).
 The validator does not fix the repository.
 The validator does not choose remedies.
-Agentic tools may consume the Markdown projection, but the validator itself remains non-autonomous and authority-free.
+Every permission-bearing caller may consume the implemented line-oriented evidence. A future Markdown projection remains deferred. The validator itself remains non-autonomous and authority-free. Caller types remain descriptive.
+
+## Invocation Procedure
+1. Build the checked-in C++26 target according to `INSTALL.md`.
+2. Run `symphony-validator check --repo <path>` against the intended repository root.
+3. Consume every evidence line through the single final `summary` line; do not stop after the first matching line.
+4. Treat exit `21` as a bounded caller-authority, discovery, symlink, stream, or resource failure and use the stable rule ID and lexical path to locate the evidence.
+5. Refer to the normative Caller-Authority Regression Check in `SPEC.md` before interpreting scope or exclusions.
 
 ## Output Consumption Behavior
-Evidence lines and the final summary are the current implementation output. Any future JSON or Markdown projection must derive from one evidence model, share stable rule identifiers, and introduce no claims, conclusions, or remediation steps absent from that model.
+Evidence lines and the final summary are the current implementation output. Consumers must retain the complete output and process status. Any future JSON or Markdown projection must derive from one evidence model, share stable rule identifiers, and introduce no claims, conclusions, or remediation steps absent from that model. A clean bounded scan provides deterministic evidence but must not be interpreted as universal semantic proof or an all-encompassing semantic analysis of the codebase.
 
 ## Refusal/non-remediation Behavior
 The validator does not infer intent.

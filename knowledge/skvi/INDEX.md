@@ -1022,7 +1022,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - scope: Contractual definitions.
 - consumers: humans, validator maintainers, future qxctl integration
 - relationships: governs -> `tools/symphony-validator/CMakeLists.txt`
-- deferred_projections: installation packaging and integration surfaces
+- deferred_projections: Markdown caller-ingestion projection, JSON/JSONL portable evidence, installation packaging, qxctl mediation, and CI/PR-gate integration. The implemented bounded active-Markdown caller-authority check does not authorize runtime/source/AST analysis, remediation, or general semantic analysis.
 - notes: The checked-in parser/checker is authorized; runtime residency is not.
 - status: canonical
 
@@ -1058,7 +1058,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: tool specification
 - truth_role: normative parser/checker behavior and authority boundary
 - owner: validator maintainer
-- scope: Deterministic validation rules.
+- scope: Deterministic validation rules, including caller-authority regression checking (exit code 21).
 - consumers: humans, validator implementation, reviewers
 - relationships: governs -> `tools/symphony-validator/src/`; constrains -> future projectors and integrations
 - deferred_projections: JSON/Markdown, graph, analytical, and qxctl-readable projections
