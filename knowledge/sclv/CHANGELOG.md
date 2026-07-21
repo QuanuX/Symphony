@@ -1604,3 +1604,166 @@ This PR authorizes none of the following:
   - `hot-path or warm-path participation`
 - notes: |
     This post-merge closure records the implementation merged by PR #79. The closure record itself is appended separately so the implementation revision and its evidence remain immutable and independently verifiable.
+
+- record_id: `SCLV-CHG-20260721-SACV-ENGINE`
+- record_version: `3`
+- title: `SACV OpenAPI governance engine and qxctl integration implemented`
+- status: `canonical`
+- date: `2026-07-21`
+- change_started_at: `2026-07-21T23:04:50Z`
+- change_completed_at: `2026-07-21T23:06:12Z`
+- recorded_at: `2026-07-21T23:08:34Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#81`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/81`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `85c1ee8258f893dec3b903da3996758277b1bf88`
+- tree_digest: `sha256:5c54923b717e8fabec18bc2ff880e10078869fcffcae2c8e233018b32ee14a8b`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/81`
+- ratification_evidence_digest: `sha256:b77462dd21f5baae1d14b914d82428eb31f3572b1df570b2be00c96004b4a1f2`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/sacv/INTENT.md`
+  - `knowledge/sacv/MANIFEST.md`
+  - `knowledge/sacv/REGISTRY.md`
+  - `knowledge/sacv/SKILL.md`
+  - `knowledge/sacv/SPEC.md`
+  - `knowledge/sacv/profiles/openapi-3.2.md`
+  - `knowledge/sacv/schemas/v1/MANIFEST.md`
+  - `knowledge/sacv/schemas/v1/check-result.schema.json`
+  - `knowledge/sacv/schemas/v1/diff-input.schema.json`
+  - `knowledge/sacv/schemas/v1/diff-result.schema.json`
+  - `knowledge/sacv/schemas/v1/projection.schema.json`
+  - `knowledge/sacv/schemas/v1/proposal-input.schema.json`
+  - `knowledge/sacv/schemas/v1/registry-entry.schema.json`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/proposal.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `modules/sacv-engine/CMakeLists.txt`
+  - `modules/sacv-engine/INSTALL.md`
+  - `modules/sacv-engine/INTENT.md`
+  - `modules/sacv-engine/MANIFEST.md`
+  - `modules/sacv-engine/SKILL.md`
+  - `modules/sacv-engine/SPEC.md`
+  - `modules/sacv-engine/cmake/install-receipt.json.in`
+  - `modules/sacv-engine/cmake/uninstall.cmake.in`
+  - `modules/sacv-engine/src/main.cpp`
+  - `modules/sacv-engine/src/sacv.cpp`
+  - `modules/sacv-engine/src/sacv.hpp`
+  - `modules/sacv-engine/tests/process_smoke.sh`
+  - `modules/sacv-engine/tests/sacv_test.cpp`
+  - `modules/sclv-engine/src/sclv.cpp`
+  - `modules/sclv-engine/tests/sclv_test.cpp`
+  - `modules/skvi-engine/SPEC.md`
+  - `modules/skvi-engine/src/skvi.cpp`
+  - `modules/skvi-engine/tests/skvi_test.cpp`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/sacv_test.go`
+  - `tools/qxctl/cmd/qxctl/sclv_test.go`
+  - `tools/qxctl/cmd/qxctl/skvi_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/qxctl/internal/knowledgeengine/client_test.go`
+  - `tools/symphony-validator/CMakeLists.txt`
+  - `tools/symphony-validator/INTENT.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SKILL.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/src/canonical_surfaces.cpp`
+  - `tools/symphony-validator/src/cli.cpp`
+  - `tools/symphony-validator/src/knowledge_contracts.cpp`
+  - `tools/symphony-validator/src/sacv_registry.cpp`
+  - `tools/symphony-validator/src/sacv_registry.hpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/sacv/INTENT.md`
+  - `knowledge/sacv/MANIFEST.md`
+  - `knowledge/sacv/REGISTRY.md`
+  - `knowledge/sacv/SKILL.md`
+  - `knowledge/sacv/SPEC.md`
+  - `knowledge/sacv/profiles/openapi-3.2.md`
+  - `knowledge/sacv/schemas/v1/MANIFEST.md`
+  - `knowledge/sacv/schemas/v1/check-result.schema.json`
+  - `knowledge/sacv/schemas/v1/diff-input.schema.json`
+  - `knowledge/sacv/schemas/v1/diff-result.schema.json`
+  - `knowledge/sacv/schemas/v1/projection.schema.json`
+  - `knowledge/sacv/schemas/v1/proposal-input.schema.json`
+  - `knowledge/sacv/schemas/v1/registry-entry.schema.json`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/proposal.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `modules/sacv-engine/CMakeLists.txt`
+  - `modules/sacv-engine/INSTALL.md`
+  - `modules/sacv-engine/INTENT.md`
+  - `modules/sacv-engine/MANIFEST.md`
+  - `modules/sacv-engine/SKILL.md`
+  - `modules/sacv-engine/SPEC.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/symphony-validator/CMakeLists.txt`
+  - `tools/symphony-validator/INTENT.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SKILL.md`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    Under the Architect's direction, PR #81 implemented the first SACV application slice as an independently installable C++26 freezing-path module. The bounded symphony-sacv engine now performs inspect, registry and OpenAPI 3.2.0 JSON checks, deterministic compatibility diff, caller-declared immutable registry proposals, and disposable registry-conformance projection. qxctl securely resolves and invokes the exact inactive-undocked installation, while symphony-validator independently enforces canonical SACV registry grammar and ownership boundaries.
+- relationship_changes: |
+    knowledge/sacv remains the canonical API-contract source of truth. The SACV engine implements that truth through the common C++ knowledge-vector foundation without owning endpoints, authentication, publication, or acceptance decisions. qxctl owns Cobra command grammar, exact receipt validation, bounded process invocation, and result safety checks. SKVI indexes SACV contracts and engine surfaces, and symphony-validator remains an independent repository checker rather than an OpenAPI parser.
+- doctrine_changes: |
+    The common knowledge proposal authority assertion is now vector-neutral engine_decided_domain_truth: false. Deterministic validation cannot become membership, ownership, feature-worthiness, ratification, publication, or other vector-owned authority. Every registered OpenAPI document binds to its canonical SKVI-indexed security profile through x-symphony-security-profile, without inventing a generic SSIAG token or caller-class policy.
+- compatibility_consequences: |
+    This slice adds qxctl sacv inspect, check, diff, propose, and project grammar and symphony-sacv 0.1.0-dev process/schema behavior. JSON OpenAPI 3.2.0 documents receive bounded duplicate-key, structural, security, reference, example-safety, registry-alignment, and compatibility checks. YAML remains canonical-capable and preferred when owner-justified, but the development engine fails closed with parser-unavailable evidence until its independent parser gate. Existing API endpoints, SSIAG, STAV, trading paths, and Go 1.26.5 behavior are unchanged.
+- publication_consequences: |
+    No module tag, release artifact, package coordinate, endpoint, SDK, OpenAPI publication, Mintlify configuration, live playground, public documentation, or MCP exposure is authorized. The canonical SACV registry remains explicitly empty and the source-installable engine remains version 0.1.0-dev.
+- projection_consequences: |
+    SACV projection produces only a content-addressed registry-conformance inventory returned to the caller. It is noncanonical, disposable, and rebuildable; it does not bundle or dereference raw OpenAPI source, generate runtime bindings, prepare publication, or replace canonical owner contracts and the registry.
+- evidence:
+  - `PR #81 merged into main at 2026-07-21T23:06:12Z by quantDIY as 85c1ee8258f893dec3b903da3996758277b1bf88`
+  - `implementation head 6ccdcc50635f837baee2069a5c2344d12309d12f; 64 files changed, 3525 insertions, 69 deletions`
+  - `local-Git adapter evidence digest sha256:0905cafb022b3439c782d6ebdc93926df4135ee30450b40c42c81f91ed4ecb8e bound tree digest sha256:5c54923b717e8fabec18bc2ff880e10078869fcffcae2c8e233018b32ee14a8b`
+  - `ratification adapter evidence digest sha256:dad549b4e689e7531a8c10e0ebe90b007c93a5e91de2f24342c6683e268ed5f2 bound canonical PR metadata digest sha256:b77462dd21f5baae1d14b914d82428eb31f3572b1df570b2be00c96004b4a1f2`
+  - `SACV, SKVI, SCLV, shared-foundation, coordinator, qxctl, SSIAG, STAV append-authority, and STAV protocol test suites passed`
+  - `symphony-validator unit and full negative-fixture smoke suites passed; live repository result pass=2431 warning=132 violation=0 exit=0`
+  - `release-mode install proof installed exactly nine receipt-owned files; qxctl inspect, check, and project passed; uninstall removed only owned files and preserved an unrelated sentinel`
+  - `warm qxctl-to-SACV checks completed in approximately 0.02 seconds on the development host`
+- non_authorizations:
+  - `programmatic canonical apply, registry mutation, proposal self-ratification, or engine-decided domain truth`
+  - `HTTP endpoint, listener, remote gateway, generic SSIAG token, or caller-class authorization policy`
+  - `YAML parser conformance before its independent dependency and differential-validation gate`
+  - `generated router, runtime binding, SDK, Mintlify publication, live playground, public documentation, or MCP exposure`
+  - `qxctl install, upgrade, rollback, version activation, docking, or uninstall administration`
+  - `live Maestro receptor selection, docking, persistence, or mutable knowledge-session lifecycle`
+  - `SODV or SSFV engine implementation, FEATURES.md generation, or feature-worthiness decisions`
+  - `hot-path or warm-path participation`
+  - `module tag, binary release, package publication, or Go 1.27 production pin`
+- notes: |
+    This post-merge closure records the SACV implementation merged by PR #81. The closure record is appended separately so the implementation revision and its provider-normalized evidence remain immutable and independently verifiable. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
