@@ -23,5 +23,7 @@ Or built locally:
 go build -o qxctl ./cmd/qxctl
 ```
 
+The SKVI command group additionally requires a separately installed `skvi-engine` package. Pass its exact prefix and version on every current invocation; qxctl validates the versioned receipt and owned files before execution. Secure local SKVI installation access is implemented on Linux and the macOS development path and fails closed on other native operating systems. No lifecycle default or active-version selector is implemented yet.
+
 ## Migration Note
 qxctl targets Go 1.27 only after general availability and the differential fixture/digest, default-vs-`nojsonv2`, vet, race, and supported-platform cross-build gates pass. The workspace and module pins change atomically, and the migration cannot alter qxctl grammar or STAV bytes.

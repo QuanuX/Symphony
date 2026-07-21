@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:skvi:operation-payload:v1",
+  "title": "Symphony SKVI proposal operation payload v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["repository", "session_ref", "context_ref", "created_at", "expires_at", "operation"],
+  "properties": {
+    "repository": {"$ref": "#/$defs/repository"},
+    "session_ref": {"$ref": "#/$defs/optional_token"},
+    "context_ref": {"$ref": "#/$defs/optional_token"},
+    "created_at": {"$ref": "#/$defs/utc"},
+    "expires_at": {"$ref": "#/$defs/utc"},
+    "operation": {"$ref": "#/$defs/operation"}
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "optional_token": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])[^/]+(?:/[^/]+)*$"
+    },
+    "field": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 65536,
+      "pattern": "^(?![\\s\\S]*[\\u0000-\\u0009\\u000B-\\u001F\\u007F])[\\s\\S]+$"
+    },
+    "utc": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"
+    },
+    "revision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scheme", "value"],
+      "properties": {
+        "scheme": {"$ref": "#/$defs/token"},
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        }
+      }
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository_id", "revision", "worktree_id", "tree_digest"],
+      "properties": {
+        "repository_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "revision": {"$ref": "#/$defs/revision"},
+        "worktree_id": {"$ref": "#/$defs/token"},
+        "tree_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path", "title", "surface_type", "truth_role", "owner", "scope",
+        "relationships", "consumers", "deferred_projections", "notes", "status"
+      ],
+      "properties": {
+        "path": {"$ref": "#/$defs/path"},
+        "title": {"$ref": "#/$defs/field"},
+        "surface_type": {"$ref": "#/$defs/field"},
+        "truth_role": {"$ref": "#/$defs/field"},
+        "owner": {"$ref": "#/$defs/field"},
+        "scope": {"$ref": "#/$defs/field"},
+        "relationships": {"$ref": "#/$defs/field"},
+        "consumers": {"$ref": "#/$defs/field"},
+        "deferred_projections": {"$ref": "#/$defs/field"},
+        "notes": {"$ref": "#/$defs/field"},
+        "status": {"const": "canonical"}
+      }
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "target_path", "expected_entry_digest", "entry"],
+      "properties": {
+        "type": {"enum": ["add_entry", "replace_entry", "remove_entry"]},
+        "target_path": {"$ref": "#/$defs/path"},
+        "expected_entry_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+        "entry": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/entry"}]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"type": {"const": "add_entry"}}, "required": ["type"]},
+          "then": {"properties": {"expected_entry_digest": {"type": "null"}, "entry": {"$ref": "#/$defs/entry"}}}
+        },
+        {
+          "if": {"properties": {"type": {"const": "replace_entry"}}, "required": ["type"]},
+          "then": {"properties": {"expected_entry_digest": {"$ref": "#/$defs/digest"}, "entry": {"$ref": "#/$defs/entry"}}}
+        },
+        {
+          "if": {"properties": {"type": {"const": "remove_entry"}}, "required": ["type"]},
+          "then": {"properties": {"expected_entry_digest": {"$ref": "#/$defs/digest"}, "entry": {"type": "null"}}}
+        }
+      ]
+    }
+  }
+}

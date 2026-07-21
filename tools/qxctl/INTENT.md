@@ -16,7 +16,7 @@ Every SSIAG query is scoped by immutable TOPS ID. `knowledge/ssiag/` owns SSIAG 
 
 The Architect-ratified `qxctl stav status|verify|query|doctor` grammar is operational. It loads the selected per-TOPS STAV contract, authenticates the authority endpoint from kernel credentials, submits strict local envelopes, and displays only classification-authorized projections. qxctl has no `stav append`, does not edit STAV ledgers, and does not own `knowledge/stav/` schemas. qxctl grammar is not governed by OpenAPI.
 
-The vector-engine grammar is ratified for implementation after its canonical contract transition merges. `qxctl knowledge ...` is the cross-vector umbrella; `qxctl skvi|sclv|sacv|sodv|ssfv ...` owns vector-specific commands. qxctl invokes exact independently installed C++ engines through the bounded standard-I/O process protocol. Initial implementation is read/query/check/propose/project only. `knowledge apply` and SSFV commands remain reserved and disabled until their separate gates pass.
+The first vector-engine grammar is operational as `qxctl skvi inspect|check|propose|project`. qxctl requires an explicit installation prefix, resolves the exact version from its inactive undocked receipt, validates every receipt-owned path, invokes the independently installed C++ engine through bounded standard I/O with a hard deadline and empty environment, and verifies response identity and digest. `qxctl knowledge ...` remains the cross-vector umbrella for later lifecycle/session coordination; SCLV, SACV, SODV, SSFV, `knowledge apply`, and lifecycle commands remain unavailable until their separate implementation gates pass.
 
 ## Non-goals
 - qxctl does not execute hotpath-runtime workloads.

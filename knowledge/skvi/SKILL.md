@@ -11,7 +11,7 @@ To outline how humans and automated systems should safely read, interpret, and o
 - reviewers
 - validators
 - CI systems
-- future qxctl consumers
+- qxctl consumers
 - agentic tools consuming canonical knowledge
 
 ## How Readers Consume SKVI
@@ -24,7 +24,7 @@ The checked-in `tools/symphony-validator/` implementation may read SKVI to check
 Agentic tools may consume SKVI to orient themselves, but SKVI does not make architectural decisions.
 
 ## How qxctl Consumes SKVI
-qxctl may invoke installed `symphony-skvi` inspect, check, propose, and project operations through the common bounded process protocol. Treat proposals and projections as noncanonical evidence.
+qxctl invokes an exact installed `symphony-skvi` version through the common bounded process protocol. Supply `--prefix`, optionally pin `--version`, and use a no-follow JSON `--input` file for `propose`. Treat proposals and projections as noncanonical evidence.
 
 ## How SKVI Relates to NotebookLM
 NotebookLM aligns corpus context.

@@ -1236,6 +1236,45 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Implementation claims must remain synchronized with the manifest.
 - status: canonical
 
+#### qxctl Command Grammar Implementation
+- path: `tools/qxctl/cmd/qxctl/main.go`
+- title: qxctl Administrative Operation Implementation
+- surface_type: administrative CLI implementation surface
+- truth_role: local operation dispatch, process-client invocation, and presentation implementation truth
+- owner: qxctl maintainers
+- scope: Implements current repository, module, SSIAG, STAV, and SKVI administrative operation handlers.
+- relationships: implements -> `tools/qxctl/MANIFEST.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`
+- consumers: qxctl executable, tests, maintainers, reviewers
+- deferred_projections: generated CLI reference and operation evidence
+- notes: Presentation does not own vector semantics or authorize mutation.
+- status: canonical
+
+#### qxctl Cobra Command Grammar
+- path: `tools/qxctl/cmd/qxctl/commands.go`
+- title: qxctl Cobra Command Grammar
+- surface_type: administrative CLI implementation surface
+- truth_role: implemented command tree, flag grammar, and failure routing
+- owner: qxctl maintainers
+- scope: Implements current repository, SSIAG, STAV, and exact-installation SKVI command grammar without owning domain semantics.
+- relationships: implements -> `tools/qxctl/MANIFEST.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`
+- consumers: qxctl executable, compatibility tests, maintainers, reviewers
+- deferred_projections: generated CLI reference documentation
+- notes: Cobra grammar does not authorize lifecycle activation or canonical apply.
+- status: canonical
+
+#### qxctl SKVI Process Client
+- path: `tools/qxctl/internal/knowledgeengine/client.go`
+- title: qxctl Knowledge Engine Process Client
+- surface_type: bounded Go process-client implementation
+- truth_role: trusted receipt resolution, child-process bounds, and response verification implementation truth
+- owner: qxctl maintainers
+- scope: Resolves the exact installed SKVI version, validates its inactive-undocked receipt and owned paths, invokes it with an empty environment and hard deadline, and verifies response identity and digest.
+- relationships: implements -> `knowledge/SPEC.md`; implements -> `knowledge/skvi/SPEC.md`; called_by -> `tools/qxctl/cmd/qxctl/commands.go`
+- consumers: qxctl SKVI commands, tests, reviewers, future compatible vector clients
+- deferred_projections: common process-client extraction after multiple proven consumers
+- notes: It does not install, activate, dock, infer membership, ratify, or apply.
+- status: canonical
+
 ### Knowledge Session Coordinator Module
 
 #### Knowledge Session Coordinator INTENT.md
@@ -1316,6 +1355,86 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: No global executable alias or active binding is installed.
 - status: canonical
 
+### SKVI Engine Module
+
+#### SKVI Engine INTENT.md
+- path: `modules/skvi-engine/INTENT.md`
+- title: SKVI Engine Intent
+- surface_type: vector-engine module intent
+- truth_role: subordinate structural-check, proposal, and projection purpose
+- owner: SKVI engine maintainers
+- scope: Declares deterministic inspect/check/propose/project behavior without membership or mutation authority.
+- relationships: depends_on -> `knowledge/skvi/INTENT.md`; declares -> `modules/skvi-engine/MANIFEST.md`
+- consumers: qxctl, implementers, administrators, reviewers, agentic tools
+- deferred_projections: installed-engine inventory and conformance evidence
+- notes: The engine implements SKVI truth but does not own it.
+- status: canonical
+
+#### SKVI Engine MANIFEST.md
+- path: `modules/skvi-engine/MANIFEST.md`
+- title: SKVI Engine Manifest
+- surface_type: independently installable vector-engine manifest
+- truth_role: executable, operation, protocol, dependency, and lifecycle truth
+- owner: SKVI engine maintainers
+- scope: Declares the C++26 executable, implemented operation set, disabled apply, and inactive installed-undocked state.
+- relationships: depends_on -> `modules/skvi-engine/INTENT.md`; implements -> `knowledge/skvi/SPEC.md`; statically_links -> `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
+- consumers: qxctl, packagers, implementers, reviewers, agentic tools
+- deferred_projections: engine inventory and Maestro presence evidence
+- notes: No default receptor, active alias, or canonical write route exists.
+- status: canonical
+
+#### SKVI Engine INSTALL.md
+- path: `modules/skvi-engine/INSTALL.md`
+- title: SKVI Engine Installation
+- surface_type: module installation contract
+- truth_role: build, test, versioned install, qxctl invocation, and receipt-owned uninstall procedure
+- owner: SKVI engine maintainers
+- scope: Defines monorepo and installed-foundation builds plus exact prefix installation and removal.
+- relationships: depends_on -> `modules/skvi-engine/MANIFEST.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/INSTALL.md`; consumed_by -> `tools/qxctl/internal/knowledgeengine/client.go`
+- consumers: implementers, administrators, packagers, qxctl, reviewers
+- deferred_projections: lifecycle administration evidence
+- notes: Installation leaves the version inactive and undocked.
+- status: canonical
+
+#### SKVI Engine SKILL.md
+- path: `modules/skvi-engine/SKILL.md`
+- title: SKVI Engine Skill
+- surface_type: vector-engine skill guidance
+- truth_role: safe direct and qxctl operation procedure
+- owner: SKVI engine maintainers
+- scope: Guides check, projection, caller-declared proposal review, and stop conditions.
+- relationships: depends_on -> `modules/skvi-engine/SPEC.md`; depends_on -> `knowledge/skvi/SKILL.md`
+- consumers: administrators, implementers, reviewers, agentic tools
+- deferred_projections: qxctl lifecycle procedure
+- notes: Proposal and projection output remain noncanonical.
+- status: canonical
+
+#### SKVI Engine SPEC.md
+- path: `modules/skvi-engine/SPEC.md`
+- title: SKVI Engine Specification
+- surface_type: vector-engine module specification
+- truth_role: exact operation, bound, exit, install, and non-authorization contract
+- owner: SKVI engine maintainers
+- scope: Defines inspect, structural check, caller-declared add/replace/remove proposals, disposable JSON projection, and disabled apply.
+- relationships: depends_on -> `knowledge/SPEC.md`; implements -> `knowledge/skvi/SPEC.md`; implements -> `knowledge/schemas/v1/proposal.schema.json`; implements -> `knowledge/skvi/schemas/v1/MANIFEST.md`
+- consumers: C++ implementers, qxctl, testers, reviewers
+- deferred_projections: expanded SKVI-authorized projection formats
+- notes: It has no session, authentication, network, SSIAG/STAV, lifecycle, or Maestro authority.
+- status: canonical
+
+#### SKVI Engine CMakeLists.txt
+- path: `modules/skvi-engine/CMakeLists.txt`
+- title: SKVI Engine Build Contract
+- surface_type: module build and install contract
+- truth_role: static-link, test, package receipt, and uninstall implementation truth
+- owner: SKVI engine maintainers
+- scope: Builds and tests the exact versioned executable and supports source or installed foundation consumption.
+- relationships: implements -> `modules/skvi-engine/SPEC.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
+- consumers: CMake, implementers, packagers, reviewers
+- deferred_projections: reproducible build, install, and receipt evidence
+- notes: No global executable alias or active binding is installed.
+- status: canonical
+
 ### Knowledge Vector Surfaces
 
 #### Knowledge Root
@@ -1338,11 +1457,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: SKV umbrella manifest
 - truth_role: common vector-engine identity, namespace, installability, and authority boundary
 - owner: Symphony Knowledge Vector maintainers
-- scope: Declares independently installed C++ engines, the implemented shared mechanics/read-only coordinator slice, qxctl administration, Linux-first delivery, Maestro readiness, and proposal-only initial state.
-- relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/`; governs -> `modules/knowledge-session-coordinator/`; governs -> future cleared vector-engine module paths
+- scope: Declares independently installed C++ engines, the implemented shared mechanics/read-only coordinator/SKVI slices, qxctl administration, Linux-first delivery, Maestro readiness, and proposal-only initial state.
+- relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/`; governs -> `modules/knowledge-session-coordinator/`; governs -> `modules/skvi-engine/`; governs -> future cleared vector-engine module paths
 - consumers: vector maintainers, engine implementers, qxctl, Maestro planners, reviewers, agentic tools
 - deferred_projections: engine inventory, install receipts, Maestro presence graph
-- notes: Foundation `0.1.0-dev` and coordinator inspect/check now exist; every vector engine, session mutation, canonical apply, live docking, and SSFV remain gated.
+- notes: Foundation/coordinator and SKVI `0.1.0-dev` slices now exist; other vector engines, session mutation, canonical apply, live docking, and SSFV remain gated.
 - status: canonical
 
 ##### SPEC.md
@@ -1355,7 +1474,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
 - consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
 - deferred_projections: proposal/session/provider/docking schemas, conformance evidence, engine inventory, docking graph
-- notes: Four common schemas and the read-only foundation slice are implemented; programmatic apply is disabled.
+- notes: Five common schemas and the foundation/coordinator/SKVI slices are implemented; programmatic apply is disabled.
 - status: canonical
 
 ##### SKILL.md
@@ -1377,7 +1496,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: common protocol schema manifest
 - truth_role: canonical inventory and boundary for exact common JSON schemas
 - owner: Symphony Knowledge Vector maintainers
-- scope: Declares process request/response, descriptor, and install-receipt schemas.
+- scope: Declares process request/response, descriptor, install-receipt, and immutable-proposal schemas.
 - relationships: depends_on -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`
 - consumers: C++ foundation and engine implementers, qxctl planners, validator, reviewers
 - deferred_projections: generated schema documentation and conformance evidence
@@ -1417,7 +1536,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - truth_role: canonical engine identity, capability, limit, scope, and disabled-state truth
 - owner: Symphony Knowledge Vector maintainers
 - scope: Defines installed identity, operations, bounds, thermal placement, scope, docking state, and mutation flags.
-- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `modules/knowledge-session-coordinator/SPEC.md`
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `modules/knowledge-session-coordinator/SPEC.md`; implemented_by -> `modules/skvi-engine/SPEC.md`
 - consumers: qxctl lifecycle planner, coordinator and vector engines, packagers, reviewers
 - deferred_projections: installed engine inventory and Maestro presence graph
 - notes: A descriptor reports capability; it does not grant permission or activate a version.
@@ -1430,10 +1549,23 @@ Future validator increments may add separately ratified deterministic checks wit
 - truth_role: canonical prefix-relative package ownership and docking-state truth
 - owner: Symphony Knowledge Vector maintainers
 - scope: Defines module/version, scope, prefix interpretation, state, activation, receptor, and exact owned files.
-- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`; implemented_by -> `modules/knowledge-session-coordinator/CMakeLists.txt`
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`; implemented_by -> `modules/knowledge-session-coordinator/CMakeLists.txt`; implemented_by -> `modules/skvi-engine/CMakeLists.txt`
 - consumers: qxctl lifecycle planner, installers, uninstallers, packagers, reviewers
 - deferred_projections: lifecycle inventory and rollback evidence
 - notes: A receipt does not authorize activation, canonical writes, or live docking.
+- status: canonical
+
+##### Knowledge Proposal Schema
+- path: `knowledge/schemas/v1/proposal.schema.json`
+- title: Symphony Knowledge Proposal v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical provider-neutral immutable proposal envelope truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes proposal identity, repository, read/write sets, operations, validation, authority, expiry, and disabled-apply fields.
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `modules/skvi-engine/SPEC.md`
+- consumers: vector engines, qxctl process clients, conformance tests, validator, reviewers
+- deferred_projections: rendered protocol documentation
+- notes: A conforming proposal is noncanonical and never manufactures ratification.
 - status: canonical
 
 #### SKVI
@@ -1458,7 +1590,7 @@ Future validator increments may add separately ratified deterministic checks wit
   - agentic reviewers
   - NotebookLM corpus alignment
   - symphony-validator
-  - future qxctl-derived evidence consumers
+  - qxctl-derived evidence consumers
   - future SODV publication governance
 - deferred_projections:
   - JSON / JSONL portable evidence
@@ -1520,6 +1652,71 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: checked_by -> `tools/symphony-validator/SPEC.md`; depends_on -> `knowledge/SPEC.md`
 - deferred_projections: JSON/JSONL, search, analytical, and graph projections
 - notes: Initial engine operations are inspect, check, propose, and project.
+- status: canonical
+
+##### SKVI v1 Schema Manifest
+- path: `knowledge/skvi/schemas/v1/MANIFEST.md`
+- title: SKVI Schemas v1
+- surface_type: vector-specific protocol schema manifest
+- truth_role: canonical inventory and boundary for exact SKVI JSON schemas
+- owner: SKVI maintainers
+- scope: Declares normalized entry, proposal payload, check result, and projection schemas.
+- relationships: depends_on -> `knowledge/skvi/SPEC.md`; implemented_by -> `modules/skvi-engine/SPEC.md`
+- consumers: SKVI engine, qxctl, conformance tests, validator, reviewers
+- deferred_projections: rendered SKVI protocol documentation
+- notes: It does not authorize inferred membership or canonical apply.
+- status: canonical
+
+##### SKVI Entry Schema
+- path: `knowledge/skvi/schemas/v1/entry.schema.json`
+- title: SKVI Normalized Entry v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical normalized projection-entry shape
+- owner: SKVI maintainers
+- scope: Closes the ten semantic fields, canonical status, safe path, and entry digest.
+- relationships: depends_on -> `knowledge/skvi/schemas/v1/MANIFEST.md`; implemented_by -> `modules/skvi-engine/SPEC.md`
+- consumers: SKVI projections, qxctl, conformance tests, validator
+- deferred_projections: rendered entry reference
+- notes: Normalization does not make a derived entry canonical index truth.
+- status: canonical
+
+##### SKVI Operation Payload Schema
+- path: `knowledge/skvi/schemas/v1/operation-payload.schema.json`
+- title: SKVI Proposal Operation Payload v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical caller-declared proposal input shape
+- owner: SKVI maintainers
+- scope: Closes repository identity, optional session/context references, caller timestamps, and add/replace/remove semantics.
+- relationships: depends_on -> `knowledge/skvi/schemas/v1/MANIFEST.md`; implemented_by -> `modules/skvi-engine/SPEC.md`
+- consumers: qxctl proposal callers, SKVI engine, conformance tests, validator
+- deferred_projections: proposal form and SDK documentation
+- notes: The caller selects membership intent; the engine validates but does not decide it.
+- status: canonical
+
+##### SKVI Check Result Schema
+- path: `knowledge/skvi/schemas/v1/check-result.schema.json`
+- title: SKVI Check Result v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical deterministic structural evidence shape
+- owner: SKVI maintainers
+- scope: Closes index/contract digests, evidence, counts, valid/invalid state, read-only status, and disabled apply.
+- relationships: depends_on -> `knowledge/skvi/schemas/v1/MANIFEST.md`; implemented_by -> `modules/skvi-engine/SPEC.md`
+- consumers: qxctl check presentation, conformance tests, validator, reviewers
+- deferred_projections: check reports and analytical evidence
+- notes: Invalid state is evidence and does not authorize repair.
+- status: canonical
+
+##### SKVI Projection Schema
+- path: `knowledge/skvi/schemas/v1/projection.schema.json`
+- title: SKVI Structural Projection v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical disposable projection-result shape
+- owner: SKVI maintainers
+- scope: Closes engine/input identities, normalized entries, projection digest, and noncanonical rebuildable state.
+- relationships: depends_on -> `knowledge/skvi/schemas/v1/MANIFEST.md`; implements_entries -> `knowledge/skvi/schemas/v1/entry.schema.json`; implemented_by -> `modules/skvi-engine/SPEC.md`
+- consumers: qxctl project presentation, conformance tests, graph/search planners, validator
+- deferred_projections: JSONL, search, analytical, and graph projections after separate authorization
+- notes: This v1 implementation returns JSON in the process response and writes no projection file.
 - status: canonical
 
 #### SCLV
@@ -1691,7 +1888,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: `Authorization never implies completion; pending transaction state is noncanonical. Current validator coverage does not interpret release-transaction semantics.`
 
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures and the four common SKV JSON Schemas are permission-backed ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, five common SKV JSON Schemas, and four SKVI JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

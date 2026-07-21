@@ -16,12 +16,15 @@ Root governance establishes shared invariants without turning the repository int
 
 ## Implemented Foundations
 
-- [`qxctl`](tools/qxctl/) is the Go-based Cobra/Viper administrative and query CLI. It implements repository inspection, contract inventory, authenticated SSIAG metadata queries, and authenticated read-only STAV status, verification, query, and doctor commands.
+- [`qxctl`](tools/qxctl/) is the Go-based Cobra/Viper administrative and query CLI. It implements repository inspection, contract inventory, authenticated SSIAG metadata queries, authenticated read-only STAV operations, and exact-installation SKVI inspect/check/propose/project invocation with hard process deadlines and response verification.
 - [Symphony Secure Identity and Access Governance](modules/secure-identity-access-governance/) is an independently installable, cgo-free Go foundation with per-TOPS enrollment, exact local peer and endpoint trust, a metadata-only Unix-socket API, typed safe-metadata STAV production, and native launchd/systemd supervision. Credential use, policy mutation, provider execution, and secret delivery are not enabled.
 - [STAV Append Authority](modules/stav-append-authority/) is an independently installable Go service with per-TOPS durable append-only ledgers, mutually authenticated local IPC, exact producer and reader grants, fsync-before-receipt durability, bounded read projections, startup verification and tail recovery, and native launchd/systemd supervision.
 - [STAV Protocol for Go](libraries/stav-protocol-go/) is an authority-free Go library implementing the canonical STAV v1 codec, validation, digest, framing, and conformance rules.
 - [SSIAG macOS Keychain Provider](modules/ssiag-provider-macos-keychain/) is an independently buildable Swift metadata adapter implementing bounded `hello`, `status`, and `capabilities` operations. Operational Keychain access is deliberately disabled.
 - [Symphony Validator](tools/symphony-validator/) is a deterministic, read-only C++26 repository checker with a CMake build, line-oriented evidence, stable exit behavior, and extensive smoke fixtures. Structured projectors, qxctl mediation, CI wiring, and portable installation packaging remain deferred.
+- [Knowledge Vector Engine C++ Foundation](libraries/knowledge-vector-engine-cpp/) implements authority-free bounded JSON process framing, SHA-256 digests, no-follow repository reads, deterministic snapshots, versioned packaging, receipts, and receipt-owned uninstall mechanics.
+- [Knowledge Session Coordinator](modules/knowledge-session-coordinator/) is an independently installable C++26 process implementing bounded inspect and read-only snapshot checks. Authenticated session mutation, journals, locks, vector coordination, and apply remain disabled.
+- [SKVI Engine](modules/skvi-engine/) is an independently installable C++26 structural knowledge engine implementing deterministic inspect/check, caller-declared immutable proposals, and disposable digest-bound JSON projections. It cannot decide index membership or write canonical knowledge.
 - [`knowledge/`](knowledge/) contains the canonical SKV surfaces currently established for source routing (SKVI), change truth (SCLV), API governance (SACV), publication governance (SODV), SSIAG, and STAV. Canonical knowledge governs implementations; tools do not own canonical schemas.
 
 ## First Runtime Set
@@ -30,7 +33,7 @@ The repository contains proposal-only Contract Quad seeds for `node-troll`, `bus
 
 ## Current Integration Boundary
 
-SSIAG submits only typed, security-relevant safe metadata to the STAV append authority and never writes ledger files. qxctl authenticates the exact configured SSIAG and STAV endpoints before application exchange and remains read-only. The macOS provider reports metadata only. SACV targets OpenAPI 3.2.0 governance, but no remote HTTP API, SDK, live playground, or published OpenAPI description is currently claimed.
+SSIAG submits only typed, security-relevant safe metadata to the STAV append authority and never writes ledger files. qxctl authenticates the exact configured SSIAG and STAV endpoints before application exchange and performs no canonical mutation. For SKVI, qxctl validates an exact inactive-undocked installation before invoking its bounded local process; lifecycle selection, docking, and apply are not implemented. The macOS provider reports metadata only. SACV targets OpenAPI 3.2.0 governance, but no remote HTTP API, SDK, live playground, or published OpenAPI description is currently claimed.
 
 ## Releases and Documentation
 

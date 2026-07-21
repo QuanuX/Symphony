@@ -31,6 +31,8 @@ func TestCLICompatibility(t *testing.T) {
 		{name: "missing STAV subcommand", args: []string{"stav"}, status: 1, output: "stav failed: STAV subcommand is required: status, verify, query, or doctor\n"},
 		{name: "unknown STAV subcommand", args: []string{"stav", "unknown"}, status: 1, output: "stav failed: unknown STAV subcommand \"unknown\"\n"},
 		{name: "prohibited STAV append", args: []string{"stav", "append"}, status: 1, output: "stav failed: qxctl stav append is prohibited; qxctl never submits arbitrary events or edits ledgers\n"},
+		{name: "missing SKVI subcommand", args: []string{"skvi"}, status: 1, output: "skvi failed: SKVI subcommand is required: inspect, check, propose, or project\n"},
+		{name: "SKVI prefix required", args: []string{"skvi", "inspect"}, status: 1, output: "skvi inspect failed: --prefix is required\n"},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
