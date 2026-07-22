@@ -28,6 +28,8 @@ const (
 	sclvEngineID     = "symphony-sclv"
 	sacvModuleID     = "sacv-engine"
 	sacvEngineID     = "symphony-sacv"
+	sodvModuleID     = "sodv-engine"
+	sodvEngineID     = "symphony-sodv"
 	maxReceiptBytes  = 256 * 1024
 	maxRequestBytes  = 1024 * 1024
 	maxResponseBytes = 4 * 1024 * 1024
@@ -54,6 +56,10 @@ var sclvSpec = engineSpec{
 
 var sacvSpec = engineSpec{
 	label: "SACV", moduleID: sacvModuleID, engineID: sacvEngineID, expectedFiles: expectedSACVFiles,
+}
+
+var sodvSpec = engineSpec{
+	label: "SODV", moduleID: sodvModuleID, engineID: sodvEngineID, expectedFiles: expectedSODVFiles,
 }
 
 type receipt struct {
@@ -110,6 +116,10 @@ func InvokeSCLV(ctx context.Context, prefix, version, repositoryRoot, operation 
 
 func InvokeSACV(ctx context.Context, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
 	return invoke(ctx, sacvSpec, prefix, version, repositoryRoot, operation, payload)
+}
+
+func InvokeSODV(ctx context.Context, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
+	return invoke(ctx, sodvSpec, prefix, version, repositoryRoot, operation, payload)
 }
 
 func invoke(ctx context.Context, spec engineSpec, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
@@ -363,6 +373,27 @@ func expectedSACVFiles(version string) map[string]struct{} {
 	paths := []string{
 		"libexec/symphony/sacv-engine/" + version + "/symphony-sacv",
 		"share/symphony/receipts/sacv-engine/" + version + "/install-receipt.json",
+		base + "INTENT.md",
+		base + "MANIFEST.md",
+		base + "INSTALL.md",
+		base + "SKILL.md",
+		base + "SPEC.md",
+		license + "LICENSE-AGPL-3.0",
+		license + "nlohmann-json-LICENSE.MIT",
+	}
+	result := make(map[string]struct{}, len(paths))
+	for _, path := range paths {
+		result[path] = struct{}{}
+	}
+	return result
+}
+
+func expectedSODVFiles(version string) map[string]struct{} {
+	base := "share/doc/symphony/sodv-engine/" + version + "/"
+	license := "share/licenses/symphony-sodv-engine/" + version + "/"
+	paths := []string{
+		"libexec/symphony/sodv-engine/" + version + "/symphony-sodv",
+		"share/symphony/receipts/sodv-engine/" + version + "/install-receipt.json",
 		base + "INTENT.md",
 		base + "MANIFEST.md",
 		base + "INSTALL.md",

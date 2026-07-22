@@ -12,6 +12,7 @@ add_executable(symphony-validator
     src/skvi_coverage.cpp
     src/skvi_paths.cpp
     src/sacv_registry.cpp
+    src/sodv_releases.cpp
     src/sclv_changelog.cpp
     src/sclv_shape.cpp
     src/sclv_ledger.cpp
@@ -60,6 +61,20 @@ add_executable(caller-authority-tests
     src/evidence.cpp
 )
 
+add_executable(sodv-release-tests
+    tests/sodv_release_test.cpp
+    src/sodv_releases.cpp
+    src/evidence.cpp
+)
+
+target_include_directories(sodv-release-tests PRIVATE src)
+
+set_target_properties(sodv-release-tests PROPERTIES
+  CXX_STANDARD 26
+  CXX_STANDARD_REQUIRED ON
+  CXX_EXTENSIONS OFF
+)
+
 target_include_directories(caller-authority-tests PRIVATE src)
 
 target_compile_definitions(caller-authority-tests PRIVATE
@@ -75,4 +90,6 @@ set_target_properties(caller-authority-tests PROPERTIES
 if(BUILD_TESTING)
   add_test(NAME sclv-temporal-tests COMMAND sclv-temporal-tests)
   add_test(NAME caller-authority-tests COMMAND caller-authority-tests)
+  get_filename_component(SYMPHONY_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
+  add_test(NAME sodv-release-tests COMMAND sodv-release-tests ${SYMPHONY_REPOSITORY_ROOT})
 endif()

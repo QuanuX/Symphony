@@ -62,7 +62,7 @@ Families including `REPO.*`, `MODULE.*`, `INSTALL.*`, `NAMESPACE.*`, `TROLL.*`, 
 Status reflects the deterministic outcome of a rule check.
 
 ## Exit-code Model
-`0` to `22`, mapping to passes, errors, blockers, malformed repositories, or internal failures. The exact mapping is:
+`0` to `23`, mapping to passes, errors, blockers, malformed repositories, or internal failures. The exact mapping is:
 
 - `0`: success;
 - `1`: invalid CLI usage or unknown command;
@@ -86,7 +86,8 @@ Status reflects the deterministic outcome of a rule check.
 - `19`: SCLV/SKVI membership;
 - `20`: validator build-source integrity;
 - `21`: caller-authority regression.
-- `22`: SACV registry grammar, ownership, classification, SKVI coverage, or no-follow document failure.
+- `22`: SACV registry grammar, ownership, classification, SKVI coverage, or no-follow document failure;
+- `23`: SODV release-record grammar, ordering, lineage, publication-unit, or no-follow ledger failure.
 
 ## Historical/Migration Exception Behavior
 Stale names (e.g. `legacy node execution label`, `legacy native hot-path label`, `legacy bus residency label`) are rejected except in historical contexts or rename records.
@@ -94,11 +95,15 @@ Stale names (e.g. `legacy node execution label`, `legacy native hot-path label`,
 ## Allowlist Behavior
 Allowlists must never become silent bypasses. Every allowlist entry must produce evidence in JSON and Markdown.
 
-The Architect-ratified STAV v1 JSON Schema/conformance fixtures, six common SKV process/descriptor/receipt/proposal/provider-evidence schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, and six SACV v1 operation/result schemas are canonical protocol truth, not generated projections. The artifact checker may allow only their 49 exact paths and must emit `artifact.canonical_json_authorized` evidence for every encountered file with `knowledge/stav/SPEC.md`, `knowledge/SPEC.md`, `knowledge/skvi/SPEC.md`, `knowledge/sclv/SPEC.md`, or `knowledge/sacv/SPEC.md` authority as applicable. Prefix or extension-wide JSON allowlisting is prohibited; any new canonical JSON artifact requires an explicit contract and validator update.
+The Architect-ratified STAV v1 JSON Schema/conformance fixtures, six common SKV process/descriptor/receipt/proposal/provider-evidence schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, and eight SODV operational schemas are canonical protocol truth, not generated projections. The artifact checker may allow only their 57 exact paths and must emit `artifact.canonical_json_authorized` evidence for every encountered file with `knowledge/stav/SPEC.md`, `knowledge/SPEC.md`, `knowledge/skvi/SPEC.md`, `knowledge/sclv/SPEC.md`, `knowledge/sacv/SPEC.md`, or `knowledge/sodv/SPEC.md` authority as applicable. Prefix or extension-wide JSON allowlisting is prohibited; any new canonical JSON artifact requires an explicit contract and validator update.
 
 ### SACV Registry Boundary
 
 The validator independently checks `knowledge/sacv/REGISTRY.md`. An explicitly empty registry is valid. A nonempty registry requires the exact thirteen-field Markdown grammar, unique safe identities and paths, owner-path containment, OpenAPI 3.2.0 and enumerated classifications, SKVI coverage, and a no-follow regular owner document. Failure returns exit status `22`. The validator does not pretend to be an OpenAPI or YAML parser; registered document semantics, examples, references, operation security, and compatibility remain the bounded responsibility of `symphony-sacv`.
+
+### SODV Release Ledger Boundary
+
+The validator independently checks `knowledge/sodv/RELEASES.md` as a bounded no-follow regular file. It recognizes immutable historical v1 and prospective provider-neutral v2 records, rejects duplicate/unsafe identities, canonical pending state, type/status drift, timestamp reversal, missing or forward subjects, duplicate completion, malformed publication units, and authorization-lineage changes to coordinate, version, tag, or revision. Failure returns exit status `23`. It never contacts Git hosts or package providers, interprets caller observation payloads, moves tags, validates remote checksums, or declares release completion; those richer proposal/read behaviors remain in the independently installed `symphony-sodv` engine.
 
 ## Refusal/Non-Remediation Behavior
 The validator may report failures and identify expected/observed conditions. It must not rewrite files or choose remedies.

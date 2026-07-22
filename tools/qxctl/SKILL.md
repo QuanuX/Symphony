@@ -25,6 +25,11 @@ Any caller operating within its effective target-host permission should use `qxc
 - `go run ./cmd/qxctl sacv diff --prefix /chosen/prefix --input diff-input.json`
 - `go run ./cmd/qxctl sacv propose --prefix /chosen/prefix --input proposal-input.json`
 - `go run ./cmd/qxctl sacv project --prefix /chosen/prefix --json`
+- `go run ./cmd/qxctl sodv check --prefix /chosen/prefix`
+- `go run ./cmd/qxctl sodv verify --prefix /chosen/prefix --input observed-state.json`
+- `go run ./cmd/qxctl sodv propose --prefix /chosen/prefix --input proposal-input.json`
+- `go run ./cmd/qxctl sodv recover --prefix /chosen/prefix --input recovery-input.json`
+- `go run ./cmd/qxctl sodv project --prefix /chosen/prefix --json`
 
 ## Constraints
 - Use the Go standard library, ratified first-party Go libraries, and only their approved cgo-free platform dependencies.
@@ -39,6 +44,7 @@ Any caller operating within its effective target-host permission should use `qxc
 - For implemented SCLV commands, invoke only an explicit installation prefix and exact version. Treat checks as evidence and proposals, recovery results, and projections as noncanonical; recovery never updates or deletes the journal.
 - Supply SCLV v3 proposal/recovery input only through bounded no-follow JSON files. Provider evidence must be normalized by an applicable adapter and must never contain credentials, raw proofs, provider payloads, shell fragments, or environment dumps.
 - For implemented SACV commands, use an exact inactive-undocked installation and treat check/diff output as evidence, proposals as unratified, and projections as disposable. The development engine validates JSON OpenAPI 3.2.0 entry documents and reports YAML parser availability fail-closed; never use qxctl to invent ownership, endpoints, security profiles, publication approval, SDK eligibility, or runtime bindings.
+- For implemented SODV commands, use an exact inactive-undocked installation and provide external tag/package observations only through a bounded no-follow JSON file. Treat verification and recovery as noncanonical evidence, proposals as unratified, and projections as disposable. qxctl and the engine never create or move tags, contact providers, declare completion, append release records, mutate recovery journals, or publish artifacts.
 - Treat the default knowledge session as a login/authentication-to-logout/expiry/revocation authority epoch containing separate worktree reconciliation contexts. Never extend authority across a required re-authentication boundary.
 - Keep vector administration, recovery, and audit reconciliation away from hot and warm paths.
 
@@ -46,7 +52,7 @@ Any caller operating within its effective target-host permission should use `qxc
 - Do not use qxctl for managing NATS directly.
 - Do not use qxctl for deploying to cloud/Docker/Kubernetes.
 - Do not use qxctl to replace `node-troll`, `bus-troll`, or `hotpath-runtime`.
-- Do not use qxctl to write generated SKVI/SCLV/SACV records directly; use ratified proposal operations and the separately gated apply path when available.
+- Do not use qxctl to write generated SKVI/SCLV/SACV/SODV records directly; use ratified proposal operations and the separately gated apply path when available.
 - Do not use qxctl to enforce runtime behavior or execute hotpath workloads.
 - Do not use qxctl to implement provider SDK behavior or bypass SSIAG policy.
 - Do not use qxctl to append STAV events or edit ledger files.

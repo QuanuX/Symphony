@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sodv:release-record:v2",
+  "title": "SODV release record v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["release_record_id", "record_version", "record_type", "status", "disposition", "recorded_at", "recorded_by", "subject_record_ids", "publication_units", "purpose", "evidence", "non_authorizations", "notes"],
+  "properties": {
+    "release_record_id": {"$ref": "#/$defs/record_id"},
+    "record_version": {"const": 2},
+    "record_type": {"enum": ["authorization", "authorization_correction", "completion", "failure"]},
+    "status": {"enum": ["authorized", "canonical", "completed", "failed"]},
+    "disposition": {"$ref": "#/$defs/token"},
+    "recorded_at": {"$ref": "#/$defs/utc"},
+    "recorded_by": {"$ref": "#/$defs/text"},
+    "subject_record_ids": {
+      "type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true,
+      "items": {"oneOf": [{"$ref": "#/$defs/record_id"}, {"const": "not_applicable"}]}
+    },
+    "publication_units": {
+      "type": "array", "minItems": 1, "maxItems": 128,
+      "items": {"$ref": "#/$defs/unit"}
+    },
+    "purpose": {"$ref": "#/$defs/long_text"},
+    "evidence": {"$ref": "#/$defs/text_list"},
+    "non_authorizations": {"$ref": "#/$defs/text_list"},
+    "notes": {"$ref": "#/$defs/long_text"}
+  },
+  "$defs": {
+    "record_id": {"type": "string", "pattern": "^SODV-REL-[A-Z0-9][A-Z0-9._:-]{2,95}$"},
+    "token": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "text": {"type": "string", "minLength": 1, "maxLength": 4096},
+    "long_text": {"type": "string", "minLength": 1, "maxLength": 65536},
+    "utc": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"},
+    "revision": {"type": "string", "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$"},
+    "version": {"type": "string", "pattern": "^v(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$"},
+    "tag": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])[^/]+(?:/[^/]+)*$"},
+    "digest_value": {"type": "string", "minLength": 1, "maxLength": 512},
+    "optional_digest_value": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest_value"}]},
+    "digests": {
+      "type": "object", "additionalProperties": false,
+      "required": ["content", "metadata"],
+      "properties": {"content": {"$ref": "#/$defs/optional_digest_value"}, "metadata": {"$ref": "#/$defs/optional_digest_value"}}
+    },
+    "unit": {
+      "type": "object", "additionalProperties": false,
+      "required": ["unit_id", "artifact_kind", "coordinate", "version", "tag", "revision_scheme", "revision_value", "source_reference", "tag_object", "public_digests"],
+      "properties": {
+        "unit_id": {"$ref": "#/$defs/token"},
+        "artifact_kind": {"const": "go_module"},
+        "coordinate": {"$ref": "#/$defs/text"},
+        "version": {"$ref": "#/$defs/version"},
+        "tag": {"$ref": "#/$defs/tag"},
+        "revision_scheme": {"enum": ["git-sha1", "git-sha256"]},
+        "revision_value": {"$ref": "#/$defs/revision"},
+        "source_reference": {"$ref": "#/$defs/text"},
+        "tag_object": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/revision"}]},
+        "public_digests": {"$ref": "#/$defs/digests"}
+      }
+    },
+    "text_list": {"type": "array", "minItems": 1, "maxItems": 1024, "uniqueItems": true, "items": {"$ref": "#/$defs/text"}}
+  }
+}

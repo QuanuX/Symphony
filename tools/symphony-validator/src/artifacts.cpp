@@ -9,9 +9,9 @@ namespace fs = std::filesystem;
 #include "evidence.hpp"
 
 bool is_authorized_canonical_json(const std::string& relative_path) {
-    // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, and SACV protocol artifacts. Directory-prefix
+    // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, and SODV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 49> authorized_paths = {
+    static const std::array<std::string, 57> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -60,7 +60,15 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/sacv/schemas/v1/diff-input.schema.json",
         "knowledge/sacv/schemas/v1/diff-result.schema.json",
         "knowledge/sacv/schemas/v1/proposal-input.schema.json",
-        "knowledge/sacv/schemas/v1/projection.schema.json"
+        "knowledge/sacv/schemas/v1/projection.schema.json",
+        "knowledge/sodv/schemas/v1/release-record-v2.schema.json",
+        "knowledge/sodv/schemas/v1/observed-state.schema.json",
+        "knowledge/sodv/schemas/v1/check-result.schema.json",
+        "knowledge/sodv/schemas/v1/verify-result.schema.json",
+        "knowledge/sodv/schemas/v1/proposal-input.schema.json",
+        "knowledge/sodv/schemas/v1/recovery-input.schema.json",
+        "knowledge/sodv/schemas/v1/recovery-result.schema.json",
+        "knowledge/sodv/schemas/v1/projection.schema.json"
     };
     return std::find(authorized_paths.begin(), authorized_paths.end(), relative_path) != authorized_paths.end();
 }
@@ -127,6 +135,8 @@ ArtifactCheckResult check_unauthorized_artifacts(const std::string& repo_root) {
                                         ? "knowledge/sclv/SPEC.md"
                                     : rel_path.starts_with("knowledge/sacv/")
                                         ? "knowledge/sacv/SPEC.md"
+                                    : rel_path.starts_with("knowledge/sodv/")
+                                        ? "knowledge/sodv/SPEC.md"
                                     : "knowledge/SPEC.md";
                             result.messages.push_back(format_evidence(EvidenceCategory::Pass, "artifact.canonical_json_authorized", "path=" + rel_path + " authority=" + authority));
                             break;

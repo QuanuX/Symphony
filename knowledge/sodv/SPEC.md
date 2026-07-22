@@ -4,8 +4,8 @@
 `knowledge/sodv/SPEC.md`
 
 ## Specification Status
-- declarative only
-- proposal/projection engine architecture authorized
+- canonical declarative contract with an implemented subordinate proposal/read engine
+- operational release-record, observation, check, verify, proposal-input, recovery, and projection schemas implemented
 - not public documentation
 - not a docs site
 - not Mintlify configuration
@@ -15,7 +15,7 @@
 - not a JSON schema
 - not a Markdown template
 - not CI configuration
-- bounded qxctl proposal/read integration authorized after contract merge
+- bounded qxctl proposal/read integration implemented
 - not validator implementation; checked in part by the separately bounded validator
 
 ## Purpose
@@ -40,7 +40,7 @@ For Go modules, a workspace-composed test or warm module cache is insufficient c
 Any pre-publication Go archive or checksum simulation for a module nested in the monorepo must use the VCS-aware module-zip algorithm against the repository root, exact revision, and module subdirectory, equivalent to `golang.org/x/mod/zip.CreateFromVCS`. A raw subdirectory archive, `git archive` limited to the module subtree, or directory-only proxy builder is not canonical packaging evidence. In particular, VCS-aware packaging must preserve Go's repository-root `LICENSE` inheritance and all nested-module, vendor, symlink, path, and size rules.
 
 ## Initial SODV Governance Scope
-The initial SODV scope covers sources, relationships, and evidence. Projections are deferred.
+The initial SODV scope covers sources, relationships, evidence, and a disposable release-transaction inventory. Public-documentation and vendor projections remain deferred.
 
 ## Layer 0 Canonical Publication Sources
 - root governance files
@@ -93,7 +93,7 @@ Future docs directory creation is not authorized by this canonical seed.
 Future Mintlify configuration is not authorized by this canonical seed.
 Future publication pipelines are not authorized by this canonical seed.
 Future generated documentation is not authorized by this canonical seed.
-Future JSON schemas are not authorized by this canonical seed.
+Future public-documentation and vendor-projection schemas are not authorized by this canonical seed. The bounded operational schemas under `knowledge/sodv/schemas/v1/` govern only the implemented release proposal/read engine.
 Future Markdown templates are not authorized by this canonical seed.
 
 ## Publication Truth Versus Source Truth Boundaries
@@ -136,7 +136,7 @@ Mintlify is a publication surface, not canonical authority.
 NotebookLM is a corpus alignment and context tool, not canonical authority.
 
 ## Relationship to symphony-validator Evidence
-The checked-in validator produces deterministic evidence for required SODV contract anchors and indexed-path presence. It does not currently parse `RELEASES.md` transactions or verify Git tags, public-proxy state, checksum-database state, or release completion.
+The checked-in validator produces deterministic evidence for required SODV contract anchors, indexed-path presence, and local `RELEASES.md` record relationships. It does not inspect Git hosts, package providers, checksum databases, caller-supplied observation evidence, or release completion.
 
 ## Relationship to qxctl
 qxctl may invoke bounded SODV proposal/read operations but does not own release semantics, create tags, publish artifacts, or append canonical records.
@@ -161,9 +161,9 @@ Git history is version-control evidence.
 PR history is review and merge evidence.
 
 ## Deferred Surfaces
-`docs/`, `mint.json`, public documentation, schemas, templates, implementation, index generation.
+`docs/`, `mint.json`, public documentation, public/vendor projection schemas, templates, publication generators, and documentation-index generation. The operational release-engine schemas and implementation are not deferred.
 
-SODV is not public documentation. SODV is not a docs site. SODV is not Mintlify. SODV is not NotebookLM. SODV is not a publication pipeline. SODV is not a generated documentation system yet. SODV is not a generated index yet. SODV is not a documentation template system yet. SODV is not a schema system. SODV is not qxctl. SODV is not symphony-validator. SODV is not SKVI. SODV is not SCLV. SODV is not SSCG. SODV does not replace canonical repository knowledge files. SODV does not replace module contracts. SODV does not replace tool contracts. SODV does not replace PR review. SODV does not create runtime behavior. SODV does not enforce runtime behavior.
+SODV is not public documentation. SODV is not a docs site. SODV is not Mintlify. SODV is not NotebookLM. SODV is not a publication pipeline. SODV is not a generated documentation system yet. SODV is not a generated index yet. SODV is not a documentation template system yet. Its operational release schemas do not create a general publication-schema system. SODV is not qxctl. SODV is not symphony-validator. SODV is not SKVI. SODV is not SCLV. SODV is not SSCG. SODV does not replace canonical repository knowledge files. SODV does not replace module contracts. SODV does not replace tool contracts. SODV does not replace PR review. SODV does not create runtime behavior. SODV does not enforce runtime behavior.
 
 ## Non-Authorization Statement
-This specification authorizes the bounded SODV proposal/projection engine and qxctl invocation after contract merge. It authorizes no canonical apply, public documentation files, docs directory, `mint.json`, Mintlify configuration, tag creation, external publication, NotebookLM automation, general publication pipeline, or release-completion claim.
+This specification governs the implemented bounded SODV proposal/read engine, operational schemas, and qxctl invocation. It authorizes no canonical apply, public documentation files, docs directory, `mint.json`, Mintlify configuration, tag creation, external publication, NotebookLM automation, general publication pipeline, or release-completion claim.

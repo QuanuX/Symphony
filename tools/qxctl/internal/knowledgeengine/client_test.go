@@ -189,6 +189,71 @@ func TestResolveInstalledSACVRequiresExactNineFileReceipt(t *testing.T) {
 	}
 }
 
+func TestResolveInstalledSODVRequiresExactNineFileReceipt(t *testing.T) {
+	prefix := t.TempDir()
+	version := "0.1.0-dev"
+	files := expectedSODVFiles(version)
+	for relative := range files {
+		path := filepath.Join(prefix, filepath.FromSlash(relative))
+		if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		mode := os.FileMode(0o644)
+		if strings.HasPrefix(relative, "libexec/") {
+			mode = 0o755
+		}
+		if err := os.WriteFile(path, []byte("fixture\n"), mode); err != nil {
+			t.Fatal(err)
+		}
+	}
+	receiptPath := filepath.Join(prefix, "share/symphony/receipts/sodv-engine", version, "install-receipt.json")
+	listed := make([]string, 0, len(files))
+	for relative := range files {
+		listed = append(listed, relative)
+	}
+	document := map[string]any{
+		"protocol": receiptProtocol, "module_id": sodvModuleID, "version": version,
+		"install_scope": "prefix", "prefix_mode": "installation_prefix",
+		"state": "installed_undocked", "active": false, "default_receptor": nil,
+		"files": listed,
+	}
+	data, err := json.Marshal(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(receiptPath, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	binary, err := resolveInstalledFor(sodvSpec, prefix, version)
+	if err != nil {
+		t.Fatalf("valid SODV installation rejected: %v", err)
+	}
+	canonicalPrefix, err := filepath.EvalSymlinks(prefix)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want := filepath.Join(canonicalPrefix, "libexec/symphony/sodv-engine", version, "symphony-sodv"); binary != want {
+		t.Fatalf("binary = %q, want %q", binary, want)
+	}
+
+	delete(files, "share/doc/symphony/sodv-engine/"+version+"/SPEC.md")
+	listed = listed[:0]
+	for relative := range files {
+		listed = append(listed, relative)
+	}
+	document["files"] = listed
+	data, err = json.Marshal(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(receiptPath, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := resolveInstalledFor(sodvSpec, prefix, version); err == nil {
+		t.Fatal("SODV receipt missing a required documentation file was accepted")
+	}
+}
+
 func TestInvokeEnforcesCallerDeadlineAroundChildProcess(t *testing.T) {
 	prefix := t.TempDir()
 	createInstalledFixture(t, prefix, "#!/bin/sh\n/bin/sleep 10\n")

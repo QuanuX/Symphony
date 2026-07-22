@@ -1333,7 +1333,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: administrative CLI implementation surface
 - truth_role: local operation dispatch, process-client invocation, and presentation implementation truth
 - owner: qxctl maintainers
-- scope: Implements current repository, module, SSIAG, STAV, SKVI, SCLV, and SACV administrative operation handlers.
+- scope: Implements current repository, module, SSIAG, STAV, SKVI, SCLV, SACV, and SODV administrative operation handlers.
 - relationships: implements -> `tools/qxctl/MANIFEST.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`
 - consumers: qxctl executable, tests, maintainers, reviewers
 - deferred_projections: generated CLI reference and operation evidence
@@ -1346,7 +1346,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: administrative CLI implementation surface
 - truth_role: implemented command tree, flag grammar, and failure routing
 - owner: qxctl maintainers
-- scope: Implements current repository, SSIAG, STAV, and exact-installation SKVI/SCLV/SACV command grammar without owning domain semantics.
+- scope: Implements current repository, SSIAG, STAV, and exact-installation SKVI/SCLV/SACV/SODV command grammar without owning domain semantics.
 - relationships: implements -> `tools/qxctl/MANIFEST.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`
 - consumers: qxctl executable, compatibility tests, maintainers, reviewers
 - deferred_projections: generated CLI reference documentation
@@ -1359,9 +1359,9 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: bounded Go process-client implementation
 - truth_role: trusted receipt resolution, child-process bounds, and response verification implementation truth
 - owner: qxctl maintainers
-- scope: Resolves exact installed SKVI, SCLV, and SACV versions, validates their inactive-undocked receipts and owned paths, invokes them with an empty environment and hard deadline, and verifies response identity and digest.
-- relationships: implements -> `knowledge/SPEC.md`; implements -> `knowledge/skvi/SPEC.md`; implements -> `knowledge/sclv/SPEC.md`; implements -> `knowledge/sacv/SPEC.md`; called_by -> `tools/qxctl/cmd/qxctl/commands.go`
-- consumers: qxctl SKVI/SCLV/SACV commands, tests, reviewers, future compatible vector clients
+- scope: Resolves exact installed SKVI, SCLV, SACV, and SODV versions, validates their inactive-undocked receipts and owned paths, invokes them with an empty environment and hard deadline, and verifies response identity and digest.
+- relationships: implements -> `knowledge/SPEC.md`; implements -> `knowledge/skvi/SPEC.md`; implements -> `knowledge/sclv/SPEC.md`; implements -> `knowledge/sacv/SPEC.md`; implements -> `knowledge/sodv/SPEC.md`; called_by -> `tools/qxctl/cmd/qxctl/commands.go`
+- consumers: qxctl SKVI/SCLV/SACV/SODV commands, tests, reviewers, future compatible vector clients
 - deferred_projections: additional compatible vector clients
 - notes: It does not install, activate, dock, infer membership, grant permission, ratify, mutate journals, or apply.
 - status: canonical
@@ -1708,11 +1708,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: SKV umbrella manifest
 - truth_role: common vector-engine identity, namespace, installability, and authority boundary
 - owner: Symphony Knowledge Vector maintainers
-- scope: Declares independently installed C++ engines, the implemented shared mechanics/read-only coordinator/SKVI/SCLV slices, qxctl administration, Linux-first delivery, Maestro readiness, and proposal-only initial state.
+- scope: Declares independently installed C++ engines, the implemented shared mechanics/read-only coordinator/SKVI/SCLV/SACV/SODV slices, qxctl administration, Linux-first delivery, Maestro readiness, and proposal-only initial state.
 - relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/`; governs -> `modules/knowledge-session-coordinator/`; governs -> `modules/skvi-engine/`; governs -> `modules/sclv-engine/`; governs -> future cleared vector-engine module paths
 - consumers: vector maintainers, engine implementers, qxctl, Maestro planners, reviewers, agentic tools
 - deferred_projections: engine inventory, install receipts, Maestro presence graph
-- notes: Foundation/coordinator and SKVI/SCLV `0.1.0-dev` slices now exist; other vector engines, session mutation, canonical apply, live docking, and SSFV remain gated.
+- notes: Foundation/coordinator and SKVI/SCLV/SACV/SODV `0.1.0-dev` slices now exist; other vector engines, session mutation, canonical apply, live docking, and SSFV remain gated.
 - status: canonical
 
 ##### SPEC.md
@@ -1725,7 +1725,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
 - consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
 - deferred_projections: proposal/session/provider/docking schemas, conformance evidence, engine inventory, docking graph
-- notes: Six common schemas and the foundation/coordinator/SKVI/SCLV slices are implemented; programmatic apply is disabled.
+- notes: Six common schemas and the foundation/coordinator/SKVI/SCLV/SACV/SODV slices are implemented; programmatic apply is disabled.
 - status: canonical
 
 ##### SKILL.md
@@ -2236,14 +2236,211 @@ Future validator increments may add separately ratified deterministic checks wit
 - truth_role: `canonical module-publication authorization and completion truth`
 - owner: `SODV maintainer`
 - scope: `Binds module versions to immutable source commits before publication and records clean-cache completion evidence afterward.`
-- relationships: `depends_on -> knowledge/sodv/SPEC.md; depends_on -> knowledge/sclv/CHANGELOG.md; records -> module release publication; checked_by -> tools/symphony-validator/SPEC.md for indexed-path presence only`
+- relationships: `depends_on -> knowledge/sodv/SPEC.md; depends_on -> knowledge/sclv/CHANGELOG.md; records -> module release publication; checked_by -> tools/symphony-validator/SPEC.md for local record relationships`
 - consumers: `Architect, release maintainers, reviewers, agentic tools, symphony-validator and future validator extensions`
 - deferred_projections: `release notes, package index, public documentation`
 - status: `canonical`
-- notes: `Authorization never implies completion; pending transaction state is noncanonical. Current validator coverage does not interpret release-transaction semantics.`
+- notes: `Authorization never implies completion; pending transaction state is noncanonical. External tag and package-provider state remains caller-supplied evidence.`
+
+##### SODV v1 Schema Manifest
+- path: `knowledge/sodv/schemas/v1/MANIFEST.md`
+- title: SODV Operational Schema Manifest
+- surface_type: vector-specific protocol schema manifest
+- truth_role: canonical inventory and boundary for exact SODV release-engine schemas
+- owner: SODV maintainers
+- scope: Declares v2 records and v1 observation, check, verify, proposal-input, recovery-input, recovery-result, and projection schemas.
+- relationships: depends_on -> `knowledge/sodv/SPEC.md`; implemented_by -> `modules/sodv-engine/SPEC.md`
+- consumers: SODV engine, qxctl, conformance tests, validator, reviewers
+- deferred_projections: rendered SODV protocol documentation
+- notes: Operational schemas grant no tag, publication, completion, ratification, or apply authority.
+- status: canonical
+
+##### SODV Release Record v2 Schema
+- path: `knowledge/sodv/schemas/v1/release-record-v2.schema.json`
+- title: SODV Provider-Neutral Release Record v2
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical prospective release-record shape
+- owner: SODV maintainers
+- scope: Closes record identity, lineage, caller authority, publication units, immutable revisions, evidence, and non-authorizations.
+- relationships: depends_on -> `knowledge/sodv/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sodv-engine/SPEC.md`
+- consumers: SODV engine, qxctl proposal callers, conformance tests, validator
+- deferred_projections: release-record reference documentation
+- notes: Version 2 is prospective; historical v1 records remain immutable.
+- status: canonical
+
+##### SODV Observed State Schema
+- path: `knowledge/sodv/schemas/v1/observed-state.schema.json`
+- title: SODV Observed Publication State v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical caller-supplied external-state evidence shape
+- owner: SODV maintainers
+- scope: Closes authorization identity, observation time/source, tag objects/targets, public state, digests, and evidence digests.
+- relationships: depends_on -> `knowledge/sodv/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sodv-engine/SPEC.md`
+- consumers: qxctl verify/recovery callers, SODV engine, conformance tests
+- deferred_projections: provider adapters after separate authorization
+- notes: The engine performs no provider lookup; supplying evidence does not make it canonical.
+- status: canonical
+
+##### SODV Check Result Schema
+- path: `knowledge/sodv/schemas/v1/check-result.schema.json`
+- title: SODV Check Result v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical deterministic release-ledger diagnostic shape
+- owner: SODV maintainers
+- scope: Closes ledger/snapshot digests, expected-state match, record/transaction counts, evidence, summary, read-only state, and disabled apply.
+- relationships: depends_on -> `knowledge/sodv/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sodv-engine/SPEC.md`
+- consumers: qxctl check presentation, conformance tests, validator, reviewers
+- deferred_projections: check reports
+- notes: Invalid state is evidence and does not authorize repair.
+- status: canonical
+
+##### SODV Verify Result Schema
+- path: `knowledge/sodv/schemas/v1/verify-result.schema.json`
+- title: SODV Verification Result v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical noncanonical verification-result shape
+- owner: SODV maintainers
+- scope: Closes release state classification, per-unit findings, canonical completion reference, and explicit non-completion authority.
+- relationships: depends_on -> `knowledge/sodv/schemas/v1/observed-state.schema.json`; implemented_by -> `modules/sodv-engine/SPEC.md`
+- consumers: qxctl verify/recovery presentation, SODV engine, conformance tests
+- deferred_projections: verification reports
+- notes: `engine_declares_completion` is always false.
+- status: canonical
+
+##### SODV Proposal Input Schema
+- path: `knowledge/sodv/schemas/v1/proposal-input.schema.json`
+- title: SODV Proposal Input v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical caller-declared release-proposal input shape
+- owner: SODV maintainers
+- scope: Closes repository/session/context/expiry, expected ledger digest, one v2 record, and optional observed state.
+- relationships: depends_on -> `knowledge/sodv/schemas/v1/release-record-v2.schema.json`; depends_on -> `knowledge/schemas/v1/proposal.schema.json`; implemented_by -> `modules/sodv-engine/SPEC.md`
+- consumers: qxctl proposal callers, SODV engine, conformance tests
+- deferred_projections: proposal forms
+- notes: The engine validates but neither publishes nor ratifies.
+- status: canonical
+
+##### SODV Recovery Input Schema
+- path: `knowledge/sodv/schemas/v1/recovery-input.schema.json`
+- title: SODV Recovery Input v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical non-mutating interrupted-session reconciliation input shape
+- owner: SODV maintainers
+- scope: Closes a local journal snapshot/digest, caller observation, optional forward proposal, and recovery reason.
+- relationships: depends_on -> `knowledge/sodv/schemas/v1/proposal-input.schema.json`; implemented_by -> `modules/sodv-engine/SPEC.md`
+- consumers: qxctl recovery callers, SODV engine, conformance tests
+- deferred_projections: recovery-status evidence
+- notes: Recovery never moves a tag, edits a record, or mutates/deletes the journal.
+- status: canonical
+
+##### SODV Recovery Result Schema
+- path: `knowledge/sodv/schemas/v1/recovery-result.schema.json`
+- title: SODV Recovery Result v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical recovery recommendation shape
+- owner: SODV maintainers
+- scope: Closes the action, nested verification, optional proposal, journal disposition recommendation, digest, and disabled apply.
+- relationships: depends_on -> `knowledge/sodv/schemas/v1/recovery-input.schema.json`; implemented_by -> `modules/sodv-engine/SPEC.md`
+- consumers: qxctl recovery presentation, SODV engine, conformance tests
+- deferred_projections: recovery reports
+- notes: Delete recommendation is not journal mutation.
+- status: canonical
+
+##### SODV Projection Schema
+- path: `knowledge/sodv/schemas/v1/projection.schema.json`
+- title: SODV Release Transaction Projection v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical disposable projection-result shape
+- owner: SODV maintainers
+- scope: Closes engine/input identities, normalized records, transaction summaries, digest, and noncanonical rebuildable state.
+- relationships: depends_on -> `knowledge/sodv/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sodv-engine/SPEC.md`
+- consumers: qxctl project presentation, conformance tests, future analytical planners
+- deferred_projections: JSONL, search, graph, and public release projections after separate authorization
+- notes: The implementation writes no projection file.
+- status: canonical
+
+### SODV Engine Module
+
+#### SODV Engine INTENT.md
+- path: `modules/sodv-engine/INTENT.md`
+- title: SODV Engine Intent
+- surface_type: independently installable module intent
+- truth_role: subordinate engine purpose and authority boundary
+- owner: SODV engine maintainers
+- scope: Declares provider-neutral proposal/read behavior for module-release truth.
+- relationships: depends_on -> `knowledge/sodv/INTENT.md`; declares -> `modules/sodv-engine/MANIFEST.md`
+- consumers: qxctl, implementers, reviewers, administrators, agentic tools
+- deferred_projections: provider adapters and public documentation
+- notes: The engine is not a publisher or source of canonical truth.
+- status: canonical
+
+#### SODV Engine MANIFEST.md
+- path: `modules/sodv-engine/MANIFEST.md`
+- title: SODV Engine Manifest
+- surface_type: independently installable module manifest
+- truth_role: executable, operation, dependency, installation, and authority truth
+- owner: SODV engine maintainers
+- scope: Declares six implemented proposal/read operations, three disabled mutation operations, and installed-undocked state.
+- relationships: depends_on -> `modules/sodv-engine/INTENT.md`; implements -> `knowledge/sodv/SPEC.md`; statically_links -> `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
+- consumers: build/install tooling, qxctl, reviewers, conformance tests
+- deferred_projections: provider adapters and lifecycle activation
+- notes: No network, tag, publication, completion-declaration, or canonical-apply authority exists.
+- status: canonical
+
+#### SODV Engine INSTALL.md
+- path: `modules/sodv-engine/INSTALL.md`
+- title: SODV Engine Installation
+- surface_type: module installation contract
+- truth_role: versioned prefix install, receipt, coexistence, and owned uninstall procedure
+- owner: SODV engine maintainers
+- scope: Defines the exact inactive-undocked nine-file package.
+- relationships: depends_on -> `modules/sodv-engine/MANIFEST.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/INSTALL.md`; consumed_by -> `tools/qxctl/internal/knowledgeengine/client.go`
+- consumers: administrators, packaging, qxctl, conformance tests
+- deferred_projections: lifecycle-administrator automation
+- notes: Installation creates no active alias or Maestro docking state.
+- status: canonical
+
+#### SODV Engine SKILL.md
+- path: `modules/sodv-engine/SKILL.md`
+- title: SODV Engine Skill
+- surface_type: module operational guidance
+- truth_role: safe direct/qxctl invocation and verification procedure
+- owner: SODV engine maintainers
+- scope: Guides bounded check, verify, proposal, recovery, and projection use.
+- relationships: depends_on -> `modules/sodv-engine/SPEC.md`; depends_on -> `knowledge/sodv/SKILL.md`
+- consumers: administrators, reviewers, agentic tools
+- deferred_projections: operator runbooks
+- notes: External observations remain caller-supplied and noncanonical.
+- status: canonical
+
+#### SODV Engine SPEC.md
+- path: `modules/sodv-engine/SPEC.md`
+- title: SODV Engine Specification
+- surface_type: module implementation specification
+- truth_role: exact process, parser, operation, recovery, and authority behavior
+- owner: SODV engine maintainers
+- scope: Defines bounded historical/v2 parsing, caller observations, proposals, recovery recommendations, and disposable inventories.
+- relationships: implements -> `knowledge/sodv/SPEC.md`; depends_on -> `knowledge/SPEC.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/SPEC.md`
+- consumers: implementers, qxctl, conformance tests, validator, reviewers
+- deferred_projections: providers, mutation, publication, and lifecycle activation
+- notes: All canonical writes and external side effects are absent.
+- status: canonical
+
+#### SODV Engine CMakeLists.txt
+- path: `modules/sodv-engine/CMakeLists.txt`
+- title: SODV Engine Build Contract
+- surface_type: CMake build/install implementation
+- truth_role: C++26 target, tests, exact package layout, receipt, and uninstall implementation truth
+- owner: SODV engine maintainers
+- scope: Builds `symphony-sodv` and its conformance suite against the shared static foundation.
+- relationships: implements -> `modules/sodv-engine/SPEC.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
+- consumers: builders, packagers, tests, administrators
+- deferred_projections: external package formats
+- notes: The exact versioned receipt owns nine installed files.
+- status: canonical
 
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, six common SKV JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, and six SACV JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, six common SKV JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, and eight SODV operational JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:
