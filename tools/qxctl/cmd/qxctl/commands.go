@@ -55,6 +55,15 @@ type sacvOptions struct {
 	jsonOutput             bool
 }
 
+type sodvOptions struct {
+	prefix               string
+	version              string
+	repository           string
+	input                string
+	expectedLedgerDigest string
+	jsonOutput           bool
+}
+
 func execute(args []string) int {
 	if len(args) == 0 {
 		printUsage()
@@ -133,8 +142,40 @@ func newRootCommand() (*cobra.Command, error) {
 		return nil, err
 	}
 	stav := newSTAVCommand()
-	root.AddCommand(ssiag, stav, newSKVICommand(), newSCLVCommand(), newSACVCommand())
+	root.AddCommand(ssiag, stav, newSKVICommand(), newSCLVCommand(), newSACVCommand(), newSODVCommand())
 	return root, nil
+}
+
+func newSODVCommand() *cobra.Command {
+	command := &cobra.Command{
+		Use:  "sodv",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return fmt.Errorf("SODV subcommand is required: inspect, check, verify, propose, recover, or project")
+		},
+	}
+	for _, operation := range []string{"inspect", "check", "verify", "propose", "recover", "project"} {
+		options := sodvOptions{version: "0.1.0-dev"}
+		child := &cobra.Command{
+			Use:  operation,
+			Args: usageOnlyArgs,
+			RunE: func(*cobra.Command, []string) error { return runSODV(operation, options) },
+		}
+		child.Flags().StringVar(&options.prefix, "prefix", "", "exact SODV installation prefix")
+		child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed SODV engine version")
+		child.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
+		child.Flags().BoolVar(&options.jsonOutput, "json", false, "emit operation result JSON")
+		if operation == "check" {
+			child.Flags().StringVar(&options.expectedLedgerDigest, "expected-ledger-digest", "", "optional expected tagged SHA-256 release-ledger digest")
+		}
+		if operation == "verify" || operation == "propose" || operation == "recover" {
+			child.Flags().StringVar(&options.input, "input", "", "no-follow JSON operation payload file")
+		}
+		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+		command.AddCommand(child)
+	}
+	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	return command
 }
 
 func newSACVCommand() *cobra.Command {
@@ -437,7 +478,7 @@ func exactOneUsageArg(_ *cobra.Command, args []string) error {
 
 func knownTopLevel(value string) bool {
 	switch value {
-	case "--help", "--version", "doctor", "contracts", "inventory", "status", "modules", "module", "ssiag", "stav", "skvi", "sclv", "sacv":
+	case "--help", "--version", "doctor", "contracts", "inventory", "status", "modules", "module", "ssiag", "stav", "skvi", "sclv", "sacv", "sodv":
 		return true
 	default:
 		return false
@@ -480,6 +521,13 @@ func failurePrefix(args []string) string {
 			switch args[1] {
 			case "inspect", "check", "diff", "propose", "project":
 				return "sacv " + args[1]
+			}
+		}
+	case "sodv":
+		if len(args) > 1 {
+			switch args[1] {
+			case "inspect", "check", "verify", "propose", "recover", "project":
+				return "sodv " + args[1]
 			}
 		}
 	}

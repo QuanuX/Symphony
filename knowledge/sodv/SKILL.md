@@ -37,7 +37,7 @@ Reviewers verify that changes to SKV structures are accurately permitted by SODV
 An interrupted session resumes from `.git/symphony/releases/pending/` and reconciles observed external state. Never move a tag, rewrite authorization, or claim completion from a warm local cache.
 
 ## How the Validator Checks SODV
-The checked-in validator checks required SODV contract anchors and indexed-path presence. It does not currently parse the release ledger, contact Git hosting or package proxies, validate checksums, or declare a release complete.
+The checked-in validator checks required SODV contract anchors, indexed-path presence, and local release-record relationships. It does not contact Git hosting or package providers, independently validate remote checksums, or declare a release complete.
 
 ## How Agentic Tools May Consume SODV
 Agentic tools may consume SODV to understand publication-governance context, but SODV does not make architectural decisions.
@@ -74,13 +74,13 @@ Git history is version-control evidence, acting as a substrate for publication c
 PR history is review and merge evidence.
 
 ## Safe-Use Rules
-Do not treat SODV as a documentation generation engine. Treat it as a declarative governance boundary.
+Do not treat SODV as a documentation generation engine. Treat the vector as the declarative governance boundary and its installed engine as a subordinate proposal/read implementation.
 Do not treat release authorization as release completion.
 Do not rewrite historical release records to make them read like the present. Append a forward record and use the latest applicable record for current-state answers.
 Do not let the SODV engine create/move tags, upload artifacts, append canonical records, or infer public completion from a local cache.
 
 ## Non-Scope
-SODV is not public documentation. SODV is not a docs site. SODV is not Mintlify. SODV is not NotebookLM. SODV is not a publication pipeline. SODV is not a generated documentation system yet. SODV is not a generated index yet. SODV is not a documentation template system yet. SODV is not a schema system. SODV is not qxctl. SODV is not symphony-validator. SODV is not SKVI. SODV is not SCLV. SODV is not SSCG. SODV does not replace canonical repository knowledge files. SODV does not replace module contracts. SODV does not replace tool contracts. SODV does not replace PR review. SODV does not create runtime behavior. SODV does not enforce runtime behavior.
+SODV is not public documentation. SODV is not a docs site. SODV is not Mintlify. SODV is not NotebookLM. SODV is not a publication pipeline. SODV is not a generated documentation system yet. SODV is not a generated index yet. SODV is not a documentation template system yet. Its operational release schemas do not create a general publication-schema system. SODV is not qxctl. SODV is not symphony-validator. SODV is not SKVI. SODV is not SCLV. SODV is not SSCG. SODV does not replace canonical repository knowledge files. SODV does not replace module contracts. SODV does not replace tool contracts. SODV does not replace PR review. SODV does not create runtime behavior. SODV does not enforce runtime behavior.
 
 ## Non-Authorization Statement
-This skill guides the bounded SODV proposal/projection engine but authorizes no canonical apply, tag creation, public publication, Mintlify configuration, NotebookLM automation, general publication pipeline, or release-completion claim.
+This skill guides the implemented bounded SODV proposal/read engine but authorizes no canonical apply, tag creation, public publication, Mintlify configuration, NotebookLM automation, general publication pipeline, or release-completion claim.

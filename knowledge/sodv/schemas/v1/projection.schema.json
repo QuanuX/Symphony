@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sodv:projection:v1",
+  "title": "SODV release transaction projection v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "projection_kind", "format", "module_id", "engine_id", "engine_version", "vector_id", "canonical_ledger", "contract_snapshot", "record_count", "transaction_count", "records", "transactions", "noncanonical", "rebuildable", "projection_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sodv.projection.v1"},
+    "projection_kind": {"const": "release-transaction-inventory"},
+    "format": {"const": "json"},
+    "module_id": {"const": "sodv-engine"},
+    "engine_id": {"const": "symphony-sodv"},
+    "engine_version": {"type": "string", "minLength": 1, "maxLength": 64},
+    "vector_id": {"const": "sodv"},
+    "canonical_ledger": {"$ref": "#/$defs/file"},
+    "contract_snapshot": {"$ref": "#/$defs/snapshot"},
+    "record_count": {"type": "integer", "minimum": 0, "maximum": 4096},
+    "transaction_count": {"type": "integer", "minimum": 0, "maximum": 4096},
+    "records": {"type": "array", "maxItems": 4096, "items": {"$ref": "#/$defs/record"}},
+    "transactions": {"type": "array", "maxItems": 4096, "items": {"$ref": "#/$defs/transaction"}},
+    "noncanonical": {"const": true},
+    "rebuildable": {"const": true},
+    "projection_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "file": {"type": "object", "additionalProperties": false, "required": ["path", "size", "digest"], "properties": {"path": {"type": "string", "minLength": 1, "maxLength": 4096}, "size": {"type": "integer", "minimum": 0, "maximum": 4194304}, "digest": {"$ref": "#/$defs/digest"}}},
+    "snapshot": {"type": "object", "additionalProperties": false, "required": ["digest", "files"], "properties": {"digest": {"$ref": "#/$defs/digest"}, "files": {"type": "array", "minItems": 1, "maxItems": 64, "items": {"$ref": "#/$defs/file"}}}},
+    "record": {
+      "type": "object", "additionalProperties": false,
+      "required": ["release_record_id", "record_version", "record_type", "status", "disposition", "recorded_at", "recorded_by", "subject_record_ids", "publication_units", "purpose", "evidence", "non_authorizations", "notes", "record_digest", "source_line"],
+      "properties": {
+        "release_record_id": {"type": "string", "minLength": 1, "maxLength": 105},
+        "record_version": {"enum": [1, 2]},
+        "record_type": {"enum": ["authorization", "authorization_correction", "completion", "failure"]},
+        "status": {"enum": ["authorized", "canonical", "completed", "failed"]},
+        "disposition": {"type": "string", "minLength": 1, "maxLength": 128},
+        "recorded_at": {"type": "string", "minLength": 20, "maxLength": 20},
+        "recorded_by": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "subject_record_ids": {"type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 105}},
+        "publication_units": {"type": "array", "minItems": 1, "maxItems": 128, "items": {"$ref": "release-record-v2.schema.json#/$defs/unit"}},
+        "purpose": {"type": "string", "minLength": 1, "maxLength": 65536},
+        "evidence": {"type": "array", "minItems": 1, "maxItems": 1024, "items": {"type": "string", "minLength": 1, "maxLength": 4096}},
+        "non_authorizations": {"type": "array", "minItems": 1, "maxItems": 1024, "items": {"type": "string", "minLength": 1, "maxLength": 4096}},
+        "notes": {"type": "string", "minLength": 1, "maxLength": 65536},
+        "record_digest": {"$ref": "#/$defs/digest"},
+        "source_line": {"type": "integer", "minimum": 1, "maximum": 9007199254740991}
+      }
+    },
+    "transaction": {
+      "type": "object", "additionalProperties": false,
+      "required": ["authorization_record_id", "latest_correction_record", "completion_record", "state", "unit_count"],
+      "properties": {
+        "authorization_record_id": {"type": "string", "minLength": 1, "maxLength": 105},
+        "latest_correction_record": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1, "maxLength": 105}]},
+        "completion_record": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1, "maxLength": 105}]},
+        "state": {"enum": ["authorized", "completed"]},
+        "unit_count": {"type": "integer", "minimum": 1, "maximum": 128}
+      }
+    }
+  }
+}

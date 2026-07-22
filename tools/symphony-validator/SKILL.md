@@ -16,6 +16,8 @@ The implemented skill surface is direct execution through `symphony-validator ch
 
 The repository check includes SACV registry shape, ownership, classification, SKVI coverage, and no-follow owner-document presence. Use `qxctl sacv check` with an exact installed engine for OpenAPI syntax/profile, reference, security, example-safety, and registry/document alignment evidence; do not mistake the validator's registry check for a partial OpenAPI parser.
 
+The repository check also includes SODV local release-record shape, time order, lineage, publication-unit preservation, and no-follow ledger presence. Use `qxctl sodv check|verify|recover` with an exact installed engine for richer release evidence and caller-supplied external observations; do not mistake the validator for a Git-host or package-provider client.
+
 ## Deterministic, Non-Autonomous Behavior
 The validator is deterministic, explainable, and non-autonomous.
 The validator produces evidence, including caller-authority regression findings (exit code 21).
@@ -29,7 +31,8 @@ Every permission-bearing caller may consume the implemented line-oriented eviden
 3. Consume every evidence line through the single final `summary` line; do not stop after the first matching line.
 4. Treat exit `21` as a bounded caller-authority, discovery, symlink, stream, or resource failure and use the stable rule ID and lexical path to locate the evidence.
 5. Treat exit `22` as a SACV registry failure and use `sacv.registry.*` evidence to locate the exact entry boundary.
-6. Refer to the normative Caller-Authority Regression Check and SACV Registry Boundary in `SPEC.md` before interpreting scope or exclusions.
+6. Treat exit `23` as a SODV release-ledger failure and use `sodv.releases.*` evidence to locate the record boundary.
+7. Refer to the normative Caller-Authority Regression Check, SACV Registry Boundary, and SODV Release Ledger Boundary in `SPEC.md` before interpreting scope or exclusions.
 
 ## Output Consumption Behavior
 Evidence lines and the final summary are the current implementation output. Consumers must retain the complete output and process status. Any future JSON or Markdown projection must derive from one evidence model, share stable rule identifiers, and introduce no claims, conclusions, or remediation steps absent from that model. A clean bounded scan provides deterministic evidence but must not be interpreted as universal semantic proof or an all-encompassing semantic analysis of the codebase.

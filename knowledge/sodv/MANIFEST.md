@@ -11,7 +11,7 @@ SODV is the Symphony Official Documentation Vector.
 
 ## Classification
 - canonical knowledge-vector publication-governance surface
-- declarative publication-governance contract
+- declarative publication-governance contract with a subordinate implemented proposal/read engine
 - not public documentation
 - not docs site
 - not Mintlify configuration
@@ -38,7 +38,7 @@ SODV governs publication truth. It manages the boundaries between internal decla
 - an interrupted transaction is reconciled against actual Git and proxy state and then completed forward or failed closed.
 
 ## Non-Scope
-SODV is not public documentation. SODV is not a docs site. SODV is not Mintlify. SODV is not NotebookLM. SODV is not a publication pipeline. SODV is not a generated documentation system yet. SODV is not a generated index yet. SODV is not a documentation template system yet. SODV is not a schema system. SODV is not qxctl. SODV is not symphony-validator. SODV is not SKVI. SODV is not SCLV. SODV is not SSCG. SODV does not replace canonical repository knowledge files. SODV does not replace module contracts. SODV does not replace tool contracts. SODV does not replace PR review. SODV does not create runtime behavior. SODV does not enforce runtime behavior.
+SODV is not public documentation. SODV is not a docs site. SODV is not Mintlify. SODV is not NotebookLM. SODV is not a publication pipeline. SODV is not a generated documentation system yet. SODV is not a generated index yet. SODV is not a documentation template system yet. Its operational release schemas do not authorize a general publication-schema system. SODV is not qxctl. SODV is not symphony-validator. SODV is not SKVI. SODV is not SCLV. SODV is not SSCG. SODV does not replace canonical repository knowledge files. SODV does not replace module contracts. SODV does not replace tool contracts. SODV does not replace PR review. SODV does not create runtime behavior. SODV does not enforce runtime behavior.
 
 ## SODV Governance Scope Summary
 Layer 0 canonical publication sources, Layer 1 publication relationships, Layer 2 publication evidence. Layer 3 future publication projections are strictly deferred.
@@ -71,7 +71,7 @@ Mintlify is a publication surface, not canonical authority.
 NotebookLM is a corpus alignment and context tool, not canonical authority.
 
 ## Relationship to symphony-validator
-The checked-in validator checks required SODV contract anchors and SKVI-indexed path presence. It does not currently validate `RELEASES.md` transaction semantics, remote tag state, public-proxy propagation, or checksums.
+The checked-in validator checks required SODV contract anchors, SKVI-indexed path presence, and local `RELEASES.md` record relationships. It does not inspect remote tags, package-provider propagation, or external checksums and never declares a release complete.
 
 ## Relationship to qxctl
 qxctl may invoke the installed SODV engine's proposal/read operations. qxctl does not publish, create tags, or write release records.
@@ -83,4 +83,4 @@ Git history is version-control evidence.
 PR history is review and merge evidence.
 
 ## Non-Authorization Statement
-This manifest authorizes the bounded SODV proposal/projection engine and qxctl invocation after contract merge. It authorizes no canonical apply, public documentation files, docs directory, `mint.json`, Mintlify configuration, tag creation, external publication, NotebookLM automation, general publication pipeline, or release-completion claim.
+This manifest authorizes the implemented bounded SODV proposal/read engine, its operational schemas, and qxctl invocation. It authorizes no canonical apply, public documentation files, docs directory, `mint.json`, Mintlify configuration, tag creation, external publication, NotebookLM automation, general publication pipeline, or release-completion claim.

@@ -20,6 +20,7 @@
 #include "sclv_references.hpp"
 #include "validator_build.hpp"
 #include "sacv_registry.hpp"
+#include "sodv_releases.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -130,6 +131,14 @@ int run_cli(const std::vector<std::string>& args) {
             process_messages(sacv_result.messages);
             if (!sacv_result.success) {
                 final_exit = 22;
+                print_summary();
+                return final_exit;
+            }
+
+            SodvReleaseCheckResult sodv_result = check_sodv_releases(args[2]);
+            process_messages(sodv_result.messages);
+            if (!sodv_result.success) {
+                final_exit = 23;
                 print_summary();
                 return final_exit;
             }

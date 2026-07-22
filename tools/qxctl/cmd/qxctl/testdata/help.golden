@@ -38,3 +38,9 @@ Commands:
   sacv diff --prefix PATH --input FILE [--version VERSION] [--json] Compare bounded OpenAPI revisions
   sacv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared registry proposal
   sacv project --prefix PATH [--version VERSION] [--json] Build a disposable SACV inventory
+  sodv inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SODV engine
+  sodv check --prefix PATH [--version VERSION] [--json] Check canonical release transaction truth
+  sodv verify --prefix PATH --input FILE [--version VERSION] [--json] Verify caller-observed publication state
+  sodv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a release-record proposal
+  sodv recover --prefix PATH --input FILE [--version VERSION] [--json] Reconcile an interrupted release journal
+  sodv project --prefix PATH [--version VERSION] [--json] Build a disposable release inventory

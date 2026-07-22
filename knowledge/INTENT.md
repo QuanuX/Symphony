@@ -44,7 +44,7 @@ SODV governs how knowledge within the SKV framework becomes official public docu
 Module contracts (`MANIFEST.md`, etc.) are distinct domains. SKV maps them but does not replace them.
 
 ### Relationship to symphony-validator
-The checked-in `tools/symphony-validator/` implementation produces deterministic, read-only evidence. It currently checks required Knowledge Vector contract anchors, SKVI structure, SKVI coverage and paths, SCLV record shape and continuity, and bounded repository doctrine. It does not create canonical truth, validate SODV release-transaction semantics, publish documentation, or remediate files.
+The checked-in `tools/symphony-validator/` implementation produces deterministic, read-only evidence. It currently checks required Knowledge Vector contract anchors, SKVI structure, SKVI coverage and paths, SCLV record shape and continuity, SACV registry structure, SODV local release-record relationships, and bounded repository doctrine. It does not create canonical truth, inspect external publication state, publish documentation, or remediate files.
 
 ### Relationship to qxctl
 qxctl is the Go administrative surface for the ratified vector-engine family. `qxctl knowledge ...` owns cross-vector engine, authenticated-session, worktree-reconciliation, proposal, and later apply coordination. `qxctl skvi|sclv|sacv|sodv|ssfv ...` owns vector-specific grammar. qxctl implements these contracts but does not own vector semantics or canonical knowledge truth.

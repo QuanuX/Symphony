@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sodv:proposal-input:v1",
+  "title": "SODV proposal input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["repository", "session_ref", "context_ref", "proposal_expires_at", "expected_ledger_digest", "record", "observed_state"],
+  "properties": {
+    "repository": {"$ref": "#/$defs/repository"},
+    "session_ref": {"$ref": "#/$defs/optional_token"},
+    "context_ref": {"$ref": "#/$defs/optional_token"},
+    "proposal_expires_at": {"$ref": "#/$defs/utc"},
+    "expected_ledger_digest": {"$ref": "#/$defs/digest"},
+    "record": {"$ref": "release-record-v2.schema.json"},
+    "observed_state": {"oneOf": [{"type": "null"}, {"$ref": "observed-state.schema.json"}]}
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "optional_token": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "utc": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"},
+    "repository": {"type": "object", "additionalProperties": false, "required": ["repository_id", "revision", "worktree_id", "tree_digest"], "properties": {"repository_id": {"type": "string", "minLength": 1, "maxLength": 256}, "revision": {"type": "object", "additionalProperties": false, "required": ["scheme", "value"], "properties": {"scheme": {"$ref": "#/$defs/token"}, "value": {"type": "string", "minLength": 1, "maxLength": 256}}}, "worktree_id": {"$ref": "#/$defs/token"}, "tree_digest": {"$ref": "#/$defs/digest"}}}
+  }
+}

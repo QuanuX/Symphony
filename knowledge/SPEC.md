@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator read-only slice and SKVI/SCLV/SACV proposal/projection slices implemented. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No later session-mutation, other vector-engine, lifecycle, apply, endpoint, publication, or docking capability may be inferred from these slices.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator read-only slice and SKVI/SCLV/SACV/SODV proposal/projection slices implemented. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No later session-mutation, other vector-engine, lifecycle, apply, endpoint, publication, or docking capability may be inferred from these slices.
 
 ## Purpose
 
@@ -53,7 +53,7 @@ The initial exact schemas are:
 
 The process request limit is 1 MiB and the response limit is 4 MiB. JSON depth is at most 64, parsed values/events at most 16,384, one string or key at most 65,536 bytes, integers remain within `[-9007199254740991, 9007199254740991]`, and a request deadline is at most 300 seconds ahead. Unknown fields, duplicate names, invalid UTF-8, trailing data, floating-point values, out-of-range integers, unsupported versions, excessive input, unsafe paths, expired deadlines, and target mismatch fail closed. Standard output is reserved for the single protocol response; bounded diagnostics use standard error. Arguments and environment variables MUST NOT carry secrets or arbitrary executable instructions.
 
-An engine checks the deadline before and between bounded work units and file-read chunks. The invoking process MUST independently enforce the same deadline on child-process lifetime so a blocked operating-system or filesystem call cannot outlive the request. The direct coordinator slice provides cooperative checks; the implemented qxctl SKVI/SCLV/SACV client adds a hard child-process timeout around each request deadline.
+An engine checks the deadline before and between bounded work units and file-read chunks. The invoking process MUST independently enforce the same deadline on child-process lifetime so a blocked operating-system or filesystem call cannot outlive the request. The direct coordinator slice provides cooperative checks; the implemented qxctl SKVI/SCLV/SACV/SODV client adds a hard child-process timeout around each request deadline.
 
 `response_digest` is the tagged SHA-256 of the compact key-sorted response object before that member is inserted. Operation-specific payload/result schemas remain owned by the applicable coordinator or vector contract.
 
@@ -188,7 +188,7 @@ The SSFV namespace is reserved, but no SSFV engine or `FEATURES.md` generation i
 
 Append-only SCLV and SODV records remain immutable. A contract transition changes prospective behavior and never rewrites earlier evidence. `symphony-validator` remains an independent, read-only checker. Shared authority-free mechanics may be extracted for static reuse only when the validator's Contract Quad, direct invocation, evidence semantics, and absence of remediation remain intact.
 
-## Implemented Foundation, SKVI, and SCLV Slices
+## Implemented Foundation and Vector Slices
 
 `libraries/knowledge-vector-engine-cpp/` implements the authority-free bounded parser, framing, digest, no-follow path, file-read, snapshot, versioned CMake package, receipt, and uninstall mechanics. nlohmann/json `v3.12.0` is pinned and vendored with its official release checksum and MIT license; it is not a runtime download and is not linked into `symphony-validator`.
 
@@ -198,6 +198,10 @@ Append-only SCLV and SODV records remain immutable. A contract transition change
 
 `modules/sclv-engine/` implements deterministic `inspect`, append-only v1/v2/v3 `check`, provider-neutral v3 `propose`, non-mutating ephemeral-journal `recover`, and disposable JSON `project`. Its separately discoverable local-Git and air-gapped adapter processes normalize bounded evidence but do not grant permission or ratify. The module installs three exact executables under one inactive-undocked eleven-file receipt. `qxctl sclv ...` validates that installation and applies the same empty-environment, deadline, response-identity, digest, and result-safety gates. The engine never appends, commits, deletes journals, edits provider state, or activates itself.
 
+`modules/sacv-engine/` implements deterministic API-registry inspection/checks, bounded OpenAPI 3.2.0 JSON compatibility diffs, caller-declared registry proposals, and disposable inventories. YAML entry documents fail closed until a separate parser gate. `qxctl sacv ...` validates its exact inactive-undocked nine-file installation and invokes it under the common process-safety gates. The engine does not decide semantic ownership, expose endpoints, publish, generate bindings, or apply canonical changes.
+
+`modules/sodv-engine/` implements deterministic append-only v1/v2 release-ledger checks, caller-supplied external-state verification, provider-neutral v2 release-record proposals, non-mutating interrupted-session recovery, and disposable release-transaction inventories. `qxctl sodv ...` validates its exact inactive-undocked nine-file installation and invokes it under the common process-safety gates. The engine has no network access and never creates or moves tags, contacts package providers, declares completion, mutates recovery journals, appends records, publishes, or applies canonical changes.
+
 ## Non-Authorization Statement
 
-This specification does not claim implementation beyond the explicitly identified foundation/coordinator, SKVI, and SCLV slices, enable canonical apply, authorize an external package coordinate, create an HTTP surface, publish a release artifact, permit direct ledger mutation, activate Maestro, or authorize SSFV semantics.
+This specification does not claim implementation beyond the explicitly identified foundation/coordinator and SKVI/SCLV/SACV/SODV slices, enable canonical apply, authorize an external package coordinate, create an HTTP surface, publish a release artifact, permit direct ledger mutation, activate Maestro, or authorize SSFV semantics.

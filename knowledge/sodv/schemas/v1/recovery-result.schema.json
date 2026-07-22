@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sodv:recovery-result:v1",
+  "title": "SODV recovery result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "action", "verification", "proposal", "journal_mutated", "delete_recommended", "canonical_apply_enabled", "result_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sodv.recovery-result.v1"},
+    "action": {"enum": ["resume_authorized_publication", "await_public_evidence", "completion_proposal_required", "propose_forward_completion", "no_op_completed", "fail_closed_review"]},
+    "verification": {"$ref": "verify-result.schema.json"},
+    "proposal": {"oneOf": [{"type": "null"}, {"$ref": "../../../schemas/v1/proposal.schema.json"}]},
+    "journal_mutated": {"const": false},
+    "delete_recommended": {"type": "boolean"},
+    "canonical_apply_enabled": {"const": false},
+    "result_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

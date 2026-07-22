@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sodv:recovery-input:v1",
+  "title": "SODV recovery input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["journal", "journal_digest", "observed_state", "proposal_input", "recovery_reason"],
+  "properties": {
+    "journal": {"$ref": "#/$defs/journal"},
+    "journal_digest": {"$ref": "#/$defs/digest"},
+    "observed_state": {"$ref": "observed-state.schema.json"},
+    "proposal_input": {"oneOf": [{"type": "null"}, {"$ref": "proposal-input.schema.json"}]},
+    "recovery_reason": {"type": "string", "minLength": 1, "maxLength": 65536}
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "utc": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"},
+    "journal": {"type": "object", "additionalProperties": false, "required": ["format_version", "transaction_id", "authorization_record_id", "started_at", "intended_tags", "local_state"], "properties": {"format_version": {"const": 1}, "transaction_id": {"$ref": "#/$defs/token"}, "authorization_record_id": {"type": "string", "pattern": "^SODV-REL-[A-Z0-9][A-Z0-9._:-]{2,95}$"}, "started_at": {"$ref": "#/$defs/utc"}, "intended_tags": {"type": "array", "minItems": 1, "maxItems": 128, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 4096}}, "local_state": {"enum": ["prepared", "tags_published", "awaiting_public", "completion_ready"]}}}
+  }
+}

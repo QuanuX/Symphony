@@ -48,6 +48,8 @@ The validator performs deterministic caller-authority regression checks on activ
 
 The validator independently checks the canonical SACV registry and returns exit code 22 for malformed entry grammar, unsafe or duplicate identities, owner/path drift, invalid classifications, absent SKVI coverage, or unreadable owner documents. OpenAPI semantic validation remains in the independently installed SACV engine.
 
+The validator independently checks the canonical SODV release ledger and returns exit code 23 for malformed or duplicate records, type/status or time-order drift, invalid lineage, publication-unit mismatch, duplicate completion, or unreadable ledger state. External provider observation, proposals, recovery recommendations, and completion decisions remain outside the validator.
+
 ## Relationship to SPEC.md
 `tools/symphony-validator/SPEC.md` is the normative source for the checker. It defines discovery and historical-record boundaries, deterministic matching limits, evidence, fail-visible behavior, exit precedence, and the read-only, non-remediating posture.
 

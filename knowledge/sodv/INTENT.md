@@ -37,10 +37,10 @@ SACV governs canonical API contracts and their registry. SODV alone decides whet
 NotebookLM aligns corpus context but is not canonical authority. Append-only release records must be interpreted under the corpus interpretation rule in `knowledge/INTENT.md`.
 
 ### Relationship to Validator
-The checked-in `tools/symphony-validator/` implementation produces deterministic, read-only evidence for required SODV contract anchors and indexed-path presence. It does not currently interpret release-transaction semantics or prove publication completion; `RELEASES.md`, immutable Git state, public-proxy resolution, and permission-backed review carry those roles.
+The checked-in `tools/symphony-validator/` implementation produces deterministic, read-only evidence for required SODV contract anchors, indexed-path presence, and local release-record relationships. It does not contact Git hosts or package providers and cannot prove publication completion; `RELEASES.md`, caller-supplied immutable external evidence, and permission-backed review carry those roles.
 
 ### Relationship to qxctl
-qxctl may invoke implemented SODV inspect, check, propose, verify, and project operations under `qxctl sodv ...`. It does not publish, create tags, append completion records, or own SODV semantics. No documentation publication pipeline is authorized by this contract.
+qxctl may invoke implemented SODV inspect, check, verify, propose, recover, and project operations under `qxctl sodv ...`. It does not publish, create tags, append completion records, or own SODV semantics. No documentation publication pipeline is authorized by this contract.
 
 ### Non-authorization Statement
-This canonical surface authorizes a proposal-only C++ SODV engine at `modules/sodv-engine/`, bounded derived release/publication evidence, and qxctl invocation after the common contract transition merges. It authorizes no canonical apply, tag creation, external publication, public documentation, Mintlify configuration, NotebookLM automation, general publication pipeline, or release-completion claim.
+This canonical surface authorizes the implemented proposal/read-only C++ SODV engine at `modules/sodv-engine/`, bounded derived release evidence, operational protocol schemas, and qxctl invocation. It authorizes no canonical apply, tag creation, external publication, public documentation, Mintlify configuration, NotebookLM automation, general publication pipeline, or release-completion claim.

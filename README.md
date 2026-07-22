@@ -16,7 +16,7 @@ Root governance establishes shared invariants without turning the repository int
 
 ## Implemented Foundations
 
-- [`qxctl`](tools/qxctl/) is the Go-based Cobra/Viper administrative and query CLI. It implements repository inspection, contract inventory, authenticated SSIAG metadata queries, authenticated read-only STAV operations, and exact-installation SKVI, SCLV, and SACV engine invocation with hard process deadlines and response verification.
+- [`qxctl`](tools/qxctl/) is the Go-based Cobra/Viper administrative and query CLI. It implements repository inspection, contract inventory, authenticated SSIAG metadata queries, authenticated read-only STAV operations, and exact-installation SKVI, SCLV, SACV, and SODV engine invocation with hard process deadlines and response verification.
 - [Symphony Secure Identity and Access Governance](modules/secure-identity-access-governance/) is an independently installable, cgo-free Go foundation with per-TOPS enrollment, exact local peer and endpoint trust, a metadata-only Unix-socket API, typed safe-metadata STAV production, and native launchd/systemd supervision. Credential use, policy mutation, provider execution, and secret delivery are not enabled.
 - [STAV Append Authority](modules/stav-append-authority/) is an independently installable Go service with per-TOPS durable append-only ledgers, mutually authenticated local IPC, exact producer and reader grants, fsync-before-receipt durability, bounded read projections, startup verification and tail recovery, and native launchd/systemd supervision.
 - [STAV Protocol for Go](libraries/stav-protocol-go/) is an authority-free Go library implementing the canonical STAV v1 codec, validation, digest, framing, and conformance rules.
@@ -27,6 +27,7 @@ Root governance establishes shared invariants without turning the repository int
 - [SKVI Engine](modules/skvi-engine/) is an independently installable C++26 structural knowledge engine implementing deterministic inspect/check, caller-declared immutable proposals, and disposable digest-bound JSON projections. It cannot decide index membership or write canonical knowledge.
 - [SCLV Engine](modules/sclv-engine/) is an independently installable C++26 change-truth engine implementing deterministic ledger checks, provider-neutral v3 proposals, non-mutating closure recovery, disposable projections, and bounded local-Git and air-gapped evidence adapters. It cannot ratify, append, commit, or delete recovery journals.
 - [SACV Engine](modules/sacv-engine/) is an independently installable C++26 API-contract governance engine implementing bounded OpenAPI 3.2.0 JSON checks, deterministic compatibility diffs, caller-declared registry proposals, and disposable registry inventories. YAML entry documents fail closed until the separate parser gate; no endpoint, SDK, publication, generated binding, or canonical apply is implemented.
+- [SODV Engine](modules/sodv-engine/) is an independently installable C++26 release-publication governance engine implementing local append-only ledger checks, caller-supplied observation verification, provider-neutral release-record proposals, non-mutating interrupted-session recovery, and disposable release inventories. It performs no network access, creates no tags, declares no release complete, and exposes no canonical apply.
 - [`knowledge/`](knowledge/) contains the canonical SKV surfaces currently established for source routing (SKVI), change truth (SCLV), API governance (SACV), publication governance (SODV), SSIAG, and STAV. Canonical knowledge governs implementations; tools do not own canonical schemas.
 
 ## First Runtime Set
@@ -35,7 +36,7 @@ The repository contains proposal-only Contract Quad seeds for `node-troll`, `bus
 
 ## Current Integration Boundary
 
-SSIAG submits only typed, security-relevant safe metadata to the STAV append authority and never writes ledger files. qxctl authenticates the exact configured SSIAG and STAV endpoints before application exchange and performs no canonical mutation. For SKVI, SCLV, and SACV, qxctl validates an exact inactive-undocked installation before invoking its bounded local process; lifecycle selection, docking, and apply are not implemented. The macOS provider reports metadata only. SACV's canonical registry remains empty: no remote HTTP API, SDK, live playground, or published OpenAPI description is currently claimed.
+SSIAG submits only typed, security-relevant safe metadata to the STAV append authority and never writes ledger files. qxctl authenticates the exact configured SSIAG and STAV endpoints before application exchange and performs no canonical mutation. For SKVI, SCLV, SACV, and SODV, qxctl validates an exact inactive-undocked installation before invoking its bounded local process; lifecycle selection, docking, and apply are not implemented. The macOS provider reports metadata only. SACV's canonical registry remains empty: no remote HTTP API, SDK, live playground, or published OpenAPI description is currently claimed. SODV release observation remains caller-supplied: the engine does not contact Git hosts or package providers.
 
 ## Releases and Documentation
 
