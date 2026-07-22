@@ -1767,3 +1767,153 @@ This PR authorizes none of the following:
   - `module tag, binary release, package publication, or Go 1.27 production pin`
 - notes: |
     This post-merge closure records the SACV implementation merged by PR #81. The closure record is appended separately so the implementation revision and its provider-normalized evidence remain immutable and independently verifiable. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
+
+- record_id: `SCLV-CHG-20260722-SODV-ENGINE`
+- record_version: `3`
+- title: `SODV release governance engine and qxctl integration implemented`
+- status: `canonical`
+- date: `2026-07-22`
+- change_started_at: `2026-07-22T00:21:40Z`
+- change_completed_at: `2026-07-22T00:23:15Z`
+- recorded_at: `2026-07-22T00:27:00Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#83`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/83`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `efb980c63db201fa68f458bcfa37e270969377bf`
+- tree_digest: `sha256:cd64fe2d854f9d9d4e96eb692ec1c5ab3ef362492ef3cf443d799f95d7c135fc`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/83`
+- ratification_evidence_digest: `sha256:b0427a0fcb309b1544bd8530411abd563f8ba7798b2174068b2934cf8310cd53`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sodv/INTENT.md`
+  - `knowledge/sodv/MANIFEST.md`
+  - `knowledge/sodv/SKILL.md`
+  - `knowledge/sodv/SPEC.md`
+  - `knowledge/sodv/schemas/v1/MANIFEST.md`
+  - `knowledge/sodv/schemas/v1/check-result.schema.json`
+  - `knowledge/sodv/schemas/v1/observed-state.schema.json`
+  - `knowledge/sodv/schemas/v1/projection.schema.json`
+  - `knowledge/sodv/schemas/v1/proposal-input.schema.json`
+  - `knowledge/sodv/schemas/v1/recovery-input.schema.json`
+  - `knowledge/sodv/schemas/v1/recovery-result.schema.json`
+  - `knowledge/sodv/schemas/v1/release-record-v2.schema.json`
+  - `knowledge/sodv/schemas/v1/verify-result.schema.json`
+  - `modules/sodv-engine/CMakeLists.txt`
+  - `modules/sodv-engine/INSTALL.md`
+  - `modules/sodv-engine/INTENT.md`
+  - `modules/sodv-engine/MANIFEST.md`
+  - `modules/sodv-engine/SKILL.md`
+  - `modules/sodv-engine/SPEC.md`
+  - `modules/sodv-engine/cmake/install-receipt.json.in`
+  - `modules/sodv-engine/cmake/uninstall.cmake.in`
+  - `modules/sodv-engine/src/main.cpp`
+  - `modules/sodv-engine/src/sodv.cpp`
+  - `modules/sodv-engine/src/sodv.hpp`
+  - `modules/sodv-engine/tests/process_smoke.sh`
+  - `modules/sodv-engine/tests/sodv_test.cpp`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/sodv_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/qxctl/internal/knowledgeengine/client_test.go`
+  - `tools/symphony-validator/CMakeLists.txt`
+  - `tools/symphony-validator/INTENT.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SKILL.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/src/cli.cpp`
+  - `tools/symphony-validator/src/sodv_releases.cpp`
+  - `tools/symphony-validator/src/sodv_releases.hpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+  - `tools/symphony-validator/tests/sodv_release_test.cpp`
+- skvi_references:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/sodv/INTENT.md`
+  - `knowledge/sodv/MANIFEST.md`
+  - `knowledge/sodv/SKILL.md`
+  - `knowledge/sodv/SPEC.md`
+  - `knowledge/sodv/schemas/v1/MANIFEST.md`
+  - `knowledge/sodv/schemas/v1/check-result.schema.json`
+  - `knowledge/sodv/schemas/v1/observed-state.schema.json`
+  - `knowledge/sodv/schemas/v1/projection.schema.json`
+  - `knowledge/sodv/schemas/v1/proposal-input.schema.json`
+  - `knowledge/sodv/schemas/v1/recovery-input.schema.json`
+  - `knowledge/sodv/schemas/v1/recovery-result.schema.json`
+  - `knowledge/sodv/schemas/v1/release-record-v2.schema.json`
+  - `knowledge/sodv/schemas/v1/verify-result.schema.json`
+  - `modules/sodv-engine/CMakeLists.txt`
+  - `modules/sodv-engine/INSTALL.md`
+  - `modules/sodv-engine/INTENT.md`
+  - `modules/sodv-engine/MANIFEST.md`
+  - `modules/sodv-engine/SKILL.md`
+  - `modules/sodv-engine/SPEC.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/symphony-validator/CMakeLists.txt`
+  - `tools/symphony-validator/INTENT.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SKILL.md`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    Under the Architect's direction, PR #83 implemented the independently installable C++26 SODV release-governance engine. It added bounded inspect, release-ledger check, caller-supplied observed-state verification, forward v2 record proposal, interrupted-transaction recovery reconciliation, and disposable inventory projection operations; canonical SODV v2 record and operation/result schemas; exact-receipt qxctl administration; and an independent validator check for local SODV release relationships.
+- relationship_changes: |
+    knowledge/sodv remains canonical publication truth. symphony-sodv implements deterministic freezing-path semantics through the shared C++ foundation without becoming a Git forge, package provider, publisher, ratifier, or ledger writer. qxctl owns Cobra grammar, exact inactive-undocked receipt resolution, bounded process invocation, and result safety checks. symphony-validator independently parses the canonical release ledger and rejects invalid identity, ordering, lineage, publication-unit, correction, and completion relationships.
+- doctrine_changes: |
+    Release observations are explicitly caller-supplied and provider-neutral. Deterministic evidence can identify an unpublished, waiting, completion-candidate, verified-completed, or mismatched state, but the engine never declares external truth, grants release permission, or converts evidence into ratification. Completion is compared with the latest applicable authorization correction, and forward recovery never edits history, moves a tag, or mutates the caller's journal.
+- compatibility_consequences: |
+    This slice adds qxctl sodv inspect, check, verify, propose, recover, and project grammar and symphony-sodv 0.1.0-dev process/schema behavior. The first implementation accepts go_module publication units because those are the completed artifact class currently represented in canonical SODV history. Legacy v1 records remain accepted and normalized alongside prospective v2 records. Existing tags, published modules, SSIAG, STAV, API contracts, trading paths, and the Go 1.26.5 pin remain unchanged.
+- publication_consequences: |
+    No tag, module version, binary distribution, package registry artifact, container, SDK, OpenAPI document, Mintlify surface, public documentation, or launch claim was published or authorized. The SODV engine remains a source-installable 0.1.0-dev module.
+- projection_consequences: |
+    SODV projection returns a content-addressed transaction inventory that is noncanonical, disposable, and rebuildable from canonical records. It does not write generated files, contact external providers, replace RELEASES.md, authorize publication, or create a Maestro receptor. NotebookLM, Mintlify, graph, public-documentation, and broader artifact projections remain deferred.
+- evidence:
+  - `PR #83 merged into main at 2026-07-22T00:23:15Z by quantDIY as efb980c63db201fa68f458bcfa37e270969377bf`
+  - `implementation head 7ea0a49cdc97c8196a495c05c33b69e9961a2107; 53 files changed, 3777 insertions, 59 deletions`
+  - `local-Git adapter evidence digest sha256:9122437d2517244cbaca215bf7fffb776569a2cc82427994235145cb611c7238 bound tree digest sha256:cd64fe2d854f9d9d4e96eb692ec1c5ab3ef362492ef3cf443d799f95d7c135fc`
+  - `ratification adapter evidence digest sha256:9736bbabcd7bf64d1795a684a57024053b4906f7ec85697e70dd979a02bd8d76 bound canonical PR metadata digest sha256:b0427a0fcb309b1544bd8530411abd563f8ba7798b2174068b2934cf8310cd53`
+  - `shared foundation, coordinator, SKVI, SCLV, SACV, SODV, validator, qxctl, SSIAG, STAV append-authority, STAV protocol, and macOS Keychain adapter suites passed`
+  - `full validator negative-fixture smoke matrix passed; pre-closure live result pass=2707 warning=156 violation=0 exit=0`
+  - `all 156 pre-closure warnings were historical sclv.affected_surface.unindexed findings; 152 named implementation paths outside canonical SKVI content and four named knowledge paths`
+  - `release-mode installation produced exactly nine inactive-undocked receipt-owned files; installed qxctl sodv check passed; uninstall removed only owned files and preserved operator state plus the canonical release ledger`
+  - `canonical SODV check observed three records, one transaction, and zero violations; direct check was below 0.01 seconds and the repository validator scan was 0.17 seconds on the development host`
+- non_authorizations:
+  - `programmatic canonical apply, ledger append, proposal self-ratification, or engine-declared release truth`
+  - `network access, Git forge discovery, package-provider discovery, cache-based completion inference, artifact upload, tag creation, tag movement, or tag replacement`
+  - `journal mutation, journal deletion, historical record rewrite, or automatic correction persistence`
+  - `qxctl install, upgrade, rollback, version activation, docking, or uninstall administration`
+  - `live Maestro receptor selection, docking, persistence, or mutable knowledge-session lifecycle`
+  - `public documentation, Mintlify, NotebookLM automation, graph publication, SDK generation, or broader artifact-kind support`
+  - `operational SSIAG provider access, credential delivery, or new STAV append behavior`
+  - `native Windows engine implementation, hot-path participation, or warm-path participation`
+  - `module tag, release artifact, package publication, or Go 1.27 production pin`
+- notes: |
+    This post-merge closure records the SODV implementation merged by PR #83. The closure record is appended separately so the implementation revision and its provider-normalized evidence remain immutable and independently verifiable. Every changed file is listed as an affected surface; unindexed implementation paths remain explicit advisory evidence rather than being hidden by selective omission or artificial SKVI expansion. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
