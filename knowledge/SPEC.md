@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator read-only slice and SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices implemented. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No feature bootstrap, later session mutation, lifecycle, apply, endpoint, publication, or docking capability may be inferred from these slices.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator read-only slice, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, and the exact three-record SSFV partial bootstrap implemented. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, later session mutation, lifecycle, apply, endpoint, publication, or docking capability may be inferred from these slices.
 
 ## Purpose
 
@@ -176,9 +176,9 @@ Implementation proceeds as tested vertical slices:
 3. SCLV engine, provider-neutral v3 format/validator activation, and local/air-gapped evidence adapters;
 4. SACV OpenAPI 3.2.0 engine;
 5. SODV release/publication reconciliation engine;
-6. SSFV Contract Quad, namespace, empty registry, and payload contracts;
+6. SSFV Contract Quad, namespace, initially empty registry, and payload contracts;
 7. SSFV engine and qxctl client;
-8. distributed SSFV feature bootstrap only after source review and feature-worthiness ratification.
+8. first distributed SSFV feature bootstrap after source review and feature-worthiness ratification.
 
 Scaffolding every engine in advance is prohibited. Each slice must pass its contract, conformance, receipt, and uninstall gates before the next vector claims implementation.
 
@@ -186,7 +186,7 @@ Scaffolding every engine in advance is prohibited. Each slice must pass its cont
 
 The Architect has ratified `knowledge/ssfv/` with stable identifiers, feature-worthiness criteria, hierarchy, sparse distributed-file ownership, typed relationships, lifecycle, 5W1H semantics, content-addressed freshness, and portable JSON graph contracts. This completes the semantic contract gate.
 
-The implementation gate is complete and the bootstrap gate remains closed. The independently installed engine and qxctl client do not authorize a distributed `FEATURES.md`, canonical feature entry, persistent graph store, or Maestro receptor.
+The implementation gate and first partial-bootstrap gate are complete. Exactly three ratified records cover the repository-root platform capability, shared engine foundation, and read-only coordinator foundation. That bounded result does not authorize another distributed `FEATURES.md`, another canonical feature entry, a complete-catalog claim, a persistent graph store, or a Maestro receptor.
 
 ## Historical and Validator Boundary
 
@@ -206,8 +206,8 @@ Append-only SCLV and SODV records remain immutable. A contract transition change
 
 `modules/sodv-engine/` implements deterministic append-only v1/v2 release-ledger checks, caller-supplied external-state verification, provider-neutral v2 release-record proposals, non-mutating interrupted-session recovery, and disposable release-transaction inventories. `qxctl sodv ...` validates its exact inactive-undocked nine-file installation and invokes it under the common process-safety gates. The engine has no network access and never creates or moves tags, contacts package providers, declares completion, mutates recovery journals, appends records, publishes, or applies canonical changes.
 
-`modules/ssfv-engine/` implements deterministic `inspect`, structural and freshness-aware `check`, baseline-versus-live `diff`, caller-declared `propose`, and disposable JSON `graph`. It validates exact managed regions, namespaces, registry routing, record normalization, hierarchy, evidence paths, and SKVI coverage without deciding semantic truth. `qxctl ssfv ...` validates its exact inactive-undocked nine-file installation and adds no-follow baseline/input handling plus operation-specific authority and projection safety checks. The engine and client never create feature records, apply proposals, persist graphs, activate a version, or dock with Maestro.
+`modules/ssfv-engine/` implements deterministic `inspect`, structural and freshness-aware `check`, baseline-versus-live `diff`, caller-declared `propose`, and disposable JSON `graph`. It validates exact managed regions, namespaces, registry routing, record normalization, hierarchy, evidence paths, and SKVI coverage without deciding semantic truth. `qxctl ssfv ...` validates its exact inactive-undocked nine-file installation and adds no-follow baseline/input handling plus operation-specific authority and projection safety checks. The first three canonical records were authored and ratified through ordinary reviewed source changes; the engine and client never create feature records, apply proposals, persist graphs, activate a version, or dock with Maestro.
 
 ## Non-Authorization Statement
 
-This specification does not claim implementation beyond the explicitly identified foundation/coordinator and SKVI/SCLV/SACV/SODV/SSFV slices, enable canonical apply, authorize an external package coordinate, create an HTTP surface, publish a release artifact, permit direct ledger mutation, activate Maestro, or create SSFV feature records.
+This specification does not claim implementation beyond the explicitly identified foundation/coordinator and SKVI/SCLV/SACV/SODV/SSFV slices and exact three-record SSFV partial bootstrap, enable canonical apply, authorize another feature record or complete-catalog claim, authorize an external package coordinate, create an HTTP surface, publish a release artifact, permit direct ledger mutation, or activate Maestro.

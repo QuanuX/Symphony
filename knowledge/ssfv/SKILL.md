@@ -72,4 +72,4 @@ Stop and obtain permission-backed owner ratification before allocating a public 
 
 ## Non-Authorization Statement
 
-This skill is procedural contract guidance for the implemented engine and qxctl client. It authorizes no feature record, distributed application `FEATURES.md` file, canonical mutation, graph database, Maestro state, public documentation, or marketing output.
+This skill is procedural contract guidance for the implemented engine, qxctl client, and reviewed sparse-record workflow. The existing three-record partial bootstrap authorizes no additional feature record, distributed application `FEATURES.md` file, complete-catalog claim, canonical mutation, graph database, Maestro state, public documentation, or marketing output.

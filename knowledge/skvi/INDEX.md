@@ -154,6 +154,19 @@ Future validator increments may add separately ratified deterministic checks wit
 - status: canonical
 - notes: None.
 
+#### Root FEATURES.md
+- path: `FEATURES.md`
+- title: Root Symphony Semantic Features
+- surface_type: distributed SSFV feature record
+- truth_role: canonical semantic capability truth for the repository-root platform boundary
+- owner: Symphony root governance
+- scope: Owns the experimental `ssfv:symphony:platform` capability record at exact source scope `.`.
+- relationships: depends_on -> `knowledge/ssfv/SPEC.md`; declares -> `ssfv:symphony:platform`
+- consumers: symphony-ssfv, qxctl, reviewers, agentic tools, future SODV-governed documentation projections
+- deferred_projections: portable SSFV graph, module catalog, encyclopedic reference, reviewed public documentation
+- notes: First partial SSFV bootstrap record; it does not claim complete repository coverage or production readiness.
+- status: canonical
+
 #### go.work
 - path: `go.work`
 - title: Symphony Go Workspace
@@ -740,6 +753,19 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: coordinator and future vector engines, testers, reviewers
 - deferred_projections: protocol conformance report
 - notes: The version is developmental and not published.
+- status: canonical
+
+#### Knowledge Vector Engine C++ Foundation FEATURES.md
+- path: `libraries/knowledge-vector-engine-cpp/FEATURES.md`
+- title: Knowledge Vector Engine C++ Foundation Semantic Features
+- surface_type: distributed SSFV feature record
+- truth_role: canonical semantic feature truth for the authority-free shared engine foundation
+- owner: SKV foundation maintainers
+- scope: Owns the experimental `ssfv:symphony:knowledge-vector-engine-foundation` record for exact source scope `libraries/knowledge-vector-engine-cpp`.
+- relationships: depends_on -> `knowledge/ssfv/SPEC.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; declares -> `ssfv:symphony:knowledge-vector-engine-foundation`
+- consumers: symphony-ssfv, qxctl, foundation and vector-engine maintainers, reviewers, agentic tools
+- deferred_projections: portable SSFV graph, capability catalog, conformance documentation
+- notes: Records implemented mechanics only; no runtime identity, semantic authority, or published package is claimed.
 - status: canonical
 
 #### Knowledge Vector Engine C++ Foundation CMakeLists.txt
@@ -1472,6 +1498,19 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: System/TOPS provisioning, qxctl, SSIAG/STAV, and Maestro remain unimplemented.
 - status: canonical
 
+#### Knowledge Session Coordinator FEATURES.md
+- path: `modules/knowledge-session-coordinator/FEATURES.md`
+- title: Knowledge Session Coordinator Semantic Features
+- surface_type: distributed SSFV feature record
+- truth_role: canonical semantic feature truth for the read-only coordination foundation
+- owner: SKV coordinator maintainers
+- scope: Owns the experimental `ssfv:symphony:knowledge-session-coordinator` record for exact source scope `modules/knowledge-session-coordinator`.
+- relationships: depends_on -> `knowledge/ssfv/SPEC.md`; depends_on -> `modules/knowledge-session-coordinator/SPEC.md`; declares -> `ssfv:symphony:knowledge-session-coordinator`
+- consumers: symphony-ssfv, qxctl, coordinator maintainers, reviewers, administrators, agentic tools
+- deferred_projections: portable SSFV graph, authenticated-session capability lineage, operator documentation
+- notes: Records implemented inspect/check behavior only; authenticated session mutation and apply remain unimplemented.
+- status: canonical
+
 #### Knowledge Session Coordinator CMakeLists.txt
 - path: `modules/knowledge-session-coordinator/CMakeLists.txt`
 - title: Knowledge Session Coordinator Build Contract
@@ -1747,11 +1786,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: SKV umbrella manifest
 - truth_role: common vector-engine identity, namespace, installability, and authority boundary
 - owner: Symphony Knowledge Vector maintainers
-- scope: Declares independently installed C++ engines, the implemented shared mechanics/read-only coordinator/SKVI/SCLV/SACV/SODV slices, the canonical SSFV contract, qxctl administration, Linux-first delivery, Maestro readiness, and proposal-only initial state.
+- scope: Declares independently installed C++ engines, the implemented shared mechanics/read-only coordinator/SKVI/SCLV/SACV/SODV/SSFV slices, the first partial SSFV catalog, qxctl administration, Linux-first delivery, Maestro readiness, and proposal-only initial state.
 - relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/`; governs -> `modules/knowledge-session-coordinator/`; governs -> `modules/skvi-engine/`; governs -> `modules/sclv-engine/`; governs -> future cleared vector-engine module paths
 - consumers: vector maintainers, engine implementers, qxctl, Maestro planners, reviewers, agentic tools
 - deferred_projections: engine inventory, install receipts, Maestro presence graph
-- notes: Foundation/coordinator and SKVI/SCLV/SACV/SODV `0.1.0-dev` slices now exist; the SSFV contract is canonical while its engine and feature bootstrap remain gated.
+- notes: Foundation/coordinator and all five vector-engine `0.1.0-dev` slices exist; SSFV has exactly three experimental records and explicitly partial coverage.
 - status: canonical
 
 ##### SPEC.md
@@ -1764,7 +1803,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
 - consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
 - deferred_projections: proposal/session/provider/docking schemas, conformance evidence, engine inventory, docking graph
-- notes: Six common schemas and the foundation/coordinator/SKVI/SCLV/SACV/SODV slices are implemented; SSFV owns eight canonical schemas without a runtime; programmatic apply is disabled.
+- notes: Six common schemas and the foundation/coordinator/SKVI/SCLV/SACV/SODV/SSFV slices are implemented; the three-record SSFV bootstrap is partial and programmatic apply is disabled.
 - status: canonical
 
 ##### SKILL.md
@@ -2490,7 +2529,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, agentic tools
 - deferred_projections: feature catalogs, encyclopedia views, publication inputs, graph views
-- notes: No feature record or runtime is created by this intent.
+- notes: Defines the governing intent for the implemented engine and exact three-record partial bootstrap without granting additional-record authority.
 - status: canonical
 
 ##### MANIFEST.md
@@ -2499,11 +2538,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: vector contract truth
 - truth_role: canonical topology, identity, classification, and installability boundary
 - owner: SSFV maintainers
-- scope: Declares owned feature semantics, sparse distributed records, implemented engine identity, and current empty state.
+- scope: Declares owned feature semantics, sparse distributed records, implemented engine identity, and exact three-record partial-bootstrap state.
 - relationships: depends_on -> `knowledge/ssfv/INTENT.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, implementers, qxctl planners, packaging planners
 - deferred_projections: installation descriptors and Maestro docking descriptors after separate review
-- notes: The engine module is implemented; the feature registry remains intentionally empty.
+- notes: The engine module and first three experimental records are implemented; repository-wide catalog completeness is not claimed.
 - status: canonical
 
 ##### SKILL.md
@@ -2529,7 +2568,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, validator
 - deferred_projections: portable JSON graph, catalogs, search, documentation, and analytical views
-- notes: Engine implementation is complete; feature bootstrap remains a separate gate.
+- notes: Engine implementation and the exact three-record partial bootstrap are complete; every additional record remains separately reviewed.
 - status: canonical
 
 ##### NAMESPACES.md
@@ -2551,11 +2590,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: canonical distributed-feature routing registry
 - truth_role: canonical mapping from stable feature IDs to owner records
 - owner: SSFV maintainers
-- scope: Defines the exact eight-field registry grammar and records the intentionally empty current feature set.
+- scope: Defines the exact eight-field registry grammar and routes the three records in the current partial feature set.
 - relationships: depends_on -> `knowledge/ssfv/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, validator
 - deferred_projections: feature inventories and graph routing
-- notes: Empty is valid; no placeholder feature is required.
+- notes: The current catalog is partial; structural closure does not establish repository-wide completeness.
 - status: canonical
 
 ##### SSFV v1 Schema Manifest

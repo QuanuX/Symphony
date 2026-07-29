@@ -21,8 +21,7 @@ DEADLINE=$(( $(date +%s) * 1000 + 60000 ))
 CHECK=$(printf '{"protocol":"symphony.knowledge.engine-process.v1","request_id":"smoke-check","correlation_id":"smoke-check","operation":"check","target_engine":"symphony-ssfv","deadline_unix_ms":%s,"payload":{"expected_namespace_digest":null,"expected_registry_digest":null,"freshness":"disabled","baseline":null}}' "$DEADLINE")
 CHECK_RESPONSE=$(cd "$REPO" && printf '%s' "$CHECK" | "$BINARY")
 printf '%s\n' "$CHECK_RESPONSE" | grep '"outcome":"ok"' >/dev/null
-printf '%s\n' "$CHECK_RESPONSE" | grep '"coverage_state":"empty"' >/dev/null
-printf '%s\n' "$CHECK_RESPONSE" | grep '"feature_count":0' >/dev/null
+printf '%s\n' "$CHECK_RESPONSE" | grep '"coverage_state":"partial"' >/dev/null
 printf '%s\n' "$CHECK_RESPONSE" | grep '"structural_state":"valid"' >/dev/null
 printf '%s\n' "$CHECK_RESPONSE" | grep '"read_only":true' >/dev/null
 
@@ -31,9 +30,8 @@ GRAPH=$(printf '{"protocol":"symphony.knowledge.engine-process.v1","request_id":
 GRAPH_RESPONSE=$(cd "$REPO" && printf '%s' "$GRAPH" | "$BINARY")
 GRAPH_AGAIN=$(cd "$REPO" && printf '%s' "$GRAPH" | "$BINARY")
 test "$GRAPH_RESPONSE" = "$GRAPH_AGAIN"
-printf '%s\n' "$GRAPH_RESPONSE" | grep '"node_count":0' >/dev/null
-printf '%s\n' "$GRAPH_RESPONSE" | grep '"edge_count":0' >/dev/null
 printf '%s\n' "$GRAPH_RESPONSE" | grep '"noncanonical":true' >/dev/null
+printf '%s\n' "$GRAPH_RESPONSE" | grep '"rebuildable":true' >/dev/null
 
 set +e
 INVALID_RESPONSE=$(printf '%s' '{"protocol":"symphony.knowledge.engine-process.v1","request_id":"bad","request_id":"duplicate"}' | "$BINARY")

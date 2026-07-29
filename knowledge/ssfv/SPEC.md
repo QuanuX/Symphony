@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified engine implementation contract. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative. The canonical registry remains empty; the bounded SSFV engine and qxctl client are implemented without feature bootstrap or canonical apply.
+Architect-ratified engine implementation and first partial-bootstrap contract. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative. The canonical registry contains exactly three experimental records; the bounded SSFV engine and qxctl client remain without canonical apply or semantic-decision authority.
 
 ## Purpose
 
@@ -118,7 +118,7 @@ A `FEATURES.md` file is permitted only at a source scope owning one or more rati
 - link parent and child records through stable identities;
 - remain sparse when no feature-worthy behavior exists.
 
-The first bootstrap is separately gated. This specification does not create a root or nested `FEATURES.md` file.
+The first partial bootstrap is ratified and contains exactly one root owner file and two nested owner files. Any additional `FEATURES.md` or feature record remains separately gated by the complete feature-worthiness and reviewed-change procedure.
 
 Every registered feature file uses the exact managed-region and embedded JSON-envelope grammar in `FEATURE-FILE-FORMAT.md`. The exact literal `.` represents repository-root source scope and owns root `FEATURES.md`; any other normalized directory scope owns `<source_scope>/FEATURES.md`.
 
@@ -171,6 +171,8 @@ Structural integrity checking is mandatory. The implemented per-invocation fresh
 
 No unresolved structural error may be silently carried into a later session as canonical truth.
 
+`coverage_state` reports semantic-catalog coverage, not merely registry closure. `empty` means no feature record is registered. `partial` means one or more records exist in an incrementally bootstrapped catalog, including when every registered relationship is structurally valid. `complete` is reserved and MUST NOT be emitted until a future owner-ratified repository-coverage contract defines the source universe, exclusions, evidence, freshness, and completion rule. Successful structural validation never establishes repository-wide feature completeness.
+
 ## Proposal and Mutation Boundary
 
 An engine proposal may coordinate a bounded update to a distributed `FEATURES.md`, `REGISTRY.md`, `NAMESPACES.md`, and SKVI. It includes exact expected digests, paths, operation intent, expiry, affected feature IDs, and one caller-declared desired namespace or feature record.
@@ -191,4 +193,4 @@ The schemas bound individual strings, arrays, records, and snapshots. The engine
 
 ## Non-Authorization Statement
 
-This specification authorizes canonical SSFV governance plus the bounded independently installed engine and qxctl client. It does not authorize distributed feature bootstrap, canonical apply, Maestro docking, persistent graph storage, a remote interface, public documentation, or an application capability claim.
+This specification authorizes canonical SSFV governance, the bounded independently installed engine and qxctl client, and the exact three-record partial bootstrap. It does not authorize another distributed feature record, a repository-completeness claim, canonical apply, Maestro docking, persistent graph storage, a remote interface, public documentation, or any application capability claim beyond those three records.

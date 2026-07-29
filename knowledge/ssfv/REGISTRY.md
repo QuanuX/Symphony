@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. No feature record or distributed `FEATURES.md` file is registered at this time.
+Canonical SSFV feature-routing registry. The first partial bootstrap covers the repository-root platform capability, the shared knowledge-vector engine foundation, and the read-only knowledge-session coordinator foundation.
 
 ## Purpose
 
@@ -31,7 +31,32 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 
 ## Canonical Entries
 
-None.
+- feature_id: `ssfv:symphony:knowledge-session-coordinator`
+- feature_file: `modules/knowledge-session-coordinator/FEATURES.md`
+- owner_contract: `modules/knowledge-session-coordinator/SPEC.md`
+- source_scope: `modules/knowledge-session-coordinator`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:ba1d08e1869c079c1e4512c68927430b732aee90482d970a988ae1e8febbf5ae`
+- notes: First partial bootstrap record for the implemented read-only coordinator foundation; authenticated session mutation remains unimplemented.
+
+- feature_id: `ssfv:symphony:knowledge-vector-engine-foundation`
+- feature_file: `libraries/knowledge-vector-engine-cpp/FEATURES.md`
+- owner_contract: `libraries/knowledge-vector-engine-cpp/SPEC.md`
+- source_scope: `libraries/knowledge-vector-engine-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:fb489afca6d8b5520331a7a67006ee525ffbd828a268e444eace8da1675c637f`
+- notes: First partial bootstrap record for the implemented authority-free shared C++ mechanics.
+
+- feature_id: `ssfv:symphony:platform`
+- feature_file: `FEATURES.md`
+- owner_contract: `INTENT.md`
+- source_scope: `.`
+- status: `experimental`
+- parent_feature_id: `none`
+- record_digest: `sha256:700f02746603ccebdb94711291414c5f840b5c28039dc525dc9b0837f041c0fd`
+- notes: Repository-root capability record; bootstrap coverage is explicitly partial and does not imply production readiness or complete catalog coverage.
 
 ## Prohibited Entries
 
@@ -47,4 +72,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This empty registry is complete for the current contract state. It does not authorize feature bootstrap, distributed file creation, engine implementation, or canonical mutation.
+This three-record registry is an explicitly partial catalog. It does not authorize another feature record, another distributed file, repository-wide completeness, engine-decided feature-worthiness, or canonical mutation.

@@ -1253,8 +1253,6 @@ State load_state(std::int64_t deadline_unix_ms) {
 
     if (state.registry_empty && state.records.empty()) {
         state.coverage_state = "empty";
-    } else if (state.structural_valid) {
-        state.coverage_state = "complete";
     } else {
         state.coverage_state = "partial";
     }

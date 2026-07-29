@@ -48,7 +48,7 @@ knowledge/ssfv/
   schemas/v2/
 ```
 
-No distributed `FEATURES.md` record exists at contract-transition time. The explicit empty registry is canonical and valid.
+The first partial bootstrap distributes exactly three canonical records across `FEATURES.md`, `libraries/knowledge-vector-engine-cpp/FEATURES.md`, and `modules/knowledge-session-coordinator/FEATURES.md`. `REGISTRY.md` routes those records, and SKVI indexes all three owner files. No other feature record or complete-catalog claim is authorized.
 
 ## Record Model
 
@@ -81,8 +81,8 @@ The Go qxctl client validates the exact inactive-undocked receipt and invokes th
 
 ## Non-Authorization Statement
 
-This manifest authorizes the canonical SSFV contract and bounded engine/client implementation. It does not authorize feature bootstrap, application `FEATURES.md` creation, canonical apply, repository mutation, graph-database persistence, Maestro docking, public documentation, or marketing claims.
+This manifest authorizes the canonical SSFV contract, bounded engine/client implementation, and exact three-record partial bootstrap. It does not authorize an additional application `FEATURES.md`, another feature record, repository-wide completeness, canonical apply, repository mutation by tooling, graph-database persistence, Maestro docking, public documentation, or marketing claims.
 
 ## Status
 
-Architect-ratified engine implementation. Namespace `symphony` is allocated, the registry is intentionally empty, and no application feature record exists.
+Architect-ratified engine implementation and first partial bootstrap. Namespace `symphony` is allocated, exactly three experimental application-feature records exist, and coverage remains explicitly partial.
