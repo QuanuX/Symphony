@@ -76,6 +76,15 @@ type ssfvOptions struct {
 	jsonOutput              bool
 }
 
+type knowledgeEngineOptions struct {
+	role                   string
+	stateRoot              string
+	prefix                 string
+	version                string
+	expectedRegistryDigest string
+	jsonOutput             bool
+}
+
 func execute(args []string) int {
 	if len(args) == 0 {
 		printUsage()
@@ -154,8 +163,68 @@ func newRootCommand() (*cobra.Command, error) {
 		return nil, err
 	}
 	stav := newSTAVCommand()
-	root.AddCommand(ssiag, stav, newSKVICommand(), newSCLVCommand(), newSACVCommand(), newSODVCommand(), newSSFVCommand())
+	root.AddCommand(
+		ssiag, stav, newKnowledgeCommand(), newSKVICommand(), newSCLVCommand(),
+		newSACVCommand(), newSODVCommand(), newSSFVCommand(),
+	)
 	return root, nil
+}
+
+func newKnowledgeCommand() *cobra.Command {
+	command := &cobra.Command{
+		Use:  "knowledge",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return fmt.Errorf("knowledge subcommand is required: engines")
+		},
+	}
+	engines := &cobra.Command{
+		Use:  "engines",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return fmt.Errorf("knowledge engines subcommand is required: list, inspect, doctor, bind, or unbind")
+		},
+	}
+	for _, operation := range []string{"list", "inspect", "doctor", "bind", "unbind"} {
+		options := knowledgeEngineOptions{version: "0.1.0-dev"}
+		child := &cobra.Command{
+			Use: operation,
+			Args: func(_ *cobra.Command, args []string) error {
+				if operation == "inspect" || operation == "bind" || operation == "unbind" {
+					if len(args) != 1 {
+						return errUsageOnly
+					}
+					options.role = args[0]
+					return nil
+				}
+				return usageOnlyArgs(nil, args)
+			},
+			RunE: func(*cobra.Command, []string) error {
+				return runKnowledgeEngines(operation, options)
+			},
+		}
+		child.Flags().StringVar(
+			&options.stateRoot, "state-root", "",
+			"user state root; defaults to XDG_STATE_HOME or ~/.local/state",
+		)
+		child.Flags().BoolVar(&options.jsonOutput, "json", false, "emit JSON")
+		if operation == "bind" {
+			child.Flags().StringVar(&options.prefix, "prefix", "", "exact knowledge engine installation prefix")
+			child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed engine version")
+		}
+		if operation == "bind" || operation == "unbind" {
+			child.Flags().StringVar(
+				&options.expectedRegistryDigest, "expected-registry-digest", "",
+				"required prior registry state: absent or exact tagged SHA-256 digest",
+			)
+		}
+		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+		engines.AddCommand(child)
+	}
+	engines.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	command.AddCommand(engines)
+	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	return command
 }
 
 func newSSFVCommand() *cobra.Command {
@@ -531,7 +600,7 @@ func exactOneUsageArg(_ *cobra.Command, args []string) error {
 
 func knownTopLevel(value string) bool {
 	switch value {
-	case "--help", "--version", "doctor", "contracts", "inventory", "status", "modules", "module", "ssiag", "stav", "skvi", "sclv", "sacv", "sodv", "ssfv":
+	case "--help", "--version", "doctor", "contracts", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "ssfv":
 		return true
 	default:
 		return false
@@ -554,6 +623,13 @@ func failurePrefix(args []string) string {
 	case "module":
 		if len(args) > 1 && (args[1] == "inspect" || args[1] == "check" || args[1] == "metadata") {
 			return "module " + args[1]
+		}
+	case "knowledge":
+		if len(args) > 2 && args[1] == "engines" {
+			switch args[2] {
+			case "list", "inspect", "doctor", "bind", "unbind":
+				return "knowledge engines " + args[2]
+			}
 		}
 	case "skvi":
 		if len(args) > 1 {

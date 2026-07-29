@@ -21,6 +21,7 @@ After this contract transition is merged, authorized implementation work may:
 
 - build the authority-free shared C++ foundation and coordinator read path;
 - inspect bounded repository and provider inputs;
+- bind one exact inactive-undocked coordinator or vector-engine installation per role in the protected qxctl user-default profile;
 - compute content digests and deterministic validation evidence;
 - maintain noncanonical authenticated-session/worktree journals;
 - create immutable proposals;
@@ -29,6 +30,8 @@ After this contract transition is merged, authorized implementation work may:
 - prove independent install/uninstall without silently docking or mutating canonical files.
 
 The implemented `0.1.0-dev` foundation supports direct coordinator `inspect` and explicit-path read-only `check`, plus independently installed SKVI `inspect`, `check`, caller-declared `propose`, and disposable `project`; SCLV `inspect`, `check`, provider-neutral `propose`, non-mutating `recover`, and disposable `project`; and SACV `inspect`, `check`, `diff`, caller-declared `propose`, and disposable `project`. qxctl validates each exact receipt, owned paths, process identity, deadline, and response digest before presenting results. Success proves those bounded operations only; it does not prove authentication, an active session, lifecycle activation, docking, ratification, journal mutation, endpoint existence, publication, or apply authority.
+
+The implemented `qxctl knowledge engines list|inspect|doctor|bind|unbind` surface manages only the protected user-scope `default` binding profile. Supply `absent` for the first expected registry state or the exact digest reported by `list` for later mutations. A bind selects exact content for later reconciliation; it does not install, invoke, activate, dock, authenticate, authorize, or apply.
 
 ## Prohibited Initial Operations
 

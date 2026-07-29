@@ -13,6 +13,7 @@ import (
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/contracts"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/inventory"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgebinding"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgeengine"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/modules"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/repository"
@@ -52,6 +53,11 @@ func printUsage() {
 	fmt.Println("  stav verify --tops-id UUID [--scope user|system] [--json] Verify the STAV digest chain")
 	fmt.Println("  stav query --tops-id UUID [--scope user|system] [bounded filters] [--json] Query authorized STAV projections")
 	fmt.Println("  stav doctor --tops-id UUID [--scope user|system] Run authenticated STAV diagnostics")
+	fmt.Println("  knowledge engines list [--state-root PATH] [--json] List the user-default exact engine bindings")
+	fmt.Println("  knowledge engines inspect ROLE [--state-root PATH] [--json] Inspect one exact engine binding")
+	fmt.Println("  knowledge engines doctor [--state-root PATH] [--json] Verify every bound installation")
+	fmt.Println("  knowledge engines bind ROLE --prefix PATH [--version VERSION] --expected-registry-digest STATE [--json] Bind an exact installation")
+	fmt.Println("  knowledge engines unbind ROLE --expected-registry-digest DIGEST [--json] Remove one exact binding")
 	fmt.Println("  skvi inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SKVI engine")
 	fmt.Println("  skvi check --prefix PATH [--version VERSION] [--json] Check canonical SKVI index truth")
 	fmt.Println("  skvi propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared proposal")
@@ -77,6 +83,137 @@ func printUsage() {
 	fmt.Println("  ssfv diff --prefix PATH --input FILE [--version VERSION] [--json] Compare a semantic baseline with live truth")
 	fmt.Println("  ssfv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared semantic proposal")
 	fmt.Println("  ssfv graph --prefix PATH [--version VERSION] [--json] Build a disposable semantic-feature graph")
+}
+
+func runKnowledgeEngines(operation string, options knowledgeEngineOptions) error {
+	store, err := knowledgebinding.NewStore(options.stateRoot)
+	if err != nil {
+		return err
+	}
+	switch operation {
+	case "list":
+		snapshot, err := store.Snapshot()
+		if err != nil {
+			return err
+		}
+		if options.jsonOutput {
+			return printIndentedJSON(snapshot)
+		}
+		if !snapshot.Exists {
+			fmt.Println("Knowledge engine bindings: absent profile=user-default canonical=false")
+			return nil
+		}
+		fmt.Printf(
+			"Knowledge engine bindings: profile=%s generation=%d digest=%s canonical=false\n",
+			snapshot.Registry.ProfileID, snapshot.Registry.Generation, snapshot.Registry.RegistryDigest,
+		)
+		for _, binding := range snapshot.Registry.Bindings {
+			fmt.Printf(
+				"Knowledge engine binding: role=%s engine=%s version=%s state=%s prefix=%s\n",
+				binding.Role, binding.EngineID, binding.Version, binding.State, binding.Prefix,
+			)
+		}
+		return nil
+	case "inspect":
+		snapshot, err := store.Snapshot()
+		if err != nil {
+			return err
+		}
+		if !snapshot.Exists {
+			return fmt.Errorf("knowledge engine binding registry is absent")
+		}
+		for _, binding := range snapshot.Registry.Bindings {
+			if binding.Role != options.role {
+				continue
+			}
+			if options.jsonOutput {
+				return printIndentedJSON(map[string]any{
+					"registry_digest": snapshot.Registry.RegistryDigest,
+					"binding":         binding,
+					"canonical":       false,
+				})
+			}
+			fmt.Printf(
+				"Knowledge engine binding: role=%s module=%s engine=%s version=%s state=%s receipt_digest=%s executable_digest=%s canonical=false\n",
+				binding.Role, binding.ModuleID, binding.EngineID, binding.Version, binding.State,
+				binding.ReceiptDigest, binding.ExecutableDigest,
+			)
+			return nil
+		}
+		return fmt.Errorf("knowledge engine role %q is not bound", options.role)
+	case "doctor":
+		report, err := store.Doctor()
+		if err != nil {
+			return err
+		}
+		if options.jsonOutput {
+			if err := printIndentedJSON(report); err != nil {
+				return err
+			}
+		} else {
+			fmt.Printf(
+				"Knowledge engine binding doctor: healthy=%t registry_exists=%t checks=%d\n",
+				report.Healthy, report.RegistryExists, len(report.Results),
+			)
+			for _, result := range report.Results {
+				fmt.Printf(
+					"Knowledge engine binding check: role=%s healthy=%t code=%s message=%q\n",
+					result.Role, result.Healthy, result.Code, result.Message,
+				)
+			}
+		}
+		if !report.Healthy {
+			return fmt.Errorf("knowledge engine binding doctor reported unhealthy state")
+		}
+		return nil
+	case "bind":
+		if options.prefix == "" {
+			return fmt.Errorf("--prefix is required")
+		}
+		if options.expectedRegistryDigest == "" {
+			return fmt.Errorf("--expected-registry-digest is required")
+		}
+		registry, changed, err := store.Bind(
+			options.role, options.prefix, options.version, options.expectedRegistryDigest)
+		if err != nil {
+			return err
+		}
+		if options.jsonOutput {
+			return printIndentedJSON(map[string]any{"changed": changed, "registry": registry})
+		}
+		fmt.Printf(
+			"Knowledge engine binding: operation=bind role=%s changed=%t generation=%d digest=%s canonical=false\n",
+			options.role, changed, registry.Generation, registry.RegistryDigest,
+		)
+		return nil
+	case "unbind":
+		if options.expectedRegistryDigest == "" {
+			return fmt.Errorf("--expected-registry-digest is required")
+		}
+		registry, changed, err := store.Unbind(options.role, options.expectedRegistryDigest)
+		if err != nil {
+			return err
+		}
+		if options.jsonOutput {
+			return printIndentedJSON(map[string]any{"changed": changed, "registry": registry})
+		}
+		fmt.Printf(
+			"Knowledge engine binding: operation=unbind role=%s changed=%t generation=%d digest=%s canonical=false\n",
+			options.role, changed, registry.Generation, registry.RegistryDigest,
+		)
+		return nil
+	default:
+		return fmt.Errorf("unsupported knowledge engines operation")
+	}
+}
+
+func printIndentedJSON(value any) error {
+	encoded, err := json.MarshalIndent(value, "", "  ")
+	if err != nil {
+		return fmt.Errorf("format JSON output: %w", err)
+	}
+	fmt.Println(string(encoded))
+	return nil
 }
 
 func runSKVI(operation string, options skviOptions) error {

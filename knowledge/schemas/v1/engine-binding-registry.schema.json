@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:engine-binding-registry:v1",
+  "title": "Symphony user-scope knowledge engine binding registry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "scope",
+    "profile_id",
+    "generation",
+    "updated_at",
+    "previous_registry_digest",
+    "bindings",
+    "canonical",
+    "registry_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.engine-binding-registry.v1"},
+    "scope": {"const": "user"},
+    "profile_id": {"const": "default"},
+    "generation": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "maxLength": 64,
+      "pattern": "Z$"
+    },
+    "previous_registry_digest": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/digest"}
+      ]
+    },
+    "bindings": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/binding"}
+    },
+    "canonical": {"const": false},
+    "registry_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "module_id",
+        "engine_id",
+        "version",
+        "prefix",
+        "receipt_path",
+        "receipt_digest",
+        "executable_path",
+        "executable_digest",
+        "state",
+        "default_receptor"
+      ],
+      "properties": {
+        "role": {
+          "enum": ["coordinator", "sacv", "sclv", "skvi", "sodv", "ssfv"]
+        },
+        "module_id": {"$ref": "#/$defs/token"},
+        "engine_id": {"$ref": "#/$defs/token"},
+        "version": {"$ref": "#/$defs/version"},
+        "prefix": {"$ref": "#/$defs/absolutePath"},
+        "receipt_path": {"$ref": "#/$defs/absolutePath"},
+        "receipt_digest": {"$ref": "#/$defs/digest"},
+        "executable_path": {"$ref": "#/$defs/absolutePath"},
+        "executable_digest": {"$ref": "#/$defs/digest"},
+        "state": {"const": "bound_undocked"},
+        "default_receptor": {"type": "null"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"role": {"const": "coordinator"}}},
+          "then": {
+            "properties": {
+              "module_id": {"const": "knowledge-session-coordinator"},
+              "engine_id": {"const": "symphony-knowledge-session"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"role": {"const": "skvi"}}},
+          "then": {
+            "properties": {
+              "module_id": {"const": "skvi-engine"},
+              "engine_id": {"const": "symphony-skvi"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"role": {"const": "sclv"}}},
+          "then": {
+            "properties": {
+              "module_id": {"const": "sclv-engine"},
+              "engine_id": {"const": "symphony-sclv"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"role": {"const": "sacv"}}},
+          "then": {
+            "properties": {
+              "module_id": {"const": "sacv-engine"},
+              "engine_id": {"const": "symphony-sacv"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"role": {"const": "sodv"}}},
+          "then": {
+            "properties": {
+              "module_id": {"const": "sodv-engine"},
+              "engine_id": {"const": "symphony-sodv"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"role": {"const": "ssfv"}}},
+          "then": {
+            "properties": {
+              "module_id": {"const": "ssfv-engine"},
+              "engine_id": {"const": "symphony-ssfv"}
+            }
+          }
+        }
+      ]
+    },
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "absolutePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^/(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])(?:$|[^/](?:.*[^/])?)$"
+    }
+  }
+}

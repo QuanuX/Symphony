@@ -1298,7 +1298,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: declares -> `tools/qxctl/MANIFEST.md`; depends_on -> `knowledge/SPEC.md`; interprets -> vector and module contracts
 - consumers: administrators, implementers, reviewers, agentic tools
 - deferred_projections: command reference and completion metadata
-- notes: Implemented SSIAG/STAV commands and ratified-but-unimplemented vector-engine grammar are explicitly distinguished.
+- notes: Implemented SSIAG/STAV, vector-engine, and user-default binding commands are distinguished from reserved reconciliation, session, and apply grammar.
 - status: canonical
 
 #### qxctl MANIFEST.md
@@ -1307,7 +1307,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: tool manifest
 - truth_role: command, dependency, installation, and non-authorization contract
 - owner: qxctl maintainer
-- scope: Enumerates operational commands, reserved vector-engine grammar, constrained dependencies, and lifecycle boundaries.
+- scope: Enumerates operational commands, user-default engine bindings, reserved knowledge grammar, constrained dependencies, and lifecycle boundaries.
 - relationships: depends_on -> `tools/qxctl/INTENT.md`; depends_on -> `knowledge/SPEC.md`; governs -> `tools/qxctl/cmd/qxctl/`
 - consumers: qxctl implementers, module/vector maintainers, reviewers, agentic tools
 - deferred_projections: command registry and module lifecycle evidence
@@ -1359,8 +1359,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: administrative CLI implementation surface
 - truth_role: local operation dispatch, process-client invocation, and presentation implementation truth
 - owner: qxctl maintainers
-- scope: Implements current repository, module, SSIAG, STAV, SKVI, SCLV, SACV, SODV, and shared SSFV administrative operation handlers.
-- relationships: implements -> `tools/qxctl/MANIFEST.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`
+- scope: Implements current repository, module, SSIAG, STAV, knowledge-engine binding, SKVI, SCLV, SACV, SODV, and shared SSFV administrative operation handlers.
+- relationships: implements -> `tools/qxctl/MANIFEST.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`; invokes -> `tools/qxctl/internal/knowledgebinding/registry.go`
 - consumers: qxctl executable, tests, maintainers, reviewers
 - deferred_projections: generated CLI reference and operation evidence
 - notes: Presentation does not own vector semantics or authorize mutation.
@@ -1372,8 +1372,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: administrative CLI implementation surface
 - truth_role: implemented command tree, flag grammar, and failure routing
 - owner: qxctl maintainers
-- scope: Implements current repository, SSIAG, STAV, and exact-installation SKVI/SCLV/SACV/SODV/SSFV command grammar without owning domain semantics.
-- relationships: implements -> `tools/qxctl/MANIFEST.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`
+- scope: Implements current repository, SSIAG, STAV, user-default engine binding, and exact-installation SKVI/SCLV/SACV/SODV/SSFV command grammar without owning domain semantics.
+- relationships: implements -> `tools/qxctl/MANIFEST.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`; invokes -> `tools/qxctl/internal/knowledgebinding/registry.go`
 - consumers: qxctl executable, compatibility tests, maintainers, reviewers
 - deferred_projections: generated CLI reference documentation
 - notes: Cobra grammar does not authorize lifecycle activation or canonical apply.
@@ -1385,11 +1385,50 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: bounded Go process-client implementation
 - truth_role: trusted receipt resolution, child-process bounds, and response verification implementation truth
 - owner: qxctl maintainers
-- scope: Resolves exact installed SKVI, SCLV, SACV, SODV, and SSFV versions, validates trusted inactive-undocked receipts and owned paths, invokes them with an empty environment and hard deadline, and verifies response identity and digest.
+- scope: Resolves exact installed coordinator, SKVI, SCLV, SACV, SODV, and SSFV versions for binding evidence; invokes the five vector engines with an empty environment and hard deadline; and verifies response identity and digest.
 - relationships: implements -> `knowledge/SPEC.md`; implements -> `knowledge/skvi/SPEC.md`; implements -> `knowledge/sclv/SPEC.md`; implements -> `knowledge/sacv/SPEC.md`; implements -> `knowledge/sodv/SPEC.md`; implements -> `knowledge/ssfv/SPEC.md`; called_by -> `tools/qxctl/cmd/qxctl/commands.go`
 - consumers: qxctl SKVI/SCLV/SACV/SODV/SSFV commands, tests, reviewers, future compatible vector clients
 - deferred_projections: additional compatible vector clients
-- notes: It does not install, activate, dock, infer membership, grant permission, ratify, mutate journals, or apply.
+- notes: It does not install, alter receipt activation, dock, infer membership, grant permission, ratify, mutate journals, or apply.
+- status: canonical
+
+#### qxctl Knowledge Engine Binding Registry
+- path: `tools/qxctl/internal/knowledgebinding/registry.go`
+- title: qxctl Knowledge Engine Binding Registry
+- surface_type: protected local lifecycle-state implementation
+- truth_role: exact user-default engine selection, expected-state, digest, and doctor implementation truth
+- owner: qxctl maintainers
+- scope: Records one exact inactive-undocked installation per coordinator/vector role in a noncanonical user-default profile and revalidates bound receipt and executable digests.
+- relationships: implements -> `knowledge/SPEC.md`; implements -> `knowledge/schemas/v1/engine-binding-registry.schema.json`; called_by -> `tools/qxctl/cmd/qxctl/main.go`
+- consumers: qxctl knowledge commands, tests, future reconciliation coordinator integration
+- deferred_projections: repository/system/TOPS profiles, reconciliation inventory, Maestro docking
+- notes: Binding is not installation, engine invocation, authentication, permission, repository activation, or docking.
+- status: canonical
+
+#### qxctl Unix Knowledge Binding State
+- path: `tools/qxctl/internal/knowledgebinding/state_unix.go`
+- title: qxctl Unix Knowledge Binding State
+- surface_type: platform-specific protected local-state implementation
+- truth_role: no-follow lock, atomic replacement, and durability implementation truth
+- owner: qxctl maintainers
+- scope: Implements Linux/macOS owner-controlled state directories, shared/exclusive no-follow registry locking, mode-0600 files, same-directory atomic replacement, and directory durability.
+- relationships: implements -> `tools/qxctl/MANIFEST.md`; called_by -> `tools/qxctl/internal/knowledgebinding/registry.go`
+- consumers: qxctl knowledge commands, tests, reviewers
+- deferred_projections: system/TOPS protected state
+- notes: The persistent lock file is never unlinked during normal operation.
+- status: canonical
+
+#### qxctl Unsupported Native Knowledge Binding State
+- path: `tools/qxctl/internal/knowledgebinding/state_unsupported.go`
+- title: qxctl Unsupported Native Knowledge Binding State
+- surface_type: platform fail-closed implementation
+- truth_role: unsupported-native-operating-system rejection truth
+- owner: qxctl maintainers
+- scope: Refuses binding-registry access where the Linux/macOS protected local-state contract is unavailable.
+- relationships: implements -> `tools/qxctl/MANIFEST.md`; called_by -> `tools/qxctl/internal/knowledgebinding/registry.go`
+- consumers: qxctl knowledge commands, tests, reviewers
+- deferred_projections: WSL and remote administration documentation
+- notes: It does not introduce a native Windows state implementation.
 - status: canonical
 
 #### qxctl Unix No-Follow Knowledge-Engine Access
@@ -1825,7 +1864,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: common protocol schema manifest
 - truth_role: canonical inventory and boundary for exact common JSON schemas
 - owner: Symphony Knowledge Vector maintainers
-- scope: Declares process request/response, descriptor, install-receipt, immutable-proposal, and provider-evidence schemas.
+- scope: Declares process request/response, descriptor, install-receipt, engine-binding-registry, immutable-proposal, and provider-evidence schemas.
 - relationships: depends_on -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; governs -> `modules/skvi-engine/SPEC.md`; governs -> `modules/sclv-engine/SPEC.md`
 - consumers: C++ foundation and engine implementers, qxctl planners, validator, reviewers
 - deferred_projections: generated schema documentation and conformance evidence
@@ -1882,6 +1921,19 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: qxctl lifecycle planner, installers, uninstallers, packagers, reviewers
 - deferred_projections: lifecycle inventory and rollback evidence
 - notes: A receipt does not authorize activation, canonical writes, or live docking.
+- status: canonical
+
+##### Engine Binding Registry Schema
+- path: `knowledge/schemas/v1/engine-binding-registry.schema.json`
+- title: Symphony Knowledge Engine Binding Registry v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical schema for protected noncanonical user-default exact-version selection
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes profile identity, generation, expected-state chain, exact receipt/executable identity and digests, inactive-undocked binding state, and noncanonical status.
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `tools/qxctl/internal/knowledgebinding/registry.go`
+- consumers: qxctl lifecycle administration, future coordinator reconciliation, validator, reviewers
+- deferred_projections: repository/system/TOPS profiles and Maestro docking
+- notes: A binding does not install, invoke, authenticate, authorize, activate a receipt, or dock an engine.
 - status: canonical
 
 ##### Knowledge Proposal Schema
@@ -2953,7 +3005,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - status: canonical
 
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, six common SKV JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, seven common SKV JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

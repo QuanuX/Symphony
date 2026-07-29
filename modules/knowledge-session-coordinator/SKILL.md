@@ -24,4 +24,6 @@ Without arguments, send exactly one bounded `symphony.knowledge.engine-process.v
 
 ## Stop Conditions
 
-Stop for a new reviewed increment before enabling session mutation, persistent journals, locks, authentication, qxctl grammar, SSIAG/STAV calls, apply, system/TOPS installation claims, an unversioned active alias, or Maestro docking.
+qxctl may select this exact inactive-undocked package in its protected user-default binding registry. Treat that selection as noncanonical future-reconciliation input only; it does not invoke or activate the coordinator.
+
+Stop for a new reviewed increment before enabling session mutation, persistent journals, locks, authentication, qxctl coordinator invocation or reconciliation grammar, SSIAG/STAV calls, apply, system/TOPS installation claims, an unversioned active alias, or Maestro docking.
