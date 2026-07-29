@@ -327,14 +327,15 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
     require(inspect.at("engine_decides_feature_worthiness") == false,
             "engine claimed feature-worthiness authority");
     const auto check = ssfv::handle_request(request("check", disabled_check()));
-    require(check.at("summary").at("state") == "valid", "canonical empty registry invalid");
-    require(check.at("coverage_state") == "empty", "empty coverage state mismatch");
-    require(check.at("feature_count") == 0U && check.at("feature_file_count") == 0U,
-            "unexpected canonical feature records");
+    require(check.at("summary").at("state") == "valid", "canonical partial registry invalid");
+    require(check.at("coverage_state") == "partial",
+            "canonical bootstrap must not imply repository-wide completeness");
+    require(check.at("feature_count") == 3U && check.at("feature_file_count") == 3U,
+            "canonical bootstrap record counts mismatch");
     const auto graph = ssfv::handle_request(
         request("graph", engine::Json{{"format", "json"}}));
-    require(graph.at("node_count") == 0U && graph.at("edge_count") == 0U,
-            "empty graph count mismatch");
+    require(graph.at("node_count") == 3U && graph.at("edge_count") == 5U,
+            "canonical bootstrap graph count mismatch");
     require(graph.at("noncanonical") == true && graph.at("rebuildable") == true,
             "graph authority escalated");
 }
@@ -345,7 +346,8 @@ void test_valid_hierarchy_and_deterministic_graph() {
     CurrentDirectory current(temporary.path());
     const auto check = ssfv::handle_request(request("check", disabled_check()));
     require(check.at("summary").at("state") == "valid", "valid hierarchy rejected");
-    require(check.at("coverage_state") == "complete", "coverage state mismatch");
+    require(check.at("coverage_state") == "partial",
+            "populated catalog must not imply repository-wide completeness");
     require(check.at("feature_count") == 4U && check.at("feature_file_count") == 1U,
             "feature counts mismatch");
     const auto first = ssfv::handle_request(

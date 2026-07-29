@@ -54,6 +54,7 @@
       ]
     },
     "coverage_state": {
+      "description": "Repository semantic-catalog coverage. Empty means no registered records, partial means a nonempty incrementally bootstrapped catalog, and complete is reserved until an owner-ratified repository-coverage contract exists.",
       "enum": [
         "empty",
         "partial",
