@@ -30,6 +30,8 @@ const (
 	sacvEngineID     = "symphony-sacv"
 	sodvModuleID     = "sodv-engine"
 	sodvEngineID     = "symphony-sodv"
+	ssfvModuleID     = "ssfv-engine"
+	ssfvEngineID     = "symphony-ssfv"
 	maxReceiptBytes  = 256 * 1024
 	maxRequestBytes  = 1024 * 1024
 	maxResponseBytes = 4 * 1024 * 1024
@@ -60,6 +62,10 @@ var sacvSpec = engineSpec{
 
 var sodvSpec = engineSpec{
 	label: "SODV", moduleID: sodvModuleID, engineID: sodvEngineID, expectedFiles: expectedSODVFiles,
+}
+
+var ssfvSpec = engineSpec{
+	label: "SSFV", moduleID: ssfvModuleID, engineID: ssfvEngineID, expectedFiles: expectedSSFVFiles,
 }
 
 type receipt struct {
@@ -120,6 +126,10 @@ func InvokeSACV(ctx context.Context, prefix, version, repositoryRoot, operation 
 
 func InvokeSODV(ctx context.Context, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
 	return invoke(ctx, sodvSpec, prefix, version, repositoryRoot, operation, payload)
+}
+
+func InvokeSSFV(ctx context.Context, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
+	return invoke(ctx, ssfvSpec, prefix, version, repositoryRoot, operation, payload)
 }
 
 func invoke(ctx context.Context, spec engineSpec, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
@@ -262,10 +272,16 @@ func resolveInstalledFor(spec engineSpec, prefix, version string) (string, error
 	if err != nil {
 		return "", err
 	}
+	if err := validateTrustedInstallPrefix(prefix); err != nil {
+		return "", fmt.Errorf("installation prefix is untrusted: %w", err)
+	}
 	receiptRelative := filepath.ToSlash(filepath.Join(
 		"share", "symphony", "receipts", spec.moduleID, version, "install-receipt.json"))
 	binaryRelative := filepath.ToSlash(filepath.Join(
 		"libexec", "symphony", spec.moduleID, version, spec.engineID))
+	if err := validateNoFollowRelative(prefix, receiptRelative, maxReceiptBytes); err != nil {
+		return "", fmt.Errorf("validate %s install receipt: %w", spec.label, err)
+	}
 	receiptBytes, err := readNoFollowRelative(prefix, receiptRelative, maxReceiptBytes)
 	if err != nil {
 		return "", fmt.Errorf("validate %s install receipt: %w", spec.label, err)
@@ -409,6 +425,27 @@ func expectedSODVFiles(version string) map[string]struct{} {
 	return result
 }
 
+func expectedSSFVFiles(version string) map[string]struct{} {
+	base := "share/doc/symphony/ssfv-engine/" + version + "/"
+	license := "share/licenses/symphony-ssfv-engine/" + version + "/"
+	paths := []string{
+		"libexec/symphony/ssfv-engine/" + version + "/symphony-ssfv",
+		"share/symphony/receipts/ssfv-engine/" + version + "/install-receipt.json",
+		base + "INTENT.md",
+		base + "MANIFEST.md",
+		base + "INSTALL.md",
+		base + "SKILL.md",
+		base + "SPEC.md",
+		license + "LICENSE-AGPL-3.0",
+		license + "nlohmann-json-LICENSE.MIT",
+	}
+	result := make(map[string]struct{}, len(paths))
+	for _, path := range paths {
+		result[path] = struct{}{}
+	}
+	return result
+}
+
 func maxInstalledFileBytes(relative string) int64 {
 	if strings.HasPrefix(relative, "libexec/") {
 		return 64 * 1024 * 1024
@@ -472,11 +509,22 @@ func readNoFollowRelative(root, relative string, maxBytes int64) ([]byte, error)
 }
 
 func validateNoFollowRelative(root, relative string, maxBytes int64) error {
-	file, err := openNoFollowRelative(root, relative, maxBytes)
-	if err != nil {
-		return err
+	if !safeRelativePath(relative) {
+		return fmt.Errorf("unsafe relative path")
 	}
-	return file.Close()
+	file, err := openTrustedRelativeNoFollow(root, strings.Split(relative, "/"))
+	if err != nil {
+		return fmt.Errorf("trusted no-follow open failed: %w", err)
+	}
+	defer file.Close()
+	info, err := file.Stat()
+	if err != nil || !info.Mode().IsRegular() || info.Size() > maxBytes {
+		if err == nil && info.Size() > maxBytes {
+			return fmt.Errorf("file exceeds %d bytes", maxBytes)
+		}
+		return fmt.Errorf("trusted no-follow target is not a regular file")
+	}
+	return nil
 }
 
 func openNoFollowRelative(root, relative string, maxBytes int64) (*os.File, error) {

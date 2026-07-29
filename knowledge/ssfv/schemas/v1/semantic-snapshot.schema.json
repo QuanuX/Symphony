@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssfv:semantic-snapshot:v1",
+  "title": "SSFV semantic snapshot v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "module_id",
+    "engine_id",
+    "engine_version",
+    "vector_id",
+    "contract_digest",
+    "namespace_digest",
+    "registry_digest",
+    "source_digest",
+    "feature_files",
+    "records",
+    "snapshot_digest"
+  ],
+  "properties": {
+    "protocol": {
+      "const": "symphony.ssfv.semantic-snapshot.v1"
+    },
+    "module_id": {
+      "const": "ssfv-engine"
+    },
+    "engine_id": {
+      "const": "symphony-ssfv"
+    },
+    "engine_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "vector_id": {
+      "const": "ssfv"
+    },
+    "contract_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "namespace_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "registry_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "source_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "feature_files": {
+      "type": "array",
+      "maxItems": 1024,
+      "items": {
+        "$ref": "#/$defs/file"
+      }
+    },
+    "records": {
+      "type": "array",
+      "maxItems": 8192,
+      "items": {
+        "$ref": "#/$defs/record"
+      }
+    },
+    "snapshot_digest": {
+      "$ref": "#/$defs/digest"
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "feature_id": {
+      "type": "string",
+      "pattern": "^ssfv:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$",
+      "maxLength": 256
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "scope": {
+      "oneOf": [
+        {
+          "const": "."
+        },
+        {
+          "$ref": "#/$defs/path"
+        }
+      ]
+    },
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "size",
+        "digest"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/path"
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16777216
+        },
+        "digest": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "feature_id",
+        "feature_file",
+        "owner_contract",
+        "source_scope",
+        "kind",
+        "status",
+        "parent_feature_id",
+        "record_digest",
+        "implementation_files",
+        "cross_vector_files"
+      ],
+      "properties": {
+        "feature_id": {
+          "$ref": "#/$defs/feature_id"
+        },
+        "feature_file": {
+          "$ref": "#/$defs/path"
+        },
+        "owner_contract": {
+          "$ref": "#/$defs/path"
+        },
+        "source_scope": {
+          "$ref": "#/$defs/scope"
+        },
+        "kind": {
+          "enum": [
+            "capability",
+            "feature",
+            "subfeature",
+            "microfeature"
+          ]
+        },
+        "status": {
+          "enum": [
+            "experimental",
+            "implemented",
+            "deprecated",
+            "retired"
+          ]
+        },
+        "parent_feature_id": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/feature_id"
+            }
+          ]
+        },
+        "record_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "implementation_files": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 256,
+          "items": {
+            "$ref": "#/$defs/file"
+          }
+        },
+        "cross_vector_files": {
+          "type": "array",
+          "maxItems": 128,
+          "items": {
+            "$ref": "#/$defs/file"
+          }
+        }
+      }
+    }
+  }
+}

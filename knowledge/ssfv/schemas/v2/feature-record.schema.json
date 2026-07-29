@@ -1,0 +1,327 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssfv:feature-record:v2",
+  "title": "SSFV normalized feature record v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "feature_id",
+    "record_version",
+    "title",
+    "kind",
+    "status",
+    "parent_feature_id",
+    "owner_contract",
+    "source_scope",
+    "implementation_paths",
+    "implementation_languages",
+    "who",
+    "what",
+    "how",
+    "when",
+    "where",
+    "why",
+    "relationships",
+    "distinctions",
+    "cross_vector_references",
+    "evidence",
+    "non_claims"
+  ],
+  "properties": {
+    "feature_id": {
+      "$ref": "#/$defs/feature_id"
+    },
+    "record_version": {
+      "const": 2
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "kind": {
+      "enum": [
+        "capability",
+        "feature",
+        "subfeature",
+        "microfeature"
+      ]
+    },
+    "status": {
+      "$ref": "#/$defs/status"
+    },
+    "parent_feature_id": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/feature_id"
+        }
+      ]
+    },
+    "owner_contract": {
+      "$ref": "#/$defs/path"
+    },
+    "source_scope": {
+      "$ref": "#/$defs/scope"
+    },
+    "implementation_paths": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/path"
+      }
+    },
+    "implementation_languages": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "language",
+          "role"
+        ],
+        "properties": {
+          "language": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "role": {
+            "$ref": "#/$defs/description"
+          }
+        }
+      }
+    },
+    "who": {
+      "$ref": "#/$defs/description"
+    },
+    "what": {
+      "$ref": "#/$defs/description"
+    },
+    "how": {
+      "$ref": "#/$defs/description"
+    },
+    "when": {
+      "$ref": "#/$defs/description"
+    },
+    "where": {
+      "$ref": "#/$defs/description"
+    },
+    "why": {
+      "$ref": "#/$defs/description"
+    },
+    "relationships": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "$ref": "#/$defs/relationship"
+      }
+    },
+    "distinctions": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "target_feature_id",
+          "distinction"
+        ],
+        "properties": {
+          "target_feature_id": {
+            "$ref": "#/$defs/feature_id"
+          },
+          "distinction": {
+            "$ref": "#/$defs/description"
+          }
+        }
+      }
+    },
+    "cross_vector_references": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "vector",
+          "applicability",
+          "reference",
+          "reason"
+        ],
+        "properties": {
+          "vector": {
+            "enum": [
+              "skvi",
+              "sclv",
+              "sacv",
+              "sodv",
+              "stav",
+              "ssiag",
+              "maestro"
+            ]
+          },
+          "applicability": {
+            "enum": [
+              "applicable",
+              "not_applicable"
+            ]
+          },
+          "reference": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/$defs/path"
+              }
+            ]
+          },
+          "reason": {
+            "$ref": "#/$defs/description"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "applicability": {
+                  "const": "applicable"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "reference": {
+                  "$ref": "#/$defs/path"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "reference": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 256,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4096
+      }
+    },
+    "non_claims": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 128,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4096
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "capability"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "parent_feature_id": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "parent_feature_id": {
+            "$ref": "#/$defs/feature_id"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "feature_id": {
+      "type": "string",
+      "pattern": "^ssfv:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$",
+      "maxLength": 256
+    },
+    "status": {
+      "enum": [
+        "experimental",
+        "implemented",
+        "deprecated",
+        "retired"
+      ]
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[*?\\[\\]{}])(?!.*[\\u0000-\\u001F\\u007F])[^/]+(?:/[^/]+)*$"
+    },
+    "scope": {
+      "oneOf": [
+        {
+          "const": "."
+        },
+        {
+          "$ref": "#/$defs/path"
+        }
+      ]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 65536
+    },
+    "relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "target_feature_id",
+        "rationale"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "depends_on",
+            "enables",
+            "composes_with",
+            "extends",
+            "alternative_to",
+            "supersedes",
+            "distinguished_from"
+          ]
+        },
+        "target_feature_id": {
+          "$ref": "#/$defs/feature_id"
+        },
+        "rationale": {
+          "$ref": "#/$defs/description"
+        }
+      }
+    }
+  }
+}

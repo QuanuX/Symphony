@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssfv:diff-input:v2",
+  "title": "SSFV diff input v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "baseline",
+    "expected_current_snapshot_digest",
+    "scope_feature_ids",
+    "include_semantic_candidates"
+  ],
+  "properties": {
+    "baseline": {
+      "$ref": "urn:symphony:ssfv:semantic-snapshot:v1"
+    },
+    "expected_current_snapshot_digest": {
+      "$ref": "#/$defs/optional_digest"
+    },
+    "scope_feature_ids": {
+      "type": "array",
+      "maxItems": 8192,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/feature_id"
+      }
+    },
+    "include_semantic_candidates": {
+      "type": "boolean"
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "optional_digest": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/digest"
+        }
+      ]
+    },
+    "feature_id": {
+      "type": "string",
+      "pattern": "^ssfv:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$",
+      "maxLength": 256
+    }
+  }
+}

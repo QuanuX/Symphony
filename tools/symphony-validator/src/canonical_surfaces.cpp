@@ -84,13 +84,14 @@ CanonicalSurfaceCheckResult check_required_canonical_surfaces(const std::string&
     }
 
     if (fs::exists(root / "knowledge/ssfv")) {
-        const std::array<std::string, 6> ssfv_surfaces = {
+        const std::array<std::string, 7> ssfv_surfaces = {
             "knowledge/ssfv/INTENT.md",
             "knowledge/ssfv/MANIFEST.md",
             "knowledge/ssfv/SKILL.md",
             "knowledge/ssfv/SPEC.md",
             "knowledge/ssfv/NAMESPACES.md",
-            "knowledge/ssfv/REGISTRY.md"
+            "knowledge/ssfv/REGISTRY.md",
+            "knowledge/ssfv/FEATURE-FILE-FORMAT.md"
         };
         for (const auto& surface : ssfv_surfaces) {
             if (fs::exists(root / surface)) {

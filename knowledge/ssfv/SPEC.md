@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified contract transition. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative. The canonical registry is empty, and no SSFV runtime is implemented by this specification.
+Architect-ratified engine implementation contract. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative. The canonical registry remains empty; the bounded SSFV engine and qxctl client are implemented without feature bootstrap or canonical apply.
 
 ## Purpose
 
@@ -18,7 +18,9 @@ The canonical vector surfaces are:
 - `knowledge/ssfv/SPEC.md`;
 - `knowledge/ssfv/NAMESPACES.md`;
 - `knowledge/ssfv/REGISTRY.md`;
-- `knowledge/ssfv/schemas/v1/`.
+- `knowledge/ssfv/FEATURE-FILE-FORMAT.md`;
+- `knowledge/ssfv/schemas/v1/`;
+- `knowledge/ssfv/schemas/v2/`.
 
 Future distributed `FEATURES.md` files become canonical only when explicitly registered by SSFV and indexed by SKVI. Generated projections and external graph stores remain noncanonical.
 
@@ -70,7 +72,7 @@ Canonical lifecycle states are:
 
 ## Hierarchy and Relationships
 
-Every non-root record MUST have exactly one primary parent. A root `capability` MUST use a null parent. Cycles are prohibited.
+Every non-root record MUST have exactly one primary parent. A root `capability` MUST use a null parent. A `feature` has a `capability` parent, a `subfeature` has a `feature` parent, and a `microfeature` has a `subfeature` parent. Primary-parent cycles, missing targets, self-links, and duplicate links are prohibited.
 
 Typed crosslinks are:
 
@@ -118,11 +120,15 @@ A `FEATURES.md` file is permitted only at a source scope owning one or more rati
 
 The first bootstrap is separately gated. This specification does not create a root or nested `FEATURES.md` file.
 
+Every registered feature file uses the exact managed-region and embedded JSON-envelope grammar in `FEATURE-FILE-FORMAT.md`. The exact literal `.` represents repository-root source scope and owns root `FEATURES.md`; any other normalized directory scope owns `<source_scope>/FEATURES.md`.
+
+The embedded envelope contains one or more complete v2 feature records. A feature ID is globally unique. Several records may share one owner file and the same `feature_file`, `owner_contract`, and `source_scope` routing tuple. One source scope maps to one routing tuple, and one feature identity has one canonical owner file.
+
 ## Registry Contract
 
 `REGISTRY.md` maps each stable feature ID to exactly one canonical `FEATURES.md`, owner contract, source scope, lifecycle state, primary parent, and record digest. An explicitly empty registry is valid.
 
-Registry entries MUST use the grammar in `REGISTRY.md`, be unique by ID and owner location, refer to regular no-follow repository files, and have SKVI coverage. Registry routing never replaces the distributed record.
+Registry entries MUST use the grammar in `REGISTRY.md`, be unique by ID, use a consistent owner routing tuple, refer to regular no-follow repository files and directory scopes, and have SKVI coverage. Registry routing never replaces the distributed record.
 
 ## Cross-Vector Boundaries
 
@@ -143,9 +149,9 @@ Deterministic facts such as paths, digests, declared languages, registry coverag
 
 Tool output MUST distinguish deterministic findings from unratified semantic proposals.
 
-## Future SSFV Engine Operations
+## SSFV Engine Operations
 
-The reserved initial operation set is:
+The implemented operation set is:
 
 - `inspect`: report contract, namespace, registry, and installed-engine state;
 - `check`: validate structural integrity and produce semantic-freshness evidence;
@@ -153,21 +159,25 @@ The reserved initial operation set is:
 - `propose`: create an immutable bounded multi-file change proposal without canonical writes;
 - `graph`: emit a disposable portable JSON graph projection.
 
-The reserved executable is `symphony-ssfv`, module ID is `ssfv-engine`, and qxctl namespace is `qxctl ssfv`. The future engine uses the common `symphony.knowledge.engine-process.v1` process envelope. None of these surfaces is implemented by this contract transition.
+The executable is `symphony-ssfv`, module ID is `ssfv-engine`, and qxctl namespace is `qxctl ssfv`. The engine uses the common `symphony.knowledge.engine-process.v1` process envelope and installs independently as inactive `installed_undocked`.
+
+`inspect` accepts exactly `{}`. `graph` accepts exactly `{"format":"json"}`. Check, diff, and proposal inputs conform to the executable v2 schemas. Results bind the exact engine and supported contract versions.
 
 ## Session and Freshness Contract
 
 Every result MUST bind to content-addressed canonical-contract, namespace, registry, distributed-record, and relevant source snapshots. A result from stale inputs MUST NOT be represented as current.
 
-Structural integrity checking is mandatory. Semantic freshness is an administrator-controlled safeguard that MAY fail a session-close or apply gate when enabled. The default safeguard policy and its qxctl controls require separate implementation review. Session boundaries are configurable; the default spans authentication through logout or mandatory reauthentication.
+Structural integrity checking is mandatory. The implemented per-invocation freshness modes are `disabled`, `report`, and `require`. `report` produces caller-neutral semantic-review candidates; `require` makes unresolved stale semantics unsuccessful. Persistent safeguard profiles, automatic session-close execution, and canonical apply remain deferred. Session boundaries remain configurable direction; the default spans authentication through logout or mandatory reauthentication.
 
 No unresolved structural error may be silently carried into a later session as canonical truth.
 
 ## Proposal and Mutation Boundary
 
-A future proposal may coordinate a bounded update to a distributed `FEATURES.md`, `REGISTRY.md`, and SKVI. It MUST include exact expected digests, paths, operation intent, expiry, and affected feature IDs.
+An engine proposal may coordinate a bounded update to a distributed `FEATURES.md`, `REGISTRY.md`, `NAMESPACES.md`, and SKVI. It includes exact expected digests, paths, operation intent, expiry, affected feature IDs, and one caller-declared desired namespace or feature record.
 
 `propose` never mutates canonical files. Canonical apply, recovery, rollback, locking, permission evaluation, session-close behavior, and audit emission require a separately ratified qxctl mutation design.
+
+A prospective new path binds a typed path-specific absence digest plus `target_must_be_absent`; absence is not represented as an empty-file digest.
 
 ## Graph Projection
 
@@ -177,8 +187,8 @@ No graph database, daemon, network listener, or persistent graph store is author
 
 ## Resource Bounds
 
-The schemas bound individual strings, arrays, records, and snapshots. A future implementation MUST additionally bound file size, record count, traversal depth, total input bytes, runtime, memory, and output size, and MUST fail closed on unreadable files, symlinks, traversal, duplicate identities, cycles, digest mismatch, or incomplete records.
+The schemas bound individual strings, arrays, records, and snapshots. The engine additionally bounds requests to 1 MiB, responses to 4 MiB, a file to 4 MiB, total SSFV evidence reads to 64 MiB, feature files to 1,024, feature records to 8,192, graph edges to 32,768 within the response ceiling, and deadlines to the common 300-second maximum. It fails closed on unreadable files, symlinks, traversal, special files, duplicate identities, invalid parent progression, cycles, digest mismatch, ambiguous markers, incomplete records, or excessive output.
 
 ## Non-Authorization Statement
 
-This specification authorizes canonical SSFV governance and machine-readable payload contracts only. It does not authorize an engine implementation, distributed feature bootstrap, canonical apply, qxctl command, Maestro docking, persistent graph store, remote interface, public documentation, or capability claim.
+This specification authorizes canonical SSFV governance plus the bounded independently installed engine and qxctl client. It does not authorize distributed feature bootstrap, canonical apply, Maestro docking, persistent graph storage, a remote interface, public documentation, or an application capability claim.

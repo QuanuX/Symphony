@@ -8,7 +8,7 @@ The vector makes small but important behavior discoverable without treating code
 
 ## Source-Truth Boundary
 
-`knowledge/ssfv/` owns feature identity, vocabulary, lifecycle, hierarchy, relationship rules, and the registry that routes feature identities to distributed `FEATURES.md` owner records. A distributed feature record owns the feature semantics for its declared source scope.
+`knowledge/ssfv/` owns feature identity, vocabulary, lifecycle, hierarchy, relationship rules, the deterministic feature-file format, and the registry that routes feature identities to distributed `FEATURES.md` owner records. A distributed feature record owns the feature semantics for its declared source scope.
 
 SSFV does not replace:
 
@@ -54,6 +54,10 @@ Any caller operating within effective host permissions may inspect feature truth
 
 Owner-configured safeguards may constrain operations by permission, scope, risk, session, environment, or operation. Safeguards MUST remain caller-neutral.
 
+## Implementation Boundary
+
+The independently installable C++ `ssfv-engine` and Go qxctl client implement bounded inspect, check, diff, proposal, and disposable graph operations. They provide application-owned mechanics without deciding feature-worthiness or mutating canonical truth.
+
 ## Non-Authorization Statement
 
-This vector contract does not create `FEATURES.md` records, declare an application capability implemented, install an engine, enable canonical mutation, dock into Maestro, publish documentation, or authorize a graph database. The names `modules/ssfv-engine/`, `ssfv-engine`, `symphony-ssfv`, and `qxctl ssfv` are reserved for a separately reviewed implementation slice.
+This vector and its engine do not create application `FEATURES.md` records, declare an application capability implemented, enable canonical mutation, dock into Maestro, publish documentation, or authorize a graph database.

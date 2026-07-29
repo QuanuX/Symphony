@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssfv:check-input:v2",
+  "title": "SSFV check input v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "expected_namespace_digest",
+    "expected_registry_digest",
+    "freshness",
+    "baseline"
+  ],
+  "properties": {
+    "expected_namespace_digest": {
+      "$ref": "#/$defs/optional_digest"
+    },
+    "expected_registry_digest": {
+      "$ref": "#/$defs/optional_digest"
+    },
+    "freshness": {
+      "enum": [
+        "disabled",
+        "report",
+        "require"
+      ]
+    },
+    "baseline": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "urn:symphony:ssfv:semantic-snapshot:v1"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "optional_digest": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/digest"
+        }
+      ]
+    }
+  }
+}

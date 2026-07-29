@@ -11,14 +11,15 @@ Guide every authorized caller in reading, evaluating, proposing, reviewing, and 
 3. `knowledge/ssfv/SPEC.md`
 4. `knowledge/ssfv/NAMESPACES.md`
 5. `knowledge/ssfv/REGISTRY.md`
-6. `knowledge/SPEC.md`
-7. `knowledge/skvi/SPEC.md`
-8. the owning module or vector contracts and implementation evidence
-9. `knowledge/sodv/SPEC.md` before proposing publication
+6. `knowledge/ssfv/FEATURE-FILE-FORMAT.md`
+7. `knowledge/SPEC.md`
+8. `knowledge/skvi/SPEC.md`
+9. the owning module or vector contracts and implementation evidence
+10. `knowledge/sodv/SPEC.md` before proposing publication
 
 ## Caller Authority
 
-Any caller may inspect canonical SSFV truth and create noncanonical evidence within effective permissions. After the separately reviewed engine and qxctl surfaces exist, any permission-backed caller may also request bounded checks, comparisons, proposals, and disposable graphs. Caller type does not grant or remove authority.
+Any caller may inspect canonical SSFV truth and create noncanonical evidence within effective permissions. Any permission-backed caller may request bounded checks, comparisons, proposals, and disposable graphs through the installed engine and qxctl. Caller type does not grant or remove authority.
 
 No caller operation may:
 
@@ -44,6 +45,17 @@ No caller operation may:
 10. Update the owner `FEATURES.md`, SSFV registry, and SKVI in one reviewed change.
 11. Record SCLV closure only after real review and merge evidence exists.
 
+## Engine Procedure
+
+1. Identify the exact installed `ssfv-engine` prefix and version.
+2. Run `qxctl ssfv inspect` and verify the engine reports no apply, session mutation, listener, docking, or semantic-decision authority.
+3. Run `qxctl ssfv check` before a diff or proposal and preserve the returned semantic snapshot as bounded noncanonical evidence.
+4. Use `--freshness report` or `--freshness require` only with a prior semantic snapshot.
+5. Use `diff` to compare that bounded baseline with live canonical repository truth.
+6. Use `propose` for one caller-declared namespace or feature operation; inspect every write target, expected-state digest, rendered digest, and false ratification field.
+7. Use `graph` only as a disposable portable projection.
+8. Apply no proposal through the engine; canonical changes remain ordinary reviewed source changes until the common apply gate is implemented.
+
 ## Sparse Placement Rule
 
 Create a `FEATURES.md` file only when at least one ratified feature record is owned by that exact source scope. Parent files summarize owned records and link to children; they do not copy child semantics. Explicit repository-relative paths are required in v1.
@@ -52,7 +64,7 @@ Create a `FEATURES.md` file only when at least one ratified feature record is ow
 
 A working session begins when the effective caller authenticates and ends on logout or mandatory reauthentication unless the administrator configures a different bounded session policy through the eventual qxctl surface.
 
-Future engine results bind to content-addressed contract and source snapshots. Structural integrity is mandatory. Semantic-freshness enforcement is an administrator-controlled safeguard that may be enabled or disabled without classifying the caller.
+Engine results bind to content-addressed contract and source snapshots. Structural integrity is mandatory. Per-invocation semantic freshness is `disabled`, `report`, or `require`; persistent safeguard profiles and automatic session-close behavior remain deferred.
 
 ## Stop Conditions
 
@@ -60,4 +72,4 @@ Stop and obtain permission-backed owner ratification before allocating a public 
 
 ## Non-Authorization Statement
 
-This skill is procedural contract guidance. It authorizes no engine, qxctl command, feature record, distributed `FEATURES.md` file, canonical mutation, graph database, Maestro state, public documentation, or marketing output.
+This skill is procedural contract guidance for the implemented engine and qxctl client. It authorizes no feature record, distributed application `FEATURES.md` file, canonical mutation, graph database, Maestro state, public documentation, or marketing output.

@@ -21,9 +21,22 @@ SkviCoverageCheckResult check_skvi_coverage(const SkviCheckResult& index_res, co
             "knowledge/ssfv/SKILL.md",
             "knowledge/ssfv/SPEC.md",
             "knowledge/ssfv/NAMESPACES.md",
-            "knowledge/ssfv/REGISTRY.md"
+            "knowledge/ssfv/REGISTRY.md",
+            "knowledge/ssfv/FEATURE-FILE-FORMAT.md"
         };
         required_surfaces.insert(required_surfaces.end(), ssfv_required.begin(), ssfv_required.end());
+    }
+    if (fs::exists(fs::path(repo_root) / "modules/ssfv-engine")) {
+        const std::vector<std::string> ssfv_engine_required = {
+            "modules/ssfv-engine/INTENT.md",
+            "modules/ssfv-engine/MANIFEST.md",
+            "modules/ssfv-engine/INSTALL.md",
+            "modules/ssfv-engine/SKILL.md",
+            "modules/ssfv-engine/SPEC.md",
+            "modules/ssfv-engine/CMakeLists.txt"
+        };
+        required_surfaces.insert(required_surfaces.end(),
+            ssfv_engine_required.begin(), ssfv_engine_required.end());
     }
     std::unordered_set<std::string> indexed_paths_set(index_res.indexed_paths.begin(), index_res.indexed_paths.end());
     

@@ -64,6 +64,18 @@ type sodvOptions struct {
 	jsonOutput           bool
 }
 
+type ssfvOptions struct {
+	prefix                  string
+	version                 string
+	repository              string
+	input                   string
+	baseline                string
+	freshness               string
+	expectedNamespaceDigest string
+	expectedRegistryDigest  string
+	jsonOutput              bool
+}
+
 func execute(args []string) int {
 	if len(args) == 0 {
 		printUsage()
@@ -142,8 +154,49 @@ func newRootCommand() (*cobra.Command, error) {
 		return nil, err
 	}
 	stav := newSTAVCommand()
-	root.AddCommand(ssiag, stav, newSKVICommand(), newSCLVCommand(), newSACVCommand(), newSODVCommand())
+	root.AddCommand(ssiag, stav, newSKVICommand(), newSCLVCommand(), newSACVCommand(), newSODVCommand(), newSSFVCommand())
 	return root, nil
+}
+
+func newSSFVCommand() *cobra.Command {
+	command := &cobra.Command{
+		Use:  "ssfv",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return fmt.Errorf("SSFV subcommand is required: inspect, check, diff, propose, or graph")
+		},
+	}
+	for _, operation := range []string{"inspect", "check", "diff", "propose", "graph"} {
+		options := ssfvOptions{version: "0.1.0-dev", freshness: "disabled"}
+		child := &cobra.Command{
+			Use:  operation,
+			Args: usageOnlyArgs,
+			RunE: func(command *cobra.Command, _ []string) error {
+				if operation == "check" && options.baseline != "" &&
+					!command.Flags().Changed("freshness") {
+					options.freshness = "report"
+				}
+				return runSSFV(operation, options)
+			},
+		}
+		child.Flags().StringVar(&options.prefix, "prefix", "", "exact SSFV installation prefix")
+		child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed SSFV engine version")
+		child.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
+		child.Flags().BoolVar(&options.jsonOutput, "json", false, "emit operation result JSON")
+		if operation == "check" {
+			child.Flags().StringVar(&options.expectedNamespaceDigest, "expected-namespace-digest", "", "optional expected tagged SHA-256 namespace digest")
+			child.Flags().StringVar(&options.expectedRegistryDigest, "expected-registry-digest", "", "optional expected tagged SHA-256 registry digest")
+			child.Flags().StringVar(&options.baseline, "baseline", "", "bounded no-follow semantic snapshot JSON file")
+			child.Flags().StringVar(&options.freshness, "freshness", "disabled", "semantic freshness mode: disabled, report, or require")
+		}
+		if operation == "diff" || operation == "propose" {
+			child.Flags().StringVar(&options.input, "input", "", "no-follow JSON operation payload file")
+		}
+		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+		command.AddCommand(child)
+	}
+	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	return command
 }
 
 func newSODVCommand() *cobra.Command {
@@ -478,7 +531,7 @@ func exactOneUsageArg(_ *cobra.Command, args []string) error {
 
 func knownTopLevel(value string) bool {
 	switch value {
-	case "--help", "--version", "doctor", "contracts", "inventory", "status", "modules", "module", "ssiag", "stav", "skvi", "sclv", "sacv", "sodv":
+	case "--help", "--version", "doctor", "contracts", "inventory", "status", "modules", "module", "ssiag", "stav", "skvi", "sclv", "sacv", "sodv", "ssfv":
 		return true
 	default:
 		return false
@@ -528,6 +581,13 @@ func failurePrefix(args []string) string {
 			switch args[1] {
 			case "inspect", "check", "verify", "propose", "recover", "project":
 				return "sodv " + args[1]
+			}
+		}
+	case "ssfv":
+		if len(args) > 1 {
+			switch args[1] {
+			case "inspect", "check", "diff", "propose", "graph":
+				return "ssfv " + args[1]
 			}
 		}
 	}

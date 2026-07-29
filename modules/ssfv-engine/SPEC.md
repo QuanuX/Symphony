@@ -1,0 +1,37 @@
+# SSFV Engine Specification
+
+## Status
+
+Implemented read/comparison/proposal development slice, version `0.1.0-dev`. It is source-installable and not a published module release.
+
+## Process Contract
+
+The engine uses `symphony.knowledge.engine-process.v1`. Direct diagnostics are `--help`, `--version`, and `--descriptor`. Exit statuses are 0 completed, 2 malformed input, 3 process protocol or deadline mismatch, 4 invalid operation semantics, and 5 bounded repository/internal failure.
+
+## Operations
+
+- `inspect`: exact empty payload; reports compatibility, bounds, lifecycle, and disabled authority.
+- `check`: exact SSFV v2 check input; validates namespace, registry, owner files, records, paths, hierarchy, relationships, SKVI coverage, and optional semantic freshness.
+- `diff`: exact SSFV v2 diff input; compares one caller-supplied semantic snapshot with live canonical state.
+- `propose`: exact SSFV v2 proposal input; creates one immutable namespace or feature proposal with a bounded multi-file write set.
+- `graph`: exact `{"format":"json"}` payload; emits the complete bounded portable feature graph.
+
+Feature proposals validate namespace allocation, strict prospective hierarchy, route ownership, owner and implementation evidence, applicable cross-vector references, and typed absence for an unregistered target file before rendering a write set. Existing but unregistered target files are never treated as absent.
+
+## Bounds
+
+The common 1 MiB request, 4 MiB response, JSON, path, and deadline bounds apply. One file is at most 4 MiB, all SSFV evidence reads total at most 64 MiB, and one operation accepts at most 4,096 namespaces, 1,024 feature files, 8,192 feature records, and 32,768 graph edges within the response ceiling.
+
+## Freshness
+
+Structural validation is mandatory. Freshness is per invocation:
+
+- `disabled` performs no baseline comparison;
+- `report` emits semantic candidates as warnings;
+- `require` emits the same unresolved candidates as violations.
+
+Freshness evidence means cited implementation content changed. It does not decide that a feature changed semantically.
+
+## Non-Authorization
+
+No operation writes a file, creates a feature record, authenticates or classifies a caller, grants permission, ratifies a proposal, persists a snapshot/graph, invokes Git or a provider, starts a listener, mutates a session, activates a version, or docks with Maestro.

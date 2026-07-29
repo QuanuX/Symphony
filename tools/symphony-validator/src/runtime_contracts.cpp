@@ -79,6 +79,41 @@ RuntimeContractShapeResult check_runtime_contract_shapes(const std::string& repo
         }
     }
 
+    if (fs::exists(root / "modules/ssfv-engine")) {
+        const std::vector<ContractFileTarget> ssfv_targets = {
+            {"modules/ssfv-engine/INTENT.md", {
+                {"Intent", "Intent"}, {"Purpose", "## Purpose"},
+                {"Authority", "## Authority Boundary"}, {"Non_Goals", "## Non-Goals"}}},
+            {"modules/ssfv-engine/MANIFEST.md", {
+                {"Manifest", "Manifest"}, {"Identity", "## Identity"},
+                {"Contract", "## Contract"}, {"Installation", "## Installation"},
+                {"Boundaries", "## Boundaries"}}},
+            {"modules/ssfv-engine/INSTALL.md", {
+                {"Install", "Installation"}, {"Requirements", "## Requirements"},
+                {"Build", "## Build, Test, and Install"}, {"Lifecycle", "## Lifecycle"}}},
+            {"modules/ssfv-engine/SKILL.md", {
+                {"Skill", "Skill"}, {"Purpose", "## Purpose"},
+                {"Procedure", "## Procedure"}, {"Boundaries", "## Boundaries"}}},
+            {"modules/ssfv-engine/SPEC.md", {
+                {"Specification", "Specification"}, {"Status", "## Status"},
+                {"Process", "## Process Contract"}, {"Operations", "## Operations"},
+                {"Non_Authorization", "## Non-Authorization"}}},
+            {"modules/ssfv-engine/CMakeLists.txt", {
+                {"Project", "project(SymphonySsfvEngine"}, {"CXX26", "CXX_STANDARD 26"},
+                {"Receipt", "install-receipt.json"}, {"Uninstall", "uninstall-ssfv-engine"}}},
+            {"tools/qxctl/README.md", {
+                {"SSFV_Group", "qxctl ssfv"}, {"SSFV_Check", "ssfv check"},
+                {"SSFV_Graph", "ssfv graph"}}},
+            {"tools/qxctl/cmd/qxctl/commands.go", {
+                {"SSFV_Command", "newSSFVCommand"}, {"SSFV_Group", "\"ssfv\""},
+                {"SSFV_Run", "runSSFV"}}},
+            {"tools/qxctl/internal/knowledgeengine/client.go", {
+                {"SSFV_Invoke", "InvokeSSFV"}, {"SSFV_Module", "ssfv-engine"},
+                {"SSFV_Engine", "symphony-ssfv"}}}
+        };
+        targets.insert(targets.end(), ssfv_targets.begin(), ssfv_targets.end());
+    }
+
     for (const auto& file_target : targets) {
         fs::path p = root / file_target.path;
         if (!fs::exists(p)) {
