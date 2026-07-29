@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssfv:registry-entry:v1",
+  "title": "SSFV registry entry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["feature_id", "feature_file", "owner_contract", "source_scope", "status", "parent_feature_id", "record_digest", "notes"],
+  "properties": {
+    "feature_id": {"$ref": "#/$defs/feature_id"},
+    "feature_file": {"type": "string", "minLength": 11, "maxLength": 4096, "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[*?\\[\\]{}])(?!.*[\\u0000-\\u001F\\u007F])(?:[^/]+/)*FEATURES\\.md$"},
+    "owner_contract": {"$ref": "#/$defs/path"},
+    "source_scope": {"$ref": "#/$defs/path"},
+    "status": {"enum": ["experimental", "implemented", "deprecated", "retired"]},
+    "parent_feature_id": {"oneOf": [{"const": "none"}, {"$ref": "#/$defs/feature_id"}]},
+    "record_digest": {"$ref": "#/$defs/digest"},
+    "notes": {"type": "string", "minLength": 1, "maxLength": 65536}
+  },
+  "$defs": {
+    "feature_id": {"type": "string", "pattern": "^ssfv:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$", "maxLength": 256},
+    "path": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[*?\\[\\]{}])(?!.*[\\u0000-\\u001F\\u007F])[^/]+(?:/[^/]+)*$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

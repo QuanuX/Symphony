@@ -132,8 +132,8 @@ if ! printf '%s\n' "$OUT_REPO" | grep "caller_authority.scan_complete " | grep "
     echo "error: current repo missing expected caller_authority.scan_complete status or findings=0"
     exit 1
 fi
-if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 57 ]; then
-    echo "error: current repo should authorize exactly the 28 STAV, 6 common SKV, 4 SKVI, 5 SCLV, 6 SACV, and 8 SODV JSON artifacts"
+if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 65 ]; then
+    echo "error: current repo should authorize exactly the 28 STAV, 6 common SKV, 4 SKVI, 5 SCLV, 6 SACV, 8 SODV, and 8 SSFV JSON artifacts"
     exit 1
 fi
 if ! printf '%s\n' "$OUT_REPO" | grep "sodv.releases.scan_complete records=3 transactions=1 violations=0" >/dev/null; then

@@ -39,7 +39,7 @@ The implemented `0.1.0-dev` foundation supports direct coordinator `inspect` and
 - Do not pass secrets through JSON, process arguments, environment variables, logs, proposals, projections, or fixtures.
 - Do not add HTTP merely to avoid the standard-I/O process contract.
 - Do not make GitHub, GitLab, Mintlify, NotebookLM, a package registry, or Maestro required for canonical truth.
-- Do not implement SSFV before its separate Contract Quad gate.
+- Do not implement the SSFV engine or bootstrap distributed feature records outside the now-ratified SSFV Contract Quad and their separate reviewed slices.
 - Do not put administrative reconciliation or audit recovery on a hot or warm path.
 
 ## Session and Recovery Procedure
@@ -65,4 +65,4 @@ The implemented `0.1.0-dev` foundation supports direct coordinator `inspect` and
 
 ## Stop Conditions
 
-Stop for permission-backed Architect review before changing a cleared namespace, enabling apply, adding an external package coordinate, changing protocol major version, enabling a network listener, selecting a Maestro receptor contract, enabling an SSFV surface, weakening protocol integrity, or introducing any hot/warm dependency.
+Stop for permission-backed Architect review before changing a cleared namespace, enabling apply, adding an external package coordinate, changing protocol major version, enabling a network listener, selecting a Maestro receptor contract, implementing the SSFV engine, bootstrapping SSFV feature records, weakening protocol integrity, or introducing any hot/warm dependency.

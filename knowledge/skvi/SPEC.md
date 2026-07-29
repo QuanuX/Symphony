@@ -58,6 +58,7 @@ Relationship descriptors among:
 - SCLV records
 - SODV publication governance
 - SACV API-contract governance and registry
+- SSFV semantic-feature governance, namespaces, registry, schemas, and future distributed owner records
 - validator evidence
 - future qxctl consumption
 - NotebookLM corpus alignment
@@ -89,6 +90,9 @@ SCLV records change truth. SKVI indexes where these SCLV change records reside.
 
 ## Relationship to SODV
 SODV governs publication truth based on the index mapped by SKVI.
+
+## Relationship to SSFV
+SSFV owns feature identity, meaning, hierarchy, lifecycle, and routing. SKVI indexes those surfaces and future registered owner files but MUST NOT decide feature-worthiness, generate canonical feature records, or treat a graph projection as source truth.
 
 ## Relationship to SSCG
 SSCG interprets compatibility across the structural contracts that SKVI indexes.

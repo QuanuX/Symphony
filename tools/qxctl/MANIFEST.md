@@ -62,7 +62,7 @@
 - `qxctl knowledge engines list|inspect|doctor`
 - `qxctl knowledge session begin|status|checkpoint|close|recover`
 - `qxctl knowledge proposals list|show|verify`
-- `qxctl ssfv ...` is namespace-reserved but unavailable until the SSFV Contract Quad gate passes
+- `qxctl ssfv inspect|check|diff|propose|graph` is contract-ratified but unavailable until the SSFV engine/client implementation gate passes
 - `qxctl knowledge apply ...` is namespace-reserved but unavailable until the common apply gate passes
 
 The qxctl lifecycle administrator is also ratified for future implementation: install, upgrade, rollback, receipt inspection, dock, undock, activate, and uninstall. Exact leaf grammar is added only with its reviewed artifact-verification and receipt contract. No current `module` command should imply these operations already exist.

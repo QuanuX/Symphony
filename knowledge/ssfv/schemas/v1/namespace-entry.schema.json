@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssfv:namespace-entry:v1",
+  "title": "SSFV namespace entry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["namespace", "id_prefix", "owner_contract", "scope", "status", "evidence", "notes"],
+  "properties": {
+    "namespace": {"type": "string", "pattern": "^[a-z][a-z0-9-]{0,62}$"},
+    "id_prefix": {"type": "string", "pattern": "^ssfv:[a-z][a-z0-9-]{0,62}:$", "maxLength": 70},
+    "owner_contract": {"$ref": "#/$defs/path"},
+    "scope": {"type": "string", "minLength": 1, "maxLength": 4096},
+    "status": {"enum": ["canonical", "deprecated", "retired"]},
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/path"}
+    },
+    "notes": {"type": "string", "minLength": 1, "maxLength": 65536}
+  },
+  "$defs": {
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[*?\\[\\]{}])(?!.*[\\u0000-\\u001F\\u007F])[^/]+(?:/[^/]+)*$"
+    }
+  }
+}

@@ -33,6 +33,9 @@ Mintlify publishes derived official documentation. SODV governs what Mintlify pr
 ### Relationship to SACV
 SACV governs canonical API contracts and their registry. SODV alone decides whether a SACV-registered API may be projected into Mintlify, SDK documentation, a live playground, or MCP tooling.
 
+### Relationship to SSFV
+SSFV owns factual application-feature truth. SODV governs whether and how ratified SSFV records may be transformed into public feature documentation or marketing material; publication never changes the source record.
+
 ### Relationship to NotebookLM
 NotebookLM aligns corpus context but is not canonical authority. Append-only release records must be interpreted under the corpus interpretation rule in `knowledge/INTENT.md`.
 

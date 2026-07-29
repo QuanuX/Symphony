@@ -40,11 +40,12 @@ SKVI is not symphony-validator.
 SKVI does not replace module contracts.
 SKVI does not replace SCLV.
 SKVI does not replace SODV.
+SKVI does not replace SSFV.
 SKVI does not replace SSCG.
 SKVI does not execute application workloads or enforce runtime behavior.
 
 ## Inputs SKVI Maps
-Module contract boundaries, root governance, and other Knowledge Vector files, including SCLV and SODV.
+Module contract boundaries, root governance, and other Knowledge Vector files, including SCLV, SODV, and SSFV.
 
 ## Outputs SKVI Describes
 Repository-maintained paths, roles, ownership boundaries, relationships, consumers, status, and projection eligibility. Authorized machine projections are disposable, digest-bound, and rebuildable.
@@ -57,6 +58,9 @@ SCLV records change truth; SKVI indexes where that change truth lives.
 
 ## Relationship to SODV
 SODV governs publication truth; it uses SKVI's structural map to project to the public.
+
+## Relationship to SSFV
+SSFV owns application-feature semantics and distributed record routing. SKVI indexes each canonical SSFV contract, schema, registry, and future registered `FEATURES.md` file without deciding feature-worthiness.
 
 ## Relationship to SSCG
 SSCG interprets compatibility. SKVI defines where module boundaries and SSCG rules are documented.

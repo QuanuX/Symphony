@@ -52,6 +52,9 @@ SKVI indexes source truth. SODV governs publication truth.
 ## Relationship to SACV
 SACV governs canonical API-contract policy and registration. SODV governs publication eligibility and derived vendor configuration. SODV MUST NOT rewrite an owner OpenAPI document or treat a Mintlify bundle as source truth.
 
+## Relationship to SSFV
+SSFV governs factual application-feature semantics. SODV governs feature-derived public presentation and MUST NOT rewrite a canonical SSFV record or elevate an unratified candidate into a claim.
+
 ## Relationship to SCLV
 SCLV records change truth. SODV governs publication truth.
 

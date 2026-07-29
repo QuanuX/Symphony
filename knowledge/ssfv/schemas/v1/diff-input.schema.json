@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssfv:diff-input:v1",
+  "title": "SSFV diff input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["baseline", "current", "scope_feature_ids", "include_semantic_candidates"],
+  "properties": {
+    "baseline": {"$ref": "#/$defs/snapshot_reference"},
+    "current": {"$ref": "#/$defs/snapshot_reference"},
+    "scope_feature_ids": {
+      "type": "array",
+      "maxItems": 65536,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/feature_id"}
+    },
+    "include_semantic_candidates": {"type": "boolean"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "feature_id": {"type": "string", "pattern": "^ssfv:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$", "maxLength": 256},
+    "snapshot_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revision", "contract_digest", "namespace_digest", "registry_digest", "source_digest"],
+      "properties": {
+        "revision": {"type": "string", "minLength": 1, "maxLength": 256},
+        "contract_digest": {"$ref": "#/$defs/digest"},
+        "namespace_digest": {"$ref": "#/$defs/digest"},
+        "registry_digest": {"$ref": "#/$defs/digest"},
+        "source_digest": {"$ref": "#/$defs/digest"}
+      }
+    }
+  }
+}

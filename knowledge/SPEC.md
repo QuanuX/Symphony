@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator read-only slice and SKVI/SCLV/SACV/SODV proposal/projection slices implemented. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No later session-mutation, other vector-engine, lifecycle, apply, endpoint, publication, or docking capability may be inferred from these slices.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator read-only slice and SKVI/SCLV/SACV/SODV proposal/projection slices implemented, plus the SSFV Contract Quad ratified without an engine or feature bootstrap. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No later session-mutation, other vector-engine, lifecycle, apply, endpoint, publication, or docking capability may be inferred from these slices.
 
 ## Purpose
 
@@ -119,7 +119,7 @@ qxctl skvi ...
 qxctl sclv ...
 qxctl sacv ...
 qxctl sodv ...
-qxctl ssfv ...                   # reserved until the SSFV Contract Quad gate passes
+qxctl ssfv inspect|check|diff|propose|graph ...  # ratified grammar; implementation pending
 ```
 
 qxctl MUST resolve exact installed engine identities and protocol compatibility from trusted receipts. Direct engine invocation remains available for diagnostics and conformance. qxctl MUST NOT absorb vector semantics, classify callers, accept secret-bearing engine input, or present a reserved command as operational.
@@ -176,13 +176,17 @@ Implementation proceeds as tested vertical slices:
 3. SCLV engine, provider-neutral v3 format/validator activation, and local/air-gapped evidence adapters;
 4. SACV OpenAPI 3.2.0 engine;
 5. SODV release/publication reconciliation engine;
-6. SSFV only after its separate Contract Quad gate.
+6. SSFV Contract Quad, namespace, empty registry, and payload contracts;
+7. SSFV engine and qxctl client only after a separate implementation review;
+8. distributed SSFV feature bootstrap only after source review and feature-worthiness ratification.
 
 Scaffolding every engine in advance is prohibited. Each slice must pass its contract, conformance, receipt, and uninstall gates before the next vector claims implementation.
 
 ## SSFV Gate
 
-The SSFV namespace is reserved, but no SSFV engine or `FEATURES.md` generation is authorized until the Architect ratifies its Contract Quad, stable feature identifiers, feature-worthiness criteria, hierarchy, distributed-file ownership, relationship vocabulary, and graph-projection contract.
+The Architect has ratified `knowledge/ssfv/` with stable identifiers, feature-worthiness criteria, hierarchy, sparse distributed-file ownership, typed relationships, lifecycle, 5W1H semantics, content-addressed freshness, and portable JSON graph contracts. This completes the semantic contract gate.
+
+The implementation and bootstrap gates remain closed. No `modules/ssfv-engine/`, qxctl client, distributed `FEATURES.md`, canonical feature entry, persistent graph store, or Maestro receptor may be inferred or created without its own reviewed slice.
 
 ## Historical and Validator Boundary
 
@@ -204,4 +208,4 @@ Append-only SCLV and SODV records remain immutable. A contract transition change
 
 ## Non-Authorization Statement
 
-This specification does not claim implementation beyond the explicitly identified foundation/coordinator and SKVI/SCLV/SACV/SODV slices, enable canonical apply, authorize an external package coordinate, create an HTTP surface, publish a release artifact, permit direct ledger mutation, activate Maestro, or authorize SSFV semantics.
+This specification does not claim implementation beyond the explicitly identified foundation/coordinator and SKVI/SCLV/SACV/SODV slices, enable canonical apply, authorize an external package coordinate, create an HTTP surface, publish a release artifact, permit direct ledger mutation, activate Maestro, implement the SSFV engine, or create SSFV feature records.

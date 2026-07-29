@@ -9,9 +9,9 @@ namespace fs = std::filesystem;
 #include "evidence.hpp"
 
 bool is_authorized_canonical_json(const std::string& relative_path) {
-    // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, and SODV protocol artifacts. Directory-prefix
+    // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, and SSFV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 57> authorized_paths = {
+    static const std::array<std::string, 65> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -68,7 +68,15 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/sodv/schemas/v1/proposal-input.schema.json",
         "knowledge/sodv/schemas/v1/recovery-input.schema.json",
         "knowledge/sodv/schemas/v1/recovery-result.schema.json",
-        "knowledge/sodv/schemas/v1/projection.schema.json"
+        "knowledge/sodv/schemas/v1/projection.schema.json",
+        "knowledge/ssfv/schemas/v1/feature-record.schema.json",
+        "knowledge/ssfv/schemas/v1/namespace-entry.schema.json",
+        "knowledge/ssfv/schemas/v1/registry-entry.schema.json",
+        "knowledge/ssfv/schemas/v1/check-result.schema.json",
+        "knowledge/ssfv/schemas/v1/diff-input.schema.json",
+        "knowledge/ssfv/schemas/v1/diff-result.schema.json",
+        "knowledge/ssfv/schemas/v1/proposal-input.schema.json",
+        "knowledge/ssfv/schemas/v1/graph-projection.schema.json"
     };
     return std::find(authorized_paths.begin(), authorized_paths.end(), relative_path) != authorized_paths.end();
 }
@@ -99,13 +107,14 @@ ArtifactCheckResult check_unauthorized_artifacts(const std::string& repo_root) {
     }
 
     // B. Generated projection directories
-    const std::array<std::string, 14> gen_paths = {
+    const std::array<std::string, 16> gen_paths = {
         "generated", "projections",
         "knowledge/generated", "knowledge/projections",
         "knowledge/skvi/generated", "knowledge/skvi/projections",
         "knowledge/sclv/generated", "knowledge/sclv/projections",
         "knowledge/sacv/generated", "knowledge/sacv/projections",
         "knowledge/sodv/generated", "knowledge/sodv/projections",
+        "knowledge/ssfv/generated", "knowledge/ssfv/projections",
         "tools/symphony-validator/generated", "tools/symphony-validator/projections"
     };
     for (const auto& path : gen_paths) {
@@ -137,6 +146,8 @@ ArtifactCheckResult check_unauthorized_artifacts(const std::string& repo_root) {
                                         ? "knowledge/sacv/SPEC.md"
                                     : rel_path.starts_with("knowledge/sodv/")
                                         ? "knowledge/sodv/SPEC.md"
+                                    : rel_path.starts_with("knowledge/ssfv/")
+                                        ? "knowledge/ssfv/SPEC.md"
                                     : "knowledge/SPEC.md";
                             result.messages.push_back(format_evidence(EvidenceCategory::Pass, "artifact.canonical_json_authorized", "path=" + rel_path + " authority=" + authority));
                             break;

@@ -95,7 +95,11 @@ Stale names (e.g. `legacy node execution label`, `legacy native hot-path label`,
 ## Allowlist Behavior
 Allowlists must never become silent bypasses. Every allowlist entry must produce evidence in JSON and Markdown.
 
-The Architect-ratified STAV v1 JSON Schema/conformance fixtures, six common SKV process/descriptor/receipt/proposal/provider-evidence schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, and eight SODV operational schemas are canonical protocol truth, not generated projections. The artifact checker may allow only their 57 exact paths and must emit `artifact.canonical_json_authorized` evidence for every encountered file with `knowledge/stav/SPEC.md`, `knowledge/SPEC.md`, `knowledge/skvi/SPEC.md`, `knowledge/sclv/SPEC.md`, `knowledge/sacv/SPEC.md`, or `knowledge/sodv/SPEC.md` authority as applicable. Prefix or extension-wide JSON allowlisting is prohibited; any new canonical JSON artifact requires an explicit contract and validator update.
+The Architect-ratified STAV v1 JSON Schema/conformance fixtures, six common SKV process/descriptor/receipt/proposal/provider-evidence schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, and eight SSFV v1 schemas are canonical protocol truth, not generated projections. The artifact checker may allow only their 65 exact paths and must emit `artifact.canonical_json_authorized` evidence for every encountered file with `knowledge/stav/SPEC.md`, `knowledge/SPEC.md`, `knowledge/skvi/SPEC.md`, `knowledge/sclv/SPEC.md`, `knowledge/sacv/SPEC.md`, `knowledge/sodv/SPEC.md`, or `knowledge/ssfv/SPEC.md` authority as applicable. Prefix or extension-wide JSON allowlisting is prohibited; any new canonical JSON artifact requires an explicit contract and validator update.
+
+### SSFV Contract Boundary
+
+The validator requires `knowledge/ssfv/INTENT.md`, `MANIFEST.md`, `SKILL.md`, `SPEC.md`, `NAMESPACES.md`, and `REGISTRY.md`, checks their declared anchors, and requires SKVI coverage for those six surfaces. It recognizes exactly the eight SSFV v1 JSON paths declared above. It does not parse future distributed `FEATURES.md` records, decide feature-worthiness or lifecycle, generate a graph, create proposals, or duplicate the separately gated `symphony-ssfv` engine.
 
 ### SACV Registry Boundary
 
@@ -114,11 +118,11 @@ The validator is currently invoked directly. `qxctl` mediation remains deferred.
 ## Relationship to CI / PR gates
 The implementation provides deterministic line-oriented evidence, a summary, and exit status. CI/PR-gate wiring and structured artifacts remain deferred.
 
-## Relationship to SKV / SKVI / SCLV / SACV / SODV
-The validator does not replace SKV / SKVI / SCLV / SACV / SODV records. It provides evidence to support them.
+## Relationship to SKV / SKVI / SCLV / SACV / SODV / SSFV
+The validator does not replace SKV / SKVI / SCLV / SACV / SODV / SSFV records. It provides evidence to support them.
 
 ## Behavioral Non-goals
-The validator must not choose infrastructure for users, assume Docker/Kubernetes/cloud providers, impose market-data/order-flow/trading doctrine, require Python for hot-path or administrative spine, ban optional isolated Python habitats, treat contract seeds as runtime implementation, convert monorepo modularity into microservices doctrine, absorb module sovereignty into root-level logic, become a runtime daemon, become a hidden coordinator, replace qxctl, replace Maestro, replace SKV / SKVI / SCLV / SACV / SODV records, perform autonomous semantic decisions, infer intent, auto-remediate files, or make architecture decisions.
+The validator must not choose infrastructure for users, assume Docker/Kubernetes/cloud providers, impose market-data/order-flow/trading doctrine, require Python for hot-path or administrative spine, ban optional isolated Python habitats, treat contract seeds as runtime implementation, convert monorepo modularity into microservices doctrine, absorb module sovereignty into root-level logic, become a runtime daemon, become a hidden coordinator, replace qxctl, replace Maestro, replace SKV / SKVI / SCLV / SACV / SODV / SSFV records, perform autonomous semantic decisions, infer intent, auto-remediate files, or make architecture decisions.
 Active project term c-o-r-e is absent except inside explicit forbidden-term scan descriptions.
 
 ## Implemented Authorization Boundary
@@ -189,6 +193,7 @@ The implemented validator parser may read canonical Markdown surfaces including:
 - `knowledge/sclv/CHANGELOG.md`
 - `knowledge/sclv/SPEC.md`
 - `knowledge/sodv/SPEC.md`
+- `knowledge/ssfv/SPEC.md`
 - `tools/symphony-validator/SPEC.md`
 
 The parser may extract SKVI entry fields:

@@ -18,6 +18,8 @@ The repository check includes SACV registry shape, ownership, classification, SK
 
 The repository check also includes SODV local release-record shape, time order, lineage, publication-unit preservation, and no-follow ledger presence. Use `qxctl sodv check|verify|recover` with an exact installed engine for richer release evidence and caller-supplied external observations; do not mistake the validator for a Git-host or package-provider client.
 
+The repository check requires the canonical SSFV contract, namespace, and empty-or-future registry surfaces and recognizes their eight exact v1 JSON schemas. It does not decide feature-worthiness, validate distributed semantic records, or substitute for the future `symphony-ssfv` engine.
+
 ## Deterministic, Non-Autonomous Behavior
 The validator is deterministic, explainable, and non-autonomous.
 The validator produces evidence, including caller-authority regression findings (exit code 21).
@@ -45,7 +47,7 @@ The validator does not make architecture decisions.
 The validator does not replace permission-backed ratification or semantic review.
 
 ## Non-goals
-The validator must not perform autonomous semantic decisions, infer intent, rewrite files, choose remedies, make architecture decisions, replace qxctl, replace Maestro, replace SKV / SKVI / SCLV / SACV / SODV records, become a runtime daemon, become hidden coordinator logic, become a module implementation, choose infrastructure for users, impose market-data/order-flow/trading doctrine, require Python for hot-path or administrative spine, or ban optional isolated Python habitats.
+The validator must not perform autonomous semantic decisions, infer intent, rewrite files, choose remedies, make architecture decisions, replace qxctl, replace Maestro, replace SKV / SKVI / SCLV / SACV / SODV / SSFV records, become a runtime daemon, become hidden coordinator logic, become a module implementation, choose infrastructure for users, impose market-data/order-flow/trading doctrine, require Python for hot-path or administrative spine, or ban optional isolated Python habitats.
 
 ## Non-authorization Statement
 This skill authorizes use of the checked-in deterministic C++26 parser/checker. It does not authorize executable schema generation, structured projectors, qxctl/CI integration, repository mutation, publication, or remediation.

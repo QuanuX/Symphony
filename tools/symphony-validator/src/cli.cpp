@@ -231,7 +231,7 @@ int run_cli(const std::vector<std::string>& args) {
                 return final_exit;
             }
 
-            SkviCoverageCheckResult skvi_coverage_result = check_skvi_coverage(skvi_result);
+            SkviCoverageCheckResult skvi_coverage_result = check_skvi_coverage(skvi_result, args[2]);
             process_messages(skvi_coverage_result.messages);
             if (!skvi_coverage_result.success) {
                 final_exit = 16;

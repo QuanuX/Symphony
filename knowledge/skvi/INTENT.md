@@ -28,6 +28,9 @@ SCLV is one of the knowledge surfaces indexed by SKVI. SKVI tracks SCLV's locati
 ### Relationship to SODV
 SODV uses SKVI to discover the canonical source truth necessary for deriving public documentation.
 
+### Relationship to SSFV
+SSFV uses SKVI to route its canonical vector contracts and future distributed `FEATURES.md` owner records. SKVI records location and relationships; it does not decide feature-worthiness or duplicate feature semantics.
+
 ### Relationship to Validator
 The checked-in `tools/symphony-validator/` implementation consumes SKVI as declared routing truth and produces deterministic, read-only evidence for entry shape, required-surface coverage, indexed-path safety and existence, and SCLV cross-references. SKVI does not grant the validator authority to create or rewrite canonical entries.
 
@@ -40,4 +43,4 @@ Mintlify publishes derived official documentation.
 SKVI provides the structural roadmap that NotebookLM and Mintlify consume as derived projections. No documentation publication pipeline is authorized by this task.
 
 ### Non-authorization Statement
-This canonical surface governs the implemented proposal-only C++ SKVI engine at `modules/skvi-engine/`, shared foundation use, deterministic derived projections, and bounded exact-installation qxctl integration. It authorizes no programmatic canonical apply, autonomous membership decision, competing source-truth database, NotebookLM automation, Mintlify/publication pipeline, or SSFV behavior.
+This canonical surface governs the implemented proposal-only C++ SKVI engine at `modules/skvi-engine/`, shared foundation use, deterministic derived projections, and bounded exact-installation qxctl integration. It authorizes no programmatic canonical apply, autonomous membership or feature decision, competing source-truth database, NotebookLM automation, Mintlify/publication pipeline, or SSFV engine behavior.

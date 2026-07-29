@@ -189,6 +189,29 @@ KnowledgeContractShapeResult check_knowledge_contract_shapes(const std::string& 
         targets.insert(targets.end(), sacv_targets.begin(), sacv_targets.end());
     }
 
+    if (fs::exists(root / "knowledge/ssfv")) {
+        const std::vector<ContractFileTarget> ssfv_targets = {
+            {"knowledge/ssfv/INTENT.md", {{"Intent", "Intent"}, {"Purpose", "## Purpose"},
+                {"Source_Truth", "## Source-Truth Boundary"}, {"Scope", "## Scope"},
+                {"Boundaries", "## Non-Authorization Statement"}}},
+            {"knowledge/ssfv/MANIFEST.md", {{"Manifest", "Manifest"}, {"Identity", "## Identity"},
+                {"Contract", "## Declared Contract Truth Role"}, {"Installability", "## Installability Considerations"},
+                {"Boundaries", "## Non-Authorization Statement"}}},
+            {"knowledge/ssfv/SKILL.md", {{"Skill", "Skill"}, {"Purpose", "## Purpose"},
+                {"Authority", "## Caller Authority"}, {"Boundaries", "## Non-Authorization Statement"}}},
+            {"knowledge/ssfv/SPEC.md", {{"Specification", "Specification"}, {"Purpose", "## Purpose"},
+                {"Required", "## Layer 0 Canonical Surfaces"}, {"Registry", "## Registry Contract"},
+                {"Boundaries", "## Non-Authorization Statement"}}},
+            {"knowledge/ssfv/NAMESPACES.md", {{"Registry", "Namespace Registry"}, {"Purpose", "## Purpose"},
+                {"Entry_Model", "## Namespace Entry Model"}, {"Entries", "## Canonical Namespace Entries"},
+                {"Boundaries", "## Non-Authorization Statement"}}},
+            {"knowledge/ssfv/REGISTRY.md", {{"Registry", "Registry"}, {"Purpose", "## Purpose"},
+                {"Entry_Model", "## Entry Model"}, {"Entries", "## Canonical Entries"},
+                {"Boundaries", "## Non-Authorization Statement"}}}
+        };
+        targets.insert(targets.end(), ssfv_targets.begin(), ssfv_targets.end());
+    }
+
     for (const auto& file_target : targets) {
         fs::path p = root / file_target.path;
         if (!fs::exists(p)) {
