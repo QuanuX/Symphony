@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <filesystem>
 
 namespace {
     const std::vector<std::string> CANONICAL_FILES = {
@@ -37,6 +38,12 @@ namespace {
         "knowledge/sodv/MANIFEST.md",
         "knowledge/sodv/SKILL.md",
         "knowledge/sodv/SPEC.md",
+        "knowledge/ssfv/INTENT.md",
+        "knowledge/ssfv/MANIFEST.md",
+        "knowledge/ssfv/SKILL.md",
+        "knowledge/ssfv/SPEC.md",
+        "knowledge/ssfv/NAMESPACES.md",
+        "knowledge/ssfv/REGISTRY.md",
         "tools/symphony-validator/INTENT.md",
         "tools/symphony-validator/MANIFEST.md",
         "tools/symphony-validator/INSTALL.md",
@@ -71,8 +78,12 @@ namespace {
 
 void check_doctrine_vocabulary(const std::string& repo_path, std::vector<std::string>& evidence) {
     std::regex core_regex("\\bcore\\b");
+    const bool ssfv_present = std::filesystem::exists(std::filesystem::path(repo_path) / "knowledge/ssfv");
 
     for (const auto& rel_path : CANONICAL_FILES) {
+        if (!ssfv_present && rel_path.starts_with("knowledge/ssfv/")) {
+            continue;
+        }
         std::string full_path = repo_path + "/" + rel_path;
         std::ifstream file(full_path);
         

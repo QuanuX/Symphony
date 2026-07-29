@@ -42,7 +42,9 @@ Structured JSON and Markdown projections remain deferred. Runtime source/AST cal
 
 ## Canonical JSON Boundary
 
-The artifact checker recognizes exactly 57 canonical JSON paths: 28 STAV v1 schemas/fixtures, six common SKV process/descriptor/receipt/proposal/provider-evidence schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, and eight SODV operational schemas. It does not authorize a directory prefix, generated projection, or new JSON artifact by extension.
+The artifact checker recognizes exactly 65 canonical JSON paths: 28 STAV v1 schemas/fixtures, six common SKV process/descriptor/receipt/proposal/provider-evidence schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, and eight SSFV v1 schemas. It does not authorize a directory prefix, generated projection, or new JSON artifact by extension.
+
+The contract-shape and canonical-surface checks require the SSFV Contract Quad plus its namespace and feature registries. The validator confirms anchors, presence, SKVI coverage, and exact JSON allowlisting; it does not decide feature-worthiness, parse distributed feature records, or implement the future SSFV engine.
 
 The SACV registry checker independently validates the empty marker or exact thirteen-field entry grammar, identity/path uniqueness, owner-path containment, OpenAPI/profile enums, SKVI coverage, and no-follow document presence. OpenAPI semantic validation remains in the independently installed SACV engine rather than being duplicated through an unsafe partial parser.
 
@@ -57,7 +59,7 @@ A conforming C++26 compiler, CMake 3.25 or newer, and the C++ standard library. 
 The caller-authority checker depends only on the validator evidence formatter and the C++ standard library. Its direct input is a repository path; its implemented outputs are line-oriented evidence, one summary line, and the process status.
 
 ## Non-goals
-The validator must not choose infrastructure for users, assume Docker/Kubernetes/cloud providers, impose market-data/order-flow/trading doctrine, require Python for hot-path or administrative spine, ban optional isolated Python habitats, treat contract seeds as runtime implementation, convert monorepo modularity into microservices doctrine, absorb module sovereignty into root-level logic, become a runtime daemon, become a hidden coordinator, replace qxctl, replace Maestro, replace SKV / SKVI / SCLV / SODV records, perform autonomous semantic decisions, infer intent, auto-remediate files, or make architecture decisions.
+The validator must not choose infrastructure for users, assume Docker/Kubernetes/cloud providers, impose market-data/order-flow/trading doctrine, require Python for hot-path or administrative spine, ban optional isolated Python habitats, treat contract seeds as runtime implementation, convert monorepo modularity into microservices doctrine, absorb module sovereignty into root-level logic, become a runtime daemon, become a hidden coordinator, replace qxctl, replace Maestro, replace SKV / SKVI / SCLV / SODV / SSFV records, perform autonomous semantic decisions, infer intent, auto-remediate files, or make architecture decisions.
 It does not contain any forbidden terms (such as c-o-r-e).
 
 ## Non-authorization Statement

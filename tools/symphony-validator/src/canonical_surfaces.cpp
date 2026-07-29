@@ -83,5 +83,26 @@ CanonicalSurfaceCheckResult check_required_canonical_surfaces(const std::string&
         }
     }
 
+    if (fs::exists(root / "knowledge/ssfv")) {
+        const std::array<std::string, 6> ssfv_surfaces = {
+            "knowledge/ssfv/INTENT.md",
+            "knowledge/ssfv/MANIFEST.md",
+            "knowledge/ssfv/SKILL.md",
+            "knowledge/ssfv/SPEC.md",
+            "knowledge/ssfv/NAMESPACES.md",
+            "knowledge/ssfv/REGISTRY.md"
+        };
+        for (const auto& surface : ssfv_surfaces) {
+            if (fs::exists(root / surface)) {
+                result.messages.push_back(format_evidence(EvidenceCategory::Pass,
+                    "canonical_surface.exists", "path=" + surface));
+            } else {
+                result.success = false;
+                result.messages.push_back(format_evidence(EvidenceCategory::Violation,
+                    "canonical_surface.missing", "path=" + surface));
+            }
+        }
+    }
+
     return result;
 }

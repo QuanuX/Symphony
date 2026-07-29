@@ -1695,9 +1695,9 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: vector intent seed
 - truth_role: intent and purpose for knowledge vectors
 - owner: knowledge maintainer
-- scope: Root definition of SKVI, SCLV, SODV, SACV, SSIAG, and STAV vector domains.
+- scope: Root definition of SKVI, SCLV, SODV, SACV, SSFV, SSIAG, and STAV vector domains.
 - consumers: humans, reviewers, agentic tools, symphony-validator and future validator extensions
-- relationships: declares -> `knowledge/MANIFEST.md`; declares -> `knowledge/sacv/INTENT.md`; declares -> `knowledge/ssiag/INTENT.md`; declares -> `knowledge/stav/INTENT.md`; checked_by -> `tools/symphony-validator/SPEC.md`
+- relationships: declares -> `knowledge/MANIFEST.md`; declares -> `knowledge/sacv/INTENT.md`; declares -> `knowledge/ssfv/INTENT.md`; declares -> `knowledge/ssiag/INTENT.md`; declares -> `knowledge/stav/INTENT.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - deferred_projections: vector-authorized JSON/JSONL, search, graph, analytical, and documentation evidence
 - notes: Owns the cross-vector engine foundation contract without owning vector-specific semantics.
 - status: canonical
@@ -1708,11 +1708,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: SKV umbrella manifest
 - truth_role: common vector-engine identity, namespace, installability, and authority boundary
 - owner: Symphony Knowledge Vector maintainers
-- scope: Declares independently installed C++ engines, the implemented shared mechanics/read-only coordinator/SKVI/SCLV/SACV/SODV slices, qxctl administration, Linux-first delivery, Maestro readiness, and proposal-only initial state.
+- scope: Declares independently installed C++ engines, the implemented shared mechanics/read-only coordinator/SKVI/SCLV/SACV/SODV slices, the canonical SSFV contract, qxctl administration, Linux-first delivery, Maestro readiness, and proposal-only initial state.
 - relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/`; governs -> `modules/knowledge-session-coordinator/`; governs -> `modules/skvi-engine/`; governs -> `modules/sclv-engine/`; governs -> future cleared vector-engine module paths
 - consumers: vector maintainers, engine implementers, qxctl, Maestro planners, reviewers, agentic tools
 - deferred_projections: engine inventory, install receipts, Maestro presence graph
-- notes: Foundation/coordinator and SKVI/SCLV/SACV/SODV `0.1.0-dev` slices now exist; other vector engines, session mutation, canonical apply, live docking, and SSFV remain gated.
+- notes: Foundation/coordinator and SKVI/SCLV/SACV/SODV `0.1.0-dev` slices now exist; the SSFV contract is canonical while its engine and feature bootstrap remain gated.
 - status: canonical
 
 ##### SPEC.md
@@ -1725,7 +1725,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
 - consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
 - deferred_projections: proposal/session/provider/docking schemas, conformance evidence, engine inventory, docking graph
-- notes: Six common schemas and the foundation/coordinator/SKVI/SCLV/SACV/SODV slices are implemented; programmatic apply is disabled.
+- notes: Six common schemas and the foundation/coordinator/SKVI/SCLV/SACV/SODV slices are implemented; SSFV owns eight canonical schemas without a runtime; programmatic apply is disabled.
 - status: canonical
 
 ##### SKILL.md
@@ -1734,7 +1734,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: SKV umbrella skill guidance
 - truth_role: safe engine implementation, review, session, and recovery procedure
 - owner: Symphony Knowledge Vector maintainers
-- scope: Guides proposal-only implementation and records stop conditions for apply, namespaces, external packages, networking, SSFV, and hot/warm isolation.
+- scope: Guides proposal-only implementation and records stop conditions for apply, namespaces, external packages, networking, SSFV engine/bootstrap work, and hot/warm isolation.
 - relationships: depends_on -> `knowledge/SPEC.md`; governs -> future vector-engine implementation procedure
 - consumers: implementers, maintainers, reviewers, qxctl contributors, agentic tools
 - deferred_projections: conformance checklist and requirements traceability evidence
@@ -2439,8 +2439,205 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: The exact versioned receipt owns nine installed files.
 - status: canonical
 
+#### SSFV
+
+##### INTENT.md
+- path: `knowledge/ssfv/INTENT.md`
+- title: SSFV Intent
+- surface_type: vector intent
+- truth_role: canonical purpose and source-truth boundary for semantic feature truth
+- owner: SSFV maintainers
+- scope: Defines feature purpose, feature-worthiness, caller neutrality, and adjacent-vector boundaries.
+- relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
+- consumers: reviewers, future SSFV engine, qxctl planners, agentic tools
+- deferred_projections: feature catalogs, encyclopedia views, publication inputs, graph views
+- notes: No feature record or runtime is created by this intent.
+- status: canonical
+
+##### MANIFEST.md
+- path: `knowledge/ssfv/MANIFEST.md`
+- title: SSFV Manifest
+- surface_type: vector contract truth
+- truth_role: canonical topology, identity, classification, and installability boundary
+- owner: SSFV maintainers
+- scope: Declares owned feature semantics, sparse distributed records, future engine identity, and current empty state.
+- relationships: depends_on -> `knowledge/ssfv/INTENT.md`; checked_by -> `tools/symphony-validator/SPEC.md`
+- consumers: reviewers, implementers, qxctl planners, packaging planners
+- deferred_projections: installation descriptors and Maestro docking descriptors after separate review
+- notes: The future engine namespace is reserved but no module exists.
+- status: canonical
+
+##### SKILL.md
+- path: `knowledge/ssfv/SKILL.md`
+- title: SSFV Skill
+- surface_type: vector operational guidance
+- truth_role: canonical feature-review and sparse-placement procedure
+- owner: SSFV maintainers
+- scope: Guides feature-worthiness review, 5W1H authoring, relationship evidence, and stop conditions.
+- relationships: depends_on -> `knowledge/ssfv/SPEC.md`; depends_on -> `knowledge/SPEC.md`
+- consumers: reviewers, maintainers, agentic tools, future qxctl callers
+- deferred_projections: authoring assistance and review checklists
+- notes: Caller type is not an authority input.
+- status: canonical
+
+##### SPEC.md
+- path: `knowledge/ssfv/SPEC.md`
+- title: SSFV Specification
+- surface_type: vector specification
+- truth_role: canonical feature identity, semantics, hierarchy, lifecycle, routing, and protocol contract
+- owner: SSFV maintainers
+- scope: Defines stable IDs, feature kinds, 5W1H, sparse files, registry, future operations, freshness, proposals, and graphs.
+- relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
+- consumers: reviewers, future SSFV engine, qxctl planners, validator
+- deferred_projections: portable JSON graph, catalogs, search, documentation, and analytical views
+- notes: Engine implementation and feature bootstrap remain separate gates.
+- status: canonical
+
+##### NAMESPACES.md
+- path: `knowledge/ssfv/NAMESPACES.md`
+- title: SSFV Namespace Registry
+- surface_type: canonical stable-identity namespace registry
+- truth_role: canonical allocation truth for SSFV identifier prefixes
+- owner: SSFV maintainers
+- scope: Allocates the first-party `ssfv:symphony:` prefix and governs future namespace allocation.
+- relationships: depends_on -> `knowledge/ssfv/SPEC.md`
+- consumers: reviewers, future SSFV engine, qxctl planners
+- deferred_projections: namespace inventory
+- notes: Internal stable-ID allocation claims no external URI, package, repository, or trademark authority.
+- status: canonical
+
+##### REGISTRY.md
+- path: `knowledge/ssfv/REGISTRY.md`
+- title: SSFV Feature Registry
+- surface_type: canonical distributed-feature routing registry
+- truth_role: canonical mapping from stable feature IDs to owner records
+- owner: SSFV maintainers
+- scope: Defines the exact eight-field registry grammar and records the intentionally empty current feature set.
+- relationships: depends_on -> `knowledge/ssfv/SPEC.md`
+- consumers: reviewers, future SSFV engine, qxctl planners, validator
+- deferred_projections: feature inventories and graph routing
+- notes: Empty is valid; no placeholder feature is required.
+- status: canonical
+
+##### SSFV v1 Schema Manifest
+- path: `knowledge/ssfv/schemas/v1/MANIFEST.md`
+- title: SSFV v1 Schema Manifest
+- surface_type: vector-specific protocol schema manifest
+- truth_role: canonical inventory and boundary for exact SSFV record and operation schemas
+- owner: SSFV maintainers
+- scope: Declares feature, namespace, registry, check, diff, proposal, and graph schemas.
+- relationships: depends_on -> `knowledge/ssfv/SPEC.md`
+- consumers: future SSFV engine, qxctl planners, conformance tests, validator, reviewers
+- deferred_projections: rendered protocol documentation
+- notes: Machine-readable contracts do not implement an engine or grant mutation authority.
+- status: canonical
+
+##### SSFV Feature Record Schema
+- path: `knowledge/ssfv/schemas/v1/feature-record.schema.json`
+- title: SSFV Normalized Feature Record v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical normalized semantic feature-record shape
+- owner: SSFV maintainers
+- scope: Closes stable identity, kind, lifecycle, hierarchy, 5W1H, implementation evidence, relationships, distinctions, references, evidence, and non-claims.
+- relationships: depends_on -> `knowledge/ssfv/schemas/v1/MANIFEST.md`
+- consumers: future SSFV engine, qxctl planners, conformance tests, validator
+- deferred_projections: feature reference documentation
+- notes: The schema does not decide feature-worthiness.
+- status: canonical
+
+##### SSFV Namespace Entry Schema
+- path: `knowledge/ssfv/schemas/v1/namespace-entry.schema.json`
+- title: SSFV Namespace Entry v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical normalized namespace-allocation shape
+- owner: SSFV maintainers
+- scope: Closes namespace, prefix, owner contract, scope, lifecycle, evidence, and notes.
+- relationships: depends_on -> `knowledge/ssfv/schemas/v1/MANIFEST.md`
+- consumers: future SSFV engine, qxctl planners, conformance tests, validator
+- deferred_projections: namespace inventories
+- notes: Namespace allocation does not claim external provider identity.
+- status: canonical
+
+##### SSFV Registry Entry Schema
+- path: `knowledge/ssfv/schemas/v1/registry-entry.schema.json`
+- title: SSFV Registry Entry v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical normalized feature-routing entry shape
+- owner: SSFV maintainers
+- scope: Closes feature ID, owner file, contract, source scope, lifecycle, parent, digest, and notes.
+- relationships: depends_on -> `knowledge/ssfv/schemas/v1/MANIFEST.md`
+- consumers: future SSFV engine, qxctl planners, conformance tests, validator
+- deferred_projections: feature routing inventories
+- notes: Routing metadata never replaces the distributed semantic record.
+- status: canonical
+
+##### SSFV Check Result Schema
+- path: `knowledge/ssfv/schemas/v1/check-result.schema.json`
+- title: SSFV Check Result v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical deterministic structural and semantic-freshness result shape
+- owner: SSFV maintainers
+- scope: Closes snapshot, coverage, counts, structural state, freshness state, findings, disabled apply, and digest.
+- relationships: depends_on -> `knowledge/ssfv/schemas/v1/MANIFEST.md`
+- consumers: future SSFV engine, qxctl planners, conformance tests, validator
+- deferred_projections: check reports
+- notes: Semantic candidates remain unratified evidence.
+- status: canonical
+
+##### SSFV Diff Input Schema
+- path: `knowledge/ssfv/schemas/v1/diff-input.schema.json`
+- title: SSFV Diff Input v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical bounded content-addressed comparison input shape
+- owner: SSFV maintainers
+- scope: Closes baseline and current digests, bounded feature scope, and semantic-candidate selection.
+- relationships: depends_on -> `knowledge/ssfv/schemas/v1/MANIFEST.md`
+- consumers: future SSFV engine, qxctl planners, conformance tests
+- deferred_projections: comparison forms
+- notes: Revision labels never replace content digests.
+- status: canonical
+
+##### SSFV Diff Result Schema
+- path: `knowledge/ssfv/schemas/v1/diff-result.schema.json`
+- title: SSFV Diff Result v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical deterministic feature-change evidence shape
+- owner: SSFV maintainers
+- scope: Closes added, changed, removed, uncovered, stale, and semantic-candidate results.
+- relationships: depends_on -> `knowledge/ssfv/schemas/v1/diff-input.schema.json`
+- consumers: future SSFV engine, qxctl planners, conformance tests
+- deferred_projections: change reports
+- notes: A diff result is evidence and grants no ratification or mutation authority.
+- status: canonical
+
+##### SSFV Proposal Input Schema
+- path: `knowledge/ssfv/schemas/v1/proposal-input.schema.json`
+- title: SSFV Proposal Input v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical caller-declared bounded multi-file proposal input shape
+- owner: SSFV maintainers
+- scope: Closes session, context, expiry, expected digests, operation, feature IDs, target paths, semantic declaration, and permission reference.
+- relationships: depends_on -> `knowledge/ssfv/schemas/v1/MANIFEST.md`; depends_on -> `knowledge/schemas/v1/proposal.schema.json`
+- consumers: future SSFV engine, qxctl planners, conformance tests
+- deferred_projections: proposal forms
+- notes: Proposal generation never applies canonical changes.
+- status: canonical
+
+##### SSFV Graph Projection Schema
+- path: `knowledge/ssfv/schemas/v1/graph-projection.schema.json`
+- title: SSFV Portable Graph Projection v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical shape for disposable semantic feature graphs
+- owner: SSFV maintainers
+- scope: Closes source snapshots, feature nodes, typed edges, counts, noncanonical state, rebuildability, and digest.
+- relationships: depends_on -> `knowledge/ssfv/schemas/v1/MANIFEST.md`
+- consumers: future SSFV engine, qxctl planners, graph and documentation consumers
+- deferred_projections: JSONL, search, visualization, analytical, and graph-database imports after separate review
+- notes: The graph is portable JSON and never canonical authority.
+- status: canonical
+
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, six common SKV JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, and eight SODV operational JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, six common SKV JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eight SSFV v1 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

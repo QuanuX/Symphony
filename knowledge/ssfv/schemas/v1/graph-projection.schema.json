@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssfv:graph-projection:v1",
+  "title": "SSFV portable graph projection v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "projection_kind", "format", "module_id", "engine_id", "engine_version", "vector_id", "contract_snapshot", "namespace_digest", "registry_digest", "node_count", "edge_count", "nodes", "edges", "noncanonical", "rebuildable", "projection_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.ssfv.graph-projection.v1"},
+    "projection_kind": {"const": "semantic-feature-graph"},
+    "format": {"const": "json"},
+    "module_id": {"const": "ssfv-engine"},
+    "engine_id": {"const": "symphony-ssfv"},
+    "engine_version": {"type": "string", "minLength": 1, "maxLength": 64},
+    "vector_id": {"const": "ssfv"},
+    "contract_snapshot": {"$ref": "#/$defs/snapshot"},
+    "namespace_digest": {"$ref": "#/$defs/digest"},
+    "registry_digest": {"$ref": "#/$defs/digest"},
+    "node_count": {"type": "integer", "minimum": 0, "maximum": 65536},
+    "edge_count": {"type": "integer", "minimum": 0, "maximum": 262144},
+    "nodes": {
+      "type": "array",
+      "maxItems": 65536,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["feature_id", "title", "kind", "status", "feature_file", "source_scope", "record_digest"],
+        "properties": {
+          "feature_id": {"$ref": "#/$defs/feature_id"},
+          "title": {"type": "string", "minLength": 1, "maxLength": 256},
+          "kind": {"enum": ["capability", "feature", "subfeature", "microfeature"]},
+          "status": {"enum": ["experimental", "implemented", "deprecated", "retired"]},
+          "feature_file": {"type": "string", "minLength": 1, "maxLength": 4096},
+          "source_scope": {"type": "string", "minLength": 1, "maxLength": 4096},
+          "record_digest": {"$ref": "#/$defs/digest"}
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "maxItems": 262144,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_feature_id", "target_feature_id", "type", "rationale"],
+        "properties": {
+          "source_feature_id": {"$ref": "#/$defs/feature_id"},
+          "target_feature_id": {"$ref": "#/$defs/feature_id"},
+          "type": {"enum": ["primary_parent", "depends_on", "enables", "composes_with", "extends", "alternative_to", "supersedes", "distinguished_from"]},
+          "rationale": {"type": "string", "minLength": 1, "maxLength": 65536}
+        }
+      }
+    },
+    "noncanonical": {"const": true},
+    "rebuildable": {"const": true},
+    "projection_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "feature_id": {"type": "string", "pattern": "^ssfv:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$", "maxLength": 256},
+    "file": {"type": "object", "additionalProperties": false, "required": ["path", "size", "digest"], "properties": {"path": {"type": "string", "minLength": 1, "maxLength": 4096}, "size": {"type": "integer", "minimum": 0, "maximum": 16777216}, "digest": {"$ref": "#/$defs/digest"}}},
+    "snapshot": {"type": "object", "additionalProperties": false, "required": ["digest", "files"], "properties": {"digest": {"$ref": "#/$defs/digest"}, "files": {"type": "array", "minItems": 1, "maxItems": 16384, "items": {"$ref": "#/$defs/file"}}}}
+  }
+}

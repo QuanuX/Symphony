@@ -5,7 +5,7 @@
 To establish declarative boundaries for the Symphony Knowledge Vector layer and formally map the relationships between truth surfaces, indexes, changes, and publication governance.
 
 ### Scope
-Defines the overarching knowledge framework structure (`knowledge/`) and houses autonomous vector surfaces including SKVI, SCLV, SODV, SACV, SSIAG, and STAV.
+Defines the overarching knowledge framework structure (`knowledge/`) and houses autonomous vector surfaces including SKVI, SCLV, SODV, SACV, SSFV, SSIAG, and STAV.
 
 ### Non-scope
 It does not house implementation source, build systems, deployment orchestration, or runtime state. It does own the cross-vector contracts that bound independently installed vector engines and their qxctl administration.
@@ -40,6 +40,9 @@ SODV governs how knowledge within the SKV framework becomes official public docu
 ### Relationship to STAV
 `knowledge/stav/` owns canonical TOPS audit protocol truth. Per-TOPS operational ledgers live outside the repository and are not SKV content.
 
+### Relationship to SSFV
+`knowledge/ssfv/` owns canonical application-feature identity, semantics, hierarchy, lifecycle, distinctions, distributed record routing, and graph-projection contracts. Its registry is intentionally empty until a separately reviewed feature bootstrap. SSFV references other vectors without duplicating their truth.
+
 ### Relationship to Module Contracts
 Module contracts (`MANIFEST.md`, etc.) are distinct domains. SKV maps them but does not replace them.
 
@@ -52,7 +55,7 @@ qxctl is the Go administrative surface for the ratified vector-engine family. `q
 ### Vector Engine Foundation
 Each active application-level vector may have an independently installable, out-of-process C++ engine. Shared authority-free C++ mechanics may live under `libraries/`; a separate C++ coordinator owns authenticated-session and worktree-reconciliation mechanics. Engines inspect, validate, project, and propose within vector-owned contracts. They do not acquire authority merely by generating content.
 
-The implemented `0.1.0-dev` foundation and coordinator slice provides strict local process framing plus read-only inspect/snapshot checking. Independent C++ slices implement SKVI inspect/check/propose/project, SCLV inspect/check/propose/recover/project with provider-neutral evidence adapters, and SACV inspect/check/diff/propose/project with bounded OpenAPI 3.2.0 JSON validation. qxctl invokes each only from an exact inactive-undocked installation. None of these slices establishes an authenticated session or mutates canonical knowledge.
+The implemented `0.1.0-dev` foundation and coordinator slice provides strict local process framing plus read-only inspect/snapshot checking. Independent C++ slices implement SKVI inspect/check/propose/project, SCLV inspect/check/propose/recover/project with provider-neutral evidence adapters, SACV inspect/check/diff/propose/project with bounded OpenAPI 3.2.0 JSON validation, and SODV inspect/check/verify/propose/recover/project. qxctl invokes each only from an exact inactive-undocked installation. The SSFV Contract Quad and v1 payload contracts are canonical, but its engine and feature bootstrap do not yet exist. None of these slices establishes an authenticated session or mutates canonical knowledge.
 
 Initial vector-engine releases are read/query/validate/propose only. Programmatic canonical apply remains disabled until its SSIAG permission verification, expected-state transaction, qxctl safeguard, STAV event, recovery, and negative-test contracts are implemented and verified. `knowledge/SPEC.md` owns the common boundary; each vector Contract Quad owns its domain operations.
 
@@ -86,4 +89,4 @@ SODV governs publication truth.
 Published documentation is a derived public projection.
 
 ### Non-authorization Statement
-This canonical surface recognizes SACV governance but authorizes no endpoint document by itself. It authorizes the bounded vector-engine architecture, the implemented read-only/proposal development slices, derived projections, and qxctl grammar defined by `knowledge/MANIFEST.md` and `knowledge/SPEC.md`. It does not authorize canonical apply, an SSFV implementation, a network API, Mintlify configuration, NotebookLM automation, general publication pipeline, database authority, direct STAV mutation, hot/warm-path participation, or any capability outside a vector's own Contract Quad.
+This canonical surface recognizes SACV and SSFV governance but authorizes no endpoint or feature record by itself. It authorizes the bounded vector-engine architecture, the implemented read-only/proposal development slices, derived projections, and qxctl grammar defined by `knowledge/MANIFEST.md` and `knowledge/SPEC.md`. It does not authorize canonical apply, an SSFV engine or feature bootstrap, a network API, Mintlify configuration, NotebookLM automation, general publication pipeline, database authority, direct STAV mutation, hot/warm-path participation, or any capability outside a vector's own Contract Quad.

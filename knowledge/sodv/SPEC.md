@@ -48,6 +48,7 @@ The initial SODV scope covers sources, relationships, evidence, and a disposable
 - tool contract files
 - Knowledge Vector files
 - SACV registry and owner-controlled API contracts
+- SSFV contracts, registry, and ratified distributed feature records
 - SKVI files
 - SCLV files
 - SODV files
@@ -116,6 +117,9 @@ SKVI indexes source truth.
 
 ## Relationship to SACV
 SACV owns API-contract governance and registration. SODV may authorize a derived documentation or vendor projection only after the canonical owner contract is registered and validated. Mintlify settings, combined specifications, SDK examples, live playgrounds, and MCP tools remain derived publication surfaces.
+
+## Relationship to SSFV
+SSFV governs factual application-feature identity and semantics. SODV may govern derived public feature pages, catalogs, or marketing projections only from ratified SSFV records and MUST preserve their lifecycle, evidence, distinctions, and non-claims.
 
 ## Relationship to SCLV
 SCLV records change truth.

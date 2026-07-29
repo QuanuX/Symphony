@@ -31,6 +31,8 @@ Any caller operating within its effective target-host permission should use `qxc
 - `go run ./cmd/qxctl sodv recover --prefix /chosen/prefix --input recovery-input.json`
 - `go run ./cmd/qxctl sodv project --prefix /chosen/prefix --json`
 
+The SSFV grammar `qxctl ssfv inspect|check|diff|propose|graph` is contract-ratified but not implemented. Do not present those commands as available or emulate them through another vector engine.
+
 ## Constraints
 - Use the Go standard library, ratified first-party Go libraries, and only their approved cgo-free platform dependencies.
 - Treat Cobra as the command grammar and Viper only as a private, explicitly bound command-configuration mapper. Do not enable `AutomaticEnv`, configuration-file discovery, remote providers, watch/reload, or write-back.

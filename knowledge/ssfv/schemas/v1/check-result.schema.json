@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssfv:check-result:v1",
+  "title": "SSFV check result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "namespace_registry", "feature_registry", "contract_snapshot", "expected_registry_matches", "coverage_state", "namespace_count", "feature_count", "feature_file_count", "structural_state", "semantic_freshness_state", "evidence", "summary", "read_only", "canonical_apply_enabled"],
+  "properties": {
+    "protocol": {"const": "symphony.ssfv.check-result.v1"},
+    "namespace_registry": {"$ref": "#/$defs/file"},
+    "feature_registry": {"$ref": "#/$defs/file"},
+    "contract_snapshot": {"$ref": "#/$defs/snapshot"},
+    "expected_registry_matches": {"oneOf": [{"type": "null"}, {"type": "boolean"}]},
+    "coverage_state": {"enum": ["empty", "partial", "complete"]},
+    "namespace_count": {"type": "integer", "minimum": 0, "maximum": 4096},
+    "feature_count": {"type": "integer", "minimum": 0, "maximum": 65536},
+    "feature_file_count": {"type": "integer", "minimum": 0, "maximum": 16384},
+    "structural_state": {"enum": ["valid", "invalid"]},
+    "semantic_freshness_state": {"enum": ["current", "stale", "unknown", "not_evaluated"]},
+    "evidence": {
+      "type": "array",
+      "maxItems": 4096,
+      "items": {"$ref": "#/$defs/evidence"}
+    },
+    "summary": {"$ref": "#/$defs/summary"},
+    "read_only": {"const": true},
+    "canonical_apply_enabled": {"const": false}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "file": {"type": "object", "additionalProperties": false, "required": ["path", "size", "digest"], "properties": {"path": {"type": "string", "minLength": 1, "maxLength": 4096}, "size": {"type": "integer", "minimum": 0, "maximum": 16777216}, "digest": {"$ref": "#/$defs/digest"}}},
+    "snapshot": {"type": "object", "additionalProperties": false, "required": ["digest", "files"], "properties": {"digest": {"$ref": "#/$defs/digest"}, "files": {"type": "array", "minItems": 1, "maxItems": 16384, "items": {"$ref": "#/$defs/file"}}}},
+    "evidence": {"type": "object", "additionalProperties": false, "required": ["severity", "code", "path", "feature_id", "detail", "basis"], "properties": {"severity": {"enum": ["pass", "warning", "violation"]}, "code": {"type": "string", "pattern": "^ssfv\\.[a-z0-9_.-]+$", "maxLength": 128}, "path": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1, "maxLength": 4096}]}, "feature_id": {"oneOf": [{"type": "null"}, {"type": "string", "maxLength": 256}]}, "detail": {"type": "string", "minLength": 1, "maxLength": 65536}, "basis": {"enum": ["deterministic", "semantic_candidate"]}}},
+    "summary": {"type": "object", "additionalProperties": false, "required": ["pass", "warning", "violation", "state"], "properties": {"pass": {"type": "integer", "minimum": 0}, "warning": {"type": "integer", "minimum": 0}, "violation": {"type": "integer", "minimum": 0}, "state": {"enum": ["valid", "invalid"]}}}
+  }
+}

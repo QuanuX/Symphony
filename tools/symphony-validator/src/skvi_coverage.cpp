@@ -1,9 +1,12 @@
 #include "skvi_coverage.hpp"
 #include "canonical_surfaces.hpp"
 #include "evidence.hpp"
+#include <filesystem>
 #include <unordered_set>
 
-SkviCoverageCheckResult check_skvi_coverage(const SkviCheckResult& index_res) {
+namespace fs = std::filesystem;
+
+SkviCoverageCheckResult check_skvi_coverage(const SkviCheckResult& index_res, const std::string& repo_root) {
     SkviCoverageCheckResult result;
     result.success = true;
     
@@ -11,6 +14,17 @@ SkviCoverageCheckResult check_skvi_coverage(const SkviCheckResult& index_res) {
     
     // Check required surfaces coverage in required canonical surface order
     std::vector<std::string> required_surfaces = get_required_canonical_surfaces();
+    if (fs::exists(fs::path(repo_root) / "knowledge/ssfv")) {
+        const std::vector<std::string> ssfv_required = {
+            "knowledge/ssfv/INTENT.md",
+            "knowledge/ssfv/MANIFEST.md",
+            "knowledge/ssfv/SKILL.md",
+            "knowledge/ssfv/SPEC.md",
+            "knowledge/ssfv/NAMESPACES.md",
+            "knowledge/ssfv/REGISTRY.md"
+        };
+        required_surfaces.insert(required_surfaces.end(), ssfv_required.begin(), ssfv_required.end());
+    }
     std::unordered_set<std::string> indexed_paths_set(index_res.indexed_paths.begin(), index_res.indexed_paths.end());
     
     for (const auto& req_path : required_surfaces) {

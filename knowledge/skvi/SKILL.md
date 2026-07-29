@@ -15,7 +15,7 @@ To outline how humans and automated systems should safely read, interpret, and o
 - agentic tools consuming canonical knowledge
 
 ## How Readers Consume SKVI
-Readers use SKVI to discover the location of SCLV records, SODV publication rules, and module boundaries.
+Readers use SKVI to discover the location of SCLV records, SODV publication rules, SSFV feature contracts and future owner records, and module boundaries.
 
 ## How the Validator Checks SKVI
 The checked-in `tools/symphony-validator/` implementation may read SKVI to check entry shape, required-surface coverage, relative-path safety, path existence, uniqueness, and SCLV cross-references. Treat its output as deterministic evidence, not permission to rewrite SKVI or infer architectural intent.
@@ -53,6 +53,7 @@ SKVI is not symphony-validator.
 SKVI does not replace module contracts.
 SKVI does not replace SCLV.
 SKVI does not replace SODV.
+SKVI does not replace SSFV.
 SKVI does not replace SSCG.
 SKVI does not execute or enforce application runtime behavior.
 

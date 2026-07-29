@@ -8,4 +8,4 @@ struct SkviCoverageCheckResult {
     std::vector<std::string> messages;
 };
 
-SkviCoverageCheckResult check_skvi_coverage(const SkviCheckResult& index_res);
+SkviCoverageCheckResult check_skvi_coverage(const SkviCheckResult& index_res, const std::string& repo_root);
