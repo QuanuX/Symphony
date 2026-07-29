@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator read-only slice and SKVI/SCLV/SACV/SODV proposal/projection slices implemented, plus the SSFV Contract Quad ratified without an engine or feature bootstrap. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No later session-mutation, other vector-engine, lifecycle, apply, endpoint, publication, or docking capability may be inferred from these slices.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator read-only slice and SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices implemented. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No feature bootstrap, later session mutation, lifecycle, apply, endpoint, publication, or docking capability may be inferred from these slices.
 
 ## Purpose
 
@@ -53,7 +53,7 @@ The initial exact schemas are:
 
 The process request limit is 1 MiB and the response limit is 4 MiB. JSON depth is at most 64, parsed values/events at most 16,384, one string or key at most 65,536 bytes, integers remain within `[-9007199254740991, 9007199254740991]`, and a request deadline is at most 300 seconds ahead. Unknown fields, duplicate names, invalid UTF-8, trailing data, floating-point values, out-of-range integers, unsupported versions, excessive input, unsafe paths, expired deadlines, and target mismatch fail closed. Standard output is reserved for the single protocol response; bounded diagnostics use standard error. Arguments and environment variables MUST NOT carry secrets or arbitrary executable instructions.
 
-An engine checks the deadline before and between bounded work units and file-read chunks. The invoking process MUST independently enforce the same deadline on child-process lifetime so a blocked operating-system or filesystem call cannot outlive the request. The direct coordinator slice provides cooperative checks; the implemented qxctl SKVI/SCLV/SACV/SODV client adds a hard child-process timeout around each request deadline.
+An engine checks the deadline before and between bounded work units and file-read chunks. The invoking process MUST independently enforce the same deadline on child-process lifetime so a blocked operating-system or filesystem call cannot outlive the request. The direct coordinator slice provides cooperative checks; the implemented qxctl SKVI/SCLV/SACV/SODV/SSFV client adds a hard child-process timeout around each request deadline.
 
 `response_digest` is the tagged SHA-256 of the compact key-sorted response object before that member is inserted. Operation-specific payload/result schemas remain owned by the applicable coordinator or vector contract.
 
@@ -119,7 +119,7 @@ qxctl skvi ...
 qxctl sclv ...
 qxctl sacv ...
 qxctl sodv ...
-qxctl ssfv inspect|check|diff|propose|graph ...  # ratified grammar; implementation pending
+qxctl ssfv inspect|check|diff|propose|graph ...
 ```
 
 qxctl MUST resolve exact installed engine identities and protocol compatibility from trusted receipts. Direct engine invocation remains available for diagnostics and conformance. qxctl MUST NOT absorb vector semantics, classify callers, accept secret-bearing engine input, or present a reserved command as operational.
@@ -177,7 +177,7 @@ Implementation proceeds as tested vertical slices:
 4. SACV OpenAPI 3.2.0 engine;
 5. SODV release/publication reconciliation engine;
 6. SSFV Contract Quad, namespace, empty registry, and payload contracts;
-7. SSFV engine and qxctl client only after a separate implementation review;
+7. SSFV engine and qxctl client;
 8. distributed SSFV feature bootstrap only after source review and feature-worthiness ratification.
 
 Scaffolding every engine in advance is prohibited. Each slice must pass its contract, conformance, receipt, and uninstall gates before the next vector claims implementation.
@@ -186,7 +186,7 @@ Scaffolding every engine in advance is prohibited. Each slice must pass its cont
 
 The Architect has ratified `knowledge/ssfv/` with stable identifiers, feature-worthiness criteria, hierarchy, sparse distributed-file ownership, typed relationships, lifecycle, 5W1H semantics, content-addressed freshness, and portable JSON graph contracts. This completes the semantic contract gate.
 
-The implementation and bootstrap gates remain closed. No `modules/ssfv-engine/`, qxctl client, distributed `FEATURES.md`, canonical feature entry, persistent graph store, or Maestro receptor may be inferred or created without its own reviewed slice.
+The implementation gate is complete and the bootstrap gate remains closed. The independently installed engine and qxctl client do not authorize a distributed `FEATURES.md`, canonical feature entry, persistent graph store, or Maestro receptor.
 
 ## Historical and Validator Boundary
 
@@ -206,6 +206,8 @@ Append-only SCLV and SODV records remain immutable. A contract transition change
 
 `modules/sodv-engine/` implements deterministic append-only v1/v2 release-ledger checks, caller-supplied external-state verification, provider-neutral v2 release-record proposals, non-mutating interrupted-session recovery, and disposable release-transaction inventories. `qxctl sodv ...` validates its exact inactive-undocked nine-file installation and invokes it under the common process-safety gates. The engine has no network access and never creates or moves tags, contacts package providers, declares completion, mutates recovery journals, appends records, publishes, or applies canonical changes.
 
+`modules/ssfv-engine/` implements deterministic `inspect`, structural and freshness-aware `check`, baseline-versus-live `diff`, caller-declared `propose`, and disposable JSON `graph`. It validates exact managed regions, namespaces, registry routing, record normalization, hierarchy, evidence paths, and SKVI coverage without deciding semantic truth. `qxctl ssfv ...` validates its exact inactive-undocked nine-file installation and adds no-follow baseline/input handling plus operation-specific authority and projection safety checks. The engine and client never create feature records, apply proposals, persist graphs, activate a version, or dock with Maestro.
+
 ## Non-Authorization Statement
 
-This specification does not claim implementation beyond the explicitly identified foundation/coordinator and SKVI/SCLV/SACV/SODV slices, enable canonical apply, authorize an external package coordinate, create an HTTP surface, publish a release artifact, permit direct ledger mutation, activate Maestro, implement the SSFV engine, or create SSFV feature records.
+This specification does not claim implementation beyond the explicitly identified foundation/coordinator and SKVI/SCLV/SACV/SODV/SSFV slices, enable canonical apply, authorize an external package coordinate, create an HTTP surface, publish a release artifact, permit direct ledger mutation, activate Maestro, or create SSFV feature records.

@@ -195,7 +195,7 @@ KnowledgeContractShapeResult check_knowledge_contract_shapes(const std::string& 
                 {"Source_Truth", "## Source-Truth Boundary"}, {"Scope", "## Scope"},
                 {"Boundaries", "## Non-Authorization Statement"}}},
             {"knowledge/ssfv/MANIFEST.md", {{"Manifest", "Manifest"}, {"Identity", "## Identity"},
-                {"Contract", "## Declared Contract Truth Role"}, {"Installability", "## Installability Considerations"},
+                {"Contract", "## Declared Contract Truth Role"}, {"Installability", "## Installability"},
                 {"Boundaries", "## Non-Authorization Statement"}}},
             {"knowledge/ssfv/SKILL.md", {{"Skill", "Skill"}, {"Purpose", "## Purpose"},
                 {"Authority", "## Caller Authority"}, {"Boundaries", "## Non-Authorization Statement"}}},
@@ -207,6 +207,10 @@ KnowledgeContractShapeResult check_knowledge_contract_shapes(const std::string& 
                 {"Boundaries", "## Non-Authorization Statement"}}},
             {"knowledge/ssfv/REGISTRY.md", {{"Registry", "Registry"}, {"Purpose", "## Purpose"},
                 {"Entry_Model", "## Entry Model"}, {"Entries", "## Canonical Entries"},
+                {"Boundaries", "## Non-Authorization Statement"}}},
+            {"knowledge/ssfv/FEATURE-FILE-FORMAT.md", {{"Format", "Feature File Format"},
+                {"Purpose", "## Purpose"}, {"Managed_Region", "## Exact Managed Region"},
+                {"Rendering", "## Deterministic Rendering"},
                 {"Boundaries", "## Non-Authorization Statement"}}}
         };
         targets.insert(targets.end(), ssfv_targets.begin(), ssfv_targets.end());

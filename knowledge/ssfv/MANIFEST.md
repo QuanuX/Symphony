@@ -43,14 +43,16 @@ knowledge/ssfv/
   SPEC.md
   NAMESPACES.md
   REGISTRY.md
+  FEATURE-FILE-FORMAT.md
   schemas/v1/
+  schemas/v2/
 ```
 
 No distributed `FEATURES.md` record exists at contract-transition time. The explicit empty registry is canonical and valid.
 
 ## Record Model
 
-Every future record has:
+Every record has:
 
 - one stable `ssfv:<namespace>:<stable.dotted-key>` identity;
 - one kind and lifecycle state;
@@ -69,18 +71,18 @@ Every future record has:
 - STAV records safe operational audit metadata where separately authorized.
 - SSIAG controls permission-backed feature administration.
 - Maestro may later persist inactive or docked engine state; it does not own feature semantics.
-- qxctl is the eventual lifecycle and administration interface; it does not own SSFV truth.
+- qxctl is the implemented inspect/check/diff/propose/graph interface and eventual lifecycle administrator; it does not own SSFV truth.
 
-## Installability Considerations
+## Installability
 
-The future independently installable C++ engine is reserved at `modules/ssfv-engine/` with executable `symphony-ssfv` and module identifier `ssfv-engine`. It may install as `installed_undocked`, including alongside other compatible engine versions. Its initial operation vocabulary is `inspect`, `check`, `diff`, `propose`, and `graph`.
+The independently installable C++ engine lives at `modules/ssfv-engine/` with executable `symphony-ssfv` and module identifier `ssfv-engine`. It installs under an exact versioned prefix as inactive `installed_undocked`, including alongside other compatible engine versions. Its operation vocabulary is `inspect`, `check`, `diff`, `propose`, and `graph`.
 
-No engine, package, install receipt, Maestro receptor, or qxctl command is implemented by this manifest.
+The Go qxctl client validates the exact inactive-undocked receipt and invokes the selected version out of process. Generic qxctl installation, activation, receptor selection, docking, and canonical apply remain deferred.
 
 ## Non-Authorization Statement
 
-This manifest authorizes only the canonical SSFV contract surface. It does not authorize engine implementation, feature bootstrap, `FEATURES.md` creation, canonical apply, repository mutation, graph-database persistence, Maestro docking, public documentation, or marketing claims.
+This manifest authorizes the canonical SSFV contract and bounded engine/client implementation. It does not authorize feature bootstrap, application `FEATURES.md` creation, canonical apply, repository mutation, graph-database persistence, Maestro docking, public documentation, or marketing claims.
 
 ## Status
 
-Architect-ratified contract transition. Namespace `symphony` is allocated, the registry is intentionally empty, and runtime implementation remains pending.
+Architect-ratified engine implementation. Namespace `symphony` is allocated, the registry is intentionally empty, and no application feature record exists.

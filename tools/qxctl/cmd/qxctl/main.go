@@ -72,6 +72,11 @@ func printUsage() {
 	fmt.Println("  sodv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a release-record proposal")
 	fmt.Println("  sodv recover --prefix PATH --input FILE [--version VERSION] [--json] Reconcile an interrupted release journal")
 	fmt.Println("  sodv project --prefix PATH [--version VERSION] [--json] Build a disposable release inventory")
+	fmt.Println("  ssfv inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SSFV engine")
+	fmt.Println("  ssfv check --prefix PATH [--version VERSION] [freshness flags] [--json] Check canonical semantic-feature truth")
+	fmt.Println("  ssfv diff --prefix PATH --input FILE [--version VERSION] [--json] Compare a semantic baseline with live truth")
+	fmt.Println("  ssfv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared semantic proposal")
+	fmt.Println("  ssfv graph --prefix PATH [--version VERSION] [--json] Build a disposable semantic-feature graph")
 }
 
 func runSKVI(operation string, options skviOptions) error {

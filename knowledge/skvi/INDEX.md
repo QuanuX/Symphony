@@ -1333,7 +1333,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: administrative CLI implementation surface
 - truth_role: local operation dispatch, process-client invocation, and presentation implementation truth
 - owner: qxctl maintainers
-- scope: Implements current repository, module, SSIAG, STAV, SKVI, SCLV, SACV, and SODV administrative operation handlers.
+- scope: Implements current repository, module, SSIAG, STAV, SKVI, SCLV, SACV, SODV, and shared SSFV administrative operation handlers.
 - relationships: implements -> `tools/qxctl/MANIFEST.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`
 - consumers: qxctl executable, tests, maintainers, reviewers
 - deferred_projections: generated CLI reference and operation evidence
@@ -1346,7 +1346,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: administrative CLI implementation surface
 - truth_role: implemented command tree, flag grammar, and failure routing
 - owner: qxctl maintainers
-- scope: Implements current repository, SSIAG, STAV, and exact-installation SKVI/SCLV/SACV/SODV command grammar without owning domain semantics.
+- scope: Implements current repository, SSIAG, STAV, and exact-installation SKVI/SCLV/SACV/SODV/SSFV command grammar without owning domain semantics.
 - relationships: implements -> `tools/qxctl/MANIFEST.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`
 - consumers: qxctl executable, compatibility tests, maintainers, reviewers
 - deferred_projections: generated CLI reference documentation
@@ -1359,11 +1359,50 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: bounded Go process-client implementation
 - truth_role: trusted receipt resolution, child-process bounds, and response verification implementation truth
 - owner: qxctl maintainers
-- scope: Resolves exact installed SKVI, SCLV, SACV, and SODV versions, validates their inactive-undocked receipts and owned paths, invokes them with an empty environment and hard deadline, and verifies response identity and digest.
-- relationships: implements -> `knowledge/SPEC.md`; implements -> `knowledge/skvi/SPEC.md`; implements -> `knowledge/sclv/SPEC.md`; implements -> `knowledge/sacv/SPEC.md`; implements -> `knowledge/sodv/SPEC.md`; called_by -> `tools/qxctl/cmd/qxctl/commands.go`
-- consumers: qxctl SKVI/SCLV/SACV/SODV commands, tests, reviewers, future compatible vector clients
+- scope: Resolves exact installed SKVI, SCLV, SACV, SODV, and SSFV versions, validates trusted inactive-undocked receipts and owned paths, invokes them with an empty environment and hard deadline, and verifies response identity and digest.
+- relationships: implements -> `knowledge/SPEC.md`; implements -> `knowledge/skvi/SPEC.md`; implements -> `knowledge/sclv/SPEC.md`; implements -> `knowledge/sacv/SPEC.md`; implements -> `knowledge/sodv/SPEC.md`; implements -> `knowledge/ssfv/SPEC.md`; called_by -> `tools/qxctl/cmd/qxctl/commands.go`
+- consumers: qxctl SKVI/SCLV/SACV/SODV/SSFV commands, tests, reviewers, future compatible vector clients
 - deferred_projections: additional compatible vector clients
 - notes: It does not install, activate, dock, infer membership, grant permission, ratify, mutate journals, or apply.
+- status: canonical
+
+#### qxctl Unix No-Follow Knowledge-Engine Access
+- path: `tools/qxctl/internal/knowledgeengine/open_relative_unix.go`
+- title: qxctl Unix No-Follow Knowledge-Engine Access
+- surface_type: platform-specific secure file-access implementation
+- truth_role: Linux and macOS descriptor traversal plus installation trust-check implementation truth
+- owner: qxctl maintainers
+- scope: Opens exact relative receipt paths without following symlinks and rejects group/world-writable or foreign-owned engine installations.
+- relationships: implements -> `tools/qxctl/MANIFEST.md`; called_by -> `tools/qxctl/internal/knowledgeengine/client.go`
+- consumers: qxctl vector-engine clients, tests, reviewers
+- deferred_projections: none
+- notes: Effective-user and root ownership are accepted without classifying the caller.
+- status: canonical
+
+#### qxctl Unsupported Native Knowledge-Engine Access
+- path: `tools/qxctl/internal/knowledgeengine/open_relative_unsupported.go`
+- title: qxctl Unsupported Native Knowledge-Engine Access
+- surface_type: platform fail-closed implementation
+- truth_role: unsupported-native-operating-system rejection truth
+- owner: qxctl maintainers
+- scope: Refuses knowledge-engine receipt traversal where the Linux/macOS no-follow contract is unavailable.
+- relationships: implements -> `tools/qxctl/MANIFEST.md`; called_by -> `tools/qxctl/internal/knowledgeengine/client.go`
+- consumers: qxctl vector-engine clients, tests, reviewers
+- deferred_projections: WSL and remote administration documentation
+- notes: It does not introduce a weaker native Windows fallback.
+- status: canonical
+
+#### qxctl SSFV Operation Layer
+- path: `tools/qxctl/cmd/qxctl/ssfv.go`
+- title: qxctl SSFV Operation Layer
+- surface_type: administrative CLI implementation surface
+- truth_role: SSFV payload assembly, result-safety validation, and presentation implementation truth
+- owner: qxctl maintainers
+- scope: Implements no-follow baselines/inputs, freshness coupling, proposal-target checks, and disposable graph validation.
+- relationships: implements -> `tools/qxctl/MANIFEST.md`; implements -> `knowledge/ssfv/SPEC.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`
+- consumers: qxctl executable, tests, administrators, reviewers
+- deferred_projections: generated SSFV CLI reference
+- notes: The command layer does not parse feature semantics, ratify, apply, or persist graphs.
 - status: canonical
 
 ### Knowledge Session Coordinator Module
@@ -2449,7 +2488,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SSFV maintainers
 - scope: Defines feature purpose, feature-worthiness, caller neutrality, and adjacent-vector boundaries.
 - relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
-- consumers: reviewers, future SSFV engine, qxctl planners, agentic tools
+- consumers: reviewers, SSFV engine, qxctl planners, agentic tools
 - deferred_projections: feature catalogs, encyclopedia views, publication inputs, graph views
 - notes: No feature record or runtime is created by this intent.
 - status: canonical
@@ -2460,11 +2499,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: vector contract truth
 - truth_role: canonical topology, identity, classification, and installability boundary
 - owner: SSFV maintainers
-- scope: Declares owned feature semantics, sparse distributed records, future engine identity, and current empty state.
+- scope: Declares owned feature semantics, sparse distributed records, implemented engine identity, and current empty state.
 - relationships: depends_on -> `knowledge/ssfv/INTENT.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, implementers, qxctl planners, packaging planners
 - deferred_projections: installation descriptors and Maestro docking descriptors after separate review
-- notes: The future engine namespace is reserved but no module exists.
+- notes: The engine module is implemented; the feature registry remains intentionally empty.
 - status: canonical
 
 ##### SKILL.md
@@ -2475,7 +2514,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SSFV maintainers
 - scope: Guides feature-worthiness review, 5W1H authoring, relationship evidence, and stop conditions.
 - relationships: depends_on -> `knowledge/ssfv/SPEC.md`; depends_on -> `knowledge/SPEC.md`
-- consumers: reviewers, maintainers, agentic tools, future qxctl callers
+- consumers: reviewers, maintainers, agentic tools, qxctl callers
 - deferred_projections: authoring assistance and review checklists
 - notes: Caller type is not an authority input.
 - status: canonical
@@ -2486,11 +2525,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: vector specification
 - truth_role: canonical feature identity, semantics, hierarchy, lifecycle, routing, and protocol contract
 - owner: SSFV maintainers
-- scope: Defines stable IDs, feature kinds, 5W1H, sparse files, registry, future operations, freshness, proposals, and graphs.
+- scope: Defines stable IDs, feature kinds, 5W1H, sparse files, registry, implemented operations, freshness, proposals, and graphs.
 - relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
-- consumers: reviewers, future SSFV engine, qxctl planners, validator
+- consumers: reviewers, SSFV engine, qxctl planners, validator
 - deferred_projections: portable JSON graph, catalogs, search, documentation, and analytical views
-- notes: Engine implementation and feature bootstrap remain separate gates.
+- notes: Engine implementation is complete; feature bootstrap remains a separate gate.
 - status: canonical
 
 ##### NAMESPACES.md
@@ -2501,7 +2540,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SSFV maintainers
 - scope: Allocates the first-party `ssfv:symphony:` prefix and governs future namespace allocation.
 - relationships: depends_on -> `knowledge/ssfv/SPEC.md`
-- consumers: reviewers, future SSFV engine, qxctl planners
+- consumers: reviewers, SSFV engine, qxctl planners
 - deferred_projections: namespace inventory
 - notes: Internal stable-ID allocation claims no external URI, package, repository, or trademark authority.
 - status: canonical
@@ -2514,7 +2553,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SSFV maintainers
 - scope: Defines the exact eight-field registry grammar and records the intentionally empty current feature set.
 - relationships: depends_on -> `knowledge/ssfv/SPEC.md`
-- consumers: reviewers, future SSFV engine, qxctl planners, validator
+- consumers: reviewers, SSFV engine, qxctl planners, validator
 - deferred_projections: feature inventories and graph routing
 - notes: Empty is valid; no placeholder feature is required.
 - status: canonical
@@ -2527,7 +2566,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SSFV maintainers
 - scope: Declares feature, namespace, registry, check, diff, proposal, and graph schemas.
 - relationships: depends_on -> `knowledge/ssfv/SPEC.md`
-- consumers: future SSFV engine, qxctl planners, conformance tests, validator, reviewers
+- consumers: SSFV engine, qxctl planners, conformance tests, validator, reviewers
 - deferred_projections: rendered protocol documentation
 - notes: Machine-readable contracts do not implement an engine or grant mutation authority.
 - status: canonical
@@ -2540,7 +2579,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SSFV maintainers
 - scope: Closes stable identity, kind, lifecycle, hierarchy, 5W1H, implementation evidence, relationships, distinctions, references, evidence, and non-claims.
 - relationships: depends_on -> `knowledge/ssfv/schemas/v1/MANIFEST.md`
-- consumers: future SSFV engine, qxctl planners, conformance tests, validator
+- consumers: SSFV engine, qxctl planners, conformance tests, validator
 - deferred_projections: feature reference documentation
 - notes: The schema does not decide feature-worthiness.
 - status: canonical
@@ -2553,7 +2592,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SSFV maintainers
 - scope: Closes namespace, prefix, owner contract, scope, lifecycle, evidence, and notes.
 - relationships: depends_on -> `knowledge/ssfv/schemas/v1/MANIFEST.md`
-- consumers: future SSFV engine, qxctl planners, conformance tests, validator
+- consumers: SSFV engine, qxctl planners, conformance tests, validator
 - deferred_projections: namespace inventories
 - notes: Namespace allocation does not claim external provider identity.
 - status: canonical
@@ -2566,7 +2605,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SSFV maintainers
 - scope: Closes feature ID, owner file, contract, source scope, lifecycle, parent, digest, and notes.
 - relationships: depends_on -> `knowledge/ssfv/schemas/v1/MANIFEST.md`
-- consumers: future SSFV engine, qxctl planners, conformance tests, validator
+- consumers: SSFV engine, qxctl planners, conformance tests, validator
 - deferred_projections: feature routing inventories
 - notes: Routing metadata never replaces the distributed semantic record.
 - status: canonical
@@ -2579,7 +2618,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SSFV maintainers
 - scope: Closes snapshot, coverage, counts, structural state, freshness state, findings, disabled apply, and digest.
 - relationships: depends_on -> `knowledge/ssfv/schemas/v1/MANIFEST.md`
-- consumers: future SSFV engine, qxctl planners, conformance tests, validator
+- consumers: SSFV engine, qxctl planners, conformance tests, validator
 - deferred_projections: check reports
 - notes: Semantic candidates remain unratified evidence.
 - status: canonical
@@ -2592,7 +2631,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SSFV maintainers
 - scope: Closes baseline and current digests, bounded feature scope, and semantic-candidate selection.
 - relationships: depends_on -> `knowledge/ssfv/schemas/v1/MANIFEST.md`
-- consumers: future SSFV engine, qxctl planners, conformance tests
+- consumers: SSFV engine, qxctl planners, conformance tests
 - deferred_projections: comparison forms
 - notes: Revision labels never replace content digests.
 - status: canonical
@@ -2605,7 +2644,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SSFV maintainers
 - scope: Closes added, changed, removed, uncovered, stale, and semantic-candidate results.
 - relationships: depends_on -> `knowledge/ssfv/schemas/v1/diff-input.schema.json`
-- consumers: future SSFV engine, qxctl planners, conformance tests
+- consumers: SSFV engine, qxctl planners, conformance tests
 - deferred_projections: change reports
 - notes: A diff result is evidence and grants no ratification or mutation authority.
 - status: canonical
@@ -2618,7 +2657,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SSFV maintainers
 - scope: Closes session, context, expiry, expected digests, operation, feature IDs, target paths, semantic declaration, and permission reference.
 - relationships: depends_on -> `knowledge/ssfv/schemas/v1/MANIFEST.md`; depends_on -> `knowledge/schemas/v1/proposal.schema.json`
-- consumers: future SSFV engine, qxctl planners, conformance tests
+- consumers: SSFV engine, qxctl planners, conformance tests
 - deferred_projections: proposal forms
 - notes: Proposal generation never applies canonical changes.
 - status: canonical
@@ -2631,13 +2670,251 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: SSFV maintainers
 - scope: Closes source snapshots, feature nodes, typed edges, counts, noncanonical state, rebuildability, and digest.
 - relationships: depends_on -> `knowledge/ssfv/schemas/v1/MANIFEST.md`
-- consumers: future SSFV engine, qxctl planners, graph and documentation consumers
+- consumers: SSFV engine, qxctl planners, graph and documentation consumers
 - deferred_projections: JSONL, search, visualization, analytical, and graph-database imports after separate review
 - notes: The graph is portable JSON and never canonical authority.
 - status: canonical
 
+### SSFV Executable Contract Additions
+
+#### SSFV Feature File Format
+- path: `knowledge/ssfv/FEATURE-FILE-FORMAT.md`
+- title: SSFV Feature File Format
+- surface_type: canonical machine-managed Markdown format
+- truth_role: exact distributed feature-file envelope, routing, normalization, and rendering contract
+- owner: SSFV maintainers
+- scope: Defines the single managed JSON region and byte-preserving owner-text boundary.
+- relationships: depends_on -> `knowledge/ssfv/SPEC.md`; implemented_by -> `modules/ssfv-engine/SPEC.md`
+- consumers: SSFV engine, qxctl, validator, reviewers, agentic tools
+- deferred_projections: rendered feature references
+- notes: The format creates no feature record and grants no apply authority.
+- status: canonical
+
+#### SSFV Feature File Schema
+- path: `knowledge/ssfv/schemas/v1/feature-file.schema.json`
+- title: SSFV Feature File Envelope v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical embedded feature-file envelope shape
+- owner: SSFV maintainers
+- scope: Binds protocol, owner contract, source scope, and ordered complete records.
+- relationships: depends_on -> `knowledge/ssfv/FEATURE-FILE-FORMAT.md`; implemented_by -> `modules/ssfv-engine/SPEC.md`
+- consumers: SSFV engine, qxctl, validator, conformance tests
+- deferred_projections: schema documentation
+- notes: The schema does not authorize an empty canonical owner file.
+- status: canonical
+
+#### SSFV Semantic Snapshot Schema
+- path: `knowledge/ssfv/schemas/v1/semantic-snapshot.schema.json`
+- title: SSFV Semantic Snapshot v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical content-addressed feature and evidence snapshot shape
+- owner: SSFV maintainers
+- scope: Binds contract, namespace, registry, owner-file, record, and source-evidence digests.
+- relationships: depends_on -> `knowledge/ssfv/SPEC.md`; implemented_by -> `modules/ssfv-engine/SPEC.md`
+- consumers: SSFV engine, qxctl, freshness and diff callers
+- deferred_projections: snapshot reports
+- notes: Snapshots contain digests and metadata rather than source bodies.
+- status: canonical
+
+#### SSFV Graph Input Schema
+- path: `knowledge/ssfv/schemas/v1/graph-input.schema.json`
+- title: SSFV Graph Input v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical exact graph-operation input shape
+- owner: SSFV maintainers
+- scope: Restricts the graph request to portable JSON output.
+- relationships: depends_on -> `knowledge/ssfv/SPEC.md`; implemented_by -> `modules/ssfv-engine/SPEC.md`
+- consumers: SSFV engine, qxctl, conformance tests
+- deferred_projections: future separately reviewed transports
+- notes: No persistent graph store or paging contract is authorized.
+- status: canonical
+
+#### SSFV v2 Schema Manifest
+- path: `knowledge/ssfv/schemas/v2/MANIFEST.md`
+- title: SSFV v2 Schema Manifest
+- surface_type: vector protocol schema manifest
+- truth_role: canonical executable-operation schema inventory
+- owner: SSFV maintainers
+- scope: Declares v2 record, registry, check, diff, and proposal payload/result contracts.
+- relationships: depends_on -> `knowledge/ssfv/SPEC.md`; depends_on -> `knowledge/ssfv/schemas/v1/MANIFEST.md`
+- consumers: SSFV engine, qxctl, validator, conformance tests
+- deferred_projections: schema documentation
+- notes: v1 historical contracts remain canonical and are not silently reinterpreted.
+- status: canonical
+
+#### SSFV v2 Check Input Schema
+- path: `knowledge/ssfv/schemas/v2/check-input.schema.json`
+- title: SSFV Check Input v2
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical structural and freshness check request shape
+- owner: SSFV maintainers
+- scope: Binds expected namespace/registry digests, freshness mode, and optional baseline.
+- relationships: depends_on -> `knowledge/ssfv/schemas/v2/MANIFEST.md`; implemented_by -> `modules/ssfv-engine/SPEC.md`
+- consumers: SSFV engine, qxctl, conformance tests
+- deferred_projections: check forms
+- notes: Report and require modes need a semantic baseline.
+- status: canonical
+
+#### SSFV v2 Check Result Schema
+- path: `knowledge/ssfv/schemas/v2/check-result.schema.json`
+- title: SSFV Check Result v2
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical structural, coverage, snapshot, and freshness evidence shape
+- owner: SSFV maintainers
+- scope: Reports deterministic findings and caller-neutral semantic-review candidates.
+- relationships: depends_on -> `knowledge/ssfv/schemas/v2/check-input.schema.json`; implemented_by -> `modules/ssfv-engine/SPEC.md`
+- consumers: SSFV engine, qxctl, conformance tests
+- deferred_projections: check reports
+- notes: Semantic candidates are evidence and remain unratified.
+- status: canonical
+
+#### SSFV v2 Diff Input Schema
+- path: `knowledge/ssfv/schemas/v2/diff-input.schema.json`
+- title: SSFV Diff Input v2
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical prior-snapshot versus live-state comparison request
+- owner: SSFV maintainers
+- scope: Carries one bounded baseline, optional expected current digest, scope, and candidate flag.
+- relationships: depends_on -> `knowledge/ssfv/schemas/v1/semantic-snapshot.schema.json`; implemented_by -> `modules/ssfv-engine/SPEC.md`
+- consumers: SSFV engine, qxctl, conformance tests
+- deferred_projections: diff forms
+- notes: The engine does not invoke Git or a forge for historical state.
+- status: canonical
+
+#### SSFV v2 Diff Result Schema
+- path: `knowledge/ssfv/schemas/v2/diff-result.schema.json`
+- title: SSFV Diff Result v2
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical deterministic semantic-change evidence shape
+- owner: SSFV maintainers
+- scope: Reports added, changed, removed, uncovered, stale, and review-required evidence.
+- relationships: depends_on -> `knowledge/ssfv/schemas/v2/diff-input.schema.json`; implemented_by -> `modules/ssfv-engine/SPEC.md`
+- consumers: SSFV engine, qxctl, conformance tests
+- deferred_projections: change reports
+- notes: The result is noncanonical and grants no ratification.
+- status: canonical
+
+#### SSFV v2 Feature Record Schema
+- path: `knowledge/ssfv/schemas/v2/feature-record.schema.json`
+- title: SSFV Normalized Feature Record v2
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical executable normalized semantic feature-record shape
+- owner: SSFV maintainers
+- scope: Closes stable identity, strict hierarchy, 5W1H, implementation evidence, relationships, distinctions, references, evidence, and non-claims.
+- relationships: depends_on -> `knowledge/ssfv/schemas/v2/MANIFEST.md`; implemented_by -> `modules/ssfv-engine/SPEC.md`
+- consumers: SSFV engine, qxctl, conformance tests, reviewers
+- deferred_projections: feature reference documentation
+- notes: Record validation does not decide feature-worthiness.
+- status: canonical
+
+#### SSFV v2 Proposal Input Schema
+- path: `knowledge/ssfv/schemas/v2/proposal-input.schema.json`
+- title: SSFV Proposal Input v2
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical caller-declared namespace or feature proposal input
+- owner: SSFV maintainers
+- scope: Binds repository identity, expected state, desired semantics, targets, evidence, and authorization reference.
+- relationships: depends_on -> `knowledge/ssfv/schemas/v2/feature-record.schema.json`; depends_on -> `knowledge/schemas/v1/proposal.schema.json`; implemented_by -> `modules/ssfv-engine/SPEC.md`
+- consumers: SSFV engine, qxctl, conformance tests
+- deferred_projections: proposal forms
+- notes: Proposal generation never applies canonical changes.
+- status: canonical
+
+#### SSFV v2 Registry Entry Schema
+- path: `knowledge/ssfv/schemas/v2/registry-entry.schema.json`
+- title: SSFV Registry Entry v2
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical executable feature-routing entry shape
+- owner: SSFV maintainers
+- scope: Supports root scope, shared owner routing, lifecycle, parent, and normalized record digest.
+- relationships: depends_on -> `knowledge/ssfv/schemas/v2/MANIFEST.md`; implemented_by -> `modules/ssfv-engine/SPEC.md`
+- consumers: SSFV engine, qxctl, conformance tests
+- deferred_projections: feature-routing inventories
+- notes: Routing metadata never replaces the distributed semantic record.
+- status: canonical
+
+### SSFV Engine Module
+
+#### SSFV Engine INTENT.md
+- path: `modules/ssfv-engine/INTENT.md`
+- title: SSFV Engine Intent
+- surface_type: independently installable vector-engine intent
+- truth_role: subordinate semantic feature inspection and proposal purpose
+- owner: SSFV engine maintainers
+- scope: Declares bounded freezing-path SSFV mechanics without semantic-decision or mutation authority.
+- relationships: depends_on -> `knowledge/ssfv/INTENT.md`; declares -> `modules/ssfv-engine/MANIFEST.md`
+- consumers: qxctl, implementers, administrators, reviewers, agentic tools
+- deferred_projections: installed-engine inventory and conformance evidence
+- notes: The engine implements SSFV truth but does not own it.
+- status: canonical
+
+#### SSFV Engine MANIFEST.md
+- path: `modules/ssfv-engine/MANIFEST.md`
+- title: SSFV Engine Manifest
+- surface_type: independently installable vector-engine manifest
+- truth_role: executable, operation, dependency, lifecycle, and authority truth
+- owner: SSFV engine maintainers
+- scope: Declares C++26 inspect, check, diff, propose, and graph operations with disabled apply.
+- relationships: depends_on -> `modules/ssfv-engine/INTENT.md`; implements -> `knowledge/ssfv/SPEC.md`; statically_links -> `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
+- consumers: qxctl, packagers, implementers, reviewers, agentic tools
+- deferred_projections: engine inventory and Maestro presence evidence
+- notes: Installation is inactive and undocked with no default receptor.
+- status: canonical
+
+#### SSFV Engine INSTALL.md
+- path: `modules/ssfv-engine/INSTALL.md`
+- title: SSFV Engine Installation
+- surface_type: module installation contract
+- truth_role: versioned prefix build, test, receipt, and receipt-owned uninstall procedure
+- owner: SSFV engine maintainers
+- scope: Defines the exact inactive-undocked nine-file package.
+- relationships: depends_on -> `modules/ssfv-engine/MANIFEST.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/INSTALL.md`; consumed_by -> `tools/qxctl/internal/knowledgeengine/client.go`
+- consumers: administrators, packagers, qxctl, conformance tests
+- deferred_projections: lifecycle-administrator automation
+- notes: No global alias, active binding, service, socket, or hook is installed.
+- status: canonical
+
+#### SSFV Engine SKILL.md
+- path: `modules/ssfv-engine/SKILL.md`
+- title: SSFV Engine Skill
+- surface_type: module operational guidance
+- truth_role: safe direct and qxctl invocation procedure
+- owner: SSFV engine maintainers
+- scope: Guides structural/freshness checks, diffs, proposals, and disposable graphs.
+- relationships: depends_on -> `modules/ssfv-engine/SPEC.md`; depends_on -> `knowledge/ssfv/SKILL.md`
+- consumers: administrators, reviewers, agentic tools
+- deferred_projections: operator runbooks
+- notes: Every operation remains caller-neutral and non-mutating.
+- status: canonical
+
+#### SSFV Engine SPEC.md
+- path: `modules/ssfv-engine/SPEC.md`
+- title: SSFV Engine Specification
+- surface_type: module implementation specification
+- truth_role: exact process, operation, parser, bound, freshness, and authority behavior
+- owner: SSFV engine maintainers
+- scope: Defines deterministic managed-region parsing, snapshots, diffs, proposals, graphs, and disabled apply.
+- relationships: implements -> `knowledge/ssfv/SPEC.md`; depends_on -> `knowledge/SPEC.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/SPEC.md`
+- consumers: implementers, qxctl, conformance tests, validator, reviewers
+- deferred_projections: persistent graph, mutation, lifecycle activation, and docking
+- notes: It has no session, authentication, network, semantic-decision, feature-bootstrap, or Maestro authority.
+- status: canonical
+
+#### SSFV Engine CMakeLists.txt
+- path: `modules/ssfv-engine/CMakeLists.txt`
+- title: SSFV Engine Build Contract
+- surface_type: CMake build and install implementation
+- truth_role: C++26 target, tests, exact package layout, receipt, and uninstall implementation truth
+- owner: SSFV engine maintainers
+- scope: Builds `symphony-ssfv` and its conformance suite against the shared static foundation.
+- relationships: implements -> `modules/ssfv-engine/SPEC.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
+- consumers: builders, packagers, tests, administrators
+- deferred_projections: external package formats
+- notes: The exact versioned receipt owns nine installed files.
+- status: canonical
+
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, six common SKV JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eight SSFV v1 JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, six common SKV JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

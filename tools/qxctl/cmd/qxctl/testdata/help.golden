@@ -44,3 +44,8 @@ Commands:
   sodv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a release-record proposal
   sodv recover --prefix PATH --input FILE [--version VERSION] [--json] Reconcile an interrupted release journal
   sodv project --prefix PATH [--version VERSION] [--json] Build a disposable release inventory
+  ssfv inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SSFV engine
+  ssfv check --prefix PATH [--version VERSION] [freshness flags] [--json] Check canonical semantic-feature truth
+  ssfv diff --prefix PATH --input FILE [--version VERSION] [--json] Compare a semantic baseline with live truth
+  ssfv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared semantic proposal
+  ssfv graph --prefix PATH [--version VERSION] [--json] Build a disposable semantic-feature graph

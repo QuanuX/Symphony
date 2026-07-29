@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssfv:diff-result:v2",
+  "title": "SSFV diff result v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "baseline_digest",
+    "current_digest",
+    "state",
+    "added_feature_ids",
+    "changed_feature_ids",
+    "removed_feature_ids",
+    "uncovered_paths",
+    "stale_references",
+    "semantic_candidates",
+    "summary",
+    "read_only",
+    "noncanonical",
+    "result_digest"
+  ],
+  "properties": {
+    "protocol": {
+      "const": "symphony.ssfv.diff-result.v2"
+    },
+    "baseline_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "current_digest": {
+      "$ref": "#/$defs/digest"
+    },
+    "state": {
+      "enum": [
+        "identical",
+        "additive",
+        "semantic_change",
+        "removal",
+        "review_required"
+      ]
+    },
+    "added_feature_ids": {
+      "$ref": "#/$defs/feature_ids"
+    },
+    "changed_feature_ids": {
+      "$ref": "#/$defs/feature_ids"
+    },
+    "removed_feature_ids": {
+      "$ref": "#/$defs/feature_ids"
+    },
+    "uncovered_paths": {
+      "$ref": "#/$defs/paths"
+    },
+    "stale_references": {
+      "$ref": "#/$defs/paths"
+    },
+    "semantic_candidates": {
+      "type": "array",
+      "maxItems": 4096,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "feature_id",
+          "candidate_kind",
+          "reason",
+          "ratification_required"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "feature_id": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "#/$defs/feature_id"
+              }
+            ]
+          },
+          "candidate_kind": {
+            "enum": [
+              "feature_candidate",
+              "stale_semantics",
+              "distinction_review"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536
+          },
+          "ratification_required": {
+            "const": true
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "added",
+        "changed",
+        "removed",
+        "uncovered",
+        "stale",
+        "review_required"
+      ],
+      "properties": {
+        "added": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8192
+        },
+        "changed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8192
+        },
+        "removed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8192
+        },
+        "uncovered": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8192
+        },
+        "stale": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8192
+        },
+        "review_required": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8192
+        }
+      }
+    },
+    "read_only": {
+      "const": true
+    },
+    "noncanonical": {
+      "const": true
+    },
+    "result_digest": {
+      "$ref": "#/$defs/digest"
+    }
+  },
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "feature_id": {
+      "type": "string",
+      "pattern": "^ssfv:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$",
+      "maxLength": 256
+    },
+    "feature_ids": {
+      "type": "array",
+      "maxItems": 8192,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/feature_id"
+      }
+    },
+    "paths": {
+      "type": "array",
+      "maxItems": 8192,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4096
+      }
+    }
+  }
+}

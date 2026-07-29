@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 bool is_authorized_canonical_json(const std::string& relative_path) {
     // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, and SSFV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 65> authorized_paths = {
+    static const std::array<std::string, 75> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -76,7 +76,17 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/ssfv/schemas/v1/diff-input.schema.json",
         "knowledge/ssfv/schemas/v1/diff-result.schema.json",
         "knowledge/ssfv/schemas/v1/proposal-input.schema.json",
-        "knowledge/ssfv/schemas/v1/graph-projection.schema.json"
+        "knowledge/ssfv/schemas/v1/graph-projection.schema.json",
+        "knowledge/ssfv/schemas/v1/feature-file.schema.json",
+        "knowledge/ssfv/schemas/v1/semantic-snapshot.schema.json",
+        "knowledge/ssfv/schemas/v1/graph-input.schema.json",
+        "knowledge/ssfv/schemas/v2/feature-record.schema.json",
+        "knowledge/ssfv/schemas/v2/registry-entry.schema.json",
+        "knowledge/ssfv/schemas/v2/check-input.schema.json",
+        "knowledge/ssfv/schemas/v2/check-result.schema.json",
+        "knowledge/ssfv/schemas/v2/diff-input.schema.json",
+        "knowledge/ssfv/schemas/v2/diff-result.schema.json",
+        "knowledge/ssfv/schemas/v2/proposal-input.schema.json"
     };
     return std::find(authorized_paths.begin(), authorized_paths.end(), relative_path) != authorized_paths.end();
 }

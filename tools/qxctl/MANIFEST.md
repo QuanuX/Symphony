@@ -13,6 +13,7 @@
 - `README.md`
 - `cmd/qxctl/main.go`
 - `cmd/qxctl/commands.go`
+- `cmd/qxctl/ssfv.go`
 - `internal/knowledgeengine/client.go`
 - `internal/knowledgeengine/open_relative_unix.go`
 - `internal/knowledgeengine/open_relative_unsupported.go`
@@ -56,13 +57,17 @@
 - `qxctl sodv propose --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
 - `qxctl sodv recover --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
 - `qxctl sodv project --prefix PATH [--version VERSION] [--repo PATH] [--json]`
+- `qxctl ssfv inspect --prefix PATH [--version VERSION] [--repo PATH] [--json]`
+- `qxctl ssfv check --prefix PATH [--version VERSION] [--repo PATH] [--expected-namespace-digest DIGEST] [--expected-registry-digest DIGEST] [--baseline FILE] [--freshness disabled|report|require] [--json]`
+- `qxctl ssfv diff --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
+- `qxctl ssfv propose --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
+- `qxctl ssfv graph --prefix PATH [--version VERSION] [--repo PATH] [--json]`
 
 ## Ratified Vector-Engine Grammar, Not Yet Implemented
 
 - `qxctl knowledge engines list|inspect|doctor`
 - `qxctl knowledge session begin|status|checkpoint|close|recover`
 - `qxctl knowledge proposals list|show|verify`
-- `qxctl ssfv inspect|check|diff|propose|graph` is contract-ratified but unavailable until the SSFV engine/client implementation gate passes
 - `qxctl knowledge apply ...` is namespace-reserved but unavailable until the common apply gate passes
 
 The qxctl lifecycle administrator is also ratified for future implementation: install, upgrade, rollback, receipt inspection, dock, undock, activate, and uninstall. Exact leaf grammar is added only with its reviewed artifact-verification and receipt contract. No current `module` command should imply these operations already exist.
@@ -86,7 +91,7 @@ Future safeguard administration must provide the same supported inspection and c
 
 `knowledge/SPEC.md` governs the cross-vector process, authenticated-session, worktree-reconciliation, proposal, projection, install-receipt, and docking boundaries. Vector engines are independent C++ processes; qxctl remains Go and does not dynamically link them or absorb their domain logic.
 
-The shared knowledge-engine process client has four implemented consumers. SKVI, SACV, and SODV each validate an exact inactive-undocked nine-file receipt; SCLV validates an exact inactive-undocked eleven-file receipt containing its engine and two provider-evidence adapters. All require an explicit prefix and exact version, accept proposal/diff/verification/recovery content only from a bounded no-follow regular file, provide an empty child environment, enforce the process deadline independently, and validate response identity and digest. The vector command layers additionally reject self-ratification, ownership or membership escalation, engine-declared completion, journal mutation, canonical projection/diff status, listener enablement, or apply. No client selects an active version, installs, uninstalls, docks, or applies.
+The shared knowledge-engine process client has five implemented consumers. SKVI, SACV, SODV, and SSFV each validate an exact inactive-undocked nine-file receipt; SCLV validates an exact inactive-undocked eleven-file receipt containing its engine and two provider-evidence adapters. All require an explicit prefix and exact version. The prefix and receipt-owned files must be owned by the effective user or root and not writable by group or other. Clients accept proposal/diff/verification/recovery/baseline content only from a bounded no-follow regular file, provide an empty child environment, enforce the process deadline independently, and validate response identity and digest. The vector command layers additionally reject self-ratification, ownership or membership escalation, engine-declared completion, journal mutation, canonical projection/diff/graph status, listener enablement, or apply. SSFV additionally validates freshness mode/baseline coupling and exact vector-owned proposal targets. No client selects an active version, installs, uninstalls, docks, or applies.
 
 ## Non-authorizations
 qxctl is not authorized to write canonical generated artifacts. It may invoke ratified engines to create noncanonical proposals and disposable projections. The Architect-ratified Cobra and Viper libraries and their required cgo-free Go dependencies are authorized only for command grammar and constrained configuration mapping; Python, C bindings, remote configuration backends, in-process vector execution engines, and unrelated third-party dependencies remain prohibited. First-party Symphony libraries remain subordinate to their canonical knowledge vectors.

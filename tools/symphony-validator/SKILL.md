@@ -18,7 +18,7 @@ The repository check includes SACV registry shape, ownership, classification, SK
 
 The repository check also includes SODV local release-record shape, time order, lineage, publication-unit preservation, and no-follow ledger presence. Use `qxctl sodv check|verify|recover` with an exact installed engine for richer release evidence and caller-supplied external observations; do not mistake the validator for a Git-host or package-provider client.
 
-The repository check requires the canonical SSFV contract, namespace, and empty-or-future registry surfaces and recognizes their eight exact v1 JSON schemas. It does not decide feature-worthiness, validate distributed semantic records, or substitute for the future `symphony-ssfv` engine.
+The repository check requires the canonical SSFV contract, namespace, empty-or-future registry, feature-file format, engine Contract Quad/build surface, and qxctl grammar/client anchors. It recognizes eighteen exact v1/v2 JSON schemas. It does not decide feature-worthiness, validate distributed semantic records, or substitute for the independently installed `symphony-ssfv` engine.
 
 ## Deterministic, Non-Autonomous Behavior
 The validator is deterministic, explainable, and non-autonomous.

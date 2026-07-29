@@ -25,7 +25,7 @@ Each entry MUST provide, in this exact order:
 
 Each entry is one contiguous ordered block using Markdown list items in `- field: value` form. Outer backticks are presentation delimiters only. Duplicate, unknown, missing, empty, or reordered fields fail validation.
 
-`feature_id`, `feature_file`, and the pair of `owner_contract` plus `source_scope` MUST be unique where their semantics require uniqueness. Paths MUST be normalized, repository-relative, no-follow regular files. `feature_file` MUST end in `FEATURES.md`, and `source_scope` MUST be the exact scope declared by that file. Every registered file MUST also be indexed by SKVI.
+`feature_id` MUST be globally unique. One source scope maps to exactly one `feature_file` plus `owner_contract` routing tuple, and several feature IDs MAY share that tuple. A feature identity appears in exactly one owner file. Paths MUST be normalized, repository-relative, and no-follow. The exact literal `.` represents repository-root source scope and owns root `FEATURES.md`; every other source scope owns `<source_scope>/FEATURES.md`. Every registered file MUST also be indexed by SKVI.
 
 The literal `None.` beneath `## Canonical Entries` is the only valid empty-registry representation. It is removed atomically with the first ratified entry and MUST NOT coexist with entry blocks.
 

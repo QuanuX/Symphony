@@ -34,6 +34,11 @@ echo "--help passed"
 echo "--version passed"
 
 # Verify perfectly valid fixture
+if [ -e ./tests/fixtures_valid/modules/ssfv-engine ] ||
+   find ./tests/fixtures_valid -name FEATURES.md -print | grep . >/dev/null; then
+    echo "error: pre-SSFV valid fixture must contain neither an engine nor inferred FEATURES.md"
+    exit 1
+fi
 OUT=$("$VALIDATOR_BIN" check --repo ./tests/fixtures_valid)
 if ! printf '%s\n' "$OUT" | grep "violation=0 exit=0" >/dev/null; then
     echo "error: valid fixture missing violation=0 exit=0 in summary"
@@ -43,7 +48,46 @@ if [ "$(printf '%s\n' "$OUT" | grep -c "^summary ")" -ne 1 ]; then
     echo "error: valid fixture should have exactly one summary footer"
     exit 1
 fi
-echo "valid fixture passed"
+echo "valid pre-SSFV absence fixture passed"
+
+# Verify a present but incomplete SSFV module fails closed.
+TEMP_FIXTURE=$(mktemp -d)
+trap 'rm -rf "$TEMP_FIXTURE"' EXIT
+cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
+mkdir -p "$TEMP_FIXTURE/modules/ssfv-engine"
+set +e
+OUT_SSFV_MODULE=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" 2>&1)
+EXIT_CODE=$?
+set -e
+if [ $EXIT_CODE -eq 0 ] ||
+   ! printf '%s\n' "$OUT_SSFV_MODULE" |
+       grep "runtime_contract.unreadable path=modules/ssfv-engine/INTENT.md" >/dev/null; then
+    echo "error: incomplete SSFV engine module did not fail through its runtime contract"
+    exit 1
+fi
+rm -rf "$TEMP_FIXTURE"
+trap - EXIT
+echo "incomplete SSFV engine fixture failed as expected"
+
+# Verify an unratified SSFV JSON schema is never admitted by directory prefix.
+TEMP_FIXTURE=$(mktemp -d)
+trap 'rm -rf "$TEMP_FIXTURE"' EXIT
+cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
+cp -a "$REPO_ROOT/knowledge/ssfv" "$TEMP_FIXTURE/knowledge/"
+printf '{}\n' > "$TEMP_FIXTURE/knowledge/ssfv/schemas/v2/unratified.schema.json"
+set +e
+OUT_SSFV_SCHEMA=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" 2>&1)
+EXIT_CODE=$?
+set -e
+if [ $EXIT_CODE -eq 0 ] ||
+   ! printf '%s\n' "$OUT_SSFV_SCHEMA" |
+       grep "artifact.unauthorized path=knowledge/ssfv/schemas/v2/unratified.schema.json" >/dev/null; then
+    echo "error: unratified SSFV schema was admitted by directory prefix"
+    exit 1
+fi
+rm -rf "$TEMP_FIXTURE"
+trap - EXIT
+echo "unratified SSFV schema fixture failed as expected"
 
 # Verify caller-authority regression (exit 21)
 TEMP_FIXTURE=$(mktemp -d)
@@ -132,8 +176,8 @@ if ! printf '%s\n' "$OUT_REPO" | grep "caller_authority.scan_complete " | grep "
     echo "error: current repo missing expected caller_authority.scan_complete status or findings=0"
     exit 1
 fi
-if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 65 ]; then
-    echo "error: current repo should authorize exactly the 28 STAV, 6 common SKV, 4 SKVI, 5 SCLV, 6 SACV, 8 SODV, and 8 SSFV JSON artifacts"
+if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 75 ]; then
+    echo "error: current repo should authorize exactly the 28 STAV, 6 common SKV, 4 SKVI, 5 SCLV, 6 SACV, 8 SODV, and 18 SSFV JSON artifacts"
     exit 1
 fi
 if ! printf '%s\n' "$OUT_REPO" | grep "sodv.releases.scan_complete records=3 transactions=1 violations=0" >/dev/null; then

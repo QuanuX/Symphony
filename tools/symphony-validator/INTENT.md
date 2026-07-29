@@ -28,7 +28,7 @@ The validator is currently invoked directly. Any `qxctl`-mediated invocation req
 The validator provides deterministic exit codes and line-oriented evidence suitable for local preflight. CI and PR-gate wiring remain separate integration work.
 
 ## Relationship to SKV / SKVI / SCLV / SACV / SODV / SSFV
-The validator does not replace SKV / SKVI / SCLV / SACV / SODV / SSFV records. It provides evidence to support them. For SSFV it verifies the required contract surfaces, anchors, SKVI coverage, and exact schema allowlist only; semantic feature validation remains outside this tool.
+The validator does not replace SKV / SKVI / SCLV / SACV / SODV / SSFV records. It provides evidence to support them. For SSFV it verifies required vector/engine contract surfaces, qxctl integration anchors, SKVI coverage, and the exact schema allowlist; semantic feature validation remains in the independently installed engine.
 
 ## Relationship to Module Sovereignty
 The validator sits outside module logic and respects module sovereignty by only observing declarative boundaries.
