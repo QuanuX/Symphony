@@ -1917,3 +1917,141 @@ This PR authorizes none of the following:
   - `module tag, release artifact, package publication, or Go 1.27 production pin`
 - notes: |
     This post-merge closure records the SODV implementation merged by PR #83. The closure record is appended separately so the implementation revision and its provider-normalized evidence remain immutable and independently verifiable. Every changed file is listed as an affected surface; unindexed implementation paths remain explicit advisory evidence rather than being hidden by selective omission or artificial SKVI expansion. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
+
+- record_id: `SCLV-CHG-20260729-SSFV-CONTRACT`
+- record_version: `3`
+- title: `SSFV semantic feature contract established`
+- status: `canonical`
+- date: `2026-07-29`
+- change_started_at: `2026-07-29T15:12:15Z`
+- change_completed_at: `2026-07-29T16:14:45Z`
+- recorded_at: `2026-07-29T16:18:41Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `canonical_addition`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#85`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/85`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `8ce1c74b556b0821a8d4490e8e3367ad088049a9`
+- tree_digest: `sha256:00e820a5761cccc1b28ee25608d7f5c111243482379ebf8d1f30c020e7071b18`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/85`
+- ratification_evidence_digest: `sha256:89a144987522488b5fb58bb25074a4d4973c74ebba16de6aa94dae468879ec08`
+- affected_surfaces:
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/skvi/INTENT.md`
+  - `knowledge/skvi/MANIFEST.md`
+  - `knowledge/skvi/SKILL.md`
+  - `knowledge/skvi/SPEC.md`
+  - `knowledge/sodv/INTENT.md`
+  - `knowledge/sodv/MANIFEST.md`
+  - `knowledge/sodv/SKILL.md`
+  - `knowledge/sodv/SPEC.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/MANIFEST.md`
+  - `knowledge/ssfv/NAMESPACES.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SKILL.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `knowledge/ssfv/schemas/v1/MANIFEST.md`
+  - `knowledge/ssfv/schemas/v1/check-result.schema.json`
+  - `knowledge/ssfv/schemas/v1/diff-input.schema.json`
+  - `knowledge/ssfv/schemas/v1/diff-result.schema.json`
+  - `knowledge/ssfv/schemas/v1/feature-record.schema.json`
+  - `knowledge/ssfv/schemas/v1/graph-projection.schema.json`
+  - `knowledge/ssfv/schemas/v1/namespace-entry.schema.json`
+  - `knowledge/ssfv/schemas/v1/proposal-input.schema.json`
+  - `knowledge/ssfv/schemas/v1/registry-entry.schema.json`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/symphony-validator/INTENT.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SKILL.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/src/canonical_surfaces.cpp`
+  - `tools/symphony-validator/src/cli.cpp`
+  - `tools/symphony-validator/src/doctrine_vocab.cpp`
+  - `tools/symphony-validator/src/knowledge_contracts.cpp`
+  - `tools/symphony-validator/src/skvi_coverage.cpp`
+  - `tools/symphony-validator/src/skvi_coverage.hpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/skvi/INTENT.md`
+  - `knowledge/skvi/MANIFEST.md`
+  - `knowledge/skvi/SKILL.md`
+  - `knowledge/skvi/SPEC.md`
+  - `knowledge/sodv/INTENT.md`
+  - `knowledge/sodv/MANIFEST.md`
+  - `knowledge/sodv/SKILL.md`
+  - `knowledge/sodv/SPEC.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/MANIFEST.md`
+  - `knowledge/ssfv/NAMESPACES.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SKILL.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `knowledge/ssfv/schemas/v1/MANIFEST.md`
+  - `knowledge/ssfv/schemas/v1/check-result.schema.json`
+  - `knowledge/ssfv/schemas/v1/diff-input.schema.json`
+  - `knowledge/ssfv/schemas/v1/diff-result.schema.json`
+  - `knowledge/ssfv/schemas/v1/feature-record.schema.json`
+  - `knowledge/ssfv/schemas/v1/graph-projection.schema.json`
+  - `knowledge/ssfv/schemas/v1/namespace-entry.schema.json`
+  - `knowledge/ssfv/schemas/v1/proposal-input.schema.json`
+  - `knowledge/ssfv/schemas/v1/registry-entry.schema.json`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/symphony-validator/INTENT.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SKILL.md`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    Under the Architect's direction, PR #85 established the canonical Symphony Semantic Feature Vector contract without creating an engine or application feature records. It added the SSFV Contract Quad, first-party stable-ID namespace, intentionally empty distributed feature registry, eight bounded v1 schemas, cross-vector SKVI and SODV relationships, future qxctl grammar, and exact checked-in validator recognition.
+- relationship_changes: |
+    SSFV now owns application-feature identity, feature-worthiness criteria, capability hierarchy, lifecycle, caller-neutral 5W1H semantics, distinctions, sparse distributed FEATURES.md routing, content-addressed freshness, and portable graph-projection contracts. SKVI owns location and relationship routing, SODV owns feature-derived publication, qxctl remains the eventual administrator, and symphony-validator verifies bounded contract presence and exact schema allowlisting without becoming the semantic engine.
+- doctrine_changes: |
+    Feature significance is evidence-based rather than code-size, folder-depth, language, marketing, or caller-class based. Canonical feature lifecycle excludes planned claims; proposal-only future behavior remains noncanonical. Permission and owner ratification govern semantic acceptance, while deterministic tools may identify candidates and structural drift but do not decide feature-worthiness.
+- compatibility_consequences: |
+    Eight SSFV JSON Schema Draft 2020-12 artifacts are now canonical, increasing the validator's exact JSON allowlist from 57 to 65. Six SSFV contract and registry surfaces are mandatory and SKVI-covered when the vector is present. Future qxctl ssfv inspect, check, diff, propose, and graph grammar is ratified but unavailable. Existing qxctl commands, engines, SSIAG, STAV, API contracts, releases, and thermal execution paths are unchanged.
+- publication_consequences: |
+    SSFV feature truth may become an input to future SODV-governed documentation or marketing projections, but PR #85 published no feature claim, documentation site, Mintlify configuration, SDK, release, package, or external namespace.
+- projection_consequences: |
+    The portable JSON graph schema is canonical protocol truth for a future disposable projection. No graph was generated, no graph database or persistent store was selected, and no projection became source truth. The empty feature registry remains the complete canonical application-feature state until a separately reviewed bootstrap.
+- evidence:
+  - `PR #85 merged into main at 2026-07-29T16:14:45Z by quantDIY as 8ce1c74b556b0821a8d4490e8e3367ad088049a9`
+  - `implementation head 97fcc6cc52c36028588686ff84cd3a8f1ad0d307; 43 files changed, 1311 insertions, 43 deletions`
+  - `local-Git adapter evidence digest sha256:6754c6de4e64aeef0059282546beb1edae7b1dec851c4a607cb532390db37b35 bound tree digest sha256:00e820a5761cccc1b28ee25608d7f5c111243482379ebf8d1f30c020e7071b18`
+  - `provider-neutral ratification evidence digest sha256:b86e488e14c3866be0be568195bcff0655e33e65253811924c50a658ce153138 bound canonical PR metadata digest sha256:89a144987522488b5fb58bb25074a4d4973c74ebba16de6aa94dae468879ec08`
+  - `all eight SSFV schemas passed JSON syntax validation; no FEATURES.md or modules/ssfv-engine path exists`
+  - `symphony-validator CMake build, three unit tests, and full negative-fixture smoke matrix passed`
+  - `pre-closure live validator result pass=3006 warning=173 violation=0 exit=0; all warnings shared the historical sclv.affected_surface.unindexed class`
+  - `qxctl go test ./... passed with the future SSFV grammar explicitly unavailable`
+  - `PR #85 had no review threads, comments, or configured checks and was mergeable at the exact reviewed head`
+- non_authorizations:
+  - `SSFV engine implementation, symphony-ssfv executable, qxctl SSFV client, or engine installation`
+  - `root or nested FEATURES.md creation, feature bootstrap, canonical feature entry, or generated semantic claim`
+  - `programmatic canonical apply, proposal self-ratification, semantic auto-acceptance, or caller-class authority`
+  - `persistent graph database, graph daemon, network listener, remote interface, or canonical graph projection`
+  - `live Maestro receptor, docking, activation, persistence, or lifecycle administration`
+  - `public documentation, marketing claim, Mintlify configuration, SDK, MCP exposure, or publication pipeline`
+  - `module tag, binary release, package coordinate, or external namespace reservation`
+  - `hot-path or warm-path behavior, trading-node doctrine, native Windows engine, or Go 1.27 production migration`
+- notes: |
+    This post-merge closure records the SSFV contract transition merged by PR #85. The closure record is appended separately so the implementation revision and provider-neutral evidence remain immutable and independently verifiable. Every changed file is listed as an affected surface. The eight unindexed validator implementation paths remain explicit advisory evidence rather than being hidden through selective omission or artificial SKVI expansion. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
