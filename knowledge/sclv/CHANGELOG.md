@@ -2055,3 +2055,168 @@ This PR authorizes none of the following:
   - `hot-path or warm-path behavior, trading-node doctrine, native Windows engine, or Go 1.27 production migration`
 - notes: |
     This post-merge closure records the SSFV contract transition merged by PR #85. The closure record is appended separately so the implementation revision and provider-neutral evidence remain immutable and independently verifiable. Every changed file is listed as an affected surface. The eight unindexed validator implementation paths remain explicit advisory evidence rather than being hidden through selective omission or artificial SKVI expansion. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
+
+- record_id: `SCLV-CHG-20260729-SSFV-ENGINE`
+- record_version: `3`
+- title: `SSFV semantic feature engine implemented`
+- status: `canonical`
+- date: `2026-07-29`
+- change_started_at: `2026-07-29T18:34:49Z`
+- change_completed_at: `2026-07-29T18:40:22Z`
+- recorded_at: `2026-07-29T18:45:39Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#87`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/87`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `91baaa18b71ed6f094c75938071f885b86cab0f5`
+- tree_digest: `sha256:88f5fff6508b2ed020ac2128a9f057fb8d5229f121b759abb352dc9e2dbe3c01`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/87`
+- ratification_evidence_digest: `sha256:f24610acedda6b9a350cc90fc66d3ef03e00f90a66fa2bf21f51edb04b3262fe`
+- affected_surfaces:
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/FEATURE-FILE-FORMAT.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/MANIFEST.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SKILL.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `knowledge/ssfv/schemas/v1/MANIFEST.md`
+  - `knowledge/ssfv/schemas/v1/feature-file.schema.json`
+  - `knowledge/ssfv/schemas/v1/graph-input.schema.json`
+  - `knowledge/ssfv/schemas/v1/semantic-snapshot.schema.json`
+  - `knowledge/ssfv/schemas/v2/MANIFEST.md`
+  - `knowledge/ssfv/schemas/v2/check-input.schema.json`
+  - `knowledge/ssfv/schemas/v2/check-result.schema.json`
+  - `knowledge/ssfv/schemas/v2/diff-input.schema.json`
+  - `knowledge/ssfv/schemas/v2/diff-result.schema.json`
+  - `knowledge/ssfv/schemas/v2/feature-record.schema.json`
+  - `knowledge/ssfv/schemas/v2/proposal-input.schema.json`
+  - `knowledge/ssfv/schemas/v2/registry-entry.schema.json`
+  - `modules/ssfv-engine/CMakeLists.txt`
+  - `modules/ssfv-engine/INSTALL.md`
+  - `modules/ssfv-engine/INTENT.md`
+  - `modules/ssfv-engine/MANIFEST.md`
+  - `modules/ssfv-engine/SKILL.md`
+  - `modules/ssfv-engine/SPEC.md`
+  - `modules/ssfv-engine/cmake/install-receipt.json.in`
+  - `modules/ssfv-engine/cmake/uninstall.cmake.in`
+  - `modules/ssfv-engine/src/main.cpp`
+  - `modules/ssfv-engine/src/ssfv.cpp`
+  - `modules/ssfv-engine/src/ssfv.hpp`
+  - `modules/ssfv-engine/tests/process_smoke.sh`
+  - `modules/ssfv-engine/tests/ssfv_test.cpp`
+  - `tools/qxctl/INSTALL.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/ssfv.go`
+  - `tools/qxctl/cmd/qxctl/ssfv_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/qxctl/internal/knowledgeengine/client_test.go`
+  - `tools/qxctl/internal/knowledgeengine/open_relative_unix.go`
+  - `tools/qxctl/internal/knowledgeengine/open_relative_unsupported.go`
+  - `tools/symphony-validator/INTENT.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SKILL.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/src/canonical_surfaces.cpp`
+  - `tools/symphony-validator/src/knowledge_contracts.cpp`
+  - `tools/symphony-validator/src/runtime_contracts.cpp`
+  - `tools/symphony-validator/src/skvi_coverage.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/FEATURE-FILE-FORMAT.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/MANIFEST.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SKILL.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `knowledge/ssfv/schemas/v1/MANIFEST.md`
+  - `knowledge/ssfv/schemas/v1/feature-file.schema.json`
+  - `knowledge/ssfv/schemas/v1/graph-input.schema.json`
+  - `knowledge/ssfv/schemas/v1/semantic-snapshot.schema.json`
+  - `knowledge/ssfv/schemas/v2/MANIFEST.md`
+  - `knowledge/ssfv/schemas/v2/check-input.schema.json`
+  - `knowledge/ssfv/schemas/v2/check-result.schema.json`
+  - `knowledge/ssfv/schemas/v2/diff-input.schema.json`
+  - `knowledge/ssfv/schemas/v2/diff-result.schema.json`
+  - `knowledge/ssfv/schemas/v2/feature-record.schema.json`
+  - `knowledge/ssfv/schemas/v2/proposal-input.schema.json`
+  - `knowledge/ssfv/schemas/v2/registry-entry.schema.json`
+  - `modules/ssfv-engine/CMakeLists.txt`
+  - `modules/ssfv-engine/INSTALL.md`
+  - `modules/ssfv-engine/INTENT.md`
+  - `modules/ssfv-engine/MANIFEST.md`
+  - `modules/ssfv-engine/SKILL.md`
+  - `modules/ssfv-engine/SPEC.md`
+  - `tools/qxctl/INSTALL.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/ssfv.go`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/qxctl/internal/knowledgeengine/open_relative_unix.go`
+  - `tools/qxctl/internal/knowledgeengine/open_relative_unsupported.go`
+  - `tools/symphony-validator/INTENT.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SKILL.md`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    Under the Architect's direction, PR #87 implemented the independently installable C++26 SSFV semantic-feature engine and its qxctl administration surface. It added deterministic inspect, check, diff, proposal, and disposable graph operations; completed the SSFV v1 and v2 process contracts; integrated exact inactive-undocked receipt resolution and bounded subprocess handling into qxctl; and extended the independent repository validator for SSFV runtime and schema truth.
+- relationship_changes: |
+    knowledge/ssfv remains the canonical semantic-feature contract and registry truth. symphony-ssfv implements bounded freezing-path interpretation without becoming the semantic authority or a canonical writer. qxctl owns Cobra grammar, exact receipt discovery, process invocation, and response safety checks. symphony-validator independently verifies the installed source contract and repository relationships. The graph result remains a disposable projection of canonical inputs, not an additional source of truth.
+- doctrine_changes: |
+    Semantic feature administration is caller-neutral and permission-governed. The engine can report structural validity, freshness, differences, candidates, and graph relationships, but cannot decide feature-worthiness, ratify a feature, or apply a proposal. Sparse FEATURES.md placement remains evidence-driven; no application feature record is created merely because the engine now exists.
+- compatibility_consequences: |
+    This slice adds qxctl ssfv inspect, check, diff, propose, and graph grammar and symphony-ssfv 0.1.0-dev process/schema behavior. qxctl's shared knowledge-engine client now rejects unsafe installed-engine paths and non-receipt-owned executables before invocation, strengthening all knowledge-engine administration through that client. Installation is source-driven and inactive-undocked by default, with an exact nine-file receipt. Existing SSIAG, STAV, API, release, trading, thermal-path, and Go 1.26.5 contracts remain unchanged.
+- publication_consequences: |
+    No module tag, binary distribution, package registry artifact, container, SDK, OpenAPI document, Mintlify surface, public documentation, marketing claim, or launch claim was published or authorized. The SSFV engine remains a source-installable 0.1.0-dev module.
+- projection_consequences: |
+    SSFV graph returns a content-addressed, portable JSON projection that is noncanonical, disposable, and rebuildable. It creates no graph database, persistent store, daemon, socket, network interface, FEATURES.md file, registry entry, or Maestro state.
+- evidence:
+  - `PR #87 merged into main at 2026-07-29T18:40:22Z by quantDIY as 91baaa18b71ed6f094c75938071f885b86cab0f5`
+  - `implementation head ca378725a831c91a2452b6b6ed2bdbdb47400535; 60 files changed, 7163 insertions, 95 deletions`
+  - `local-Git adapter evidence digest sha256:24c5c853838d641174871e568cf2e3138f6259152f0d7026c2eb6402b73179a4 bound tree digest sha256:88f5fff6508b2ed020ac2128a9f057fb8d5229f121b759abb352dc9e2dbe3c01`
+  - `provider-neutral ratification evidence digest sha256:d471882a342c2641d32240c1d0b3b379faa7d1eaa9b314dbeca5cef687928068 bound canonical PR metadata digest sha256:f24610acedda6b9a350cc90fc66d3ef03e00f90a66fa2bf21f51edb04b3262fe`
+  - `SSFV C++ release build and both CTest targets passed; qxctl go test ./... -count=1 passed`
+  - `all 18 SSFV schemas compiled with references resolved; the full validator negative-fixture smoke matrix passed`
+  - `pre-closure live validator result pass=3319 warning=179 violation=0 exit=0; all 179 warnings were historical sclv.affected_surface.unindexed findings`
+  - `release-mode installation produced exactly nine inactive-undocked receipt-owned files; installed qxctl SSFV inspect, check, and graph operations passed; uninstall removed only receipt-owned files`
+  - `the exact reviewed head contained no application FEATURES.md, canonical registry entry, graph store, graph service, socket, or Maestro receptor state`
+  - `PR #87 had no review threads, comments, reviews, or configured checks and was mergeable at the exact reviewed head`
+- non_authorizations:
+  - `programmatic canonical apply, registry mutation, FEATURES.md generation, proposal self-ratification, or engine-decided semantic truth`
+  - `automatic feature-worthiness acceptance, planned-feature promotion, generated marketing claim, or canonical graph persistence`
+  - `network listener, remote API, graph daemon, graph database, socket, or mutable graph service`
+  - `live Maestro receptor, docking, activation, persistence, or lifecycle administration`
+  - `qxctl install, upgrade, rollback, version activation, docking, or uninstall implementation beyond the documented source-install procedure`
+  - `public documentation, Mintlify, NotebookLM automation, SDK generation, OpenAPI publication, or broader feature bootstrap`
+  - `operational SSIAG provider access, credential delivery, or new STAV append behavior`
+  - `native Windows engine implementation, hot-path participation, warm-path participation, or trading-node doctrine`
+  - `module tag, binary release, package publication, or Go 1.27 production pin`
+- notes: |
+    This post-merge closure records the SSFV engine implementation merged by PR #87. The closure record is appended separately so the implementation revision and provider-neutral evidence remain immutable and independently verifiable. Every changed file is listed as an affected surface; unindexed implementation paths remain explicit advisory evidence rather than being hidden through selective omission or artificial SKVI expansion. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
