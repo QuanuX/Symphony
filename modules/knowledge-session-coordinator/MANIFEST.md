@@ -28,7 +28,7 @@ The implemented scope is user-process invocation. System/TOPS session provisioni
 
 ## Installability
 
-The executable installs beneath a module-and-version-specific `libexec` path, with contracts, AGPL and third-party licenses, and a deterministic receipt. Installation leaves the module `installed_undocked`, creates no global executable alias, changes no active binding, and does not contact Maestro. Uninstall removes only receipt-owned files.
+The executable installs beneath a module-and-version-specific `libexec` path, with contracts, AGPL and third-party licenses, and a deterministic receipt. Installation leaves the module `installed_undocked`, creates no global executable alias, changes no binding, and does not contact Maestro. qxctl may later select the exact receipt in its separate protected user-default binding registry without changing receipt state. Uninstall removes only receipt-owned files.
 
 ## Dependencies
 
@@ -36,4 +36,4 @@ The coordinator statically links `knowledge-vector-engine-cpp` and has no runtim
 
 ## Boundaries
 
-There is no network listener, daemon, credential input, secret field, canonical write, worktree journal mutation, hook, watcher, qxctl command, SSIAG decision, STAV append, or Maestro dock in this version.
+There is no network listener, daemon, credential input, secret field, canonical write, worktree journal mutation, hook, watcher, qxctl coordinator invocation, SSIAG decision, STAV append, or Maestro dock in this version. External qxctl receipt binding is selection evidence only.

@@ -32,6 +32,8 @@ const (
 	sodvEngineID     = "symphony-sodv"
 	ssfvModuleID     = "ssfv-engine"
 	ssfvEngineID     = "symphony-ssfv"
+	sessionModuleID  = "knowledge-session-coordinator"
+	sessionEngineID  = "symphony-knowledge-session"
 	maxReceiptBytes  = 256 * 1024
 	maxRequestBytes  = 1024 * 1024
 	maxResponseBytes = 4 * 1024 * 1024
@@ -66,6 +68,34 @@ var sodvSpec = engineSpec{
 
 var ssfvSpec = engineSpec{
 	label: "SSFV", moduleID: ssfvModuleID, engineID: ssfvEngineID, expectedFiles: expectedSSFVFiles,
+}
+
+var sessionSpec = engineSpec{
+	label: "knowledge-session coordinator", moduleID: sessionModuleID, engineID: sessionEngineID,
+	expectedFiles: expectedSessionFiles,
+}
+
+var engineSpecsByRole = map[string]engineSpec{
+	"skvi":        skviSpec,
+	"sclv":        sclvSpec,
+	"sacv":        sacvSpec,
+	"sodv":        sodvSpec,
+	"ssfv":        ssfvSpec,
+	"coordinator": sessionSpec,
+}
+
+// Installation is the exact, receipt-validated local engine installation
+// identity that may be recorded in a noncanonical binding registry.
+type Installation struct {
+	Role             string
+	ModuleID         string
+	EngineID         string
+	Version          string
+	Prefix           string
+	ReceiptPath      string
+	ReceiptDigest    string
+	ExecutablePath   string
+	ExecutableDigest string
 }
 
 type receipt struct {
@@ -130,6 +160,50 @@ func InvokeSODV(ctx context.Context, prefix, version, repositoryRoot, operation 
 
 func InvokeSSFV(ctx context.Context, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
 	return invoke(ctx, ssfvSpec, prefix, version, repositoryRoot, operation, payload)
+}
+
+// InspectInstallation validates an exact inactive-undocked installation and
+// returns content-addressed evidence suitable for the user-scope binding
+// registry. Installation remains distinct from activation and docking.
+func InspectInstallation(role, prefix, version string) (Installation, error) {
+	spec, ok := engineSpecsByRole[role]
+	if !ok {
+		return Installation{}, fmt.Errorf("unsupported knowledge engine role %q", role)
+	}
+	canonicalPrefix, err := canonicalDirectory(prefix, "installation prefix")
+	if err != nil {
+		return Installation{}, err
+	}
+	binary, err := resolveInstalledFor(spec, canonicalPrefix, version)
+	if err != nil {
+		return Installation{}, err
+	}
+	receiptRelative := filepath.ToSlash(filepath.Join(
+		"share", "symphony", "receipts", spec.moduleID, version, "install-receipt.json"))
+	binaryRelative := filepath.ToSlash(filepath.Join(
+		"libexec", "symphony", spec.moduleID, version, spec.engineID))
+	receiptBytes, err := readTrustedNoFollowRelative(canonicalPrefix, receiptRelative, maxReceiptBytes)
+	if err != nil {
+		return Installation{}, fmt.Errorf("read validated %s receipt: %w", spec.label, err)
+	}
+	binaryBytes, err := readTrustedNoFollowRelative(
+		canonicalPrefix, binaryRelative, maxInstalledFileBytes(binaryRelative))
+	if err != nil {
+		return Installation{}, fmt.Errorf("read validated %s executable: %w", spec.label, err)
+	}
+	receiptHash := sha256.Sum256(receiptBytes)
+	binaryHash := sha256.Sum256(binaryBytes)
+	return Installation{
+		Role:             role,
+		ModuleID:         spec.moduleID,
+		EngineID:         spec.engineID,
+		Version:          version,
+		Prefix:           canonicalPrefix,
+		ReceiptPath:      filepath.Join(canonicalPrefix, filepath.FromSlash(receiptRelative)),
+		ReceiptDigest:    "sha256:" + hex.EncodeToString(receiptHash[:]),
+		ExecutablePath:   binary,
+		ExecutableDigest: "sha256:" + hex.EncodeToString(binaryHash[:]),
+	}, nil
 }
 
 func invoke(ctx context.Context, spec engineSpec, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
@@ -446,6 +520,27 @@ func expectedSSFVFiles(version string) map[string]struct{} {
 	return result
 }
 
+func expectedSessionFiles(version string) map[string]struct{} {
+	base := "share/doc/symphony/knowledge-session-coordinator/" + version + "/"
+	license := "share/licenses/symphony-knowledge-session/" + version + "/"
+	paths := []string{
+		"libexec/symphony/knowledge-session-coordinator/" + version + "/symphony-knowledge-session",
+		"share/symphony/receipts/knowledge-session-coordinator/" + version + "/install-receipt.json",
+		base + "INTENT.md",
+		base + "MANIFEST.md",
+		base + "INSTALL.md",
+		base + "SKILL.md",
+		base + "SPEC.md",
+		license + "LICENSE-AGPL-3.0",
+		license + "nlohmann-json-LICENSE.MIT",
+	}
+	result := make(map[string]struct{}, len(paths))
+	for _, path := range paths {
+		result[path] = struct{}{}
+	}
+	return result
+}
+
 func maxInstalledFileBytes(relative string) int64 {
 	if strings.HasPrefix(relative, "libexec/") {
 		return 64 * 1024 * 1024
@@ -498,6 +593,32 @@ func readNoFollowRelative(root, relative string, maxBytes int64) ([]byte, error)
 		return nil, err
 	}
 	defer file.Close()
+	data, err := io.ReadAll(io.LimitReader(file, maxBytes+1))
+	if err != nil {
+		return nil, err
+	}
+	if int64(len(data)) > maxBytes {
+		return nil, fmt.Errorf("file exceeds %d bytes", maxBytes)
+	}
+	return data, nil
+}
+
+func readTrustedNoFollowRelative(root, relative string, maxBytes int64) ([]byte, error) {
+	if !safeRelativePath(relative) {
+		return nil, fmt.Errorf("unsafe relative path")
+	}
+	file, err := openTrustedRelativeNoFollow(root, strings.Split(relative, "/"))
+	if err != nil {
+		return nil, fmt.Errorf("trusted no-follow open failed: %w", err)
+	}
+	defer file.Close()
+	info, err := file.Stat()
+	if err != nil || !info.Mode().IsRegular() || info.Size() > maxBytes {
+		if err == nil && info.Size() > maxBytes {
+			return nil, fmt.Errorf("file exceeds %d bytes", maxBytes)
+		}
+		return nil, fmt.Errorf("trusted no-follow target is not a regular file")
+	}
 	data, err := io.ReadAll(io.LimitReader(file, maxBytes+1))
 	if err != nil {
 		return nil, err
@@ -665,6 +786,12 @@ func validateJSONObject(data []byte, maxBytes int64) error {
 	return ensureEOF(decoder)
 }
 
+// ValidateJSONObject applies the common bounded, duplicate-key rejecting,
+// integer-only JSON object rules to another qxctl knowledge surface.
+func ValidateJSONObject(data []byte, maxBytes int64) error {
+	return validateJSONObject(data, maxBytes)
+}
+
 func validateJSONValue(decoder *json.Decoder, depth int, count *int) (bool, error) {
 	if depth > maxJSONDepth {
 		return false, fmt.Errorf("JSON depth exceeds %d", maxJSONDepth)
@@ -795,6 +922,12 @@ func safeVersion(value string) bool {
 		return false
 	}
 	return true
+}
+
+// ValidVersion reports whether value is safe in exact receipt and executable
+// paths under the common knowledge-engine version grammar.
+func ValidVersion(value string) bool {
+	return safeVersion(value)
 }
 
 func taggedDigest(value string) bool {

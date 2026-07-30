@@ -43,8 +43,8 @@ Only `inspect` and `check` are implemented. Session lifecycle operations are `re
 
 ## Install and Uninstall
 
-Installation uses module-and-version-specific paths and creates no active alias. The receipt uses `prefix_mode: installation_prefix`, lists all owned relative files, and carries no host-specific secret or timestamp. The generated uninstall script removes those files only and refuses directory removal.
+Installation uses module-and-version-specific paths and creates no active alias. The receipt uses `prefix_mode: installation_prefix`, lists all owned relative files, and carries no host-specific secret or timestamp. qxctl may bind the exact validated receipt and executable digests in its separate user-default registry; that does not alter this receipt's inactive-undocked state. The generated uninstall script removes those files only and refuses directory removal.
 
 ## Non-Authorization
 
-This implementation does not authenticate a caller, establish or recover a session, create a mutable journal, take a writer lock, run a watcher, invoke a vector engine, call qxctl/SSIAG/STAV, mutate a repository, activate a version, or dock with Maestro.
+This implementation does not authenticate a caller, establish or recover a session, create a mutable journal, take a writer lock, run a watcher, invoke a vector engine, receive qxctl process requests through the binding registry, call SSIAG/STAV, mutate a repository, activate an install receipt, or dock with Maestro.

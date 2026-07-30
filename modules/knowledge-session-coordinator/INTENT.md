@@ -15,7 +15,7 @@ Development version `0.1.0-dev` implements the first read-only vertical slice:
 
 ## Deferred Scope
 
-Session `begin`, `status`, `checkpoint`, `close`, and `recover` are descriptor-visible but reserved. Authenticated authority binding, mutable worktree journals, locks, observers, qxctl integration, SSIAG/STAV coordination, proposal serialization, apply, and live Maestro docking remain unimplemented.
+Session `begin`, `status`, `checkpoint`, `close`, and `recover` are descriptor-visible but reserved. qxctl may validate and select this exact inactive-undocked installation in its protected user-default binding profile, but does not invoke the coordinator through that binding. Authenticated authority binding, mutable worktree journals, locks, observers, qxctl process invocation, SSIAG/STAV coordination, proposal serialization, apply, and live Maestro docking remain unimplemented.
 
 ## Authority
 

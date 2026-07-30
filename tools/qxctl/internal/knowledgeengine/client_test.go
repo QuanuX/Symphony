@@ -334,6 +334,54 @@ func TestResolveInstalledSSFVRequiresExactNineFileReceipt(t *testing.T) {
 	}
 }
 
+func TestInspectInstallationSupportsExactCoordinatorReceipt(t *testing.T) {
+	prefix := t.TempDir()
+	version := "0.1.0-dev"
+	files := expectedSessionFiles(version)
+	listed := make([]string, 0, len(files))
+	for relative := range files {
+		listed = append(listed, relative)
+		path := filepath.Join(prefix, filepath.FromSlash(relative))
+		if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		if strings.HasSuffix(relative, "install-receipt.json") {
+			continue
+		}
+		mode := os.FileMode(0o644)
+		if strings.HasPrefix(relative, "libexec/") {
+			mode = 0o755
+		}
+		if err := os.WriteFile(path, []byte(relative+"\n"), mode); err != nil {
+			t.Fatal(err)
+		}
+	}
+	document := map[string]any{
+		"protocol": receiptProtocol, "module_id": sessionModuleID, "version": version,
+		"install_scope": "prefix", "prefix_mode": "installation_prefix",
+		"state": "installed_undocked", "active": false, "default_receptor": nil,
+		"files": listed,
+	}
+	data, err := json.Marshal(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	receiptPath := filepath.Join(
+		prefix, "share/symphony/receipts/knowledge-session-coordinator",
+		version, "install-receipt.json")
+	if err := os.WriteFile(receiptPath, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	installed, err := InspectInstallation("coordinator", prefix, version)
+	if err != nil {
+		t.Fatalf("valid coordinator installation rejected: %v", err)
+	}
+	if installed.ModuleID != sessionModuleID || installed.EngineID != sessionEngineID ||
+		!taggedDigest(installed.ReceiptDigest) || !taggedDigest(installed.ExecutableDigest) {
+		t.Fatalf("unexpected coordinator installation evidence: %+v", installed)
+	}
+}
+
 func TestInvokeEnforcesCallerDeadlineAroundChildProcess(t *testing.T) {
 	prefix := t.TempDir()
 	createInstalledFixture(t, prefix, "#!/bin/sh\n/bin/sleep 10\n")

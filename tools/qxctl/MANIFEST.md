@@ -17,6 +17,9 @@
 - `internal/knowledgeengine/client.go`
 - `internal/knowledgeengine/open_relative_unix.go`
 - `internal/knowledgeengine/open_relative_unsupported.go`
+- `internal/knowledgebinding/registry.go`
+- `internal/knowledgebinding/state_unix.go`
+- `internal/knowledgebinding/state_unsupported.go`
 
 ## Supported Commands
 - `qxctl doctor`
@@ -37,6 +40,11 @@
 - `qxctl stav verify --tops-id UUID [--scope user|system] [--json]`
 - `qxctl stav query --tops-id UUID [--scope user|system] [bounded filters] [--json]`
 - `qxctl stav doctor --tops-id UUID [--scope user|system]`
+- `qxctl knowledge engines list [--state-root PATH] [--json]`
+- `qxctl knowledge engines inspect ROLE [--state-root PATH] [--json]`
+- `qxctl knowledge engines doctor [--state-root PATH] [--json]`
+- `qxctl knowledge engines bind ROLE --prefix PATH [--version VERSION] --expected-registry-digest absent|DIGEST [--state-root PATH] [--json]`
+- `qxctl knowledge engines unbind ROLE --expected-registry-digest DIGEST [--state-root PATH] [--json]`
 - `qxctl skvi inspect --prefix PATH [--version VERSION] [--repo PATH] [--json]`
 - `qxctl skvi check --prefix PATH [--version VERSION] [--repo PATH] [--expected-index-digest DIGEST] [--json]`
 - `qxctl skvi propose --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
@@ -63,9 +71,9 @@
 - `qxctl ssfv propose --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
 - `qxctl ssfv graph --prefix PATH [--version VERSION] [--repo PATH] [--json]`
 
-## Ratified Vector-Engine Grammar, Not Yet Implemented
+## Ratified Knowledge Grammar, Not Yet Implemented
 
-- `qxctl knowledge engines list|inspect|doctor`
+- `qxctl knowledge reconcile begin|status|checkpoint|close|recover`
 - `qxctl knowledge session begin|status|checkpoint|close|recover`
 - `qxctl knowledge proposals list|show|verify`
 - `qxctl knowledge apply ...` is namespace-reserved but unavailable until the common apply gate passes
@@ -89,9 +97,11 @@ Future safeguard administration must provide the same supported inspection and c
 
 `knowledge/sacv/` governs HTTP API contracts. It does not govern qxctl CLI grammar, and qxctl does not own or generate canonical OpenAPI descriptions.
 
-`knowledge/SPEC.md` governs the cross-vector process, authenticated-session, worktree-reconciliation, proposal, projection, install-receipt, and docking boundaries. Vector engines are independent C++ processes; qxctl remains Go and does not dynamically link them or absorb their domain logic.
+`knowledge/SPEC.md` governs the cross-vector process, engine-binding, authenticated-session, worktree-reconciliation, proposal, projection, install-receipt, and docking boundaries. Vector engines are independent C++ processes; qxctl remains Go and does not dynamically link them or absorb their domain logic.
 
-The shared knowledge-engine process client has five implemented consumers. SKVI, SACV, SODV, and SSFV each validate an exact inactive-undocked nine-file receipt; SCLV validates an exact inactive-undocked eleven-file receipt containing its engine and two provider-evidence adapters. All require an explicit prefix and exact version. The prefix and receipt-owned files must be owned by the effective user or root and not writable by group or other. Clients accept proposal/diff/verification/recovery/baseline content only from a bounded no-follow regular file, provide an empty child environment, enforce the process deadline independently, and validate response identity and digest. The vector command layers additionally reject self-ratification, ownership or membership escalation, engine-declared completion, journal mutation, canonical projection/diff/graph status, listener enablement, or apply. SSFV additionally validates freshness mode/baseline coupling and exact vector-owned proposal targets. No client selects an active version, installs, uninstalls, docks, or applies.
+The shared knowledge-engine process client has five implemented invocation consumers and validates six binding roles including the read-only coordinator. SKVI, SACV, SODV, SSFV, and the coordinator each validate an exact inactive-undocked nine-file receipt; SCLV validates an exact inactive-undocked eleven-file receipt containing its engine and two provider-evidence adapters. All require an explicit prefix and exact version. The prefix and receipt-owned files must be owned by the effective user or root and not writable by group or other. Clients accept proposal/diff/verification/recovery/baseline content only from a bounded no-follow regular file, provide an empty child environment, enforce the process deadline independently, and validate response identity and digest. The vector command layers additionally reject self-ratification, ownership or membership escalation, engine-declared completion, journal mutation, canonical projection/diff/graph status, listener enablement, or apply. SSFV additionally validates freshness mode/baseline coupling and exact vector-owned proposal targets.
+
+The user-scope binding client records one exact inactive-undocked installation per role in a protected `default` profile under `${XDG_STATE_HOME:-~/.local/state}/symphony/qxctl/knowledge/engine-bindings/`. Reads and mutations use a persistent no-follow lock file. Mutations require `absent` or the exact current registry digest, validate the full receipt and executable before binding, increment the generation only when state changes, and commit a mode-`0600` registry with file and directory durability. `doctor` revalidates stored receipt and executable digests. Bindings contain no secrets and are noncanonical. They do not invoke engines, select a repository profile, change an install receipt's inactive state, install, uninstall, dock, establish an authenticated session, or apply.
 
 ## Non-authorizations
 qxctl is not authorized to write canonical generated artifacts. It may invoke ratified engines to create noncanonical proposals and disposable projections. The Architect-ratified Cobra and Viper libraries and their required cgo-free Go dependencies are authorized only for command grammar and constrained configuration mapping; Python, C bindings, remote configuration backends, in-process vector execution engines, and unrelated third-party dependencies remain prohibited. First-party Symphony libraries remain subordinate to their canonical knowledge vectors.

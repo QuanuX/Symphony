@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator read-only slice, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, and the exact three-record SSFV partial bootstrap implemented. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, later session mutation, lifecycle, apply, endpoint, publication, or docking capability may be inferred from these slices.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator read-only slice, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact three-record SSFV partial bootstrap, and protected user-default engine binding registry implemented. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, reconciliation journal, authenticated-session mutation, apply, endpoint, publication, repository-specific binding, system/TOPS binding, or docking capability may be inferred from these slices.
 
 ## Purpose
 
@@ -42,6 +42,7 @@ The v1 identifier family is:
 | `symphony.knowledge.session-journal.v1` | authenticated-session/worktree recovery journal |
 | `symphony.knowledge.provider-evidence.v1` | normalized provider evidence |
 | `symphony.knowledge.install-receipt.v1` | installed-file and lifecycle receipt |
+| `symphony.knowledge.engine-binding-registry.v1` | protected noncanonical user-scope exact-version selection |
 | `symphony.maestro.knowledge-engine-docking.v1` | Maestro docking projection |
 
 The initial exact schemas are:
@@ -49,7 +50,8 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/engine-process-request.schema.json`;
 - `knowledge/schemas/v1/engine-process-response.schema.json`;
 - `knowledge/schemas/v1/engine-descriptor.schema.json`;
-- `knowledge/schemas/v1/install-receipt.schema.json`.
+- `knowledge/schemas/v1/install-receipt.schema.json`;
+- `knowledge/schemas/v1/engine-binding-registry.schema.json`.
 
 The process request limit is 1 MiB and the response limit is 4 MiB. JSON depth is at most 64, parsed values/events at most 16,384, one string or key at most 65,536 bytes, integers remain within `[-9007199254740991, 9007199254740991]`, and a request deadline is at most 300 seconds ahead. Unknown fields, duplicate names, invalid UTF-8, trailing data, floating-point values, out-of-range integers, unsupported versions, excessive input, unsafe paths, expired deadlines, and target mismatch fail closed. Standard output is reserved for the single protocol response; bounded diagnostics use standard error. Arguments and environment variables MUST NOT carry secrets or arbitrary executable instructions.
 
@@ -65,7 +67,7 @@ An administrator MAY select another supported session-lifecycle policy through q
 
 ## Worktree Reconciliation Context
 
-One authenticated session may contain multiple worktree-scoped reconciliation contexts. Each context owns its repository/worktree identity, initial and current content digests, vector-contract digests, engine inventory, journal, observer hints, and writer/reconciliation lock.
+One authenticated session may contain multiple worktree-scoped reconciliation contexts. Each context owns its repository/worktree identity, initial and current content digests, vector-contract digests, engine inventory, journal, observer hints, and writer/reconciliation lock. A reconciliation context is noncanonical coordination state, not authentication or permission evidence, and may be inspected or repaired independently of canonical apply.
 
 Separate worktrees MUST NOT share a mutable journal or writer lock. VCS merge is their cross-worktree reconciliation boundary. Absolute paths may appear only in protected local state and never in canonical records or portable proposals.
 
@@ -107,6 +109,7 @@ The cross-vector groups are:
 
 ```text
 qxctl knowledge engines ...
+qxctl knowledge reconcile ...      # reserved until the reconciliation-journal slice
 qxctl knowledge session ...
 qxctl knowledge proposals ...
 qxctl knowledge apply ...        # reserved; disabled until the apply gate passes
@@ -123,6 +126,8 @@ qxctl ssfv inspect|check|diff|propose|graph ...
 ```
 
 qxctl MUST resolve exact installed engine identities and protocol compatibility from trusted receipts. Direct engine invocation remains available for diagnostics and conformance. qxctl MUST NOT absorb vector semantics, classify callers, accept secret-bearing engine input, or present a reserved command as operational.
+
+The implemented user-scope `qxctl knowledge engines list|inspect|doctor|bind|unbind` surface manages one `default` binding profile. A bind selects one exact inactive-undocked receipt for a role and records its receipt and executable digests. `registry_digest` is the tagged SHA-256 of the compact recursively key-sorted registry object with the `registry_digest` member omitted and bindings sorted by role. Binding is separate from installation and Maestro docking, never selects the newest version implicitly, uses an exact expected prior registry state, and grants no repository, session, permission, vector-semantic, or canonical-write authority. Multiple versions may remain installed while one exact version is bound per role. Repository-specific profiles and system/TOPS mutations remain unavailable.
 
 ## Authority and Apply Gate
 
@@ -155,7 +160,7 @@ JSON/JSONL, search, graph, database, documentation, SDK, and analytical outputs 
 
 ## Installation, Receipts, and Maestro
 
-Every engine and the coordinator MUST support independent install, upgrade, rollback, and uninstall. Installation never silently changes repository hooks, canonical files, active engine bindings, or Maestro state. Uninstall removes only files owned by the selected receipt and preserves canonical knowledge and session/recovery evidence.
+Every engine and the coordinator MUST support independent install, upgrade, rollback, and uninstall. Installation never silently changes repository hooks, canonical files, engine bindings, or Maestro state. Uninstall removes only files owned by the selected receipt and preserves canonical knowledge, binding diagnostics, and session/recovery evidence.
 
 Every package declares a default receptor that an administrator may change through qxctl. Installation without Maestro is valid and reports `installed_undocked`. Multiple compatible versions may coexist, dock, undock, and activate under explicit administrator selection. A newer installation MUST NOT silently replace the active version.
 
@@ -196,7 +201,9 @@ Append-only SCLV and SODV records remain immutable. A contract transition change
 
 `libraries/knowledge-vector-engine-cpp/` implements the authority-free bounded parser, framing, digest, no-follow path, file-read, snapshot, versioned CMake package, receipt, and uninstall mechanics. nlohmann/json `v3.12.0` is pinned and vendored with its official release checksum and MIT license; it is not a runtime download and is not linked into `symphony-validator`.
 
-`modules/knowledge-session-coordinator/` implements process `inspect` and read-only snapshot `check` only. It does not yet establish an authenticated session, persist a journal, acquire a reconciliation lock, invoke a vector engine, mutate a worktree, integrate qxctl/SSIAG/STAV, activate an installed version, or dock with Maestro. Descriptor-visible lifecycle operations are reserved and apply is disabled.
+`modules/knowledge-session-coordinator/` implements process `inspect` and read-only snapshot `check` only. It does not yet establish an authenticated session, persist a journal, acquire a reconciliation lock, invoke a vector engine, mutate a worktree, integrate SSIAG/STAV, consume the qxctl binding registry, or dock with Maestro. Descriptor-visible lifecycle operations are reserved and apply is disabled.
+
+qxctl implements a protected user-scope `default` engine binding registry beneath its state root. It verifies exact inactive-undocked coordinator and vector-engine receipts and package files, records receipt and executable digests, serializes registry access with a persistent no-follow lock file, requires exact expected prior state, and commits replacements through a durable same-directory atomic rename. `list` and `inspect` report binding state; `doctor` revalidates the exact installation. This does not invoke the bound engine, create a repository profile, reconcile a worktree, establish an authenticated session, activate an install receipt, dock with Maestro, or enable apply.
 
 `modules/skvi-engine/` implements deterministic `inspect`, structural `check`, caller-declared `propose`, and disposable JSON `project`. It parses repository-maintained `knowledge/skvi/INDEX.md`, rejects unsafe or ambiguous state, binds proposals and projections to canonical digests, installs under an exact versioned prefix, and exposes no canonical write path. `qxctl skvi ...` validates that exact inactive undocked installation and invokes it out of process with empty child environment, bounded input/output, a hard deadline, and response-digest/identity checks. qxctl lifecycle selection and activation remain deferred.
 
@@ -210,4 +217,4 @@ Append-only SCLV and SODV records remain immutable. A contract transition change
 
 ## Non-Authorization Statement
 
-This specification does not claim implementation beyond the explicitly identified foundation/coordinator and SKVI/SCLV/SACV/SODV/SSFV slices and exact three-record SSFV partial bootstrap, enable canonical apply, authorize another feature record or complete-catalog claim, authorize an external package coordinate, create an HTTP surface, publish a release artifact, permit direct ledger mutation, or activate Maestro.
+This specification does not claim implementation beyond the explicitly identified foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV slices, exact three-record SSFV partial bootstrap, and user-default binding registry; enable reconciliation/session lifecycle or canonical apply; authorize another feature record or complete-catalog claim; authorize an external package coordinate; create an HTTP surface; publish a release artifact; permit direct ledger mutation; or activate Maestro.
