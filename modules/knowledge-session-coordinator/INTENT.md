@@ -6,17 +6,19 @@ Provide the domain-neutral, independently installable process that will coordina
 
 ## Implemented Scope
 
-Development version `0.1.0-dev` implements the first read-only vertical slice:
+Development version `0.1.0-dev` implements the user-scope reconciliation vertical slice:
 
 - `inspect` reports the exact engine descriptor and disabled capabilities;
 - `check` computes a bounded deterministic digest over an explicit relative-path set in the process working directory and optionally compares expected state;
+- `compatibility` negotiates exact process, journal-format, and capability overlap with qxctl;
+- `begin`, `status`, `checkpoint`, `close`, and `recover` manage a protected noncanonical worktree context through a dual-slot journal, atomic head, expected-state generations, and content-addressed snapshots;
 - strict `symphony.knowledge.engine-process.v1` standard-input/output handling;
 - versioned install receipt, isolated install paths, and receipt-owned uninstall proof.
 
 ## Deferred Scope
 
-Session `begin`, `status`, `checkpoint`, `close`, and `recover` are descriptor-visible but reserved. qxctl may validate and select this exact inactive-undocked installation in its protected user-default binding profile, but does not invoke the coordinator through that binding. Authenticated authority binding, mutable worktree journals, locks, observers, qxctl process invocation, SSIAG/STAV coordination, proposal serialization, apply, and live Maestro docking remain unimplemented.
+Authenticated-session lifecycle remains reserved. qxctl validates, binds, and invokes this exact inactive-undocked coordinator for reconciliation only. SSIAG authority-epoch binding, vector-engine invocation, observers/hooks, proposal serialization, canonical apply, STAV coordination, system/TOPS profiles, format migration beyond the current v1 compatibility window, and live Maestro docking remain unimplemented.
 
 ## Authority
 
-The coordinator never decides vector meaning or caller authority. Its current operations are read-only for every caller and cannot mutate canonical files or establish a session.
+The coordinator never decides vector meaning or caller authority. It mutates only protected noncanonical reconciliation state and cannot mutate canonical files or establish an authenticated session. Self-healing uses verifiable slot/head evidence and never guesses across incompatible state.

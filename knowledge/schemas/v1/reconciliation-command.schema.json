@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:reconciliation-command:v1",
+  "title": "Symphony reconciliation coordinator command v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "operation", "state_root", "operation_id",
+    "expected_journal_digest", "paths", "binding_registry_digest",
+    "engine_inventory", "client"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.reconciliation-command.v1"},
+    "operation": {
+      "enum": ["compatibility", "begin", "status", "checkpoint", "close", "recover"]
+    },
+    "state_root": {
+      "allOf": [
+        {"$ref": "#/$defs/absolutePath"},
+        {"not": {"const": "/"}}
+      ]
+    },
+    "operation_id": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]
+    },
+    "expected_journal_digest": {
+      "oneOf": [
+        {"type": "null"},
+        {"const": "absent"},
+        {"const": "discover"},
+        {"$ref": "#/$defs/digest"}
+      ]
+    },
+    "paths": {
+      "type": "array",
+      "maxItems": 1024,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/relativePath"}
+    },
+    "binding_registry_digest": {"$ref": "#/$defs/digest"},
+    "engine_inventory": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {"$ref": "#/$defs/engineInventoryEntry"}
+    },
+    "client": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "client_id", "client_version", "process_protocols",
+        "journal_read_versions", "journal_write_versions", "capabilities"
+      ],
+      "properties": {
+        "client_id": {"const": "qxctl"},
+        "client_version": {"$ref": "#/$defs/version"},
+        "process_protocols": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/token"}
+        },
+        "journal_read_versions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {"type": "integer", "minimum": 1, "maximum": 1024}
+        },
+        "journal_write_versions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {"type": "integer", "minimum": 1, "maximum": 1024}
+        },
+        "capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/token"}
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"operation": {"const": "begin"}}},
+      "then": {
+        "properties": {
+          "operation_id": {"$ref": "#/$defs/token"},
+          "expected_journal_digest": {
+            "oneOf": [{"const": "absent"}, {"$ref": "#/$defs/digest"}]
+          },
+          "paths": {"minItems": 1}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "operation": {"enum": ["checkpoint", "close"]}
+        }
+      },
+      "then": {
+        "properties": {
+          "operation_id": {"$ref": "#/$defs/token"},
+          "expected_journal_digest": {"$ref": "#/$defs/digest"},
+          "paths": {"maxItems": 0}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"operation": {"const": "recover"}}},
+      "then": {
+        "properties": {
+          "operation_id": {"$ref": "#/$defs/token"},
+          "expected_journal_digest": {
+            "oneOf": [{"const": "discover"}, {"$ref": "#/$defs/digest"}]
+          },
+          "paths": {"maxItems": 0}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "operation": {"enum": ["compatibility", "status"]}
+        }
+      },
+      "then": {
+        "properties": {
+          "operation_id": {"type": "null"},
+          "expected_journal_digest": {"type": "null"},
+          "paths": {"maxItems": 0}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
+    },
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "engineInventoryEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role", "module_id", "engine_id", "version", "receipt_digest",
+        "executable_digest"
+      ],
+      "properties": {
+        "role": {
+          "enum": ["coordinator", "sacv", "sclv", "skvi", "sodv", "ssfv"]
+        },
+        "module_id": {"$ref": "#/$defs/token"},
+        "engine_id": {"$ref": "#/$defs/token"},
+        "version": {"$ref": "#/$defs/version"},
+        "receipt_digest": {"$ref": "#/$defs/digest"},
+        "executable_digest": {"$ref": "#/$defs/digest"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"role": {"const": "coordinator"}}},
+          "then": {"properties": {
+            "module_id": {"const": "knowledge-session-coordinator"},
+            "engine_id": {"const": "symphony-knowledge-session"}
+          }}
+        },
+        {
+          "if": {"properties": {"role": {"const": "sacv"}}},
+          "then": {"properties": {
+            "module_id": {"const": "sacv-engine"},
+            "engine_id": {"const": "symphony-sacv"}
+          }}
+        },
+        {
+          "if": {"properties": {"role": {"const": "sclv"}}},
+          "then": {"properties": {
+            "module_id": {"const": "sclv-engine"},
+            "engine_id": {"const": "symphony-sclv"}
+          }}
+        },
+        {
+          "if": {"properties": {"role": {"const": "skvi"}}},
+          "then": {"properties": {
+            "module_id": {"const": "skvi-engine"},
+            "engine_id": {"const": "symphony-skvi"}
+          }}
+        },
+        {
+          "if": {"properties": {"role": {"const": "sodv"}}},
+          "then": {"properties": {
+            "module_id": {"const": "sodv-engine"},
+            "engine_id": {"const": "symphony-sodv"}
+          }}
+        },
+        {
+          "if": {"properties": {"role": {"const": "ssfv"}}},
+          "then": {"properties": {
+            "module_id": {"const": "ssfv-engine"},
+            "engine_id": {"const": "symphony-ssfv"}
+          }}
+        }
+      ]
+    },
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^(?!/)(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])[^/](?:.*[^/])?$"
+    },
+    "absolutePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^/(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])(?:$|[^/](?:.*[^/])?)$"
+    }
+  }
+}

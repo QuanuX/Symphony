@@ -22,6 +22,7 @@ After this contract transition is merged, authorized implementation work may:
 - build the authority-free shared C++ foundation and coordinator read path;
 - inspect bounded repository and provider inputs;
 - bind one exact inactive-undocked coordinator or vector-engine installation per role in the protected qxctl user-default profile;
+- begin, inspect, checkpoint, close, and recover a protected noncanonical worktree reconciliation context through the exact bound coordinator;
 - compute content digests and deterministic validation evidence;
 - maintain noncanonical authenticated-session/worktree journals;
 - create immutable proposals;
@@ -32,6 +33,8 @@ After this contract transition is merged, authorized implementation work may:
 The implemented `0.1.0-dev` foundation supports direct coordinator `inspect` and explicit-path read-only `check`, plus independently installed SKVI `inspect`, `check`, caller-declared `propose`, and disposable `project`; SCLV `inspect`, `check`, provider-neutral `propose`, non-mutating `recover`, and disposable `project`; and SACV `inspect`, `check`, `diff`, caller-declared `propose`, and disposable `project`. qxctl validates each exact receipt, owned paths, process identity, deadline, and response digest before presenting results. Success proves those bounded operations only; it does not prove authentication, an active session, lifecycle activation, docking, ratification, journal mutation, endpoint existence, publication, or apply authority.
 
 The implemented `qxctl knowledge engines list|inspect|doctor|bind|unbind` surface manages only the protected user-scope `default` binding profile. Supply `absent` for the first expected registry state or the exact digest reported by `list` for later mutations. A bind selects exact content for later reconciliation; it does not install, invoke, activate, dock, authenticate, authorize, or apply.
+
+The implemented `qxctl knowledge reconcile compatibility|begin|status|checkpoint|close|recover` surface uses one exact bound coordinator. Supply a stable operation identifier for every mutation and the exact current journal digest; use discovery recovery only when ordinary status cannot validate local state. Treat two-slot recovery as evidence-based forward repair, never permission to discard an incompatible journal or unknown critical extension.
 
 ## Prohibited Initial Operations
 
@@ -47,7 +50,7 @@ The implemented `qxctl knowledge engines list|inspect|doctor|bind|unbind` surfac
 
 ## Session and Recovery Procedure
 
-1. Authenticate and establish the authority epoch.
+1. Authenticate and establish the authority epoch when an authority-bearing operation requires one; reconciliation alone makes no authentication claim.
 2. Open or resume a separately locked reconciliation context for each worktree.
 3. Capture canonical contract, tree, and engine digests.
 4. Treat observer and hook input only as a dirty-path hint.

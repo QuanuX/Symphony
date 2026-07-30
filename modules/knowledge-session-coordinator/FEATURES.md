@@ -10,7 +10,7 @@
       "cross_vector_references": [
         {
           "applicability": "not_applicable",
-          "reason": "The current installed-undocked version creates no Maestro receptor, binding, activation, or persisted deployment state.",
+          "reason": "The installed-undocked coordinator creates no Maestro receptor, activation, or persisted deployment state; its user-scope binding and reconciliation journal remain outside Maestro.",
           "reference": null,
           "vector": "maestro"
         },
@@ -28,13 +28,13 @@
         },
         {
           "applicability": "not_applicable",
-          "reason": "The current read-only slice does not authenticate a caller, request an SSIAG decision, or establish an authority epoch.",
+          "reason": "Reconciliation is caller-neutral and noncanonical; it does not authenticate a caller, request an SSIAG decision, or establish an authority epoch.",
           "reference": null,
           "vector": "ssiag"
         },
         {
           "applicability": "not_applicable",
-          "reason": "The current read-only slice emits no STAV event and has no append-authority producer grant.",
+          "reason": "The reconciliation slice emits no STAV event and has no append-authority producer grant.",
           "reference": null,
           "vector": "stav"
         }
@@ -46,21 +46,26 @@
         }
       ],
       "evidence": [
-        "modules/knowledge-session-coordinator/tests/coordinator_test.cpp verifies descriptor truth, read-only snapshot comparison, unsafe-path rejection, invalid digest rejection, and reserved-operation failure.",
-        "modules/knowledge-session-coordinator/tests/process_smoke.sh verifies deterministic process responses, explicit disabled authority, bounded check output, duplicate-key rejection, and reserved begin failure.",
+        "modules/knowledge-session-coordinator/tests/coordinator_test.cpp verifies lifecycle mutations, exact-state rejection, idempotent replay, compatible unordered engine-version evidence, capability downgrade, content drift, close, damaged-head discovery recovery, stale-temporary cleanup, extension preservation, critical-extension refusal, lock contention, symlink rejection, and worktree isolation.",
+        "modules/knowledge-session-coordinator/tests/process_smoke.sh verifies deterministic process responses, explicit disabled authority, bounded check output, duplicate-key rejection, and disabled canonical apply.",
         "modules/knowledge-session-coordinator/CMakeLists.txt builds, tests, installs, receipts, and uninstalls the exact versioned process.",
-        "modules/knowledge-session-coordinator/SPEC.md defines the implemented inspect/check behavior and deferred authenticated-session boundary."
+        "modules/knowledge-session-coordinator/SPEC.md defines inspect/check plus durable reconciliation, two-way procedural compatibility, evidence-preserving recovery, and the deferred authenticated-session boundary.",
+        "tools/qxctl/cmd/qxctl/main.go and tools/qxctl/internal/knowledgeengine/client.go verify and invoke the exact bound coordinator while recording a role-sorted engine inventory."
       ],
       "feature_id": "ssfv:symphony:knowledge-session-coordinator",
-      "how": "The C++26 symphony-knowledge-session process statically links the shared foundation, accepts the common bounded process envelope, reports an exact descriptor, and hashes caller-supplied safe relative regular-file paths without following symlinks or returning file bodies.",
+      "how": "The C++26 symphony-knowledge-session process statically links the shared foundation, accepts the common bounded process envelope, hashes caller-supplied safe relative files without following symlinks, serializes each worktree through a private persistent lock, and commits content-addressed checkpoints through an fsync-backed dual-slot journal plus atomic head. Go qxctl revalidates its immutable binding snapshot, negotiates protocol/version/capabilities, supplies stable operation IDs and compare-and-swap state, and records the exact bound-engine inventory.",
       "implementation_languages": [
         {
           "language": "C++26",
-          "role": "Implements the independently installed process, descriptor, inspect operation, bounded read-only snapshot check, and stable failure behavior."
+          "role": "Implements the independently installed process, descriptor, bounded snapshot check, compatibility negotiation, journal durability, idempotent reconciliation lifecycle, and evidence-preserving recovery."
         },
         {
           "language": "CMake",
           "role": "Builds and installs the exact versioned executable, module contracts, receipt, tests, and receipt-owned uninstall surface."
+        },
+        {
+          "language": "Go",
+          "role": "Implements qxctl binding revalidation, exact coordinator invocation, reconciliation command grammar, operation identity, expected-state input, and bound-engine inventory delivery."
         }
       ],
       "implementation_paths": [
@@ -68,14 +73,19 @@
         "modules/knowledge-session-coordinator/src/coordinator.cpp",
         "modules/knowledge-session-coordinator/src/coordinator.hpp",
         "modules/knowledge-session-coordinator/src/main.cpp",
+        "modules/knowledge-session-coordinator/src/reconciliation.cpp",
+        "modules/knowledge-session-coordinator/src/reconciliation.hpp",
         "modules/knowledge-session-coordinator/tests/coordinator_test.cpp",
-        "modules/knowledge-session-coordinator/tests/process_smoke.sh"
+        "modules/knowledge-session-coordinator/tests/process_smoke.sh",
+        "tools/qxctl/cmd/qxctl/commands.go",
+        "tools/qxctl/cmd/qxctl/main.go",
+        "tools/qxctl/internal/knowledgeengine/client.go"
       ],
       "kind": "feature",
       "non_claims": [
-        "Does not authenticate a caller, establish or recover a session, create a journal, take a writer lock, run a watcher, or invoke a vector engine.",
-        "Does not implement begin, status, checkpoint, close, recover, or apply; those operations remain reserved or disabled.",
-        "Does not integrate qxctl, SSIAG, STAV, or Maestro, and does not mutate canonical repository state.",
+        "Does not authenticate a caller, establish or recover an authenticated session or authority epoch, run a watcher, or invoke a vector engine.",
+        "Does not implement canonical apply; it mutates only protected noncanonical user-scope reconciliation state.",
+        "Does not integrate SSIAG, STAV, or Maestro and does not mutate canonical repository state.",
         "Does not claim system or TOPS provisioning, active docking, or a published module release."
       ],
       "owner_contract": "modules/knowledge-session-coordinator/SPEC.md",
@@ -90,12 +100,12 @@
       ],
       "source_scope": "modules/knowledge-session-coordinator",
       "status": "experimental",
-      "title": "Read-only knowledge-session coordination foundation",
-      "what": "Provides an independently installable administrative process that reports its exact capability state and computes deterministic read-only snapshots over explicit repository paths.",
-      "when": "Runs only on explicit user-scope process invocation under a bounded deadline. It does not currently begin or supervise an authenticated knowledge session.",
+      "title": "Durable knowledge reconciliation coordinator",
+      "what": "Provides an independently installable administrative process that reports exact capabilities, computes deterministic snapshots, and maintains a recoverable noncanonical reconciliation context for each canonical worktree.",
+      "when": "Runs only on explicit user-scope qxctl or exact process invocation under a bounded deadline. A context begins with an explicit inventory, checkpoints or closes under exact expected state, and repairs only through an explicit recovery operation.",
       "where": "Executes as the inactive, installed-undocked symphony-knowledge-session C++ process in the administrative freezing path and roots checks at its current repository working directory.",
-      "who": "Callers, maintainers, tests, and future qxctl, SSIAG, STAV, and vector-engine integrations that need a domain-neutral knowledge-session process boundary.",
-      "why": "Provides a safe, independently versioned landing zone for future authenticated session coordination while making current read-only repository-state evidence explicit and testable."
+      "who": "Any host-authorized caller using qxctl, plus maintainers and tests that need a caller-neutral, domain-neutral reconciliation boundary across independently versioned SKV engines.",
+      "why": "Preserves coherent worktree and engine-version evidence when upgrades, retries, or crashes occur out of sequence, while providing a safe independently versioned landing zone for future authenticated session coordination."
     }
   ],
   "source_scope": "modules/knowledge-session-coordinator"

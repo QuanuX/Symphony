@@ -1,13 +1,17 @@
 #include "coordinator.hpp"
 
+#include "symphony/knowledge/engine/digest.hpp"
 #include "symphony/knowledge/engine/error.hpp"
 #include "symphony/knowledge/engine/protocol.hpp"
 
+#include <algorithm>
+#include <fcntl.h>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <sys/file.h>
 #include <unistd.h>
 
 namespace fs = std::filesystem;
@@ -83,6 +87,108 @@ engine::Request request(std::string operation, engine::Json payload) {
     };
 }
 
+engine::Json reconciliation_payload(
+    const fs::path& state_root,
+    const std::string& operation,
+    const engine::Json& operation_id,
+    const engine::Json& expected,
+    const engine::Json& paths,
+    std::string engine_version = "0.1.0-dev",
+    bool full_capabilities = true) {
+    auto capabilities = engine::Json::array({
+        "atomic-head-v1",
+        "content-snapshot-v1",
+        "discovery-recovery-v1",
+        "dual-slot-journal-v1",
+        "expected-state-cas-v1",
+        "idempotent-operation-v1",
+        "nonblocking-lock-v1",
+        "opaque-extension-preservation-v1",
+        "recovery-forward-v1",
+    });
+    if (!full_capabilities) {
+        capabilities = engine::Json::array({"content-snapshot-v1"});
+    }
+    return engine::Json{
+        {"protocol", "symphony.knowledge.reconciliation-command.v1"},
+        {"operation", operation},
+        {"state_root", fs::canonical(state_root).string()},
+        {"operation_id", operation_id},
+        {"expected_journal_digest", expected},
+        {"paths", paths},
+        {"binding_registry_digest",
+         "sha256:2222222222222222222222222222222222222222222222222222222222222222"},
+        {"engine_inventory", engine::Json::array({
+            engine::Json{
+                {"role", "coordinator"},
+                {"module_id", "knowledge-session-coordinator"},
+                {"engine_id", "symphony-knowledge-session"},
+                {"version", std::move(engine_version)},
+                {"receipt_digest",
+                 "sha256:0000000000000000000000000000000000000000000000000000000000000000"},
+                {"executable_digest",
+                 "sha256:1111111111111111111111111111111111111111111111111111111111111111"},
+            },
+        })},
+        {"client", engine::Json{
+            {"client_id", "qxctl"},
+            {"client_version", "qxctl-dev"},
+            {"process_protocols", engine::Json::array({engine::process_protocol_v1})},
+            {"journal_read_versions", engine::Json::array({1})},
+            {"journal_write_versions", engine::Json::array({1})},
+            {"capabilities", capabilities},
+        }},
+    };
+}
+
+engine::Json reconcile(
+    const fs::path& state_root,
+    const std::string& operation,
+    const engine::Json& operation_id,
+    const engine::Json& expected,
+    const engine::Json& paths = engine::Json::array(),
+    std::string engine_version = "0.1.0-dev",
+    bool full_capabilities = true) {
+    return session::handle_request(request(
+        operation,
+        reconciliation_payload(
+            state_root,
+            operation,
+            operation_id,
+            expected,
+            paths,
+            std::move(engine_version),
+            full_capabilities)));
+}
+
+engine::Json read_json(const fs::path& path) {
+    std::ifstream input(path, std::ios::binary);
+    if (!input) {
+        throw std::runtime_error("could not read test JSON");
+    }
+    return engine::Json::parse(input);
+}
+
+void write_json(const fs::path& path, const engine::Json& value) {
+    std::ofstream output(path, std::ios::binary | std::ios::trunc);
+    if (!output) {
+        throw std::runtime_error("could not write test JSON");
+    }
+    output << value.dump() << '\n';
+}
+
+void finalize_test_digest(engine::Json& value, const char* field) {
+    value.erase(field);
+    value[field] = engine::tagged_sha256(value.dump());
+}
+
+fs::path context_path(const fs::path& state, const fs::path& repository) {
+    const auto worktree =
+        engine::sha256_hex("worktree-root:" + fs::canonical(repository).string());
+    return state / "symphony" / "knowledge-session-coordinator" /
+           "reconciliation" / "v1" / "contexts" / worktree;
+}
+
 void test_descriptor_and_inspect() {
     const auto descriptor = session::descriptor();
     require(descriptor.at("engine_id") == session::engine_id, "descriptor engine mismatch");
@@ -91,7 +197,9 @@ void test_descriptor_and_inspect() {
     require(descriptor.at("network_listener") == false, "network listener must remain disabled");
 
     const auto result = session::handle_request(request("inspect", engine::Json::object()));
-    require(result.at("readiness") == "read_only_foundation", "inspect readiness mismatch");
+    require(result.at("readiness") == "reconciliation_foundation", "inspect readiness mismatch");
+    require(result.at("reconciliation").at("two_way_procedural_compatibility") == true,
+            "reconciliation compatibility declaration missing");
     require(result.at("maestro_docking_enabled") == false, "docking must remain disabled");
 
     require_error([&] {
@@ -140,11 +248,342 @@ void test_check() {
 }
 
 void test_reserved_operations() {
-    for (const std::string operation : {"begin", "status", "checkpoint", "close", "recover", "apply"}) {
+    for (const std::string operation : {"apply"}) {
         require_error([&] {
             static_cast<void>(session::handle_request(request(operation, engine::Json::object())));
         }, "operation.unsupported");
     }
+}
+
+void test_reconciliation_lifecycle_and_compatibility() {
+    TemporaryDirectory repository;
+    TemporaryDirectory state;
+    {
+        std::ofstream output(repository.path() / "INTENT.md", std::ios::binary);
+        output << "first\n";
+    }
+    CurrentDirectory current(repository.path());
+
+    const auto compatibility = reconcile(
+        state.path(), "compatibility", nullptr, nullptr);
+    require(compatibility.at("compatibility").at("mode") == "full",
+            "full compatibility was not negotiated");
+    require(compatibility.at("journal_present") == false,
+            "compatibility unexpectedly created a journal");
+
+    const auto begin = reconcile(
+        state.path(), "begin", "begin-1", "absent",
+        engine::Json::array({"INTENT.md"}));
+    require(begin.at("changed") == true, "begin did not commit");
+    require(begin.at("journal").at("generation") == 1, "begin generation mismatch");
+    const auto begin_digest = begin.at("journal_digest").get<std::string>();
+
+    const auto replay = reconcile(
+        state.path(), "begin", "begin-1", "absent",
+        engine::Json::array({"INTENT.md"}));
+    require(replay.at("changed") == false && replay.at("journal_digest") == begin_digest,
+            "idempotent begin replay changed state");
+
+    {
+        std::ofstream output(repository.path() / "INTENT.md", std::ios::binary);
+        output << "second\n";
+    }
+    const auto checkpoint = reconcile(
+        state.path(), "checkpoint", "checkpoint-1", begin_digest,
+        engine::Json::array(), "0.2.0-dev");
+    require(checkpoint.at("changed") == true, "checkpoint did not commit");
+    require(checkpoint.at("journal").at("checkpoints").back().at("changed_file_count") == 1,
+            "content drift was not recorded");
+    require(checkpoint.at("journal").at("engine_inventory").at("entries")[0].at("version") ==
+                "0.2.0-dev",
+            "out-of-order engine upgrade inventory was not recorded");
+    const auto checkpoint_digest = checkpoint.at("journal_digest").get<std::string>();
+
+    require_error([&] {
+        static_cast<void>(reconcile(
+            state.path(), "checkpoint", "checkpoint-stale", begin_digest));
+    }, "reconcile.expected_state_mismatch");
+
+    const auto read_only = reconcile(
+        state.path(), "status", nullptr, nullptr,
+        engine::Json::array(), "0.2.0-dev", false);
+    require(read_only.at("compatibility").at("mode") == "read_only",
+            "missing capabilities did not negotiate read-only mode");
+    require_error([&] {
+        static_cast<void>(reconcile(
+            state.path(), "checkpoint", "checkpoint-incompatible", checkpoint_digest,
+            engine::Json::array(), "0.2.0-dev", false));
+    }, "reconcile.compatibility_required");
+
+    const auto close = reconcile(
+        state.path(), "close", "close-1", checkpoint_digest,
+        engine::Json::array(), "0.2.0-dev");
+    require(close.at("journal").at("state") == "closed", "close did not persist");
+    const auto closed_digest = close.at("journal_digest").get<std::string>();
+
+    const auto healthy = reconcile(
+        state.path(), "recover", "recover-healthy", closed_digest,
+        engine::Json::array(), "0.2.0-dev");
+    require(healthy.at("changed") == false && healthy.at("recovered") == false,
+            "healthy recovery was not a no-op");
+}
+
+void test_reconciliation_discovery_recovery_and_replay() {
+    TemporaryDirectory repository;
+    TemporaryDirectory state;
+    {
+        std::ofstream output(repository.path() / "INTENT.md", std::ios::binary);
+        output << "recovery\n";
+    }
+    CurrentDirectory current(repository.path());
+    const auto begin = reconcile(
+        state.path(), "begin", "begin-recovery", "absent",
+        engine::Json::array({"INTENT.md"}));
+    const auto begin_digest = begin.at("journal_digest").get<std::string>();
+    const auto checkpoint = reconcile(
+        state.path(), "checkpoint", "checkpoint-recovery", begin_digest);
+    const auto checkpoint_digest = checkpoint.at("journal_digest").get<std::string>();
+
+    const auto context = context_path(state.path(), repository.path());
+    {
+        std::ofstream output(context / ".head.tmp-crash", std::ios::binary);
+        output << "interrupted head\n";
+    }
+    fs::permissions(
+        context / ".head.tmp-crash",
+        fs::perms::owner_read | fs::perms::owner_write,
+        fs::perm_options::replace);
+    {
+        std::ofstream output(context / "head.json", std::ios::binary);
+        output << "{broken\n";
+    }
+    require_error([&] {
+        static_cast<void>(reconcile(state.path(), "status", nullptr, nullptr));
+    }, "reconcile.state_json_invalid");
+
+    const auto recovered = reconcile(
+        state.path(), "recover", "recover-discovery", "discover");
+    require(recovered.at("changed") == true && recovered.at("recovered") == true,
+            "discovery recovery did not repair the journal");
+    require(recovered.at("journal").at("previous_journal_digest") == checkpoint_digest,
+            "recovery did not preserve the selected predecessor");
+    require(!fs::exists(context / ".head.tmp-crash"),
+            "recovery did not remove the stale atomic-head temporary");
+
+    const auto replay = reconcile(
+        state.path(), "recover", "recover-discovery", "discover");
+    require(replay.at("changed") == false,
+            "replayed discovery recovery committed a second checkpoint");
+}
+
+void test_reconciliation_extension_and_filesystem_safety() {
+    TemporaryDirectory repository;
+    TemporaryDirectory state;
+    {
+        std::ofstream output(repository.path() / "INTENT.md", std::ios::binary);
+        output << "extension\n";
+    }
+    CurrentDirectory current(repository.path());
+    const auto begin = reconcile(
+        state.path(), "begin", "begin-extension", "absent",
+        engine::Json::array({"INTENT.md"}));
+    const auto context = context_path(state.path(), repository.path());
+    auto head = read_json(context / "head.json");
+    const auto slot = head.at("active_slot").get<int>();
+    const auto journal_path = context / ("journal." + std::to_string(slot) + ".json");
+    auto journal = read_json(journal_path);
+    engine::Json extension{
+        {"extension_id", "future-compatible-evidence"},
+        {"extension_version", "2.0.0"},
+        {"critical", false},
+        {"payload", engine::Json{{"future_field", "preserve-verbatim"}}},
+    };
+    extension["payload_digest"] = engine::tagged_sha256(extension.at("payload").dump());
+    journal["extensions"].push_back(extension);
+    finalize_test_digest(journal, "journal_digest");
+    head["journal_digest"] = journal.at("journal_digest");
+    finalize_test_digest(head, "head_digest");
+    write_json(journal_path, journal);
+    write_json(context / "head.json", head);
+
+    const auto extended_digest = journal.at("journal_digest").get<std::string>();
+    const auto checkpoint = reconcile(
+        state.path(), "checkpoint", "checkpoint-extension", extended_digest);
+    require(checkpoint.at("journal").at("extensions").size() == 1,
+            "noncritical future extension was not preserved");
+    require(checkpoint.at("journal").at("extensions")[0] == extension,
+            "noncritical future extension changed during the write");
+
+    head = read_json(context / "head.json");
+    const auto critical_slot = head.at("active_slot").get<int>();
+    const auto critical_path =
+        context / ("journal." + std::to_string(critical_slot) + ".json");
+    journal = read_json(critical_path);
+    journal["extensions"][0]["critical"] = true;
+    finalize_test_digest(journal, "journal_digest");
+    head["journal_digest"] = journal.at("journal_digest");
+    finalize_test_digest(head, "head_digest");
+    write_json(critical_path, journal);
+    write_json(context / "head.json", head);
+    require_error([&] {
+        static_cast<void>(reconcile(state.path(), "status", nullptr, nullptr));
+    }, "reconcile.critical_extension_unknown");
+
+    TemporaryDirectory unsafe_state;
+    const auto link = unsafe_state.path().parent_path() /
+                      ("symphony-state-link-" + std::to_string(::getpid()));
+    std::error_code ignored;
+    fs::remove(link, ignored);
+    if (::symlink(unsafe_state.path().c_str(), link.c_str()) != 0) {
+        throw std::runtime_error("could not create state-root symlink");
+    }
+    auto unsafe_payload = reconciliation_payload(
+        unsafe_state.path(), "status", nullptr, nullptr, engine::Json::array());
+    unsafe_payload["state_root"] = link.string();
+    require_error([&] {
+        static_cast<void>(session::handle_request(request("status", unsafe_payload)));
+    }, "reconcile.state_open_failed");
+    fs::remove(link, ignored);
+}
+
+void test_reconciliation_lock_and_worktree_isolation() {
+    TemporaryDirectory repository_one;
+    TemporaryDirectory repository_two;
+    TemporaryDirectory state;
+    for (const auto& repository : {repository_one.path(), repository_two.path()}) {
+        std::ofstream output(repository / "INTENT.md", std::ios::binary);
+        output << repository.string() << '\n';
+    }
+    engine::Json first;
+    {
+        CurrentDirectory current(repository_one.path());
+        first = reconcile(
+            state.path(), "begin", "begin-one", "absent",
+            engine::Json::array({"INTENT.md"}));
+        const auto lock_path =
+            context_path(state.path(), repository_one.path()) / "journal.lock";
+        const int lock = ::open(lock_path.c_str(), O_RDWR | O_CLOEXEC);
+        if (lock < 0 || ::flock(lock, LOCK_EX | LOCK_NB) != 0) {
+            if (lock >= 0) ::close(lock);
+            throw std::runtime_error("could not acquire contention test lock");
+        }
+        require_error([&] {
+            static_cast<void>(reconcile(state.path(), "status", nullptr, nullptr));
+        }, "reconcile.busy");
+        static_cast<void>(::flock(lock, LOCK_UN));
+        ::close(lock);
+    }
+    engine::Json second;
+    {
+        CurrentDirectory current(repository_two.path());
+        second = reconcile(
+            state.path(), "begin", "begin-two", "absent",
+            engine::Json::array({"INTENT.md"}));
+    }
+    require(first.at("journal").at("context_id") != second.at("journal").at("context_id"),
+            "separate worktrees shared a reconciliation context");
+    require(
+        context_path(state.path(), repository_one.path()) !=
+            context_path(state.path(), repository_two.path()),
+        "separate worktrees shared a state path");
+}
+
+void test_reconciliation_refuses_future_and_ambiguous_state() {
+    {
+        TemporaryDirectory repository;
+        TemporaryDirectory state;
+        std::ofstream(repository.path() / "INTENT.md", std::ios::binary) << "future\n";
+        CurrentDirectory current(repository.path());
+        static_cast<void>(reconcile(
+            state.path(), "begin", "begin-future", "absent",
+            engine::Json::array({"INTENT.md"})));
+        const auto context = context_path(state.path(), repository.path());
+        auto head = read_json(context / "head.json");
+        const auto slot = head.at("active_slot").get<int>();
+        const auto journal_path =
+            context / ("journal." + std::to_string(slot) + ".json");
+        auto journal = read_json(journal_path);
+        journal["protocol"] = "symphony.knowledge.reconciliation-journal.v2";
+        journal["format_version"] = 2;
+        finalize_test_digest(journal, "journal_digest");
+        head["journal_digest"] = journal.at("journal_digest");
+        finalize_test_digest(head, "head_digest");
+        write_json(journal_path, journal);
+        write_json(context / "head.json", head);
+        const auto preserved = read_json(journal_path);
+        require_error([&] {
+            static_cast<void>(reconcile(state.path(), "status", nullptr, nullptr));
+        }, "reconcile.journal_incompatible");
+        require_error([&] {
+            static_cast<void>(reconcile(
+                state.path(), "recover", "recover-future", "discover"));
+        }, "reconcile.compatibility_required");
+        require(read_json(journal_path) == preserved,
+                "future journal was changed by incompatible recovery");
+    }
+    {
+        TemporaryDirectory repository;
+        TemporaryDirectory state;
+        std::ofstream(repository.path() / "INTENT.md", std::ios::binary) << "ambiguous\n";
+        CurrentDirectory current(repository.path());
+        static_cast<void>(reconcile(
+            state.path(), "begin", "begin-ambiguous", "absent",
+            engine::Json::array({"INTENT.md"})));
+        const auto context = context_path(state.path(), repository.path());
+        auto head = read_json(context / "head.json");
+        const auto active = head.at("active_slot").get<int>();
+        const auto other = 1 - active;
+        auto divergent = read_json(
+            context / ("journal." + std::to_string(active) + ".json"));
+        divergent["journal_id"] =
+            "journal:" + engine::sha256_hex("equally-ranked-divergent-journal");
+        finalize_test_digest(divergent, "journal_digest");
+        const auto other_path =
+            context / ("journal." + std::to_string(other) + ".json");
+        write_json(other_path, divergent);
+        fs::permissions(
+            other_path,
+            fs::perms::owner_read | fs::perms::owner_write,
+            fs::perm_options::replace);
+        fs::remove(context / "head.json");
+        require_error([&] {
+            static_cast<void>(reconcile(
+                state.path(), "recover", "recover-ambiguous", "discover"));
+        }, "reconcile.recovery_ambiguous");
+        require(fs::exists(other_path),
+                "ambiguous recovery removed evidence");
+    }
+}
+
+void test_reconciliation_adopts_interrupted_successor() {
+    TemporaryDirectory repository;
+    TemporaryDirectory state;
+    std::ofstream(repository.path() / "INTENT.md", std::ios::binary) << "successor\n";
+    CurrentDirectory current(repository.path());
+    const auto begin = reconcile(
+        state.path(), "begin", "begin-successor", "absent",
+        engine::Json::array({"INTENT.md"}));
+    const auto begin_digest = begin.at("journal_digest").get<std::string>();
+    const auto context = context_path(state.path(), repository.path());
+    const auto prior_head = read_json(context / "head.json");
+    static_cast<void>(reconcile(
+        state.path(), "checkpoint", "checkpoint-successor", begin_digest));
+    write_json(context / "head.json", prior_head);
+
+    require_error([&] {
+        static_cast<void>(reconcile(state.path(), "status", nullptr, nullptr));
+    }, "reconcile.recovery_required");
+    const auto recovered = reconcile(
+        state.path(), "recover", "recover-successor", begin_digest);
+    require(recovered.at("changed") == true && recovered.at("recovered") == true,
+            "linked successor was not recovered");
+    require(recovered.at("journal").at("recovery").at("disposition") ==
+                "adopted_linked_successor",
+            "linked successor recovery disposition mismatch");
+    const auto replay = reconcile(
+        state.path(), "recover", "recover-successor", begin_digest);
+    require(replay.at("changed") == false,
+            "linked successor recovery replay changed state");
 }
 
 }
@@ -154,6 +593,12 @@ int main() {
         test_descriptor_and_inspect();
         test_check();
         test_reserved_operations();
+        test_reconciliation_lifecycle_and_compatibility();
+        test_reconciliation_discovery_recovery_and_replay();
+        test_reconciliation_extension_and_filesystem_safety();
+        test_reconciliation_lock_and_worktree_isolation();
+        test_reconciliation_refuses_future_and_ambiguous_state();
+        test_reconciliation_adopts_interrupted_successor();
         std::cout << "knowledge session coordinator tests passed\n";
         return 0;
     } catch (const std::exception& error) {

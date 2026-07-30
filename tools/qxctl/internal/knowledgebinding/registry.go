@@ -87,6 +87,12 @@ type Store struct {
 	now       func() time.Time
 }
 
+// StateRoot is the canonical root used by this store and by bound
+// user-scope operational state.
+func (s *Store) StateRoot() string {
+	return s.stateRoot
+}
+
 func NewStore(stateRoot string) (*Store, error) {
 	if stateRoot == "" {
 		var err error
@@ -110,6 +116,9 @@ func NewStore(stateRoot string) (*Store, error) {
 
 func canonicalStateRoot(root string) (string, error) {
 	clean := filepath.Clean(root)
+	if filepath.Dir(clean) == clean {
+		return "", fmt.Errorf("knowledge binding state root must be a descendant directory")
+	}
 	if info, err := os.Lstat(clean); err == nil {
 		if info.Mode()&os.ModeSymlink != 0 {
 			return "", fmt.Errorf("knowledge binding state root must not be a symbolic link")

@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator read-only slice, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact three-record SSFV partial bootstrap, and protected user-default engine binding registry implemented. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, reconciliation journal, authenticated-session mutation, apply, endpoint, publication, repository-specific binding, system/TOPS binding, or docking capability may be inferred from these slices.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact three-record SSFV partial bootstrap, protected user-default engine binding registry, and user-scope reconciliation-journal slice. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, authenticated-session mutation, apply, endpoint, publication, repository-specific binding, system/TOPS binding, observer, or docking capability may be inferred from these slices.
 
 ## Purpose
 
@@ -39,7 +39,11 @@ The v1 identifier family is:
 | `symphony.knowledge.engine-process.v1` | process request/response envelope |
 | `symphony.knowledge.proposal.v1` | immutable proposal |
 | `symphony.knowledge.engine-descriptor.v1` | engine identity and capability descriptor |
-| `symphony.knowledge.session-journal.v1` | authenticated-session/worktree recovery journal |
+| `symphony.knowledge.session-journal.v1` | future authenticated authority-epoch journal |
+| `symphony.knowledge.reconciliation-journal.v1` | noncanonical worktree coordination journal |
+| `symphony.knowledge.reconciliation-head.v1` | atomic dual-slot journal head |
+| `symphony.knowledge.reconciliation-command.v1` | qxctl-to-coordinator reconciliation command |
+| `symphony.knowledge.reconciliation-result.v1` | coordinator reconciliation result |
 | `symphony.knowledge.provider-evidence.v1` | normalized provider evidence |
 | `symphony.knowledge.install-receipt.v1` | installed-file and lifecycle receipt |
 | `symphony.knowledge.engine-binding-registry.v1` | protected noncanonical user-scope exact-version selection |
@@ -51,7 +55,11 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/engine-process-response.schema.json`;
 - `knowledge/schemas/v1/engine-descriptor.schema.json`;
 - `knowledge/schemas/v1/install-receipt.schema.json`;
-- `knowledge/schemas/v1/engine-binding-registry.schema.json`.
+- `knowledge/schemas/v1/engine-binding-registry.schema.json`;
+- `knowledge/schemas/v1/reconciliation-journal.schema.json`;
+- `knowledge/schemas/v1/reconciliation-head.schema.json`;
+- `knowledge/schemas/v1/reconciliation-command.schema.json`;
+- `knowledge/schemas/v1/reconciliation-result.schema.json`.
 
 The process request limit is 1 MiB and the response limit is 4 MiB. JSON depth is at most 64, parsed values/events at most 16,384, one string or key at most 65,536 bytes, integers remain within `[-9007199254740991, 9007199254740991]`, and a request deadline is at most 300 seconds ahead. Unknown fields, duplicate names, invalid UTF-8, trailing data, floating-point values, out-of-range integers, unsupported versions, excessive input, unsafe paths, expired deadlines, and target mismatch fail closed. Standard output is reserved for the single protocol response; bounded diagnostics use standard error. Arguments and environment variables MUST NOT carry secrets or arbitrary executable instructions.
 
@@ -74,6 +82,16 @@ Separate worktrees MUST NOT share a mutable journal or writer lock. VCS merge is
 Correctness comes from content-addressed snapshots at begin, checkpoint, close, pre-apply, post-apply stabilization, and next-authenticated-session recovery. Filesystem notifications, IDE callbacks, forge events, and Git hooks are optional latency hints. A missed event MUST self-heal through the next bounded digest comparison.
 
 Hooks are explicit, removable, and never installed silently. A disposable observer MAY run only for an active reconciliation context and MUST terminate at close. Neither is required for correctness.
+
+### Reconciliation Durability and Compatibility
+
+The reconciliation journal is deliberately separate from the future authenticated-session journal. It contains no proof of identity, authority, permission, or ratification. A later authenticated authority epoch may bind one or more reconciliation context identifiers without merging their expected-state or lock domains.
+
+One protected context directory contains a persistent no-follow lock, two journal slots, and an atomic head. A mutation writes and synchronizes the inactive slot before atomically replacing and synchronizing the head. Recovery validates the head and both slots. It may adopt only one uniquely linked durable successor, repair a head that references an intact slot, or roll forward from the highest valid slot while recording the discarded head digest. Ambiguous divergent successors, invalid ownership/modes, unknown critical extensions, unsafe paths, stale expected state, or unsupported formats fail closed with bounded repair guidance.
+
+Compatibility is negotiated from process protocols, journal read/write versions, operation availability, and named capabilities. Package recency is not compatibility evidence. Readers preserve unknown noncritical opaque extensions through their parsed JSON value and reject unknown critical extensions. Writers retain the existing supported journal format unless a separately reviewed compare-and-swap migration succeeds. Format transitions are stepwise, idempotent, content-addressed, and recover through the same dual-slot procedure. A newer component MUST preserve the preceding supported format while it claims two-way compatibility; an older component remains fully operational only while the journal and required capability set remain within its declared range.
+
+Unsupported or lossy combinations never delete an installation, rewrite a journal, fabricate a downgrade, or silently reduce safeguards. They preserve evidence and return deterministic upgrade, downgrade, rebind, or explicit-migration guidance. Self-healing means recovery from verifiable local evidence; it never manufactures authority or guesses across incompatible state.
 
 ## Proposal Boundary
 
@@ -109,7 +127,7 @@ The cross-vector groups are:
 
 ```text
 qxctl knowledge engines ...
-qxctl knowledge reconcile ...      # reserved until the reconciliation-journal slice
+qxctl knowledge reconcile compatibility|begin|status|checkpoint|close|recover ...
 qxctl knowledge session ...
 qxctl knowledge proposals ...
 qxctl knowledge apply ...        # reserved; disabled until the apply gate passes
@@ -128,6 +146,8 @@ qxctl ssfv inspect|check|diff|propose|graph ...
 qxctl MUST resolve exact installed engine identities and protocol compatibility from trusted receipts. Direct engine invocation remains available for diagnostics and conformance. qxctl MUST NOT absorb vector semantics, classify callers, accept secret-bearing engine input, or present a reserved command as operational.
 
 The implemented user-scope `qxctl knowledge engines list|inspect|doctor|bind|unbind` surface manages one `default` binding profile. A bind selects one exact inactive-undocked receipt for a role and records its receipt and executable digests. `registry_digest` is the tagged SHA-256 of the compact recursively key-sorted registry object with the `registry_digest` member omitted and bindings sorted by role. Binding is separate from installation and Maestro docking, never selects the newest version implicitly, uses an exact expected prior registry state, and grants no repository, session, permission, vector-semantic, or canonical-write authority. Multiple versions may remain installed while one exact version is bound per role. Repository-specific profiles and system/TOPS mutations remain unavailable.
+
+The implemented user-scope `qxctl knowledge reconcile ...` surface resolves and revalidates the exact bound coordinator, performs an explicit compatibility handshake, and invokes it through bounded local process IPC. `begin` requires a caller-declared bounded path inventory and exact expected journal state. `checkpoint`, `close`, and ordinary `recover` require the exact current digest. An administrator may request discovery recovery only explicitly when ordinary status cannot validate the head. Reconciliation mutates protected noncanonical coordination state only; it does not authenticate a caller, invoke a vector engine, mutate a canonical repository file, install a hook, run an observer, append STAV, or dock with Maestro.
 
 ## Authority and Apply Gate
 
@@ -191,7 +211,7 @@ Scaffolding every engine in advance is prohibited. Each slice must pass its cont
 
 The Architect has ratified `knowledge/ssfv/` with stable identifiers, feature-worthiness criteria, hierarchy, sparse distributed-file ownership, typed relationships, lifecycle, 5W1H semantics, content-addressed freshness, and portable JSON graph contracts. This completes the semantic contract gate.
 
-The implementation gate and first partial-bootstrap gate are complete. Exactly three ratified records cover the repository-root platform capability, shared engine foundation, and read-only coordinator foundation. That bounded result does not authorize another distributed `FEATURES.md`, another canonical feature entry, a complete-catalog claim, a persistent graph store, or a Maestro receptor.
+The implementation gate and first partial-bootstrap gate are complete. Exactly three ratified records cover the repository-root platform capability, shared engine foundation, and knowledge-session coordinator foundation, whose existing record now includes durable reconciliation. That bounded result does not authorize another distributed `FEATURES.md`, another canonical feature entry, a complete-catalog claim, a persistent graph store, or a Maestro receptor.
 
 ## Historical and Validator Boundary
 
@@ -201,9 +221,9 @@ Append-only SCLV and SODV records remain immutable. A contract transition change
 
 `libraries/knowledge-vector-engine-cpp/` implements the authority-free bounded parser, framing, digest, no-follow path, file-read, snapshot, versioned CMake package, receipt, and uninstall mechanics. nlohmann/json `v3.12.0` is pinned and vendored with its official release checksum and MIT license; it is not a runtime download and is not linked into `symphony-validator`.
 
-`modules/knowledge-session-coordinator/` implements process `inspect` and read-only snapshot `check` only. It does not yet establish an authenticated session, persist a journal, acquire a reconciliation lock, invoke a vector engine, mutate a worktree, integrate SSIAG/STAV, consume the qxctl binding registry, or dock with Maestro. Descriptor-visible lifecycle operations are reserved and apply is disabled.
+`modules/knowledge-session-coordinator/` implements process `inspect`, read-only snapshot `check`, compatibility negotiation, and durable user-scope reconciliation `begin`, `status`, `checkpoint`, `close`, and `recover`. Reconciliation uses per-worktree dual-slot journals, expected-state generations, content-addressed snapshots, persistent no-follow locks, atomic head replacement, and bounded recovery. It does not establish an authenticated session, invoke a vector engine, mutate a worktree, integrate SSIAG/STAV, install a hook, run an observer, or dock with Maestro. Session lifecycle and apply remain reserved or disabled.
 
-qxctl implements a protected user-scope `default` engine binding registry beneath its state root. It verifies exact inactive-undocked coordinator and vector-engine receipts and package files, records receipt and executable digests, serializes registry access with a persistent no-follow lock file, requires exact expected prior state, and commits replacements through a durable same-directory atomic rename. `list` and `inspect` report binding state; `doctor` revalidates the exact installation. This does not invoke the bound engine, create a repository profile, reconcile a worktree, establish an authenticated session, activate an install receipt, dock with Maestro, or enable apply.
+qxctl implements a protected user-scope `default` engine binding registry beneath its state root. It verifies exact inactive-undocked coordinator and vector-engine receipts and package files, records receipt and executable digests, serializes registry access with a persistent no-follow lock file, requires exact expected prior state, and commits replacements through a durable same-directory atomic rename. `list` and `inspect` report binding state; `doctor` revalidates the exact installation. `knowledge reconcile` revalidates one immutable binding snapshot, records its full engine inventory in the noncanonical journal, and invokes only the exact bound coordinator. Binding itself does not invoke an engine, create a repository profile, establish an authenticated session, activate an install receipt, dock with Maestro, or enable apply.
 
 `modules/skvi-engine/` implements deterministic `inspect`, structural `check`, caller-declared `propose`, and disposable JSON `project`. It parses repository-maintained `knowledge/skvi/INDEX.md`, rejects unsafe or ambiguous state, binds proposals and projections to canonical digests, installs under an exact versioned prefix, and exposes no canonical write path. `qxctl skvi ...` validates that exact inactive undocked installation and invokes it out of process with empty child environment, bounded input/output, a hard deadline, and response-digest/identity checks. qxctl lifecycle selection and activation remain deferred.
 
@@ -217,4 +237,4 @@ qxctl implements a protected user-scope `default` engine binding registry beneat
 
 ## Non-Authorization Statement
 
-This specification does not claim implementation beyond the explicitly identified foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV slices, exact three-record SSFV partial bootstrap, and user-default binding registry; enable reconciliation/session lifecycle or canonical apply; authorize another feature record or complete-catalog claim; authorize an external package coordinate; create an HTTP surface; publish a release artifact; permit direct ledger mutation; or activate Maestro.
+This specification does not claim implementation beyond the explicitly identified foundation/coordinator reconciliation, SKVI/SCLV/SACV/SODV/SSFV slices, exact three-record SSFV partial bootstrap, and user-default binding registry; enable authenticated-session lifecycle or canonical apply; authorize another feature record or complete-catalog claim; authorize an external package coordinate; create an HTTP surface; publish a release artifact; permit direct ledger mutation; or activate Maestro.

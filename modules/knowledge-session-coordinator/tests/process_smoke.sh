@@ -31,7 +31,7 @@ test "$INVALID_STATUS" -eq 2
 printf '%s\n' "$INVALID_RESPONSE" | grep '"code":"json.duplicate_key"' >/dev/null
 
 DEADLINE=$(( $(date +%s) * 1000 + 60000 ))
-RESERVED=$(printf '{"protocol":"symphony.knowledge.engine-process.v1","request_id":"smoke-3","correlation_id":"smoke-3","operation":"begin","target_engine":"symphony-knowledge-session","deadline_unix_ms":%s,"payload":{}}' "$DEADLINE")
+RESERVED=$(printf '{"protocol":"symphony.knowledge.engine-process.v1","request_id":"smoke-3","correlation_id":"smoke-3","operation":"apply","target_engine":"symphony-knowledge-session","deadline_unix_ms":%s,"payload":{}}' "$DEADLINE")
 set +e
 RESERVED_RESPONSE=$(printf '%s' "$RESERVED" | "$BINARY")
 RESERVED_STATUS=$?

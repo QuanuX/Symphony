@@ -48,4 +48,4 @@ cmake -DINSTALL_PREFIX=/chosen/prefix \
   -P build/knowledge-session-coordinator/uninstall.cmake
 ```
 
-The procedure removes only files named by this version's receipt model. Canonical knowledge, journals, other versions, user files, and containing directories are preserved. qxctl lifecycle administration remains deferred.
+The procedure removes only files named by this version's receipt model. Canonical knowledge, reconciliation journals, other versions, user files, and containing directories are preserved. qxctl can bind an exact installed version and administer reconciliation through that bound executable; installation, upgrade, rollback, and receipt-owned uninstall remain explicit CMake operations until the later lifecycle surface is implemented.
