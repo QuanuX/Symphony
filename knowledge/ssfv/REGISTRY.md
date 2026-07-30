@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The first partial bootstrap covers the repository-root platform capability, the shared knowledge-vector engine foundation, and the read-only knowledge-session coordinator foundation.
+Canonical SSFV feature-routing registry. The first partial bootstrap covers the repository-root platform capability, the shared knowledge-vector engine foundation, and the knowledge-session coordinator foundation.
 
 ## Purpose
 
@@ -37,8 +37,8 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/knowledge-session-coordinator`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:ba1d08e1869c079c1e4512c68927430b732aee90482d970a988ae1e8febbf5ae`
-- notes: First partial bootstrap record for the implemented read-only coordinator foundation; authenticated session mutation remains unimplemented.
+- record_digest: `sha256:abdf3f2345db365798d9db0a3947c0f43d774f4acf46d9454a5eb311e61289e7`
+- notes: First partial bootstrap record for the implemented durable reconciliation coordinator foundation; authenticated session mutation remains unimplemented.
 
 - feature_id: `ssfv:symphony:knowledge-vector-engine-foundation`
 - feature_file: `libraries/knowledge-vector-engine-cpp/FEATURES.md`

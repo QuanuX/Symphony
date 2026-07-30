@@ -1359,7 +1359,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: administrative CLI implementation surface
 - truth_role: local operation dispatch, process-client invocation, and presentation implementation truth
 - owner: qxctl maintainers
-- scope: Implements current repository, module, SSIAG, STAV, knowledge-engine binding, SKVI, SCLV, SACV, SODV, and shared SSFV administrative operation handlers.
+- scope: Implements current repository, module, SSIAG, STAV, knowledge-engine binding/reconciliation, SKVI, SCLV, SACV, SODV, and shared SSFV administrative operation handlers.
 - relationships: implements -> `tools/qxctl/MANIFEST.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`; invokes -> `tools/qxctl/internal/knowledgebinding/registry.go`
 - consumers: qxctl executable, tests, maintainers, reviewers
 - deferred_projections: generated CLI reference and operation evidence
@@ -1372,7 +1372,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: administrative CLI implementation surface
 - truth_role: implemented command tree, flag grammar, and failure routing
 - owner: qxctl maintainers
-- scope: Implements current repository, SSIAG, STAV, user-default engine binding, and exact-installation SKVI/SCLV/SACV/SODV/SSFV command grammar without owning domain semantics.
+- scope: Implements current repository, SSIAG, STAV, user-default engine binding, bound-coordinator reconciliation, and exact-installation SKVI/SCLV/SACV/SODV/SSFV command grammar without owning domain semantics.
 - relationships: implements -> `tools/qxctl/MANIFEST.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`; invokes -> `tools/qxctl/internal/knowledgebinding/registry.go`
 - consumers: qxctl executable, compatibility tests, maintainers, reviewers
 - deferred_projections: generated CLI reference documentation
@@ -1385,11 +1385,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: bounded Go process-client implementation
 - truth_role: trusted receipt resolution, child-process bounds, and response verification implementation truth
 - owner: qxctl maintainers
-- scope: Resolves exact installed coordinator, SKVI, SCLV, SACV, SODV, and SSFV versions for binding evidence; invokes the five vector engines with an empty environment and hard deadline; and verifies response identity and digest.
-- relationships: implements -> `knowledge/SPEC.md`; implements -> `knowledge/skvi/SPEC.md`; implements -> `knowledge/sclv/SPEC.md`; implements -> `knowledge/sacv/SPEC.md`; implements -> `knowledge/sodv/SPEC.md`; implements -> `knowledge/ssfv/SPEC.md`; called_by -> `tools/qxctl/cmd/qxctl/commands.go`
-- consumers: qxctl SKVI/SCLV/SACV/SODV/SSFV commands, tests, reviewers, future compatible vector clients
+- scope: Resolves exact installed coordinator, SKVI, SCLV, SACV, SODV, and SSFV versions for binding evidence; invokes the bound coordinator and five vector engines with an empty environment and hard deadline; and verifies response identity and digest.
+- relationships: implements -> `knowledge/SPEC.md`; implements -> `knowledge/schemas/v1/reconciliation-command.schema.json`; implements -> `knowledge/skvi/SPEC.md`; implements -> `knowledge/sclv/SPEC.md`; implements -> `knowledge/sacv/SPEC.md`; implements -> `knowledge/sodv/SPEC.md`; implements -> `knowledge/ssfv/SPEC.md`; called_by -> `tools/qxctl/cmd/qxctl/commands.go`
+- consumers: qxctl knowledge-reconciliation/SKVI/SCLV/SACV/SODV/SSFV commands, tests, reviewers, future compatible vector clients
 - deferred_projections: additional compatible vector clients
-- notes: It does not install, alter receipt activation, dock, infer membership, grant permission, ratify, mutate journals, or apply.
+- notes: It does not install, alter receipt activation, dock, infer membership, grant permission, ratify, mutate canonical knowledge, or apply; coordinator journal mutation is governed separately.
 - status: canonical
 
 #### qxctl Knowledge Engine Binding Registry
@@ -1400,8 +1400,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: qxctl maintainers
 - scope: Records one exact inactive-undocked installation per coordinator/vector role in a noncanonical user-default profile and revalidates bound receipt and executable digests.
 - relationships: implements -> `knowledge/SPEC.md`; implements -> `knowledge/schemas/v1/engine-binding-registry.schema.json`; called_by -> `tools/qxctl/cmd/qxctl/main.go`
-- consumers: qxctl knowledge commands, tests, future reconciliation coordinator integration
-- deferred_projections: repository/system/TOPS profiles, reconciliation inventory, Maestro docking
+- consumers: qxctl knowledge commands, reconciliation coordinator integration, tests
+- deferred_projections: repository/system/TOPS profiles and Maestro docking
 - notes: Binding is not installation, engine invocation, authentication, permission, repository activation, or docking.
 - status: canonical
 
@@ -1491,7 +1491,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: independently installable coordinator manifest
 - truth_role: executable, protocol, operation, dependency, and lifecycle truth
 - owner: SKV coordinator maintainers
-- scope: Declares implemented inspect/check, reserved session operations, disabled apply, and installed-undocked state.
+- scope: Declares implemented inspect/check/reconciliation operations, reserved authenticated-session operations, disabled apply, and installed-undocked state.
 - relationships: depends_on -> `modules/knowledge-session-coordinator/INTENT.md`; implements -> `knowledge/SPEC.md`; statically_links -> `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
 - consumers: qxctl planners, packagers, implementers, reviewers, agentic tools
 - deferred_projections: installed-engine inventory and Maestro presence evidence
@@ -1517,37 +1517,37 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: coordinator skill guidance
 - truth_role: safe direct diagnostics and process invocation procedure
 - owner: SKV coordinator maintainers
-- scope: Guides descriptor, inspect, check, deadline, stdout, and stop-condition handling.
+- scope: Guides descriptor, inspect, check, compatibility, durable reconciliation, deadline, stdout, and stop-condition handling.
 - relationships: depends_on -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/SKILL.md`
 - consumers: administrators, implementers, reviewers, agentic tools
-- deferred_projections: qxctl command procedure
-- notes: Reserved and disabled descriptor states must be reported literally.
+- deferred_projections: authenticated-session and apply procedures
+- notes: Reconciliation is noncanonical; reserved and disabled descriptor states must be reported literally.
 - status: canonical
 
 #### Knowledge Session Coordinator SPEC.md
 - path: `modules/knowledge-session-coordinator/SPEC.md`
 - title: Knowledge Session Coordinator Specification
 - surface_type: coordinator module specification
-- truth_role: exact read-only operation, exit, descriptor, install, and non-authorization contract
+- truth_role: exact read-only/reconciliation operation, compatibility, durability, recovery, exit, descriptor, install, and non-authorization contract
 - owner: SKV coordinator maintainers
-- scope: Defines process inspect/check and explicitly excludes authenticated session mutation and apply.
-- relationships: depends_on -> `knowledge/SPEC.md`; implements -> `knowledge/schemas/v1/engine-process-request.schema.json`; implements -> `knowledge/schemas/v1/engine-process-response.schema.json`
-- consumers: C++ implementers, qxctl planners, testers, reviewers
-- deferred_projections: authenticated-session and reconciliation conformance evidence
-- notes: System/TOPS provisioning, qxctl, SSIAG/STAV, and Maestro remain unimplemented.
+- scope: Defines process inspect/check plus user-scope durable per-worktree reconciliation and explicitly excludes authenticated session mutation and apply.
+- relationships: depends_on -> `knowledge/SPEC.md`; implements -> `knowledge/schemas/v1/engine-process-request.schema.json`; implements -> `knowledge/schemas/v1/engine-process-response.schema.json`; implements -> `knowledge/schemas/v1/reconciliation-command.schema.json`; implements -> `knowledge/schemas/v1/reconciliation-result.schema.json`; persists -> `knowledge/schemas/v1/reconciliation-journal.schema.json`; persists -> `knowledge/schemas/v1/reconciliation-head.schema.json`
+- consumers: C++ implementers, qxctl, testers, reviewers
+- deferred_projections: authenticated-session conformance evidence
+- notes: System/TOPS provisioning, authenticated sessions, SSIAG/STAV, vector invocation, apply, and Maestro remain unimplemented.
 - status: canonical
 
 #### Knowledge Session Coordinator FEATURES.md
 - path: `modules/knowledge-session-coordinator/FEATURES.md`
 - title: Knowledge Session Coordinator Semantic Features
 - surface_type: distributed SSFV feature record
-- truth_role: canonical semantic feature truth for the read-only coordination foundation
+- truth_role: canonical semantic feature truth for the durable reconciliation coordinator foundation
 - owner: SKV coordinator maintainers
 - scope: Owns the experimental `ssfv:symphony:knowledge-session-coordinator` record for exact source scope `modules/knowledge-session-coordinator`.
 - relationships: depends_on -> `knowledge/ssfv/SPEC.md`; depends_on -> `modules/knowledge-session-coordinator/SPEC.md`; declares -> `ssfv:symphony:knowledge-session-coordinator`
 - consumers: symphony-ssfv, qxctl, coordinator maintainers, reviewers, administrators, agentic tools
 - deferred_projections: portable SSFV graph, authenticated-session capability lineage, operator documentation
-- notes: Records implemented inspect/check behavior only; authenticated session mutation and apply remain unimplemented.
+- notes: Records implemented inspect/check/reconciliation behavior; authenticated session mutation and apply remain unimplemented.
 - status: canonical
 
 #### Knowledge Session Coordinator CMakeLists.txt
@@ -1561,6 +1561,32 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: CMake, implementers, packagers, reviewers
 - deferred_projections: reproducible build and receipt evidence
 - notes: No global executable alias or active binding is installed.
+- status: canonical
+
+#### Knowledge Session Coordinator Reconciliation Header
+- path: `modules/knowledge-session-coordinator/src/reconciliation.hpp`
+- title: Knowledge Session Coordinator Reconciliation Interface
+- surface_type: C++ coordinator implementation surface
+- truth_role: reconciliation capability and request-handler boundary
+- owner: SKV coordinator maintainers
+- scope: Declares the internal compatibility description and bounded reconciliation dispatcher.
+- relationships: implements -> `modules/knowledge-session-coordinator/SPEC.md`; implemented_by -> `modules/knowledge-session-coordinator/src/reconciliation.cpp`
+- consumers: coordinator dispatcher, tests, reviewers
+- deferred_projections: authenticated-session integration
+- notes: The interface grants no canonical or authentication authority.
+- status: canonical
+
+#### Knowledge Session Coordinator Reconciliation Implementation
+- path: `modules/knowledge-session-coordinator/src/reconciliation.cpp`
+- title: Knowledge Session Coordinator Durable Reconciliation
+- surface_type: C++ freezing-path state implementation
+- truth_role: capability negotiation, journal durability, compare-and-swap, replay, and recovery implementation truth
+- owner: SKV coordinator maintainers
+- scope: Implements private user-scope per-worktree locks, dual journal slots, atomic heads, content and engine-inventory checkpoints, extension preservation, and explicit evidence-based repair.
+- relationships: implements -> `modules/knowledge-session-coordinator/SPEC.md`; implements -> `knowledge/schemas/v1/reconciliation-command.schema.json`; persists -> `knowledge/schemas/v1/reconciliation-journal.schema.json`; persists -> `knowledge/schemas/v1/reconciliation-head.schema.json`; emits -> `knowledge/schemas/v1/reconciliation-result.schema.json`
+- consumers: symphony-knowledge-session, qxctl, tests, reviewers
+- deferred_projections: authenticated-session journal, vector invocation, observers, canonical apply, Maestro docking
+- notes: Unknown critical/newer state and ambiguous evidence are preserved and block automated downgrade.
 - status: canonical
 
 ### SKVI Engine Module
@@ -1825,7 +1851,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: SKV umbrella manifest
 - truth_role: common vector-engine identity, namespace, installability, and authority boundary
 - owner: Symphony Knowledge Vector maintainers
-- scope: Declares independently installed C++ engines, the implemented shared mechanics/read-only coordinator/SKVI/SCLV/SACV/SODV/SSFV slices, the first partial SSFV catalog, qxctl administration, Linux-first delivery, Maestro readiness, and proposal-only initial state.
+- scope: Declares independently installed C++ engines, the implemented shared mechanics/reconciliation coordinator/SKVI/SCLV/SACV/SODV/SSFV slices, the first partial SSFV catalog, qxctl administration, Linux-first delivery, Maestro readiness, and proposal-only initial state.
 - relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/`; governs -> `modules/knowledge-session-coordinator/`; governs -> `modules/skvi-engine/`; governs -> `modules/sclv-engine/`; governs -> future cleared vector-engine module paths
 - consumers: vector maintainers, engine implementers, qxctl, Maestro planners, reviewers, agentic tools
 - deferred_projections: engine inventory, install receipts, Maestro presence graph
@@ -1842,7 +1868,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
 - consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
 - deferred_projections: proposal/session/provider/docking schemas, conformance evidence, engine inventory, docking graph
-- notes: Six common schemas and the foundation/coordinator/SKVI/SCLV/SACV/SODV/SSFV slices are implemented; the three-record SSFV bootstrap is partial and programmatic apply is disabled.
+- notes: Eleven common schemas and the foundation/coordinator/SKVI/SCLV/SACV/SODV/SSFV slices are implemented; the three-record SSFV bootstrap is partial and programmatic apply is disabled.
 - status: canonical
 
 ##### SKILL.md
@@ -1864,11 +1890,63 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: common protocol schema manifest
 - truth_role: canonical inventory and boundary for exact common JSON schemas
 - owner: Symphony Knowledge Vector maintainers
-- scope: Declares process request/response, descriptor, install-receipt, engine-binding-registry, immutable-proposal, and provider-evidence schemas.
+- scope: Declares process request/response, descriptor, install-receipt, engine-binding-registry, immutable-proposal, provider-evidence, and reconciliation command/head/journal/result schemas.
 - relationships: depends_on -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; governs -> `modules/skvi-engine/SPEC.md`; governs -> `modules/sclv-engine/SPEC.md`
 - consumers: C++ foundation and engine implementers, qxctl planners, validator, reviewers
 - deferred_projections: generated schema documentation and conformance evidence
 - notes: Operation-specific payload/result schemas remain with the applicable coordinator or vector.
+- status: canonical
+
+##### Reconciliation Command Schema
+- path: `knowledge/schemas/v1/reconciliation-command.schema.json`
+- title: Symphony Knowledge Reconciliation Command v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical qxctl-to-coordinator reconciliation request truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes operation identity, state root, expected journal state, path inventory, exact bound-engine inventory, and client compatibility declaration.
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; implemented_by -> `tools/qxctl/cmd/qxctl/main.go`; implemented_by -> `modules/knowledge-session-coordinator/src/reconciliation.cpp`
+- consumers: qxctl, coordinator, conformance tests, validator, reviewers
+- deferred_projections: rendered protocol documentation
+- notes: The command does not carry permission or canonical-apply authority.
+- status: canonical
+
+##### Reconciliation Head Schema
+- path: `knowledge/schemas/v1/reconciliation-head.schema.json`
+- title: Symphony Knowledge Reconciliation Head v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical active-slot selector and atomic continuity truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes worktree/context identity, active slot, generation, journal digest, prior-head digest, and head digest.
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; persisted_by -> `modules/knowledge-session-coordinator/src/reconciliation.cpp`
+- consumers: coordinator recovery, conformance tests, validator, reviewers
+- deferred_projections: rendered durability documentation
+- notes: The head is replaceable operational evidence; journal slots remain the recovery evidence.
+- status: canonical
+
+##### Reconciliation Journal Schema
+- path: `knowledge/schemas/v1/reconciliation-journal.schema.json`
+- title: Symphony Knowledge Reconciliation Journal v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical noncanonical-state format and recovery-evidence truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes repository/worktree identity, selected paths, exact engine inventory, content snapshots, checkpoint chain, compatibility, extensions, recovery disposition, and journal digest.
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; persisted_by -> `modules/knowledge-session-coordinator/src/reconciliation.cpp`
+- consumers: coordinator, qxctl status/recovery, conformance tests, validator, reviewers
+- deferred_projections: future stepwise journal-format migrations
+- notes: The journal records operational truth but is not canonical knowledge or an authority epoch.
+- status: canonical
+
+##### Reconciliation Result Schema
+- path: `knowledge/schemas/v1/reconciliation-result.schema.json`
+- title: Symphony Knowledge Reconciliation Result v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical compatibility, state, mutation, and repair result truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes compatibility mode, optional journal, change/recovery flags, repair actions, read-only status, and disabled canonical apply.
+- relationships: depends_on -> `knowledge/schemas/v1/reconciliation-journal.schema.json`; emitted_by -> `modules/knowledge-session-coordinator/src/reconciliation.cpp`; consumed_by -> `tools/qxctl/cmd/qxctl/main.go`
+- consumers: qxctl, conformance tests, validator, reviewers
+- deferred_projections: rendered operator diagnostics
+- notes: A successful recovery result reports local operational repair only.
 - status: canonical
 
 ##### Engine Process Request Schema
@@ -3005,7 +3083,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - status: canonical
 
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, seven common SKV JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, eleven common SKV JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

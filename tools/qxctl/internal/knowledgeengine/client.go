@@ -162,6 +162,12 @@ func InvokeSSFV(ctx context.Context, prefix, version, repositoryRoot, operation 
 	return invoke(ctx, ssfvSpec, prefix, version, repositoryRoot, operation, payload)
 }
 
+// InvokeCoordinator executes the exact receipt-validated coordinator selected
+// by the caller's binding snapshot.
+func InvokeCoordinator(ctx context.Context, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
+	return invoke(ctx, sessionSpec, prefix, version, repositoryRoot, operation, payload)
+}
+
 // InspectInstallation validates an exact inactive-undocked installation and
 // returns content-addressed evidence suitable for the user-scope binding
 // registry. Installation remains distinct from activation and docking.

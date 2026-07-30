@@ -29,6 +29,12 @@ Commands:
   knowledge engines doctor [--state-root PATH] [--json] Verify every bound installation
   knowledge engines bind ROLE --prefix PATH [--version VERSION] --expected-registry-digest STATE [--json] Bind an exact installation
   knowledge engines unbind ROLE --expected-registry-digest DIGEST [--json] Remove one exact binding
+  knowledge reconcile compatibility [--state-root PATH] [--repo PATH] [--json] Negotiate coordinator compatibility
+  knowledge reconcile begin --operation-id ID --expected-journal-digest STATE --path FILE... [--json] Begin a durable context
+  knowledge reconcile status [--state-root PATH] [--repo PATH] [--json] Read durable context status
+  knowledge reconcile checkpoint --operation-id ID --expected-journal-digest DIGEST [--json] Record a durable checkpoint
+  knowledge reconcile close --operation-id ID --expected-journal-digest DIGEST [--json] Close a durable context
+  knowledge reconcile recover --operation-id ID (--expected-journal-digest DIGEST|--discover) [--json] Repair from durable evidence
   skvi inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SKVI engine
   skvi check --prefix PATH [--version VERSION] [--json] Check canonical SKVI index truth
   skvi propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared proposal

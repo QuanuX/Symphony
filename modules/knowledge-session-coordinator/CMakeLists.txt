@@ -20,6 +20,7 @@ endif()
 add_executable(symphony-knowledge-session
     src/main.cpp
     src/coordinator.cpp
+    src/reconciliation.cpp
 )
 target_include_directories(symphony-knowledge-session PRIVATE src)
 target_link_libraries(symphony-knowledge-session PRIVATE Symphony::KnowledgeVectorEngine)
@@ -36,6 +37,7 @@ if(BUILD_TESTING)
     add_executable(knowledge-session-coordinator-tests
         tests/coordinator_test.cpp
         src/coordinator.cpp
+        src/reconciliation.cpp
     )
     target_include_directories(knowledge-session-coordinator-tests PRIVATE src)
     target_link_libraries(knowledge-session-coordinator-tests PRIVATE Symphony::KnowledgeVectorEngine)

@@ -17,6 +17,12 @@ Any caller operating within its effective target-host permission should use `qxc
 - `go run ./cmd/qxctl knowledge engines list --json`
 - `go run ./cmd/qxctl knowledge engines bind skvi --prefix /chosen/prefix --expected-registry-digest absent`
 - `go run ./cmd/qxctl knowledge engines doctor`
+- `go run ./cmd/qxctl knowledge reconcile compatibility --json`
+- `go run ./cmd/qxctl knowledge reconcile begin --operation-id ID --expected-journal-digest absent --path INTENT.md`
+- `go run ./cmd/qxctl knowledge reconcile status --json`
+- `go run ./cmd/qxctl knowledge reconcile checkpoint --operation-id ID --expected-journal-digest sha256:...`
+- `go run ./cmd/qxctl knowledge reconcile close --operation-id ID --expected-journal-digest sha256:...`
+- `go run ./cmd/qxctl knowledge reconcile recover --operation-id ID --discover`
 - `go run ./cmd/qxctl skvi check --prefix /chosen/prefix`
 - `go run ./cmd/qxctl skvi project --prefix /chosen/prefix --json`
 - `go run ./cmd/qxctl skvi propose --prefix /chosen/prefix --input proposal-input.json`
@@ -45,9 +51,10 @@ Any caller operating within its effective target-host permission should use `qxc
 - Keep SSIAG/STAV trust configuration and endpoint authentication outside Viper in their dedicated clients.
 - Run commands synchronously in the active execution session.
 - SSIAG commands may read safe metadata only. Never pass secret values through qxctl arguments, input, output, logs, or fixtures.
-- Canonical knowledge, STAV, and security-governed surfaces remain read-only. The only current mutation is the protected, noncanonical user-scope engine-binding registry. When proposal and apply support exists, use only operations permitted by the target host and satisfy the configured safeguards; never emulate, manufacture, or bypass host authority.
+- Canonical knowledge, STAV, and security-governed surfaces remain read-only. Current mutations are limited to the protected noncanonical user-scope engine-binding registry and reconciliation journal. When proposal and apply support exists, use only operations permitted by the target host and satisfy the configured safeguards; never emulate, manufacture, or bypass host authority.
 - STAV commands require an enrolled, running authority and an explicit reader grant. Never bypass endpoint authentication, reader classification, or add raw append behavior.
 - Use `knowledge engines bind` only with an exact inactive-undocked installation. Supply `absent` for the first mutation and the exact digest returned by `list` for every later mutation. A binding is noncanonical selection for later reconciliation; it is not installation, invocation, authentication, permission, repository activation, or Maestro docking.
+- Use `knowledge reconcile begin|checkpoint|close` with a stable unique operation ID and the exact state reported by `status`; safe retries reuse the same operation ID. Use `recover --discover` only when the head is unavailable or inconsistent and retain all reported repair evidence. Never delete or edit journal slots to force a result. Unknown critical/newer state and ambiguous slots are stop conditions, not reasons to select an older version.
 - For implemented SKVI commands, invoke only an explicit installation prefix and exact version. Treat proposal and projection output as noncanonical; `qxctl skvi propose` does not apply its result.
 - Keep SKVI proposal input to the exact nonsecret operation schema. Never place credentials, proofs, raw tokens, provider payloads, environment data, or executable instructions in its semantic fields.
 - For implemented SCLV commands, invoke only an explicit installation prefix and exact version. Treat checks as evidence and proposals, recovery results, and projections as noncanonical; recovery never updates or deletes the journal.
@@ -75,3 +82,6 @@ Any caller operating within its effective target-host permission should use `qxc
 5. `go run ./cmd/qxctl status`
 6. `go run ./cmd/qxctl ssiag doctor --tops-id UUID` when the selected SSIAG enrollment is running
 7. `go run ./cmd/qxctl stav doctor --tops-id UUID` when the selected STAV enrollment is running
+8. `go run ./cmd/qxctl knowledge engines doctor`
+9. `go run ./cmd/qxctl knowledge reconcile compatibility --json`
+10. `go run ./cmd/qxctl knowledge reconcile status --json`

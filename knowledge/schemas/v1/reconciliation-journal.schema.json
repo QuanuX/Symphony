@@ -1,0 +1,308 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:reconciliation-journal:v1",
+  "title": "Symphony worktree reconciliation journal v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "format_version", "journal_id", "context_id", "generation",
+    "previous_journal_digest", "state", "repository", "inventory",
+    "engine_inventory", "current_snapshot", "checkpoints", "compatibility", "extensions",
+    "recovery", "started_at", "updated_at", "closed_at", "canonical",
+    "journal_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.reconciliation-journal.v1"},
+    "format_version": {"const": 1},
+    "journal_id": {"$ref": "#/$defs/token"},
+    "context_id": {"$ref": "#/$defs/token"},
+    "generation": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "previous_journal_digest": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+    },
+    "state": {"enum": ["open", "closed"]},
+    "repository": {"$ref": "#/$defs/repository"},
+    "inventory": {"$ref": "#/$defs/inventory"},
+    "engine_inventory": {"$ref": "#/$defs/engineInventory"},
+    "current_snapshot": {"$ref": "#/$defs/snapshot"},
+    "checkpoints": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 256,
+      "items": {"$ref": "#/$defs/checkpoint"}
+    },
+    "compatibility": {"$ref": "#/$defs/compatibility"},
+    "extensions": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {"$ref": "#/$defs/extension"}
+    },
+    "recovery": {"$ref": "#/$defs/recovery"},
+    "started_at": {"$ref": "#/$defs/timestamp"},
+    "updated_at": {"$ref": "#/$defs/timestamp"},
+    "closed_at": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/timestamp"}]
+    },
+    "canonical": {"const": false},
+    "journal_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository_root", "repository_key", "worktree_key"],
+      "properties": {
+        "repository_root": {"$ref": "#/$defs/absolutePath"},
+        "repository_key": {"$ref": "#/$defs/digest"},
+        "worktree_key": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "inventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "paths", "digest"],
+      "properties": {
+        "source": {"enum": ["caller_declared"]},
+        "paths": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1024,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/relativePath"}
+        },
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "size", "digest"],
+      "properties": {
+        "path": {"$ref": "#/$defs/relativePath"},
+        "size": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["digest", "files"],
+      "properties": {
+        "digest": {"$ref": "#/$defs/digest"},
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1024,
+          "items": {"$ref": "#/$defs/file"}
+        }
+      }
+    },
+    "checkpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sequence", "kind", "operation_id", "observed_at", "snapshot_digest",
+        "changed_file_count", "engine_inventory_digest",
+        "previous_checkpoint_digest", "checkpoint_digest"
+      ],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1, "maximum": 256},
+        "kind": {"enum": ["begin", "checkpoint", "close", "recover"]},
+        "operation_id": {"$ref": "#/$defs/token"},
+        "observed_at": {"$ref": "#/$defs/timestamp"},
+        "snapshot_digest": {"$ref": "#/$defs/digest"},
+        "changed_file_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024
+        },
+        "engine_inventory_digest": {"$ref": "#/$defs/digest"},
+        "previous_checkpoint_digest": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+        },
+        "checkpoint_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "process_protocols", "journal_read_versions", "journal_write_version",
+        "minimum_reader_version", "required_capabilities",
+        "optional_capabilities", "opaque_extensions_preserved"
+      ],
+      "properties": {
+        "process_protocols": {
+          "type": "array",
+          "const": ["symphony.knowledge.engine-process.v1"]
+        },
+        "journal_read_versions": {
+          "type": "array",
+          "const": [1]
+        },
+        "journal_write_version": {"const": 1},
+        "minimum_reader_version": {"const": 1},
+        "required_capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/token"}
+        },
+        "optional_capabilities": {
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/token"}
+        },
+        "opaque_extensions_preserved": {"const": true}
+      }
+    },
+    "engineInventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binding_registry_digest", "entries", "digest"],
+      "properties": {
+        "binding_registry_digest": {"$ref": "#/$defs/digest"},
+        "entries": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 6,
+          "items": {"$ref": "#/$defs/engineInventoryEntry"}
+        },
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "engineInventoryEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role", "module_id", "engine_id", "version", "receipt_digest",
+        "executable_digest"
+      ],
+      "properties": {
+        "role": {
+          "enum": ["coordinator", "sacv", "sclv", "skvi", "sodv", "ssfv"]
+        },
+        "module_id": {"$ref": "#/$defs/token"},
+        "engine_id": {"$ref": "#/$defs/token"},
+        "version": {"$ref": "#/$defs/version"},
+        "receipt_digest": {"$ref": "#/$defs/digest"},
+        "executable_digest": {"$ref": "#/$defs/digest"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"role": {"const": "coordinator"}}},
+          "then": {"properties": {
+            "module_id": {"const": "knowledge-session-coordinator"},
+            "engine_id": {"const": "symphony-knowledge-session"}
+          }}
+        },
+        {
+          "if": {"properties": {"role": {"const": "sacv"}}},
+          "then": {"properties": {
+            "module_id": {"const": "sacv-engine"},
+            "engine_id": {"const": "symphony-sacv"}
+          }}
+        },
+        {
+          "if": {"properties": {"role": {"const": "sclv"}}},
+          "then": {"properties": {
+            "module_id": {"const": "sclv-engine"},
+            "engine_id": {"const": "symphony-sclv"}
+          }}
+        },
+        {
+          "if": {"properties": {"role": {"const": "skvi"}}},
+          "then": {"properties": {
+            "module_id": {"const": "skvi-engine"},
+            "engine_id": {"const": "symphony-skvi"}
+          }}
+        },
+        {
+          "if": {"properties": {"role": {"const": "sodv"}}},
+          "then": {"properties": {
+            "module_id": {"const": "sodv-engine"},
+            "engine_id": {"const": "symphony-sodv"}
+          }}
+        },
+        {
+          "if": {"properties": {"role": {"const": "ssfv"}}},
+          "then": {"properties": {
+            "module_id": {"const": "ssfv-engine"},
+            "engine_id": {"const": "symphony-ssfv"}
+          }}
+        }
+      ]
+    },
+    "extension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "extension_id", "extension_version", "critical", "payload",
+        "payload_digest"
+      ],
+      "properties": {
+        "extension_id": {"$ref": "#/$defs/token"},
+        "extension_version": {"$ref": "#/$defs/version"},
+        "critical": {"type": "boolean"},
+        "payload": {},
+        "payload_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state", "last_recovery_at", "disposition", "recovered_from_digest",
+        "detail"
+      ],
+      "properties": {
+        "state": {"enum": ["clean", "recovered"]},
+        "last_recovery_at": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/timestamp"}]
+        },
+        "disposition": {
+          "enum": [
+            "not_applicable", "adopted_linked_successor", "repaired_head",
+            "rolled_forward_from_valid_slot"
+          ]
+        },
+        "recovered_from_digest": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+        },
+        "detail": {"$ref": "#/$defs/text"}
+      }
+    },
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
+    },
+    "text": {"type": "string", "minLength": 1, "maxLength": 4096},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "timestamp": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"
+    },
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^(?!/)(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])[^/](?:.*[^/])?$"
+    },
+    "absolutePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^/(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])(?:$|[^/](?:.*[^/])?)$"
+    }
+  }
+}

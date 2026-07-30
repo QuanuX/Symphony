@@ -1,4 +1,5 @@
 #include "coordinator.hpp"
+#include "reconciliation.hpp"
 
 #include "symphony/knowledge/engine/error.hpp"
 #include "symphony/knowledge/engine/limits.hpp"
@@ -32,7 +33,8 @@ engine::Json inspect(const engine::Json& payload) {
     require_exact_fields(payload, {});
     return engine::Json{
         {"descriptor", descriptor()},
-        {"readiness", "read_only_foundation"},
+        {"readiness", "reconciliation_foundation"},
+        {"reconciliation", reconciliation_capabilities()},
         {"canonical_apply_enabled", false},
         {"session_mutation_enabled", false},
         {"maestro_docking_enabled", false},
@@ -112,11 +114,12 @@ engine::Json descriptor() {
         {"operations", engine::Json::array({
             engine::Json{{"name", "inspect"}, {"availability", "implemented"}, {"mutates_canonical", false}},
             engine::Json{{"name", "check"}, {"availability", "implemented"}, {"mutates_canonical", false}},
-            engine::Json{{"name", "begin"}, {"availability", "reserved"}, {"mutates_canonical", false}},
-            engine::Json{{"name", "status"}, {"availability", "reserved"}, {"mutates_canonical", false}},
-            engine::Json{{"name", "checkpoint"}, {"availability", "reserved"}, {"mutates_canonical", false}},
-            engine::Json{{"name", "close"}, {"availability", "reserved"}, {"mutates_canonical", false}},
-            engine::Json{{"name", "recover"}, {"availability", "reserved"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "compatibility"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "begin"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "status"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "checkpoint"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "close"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "recover"}, {"availability", "implemented"}, {"mutates_canonical", false}},
             engine::Json{{"name", "apply"}, {"availability", "disabled"}, {"mutates_canonical", true}},
         })},
         {"limits", engine::Json{
@@ -146,6 +149,11 @@ engine::Json handle_request(const engine::Request& request) {
     }
     if (request.operation == "check") {
         return check(request.payload, request.deadline_unix_ms);
+    }
+    if (request.operation == "compatibility" || request.operation == "begin" ||
+        request.operation == "status" || request.operation == "checkpoint" ||
+        request.operation == "close" || request.operation == "recover") {
+        return handle_reconciliation(request);
     }
     throw engine::Error("operation.unsupported", "operation is reserved or unsupported", 4);
 }

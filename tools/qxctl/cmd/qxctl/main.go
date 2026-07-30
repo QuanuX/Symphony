@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
@@ -20,6 +21,7 @@ import (
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/ssiagclient"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/status"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/stavclient"
+	qxversion "github.com/QuanuX/Symphony/tools/qxctl/internal/version"
 )
 
 func main() {
@@ -58,6 +60,12 @@ func printUsage() {
 	fmt.Println("  knowledge engines doctor [--state-root PATH] [--json] Verify every bound installation")
 	fmt.Println("  knowledge engines bind ROLE --prefix PATH [--version VERSION] --expected-registry-digest STATE [--json] Bind an exact installation")
 	fmt.Println("  knowledge engines unbind ROLE --expected-registry-digest DIGEST [--json] Remove one exact binding")
+	fmt.Println("  knowledge reconcile compatibility [--state-root PATH] [--repo PATH] [--json] Negotiate coordinator compatibility")
+	fmt.Println("  knowledge reconcile begin --operation-id ID --expected-journal-digest STATE --path FILE... [--json] Begin a durable context")
+	fmt.Println("  knowledge reconcile status [--state-root PATH] [--repo PATH] [--json] Read durable context status")
+	fmt.Println("  knowledge reconcile checkpoint --operation-id ID --expected-journal-digest DIGEST [--json] Record a durable checkpoint")
+	fmt.Println("  knowledge reconcile close --operation-id ID --expected-journal-digest DIGEST [--json] Close a durable context")
+	fmt.Println("  knowledge reconcile recover --operation-id ID (--expected-journal-digest DIGEST|--discover) [--json] Repair from durable evidence")
 	fmt.Println("  skvi inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SKVI engine")
 	fmt.Println("  skvi check --prefix PATH [--version VERSION] [--json] Check canonical SKVI index truth")
 	fmt.Println("  skvi propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared proposal")
@@ -205,6 +213,313 @@ func runKnowledgeEngines(operation string, options knowledgeEngineOptions) error
 	default:
 		return fmt.Errorf("unsupported knowledge engines operation")
 	}
+}
+
+func runKnowledgeReconcile(operation string, options knowledgeReconcileOptions) error {
+	if operation == "begin" || operation == "checkpoint" ||
+		operation == "close" || operation == "recover" {
+		if options.operationID == "" {
+			return fmt.Errorf("--operation-id is required")
+		}
+	}
+	expected := options.expectedJournalDigest
+	if operation == "begin" || operation == "checkpoint" || operation == "close" {
+		if expected == "" {
+			return fmt.Errorf("--expected-journal-digest is required")
+		}
+	}
+	if operation == "begin" && len(options.paths) == 0 {
+		return fmt.Errorf("at least one --path is required")
+	}
+	if operation == "recover" {
+		if options.discover && expected != "" {
+			return fmt.Errorf("--discover and --expected-journal-digest are mutually exclusive")
+		}
+		if options.discover {
+			expected = "discover"
+		}
+		if expected == "" {
+			return fmt.Errorf("--expected-journal-digest or --discover is required")
+		}
+	}
+
+	start := options.repository
+	if start == "" {
+		var err error
+		start, err = os.Getwd()
+		if err != nil {
+			return fmt.Errorf("could not get current working directory: %w", err)
+		}
+	}
+	start, err := filepath.Abs(start)
+	if err != nil {
+		return fmt.Errorf("resolve repository path: %w", err)
+	}
+	info, err := os.Lstat(start)
+	if err != nil || info.Mode()&os.ModeSymlink != 0 || !info.IsDir() {
+		return fmt.Errorf("--repo must identify a no-follow directory")
+	}
+	repoRoot, err := repository.FindRoot(start)
+	if err != nil {
+		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+
+	store, err := knowledgebinding.NewStore(options.stateRoot)
+	if err != nil {
+		return err
+	}
+	snapshot, err := store.Snapshot()
+	if err != nil {
+		return err
+	}
+	if !snapshot.Exists {
+		return fmt.Errorf("knowledge engine binding registry is absent")
+	}
+
+	type inventoryEntry struct {
+		Role             string `json:"role"`
+		ModuleID         string `json:"module_id"`
+		EngineID         string `json:"engine_id"`
+		Version          string `json:"version"`
+		ReceiptDigest    string `json:"receipt_digest"`
+		ExecutableDigest string `json:"executable_digest"`
+	}
+	inventoryEntries := make([]inventoryEntry, 0, len(snapshot.Registry.Bindings))
+	var coordinator *knowledgebinding.Binding
+	for index := range snapshot.Registry.Bindings {
+		binding := &snapshot.Registry.Bindings[index]
+		installed, inspectErr := knowledgeengine.InspectInstallation(
+			binding.Role, binding.Prefix, binding.Version)
+		if inspectErr != nil {
+			return fmt.Errorf("bound %s installation is unavailable: %w", binding.Role, inspectErr)
+		}
+		if installed.ModuleID != binding.ModuleID || installed.EngineID != binding.EngineID ||
+			installed.ReceiptPath != binding.ReceiptPath ||
+			installed.ReceiptDigest != binding.ReceiptDigest ||
+			installed.ExecutablePath != binding.ExecutablePath ||
+			installed.ExecutableDigest != binding.ExecutableDigest {
+			return fmt.Errorf("bound %s installation no longer matches its content-addressed identity", binding.Role)
+		}
+		inventoryEntries = append(inventoryEntries, inventoryEntry{
+			Role: binding.Role, ModuleID: binding.ModuleID, EngineID: binding.EngineID,
+			Version: binding.Version, ReceiptDigest: binding.ReceiptDigest,
+			ExecutableDigest: binding.ExecutableDigest,
+		})
+		if binding.Role == "coordinator" {
+			coordinator = binding
+		}
+	}
+	if coordinator == nil {
+		return fmt.Errorf("knowledge-session coordinator is not bound")
+	}
+
+	var operationID any
+	var expectedDigest any
+	if options.operationID != "" {
+		operationID = options.operationID
+	}
+	if expected != "" {
+		expectedDigest = expected
+	}
+	paths := options.paths
+	if paths == nil {
+		paths = []string{}
+	}
+	payload, err := json.Marshal(map[string]any{
+		"protocol":                "symphony.knowledge.reconciliation-command.v1",
+		"operation":               operation,
+		"state_root":              store.StateRoot(),
+		"operation_id":            operationID,
+		"expected_journal_digest": expectedDigest,
+		"paths":                   paths,
+		"binding_registry_digest": snapshot.Registry.RegistryDigest,
+		"engine_inventory":        inventoryEntries,
+		"client": map[string]any{
+			"client_id":              "qxctl",
+			"client_version":         strings.ReplaceAll(qxversion.Version, " ", "-"),
+			"process_protocols":      []string{"symphony.knowledge.engine-process.v1"},
+			"journal_read_versions":  []uint64{1},
+			"journal_write_versions": []uint64{1},
+			"capabilities": []string{
+				"atomic-head-v1",
+				"content-snapshot-v1",
+				"discovery-recovery-v1",
+				"dual-slot-journal-v1",
+				"expected-state-cas-v1",
+				"idempotent-operation-v1",
+				"nonblocking-lock-v1",
+				"opaque-extension-preservation-v1",
+				"recovery-forward-v1",
+			},
+		},
+	})
+	if err != nil {
+		return fmt.Errorf("encode reconciliation request: %w", err)
+	}
+	response, err := knowledgeengine.InvokeCoordinator(
+		context.Background(),
+		coordinator.Prefix,
+		coordinator.Version,
+		repoRoot,
+		operation,
+		payload,
+	)
+	if err != nil {
+		return err
+	}
+	result, err := validateReconciliationResult(response.Result, operation)
+	if err != nil {
+		return err
+	}
+	if options.jsonOutput {
+		var display any
+		if err := json.Unmarshal(response.Result, &display); err != nil {
+			return fmt.Errorf("decode reconciliation result: %w", err)
+		}
+		return printIndentedJSON(display)
+	}
+	digest := "absent"
+	if result.JournalDigest != nil {
+		digest = *result.JournalDigest
+	}
+	fmt.Printf(
+		"Knowledge reconciliation: operation=%s compatibility=%s present=%t changed=%t recovered=%t read_only=%t digest=%s canonical=false\n",
+		result.Operation, result.Mode, *result.JournalPresent,
+		*result.Changed, *result.Recovered, *result.ReadOnly, digest,
+	)
+	return nil
+}
+
+type reconciliationResult struct {
+	Protocol       string          `json:"protocol"`
+	Operation      string          `json:"operation"`
+	Compatibility  json.RawMessage `json:"compatibility"`
+	JournalPresent *bool           `json:"journal_present"`
+	Journal        json.RawMessage `json:"journal"`
+	JournalDigest  *string         `json:"journal_digest"`
+	Changed        *bool           `json:"changed"`
+	Recovered      *bool           `json:"recovered"`
+	RepairActions  []string        `json:"repair_actions"`
+	ReadOnly       *bool           `json:"read_only"`
+	ApplyEnabled   *bool           `json:"canonical_apply_enabled"`
+	Canonical      *bool           `json:"canonical"`
+	Mode           string          `json:"-"`
+}
+
+func validateReconciliationResult(raw json.RawMessage, operation string) (reconciliationResult, error) {
+	var fields map[string]json.RawMessage
+	if err := json.Unmarshal(raw, &fields); err != nil {
+		return reconciliationResult{}, fmt.Errorf("decode reconciliation result: %w", err)
+	}
+	required := map[string]struct{}{
+		"protocol": {}, "operation": {}, "compatibility": {}, "journal_present": {},
+		"journal": {}, "journal_digest": {}, "changed": {}, "recovered": {},
+		"repair_actions": {}, "read_only": {}, "canonical_apply_enabled": {}, "canonical": {},
+	}
+	if len(fields) != len(required) {
+		return reconciliationResult{}, fmt.Errorf("reconciliation result has an invalid field set")
+	}
+	for field := range fields {
+		if _, ok := required[field]; !ok {
+			return reconciliationResult{}, fmt.Errorf("reconciliation result contains unknown field %q", field)
+		}
+	}
+	var result reconciliationResult
+	if err := json.Unmarshal(raw, &result); err != nil {
+		return reconciliationResult{}, fmt.Errorf("decode reconciliation result: %w", err)
+	}
+	if result.Protocol != "symphony.knowledge.reconciliation-result.v1" ||
+		result.Operation != operation || result.JournalPresent == nil ||
+		result.Changed == nil || result.Recovered == nil || result.ReadOnly == nil ||
+		!explicitFalse(result.ApplyEnabled) || !explicitFalse(result.Canonical) ||
+		result.RepairActions == nil || len(result.RepairActions) > 32 {
+		return reconciliationResult{}, fmt.Errorf("reconciliation result violates the v1 identity contract")
+	}
+	for _, action := range result.RepairActions {
+		if action == "" || len(action) > 4096 || strings.IndexFunc(action, func(character rune) bool {
+			return character < 0x20 || character == 0x7f
+		}) >= 0 {
+			return reconciliationResult{}, fmt.Errorf("reconciliation result contains unsafe repair guidance")
+		}
+	}
+	var compatibilityFields map[string]json.RawMessage
+	if err := json.Unmarshal(result.Compatibility, &compatibilityFields); err != nil ||
+		len(compatibilityFields) != 7 {
+		return reconciliationResult{}, fmt.Errorf("reconciliation compatibility result is invalid")
+	}
+	for _, field := range []string{
+		"mode", "process_protocol", "journal_read_version", "journal_write_version",
+		"shared_capabilities", "missing_capabilities", "reasons",
+	} {
+		if _, ok := compatibilityFields[field]; !ok {
+			return reconciliationResult{}, fmt.Errorf("reconciliation compatibility result is incomplete")
+		}
+	}
+	var compatibility struct {
+		Mode                string   `json:"mode"`
+		ProcessProtocol     *string  `json:"process_protocol"`
+		JournalReadVersion  *uint64  `json:"journal_read_version"`
+		JournalWriteVersion *uint64  `json:"journal_write_version"`
+		SharedCapabilities  []string `json:"shared_capabilities"`
+		MissingCapabilities []string `json:"missing_capabilities"`
+		Reasons             []string `json:"reasons"`
+	}
+	if err := json.Unmarshal(result.Compatibility, &compatibility); err != nil ||
+		(compatibility.Mode != "full" && compatibility.Mode != "read_only" &&
+			compatibility.Mode != "migration_required" && compatibility.Mode != "unsupported") ||
+		compatibility.SharedCapabilities == nil ||
+		compatibility.MissingCapabilities == nil ||
+		compatibility.Reasons == nil || len(compatibility.Reasons) == 0 ||
+		len(compatibility.Reasons) > 32 {
+		return reconciliationResult{}, fmt.Errorf("reconciliation compatibility mode is invalid")
+	}
+	for _, reason := range compatibility.Reasons {
+		if reason == "" || len(reason) > 4096 || strings.IndexFunc(reason, func(character rune) bool {
+			return character < 0x20 || character == 0x7f
+		}) >= 0 {
+			return reconciliationResult{}, fmt.Errorf("reconciliation compatibility reason is unsafe")
+		}
+	}
+	if compatibility.Mode == "full" &&
+		(compatibility.ProcessProtocol == nil ||
+			*compatibility.ProcessProtocol != "symphony.knowledge.engine-process.v1" ||
+			compatibility.JournalReadVersion == nil ||
+			*compatibility.JournalReadVersion != 1 ||
+			compatibility.JournalWriteVersion == nil ||
+			*compatibility.JournalWriteVersion != 1 ||
+			len(compatibility.MissingCapabilities) != 0) {
+		return reconciliationResult{}, fmt.Errorf("full reconciliation compatibility evidence is inconsistent")
+	}
+	result.Mode = compatibility.Mode
+	journalIsNull := bytes.Equal(bytes.TrimSpace(result.Journal), []byte("null"))
+	if !*result.JournalPresent {
+		if !journalIsNull || result.JournalDigest != nil {
+			return reconciliationResult{}, fmt.Errorf("absent reconciliation journal result is inconsistent")
+		}
+	} else {
+		if journalIsNull || result.JournalDigest == nil || !validTaggedDigest(*result.JournalDigest) {
+			return reconciliationResult{}, fmt.Errorf("present reconciliation journal result is incomplete")
+		}
+		var journal struct {
+			Protocol      string `json:"protocol"`
+			JournalDigest string `json:"journal_digest"`
+			Canonical     *bool  `json:"canonical"`
+		}
+		if err := json.Unmarshal(result.Journal, &journal); err != nil ||
+			journal.Protocol != "symphony.knowledge.reconciliation-journal.v1" ||
+			journal.JournalDigest != *result.JournalDigest ||
+			!explicitFalse(journal.Canonical) {
+			return reconciliationResult{}, fmt.Errorf("reconciliation journal identity is invalid")
+		}
+	}
+	isReadOperation := operation == "compatibility" || operation == "status"
+	if *result.ReadOnly != isReadOperation ||
+		(!isReadOperation && compatibility.Mode != "full") ||
+		(operation != "recover" && *result.Recovered) ||
+		(operation == "recover" && *result.Recovered != *result.Changed) {
+		return reconciliationResult{}, fmt.Errorf("reconciliation result mutation flags are inconsistent")
+	}
+	return result, nil
 }
 
 func printIndentedJSON(value any) error {

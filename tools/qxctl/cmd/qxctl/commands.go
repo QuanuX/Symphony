@@ -85,6 +85,16 @@ type knowledgeEngineOptions struct {
 	jsonOutput             bool
 }
 
+type knowledgeReconcileOptions struct {
+	stateRoot             string
+	repository            string
+	operationID           string
+	expectedJournalDigest string
+	paths                 []string
+	discover              bool
+	jsonOutput            bool
+}
+
 func execute(args []string) int {
 	if len(args) == 0 {
 		printUsage()
@@ -175,7 +185,7 @@ func newKnowledgeCommand() *cobra.Command {
 		Use:  "knowledge",
 		Args: usageOnlyArgs,
 		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge subcommand is required: engines")
+			return fmt.Errorf("knowledge subcommand is required: engines or reconcile")
 		},
 	}
 	engines := &cobra.Command{
@@ -223,6 +233,60 @@ func newKnowledgeCommand() *cobra.Command {
 	}
 	engines.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	command.AddCommand(engines)
+
+	reconcile := &cobra.Command{
+		Use:  "reconcile",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return fmt.Errorf("knowledge reconcile subcommand is required: compatibility, begin, status, checkpoint, close, or recover")
+		},
+	}
+	for _, operation := range []string{"compatibility", "begin", "status", "checkpoint", "close", "recover"} {
+		options := knowledgeReconcileOptions{}
+		child := &cobra.Command{
+			Use:  operation,
+			Args: usageOnlyArgs,
+			RunE: func(*cobra.Command, []string) error {
+				return runKnowledgeReconcile(operation, options)
+			},
+		}
+		child.Flags().StringVar(
+			&options.stateRoot, "state-root", "",
+			"user state root; defaults to XDG_STATE_HOME or ~/.local/state",
+		)
+		child.Flags().StringVar(
+			&options.repository, "repo", "",
+			"Symphony repository path; defaults to the current repository",
+		)
+		child.Flags().BoolVar(&options.jsonOutput, "json", false, "emit operation result JSON")
+		if operation == "begin" || operation == "checkpoint" ||
+			operation == "close" || operation == "recover" {
+			child.Flags().StringVar(
+				&options.operationID, "operation-id", "",
+				"stable idempotency token for this mutation",
+			)
+			child.Flags().StringVar(
+				&options.expectedJournalDigest, "expected-journal-digest", "",
+				"required prior journal state: absent or exact tagged SHA-256 digest",
+			)
+		}
+		if operation == "begin" {
+			child.Flags().StringSliceVar(
+				&options.paths, "path", nil,
+				"repository-relative file to reconcile; repeat for additional files",
+			)
+		}
+		if operation == "recover" {
+			child.Flags().BoolVar(
+				&options.discover, "discover", false,
+				"recover from uniquely validated local evidence when the head is unavailable",
+			)
+		}
+		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+		reconcile.AddCommand(child)
+	}
+	reconcile.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	command.AddCommand(reconcile)
 	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	return command
 }
@@ -629,6 +693,12 @@ func failurePrefix(args []string) string {
 			switch args[2] {
 			case "list", "inspect", "doctor", "bind", "unbind":
 				return "knowledge engines " + args[2]
+			}
+		}
+		if len(args) > 2 && args[1] == "reconcile" {
+			switch args[2] {
+			case "compatibility", "begin", "status", "checkpoint", "close", "recover":
+				return "knowledge reconcile " + args[2]
 			}
 		}
 	case "skvi":

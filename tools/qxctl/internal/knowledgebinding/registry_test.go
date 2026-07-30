@@ -136,6 +136,10 @@ func TestInvalidRolesExpectedStateAndStateRootsFailClosed(t *testing.T) {
 	if _, err := NewStore("relative"); err == nil {
 		t.Fatal("relative state root was accepted")
 	}
+	root := filepath.VolumeName(filepath.Clean(os.TempDir())) + string(os.PathSeparator)
+	if _, err := NewStore(root); err == nil {
+		t.Fatal("filesystem root was accepted as application state")
+	}
 	store, _ := NewStore(filepath.Join(t.TempDir(), "state"))
 	if _, _, err := store.Bind("unknown", t.TempDir(), "0.1.0-dev", "absent"); err == nil {
 		t.Fatal("unknown role was accepted")
