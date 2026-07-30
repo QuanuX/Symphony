@@ -2315,3 +2315,115 @@ This PR authorizes none of the following:
   - `native Windows engine implementation, hot-path participation, warm-path participation, trading-node doctrine, or Go 1.27 production pin`
 - notes: |
     This post-merge closure records the exact three-record partial SSFV bootstrap merged by PR #89. The closure record is appended separately so the implementation revision and provider-neutral evidence remain immutable and independently verifiable. All 17 changed files are listed as affected surfaces. The three unindexed engine source and test paths remain explicit advisory evidence rather than being hidden through selective omission or artificial SKVI expansion. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
+
+- record_id: `SCLV-CHG-20260730-KNOWLEDGE-ENGINE-BINDING-REGISTRY`
+- record_version: `3`
+- title: `Protected knowledge-engine binding registry implemented`
+- status: `canonical`
+- date: `2026-07-30`
+- change_started_at: `2026-07-29T23:49:36Z`
+- change_completed_at: `2026-07-30T14:22:12Z`
+- recorded_at: `2026-07-30T14:24:59Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `canonical_addition`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#91`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/91`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `9f50167e6f8945d271dd167db9656de6d1a19300`
+- tree_digest: `sha256:097d1d5498d043dc4919b8a530229d4169d4a950b47891b3b0b86aafdbc02608`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/91`
+- ratification_evidence_digest: `sha256:c21f5398a3a517959350c4daa2661c4e74c744fabea5ac52e4d1d3afd58f8325`
+- affected_surfaces:
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/engine-binding-registry.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `libraries/knowledge-vector-engine-cpp/tests/foundation_test.cpp`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `modules/knowledge-session-coordinator/MANIFEST.md`
+  - `modules/knowledge-session-coordinator/SKILL.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgebinding/registry.go`
+  - `tools/qxctl/internal/knowledgebinding/registry_test.go`
+  - `tools/qxctl/internal/knowledgebinding/state_unix.go`
+  - `tools/qxctl/internal/knowledgebinding/state_unsupported.go`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/qxctl/internal/knowledgeengine/client_test.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/engine-binding-registry.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `modules/knowledge-session-coordinator/MANIFEST.md`
+  - `modules/knowledge-session-coordinator/SKILL.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/internal/knowledgebinding/registry.go`
+  - `tools/qxctl/internal/knowledgebinding/state_unix.go`
+  - `tools/qxctl/internal/knowledgebinding/state_unsupported.go`
+- change_summary: |
+    Under the Architect's direction, PR #91 implemented the first protected knowledge-engine binding registry and the qxctl cross-vector administration surface for it. The user-scope default profile can bind one exact inactive-undocked installation for the coordinator and each of the five implemented vector-engine roles, retaining receipt and executable content digests for later reconciliation.
+- relationship_changes: |
+    knowledge/ owns the canonical common binding protocol and schema. qxctl owns Cobra grammar plus the protected noncanonical registry implementation. The common knowledge-engine client validates exact coordinator and vector-engine installations before they can be bound. Vector contracts continue to own semantic behavior, install receipts continue to describe inactive-undocked packages, and Maestro docking remains a separate future relationship.
+- doctrine_changes: |
+    Binding is explicit exact-version selection, not newest-version discovery, installation, activation, invocation, authentication, authorization, session establishment, canonical apply, or docking. Multiple engine versions may remain installed, while one exact version is selected per role in the implemented user-default profile. Every mutation requires the exact expected prior registry state and remains caller-neutral within effective host permission.
+- compatibility_consequences: |
+    qxctl now exposes `knowledge engines list`, `inspect`, `doctor`, `bind`, and `unbind`. Existing vector-specific invocation grammar remains compatible and still accepts explicit prefixes and versions. The new registry uses a closed v1 JSON contract, generation and prior-digest continuity, strict file ownership and mode rules, descriptor-relative no-follow traversal on Linux and macOS, and fail-closed behavior on unsupported native operating systems.
+- publication_consequences: |
+    No module tag, release artifact, package coordinate, container, SDK, OpenAPI surface, Mintlify publication, public documentation release, marketing claim, or platform launch was published or authorized. The implementation remains active-development source on the rolling main branch.
+- projection_consequences: |
+    List, inspect, and doctor results are bounded administrative projections over the noncanonical binding registry and installed content. They do not create a canonical vector record, persistent semantic graph, Maestro receptor, repository profile, system/TOPS profile, remote endpoint, watcher, or engine process.
+- evidence:
+  - `PR #91 merged into main at 2026-07-30T14:22:12Z by quantDIY as 9f50167e6f8945d271dd167db9656de6d1a19300`
+  - `implementation head d311ad1db8caa4043ab51bc91f72f4a3b8eaca6c; 30 files changed, 1754 insertions, 43 deletions`
+  - `local-Git adapter evidence digest sha256:e15626645b43c3768ad10dfb92d96191d3b5cd37e6eb3998b5bac4728e1c98f0 bound tree digest sha256:097d1d5498d043dc4919b8a530229d4169d4a950b47891b3b0b86aafdbc02608`
+  - `provider-neutral ratification evidence digest sha256:a253efaa01da630aaa5ae3e6a32e0ba6e3837aa99780464b5168350e0b0e4d02 bound canonical PR metadata digest sha256:c21f5398a3a517959350c4daa2661c4e74c744fabea5ac52e4d1d3afd58f8325`
+  - `qxctl go test ./... passed, including adversarial registry, exact coordinator receipt, and CLI compatibility tests`
+  - `knowledge-vector foundation CTest passed with the seventh common schema`
+  - `full symphony-validator build and smoke matrix passed; pre-closure live result pass=3626 warning=199 violation=0 exit=0`
+  - `all pre-closure warnings were the established sclv.affected_surface.unindexed advisory class`
+  - `closure SCLV engine check reported 22 records, 88 passes, 0 warnings, 0 violations, and valid state`
+  - `closure validator result pass=3729 warning=206 violation=0 exit=0; the seven-record advisory delta is exclusively the implementation and test paths listed by this record`
+  - `an independently installed SKVI package passed bind, inspect, doctor, and unbind integration with generation and digest continuity`
+  - `PR #91 reported no configured checks and was mergeable at the exact reviewed head`
+- non_authorizations:
+  - `implicit newest-version selection, package installation, upgrade, rollback, activation, invocation, or uninstall`
+  - `repository-specific, system-wide, TOPS-scoped, or multi-profile binding administration`
+  - `authenticated-session establishment, reconciliation-journal mutation, writer observer, coordinator-to-vector invocation, or lifecycle apply`
+  - `live Maestro receptor, docking, activation, persistent receptor state, or module orchestration`
+  - `canonical knowledge mutation, proposal ratification, canonical apply, or engine-owned semantic truth`
+  - `operational SSIAG provider access, credential delivery, caller classification, or new STAV append behavior`
+  - `network listener, remote binding API, socket service, daemon, watcher, or background process`
+  - `native Windows implementation, hot-path participation, warm-path participation, trading-node doctrine, or Go 1.27 production pin`
+  - `module tag, binary release, package publication, public documentation, SDK generation, or launch claim`
+- notes: |
+    This post-merge closure records the protected knowledge-engine binding implementation merged by PR #91. The closure record is appended separately so the implementation revision and provider-neutral evidence remain immutable and independently verifiable. Every changed file is listed as an affected surface. Unindexed implementation and test paths remain explicit advisory evidence rather than being hidden through selective omission or artificial SKVI expansion. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
