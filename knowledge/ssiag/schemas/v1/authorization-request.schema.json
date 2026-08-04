@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:authorization-request:v1",
+  "title": "Symphony SSIAG authorization request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "request_id", "correlation_id", "operation", "resource",
+    "audience", "scope", "requested_at", "requested_expires_at"
+  ],
+  "properties": {
+    "schema": {"const": "symphony.ssiag.authorization-request.v1"},
+    "request_id": {"$ref": "#/$defs/token"},
+    "correlation_id": {"$ref": "#/$defs/token"},
+    "operation": {"$ref": "#/$defs/token"},
+    "resource": {"$ref": "#/$defs/token"},
+    "audience": {"$ref": "#/$defs/token"},
+    "scope": {"$ref": "#/$defs/token"},
+    "requested_at": {"$ref": "#/$defs/timestamp"},
+    "requested_expires_at": {"$ref": "#/$defs/timestamp"}
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "timestamp": {"type": "string", "format": "date-time", "pattern": "Z$"}
+  }
+}

@@ -144,3 +144,39 @@ func TestLegacyMetadataConfigHasNoSubjectAuthority(t *testing.T) {
 		t.Fatalf("legacy configuration unexpectedly gained subject authority: %+v", cfg.Authentication)
 	}
 }
+
+func TestAuthorizationGrantsAreExactAndReferenceMappedSubjects(t *testing.T) {
+	cfg := validConfig(t)
+	uid, gid := uint32(501), uint32(20)
+	cfg.Authentication = &AuthenticationConfig{
+		Mechanism: "unix_peer_credentials",
+		Subjects:  []SubjectConfig{{ID: "owner.primary", Kind: "owner", UID: &uid, GID: &gid}},
+	}
+	cfg.Authorization = &AuthorizationConfig{
+		DefaultEffect: "deny", MaxCapabilitySeconds: 900,
+		Grants: []AuthorizationGrant{{
+			ID: "session-begin", SubjectID: "owner.primary", AuthorityBasis: "host_owner",
+			Operation: "symphony.knowledge.session.begin", Resource: "symphony.knowledge.repository:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+			Audience: "qxctl", Scope: "tops:" + cfg.TOPS.ID,
+		}},
+	}
+	if err := cfg.Validate(); err != nil {
+		t.Fatal(err)
+	}
+	duplicate := cfg.Authorization.Grants[0]
+	duplicate.ID = "session-begin-duplicate"
+	cfg.Authorization.Grants = append(cfg.Authorization.Grants, duplicate)
+	if err := cfg.Validate(); err == nil {
+		t.Fatal("ambiguous exact authorization grants were accepted")
+	}
+	cfg.Authorization.Grants = cfg.Authorization.Grants[:1]
+	cfg.Authorization.Grants[0].SubjectID = "unknown"
+	if err := cfg.Validate(); err == nil {
+		t.Fatal("grant for an unmapped subject was accepted")
+	}
+	cfg.Authorization.Grants[0].SubjectID = "owner.primary"
+	cfg.Authorization.DefaultEffect = "allow"
+	if err := cfg.Validate(); err == nil {
+		t.Fatal("allow-by-default policy was accepted")
+	}
+}

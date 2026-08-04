@@ -37,8 +37,8 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/knowledge-session-coordinator`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:abdf3f2345db365798d9db0a3947c0f43d774f4acf46d9454a5eb311e61289e7`
-- notes: First partial bootstrap record for the implemented durable reconciliation coordinator foundation; authenticated session mutation remains unimplemented.
+- record_digest: `sha256:99d9ab9054541abd08fb42ad686a027a725823959eb306cbc29fb294661b2899`
+- notes: First partial bootstrap record for the implemented durable reconciliation and SSIAG-authorized noncanonical authenticated-session coordinator foundation; canonical apply remains disabled.
 
 - feature_id: `ssfv:symphony:knowledge-vector-engine-foundation`
 - feature_file: `libraries/knowledge-vector-engine-cpp/FEATURES.md`

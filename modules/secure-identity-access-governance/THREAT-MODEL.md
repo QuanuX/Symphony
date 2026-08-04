@@ -69,7 +69,7 @@ Draft threat model for the scaffold and planned provider phases. It uses assets,
 - persistent no-follow socket lifecycle lock acquired after service-identity verification;
 - conservative stale-socket proof and lock-last shutdown cleanup;
 
-Socket permissions and ownership alone are not endpoint authentication; the post-dial kernel credential check is authoritative. Mutation remains disabled pending policy, replay/binding, adapter trust, and audit gates rather than endpoint-authentication review.
+Socket permissions and ownership alone are not endpoint authentication; the post-dial kernel credential check is authoritative. Exact policy decisions and noncanonical knowledge-session coordination are implemented. Canonical mutation and provider operations remain disabled pending their separate replay/binding, adapter-trust, safeguard, and apply gates rather than endpoint-authentication review.
 
 ### Supervisor Authority or Restart Abuse
 **Threat:** A service manager grants itself application authority, tightly couples bootstrap services, restarts in a hot loop, or leaves a second process racing the endpoint.
@@ -242,7 +242,7 @@ STAV v1 detects tampering but does not provide non-repudiation. No caller, qxctl
 - Excessive provider SDK permissions.
 
 ## Implemented and Unimplemented Controls
-The module does not expose credential mutation/use endpoints. Kernel peer authentication is implemented on accepted Darwin/Linux connections, including exact UID/GID subject resolution and fail-closed ambiguous mapping. SSIAG verifies its configured process identity before runtime mutation; qxctl and the self-client load scope-exact trust and verify the exact connected endpoint before sending HTTP bytes. SSIAG's typed STAV producer authenticates the authority endpoint, exposes no secret-bearing field, and requires a committed receipt. Per-TOPS launchd/systemd definitions, lifecycle provisioning, exact owner validation, socket lifecycle locking, and direct-run-versus-supervised enforcement are implemented. Provider mutual executable trust, per-user Keychain access, control/secret channel separation, and proposal/apply mutation remain ratified but unimplemented controls.
+The module does not expose credential mutation/use endpoints. Kernel peer authentication is implemented on accepted Darwin/Linux connections, including exact UID/GID subject resolution and fail-closed ambiguous mapping. SSIAG verifies its configured process identity before runtime mutation; qxctl and the self-client load scope-exact trust and verify the exact connected endpoint before sending HTTP bytes. Exact-grant deny-by-default policy evaluation issues only short-lived non-transferable capability evidence, binds it to the complete request and configuration, records that caller class was not used, and refuses to release any decision unless the safe STAV append commits. qxctl and the coordinator independently reject target drift, expiry, a false neutrality assertion, a canonical-apply claim, or a capability-binding mismatch. Per-TOPS launchd/systemd definitions, lifecycle provisioning, exact owner validation, socket lifecycle locking, and direct-run-versus-supervised enforcement are implemented. Provider mutual executable trust, per-user Keychain access, control/secret channel separation, safeguard administration, and proposal/canonical-apply mutation remain ratified but unimplemented controls.
 
 Configured production caller subjects, distinct-account integration evidence, signing requirements, Keychain item policy, secret buffers, lease replay, and provider channel framing remain release blockers for those later capabilities, not accepted residual risks.
 
@@ -251,8 +251,10 @@ Configured production caller subjects, distinct-account integration evidence, si
 - Verify socket path collision with a regular file fails closed.
 - Verify requests without accepted-connection credential context fail closed.
 - Verify exact UID/GID mappings resolve once and duplicate/ambiguous mappings are rejected.
+- Verify authorization requests cannot supply subject or caller class, exact grants are required, unmatched/wildcard targets deny, and equivalent subject permissions produce the same result across caller kinds.
+- Verify an unavailable or failed STAV append releases no decision, and decision/capability target, expiry, neutrality, non-transferability, non-apply, and binding drift are rejected by qxctl/coordinator consumers.
 - Verify a wrong endpoint is rejected before application bytes and a socket override cannot replace configured identity.
-- Verify methods other than declared read-only endpoints are rejected.
+- Verify methods and routes outside declared metadata and authorization endpoints are rejected.
 - Verify provider duplicates and invalid names fail configuration validation.
 - Verify install/uninstall path and digest protections.
 - Verify two TOPS identities cannot collide or cross-query.

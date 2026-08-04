@@ -2,7 +2,7 @@
 
 ## Status and Requirements
 
-The host installer, per-TOPS enrollment lifecycle, native supervision, and metadata-only API are implemented. Operational providers remain intentionally disabled.
+The host installer, per-TOPS enrollment lifecycle, native supervision, safe metadata API, and audited deny-by-default authorization endpoint are implemented. Operational credential providers, policy mutation, safeguard administration, and canonical apply remain intentionally disabled.
 
 Requirements: a supported TOPS operating system and Go 1.26.5 for source builds. Python, cgo, containers, Kubernetes, NATS, and cloud infrastructure are not required.
 
@@ -93,7 +93,7 @@ Every accepted Darwin/Linux connection is kernel-authenticated even when this ar
 }
 ```
 
-Use numeric effective identities obtained from the operating system; do not derive them from a display name or accept a request-supplied subject. Subject IDs and UID/GID pairs must both be unique. Ambiguous mappings prevent SSIAG from starting. The current endpoints are read-only, so a mapping reserves identity but grants no credential, provider, policy, or apply capability.
+Use numeric effective identities obtained from the operating system; do not derive them from a display name or accept a request-supplied subject. Subject IDs and UID/GID pairs must both be unique. Ambiguous mappings prevent SSIAG from starting. A mapping establishes identity only. Authorization additionally requires an explicit exact grant, and even an allow decision grants no credential, provider, policy-mutation, safeguard, or canonical-apply capability.
 
 ## Install Native Supervision and Verify One Enrollment
 

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:capability:v1",
+  "title": "Symphony SSIAG non-transferable capability evidence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "capability_id", "subject", "tops_id", "target",
+    "authority_basis", "grant_id", "request_id", "correlation_id",
+    "issued_at", "expires_at", "policy_digest", "config_digest",
+    "binding_digest", "transferable", "canonical_apply"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.capability.v1"},
+    "capability_id": {"$ref": "#/$defs/token"},
+    "subject": {"$ref": "#/$defs/subject"},
+    "tops_id": {"$ref": "#/$defs/uuid"},
+    "target": {"$ref": "#/$defs/target"},
+    "authority_basis": {"enum": ["host_owner", "granted_permission"]},
+    "grant_id": {"$ref": "#/$defs/token"},
+    "request_id": {"$ref": "#/$defs/token"},
+    "correlation_id": {"$ref": "#/$defs/token"},
+    "issued_at": {"$ref": "#/$defs/timestamp"},
+    "expires_at": {"$ref": "#/$defs/timestamp"},
+    "policy_digest": {"$ref": "#/$defs/digest"},
+    "config_digest": {"$ref": "#/$defs/digest"},
+    "binding_digest": {"$ref": "#/$defs/digest"},
+    "transferable": {"const": false},
+    "canonical_apply": {"const": false}
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "uuid": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "timestamp": {"type": "string", "format": "date-time", "pattern": "Z$"},
+    "subject": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "authority"],
+      "properties": {"id": {"$ref": "#/$defs/token"}, "kind": {"$ref": "#/$defs/token"}, "authority": {"const": "unix_peer_credentials"}}
+    },
+    "target": {
+      "type": "object", "additionalProperties": false,
+      "required": ["operation", "resource", "audience", "scope"],
+      "properties": {
+        "operation": {"$ref": "#/$defs/token"}, "resource": {"$ref": "#/$defs/token"},
+        "audience": {"$ref": "#/$defs/token"}, "scope": {"$ref": "#/$defs/token"}
+      }
+    }
+  }
+}

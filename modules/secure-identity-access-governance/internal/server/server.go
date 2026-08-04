@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net"
 	"net/http"
 	"os"
@@ -12,10 +13,13 @@ import (
 	"syscall"
 	"time"
 
+	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/model"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/peerauth"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/policy"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/provider"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/stavproducer"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/version"
 )
 
@@ -23,15 +27,27 @@ const (
 	maxHeaderBytes           = 16 << 10
 	shutdownTimeout          = 5 * time.Second
 	activeSocketProbeTimeout = 250 * time.Millisecond
+	maxRequestBytes          = 64 << 10
 )
+
+type auditSink interface {
+	Submit(context.Context, stavproducer.Record) (stavprotocol.Receipt, error)
+}
 
 type Server struct {
 	config   config.Config
 	registry *provider.Registry
 	resolver peerauth.Resolver
+	policy   policy.Evaluator
+	audit    auditSink
+	now      func() time.Time
 }
 
 func New(cfg config.Config, registry *provider.Registry) (*Server, error) {
+	return NewWithAudit(cfg, registry, nil)
+}
+
+func NewWithAudit(cfg config.Config, registry *provider.Registry, audit auditSink) (*Server, error) {
 	if err := cfg.Validate(); err != nil {
 		return nil, err
 	}
@@ -54,14 +70,82 @@ func New(cfg config.Config, registry *provider.Registry) (*Server, error) {
 	if err != nil {
 		return nil, fmt.Errorf("configure peer subject mapping: %w", err)
 	}
-	return &Server{config: cfg, registry: registry, resolver: resolver}, nil
+	policyEngine, err := policy.New(cfg, time.Now)
+	if err != nil {
+		return nil, fmt.Errorf("configure authorization policy: %w", err)
+	}
+	return &Server{
+		config: cfg, registry: registry, resolver: resolver,
+		policy: policyEngine, audit: audit, now: time.Now,
+	}, nil
 }
 
 func (s *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/v1/status", s.handleStatus)
 	mux.HandleFunc("/v1/providers", s.handleProviders)
+	mux.HandleFunc("/v1/authorization/decisions", s.handleAuthorization)
 	return s.requireAuthenticatedPeer(mux)
+}
+
+func (s *Server) handleAuthorization(writer http.ResponseWriter, request *http.Request) {
+	if request.Method != http.MethodPost {
+		writeError(writer, http.StatusMethodNotAllowed, "request.method_not_allowed", "method not allowed")
+		return
+	}
+	subject, err := peerauth.SubjectFromContext(request.Context())
+	if err != nil {
+		writeError(writer, http.StatusForbidden, "request.subject_unmapped", "authenticated peer has no canonical subject mapping")
+		return
+	}
+	request.Body = http.MaxBytesReader(writer, request.Body, maxRequestBytes)
+	decoder := json.NewDecoder(request.Body)
+	decoder.DisallowUnknownFields()
+	var candidate model.AuthorizationRequest
+	if err := decoder.Decode(&candidate); err != nil {
+		writeError(writer, http.StatusBadRequest, "request.invalid_json", "authorization request is not valid bounded JSON")
+		return
+	}
+	var extra any
+	if err := decoder.Decode(&extra); err == nil {
+		writeError(writer, http.StatusBadRequest, "request.multiple_values", "authorization request contains multiple JSON values")
+		return
+	} else if !errors.Is(err, io.EOF) {
+		writeError(writer, http.StatusBadRequest, "request.invalid_trailing_data", "authorization request contains invalid trailing data")
+		return
+	}
+	now := s.now().UTC()
+	if err := policy.ValidateRequest(candidate, now); err != nil {
+		writeError(writer, http.StatusBadRequest, "request.authorization_invalid", err.Error())
+		return
+	}
+	decision := s.policy.Evaluate(request.Context(), subject, candidate)
+	if s.audit == nil {
+		writeError(writer, http.StatusServiceUnavailable, "audit.unavailable", "STAV append authority is unavailable")
+		return
+	}
+	outcome := "denied"
+	if decision.Effect == "allow" {
+		outcome = "allowed"
+	}
+	_, err = s.audit.Submit(request.Context(), stavproducer.Record{
+		Kind: stavproducer.PolicyDecision, RequestID: decision.RequestID,
+		CorrelationID:  decision.CorrelationID,
+		Actor:          stavprotocol.SafeReference{ID: decision.Subject.ID, Kind: decision.Subject.Kind},
+		Authentication: stavprotocol.Authentication{MethodID: "symphony.ssiag.local-peer", State: "identified"},
+		Target:         stavprotocol.SafeReference{ID: decision.Target.Resource, Kind: "symphony.ssiag.resource"},
+		Outcome:        outcome,
+		Configuration: stavprotocol.Configuration{
+			PreviousDigest: decision.ConfigDigest, NewDigest: decision.ConfigDigest, State: "digests",
+		},
+		TROG:           stavprotocol.TROG{ReasonCode: "symphony.stav.trog.not-applicable", State: "not_applicable"},
+		Classification: "administrative_metadata",
+	})
+	if err != nil {
+		writeError(writer, http.StatusServiceUnavailable, "audit.append_failed", "authorization decision could not be durably audited")
+		return
+	}
+	writeJSON(writer, http.StatusOK, decision)
 }
 
 func (s *Server) Run(ctx context.Context) error {

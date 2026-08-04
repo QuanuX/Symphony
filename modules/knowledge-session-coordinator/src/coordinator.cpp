@@ -1,4 +1,5 @@
 #include "coordinator.hpp"
+#include "authority_session.hpp"
 #include "reconciliation.hpp"
 
 #include "symphony/knowledge/engine/error.hpp"
@@ -33,10 +34,11 @@ engine::Json inspect(const engine::Json& payload) {
     require_exact_fields(payload, {});
     return engine::Json{
         {"descriptor", descriptor()},
-        {"readiness", "reconciliation_foundation"},
+        {"readiness", "authenticated_session_foundation"},
         {"reconciliation", reconciliation_capabilities()},
+        {"authenticated_session", authority_session_capabilities()},
         {"canonical_apply_enabled", false},
-        {"session_mutation_enabled", false},
+        {"session_mutation_enabled", true},
         {"maestro_docking_enabled", false},
     };
 }
@@ -96,7 +98,7 @@ engine::Json check(const engine::Json& payload, std::int64_t deadline_unix_ms) {
         {"expected_snapshot_matches", expected_matches},
         {"read_only", true},
         {"canonical_apply_enabled", false},
-        {"session_mutation_enabled", false},
+        {"session_mutation_enabled", true},
     };
 }
 
@@ -120,6 +122,11 @@ engine::Json descriptor() {
             engine::Json{{"name", "checkpoint"}, {"availability", "implemented"}, {"mutates_canonical", false}},
             engine::Json{{"name", "close"}, {"availability", "implemented"}, {"mutates_canonical", false}},
             engine::Json{{"name", "recover"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "session_begin"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "session_status"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "session_checkpoint"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "session_close"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "session_recover"}, {"availability", "implemented"}, {"mutates_canonical", false}},
             engine::Json{{"name", "apply"}, {"availability", "disabled"}, {"mutates_canonical", true}},
         })},
         {"limits", engine::Json{
@@ -138,7 +145,7 @@ engine::Json descriptor() {
         {"install_state", "installed_undocked"},
         {"default_receptor", nullptr},
         {"canonical_apply_enabled", false},
-        {"session_mutation_enabled", false},
+        {"session_mutation_enabled", true},
         {"network_listener", false},
     };
 }
@@ -154,6 +161,11 @@ engine::Json handle_request(const engine::Request& request) {
         request.operation == "status" || request.operation == "checkpoint" ||
         request.operation == "close" || request.operation == "recover") {
         return handle_reconciliation(request);
+    }
+    if (request.operation == "session_begin" || request.operation == "session_status" ||
+        request.operation == "session_checkpoint" || request.operation == "session_close" ||
+        request.operation == "session_recover") {
+        return handle_authority_session(request);
     }
     throw engine::Error("operation.unsupported", "operation is reserved or unsupported", 4);
 }

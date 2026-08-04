@@ -114,7 +114,7 @@ go run ./cmd/qxctl ssfv graph --prefix /chosen/prefix [--json]
 
 SSIAG commands require an immutable TOPS UUID through `--tops-id` or `SYMPHONY_SSIAG_TOPS_ID`. They use `SYMPHONY_SSIAG_SOCKET` only as an explicit override; otherwise the selected scope and TOPS ID determine the isolated socket. They never accept or print credential values.
 
-The ratified future administrative model separates non-mutating proposal from permission-backed local apply. Authorization will use target-host ownership or granted permission and caller-neutral, owner-configured safeguards; qxctl will not request or evaluate caller type. Canonical knowledge, STAV, and security-governed surfaces remain read-only. The protected user-scope engine-binding registry and noncanonical reconciliation journals are the current mutable administrative surfaces, and qxctl will never write STAV ledger files directly.
+The ratified administrative model separates non-mutating proposal from permission-backed local apply. Implemented knowledge-session authorization uses exact target-host ownership or granted-permission grants and never requests or evaluates caller type. Owner-configurable safeguard administration and canonical apply remain future gates. Canonical knowledge and STAV remain read-only through qxctl. The protected user-scope engine-binding registry, reconciliation journals, and authenticated-session journals are the current mutable administrative surfaces, and qxctl never writes STAV ledger files directly.
 
 Future safeguard administration will let a target-host administrator inspect and change optional governance interlocks through supported qxctl commands, including selecting a direct profile. That future surface does not make parser bounds, path safety, atomic writes, expected-state validation, ledger framing, or secret exclusion optional. No safeguard-management, apply, or audit-deferred recovery command is implemented today.
 
@@ -124,4 +124,20 @@ The SKVI, SCLV, SACV, SODV, and SSFV commands are cold/freezing-path local proce
 
 `knowledge engines` manages one protected user-scope `default` profile. A binding records the exact receipt and executable digests for an inactive-undocked coordinator or vector engine. Registry mutations require the exact prior digest, serialize through a persistent no-follow lock, and commit atomically. Multiple versions may remain installed, but one exact version may be bound per role.
 
-`knowledge reconcile` snapshots and revalidates every binding, invokes only the exact bound coordinator, and records the registry digest plus role-sorted module/engine/version/receipt/executable evidence in each checkpoint. Its capability negotiation supports compatible newer or older executables without inferring safety from version recency: supported formats remain writable, missing write capabilities become read-only, noncritical extensions survive writes, and unknown critical or newer state is preserved without downgrade. Mutations use stable operation IDs and exact prior journal digests. Explicit discovery recovery may repair a corrupt/missing atomic head, adopt one uniquely linked successor left by an interrupted commit, and remove only safe stale head temporaries. Ambiguity remains visible and unmodified. This surface does not authenticate a session, invoke vector semantics, write canonical knowledge, or dock with Maestro. `knowledge session` and `knowledge apply` remain unavailable.
+`knowledge reconcile` snapshots and revalidates every binding, invokes only the exact bound coordinator, and records the registry digest plus role-sorted module/engine/version/receipt/executable evidence in each checkpoint. Its capability negotiation supports compatible newer or older executables without inferring safety from version recency: supported formats remain writable, missing write capabilities become read-only, noncritical extensions survive writes, and unknown critical or newer state is preserved without downgrade. Mutations use stable operation IDs and exact prior journal digests. Explicit discovery recovery may repair a corrupt/missing atomic head, adopt one uniquely linked successor left by an interrupted commit, and remove only safe stale head temporaries. Ambiguity remains visible and unmodified. This surface does not itself authenticate a session, invoke vector semantics, write canonical knowledge, or dock with Maestro.
+
+`knowledge session begin|status|checkpoint|close|recover` establishes and maintains a separate protected noncanonical authority-epoch journal. Every call requires `--tops-id`, revalidates the exact coordinator and engine inventory, authenticates the TOPS-scoped SSIAG endpoint, and requests an exact audited authorization decision for that operation and canonical repository resource. qxctl rejects denial, expiry, target/configuration drift, caller-class use, transferability, canonical-apply claims, and malformed capability bindings. The coordinator uses stable operation IDs, exact prior digests, dual-slot durability, linked epochs, and unambiguous forward recovery; `--context-ref` attaches reconciliation contexts without turning them into identity evidence. This surface does not invoke vector semantics, write canonical knowledge, administer safeguards, activate receipts, or dock with Maestro. `knowledge apply` remains unavailable.
+
+```bash
+go run ./cmd/qxctl knowledge session begin \
+  --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 \
+  --operation-id session-start-001 \
+  --expected-journal-digest absent \
+  --repo /absolute/path/to/Symphony
+
+go run ./cmd/qxctl knowledge session status \
+  --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 \
+  --repo /absolute/path/to/Symphony --json
+```
+
+The selected SSIAG configuration must map the invoking effective UID/GID and contain an exact grant for each requested `symphony.knowledge.session.*` operation, the opaque `symphony.knowledge.repository:<sha256>` resource derived from the canonical repository root, audience `qxctl`, and scope `tops:<tops-id>`. With no exact grant—or if STAV is unavailable—the operation fails closed without coordinator mutation.

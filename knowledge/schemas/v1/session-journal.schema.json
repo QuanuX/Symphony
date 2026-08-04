@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:session-journal:v1",
+  "title": "Symphony authenticated authority-epoch session journal v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "format_version", "session_id", "session_key", "generation",
+    "previous_journal_digest", "state", "close_reason", "tops_id", "subject",
+    "repository", "authority_epoch", "contexts", "checkpoints", "compatibility",
+    "extensions", "recovery", "started_at", "updated_at", "closed_at",
+    "canonical", "journal_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.session-journal.v1"},
+    "format_version": {"const": 1},
+    "session_id": {"$ref": "#/$defs/token"},
+    "session_key": {"$ref": "#/$defs/digest"},
+    "generation": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "previous_journal_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "state": {"enum": ["open", "closed"]},
+    "close_reason": {"oneOf": [{"type": "null"}, {"enum": ["logout", "expired", "revoked", "policy_changed", "config_changed", "administrator_closed", "recovery_closed"]}]},
+    "tops_id": {"$ref": "#/$defs/uuid"},
+    "subject": {"$ref": "urn:symphony:ssiag:capability:v1#/$defs/subject"},
+    "repository": {"$ref": "#/$defs/repository"},
+    "authority_epoch": {"$ref": "#/$defs/authorityEpoch"},
+    "contexts": {"type": "array", "maxItems": 64, "items": {"$ref": "#/$defs/context"}},
+    "checkpoints": {"type": "array", "minItems": 1, "maxItems": 256, "items": {"$ref": "#/$defs/checkpoint"}},
+    "compatibility": {"$ref": "#/$defs/compatibility"},
+    "extensions": {"type": "array", "maxItems": 64, "items": {"$ref": "#/$defs/extension"}},
+    "recovery": {"$ref": "#/$defs/recovery"},
+    "started_at": {"$ref": "#/$defs/timestamp"},
+    "updated_at": {"$ref": "#/$defs/timestamp"},
+    "closed_at": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/timestamp"}]},
+    "canonical": {"const": false},
+    "journal_digest": {"$ref": "#/$defs/digest"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"generation": {"const": 1}}},
+      "then": {"properties": {"previous_journal_digest": {"type": "null"}}},
+      "else": {"properties": {"previous_journal_digest": {"$ref": "#/$defs/digest"}}}
+    },
+    {
+      "if": {"properties": {"state": {"const": "open"}}},
+      "then": {"properties": {"close_reason": {"type": "null"}, "closed_at": {"type": "null"}}},
+      "else": {"properties": {"close_reason": {"type": "string"}, "closed_at": {"type": "string"}}}
+    }
+  ],
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "uuid": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "timestamp": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"},
+    "absolutePath": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "^/(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])(?:$|[^/](?:.*[^/])?)$"},
+    "repository": {
+      "type": "object", "additionalProperties": false,
+      "required": ["repository_root", "repository_key"],
+      "properties": {"repository_root": {"$ref": "#/$defs/absolutePath"}, "repository_key": {"$ref": "#/$defs/digest"}}
+    },
+    "authorityEpoch": {
+      "type": "object", "additionalProperties": false,
+      "required": ["decision_id", "capability", "began_at", "expires_at"],
+      "properties": {
+        "decision_id": {"$ref": "#/$defs/token"},
+        "capability": {"$ref": "urn:symphony:ssiag:capability:v1"},
+        "began_at": {"$ref": "#/$defs/timestamp"}, "expires_at": {"$ref": "#/$defs/timestamp"}
+      }
+    },
+    "context": {
+      "type": "object", "additionalProperties": false,
+      "required": ["context_ref", "attached_at", "decision_id"],
+      "properties": {"context_ref": {"$ref": "#/$defs/token"}, "attached_at": {"$ref": "#/$defs/timestamp"}, "decision_id": {"$ref": "#/$defs/token"}}
+    },
+    "checkpoint": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sequence", "kind", "operation_id", "operation_fingerprint", "observed_at", "decision_id", "capability_binding_digest", "previous_checkpoint_digest", "checkpoint_digest"],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1, "maximum": 256},
+        "kind": {"enum": ["begin", "checkpoint", "close", "recover"]},
+        "operation_id": {"$ref": "#/$defs/token"}, "operation_fingerprint": {"$ref": "#/$defs/digest"}, "observed_at": {"$ref": "#/$defs/timestamp"},
+        "decision_id": {"$ref": "#/$defs/token"}, "capability_binding_digest": {"$ref": "#/$defs/digest"},
+        "previous_checkpoint_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+        "checkpoint_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "compatibility": {
+      "type": "object", "additionalProperties": false,
+      "required": ["process_protocols", "journal_read_versions", "journal_write_version", "minimum_reader_version", "required_capabilities", "optional_capabilities", "opaque_extensions_preserved"],
+      "properties": {
+        "process_protocols": {"const": ["symphony.knowledge.engine-process.v1"]},
+        "journal_read_versions": {"const": [1]}, "journal_write_version": {"const": 1}, "minimum_reader_version": {"const": 1},
+        "required_capabilities": {"type": "array", "minItems": 1, "maxItems": 32, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}},
+        "optional_capabilities": {"type": "array", "maxItems": 32, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}},
+        "opaque_extensions_preserved": {"const": true}
+      }
+    },
+    "extension": {
+      "type": "object", "additionalProperties": false,
+      "required": ["extension_id", "extension_version", "critical", "payload", "payload_digest"],
+      "properties": {"extension_id": {"$ref": "#/$defs/token"}, "extension_version": {"$ref": "#/$defs/token"}, "critical": {"type": "boolean"}, "payload": {}, "payload_digest": {"$ref": "#/$defs/digest"}}
+    },
+    "recovery": {
+      "type": "object", "additionalProperties": false,
+      "required": ["state", "last_recovery_at", "disposition", "recovered_from_digest", "detail"],
+      "properties": {
+        "state": {"enum": ["clean", "recovered"]}, "last_recovery_at": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/timestamp"}]},
+        "disposition": {"enum": ["not_applicable", "adopted_linked_successor", "repaired_head", "rolled_forward_from_valid_slot"]},
+        "recovered_from_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+        "detail": {"type": "string", "minLength": 1, "maxLength": 4096}
+      }
+    }
+  }
+}

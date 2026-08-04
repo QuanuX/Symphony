@@ -2,7 +2,7 @@
 
 ## Status
 
-Metadata-only API plus safe STAV producer foundation implementing the Architect-ratified architecture in `knowledge/ssiag/SPEC.md`. Kernel caller authentication, native foundation supervision, and mutually authenticated typed STAV submission are implemented. No mutation, credential delivery, or provider operation is enabled. Canonical relationship and provider semantics remain owned by that Knowledge Vector.
+Safe metadata and audited authorization API plus the STAV producer foundation implementing the Architect-ratified architecture in `knowledge/ssiag/SPEC.md`. Kernel caller authentication, native foundation supervision, exact deny-by-default policy evaluation, non-transferable capability evidence, and mutually authenticated typed STAV submission are implemented. Protected noncanonical knowledge-session coordination may consume that evidence; no policy mutation, safeguard administration, canonical apply, credential delivery, or provider operation is enabled. Canonical relationship and provider semantics remain owned by that Knowledge Vector.
 
 ## Invariants
 
@@ -30,7 +30,7 @@ Metadata-only API plus safe STAV producer foundation implementing the Architect-
 
 ## Configuration
 
-Configuration is strict JSON, bounded to 1 MiB, rejects unknown fields and trailing values, and contains `schema`, `mode`, `tops`, local `listen`, an authentication mapping, and provider descriptors. The authentication mechanism is `unix_peer_credentials`. Its `service` member separately binds ID `symphony.ssiag.service` and kind `symphony.identity.service` to an explicitly present effective UID/GID pair; `subjects` maps caller identities. Missing authentication/service members from earlier metadata-only v1 enrollments remain structurally readable but cannot start a trusted service or client until safely re-enrolled. Configuration MUST NOT contain credential values, assertions, tokens, recovery material, private keys, or provider payloads.
+Configuration is strict JSON, bounded to 1 MiB, rejects unknown fields and trailing values, and contains `schema`, `mode`, `tops`, local `listen`, an authentication mapping, an authorization policy, and provider descriptors. The authentication mechanism is `unix_peer_credentials`. Its `service` member separately binds ID `symphony.ssiag.service` and kind `symphony.identity.service` to an explicitly present effective UID/GID pair; `subjects` maps caller identities. Authorization is explicitly deny-by-default, bounds capability lifetime to 1–86,400 seconds, and contains an explicit grant array. Each grant binds one configured subject and `host_owner` or `granted_permission` basis to one exact operation/resource/audience/scope tuple. Wildcards and implicit grants are unsupported. Missing authorization from an earlier v1 enrollment is readable only as an empty deny policy. Missing authentication/service members remain structurally readable but cannot start a trusted service or client until safely re-enrolled. Configuration MUST NOT contain credential values, assertions, tokens, recovery material, private keys, or provider payloads.
 
 ## Mutual Endpoint Authentication
 
@@ -44,14 +44,15 @@ On the client side, both the self-client and `qxctl` load the configuration corr
 
 Before dialing, the client requires a Unix socket owned by the configured service UID. Upon dialing, it retrieves kernel-attested peer credentials (using Darwin `LOCAL_PEERCRED`/`LOCAL_PEERPID` or Linux `SO_PEERCRED`) and verifies that the connected peer exact UID and GID match the configured service identity. If verification fails, the connection is closed before any HTTP bytes are exchanged. Socket group/mode remains reachability policy and never substitutes for the post-dial check.
 
-## Metadata API
+## Local API
 
-The scaffold listens on one Unix socket for one TOPS and exposes only:
+The foundation listens on one Unix socket for one TOPS and exposes:
 
 - `GET /v1/status`: version, readiness, mode, TOPS ID/name, transport, provider count;
 - `GET /v1/providers`: safe declared descriptors.
+- `POST /v1/authorization/decisions`: a bounded strict request containing request/correlation IDs, exact operation/resource/audience/scope, and fresh UTC issue/expiry intent. It contains no subject or caller-class field.
 
-TCP binding and mutation routes are prohibited. Socket paths are absolute, restrictive, and collision-safe. The runtime rejects non-socket objects rather than replacing them. Every request must carry connection context produced from Darwin `LOCAL_PEERCRED`/`LOCAL_PEERPID` or Linux/WSL `SO_PEERCRED`; missing or invalid kernel credentials return a safe authentication failure. Unmapped peers remain limited to these read-only routes and cannot resolve a canonical subject.
+SSIAG derives the authorization subject from kernel connection context, evaluates exact non-overlapping grants, and returns allow or deny only after the safe STAV policy event commits. Duplicate grants for the same subject and target tuple invalidate configuration rather than creating an order-dependent result. An allow may include an expiring capability bound to the complete target, subject, TOPS, authority basis, grant, request/correlation pair, and policy/configuration digests. The capability is explicitly non-transferable and has no canonical apply authority. TCP binding, policy mutation, provider operation, credential, lease, safeguard, and apply routes are prohibited. Socket paths are absolute, restrictive, and collision-safe. The runtime rejects non-socket objects rather than replacing them. Every request must carry connection context produced from Darwin `LOCAL_PEERCRED`/`LOCAL_PEERPID` or Linux/WSL `SO_PEERCRED`; missing or invalid kernel credentials return a safe authentication failure. Unmapped peers remain limited to read-only metadata routes and cannot request a decision.
 
 ## Supervision and Socket Lifecycle
 
@@ -73,4 +74,4 @@ SSIAG submits only the closed safe outcome vocabulary defined by `knowledge/ssia
 
 ## Implemented and Disabled Gates
 
-Local peer authentication, exact UID/GID subject resolution, endpoint verification, native supervision/runtime ownership, serialized socket recovery, and typed SSIAG STAV submission are implemented. Proposal/apply mutation, safeguard administration, audit-deferred recovery, lease issuance, credential delivery, and operational provider calls remain disabled for every caller. Future apply authority must derive from effective target-host permission without evaluating caller type. Remote access and any non-permission-backed apply path are unauthorized.
+Local peer authentication, exact UID/GID subject resolution, endpoint verification, native supervision/runtime ownership, serialized socket recovery, exact-grant authorization decisions, non-transferable capability evidence, and typed SSIAG STAV submission are implemented. Protected noncanonical authenticated-session coordination is the only current mutation consumer. Policy mutation, proposal/apply mutation, safeguard administration, audit-deferred recovery, lease issuance, credential delivery, and operational provider calls remain disabled for every caller. Future apply authority must derive from effective target-host permission without evaluating caller type. Remote access and any non-permission-backed apply path are unauthorized.

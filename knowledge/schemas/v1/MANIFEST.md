@@ -15,6 +15,10 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 - `reconciliation-head.schema.json`: atomic selector for the active member of a dual-slot reconciliation journal.
 - `reconciliation-command.schema.json`: exact qxctl-to-coordinator reconciliation operation payload.
 - `reconciliation-result.schema.json`: bounded compatibility, state, mutation, recovery, and repair-guidance result.
+- `session-command.schema.json`: exact qxctl-to-coordinator authenticated-session lifecycle request, including SSIAG authorization evidence and expected state.
+- `session-journal.schema.json`: protected noncanonical authority-epoch state, capability and operation-fingerprint binding, linked epochs, attached reconciliation-context references, compatibility, extensions, and recovery evidence.
+- `session-head.schema.json`: atomic selector for the active member of a dual-slot authenticated-session journal.
+- `session-result.schema.json`: bounded authenticated-session compatibility, effective state, mutation, recovery, and repair-guidance result.
 - `proposal.schema.json`: provider-neutral immutable proposal envelope and vector-neutral authority boundary. Its explicit `engine_decided_domain_truth: false` assertion prevents any engine from converting validation into ownership, membership, ratification, publication, or other semantic authority.
 - `provider-evidence.schema.json`: bounded provider-neutral revision, change-request, and ratification evidence normalized by separately discoverable adapters.
 
@@ -22,4 +26,4 @@ All schemas use JSON Schema Draft 2020-12, close every common-governed object wi
 
 ## Boundary
 
-The binding schema authorizes only explicit user-scope selection among exact validated local installations. These artifacts do not authorize canonical apply, network access, system/TOPS binding changes, repository-specific overrides, live Maestro docking, or any vector-specific semantic decision.
+The binding schema authorizes only explicit user-scope selection among exact validated local installations. Session artifacts preserve SSIAG decision evidence but are not transferable bearer credentials and grant no canonical write authority by possession. These artifacts do not authorize canonical apply, network access, system/TOPS binding changes, repository-specific overrides, live Maestro docking, or any vector-specific semantic decision.

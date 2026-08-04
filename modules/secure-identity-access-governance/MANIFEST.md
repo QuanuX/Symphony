@@ -9,7 +9,7 @@
 - **environment prefix**: `SYMPHONY_SSIAG_*`
 - **language/runtime**: Go 1.26.5 with pinned `golang.org/x/sys` for cgo-free kernel peer credentials
 - **cgo**: prohibited
-- **status**: DRAFT foundation; supervised metadata-only runtime
+- **status**: DRAFT foundation; supervised metadata and audited authorization runtime
 
 ## Canonical Authority
 
@@ -24,13 +24,14 @@
 
 - `install` / `uninstall`: one host binary and digest-bearing install manifest;
 - `enroll` / `unenroll`: isolated per-TOPS configuration and state;
-- `serve`: one metadata-only Unix-socket API for one TOPS;
+- `serve`: one protected Unix-socket API for one TOPS;
 - `supervisor install` / `supervisor uninstall`: per-TOPS launchd or systemd liveness profile with conservative state preservation;
 - Darwin/Linux kernel peer authentication on every accepted API connection;
 - exact per-TOPS UID/GID-to-canonical-subject resolution for future subject-gated operations;
 - stable per-TOPS service identity, pre-listen process verification, and client-side exact endpoint verification;
 - owner-provisioned system identity validation, distinct service-owned state/runtime children, bounded restart/shutdown, and serialized stale-socket recovery;
 - `status` / `providers`: safe local inspection;
+- `POST /v1/authorization/decisions`: kernel-subject-derived, exact-grant, deny-by-default authorization with fail-closed STAV audit and non-transferable capability evidence;
 - `qxctl ssiag status|providers|doctor`: provider-neutral query interface.
 
 ## Install and Enrollment Separation
@@ -39,7 +40,7 @@ Host uninstall never deletes per-TOPS state. `unenroll` preserves state by defau
 
 ## Provider Boundary
 
-No operational provider is enabled. Native dependencies remain in independently installed adapters. The first adapter scaffold is `modules/ssiag-provider-macos-keychain/`, a separate Swift executable whose current capability is metadata only.
+No operational credential provider or canonical apply route is enabled. Native dependencies remain in independently installed adapters. The first adapter scaffold is `modules/ssiag-provider-macos-keychain/`, a separate Swift executable whose current capability is metadata only.
 
 ## Contamination Boundary
 

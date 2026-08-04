@@ -14,7 +14,7 @@ RESPONSE=$(printf '%s' "$REQUEST" | "$BINARY")
 RESPONSE_AGAIN=$(printf '%s' "$REQUEST" | "$BINARY")
 test "$RESPONSE" = "$RESPONSE_AGAIN"
 printf '%s\n' "$RESPONSE" | grep '"outcome":"ok"' >/dev/null
-printf '%s\n' "$RESPONSE" | grep '"session_mutation_enabled":false' >/dev/null
+printf '%s\n' "$RESPONSE" | grep '"session_mutation_enabled":true' >/dev/null
 printf '%s\n' "$RESPONSE" | grep '"response_digest":"sha256:' >/dev/null
 
 DEADLINE=$(( $(date +%s) * 1000 + 60000 ))

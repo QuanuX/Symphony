@@ -44,6 +44,22 @@ type SubjectConfig struct {
 	GID  *uint32 `json:"gid"`
 }
 
+type AuthorizationGrant struct {
+	ID             string `json:"id"`
+	SubjectID      string `json:"subject_id"`
+	AuthorityBasis string `json:"authority_basis"`
+	Operation      string `json:"operation"`
+	Resource       string `json:"resource"`
+	Audience       string `json:"audience"`
+	Scope          string `json:"scope"`
+}
+
+type AuthorizationConfig struct {
+	DefaultEffect        string               `json:"default_effect"`
+	MaxCapabilitySeconds uint64               `json:"max_capability_seconds"`
+	Grants               []AuthorizationGrant `json:"grants"`
+}
+
 type AuthenticationConfig struct {
 	Mechanism string          `json:"mechanism"`
 	Service   *SubjectConfig  `json:"service,omitempty"`
@@ -56,6 +72,7 @@ type Config struct {
 	TOPS           TOPSConfig            `json:"tops"`
 	Listen         ListenConfig          `json:"listen"`
 	Authentication *AuthenticationConfig `json:"authentication,omitempty"`
+	Authorization  *AuthorizationConfig  `json:"authorization,omitempty"`
 	Providers      []ProviderConfig      `json:"providers"`
 }
 
@@ -81,6 +98,11 @@ func Default(layout ssiagpaths.InstanceLayout, topsName string, serviceUID, serv
 			Mechanism: "unix_peer_credentials",
 			Service:   service,
 			Subjects:  []SubjectConfig{},
+		},
+		Authorization: &AuthorizationConfig{
+			DefaultEffect:        "deny",
+			MaxCapabilitySeconds: 900,
+			Grants:               []AuthorizationGrant{},
 		},
 		Providers: []ProviderConfig{},
 	}
@@ -148,6 +170,9 @@ func (cfg Config) Validate() error {
 	if err := validateAuthentication(cfg.Authentication); err != nil {
 		return err
 	}
+	if err := validateAuthorization(cfg.Authorization, cfg.Authentication); err != nil {
+		return err
+	}
 
 	seen := make(map[string]struct{}, len(cfg.Providers))
 	for i, provider := range cfg.Providers {
@@ -168,6 +193,76 @@ func (cfg Config) Validate() error {
 		}
 	}
 	return nil
+}
+
+func validateAuthorization(authorization *AuthorizationConfig, authentication *AuthenticationConfig) error {
+	// Absence preserves read compatibility with pre-policy v1 enrollments and
+	// always evaluates as deny. New enrollments write an explicit empty policy.
+	if authorization == nil {
+		return nil
+	}
+	if authorization.DefaultEffect != "deny" {
+		return fmt.Errorf("authorization default_effect must be deny")
+	}
+	if authorization.MaxCapabilitySeconds == 0 || authorization.MaxCapabilitySeconds > 86400 {
+		return fmt.Errorf("authorization max_capability_seconds must be between 1 and 86400")
+	}
+	if authorization.Grants == nil {
+		return fmt.Errorf("authorization grants must be an explicit array")
+	}
+	subjects := make(map[string]struct{})
+	if authentication != nil {
+		for _, subject := range authentication.Subjects {
+			subjects[subject.ID] = struct{}{}
+		}
+	}
+	seen := make(map[string]struct{}, len(authorization.Grants))
+	seenTuples := make(map[string]string, len(authorization.Grants))
+	for index, grant := range authorization.Grants {
+		if !validName(grant.ID) {
+			return fmt.Errorf("authorization grant %d has invalid ID %q", index, grant.ID)
+		}
+		if _, exists := seen[grant.ID]; exists {
+			return fmt.Errorf("duplicate authorization grant ID %q", grant.ID)
+		}
+		seen[grant.ID] = struct{}{}
+		if _, exists := subjects[grant.SubjectID]; !exists {
+			return fmt.Errorf("authorization grant %q references unknown subject %q", grant.ID, grant.SubjectID)
+		}
+		if grant.AuthorityBasis != "host_owner" && grant.AuthorityBasis != "granted_permission" {
+			return fmt.Errorf("authorization grant %q has unsupported authority basis %q", grant.ID, grant.AuthorityBasis)
+		}
+		for name, value := range map[string]string{
+			"operation": grant.Operation, "resource": grant.Resource,
+			"audience": grant.Audience, "scope": grant.Scope,
+		} {
+			if !validPolicyToken(value) {
+				return fmt.Errorf("authorization grant %q has invalid %s %q", grant.ID, name, value)
+			}
+		}
+		tuple := strings.Join([]string{
+			grant.SubjectID, grant.Operation, grant.Resource, grant.Audience, grant.Scope,
+		}, "\x00")
+		if existing, exists := seenTuples[tuple]; exists {
+			return fmt.Errorf("authorization grants %q and %q ambiguously match the same exact tuple", existing, grant.ID)
+		}
+		seenTuples[tuple] = grant.ID
+	}
+	return nil
+}
+
+func validPolicyToken(value string) bool {
+	if value == "" || len(value) > 256 || strings.TrimSpace(value) != value {
+		return false
+	}
+	for _, r := range value {
+		if (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') ||
+			r == '-' || r == '_' || r == '.' || r == ':' {
+			continue
+		}
+		return false
+	}
+	return true
 }
 
 func validateAuthentication(authentication *AuthenticationConfig) error {

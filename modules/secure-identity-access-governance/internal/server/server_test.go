@@ -1,6 +1,7 @@
 package server
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"net"
@@ -12,12 +13,113 @@ import (
 	"testing"
 	"time"
 
+	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/model"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/provider"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/stavproducer"
 )
 
 const testTOPSID = "018f0c3a-7b2d-7e11-8c12-0242ac120002"
+
+type recordingAudit struct {
+	record stavproducer.Record
+}
+
+func (audit *recordingAudit) Submit(_ context.Context, record stavproducer.Record) (stavprotocol.Receipt, error) {
+	audit.record = record
+	return stavprotocol.Receipt{}, nil
+}
+
+func TestAuthorizationOverKernelAuthenticatedSocketIsAudited(t *testing.T) {
+	socket := shortSocketPath(t)
+	probe, err := net.Listen("unix", socket)
+	if err != nil {
+		t.Skipf("unix sockets are unavailable in this test environment: %v", err)
+	}
+	if err := probe.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Remove(socket); err != nil && !os.IsNotExist(err) {
+		t.Fatal(err)
+	}
+	uid, gid := uint32(os.Geteuid()), uint32(os.Getegid())
+	authentication := serviceAuthentication(uid, gid)
+	authentication.Subjects = []config.SubjectConfig{{ID: "owner.primary", Kind: "owner", UID: &uid, GID: &gid}}
+	cfg := config.Config{
+		Schema: "symphony.ssiag.config.v1", Mode: "development",
+		TOPS:           config.TOPSConfig{ID: testTOPSID, Name: "Test TOPS"},
+		Listen:         config.ListenConfig{Network: "unix", Address: socket},
+		Authentication: authentication,
+		Authorization: &config.AuthorizationConfig{
+			DefaultEffect: "deny", MaxCapabilitySeconds: 900,
+			Grants: []config.AuthorizationGrant{{
+				ID: "session-begin", SubjectID: "owner.primary", AuthorityBasis: "host_owner",
+				Operation: "symphony.knowledge.session.begin", Resource: "symphony.knowledge.repository:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+				Audience: "qxctl", Scope: "tops:" + testTOPSID,
+			}},
+		},
+		Providers: []config.ProviderConfig{},
+	}
+	registry, _ := provider.New(nil)
+	audit := &recordingAudit{}
+	instance, err := NewWithAudit(cfg, registry, audit)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	done := make(chan error, 1)
+	go func() { done <- instance.Run(ctx) }()
+	deadline := time.Now().Add(3 * time.Second)
+	for {
+		if info, statErr := os.Stat(socket); statErr == nil && info.Mode()&os.ModeSocket != 0 {
+			break
+		}
+		select {
+		case runErr := <-done:
+			t.Fatalf("authorization server stopped before creating its socket: %v", runErr)
+		default:
+		}
+		if time.Now().After(deadline) {
+			t.Fatalf("socket %s was not created", socket)
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	transport := &http.Transport{DialContext: func(ctx context.Context, _, _ string) (net.Conn, error) {
+		return (&net.Dialer{}).DialContext(ctx, "unix", socket)
+	}}
+	client := &http.Client{Transport: transport, Timeout: 2 * time.Second}
+	now := time.Now().UTC().Truncate(time.Second)
+	payload, _ := json.Marshal(model.AuthorizationRequest{
+		Schema: "symphony.ssiag.authorization-request.v1", RequestID: "request-1", CorrelationID: "correlation-1",
+		Operation: "symphony.knowledge.session.begin", Resource: "symphony.knowledge.repository:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+		Audience: "qxctl", Scope: "tops:" + testTOPSID, RequestedAt: now, RequestedExpiresAt: now.Add(10 * time.Minute),
+	})
+	response, err := client.Post("http://unix/v1/authorization/decisions", "application/json", bytes.NewReader(payload))
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	defer response.Body.Close()
+	var decision model.AuthorizationDecision
+	if err := json.NewDecoder(response.Body).Decode(&decision); err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	if response.StatusCode != http.StatusOK || decision.Effect != "allow" || decision.Capability == nil {
+		cancel()
+		t.Fatalf("authorization response was not allowed: status=%d decision=%+v", response.StatusCode, decision)
+	}
+	if audit.record.Kind != stavproducer.PolicyDecision || audit.record.Outcome != "allowed" ||
+		audit.record.Actor.ID != "owner.primary" || audit.record.Configuration.State != "digests" {
+		cancel()
+		t.Fatalf("safe STAV policy evidence was not submitted: %+v", audit.record)
+	}
+	cancel()
+	if err := <-done; err != nil {
+		t.Fatal(err)
+	}
+}
 
 func TestStatusOverUnixSocket(t *testing.T) {
 	socket := shortSocketPath(t)
