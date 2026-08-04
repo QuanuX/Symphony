@@ -22,6 +22,7 @@ add_executable(symphony-knowledge-session
     src/coordinator.cpp
     src/reconciliation.cpp
     src/authority_session.cpp
+    src/lifecycle.cpp
 )
 target_include_directories(symphony-knowledge-session PRIVATE src)
 target_link_libraries(symphony-knowledge-session PRIVATE Symphony::KnowledgeVectorEngine)
@@ -40,6 +41,7 @@ if(BUILD_TESTING)
         src/coordinator.cpp
         src/reconciliation.cpp
         src/authority_session.cpp
+        src/lifecycle.cpp
     )
     target_include_directories(knowledge-session-coordinator-tests PRIVATE src)
     target_link_libraries(knowledge-session-coordinator-tests PRIVATE Symphony::KnowledgeVectorEngine)
@@ -52,6 +54,24 @@ if(BUILD_TESTING)
         $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>
     )
     add_test(NAME knowledge-session-coordinator-tests COMMAND knowledge-session-coordinator-tests)
+    add_executable(knowledge-lifecycle-planner-tests
+        tests/lifecycle_test.cpp
+        src/coordinator.cpp
+        src/reconciliation.cpp
+        src/authority_session.cpp
+        src/lifecycle.cpp
+    )
+    target_include_directories(knowledge-lifecycle-planner-tests PRIVATE src)
+    target_link_libraries(knowledge-lifecycle-planner-tests PRIVATE Symphony::KnowledgeVectorEngine)
+    set_target_properties(knowledge-lifecycle-planner-tests PROPERTIES
+        CXX_STANDARD 26
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+    )
+    target_compile_options(knowledge-lifecycle-planner-tests PRIVATE
+        $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>
+    )
+    add_test(NAME knowledge-lifecycle-planner-tests COMMAND knowledge-lifecycle-planner-tests)
     add_test(
         NAME knowledge-session-process-smoke
         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/tests/process_smoke.sh

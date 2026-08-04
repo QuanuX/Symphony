@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-plan-command:v1",
+  "title": "Symphony report-only lifecycle plan command v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "operation", "desired_state", "observation",
+    "prior_applied_state_digest", "client"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.lifecycle-plan-command.v1"},
+    "operation": {"const": "lifecycle_plan"},
+    "desired_state": {"$ref": "urn:symphony:knowledge:lifecycle-desired-state:v1"},
+    "observation": {"$ref": "urn:symphony:knowledge:lifecycle-observation:v1"},
+    "prior_applied_state_digest": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+    },
+    "client": {"$ref": "#/$defs/client"}
+  },
+  "$defs": {
+    "client": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "client_id", "client_version", "process_protocols",
+        "desired_state_read_versions", "observation_read_versions",
+        "plan_read_versions", "applied_state_read_versions",
+        "receipt_read_versions", "capabilities"
+      ],
+      "properties": {
+        "client_id": {"$ref": "#/$defs/token"},
+        "client_version": {"$ref": "#/$defs/version"},
+        "process_protocols": {"$ref": "#/$defs/versions"},
+        "desired_state_read_versions": {"$ref": "#/$defs/integerVersions"},
+        "observation_read_versions": {"$ref": "#/$defs/integerVersions"},
+        "plan_read_versions": {"$ref": "#/$defs/integerVersions"},
+        "applied_state_read_versions": {"$ref": "#/$defs/integerVersions"},
+        "receipt_read_versions": {"$ref": "#/$defs/integerVersions"},
+        "capabilities": {
+          "type": "array", "minItems": 1, "maxItems": 128,
+          "uniqueItems": true, "items": {"$ref": "#/$defs/token"}
+        }
+      }
+    },
+    "versions": {
+      "type": "array", "minItems": 1, "maxItems": 16,
+      "uniqueItems": true, "items": {"$ref": "#/$defs/token"}
+    },
+    "integerVersions": {
+      "type": "array", "minItems": 1, "maxItems": 16,
+      "uniqueItems": true, "items": {"type": "integer", "minimum": 1, "maximum": 16}
+    },
+    "token": {
+      "type": "string", "minLength": 1, "maxLength": 256,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "version": {
+      "type": "string", "minLength": 1, "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
+    },
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

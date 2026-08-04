@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact three-record SSFV partial bootstrap, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, explicit qxctl session transitions, and canonical desired/observed/plan/applied/boot-journal plus receipt-v2 lifecycle contracts in `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, lifecycle runtime, lifecycle apply, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, or docking capability may be inferred from these contract slices.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact three-record SSFV partial bootstrap, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, explicit qxctl session transitions, implemented report-only coordinator lifecycle planning, and canonical desired/observed/plan/applied/boot-journal plus receipt-v2 lifecycle contracts in `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, lifecycle persistence/observation/apply, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, or docking capability may be inferred from these contract slices.
 
 ## Purpose
 
@@ -52,6 +52,7 @@ The v1 identifier family is:
 | `symphony.knowledge.install-receipt.v1` | installed-file and lifecycle receipt |
 | `symphony.knowledge.lifecycle-desired-state.v1` | protected noncanonical exact component intent |
 | `symphony.knowledge.lifecycle-observation.v1` | bounded disposable installation and platform evidence |
+| `symphony.knowledge.lifecycle-plan-command.v1` | exact report-only planner request and compatibility declaration |
 | `symphony.knowledge.lifecycle-plan.v1` | dependency-ready-set forward/inverse convergence plan |
 | `symphony.knowledge.lifecycle-applied-state.v1` | last verified lifecycle convergence evidence |
 | `symphony.knowledge.lifecycle-boot-journal.v1` | durable boot transaction, replan, blocker, and recovery evidence |
@@ -78,6 +79,7 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/session-transition-result.schema.json`;
 - `knowledge/schemas/v1/lifecycle-desired-state.schema.json`;
 - `knowledge/schemas/v1/lifecycle-observation.schema.json`;
+- `knowledge/schemas/v1/lifecycle-plan-command.schema.json`;
 - `knowledge/schemas/v1/lifecycle-plan.schema.json`;
 - `knowledge/schemas/v1/lifecycle-applied-state.schema.json`;
 - `knowledge/schemas/v1/lifecycle-boot-journal.schema.json`;

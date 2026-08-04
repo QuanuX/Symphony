@@ -24,7 +24,8 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 - `provider-evidence.schema.json`: bounded provider-neutral revision, change-request, and ratification evidence normalized by separately discoverable adapters.
 - `lifecycle-desired-state.schema.json`: protected noncanonical exact component intent, dependency, compatibility, activation, and docking selection.
 - `lifecycle-observation.schema.json`: disposable bounded inventory of configured roots, platforms, packages, component state, integrity, capabilities, and unknown preserved receipts without executable discovery.
-- `lifecycle-plan.schema.json`: deterministic dependency-ready-set action graph, forward/inverse relationships, typed blockers, bounded dynamic replanning, and immutable safety-phase order.
+- `lifecycle-plan-command.schema.json`: exact report-only caller-to-coordinator desired/observation evidence and explicit protocol, receipt-reader, and planner-capability declaration.
+- `lifecycle-plan.schema.json`: deterministic dependency-ready-set action graph, forward/inverse relationships, exact receptor and target-state binding, typed blockers, noncritical dependency advisories, bounded dynamic replanning, and immutable safety-phase order.
 - `lifecycle-applied-state.schema.json`: durable noncanonical last-verified component state and actual execution-order evidence anchored to exact desired, observation, plan, and transaction identities.
 - `lifecycle-boot-journal.schema.json`: dual-read-compatible lifecycle transaction, replan, attempt, blocker, checkpoint, compatibility, and recovery evidence.
 - `lifecycle-boot-head.schema.json`: atomic selector for the active member of a dual-slot lifecycle boot journal.
@@ -33,4 +34,4 @@ All schemas use JSON Schema Draft 2020-12, close every common-governed object wi
 
 ## Boundary
 
-The binding schema authorizes only explicit user-scope selection among exact validated local installations. Session artifacts preserve SSIAG decision evidence but are not transferable bearer credentials and grant no canonical write authority by possession. Lifecycle schemas establish contract truth but do not implement persistence, observation, planning, recovery, or apply. These artifacts do not authorize canonical apply, network access, system/TOPS binding changes, repository-specific overrides, live Maestro docking, or any vector-specific semantic decision.
+The binding schema authorizes only explicit user-scope selection among exact validated local installations. Session artifacts preserve SSIAG decision evidence but are not transferable bearer credentials and grant no canonical write authority by possession. The coordinator implements only caller-supplied, report-only lifecycle planning; lifecycle persistence, configured-root observation, recovery, qxctl administration, and apply remain unimplemented. These artifacts do not authorize canonical apply, network access, system/TOPS binding changes, repository-specific overrides, live Maestro docking, or any vector-specific semantic decision.

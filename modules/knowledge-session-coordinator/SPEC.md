@@ -2,7 +2,7 @@
 
 ## Status
 
-Implemented reconciliation and authenticated-session development slices, version `0.1.0-dev`. Not a published release and not a canonical mutation manager.
+Implemented reconciliation, authenticated-session, and report-only lifecycle-planning development slices, version `0.1.0-dev`. Not a published release and not a canonical mutation manager.
 
 ## Process Contract
 
@@ -89,9 +89,23 @@ Two-way procedural compatibility is determined independently for reconciliation 
 
 The qxctl `knowledge session transition` surface composes these existing operations for one explicit stable host event ID. It is not a new coordinator operation. The coordinator continues to validate and durably commit each status, recover, begin, checkpoint, or close request independently, so qxctl/coordinator upgrade order cannot bypass expected-state, capability, or idempotency checks.
 
+## Report-Only Lifecycle Planning
+
+`lifecycle_plan` accepts the exact `symphony.knowledge.lifecycle-plan-command.v1` payload. The caller supplies complete digest-bound desired-state and observation documents, an optional prior applied-state digest, and an explicit declaration of readable process, desired, observation, plan, applied-state, and receipt versions plus named capabilities. The coordinator performs no filesystem discovery and reads no profile, receipt, registry, lifecycle journal, or Maestro state while handling this operation.
+
+Parsing closes every governed object, bounds components to 4,096, packages and dependencies to 256 per component, capabilities to 128, and extensions to 64. It validates normalized document, platform, component, and extension digests; safe absolute and relative paths; exact component identities; selected receipt integrity; receipt v1/v2 protocol identity; and explicit receptor identity for every docked observation. Unknown critical extensions, unknown packages, ambiguous selected state, identity drift, invalid entry-point evidence, and unsupported receipt protocols fail closed or produce explicit fatal blockers without actions.
+
+Compatibility is capability-based rather than release-order based. A v1-only caller remains fully operational when all supplied evidence uses receipt v1 and it advertises the v1 adapter. Receipt v2 becomes required only when desired or observed evidence actually contains v2. Missing common protocol, schema-reader, receipt-reader, or planner capabilities returns a compatibility-blocked plan with no actions; it never silently downgrades or infers compatibility from semantic versions.
+
+The planner emits a deterministic dependency-ready-set graph. Action IDs derive from component/action semantics, exact pre-state, target-state digest, target receptor, artifacts, evidence, and prerequisite semantics—not input array position. Unsatisfied critical dependencies block only their dependent actions; unsatisfied noncritical dependencies produce explicit non-blocking advisories. A critical dependency that contradicts the target's desired disposition remains blocked instead of being misrepresented as a healable ordering edge. Missing required component capabilities are localized compatibility blockers. Strongly connected critical-dependency cycles are isolated while unrelated acyclic actions remain eligible. Repeating the operation with changed verified observations recomputes readiness, permitting a previously blocked component to heal without changing the fixed safety-phase order.
+
+Package selection while active or docked is sequenced as `undock`, `deactivate`, `select`, restore desired activation, and `dock`. Receptor replacement is sequenced as exact old-receptor undock followed by exact desired-receptor dock. Dock actions carry a required `target_receptor_id`; every action carries a digest-bound target state and explicit inverse identity when an inverse exists. Desired upgrade and rollback are equally ordinary forward convergence toward the exact selected receipt; “newest” is never inferred.
+
+The result always declares `apply_authorized: false`. It is disposable noncanonical planning evidence: no lock is acquired, no boot journal or applied state is written, no authorization is requested, no package is installed or removed, no component is activated, and no receptor is contacted. Persistence, qxctl lifecycle invocation, configured-root evidence collection, per-action authorization/compare-and-swap, execution, verification, and audit remain separate gates.
+
 ## Descriptor Truth
 
-`inspect`, `check`, reconciliation `compatibility|begin|status|checkpoint|close|recover`, and authenticated-session `session_begin|session_status|session_checkpoint|session_close|session_recover` are implemented. `apply` is disabled. The descriptor declares user-scope process invocation, C++26, freezing-path placement, `installed_undocked`, no default receptor, and no network listener.
+`inspect`, `check`, reconciliation `compatibility|begin|status|checkpoint|close|recover`, authenticated-session `session_begin|session_status|session_checkpoint|session_close|session_recover`, and report-only `lifecycle_plan` are implemented. `apply` is disabled. The descriptor declares user-scope process invocation, C++26, freezing-path placement, `installed_undocked`, no default receptor, and no network listener.
 
 ## Install and Uninstall
 
@@ -99,4 +113,4 @@ Installation uses module-and-version-specific paths and creates no active alias.
 
 ## Non-Authorization
 
-This implementation does not authenticate the operating-system caller, decide permission, mutate canonical repository content, run a watcher, install a hook, implement generic desired-state or first-boot lifecycle apply, invoke a vector engine, directly call SSIAG/STAV, activate an install receipt, or dock with Maestro. SSIAG authenticates and decides; qxctl obtains and transports the exact safe evidence; the coordinator validates it and mutates only protected noncanonical reconciliation or authenticated-session journals.
+This implementation does not authenticate the operating-system caller, decide permission, mutate canonical repository content, run a watcher, install a hook, discover lifecycle state, administer desired profiles, persist or apply a lifecycle plan, invoke a vector engine, directly call SSIAG/STAV, activate an install receipt, or dock with Maestro. SSIAG authenticates and decides; qxctl obtains and transports exact safe evidence for implemented protected operations; the coordinator validates it and mutates only protected noncanonical reconciliation or authenticated-session journals. `lifecycle_plan` performs no mutation.

@@ -81,7 +81,7 @@
       "additionalProperties": false,
       "required": [
         "component_id", "component_kind", "module_id", "vector_id", "engine_id",
-        "packages", "selected_package_digest", "activation", "docking",
+        "packages", "selected_package_digest", "activation", "docking", "receptor_id",
         "capabilities", "platform_compatibility", "observation_digest"
       ],
       "properties": {
@@ -101,13 +101,26 @@
         },
         "activation": {"enum": ["inactive", "active", "unknown"]},
         "docking": {"enum": ["undocked", "docked", "unavailable", "unknown"]},
+        "receptor_id": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]
+        },
         "capabilities": {
           "type": "array", "maxItems": 128, "uniqueItems": true,
           "items": {"$ref": "#/$defs/token"}
         },
         "platform_compatibility": {"enum": ["compatible", "incompatible", "unknown"]},
         "observation_digest": {"$ref": "#/$defs/digest"}
-      }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"docking": {"const": "docked"}}},
+          "then": {"properties": {"receptor_id": {"$ref": "#/$defs/token"}}}
+        },
+        {
+          "if": {"properties": {"docking": {"enum": ["undocked", "unavailable", "unknown"]}}},
+          "then": {"properties": {"receptor_id": {"type": "null"}}}
+        }
+      ]
     },
     "package": {
       "type": "object",
