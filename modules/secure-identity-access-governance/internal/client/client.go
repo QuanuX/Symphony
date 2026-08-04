@@ -127,6 +127,17 @@ func (c *Client) Providers(ctx context.Context) (model.ProvidersResponse, error)
 	return result, nil
 }
 
+func (c *Client) Authorize(ctx context.Context, request model.AuthorizationRequest) (model.AuthorizationDecision, error) {
+	var result model.AuthorizationDecision
+	if err := c.post(ctx, "/v1/authorization/decisions", request, &result); err != nil {
+		return result, err
+	}
+	if result.Schema != "symphony.ssiag.authorization-decision.v1" {
+		return result, fmt.Errorf("unsupported SSIAG authorization decision schema %q", result.Schema)
+	}
+	return result, nil
+}
+
 func (c *Client) get(ctx context.Context, path string, target any) error {
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, "http://unix"+path, nil)
 	if err != nil {
@@ -158,6 +169,47 @@ func (c *Client) get(ctx context.Context, path string, target any) error {
 			return fmt.Errorf("decode SSIAG response: multiple JSON values")
 		}
 		return fmt.Errorf("decode trailing SSIAG response: %w", err)
+	}
+	return nil
+}
+
+func (c *Client) post(ctx context.Context, path string, value, target any) error {
+	payload, err := json.Marshal(value)
+	if err != nil {
+		return fmt.Errorf("encode SSIAG request: %w", err)
+	}
+	request, err := http.NewRequestWithContext(ctx, http.MethodPost, "http://unix"+path, bytes.NewReader(payload))
+	if err != nil {
+		return err
+	}
+	request.Header.Set("Content-Type", "application/json")
+	response, err := c.httpClient.Do(request)
+	if err != nil {
+		return fmt.Errorf("SSIAG request failed: %w", err)
+	}
+	defer response.Body.Close()
+	responsePayload, err := io.ReadAll(io.LimitReader(response.Body, maxResponseBytes+1))
+	if err != nil {
+		return fmt.Errorf("read SSIAG response: %w", err)
+	}
+	if len(responsePayload) > maxResponseBytes {
+		return fmt.Errorf("SSIAG response exceeds %d bytes", maxResponseBytes)
+	}
+	if response.StatusCode != http.StatusOK {
+		var failure model.ErrorResponse
+		if json.Unmarshal(responsePayload, &failure) == nil && failure.Code != "" {
+			return fmt.Errorf("SSIAG authorization failed: %s", failure.Code)
+		}
+		return fmt.Errorf("SSIAG returned HTTP %d", response.StatusCode)
+	}
+	decoder := json.NewDecoder(bytes.NewReader(responsePayload))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(target); err != nil {
+		return fmt.Errorf("decode SSIAG response: %w", err)
+	}
+	var extra any
+	if err := decoder.Decode(&extra); err != io.EOF {
+		return fmt.Errorf("decode SSIAG response: multiple JSON values")
 	}
 	return nil
 }

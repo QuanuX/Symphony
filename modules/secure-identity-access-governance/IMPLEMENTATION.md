@@ -153,17 +153,19 @@ Implementation procedure:
 
 Exit gate: qxctl, SSIAG, node-troll, producers, and all other callers cannot write the ledger file directly through a supported interface; v1 claims tamper evidence but not non-repudiation.
 
-## Phase 8 — Implement Deny-by-Default Policy
+## Phase 8 — Implement Deny-by-Default Policy (implemented for bounded authorization evidence)
+
+Implemented scope: strict canonical authorization request/decision/capability schemas; exact subject and operation/resource/audience/scope grants; `host_owner` and `granted_permission` authority bases; empty-policy compatibility for older v1 enrollments; short-lived capability binding; caller-class-neutral property tests; and fail-closed STAV submission. The capability is non-transferable safe evidence with canonical apply disabled. It authorizes no provider dispatch, policy mutation, safeguard change, credential release, or canonical write.
 
 1. Canonicalize subject, proof summary, requested operation, provider, target, audience, scope, interaction, and time inputs.
 2. Reject absent or unknown fields.
 3. evaluate exact relationships from the SSIAG contract.
 4. Return allow/deny plus a safe reason code and bounded capability.
 5. Bind capabilities to subject, TOPS, provider, reference, operation, audience, issue/expiry, and request/correlation IDs.
-6. Add property and fuzz tests for wildcards, extension types, expiry, interaction, assurance, and cross-TOPS confusion.
+6. Maintain positive and negative tests for exact grants, wildcard rejection, expiry/freshness, caller-class neutrality, unknown subjects, cross-TOPS/target drift, STAV unavailability, and capability binding.
 7. Submit safe policy outcomes to the STAV append authority.
 
-Exit gate: no provider dispatch occurs without an exact allow decision and auditable safe result.
+Exit gate passed for noncanonical knowledge-session authorization: no decision is released without exact evaluation and an auditable safe result. Provider dispatch remains disabled and retains its separate Phase 9/10 gates.
 
 ## Phase 9 — Implement Ratified Provider Trust and Channel Separation
 

@@ -2,7 +2,7 @@
 
 SSIAG is Symphony's Go-only, independently installable identity, authentication, authorization, capability, credential-reference, lease, and provider-operation foundation.
 
-The current foundation is deliberately safe and limited: it installs one host binary, enrolls multiple isolated TOPS instances, authenticates every accepted Darwin/Linux Unix-socket connection from kernel peer credentials, verifies the configured service identity on both sides, installs bounded per-TOPS launchd/systemd liveness profiles, serves metadata, integrates read-only qxctl inspection, and provides a closed typed producer for durable STAV security outcomes. It does not release, store, or exercise credentials.
+The current foundation is deliberately safe and limited: it installs one host binary, enrolls multiple isolated TOPS instances, authenticates every accepted Darwin/Linux Unix-socket connection from kernel peer credentials, verifies the configured service identity on both sides, installs bounded per-TOPS launchd/systemd liveness profiles, serves safe metadata, evaluates exact deny-by-default authorization grants, and provides a closed typed producer for durable STAV security outcomes. Its short-lived capabilities are non-transferable evidence for protected noncanonical operations and explicitly cannot authorize canonical apply. It does not release, store, or exercise credentials.
 
 ## Quick Start
 
@@ -28,4 +28,4 @@ qxctl ssiag status --json --scope user \
   --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002
 ```
 
-Read `knowledge/ssiag/`, `ARCHITECTURE.md`, `REQUIREMENTS.md`, `THREAT-MODEL.md`, and `IMPLEMENTATION.md` before enabling any mutation or operational provider behavior.
+Read `knowledge/ssiag/`, `ARCHITECTURE.md`, `REQUIREMENTS.md`, `THREAT-MODEL.md`, and `IMPLEMENTATION.md` before configuring grants or enabling any canonical mutation or operational provider behavior.

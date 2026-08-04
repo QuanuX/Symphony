@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:authorization-decision:v1",
+  "title": "Symphony SSIAG authorization decision v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "decision_id", "request_id", "correlation_id", "tops_id",
+    "subject", "target", "effect", "reason_code", "authority_basis",
+    "capability", "policy_digest", "config_digest", "decided_at", "expires_at",
+    "caller_class_used", "canonical_apply"
+  ],
+  "properties": {
+    "schema": {"const": "symphony.ssiag.authorization-decision.v1"},
+    "decision_id": {"$ref": "#/$defs/token"},
+    "request_id": {"$ref": "#/$defs/token"},
+    "correlation_id": {"$ref": "#/$defs/token"},
+    "tops_id": {"$ref": "#/$defs/uuid"},
+    "subject": {"$ref": "urn:symphony:ssiag:capability:v1#/$defs/subject"},
+    "target": {"$ref": "urn:symphony:ssiag:capability:v1#/$defs/target"},
+    "effect": {"enum": ["allow", "deny"]},
+    "reason_code": {"$ref": "#/$defs/token"},
+    "authority_basis": {"oneOf": [{"type": "null"}, {"enum": ["host_owner", "granted_permission"]}]},
+    "capability": {"oneOf": [{"type": "null"}, {"$ref": "urn:symphony:ssiag:capability:v1"}]},
+    "policy_digest": {"$ref": "#/$defs/digest"},
+    "config_digest": {"$ref": "#/$defs/digest"},
+    "decided_at": {"$ref": "#/$defs/timestamp"},
+    "expires_at": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/timestamp"}]},
+    "caller_class_used": {"const": false},
+    "canonical_apply": {"const": false}
+  },
+  "allOf": [
+    {"if": {"properties": {"effect": {"const": "allow"}}}, "then": {"properties": {"authority_basis": {"type": "string"}, "capability": {"type": "object"}, "expires_at": {"type": "string"}}}},
+    {"if": {"properties": {"effect": {"const": "deny"}}}, "then": {"properties": {"authority_basis": {"type": "null"}, "capability": {"type": "null"}, "expires_at": {"type": "null"}}}}
+  ],
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "uuid": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "timestamp": {"type": "string", "format": "date-time", "pattern": "Z$"}
+  }
+}

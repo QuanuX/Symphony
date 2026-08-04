@@ -131,14 +131,15 @@ Architect-ratified architecture with phased implementation requirements. “Must
 - **SSIAG-K-008**: `knowledge/stav/` must remain canonical authority for STAV schema and append protocol truth.
 - **SSIAG-K-009**: `knowledge/sacv/` must govern HTTP API-contract policy and registry; no SSIAG endpoint document may be created without ratified transport and security ownership.
 
-## Acceptance Criteria for This Scaffold
+## Acceptance Criteria for This Foundation
 - All Go packages compile and tests pass under the declared Go baseline.
-- The local server exposes only status and provider metadata.
+- The local server exposes only status, provider metadata, and the exact audited authorization-decision endpoint.
 - No operational credential provider exists.
 - User install is idempotent, uninstall is digest-safe, and multiple TOPS enrollments remain isolated.
-- qxctl can report SSIAG status and providers through the local socket.
+- qxctl can report SSIAG status/providers and request exact knowledge-session authorization through the authenticated local socket.
 - Every accepted Darwin/Linux connection must carry kernel peer credentials before request dispatch.
 - Exact UID/GID subject mappings must validate as one-to-one; an unmapped peer cannot resolve a mutation subject.
+- Authorization defaults to deny, accepts no caller-supplied subject/class, matches only an exact configured tuple, audits before release, and marks capability evidence non-transferable and canonical-apply disabled.
 - Existing qxctl inventory/status tests account for the new module.
 - symphony-validator reports no new violation.
 - Documentation contains the architecture, requirements, threat model, and phased implementation procedure.

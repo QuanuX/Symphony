@@ -18,7 +18,7 @@
 - Treat `knowledge/ssiag/` and `knowledge/stav/` as protocol truth and code as implementation truth.
 - Keep ID and name fields separate; use IDs for security scope.
 - Never place secrets, proofs, tokens, or provider payloads in flags, environment variables, logs, fixtures, JSON output, manifests, or Knowledge Vectors.
-- Keep qxctl provider-neutral and metadata-only.
+- Keep qxctl provider-neutral and free of secrets; safe authorization decisions are metadata, not transferable credentials.
 - Keep all foundation source Go-only and cgo-free.
 - Keep native platform code in independent adapters.
 - Fail closed when a provider or capability is absent.
@@ -26,4 +26,4 @@
 
 ## Do Not Use For
 
-Kernel peer authentication is enabled automatically for the read-only local metadata API; never substitute a caller-supplied identity or socket permissions for it. Safe runtime outcomes may use only the internal closed STAV producer and must require a committed receipt. No caller may submit arbitrary STAV events through a supported interface. Supervision owns liveness only and does not authorize service-account creation or application operations. Do not use this foundation for credential access, policy mutation, plaintext development providers, or hot-path authorization; those capabilities are not enabled for any caller.
+Kernel peer authentication is enabled automatically for the local API; never substitute a caller-supplied identity or socket permissions for it. Exact-grant authorization decisions require a mapped kernel subject and committed STAV receipt. Their capabilities are short-lived, non-transferable evidence for the exact protected operation and never canonical apply authority. No caller may submit arbitrary STAV events through a supported interface. Supervision owns liveness only and does not authorize service-account creation or application operations. Do not use this foundation for credential access, policy mutation, safeguard administration, plaintext development providers, canonical apply, or hot-path authorization; those capabilities are not enabled for any caller.

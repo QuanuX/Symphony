@@ -2,7 +2,7 @@
 
 ## Status
 
-Implemented reconciliation development slice, version `0.1.0-dev`. Not a published release and not an operational authenticated-session manager.
+Implemented reconciliation and authenticated-session development slices, version `0.1.0-dev`. Not a published release and not a canonical mutation manager.
 
 ## Process Contract
 
@@ -24,7 +24,7 @@ Every process-mode error still attempts one safe protocol response. If response 
 
 Payload: exact empty object.
 
-The result returns the descriptor, `reconciliation_foundation` readiness, and explicit false values for canonical apply, authenticated-session mutation, and Maestro docking.
+The result returns the descriptor, `authenticated_session_foundation` readiness, implemented reconciliation and authenticated-session capability declarations, and explicit false values for canonical apply and Maestro docking.
 
 ## `check`
 
@@ -69,9 +69,27 @@ Unknown noncritical extension values and their declared payload digests are pres
 | an inactive slot is equally ranked, unexpectedly ahead, newer-format, or contains an unknown critical extension | normal writes and automated downgrade stop; all evidence remains in place |
 | a future implementation needs a new journal format | it first dual-reads the prior format, preserves that write format while old participants remain bound, then performs a separately contracted idempotent migration |
 
+## Authenticated-Session Operations
+
+`session_begin`, `session_status`, `session_checkpoint`, `session_close`, and `session_recover` use the exact session command and result schemas under `knowledge/schemas/v1/`. Their operation names are distinct from reconciliation operations. qxctl authenticates SSIAG through the configured per-TOPS Unix socket and requests a fresh exact authorization decision before every operation. The coordinator does not call SSIAG itself and does not decide authority.
+
+The command carries the complete safe authorization decision and capability. The coordinator requires an allow decision with `caller_class_used: false` and `canonical_apply: false`; a capability with `transferable: false` and `canonical_apply: false`; an unexpired UTC interval; one exact subject, TOPS ID, operation, opaque canonical-repository-root resource, `qxctl` audience, TOPS scope, request/correlation pair, authority basis, grant ID, policy digest, configuration digest, and binding digest; and exact agreement between decision, capability, and command. The repository resource and binding digest are recomputed before use. Possession of this evidence outside the protected qxctl-to-coordinator invocation is not bearer authority and cannot authorize canonical apply.
+
+One canonical TOPS/subject/repository tuple maps to one protected session directory under:
+
+```text
+<state-root>/symphony/knowledge-session-coordinator/sessions/v1/epochs/<session-key>/
+```
+
+The directory contains `journal.lock`, `journal.0.json`, `journal.1.json`, and `head.json`. Its ownership, modes, no-follow traversal, write ordering, synchronization, expected-state compare-and-swap, idempotent replay, extension preservation, and unambiguous forward-recovery requirements match the reconciliation durability boundary. Each checkpoint binds an operation fingerprint over the operation, stable ID, expected state, canonical repository, and normalized context-reference set; reuse of an operation ID with different semantics fails closed even though a retry obtains fresh SSIAG evidence. The session journal is separate from every worktree reconciliation journal. It may attach bounded reconciliation-context references; those references do not become authentication or permission evidence.
+
+`session_begin` requires `absent` or the exact closed predecessor journal digest and begins a new linked authority epoch. `session_checkpoint` requires an open unexpired epoch, the exact current journal digest, and unchanged policy/configuration digests. It may attach previously unattached context references. `session_close` records `logout`, `expired`, `policy_changed`, or `config_changed` as applicable. `session_status` is read-only and reports the effective open, closed, or expired state. `session_recover` requires full write compatibility, uses exact state or explicit discovery, and repairs only a unique verifiable forward state: two slots must be identical or form one adjacent digest-linked chain. Exact recovery against an absent stream fails its compare-and-swap; explicit discovery may report an absent no-op. An inactive linked successor requires explicit recovery. Same-generation divergence, an unlinked generation jump, an unknown critical extension, unsupported newer state, invalid evidence, stale expected state, or an expired mutation capability remains visible and unmodified.
+
+Two-way procedural compatibility is determined independently for reconciliation and authenticated-session journals through explicit process protocols, journal read/write versions, and named required capabilities. Upgrade order is not authority or compatibility evidence. A participant lacking a required write capability may inspect supported state but cannot mutate it. A writer preserves supported older formats and all noncritical extension values until an explicit idempotent migration contract is installed. Recovery never deletes or fabricates authority evidence to make versions appear compatible.
+
 ## Descriptor Truth
 
-`inspect`, `check`, `compatibility`, `begin`, `status`, `checkpoint`, `close`, and `recover` are implemented. Authenticated-session lifecycle remains reserved and `apply` is disabled. The descriptor declares user-scope process invocation, C++26, freezing-path placement, `installed_undocked`, no default receptor, and no network listener.
+`inspect`, `check`, reconciliation `compatibility|begin|status|checkpoint|close|recover`, and authenticated-session `session_begin|session_status|session_checkpoint|session_close|session_recover` are implemented. `apply` is disabled. The descriptor declares user-scope process invocation, C++26, freezing-path placement, `installed_undocked`, no default receptor, and no network listener.
 
 ## Install and Uninstall
 
@@ -79,4 +97,4 @@ Installation uses module-and-version-specific paths and creates no active alias.
 
 ## Non-Authorization
 
-This implementation does not authenticate a caller, establish or recover an authority epoch, mutate canonical repository content, run a watcher, install a hook, invoke a vector engine, call SSIAG/STAV, activate an install receipt, or dock with Maestro. Reconciliation journal mutation is noncanonical local coordination only.
+This implementation does not authenticate the operating-system caller, decide permission, mutate canonical repository content, run a watcher, install a hook, invoke a vector engine, directly call SSIAG/STAV, activate an install receipt, or dock with Maestro. SSIAG authenticates and decides; qxctl obtains and transports the exact safe evidence; the coordinator validates it and mutates only protected noncanonical reconciliation or authenticated-session journals.

@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"time"
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/version"
@@ -92,6 +93,19 @@ type knowledgeReconcileOptions struct {
 	expectedJournalDigest string
 	paths                 []string
 	discover              bool
+	jsonOutput            bool
+}
+
+type knowledgeSessionOptions struct {
+	topsID                string
+	scope                 string
+	stateRoot             string
+	repository            string
+	operationID           string
+	expectedJournalDigest string
+	contextRefs           []string
+	discover              bool
+	ttl                   time.Duration
 	jsonOutput            bool
 }
 
@@ -185,7 +199,7 @@ func newKnowledgeCommand() *cobra.Command {
 		Use:  "knowledge",
 		Args: usageOnlyArgs,
 		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge subcommand is required: engines or reconcile")
+			return fmt.Errorf("knowledge subcommand is required: engines, reconcile, or session")
 		},
 	}
 	engines := &cobra.Command{
@@ -287,6 +301,44 @@ func newKnowledgeCommand() *cobra.Command {
 	}
 	reconcile.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	command.AddCommand(reconcile)
+
+	session := &cobra.Command{
+		Use:  "session",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return fmt.Errorf("knowledge session subcommand is required: begin, status, checkpoint, close, or recover")
+		},
+	}
+	for _, operation := range []string{"begin", "status", "checkpoint", "close", "recover"} {
+		options := knowledgeSessionOptions{scope: "user", ttl: 15 * time.Minute}
+		child := &cobra.Command{
+			Use:  operation,
+			Args: usageOnlyArgs,
+			RunE: func(*cobra.Command, []string) error {
+				return runKnowledgeSession(operation, options)
+			},
+		}
+		child.Flags().StringVar(&options.topsID, "tops-id", "", "immutable TOPS UUID")
+		child.Flags().StringVar(&options.scope, "scope", "user", "SSIAG installation scope: user or system")
+		child.Flags().StringVar(&options.stateRoot, "state-root", "", "user state root; defaults to XDG_STATE_HOME or ~/.local/state")
+		child.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
+		child.Flags().DurationVar(&options.ttl, "ttl", 15*time.Minute, "requested authority-epoch lifetime")
+		child.Flags().BoolVar(&options.jsonOutput, "json", false, "emit operation result JSON")
+		if operation != "status" {
+			child.Flags().StringVar(&options.operationID, "operation-id", "", "stable idempotency token for this mutation")
+			child.Flags().StringVar(&options.expectedJournalDigest, "expected-journal-digest", "", "required prior session state: absent or exact tagged SHA-256 digest")
+		}
+		if operation == "begin" || operation == "checkpoint" {
+			child.Flags().StringSliceVar(&options.contextRefs, "context-ref", nil, "reconciliation context reference to attach; repeat as needed")
+		}
+		if operation == "recover" {
+			child.Flags().BoolVar(&options.discover, "discover", false, "recover from uniquely validated local evidence when the head is unavailable")
+		}
+		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+		session.AddCommand(child)
+	}
+	session.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	command.AddCommand(session)
 	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	return command
 }
@@ -699,6 +751,12 @@ func failurePrefix(args []string) string {
 			switch args[2] {
 			case "compatibility", "begin", "status", "checkpoint", "close", "recover":
 				return "knowledge reconcile " + args[2]
+			}
+		}
+		if len(args) > 2 && args[1] == "session" {
+			switch args[2] {
+			case "begin", "status", "checkpoint", "close", "recover":
+				return "knowledge session " + args[2]
 			}
 		}
 	case "skvi":

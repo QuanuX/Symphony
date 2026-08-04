@@ -48,6 +48,70 @@ type ProvidersResponse struct {
 	Providers []ProviderDescriptor `json:"providers"`
 }
 
+type AuthorizationRequest struct {
+	Schema             string    `json:"schema"`
+	RequestID          string    `json:"request_id"`
+	CorrelationID      string    `json:"correlation_id"`
+	Operation          string    `json:"operation"`
+	Resource           string    `json:"resource"`
+	Audience           string    `json:"audience"`
+	Scope              string    `json:"scope"`
+	RequestedAt        time.Time `json:"requested_at"`
+	RequestedExpiresAt time.Time `json:"requested_expires_at"`
+}
+
+type DecisionSubject struct {
+	ID        string `json:"id"`
+	Kind      string `json:"kind"`
+	Authority string `json:"authority"`
+}
+
+type DecisionTarget struct {
+	Operation string `json:"operation"`
+	Resource  string `json:"resource"`
+	Audience  string `json:"audience"`
+	Scope     string `json:"scope"`
+}
+
+type Capability struct {
+	Protocol       string          `json:"protocol"`
+	CapabilityID   string          `json:"capability_id"`
+	Subject        DecisionSubject `json:"subject"`
+	TOPSID         string          `json:"tops_id"`
+	Target         DecisionTarget  `json:"target"`
+	AuthorityBasis string          `json:"authority_basis"`
+	GrantID        string          `json:"grant_id"`
+	RequestID      string          `json:"request_id"`
+	CorrelationID  string          `json:"correlation_id"`
+	IssuedAt       time.Time       `json:"issued_at"`
+	ExpiresAt      time.Time       `json:"expires_at"`
+	PolicyDigest   string          `json:"policy_digest"`
+	ConfigDigest   string          `json:"config_digest"`
+	BindingDigest  string          `json:"binding_digest"`
+	Transferable   bool            `json:"transferable"`
+	CanonicalApply bool            `json:"canonical_apply"`
+}
+
+type AuthorizationDecision struct {
+	Schema          string          `json:"schema"`
+	DecisionID      string          `json:"decision_id"`
+	RequestID       string          `json:"request_id"`
+	CorrelationID   string          `json:"correlation_id"`
+	TOPSID          string          `json:"tops_id"`
+	Subject         DecisionSubject `json:"subject"`
+	Target          DecisionTarget  `json:"target"`
+	Effect          string          `json:"effect"`
+	ReasonCode      string          `json:"reason_code"`
+	AuthorityBasis  *string         `json:"authority_basis"`
+	Capability      *Capability     `json:"capability"`
+	PolicyDigest    string          `json:"policy_digest"`
+	ConfigDigest    string          `json:"config_digest"`
+	DecidedAt       time.Time       `json:"decided_at"`
+	ExpiresAt       *time.Time      `json:"expires_at"`
+	CallerClassUsed bool            `json:"caller_class_used"`
+	CanonicalApply  bool            `json:"canonical_apply"`
+}
+
 type Client struct {
 	httpClient *http.Client
 	baseURL    string
@@ -139,6 +203,7 @@ type ssiagConfig struct {
 		Address string `json:"address"`
 	} `json:"listen"`
 	Authentication *authenticationConfig `json:"authentication"`
+	Authorization  json.RawMessage       `json:"authorization"`
 	Providers      []json.RawMessage     `json:"providers"`
 }
 
@@ -359,6 +424,17 @@ func (c *Client) Providers(ctx context.Context) (ProvidersResponse, error) {
 	return result, nil
 }
 
+func (c *Client) Authorize(ctx context.Context, request AuthorizationRequest) (AuthorizationDecision, error) {
+	var result AuthorizationDecision
+	if err := c.post(ctx, "/v1/authorization/decisions", request, &result); err != nil {
+		return result, err
+	}
+	if result.Schema != "symphony.ssiag.authorization-decision.v1" {
+		return result, fmt.Errorf("unsupported SSIAG authorization decision schema %q", result.Schema)
+	}
+	return result, nil
+}
+
 func (c *Client) get(ctx context.Context, path string, target any) error {
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, c.baseURL+path, nil)
 	if err != nil {
@@ -390,6 +466,49 @@ func (c *Client) get(ctx context.Context, path string, target any) error {
 			return fmt.Errorf("decode SSIAG response: multiple JSON values")
 		}
 		return fmt.Errorf("decode trailing SSIAG response: %w", err)
+	}
+	return nil
+}
+
+func (c *Client) post(ctx context.Context, path string, value, target any) error {
+	payload, err := json.Marshal(value)
+	if err != nil {
+		return fmt.Errorf("encode SSIAG request: %w", err)
+	}
+	request, err := http.NewRequestWithContext(ctx, http.MethodPost, c.baseURL+path, bytes.NewReader(payload))
+	if err != nil {
+		return err
+	}
+	request.Header.Set("Content-Type", "application/json")
+	response, err := c.httpClient.Do(request)
+	if err != nil {
+		return fmt.Errorf("SSIAG request failed: %w", err)
+	}
+	defer response.Body.Close()
+	responsePayload, err := io.ReadAll(io.LimitReader(response.Body, maxResponseBytes+1))
+	if err != nil {
+		return fmt.Errorf("read SSIAG response: %w", err)
+	}
+	if len(responsePayload) > maxResponseBytes {
+		return fmt.Errorf("SSIAG response exceeds %d bytes", maxResponseBytes)
+	}
+	if response.StatusCode != http.StatusOK {
+		var failure struct {
+			Code string `json:"code"`
+		}
+		if json.Unmarshal(responsePayload, &failure) == nil && failure.Code != "" {
+			return fmt.Errorf("SSIAG authorization failed: %s", failure.Code)
+		}
+		return fmt.Errorf("SSIAG returned HTTP %d", response.StatusCode)
+	}
+	decoder := json.NewDecoder(bytes.NewReader(responsePayload))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(target); err != nil {
+		return fmt.Errorf("decode SSIAG response: %w", err)
+	}
+	var extra any
+	if err := decoder.Decode(&extra); err != io.EOF {
+		return fmt.Errorf("decode SSIAG response: multiple JSON values")
 	}
 	return nil
 }

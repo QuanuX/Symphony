@@ -81,7 +81,7 @@ macOS uses per-TOPS launchd jobs under the `io.github.quanux.symphony.*` namespa
 
 ### Decision Packages
 
-`internal/identity`, `internal/policy`, and `internal/credential` keep proof summaries, subjects, deny-by-default decisions, references, leases, and operations separate. Present types are scaffolding; they do not establish authenticated sessions or perform operations.
+`internal/identity`, `internal/policy`, and `internal/credential` keep proof summaries, subjects, deny-by-default decisions, references, leases, and operations separate. The policy package implements exact-grant audited authorization and non-transferable capability evidence for protected noncanonical knowledge-session operations. Credential, lease, provider, policy-mutation, safeguard, and canonical-apply types remain scaffolding or disabled.
 
 ### Provider Registry
 

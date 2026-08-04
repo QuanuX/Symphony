@@ -3,6 +3,9 @@ package main
 import (
 	"bytes"
 	"context"
+	"crypto/rand"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -66,6 +69,11 @@ func printUsage() {
 	fmt.Println("  knowledge reconcile checkpoint --operation-id ID --expected-journal-digest DIGEST [--json] Record a durable checkpoint")
 	fmt.Println("  knowledge reconcile close --operation-id ID --expected-journal-digest DIGEST [--json] Close a durable context")
 	fmt.Println("  knowledge reconcile recover --operation-id ID (--expected-journal-digest DIGEST|--discover) [--json] Repair from durable evidence")
+	fmt.Println("  knowledge session begin --tops-id UUID --operation-id ID --expected-journal-digest STATE [--context-ref REF...] [--json] Begin an authenticated authority epoch")
+	fmt.Println("  knowledge session status --tops-id UUID [--json] Read authenticated session status")
+	fmt.Println("  knowledge session checkpoint --tops-id UUID --operation-id ID --expected-journal-digest DIGEST [--context-ref REF...] [--json] Checkpoint an authenticated session")
+	fmt.Println("  knowledge session close --tops-id UUID --operation-id ID --expected-journal-digest DIGEST [--json] Close an authenticated session")
+	fmt.Println("  knowledge session recover --tops-id UUID --operation-id ID (--expected-journal-digest DIGEST|--discover) [--json] Recover authenticated session evidence")
 	fmt.Println("  skvi inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SKVI engine")
 	fmt.Println("  skvi check --prefix PATH [--version VERSION] [--json] Check canonical SKVI index truth")
 	fmt.Println("  skvi propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared proposal")
@@ -388,6 +396,345 @@ func runKnowledgeReconcile(operation string, options knowledgeReconcileOptions) 
 		*result.Changed, *result.Recovered, *result.ReadOnly, digest,
 	)
 	return nil
+}
+
+func runKnowledgeSession(operation string, options knowledgeSessionOptions) error {
+	if options.topsID == "" {
+		return fmt.Errorf("--tops-id is required")
+	}
+	if options.scope != "user" && options.scope != "system" {
+		return fmt.Errorf("--scope must be user or system")
+	}
+	if options.ttl <= 0 || options.ttl > 24*time.Hour {
+		return fmt.Errorf("--ttl must be greater than zero and no more than 24h")
+	}
+	if operation != "status" && options.operationID == "" {
+		return fmt.Errorf("--operation-id is required")
+	}
+	expected := options.expectedJournalDigest
+	if operation == "begin" || operation == "checkpoint" || operation == "close" {
+		if expected == "" {
+			return fmt.Errorf("--expected-journal-digest is required")
+		}
+	}
+	if operation == "recover" {
+		if options.discover && expected != "" {
+			return fmt.Errorf("--discover and --expected-journal-digest are mutually exclusive")
+		}
+		if options.discover {
+			expected = "discover"
+		}
+		if expected == "" {
+			return fmt.Errorf("--expected-journal-digest or --discover is required")
+		}
+	}
+
+	repoRoot, err := resolveKnowledgeRepository(options.repository)
+	if err != nil {
+		return err
+	}
+	store, err := knowledgebinding.NewStore(options.stateRoot)
+	if err != nil {
+		return err
+	}
+	bindingSnapshot, err := store.Snapshot()
+	if err != nil {
+		return err
+	}
+	if !bindingSnapshot.Exists {
+		return fmt.Errorf("knowledge engine binding registry is absent")
+	}
+	var coordinator *knowledgebinding.Binding
+	for index := range bindingSnapshot.Registry.Bindings {
+		if bindingSnapshot.Registry.Bindings[index].Role == "coordinator" {
+			coordinator = &bindingSnapshot.Registry.Bindings[index]
+			break
+		}
+	}
+	if coordinator == nil {
+		return fmt.Errorf("knowledge-session coordinator is not bound")
+	}
+	installed, err := knowledgeengine.InspectInstallation("coordinator", coordinator.Prefix, coordinator.Version)
+	if err != nil {
+		return fmt.Errorf("bound coordinator installation is unavailable: %w", err)
+	}
+	if installed.ModuleID != coordinator.ModuleID || installed.EngineID != coordinator.EngineID ||
+		installed.ReceiptDigest != coordinator.ReceiptDigest || installed.ExecutableDigest != coordinator.ExecutableDigest {
+		return fmt.Errorf("bound coordinator installation no longer matches its content-addressed identity")
+	}
+
+	ssiag, err := ssiagclient.NewForTOPS(options.scope, options.topsID, 4*time.Second)
+	if err != nil {
+		return err
+	}
+	authorizationContext, cancel := context.WithTimeout(context.Background(), 4*time.Second)
+	defer cancel()
+	if _, err := requireSSIAGStatus(authorizationContext, ssiag, options.topsID, options.scope); err != nil {
+		return err
+	}
+	requestID, err := randomUUID()
+	if err != nil {
+		return err
+	}
+	correlationID, err := randomUUID()
+	if err != nil {
+		return err
+	}
+	now := time.Now().UTC().Truncate(time.Second)
+	authorizationRequest := ssiagclient.AuthorizationRequest{
+		Schema: "symphony.ssiag.authorization-request.v1", RequestID: requestID,
+		CorrelationID: correlationID, Operation: "symphony.knowledge.session." + operation,
+		Resource: sessionRepositoryResource(repoRoot), Audience: "qxctl", Scope: "tops:" + options.topsID,
+		RequestedAt: now, RequestedExpiresAt: now.Add(options.ttl).UTC().Truncate(time.Second),
+	}
+	decision, err := ssiag.Authorize(authorizationContext, authorizationRequest)
+	if err != nil {
+		return err
+	}
+	if err := validateSessionAuthorization(decision, authorizationRequest, options.topsID); err != nil {
+		return err
+	}
+
+	var operationID any
+	var expectedDigest any
+	if options.operationID != "" {
+		operationID = options.operationID
+	}
+	if expected != "" {
+		expectedDigest = expected
+	}
+	contextRefs := options.contextRefs
+	if contextRefs == nil {
+		contextRefs = []string{}
+	}
+	engineOperation := "session_" + operation
+	payload, err := json.Marshal(map[string]any{
+		"protocol":                "symphony.knowledge.session-command.v1",
+		"operation":               engineOperation,
+		"state_root":              store.StateRoot(),
+		"operation_id":            operationID,
+		"expected_journal_digest": expectedDigest,
+		"repository_root":         repoRoot,
+		"context_refs":            contextRefs,
+		"authorization_decision":  decision,
+		"client": map[string]any{
+			"client_id": "qxctl", "client_version": strings.ReplaceAll(qxversion.Version, " ", "-"),
+			"process_protocols":     []string{"symphony.knowledge.engine-process.v1"},
+			"journal_read_versions": []uint64{1}, "journal_write_versions": []uint64{1},
+			"capabilities": []string{
+				"atomic-head-v1", "authority-epoch-v1", "discovery-recovery-v1",
+				"dual-slot-journal-v1", "expected-state-cas-v1", "idempotent-operation-v1",
+				"nonblocking-lock-v1", "opaque-extension-preservation-v1",
+				"recovery-forward-v1", "ssiag-capability-binding-v1",
+			},
+		},
+	})
+	if err != nil {
+		return fmt.Errorf("encode authenticated session request: %w", err)
+	}
+	response, err := knowledgeengine.InvokeCoordinator(
+		context.Background(), coordinator.Prefix, coordinator.Version, repoRoot, engineOperation, payload)
+	if err != nil {
+		return err
+	}
+	result, err := validateSessionResult(response.Result, engineOperation)
+	if err != nil {
+		return err
+	}
+	if options.jsonOutput {
+		var display any
+		if err := json.Unmarshal(response.Result, &display); err != nil {
+			return fmt.Errorf("decode authenticated session result: %w", err)
+		}
+		return printIndentedJSON(display)
+	}
+	digest := "absent"
+	if result.JournalDigest != nil {
+		digest = *result.JournalDigest
+	}
+	fmt.Printf(
+		"Knowledge session: operation=%s state=%s present=%t changed=%t recovered=%t read_only=%t digest=%s canonical=false\n",
+		operation, result.EffectiveState, *result.JournalPresent, *result.Changed,
+		*result.Recovered, *result.ReadOnly, digest,
+	)
+	return nil
+}
+
+func sessionRepositoryResource(repositoryRoot string) string {
+	digest := sha256.Sum256([]byte("repository-root:" + repositoryRoot))
+	return "symphony.knowledge.repository:" + hex.EncodeToString(digest[:])
+}
+
+func resolveKnowledgeRepository(start string) (string, error) {
+	if start == "" {
+		var err error
+		start, err = os.Getwd()
+		if err != nil {
+			return "", fmt.Errorf("could not get current working directory: %w", err)
+		}
+	}
+	absolute, err := filepath.Abs(start)
+	if err != nil {
+		return "", fmt.Errorf("resolve repository path: %w", err)
+	}
+	info, err := os.Lstat(absolute)
+	if err != nil || info.Mode()&os.ModeSymlink != 0 || !info.IsDir() {
+		return "", fmt.Errorf("--repo must identify a no-follow directory")
+	}
+	root, err := repository.FindRoot(absolute)
+	if err != nil {
+		return "", fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+	return root, nil
+}
+
+func randomUUID() (string, error) {
+	var value [16]byte
+	if _, err := rand.Read(value[:]); err != nil {
+		return "", fmt.Errorf("generate request identity: %w", err)
+	}
+	value[6] = (value[6] & 0x0f) | 0x40
+	value[8] = (value[8] & 0x3f) | 0x80
+	return fmt.Sprintf("%08x-%04x-%04x-%04x-%012x",
+		value[0:4], value[4:6], value[6:8], value[8:10], value[10:16]), nil
+}
+
+func validateSessionAuthorization(decision ssiagclient.AuthorizationDecision, request ssiagclient.AuthorizationRequest, topsID string) error {
+	if decision.Schema != "symphony.ssiag.authorization-decision.v1" || decision.Effect != "allow" ||
+		decision.ReasonCode != "symphony.ssiag.policy.exact-grant" || !validSessionToken(decision.DecisionID) ||
+		decision.RequestID != request.RequestID || decision.CorrelationID != request.CorrelationID ||
+		decision.TOPSID != topsID || decision.Target.Operation != request.Operation ||
+		decision.Target.Resource != request.Resource || decision.Target.Audience != request.Audience ||
+		decision.Target.Scope != request.Scope || decision.CallerClassUsed || decision.CanonicalApply ||
+		decision.AuthorityBasis == nil || decision.Capability == nil || decision.ExpiresAt == nil {
+		return fmt.Errorf("SSIAG authorization decision does not bind the requested session authority")
+	}
+	capability := decision.Capability
+	basis := *decision.AuthorityBasis
+	binding := capability.BindingDigest
+	current := time.Now().UTC()
+	if capability.Protocol != "symphony.ssiag.capability.v1" || capability.TOPSID != topsID ||
+		!validSessionToken(capability.Subject.ID) || !validSessionToken(capability.Subject.Kind) ||
+		(capability.Subject.Authority != "unix_peer_credentials") ||
+		(basis != "host_owner" && basis != "granted_permission") ||
+		!validSessionToken(capability.CapabilityID) || !validSessionToken(capability.GrantID) ||
+		capability.Subject != decision.Subject || capability.Target != decision.Target ||
+		capability.RequestID != decision.RequestID || capability.CorrelationID != decision.CorrelationID ||
+		capability.AuthorityBasis != basis || capability.PolicyDigest != decision.PolicyDigest ||
+		capability.ConfigDigest != decision.ConfigDigest || capability.Transferable || capability.CanonicalApply ||
+		!validTaggedDigest(capability.PolicyDigest) || !validTaggedDigest(capability.ConfigDigest) ||
+		!validTaggedDigest(binding) || sessionCapabilityBinding(*capability) != binding ||
+		capability.CapabilityID != "ssiag-capability:"+strings.TrimPrefix(binding, "sha256:") ||
+		!capability.IssuedAt.Equal(decision.DecidedAt) || !capability.ExpiresAt.Equal(*decision.ExpiresAt) ||
+		capability.IssuedAt.Location() != time.UTC || capability.ExpiresAt.Location() != time.UTC ||
+		decision.DecidedAt.Location() != time.UTC || decision.ExpiresAt.Location() != time.UTC ||
+		capability.IssuedAt.Before(request.RequestedAt.Add(-30*time.Second)) ||
+		capability.IssuedAt.After(current.Add(30*time.Second)) ||
+		!capability.ExpiresAt.After(current) || capability.ExpiresAt.After(request.RequestedExpiresAt) ||
+		!capability.ExpiresAt.After(capability.IssuedAt) {
+		return fmt.Errorf("SSIAG capability evidence is inconsistent or expired")
+	}
+	return nil
+}
+
+func sessionCapabilityBinding(capability ssiagclient.Capability) string {
+	joined := strings.Join([]string{
+		capability.Protocol, capability.Subject.ID, capability.Subject.Kind, capability.Subject.Authority,
+		capability.TOPSID, capability.Target.Operation, capability.Target.Resource,
+		capability.Target.Audience, capability.Target.Scope, capability.AuthorityBasis,
+		capability.GrantID, capability.RequestID, capability.CorrelationID,
+		capability.IssuedAt.UTC().Format(time.RFC3339), capability.ExpiresAt.UTC().Format(time.RFC3339),
+		capability.PolicyDigest, capability.ConfigDigest, "transferable=false", "canonical_apply=false",
+	}, "\n")
+	digest := sha256.Sum256([]byte(joined))
+	return "sha256:" + hex.EncodeToString(digest[:])
+}
+
+func validSessionToken(value string) bool {
+	if value == "" || len(value) > 256 || strings.TrimSpace(value) != value {
+		return false
+	}
+	for _, character := range value {
+		if (character >= 'a' && character <= 'z') || (character >= 'A' && character <= 'Z') ||
+			(character >= '0' && character <= '9') || strings.ContainsRune("._:-", character) {
+			continue
+		}
+		return false
+	}
+	return true
+}
+
+type sessionResult struct {
+	Protocol       string          `json:"protocol"`
+	Operation      string          `json:"operation"`
+	Compatibility  json.RawMessage `json:"compatibility"`
+	JournalPresent *bool           `json:"journal_present"`
+	Journal        json.RawMessage `json:"journal"`
+	JournalDigest  *string         `json:"journal_digest"`
+	EffectiveState string          `json:"effective_state"`
+	Changed        *bool           `json:"changed"`
+	Recovered      *bool           `json:"recovered"`
+	RepairActions  []string        `json:"repair_actions"`
+	ReadOnly       *bool           `json:"read_only"`
+	ApplyEnabled   *bool           `json:"canonical_apply_enabled"`
+	Canonical      *bool           `json:"canonical"`
+}
+
+func validateSessionResult(raw json.RawMessage, operation string) (sessionResult, error) {
+	var fields map[string]json.RawMessage
+	if err := json.Unmarshal(raw, &fields); err != nil {
+		return sessionResult{}, fmt.Errorf("decode authenticated session result: %w", err)
+	}
+	required := []string{
+		"protocol", "operation", "compatibility", "journal_present", "journal", "journal_digest",
+		"effective_state", "changed", "recovered", "repair_actions", "read_only",
+		"canonical_apply_enabled", "canonical",
+	}
+	if len(fields) != len(required) {
+		return sessionResult{}, fmt.Errorf("authenticated session result has an invalid field set")
+	}
+	for _, field := range required {
+		if _, ok := fields[field]; !ok {
+			return sessionResult{}, fmt.Errorf("authenticated session result is incomplete")
+		}
+	}
+	var result sessionResult
+	if err := json.Unmarshal(raw, &result); err != nil {
+		return sessionResult{}, fmt.Errorf("decode authenticated session result: %w", err)
+	}
+	if result.Protocol != "symphony.knowledge.session-result.v1" || result.Operation != operation ||
+		result.JournalPresent == nil || result.Changed == nil || result.Recovered == nil || result.ReadOnly == nil ||
+		!explicitFalse(result.ApplyEnabled) || !explicitFalse(result.Canonical) || result.RepairActions == nil ||
+		(result.EffectiveState != "absent" && result.EffectiveState != "open" &&
+			result.EffectiveState != "closed" && result.EffectiveState != "expired") {
+		return sessionResult{}, fmt.Errorf("authenticated session result violates the v1 identity contract")
+	}
+	journalNull := bytes.Equal(bytes.TrimSpace(result.Journal), []byte("null"))
+	if !*result.JournalPresent {
+		if !journalNull || result.JournalDigest != nil || result.EffectiveState != "absent" {
+			return sessionResult{}, fmt.Errorf("absent authenticated session result is inconsistent")
+		}
+	} else {
+		if journalNull || result.JournalDigest == nil || !validTaggedDigest(*result.JournalDigest) || result.EffectiveState == "absent" {
+			return sessionResult{}, fmt.Errorf("present authenticated session result is incomplete")
+		}
+		var journal struct {
+			Protocol      string `json:"protocol"`
+			JournalDigest string `json:"journal_digest"`
+			Canonical     *bool  `json:"canonical"`
+		}
+		if err := json.Unmarshal(result.Journal, &journal); err != nil ||
+			journal.Protocol != "symphony.knowledge.session-journal.v1" ||
+			journal.JournalDigest != *result.JournalDigest || !explicitFalse(journal.Canonical) {
+			return sessionResult{}, fmt.Errorf("authenticated session journal identity is invalid")
+		}
+	}
+	if *result.ReadOnly != (operation == "session_status") ||
+		(operation != "session_recover" && *result.Recovered) ||
+		(operation == "session_recover" && *result.Recovered != *result.Changed) {
+		return sessionResult{}, fmt.Errorf("authenticated session mutation flags are inconsistent")
+	}
+	return result, nil
 }
 
 type reconciliationResult struct {

@@ -35,6 +35,11 @@ Commands:
   knowledge reconcile checkpoint --operation-id ID --expected-journal-digest DIGEST [--json] Record a durable checkpoint
   knowledge reconcile close --operation-id ID --expected-journal-digest DIGEST [--json] Close a durable context
   knowledge reconcile recover --operation-id ID (--expected-journal-digest DIGEST|--discover) [--json] Repair from durable evidence
+  knowledge session begin --tops-id UUID --operation-id ID --expected-journal-digest STATE [--context-ref REF...] [--json] Begin an authenticated authority epoch
+  knowledge session status --tops-id UUID [--json] Read authenticated session status
+  knowledge session checkpoint --tops-id UUID --operation-id ID --expected-journal-digest DIGEST [--context-ref REF...] [--json] Checkpoint an authenticated session
+  knowledge session close --tops-id UUID --operation-id ID --expected-journal-digest DIGEST [--json] Close an authenticated session
+  knowledge session recover --tops-id UUID --operation-id ID (--expected-journal-digest DIGEST|--discover) [--json] Recover authenticated session evidence
   skvi inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SKVI engine
   skvi check --prefix PATH [--version VERSION] [--json] Check canonical SKVI index truth
   skvi propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared proposal

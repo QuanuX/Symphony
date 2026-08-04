@@ -30,11 +30,13 @@ After this contract transition is merged, authorized implementation work may:
 - expose implemented proposal/read operations through qxctl;
 - prove independent install/uninstall without silently docking or mutating canonical files.
 
-The implemented `0.1.0-dev` foundation supports direct coordinator `inspect` and explicit-path read-only `check`, plus independently installed SKVI `inspect`, `check`, caller-declared `propose`, and disposable `project`; SCLV `inspect`, `check`, provider-neutral `propose`, non-mutating `recover`, and disposable `project`; and SACV `inspect`, `check`, `diff`, caller-declared `propose`, and disposable `project`. qxctl validates each exact receipt, owned paths, process identity, deadline, and response digest before presenting results. Success proves those bounded operations only; it does not prove authentication, an active session, lifecycle activation, docking, ratification, journal mutation, endpoint existence, publication, or apply authority.
+The implemented `0.1.0-dev` foundation supports direct coordinator `inspect`, explicit-path read-only `check`, durable reconciliation, and SSIAG-authorized noncanonical authenticated sessions, plus independently installed SKVI `inspect`, `check`, caller-declared `propose`, and disposable `project`; SCLV `inspect`, `check`, provider-neutral `propose`, non-mutating `recover`, and disposable `project`; SACV `inspect`, `check`, `diff`, caller-declared `propose`, and disposable `project`; SODV `inspect`, `check`, `verify`, `propose`, `recover`, and `project`; and SSFV `inspect`, `check`, `diff`, `propose`, and `graph`. qxctl validates each exact receipt, owned paths, process identity, deadline, and response digest before presenting results. Session success additionally proves that one fresh exact SSIAG decision was accepted for the noncanonical operation. It does not prove lifecycle activation, docking, ratification, canonical endpoint publication, or apply authority.
 
 The implemented `qxctl knowledge engines list|inspect|doctor|bind|unbind` surface manages only the protected user-scope `default` binding profile. Supply `absent` for the first expected registry state or the exact digest reported by `list` for later mutations. A bind selects exact content for later reconciliation; it does not install, invoke, activate, dock, authenticate, authorize, or apply.
 
 The implemented `qxctl knowledge reconcile compatibility|begin|status|checkpoint|close|recover` surface uses one exact bound coordinator. Supply a stable operation identifier for every mutation and the exact current journal digest; use discovery recovery only when ordinary status cannot validate local state. Treat two-slot recovery as evidence-based forward repair, never permission to discard an incompatible journal or unknown critical extension.
+
+The implemented `qxctl knowledge session begin|status|checkpoint|close|recover` surface uses the same exact bound coordinator and one TOPS-scoped SSIAG endpoint. Every call requests a fresh exact grant and validates subject, target, policy/configuration, expiry, caller-class neutrality, non-transferability, canonical-apply disablement, and capability binding. Session evidence authorizes only the named protected noncanonical operation. Keep session and reconciliation journals separate and use context references only to associate them.
 
 ## Prohibited Initial Operations
 
@@ -50,7 +52,7 @@ The implemented `qxctl knowledge reconcile compatibility|begin|status|checkpoint
 
 ## Session and Recovery Procedure
 
-1. Authenticate and establish the authority epoch when an authority-bearing operation requires one; reconciliation alone makes no authentication claim.
+1. Use `qxctl knowledge session begin` to obtain exact SSIAG authorization and establish a noncanonical authority epoch when an authority-bearing operation requires one; reconciliation alone makes no authentication claim.
 2. Open or resume a separately locked reconciliation context for each worktree.
 3. Capture canonical contract, tree, and engine digests.
 4. Treat observer and hook input only as a dirty-path hint.

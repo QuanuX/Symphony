@@ -19,6 +19,7 @@ import (
 	ssiagpaths "github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/paths"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/provider"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/server"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/stavproducer"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/supervision"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/version"
 )
@@ -111,7 +112,13 @@ func runServe(args []string) error {
 	if err != nil {
 		return err
 	}
-	ssiagServer, err := server.New(cfg, registry)
+	var audit *stavproducer.Producer
+	audit, err = stavproducer.Open(scope, topsID)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "symphony-ssiag: STAV audit unavailable; authorization endpoint will fail closed: %v\n", err)
+		audit = nil
+	}
+	ssiagServer, err := server.NewWithAudit(cfg, registry, audit)
 	if err != nil {
 		return err
 	}
@@ -436,7 +443,7 @@ func printUsage() {
 	fmt.Println("  enroll      Create or update one TOPS enrollment")
 	fmt.Println("  unenroll    Remove one TOPS enrollment; preserve data unless --purge")
 	fmt.Println("  supervisor  Install/uninstall one TOPS native liveness service")
-	fmt.Println("  serve       Run the local metadata-only SSIAG API for one TOPS")
+	fmt.Println("  serve       Run the local safe-metadata and authorization SSIAG API for one TOPS")
 	fmt.Println("  status      Read safe SSIAG status for one TOPS")
 	fmt.Println("  providers   List safe provider descriptors for one TOPS")
 	fmt.Println("  version     Print version")

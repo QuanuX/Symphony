@@ -5,6 +5,7 @@
 #include "symphony/knowledge/engine/protocol.hpp"
 
 #include <algorithm>
+#include <array>
 #include <fcntl.h>
 #include <filesystem>
 #include <fstream>
@@ -12,6 +13,7 @@
 #include <stdexcept>
 #include <string>
 #include <sys/file.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 namespace fs = std::filesystem;
@@ -161,6 +163,86 @@ engine::Json reconcile(
             full_capabilities)));
 }
 
+engine::Json authorization_decision(const std::string& operation, const std::string& suffix = "1") {
+    const std::string tops_id = "018f0c3a-7b2d-7e11-8c12-0242ac120002";
+    const auto request_id = "request-" + suffix;
+    const auto correlation_id = "correlation-" + suffix;
+    const auto target = engine::Json{
+        {"operation", "symphony.knowledge.session." + operation},
+        {"resource", "symphony.knowledge.repository:" + engine::sha256_hex(
+            "repository-root:" + fs::canonical(fs::current_path()).string())}, {"audience", "qxctl"},
+        {"scope", "tops:" + tops_id},
+    };
+    const auto subject = engine::Json{
+        {"id", "owner.primary"}, {"kind", "symphony.identity.owner"},
+        {"authority", "unix_peer_credentials"},
+    };
+    engine::Json capability{
+        {"protocol", "symphony.ssiag.capability.v1"}, {"capability_id", "pending"},
+        {"subject", subject}, {"tops_id", tops_id}, {"target", target},
+        {"authority_basis", "host_owner"}, {"grant_id", "knowledge-session-" + operation},
+        {"request_id", request_id}, {"correlation_id", correlation_id},
+        {"issued_at", "2020-01-01T00:00:00Z"}, {"expires_at", "2099-01-01T00:00:00Z"},
+        {"policy_digest", "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+        {"config_digest", "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+        {"binding_digest", "pending"}, {"transferable", false}, {"canonical_apply", false},
+    };
+    const auto values = std::array<std::string, 19>{
+        capability.at("protocol"), subject.at("id"), subject.at("kind"), subject.at("authority"),
+        tops_id, target.at("operation"), target.at("resource"), target.at("audience"), target.at("scope"),
+        capability.at("authority_basis"), capability.at("grant_id"), request_id, correlation_id,
+        capability.at("issued_at"), capability.at("expires_at"), capability.at("policy_digest"),
+        capability.at("config_digest"), "transferable=false", "canonical_apply=false",
+    };
+    std::string joined;
+    for (std::size_t index = 0; index < values.size(); ++index) {
+        if (index != 0U) joined.push_back('\n');
+        joined += values[index];
+    }
+    capability["binding_digest"] = engine::tagged_sha256(joined);
+    capability["capability_id"] = "ssiag-capability:" + capability.at("binding_digest").get<std::string>().substr(7);
+    return engine::Json{
+        {"schema", "symphony.ssiag.authorization-decision.v1"},
+        {"decision_id", "ssiag-decision:" + engine::sha256_hex(operation + suffix)},
+        {"request_id", request_id}, {"correlation_id", correlation_id}, {"tops_id", tops_id},
+        {"subject", subject}, {"target", target}, {"effect", "allow"},
+        {"reason_code", "symphony.ssiag.policy.exact-grant"}, {"authority_basis", "host_owner"},
+        {"capability", capability}, {"policy_digest", capability.at("policy_digest")},
+        {"config_digest", capability.at("config_digest")}, {"decided_at", "2020-01-01T00:00:00Z"},
+        {"expires_at", capability.at("expires_at")}, {"caller_class_used", false}, {"canonical_apply", false},
+    };
+}
+
+engine::Json authenticated_session(
+    const fs::path& state_root,
+    const std::string& operation,
+    const engine::Json& operation_id,
+    const engine::Json& expected,
+    const engine::Json& contexts = engine::Json::array(),
+    const std::string& suffix = "1",
+    bool full_capabilities = true) {
+    const auto qualified = "session_" + operation;
+    auto capabilities = engine::Json::array({
+        "atomic-head-v1", "authority-epoch-v1", "discovery-recovery-v1",
+        "dual-slot-journal-v1", "expected-state-cas-v1", "idempotent-operation-v1",
+        "nonblocking-lock-v1", "opaque-extension-preservation-v1",
+        "recovery-forward-v1", "ssiag-capability-binding-v1",
+    });
+    if (!full_capabilities) capabilities.erase(capabilities.begin());
+    return session::handle_request(request(qualified, engine::Json{
+        {"protocol", "symphony.knowledge.session-command.v1"}, {"operation", qualified},
+        {"state_root", fs::canonical(state_root).string()}, {"operation_id", operation_id},
+        {"expected_journal_digest", expected}, {"repository_root", fs::canonical(fs::current_path()).string()},
+        {"context_refs", contexts}, {"authorization_decision", authorization_decision(operation, suffix)},
+        {"client", engine::Json{
+            {"client_id", "qxctl"}, {"client_version", "qxctl-dev"},
+            {"process_protocols", engine::Json::array({engine::process_protocol_v1})},
+            {"journal_read_versions", engine::Json::array({1})}, {"journal_write_versions", engine::Json::array({1})},
+            {"capabilities", capabilities},
+        }},
+    }));
+}
+
 engine::Json read_json(const fs::path& path) {
     std::ifstream input(path, std::ios::binary);
     if (!input) {
@@ -175,6 +257,10 @@ void write_json(const fs::path& path, const engine::Json& value) {
         throw std::runtime_error("could not write test JSON");
     }
     output << value.dump() << '\n';
+    output.close();
+    if (::chmod(path.c_str(), 0600) != 0) {
+        throw std::runtime_error("could not protect test JSON");
+    }
 }
 
 void finalize_test_digest(engine::Json& value, const char* field) {
@@ -193,13 +279,15 @@ void test_descriptor_and_inspect() {
     const auto descriptor = session::descriptor();
     require(descriptor.at("engine_id") == session::engine_id, "descriptor engine mismatch");
     require(descriptor.at("canonical_apply_enabled") == false, "apply must remain disabled");
-    require(descriptor.at("session_mutation_enabled") == false, "session mutation must remain disabled");
+    require(descriptor.at("session_mutation_enabled") == true, "session mutation must be enabled");
     require(descriptor.at("network_listener") == false, "network listener must remain disabled");
 
     const auto result = session::handle_request(request("inspect", engine::Json::object()));
-    require(result.at("readiness") == "reconciliation_foundation", "inspect readiness mismatch");
+    require(result.at("readiness") == "authenticated_session_foundation", "inspect readiness mismatch");
     require(result.at("reconciliation").at("two_way_procedural_compatibility") == true,
             "reconciliation compatibility declaration missing");
+    require(result.at("authenticated_session").at("two_way_procedural_compatibility") == true,
+            "authenticated session compatibility declaration missing");
     require(result.at("maestro_docking_enabled") == false, "docking must remain disabled");
 
     require_error([&] {
@@ -253,6 +341,212 @@ void test_reserved_operations() {
             static_cast<void>(session::handle_request(request(operation, engine::Json::object())));
         }, "operation.unsupported");
     }
+}
+
+void test_authenticated_session_lifecycle_and_recovery() {
+    TemporaryDirectory repository;
+    TemporaryDirectory state;
+    CurrentDirectory current(repository.path());
+
+    const auto begin = authenticated_session(
+        state.path(), "begin", "session-begin-1", "absent",
+        engine::Json::array({"reconcile:context-one"}), "begin-1");
+    require(begin.at("changed") == true && begin.at("effective_state") == "open",
+            "authenticated session begin did not commit");
+    require(begin.at("journal").at("contexts").size() == 1,
+            "session begin did not attach the reconciliation context");
+    const auto begin_digest = begin.at("journal_digest").get<std::string>();
+
+    const auto replay = authenticated_session(
+        state.path(), "begin", "session-begin-1", "absent",
+        engine::Json::array({"reconcile:context-one"}), "begin-2");
+    require(replay.at("changed") == false && replay.at("journal_digest") == begin_digest,
+            "authenticated session begin replay changed state");
+    require_error([&] {
+        static_cast<void>(authenticated_session(
+            state.path(), "begin", "session-begin-1", "absent",
+            engine::Json::array({"reconcile:different-context"}), "begin-drift"));
+    }, "session.operation_reused");
+
+    const auto checkpoint = authenticated_session(
+        state.path(), "checkpoint", "session-checkpoint-1", begin_digest,
+        engine::Json::array({"reconcile:context-two"}), "checkpoint-1");
+    require(checkpoint.at("journal").at("contexts").size() == 2,
+            "session checkpoint did not attach a second context");
+    const auto checkpoint_digest = checkpoint.at("journal_digest").get<std::string>();
+    require_error([&] {
+        static_cast<void>(authenticated_session(
+            state.path(), "checkpoint", "session-checkpoint-stale", begin_digest,
+            engine::Json::array(), "checkpoint-stale"));
+    }, "session.expected_state_mismatch");
+
+    const auto status = authenticated_session(
+        state.path(), "status", nullptr, nullptr, engine::Json::array(), "status-1");
+    require(status.at("read_only") == true && status.at("effective_state") == "open",
+            "authenticated session status was not read-only and open");
+
+    const auto close = authenticated_session(
+        state.path(), "close", "session-close-1", checkpoint_digest,
+        engine::Json::array(), "close-1");
+    require(close.at("journal").at("state") == "closed" &&
+                close.at("journal").at("close_reason") == "logout",
+            "authenticated session close did not record logout");
+    const auto closed_digest = close.at("journal_digest").get<std::string>();
+
+    const auto second = authenticated_session(
+        state.path(), "begin", "session-begin-2", closed_digest,
+        engine::Json::array(), "begin-3");
+    require(second.at("journal").at("generation") > close.at("journal").at("generation") &&
+                second.at("journal").at("previous_journal_digest") == closed_digest,
+            "new authority epoch did not link the closed predecessor");
+
+    const auto second_digest = second.at("journal_digest").get<std::string>();
+    const auto key = engine::sha256_hex(
+        "session-key:018f0c3a-7b2d-7e11-8c12-0242ac120002|owner.primary|" +
+        fs::canonical(repository.path()).string());
+    const auto directory = state.path() / "symphony" / "knowledge-session-coordinator" /
+        "sessions" / "v1" / "epochs" / key;
+    write_json(directory / "head.json", engine::Json{{"broken", true}});
+    require_error([&] {
+        static_cast<void>(authenticated_session(
+            state.path(), "status", nullptr, nullptr, engine::Json::array(), "status-broken"));
+    }, "session.field_set");
+    const auto recovered = authenticated_session(
+        state.path(), "recover", "session-recover-1", "discover",
+        engine::Json::array(), "recover-1");
+    require(recovered.at("changed") == true && recovered.at("recovered") == true &&
+                recovered.at("journal").at("previous_journal_digest") == second_digest,
+            "authenticated session discovery recovery did not roll forward");
+
+    require_error([&] {
+        static_cast<void>(authenticated_session(
+            state.path(), "recover", "session-recover-read-only", recovered.at("journal_digest"),
+            engine::Json::array(), "recover-read-only", false));
+    }, "session.compatibility_required");
+
+    auto denied = authorization_decision("checkpoint", "denied");
+    denied["effect"] = "deny";
+    denied["capability"] = nullptr;
+    denied["authority_basis"] = nullptr;
+    denied["expires_at"] = nullptr;
+    auto payload = engine::Json{
+        {"protocol", "symphony.knowledge.session-command.v1"}, {"operation", "session_checkpoint"},
+        {"state_root", fs::canonical(state.path()).string()}, {"operation_id", "denied-op"},
+        {"expected_journal_digest", recovered.at("journal_digest")},
+        {"repository_root", fs::canonical(repository.path()).string()}, {"context_refs", engine::Json::array()},
+        {"authorization_decision", denied},
+        {"client", engine::Json{
+            {"client_id", "qxctl"}, {"client_version", "qxctl-dev"},
+            {"process_protocols", engine::Json::array({engine::process_protocol_v1})},
+            {"journal_read_versions", engine::Json::array({1})}, {"journal_write_versions", engine::Json::array({1})},
+            {"capabilities", engine::Json::array({
+                "atomic-head-v1", "authority-epoch-v1", "dual-slot-journal-v1",
+                "expected-state-cas-v1", "idempotent-operation-v1",
+                "opaque-extension-preservation-v1", "recovery-forward-v1",
+                "ssiag-capability-binding-v1",
+            })},
+        }},
+    };
+    require_error([&] {
+        static_cast<void>(session::handle_request(request("session_checkpoint", payload)));
+    }, "session.authorization_denied");
+
+    payload["authorization_decision"] = authorization_decision("checkpoint", "malformed-client");
+    payload["client"]["journal_read_versions"] = engine::Json::array({"1"});
+    require_error([&] {
+        static_cast<void>(session::handle_request(request("session_checkpoint", payload)));
+    }, "session.invalid_field");
+}
+
+void test_authenticated_session_slot_safety() {
+    TemporaryDirectory repository;
+    TemporaryDirectory state;
+    CurrentDirectory current(repository.path());
+
+    const auto begin = authenticated_session(
+        state.path(), "begin", "slot-begin", "absent", engine::Json::array(), "slot-begin");
+    const auto key = engine::sha256_hex(
+        "session-key:018f0c3a-7b2d-7e11-8c12-0242ac120002|owner.primary|" +
+        fs::canonical(repository.path()).string());
+    const auto directory = state.path() / "symphony" / "knowledge-session-coordinator" /
+        "sessions" / "v1" / "epochs" / key;
+    auto head = read_json(directory / "head.json");
+    const auto active_slot = head.at("active_slot").get<int>();
+    const auto active_path = directory / ("journal." + std::to_string(active_slot) + ".json");
+    const auto inactive_path = directory / ("journal." + std::to_string(1 - active_slot) + ".json");
+    auto active = read_json(active_path);
+    auto linked = active;
+    linked["generation"] = active.at("generation").get<std::uint64_t>() + 1U;
+    linked["previous_journal_digest"] = active.at("journal_digest");
+    finalize_test_digest(linked, "journal_digest");
+    write_json(inactive_path, linked);
+
+    require_error([&] {
+        static_cast<void>(authenticated_session(
+            state.path(), "status", nullptr, nullptr, engine::Json::array(), "slot-status"));
+    }, "session.recovery_required");
+    const auto recovered = authenticated_session(
+        state.path(), "recover", "slot-recover", "discover", engine::Json::array(), "slot-recover");
+    require(recovered.at("recovered") == true && recovered.at("changed") == true,
+            "linked durable successor was not recovered forward");
+    require(recovered.at("journal").at("recovery").at("disposition") ==
+                "adopted_linked_successor",
+            "linked session successor recovery disposition mismatch");
+
+    head = read_json(directory / "head.json");
+    const auto recovered_slot = head.at("active_slot").get<int>();
+    const auto recovered_path = directory / ("journal." + std::to_string(recovered_slot) + ".json");
+    const auto other_path = directory / ("journal." + std::to_string(1 - recovered_slot) + ".json");
+    active = read_json(recovered_path);
+    auto divergent = active;
+    divergent["session_id"] = "session:divergent";
+    finalize_test_digest(divergent, "journal_digest");
+    write_json(other_path, divergent);
+    require_error([&] {
+        static_cast<void>(authenticated_session(
+            state.path(), "status", nullptr, nullptr, engine::Json::array(), "divergent-status"));
+    }, "session.recovery_ambiguous");
+
+    auto critical = active;
+    auto extension = engine::Json{
+        {"extension_id", "future-critical"}, {"extension_version", "v2"},
+        {"critical", true}, {"payload", engine::Json{{"future", true}}},
+        {"payload_digest", nullptr},
+    };
+    extension["payload_digest"] = engine::tagged_sha256(extension.at("payload").dump());
+    critical["extensions"].push_back(extension);
+    finalize_test_digest(critical, "journal_digest");
+    write_json(other_path, critical);
+    require_error([&] {
+        static_cast<void>(authenticated_session(
+            state.path(), "status", nullptr, nullptr, engine::Json::array(), "critical-status"));
+    }, "session.compatibility_required");
+
+    require(begin.at("canonical") == false, "slot safety fixture changed canonical state");
+}
+
+void test_authenticated_session_empty_recovery_cas() {
+    TemporaryDirectory repository;
+    TemporaryDirectory state;
+    CurrentDirectory current(repository.path());
+    const auto status = authenticated_session(
+        state.path(), "status", nullptr, nullptr, engine::Json::array(), "empty-status");
+    require(status.at("journal_present") == false && status.at("read_only") == true,
+            "absent authenticated session status was not read-only");
+    require(!fs::exists(state.path() / "symphony"),
+            "absent authenticated session status created operational state");
+    const std::string absent_digest =
+        "sha256:0000000000000000000000000000000000000000000000000000000000000000";
+    require_error([&] {
+        static_cast<void>(authenticated_session(
+            state.path(), "recover", "empty-exact-recover", absent_digest,
+            engine::Json::array(), "empty-exact-recover"));
+    }, "session.expected_state_mismatch");
+    const auto discovered = authenticated_session(
+        state.path(), "recover", "empty-discovery-recover", "discover",
+        engine::Json::array(), "empty-discovery-recover");
+    require(discovered.at("journal_present") == false && discovered.at("changed") == false,
+            "empty discovery recovery did not remain a non-mutating absent result");
 }
 
 void test_reconciliation_lifecycle_and_compatibility() {
@@ -593,6 +887,9 @@ int main() {
         test_descriptor_and_inspect();
         test_check();
         test_reserved_operations();
+        test_authenticated_session_lifecycle_and_recovery();
+        test_authenticated_session_slot_safety();
+        test_authenticated_session_empty_recovery_cas();
         test_reconciliation_lifecycle_and_compatibility();
         test_reconciliation_discovery_recovery_and_replay();
         test_reconciliation_extension_and_filesystem_safety();
