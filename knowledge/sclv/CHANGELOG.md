@@ -2750,3 +2750,122 @@ This PR authorizes none of the following:
   - `module tag, release artifact, package publication, public documentation, SDK generation, Mintlify publication, or launch claim`
 - notes: |
     This post-merge closure records the authenticated durable knowledge-session implementation merged by PR #95. Every changed file is listed as an affected surface. The nineteen unindexed implementation and test paths remain explicit advisory evidence rather than being hidden through selective omission or artificial SKVI expansion. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
+
+- record_id: `SCLV-CHG-20260804-SESSION-TRANSITION-LIFECYCLE-PLAN`
+- record_version: `3`
+- title: `Explicit session transitions and cross-vector lifecycle planning implemented`
+- status: `canonical`
+- date: `2026-08-04`
+- change_started_at: `2026-08-04T09:33:27Z`
+- change_completed_at: `2026-08-04T09:34:00Z`
+- recorded_at: `2026-08-04T09:36:26Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `canonical_addition`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#97`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/97`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `5e194ff43c296f7059726d29ee67bcd83df70167`
+- tree_digest: `sha256:a22c1664d149dc0fbd785bb7bd608d5412c4a223fba61c1ee92d294bc3677626`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/97`
+- ratification_evidence_digest: `sha256:f4275b96c0679a85373fb2894d294a8c913f0586dcdf6ad2b71b940611ee8fce`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/session-transition-result.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `libraries/knowledge-vector-engine-cpp/tests/foundation_test.cpp`
+  - `modules/knowledge-session-coordinator/FEATURES.md`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `modules/knowledge-session-coordinator/SKILL.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/session_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/session-transition-result.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/knowledge-session-coordinator/FEATURES.md`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `modules/knowledge-session-coordinator/SKILL.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    Under the Architect's direction, PR #97 added explicit idempotent qxctl login, refresh, and logout convergence over the already-ratified SSIAG-authorized coordinator primitives. It also established the cross-vector lifecycle topology for independently installable modules and vectors that may arrive, disappear, upgrade, or roll back in unplanned order. No generic lifecycle mutation was enabled.
+- relationship_changes: |
+    knowledge/ owns the session-transition result and the prospective desired/observed/applied-state and first-boot topology. qxctl owns the explicit host-event adapter and obtains a fresh SSIAG decision for every composed status, recover, close, begin, or checkpoint operation. The coordinator remains the owner of durable noncanonical authority epochs and gains no new process operation. Binding registry v1 remains fixed to its six existing roles; a future generic lifecycle layer will sit alongside it and adapt supported v1 evidence without rewriting it. Individual vectors continue to own vector-specific lifecycle meaning, while future Maestro integration owns persisted docking presence rather than semantic truth.
+- doctrine_changes: |
+    A stable host event ID is retry identity, not authority. Login, refresh, and logout transitions are explicit calls rather than hidden watchers, and optional recovery is confined to uniquely repairable damaged local evidence. First boot is modeled as a content-addressed observation comparison rather than a mutable flag, boot counter, or newest-version rule. The stable observation key excludes the prior applied-state digest so a successful applied-state commit cannot invalidate itself; that prior digest remains the transaction compare-and-swap anchor. Caller authority remains host ownership or granted permission without actor-class doctrine.
+- compatibility_consequences: |
+    Older coordinators remain usable because qxctl composes the existing session protocol rather than requiring a new coordinator operation. Stable derived step IDs plus journal fingerprints make repeated events no-ops and allow an interrupted refresh that committed close to resume its missing linked begin. The planned first-boot layer will distinguish desired, observed, and applied state; preserve unmanaged packages and degraded bindings; dual-read supported receipt/state versions; block unknown critical state; and reevaluate a normalized platform-compatibility digest after meaningful operating-system or runtime change without treating every reboot as a change.
+- publication_consequences: |
+    No module tag, release artifact, package coordinate, binary distribution, container, SDK, OpenAPI surface, Mintlify publication, public documentation release, marketing claim, or platform launch was published or authorized. The implementation remains active-development source on the rolling main branch.
+- projection_consequences: |
+    The transition result is bounded digest-bound noncanonical evidence. The desired-state, observed-state, applied-state, receipt-v2, boot-journal, lifecycle-plan, and Maestro-docking forms remain prospective contracts rather than generated canonical records or claims of installed capability.
+- evidence:
+  - `PR #97 merged into main at 2026-08-04T09:34:00Z by quantDIY as 5e194ff43c296f7059726d29ee67bcd83df70167`
+  - `implementation head 553438c92703042c3fe9fec0c6242edb344d2aaa; 28 files changed, 1070 insertions, 74 deletions`
+  - `local-Git adapter evidence digest sha256:e80d9847c9609a4fbdcd2a8c2eb004f1b4249a97e50a901feb870d8ff0faae2c bound tree digest sha256:a22c1664d149dc0fbd785bb7bd608d5412c4a223fba61c1ee92d294bc3677626`
+  - `provider-neutral ratification evidence digest sha256:d9045958a0653bcbf64ae0d851b7e9930403b18c039e2658636b9c0380750d7a bound canonical PR metadata digest sha256:f4275b96c0679a85373fb2894d294a8c913f0586dcdf6ad2b71b940611ee8fce`
+  - `canonical PR metadata identified repository QuanuX/Symphony, base main, head agent/session-transition-lifecycle-plan at 553438c92703042c3fe9fec0c6242edb344d2aaa, merged state, merge revision 5e194ff43c296f7059726d29ee67bcd83df70167, authenticated merger quantDIY, title, number 97, creation and merge times, and URL`
+  - `qxctl passed go test ./..., go vet ./..., CGO_ENABLED=0 go test ./..., CGO_ENABLED=0 go build ./cmd/qxctl, and go test -race ./...`
+  - `the common C++ knowledge-vector foundation CTest passed with sixteen common schemas; all changed JSON parsed successfully`
+  - `the full symphony-validator smoke matrix passed; pre-closure live result pass=4184 warning=235 violation=0 exit=0`
+  - `all 235 pre-closure warnings were the established sclv.affected_surface.unindexed historical-record advisory family`
+  - `the live SSFV check reported three passes, zero warnings, zero violations, structurally valid state, and intentionally partial rollout coverage`
+  - `a real-process end-to-end test passed across SSIAG and STAV Unix sockets, qxctl, and an installed C++ coordinator for login/retry/refresh/retry/logout/retry with nine committed authorization events`
+  - `unit regression proved interrupted-refresh close-to-begin resumption, bounded opt-in recovery, ambiguous-state refusal, closed-epoch non-adoption, stable retry, and event-identity bounds`
+  - `fresh SCLV engine check reported 24 records, 96 passes, zero warnings, zero violations, and valid state before this closure was authored`
+  - `closure SCLV engine check reported 25 records, 100 passes, zero warnings, zero violations, and valid state`
+  - `closure validator result pass=4292 warning=241 violation=0 exit=0; the six-warning advisory delta is exclusively the unindexed implementation and test paths listed by this record`
+  - `PR #97 was clean and mergeable at the exact reviewed head and merged with head-commit protection`
+- non_authorizations:
+  - `desired-state persistence, observed-state persistence, applied-state persistence, receipt-v2 implementation, first-boot planner, lifecycle apply, package installation, package uninstall, automatic activation, or rollback execution`
+  - `PAM module, login-manager hook, shell hook, systemd unit, launchd job, watcher, daemon, background lifecycle process, or automatic host-event capture`
+  - `canonical knowledge mutation, proposal ratification, canonical apply, or engine-owned semantic truth`
+  - `operational Keychain access, provider-secret delivery, credential payload persistence, or plaintext secret fallback`
+  - `caller-class policy, human-only authority, AI-specific restriction, service-specific privilege, or authority inferred from actor type`
+  - `coordinator-to-vector semantic execution, cross-vector apply transaction, feature-worthiness decision, or semantic graph mutation`
+  - `implicit newest-version selection, destructive downgrade, lossy receipt or journal conversion, unknown-state deletion, or automatic incompatible migration`
+  - `live Maestro receptor, docking, activation, persistent receptor state, or module orchestration`
+  - `native Windows engine implementation, hot-path participation, warm-path participation, trading-node doctrine, or Go 1.27 production pin`
+  - `module tag, release artifact, package publication, public documentation, SDK generation, Mintlify publication, or launch claim`
+- notes: |
+    This post-merge closure records the explicit session-transition implementation and cross-vector lifecycle plan merged by PR #97. Every changed file is listed as an affected surface. The six unindexed implementation and test paths remain explicit advisory evidence rather than being hidden through selective omission or artificial SKVI expansion. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
