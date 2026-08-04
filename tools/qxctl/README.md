@@ -126,7 +126,9 @@ The SKVI, SCLV, SACV, SODV, and SSFV commands are cold/freezing-path local proce
 
 `knowledge reconcile` snapshots and revalidates every binding, invokes only the exact bound coordinator, and records the registry digest plus role-sorted module/engine/version/receipt/executable evidence in each checkpoint. Its capability negotiation supports compatible newer or older executables without inferring safety from version recency: supported formats remain writable, missing write capabilities become read-only, noncritical extensions survive writes, and unknown critical or newer state is preserved without downgrade. Mutations use stable operation IDs and exact prior journal digests. Explicit discovery recovery may repair a corrupt/missing atomic head, adopt one uniquely linked successor left by an interrupted commit, and remove only safe stale head temporaries. Ambiguity remains visible and unmodified. This surface does not itself authenticate a session, invoke vector semantics, write canonical knowledge, or dock with Maestro.
 
-`knowledge session begin|status|checkpoint|close|recover` establishes and maintains a separate protected noncanonical authority-epoch journal. Every call requires `--tops-id`, revalidates the exact coordinator and engine inventory, authenticates the TOPS-scoped SSIAG endpoint, and requests an exact audited authorization decision for that operation and canonical repository resource. qxctl rejects denial, expiry, target/configuration drift, caller-class use, transferability, canonical-apply claims, and malformed capability bindings. The coordinator uses stable operation IDs, exact prior digests, dual-slot durability, linked epochs, and unambiguous forward recovery; `--context-ref` attaches reconciliation contexts without turning them into identity evidence. This surface does not invoke vector semantics, write canonical knowledge, administer safeguards, activate receipts, or dock with Maestro. `knowledge apply` remains unavailable.
+`knowledge session begin|status|checkpoint|close|recover` establishes and maintains a separate protected noncanonical authority-epoch journal. Every call requires `--tops-id`, reads one protected binding snapshot to resolve and revalidate the exact coordinator installation, authenticates the TOPS-scoped SSIAG endpoint, and requests an exact audited authorization decision for that operation and canonical repository resource. qxctl rejects denial, expiry, target/configuration drift, caller-class use, transferability, canonical-apply claims, and malformed capability bindings. The coordinator uses stable operation IDs, exact prior digests, dual-slot durability, linked epochs, and unambiguous forward recovery; `--context-ref` attaches reconciliation contexts without turning them into identity or engine-inventory evidence. This surface does not invoke vector semantics, write canonical knowledge, administer safeguards, activate receipts, or dock with Maestro. `knowledge apply` remains unavailable.
+
+`knowledge session transition` provides an explicit idempotent adapter for a host lifecycle integration. A stable event ID composes freshly authorized status, optional bounded discovery recovery, close, begin, and checkpoint operations for `login`, `refresh`, or `logout`. Retry with the same event ID observes journal operation evidence and does not repeat a completed transition. qxctl installs no PAM module, login-manager hook, watcher, service, or boot unit.
 
 ```bash
 go run ./cmd/qxctl knowledge session begin \
@@ -138,6 +140,14 @@ go run ./cmd/qxctl knowledge session begin \
 go run ./cmd/qxctl knowledge session status \
   --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 \
   --repo /absolute/path/to/Symphony --json
+
+go run ./cmd/qxctl knowledge session transition \
+  --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 \
+  --event login \
+  --event-id host-login-0001 \
+  --repo /absolute/path/to/Symphony --json
 ```
 
 The selected SSIAG configuration must map the invoking effective UID/GID and contain an exact grant for each requested `symphony.knowledge.session.*` operation, the opaque `symphony.knowledge.repository:<sha256>` resource derived from the canonical repository root, audience `qxctl`, and scope `tops:<tops-id>`. With no exact grant—or if STAV is unavailable—the operation fails closed without coordinator mutation.
+
+Future generic module and vector additions, removals, upgrades, rollbacks, and first-boot convergence are specified in `knowledge/LIFECYCLE.md`. Binding registry v1 remains fixed to its six existing roles. The future lifecycle layer will compare protected desired state with content-addressed observed installations, preserve unmanaged or temporarily missing packages, and make report mode the default before any separately authorized apply-compatible implementation exists.

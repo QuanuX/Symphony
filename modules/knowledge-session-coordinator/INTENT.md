@@ -20,6 +20,8 @@ Development version `0.1.0-dev` implements user-scope reconciliation and authent
 
 qxctl validates, binds, and invokes this exact inactive-undocked coordinator for reconciliation and authenticated-session operations. qxctl obtains every session-operation decision from the kernel-authenticated SSIAG Unix socket; the coordinator then independently checks the evidence's exact subject, TOPS, operation, resource, audience, scope, policy/configuration digests, binding digest, non-transferability, non-apply status, and expiry. Vector-engine invocation, observers/hooks, proposal serialization, canonical apply, direct coordinator-to-STAV coordination, system/TOPS binding profiles, format migration beyond the current v1 compatibility window, and live Maestro docking remain unimplemented.
 
+qxctl may explicitly compose these primitives into an idempotent login, refresh, or logout transition. That composition is a qxctl responsibility; it adds no coordinator operation, watcher, boot service, or implicit recovery behavior. The future generic desired-state and first-boot planner is governed by `knowledge/LIFECYCLE.md` and remains unimplemented in this module.
+
 ## Authority
 
 The coordinator never decides vector meaning or caller authority. SSIAG makes the authorization decision; the coordinator validates the supplied bounded evidence and mutates only protected noncanonical reconciliation or authenticated-session state. It cannot mutate canonical files. Self-healing uses verifiable slot/head and linked-epoch evidence and never guesses across incompatible state or manufactures authority.
