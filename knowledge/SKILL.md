@@ -34,7 +34,7 @@ The implemented `0.1.0-dev` foundation supports direct coordinator `inspect`, ex
 
 Use `qxctl knowledge session transition --event login|refresh|logout --event-id ID` only when an explicit host lifecycle integration supplies a stable event identity. Safe retries reuse the same event ID. Add `--recover` only when discovery recovery from damaged local session evidence is intended; it does not recover denial, incompatible critical state, or ambiguity. Symphony does not install a login hook, watcher, or boot unit through this command.
 
-For modular installation planning, read `knowledge/LIFECYCLE.md` with this Contract Quad. Preserve binding registry v1 exactly. Treat future desired, observed, and applied state as separate noncanonical evidence. A new or missing module is a plan input, not permission to execute, remove, upgrade, downgrade, bind, or dock it.
+For modular installation planning, read `knowledge/LIFECYCLE.md` with this Contract Quad and the exact common lifecycle schemas. Preserve binding registry v1 and receipt v1 evidence exactly. Treat desired, observed, planned, applied, and boot-journal state as separate noncanonical evidence. A new or missing module is a plan input, not permission to execute, remove, upgrade, downgrade, bind, or dock it. Derive component action order only from the explicit dependency ready set; preserve blockers, replan only after verified evidence changes, and never reorder the enclosing safety phases.
 
 The implemented `qxctl knowledge engines list|inspect|doctor|bind|unbind` surface manages only the protected user-scope `default` binding profile. Supply `absent` for the first expected registry state or the exact digest reported by `list` for later mutations. A bind selects exact content for later reconciliation; it does not install, invoke, activate, dock, authenticate, authorize, or apply.
 
@@ -73,6 +73,7 @@ The implemented `qxctl knowledge session begin|status|checkpoint|close|recover` 
 - Verify every projection identifies canonical input and engine digests.
 - Verify qxctl reports unimplemented reserved commands honestly.
 - Verify install and uninstall use receipts and preserve unrelated versions and user-owned files.
+- Verify lifecycle plans support both forward and inverse actions, continue unrelated ready work around localized blockers, isolate cycles, preserve stable semantic action IDs, and enforce the ratified action/replan/attempt bounds.
 - Verify cold/freezing administration has no inline call, lock, or synchronous dependency on hot/warm execution.
 
 ## Stop Conditions

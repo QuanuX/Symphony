@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-boot-journal:v1",
+  "title": "Symphony lifecycle boot journal v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "format_version", "journal_id", "transaction_id", "operation_id",
+    "generation", "previous_journal_digest", "profile_id", "tops_id", "mode", "state",
+    "desired_state_digest", "observation_key", "current_observation_digest",
+    "prior_applied_state_digest", "current_plan_digest", "current_plan_revision",
+    "replan_count", "action_attempts", "blockers", "checkpoints", "compatibility",
+    "extensions", "recovery", "started_at", "updated_at", "closed_at", "canonical",
+    "apply_authorized", "journal_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.lifecycle-boot-journal.v1"},
+    "format_version": {"const": 1},
+    "journal_id": {"$ref": "#/$defs/token"},
+    "transaction_id": {"$ref": "#/$defs/token"},
+    "operation_id": {"$ref": "#/$defs/token"},
+    "generation": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "previous_journal_digest": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+    },
+    "profile_id": {"$ref": "#/$defs/token"},
+    "tops_id": {"$ref": "#/$defs/token"},
+    "mode": {"enum": ["report", "apply-compatible"]},
+    "state": {"enum": ["open", "blocked", "verified", "closed"]},
+    "desired_state_digest": {"$ref": "#/$defs/digest"},
+    "observation_key": {"$ref": "#/$defs/digest"},
+    "current_observation_digest": {"$ref": "#/$defs/digest"},
+    "prior_applied_state_digest": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+    },
+    "current_plan_digest": {"$ref": "#/$defs/digest"},
+    "current_plan_revision": {"type": "integer", "minimum": 1, "maximum": 256},
+    "replan_count": {"type": "integer", "minimum": 0, "maximum": 256},
+    "action_attempts": {
+      "type": "array", "maxItems": 32768,
+      "items": {"$ref": "#/$defs/attempt"}
+    },
+    "blockers": {
+      "type": "array", "maxItems": 4096,
+      "items": {"$ref": "#/$defs/blocker"}
+    },
+    "checkpoints": {
+      "type": "array", "minItems": 1, "maxItems": 32768,
+      "items": {"$ref": "#/$defs/checkpoint"}
+    },
+    "compatibility": {"$ref": "#/$defs/compatibility"},
+    "extensions": {
+      "type": "array", "maxItems": 64,
+      "items": {"$ref": "#/$defs/extension"}
+    },
+    "recovery": {"$ref": "#/$defs/recovery"},
+    "started_at": {"$ref": "#/$defs/timestamp"},
+    "updated_at": {"$ref": "#/$defs/timestamp"},
+    "closed_at": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/timestamp"}]},
+    "canonical": {"const": false},
+    "apply_authorized": {"const": false},
+    "journal_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sequence", "plan_revision", "action_id", "attempt", "state", "blocker_class",
+        "expected_before_digest", "observed_after_digest", "evidence_digest",
+        "started_at", "completed_at"
+      ],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1, "maximum": 32768},
+        "plan_revision": {"type": "integer", "minimum": 1, "maximum": 256},
+        "action_id": {"$ref": "#/$defs/token"},
+        "attempt": {"type": "integer", "minimum": 1, "maximum": 8},
+        "state": {"enum": ["started", "committed", "already_applied", "blocked", "failed"]},
+        "blocker_class": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/blockerClass"}]
+        },
+        "expected_before_digest": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+        },
+        "observed_after_digest": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+        },
+        "evidence_digest": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+        },
+        "started_at": {"$ref": "#/$defs/timestamp"},
+        "completed_at": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/timestamp"}]}
+      }
+    },
+    "blocker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class", "component_id", "action_id", "retryable", "resolved", "detail"],
+      "properties": {
+        "class": {"$ref": "#/$defs/blockerClass"},
+        "component_id": {"$ref": "#/$defs/token"},
+        "action_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+        "retryable": {"type": "boolean"},
+        "resolved": {"type": "boolean"},
+        "detail": {"$ref": "#/$defs/text"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"class": {"enum": ["dependency_wait", "observation_retryable"]}}},
+          "then": {"properties": {"retryable": {"const": true}}}
+        },
+        {
+          "if": {"properties": {"class": {"enum": ["authorization_denied", "integrity_fatal", "critical_state_unknown", "cycle_detected"]}}},
+          "then": {"properties": {"retryable": {"const": false}}}
+        }
+      ]
+    },
+    "blockerClass": {
+      "enum": [
+        "dependency_wait", "observation_retryable", "compatibility_blocked",
+        "authorization_denied", "integrity_fatal", "critical_state_unknown",
+        "cycle_detected"
+      ]
+    },
+    "checkpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sequence", "kind", "plan_revision", "operation_id", "observed_at",
+        "observation_digest", "ready_set_digest", "previous_checkpoint_digest",
+        "checkpoint_digest"
+      ],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1, "maximum": 32768},
+        "kind": {"enum": ["begin", "observe", "replan", "attempt", "verify", "recover", "close"]},
+        "plan_revision": {"type": "integer", "minimum": 1, "maximum": 256},
+        "operation_id": {"$ref": "#/$defs/token"},
+        "observed_at": {"$ref": "#/$defs/timestamp"},
+        "observation_digest": {"$ref": "#/$defs/digest"},
+        "ready_set_digest": {"$ref": "#/$defs/digest"},
+        "previous_checkpoint_digest": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+        },
+        "checkpoint_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "journal_read_versions", "journal_write_version", "desired_read_versions",
+        "desired_write_version", "observation_read_versions", "observation_write_version",
+        "plan_read_versions", "plan_write_version", "applied_read_versions",
+        "applied_write_version", "receipt_read_versions", "required_capabilities",
+        "optional_capabilities", "opaque_extensions_preserved"
+      ],
+      "properties": {
+        "journal_read_versions": {"type": "array", "const": [1]},
+        "journal_write_version": {"const": 1},
+        "desired_read_versions": {"type": "array", "minItems": 1, "maxItems": 16, "items": {"type": "integer", "minimum": 1}},
+        "desired_write_version": {"type": "integer", "minimum": 1, "maximum": 16},
+        "observation_read_versions": {"type": "array", "minItems": 1, "maxItems": 16, "items": {"type": "integer", "minimum": 1}},
+        "observation_write_version": {"type": "integer", "minimum": 1, "maximum": 16},
+        "plan_read_versions": {"type": "array", "minItems": 1, "maxItems": 16, "items": {"type": "integer", "minimum": 1}},
+        "plan_write_version": {"type": "integer", "minimum": 1, "maximum": 16},
+        "applied_read_versions": {"type": "array", "minItems": 1, "maxItems": 16, "items": {"type": "integer", "minimum": 1}},
+        "applied_write_version": {"type": "integer", "minimum": 1, "maximum": 16},
+        "receipt_read_versions": {"type": "array", "minItems": 1, "maxItems": 16, "uniqueItems": true, "items": {"type": "integer", "minimum": 1}},
+        "required_capabilities": {"type": "array", "maxItems": 128, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}},
+        "optional_capabilities": {"type": "array", "maxItems": 128, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}},
+        "opaque_extensions_preserved": {"const": true}
+      }
+    },
+    "extension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["extension_id", "extension_version", "critical", "payload", "payload_digest"],
+      "properties": {
+        "extension_id": {"$ref": "#/$defs/token"},
+        "extension_version": {"$ref": "#/$defs/version"},
+        "critical": {"type": "boolean"},
+        "payload": {},
+        "payload_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "disposition", "recovered_from_digest", "detail"],
+      "properties": {
+        "state": {"enum": ["clean", "recovered"]},
+        "disposition": {
+          "enum": [
+            "not_applicable", "adopted_linked_successor", "repaired_head",
+            "resumed_compatible_actions", "replanned_after_evidence_change",
+            "closed_verified_transaction"
+          ]
+        },
+        "recovered_from_digest": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+        },
+        "detail": {"$ref": "#/$defs/text"}
+      }
+    },
+    "token": {
+      "type": "string", "minLength": 1, "maxLength": 256,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "version": {
+      "type": "string", "minLength": 1, "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
+    },
+    "text": {"type": "string", "minLength": 1, "maxLength": 4096},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "timestamp": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"
+    }
+  }
+}

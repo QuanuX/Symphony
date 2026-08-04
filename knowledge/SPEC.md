@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact three-record SSFV partial bootstrap, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, explicit qxctl session transitions, and the prospective desired-state/first-boot topology in `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, lifecycle apply, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, or docking capability may be inferred from these slices.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact three-record SSFV partial bootstrap, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, explicit qxctl session transitions, and canonical desired/observed/plan/applied/boot-journal plus receipt-v2 lifecycle contracts in `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, lifecycle runtime, lifecycle apply, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, or docking capability may be inferred from these contract slices.
 
 ## Purpose
 
@@ -50,7 +50,14 @@ The v1 identifier family is:
 | `symphony.knowledge.reconciliation-result.v1` | coordinator reconciliation result |
 | `symphony.knowledge.provider-evidence.v1` | normalized provider evidence |
 | `symphony.knowledge.install-receipt.v1` | installed-file and lifecycle receipt |
+| `symphony.knowledge.lifecycle-desired-state.v1` | protected noncanonical exact component intent |
+| `symphony.knowledge.lifecycle-observation.v1` | bounded disposable installation and platform evidence |
+| `symphony.knowledge.lifecycle-plan.v1` | dependency-ready-set forward/inverse convergence plan |
+| `symphony.knowledge.lifecycle-applied-state.v1` | last verified lifecycle convergence evidence |
+| `symphony.knowledge.lifecycle-boot-journal.v1` | durable boot transaction, replan, blocker, and recovery evidence |
+| `symphony.knowledge.lifecycle-boot-head.v1` | atomic dual-slot boot-journal head |
 | `symphony.knowledge.engine-binding-registry.v1` | protected noncanonical user-scope exact-version selection |
+| `symphony.knowledge.install-receipt.v2` | immutable content-addressed package ownership and capability evidence |
 | `symphony.maestro.knowledge-engine-docking.v1` | Maestro docking projection |
 
 The initial exact schemas are:
@@ -68,7 +75,14 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/session-head.schema.json`;
 - `knowledge/schemas/v1/session-command.schema.json`;
 - `knowledge/schemas/v1/session-result.schema.json`;
-- `knowledge/schemas/v1/session-transition-result.schema.json`.
+- `knowledge/schemas/v1/session-transition-result.schema.json`;
+- `knowledge/schemas/v1/lifecycle-desired-state.schema.json`;
+- `knowledge/schemas/v1/lifecycle-observation.schema.json`;
+- `knowledge/schemas/v1/lifecycle-plan.schema.json`;
+- `knowledge/schemas/v1/lifecycle-applied-state.schema.json`;
+- `knowledge/schemas/v1/lifecycle-boot-journal.schema.json`;
+- `knowledge/schemas/v1/lifecycle-boot-head.schema.json`;
+- `knowledge/schemas/v2/install-receipt.schema.json`.
 
 The process request limit is 1 MiB and the response limit is 4 MiB. JSON depth is at most 64, parsed values/events at most 16,384, one string or key at most 65,536 bytes, integers remain within `[-9007199254740991, 9007199254740991]`, and a request deadline is at most 300 seconds ahead. Unknown fields, duplicate names, invalid UTF-8, trailing data, floating-point values, out-of-range integers, unsupported versions, excessive input, unsafe paths, expired deadlines, and target mismatch fail closed. Standard output is reserved for the single protocol response; bounded diagnostics use standard error. Arguments and environment variables MUST NOT carry secrets or arbitrary executable instructions.
 
@@ -200,9 +214,11 @@ JSON/JSONL, search, graph, database, documentation, SDK, and analytical outputs 
 
 Every engine and the coordinator MUST support independent install, upgrade, rollback, and uninstall. Installation never silently changes repository hooks, canonical files, engine bindings, or Maestro state. Uninstall removes only files owned by the selected receipt and preserves canonical knowledge, binding diagnostics, and session/recovery evidence.
 
-Every package declares a default receptor that an administrator may change through qxctl. Installation without Maestro is valid and reports `installed_undocked`. Multiple compatible versions may coexist, dock, undock, and activate under explicit administrator selection. A newer installation MUST NOT silently replace the active version.
+Every package declares compatible receptors; protected desired state carries any administrator-selected receptor. Installation without Maestro is valid and reports `installed_undocked`. Multiple compatible versions may coexist, dock, undock, and activate under explicit administrator selection. A newer installation MUST NOT silently replace the active version.
 
-Binding registry v1 remains closed to its six ratified roles and MUST NOT be expanded in place to simulate generic lifecycle support. The prospective cross-vector desired-state, observed-state, applied-state, generic receipt v2, and first-boot transaction boundaries are defined in `knowledge/LIFECYCLE.md`. Additions, removals, upgrades, and rollbacks are digest differences to be planned, not implicit permission to mutate. Unmanaged packages and temporarily missing selected packages are preserved; no first-boot path may infer newest-version preference, delete a degraded binding, execute unknown discovered code, or rewrite a v1 receipt. First-boot `report` mode precedes any separately gated authenticated `apply-compatible` implementation.
+Binding registry v1 remains closed to its six ratified roles and MUST NOT be expanded in place to simulate generic lifecycle support. Canonical cross-vector desired-state, observed-state, dependency-driven plan, applied-state, generic receipt v2, and first-boot transaction contracts are defined in `knowledge/LIFECYCLE.md` and their exact schemas. Additions, removals, upgrades, and rollbacks are digest differences to be planned, not implicit permission to mutate. Unmanaged packages and temporarily missing selected packages are preserved; no first-boot path may infer newest-version preference, delete a degraded binding, execute unknown discovered code, or rewrite a v1 receipt. First-boot `report` mode precedes any separately gated authenticated `apply-compatible` implementation.
+
+Lifecycle plans MUST derive component action order from explicit dependency readiness. They MUST continue unrelated ready actions around a localized blocker and MAY emit a linked plan revision only after verified evidence changes. Forward and inverse actions are equally explicit so supported upgrade and rollback orders do not depend on release recency. Action reordering MUST NOT reorder lock, observation, authorization, compare-and-swap, action, verification, or audit phases. Cycles block only their cyclic component set; denial, integrity failure, and unknown critical state remain stop conditions rather than alternate-order hints. The canonical scheduler bounds are 4,096 actions, 256 plan revisions per transaction, and eight attempts per action.
 
 Docking descriptors contain no secrets, shell fragments, arbitrary arguments, or executable policy. Maestro persists deployment presence; it does not own vector semantics.
 
@@ -257,4 +273,4 @@ qxctl implements a protected user-scope `default` engine binding registry beneat
 
 ## Non-Authorization Statement
 
-This specification does not claim implementation beyond the explicitly identified foundation/coordinator reconciliation and authenticated-session slices, explicit qxctl session transitions, SKVI/SCLV/SACV/SODV/SSFV slices, exact three-record SSFV partial bootstrap, and user-default binding registry; enable desired-state or first-boot lifecycle apply or canonical apply; authorize another feature record or complete-catalog claim; authorize an external package coordinate; create an HTTP surface; publish a release artifact; permit direct ledger mutation; or activate Maestro.
+This specification does not claim implementation beyond the explicitly identified foundation/coordinator reconciliation and authenticated-session slices, explicit qxctl session transitions, SKVI/SCLV/SACV/SODV/SSFV slices, exact three-record SSFV partial bootstrap, user-default binding registry, and canonical lifecycle/receipt schemas; claim lifecycle persistence, observation, planning, recovery, or apply runtime; enable desired-state or first-boot lifecycle apply or canonical apply; authorize another feature record or complete-catalog claim; authorize an external package coordinate; create an HTTP surface; publish a release artifact; permit direct ledger mutation; or activate Maestro.

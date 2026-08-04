@@ -224,6 +224,13 @@ void test_schema_documents(const fs::path& repository_root) {
         {"knowledge/schemas/v1/session-journal.schema.json", "urn:symphony:knowledge:session-journal:v1"},
         {"knowledge/schemas/v1/session-result.schema.json", "urn:symphony:knowledge:session-result:v1"},
         {"knowledge/schemas/v1/session-transition-result.schema.json", "urn:symphony:knowledge:session-transition-result:v1"},
+        {"knowledge/schemas/v1/lifecycle-desired-state.schema.json", "urn:symphony:knowledge:lifecycle-desired-state:v1"},
+        {"knowledge/schemas/v1/lifecycle-observation.schema.json", "urn:symphony:knowledge:lifecycle-observation:v1"},
+        {"knowledge/schemas/v1/lifecycle-plan.schema.json", "urn:symphony:knowledge:lifecycle-plan:v1"},
+        {"knowledge/schemas/v1/lifecycle-applied-state.schema.json", "urn:symphony:knowledge:lifecycle-applied-state:v1"},
+        {"knowledge/schemas/v1/lifecycle-boot-journal.schema.json", "urn:symphony:knowledge:lifecycle-boot-journal:v1"},
+        {"knowledge/schemas/v1/lifecycle-boot-head.schema.json", "urn:symphony:knowledge:lifecycle-boot-head:v1"},
+        {"knowledge/schemas/v2/install-receipt.schema.json", "urn:symphony:knowledge:install-receipt:v2"},
     };
     for (const auto& [relative_path, identifier] : expected) {
         std::ifstream input(repository_root / relative_path, std::ios::binary);
@@ -236,6 +243,32 @@ void test_schema_documents(const fs::path& repository_root) {
         require(schema.at("type") == "object", "schema root type mismatch: " + relative_path);
         require(schema.at("additionalProperties") == false, "schema root is not closed: " + relative_path);
     }
+
+    const auto load_schema = [&](const std::string& relative_path) {
+        std::ifstream input(repository_root / relative_path, std::ios::binary);
+        require(input.good(), "schema could not be opened: " + relative_path);
+        return parse_bounded_json(read_bounded(input, Limits::max_request_bytes), Limits::max_request_bytes);
+    };
+
+    const auto plan = load_schema("knowledge/schemas/v1/lifecycle-plan.schema.json");
+    const auto& scheduler = plan.at("$defs").at("scheduler").at("properties");
+    require(scheduler.at("algorithm").at("const") == "dependency_ready_set_v1", "lifecycle scheduler drift");
+    require(scheduler.at("dynamic_replanning").at("const") == true, "dynamic replanning must be required");
+    require(scheduler.at("directionality").at("const") == "forward_and_inverse", "two-way action drift");
+    require(scheduler.at("max_actions").at("const") == 4096, "lifecycle action bound drift");
+    require(scheduler.at("max_replans_per_transaction").at("const") == 256, "lifecycle replan bound drift");
+    require(scheduler.at("max_attempts_per_action").at("const") == 8, "lifecycle attempt bound drift");
+    require(
+        scheduler.at("safety_phase_order").at("const") == Json::array({
+            "lock", "observe", "authorize", "compare_and_swap", "act", "verify", "audit"}),
+        "lifecycle safety phase order drift");
+
+    const auto receipt_v2 = load_schema("knowledge/schemas/v2/install-receipt.schema.json");
+    const auto& receipt_properties = receipt_v2.at("properties");
+    require(!receipt_properties.contains("state"), "receipt v2 must not own mutable state");
+    require(!receipt_properties.contains("active"), "receipt v2 must not own activation state");
+    require(!receipt_properties.contains("default_receptor"), "receipt v2 must not own receptor selection");
+    require(receipt_properties.at("files").at("items").at("$ref") == "#/$defs/file", "receipt v2 file evidence drift");
 }
 
 }

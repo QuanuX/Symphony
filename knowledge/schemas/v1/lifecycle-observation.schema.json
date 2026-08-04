@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-observation:v1",
+  "title": "Symphony lifecycle observation v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "format_version", "profile_id", "tops_id", "configured_roots",
+    "platform", "binding_registry_digest", "components", "unknown_packages",
+    "observed_at", "canonical", "observation_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.lifecycle-observation.v1"},
+    "format_version": {"const": 1},
+    "profile_id": {"$ref": "#/$defs/token"},
+    "tops_id": {"$ref": "#/$defs/token"},
+    "configured_roots": {
+      "type": "array", "minItems": 1, "maxItems": 64, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/absolutePath"}
+    },
+    "platform": {"$ref": "#/$defs/platform"},
+    "binding_registry_digest": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+    },
+    "components": {
+      "type": "array", "maxItems": 4096,
+      "items": {"$ref": "#/$defs/component"}
+    },
+    "unknown_packages": {
+      "type": "array", "maxItems": 4096,
+      "items": {"$ref": "#/$defs/unknownPackage"}
+    },
+    "observed_at": {"$ref": "#/$defs/timestamp"},
+    "canonical": {"const": false},
+    "observation_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "platform": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "os", "kernel_abi", "architecture", "qxctl_identity",
+        "coordinator_identity", "provider_availability", "compatibility_digest"
+      ],
+      "properties": {
+        "os": {"enum": ["linux", "macos"]},
+        "kernel_abi": {"$ref": "#/$defs/token"},
+        "architecture": {"$ref": "#/$defs/token"},
+        "qxctl_identity": {"$ref": "#/$defs/identity"},
+        "coordinator_identity": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/identity"}]
+        },
+        "provider_availability": {
+          "type": "array", "maxItems": 128,
+          "items": {"$ref": "#/$defs/provider"}
+        },
+        "compatibility_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["component_id", "version", "executable_digest"],
+      "properties": {
+        "component_id": {"$ref": "#/$defs/token"},
+        "version": {"$ref": "#/$defs/version"},
+        "executable_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider_id", "available"],
+      "properties": {
+        "provider_id": {"$ref": "#/$defs/token"},
+        "available": {"type": "boolean"}
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_id", "component_kind", "module_id", "vector_id", "engine_id",
+        "packages", "selected_package_digest", "activation", "docking",
+        "capabilities", "platform_compatibility", "observation_digest"
+      ],
+      "properties": {
+        "component_id": {"$ref": "#/$defs/token"},
+        "component_kind": {
+          "enum": ["coordinator", "vector_engine", "module", "adapter", "ui", "service"]
+        },
+        "module_id": {"$ref": "#/$defs/token"},
+        "vector_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+        "engine_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+        "packages": {
+          "type": "array", "minItems": 1, "maxItems": 256,
+          "items": {"$ref": "#/$defs/package"}
+        },
+        "selected_package_digest": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+        },
+        "activation": {"enum": ["inactive", "active", "unknown"]},
+        "docking": {"enum": ["undocked", "docked", "unavailable", "unknown"]},
+        "capabilities": {
+          "type": "array", "maxItems": 128, "uniqueItems": true,
+          "items": {"$ref": "#/$defs/token"}
+        },
+        "platform_compatibility": {"enum": ["compatible", "incompatible", "unknown"]},
+        "observation_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package_id", "version", "install_root", "receipt_protocol", "receipt_digest",
+        "integrity", "entry_points_validated"
+      ],
+      "properties": {
+        "package_id": {"$ref": "#/$defs/token"},
+        "version": {"$ref": "#/$defs/version"},
+        "install_root": {"$ref": "#/$defs/absolutePath"},
+        "receipt_protocol": {
+          "enum": ["symphony.knowledge.install-receipt.v1", "symphony.knowledge.install-receipt.v2"]
+        },
+        "receipt_digest": {"$ref": "#/$defs/digest"},
+        "integrity": {"enum": ["valid", "invalid", "unknown"]},
+        "entry_points_validated": {"type": "boolean"}
+      }
+    },
+    "unknownPackage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["install_root", "receipt_path", "reason", "preserved"],
+      "properties": {
+        "install_root": {"$ref": "#/$defs/absolutePath"},
+        "receipt_path": {"$ref": "#/$defs/relativePath"},
+        "reason": {"enum": ["unsupported_protocol", "invalid_receipt", "ambiguous_identity", "unreadable"]},
+        "preserved": {"const": true}
+      }
+    },
+    "token": {
+      "type": "string", "minLength": 1, "maxLength": 256,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "version": {
+      "type": "string", "minLength": 1, "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
+    },
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "timestamp": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"
+    },
+    "relativePath": {
+      "type": "string", "minLength": 1, "maxLength": 4096,
+      "pattern": "^(?!/)(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])[^/](?:.*[^/])?$"
+    },
+    "absolutePath": {
+      "type": "string", "minLength": 1, "maxLength": 4096,
+      "pattern": "^/(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])(?:$|[^/](?:.*[^/])?)$"
+    }
+  }
+}

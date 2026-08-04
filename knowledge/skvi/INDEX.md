@@ -1942,11 +1942,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: SKV umbrella specification
 - truth_role: normative cross-vector engine, session, proposal, projection, installation, and isolation contract
 - owner: Symphony Knowledge Vector maintainers
-- scope: Defines process identifiers, authenticated authority epochs and explicit transitions, worktree reconciliation, prospective desired/observed/applied state, proposal/apply separation, provider neutrality, qxctl grammar, install receipts, Maestro docking readiness, and hot/warm isolation.
-- relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
+- scope: Defines process identifiers, authenticated authority epochs and explicit transitions, worktree reconciliation, canonical desired/observed/plan/applied/boot lifecycle contracts, proposal/apply separation, provider neutrality, qxctl grammar, install receipts, Maestro docking readiness, and hot/warm isolation.
+- relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `knowledge/schemas/v2/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
 - consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
 - deferred_projections: apply/provider/docking schemas, conformance evidence, engine inventory, docking graph
-- notes: Sixteen common schemas, three SSIAG authorization schemas, and the foundation/coordinator/SKVI/SCLV/SACV/SODV/SSFV slices are implemented; the three-record SSFV bootstrap is partial and desired-state/programmatic apply are disabled.
+- notes: Twenty-two common v1 schemas and one common v2 schema are canonical; the lifecycle runtime is not implemented, the three-record SSFV bootstrap is partial, and programmatic apply is disabled.
 - status: canonical
 
 ##### SKILL.md
@@ -1966,13 +1966,13 @@ Future validator increments may add separately ratified deterministic checks wit
 - path: `knowledge/LIFECYCLE.md`
 - title: Symphony Cross-Vector Lifecycle and First-Boot Plan
 - surface_type: cross-vector lifecycle architecture contract
-- truth_role: explicit session-transition and prospective generic desired-state/first-boot topology truth
+- truth_role: explicit session-transition and generic desired-state/first-boot topology truth
 - owner: Symphony Knowledge Vector maintainers
-- scope: Defines stable host-event convergence, immutable binding-v1 compatibility, generic component identity, receipt-v2 migration, desired/observed/applied separation, evidence-based first boot, durable recovery, module addition/removal behavior, and the Maestro boundary.
-- relationships: depends_on -> `knowledge/SPEC.md`; governs -> `tools/qxctl/`; governs -> `modules/knowledge-session-coordinator/`; defers_to -> `knowledge/ssiag/SPEC.md`; defers_to -> `knowledge/stav/SPEC.md`
+- scope: Defines stable host-event convergence, immutable binding-v1 compatibility, generic component identity, receipt-v2 migration, desired/observed/plan/applied separation, dependency-ready-set two-way convergence, evidence-based first boot, durable recovery, module addition/removal behavior, and the Maestro boundary.
+- relationships: depends_on -> `knowledge/SPEC.md`; governs -> `knowledge/schemas/v1/lifecycle-desired-state.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-observation.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-plan.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-applied-state.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-boot-journal.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-boot-head.schema.json`; governs -> `knowledge/schemas/v2/install-receipt.schema.json`; governs -> `tools/qxctl/`; governs -> `modules/knowledge-session-coordinator/`; defers_to -> `knowledge/ssiag/SPEC.md`; defers_to -> `knowledge/stav/SPEC.md`
 - consumers: qxctl and coordinator implementers, module packagers, Maestro planners, administrators, reviewers, agentic tools
-- deferred_projections: desired-state schemas, receipt v2, boot journal, lifecycle planner, apply-compatible actions, docking operations
-- notes: Only explicit qxctl session transition is implemented; generic lifecycle observation/planning/apply and host integration remain separate gates.
+- deferred_projections: lifecycle persistence, runtime observer and planner, apply-compatible actions, docking operations
+- notes: The lifecycle schema family is canonical; only explicit qxctl session transition has runtime implementation, while generic lifecycle observation/planning/apply and host integration remain separate gates.
 - status: canonical
 
 ##### Common v1 Schema Manifest
@@ -1981,11 +1981,115 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: common protocol schema manifest
 - truth_role: canonical inventory and boundary for exact common JSON schemas
 - owner: Symphony Knowledge Vector maintainers
-- scope: Declares process request/response, descriptor, install-receipt, engine-binding-registry, immutable-proposal, provider-evidence, reconciliation/session command/head/journal/result, and explicit session-transition-result schemas.
+- scope: Declares twenty-two exact process, descriptor, install-receipt-v1, engine-binding, proposal, provider-evidence, reconciliation/session, and desired/observed/plan/applied/boot lifecycle schemas.
 - relationships: depends_on -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; governs -> `modules/skvi-engine/SPEC.md`; governs -> `modules/sclv-engine/SPEC.md`
 - consumers: C++ foundation and engine implementers, qxctl planners, validator, reviewers
 - deferred_projections: generated schema documentation and conformance evidence
 - notes: Operation-specific payload/result schemas remain with the applicable coordinator or vector.
+- status: canonical
+
+##### Common v2 Schema Manifest
+- path: `knowledge/schemas/v2/MANIFEST.md`
+- title: Symphony Knowledge Vector Common Schemas v2
+- surface_type: common protocol schema manifest
+- truth_role: canonical inventory and compatibility boundary for exact common v2 JSON schemas
+- owner: Symphony Knowledge Vector maintainers
+- scope: Declares immutable content-addressed install receipt v2 while preserving exact receipt v1 evidence and adapters.
+- relationships: depends_on -> `knowledge/SPEC.md`; governs -> `knowledge/schemas/v2/install-receipt.schema.json`
+- consumers: lifecycle implementers, qxctl planners, packagers, validator, reviewers
+- deferred_projections: generated schema documentation and conformance evidence
+- notes: Version 2 never authorizes rewriting or guessing fields for a version 1 receipt.
+- status: canonical
+
+##### Lifecycle Desired-State Schema
+- path: `knowledge/schemas/v1/lifecycle-desired-state.schema.json`
+- title: Symphony Lifecycle Desired State v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical protected noncanonical component-intent truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes exact component/package selection, presence, install scope/root, activation, docking, explicit dependencies, compatibility, extensions, and digest continuity.
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: future qxctl desired-profile administrator, coordinator lifecycle planner, validator, reviewers
+- deferred_projections: desired-state persistence and qxctl mutation grammar
+- notes: Desired state expresses intent and carries no mutation authority.
+- status: canonical
+
+##### Lifecycle Observation Schema
+- path: `knowledge/schemas/v1/lifecycle-observation.schema.json`
+- title: Symphony Lifecycle Observation v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical disposable observed-installation evidence truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes configured roots, normalized platform compatibility, binding evidence, package integrity, selected component state, capabilities, and unknown preserved receipts.
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/LIFECYCLE.md`; reads -> `knowledge/schemas/v1/install-receipt.schema.json`; reads -> `knowledge/schemas/v2/install-receipt.schema.json`
+- consumers: future qxctl inventory collector, coordinator lifecycle planner, validator, reviewers
+- deferred_projections: bounded configured-root inventory implementation
+- notes: Observation never executes discovered code and is rebuildable from validated evidence.
+- status: canonical
+
+##### Lifecycle Plan Schema
+- path: `knowledge/schemas/v1/lifecycle-plan.schema.json`
+- title: Symphony Dependency-Driven Lifecycle Plan v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical deterministic two-way convergence-plan truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes dependency-ready-set scheduling, forward/inverse action relationships, stable action IDs, ordered safety phases, typed blockers, cycles, bounded plan revisions, and disabled apply.
+- relationships: depends_on -> `knowledge/schemas/v1/lifecycle-desired-state.schema.json`; depends_on -> `knowledge/schemas/v1/lifecycle-observation.schema.json`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: future C++ coordinator lifecycle planner, qxctl reporting, validator, reviewers
+- deferred_projections: runtime planning and plan visualization
+- notes: Dynamic action order cannot bypass authorization, integrity, compare-and-swap, verification, or audit.
+- status: canonical
+
+##### Lifecycle Applied-State Schema
+- path: `knowledge/schemas/v1/lifecycle-applied-state.schema.json`
+- title: Symphony Lifecycle Applied State v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical durable noncanonical last-convergence evidence truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes the stabilized observation key, exact input digests, component outcomes, actual execution order, unresolved blockers, extensions, and applied-state digest continuity.
+- relationships: depends_on -> `knowledge/schemas/v1/lifecycle-plan.schema.json`; depends_on -> `knowledge/schemas/v1/lifecycle-observation.schema.json`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: future coordinator lifecycle recovery, qxctl status, validator, reviewers
+- deferred_projections: protected applied-state persistence
+- notes: Applied state advances only after verified convergence and is not canonical knowledge.
+- status: canonical
+
+##### Lifecycle Boot-Journal Schema
+- path: `knowledge/schemas/v1/lifecycle-boot-journal.schema.json`
+- title: Symphony Lifecycle Boot Journal v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical durable transaction, dynamic-replan, blocker, and recovery-evidence truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes transaction identity, exact desired/observation/plan/applied anchors, bounded action attempts and plan revisions, blockers, checkpoint chain, compatibility, recovery, and disabled apply.
+- relationships: depends_on -> `knowledge/schemas/v1/lifecycle-plan.schema.json`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: future C++ coordinator lifecycle journal, qxctl recovery, validator, reviewers
+- deferred_projections: dual-slot persistence and report-mode runtime
+- notes: The journal may record a changed action order but cannot rewrite prior attempt evidence.
+- status: canonical
+
+##### Lifecycle Boot-Head Schema
+- path: `knowledge/schemas/v1/lifecycle-boot-head.schema.json`
+- title: Symphony Lifecycle Boot Journal Head v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical active-slot selector and atomic lifecycle continuity truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes profile/TOPS/transaction identity, active slot, generation, journal digest, prior-head digest, and head digest.
+- relationships: depends_on -> `knowledge/schemas/v1/lifecycle-boot-journal.schema.json`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: future coordinator lifecycle recovery, validator, reviewers
+- deferred_projections: dual-slot persistence implementation
+- notes: Journal slots remain recovery evidence; the head is replaceable operational evidence.
+- status: canonical
+
+##### Install Receipt Schema v2
+- path: `knowledge/schemas/v2/install-receipt.schema.json`
+- title: Symphony Immutable Content-Addressed Install Receipt v2
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical immutable package ownership, integrity, capability, and compatibility truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes component/package identity, exact owned-file sizes/digests/kinds, explicit entry points, provided/required capabilities, compatible receptors, platform requirements, and receipt digest.
+- relationships: depends_on -> `knowledge/schemas/v2/MANIFEST.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: future packagers, qxctl inventory, coordinator lifecycle planner, installers, uninstallers, validator, reviewers
+- deferred_projections: package-manager-specific receipt emission and strict v1 adapters
+- notes: Mutable activation, selection, and docking state are deliberately absent; discovery never authorizes execution.
 - status: canonical
 
 ##### Reconciliation Command Schema
@@ -3239,7 +3343,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - status: canonical
 
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, sixteen common SKV JSON Schemas, three SSIAG authorization JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, twenty-two common SKV v1 JSON Schemas, one common SKV v2 JSON Schema, three SSIAG authorization JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

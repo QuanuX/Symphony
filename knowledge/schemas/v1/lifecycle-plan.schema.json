@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-plan:v1",
+  "title": "Symphony dependency-driven lifecycle plan v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "format_version", "transaction_id", "revision", "previous_plan_digest",
+    "desired_state_digest", "observation_digest", "observation_key",
+    "prior_applied_state_digest", "scheduler", "actions", "ready_action_ids",
+    "deferred_action_ids", "blocked_action_ids", "fatal_blockers", "apply_authorized",
+    "canonical", "plan_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.lifecycle-plan.v1"},
+    "format_version": {"const": 1},
+    "transaction_id": {"$ref": "#/$defs/token"},
+    "revision": {"type": "integer", "minimum": 1, "maximum": 256},
+    "previous_plan_digest": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+    },
+    "desired_state_digest": {"$ref": "#/$defs/digest"},
+    "observation_digest": {"$ref": "#/$defs/digest"},
+    "observation_key": {"$ref": "#/$defs/digest"},
+    "prior_applied_state_digest": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+    },
+    "scheduler": {"$ref": "#/$defs/scheduler"},
+    "actions": {
+      "type": "array", "maxItems": 4096,
+      "items": {"$ref": "#/$defs/action"}
+    },
+    "ready_action_ids": {"$ref": "#/$defs/actionIds"},
+    "deferred_action_ids": {"$ref": "#/$defs/actionIds"},
+    "blocked_action_ids": {"$ref": "#/$defs/actionIds"},
+    "fatal_blockers": {
+      "type": "array", "maxItems": 4096,
+      "items": {"$ref": "#/$defs/blocker"}
+    },
+    "apply_authorized": {"const": false},
+    "canonical": {"const": false},
+    "plan_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "scheduler": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm", "dynamic_replanning", "directionality", "tie_break",
+        "safety_phase_order", "cycle_policy", "max_actions", "max_replans_per_transaction",
+        "max_attempts_per_action"
+      ],
+      "properties": {
+        "algorithm": {"const": "dependency_ready_set_v1"},
+        "dynamic_replanning": {"const": true},
+        "directionality": {"const": "forward_and_inverse"},
+        "tie_break": {"const": "lexicographic_action_id"},
+        "safety_phase_order": {
+          "type": "array",
+          "const": ["lock", "observe", "authorize", "compare_and_swap", "act", "verify", "audit"]
+        },
+        "cycle_policy": {"const": "block_cyclic_component_continue_unrelated"},
+        "max_actions": {"const": 4096},
+        "max_replans_per_transaction": {"const": 256},
+        "max_attempts_per_action": {"const": 8}
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_id", "component_id", "kind", "direction", "prerequisite_action_ids",
+        "inverse_action_id", "expected_before_digest", "expected_artifact_digests",
+        "expected_evidence", "disposition", "blockers"
+      ],
+      "properties": {
+        "action_id": {"$ref": "#/$defs/token"},
+        "component_id": {"$ref": "#/$defs/token"},
+        "kind": {
+          "enum": [
+            "install", "uninstall", "select", "deselect", "activate", "deactivate",
+            "dock", "undock", "verify", "preserve", "report"
+          ]
+        },
+        "direction": {"enum": ["forward", "inverse", "neutral"]},
+        "prerequisite_action_ids": {"$ref": "#/$defs/actionIds"},
+        "inverse_action_id": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]
+        },
+        "expected_before_digest": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+        },
+        "expected_artifact_digests": {
+          "type": "array", "maxItems": 4096, "uniqueItems": true,
+          "items": {"$ref": "#/$defs/digest"}
+        },
+        "expected_evidence": {
+          "type": "array", "maxItems": 128, "uniqueItems": true,
+          "items": {"$ref": "#/$defs/token"}
+        },
+        "disposition": {
+          "enum": ["ready", "waiting", "blocked", "completed", "skipped", "fatal"]
+        },
+        "blockers": {
+          "type": "array", "maxItems": 64,
+          "items": {"$ref": "#/$defs/blocker"}
+        }
+      }
+    },
+    "blocker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class", "component_id", "action_id", "retryable", "detail"],
+      "properties": {
+        "class": {
+          "enum": [
+            "dependency_wait", "observation_retryable", "compatibility_blocked",
+            "authorization_denied", "integrity_fatal", "critical_state_unknown",
+            "cycle_detected"
+          ]
+        },
+        "component_id": {"$ref": "#/$defs/token"},
+        "action_id": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]
+        },
+        "retryable": {"type": "boolean"},
+        "detail": {"$ref": "#/$defs/text"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"class": {"enum": ["dependency_wait", "observation_retryable"]}}},
+          "then": {"properties": {"retryable": {"const": true}}}
+        },
+        {
+          "if": {"properties": {"class": {"enum": ["authorization_denied", "integrity_fatal", "critical_state_unknown", "cycle_detected"]}}},
+          "then": {"properties": {"retryable": {"const": false}}}
+        }
+      ]
+    },
+    "actionIds": {
+      "type": "array", "maxItems": 4096, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/token"}
+    },
+    "token": {
+      "type": "string", "minLength": 1, "maxLength": 256,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "text": {"type": "string", "minLength": 1, "maxLength": 4096},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}
