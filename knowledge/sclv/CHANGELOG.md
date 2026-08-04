@@ -2571,3 +2571,182 @@ This PR authorizes none of the following:
   - `module tag, release artifact, package publication, public documentation, SDK generation, or launch claim`
 - notes: |
     This late-recovery closure records the durable knowledge reconciliation and compatibility recovery implementation merged by PR #93. The implementation merged correctly, but the original Codex closure sequence ended before its SCLV record was appended; this record preserves that interruption instead of making the timeline appear continuous. Every changed file is listed as an affected surface. The ten unindexed implementation and test paths remain explicit advisory evidence rather than being hidden through selective omission or artificial SKVI expansion. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
+
+- record_id: `SCLV-CHG-20260804-AUTHENTICATED-KNOWLEDGE-SESSIONS`
+- record_version: `3`
+- title: `SSIAG-authorized durable knowledge sessions implemented`
+- status: `canonical`
+- date: `2026-08-04`
+- change_started_at: `2026-08-04T06:30:30Z`
+- change_completed_at: `2026-08-04T06:32:23Z`
+- recorded_at: `2026-08-04T06:36:26Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `canonical_addition`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#95`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/95`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `c0caf3d8750b95404dfff54cfc0e33db537b286c`
+- tree_digest: `sha256:e550ded94503c2d1f683a5a23831607696011899d96bf0d8957201cea9739908`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/95`
+- ratification_evidence_digest: `sha256:1690eca9848c30da948a3aa23d15f5f7102d264015975fba98351da0af817962`
+- affected_surfaces:
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/session-command.schema.json`
+  - `knowledge/schemas/v1/session-head.schema.json`
+  - `knowledge/schemas/v1/session-journal.schema.json`
+  - `knowledge/schemas/v1/session-result.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssiag/INTENT.md`
+  - `knowledge/ssiag/MANIFEST.md`
+  - `knowledge/ssiag/SKILL.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/ssiag/schemas/v1/MANIFEST.md`
+  - `knowledge/ssiag/schemas/v1/authorization-decision.schema.json`
+  - `knowledge/ssiag/schemas/v1/authorization-request.schema.json`
+  - `knowledge/ssiag/schemas/v1/capability.schema.json`
+  - `libraries/knowledge-vector-engine-cpp/tests/foundation_test.cpp`
+  - `modules/knowledge-session-coordinator/CMakeLists.txt`
+  - `modules/knowledge-session-coordinator/FEATURES.md`
+  - `modules/knowledge-session-coordinator/INSTALL.md`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `modules/knowledge-session-coordinator/MANIFEST.md`
+  - `modules/knowledge-session-coordinator/SKILL.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `modules/knowledge-session-coordinator/src/authority_session.cpp`
+  - `modules/knowledge-session-coordinator/src/authority_session.hpp`
+  - `modules/knowledge-session-coordinator/src/coordinator.cpp`
+  - `modules/knowledge-session-coordinator/tests/coordinator_test.cpp`
+  - `modules/knowledge-session-coordinator/tests/process_smoke.sh`
+  - `modules/secure-identity-access-governance/ARCHITECTURE.md`
+  - `modules/secure-identity-access-governance/IMPLEMENTATION.md`
+  - `modules/secure-identity-access-governance/INSTALL.md`
+  - `modules/secure-identity-access-governance/INTENT.md`
+  - `modules/secure-identity-access-governance/MANIFEST.md`
+  - `modules/secure-identity-access-governance/README.md`
+  - `modules/secure-identity-access-governance/REQUIREMENTS.md`
+  - `modules/secure-identity-access-governance/SKILL.md`
+  - `modules/secure-identity-access-governance/SPEC.md`
+  - `modules/secure-identity-access-governance/THREAT-MODEL.md`
+  - `modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go`
+  - `modules/secure-identity-access-governance/internal/client/client.go`
+  - `modules/secure-identity-access-governance/internal/config/config.go`
+  - `modules/secure-identity-access-governance/internal/config/config_test.go`
+  - `modules/secure-identity-access-governance/internal/model/model.go`
+  - `modules/secure-identity-access-governance/internal/policy/policy.go`
+  - `modules/secure-identity-access-governance/internal/policy/policy_test.go`
+  - `modules/secure-identity-access-governance/internal/server/server.go`
+  - `modules/secure-identity-access-governance/internal/server/server_test.go`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/session_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/ssiagclient/client.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/session-command.schema.json`
+  - `knowledge/schemas/v1/session-head.schema.json`
+  - `knowledge/schemas/v1/session-journal.schema.json`
+  - `knowledge/schemas/v1/session-result.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssiag/INTENT.md`
+  - `knowledge/ssiag/MANIFEST.md`
+  - `knowledge/ssiag/SKILL.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/ssiag/schemas/v1/MANIFEST.md`
+  - `knowledge/ssiag/schemas/v1/authorization-decision.schema.json`
+  - `knowledge/ssiag/schemas/v1/authorization-request.schema.json`
+  - `knowledge/ssiag/schemas/v1/capability.schema.json`
+  - `modules/knowledge-session-coordinator/CMakeLists.txt`
+  - `modules/knowledge-session-coordinator/FEATURES.md`
+  - `modules/knowledge-session-coordinator/INSTALL.md`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `modules/knowledge-session-coordinator/MANIFEST.md`
+  - `modules/knowledge-session-coordinator/SKILL.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `modules/knowledge-session-coordinator/src/authority_session.cpp`
+  - `modules/knowledge-session-coordinator/src/authority_session.hpp`
+  - `modules/secure-identity-access-governance/ARCHITECTURE.md`
+  - `modules/secure-identity-access-governance/IMPLEMENTATION.md`
+  - `modules/secure-identity-access-governance/INSTALL.md`
+  - `modules/secure-identity-access-governance/INTENT.md`
+  - `modules/secure-identity-access-governance/MANIFEST.md`
+  - `modules/secure-identity-access-governance/README.md`
+  - `modules/secure-identity-access-governance/REQUIREMENTS.md`
+  - `modules/secure-identity-access-governance/SKILL.md`
+  - `modules/secure-identity-access-governance/SPEC.md`
+  - `modules/secure-identity-access-governance/THREAT-MODEL.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    Under the Architect's direction, PR #95 completed the first authenticated durable knowledge-session circuit. qxctl now obtains an exact SSIAG decision and safe expiring capability evidence for each session operation only after SSIAG commits the corresponding allow or deny event through STAV. The independently installable C++26 coordinator persists noncanonical per-TOPS, per-subject, per-repository authority epochs for begin, status, checkpoint, close, and recovery.
+- relationship_changes: |
+    knowledge/ owns the common session schemas and knowledge/ssiag/ owns the authorization contracts. SSIAG derives the effective subject from the protected local peer, evaluates exact deny-default grants, and serializes safe decision metadata through STAV. qxctl is the administrative client: it validates the complete capability binding before invoking the exact bound coordinator. The coordinator owns session durability and compatibility recovery but receives no canonical authority from capability evidence. SSFV describes the implemented coordinator capability, while SKVI indexes the new source-truth surfaces.
+- doctrine_changes: |
+    Host ownership or explicitly granted operating-system permission governs knowledge-session access without classifying the caller as human, AI, service, or another actor type. Capability evidence is audience-, scope-, subject-, resource-, operation-, decision-, context-, endpoint-, and expiry-bound; it is non-transferable administrative evidence rather than a bearer credential. Every operation requires fresh SSIAG evaluation and committed STAV audit evidence. Canonical apply remains false.
+- compatibility_consequences: |
+    Session streams are keyed by TOPS, kernel-derived subject, and a digest of the canonical repository root. Durable state uses semantic operation fingerprints, exact-state compare-and-swap, two journal slots, an atomically replaced head, linked authority epochs, checkpoint-chain validation, and explicit recovery. Status on an absent stream creates no directories or locks. Unknown critical extensions, unsupported newer state, ambiguous successors, and incomplete write compatibility are preserved and block mutation; a uniquely linked successor can be adopted without repeating an already-completed transition.
+- publication_consequences: |
+    No module tag, release artifact, package coordinate, binary distribution, container, SDK, OpenAPI surface, Mintlify publication, public documentation release, marketing claim, or platform launch was published or authorized. The implementation remains active-development source on the rolling main branch.
+- projection_consequences: |
+    Session status, compatibility, authorization, and recovery results are bounded noncanonical administrative evidence. They do not create canonical vector records, semantic graph edges, proposal ratification, Maestro receptor state, public API contracts, or engine-owned semantic truth.
+- evidence:
+  - `PR #95 merged into main at 2026-08-04T06:32:23Z by quantDIY as c0caf3d8750b95404dfff54cfc0e33db537b286c`
+  - `implementation head f595c8ed049d35b7faca675da72c9046c7064c7e; 65 files changed, 3618 insertions, 164 deletions`
+  - `local-Git adapter evidence digest sha256:7b7499a5bcbb0b4c1d1fe59a8558c6dcc3944176d3aec2a54a4a967088a89072 bound tree digest sha256:e550ded94503c2d1f683a5a23831607696011899d96bf0d8957201cea9739908`
+  - `provider-neutral ratification evidence digest sha256:8bf25963586f2c9d0fc75e94791ac40a915ce170e2cb844e1491af3ffc7af9e8 bound canonical PR metadata digest sha256:1690eca9848c30da948a3aa23d15f5f7102d264015975fba98351da0af817962`
+  - `canonical PR metadata identified repository QuanuX/Symphony, base main, head agent/authenticated-knowledge-session-foundation at f595c8ed049d35b7faca675da72c9046c7064c7e, merged state, merge revision c0caf3d8750b95404dfff54cfc0e33db537b286c, authenticated merger quantDIY, title, number 95, merge time, and URL`
+  - `SSIAG and qxctl each passed go test ./..., go vet ./..., CGO_ENABLED=0 go test ./..., CGO_ENABLED=0 go build ./..., and go test -race ./...`
+  - `the coordinator passed a warning-clean Release build and two CTests plus an AddressSanitizer and UndefinedBehaviorSanitizer Debug build and both CTests`
+  - `the common C++ knowledge-vector foundation CTest passed with fifteen common schemas; all changed JSON parsed successfully`
+  - `the full symphony-validator smoke matrix passed; pre-closure live result pass=3957 warning=216 violation=0 exit=0`
+  - `all 216 pre-closure warnings were the established sclv.affected_surface.unindexed historical-record advisory family`
+  - `the live SSFV check reported three passes, zero warnings, zero violations, structurally valid state, and intentionally partial rollout coverage`
+  - `a real-process end-to-end test passed across SSIAG and STAV Unix sockets, qxctl, and an installed C++ coordinator for begin, status, and close with three committed audit events`
+  - `fresh SCLV engine and provider-adapter CTest passed two of two tests before this closure was authored`
+  - `closure SCLV engine check reported 24 records, 96 passes, zero warnings, zero violations, and valid state`
+  - `closure validator result pass=4174 warning=235 violation=0 exit=0; the nineteen-warning advisory delta is exclusively the unindexed implementation and test paths listed by this record`
+  - `PR #95 reported no configured GitHub checks, was mergeable at the exact reviewed head, and merged with head-commit protection`
+- non_authorizations:
+  - `canonical knowledge mutation, proposal ratification, canonical apply, or engine-owned semantic truth`
+  - `operational Keychain access, provider-secret delivery, credential payload persistence, or plaintext secret fallback`
+  - `caller-class policy, human-only authority, AI-specific restriction, service-specific privilege, or authority inferred from actor type`
+  - `coordinator-to-vector semantic execution, cross-vector apply transaction, feature-worthiness decision, or semantic graph mutation`
+  - `implicit newest-version selection, destructive downgrade, lossy journal conversion, unknown-state deletion, or automatic incompatible migration`
+  - `observer, repository hook, file watcher, daemon, remote network listener, REST endpoint, webhook, or background session process`
+  - `live Maestro receptor, docking, activation, persistent receptor state, or module orchestration`
+  - `native Windows engine implementation, hot-path participation, warm-path participation, trading-node doctrine, or Go 1.27 production pin`
+  - `module tag, release artifact, package publication, public documentation, SDK generation, Mintlify publication, or launch claim`
+- notes: |
+    This post-merge closure records the authenticated durable knowledge-session implementation merged by PR #95. Every changed file is listed as an affected surface. The nineteen unindexed implementation and test paths remain explicit advisory evidence rather than being hidden through selective omission or artificial SKVI expansion. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
