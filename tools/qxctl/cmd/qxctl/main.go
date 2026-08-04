@@ -7,6 +7,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -74,6 +75,7 @@ func printUsage() {
 	fmt.Println("  knowledge session checkpoint --tops-id UUID --operation-id ID --expected-journal-digest DIGEST [--context-ref REF...] [--json] Checkpoint an authenticated session")
 	fmt.Println("  knowledge session close --tops-id UUID --operation-id ID --expected-journal-digest DIGEST [--json] Close an authenticated session")
 	fmt.Println("  knowledge session recover --tops-id UUID --operation-id ID (--expected-journal-digest DIGEST|--discover) [--json] Recover authenticated session evidence")
+	fmt.Println("  knowledge session transition --tops-id UUID --event login|refresh|logout --event-id ID [--recover] [--json] Converge an explicit host lifecycle event")
 	fmt.Println("  skvi inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SKVI engine")
 	fmt.Println("  skvi check --prefix PATH [--version VERSION] [--json] Check canonical SKVI index truth")
 	fmt.Println("  skvi propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared proposal")
@@ -398,51 +400,80 @@ func runKnowledgeReconcile(operation string, options knowledgeReconcileOptions) 
 	return nil
 }
 
+type sessionInvocation struct {
+	Result sessionResult
+	Raw    json.RawMessage
+}
+
 func runKnowledgeSession(operation string, options knowledgeSessionOptions) error {
+	invocation, err := executeKnowledgeSession(operation, options)
+	if err != nil {
+		return err
+	}
+	if options.jsonOutput {
+		var display any
+		if err := json.Unmarshal(invocation.Raw, &display); err != nil {
+			return fmt.Errorf("decode authenticated session result: %w", err)
+		}
+		return printIndentedJSON(display)
+	}
+	digest := "absent"
+	if invocation.Result.JournalDigest != nil {
+		digest = *invocation.Result.JournalDigest
+	}
+	fmt.Printf(
+		"Knowledge session: operation=%s state=%s present=%t changed=%t recovered=%t read_only=%t digest=%s canonical=false\n",
+		operation, invocation.Result.EffectiveState, *invocation.Result.JournalPresent,
+		*invocation.Result.Changed, *invocation.Result.Recovered, *invocation.Result.ReadOnly, digest,
+	)
+	return nil
+}
+
+func executeKnowledgeSession(operation string, options knowledgeSessionOptions) (sessionInvocation, error) {
 	if options.topsID == "" {
-		return fmt.Errorf("--tops-id is required")
+		return sessionInvocation{}, fmt.Errorf("--tops-id is required")
 	}
 	if options.scope != "user" && options.scope != "system" {
-		return fmt.Errorf("--scope must be user or system")
+		return sessionInvocation{}, fmt.Errorf("--scope must be user or system")
 	}
 	if options.ttl <= 0 || options.ttl > 24*time.Hour {
-		return fmt.Errorf("--ttl must be greater than zero and no more than 24h")
+		return sessionInvocation{}, fmt.Errorf("--ttl must be greater than zero and no more than 24h")
 	}
 	if operation != "status" && options.operationID == "" {
-		return fmt.Errorf("--operation-id is required")
+		return sessionInvocation{}, fmt.Errorf("--operation-id is required")
 	}
 	expected := options.expectedJournalDigest
 	if operation == "begin" || operation == "checkpoint" || operation == "close" {
 		if expected == "" {
-			return fmt.Errorf("--expected-journal-digest is required")
+			return sessionInvocation{}, fmt.Errorf("--expected-journal-digest is required")
 		}
 	}
 	if operation == "recover" {
 		if options.discover && expected != "" {
-			return fmt.Errorf("--discover and --expected-journal-digest are mutually exclusive")
+			return sessionInvocation{}, fmt.Errorf("--discover and --expected-journal-digest are mutually exclusive")
 		}
 		if options.discover {
 			expected = "discover"
 		}
 		if expected == "" {
-			return fmt.Errorf("--expected-journal-digest or --discover is required")
+			return sessionInvocation{}, fmt.Errorf("--expected-journal-digest or --discover is required")
 		}
 	}
 
 	repoRoot, err := resolveKnowledgeRepository(options.repository)
 	if err != nil {
-		return err
+		return sessionInvocation{}, err
 	}
 	store, err := knowledgebinding.NewStore(options.stateRoot)
 	if err != nil {
-		return err
+		return sessionInvocation{}, err
 	}
 	bindingSnapshot, err := store.Snapshot()
 	if err != nil {
-		return err
+		return sessionInvocation{}, err
 	}
 	if !bindingSnapshot.Exists {
-		return fmt.Errorf("knowledge engine binding registry is absent")
+		return sessionInvocation{}, fmt.Errorf("knowledge engine binding registry is absent")
 	}
 	var coordinator *knowledgebinding.Binding
 	for index := range bindingSnapshot.Registry.Bindings {
@@ -452,33 +483,33 @@ func runKnowledgeSession(operation string, options knowledgeSessionOptions) erro
 		}
 	}
 	if coordinator == nil {
-		return fmt.Errorf("knowledge-session coordinator is not bound")
+		return sessionInvocation{}, fmt.Errorf("knowledge-session coordinator is not bound")
 	}
 	installed, err := knowledgeengine.InspectInstallation("coordinator", coordinator.Prefix, coordinator.Version)
 	if err != nil {
-		return fmt.Errorf("bound coordinator installation is unavailable: %w", err)
+		return sessionInvocation{}, fmt.Errorf("bound coordinator installation is unavailable: %w", err)
 	}
 	if installed.ModuleID != coordinator.ModuleID || installed.EngineID != coordinator.EngineID ||
 		installed.ReceiptDigest != coordinator.ReceiptDigest || installed.ExecutableDigest != coordinator.ExecutableDigest {
-		return fmt.Errorf("bound coordinator installation no longer matches its content-addressed identity")
+		return sessionInvocation{}, fmt.Errorf("bound coordinator installation no longer matches its content-addressed identity")
 	}
 
 	ssiag, err := ssiagclient.NewForTOPS(options.scope, options.topsID, 4*time.Second)
 	if err != nil {
-		return err
+		return sessionInvocation{}, err
 	}
 	authorizationContext, cancel := context.WithTimeout(context.Background(), 4*time.Second)
 	defer cancel()
 	if _, err := requireSSIAGStatus(authorizationContext, ssiag, options.topsID, options.scope); err != nil {
-		return err
+		return sessionInvocation{}, err
 	}
 	requestID, err := randomUUID()
 	if err != nil {
-		return err
+		return sessionInvocation{}, err
 	}
 	correlationID, err := randomUUID()
 	if err != nil {
-		return err
+		return sessionInvocation{}, err
 	}
 	now := time.Now().UTC().Truncate(time.Second)
 	authorizationRequest := ssiagclient.AuthorizationRequest{
@@ -489,10 +520,10 @@ func runKnowledgeSession(operation string, options knowledgeSessionOptions) erro
 	}
 	decision, err := ssiag.Authorize(authorizationContext, authorizationRequest)
 	if err != nil {
-		return err
+		return sessionInvocation{}, err
 	}
 	if err := validateSessionAuthorization(decision, authorizationRequest, options.topsID); err != nil {
-		return err
+		return sessionInvocation{}, err
 	}
 
 	var operationID any
@@ -530,34 +561,354 @@ func runKnowledgeSession(operation string, options knowledgeSessionOptions) erro
 		},
 	})
 	if err != nil {
-		return fmt.Errorf("encode authenticated session request: %w", err)
+		return sessionInvocation{}, fmt.Errorf("encode authenticated session request: %w", err)
 	}
 	response, err := knowledgeengine.InvokeCoordinator(
 		context.Background(), coordinator.Prefix, coordinator.Version, repoRoot, engineOperation, payload)
 	if err != nil {
-		return err
+		return sessionInvocation{}, err
 	}
 	result, err := validateSessionResult(response.Result, engineOperation)
+	if err != nil {
+		return sessionInvocation{}, err
+	}
+	return sessionInvocation{Result: result, Raw: append(json.RawMessage(nil), response.Result...)}, nil
+}
+
+const sessionTransitionProtocol = "symphony.knowledge.session-transition-result.v1"
+
+type sessionTransitionStep struct {
+	Operation      string  `json:"operation"`
+	OperationID    *string `json:"operation_id"`
+	EffectiveState string  `json:"effective_state"`
+	JournalDigest  *string `json:"journal_digest"`
+	Changed        bool    `json:"changed"`
+	Recovered      bool    `json:"recovered"`
+}
+
+type sessionTransitionReport struct {
+	Protocol              string                  `json:"protocol"`
+	Event                 string                  `json:"event"`
+	EventID               string                  `json:"event_id"`
+	Disposition           string                  `json:"disposition"`
+	InitialState          string                  `json:"initial_state"`
+	FinalState            string                  `json:"final_state"`
+	FinalJournalDigest    *string                 `json:"final_journal_digest"`
+	Steps                 []sessionTransitionStep `json:"steps"`
+	Recovered             bool                    `json:"recovered"`
+	CanonicalApplyEnabled bool                    `json:"canonical_apply_enabled"`
+	Canonical             bool                    `json:"canonical"`
+	ResultDigest          string                  `json:"result_digest"`
+}
+
+type sessionTransitionInvoker func(string, knowledgeSessionOptions) (sessionInvocation, error)
+
+func runKnowledgeSessionTransition(options knowledgeSessionOptions) error {
+	report, err := performKnowledgeSessionTransition(options, executeKnowledgeSession)
 	if err != nil {
 		return err
 	}
 	if options.jsonOutput {
-		var display any
-		if err := json.Unmarshal(response.Result, &display); err != nil {
-			return fmt.Errorf("decode authenticated session result: %w", err)
-		}
-		return printIndentedJSON(display)
+		return printIndentedJSON(report)
 	}
 	digest := "absent"
-	if result.JournalDigest != nil {
-		digest = *result.JournalDigest
+	if report.FinalJournalDigest != nil {
+		digest = *report.FinalJournalDigest
 	}
 	fmt.Printf(
-		"Knowledge session: operation=%s state=%s present=%t changed=%t recovered=%t read_only=%t digest=%s canonical=false\n",
-		operation, result.EffectiveState, *result.JournalPresent, *result.Changed,
-		*result.Recovered, *result.ReadOnly, digest,
+		"Knowledge session transition: event=%s disposition=%s initial=%s final=%s steps=%d recovered=%t digest=%s canonical=false\n",
+		report.Event, report.Disposition, report.InitialState, report.FinalState,
+		len(report.Steps), report.Recovered, digest,
 	)
 	return nil
+}
+
+func performKnowledgeSessionTransition(
+	options knowledgeSessionOptions,
+	invoke sessionTransitionInvoker,
+) (sessionTransitionReport, error) {
+	if options.event != "login" && options.event != "refresh" && options.event != "logout" {
+		return sessionTransitionReport{}, fmt.Errorf("--event must be login, refresh, or logout")
+	}
+	if !validSessionToken(options.eventID) || len(options.eventID) > 224 {
+		return sessionTransitionReport{}, fmt.Errorf("--event-id must be a stable token of no more than 224 characters")
+	}
+	for _, reference := range options.contextRefs {
+		if !validSessionToken(reference) {
+			return sessionTransitionReport{}, fmt.Errorf("--context-ref contains an invalid token")
+		}
+	}
+	report := sessionTransitionReport{
+		Protocol: sessionTransitionProtocol, Event: options.event, EventID: options.eventID,
+		InitialState: "unknown", FinalState: "unknown", Steps: make([]sessionTransitionStep, 0, 5),
+		CanonicalApplyEnabled: false, Canonical: false,
+	}
+	statusOptions := transitionCallOptions(options, "", "", nil, false)
+	current, err := invoke("status", statusOptions)
+	if err != nil {
+		if !options.recoverTransition || !recoverableSessionStatusError(err) {
+			return sessionTransitionReport{}, err
+		}
+		recoveryID := options.eventID + ":recover"
+		recoveryOptions := transitionCallOptions(options, recoveryID, "", nil, true)
+		recovered, recoverErr := invoke("recover", recoveryOptions)
+		if recoverErr != nil {
+			return sessionTransitionReport{}, fmt.Errorf("session transition discovery recovery failed: %w", recoverErr)
+		}
+		appendSessionTransitionStep(&report, "recover", recoveryID, recovered)
+		report.Recovered = report.Recovered || *recovered.Result.Recovered
+		current, err = invoke("status", statusOptions)
+		if err != nil {
+			return sessionTransitionReport{}, fmt.Errorf("session status remained unavailable after recovery: %w", err)
+		}
+	}
+	report.InitialState = current.Result.EffectiveState
+	appendSessionTransitionStep(&report, "status", "", current)
+
+	completionIDs := []string{}
+	switch options.event {
+	case "login":
+		completionIDs = []string{options.eventID + ":begin"}
+	case "refresh":
+		completionIDs = []string{options.eventID + ":checkpoint", options.eventID + ":begin"}
+	case "logout":
+		completionIDs = []string{options.eventID + ":close"}
+	}
+	alreadyApplied, err := sessionContainsOperation(current, completionIDs)
+	if err != nil {
+		return sessionTransitionReport{}, err
+	}
+	if alreadyApplied {
+		report.Disposition = "already_applied"
+		setSessionTransitionFinal(&report, current)
+		return finalizeSessionTransitionReport(report)
+	}
+
+	switch options.event {
+	case "login":
+		if *current.Result.JournalPresent &&
+			(current.Result.EffectiveState == "open" || current.Result.EffectiveState == "expired") {
+			current, err = invokeSessionTransitionMutation(
+				invoke, options, "close", options.eventID+":close-prior", *current.Result.JournalDigest, nil)
+			if err != nil {
+				return sessionTransitionReport{}, err
+			}
+			appendSessionTransitionStep(&report, "close", options.eventID+":close-prior", current)
+		}
+		expected := "absent"
+		if *current.Result.JournalPresent {
+			expected = *current.Result.JournalDigest
+		}
+		current, err = invokeSessionTransitionMutation(
+			invoke, options, "begin", options.eventID+":begin", expected, options.contextRefs)
+		if err != nil {
+			return sessionTransitionReport{}, err
+		}
+		appendSessionTransitionStep(&report, "begin", options.eventID+":begin", current)
+		report.Disposition = "begun"
+	case "refresh":
+		if !*current.Result.JournalPresent {
+			return sessionTransitionReport{}, fmt.Errorf("refresh requires an open authority epoch; submit a login transition")
+		}
+		if current.Result.EffectiveState == "closed" {
+			closeCompleted, closeEvidenceErr := sessionContainsOperation(
+				current, []string{options.eventID + ":close"})
+			if closeEvidenceErr != nil {
+				return sessionTransitionReport{}, closeEvidenceErr
+			}
+			if !closeCompleted {
+				return sessionTransitionReport{}, fmt.Errorf("refresh requires an open authority epoch; submit a login transition")
+			}
+			beginID := options.eventID + ":begin"
+			current, err = invokeSessionTransitionMutation(
+				invoke, options, "begin", beginID, *current.Result.JournalDigest, options.contextRefs)
+			if err != nil {
+				return sessionTransitionReport{}, err
+			}
+			appendSessionTransitionStep(&report, "begin", beginID, current)
+			report.Disposition = "reauthenticated"
+			break
+		}
+		if current.Result.EffectiveState == "open" {
+			checkpointID := options.eventID + ":checkpoint"
+			checkpoint, checkpointErr := invokeSessionTransitionMutation(
+				invoke, options, "checkpoint", checkpointID, *current.Result.JournalDigest, options.contextRefs)
+			if checkpointErr == nil {
+				current = checkpoint
+				appendSessionTransitionStep(&report, "checkpoint", checkpointID, current)
+				report.Disposition = "refreshed"
+				break
+			}
+			if !sessionReauthenticationRequired(checkpointErr) {
+				return sessionTransitionReport{}, checkpointErr
+			}
+		}
+		current, err = rotateSessionTransition(&report, invoke, options, current)
+		if err != nil {
+			return sessionTransitionReport{}, err
+		}
+		report.Disposition = "reauthenticated"
+	case "logout":
+		if !*current.Result.JournalPresent || current.Result.EffectiveState == "closed" {
+			report.Disposition = "no_change"
+			break
+		}
+		current, err = invokeSessionTransitionMutation(
+			invoke, options, "close", options.eventID+":close", *current.Result.JournalDigest, nil)
+		if err != nil {
+			return sessionTransitionReport{}, err
+		}
+		appendSessionTransitionStep(&report, "close", options.eventID+":close", current)
+		report.Disposition = "closed"
+	}
+	setSessionTransitionFinal(&report, current)
+	return finalizeSessionTransitionReport(report)
+}
+
+func transitionCallOptions(
+	base knowledgeSessionOptions,
+	operationID string,
+	expected string,
+	contexts []string,
+	discover bool,
+) knowledgeSessionOptions {
+	base.operationID = operationID
+	base.expectedJournalDigest = expected
+	base.contextRefs = contexts
+	base.discover = discover
+	base.jsonOutput = false
+	return base
+}
+
+func invokeSessionTransitionMutation(
+	invoke sessionTransitionInvoker,
+	base knowledgeSessionOptions,
+	operation string,
+	operationID string,
+	expected string,
+	contexts []string,
+) (sessionInvocation, error) {
+	result, err := invoke(operation, transitionCallOptions(base, operationID, expected, contexts, false))
+	if err != nil {
+		return sessionInvocation{}, fmt.Errorf("session transition %s failed: %w", operation, err)
+	}
+	return result, nil
+}
+
+func rotateSessionTransition(
+	report *sessionTransitionReport,
+	invoke sessionTransitionInvoker,
+	options knowledgeSessionOptions,
+	current sessionInvocation,
+) (sessionInvocation, error) {
+	closeID := options.eventID + ":close"
+	closed, err := invokeSessionTransitionMutation(
+		invoke, options, "close", closeID, *current.Result.JournalDigest, nil)
+	if err != nil {
+		return sessionInvocation{}, err
+	}
+	appendSessionTransitionStep(report, "close", closeID, closed)
+	beginID := options.eventID + ":begin"
+	begun, err := invokeSessionTransitionMutation(
+		invoke, options, "begin", beginID, *closed.Result.JournalDigest, options.contextRefs)
+	if err != nil {
+		return sessionInvocation{}, err
+	}
+	appendSessionTransitionStep(report, "begin", beginID, begun)
+	return begun, nil
+}
+
+func appendSessionTransitionStep(
+	report *sessionTransitionReport,
+	operation string,
+	operationID string,
+	invocation sessionInvocation,
+) {
+	var identity *string
+	if operationID != "" {
+		value := operationID
+		identity = &value
+	}
+	var digest *string
+	if invocation.Result.JournalDigest != nil {
+		value := *invocation.Result.JournalDigest
+		digest = &value
+	}
+	report.Steps = append(report.Steps, sessionTransitionStep{
+		Operation: operation, OperationID: identity,
+		EffectiveState: invocation.Result.EffectiveState, JournalDigest: digest,
+		Changed: *invocation.Result.Changed, Recovered: *invocation.Result.Recovered,
+	})
+}
+
+func setSessionTransitionFinal(report *sessionTransitionReport, invocation sessionInvocation) {
+	report.FinalState = invocation.Result.EffectiveState
+	if invocation.Result.JournalDigest == nil {
+		report.FinalJournalDigest = nil
+		return
+	}
+	value := *invocation.Result.JournalDigest
+	report.FinalJournalDigest = &value
+}
+
+func sessionContainsOperation(invocation sessionInvocation, candidates []string) (bool, error) {
+	if !*invocation.Result.JournalPresent {
+		return false, nil
+	}
+	var journal struct {
+		Checkpoints []struct {
+			OperationID string `json:"operation_id"`
+		} `json:"checkpoints"`
+	}
+	if err := json.Unmarshal(invocation.Result.Journal, &journal); err != nil || journal.Checkpoints == nil {
+		return false, fmt.Errorf("authenticated session journal lacks checkpoint evidence")
+	}
+	wanted := make(map[string]struct{}, len(candidates))
+	for _, candidate := range candidates {
+		wanted[candidate] = struct{}{}
+	}
+	for _, checkpoint := range journal.Checkpoints {
+		if _, ok := wanted[checkpoint.OperationID]; ok {
+			return true, nil
+		}
+	}
+	return false, nil
+}
+
+func recoverableSessionStatusError(err error) bool {
+	var processError *knowledgeengine.ProcessError
+	if !errors.As(err, &processError) {
+		return false
+	}
+	switch processError.Code {
+	case "session.head_invalid", "session.head_missing", "session.head_slot_mismatch",
+		"session.journal_invalid", "session.recovery_required", "session.state_json_invalid":
+		return true
+	default:
+		return false
+	}
+}
+
+func sessionReauthenticationRequired(err error) bool {
+	var processError *knowledgeengine.ProcessError
+	return errors.As(err, &processError) && processError.Code == "session.reauthentication_required"
+}
+
+func finalizeSessionTransitionReport(report sessionTransitionReport) (sessionTransitionReport, error) {
+	input := map[string]any{
+		"protocol": report.Protocol, "event": report.Event, "event_id": report.EventID,
+		"disposition": report.Disposition, "initial_state": report.InitialState,
+		"final_state": report.FinalState, "final_journal_digest": report.FinalJournalDigest,
+		"steps": report.Steps, "recovered": report.Recovered,
+		"canonical_apply_enabled": report.CanonicalApplyEnabled, "canonical": report.Canonical,
+	}
+	encoded, err := json.Marshal(input)
+	if err != nil {
+		return sessionTransitionReport{}, fmt.Errorf("encode session transition digest input: %w", err)
+	}
+	digest := sha256.Sum256(encoded)
+	report.ResultDigest = "sha256:" + hex.EncodeToString(digest[:])
+	return report, nil
 }
 
 func sessionRepositoryResource(repositoryRoot string) string {

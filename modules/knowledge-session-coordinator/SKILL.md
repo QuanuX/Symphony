@@ -32,4 +32,6 @@ Without arguments, send exactly one bounded `symphony.knowledge.engine-process.v
 
 qxctl may select this exact inactive-undocked package in its protected user-default binding registry and invoke its reconciliation and authenticated-session operations. Selection and invocation do not activate the package or grant authority; SSIAG remains the decision authority.
 
-Stop for a new reviewed increment before enabling direct coordinator-to-SSIAG/STAV calls, vector-engine invocation, automatic format migration beyond the declared compatibility window, observers/hooks, canonical apply, system/TOPS binding or installation claims, an unversioned active alias, or Maestro docking.
+qxctl may compose the existing authenticated-session operations into an explicit login, refresh, or logout transition. Treat the host event ID as the stable retry identity and preserve every underlying operation's separate SSIAG decision and journal evidence. Do not add a coordinator-side watcher, login hook, or implicit transition operation.
+
+Stop for a new reviewed increment before enabling direct coordinator-to-SSIAG/STAV calls, vector-engine invocation, generic desired-state or first-boot lifecycle planning/apply, automatic format migration beyond the declared compatibility window, observers/hooks, canonical apply, system/TOPS binding or installation claims, an unversioned active alias, or Maestro docking.

@@ -223,6 +223,7 @@ void test_schema_documents(const fs::path& repository_root) {
         {"knowledge/schemas/v1/session-head.schema.json", "urn:symphony:knowledge:session-head:v1"},
         {"knowledge/schemas/v1/session-journal.schema.json", "urn:symphony:knowledge:session-journal:v1"},
         {"knowledge/schemas/v1/session-result.schema.json", "urn:symphony:knowledge:session-result:v1"},
+        {"knowledge/schemas/v1/session-transition-result.schema.json", "urn:symphony:knowledge:session-transition-result:v1"},
     };
     for (const auto& [relative_path, identifier] : expected) {
         std::ifstream input(repository_root / relative_path, std::ios::binary);

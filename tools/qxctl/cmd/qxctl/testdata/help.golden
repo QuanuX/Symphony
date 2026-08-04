@@ -40,6 +40,7 @@ Commands:
   knowledge session checkpoint --tops-id UUID --operation-id ID --expected-journal-digest DIGEST [--context-ref REF...] [--json] Checkpoint an authenticated session
   knowledge session close --tops-id UUID --operation-id ID --expected-journal-digest DIGEST [--json] Close an authenticated session
   knowledge session recover --tops-id UUID --operation-id ID (--expected-journal-digest DIGEST|--discover) [--json] Recover authenticated session evidence
+  knowledge session transition --tops-id UUID --event login|refresh|logout --event-id ID [--recover] [--json] Converge an explicit host lifecycle event
   skvi inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SKVI engine
   skvi check --prefix PATH [--version VERSION] [--json] Check canonical SKVI index truth
   skvi propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared proposal

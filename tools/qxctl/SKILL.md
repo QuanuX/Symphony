@@ -23,6 +23,7 @@ Any caller operating within its effective target-host permission should use `qxc
 - `go run ./cmd/qxctl knowledge reconcile checkpoint --operation-id ID --expected-journal-digest sha256:...`
 - `go run ./cmd/qxctl knowledge reconcile close --operation-id ID --expected-journal-digest sha256:...`
 - `go run ./cmd/qxctl knowledge reconcile recover --operation-id ID --discover`
+- `go run ./cmd/qxctl knowledge session transition --tops-id UUID --event login --event-id HOST-EVENT-ID --json`
 - `go run ./cmd/qxctl skvi check --prefix /chosen/prefix`
 - `go run ./cmd/qxctl skvi project --prefix /chosen/prefix --json`
 - `go run ./cmd/qxctl skvi propose --prefix /chosen/prefix --input proposal-input.json`
@@ -51,7 +52,7 @@ Any caller operating within its effective target-host permission should use `qxc
 - Keep SSIAG/STAV trust configuration and endpoint authentication outside Viper in their dedicated clients.
 - Run commands synchronously in the active execution session.
 - SSIAG commands may read safe metadata and request exact audited authorization decisions. Treat every capability as non-transferable evidence for its bound operation, never a bearer token or canonical apply authority. Never pass secret values through qxctl arguments, input, output, logs, or fixtures.
-- Canonical knowledge, STAV, and security-governed surfaces remain read-only. Current mutations are limited to the protected noncanonical user-scope engine-binding registry and reconciliation journal. When proposal and apply support exists, use only operations permitted by the target host and satisfy the configured safeguards; never emulate, manufacture, or bypass host authority.
+- Canonical knowledge, STAV, and security-governed surfaces remain read-only. Current mutations are limited to the protected noncanonical user-scope engine-binding registry, reconciliation journals, and SSIAG-authorized authenticated-session journals. When proposal and apply support exists, use only operations permitted by the target host and satisfy the configured safeguards; never emulate, manufacture, or bypass host authority.
 - STAV commands require an enrolled, running authority and an explicit reader grant. Never bypass endpoint authentication, reader classification, or add raw append behavior.
 - Use `knowledge engines bind` only with an exact inactive-undocked installation. Supply `absent` for the first mutation and the exact digest returned by `list` for every later mutation. A binding is noncanonical selection for later reconciliation; it is not installation, invocation, authentication, permission, repository activation, or Maestro docking.
 - Use `knowledge reconcile begin|checkpoint|close` with a stable unique operation ID and the exact state reported by `status`; safe retries reuse the same operation ID. Use `recover --discover` only when the head is unavailable or inconsistent and retain all reported repair evidence. Never delete or edit journal slots to force a result. Unknown critical/newer state and ambiguous slots are stop conditions, not reasons to select an older version.
@@ -63,6 +64,8 @@ Any caller operating within its effective target-host permission should use `qxc
 - For implemented SODV commands, use an exact inactive-undocked installation and provide external tag/package observations only through a bounded no-follow JSON file. Treat verification and recovery as noncanonical evidence, proposals as unratified, and projections as disposable. qxctl and the engine never create or move tags, contact providers, declare completion, append release records, mutate recovery journals, or publish artifacts.
 - For implemented SSFV commands, use an exact inactive-undocked installation. Treat snapshots, diffs, and graphs as noncanonical evidence and proposals as unratified. Supply baseline/proposal input only through bounded no-follow JSON files. Never use qxctl to decide feature-worthiness, ratify semantics, apply a proposal, create a `FEATURES.md`, or persist a graph.
 - Treat the default knowledge session as a login/authentication-to-logout/expiry/revocation authority epoch containing separate worktree reconciliation contexts. Never extend authority across a required re-authentication boundary.
+- Use `knowledge session transition` only from an explicit reviewed host integration. Reuse one stable event ID for retry, and use `--recover` only when damaged local head/journal evidence should be reconciled. Do not convert denial, incompatibility, or ambiguity into recovery and do not imply that qxctl installs a login or boot integration.
+- Keep `symphony.knowledge.engine-binding-registry.v1` fixed to its six roles. Treat future desired, observed, and applied component state as separate evidence governed by `knowledge/LIFECYCLE.md`; discovering a new or missing package is never implicit permission to execute, remove, switch, bind, or dock it.
 - Keep vector administration, recovery, and audit reconciliation away from hot and warm paths.
 
 ## Do-Not-Use-For List
@@ -85,3 +88,4 @@ Any caller operating within its effective target-host permission should use `qxc
 8. `go run ./cmd/qxctl knowledge engines doctor`
 9. `go run ./cmd/qxctl knowledge reconcile compatibility --json`
 10. `go run ./cmd/qxctl knowledge reconcile status --json`
+11. `go run ./cmd/qxctl knowledge session status --tops-id UUID --json` when the exact SSIAG session grants and coordinator binding are available

@@ -101,10 +101,13 @@ type knowledgeSessionOptions struct {
 	scope                 string
 	stateRoot             string
 	repository            string
+	event                 string
+	eventID               string
 	operationID           string
 	expectedJournalDigest string
 	contextRefs           []string
 	discover              bool
+	recoverTransition     bool
 	ttl                   time.Duration
 	jsonOutput            bool
 }
@@ -306,7 +309,7 @@ func newKnowledgeCommand() *cobra.Command {
 		Use:  "session",
 		Args: usageOnlyArgs,
 		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge session subcommand is required: begin, status, checkpoint, close, or recover")
+			return fmt.Errorf("knowledge session subcommand is required: begin, status, checkpoint, close, recover, or transition")
 		},
 	}
 	for _, operation := range []string{"begin", "status", "checkpoint", "close", "recover"} {
@@ -337,6 +340,26 @@ func newKnowledgeCommand() *cobra.Command {
 		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 		session.AddCommand(child)
 	}
+	transitionOptions := knowledgeSessionOptions{scope: "user", ttl: 15 * time.Minute}
+	transition := &cobra.Command{
+		Use:  "transition",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return runKnowledgeSessionTransition(transitionOptions)
+		},
+	}
+	transition.Flags().StringVar(&transitionOptions.topsID, "tops-id", "", "immutable TOPS UUID")
+	transition.Flags().StringVar(&transitionOptions.scope, "scope", "user", "SSIAG installation scope: user or system")
+	transition.Flags().StringVar(&transitionOptions.stateRoot, "state-root", "", "user state root; defaults to XDG_STATE_HOME or ~/.local/state")
+	transition.Flags().StringVar(&transitionOptions.repository, "repo", "", "Symphony repository path; defaults to the current repository")
+	transition.Flags().StringVar(&transitionOptions.event, "event", "", "explicit lifecycle event: login, refresh, or logout")
+	transition.Flags().StringVar(&transitionOptions.eventID, "event-id", "", "stable idempotency token for the host lifecycle event")
+	transition.Flags().StringSliceVar(&transitionOptions.contextRefs, "context-ref", nil, "reconciliation context reference to attach; repeat as needed")
+	transition.Flags().BoolVar(&transitionOptions.recoverTransition, "recover", false, "attempt discovery recovery before transition when status evidence is damaged")
+	transition.Flags().DurationVar(&transitionOptions.ttl, "ttl", 15*time.Minute, "requested authority-epoch lifetime")
+	transition.Flags().BoolVar(&transitionOptions.jsonOutput, "json", false, "emit transition result JSON")
+	transition.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	session.AddCommand(transition)
 	session.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	command.AddCommand(session)
 	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
@@ -755,7 +778,7 @@ func failurePrefix(args []string) string {
 		}
 		if len(args) > 2 && args[1] == "session" {
 			switch args[2] {
-			case "begin", "status", "checkpoint", "close", "recover":
+			case "begin", "status", "checkpoint", "close", "recover", "transition":
 				return "knowledge session " + args[2]
 			}
 		}

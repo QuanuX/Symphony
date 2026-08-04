@@ -50,10 +50,11 @@
         "modules/knowledge-session-coordinator/tests/process_smoke.sh verifies deterministic process responses, implemented session capability truth, bounded check output, duplicate-key rejection, and disabled canonical apply.",
         "modules/knowledge-session-coordinator/CMakeLists.txt builds, tests, installs, receipts, and uninstalls the exact versioned process.",
         "modules/knowledge-session-coordinator/SPEC.md defines inspect/check plus separate durable reconciliation and authenticated-session journals, two-way procedural compatibility, evidence-preserving recovery, and the canonical-apply boundary.",
-        "tools/qxctl/cmd/qxctl/main.go, tools/qxctl/internal/ssiagclient/client.go, and tools/qxctl/internal/knowledgeengine/client.go authenticate SSIAG, validate safe authorization evidence, invoke the exact bound coordinator, and record the role-sorted engine inventory for reconciliation."
+        "tools/qxctl/cmd/qxctl/session_test.go verifies explicit login, refresh, logout, retry, bounded recovery, reauthentication, and interrupted-close resumption over the coordinator primitives.",
+        "tools/qxctl/cmd/qxctl/main.go, tools/qxctl/internal/ssiagclient/client.go, and tools/qxctl/internal/knowledgeengine/client.go authenticate SSIAG, validate safe authorization evidence, invoke the exact bound coordinator, compose explicit host events, and record the role-sorted engine inventory for reconciliation."
       ],
       "feature_id": "ssfv:symphony:knowledge-session-coordinator",
-      "how": "The C++26 symphony-knowledge-session process statically links the shared foundation, accepts the common bounded process envelope, and keeps reconciliation contexts separate from authenticated authority epochs. Each state stream uses a private no-follow lock, fsync-backed dual slots, an atomic head, content digests, stable operation IDs, exact compare-and-swap state, opaque-extension preservation, and evidence-based forward recovery. Go qxctl revalidates its immutable coordinator binding, authenticates the TOPS-scoped SSIAG endpoint, obtains and validates one exact audited decision per session operation, negotiates protocol/version/capabilities, invokes that exact coordinator, and supplies a role-sorted bound-engine inventory only to reconciliation operations.",
+      "how": "The C++26 symphony-knowledge-session process statically links the shared foundation, accepts the common bounded process envelope, and keeps reconciliation contexts separate from authenticated authority epochs. Each state stream uses a private no-follow lock, fsync-backed dual slots, an atomic head, content digests, stable operation IDs, exact compare-and-swap state, opaque-extension preservation, and evidence-based forward recovery. Go qxctl revalidates its immutable coordinator binding, authenticates the TOPS-scoped SSIAG endpoint, obtains and validates one exact audited decision per session operation, negotiates protocol/version/capabilities, invokes that exact coordinator, and supplies a role-sorted bound-engine inventory only to reconciliation operations. Its explicit transition adapter derives stable step identities from one host event ID and composes status, bounded recovery, close, begin, or checkpoint so interrupted login, refresh, and logout sequences resume from durable journal evidence.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -65,7 +66,7 @@
         },
         {
           "language": "Go",
-          "role": "Implements qxctl binding revalidation, kernel-authenticated SSIAG authorization requests, decision-boundary validation, exact coordinator invocation, reconciliation/session command grammar, operation identity, expected-state input, and bound-engine inventory delivery."
+          "role": "Implements qxctl binding revalidation, kernel-authenticated SSIAG authorization requests, decision-boundary validation, exact coordinator invocation, reconciliation/session command grammar, explicit login/refresh/logout transition composition, operation identity, expected-state input, and bound-engine inventory delivery."
         }
       ],
       "implementation_paths": [
@@ -105,7 +106,7 @@
       "status": "experimental",
       "title": "Durable knowledge session and reconciliation coordinator",
       "what": "Provides an independently installable administrative process that reports exact capabilities, computes deterministic snapshots, maintains one recoverable noncanonical reconciliation context per canonical worktree, and maintains separately authorized noncanonical authority epochs per TOPS, subject, and repository.",
-      "when": "Runs only on explicit user-scope qxctl or exact process invocation under a bounded deadline. Reconciliation begins with an explicit inventory. Session operations each require fresh exact SSIAG evidence. Both lifecycles checkpoint or close under exact expected state and repair only through explicit evidence-based recovery.",
+      "when": "Runs only on explicit user-scope qxctl or exact process invocation under a bounded deadline. Reconciliation begins with an explicit inventory. Session operations each require fresh exact SSIAG evidence. An explicit host integration may submit a stable login, refresh, or logout event to qxctl; retry reuses that event ID and resumes from journal evidence. Both lifecycles checkpoint or close under exact expected state and repair only through explicit evidence-based recovery.",
       "where": "Executes as the inactive, installed-undocked symphony-knowledge-session C++ process in the administrative freezing path and roots checks at its current repository working directory.",
       "who": "Any host-authorized caller using qxctl, plus maintainers and tests that need caller-neutral, domain-neutral authority-epoch and reconciliation boundaries across independently versioned SKV engines.",
       "why": "Preserves coherent authority-epoch, worktree, and engine-version evidence when upgrades, retries, logouts, or crashes occur out of sequence, while separating SSIAG authorization, session state, reconciliation state, vector semantics, and canonical apply authority."

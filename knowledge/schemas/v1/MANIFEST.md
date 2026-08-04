@@ -19,6 +19,7 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 - `session-journal.schema.json`: protected noncanonical authority-epoch state, capability and operation-fingerprint binding, linked epochs, attached reconciliation-context references, compatibility, extensions, and recovery evidence.
 - `session-head.schema.json`: atomic selector for the active member of a dual-slot authenticated-session journal.
 - `session-result.schema.json`: bounded authenticated-session compatibility, effective state, mutation, recovery, and repair-guidance result.
+- `session-transition-result.schema.json`: qxctl's digest-bound noncanonical result for one explicit idempotent login, refresh, or logout convergence event.
 - `proposal.schema.json`: provider-neutral immutable proposal envelope and vector-neutral authority boundary. Its explicit `engine_decided_domain_truth: false` assertion prevents any engine from converting validation into ownership, membership, ratification, publication, or other semantic authority.
 - `provider-evidence.schema.json`: bounded provider-neutral revision, change-request, and ratification evidence normalized by separately discoverable adapters.
 

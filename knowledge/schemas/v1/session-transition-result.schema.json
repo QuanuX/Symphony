@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:session-transition-result:v1",
+  "title": "Symphony explicit authenticated-session transition result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "event", "event_id", "disposition", "initial_state",
+    "final_state", "final_journal_digest", "steps", "recovered",
+    "canonical_apply_enabled", "canonical", "result_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.session-transition-result.v1"},
+    "event": {"enum": ["login", "refresh", "logout"]},
+    "event_id": {"$ref": "#/$defs/eventToken"},
+    "disposition": {
+      "enum": ["already_applied", "begun", "refreshed", "reauthenticated", "no_change", "closed"]
+    },
+    "initial_state": {"$ref": "#/$defs/state"},
+    "final_state": {"$ref": "#/$defs/state"},
+    "final_journal_digest": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": {"$ref": "#/$defs/step"}
+    },
+    "recovered": {"type": "boolean"},
+    "canonical_apply_enabled": {"const": false},
+    "canonical": {"const": false},
+    "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"final_state": {"const": "absent"}}},
+      "then": {"properties": {"final_journal_digest": {"type": "null"}}},
+      "else": {"properties": {"final_journal_digest": {"$ref": "#/$defs/digest"}}}
+    }
+  ],
+  "$defs": {
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "eventToken": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 224,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "state": {"enum": ["absent", "open", "closed", "expired"]},
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation", "operation_id", "effective_state", "journal_digest",
+        "changed", "recovered"
+      ],
+      "properties": {
+        "operation": {"enum": ["status", "recover", "begin", "checkpoint", "close"]},
+        "operation_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+        "effective_state": {"$ref": "#/$defs/state"},
+        "journal_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+        "changed": {"type": "boolean"},
+        "recovered": {"type": "boolean"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"operation": {"const": "status"}}},
+          "then": {"properties": {"operation_id": {"type": "null"}}},
+          "else": {"properties": {"operation_id": {"$ref": "#/$defs/token"}}}
+        },
+        {
+          "if": {"properties": {"effective_state": {"const": "absent"}}},
+          "then": {"properties": {"journal_digest": {"type": "null"}}},
+          "else": {"properties": {"journal_digest": {"$ref": "#/$defs/digest"}}}
+        }
+      ]
+    }
+  }
+}

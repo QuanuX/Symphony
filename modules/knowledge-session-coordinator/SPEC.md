@@ -87,6 +87,8 @@ The directory contains `journal.lock`, `journal.0.json`, `journal.1.json`, and `
 
 Two-way procedural compatibility is determined independently for reconciliation and authenticated-session journals through explicit process protocols, journal read/write versions, and named required capabilities. Upgrade order is not authority or compatibility evidence. A participant lacking a required write capability may inspect supported state but cannot mutate it. A writer preserves supported older formats and all noncritical extension values until an explicit idempotent migration contract is installed. Recovery never deletes or fabricates authority evidence to make versions appear compatible.
 
+The qxctl `knowledge session transition` surface composes these existing operations for one explicit stable host event ID. It is not a new coordinator operation. The coordinator continues to validate and durably commit each status, recover, begin, checkpoint, or close request independently, so qxctl/coordinator upgrade order cannot bypass expected-state, capability, or idempotency checks.
+
 ## Descriptor Truth
 
 `inspect`, `check`, reconciliation `compatibility|begin|status|checkpoint|close|recover`, and authenticated-session `session_begin|session_status|session_checkpoint|session_close|session_recover` are implemented. `apply` is disabled. The descriptor declares user-scope process invocation, C++26, freezing-path placement, `installed_undocked`, no default receptor, and no network listener.
@@ -97,4 +99,4 @@ Installation uses module-and-version-specific paths and creates no active alias.
 
 ## Non-Authorization
 
-This implementation does not authenticate the operating-system caller, decide permission, mutate canonical repository content, run a watcher, install a hook, invoke a vector engine, directly call SSIAG/STAV, activate an install receipt, or dock with Maestro. SSIAG authenticates and decides; qxctl obtains and transports the exact safe evidence; the coordinator validates it and mutates only protected noncanonical reconciliation or authenticated-session journals.
+This implementation does not authenticate the operating-system caller, decide permission, mutate canonical repository content, run a watcher, install a hook, implement generic desired-state or first-boot lifecycle apply, invoke a vector engine, directly call SSIAG/STAV, activate an install receipt, or dock with Maestro. SSIAG authenticates and decides; qxctl obtains and transports the exact safe evidence; the coordinator validates it and mutates only protected noncanonical reconciliation or authenticated-session journals.
