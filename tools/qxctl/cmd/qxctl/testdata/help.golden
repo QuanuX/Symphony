@@ -41,6 +41,12 @@ Commands:
   knowledge session close --tops-id UUID --operation-id ID --expected-journal-digest DIGEST [--json] Close an authenticated session
   knowledge session recover --tops-id UUID --operation-id ID (--expected-journal-digest DIGEST|--discover) [--json] Recover authenticated session evidence
   knowledge session transition --tops-id UUID --event login|refresh|logout --event-id ID [--recover] [--json] Converge an explicit host lifecycle event
+  knowledge lifecycle profile list --tops-id UUID [--profile-id ID] [--json] List protected lifecycle profiles
+  knowledge lifecycle profile show --tops-id UUID [--profile-id ID] [--json] Read one protected lifecycle profile
+  knowledge lifecycle profile set --tops-id UUID --input FILE --expected-profile-digest STATE [--profile-id ID] [--json] Commit exact desired profile intent
+  knowledge lifecycle profile remove --tops-id UUID --expected-profile-digest DIGEST [--profile-id ID] [--json] Remove one protected lifecycle profile
+  knowledge lifecycle observe --tops-id UUID [--profile-id ID | --root PATH...] [--json] Inventory fixed-layout receipts without execution
+  knowledge lifecycle report --tops-id UUID [--profile-id ID] [--prior-applied-state-digest DIGEST] [--json] Re-observe and produce a dynamic report-only plan
   skvi inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SKVI engine
   skvi check --prefix PATH [--version VERSION] [--json] Check canonical SKVI index truth
   skvi propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared proposal
