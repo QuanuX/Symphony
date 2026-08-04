@@ -2869,3 +2869,113 @@ This PR authorizes none of the following:
   - `module tag, release artifact, package publication, public documentation, SDK generation, Mintlify publication, or launch claim`
 - notes: |
     This post-merge closure records the explicit session-transition implementation and cross-vector lifecycle plan merged by PR #97. Every changed file is listed as an affected surface. The six unindexed implementation and test paths remain explicit advisory evidence rather than being hidden through selective omission or artificial SKVI expansion. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
+
+- record_id: `SCLV-CHG-20260804-DYNAMIC-TWO-WAY-LIFECYCLE-CONTRACTS`
+- record_version: `3`
+- title: `Dynamic two-way lifecycle contract family ratified`
+- status: `canonical`
+- date: `2026-08-04`
+- change_started_at: `2026-08-04T15:32:22Z`
+- change_completed_at: `2026-08-04T15:32:55Z`
+- recorded_at: `2026-08-04T15:34:38Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `canonical_addition`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#99`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/99`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `7294af001f2cced2b577881af447154602ce984e`
+- tree_digest: `sha256:a818f0404b47af71ce3c1392a604cccd1b9af30408f5783b3c40aaef925e3588`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/99`
+- ratification_evidence_digest: `sha256:07baba1a6d60628bce514cdd0f6dcab6436e0525ec76873d89f5b9a05ffdca70`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/lifecycle-applied-state.schema.json`
+  - `knowledge/schemas/v1/lifecycle-boot-head.schema.json`
+  - `knowledge/schemas/v1/lifecycle-boot-journal.schema.json`
+  - `knowledge/schemas/v1/lifecycle-desired-state.schema.json`
+  - `knowledge/schemas/v1/lifecycle-observation.schema.json`
+  - `knowledge/schemas/v1/lifecycle-plan.schema.json`
+  - `knowledge/schemas/v2/MANIFEST.md`
+  - `knowledge/schemas/v2/install-receipt.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `libraries/knowledge-vector-engine-cpp/tests/foundation_test.cpp`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/lifecycle-applied-state.schema.json`
+  - `knowledge/schemas/v1/lifecycle-boot-head.schema.json`
+  - `knowledge/schemas/v1/lifecycle-boot-journal.schema.json`
+  - `knowledge/schemas/v1/lifecycle-desired-state.schema.json`
+  - `knowledge/schemas/v1/lifecycle-observation.schema.json`
+  - `knowledge/schemas/v1/lifecycle-plan.schema.json`
+  - `knowledge/schemas/v2/MANIFEST.md`
+  - `knowledge/schemas/v2/install-receipt.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    Under the Architect's direction, PR #99 completed the canonical contract slice for generic modular lifecycle convergence. It added desired, observed, dependency-driven plan, applied, boot-journal/head, and immutable receipt-v2 schemas and explicitly corrected the prior linear-order assumption. No lifecycle runtime or mutation path was enabled.
+- relationship_changes: |
+    knowledge/ owns the cross-vector lifecycle protocol and schema truth. Individual vectors continue to own vector-specific consequences. Future qxctl lifecycle administration will collect protected desired state and bounded observed evidence, while the future C++ coordinator will plan dependency-ready actions and durable recovery. Receipt v2 owns immutable package files, entry points, capabilities, receptors, and platform requirements; mutable selection, activation, and docking remain outside the receipt. Maestro remains the later owner of persisted deployment presence rather than semantic truth.
+- doctrine_changes: |
+    Component action order is now derived from explicit dependencies and verified observations rather than vector name, directory order, discovery order, or release recency. A blocked component does not stall unrelated ready actions. Verified evidence changes may produce a linked plan revision and re-enable a dependency wait, but authorization denial, integrity failure, unknown critical state, and cycles cannot be bypassed by changing order. Lock, observe, authorize, compare-and-swap, act, verify, and audit remain ordered safety phases. Caller authority remains host ownership or granted permission without actor-class doctrine.
+- compatibility_consequences: |
+    Forward and inverse actions are equally explicit, stable action identities do not depend on ordinal position, and the boot compatibility envelope declares read and write versions for desired, observation, plan, applied, and journal evidence plus supported receipt versions. Receipt v1 remains immutable historical evidence and must be dual-read through its exact adapter; receipt v2 cannot be synthesized from absent v1 facts. A cyclic component set is isolated while unrelated acyclic work may continue. One plan is bounded to 4096 actions, one transaction to 256 plan revisions, and one action to eight attempts.
+- publication_consequences: |
+    No module tag, release artifact, package coordinate, binary distribution, container, SDK, OpenAPI surface, Mintlify publication, public documentation release, marketing claim, or platform launch was published or authorized. The contracts remain active-development source on the rolling main branch.
+- projection_consequences: |
+    Desired, observed, plan, applied, and boot artifacts are protected or disposable noncanonical lifecycle evidence. They do not create canonical vector facts, semantic graph edges, proposal ratification, Maestro presence, installation state, or permission. The new JSON Schemas are canonical protocol truth rather than generated projections.
+- evidence:
+  - `PR #99 merged into main at 2026-08-04T15:32:55Z by quantDIY as 7294af001f2cced2b577881af447154602ce984e`
+  - `implementation head 176bd93a434f3e40cfbfe9f6ceecd6892bb1011d; 24 files changed, 1263 insertions, 43 deletions`
+  - `local-Git adapter evidence digest sha256:6a74c25bce5f81ff49ba557e7783b72a1ff0e2b5c7b96469a6649dfc0ce9739f bound tree digest sha256:a818f0404b47af71ce3c1392a604cccd1b9af30408f5783b3c40aaef925e3588`
+  - `provider-neutral ratification evidence digest sha256:07baba1a6d60628bce514cdd0f6dcab6436e0525ec76873d89f5b9a05ffdca70 bound canonical PR metadata for repository, base, head, revisions, merger, title, number, state, time, and URL`
+  - `the shared C++ knowledge-vector foundation CTest passed and asserted all seven new schema identifiers, dependency_ready_set_v1, forward_and_inverse directionality, ordered safety phases, 4096/256/8 bounds, and immutable receipt-v2 state exclusion`
+  - `the full symphony-validator smoke matrix passed before merge`
+  - `pre-closure strict validator result pass=4332 warning=241 violation=0 exit=0 with exactly 95 explicitly authorized canonical JSON artifacts`
+  - `all 241 pre-closure warnings were the established sclv.affected_surface.unindexed historical-record advisory family`
+  - `all seven new JSON Schemas parsed successfully as JSON Schema Draft 2020-12 closed root objects`
+  - `closure SCLV engine check reported 26 records, 104 passes, zero warnings, zero violations, and valid state`
+  - `closure validator result pass=4433 warning=244 violation=0 exit=0; the three-warning advisory delta is exclusively the unindexed implementation and test paths listed by this record`
+  - `PR #99 was clean and mergeable at the exact reviewed head and merged with head-commit protection`
+- non_authorizations:
+  - `lifecycle persistence, configured-root observation runtime, dependency planner runtime, boot-journal mutation, recovery runtime, report command, or apply-compatible execution`
+  - `package installation, package uninstall, automatic upgrade, automatic rollback, activation, binding mutation, download, or execution of discovered entry points`
+  - `authorization bypass, integrity bypass, critical-state downgrade, guessed cycle breaking, hidden dependency edges, unbounded replanning, or silent transaction restart`
+  - `implicit newest-version selection, receipt-v1 rewrite, fabricated receipt-v2 fields, destructive downgrade, unknown-state deletion, or automatic incompatible migration`
+  - `canonical knowledge mutation, proposal ratification, canonical apply, feature-worthiness decision, or engine-owned semantic truth`
+  - `live Maestro receptor, docking, activation, persistent receptor state, or module orchestration`
+  - `PAM module, login-manager hook, shell hook, systemd unit, launchd job, watcher, daemon, remote network listener, REST endpoint, webhook, or background lifecycle process`
+  - `caller-class policy, human-only authority, AI-specific restriction, service-specific privilege, or authority inferred from actor type`
+  - `native Windows engine implementation, hot-path participation, warm-path participation, trading-node doctrine, or Go 1.27 production pin`
+  - `module tag, release artifact, package publication, public documentation, SDK generation, Mintlify publication, or launch claim`
+- notes: |
+    This post-merge closure records the dynamic two-way lifecycle contract family merged by PR #99. Every changed file is listed as an affected surface. The three implementation/test paths without individual SKVI entries remain explicit advisory evidence rather than being hidden through artificial index expansion. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
