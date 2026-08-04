@@ -28,6 +28,7 @@ Without arguments, send exactly one bounded `symphony.knowledge.engine-process.v
 - For every session operation, require a fresh exact SSIAG allow decision and recompute its non-transferable capability binding; never treat the JSON object as bearer authority.
 - Keep session and reconciliation journals separate. Context references may attach to an authority epoch but never become identity or permission evidence.
 - Treat lifecycle desired state and observation as caller-supplied, digest-bound evidence. Require full explicit protocol/capability overlap, preserve blocked components, and use the returned dependency-ready set rather than array order or version recency.
+- Treat observation collection time as document evidence only. Verify timestamp-only refresh preserves the stable inventory key, transaction, and semantic action identities.
 - Treat every lifecycle action, receptor identity, blocker, and target-state digest as a report. `apply_authorized: false` is absolute in this slice.
 
 ## Stop Conditions

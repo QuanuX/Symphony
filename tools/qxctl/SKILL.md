@@ -24,6 +24,9 @@ Any caller operating within its effective target-host permission should use `qxc
 - `go run ./cmd/qxctl knowledge reconcile close --operation-id ID --expected-journal-digest sha256:...`
 - `go run ./cmd/qxctl knowledge reconcile recover --operation-id ID --discover`
 - `go run ./cmd/qxctl knowledge session transition --tops-id UUID --event login --event-id HOST-EVENT-ID --json`
+- `go run ./cmd/qxctl knowledge lifecycle profile set --tops-id UUID --input profile.json --expected-profile-digest absent --json`
+- `go run ./cmd/qxctl knowledge lifecycle observe --tops-id UUID --profile-id default --json`
+- `go run ./cmd/qxctl knowledge lifecycle report --tops-id UUID --profile-id default --json`
 - `go run ./cmd/qxctl skvi check --prefix /chosen/prefix`
 - `go run ./cmd/qxctl skvi project --prefix /chosen/prefix --json`
 - `go run ./cmd/qxctl skvi propose --prefix /chosen/prefix --input proposal-input.json`
@@ -65,7 +68,7 @@ Any caller operating within its effective target-host permission should use `qxc
 - For implemented SSFV commands, use an exact inactive-undocked installation. Treat snapshots, diffs, and graphs as noncanonical evidence and proposals as unratified. Supply baseline/proposal input only through bounded no-follow JSON files. Never use qxctl to decide feature-worthiness, ratify semantics, apply a proposal, create a `FEATURES.md`, or persist a graph.
 - Treat the default knowledge session as a login/authentication-to-logout/expiry/revocation authority epoch containing separate worktree reconciliation contexts. Never extend authority across a required re-authentication boundary.
 - Use `knowledge session transition` only from an explicit reviewed host integration. Reuse one stable event ID for retry, and use `--recover` only when damaged local head/journal evidence should be reconciled. Do not convert denial, incompatibility, or ambiguity into recovery and do not imply that qxctl installs a login or boot integration.
-- Keep `symphony.knowledge.engine-binding-registry.v1` fixed to its six roles. Treat canonical desired, observed, planned, applied, and boot-journal component state as separate evidence governed by `knowledge/LIFECYCLE.md`; discovering a new or missing package is never implicit permission to execute, remove, switch, bind, or dock it. The coordinator's report-only planner exists, but qxctl lifecycle collection, persistence, invocation, and apply are not implemented.
+- Keep `symphony.knowledge.engine-binding-registry.v1` fixed to its six roles. Treat profile input, desired, observed, planned, applied, and boot-journal component state as separate evidence governed by `knowledge/LIFECYCLE.md`; discovering a new or missing package is never implicit permission to execute, remove, switch, bind, or dock it. Use `knowledge lifecycle profile set` with exact expected state, and use `observe` or `report` only for evidence/planning. Current lifecycle persistence is limited to protected desired profiles; plans, applied state, and boot journals are not persisted, and apply is unavailable.
 - Keep vector administration, recovery, and audit reconciliation away from hot and warm paths.
 
 ## Do-Not-Use-For List

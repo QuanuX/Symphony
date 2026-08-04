@@ -150,4 +150,19 @@ go run ./cmd/qxctl knowledge session transition \
 
 The selected SSIAG configuration must map the invoking effective UID/GID and contain an exact grant for each requested `symphony.knowledge.session.*` operation, the opaque `symphony.knowledge.repository:<sha256>` resource derived from the canonical repository root, audience `qxctl`, and scope `tops:<tops-id>`. With no exact grant—or if STAV is unavailable—the operation fails closed without coordinator mutation.
 
-Generic module and vector additions, removals, upgrades, rollbacks, and first-boot convergence are contractually specified in `knowledge/LIFECYCLE.md` and the common lifecycle schemas. Binding registry v1 remains fixed to its six existing roles. The C++ coordinator can derive forward/inverse component actions from a deterministic dependency ready set when supplied complete desired and observed evidence; it preserves unmanaged components, isolates localized blockers, binds exact receptor targets, and never authorizes apply. qxctl does not yet persist desired state, collect configured-root observations, invoke or present the planner, journal boot convergence, or expose a lifecycle apply command.
+Generic module and vector additions, removals, upgrades, rollbacks, and first-boot convergence are contractually specified in `knowledge/LIFECYCLE.md` and the common lifecycle schemas. Binding registry v1 remains fixed to its six existing roles. qxctl now persists protected per-TOPS desired profiles, collects fixed-layout configured-root observations, and invokes the exact bound C++ coordinator for a fresh report-only dependency plan. It preserves unmanaged and unsupported packages, isolates localized blockers, binds exact receptor targets, and never authorizes apply. The stable inventory key excludes observation time, so merely running the report later does not restart an unchanged transaction; real content or compatibility changes cause dynamic replanning.
+
+```bash
+# First profile generation; profile.json uses lifecycle-profile-input.v1.
+go run ./cmd/qxctl knowledge lifecycle profile set \
+  --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 \
+  --input profile.json --expected-profile-digest absent --json
+
+# Disposable evidence and a fresh non-mutating dependency plan.
+go run ./cmd/qxctl knowledge lifecycle observe \
+  --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 --profile-id default --json
+go run ./cmd/qxctl knowledge lifecycle report \
+  --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 --profile-id default --json
+```
+
+Each operation requires a matching exact `symphony.knowledge.lifecycle.*` SSIAG grant and committed STAV decision. Profile updates use the digest returned by `show` or `list` as the next expected state. Plans, applied state, and boot journals are not yet persisted; installation, uninstall, activation, docking, and lifecycle apply remain unavailable.

@@ -2,7 +2,7 @@
 
 ## Status
 
-This document records the Architect-ratified topology for explicit authenticated session transitions and the cross-vector desired-state lifecycle. The session-transition surface described below is implemented by qxctl over the existing SSIAG-authorized coordinator operations. Canonical desired-state, observation, plan-command, dependency-driven plan, applied-state, boot-journal/head, and immutable receipt v2 schemas are present. The C++ coordinator implements deterministic report-only planning over complete caller-supplied desired and observed evidence. Desired-profile persistence, configured-root observation, qxctl lifecycle invocation, durable boot journaling/recovery, lifecycle application, installation, uninstall, activation, and live Maestro docking remain planned gates.
+This document records the Architect-ratified topology for explicit authenticated session transitions and the cross-vector desired-state lifecycle. The session-transition surface described below is implemented by qxctl over the existing SSIAG-authorized coordinator operations. Canonical profile-input, protected profile, desired-state, observation, plan-command, dependency-driven plan, applied-state, boot-journal/head, and immutable receipt v2 schemas are present. qxctl implements SSIAG-authorized desired-profile administration, fixed-layout configured-root observation, and fresh report invocation through one exact bound C++ coordinator. The coordinator implements deterministic report-only dependency planning. Durable boot journaling/recovery, lifecycle application, package installation/uninstall, activation, and live Maestro docking remain planned gates.
 
 ## Purpose
 
@@ -78,8 +78,9 @@ New qxctl versions must dual-read supported v1 and v2 evidence. They must not re
 
 ## Desired, Observed, and Applied State
 
-Three states remain separate:
+Four state surfaces remain separate:
 
+- **profile input**: bounded declarative caller intent accepted by qxctl without caller-manufactured generations or digests;
 - **desired state**: protected noncanonical administrator intent managed through qxctl;
 - **observed state**: a disposable content-addressed inventory of validated receipts, files, bindings, and later Maestro presence;
 - **applied state**: durable noncanonical evidence of the last exact lifecycle plan successfully committed.
@@ -127,13 +128,13 @@ The implemented report-only planner additionally binds each dock action to one e
 A stable lifecycle observation key binds at least:
 
 - desired-state digest;
-- observed-inventory digest;
+- stable observed-inventory digest, computed from the validated observation while excluding the document-only `observed_at` and `observation_digest` fields;
 - binding-registry digest when present;
 - supported lifecycle protocol/capability set;
 - TOPS and profile identity;
 - normalized platform-compatibility digest covering the operating-system/kernel ABI, architecture, qxctl/coordinator identities, and configured provider availability without host secrets or volatile boot identity.
 
-Applied state stores the last successfully stabilized observation key. The prior applied-state digest is the transaction's compare-and-swap anchor, not an input to the stable observation key; otherwise every successful applied-state write would invalidate its own next boot. A transaction identity binds the new observation key, the exact prior applied-state digest, and one stable operation ID. An observation key equal to the last stabilized key is an idempotent no-op. A changed key starts or resumes one durable boot transaction. The sequence is:
+The complete observation document remains content-addressed, so refreshed collection time changes its evidence digest. Time alone does not change the stable inventory digest, transaction identity, ready set, or semantic action identities. Applied state stores the last successfully stabilized observation key. The prior applied-state digest is the transaction's compare-and-swap anchor, not an input to the stable observation key; otherwise every successful applied-state write would invalidate its own next boot. A transaction identity binds the new observation key and the exact prior applied-state digest. An observation key equal to the last stabilized key is an idempotent no-op. A changed key starts or resumes one durable boot transaction. The sequence is:
 
 1. acquire the protected lifecycle lock without sharing any hot/warm lock;
 2. read the desired profile and prior journal without following links;
@@ -148,7 +149,9 @@ Applied state stores the last successfully stabilized observation key. The prior
 
 Steps 1 through 10 are ordered safety phases. Within the action phase, component work follows the dependency-driven ready-set contract above and may be replanned around a localized blocker without bypassing authorization, compare-and-swap, integrity, verification, or audit.
 
-The administrator-selectable boot mode is `report` or `apply-compatible`. `report` is the default until authenticated lifecycle mutation is implemented. Disabling automatic application never disables parsing bounds, ownership checks, receipt integrity, expected-state compare-and-swap, critical-extension blocking, or secret exclusion.
+The administrator-selectable boot mode is `report` or `apply-compatible`. `report` is the default until authenticated lifecycle mutation is implemented. qxctl currently persists either intent but always invokes the report-only coordinator and states that apply is unavailable. Disabling automatic application never disables parsing bounds, ownership checks, receipt integrity, expected-state compare-and-swap, critical-extension blocking, or secret exclusion.
+
+Desired profiles are protected per TOPS beneath `${XDG_STATE_HOME:-~/.local/state}/symphony/<tops-id>/qxctl/knowledge/lifecycle/profiles/`, or beneath an explicit qxctl-selected state root. Mutations use an exact expected profile digest, semantic retry is a stable no-op, generations and predecessor digests are qxctl-generated, and durable writes use a persistent no-follow lock plus atomic replacement and directory synchronization. Profile roots may be changed through qxctl; an absent future installation root is retained as empty observed evidence rather than created or treated as a scan failure. Existing roots are no-follow trusted directories, and observation scans only `<root>/share/symphony/receipts/<module>/<version>/install-receipt.json`, never arbitrary executable discovery. Known receipt v1 packages use exact existing adapters. Receipt v2 packages are checked against their content-addressed owned files, entry points, capabilities, receptors, and platform requirements. Unsupported, unreadable, and ambiguous packages remain explicit preserved unknown evidence.
 
 If the desired profile is absent, unsupported, or critically extended, first boot reports protected read-only state and preserves every installed package and binding. If an operating-system update changes only the platform-compatibility digest, the same planner reevaluates all selected components against their declared platform requirements without assuming reinstall, upgrade, or removal. Host boot integration, its install/uninstall lifecycle, and the `knowledge lifecycle boot` grammar remain future reviewed implementation surfaces.
 
@@ -201,7 +204,7 @@ The engine implementation remains Linux-first with macOS development support. Na
 1. Implement explicit idempotent qxctl login/refresh/logout transition composition over the existing authenticated coordinator operations.
 2. Add the generic desired-state, observation, dependency-driven plan, applied-state, boot-journal/head, and immutable content-addressed receipt v2 schemas while retaining strict v1 adapters. **Completed.**
 3. Implement the C++ coordinator dependency scheduler, two-way compatibility negotiation, and deterministic report-only planner over caller-supplied evidence. **Completed.** Configured-root observation remains in step 4.
-4. Implement qxctl desired-profile administration and configured-root inventory with caller-neutral SSIAG authorization.
+4. Implement qxctl desired-profile administration and configured-root inventory with caller-neutral SSIAG authorization. **Completed.** qxctl also performs fresh observation and exact bound-coordinator invocation for report-only planning; no plan is persisted.
 5. Implement durable C++ boot journaling, report mode, bounded replanning recovery, and installation-change diagnosis.
 6. Implement separately gated `apply-compatible`, exact package lifecycle actions, and forward/inverse rollback proof.
 7. Add Maestro docking only after its receptor and presence contracts are ratified.

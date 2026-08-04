@@ -38,7 +38,7 @@
 | `lifecycle_plan` | implemented; deterministic report-only result only | no |
 | `apply` | disabled | prohibited |
 
-The implemented scope is user-process invocation, user-scope reconciliation, authenticated-session state, and caller-supplied report-only lifecycle planning. System/TOPS binding profiles, configured-root collection, desired-profile administration, lifecycle persistence, and provisioning are not claimed.
+The implemented module scope is user-process invocation, user-scope reconciliation, authenticated-session state, and caller-supplied report-only lifecycle planning. qxctl now performs the external desired-profile, configured-root observation, authorization, and invocation responsibilities; those are not coordinator-owned filesystem operations. System/TOPS engine-binding profiles, lifecycle plan/journal persistence, action execution, and provisioning are not claimed.
 
 ## Installability
 
@@ -50,4 +50,4 @@ The coordinator statically links `knowledge-vector-engine-cpp` and has no runtim
 
 ## Boundaries
 
-There is no network listener, daemon, credential input, secret field, canonical write, hook, watcher, direct SSIAG/STAV call, vector-engine invocation, lifecycle filesystem discovery, action execution, or Maestro dock in this version. qxctl obtains an SSIAG decision and invokes reconciliation or session coordination synchronously through the exact selected receipt. The lifecycle operation is a direct report-only process surface until qxctl integration is separately implemented. Absolute repository/state paths remain only in protected local state and process payloads.
+There is no network listener, daemon, credential input, secret field, canonical write, hook, watcher, direct SSIAG/STAV call, vector-engine invocation, lifecycle filesystem discovery, action execution, or Maestro dock in this version. qxctl obtains SSIAG decisions and invokes reconciliation, session coordination, or report-only lifecycle planning synchronously through the exact selected receipt. Absolute repository/state paths remain only in protected local state and process payloads.

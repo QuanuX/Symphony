@@ -114,6 +114,7 @@ struct ParsedObservation final {
     std::string profile_id;
     std::string tops_id;
     std::string digest;
+    std::string stable_inventory_digest;
     std::optional<std::string> binding_registry_digest;
     std::string platform_digest;
     std::map<std::string, ObservedComponent> components;
@@ -498,6 +499,7 @@ ParsedObservation parse_observation(const engine::Json& value, std::int64_t dead
         text_field(value, "profile_id"),
         text_field(value, "tops_id"),
         digest_field(value, "observation_digest"),
+        {},
         optional_digest(value.at("binding_registry_digest"), "binding_registry_digest"),
         {}, {}, {}, false,
     };
@@ -651,6 +653,11 @@ ParsedObservation parse_observation(const engine::Json& value, std::int64_t dead
     if (!value.at("observed_at").is_string() || !is_timestamp(value.at("observed_at").get_ref<const std::string&>())) {
         invalid("lifecycle.invalid_field", "observed_at must be a normalized UTC timestamp");
     }
+    auto stable_inventory = value;
+    stable_inventory.erase("observation_digest");
+    stable_inventory.erase("observed_at");
+    stable_inventory = normalize_observation(std::move(stable_inventory));
+    parsed.stable_inventory_digest = engine::tagged_sha256(stable_inventory.dump());
     parsed.digest = verify_document_digest(value, "observation_digest", normalize_observation);
     return parsed;
 }
@@ -1016,7 +1023,7 @@ engine::Json build_plan(
     for (const auto& capability : supported_capabilities) capability_basis += capability + "\n";
     const auto capability_digest = engine::tagged_sha256(capability_basis);
     const auto observation_key = engine::tagged_sha256(
-        desired.digest + "\n" + observation.digest + "\n" + binding + "\n" +
+        desired.digest + "\n" + observation.stable_inventory_digest + "\n" + binding + "\n" +
         desired.profile_id + "\n" + desired.tops_id + "\n" + observation.platform_digest +
         "\n" + capability_digest);
     const auto transaction_id = "lifecycle-transaction:" + engine::sha256_hex(

@@ -224,6 +224,8 @@ void test_schema_documents(const fs::path& repository_root) {
         {"knowledge/schemas/v1/session-journal.schema.json", "urn:symphony:knowledge:session-journal:v1"},
         {"knowledge/schemas/v1/session-result.schema.json", "urn:symphony:knowledge:session-result:v1"},
         {"knowledge/schemas/v1/session-transition-result.schema.json", "urn:symphony:knowledge:session-transition-result:v1"},
+        {"knowledge/schemas/v1/lifecycle-profile-input.schema.json", "urn:symphony:knowledge:lifecycle-profile-input:v1"},
+        {"knowledge/schemas/v1/lifecycle-profile.schema.json", "urn:symphony:knowledge:lifecycle-profile:v1"},
         {"knowledge/schemas/v1/lifecycle-desired-state.schema.json", "urn:symphony:knowledge:lifecycle-desired-state:v1"},
         {"knowledge/schemas/v1/lifecycle-observation.schema.json", "urn:symphony:knowledge:lifecycle-observation:v1"},
         {"knowledge/schemas/v1/lifecycle-plan-command.schema.json", "urn:symphony:knowledge:lifecycle-plan-command:v1"},

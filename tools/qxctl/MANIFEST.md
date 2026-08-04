@@ -13,6 +13,7 @@
 - `README.md`
 - `cmd/qxctl/main.go`
 - `cmd/qxctl/commands.go`
+- `cmd/qxctl/lifecycle.go`
 - `cmd/qxctl/ssfv.go`
 - `internal/knowledgeengine/client.go`
 - `internal/knowledgeengine/open_relative_unix.go`
@@ -20,6 +21,12 @@
 - `internal/knowledgebinding/registry.go`
 - `internal/knowledgebinding/state_unix.go`
 - `internal/knowledgebinding/state_unsupported.go`
+- `internal/knowledgelifecycle/profile.go`
+- `internal/knowledgelifecycle/observation.go`
+- `internal/knowledgelifecycle/scan_unix.go`
+- `internal/knowledgelifecycle/scan_unsupported.go`
+- `internal/knowledgelifecycle/state_unix.go`
+- `internal/knowledgelifecycle/state_unsupported.go`
 
 ## Supported Commands
 - `qxctl doctor`
@@ -57,6 +64,12 @@
 - `qxctl knowledge session close --tops-id UUID --operation-id ID --expected-journal-digest DIGEST [--scope user|system] [--state-root PATH] [--repo PATH] [--ttl DURATION] [--json]`
 - `qxctl knowledge session recover --tops-id UUID --operation-id ID (--expected-journal-digest DIGEST|--discover) [--scope user|system] [--state-root PATH] [--repo PATH] [--ttl DURATION] [--json]`
 - `qxctl knowledge session transition --tops-id UUID --event login|refresh|logout --event-id ID [--context-ref REF...] [--recover] [--scope user|system] [--state-root PATH] [--repo PATH] [--ttl DURATION] [--json]`
+- `qxctl knowledge lifecycle profile list --tops-id UUID [--profile-id ID] [--scope user|system] [--state-root PATH] [--json]`
+- `qxctl knowledge lifecycle profile show --tops-id UUID [--profile-id ID] [--scope user|system] [--state-root PATH] [--json]`
+- `qxctl knowledge lifecycle profile set --tops-id UUID --input FILE --expected-profile-digest absent|DIGEST [--profile-id ID] [--scope user|system] [--state-root PATH] [--json]`
+- `qxctl knowledge lifecycle profile remove --tops-id UUID --expected-profile-digest DIGEST [--profile-id ID] [--scope user|system] [--state-root PATH] [--json]`
+- `qxctl knowledge lifecycle observe --tops-id UUID [--profile-id ID | --root PATH...] [--scope user|system] [--state-root PATH] [--json]`
+- `qxctl knowledge lifecycle report --tops-id UUID [--profile-id ID] [--prior-applied-state-digest DIGEST] [--scope user|system] [--state-root PATH] [--repo PATH] [--json]`
 - `qxctl skvi inspect --prefix PATH [--version VERSION] [--repo PATH] [--json]`
 - `qxctl skvi check --prefix PATH [--version VERSION] [--repo PATH] [--expected-index-digest DIGEST] [--json]`
 - `qxctl skvi propose --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
@@ -88,7 +101,7 @@
 - `qxctl knowledge proposals list|show|verify`
 - `qxctl knowledge apply ...` is namespace-reserved but unavailable until the common apply gate passes
 
-The qxctl lifecycle administrator is also ratified for future implementation: desired-profile administration, evidence collection, report-only boot convergence, install, upgrade, rollback, receipt inspection, dock, undock, activate, and uninstall. The canonical common lifecycle and receipt-v2 contracts and the coordinator's report-only planner now bound that work; exact qxctl leaf grammar is added only with its reviewed artifact-verification and authorization contracts. No current `module` or `knowledge lifecycle` command should imply these qxctl operations already exist.
+Lifecycle action leaves remain reserved for future reviewed implementation: boot-journal recovery, install, upgrade, rollback, dock, undock, activate, deactivate, and uninstall. The implemented profile, observe, and report leaves are noncanonical administration and disposable planning only. They do not imply action execution or apply authority.
 
 ## Installability Posture
 qxctl is installable via standard `go build` or executable directly via `go run` using the Go standard toolchain. It does not require remote runtimes, providers, Docker, Kubernetes, or cloud infrastructure.
@@ -117,7 +130,9 @@ The reconciliation command layer revalidates one immutable binding snapshot befo
 
 The session command layer reads one immutable binding snapshot to resolve and revalidate the exact coordinator installation, then authenticates SSIAG through the per-TOPS trust configuration and requests one fresh exact decision per operation. It does not attach or record the reconciliation engine inventory. qxctl validates the complete decision/capability boundary before passing it to the coordinator. The coordinator owns journal durability, compatibility, and recovery; SSIAG owns policy decisions; qxctl owns neither. No component may convert safe decision evidence into transferable bearer authority or canonical apply permission.
 
-The session transition layer performs only an explicit idempotent composition of status, bounded discovery recovery, close, begin, and checkpoint. It derives stable step identities from one host event ID, checks current journal checkpoint evidence before retry, obtains a new SSIAG decision for every step, and emits `symphony.knowledge.session-transition-result.v1`. It installs no host integration. Cross-vector desired-state and first-boot contracts are canonical under `knowledge/LIFECYCLE.md`, and the coordinator can now produce a dependency-driven report from supplied evidence. qxctl desired-profile persistence, configured-root observation, planner invocation/report presentation, lifecycle recovery, and apply leaves remain unimplemented.
+The session transition layer performs only an explicit idempotent composition of status, bounded discovery recovery, close, begin, and checkpoint. It derives stable step identities from one host event ID, checks current journal checkpoint evidence before retry, obtains a new SSIAG decision for every step, and emits `symphony.knowledge.session-transition-result.v1`. It installs no host integration.
+
+The lifecycle layer stores protected profiles under `<state-root>/symphony/<tops-id>/qxctl/knowledge/lifecycle/profiles/`. It uses caller-neutral exact SSIAG operations and resources, a persistent no-follow lock, effective-user-owned mode-`0600` files, linked content digests, semantic retry, and durable same-directory replacement. Observation scans only `<root>/share/symphony/receipts/<module>/<version>/install-receipt.json`; known v1 identities use exact adapters and v2 uses generic content-addressed validation. Unsupported, invalid, unreadable, and ambiguous packages are preserved as unknown evidence. `report` re-observes on every invocation, validates the exact bound coordinator and full plan shape/digest, and never persists or applies the result. Lifecycle boot journaling/recovery and every action/apply leaf remain unimplemented.
 
 ## Non-authorizations
 qxctl is not authorized to write canonical generated artifacts. It may invoke ratified engines to create noncanonical proposals and disposable projections. The Architect-ratified Cobra and Viper libraries and their required cgo-free Go dependencies are authorized only for command grammar and constrained configuration mapping; Python, C bindings, remote configuration backends, in-process vector execution engines, and unrelated third-party dependencies remain prohibited. First-party Symphony libraries remain subordinate to their canonical knowledge vectors.
