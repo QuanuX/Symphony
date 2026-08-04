@@ -22,9 +22,15 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 - `session-transition-result.schema.json`: qxctl's digest-bound noncanonical result for one explicit idempotent login, refresh, or logout convergence event.
 - `proposal.schema.json`: provider-neutral immutable proposal envelope and vector-neutral authority boundary. Its explicit `engine_decided_domain_truth: false` assertion prevents any engine from converting validation into ownership, membership, ratification, publication, or other semantic authority.
 - `provider-evidence.schema.json`: bounded provider-neutral revision, change-request, and ratification evidence normalized by separately discoverable adapters.
+- `lifecycle-desired-state.schema.json`: protected noncanonical exact component intent, dependency, compatibility, activation, and docking selection.
+- `lifecycle-observation.schema.json`: disposable bounded inventory of configured roots, platforms, packages, component state, integrity, capabilities, and unknown preserved receipts without executable discovery.
+- `lifecycle-plan.schema.json`: deterministic dependency-ready-set action graph, forward/inverse relationships, typed blockers, bounded dynamic replanning, and immutable safety-phase order.
+- `lifecycle-applied-state.schema.json`: durable noncanonical last-verified component state and actual execution-order evidence anchored to exact desired, observation, plan, and transaction identities.
+- `lifecycle-boot-journal.schema.json`: dual-read-compatible lifecycle transaction, replan, attempt, blocker, checkpoint, compatibility, and recovery evidence.
+- `lifecycle-boot-head.schema.json`: atomic selector for the active member of a dual-slot lifecycle boot journal.
 
 All schemas use JSON Schema Draft 2020-12, close every common-governed object with `additionalProperties: false`, and carry no secrets. The proposal operation's bounded `data` object is deliberately governed by the applicable vector schema; operation-specific payload/result schemas remain owned by that engine Contract Quad.
 
 ## Boundary
 
-The binding schema authorizes only explicit user-scope selection among exact validated local installations. Session artifacts preserve SSIAG decision evidence but are not transferable bearer credentials and grant no canonical write authority by possession. These artifacts do not authorize canonical apply, network access, system/TOPS binding changes, repository-specific overrides, live Maestro docking, or any vector-specific semantic decision.
+The binding schema authorizes only explicit user-scope selection among exact validated local installations. Session artifacts preserve SSIAG decision evidence but are not transferable bearer credentials and grant no canonical write authority by possession. Lifecycle schemas establish contract truth but do not implement persistence, observation, planning, recovery, or apply. These artifacts do not authorize canonical apply, network access, system/TOPS binding changes, repository-specific overrides, live Maestro docking, or any vector-specific semantic decision.

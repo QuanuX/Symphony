@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:install-receipt:v2",
+  "title": "Symphony immutable content-addressed install receipt v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "format_version", "component_id", "component_kind", "module_id",
+    "vector_id", "engine_id", "package_id", "version", "install_scope", "prefix_mode",
+    "files", "entry_points", "provides_capabilities", "requires_capabilities",
+    "compatible_receptors", "platform_requirements", "receipt_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.install-receipt.v2"},
+    "format_version": {"const": 2},
+    "component_id": {"$ref": "#/$defs/token"},
+    "component_kind": {
+      "enum": ["coordinator", "vector_engine", "module", "adapter", "ui", "service"]
+    },
+    "module_id": {"$ref": "#/$defs/token"},
+    "vector_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+    "engine_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+    "package_id": {"$ref": "#/$defs/token"},
+    "version": {"$ref": "#/$defs/version"},
+    "install_scope": {"enum": ["prefix", "user", "system", "tops"]},
+    "prefix_mode": {"const": "installation_prefix"},
+    "files": {
+      "type": "array", "minItems": 1, "maxItems": 4096,
+      "items": {"$ref": "#/$defs/file"}
+    },
+    "entry_points": {
+      "type": "array", "maxItems": 128,
+      "items": {"$ref": "#/$defs/entryPoint"}
+    },
+    "provides_capabilities": {
+      "type": "array", "maxItems": 128, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/token"}
+    },
+    "requires_capabilities": {
+      "type": "array", "maxItems": 128, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/token"}
+    },
+    "compatible_receptors": {
+      "type": "array", "maxItems": 128, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/token"}
+    },
+    "platform_requirements": {
+      "type": "array", "maxItems": 128, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/platformRequirement"}
+    },
+    "receipt_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "kind", "size", "digest"],
+      "properties": {
+        "path": {"$ref": "#/$defs/path"},
+        "kind": {"enum": ["regular", "executable"]},
+        "size": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "entryPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entry_point_id", "kind", "path", "protocols"],
+      "properties": {
+        "entry_point_id": {"$ref": "#/$defs/token"},
+        "kind": {"enum": ["executable", "descriptor", "adapter"]},
+        "path": {"$ref": "#/$defs/path"},
+        "protocols": {
+          "type": "array", "maxItems": 64, "uniqueItems": true,
+          "items": {"$ref": "#/$defs/token"}
+        }
+      }
+    },
+    "platformRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["os", "architecture", "kernel_abi", "critical"],
+      "properties": {
+        "os": {"enum": ["linux", "macos"]},
+        "architecture": {"$ref": "#/$defs/token"},
+        "kernel_abi": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]
+        },
+        "critical": {"type": "boolean"}
+      }
+    },
+    "token": {
+      "type": "string", "minLength": 1, "maxLength": 256,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "version": {
+      "type": "string", "minLength": 1, "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
+    },
+    "path": {
+      "type": "string", "minLength": 1, "maxLength": 4096,
+      "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])[^/]+(?:/[^/]+)*$"
+    },
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

@@ -2,7 +2,7 @@
 
 ## Status
 
-This document records the Architect-ratified topology for explicit authenticated session transitions and the prospective cross-vector desired-state lifecycle. The session-transition surface described below is implemented by qxctl over the existing SSIAG-authorized coordinator operations. Desired-state persistence, generic receipt v2, first-boot planning/application, installation, uninstall, activation, and Maestro docking remain planned gates until their schemas and mutation implementations are separately completed.
+This document records the Architect-ratified topology for explicit authenticated session transitions and the cross-vector desired-state lifecycle. The session-transition surface described below is implemented by qxctl over the existing SSIAG-authorized coordinator operations. Canonical desired-state, observation, dependency-driven plan, applied-state, boot-journal/head, and immutable receipt v2 schemas are now present. Persistence, runtime observation and planning, lifecycle application, installation, uninstall, activation, and Maestro docking remain planned gates until their implementations are separately completed.
 
 ## Purpose
 
@@ -44,11 +44,11 @@ No login manager, shell hook, PAM module, systemd unit, launchd job, watcher, or
 
 `symphony.knowledge.engine-binding-registry.v1` intentionally closes six currently implemented roles. It remains an immutable compatibility surface for those exact coordinator and vector-engine identities. Adding arbitrary future modules to its enum or silently changing its maximum cardinality would cause older qxctl and coordinator versions to reinterpret the same protocol differently.
 
-The future desired-state protocol therefore sits alongside binding registry v1 rather than replacing it in place. A compatibility adapter will project valid v1 bindings into generic observed and desired component identities. Future components will not need a synthetic legacy role.
+The generic desired-state protocol therefore sits alongside binding registry v1 rather than replacing it in place. A future compatibility adapter will project valid v1 bindings into generic observed and desired component identities. Future components will not need a synthetic legacy role.
 
-## Prospective Generic Component Identity
+## Generic Component Identity
 
-The generic desired-state model will identify a component with bounded data rather than executable discovery:
+The generic desired-state contract identifies a component with bounded data rather than executable discovery:
 
 - stable component ID;
 - component kind such as coordinator, vector engine, module, adapter, or UI;
@@ -97,6 +97,27 @@ The planner uses these dispositions:
 - unknown noncritical extension: preserved through compatible writes;
 - unknown critical extension, ambiguous package identity, or unsupported newer state: preserved and mutation blocked.
 
+## Dependency-Driven Two-Way Convergence
+
+Lifecycle action order is derived from explicit dependencies and verified state, not from vector name, directory order, discovery order, release recency, or one hard-coded sequence. Every plan carries a dependency graph and a deterministic ready set. Stable action identifiers derive from action semantics, prerequisites, and expected evidence rather than ordinal position.
+
+The v1 scheduler contract is `dependency_ready_set_v1`:
+
+1. select all actions whose prerequisites are satisfied by the current verified observation;
+2. deterministically choose from that ready set by lexicographic action ID;
+3. preserve a blocked action and continue unrelated ready actions;
+4. re-observe after each committed or already-applied action;
+5. recompute the ready set only when verified evidence changes;
+6. emit a new linked plan revision when readiness, compatibility, or required direction changes;
+7. resume a previously blocked action when its prerequisites become satisfied;
+8. verify the whole resulting observation before applied state can advance.
+
+Two-way means both upgrade orders and both action directions are first-class. A new qxctl may drive an older compatible coordinator, and a new coordinator may preserve the older command surface. Where rollback is supported, forward actions carry an explicit inverse relationship; neither direction is privileged as “newest.” The scheduler may change component-action order to converge, but it may not reorder the enclosing safety phases: lock, observe, authorize, compare-and-swap, act, verify, and audit remain ordered invariants.
+
+Blockers are typed as `dependency_wait`, `observation_retryable`, `compatibility_blocked`, `authorization_denied`, `integrity_fatal`, `critical_state_unknown`, or `cycle_detected`. Dependency waits and retryable observation errors may become ready after new evidence. Authorization denial, integrity failure, and unknown critical state do not become permission to try a different order. A dependency cycle blocks that cyclic component set while unrelated acyclic components remain eligible; the scheduler never guesses a cycle-breaking edge.
+
+A single plan is bounded to 4,096 actions, one transaction to 256 plan revisions, and one action to eight attempts. Exceeding a bound is explicit blocked evidence, not an invitation to discard history or silently start another transaction.
+
 ## First Boot After Change
 
 “First boot” is evidence-based, not a mutable boolean, boot counter, wall-clock value, or version-string comparison. An explicitly installed host boot integration may invoke the future `qxctl knowledge lifecycle boot` surface on every supported-node boot. qxctl then computes state and exits as an idempotent no-op when nothing compatibility-relevant changed. No hidden watcher is required.
@@ -123,6 +144,8 @@ Applied state stores the last successfully stabilized observation key. The prior
 9. verify the resulting observation before closing the transaction;
 10. publish only safe lifecycle/audit metadata through the applicable SSIAG/STAV path.
 
+Steps 1 through 10 are ordered safety phases. Within the action phase, component work follows the dependency-driven ready-set contract above and may be replanned around a localized blocker without bypassing authorization, compare-and-swap, integrity, verification, or audit.
+
 The administrator-selectable boot mode is `report` or `apply-compatible`. `report` is the default until authenticated lifecycle mutation is implemented. Disabling automatic application never disables parsing bounds, ownership checks, receipt integrity, expected-state compare-and-swap, critical-extension blocking, or secret exclusion.
 
 If the desired profile is absent, unsupported, or critically extended, first boot reports protected read-only state and preserves every installed package and binding. If an operating-system update changes only the platform-compatibility digest, the same planner reevaluates all selected components against their declared platform requirements without assuming reinstall, upgrade, or removal. Host boot integration, its install/uninstall lifecycle, and the `knowledge lifecycle boot` grammar remain future reviewed implementation surfaces.
@@ -131,7 +154,7 @@ If the desired profile is absent, unsupported, or critically extended, first boo
 
 The lifecycle journal will use the existing proven durability pattern: persistent no-follow lock, dual slots, atomically replaced head, file and directory synchronization, linked generations, semantic idempotency fingerprints, and exact compare-and-swap. A future format must dual-read its predecessor before it can migrate state.
 
-Recovery may repair a missing/damaged head, adopt one uniquely linked successor, resume incomplete compatible actions, or close a fully verified transaction. It may not select between divergent equal-generation states, delete unknown state, downgrade a critical extension, manufacture a successful action, or erase a still-unresolved desired/observed difference.
+Recovery may repair a missing/damaged head, adopt one uniquely linked successor, resume incomplete compatible actions, recompute a ready set after verified evidence changes, or close a fully verified transaction. It may not select between divergent equal-generation states, delete unknown state, downgrade a critical extension, manufacture a successful action, guess a dependency edge, reorder a safety phase, or erase a still-unresolved desired/observed difference.
 
 Transient attempt errors remain noncanonical journal evidence and are reconciled forward. Canonical vectors and append-only ledgers are never poisoned with mutable boot-attempt state.
 
@@ -174,16 +197,15 @@ The engine implementation remains Linux-first with macOS development support. Na
 ## Implementation Sequence
 
 1. Implement explicit idempotent qxctl login/refresh/logout transition composition over the existing authenticated coordinator operations.
-2. Add the generic desired-state, observation, plan, applied-state, and boot-journal schemas under `knowledge/schemas/`.
-3. Add immutable content-addressed receipt v2 while retaining strict v1 adapters.
-4. Implement the C++ coordinator lifecycle planner and compatibility negotiation without mutation.
-5. Implement qxctl desired-profile administration and configured-root inventory with caller-neutral SSIAG authorization.
-6. Implement durable C++ boot journaling, report mode, recovery, and installation-change diagnosis.
-7. Implement separately gated `apply-compatible`, exact package lifecycle actions, and rollback proof.
-8. Add Maestro docking only after its receptor and presence contracts are ratified.
+2. Add the generic desired-state, observation, dependency-driven plan, applied-state, boot-journal/head, and immutable content-addressed receipt v2 schemas while retaining strict v1 adapters. **Completed.**
+3. Implement the C++ coordinator lifecycle observer, dependency scheduler, two-way compatibility negotiation, and deterministic report-only planner.
+4. Implement qxctl desired-profile administration and configured-root inventory with caller-neutral SSIAG authorization.
+5. Implement durable C++ boot journaling, report mode, bounded replanning recovery, and installation-change diagnosis.
+6. Implement separately gated `apply-compatible`, exact package lifecycle actions, and forward/inverse rollback proof.
+7. Add Maestro docking only after its receptor and presence contracts are ratified.
 
 Each step must preserve older supported operation surfaces and pass upgrade-order matrices in both directions.
 
 ## Current Non-Authorizations
 
-This plan does not authorize lifecycle apply, automatic installation, automatic uninstall, implicit latest-version selection, package download, arbitrary executable discovery, receipt rewriting, activation, live Maestro docking, remote lifecycle APIs, canonical knowledge mutation, hot/warm participation, native Windows engines, or hidden host integration.
+These contracts do not authorize lifecycle apply, automatic installation, automatic uninstall, implicit latest-version selection, package download, arbitrary executable discovery, receipt rewriting, activation, live Maestro docking, remote lifecycle APIs, canonical knowledge mutation, hot/warm participation, native Windows engines, or hidden host integration. A canonical schema is not evidence that its persistence or runtime behavior is implemented.

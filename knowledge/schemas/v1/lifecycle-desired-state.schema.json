@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-desired-state:v1",
+  "title": "Symphony lifecycle desired state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "format_version", "profile_id", "tops_id", "generation",
+    "previous_desired_state_digest", "components", "extensions", "canonical",
+    "desired_state_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.lifecycle-desired-state.v1"},
+    "format_version": {"const": 1},
+    "profile_id": {"$ref": "#/$defs/token"},
+    "tops_id": {"$ref": "#/$defs/token"},
+    "generation": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "previous_desired_state_digest": {
+      "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
+    },
+    "components": {
+      "type": "array",
+      "maxItems": 4096,
+      "items": {"$ref": "#/$defs/component"}
+    },
+    "extensions": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {"$ref": "#/$defs/extension"}
+    },
+    "canonical": {"const": false},
+    "desired_state_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_id", "component_kind", "module_id", "vector_id", "engine_id",
+        "presence", "selected_package", "required", "install_scope", "install_root",
+        "activation", "docking", "dependencies", "compatibility", "extensions"
+      ],
+      "properties": {
+        "component_id": {"$ref": "#/$defs/token"},
+        "component_kind": {
+          "enum": ["coordinator", "vector_engine", "module", "adapter", "ui", "service"]
+        },
+        "module_id": {"$ref": "#/$defs/token"},
+        "vector_id": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]
+        },
+        "engine_id": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]
+        },
+        "presence": {"enum": ["present", "absent"]},
+        "selected_package": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/packageIdentity"}]
+        },
+        "required": {"type": "boolean"},
+        "install_scope": {"enum": ["prefix", "user", "system", "tops"]},
+        "install_root": {"$ref": "#/$defs/absolutePath"},
+        "activation": {"enum": ["inactive", "active", "unmanaged"]},
+        "docking": {"$ref": "#/$defs/docking"},
+        "dependencies": {
+          "type": "array",
+          "maxItems": 256,
+          "items": {"$ref": "#/$defs/dependency"}
+        },
+        "compatibility": {"$ref": "#/$defs/compatibility"},
+        "extensions": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {"$ref": "#/$defs/extension"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"presence": {"const": "present"}}},
+          "then": {"properties": {"selected_package": {"$ref": "#/$defs/packageIdentity"}}}
+        },
+        {
+          "if": {"properties": {"presence": {"const": "absent"}}},
+          "then": {
+            "properties": {
+              "selected_package": {"type": "null"},
+              "activation": {"enum": ["inactive", "unmanaged"]},
+              "docking": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["disposition", "receptor_id"],
+                "properties": {
+                  "disposition": {"const": "undocked"},
+                  "receptor_id": {"type": "null"}
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "packageIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["package_id", "version", "receipt_protocol", "receipt_digest"],
+      "properties": {
+        "package_id": {"$ref": "#/$defs/token"},
+        "version": {"$ref": "#/$defs/version"},
+        "receipt_protocol": {"$ref": "#/$defs/token"},
+        "receipt_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "docking": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["disposition", "receptor_id"],
+      "properties": {
+        "disposition": {"enum": ["undocked", "docked", "unmanaged"]},
+        "receptor_id": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"disposition": {"const": "docked"}}},
+          "then": {"properties": {"receptor_id": {"$ref": "#/$defs/token"}}}
+        },
+        {
+          "if": {"properties": {"disposition": {"enum": ["undocked", "unmanaged"]}}},
+          "then": {"properties": {"receptor_id": {"type": "null"}}}
+        }
+      ]
+    },
+    "dependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target_component_id", "condition", "critical"],
+      "properties": {
+        "target_component_id": {"$ref": "#/$defs/token"},
+        "condition": {
+          "enum": ["present", "absent", "installed", "active", "inactive", "docked", "undocked", "compatible"]
+        },
+        "critical": {"type": "boolean"}
+      }
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_capabilities", "platform_requirements"],
+      "properties": {
+        "required_capabilities": {
+          "type": "array",
+          "maxItems": 128,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/token"}
+        },
+        "platform_requirements": {
+          "type": "array",
+          "maxItems": 128,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/token"}
+        }
+      }
+    },
+    "extension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["extension_id", "extension_version", "critical", "payload", "payload_digest"],
+      "properties": {
+        "extension_id": {"$ref": "#/$defs/token"},
+        "extension_version": {"$ref": "#/$defs/version"},
+        "critical": {"type": "boolean"},
+        "payload": {},
+        "payload_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "token": {
+      "type": "string", "minLength": 1, "maxLength": 256,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "version": {
+      "type": "string", "minLength": 1, "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
+    },
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "absolutePath": {
+      "type": "string", "minLength": 1, "maxLength": 4096,
+      "pattern": "^/(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])(?:$|[^/](?:.*[^/])?)$"
+    }
+  }
+}
