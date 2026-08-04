@@ -2427,3 +2427,147 @@ This PR authorizes none of the following:
   - `module tag, binary release, package publication, public documentation, SDK generation, or launch claim`
 - notes: |
     This post-merge closure records the protected knowledge-engine binding implementation merged by PR #91. The closure record is appended separately so the implementation revision and provider-neutral evidence remain immutable and independently verifiable. Every changed file is listed as an affected surface. Unindexed implementation and test paths remain explicit advisory evidence rather than being hidden through selective omission or artificial SKVI expansion. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
+
+- record_id: `SCLV-CHG-20260804-KNOWLEDGE-RECONCILIATION-JOURNAL`
+- record_version: `3`
+- title: `Durable knowledge reconciliation and compatibility recovery implemented`
+- status: `canonical`
+- date: `2026-08-04`
+- change_started_at: `2026-07-30T14:42:47Z`
+- change_completed_at: `2026-07-30T16:15:28Z`
+- recorded_at: `2026-08-04T04:18:03Z`
+- recording_disposition: `late_recovery`
+- recovery_reason: `PR #93 merged while its SCLV closure remained pending; the interrupted closure sequence resumed in a later Codex session on 2026-08-04.`
+- change_type: `canonical_addition`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#93`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/93`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `ef782711942f685823a5844d001d91d93ad61a53`
+- tree_digest: `sha256:5bb6e51d27d729f692014bb8e78aa6ea1dbc71b5bbe7919899f2d8e93bd86996`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/93`
+- ratification_evidence_digest: `sha256:61924694ba5703518e19569a16e7e6578d9ca63d06b86e14fa76336036922854`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/reconciliation-command.schema.json`
+  - `knowledge/schemas/v1/reconciliation-head.schema.json`
+  - `knowledge/schemas/v1/reconciliation-journal.schema.json`
+  - `knowledge/schemas/v1/reconciliation-result.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `libraries/knowledge-vector-engine-cpp/tests/foundation_test.cpp`
+  - `modules/knowledge-session-coordinator/CMakeLists.txt`
+  - `modules/knowledge-session-coordinator/FEATURES.md`
+  - `modules/knowledge-session-coordinator/INSTALL.md`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `modules/knowledge-session-coordinator/MANIFEST.md`
+  - `modules/knowledge-session-coordinator/SKILL.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `modules/knowledge-session-coordinator/src/coordinator.cpp`
+  - `modules/knowledge-session-coordinator/src/reconciliation.cpp`
+  - `modules/knowledge-session-coordinator/src/reconciliation.hpp`
+  - `modules/knowledge-session-coordinator/tests/coordinator_test.cpp`
+  - `modules/knowledge-session-coordinator/tests/process_smoke.sh`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/reconcile_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgebinding/registry.go`
+  - `tools/qxctl/internal/knowledgebinding/registry_test.go`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/reconciliation-command.schema.json`
+  - `knowledge/schemas/v1/reconciliation-head.schema.json`
+  - `knowledge/schemas/v1/reconciliation-journal.schema.json`
+  - `knowledge/schemas/v1/reconciliation-result.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/knowledge-session-coordinator/CMakeLists.txt`
+  - `modules/knowledge-session-coordinator/FEATURES.md`
+  - `modules/knowledge-session-coordinator/INSTALL.md`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `modules/knowledge-session-coordinator/MANIFEST.md`
+  - `modules/knowledge-session-coordinator/SKILL.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `modules/knowledge-session-coordinator/src/reconciliation.cpp`
+  - `modules/knowledge-session-coordinator/src/reconciliation.hpp`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/internal/knowledgebinding/registry.go`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    Under the Architect's direction, PR #93 implemented the first durable user-scope knowledge reconciliation lifecycle. The independently installable C++26 coordinator now provides compatibility, begin, status, checkpoint, close, and recover operations over protected per-worktree state. qxctl administers the lifecycle through the exact bound coordinator after revalidating the complete role-sorted binding inventory.
+- relationship_changes: |
+    knowledge/ owns the canonical reconciliation command, head, journal, and result schemas. The knowledge-session coordinator owns noncanonical journal durability and recovery semantics. qxctl owns Cobra administration, binding snapshot collection, exact installed-content verification, bounded process invocation, and response safety checks. The binding registry remains the source of selected installed identities; individual vectors retain their semantic authority and are not invoked by this slice. SSFV now describes the coordinator's implemented durable capability without creating another feature record.
+- doctrine_changes: |
+    Procedural compatibility is determined by explicit process protocols, journal read/write versions, and named capabilities rather than executable age or semantic-version ordering. Supported older and newer participants operate fully across their common write contract. Missing write capability yields deterministic read-only operation. Unknown noncritical extensions survive writes, while unknown critical extensions, unsupported newer state, and ambiguous successors are preserved and block automated downgrade. Self-healing means evidence-based forward repair; it never means discarding state, manufacturing authority, or performing a lossy conversion.
+- compatibility_consequences: |
+    Durable state uses a persistent nonblocking no-follow lock, two journal slots, an atomically replaced head, file and directory durability, stable operation identifiers, exact-state compare-and-swap, content snapshots, and checkpoint continuity. Explicit recovery can rebuild a missing or damaged head from one unique valid slot, adopt one uniquely linked successor left by an interrupted commit, preserve a closed snapshot, and remove only private stale head temporaries. Binding additions, removals, upgrades, or rollbacks during an open context are recorded at the next exact-state checkpoint. The v1 implementation has no generic format-migration command; a future format must first dual-read the prior version and use a separately contracted idempotent migration.
+- publication_consequences: |
+    No module tag, release artifact, package coordinate, binary distribution, container, SDK, OpenAPI surface, Mintlify publication, public documentation release, marketing claim, or platform launch was published or authorized. The implementation remains active-development source on the rolling main branch.
+- projection_consequences: |
+    Compatibility and status results are bounded noncanonical administrative evidence. Reconciliation journals are protected operational state outside canonical repository truth. They do not create a canonical vector record, persistent semantic graph, authenticated authority epoch, Maestro receptor, remote endpoint, watcher, or vector-engine result.
+- evidence:
+  - `PR #93 merged into main at 2026-07-30T16:15:28Z by quantDIY as ef782711942f685823a5844d001d91d93ad61a53`
+  - `implementation head 4612dcb21ab0319cee48752fee115100c2f3dd4e; 42 files changed, 3892 insertions, 101 deletions`
+  - `local-Git adapter evidence digest sha256:d8c2509f0f745be2a90d30b45635eba4980b7d0c6b05f8ccf4961b7b855241f1 bound tree digest sha256:5bb6e51d27d729f692014bb8e78aa6ea1dbc71b5bbe7919899f2d8e93bd86996`
+  - `provider-neutral ratification evidence digest sha256:0ce1b17e0226fda12695db8cecc9bc76cd390b7bff1fd3ec43b630ed46e3b53d bound canonical PR metadata digest sha256:61924694ba5703518e19569a16e7e6578d9ca63d06b86e14fa76336036922854`
+  - `canonical PR metadata identified base main, head agent/reconciliation-journal-foundation at 4612dcb21ab0319cee48752fee115100c2f3dd4e, merged state, merge revision ef782711942f685823a5844d001d91d93ad61a53, authenticated merger quantDIY, title, number 93, merge time, and URL`
+  - `fresh coordinator Release CTest passed 2 of 2 tests, including adversarial recovery and process smoke coverage`
+  - `qxctl go test ./... and go vet ./... passed`
+  - `fresh knowledge-vector foundation CTest passed 1 of 1 test with all eleven common schemas`
+  - `fresh SSFV CTest passed 2 of 2 tests and the live SSFV check reported three passes, zero warnings, zero violations, and valid state`
+  - `fresh symphony-validator CTest passed 3 of 3 tests; the full smoke matrix passed`
+  - `pre-closure live validator result pass=3757 warning=206 violation=0 exit=0; every warning was the established sclv.affected_surface.unindexed advisory class`
+  - `pre-closure SCLV engine check reported 22 records, 88 passes, 0 warnings, 0 violations, and valid state`
+  - `closure SCLV engine check reported 23 records, 92 passes, 0 warnings, 0 violations, and valid state`
+  - `closure validator result pass=3909 warning=216 violation=0 exit=0; the ten-warning advisory delta is exclusively the unindexed implementation and test paths listed by this record`
+  - `installed qxctl integration proved begin, checkpoint, close, damaged-head discovery recovery, and an engine-binding transition during an open context with exact inventory evidence`
+  - `receipt-owned uninstall removed only coordinator package files and preserved an unrelated Architect marker`
+  - `PR #93 had no associated GitHub Actions workflow runs and merged at the exact implementation head`
+- non_authorizations:
+  - `authenticated-session establishment, SSIAG authority-epoch binding, credential access, authorization decision, or permission grant`
+  - `canonical knowledge mutation, proposal ratification, canonical apply, or engine-owned semantic truth`
+  - `coordinator-to-vector invocation, vector semantic execution, cross-vector apply transaction, or feature-worthiness decision`
+  - `implicit newest-version selection, automatic package upgrade or rollback, generic journal-format migration, destructive downgrade, or unknown-state deletion`
+  - `observer, repository hook, file watcher, daemon, network listener, socket service, or background reconciliation process`
+  - `repository-specific, system-wide, TOPS-scoped, or multi-profile binding administration`
+  - `live Maestro receptor, docking, activation, persistent receptor state, or module orchestration`
+  - `operational SSIAG provider access, credential delivery, caller classification, or new STAV append behavior`
+  - `native Windows engine implementation, hot-path participation, warm-path participation, trading-node doctrine, or Go 1.27 production pin`
+  - `module tag, release artifact, package publication, public documentation, SDK generation, or launch claim`
+- notes: |
+    This late-recovery closure records the durable knowledge reconciliation and compatibility recovery implementation merged by PR #93. The implementation merged correctly, but the original Codex closure sequence ended before its SCLV record was appended; this record preserves that interruption instead of making the timeline appear continuous. Every changed file is listed as an affected surface. The ten unindexed implementation and test paths remain explicit advisory evidence rather than being hidden through selective omission or artificial SKVI expansion. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
