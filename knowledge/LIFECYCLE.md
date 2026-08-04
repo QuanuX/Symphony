@@ -2,7 +2,7 @@
 
 ## Status
 
-This document records the Architect-ratified topology for explicit authenticated session transitions and the cross-vector desired-state lifecycle. The session-transition surface described below is implemented by qxctl over the existing SSIAG-authorized coordinator operations. Canonical desired-state, observation, dependency-driven plan, applied-state, boot-journal/head, and immutable receipt v2 schemas are now present. Persistence, runtime observation and planning, lifecycle application, installation, uninstall, activation, and Maestro docking remain planned gates until their implementations are separately completed.
+This document records the Architect-ratified topology for explicit authenticated session transitions and the cross-vector desired-state lifecycle. The session-transition surface described below is implemented by qxctl over the existing SSIAG-authorized coordinator operations. Canonical desired-state, observation, plan-command, dependency-driven plan, applied-state, boot-journal/head, and immutable receipt v2 schemas are present. The C++ coordinator implements deterministic report-only planning over complete caller-supplied desired and observed evidence. Desired-profile persistence, configured-root observation, qxctl lifecycle invocation, durable boot journaling/recovery, lifecycle application, installation, uninstall, activation, and live Maestro docking remain planned gates.
 
 ## Purpose
 
@@ -114,9 +114,11 @@ The v1 scheduler contract is `dependency_ready_set_v1`:
 
 Two-way means both upgrade orders and both action directions are first-class. A new qxctl may drive an older compatible coordinator, and a new coordinator may preserve the older command surface. Where rollback is supported, forward actions carry an explicit inverse relationship; neither direction is privileged as “newest.” The scheduler may change component-action order to converge, but it may not reorder the enclosing safety phases: lock, observe, authorize, compare-and-swap, act, verify, and audit remain ordered invariants.
 
-Blockers are typed as `dependency_wait`, `observation_retryable`, `compatibility_blocked`, `authorization_denied`, `integrity_fatal`, `critical_state_unknown`, or `cycle_detected`. Dependency waits and retryable observation errors may become ready after new evidence. Authorization denial, integrity failure, and unknown critical state do not become permission to try a different order. A dependency cycle blocks that cyclic component set while unrelated acyclic components remain eligible; the scheduler never guesses a cycle-breaking edge.
+Blockers are typed as `dependency_wait`, `observation_retryable`, `compatibility_blocked`, `authorization_denied`, `integrity_fatal`, `critical_state_unknown`, or `cycle_detected`. An unsatisfied dependency marked `critical: true` is a hard localized gate. An unsatisfied dependency marked `critical: false` is emitted as an explicit advisory and does not stall convergence. Missing declared component capabilities are localized compatibility blockers. Dependency waits and retryable observation errors may become ready after new evidence. Authorization denial, integrity failure, and unknown critical state do not become permission to try a different order. A dependency cycle blocks that cyclic component set while unrelated acyclic components remain eligible; the scheduler never guesses a cycle-breaking edge.
 
 A single plan is bounded to 4,096 actions, one transaction to 256 plan revisions, and one action to eight attempts. Exceeding a bound is explicit blocked evidence, not an invitation to discard history or silently start another transaction.
+
+The implemented report-only planner additionally binds each dock action to one exact receptor and every action to a target-state digest. A receptor change becomes an ordered undock/dock pair. Changing a selected package while the component is active or docked becomes `undock`, `deactivate`, `select`, restore desired activation, then `dock`. This local safety order is represented through prerequisites inside the action graph; it does not serialize unrelated ready components. Reinvocation with changed verified observation evidence recomputes the graph and can release a prior dependency wait without editing the earlier report.
 
 ## First Boot After Change
 
@@ -186,7 +188,7 @@ Both package versions may coexist. The selected binding and applied-state digest
 
 ## Maestro Docking Boundary
 
-Desired state may carry a preferred receptor before Maestro exists, but it cannot claim docking. The first-boot planner may report `docking_unavailable` without treating package installation as failed. Once Maestro is implemented, docking remains a separate authenticated action with its own expected presence state and receipt/descriptor evidence.
+Desired state may carry a preferred receptor before Maestro exists, but it cannot claim docking. Observation and applied-state evidence carry the exact receptor identity whenever they report `docked`; a report-only dock action carries the exact target receptor. The planner may report receptor incompatibility without treating package installation as failed. Once Maestro is implemented, docking remains a separate authenticated action with its own expected presence state and receipt/descriptor evidence.
 
 ## Thermal and Platform Boundary
 
@@ -198,7 +200,7 @@ The engine implementation remains Linux-first with macOS development support. Na
 
 1. Implement explicit idempotent qxctl login/refresh/logout transition composition over the existing authenticated coordinator operations.
 2. Add the generic desired-state, observation, dependency-driven plan, applied-state, boot-journal/head, and immutable content-addressed receipt v2 schemas while retaining strict v1 adapters. **Completed.**
-3. Implement the C++ coordinator lifecycle observer, dependency scheduler, two-way compatibility negotiation, and deterministic report-only planner.
+3. Implement the C++ coordinator dependency scheduler, two-way compatibility negotiation, and deterministic report-only planner over caller-supplied evidence. **Completed.** Configured-root observation remains in step 4.
 4. Implement qxctl desired-profile administration and configured-root inventory with caller-neutral SSIAG authorization.
 5. Implement durable C++ boot journaling, report mode, bounded replanning recovery, and installation-change diagnosis.
 6. Implement separately gated `apply-compatible`, exact package lifecycle actions, and forward/inverse rollback proof.

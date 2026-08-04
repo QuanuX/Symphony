@@ -22,6 +22,8 @@
 - authenticated-session journal: `symphony.knowledge.session-journal.v1`
 - authenticated-session head: `symphony.knowledge.session-head.v1`
 - authenticated-session result: `symphony.knowledge.session-result.v1`
+- report-only lifecycle command: `symphony.knowledge.lifecycle-plan-command.v1`
+- desired/observation/plan evidence: `symphony.knowledge.lifecycle-desired-state.v1`, `symphony.knowledge.lifecycle-observation.v1`, and `symphony.knowledge.lifecycle-plan.v1`
 - SSIAG authorization evidence: `symphony.ssiag.authorization-decision.v1` and `symphony.ssiag.capability.v1`
 
 ## Implemented Operations
@@ -33,9 +35,10 @@
 | `compatibility` | implemented | no |
 | `begin`, `status`, `checkpoint`, `close`, `recover` | implemented; noncanonical local state only | no |
 | `session_begin`, `session_status`, `session_checkpoint`, `session_close`, `session_recover` | implemented; SSIAG-authorized noncanonical authority-epoch state only | no |
+| `lifecycle_plan` | implemented; deterministic report-only result only | no |
 | `apply` | disabled | prohibited |
 
-The implemented scope is user-process invocation and user-scope reconciliation plus authenticated-session state. System/TOPS binding profiles and provisioning are not claimed.
+The implemented scope is user-process invocation, user-scope reconciliation, authenticated-session state, and caller-supplied report-only lifecycle planning. System/TOPS binding profiles, configured-root collection, desired-profile administration, lifecycle persistence, and provisioning are not claimed.
 
 ## Installability
 
@@ -47,4 +50,4 @@ The coordinator statically links `knowledge-vector-engine-cpp` and has no runtim
 
 ## Boundaries
 
-There is no network listener, daemon, credential input, secret field, canonical write, hook, watcher, direct SSIAG/STAV call, vector-engine invocation, or Maestro dock in this version. qxctl obtains an SSIAG decision and invokes reconciliation or session coordination synchronously through the exact selected receipt. The coordinator validates bounded decision evidence but does not treat it as transferable bearer authority. Absolute repository/state paths remain only in protected local state and process payloads.
+There is no network listener, daemon, credential input, secret field, canonical write, hook, watcher, direct SSIAG/STAV call, vector-engine invocation, lifecycle filesystem discovery, action execution, or Maestro dock in this version. qxctl obtains an SSIAG decision and invokes reconciliation or session coordination synchronously through the exact selected receipt. The lifecycle operation is a direct report-only process surface until qxctl integration is separately implemented. Absolute repository/state paths remain only in protected local state and process payloads.

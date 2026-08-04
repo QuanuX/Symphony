@@ -7,8 +7,8 @@
   "required": [
     "protocol", "format_version", "transaction_id", "revision", "previous_plan_digest",
     "desired_state_digest", "observation_digest", "observation_key",
-    "prior_applied_state_digest", "scheduler", "actions", "ready_action_ids",
-    "deferred_action_ids", "blocked_action_ids", "fatal_blockers", "apply_authorized",
+    "prior_applied_state_digest", "compatibility", "scheduler", "actions", "ready_action_ids",
+    "deferred_action_ids", "blocked_action_ids", "advisories", "fatal_blockers", "apply_authorized",
     "canonical", "plan_digest"
   ],
   "properties": {
@@ -25,6 +25,7 @@
     "prior_applied_state_digest": {
       "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
     },
+    "compatibility": {"$ref": "#/$defs/compatibility"},
     "scheduler": {"$ref": "#/$defs/scheduler"},
     "actions": {
       "type": "array", "maxItems": 4096,
@@ -33,6 +34,10 @@
     "ready_action_ids": {"$ref": "#/$defs/actionIds"},
     "deferred_action_ids": {"$ref": "#/$defs/actionIds"},
     "blocked_action_ids": {"$ref": "#/$defs/actionIds"},
+    "advisories": {
+      "type": "array", "maxItems": 4096,
+      "items": {"$ref": "#/$defs/advisory"}
+    },
     "fatal_blockers": {
       "type": "array", "maxItems": 4096,
       "items": {"$ref": "#/$defs/blocker"}
@@ -42,6 +47,38 @@
     "plan_digest": {"$ref": "#/$defs/digest"}
   },
   "$defs": {
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode", "coordinator_version", "desired_state_version", "observation_version",
+        "plan_version", "applied_state_version", "receipt_versions",
+        "required_capabilities", "missing_capabilities",
+        "two_way_procedural_compatibility", "reason"
+      ],
+      "properties": {
+        "mode": {"enum": ["full", "blocked"]},
+        "coordinator_version": {"$ref": "#/$defs/version"},
+        "desired_state_version": {"const": 1},
+        "observation_version": {"const": 1},
+        "plan_version": {"const": 1},
+        "applied_state_version": {"const": 1},
+        "receipt_versions": {
+          "type": "array", "maxItems": 16,
+          "uniqueItems": true, "items": {"type": "integer", "minimum": 1, "maximum": 16}
+        },
+        "required_capabilities": {
+          "type": "array", "minItems": 1, "maxItems": 128,
+          "uniqueItems": true, "items": {"$ref": "#/$defs/token"}
+        },
+        "missing_capabilities": {
+          "type": "array", "maxItems": 128,
+          "uniqueItems": true, "items": {"$ref": "#/$defs/token"}
+        },
+        "two_way_procedural_compatibility": {"type": "boolean"},
+        "reason": {"$ref": "#/$defs/text"}
+      }
+    },
     "scheduler": {
       "type": "object",
       "additionalProperties": false,
@@ -70,7 +107,8 @@
       "additionalProperties": false,
       "required": [
         "action_id", "component_id", "kind", "direction", "prerequisite_action_ids",
-        "inverse_action_id", "expected_before_digest", "expected_artifact_digests",
+        "inverse_action_id", "expected_before_digest", "target_state_digest", "target_receptor_id",
+        "expected_artifact_digests",
         "expected_evidence", "disposition", "blockers"
       ],
       "properties": {
@@ -90,6 +128,10 @@
         "expected_before_digest": {
           "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
         },
+        "target_state_digest": {"$ref": "#/$defs/digest"},
+        "target_receptor_id": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]
+        },
         "expected_artifact_digests": {
           "type": "array", "maxItems": 4096, "uniqueItems": true,
           "items": {"$ref": "#/$defs/digest"}
@@ -105,7 +147,17 @@
           "type": "array", "maxItems": 64,
           "items": {"$ref": "#/$defs/blocker"}
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"kind": {"const": "dock"}}},
+          "then": {"properties": {"target_receptor_id": {"$ref": "#/$defs/token"}}}
+        },
+        {
+          "if": {"properties": {"kind": {"enum": ["install", "uninstall", "select", "deselect", "activate", "deactivate", "undock", "verify", "preserve", "report"]}}},
+          "then": {"properties": {"target_receptor_id": {"type": "null"}}}
+        }
+      ]
     },
     "blocker": {
       "type": "object",
@@ -137,6 +189,20 @@
         }
       ]
     },
+    "advisory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class", "component_id", "target_component_id", "condition", "detail"],
+      "properties": {
+        "class": {"const": "noncritical_dependency_unsatisfied"},
+        "component_id": {"$ref": "#/$defs/token"},
+        "target_component_id": {"$ref": "#/$defs/token"},
+        "condition": {
+          "enum": ["present", "absent", "installed", "active", "inactive", "docked", "undocked", "compatible"]
+        },
+        "detail": {"$ref": "#/$defs/text"}
+      }
+    },
     "actionIds": {
       "type": "array", "maxItems": 4096, "uniqueItems": true,
       "items": {"$ref": "#/$defs/token"}
@@ -144,6 +210,10 @@
     "token": {
       "type": "string", "minLength": 1, "maxLength": 256,
       "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "version": {
+      "type": "string", "minLength": 1, "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
     },
     "text": {"type": "string", "minLength": 1, "maxLength": 4096},
     "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}

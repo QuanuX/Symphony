@@ -50,7 +50,7 @@
       "additionalProperties": false,
       "required": [
         "component_id", "selected_receipt_digest", "presence", "activation",
-        "docking", "component_state_digest"
+        "docking", "receptor_id", "component_state_digest"
       ],
       "properties": {
         "component_id": {"$ref": "#/$defs/token"},
@@ -60,8 +60,21 @@
         "presence": {"enum": ["present", "absent", "unmanaged"]},
         "activation": {"enum": ["inactive", "active", "unmanaged", "unknown"]},
         "docking": {"enum": ["undocked", "docked", "unmanaged", "unavailable", "unknown"]},
+        "receptor_id": {
+          "oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]
+        },
         "component_state_digest": {"$ref": "#/$defs/digest"}
-      }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"docking": {"const": "docked"}}},
+          "then": {"properties": {"receptor_id": {"$ref": "#/$defs/token"}}}
+        },
+        {
+          "if": {"properties": {"docking": {"enum": ["undocked", "unmanaged", "unavailable", "unknown"]}}},
+          "then": {"properties": {"receptor_id": {"type": "null"}}}
+        }
+      ]
     },
     "execution": {
       "type": "object",

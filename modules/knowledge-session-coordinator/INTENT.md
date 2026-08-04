@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Provide the domain-neutral, independently installable process that will coordinate authenticated knowledge sessions and separately locked worktree reconciliation contexts without absorbing vector semantics.
+Provide the domain-neutral, independently installable process that coordinates authenticated knowledge sessions, separately locked worktree reconciliation contexts, and bounded report-only cross-vector lifecycle planning without absorbing vector semantics.
 
 ## Implemented Scope
 
@@ -13,14 +13,15 @@ Development version `0.1.0-dev` implements user-scope reconciliation and authent
 - `compatibility` negotiates exact process, journal-format, and capability overlap with qxctl;
 - `begin`, `status`, `checkpoint`, `close`, and `recover` manage a protected noncanonical worktree context through a dual-slot journal, atomic head, expected-state generations, and content-addressed snapshots;
 - `session_begin`, `session_status`, `session_checkpoint`, `session_close`, and `session_recover` validate exact SSIAG decision/capability evidence and manage a separate protected noncanonical authority epoch through the same evidence-preserving durability model;
+- `lifecycle_plan` validates exact desired-state and caller-supplied observation evidence, negotiates receipt/protocol capabilities, and emits a deterministic dependency-ready-set plan with forward/inverse identities, localized blockers, exact receptor targets, and disabled apply;
 - strict `symphony.knowledge.engine-process.v1` standard-input/output handling;
 - versioned install receipt, isolated install paths, and receipt-owned uninstall proof.
 
 ## Deferred Scope
 
-qxctl validates, binds, and invokes this exact inactive-undocked coordinator for reconciliation and authenticated-session operations. qxctl obtains every session-operation decision from the kernel-authenticated SSIAG Unix socket; the coordinator then independently checks the evidence's exact subject, TOPS, operation, resource, audience, scope, policy/configuration digests, binding digest, non-transferability, non-apply status, and expiry. Vector-engine invocation, observers/hooks, proposal serialization, canonical apply, direct coordinator-to-STAV coordination, system/TOPS binding profiles, format migration beyond the current v1 compatibility window, and live Maestro docking remain unimplemented.
+qxctl validates, binds, and invokes this exact inactive-undocked coordinator for reconciliation and authenticated-session operations. qxctl obtains every session-operation decision from the kernel-authenticated SSIAG Unix socket; the coordinator then independently checks the evidence's exact subject, TOPS, operation, resource, audience, scope, policy/configuration digests, binding digest, non-transferability, non-apply status, and expiry. qxctl lifecycle grammar and evidence collection, desired-profile persistence, lifecycle journaling, action execution, vector-engine invocation, observers/hooks, proposal serialization, canonical apply, direct coordinator-to-STAV coordination, system/TOPS binding profiles, format migration beyond the current v1 compatibility window, and live Maestro docking remain unimplemented.
 
-qxctl may explicitly compose these primitives into an idempotent login, refresh, or logout transition. That composition is a qxctl responsibility; it adds no coordinator operation, watcher, boot service, or implicit recovery behavior. The future generic desired-state and first-boot planner is governed by `knowledge/LIFECYCLE.md` and remains unimplemented in this module.
+qxctl may explicitly compose session primitives into an idempotent login, refresh, or logout transition. That composition is a qxctl responsibility; it adds no coordinator operation, watcher, boot service, or implicit recovery behavior. The report-only lifecycle planner accepts fully supplied, digest-bound desired and observed state; it does not scan configured roots, read protected profiles, persist a plan, or apply an action.
 
 ## Authority
 

@@ -226,6 +226,7 @@ void test_schema_documents(const fs::path& repository_root) {
         {"knowledge/schemas/v1/session-transition-result.schema.json", "urn:symphony:knowledge:session-transition-result:v1"},
         {"knowledge/schemas/v1/lifecycle-desired-state.schema.json", "urn:symphony:knowledge:lifecycle-desired-state:v1"},
         {"knowledge/schemas/v1/lifecycle-observation.schema.json", "urn:symphony:knowledge:lifecycle-observation:v1"},
+        {"knowledge/schemas/v1/lifecycle-plan-command.schema.json", "urn:symphony:knowledge:lifecycle-plan-command:v1"},
         {"knowledge/schemas/v1/lifecycle-plan.schema.json", "urn:symphony:knowledge:lifecycle-plan:v1"},
         {"knowledge/schemas/v1/lifecycle-applied-state.schema.json", "urn:symphony:knowledge:lifecycle-applied-state:v1"},
         {"knowledge/schemas/v1/lifecycle-boot-journal.schema.json", "urn:symphony:knowledge:lifecycle-boot-journal:v1"},
@@ -262,6 +263,24 @@ void test_schema_documents(const fs::path& repository_root) {
         scheduler.at("safety_phase_order").at("const") == Json::array({
             "lock", "observe", "authorize", "compare_and_swap", "act", "verify", "audit"}),
         "lifecycle safety phase order drift");
+    const auto& action_required = plan.at("$defs").at("action").at("required");
+    require(std::find(action_required.begin(), action_required.end(), "target_state_digest") != action_required.end(),
+            "lifecycle action target-state binding drift");
+    require(std::find(action_required.begin(), action_required.end(), "target_receptor_id") != action_required.end(),
+            "lifecycle action receptor binding drift");
+    const auto& plan_required = plan.at("required");
+    require(std::find(plan_required.begin(), plan_required.end(), "advisories") != plan_required.end(),
+            "lifecycle noncritical-dependency advisory drift");
+
+    const auto observation = load_schema("knowledge/schemas/v1/lifecycle-observation.schema.json");
+    const auto& observed_required = observation.at("$defs").at("component").at("required");
+    require(std::find(observed_required.begin(), observed_required.end(), "receptor_id") != observed_required.end(),
+            "lifecycle observation receptor identity drift");
+
+    const auto applied = load_schema("knowledge/schemas/v1/lifecycle-applied-state.schema.json");
+    const auto& applied_required = applied.at("$defs").at("component").at("required");
+    require(std::find(applied_required.begin(), applied_required.end(), "receptor_id") != applied_required.end(),
+            "lifecycle applied-state receptor identity drift");
 
     const auto receipt_v2 = load_schema("knowledge/schemas/v2/install-receipt.schema.json");
     const auto& receipt_properties = receipt_v2.at("properties");
