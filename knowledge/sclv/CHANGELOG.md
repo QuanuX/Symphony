@@ -3109,3 +3109,153 @@ This PR authorizes none of the following:
   - `module tag, release artifact, package publication, public documentation, SDK generation, Mintlify publication, or launch claim`
 - notes: |
     This post-merge closure records the report-only dynamic lifecycle planner merged by PR #101. Every changed file is listed as an affected surface. The six implementation and test paths without individual SKVI entries remain explicit advisory evidence rather than being hidden through selective omission or artificial index expansion. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
+
+- record_id: `SCLV-CHG-20260810-QXCTL-LIFECYCLE-OBSERVATION-REPORT`
+- record_version: `3`
+- title: `Protected qxctl lifecycle profiles, observation, and reporting implemented`
+- status: `canonical`
+- date: `2026-08-10`
+- change_started_at: `2026-08-04T17:41:41Z`
+- change_completed_at: `2026-08-10T02:58:14Z`
+- recorded_at: `2026-08-10T03:01:55Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `canonical_addition`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#103`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/103`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `f8546b466b6127e610631f462b24ab6140b005af`
+- tree_digest: `sha256:7cec0b0b21d661102dd972f9b0d6f3aeb133e45789f81f618d27c6cb29fa3597`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/103`
+- ratification_evidence_digest: `sha256:404de7988069dda50e3eb161bb72c4986a0700c3d289a44d41eaf7a6ae478f04`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/lifecycle-profile-input.schema.json`
+  - `knowledge/schemas/v1/lifecycle-profile.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `libraries/knowledge-vector-engine-cpp/tests/foundation_test.cpp`
+  - `modules/knowledge-session-coordinator/FEATURES.md`
+  - `modules/knowledge-session-coordinator/INSTALL.md`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `modules/knowledge-session-coordinator/MANIFEST.md`
+  - `modules/knowledge-session-coordinator/SKILL.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `modules/knowledge-session-coordinator/src/lifecycle.cpp`
+  - `modules/knowledge-session-coordinator/tests/lifecycle_test.cpp`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_test.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgelifecycle/observation.go`
+  - `tools/qxctl/internal/knowledgelifecycle/profile.go`
+  - `tools/qxctl/internal/knowledgelifecycle/profile_test.go`
+  - `tools/qxctl/internal/knowledgelifecycle/scan_unix.go`
+  - `tools/qxctl/internal/knowledgelifecycle/scan_unsupported.go`
+  - `tools/qxctl/internal/knowledgelifecycle/state_unix.go`
+  - `tools/qxctl/internal/knowledgelifecycle/state_unsupported.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/lifecycle-profile-input.schema.json`
+  - `knowledge/schemas/v1/lifecycle-profile.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `libraries/knowledge-vector-engine-cpp/tests/foundation_test.cpp`
+  - `modules/knowledge-session-coordinator/FEATURES.md`
+  - `modules/knowledge-session-coordinator/INSTALL.md`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `modules/knowledge-session-coordinator/MANIFEST.md`
+  - `modules/knowledge-session-coordinator/SKILL.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `modules/knowledge-session-coordinator/src/lifecycle.cpp`
+  - `modules/knowledge-session-coordinator/tests/lifecycle_test.cpp`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_test.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgelifecycle/observation.go`
+  - `tools/qxctl/internal/knowledgelifecycle/profile.go`
+  - `tools/qxctl/internal/knowledgelifecycle/profile_test.go`
+  - `tools/qxctl/internal/knowledgelifecycle/scan_unix.go`
+  - `tools/qxctl/internal/knowledgelifecycle/scan_unsupported.go`
+  - `tools/qxctl/internal/knowledgelifecycle/state_unix.go`
+  - `tools/qxctl/internal/knowledgelifecycle/state_unsupported.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- change_summary: |
+    Under the Architect's direction, PR #103 completed the protected report-only qxctl lifecycle administration circuit. qxctl now maintains bounded per-TOPS lifecycle profiles, observes administrator-selected installation roots through fixed receipt locations, obtains a fresh exact SSIAG decision, invokes the exact bound C++ coordinator, and returns a newly validated dynamic lifecycle report. Action execution remains unavailable.
+- relationship_changes: |
+    knowledge/ remains the owner of lifecycle protocol and schema truth. qxctl owns noncanonical profile administration, configured-root observation, authorization composition, and report invocation without becoming a vector source of truth. SSIAG remains the permission decision and STAV-commit boundary. The C++ knowledge-session coordinator remains the report-only dependency planner and receives no install, activation, docking, or canonical mutation authority. Individual vectors still own their semantic consequences, and Maestro remains outside this implemented slice.
+- doctrine_changes: |
+    Profile input is separated from qxctl-generated generations, predecessor links, and digests. Protected profile changes use exact compare-and-swap, semantic retry, no-follow traversal, effective-user ownership checks, a persistent nonblocking lock, atomic replacement, and directory synchronization. Observation is restricted to the fixed `<root>/share/symphony/receipts/<module>/<version>/install-receipt.json` topology; it never discovers arbitrary executables. The complete observation remains time-bearing and content-addressed, while stable transaction and semantic action identity exclude collection time so a timestamp-only rescan cannot restart work.
+- compatibility_consequences: |
+    Known receipt-v1 installations are interpreted only through their exact existing adapters. Receipt v2 evidence is checked against content-addressed owned files, entry points, capabilities, receptors, and platform requirements. Unsupported, invalid, unreadable, ambiguous, or partially unavailable packages remain explicit unknown evidence rather than disappearing or being guessed. An absent configured future root is preserved as an empty observation without being created. The planner may dynamically choose a different dependency-ready order after evidence changes, but authorization, integrity, compare-and-swap, verification, audit, and ordered safety phases remain fixed.
+- publication_consequences: |
+    No module tag, release artifact, package coordinate, binary distribution, container, SDK, OpenAPI surface, Mintlify publication, public documentation release, marketing claim, or platform launch was published or authorized. The implementation remains active-development source on the rolling main branch.
+- projection_consequences: |
+    Lifecycle profiles are protected noncanonical administrator intent. Observations and reports are bounded noncanonical evidence and disposable projections. They do not prove an action occurred, persist applied state, create canonical vector records or semantic graph edges, establish Maestro presence, activate a version, select a package, or grant authority. Every report invocation rereads the profile, reobserves configured roots, and obtains fresh authorization.
+- evidence:
+  - `PR #103 merged into main at 2026-08-10T02:58:14Z by quantDIY as f8546b466b6127e610631f462b24ab6140b005af`
+  - `implementation head 71e3fd430e4650326fdb0f798f6b8baf8ce51618; 41 files changed, 3995 insertions, 74 deletions`
+  - `local-Git adapter evidence observed at 2026-08-10T03:01:55Z has digest sha256:f9ea2b4bdee88ccef6a0a77b3091b2e2c9971878409ed41e43abb31ae12d455e and binds tree digest sha256:7cec0b0b21d661102dd972f9b0d6f3aeb133e45789f81f618d27c6cb29fa3597`
+  - `ratification evidence digest sha256:404de7988069dda50e3eb161bb72c4986a0700c3d289a44d41eaf7a6ae478f04 binds compact lexicographically key-sorted metadata for repository, pull request number, state, merged and draft status, title, URL, base and head refs/revisions, merge revision, creation/merge/close times, authenticated merger, commit count, changed-file count, additions, and deletions`
+  - `canonical PR metadata identified QuanuX/Symphony#103, base main at 40d88f1397ec46f456fff2f02c0e8b7d93976a74, head agent/qxctl-lifecycle-observation at 71e3fd430e4650326fdb0f798f6b8baf8ce51618, one commit, and merge revision f8546b466b6127e610631f462b24ab6140b005af`
+  - `qxctl passed go test -count=1 ./... and go vet ./...; targeted lifecycle tests passed after final profile-store and observation hardening`
+  - `the coordinator passed its complete CTest matrix, including process smoke and timestamp-neutral stable-inventory regression`
+  - `the common C++ knowledge-vector foundation and SSFV engine test suites passed; live SSFV check remained structurally valid with intentionally partial coverage`
+  - `the symphony-validator unit and smoke suites passed; pre-closure live result was pass=4705 warning=193 violation=0 exit=0`
+  - `all 193 pre-closure warnings were the established sclv.affected_surface.unindexed historical-record advisory family; every PR #103 affected surface has an exact SKVI entry`
+  - `fresh SCLV engine and both provider-adapter CTests passed before this closure was authored`
+  - `pre-closure SCLV engine check reported 27 records, 108 passes, zero warnings, zero violations, and valid state`
+  - `closure SCLV engine check reported 28 records, 112 passes, zero warnings, zero violations, and valid state`
+  - `closure validator result pass=4883 warning=193 violation=0 exit=0; the closure introduced no advisory delta because all 41 affected surfaces have exact SKVI entries`
+  - `PR #103 was open, non-draft, cleanly mergeable, and verified at exact head 71e3fd430e4650326fdb0f798f6b8baf8ce51618 before authenticated merge`
+- non_authorizations:
+  - `lifecycle action execution, package installation, package uninstall, download, upgrade, rollback, activation, deactivation, receptor docking, receptor undocking, or entry-point execution`
+  - `applied-state persistence, boot-journal mutation, boot recovery mutation, transaction commit, plan persistence, or automatic first-boot application`
+  - `canonical knowledge mutation, proposal ratification, canonical apply, feature-worthiness decision, vector semantic execution, or engine-owned semantic truth`
+  - `implicit newest-version selection, arbitrary executable discovery, receipt-v1 rewrite, fabricated receipt-v2 facts, unknown-state deletion, destructive downgrade, or guessed incompatible migration`
+  - `authorization bypass, integrity bypass, compare-and-swap bypass, critical-state downgrade, guessed cycle breaking, hidden dependency edges, unbounded replanning, silent transaction restart, or safety-phase reordering`
+  - `live Maestro receptor, persistent docking state, persistent activation state, module orchestration, or installation authority`
+  - `PAM module, login-manager hook, shell hook, systemd unit, launchd job, watcher, daemon, remote network listener, REST endpoint, webhook, or background lifecycle process`
+  - `caller-class policy, human-only authority, AI-specific restriction, service-specific privilege, or authority inferred from actor type`
+  - `native Windows engine implementation, hot-path participation, warm-path participation, trading-node doctrine, or Go 1.27 production pin`
+  - `module tag, release artifact, package publication, public documentation, SDK generation, Mintlify publication, or launch claim`
+- notes: |
+    This post-merge closure records the protected qxctl lifecycle profile, observation, and report circuit merged by PR #103. Every changed file is listed as an affected surface and has an exact SKVI entry, so the record introduces no knowingly unindexed surface. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
