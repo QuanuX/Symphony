@@ -42,7 +42,7 @@ Structured JSON and Markdown projections remain deferred. Runtime source/AST cal
 
 ## Canonical JSON Boundary
 
-The artifact checker recognizes exactly 96 canonical JSON paths: 28 STAV v1 schemas/fixtures, twenty-four common SKV process/descriptor/receipt/binding/proposal/provider-evidence/reconciliation/session/lifecycle schemas (twenty-three v1 and one v2), three SSIAG authorization schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, and eighteen SSFV v1/v2 schemas. It does not authorize a directory prefix, generated projection, or new JSON artifact by extension.
+The artifact checker recognizes exactly 98 canonical JSON paths: 28 STAV v1 schemas/fixtures, twenty-six common SKV process/descriptor/receipt/binding/proposal/provider-evidence/reconciliation/session/lifecycle schemas (twenty-five v1 and one v2), three SSIAG authorization schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, and eighteen SSFV v1/v2 schemas. It does not authorize a directory prefix, generated projection, or new JSON artifact by extension.
 
 The contract-shape and canonical-surface checks require the SSFV Contract Quad, namespace and feature registries, deterministic feature-file format, independently installed engine Contract Quad/build surface, and qxctl grammar/client anchors. The validator confirms anchors, presence, SKVI coverage, and exact JSON allowlisting; it does not decide feature-worthiness or duplicate the implemented SSFV engine's distributed-record parser.
 

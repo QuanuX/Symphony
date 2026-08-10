@@ -601,6 +601,31 @@ void test_compatibility_integrity_and_digest_fail_closed() {
     }, "request.deadline_expired");
 }
 
+void test_observation_timestamp_does_not_restart_transaction() {
+    const auto component_receipt = receipt("stable-inventory");
+    const auto desired = desired_state(engine::Json::array({
+        desired_component("stable-inventory", component_receipt),
+    }));
+    const auto first_observation = observation(engine::Json::array({
+        observed_component("stable-inventory", component_receipt),
+    }));
+    auto later_observation = first_observation;
+    later_observation["observed_at"] = "2026-08-04T16:01:00Z";
+    finalize_observation(later_observation);
+    require(first_observation.at("observation_digest") != later_observation.at("observation_digest"),
+            "fresh observation timestamp did not change document evidence");
+
+    const auto first = plan(desired, first_observation);
+    const auto later = plan(desired, later_observation);
+    require(first.at("transaction_id") == later.at("transaction_id"),
+            "timestamp-only observation refresh restarted the lifecycle transaction");
+    require(first.at("observation_key") == later.at("observation_key"),
+            "timestamp-only observation refresh changed the stable observation key");
+    require(action(first, "stable-inventory", "activate").at("action_id") ==
+            action(later, "stable-inventory", "activate").at("action_id"),
+            "timestamp-only refresh changed semantic action identity");
+}
+
 void test_bounded_scale_plan() {
     engine::Json desired_components = engine::Json::array();
     engine::Json observed_components = engine::Json::array();
@@ -633,6 +658,7 @@ int main() {
         test_two_way_selection_and_determinism();
         test_receptor_switch_and_safe_package_sequence();
         test_compatibility_integrity_and_digest_fail_closed();
+        test_observation_timestamp_does_not_restart_transaction();
         test_bounded_scale_plan();
         std::cout << "knowledge lifecycle planner tests passed\n";
         return 0;

@@ -112,6 +112,20 @@ type knowledgeSessionOptions struct {
 	jsonOutput            bool
 }
 
+type knowledgeLifecycleOptions struct {
+	topsID                  string
+	scope                   string
+	stateRoot               string
+	repository              string
+	profileID               string
+	input                   string
+	expectedProfileDigest   string
+	configuredRoots         []string
+	priorAppliedStateDigest string
+	ttl                     time.Duration
+	jsonOutput              bool
+}
+
 func execute(args []string) int {
 	if len(args) == 0 {
 		printUsage()
@@ -202,7 +216,7 @@ func newKnowledgeCommand() *cobra.Command {
 		Use:  "knowledge",
 		Args: usageOnlyArgs,
 		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge subcommand is required: engines, reconcile, or session")
+			return fmt.Errorf("knowledge subcommand is required: engines, reconcile, session, or lifecycle")
 		},
 	}
 	engines := &cobra.Command{
@@ -362,8 +376,91 @@ func newKnowledgeCommand() *cobra.Command {
 	session.AddCommand(transition)
 	session.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	command.AddCommand(session)
+
+	lifecycle := &cobra.Command{
+		Use:  "lifecycle",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return fmt.Errorf("knowledge lifecycle subcommand is required: profile, observe, or report")
+		},
+	}
+	profile := &cobra.Command{
+		Use:  "profile",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return fmt.Errorf("knowledge lifecycle profile subcommand is required: list, show, set, or remove")
+		},
+	}
+	for _, operation := range []string{"list", "show", "set", "remove"} {
+		options := knowledgeLifecycleOptions{scope: "user", profileID: "default", ttl: 15 * time.Minute}
+		child := &cobra.Command{
+			Use:  operation,
+			Args: usageOnlyArgs,
+			RunE: func(*cobra.Command, []string) error {
+				return runKnowledgeLifecycleProfile(operation, options)
+			},
+		}
+		addKnowledgeLifecycleCommonFlags(child, &options)
+		if operation == "set" {
+			child.Flags().StringVar(&options.input, "input", "", "bounded no-follow lifecycle profile input JSON")
+		}
+		if operation == "set" || operation == "remove" {
+			child.Flags().StringVar(
+				&options.expectedProfileDigest, "expected-profile-digest", "",
+				"required prior profile state: absent or exact tagged SHA-256 digest",
+			)
+		}
+		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+		profile.AddCommand(child)
+	}
+	profile.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	lifecycle.AddCommand(profile)
+
+	observeOptions := knowledgeLifecycleOptions{scope: "user", profileID: "default", ttl: 15 * time.Minute}
+	observe := &cobra.Command{
+		Use:  "observe",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return runKnowledgeLifecycleObserve(observeOptions)
+		},
+	}
+	addKnowledgeLifecycleCommonFlags(observe, &observeOptions)
+	observe.Flags().StringSliceVar(
+		&observeOptions.configuredRoots, "root", nil,
+		"explicit trusted installation root for bootstrap observation; repeat as needed",
+	)
+	observe.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	lifecycle.AddCommand(observe)
+
+	reportOptions := knowledgeLifecycleOptions{scope: "user", profileID: "default", ttl: 15 * time.Minute}
+	report := &cobra.Command{
+		Use:  "report",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return runKnowledgeLifecycleReport(reportOptions)
+		},
+	}
+	addKnowledgeLifecycleCommonFlags(report, &reportOptions)
+	report.Flags().StringVar(
+		&reportOptions.priorAppliedStateDigest, "prior-applied-state-digest", "",
+		"optional exact tagged SHA-256 digest of the last applied-state evidence",
+	)
+	report.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	lifecycle.AddCommand(report)
+	lifecycle.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	command.AddCommand(lifecycle)
 	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	return command
+}
+
+func addKnowledgeLifecycleCommonFlags(command *cobra.Command, options *knowledgeLifecycleOptions) {
+	command.Flags().StringVar(&options.topsID, "tops-id", "", "immutable TOPS UUID")
+	command.Flags().StringVar(&options.scope, "scope", "user", "SSIAG installation scope: user or system")
+	command.Flags().StringVar(&options.stateRoot, "state-root", "", "state root; defaults to XDG_STATE_HOME or ~/.local/state")
+	command.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
+	command.Flags().StringVar(&options.profileID, "profile-id", "default", "exact lifecycle profile identity")
+	command.Flags().DurationVar(&options.ttl, "ttl", 15*time.Minute, "requested lifecycle authorization lifetime")
+	command.Flags().BoolVar(&options.jsonOutput, "json", false, "emit JSON")
 }
 
 func newSSFVCommand() *cobra.Command {
@@ -780,6 +877,17 @@ func failurePrefix(args []string) string {
 			switch args[2] {
 			case "begin", "status", "checkpoint", "close", "recover", "transition":
 				return "knowledge session " + args[2]
+			}
+		}
+		if len(args) > 2 && args[1] == "lifecycle" {
+			if args[2] == "observe" || args[2] == "report" {
+				return "knowledge lifecycle " + args[2]
+			}
+			if len(args) > 3 && args[2] == "profile" {
+				switch args[3] {
+				case "list", "show", "set", "remove":
+					return "knowledge lifecycle profile " + args[3]
+				}
 			}
 		}
 	case "skvi":
