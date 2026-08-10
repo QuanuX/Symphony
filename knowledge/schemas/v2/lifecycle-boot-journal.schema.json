@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-boot-journal:v2",
+  "title": "Symphony apply-capable lifecycle journal v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "format_version", "journal_id", "transaction_id", "operation_id",
+    "generation", "previous_journal_digest", "source_report_journal_digest",
+    "profile_id", "profile_digest", "tops_id", "mode", "state",
+    "desired_state_digest", "observation_key", "current_observation_digest",
+    "current_stable_inventory_digest", "prior_applied_state_digest",
+    "current_plan_digest", "current_plan_revision", "replan_count", "active_action",
+    "action_attempts", "blockers", "checkpoints", "compatibility", "extensions",
+    "recovery", "applied_state_digest", "started_at", "updated_at", "closed_at",
+    "canonical", "apply_authorized", "journal_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.lifecycle-boot-journal.v2"},
+    "format_version": {"const": 2},
+    "journal_id": {"$ref": "#/$defs/token"},
+    "transaction_id": {"$ref": "#/$defs/token"},
+    "operation_id": {"$ref": "#/$defs/token"},
+    "generation": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "previous_journal_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "source_report_journal_digest": {"$ref": "#/$defs/digest"},
+    "profile_id": {"$ref": "#/$defs/token"},
+    "profile_digest": {"$ref": "#/$defs/digest"},
+    "tops_id": {"$ref": "#/$defs/token"},
+    "mode": {"const": "apply-compatible"},
+    "state": {"enum": ["open", "acting", "blocked", "verified", "closed"]},
+    "desired_state_digest": {"$ref": "#/$defs/digest"},
+    "observation_key": {"$ref": "#/$defs/digest"},
+    "current_observation_digest": {"$ref": "#/$defs/digest"},
+    "current_stable_inventory_digest": {"$ref": "#/$defs/digest"},
+    "prior_applied_state_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "current_plan_digest": {"$ref": "#/$defs/digest"},
+    "current_plan_revision": {"type": "integer", "minimum": 1, "maximum": 256},
+    "replan_count": {"type": "integer", "minimum": 0, "maximum": 256},
+    "active_action": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/action"}]},
+    "action_attempts": {"type": "array", "maxItems": 32768, "items": {"$ref": "#/$defs/attempt"}},
+    "blockers": {"type": "array", "maxItems": 4096, "items": {"$ref": "urn:symphony:knowledge:lifecycle-boot-journal:v1#/$defs/blocker"}},
+    "checkpoints": {"type": "array", "minItems": 1, "maxItems": 32768, "items": {"$ref": "urn:symphony:knowledge:lifecycle-boot-journal:v1#/$defs/checkpoint"}},
+    "compatibility": {"$ref": "#/$defs/compatibility"},
+    "extensions": {"type": "array", "maxItems": 64, "items": {"$ref": "urn:symphony:knowledge:lifecycle-boot-journal:v1#/$defs/extension"}},
+    "recovery": {"$ref": "urn:symphony:knowledge:lifecycle-boot-journal:v1#/$defs/recovery"},
+    "applied_state_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "started_at": {"$ref": "#/$defs/timestamp"},
+    "updated_at": {"$ref": "#/$defs/timestamp"},
+    "closed_at": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/timestamp"}]},
+    "canonical": {"const": false},
+    "apply_authorized": {"const": true},
+    "journal_digest": {"$ref": "#/$defs/digest"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"state": {"const": "acting"}}},
+      "then": {"properties": {"active_action": {"$ref": "#/$defs/action"}, "closed_at": {"type": "null"}}}
+    },
+    {
+      "if": {"properties": {"state": {"enum": ["open", "blocked", "verified"]}}},
+      "then": {"properties": {"active_action": {"type": "null"}, "closed_at": {"type": "null"}}}
+    },
+    {
+      "if": {"properties": {"state": {"const": "closed"}}},
+      "then": {"properties": {"active_action": {"type": "null"}, "applied_state_digest": {"$ref": "#/$defs/digest"}, "closed_at": {"$ref": "#/$defs/timestamp"}}}
+    },
+    {
+      "if": {"properties": {"recovery": {"properties": {"state": {"const": "clean"}}}}},
+      "then": {"properties": {"recovery": {"properties": {"disposition": {"const": "not_applicable"}, "recovered_from_digest": {"type": "null"}}}}}
+    },
+    {
+      "if": {"properties": {"recovery": {"properties": {"state": {"const": "recovered"}}}}},
+      "then": {"properties": {"recovery": {"properties": {"disposition": {"not": {"const": "not_applicable"}}, "recovered_from_digest": {"$ref": "#/$defs/digest"}}}}}
+    }
+  ],
+  "$defs": {
+    "action": {
+      "allOf": [
+        {"$ref": "urn:symphony:knowledge:lifecycle-plan:v1#/$defs/action"},
+        {
+          "properties": {
+            "kind": {"enum": ["install", "uninstall", "select", "deselect", "activate", "deactivate"]},
+            "prerequisite_action_ids": {"maxItems": 0},
+            "target_receptor_id": {"type": "null"},
+            "disposition": {"enum": ["ready", "blocked"]},
+            "blockers": {"maxItems": 1}
+          }
+        },
+        {
+          "if": {"properties": {"disposition": {"const": "ready"}}},
+          "then": {"properties": {"blockers": {"maxItems": 0}}}
+        },
+        {
+          "if": {"properties": {"disposition": {"const": "blocked"}}},
+          "then": {"properties": {"kind": {"const": "install"}, "expected_artifact_digests": {"minItems": 1}, "blockers": {"minItems": 1, "maxItems": 1}}}
+        }
+      ]
+    },
+    "attempt": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "sequence", "plan_revision", "action_id", "component_id", "kind", "direction",
+        "attempt", "state", "blocker_class", "expected_before_digest",
+        "observed_after_digest", "evidence_digest", "started_at", "completed_at"
+      ],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1, "maximum": 32768},
+        "plan_revision": {"type": "integer", "minimum": 1, "maximum": 256},
+        "action_id": {"$ref": "#/$defs/token"},
+        "component_id": {"$ref": "#/$defs/token"},
+        "kind": {"enum": ["install", "uninstall", "select", "deselect", "activate", "deactivate"]},
+        "direction": {"enum": ["forward", "inverse", "neutral"]},
+        "attempt": {"type": "integer", "minimum": 1, "maximum": 8},
+        "state": {"enum": ["started", "committed", "already_applied", "blocked", "failed"]},
+        "blocker_class": {"oneOf": [{"type": "null"}, {"enum": ["dependency_wait", "observation_retryable", "compatibility_blocked", "authorization_denied", "integrity_fatal", "critical_state_unknown", "cycle_detected"]}]},
+        "expected_before_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+        "observed_after_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+        "evidence_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+        "started_at": {"$ref": "#/$defs/timestamp"},
+        "completed_at": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/timestamp"}]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"state": {"const": "started"}}},
+          "then": {"properties": {"blocker_class": {"type": "null"}, "observed_after_digest": {"type": "null"}, "evidence_digest": {"type": "null"}, "completed_at": {"type": "null"}}}
+        },
+        {
+          "if": {"properties": {"state": {"enum": ["committed", "already_applied", "blocked", "failed"]}}},
+          "then": {"properties": {"observed_after_digest": {"$ref": "#/$defs/digest"}, "evidence_digest": {"$ref": "#/$defs/digest"}, "completed_at": {"$ref": "#/$defs/timestamp"}}}
+        },
+        {
+          "if": {"properties": {"state": {"enum": ["committed", "already_applied"]}}},
+          "then": {"properties": {"blocker_class": {"type": "null"}}}
+        },
+        {
+          "if": {"properties": {"state": {"enum": ["blocked", "failed"]}}},
+          "then": {"properties": {"blocker_class": {"$ref": "#/$defs/blockerClass"}}}
+        }
+      ]
+    },
+    "compatibility": {
+      "type": "object", "additionalProperties": false,
+      "required": ["journal_read_versions", "journal_write_version", "source_journal_read_versions", "applied_read_versions", "applied_write_version", "required_capabilities", "optional_capabilities", "opaque_extensions_preserved"],
+      "properties": {
+        "journal_read_versions": {"const": [1, 2]},
+        "journal_write_version": {"const": 2},
+        "source_journal_read_versions": {"const": [1]},
+        "applied_read_versions": {"const": [1]},
+        "applied_write_version": {"const": 1},
+        "required_capabilities": {"type": "array", "uniqueItems": true, "maxItems": 128, "items": {"$ref": "#/$defs/token"}},
+        "optional_capabilities": {"type": "array", "uniqueItems": true, "maxItems": 128, "items": {"$ref": "#/$defs/token"}},
+        "opaque_extensions_preserved": {"const": true}
+      }
+    },
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "blockerClass": {"enum": ["dependency_wait", "observation_retryable", "compatibility_blocked", "authorization_denied", "integrity_fatal", "critical_state_unknown", "cycle_detected"]},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "timestamp": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"}
+  }
+}

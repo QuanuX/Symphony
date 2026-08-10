@@ -461,6 +461,18 @@ func buildLifecycleObservation(
 			}
 		}
 	}
+	runtimeStore, err := knowledgelifecycle.NewRuntimeStore(options.stateRoot, options.topsID, options.profileID)
+	if err != nil {
+		return knowledgelifecycle.Observation{}, "", profile, err
+	}
+	runtimeSnapshot, err := runtimeStore.Snapshot()
+	if err != nil {
+		return knowledgelifecycle.Observation{}, "", profile, err
+	}
+	var runtimeState *knowledgelifecycle.RuntimeState
+	if runtimeSnapshot.Exists {
+		runtimeState = &runtimeSnapshot.State
+	}
 	qxctlDigest, err := knowledgelifecycle.DigestCurrentExecutable()
 	if err != nil {
 		return knowledgelifecycle.Observation{}, "", profile, err
@@ -468,6 +480,7 @@ func buildLifecycleObservation(
 	observation, err := knowledgelifecycle.Observe(knowledgelifecycle.ObservationInput{
 		ProfileID: options.profileID, TOPSID: options.topsID, ConfiguredRoots: roots,
 		DesiredState: desired, BindingRegistryDigest: bindingDigest, SelectedReceipts: selected,
+		RuntimeState: runtimeState,
 		QxctlIdentity: knowledgelifecycle.Identity{
 			ComponentID: "qxctl", Version: strings.ReplaceAll(qxversion.Version, " ", "-"),
 			ExecutableDigest: qxctlDigest,
@@ -763,6 +776,7 @@ func taggedLifecycleDigest(value []byte) string {
 
 type validatedLifecyclePlan struct {
 	Raw           any
+	Actions       []knowledgelifecycle.PlannedAction
 	TransactionID string
 	PlanDigest    string
 	ActionCount   int
@@ -961,10 +975,27 @@ func validateLifecyclePlan(raw json.RawMessage, desiredDigest, observationDigest
 	if err := json.Unmarshal(raw, &display); err != nil {
 		return validatedLifecyclePlan{}, err
 	}
+	decodedActions, err := decodedLifecycleActions(actionObjects)
+	if err != nil {
+		return validatedLifecyclePlan{}, err
+	}
 	return validatedLifecyclePlan{
-		Raw: display, TransactionID: transaction, PlanDigest: planDigest, ActionCount: len(actions),
+		Raw: display, Actions: decodedActions, TransactionID: transaction,
+		PlanDigest: planDigest, ActionCount: len(actions),
 		ReadyCount: ready, DeferredCount: deferred, BlockedCount: blocked, FatalCount: len(fatal),
 	}, nil
+}
+
+func decodedLifecycleActions(values []map[string]any) ([]knowledgelifecycle.PlannedAction, error) {
+	actions := make([]knowledgelifecycle.PlannedAction, 0, len(values))
+	for _, value := range values {
+		action, err := knowledgelifecycle.DecodePlannedAction(value)
+		if err != nil {
+			return nil, fmt.Errorf("decode validated lifecycle action: %w", err)
+		}
+		actions = append(actions, action)
+	}
+	return actions, nil
 }
 
 func validatePlanIDSet(value any, actions map[string]string, dispositions ...string) (int, error) {

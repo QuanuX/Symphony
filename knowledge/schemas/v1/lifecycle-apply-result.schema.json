@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-apply-result:v1",
+  "title": "Symphony lifecycle apply result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "operation", "compatibility", "journal_present", "journal", "journal_digest",
+    "plan", "action", "applied_state", "changed", "recovered", "repair_actions", "read_only",
+    "apply_authorized", "canonical"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.lifecycle-apply-result.v1"},
+    "operation": {"enum": ["lifecycle_apply_prepare", "lifecycle_apply_finalize", "lifecycle_apply_close", "lifecycle_apply_status", "lifecycle_apply_recover"]},
+    "compatibility": {"$ref": "#/$defs/compatibility"},
+    "journal_present": {"type": "boolean"},
+    "journal": {"oneOf": [{"type": "null"}, {"$ref": "urn:symphony:knowledge:lifecycle-boot-journal:v2"}]},
+    "journal_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "plan": {"oneOf": [{"type": "null"}, {"$ref": "urn:symphony:knowledge:lifecycle-plan:v1"}]},
+    "action": {"oneOf": [{"type": "null"}, {"$ref": "urn:symphony:knowledge:lifecycle-plan:v1#/$defs/action"}]},
+    "applied_state": {"oneOf": [{"type": "null"}, {"$ref": "urn:symphony:knowledge:lifecycle-applied-state:v1"}]},
+    "changed": {"type": "boolean"},
+    "recovered": {"type": "boolean"},
+    "repair_actions": {"type": "array", "maxItems": 64, "items": {"$ref": "#/$defs/text"}},
+    "read_only": {"type": "boolean"},
+    "apply_authorized": {"type": "boolean"},
+    "canonical": {"const": false}
+  },
+  "allOf": [
+    {"if": {"properties": {"journal_present": {"const": false}}}, "then": {"properties": {"journal": {"type": "null"}, "journal_digest": {"type": "null"}}}},
+    {"if": {"properties": {"journal_present": {"const": true}}}, "then": {"properties": {"journal": {"$ref": "urn:symphony:knowledge:lifecycle-boot-journal:v2"}, "journal_digest": {"$ref": "#/$defs/digest"}}}},
+    {"if": {"properties": {"operation": {"const": "lifecycle_apply_status"}}}, "then": {"properties": {"plan": {"type": "null"}, "changed": {"const": false}, "recovered": {"const": false}, "read_only": {"const": true}, "apply_authorized": {"const": false}}}},
+    {"if": {"properties": {"operation": {"enum": ["lifecycle_apply_prepare", "lifecycle_apply_finalize", "lifecycle_apply_close", "lifecycle_apply_recover"]}}}, "then": {"properties": {"read_only": {"const": false}, "apply_authorized": {"const": true}}}},
+    {"if": {"properties": {"operation": {"const": "lifecycle_apply_recover"}}}, "then": {"properties": {"plan": {"type": "null"}}}}
+  ],
+  "$defs": {
+    "compatibility": {
+      "type": "object", "additionalProperties": false,
+      "required": ["mode", "process_protocol", "journal_read_version", "journal_write_version", "missing_capabilities", "two_way_procedural_compatibility", "reason"],
+      "properties": {
+        "mode": {"enum": ["full", "read_only", "blocked"]},
+        "process_protocol": {"oneOf": [{"type": "null"}, {"const": "symphony.knowledge.engine-process.v1"}]},
+        "journal_read_version": {"oneOf": [{"type": "null"}, {"const": 2}]},
+        "journal_write_version": {"oneOf": [{"type": "null"}, {"const": 2}]},
+        "missing_capabilities": {"type": "array", "maxItems": 128, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}},
+        "two_way_procedural_compatibility": {"const": true},
+        "reason": {"$ref": "#/$defs/text"}
+      }
+    },
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "text": {"type": "string", "minLength": 1, "maxLength": 4096},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}
