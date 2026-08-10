@@ -2,7 +2,7 @@
 
 ## Status
 
-This document records the Architect-ratified topology for explicit authenticated session transitions and the cross-vector desired-state lifecycle. The session-transition surface described below is implemented by qxctl over the existing SSIAG-authorized coordinator operations. Canonical profile-input, protected profile, desired-state, observation, plan-command, dependency-driven plan, applied-state, boot-journal/head/command/result, and immutable receipt v2 schemas are present. qxctl implements SSIAG-authorized desired-profile administration, fixed-layout configured-root observation, fresh report invocation, and durable boot/status/recovery administration through one exact bound C++ coordinator. The coordinator implements deterministic report-only dependency planning plus protected dual-slot lifecycle boot journaling, expected-state progression, timestamp-stable no-op detection, linked replanning, and evidence-based recovery. Lifecycle action execution, applied-state persistence, package installation/uninstall, activation, host boot-hook installation, and live Maestro docking remain planned gates.
+This document records the Architect-ratified topology for explicit authenticated session transitions and the cross-vector desired-state lifecycle. The session-transition surface described below is implemented by qxctl over the existing SSIAG-authorized coordinator operations. Canonical profile-input, protected profile, desired-state, observation, plan-command, dependency-driven plan, applied-state, runtime-state, report-journal v1, apply-journal v2, command/result, and immutable receipt-v2 schemas are present. qxctl implements SSIAG-authorized desired-profile administration, fixed-layout configured-root observation, fresh report invocation, durable report-journal administration, and an explicit `apply-compatible` convergence loop through one exact bound C++ coordinator. The coordinator implements deterministic dependency planning, protected side-by-side report and apply journals, exact compare-and-swap progression, timestamp-stable no-op detection, linked replanning, action-attempt serialization, content-addressed applied-state commitment, and evidence-based recovery. Generic staged receipt-v2 install/uninstall and protected selection/activation are implemented on Linux and the macOS development path. Receipt-v1 mutation, downloads, arbitrary entry-point execution, host boot-hook installation, live service activation, coordinator self-handoff, and Maestro docking remain unavailable.
 
 ## Purpose
 
@@ -20,8 +20,8 @@ Neither job runs on a hot or warm path. Neither job mutates canonical knowledge.
 - `knowledge/` owns cross-vector desired-state, observation, plan, journal, compatibility, and first-boot protocol truth.
 - individual vectors own their semantic contracts and vector-specific lifecycle consequences;
 - immutable package receipts own installed-file identity and removal boundaries;
-- qxctl owns Cobra administration, explicit host-event entry points, protected profile selection, evidence collection, SSIAG exchange, and bounded coordinator invocation;
-- the C++ knowledge-session coordinator owns freezing-path transition planning, durable lifecycle journaling, compare-and-swap progression, compatibility negotiation, and evidence-based recovery;
+- qxctl owns Cobra administration, explicit host-event entry points, protected profile and runtime-state selection, evidence collection, SSIAG exchange, bounded coordinator invocation, and the reviewed external package/runtime action adapters;
+- the C++ knowledge-session coordinator owns freezing-path transition planning, separate report/apply lifecycle journals, action-attempt serialization, applied-state commit selection, compare-and-swap progression, compatibility negotiation, and evidence-based recovery;
 - SSIAG decides whether the kernel-derived caller may perform each lifecycle operation and emits safe capability evidence only after the corresponding STAV decision event commits;
 - STAV records safe security-relevant decision outcomes and never becomes the lifecycle state store;
 - Maestro will persist docking and deployment presence after its own implementation gate, but will not own vector semantics or desired-state policy.
@@ -65,7 +65,7 @@ Component kind is descriptive routing, not authority. The model must not classif
 
 ## Receipt Migration
 
-Current receipt v1 packages remain valid and are inspected through their existing exact per-module adapters. Future generic discovery requires a separately ratified receipt v2 that is immutable and self-contained:
+Receipt v1 packages remain valid and are inspected through their existing exact per-module adapters. Generic discovery and mutation use the separately versioned immutable receipt-v2 contract:
 
 - every owned path carries a content digest and file kind;
 - executable entry points and descriptors are explicit;
@@ -74,7 +74,9 @@ Current receipt v1 packages remain valid and are inspected through their existin
 - docking and activation live in protected desired/observed state, not package ownership evidence;
 - unknown executables are never run merely because a receipt was discovered.
 
-New qxctl versions must dual-read supported v1 and v2 evidence. They must not rewrite a v1 receipt into v2 or infer missing v2 facts. An older qxctl encountering a newer critical desired-state or receipt contract must preserve it and report read-only incompatibility.
+New qxctl versions must dual-read supported v1 and v2 evidence. They must not rewrite a v1 receipt into v2 or infer missing v2 facts. Generic package mutation is limited to an exact receipt-v2 package copied from an explicit trusted staged root. No package is downloaded. Install publishes the immutable receipt only after every owned file is durable; uninstall requires a separate exact staged rollback proof, validates every remaining owned file before deletion, and removes the receipt last. Missing files during retry are treated only as resumable evidence, while any conflicting administrator file or digest mismatch fails closed. Receipt v1 remains observation-only until an exact per-package mutation adapter is separately reviewed.
+
+The current package lock serializes mutation per target root, but the apply adapter does not yet maintain a host-global ownership/reference graph across independently administered TOPS profiles or separate state roots. An exact SSIAG authorization permits the named operation; it is not evidence that another control domain has released the same receipt. Until a separately ratified shared-root ownership protocol exists, independently managed profiles must not concurrently claim uninstall authority over one package root. Cross-TOPS shared-root reclamation remains a future lifecycle/Maestro integration gate rather than being inferred from local absence.
 
 ## Desired, Observed, and Applied State
 
@@ -84,6 +86,8 @@ Four state surfaces remain separate:
 - **desired state**: protected noncanonical administrator intent managed through qxctl;
 - **observed state**: a disposable content-addressed inventory of validated receipts, files, bindings, and later Maestro presence;
 - **applied state**: durable noncanonical evidence of the last exact lifecycle plan successfully committed.
+
+Protected qxctl runtime state remains a fifth administrative surface. It records only the exact selected receipt plus generic `active`/`inactive` eligibility for a component, uses its own linked compare-and-swap generations, and remains `undocked`. It is not an immutable package receipt, an engine binding, a Maestro presence record, or proof that arbitrary component code ran.
 
 A difference is a plan input, not an error and not permission to mutate. Version precedence is never inferred from semantic-version recency. Upgrade and rollback are both exact selected-identity changes.
 
@@ -149,27 +153,29 @@ The complete observation document remains content-addressed, so refreshed collec
 9. verify the resulting observation before closing the transaction;
 10. publish only safe lifecycle/audit metadata through the applicable SSIAG/STAV path.
 
-Steps 1 through 6 are implemented through the report-only durable circuit. Steps 7 through 10 remain separately gated; the current journal therefore contains no action attempts, persists no applied state, and emits no lifecycle event directly to STAV. The complete sequence remains the required safety-phase order for the later apply circuit. Within the future action phase, component work follows the dependency-driven ready-set contract above and may be replanned around a localized blocker without bypassing authorization, compare-and-swap, integrity, verification, or audit.
+Steps 1 through 9 are implemented for the exact local `apply-compatible` scope. The report-only v1 journal remains unchanged and becomes the required source authorization for a separate apply-capable v2 stream. Before qxctl changes host state, the coordinator durably records the selected action as active. An exact staged receipt may resolve only the single package-absence blocker on an install with no graph prerequisites or additional blockers; it never converts an ordered or multiply blocked action into a ready action. qxctl then executes only a reviewed generic adapter, re-observes all configured roots, and asks the coordinator to finalize the attempt. The coordinator accepts success only when the new observation directly proves the prepared transition, then writes content-addressed applied evidence and advances the v2 journal/head commit point. A crash before host mutation replays the prepared action; a crash after host mutation observes `already_applied`; a crash after applied-evidence publication but before head publication leaves an unselected immutable file and recovery continues from the selected journal chain. When the report is already converged, an explicit close operation commits applied evidence without manufacturing an action.
 
-The administrator-selectable boot mode is `report` or `apply-compatible`. `report` is the default until authenticated lifecycle mutation is implemented. qxctl currently persists either intent but always invokes the report-only coordinator and states that apply is unavailable. Disabling automatic application never disables parsing bounds, ownership checks, receipt integrity, expected-state compare-and-swap, critical-extension blocking, or secret exclusion.
+Step 10 is satisfied only for the existing SSIAG authorization-decision audit path: each status, prepare, finalize, close, and recovery request obtains fresh exact permission evidence whose safe security decision is committed through SSIAG/STAV before release. qxctl and the coordinator do not append a second direct lifecycle-action event, and transient attempt details never become mutable STAV ledger state. A distinct lifecycle event family, if desired beyond the existing decisions, remains a separate protocol and producer-integration gate.
+
+The administrator-selectable boot mode is `report` or `apply-compatible`. `report` remains the default and never executes an action. `apply-compatible` only makes the profile eligible for the separate explicit `qxctl knowledge lifecycle apply` command; `boot` itself remains report-only. Apply requires the exact report-journal digest, exact current apply-journal state, exact applied-state state, a stable operation ID, and explicit trusted staged roots. Disabling application never disables parsing bounds, ownership checks, receipt integrity, expected-state compare-and-swap, critical-extension blocking, or secret exclusion.
 
 Desired profiles are protected per TOPS beneath `${XDG_STATE_HOME:-~/.local/state}/symphony/<tops-id>/qxctl/knowledge/lifecycle/profiles/`, or beneath an explicit qxctl-selected state root. Mutations use an exact expected profile digest, semantic retry is a stable no-op, generations and predecessor digests are qxctl-generated, and durable writes use a persistent no-follow lock plus atomic replacement and directory synchronization. Profile roots may be changed through qxctl; an absent future installation root is retained as empty observed evidence rather than created or treated as a scan failure. Existing roots are no-follow trusted directories, and observation scans only `<root>/share/symphony/receipts/<module>/<version>/install-receipt.json`, never arbitrary executable discovery. Known receipt v1 packages use exact existing adapters. Receipt v2 packages are checked against their content-addressed owned files, entry points, capabilities, receptors, and platform requirements. Unsupported, unreadable, and ambiguous packages remain explicit preserved unknown evidence.
 
-If the desired profile is absent, unsupported, or critically extended, first boot fails closed or reports protected read-only compatibility state and preserves every installed package and binding. If an operating-system update changes only the platform-compatibility digest, the same planner reevaluates all selected components against their declared platform requirements without assuming reinstall, upgrade, or removal. The `knowledge lifecycle boot|status|recover` grammar is implemented. Host boot integration and its install/uninstall lifecycle remain future reviewed surfaces.
+If the desired profile is absent, unsupported, or critically extended, first boot fails closed or reports protected read-only compatibility state and preserves every installed package and binding. If an operating-system update changes only the platform-compatibility digest, the same planner reevaluates all selected components against their declared platform requirements without assuming reinstall, upgrade, or removal. The `knowledge lifecycle boot|status|recover|apply|apply-status|apply-recover` grammar is implemented. Host boot integration and its install/uninstall lifecycle remain future reviewed surfaces.
 
 ## Durability and Recovery
 
-The lifecycle journal uses the existing proven durability pattern: a persistent mode-`0600` no-follow lock, private per-TOPS/profile directories, dual slots, an atomically replaced head, file and directory synchronization, linked generations, stable operation IDs, and exact compare-and-swap. It persists the authorization-bound profile digest so a profile-only change cannot masquerade as an idempotent replay. Its current stable-inventory digest deliberately excludes only observation collection time and its enclosing document digest, so a timestamp-only rescan does not advance the journal. Profile, desired, stable inventory, platform/provider compatibility, binding, receipt, or prior-applied evidence changes produce a linked plan revision while the transaction identity remains stable. A future writable format must dual-read its predecessor before it can migrate state.
+Both lifecycle journal families use the proven durability pattern: a persistent mode-`0600` no-follow lock, private per-TOPS/profile directories, dual slots, an atomically replaced head, file and directory synchronization, linked generations, stable operation IDs, and exact compare-and-swap. Report journal v1 and apply journal v2 are side by side rather than an in-place format upgrade, and each has its own lock and head. The v2 stream names and digest-binds its exact v1 source journal. It persists action attempts before and after external mutation and selects immutable `applied.<digest>.json` evidence only through the committed journal/head. Its stable-inventory digest deliberately excludes only observation collection time and its enclosing document digest, so a timestamp-only rescan does not advance either transaction. A future writable format must dual-read its predecessor before it can migrate state.
 
-Implemented recovery may repair a missing/damaged head or adopt one uniquely linked adjacent successor by committing a new forward recovery checkpoint. It requires exact expected state or explicit `--discover`, full write compatibility, and a unique digest-linked local chain. It may not select between divergent equal-generation states, delete unknown state, downgrade a critical extension, manufacture a successful action, guess a dependency edge, reorder a safety phase, or erase a still-unresolved desired/observed difference. Resuming action attempts and closing applied transactions remain unavailable because action execution is not implemented.
+Implemented report and apply recovery may repair a missing/damaged head or adopt one uniquely linked adjacent successor by committing a new forward recovery checkpoint. Each requires exact expected state or explicit `--discover`, full write compatibility, and a unique digest-linked local chain. Apply recovery preserves the active prepared action and its attempt history so qxctl can re-observe and resume without guessing whether the host mutation occurred. Recovery may not select between divergent equal-generation states, delete unknown state, downgrade a critical extension, manufacture a successful action, guess a dependency edge, reorder a safety phase, or erase a still-unresolved desired/observed difference.
 
-Transient attempt errors remain noncanonical journal evidence and are reconciled forward. Canonical vectors and append-only ledgers are never poisoned with mutable boot-attempt state.
+Transient attempt errors remain noncanonical journal evidence and are reconciled forward. A failed or blocked attempt remains visible within the current transaction, while a later evidence-backed retry appends a new attempt and closes only after whole-profile verification. Canonical vectors and append-only ledgers are never poisoned with mutable boot-attempt state.
 
 ## Addition and Removal Scenarios
 
 ### Module arrives before desired-state support
 
-The package remains installed and unmanaged. Older software does not execute or remove it. A compatible qxctl can later adopt it after validating its receipt and an administrator updates desired state.
+The package remains installed and unmanaged. Older software does not execute or remove it. A compatible qxctl can later adopt it after validating its receipt and an administrator updates desired state. Receipt-v2 support may arrive before or after the package without changing that rule.
 
 ### Desired state arrives before the module
 
@@ -189,7 +195,7 @@ The package becomes a retirement candidate. Apply must first verify that no sele
 
 ### Upgrade or rollback is interrupted
 
-Both package versions may coexist. The selected binding and applied-state digest remain on the last committed identity until one exact forward action commits. Retry reuses the same semantic operation ID and either observes the completed step or resumes from the last checkpoint.
+Both package versions may coexist. Protected runtime selection and the applied-state digest remain on the last committed identity until one exact forward action commits. Retry reuses the same semantic operation ID and either observes the completed step or resumes the prepared action from the last checkpoint. No semantic-version preference is inferred.
 
 ## Maestro Docking Boundary
 
@@ -203,16 +209,16 @@ The engine implementation remains Linux-first with macOS development support. Na
 
 ## Implementation Sequence
 
-1. Implement explicit idempotent qxctl login/refresh/logout transition composition over the existing authenticated coordinator operations.
+1. Implement explicit idempotent qxctl login/refresh/logout transition composition over the existing authenticated coordinator operations. **Completed.**
 2. Add the generic desired-state, observation, dependency-driven plan, applied-state, boot-journal/head, and immutable content-addressed receipt v2 schemas while retaining strict v1 adapters. **Completed.**
 3. Implement the C++ coordinator dependency scheduler, two-way compatibility negotiation, and deterministic report-only planner over caller-supplied evidence. **Completed.** Configured-root observation remains in step 4.
 4. Implement qxctl desired-profile administration and configured-root inventory with caller-neutral SSIAG authorization. **Completed.** qxctl also performs fresh observation and exact bound-coordinator invocation for report-only planning; no plan is persisted.
-5. Implement durable C++ boot journaling, report mode, bounded replanning recovery, and installation-change diagnosis. **Completed for report-only operation.** The installed host hook, applied-state writer, action attempts, and apply authority remain excluded.
-6. Implement separately gated `apply-compatible`, exact package lifecycle actions, and forward/inverse rollback proof.
+5. Implement durable C++ boot journaling, report mode, bounded replanning recovery, and installation-change diagnosis. **Completed for report-only operation.** The installed host hook remains excluded; applied-state writes and action attempts were excluded from this v1 step and are implemented only through the separate v2 boundary in step 6.
+6. Implement separately gated `apply-compatible`, exact package lifecycle actions, and forward/inverse rollback proof. **Completed for explicit local receipt-v2 install/uninstall and protected selection/activation.** Live service/process activation, receipt-v1 mutation adapters, coordinator replacement, downloads, host hooks, and Maestro docking remain excluded.
 7. Add Maestro docking only after its receptor and presence contracts are ratified.
 
 Each step must preserve older supported operation surfaces and pass upgrade-order matrices in both directions.
 
 ## Current Non-Authorizations
 
-These contracts do not authorize lifecycle apply, automatic installation, automatic uninstall, implicit latest-version selection, package download, arbitrary executable discovery, receipt rewriting, activation, live Maestro docking, remote lifecycle APIs, canonical knowledge mutation, hot/warm participation, native Windows engines, or hidden host integration. A canonical schema is not evidence that its persistence or runtime behavior is implemented.
+These contracts do not authorize implicit or unattended apply, receipt-v1 package mutation, implicit latest-version selection, package download, arbitrary executable discovery or entry-point execution, receipt rewriting, live process/service activation, coordinator self-replacement, engine-binding rewrite, live Maestro docking, remote lifecycle APIs, canonical knowledge mutation, hot/warm participation, native Windows engines, or hidden host integration. The implemented generic activation state is protected administrative eligibility only. A canonical schema is not evidence that any broader adapter, host integration, or runtime behavior exists.

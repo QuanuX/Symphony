@@ -7,5 +7,6 @@ namespace symphony::knowledge::session {
 
 [[nodiscard]] engine::Json lifecycle_journal_capabilities();
 [[nodiscard]] engine::Json handle_lifecycle_journal(const engine::Request& request);
+[[nodiscard]] engine::Json handle_lifecycle_apply_request(const engine::Request& request);
 
 }

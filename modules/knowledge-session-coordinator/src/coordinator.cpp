@@ -135,6 +135,11 @@ engine::Json descriptor() {
             engine::Json{{"name", "lifecycle_boot"}, {"availability", "implemented_report_only_persistence"}, {"mutates_canonical", false}},
             engine::Json{{"name", "lifecycle_boot_status"}, {"availability", "implemented"}, {"mutates_canonical", false}},
             engine::Json{{"name", "lifecycle_boot_recover"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "lifecycle_apply_prepare"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "lifecycle_apply_finalize"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "lifecycle_apply_close"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "lifecycle_apply_status"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "lifecycle_apply_recover"}, {"availability", "implemented"}, {"mutates_canonical", false}},
             engine::Json{{"name", "apply"}, {"availability", "disabled"}, {"mutates_canonical", true}},
         })},
         {"limits", engine::Json{
@@ -181,6 +186,11 @@ engine::Json handle_request(const engine::Request& request) {
     if (request.operation == "lifecycle_boot" || request.operation == "lifecycle_boot_status" ||
         request.operation == "lifecycle_boot_recover") {
         return handle_lifecycle_journal(request);
+    }
+    if (request.operation == "lifecycle_apply_prepare" || request.operation == "lifecycle_apply_finalize" ||
+        request.operation == "lifecycle_apply_status" || request.operation == "lifecycle_apply_recover" ||
+        request.operation == "lifecycle_apply_close") {
+        return handle_lifecycle_apply_request(request);
     }
     throw engine::Error("operation.unsupported", "operation is reserved or unsupported", 4);
 }

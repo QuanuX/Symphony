@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-apply-command:v1",
+  "title": "Symphony lifecycle apply command v1",
+  "oneOf": [
+    {"$ref": "#/$defs/mutation"},
+    {"$ref": "#/$defs/state"}
+  ],
+  "$defs": {
+    "mutation": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "protocol", "operation", "state_root", "operation_id", "expected_journal_digest",
+        "expected_applied_state_digest", "source_report_journal_digest", "profile_id", "tops_id",
+        "profile_digest", "stable_inventory_digest", "desired_state", "observation",
+        "prior_applied_state_digest", "action_id", "available_artifact_digests", "outcome",
+        "blocker_class", "execution_evidence_digest", "authorization_decision", "planner_client",
+        "journal_client"
+      ],
+      "properties": {
+        "protocol": {"const": "symphony.knowledge.lifecycle-apply-command.v1"},
+        "operation": {"enum": ["lifecycle_apply_prepare", "lifecycle_apply_finalize", "lifecycle_apply_close"]},
+        "state_root": {"type": "string", "minLength": 2, "maxLength": 4096, "pattern": "^/"},
+        "operation_id": {"$ref": "#/$defs/token"},
+        "expected_journal_digest": {"oneOf": [{"const": "absent"}, {"$ref": "#/$defs/digest"}]},
+        "expected_applied_state_digest": {"oneOf": [{"const": "absent"}, {"$ref": "#/$defs/digest"}]},
+        "source_report_journal_digest": {"$ref": "#/$defs/digest"},
+        "profile_id": {"$ref": "#/$defs/token"},
+        "tops_id": {"$ref": "#/$defs/token"},
+        "profile_digest": {"$ref": "#/$defs/digest"},
+        "stable_inventory_digest": {"$ref": "#/$defs/digest"},
+        "desired_state": {"$ref": "urn:symphony:knowledge:lifecycle-desired-state:v1"},
+        "observation": {"$ref": "urn:symphony:knowledge:lifecycle-observation:v1"},
+        "prior_applied_state_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+        "action_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+        "available_artifact_digests": {"type": "array", "maxItems": 4096, "uniqueItems": true, "items": {"$ref": "#/$defs/digest"}},
+        "outcome": {"oneOf": [{"type": "null"}, {"enum": ["committed", "already_applied", "blocked", "failed"]}]},
+        "blocker_class": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/blockerClass"}]},
+        "execution_evidence_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+        "authorization_decision": {"$ref": "urn:symphony:ssiag:authorization-decision:v1"},
+        "planner_client": {"$ref": "urn:symphony:knowledge:lifecycle-plan-command:v1#/$defs/client"},
+        "journal_client": {"$ref": "#/$defs/client"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"operation": {"const": "lifecycle_apply_prepare"}}},
+          "then": {"properties": {"action_id": {"$ref": "#/$defs/token"}, "outcome": {"type": "null"}, "blocker_class": {"type": "null"}, "execution_evidence_digest": {"type": "null"}}}
+        },
+        {
+          "if": {"properties": {"operation": {"const": "lifecycle_apply_finalize"}}},
+          "then": {"properties": {"action_id": {"$ref": "#/$defs/token"}, "outcome": {"enum": ["committed", "already_applied", "blocked", "failed"]}, "execution_evidence_digest": {"$ref": "#/$defs/digest"}}}
+        },
+        {
+          "if": {"properties": {"operation": {"const": "lifecycle_apply_finalize"}, "outcome": {"enum": ["committed", "already_applied"]}}},
+          "then": {"properties": {"blocker_class": {"type": "null"}}}
+        },
+        {
+          "if": {"properties": {"operation": {"const": "lifecycle_apply_finalize"}, "outcome": {"enum": ["blocked", "failed"]}}},
+          "then": {"properties": {"blocker_class": {"$ref": "#/$defs/blockerClass"}}}
+        },
+        {
+          "if": {"properties": {"operation": {"const": "lifecycle_apply_close"}}},
+          "then": {"properties": {"action_id": {"type": "null"}, "outcome": {"type": "null"}, "blocker_class": {"type": "null"}, "execution_evidence_digest": {"type": "null"}}}
+        }
+      ]
+    },
+    "state": {
+      "type": "object", "additionalProperties": false,
+      "required": ["protocol", "operation", "state_root", "operation_id", "expected_journal_digest", "profile_id", "tops_id", "authorization_decision", "journal_client"],
+      "properties": {
+        "protocol": {"const": "symphony.knowledge.lifecycle-apply-command.v1"},
+        "operation": {"enum": ["lifecycle_apply_status", "lifecycle_apply_recover"]},
+        "state_root": {"type": "string", "minLength": 2, "maxLength": 4096, "pattern": "^/"},
+        "operation_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+        "expected_journal_digest": {"oneOf": [{"type": "null"}, {"const": "discover"}, {"$ref": "#/$defs/digest"}]},
+        "profile_id": {"$ref": "#/$defs/token"},
+        "tops_id": {"$ref": "#/$defs/token"},
+        "authorization_decision": {"$ref": "urn:symphony:ssiag:authorization-decision:v1"},
+        "journal_client": {"$ref": "#/$defs/client"}
+      },
+      "allOf": [
+        {"if": {"properties": {"operation": {"const": "lifecycle_apply_status"}}}, "then": {"properties": {"operation_id": {"type": "null"}, "expected_journal_digest": {"type": "null"}}}},
+        {"if": {"properties": {"operation": {"const": "lifecycle_apply_recover"}}}, "then": {"properties": {"operation_id": {"$ref": "#/$defs/token"}, "expected_journal_digest": {"oneOf": [{"const": "discover"}, {"$ref": "#/$defs/digest"}]}}}}
+      ]
+    },
+    "client": {
+      "type": "object", "additionalProperties": false,
+      "required": ["client_id", "client_version", "process_protocols", "journal_read_versions", "journal_write_versions", "capabilities"],
+      "properties": {
+        "client_id": {"const": "qxctl"},
+        "client_version": {"$ref": "#/$defs/version"},
+        "process_protocols": {"type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}},
+        "journal_read_versions": {"type": "array", "minItems": 1, "maxItems": 16, "uniqueItems": true, "contains": {"const": 2}, "items": {"type": "integer", "minimum": 1, "maximum": 16}},
+        "journal_write_versions": {"type": "array", "minItems": 1, "maxItems": 16, "uniqueItems": true, "contains": {"const": 2}, "items": {"type": "integer", "minimum": 1, "maximum": 16}},
+        "capabilities": {"type": "array", "maxItems": 128, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}}
+      }
+    },
+    "blockerClass": {"enum": ["dependency_wait", "observation_retryable", "compatibility_blocked", "authorization_denied", "integrity_fatal", "critical_state_unknown", "cycle_detected"]},
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "version": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[0-9A-Za-z.+-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

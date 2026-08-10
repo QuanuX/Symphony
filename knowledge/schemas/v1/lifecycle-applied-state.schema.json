@@ -30,7 +30,7 @@
       "items": {"$ref": "#/$defs/component"}
     },
     "execution_trace": {
-      "type": "array", "maxItems": 4096,
+      "type": "array", "maxItems": 32768,
       "items": {"$ref": "#/$defs/execution"}
     },
     "unresolved_blockers": {
@@ -85,7 +85,7 @@
         "evidence_digest"
       ],
       "properties": {
-        "sequence": {"type": "integer", "minimum": 1, "maximum": 4096},
+        "sequence": {"type": "integer", "minimum": 1, "maximum": 32768},
         "plan_revision": {"type": "integer", "minimum": 1, "maximum": 256},
         "action_id": {"$ref": "#/$defs/token"},
         "component_id": {"$ref": "#/$defs/token"},

@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"strings"
 	"testing"
+
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgelifecycle"
 )
 
 func TestValidateLifecyclePlanRejectsApplyAndAcceptsDynamicReport(t *testing.T) {
@@ -99,7 +101,7 @@ func TestLifecycleCommandGrammarIsRegistered(t *testing.T) {
 	if err != nil || command == nil || command.Name() != "report" {
 		t.Fatalf("lifecycle report grammar is absent: command=%v err=%v", command, err)
 	}
-	for _, name := range []string{"boot", "status", "recover"} {
+	for _, name := range []string{"boot", "status", "recover", "apply", "apply-status", "apply-recover"} {
 		command, _, err = root.Find([]string{"knowledge", "lifecycle", name})
 		if err != nil || command == nil || command.Name() != name {
 			t.Fatalf("lifecycle %s grammar is absent: command=%v err=%v", name, command, err)
@@ -159,6 +161,104 @@ func TestValidateLifecycleBootResultRejectsCriticalOrDigestDrift(t *testing.T) {
 	raw, _ = json.Marshal(result)
 	if _, err := validateLifecycleBootResult(raw, "lifecycle_boot_status", "default", "tops-test", "", "", "", ""); err == nil {
 		t.Fatal("unknown critical lifecycle extension was accepted")
+	}
+}
+
+func TestValidateLifecycleApplyResultEnforcesMutationAndCompatibilityBoundaries(t *testing.T) {
+	fixture := func(operation string) map[string]any {
+		return map[string]any{
+			"protocol": "symphony.knowledge.lifecycle-apply-result.v1", "operation": operation,
+			"compatibility": map[string]any{
+				"mode": "full", "process_protocol": "symphony.knowledge.engine-process.v1",
+				"journal_read_version": 2, "journal_write_version": 2,
+				"missing_capabilities": []any{}, "two_way_procedural_compatibility": true,
+				"reason": "client and coordinator share the complete apply-capable v2 contract",
+			},
+			"journal_present": false, "journal": nil, "journal_digest": nil, "plan": nil,
+			"action": nil, "applied_state": nil, "changed": false, "recovered": false,
+			"repair_actions": []any{}, "read_only": operation == "lifecycle_apply_status",
+			"apply_authorized": operation != "lifecycle_apply_status", "canonical": false,
+		}
+	}
+	validate := func(result map[string]any, operation string) error {
+		raw, err := json.Marshal(result)
+		if err != nil {
+			t.Fatal(err)
+		}
+		_, err = validateLifecycleApplyResult(raw, operation, "default", "tops-test", "", "", "")
+		return err
+	}
+
+	status := fixture("lifecycle_apply_status")
+	validatedRaw, _ := json.Marshal(status)
+	validated, err := validateLifecycleApplyResult(
+		validatedRaw, "lifecycle_apply_status", "default", "tops-test", "", "", "",
+	)
+	if err != nil || validated.JournalPresent || validated.State != "absent" {
+		t.Fatalf("valid absent apply status was rejected: %+v err=%v", validated, err)
+	}
+
+	status["changed"] = true
+	if err := validate(status, "lifecycle_apply_status"); err == nil {
+		t.Fatal("apply status carrying a mutation was accepted")
+	}
+	status = fixture("lifecycle_apply_status")
+	status["repair_actions"] = []any{"unexpected repair"}
+	if err := validate(status, "lifecycle_apply_status"); err == nil {
+		t.Fatal("apply status carrying repair evidence was accepted")
+	}
+	status = fixture("lifecycle_apply_status")
+	status["compatibility"].(map[string]any)["journal_read_version"] = 1
+	if err := validate(status, "lifecycle_apply_status"); err == nil {
+		t.Fatal("unsupported apply journal version was accepted")
+	}
+
+	recover := fixture("lifecycle_apply_recover")
+	recover["compatibility"].(map[string]any)["mode"] = "read_only"
+	if err := validate(recover, "lifecycle_apply_recover"); err == nil {
+		t.Fatal("apply recovery without full compatibility was accepted")
+	}
+	recover = fixture("lifecycle_apply_recover")
+	recover["recovered"] = true
+	if err := validate(recover, "lifecycle_apply_recover"); err == nil {
+		t.Fatal("recovery evidence without a state change was accepted")
+	}
+}
+
+func TestSelectExecutableLifecycleActionUsesOnlyExactStagedInstallException(t *testing.T) {
+	actionID := "lifecycle-action:" + strings.Repeat("a", 64)
+	receiptDigest := lifecycleTestDigest("staged-install")
+	blockerActionID := actionID
+	install := knowledgelifecycle.PlannedAction{
+		ActionID: actionID, ComponentID: "example", Kind: "install", Direction: "forward",
+		PrerequisiteActionIDs: []string{}, TargetStateDigest: lifecycleTestDigest("target"),
+		ExpectedArtifactDigests: []string{receiptDigest}, ExpectedEvidence: []string{"receipt_integrity"},
+		Disposition: "blocked", Blockers: []knowledgelifecycle.Blocker{{
+			Class: "dependency_wait", ComponentID: "example", ActionID: &blockerActionID,
+			Retryable: true, Detail: "the exact desired package is not present in the observation",
+		}},
+	}
+	selected := selectExecutableLifecycleAction([]knowledgelifecycle.PlannedAction{install}, []string{receiptDigest})
+	if selected == nil || selected.ActionID != actionID {
+		t.Fatal("exact staged package did not satisfy the isolated package-absence blocker")
+	}
+
+	install.PrerequisiteActionIDs = []string{"lifecycle-action:" + strings.Repeat("b", 64)}
+	if selected := selectExecutableLifecycleAction([]knowledgelifecycle.PlannedAction{install}, []string{receiptDigest}); selected != nil {
+		t.Fatal("staged package bypassed a graph prerequisite")
+	}
+	install.PrerequisiteActionIDs = []string{}
+	install.Blockers = append(install.Blockers, knowledgelifecycle.Blocker{
+		Class: "dependency_wait", ComponentID: "example", ActionID: &blockerActionID,
+		Retryable: true, Detail: "a separate component dependency is not satisfied",
+	})
+	if selected := selectExecutableLifecycleAction([]knowledgelifecycle.PlannedAction{install}, []string{receiptDigest}); selected != nil {
+		t.Fatal("staged package bypassed an additional dependency blocker")
+	}
+	install.Blockers = install.Blockers[:1]
+	install.Disposition = "waiting"
+	if selected := selectExecutableLifecycleAction([]knowledgelifecycle.PlannedAction{install}, []string{receiptDigest}); selected != nil {
+		t.Fatal("staged package bypassed planner ordering through a waiting disposition")
 	}
 }
 

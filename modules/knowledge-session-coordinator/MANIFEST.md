@@ -25,6 +25,9 @@
 - report-only lifecycle command: `symphony.knowledge.lifecycle-plan-command.v1`
 - durable lifecycle command/result: `symphony.knowledge.lifecycle-boot-command.v1` and `symphony.knowledge.lifecycle-boot-result.v1`
 - durable lifecycle journal/head: `symphony.knowledge.lifecycle-boot-journal.v1` and `symphony.knowledge.lifecycle-boot-head.v1`
+- apply lifecycle command/result: `symphony.knowledge.lifecycle-apply-command.v1` and `symphony.knowledge.lifecycle-apply-result.v1`
+- apply lifecycle journal/head: `symphony.knowledge.lifecycle-boot-journal.v2` and `symphony.knowledge.lifecycle-boot-head.v2`
+- applied evidence: `symphony.knowledge.lifecycle-applied-state.v1`
 - desired/observation/plan evidence: `symphony.knowledge.lifecycle-desired-state.v1`, `symphony.knowledge.lifecycle-observation.v1`, and `symphony.knowledge.lifecycle-plan.v1`
 - SSIAG authorization evidence: `symphony.ssiag.authorization-decision.v1` and `symphony.ssiag.capability.v1`
 
@@ -39,9 +42,11 @@
 | `session_begin`, `session_status`, `session_checkpoint`, `session_close`, `session_recover` | implemented; SSIAG-authorized noncanonical authority-epoch state only | no |
 | `lifecycle_plan` | implemented; deterministic report-only result only | no |
 | `lifecycle_boot`, `lifecycle_boot_status`, `lifecycle_boot_recover` | implemented; SSIAG-authorized protected report-only journal state | no |
-| `apply` | disabled | prohibited |
+| `lifecycle_apply_prepare`, `lifecycle_apply_finalize`, `lifecycle_apply_close` | implemented; SSIAG-authorized protected attempt/applied-state coordination only | no |
+| `lifecycle_apply_status`, `lifecycle_apply_recover` | implemented; read-only inspection or evidence-bounded v2 journal repair | no |
+| canonical `apply` | disabled | prohibited |
 
-The implemented module scope is user-process invocation, user-scope reconciliation, authenticated-session state, caller-supplied report-only lifecycle planning, and protected report-only lifecycle journal persistence/recovery. qxctl performs external desired-profile and configured-root observation responsibilities; those are not coordinator-owned filesystem operations. System/TOPS engine-binding profiles, applied-state persistence, action execution, and provisioning are not claimed.
+The implemented module scope is user-process invocation, user-scope reconciliation, authenticated-session state, caller-supplied lifecycle planning, protected report/apply journal persistence/recovery, attempt serialization, verified closure, and content-addressed applied-state commitment. qxctl performs desired-profile, configured-root observation, and external package/runtime action responsibilities; those are not coordinator-owned filesystem operations. System/TOPS engine-binding profiles, host provisioning, arbitrary executable invocation, and canonical apply are not claimed.
 
 ## Installability
 
@@ -53,4 +58,4 @@ The coordinator statically links `knowledge-vector-engine-cpp` and has no runtim
 
 ## Boundaries
 
-There is no network listener, daemon, credential input, secret field, canonical write, hook, watcher, direct SSIAG/STAV call, vector-engine invocation, lifecycle receipt discovery, action execution, applied-state write, or Maestro dock in this version. qxctl obtains SSIAG decisions and invokes reconciliation, session coordination, or report-only lifecycle planning/journaling synchronously through the exact selected receipt. Absolute repository/state paths remain only in protected local state and process payloads.
+There is no network listener, daemon, credential input, secret field, canonical write, hook, watcher, direct SSIAG/STAV call, vector-engine invocation, lifecycle receipt discovery, host action execution, or Maestro dock in this version. qxctl obtains SSIAG decisions and invokes reconciliation, session coordination, report-only lifecycle journaling, or apply coordination synchronously through the exact selected receipt. Applied-state writes are protected noncanonical evidence and occur only after exact after-observation verification. Absolute repository/state paths remain only in protected local state and process payloads.

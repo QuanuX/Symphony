@@ -50,6 +50,9 @@ Commands:
   knowledge lifecycle boot --tops-id UUID --operation-id ID --expected-journal-digest STATE [--json] Durably record or replan report-only boot evidence
   knowledge lifecycle status --tops-id UUID [--profile-id ID] [--json] Read durable lifecycle boot state
   knowledge lifecycle recover --tops-id UUID --operation-id ID (--expected-journal-digest DIGEST|--discover) [--json] Repair uniquely linked lifecycle boot evidence
+  knowledge lifecycle apply --tops-id UUID --operation-id ID --source-journal-digest DIGEST --expected-apply-journal-digest STATE --expected-applied-state-digest STATE [--source-root PATH...] [--json] Converge exact apply-compatible lifecycle actions
+  knowledge lifecycle apply-status --tops-id UUID [--profile-id ID] [--json] Read durable apply-capable lifecycle state
+  knowledge lifecycle apply-recover --tops-id UUID --operation-id ID (--expected-apply-journal-digest DIGEST|--discover) [--json] Repair uniquely linked apply-capable lifecycle evidence
   skvi inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SKVI engine
   skvi check --prefix PATH [--version VERSION] [--json] Check canonical SKVI index truth
   skvi propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared proposal

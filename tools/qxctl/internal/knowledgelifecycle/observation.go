@@ -94,6 +94,7 @@ type ObservationInput struct {
 	DesiredState          *DesiredState
 	BindingRegistryDigest *string
 	SelectedReceipts      map[string]string
+	RuntimeState          *RuntimeState
 	QxctlIdentity         Identity
 	CoordinatorIdentity   *Identity
 	ProviderAvailability  []ProviderAvailability
@@ -215,6 +216,15 @@ func Observe(input ObservationInput) (Observation, error) {
 	if len(input.SelectedReceipts) > 256 {
 		return Observation{}, fmt.Errorf("selected receipt set exceeds its bound")
 	}
+	runtimeComponents := make(map[string]RuntimeComponent)
+	if input.RuntimeState != nil {
+		if input.RuntimeState.ProfileID != input.ProfileID || input.RuntimeState.TOPSID != input.TOPSID {
+			return Observation{}, fmt.Errorf("lifecycle runtime state does not match observation identity")
+		}
+		for _, component := range input.RuntimeState.Components {
+			runtimeComponents[component.ComponentID] = component
+		}
+	}
 	for role, digest := range input.SelectedReceipts {
 		if !safeToken(role, 256) || !taggedDigest(digest) {
 			return Observation{}, fmt.Errorf("selected receipt identity is invalid")
@@ -327,7 +337,7 @@ func Observe(input ObservationInput) (Observation, error) {
 			component.Packages = append(component.Packages, item.packageState)
 		}
 		sort.Slice(component.Packages, func(i, j int) bool { return canonicalLess(component.Packages[i], component.Packages[j]) })
-		if selected, ok := input.SelectedReceipts[identity.role]; ok {
+		if selected, ok := input.SelectedReceipts[identity.role]; ok && identity.role != "" {
 			for _, item := range items {
 				if item.packageState.ReceiptDigest == selected {
 					component.SelectedPackageDigest = stringPointer(selected)
@@ -335,6 +345,22 @@ func Observe(input ObservationInput) (Observation, error) {
 					component.PlatformCompatibility = compatibilityText(item.compatible)
 					break
 				}
+			}
+		}
+		if runtimeComponent, ok := runtimeComponents[componentID]; ok {
+			if component.SelectedPackageDigest == nil && runtimeComponent.SelectedReceiptDigest != nil {
+				for _, item := range items {
+					if item.packageState.ReceiptDigest == *runtimeComponent.SelectedReceiptDigest {
+						component.SelectedPackageDigest = cloneString(runtimeComponent.SelectedReceiptDigest)
+						component.Capabilities = append([]string(nil), item.capabilities...)
+						component.PlatformCompatibility = compatibilityText(item.compatible)
+						break
+					}
+				}
+			}
+			if component.SelectedPackageDigest != nil && runtimeComponent.SelectedReceiptDigest != nil &&
+				*component.SelectedPackageDigest == *runtimeComponent.SelectedReceiptDigest {
+				component.Activation = runtimeComponent.Activation
 			}
 		}
 		if component.SelectedPackageDigest == nil && input.DesiredState != nil {

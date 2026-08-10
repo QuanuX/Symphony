@@ -45,6 +45,13 @@ const std::vector<std::string> journal_capabilities = {
     "report-only-v1",
 };
 
+const std::vector<std::string> apply_capabilities = {
+    "action-attempt-journal-v2", "applied-state-v1", "dynamic-replanning-v1",
+    "expected-state-cas-v1", "external-action-adapter-v1", "forward-inverse-v1",
+    "opaque-extension-preservation-v1", "per-action-authorization-v1",
+    "recovery-forward-v1", "verified-observation-commit-v1",
+};
+
 class TemporaryDirectory final {
 public:
     TemporaryDirectory() {
@@ -390,7 +397,9 @@ engine::Request lifecycle_boot_request(
     const engine::Json& observed,
     const std::string& operation_id,
     const std::string& expected,
-    const std::string& suffix) {
+    const std::string& suffix,
+    const std::string& mode = "report",
+    engine::Json prior_applied = nullptr) {
     const auto stable = session::lifecycle_stable_inventory_digest(
         observed, engine::unix_time_ms() + 60000);
     const auto profile_digest = engine::tagged_sha256("profile:" + desired.at("desired_state_digest").get<std::string>());
@@ -401,11 +410,12 @@ engine::Request lifecycle_boot_request(
             {"protocol", "symphony.knowledge.lifecycle-boot-command.v1"}, {"operation", "lifecycle_boot"},
             {"state_root", fs::absolute(state_root).lexically_normal().string()}, {"operation_id", operation_id},
             {"expected_journal_digest", expected}, {"profile_id", "default"}, {"tops_id", "tops-test"},
-            {"profile_digest", profile_digest}, {"stable_inventory_digest", stable}, {"mode", "report"},
-            {"desired_state", desired}, {"observation", observed}, {"prior_applied_state_digest", nullptr},
+            {"profile_digest", profile_digest}, {"stable_inventory_digest", stable}, {"mode", mode},
+            {"desired_state", desired}, {"observation", observed},
+            {"prior_applied_state_digest", std::move(prior_applied)},
             {"authorization_decision", lifecycle_authorization(
                 "boot", profile_digest + "\n" +
-                    desired.at("desired_state_digest").get<std::string>() + "\nreport\n" + stable,
+                    desired.at("desired_state_digest").get<std::string>() + "\n" + mode + "\n" + stable,
                 suffix)},
             {"planner_client", client()}, {"journal_client", journal_client()},
         },
@@ -418,9 +428,11 @@ engine::Json lifecycle_boot(
     const engine::Json& observed,
     const std::string& operation_id,
     const std::string& expected,
-    const std::string& suffix) {
+    const std::string& suffix,
+    const std::string& mode = "report",
+    engine::Json prior_applied = nullptr) {
     return session::handle_request(lifecycle_boot_request(
-        state_root, desired, observed, operation_id, expected, suffix));
+        state_root, desired, observed, operation_id, expected, suffix, mode, std::move(prior_applied)));
 }
 
 engine::Json lifecycle_boot_state(
@@ -451,6 +463,90 @@ fs::path lifecycle_stream_path(const fs::path& state_root) {
         engine::sha256_hex("profile:default");
 }
 
+fs::path lifecycle_apply_stream_path(const fs::path& state_root) {
+    return state_root / "symphony" / "knowledge-session-coordinator" / "lifecycle" / "v2" /
+        "tops" / engine::sha256_hex("tops:tops-test") / "profiles" /
+        engine::sha256_hex("profile:default");
+}
+
+engine::Json apply_client(bool full = true) {
+    auto values = apply_capabilities;
+    if (!full) values.pop_back();
+    return engine::Json{
+        {"client_id", "qxctl"}, {"client_version", "dev"},
+        {"process_protocols", engine::Json::array({engine::process_protocol_v1})},
+        {"journal_read_versions", engine::Json::array({1, 2})},
+        {"journal_write_versions", engine::Json::array({2})},
+        {"capabilities", values},
+    };
+}
+
+engine::Json lifecycle_apply_mutation(
+    const fs::path& state_root,
+    const std::string& operation,
+    const engine::Json& desired,
+    const engine::Json& observed,
+    const std::string& source_journal_digest,
+    const std::string& expected_journal,
+    const std::string& expected_applied,
+    const engine::Json& action_id,
+    const engine::Json& outcome,
+    const engine::Json& blocker_class,
+    const engine::Json& execution_digest,
+    const std::string& suffix,
+    engine::Json prior_applied = nullptr,
+    engine::Json available = engine::Json::array()) {
+    const auto stable = session::lifecycle_stable_inventory_digest(
+        observed, engine::unix_time_ms() + 60000);
+    const auto profile_digest = engine::tagged_sha256("profile:" + desired.at("desired_state_digest").get<std::string>());
+    const auto phase = operation == "lifecycle_apply_prepare" ? "prepare" :
+        (operation == "lifecycle_apply_close" ? "close" : "finalize");
+    const auto action_evidence = action_id.is_string() ? action_id.get<std::string>() : "converged";
+    const auto evidence = profile_digest + "\n" + desired.at("desired_state_digest").get<std::string>() +
+        "\n" + stable + "\n" + source_journal_digest + "\n" + expected_journal + "\n" + action_evidence;
+    return session::handle_request(engine::Request{
+        "apply-" + suffix, "apply-correlation-" + suffix, operation, session::engine_id,
+        engine::unix_time_ms() + 60000,
+        engine::Json{
+            {"protocol", "symphony.knowledge.lifecycle-apply-command.v1"}, {"operation", operation},
+            {"state_root", fs::absolute(state_root).lexically_normal().string()},
+            {"operation_id", "apply-operation-" + suffix}, {"expected_journal_digest", expected_journal},
+            {"expected_applied_state_digest", expected_applied},
+            {"source_report_journal_digest", source_journal_digest}, {"profile_id", "default"},
+            {"tops_id", "tops-test"}, {"profile_digest", profile_digest}, {"stable_inventory_digest", stable},
+            {"desired_state", desired}, {"observation", observed},
+            {"prior_applied_state_digest", std::move(prior_applied)}, {"action_id", action_id},
+            {"available_artifact_digests", std::move(available)}, {"outcome", outcome},
+            {"blocker_class", blocker_class}, {"execution_evidence_digest", execution_digest},
+            {"authorization_decision", lifecycle_authorization("apply." + std::string(phase), evidence, suffix)},
+            {"planner_client", client()}, {"journal_client", apply_client()},
+        },
+    });
+}
+
+engine::Json lifecycle_apply_state(
+    const fs::path& state_root,
+    const std::string& operation,
+    const engine::Json& operation_id,
+    const engine::Json& expected,
+    const std::string& suffix,
+    bool full = true) {
+    const auto status = operation == "lifecycle_apply_status";
+    const auto evidence = status ? "status" : expected.get<std::string>();
+    return session::handle_request(engine::Request{
+        "apply-state-" + suffix, "apply-state-correlation-" + suffix, operation, session::engine_id,
+        engine::unix_time_ms() + 60000,
+        engine::Json{
+            {"protocol", "symphony.knowledge.lifecycle-apply-command.v1"}, {"operation", operation},
+            {"state_root", fs::absolute(state_root).lexically_normal().string()}, {"operation_id", operation_id},
+            {"expected_journal_digest", expected}, {"profile_id", "default"}, {"tops_id", "tops-test"},
+            {"authorization_decision", lifecycle_authorization(
+                status ? "apply.status" : "apply.recover", evidence, suffix)},
+            {"journal_client", apply_client(full)},
+        },
+    });
+}
+
 engine::Json read_json(const fs::path& path) {
     std::ifstream input(path, std::ios::binary);
     if (!input) throw std::runtime_error("could not read lifecycle test JSON");
@@ -463,6 +559,14 @@ void write_json(const fs::path& path, const engine::Json& value) {
     output << value.dump() << '\n';
     output.close();
     if (::chmod(path.c_str(), 0600) != 0) throw std::runtime_error("could not protect lifecycle test JSON");
+}
+
+void write_private_text(const fs::path& path, const std::string& value) {
+    std::ofstream output(path, std::ios::binary | std::ios::trunc);
+    if (!output) throw std::runtime_error("could not write lifecycle test text");
+    output << value;
+    output.close();
+    if (::chmod(path.c_str(), 0600) != 0) throw std::runtime_error("could not protect lifecycle test text");
 }
 
 void finalize_test_digest(engine::Json& value, const char* field) {
@@ -515,8 +619,220 @@ void test_descriptor() {
     require(inspect.at("lifecycle").at("action_execution_enabled") == false, "inspect enabled lifecycle actions");
     require(inspect.at("lifecycle_journal").at("persistence_enabled") == true,
             "inspect omitted lifecycle journal persistence");
-    require(inspect.at("lifecycle_journal").at("action_execution_enabled") == false,
-            "lifecycle journal enabled action execution");
+    require(inspect.at("lifecycle_journal").at("action_execution_enabled") == false &&
+            inspect.at("lifecycle_journal").at("external_action_coordination_enabled") == true &&
+            inspect.at("lifecycle_journal").at("host_action_execution_enabled") == false &&
+            inspect.at("lifecycle_journal").at("applied_state_persistence_enabled") == true &&
+            inspect.at("lifecycle_journal").at("apply_authorized") == false,
+            "lifecycle apply capability or external-authorization boundary drifted");
+    const auto close = std::find_if(
+        descriptor.at("operations").begin(), descriptor.at("operations").end(), [](const engine::Json& operation) {
+            return operation.at("name") == "lifecycle_apply_close";
+        });
+    require(close != descriptor.at("operations").end(), "descriptor omitted lifecycle_apply_close");
+}
+
+void test_apply_journal_prepare_resume_finalize_close_and_recovery() {
+    TemporaryDirectory state;
+    const auto package = receipt("apply-action");
+    const auto desired_active = desired_state(engine::Json::array({
+        desired_component("apply-action", package, "active"),
+    }));
+    const auto observed_inactive = observation(engine::Json::array({
+        observed_component("apply-action", package, "inactive"),
+    }));
+    const auto report = lifecycle_boot(
+        state.path(), desired_active, observed_inactive, "apply-source", "absent", "apply-source",
+        "apply-compatible");
+    const auto source_digest = report.at("journal_digest").get<std::string>();
+    const auto planned = plan(desired_active, observed_inactive);
+    const auto action_id = action(planned, "apply-action", "activate").at("action_id");
+
+    const auto prepared = lifecycle_apply_mutation(
+        state.path(), "lifecycle_apply_prepare", desired_active, observed_inactive,
+        source_digest, "absent", "absent", action_id, nullptr, nullptr, nullptr, "prepare");
+    require(prepared.at("journal").at("state") == "acting" && prepared.at("action") ==
+            prepared.at("journal").at("active_action") && prepared.at("changed") == true,
+            "apply prepare did not durably select one exact action");
+    const auto prepared_digest = prepared.at("journal_digest").get<std::string>();
+    const auto status = lifecycle_apply_state(
+        state.path(), "lifecycle_apply_status", nullptr, nullptr, "prepared-status");
+    require(status.at("journal_digest") == prepared_digest &&
+            status.at("action") == status.at("journal").at("active_action") &&
+            status.at("action").at("action_id") == action_id,
+            "apply status did not preserve the prepared action");
+
+    const auto replay = lifecycle_apply_mutation(
+        state.path(), "lifecycle_apply_prepare", desired_active, observed_inactive,
+        source_digest, prepared_digest, "absent", action_id, nullptr, nullptr, nullptr, "prepare");
+    require(replay.at("changed") == false && replay.at("journal_digest") == prepared_digest,
+            "idempotent apply prepare replay changed state");
+
+    const auto mismatched_desired = desired_state(engine::Json::array({
+        desired_component("apply-action", package, "inactive"),
+    }));
+    require_error([&] {
+        static_cast<void>(lifecycle_apply_mutation(
+            state.path(), "lifecycle_apply_finalize", mismatched_desired, observed_inactive,
+            source_digest, prepared_digest, "absent", action_id, "committed", nullptr,
+            receipt("mismatched-profile-evidence"), "mismatched-profile"));
+    }, "lifecycle_apply.prepared_evidence_mismatch");
+    require_error([&] {
+        static_cast<void>(lifecycle_apply_mutation(
+            state.path(), "lifecycle_apply_finalize", desired_active, observed_inactive,
+            receipt("different-source-journal"), prepared_digest, "absent", action_id, "committed", nullptr,
+            receipt("mismatched-source-evidence"), "mismatched-source"));
+    }, "lifecycle_apply.prepared_evidence_mismatch");
+    require_error([&] {
+        static_cast<void>(lifecycle_apply_mutation(
+            state.path(), "lifecycle_apply_finalize", desired_active, observed_inactive,
+            source_digest, prepared_digest, "absent", action_id, "committed", nullptr,
+            receipt("mismatched-prior-evidence"), "mismatched-prior", receipt("unexpected-prior")));
+    }, "lifecycle_apply.command_invalid");
+    require_error([&] {
+        static_cast<void>(lifecycle_apply_mutation(
+            state.path(), "lifecycle_apply_finalize", desired_active, observation(engine::Json::array()),
+            source_digest, prepared_digest, "absent", action_id, "committed", nullptr,
+            receipt("unverified-action-evidence"), "unverified-action"));
+    }, "lifecycle_apply.verification_failed");
+
+    const auto apply_directory = lifecycle_apply_stream_path(state.path());
+    write_json(apply_directory / "head.json", engine::Json{{"broken", true}});
+    require_error([&] {
+        static_cast<void>(lifecycle_apply_state(
+            state.path(), "lifecycle_apply_status", nullptr, nullptr, "damaged-apply-status"));
+    }, "lifecycle_journal.field_set");
+    const auto recovered = lifecycle_apply_state(
+        state.path(), "lifecycle_apply_recover", "apply-recovery", "discover", "apply-recovery");
+    require(recovered.at("recovered") == true && recovered.at("journal").at("state") == "acting" &&
+            recovered.at("action").at("action_id") == action_id,
+            "apply recovery did not preserve the in-flight exact action");
+    auto recovered_digest = recovered.at("journal_digest").get<std::string>();
+
+    const auto failed_attempt = lifecycle_apply_mutation(
+        state.path(), "lifecycle_apply_finalize", desired_active, observed_inactive,
+        source_digest, recovered_digest, "absent", action_id, "failed", "observation_retryable",
+        receipt("retryable-execution-evidence"), "retryable-finalize");
+    const auto retried_prepare = lifecycle_apply_mutation(
+        state.path(), "lifecycle_apply_prepare", desired_active, observed_inactive,
+        source_digest, failed_attempt.at("journal_digest"), "absent", action_id,
+        nullptr, nullptr, nullptr, "retryable-prepare");
+    const auto recovered_head = read_json(apply_directory / "head.json");
+    const auto damaged_slot = recovered_head.at("active_slot").get<int>();
+    write_private_text(apply_directory / ("journal." + std::to_string(damaged_slot) + ".json"), "{malformed");
+    require_error([&] {
+        static_cast<void>(lifecycle_apply_state(
+            state.path(), "lifecycle_apply_status", nullptr, nullptr, "malformed-apply-status"));
+    }, "lifecycle_apply.head_slot_mismatch");
+    const auto slot_recovered = lifecycle_apply_state(
+        state.path(), "lifecycle_apply_recover", "apply-slot-recovery", "discover", "apply-slot-recovery");
+    require(slot_recovered.at("recovered") == true && slot_recovered.at("journal").at("state") == "blocked" &&
+            slot_recovered.at("action").is_null(),
+            "apply recovery did not replace a malformed selected slot from its valid predecessor");
+    const auto resumed_after_slot_recovery = lifecycle_apply_mutation(
+        state.path(), "lifecycle_apply_prepare", desired_active, observed_inactive,
+        source_digest, slot_recovered.at("journal_digest"), "absent", action_id,
+        nullptr, nullptr, nullptr, "slot-recovery-resume");
+    require(resumed_after_slot_recovery.at("journal").at("state") == "acting" &&
+            resumed_after_slot_recovery.at("action").at("action_id") == action_id,
+            "recovered predecessor could not resume the exact lifecycle action");
+    recovered_digest = resumed_after_slot_recovery.at("journal_digest").get<std::string>();
+    require(retried_prepare.at("journal_digest") != recovered_digest,
+            "malformed selected slot was not replaced by a forward recovery chain");
+
+    const auto observed_active = observation(engine::Json::array({
+        observed_component("apply-action", package, "active"),
+    }));
+    const auto evidence = receipt("execution-evidence");
+    const auto finalized = lifecycle_apply_mutation(
+        state.path(), "lifecycle_apply_finalize", desired_active, observed_active,
+        source_digest, recovered_digest, "absent", action_id, "committed", nullptr, evidence, "finalize");
+    require(finalized.at("journal").at("state") == "closed" && finalized.at("applied_state").is_object() &&
+            finalized.at("journal").at("applied_state_digest") ==
+                finalized.at("applied_state").at("applied_state_digest"),
+            "verified lifecycle action did not close with applied evidence");
+    const auto finalized_digest = finalized.at("journal_digest").get<std::string>();
+    const auto applied_digest = finalized.at("applied_state").at("applied_state_digest").get<std::string>();
+    const auto applied_path = lifecycle_apply_stream_path(state.path()) /
+        ("applied." + applied_digest.substr(7) + ".json");
+    require(fs::exists(applied_path), "applied evidence was not content-addressed beside the journal");
+    require_error([&] {
+        static_cast<void>(lifecycle_apply_mutation(
+            state.path(), "lifecycle_apply_prepare", desired_active, observed_active,
+            source_digest, prepared_digest, applied_digest, action_id, nullptr, nullptr, nullptr, "stale",
+            applied_digest));
+    }, "lifecycle_apply.expected_state_mismatch");
+
+    const auto desired_next = desired_state(engine::Json::array({
+        desired_component("apply-action", package, "inactive"),
+    }));
+    const auto next_report = lifecycle_boot(
+        state.path(), desired_next, observed_active, "next-source", source_digest,
+        "next-source", "apply-compatible", applied_digest);
+    const auto next_plan = plan(desired_next, observed_active);
+    const auto next_action = action(next_plan, "apply-action", "deactivate").at("action_id");
+    const auto next_prepared = lifecycle_apply_mutation(
+        state.path(), "lifecycle_apply_prepare", desired_next, observed_active,
+        next_report.at("journal_digest"), finalized_digest, applied_digest, next_action,
+        nullptr, nullptr, nullptr, "next-prepare", applied_digest);
+    const auto next_status = lifecycle_apply_state(
+        state.path(), "lifecycle_apply_status", nullptr, nullptr, "next-status");
+    require(next_status.at("journal_digest") == next_prepared.at("journal_digest") &&
+            next_status.at("applied_state").at("applied_state_digest") == applied_digest,
+            "new transaction could not retain and read prior applied evidence while acting");
+
+    TemporaryDirectory converged_state;
+    const auto desired_inactive = desired_state(engine::Json::array({
+        desired_component("already-converged", receipt("already-converged"), "inactive"),
+    }));
+    const auto observed_converged = observation(engine::Json::array({
+        observed_component("already-converged", receipt("already-converged"), "inactive"),
+    }));
+    const auto converged_report = lifecycle_boot(
+        converged_state.path(), desired_inactive, observed_converged,
+        "converged-source", "absent", "converged-source", "apply-compatible");
+    const auto closed = lifecycle_apply_mutation(
+        converged_state.path(), "lifecycle_apply_close", desired_inactive, observed_converged,
+        converged_report.at("journal_digest"), "absent", "absent", nullptr, nullptr, nullptr, nullptr,
+        "close");
+    require(closed.at("journal").at("state") == "closed" && closed.at("changed") == true,
+            "already-converged lifecycle state could not commit applied evidence");
+    const auto closed_digest = closed.at("journal_digest").get<std::string>();
+    const auto closed_applied = closed.at("applied_state").at("applied_state_digest").get<std::string>();
+    const auto close_retry = lifecycle_apply_mutation(
+        converged_state.path(), "lifecycle_apply_close", desired_inactive, observed_converged,
+        converged_report.at("journal_digest"), closed_digest, closed_applied, nullptr, nullptr, nullptr, nullptr,
+        "close-retry", closed_applied);
+    require(close_retry.at("changed") == false && close_retry.at("journal_digest") == closed_digest,
+            "semantic close retry churned applied state");
+
+    auto incompatible = apply_client(false);
+    static_cast<void>(incompatible);
+    require(finalized_digest != prepared_digest, "finalize did not advance the apply journal");
+}
+
+void test_apply_prepare_accepts_only_exact_staged_install_evidence() {
+    TemporaryDirectory state;
+    const auto package = receipt("staged-install");
+    const auto desired = desired_state(engine::Json::array({
+        desired_component("staged-install", package, "inactive"),
+    }));
+    const auto observed = observation(engine::Json::array());
+    const auto report = lifecycle_boot(
+        state.path(), desired, observed, "staged-install-source", "absent",
+        "staged-install-source", "apply-compatible");
+    const auto planned = plan(desired, observed);
+    const auto& install = action(planned, "staged-install", "install");
+    require(install.at("disposition") == "blocked" && install.at("blockers").size() == 1U,
+            "absent package did not produce the isolated staged-install blocker");
+    const auto prepared = lifecycle_apply_mutation(
+        state.path(), "lifecycle_apply_prepare", desired, observed,
+        report.at("journal_digest"), "absent", "absent", install.at("action_id"),
+        nullptr, nullptr, nullptr, "staged-install-prepare", nullptr,
+        engine::Json::array({package}));
+    require(prepared.at("journal").at("state") == "acting" &&
+            prepared.at("action").at("kind") == "install",
+            "exact staged receipt did not satisfy only the package-absence blocker");
 }
 
 void test_durable_boot_journal_replanning_and_recovery() {
@@ -1050,6 +1366,8 @@ void test_bounded_scale_plan() {
 int main() {
     try {
         test_descriptor();
+        test_apply_journal_prepare_resume_finalize_close_and_recovery();
+        test_apply_prepare_accepts_only_exact_staged_install_evidence();
         test_durable_boot_journal_replanning_and_recovery();
         test_dependency_ready_set_and_replanning();
         test_cycle_isolation();
