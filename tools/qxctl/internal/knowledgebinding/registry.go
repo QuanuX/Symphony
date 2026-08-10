@@ -369,7 +369,7 @@ func nextRegistry(current Registry, exists bool, now time.Time) Registry {
 		Scope:      Scope,
 		ProfileID:  ProfileID,
 		Generation: 1,
-		UpdatedAt:  now.UTC().Format(time.RFC3339Nano),
+		UpdatedAt:  now.UTC().Truncate(time.Second).Format(time.RFC3339),
 		Bindings:   make([]Binding, 0),
 		Canonical:  false,
 	}

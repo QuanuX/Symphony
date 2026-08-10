@@ -17,6 +17,7 @@
 - first-party SHA-256 and `sha256:` tagged digests;
 - POSIX no-follow component traversal and bounded regular-file reads;
 - deterministic sorted file snapshots;
+- canonical Gregorian civil-date, whole-second UTC, and exact-nanosecond UTC validation;
 - versioned static-library, header, CMake-package, receipt, and uninstall surfaces.
 
 ## Dependency
@@ -29,4 +30,4 @@ The library installs into versioned library and header roots. Multiple versions 
 
 ## Boundaries
 
-This package owns common mechanics only. It cannot create canonical Markdown, open a network listener, load arbitrary plugins, infer caller class, grant permission, perform session mutation, apply proposals, dock with Maestro, or emit STAV events.
+This package owns common mechanics only. `knowledge/TIME.md` owns temporal meaning; the library only implements its normalized validation profiles. It cannot create canonical Markdown, open a network listener, load arbitrary plugins, infer caller class, grant permission, perform session mutation, apply proposals, dock with Maestro, or emit STAV events.

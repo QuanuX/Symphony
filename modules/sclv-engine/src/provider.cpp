@@ -4,10 +4,10 @@
 #include "symphony/knowledge/engine/error.hpp"
 #include "symphony/knowledge/engine/limits.hpp"
 #include "symphony/knowledge/engine/protocol.hpp"
+#include "symphony/knowledge/engine/temporal.hpp"
 
 #include <algorithm>
 #include <cctype>
-#include <chrono>
 #include <set>
 #include <string>
 
@@ -84,20 +84,7 @@ bool bounded_text(std::string_view value, std::size_t maximum, bool allow_newlin
 }
 
 bool strict_utc(std::string_view value) {
-    if (value.size() != 20U || value[4] != '-' || value[7] != '-' || value[10] != 'T' ||
-        value[13] != ':' || value[16] != ':' || value[19] != 'Z') return false;
-    for (const std::size_t index : {0U, 1U, 2U, 3U, 5U, 6U, 8U, 9U, 11U, 12U, 14U, 15U, 17U, 18U}) {
-        if (value[index] < '0' || value[index] > '9') return false;
-    }
-    const auto number = [&](std::size_t begin, std::size_t count) {
-        int result = 0;
-        for (std::size_t index = begin; index < begin + count; ++index) result = result * 10 + (value[index] - '0');
-        return result;
-    };
-    const auto date = std::chrono::year{number(0, 4)} /
-                      std::chrono::month{static_cast<unsigned int>(number(5, 2))} /
-                      std::chrono::day{static_cast<unsigned int>(number(8, 2))};
-    return date.ok() && number(11, 2) <= 23 && number(14, 2) <= 59 && number(17, 2) <= 59;
+    return engine::is_utc_seconds(value);
 }
 
 bool tagged_digest(std::string_view value) {

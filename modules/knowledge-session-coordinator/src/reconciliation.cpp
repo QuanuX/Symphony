@@ -4,6 +4,7 @@
 #include "symphony/knowledge/engine/error.hpp"
 #include "symphony/knowledge/engine/limits.hpp"
 #include "symphony/knowledge/engine/path.hpp"
+#include "symphony/knowledge/engine/temporal.hpp"
 
 #include <algorithm>
 #include <array>
@@ -253,33 +254,6 @@ std::string utc_now() {
     return output.str();
 }
 
-bool strict_utc(std::string_view value) {
-    if (value.size() != 20U || value[4] != '-' || value[7] != '-' ||
-        value[10] != 'T' || value[13] != ':' || value[16] != ':' ||
-        value[19] != 'Z') {
-        return false;
-    }
-    for (const std::size_t index : {
-             0U, 1U, 2U, 3U, 5U, 6U, 8U, 9U,
-             11U, 12U, 14U, 15U, 17U, 18U}) {
-        if (value[index] < '0' || value[index] > '9') {
-            return false;
-        }
-    }
-    const auto number = [&](std::size_t begin, std::size_t count) {
-        int result = 0;
-        for (std::size_t index = begin; index < begin + count; ++index) {
-            result = result * 10 + (value[index] - '0');
-        }
-        return result;
-    };
-    const auto date = std::chrono::year{number(0, 4)} /
-                      std::chrono::month{static_cast<unsigned int>(number(5, 2))} /
-                      std::chrono::day{static_cast<unsigned int>(number(8, 2))};
-    return date.ok() && number(11, 2) <= 23 &&
-           number(14, 2) <= 59 && number(17, 2) <= 59;
-}
-
 std::vector<std::string> string_array(
     const engine::Json& value,
     const std::string& name,
@@ -480,7 +454,7 @@ void validate_checkpoint(const engine::Json& checkpoint, std::uint64_t expected_
     });
     if (required_unsigned(checkpoint, "sequence") != expected_sequence ||
         !safe_token(required_string(checkpoint, "operation_id", 256U)) ||
-        !strict_utc(required_string(checkpoint, "observed_at", 20U)) ||
+        !engine::is_utc_seconds(required_string(checkpoint, "observed_at", 20U)) ||
         !tagged_digest(required_string(checkpoint, "snapshot_digest", 71U)) ||
         !tagged_digest(required_string(checkpoint, "engine_inventory_digest", 71U)) ||
         !tagged_digest(required_string(checkpoint, "checkpoint_digest", 71U))) {
@@ -628,10 +602,10 @@ void validate_journal(const engine::Json& journal) {
     if (state == "closed" && !journal.at("closed_at").is_string()) {
         throw engine::Error("reconcile.journal_invalid", "closed journal lacks a close timestamp", 5);
     }
-    if (!strict_utc(required_string(journal, "started_at", 20U)) ||
-        !strict_utc(required_string(journal, "updated_at", 20U)) ||
+    if (!engine::is_utc_seconds(required_string(journal, "started_at", 20U)) ||
+        !engine::is_utc_seconds(required_string(journal, "updated_at", 20U)) ||
         (journal.at("closed_at").is_string() &&
-         !strict_utc(required_string(journal, "closed_at", 20U)))) {
+         !engine::is_utc_seconds(required_string(journal, "closed_at", 20U)))) {
         throw engine::Error("reconcile.journal_invalid", "journal timestamp is invalid", 5);
     }
     const auto started_at = journal.at("started_at").get<std::string>();
@@ -827,7 +801,7 @@ void validate_journal(const engine::Json& journal) {
     const auto& recovery_at = recovery.at("last_recovery_at");
     const auto& recovered_from = recovery.at("recovered_from_digest");
     if ((recovery_at.is_string() &&
-         !strict_utc(recovery_at.get<std::string>())) ||
+         !engine::is_utc_seconds(recovery_at.get<std::string>())) ||
         (!recovery_at.is_null() && !recovery_at.is_string()) ||
         (recovered_from.is_string() &&
          !tagged_digest(recovered_from.get<std::string>())) ||
@@ -861,7 +835,7 @@ void validate_head(const engine::Json& head) {
         !tagged_digest(required_string(head, "journal_digest", 71U)) ||
         !tagged_digest(required_string(head, "head_digest", 71U)) ||
         required_unsigned(head, "generation") == 0U ||
-        !strict_utc(required_string(head, "updated_at", 20U))) {
+        !engine::is_utc_seconds(required_string(head, "updated_at", 20U))) {
         throw engine::Error("reconcile.head_invalid", "reconciliation head identity is invalid", 5);
     }
     const auto slot = required_unsigned(head, "active_slot");

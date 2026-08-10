@@ -123,7 +123,7 @@ The implemented report-only planner additionally binds each dock action to one e
 
 ## First Boot After Change
 
-“First boot” is evidence-based, not a mutable boolean, boot counter, wall-clock value, or version-string comparison. An explicitly installed host boot integration may invoke the future `qxctl knowledge lifecycle boot` surface on every supported-node boot. qxctl then computes state and exits as an idempotent no-op when nothing compatibility-relevant changed. No hidden watcher is required.
+“First boot” is evidence-based, not a mutable boolean, boot counter, wall-clock value, or version-string comparison. Its timestamps follow `knowledge/TIME.md`; the target TOPS supplies durable commit time, while generations, operation IDs, content digests, and predecessor links establish identity and causal position. An explicitly installed host boot integration may invoke the future `qxctl knowledge lifecycle boot` surface on every supported-node boot. qxctl then computes state and exits as an idempotent no-op when nothing compatibility-relevant changed. No hidden watcher is required.
 
 A stable lifecycle observation key binds at least:
 

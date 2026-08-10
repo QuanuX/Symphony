@@ -31,6 +31,7 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 - `lifecycle-applied-state.schema.json`: durable noncanonical last-verified component state and actual execution-order evidence anchored to exact desired, observation, plan, and transaction identities.
 - `lifecycle-boot-journal.schema.json`: dual-read-compatible lifecycle transaction, replan, attempt, blocker, checkpoint, compatibility, and recovery evidence.
 - `lifecycle-boot-head.schema.json`: atomic selector for the active member of a dual-slot lifecycle boot journal.
+- `temporal.schema.json`: reusable structural definitions for canonical STSC civil-date, whole-second UTC, and exact-nine-digit nanosecond UTC encodings; real Gregorian validation remains a required implementation conformance check.
 
 All schemas use JSON Schema Draft 2020-12, close every common-governed object with `additionalProperties: false`, and carry no secrets. The proposal operation's bounded `data` object is deliberately governed by the applicable vector schema; operation-specific payload/result schemas remain owned by that engine Contract Quad.
 

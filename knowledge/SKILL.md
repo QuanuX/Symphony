@@ -9,11 +9,12 @@ Guide every caller in safely inspecting, proposing, implementing, installing, an
 1. `knowledge/INTENT.md`
 2. `knowledge/MANIFEST.md`
 3. `knowledge/SPEC.md`
-4. the affected vector's Contract Quad
-5. `tools/qxctl/` contracts for administrative grammar
-6. `knowledge/ssiag/SPEC.md` before any apply or safeguard work
-7. `knowledge/stav/SPEC.md` before any audited outcome or recovery work
-8. `knowledge/sodv/SPEC.md` before release or publication
+4. `knowledge/TIME.md` when a field, deadline, freshness rule, journal, or durable event involves time
+5. the affected vector's Contract Quad
+6. `tools/qxctl/` contracts for administrative grammar
+7. `knowledge/ssiag/SPEC.md` before any apply or safeguard work
+8. `knowledge/stav/SPEC.md` before any audited outcome or recovery work
+9. `knowledge/sodv/SPEC.md` before release or publication
 
 ## Safe Initial Operations
 
@@ -77,6 +78,7 @@ The implemented `qxctl knowledge session begin|status|checkpoint|close|recover` 
 - Verify install and uninstall use receipts and preserve unrelated versions and user-owned files.
 - Verify lifecycle plans support both forward and inverse actions, continue unrelated ready work around localized blockers, isolate cycles, preserve stable semantic action IDs, and enforce the ratified action/replan/attempt bounds.
 - Verify cold/freezing administration has no inline call, lock, or synchronous dependency on hot/warm execution.
+- Verify canonical timestamps use the applicable STSC profile, impossible Gregorian dates fail closed, and wall-clock text is not substituted for causal sequence or identity.
 
 ## Stop Conditions
 

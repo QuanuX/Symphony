@@ -34,6 +34,18 @@ KnowledgeContractShapeResult check_knowledge_contract_shapes(const std::string& 
             }
         },
         {
+            "knowledge/TIME.md",
+            {
+                {"Contract", "Symphony Temporal Semantics Contract"},
+                {"Authority", "## Status and Authority"},
+                {"Purpose", "## Purpose"},
+                {"Profiles", "## Canonical UTC Profiles"},
+                {"Timestamp_Authority", "## Durable Timestamp Authority"},
+                {"Implementation", "## Implementation and Schema Contract"},
+                {"Boundaries", "## Promotion Gate"}
+            }
+        },
+        {
             "knowledge/skvi/INTENT.md",
             {
                 {"Intent", "Intent"},

@@ -6,7 +6,26 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 )
+
+func TestTemporalProfilesAndLegacyReadCompatibility(t *testing.T) {
+	now := time.Date(2026, time.August, 10, 12, 34, 56, 987654321, time.FixedZone("fixture", -4*60*60))
+	registry := nextRegistry(Registry{}, false, now)
+	if registry.UpdatedAt != "2026-08-10T16:34:56Z" {
+		t.Fatalf("new registry did not use canonical STSC whole-second UTC: %q", registry.UpdatedAt)
+	}
+	registry.RegistryDigest = "sha256:" + strings.Repeat("0", 64)
+	registry.UpdatedAt = "2026-08-10T16:34:56.987654321Z"
+	digest, err := calculateDigest(registry)
+	if err != nil {
+		t.Fatalf("calculate legacy registry digest: %v", err)
+	}
+	registry.RegistryDigest = digest
+	if err := validateRegistry(registry); err != nil {
+		t.Fatalf("legacy registry timestamp lost read compatibility: %v", err)
+	}
+}
 
 func TestBindSnapshotDoctorAndUnbind(t *testing.T) {
 	stateRoot := filepath.Join(t.TempDir(), "state")

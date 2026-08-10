@@ -581,6 +581,11 @@ void test_compatibility_integrity_and_digest_fail_closed() {
     finalize_observation(malformed_receptor);
     require_error([&] { static_cast<void>(plan(desired, malformed_receptor)); }, "lifecycle.invalid_field");
 
+    auto impossible_time = observed;
+    impossible_time["observed_at"] = "2026-02-31T16:00:00Z";
+    finalize_observation(impossible_time);
+    require_error([&] { static_cast<void>(plan(desired, impossible_time)); }, "lifecycle.invalid_field");
+
     auto unknown_field = desired;
     unknown_field["unexpected"] = true;
     require_error([&] { static_cast<void>(plan(unknown_field, observed)); }, "lifecycle.field_set");

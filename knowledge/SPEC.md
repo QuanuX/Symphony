@@ -84,6 +84,7 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/lifecycle-applied-state.schema.json`;
 - `knowledge/schemas/v1/lifecycle-boot-journal.schema.json`;
 - `knowledge/schemas/v1/lifecycle-boot-head.schema.json`;
+- `knowledge/schemas/v1/temporal.schema.json`;
 - `knowledge/schemas/v2/install-receipt.schema.json`.
 
 The process request limit is 1 MiB and the response limit is 4 MiB. JSON depth is at most 64, parsed values/events at most 16,384, one string or key at most 65,536 bytes, integers remain within `[-9007199254740991, 9007199254740991]`, and a request deadline is at most 300 seconds ahead. Unknown fields, duplicate names, invalid UTF-8, trailing data, floating-point values, out-of-range integers, unsupported versions, excessive input, unsafe paths, expired deadlines, and target mismatch fail closed. Standard output is reserved for the single protocol response; bounded diagnostics use standard error. Arguments and environment variables MUST NOT carry secrets or arbitrary executable instructions.
@@ -91,6 +92,12 @@ The process request limit is 1 MiB and the response limit is 4 MiB. JSON depth i
 An engine checks the deadline before and between bounded work units and file-read chunks. The invoking process MUST independently enforce the same deadline on child-process lifetime so a blocked operating-system or filesystem call cannot outlive the request. The direct coordinator slice provides cooperative checks; the implemented qxctl SKVI/SCLV/SACV/SODV/SSFV client adds a hard child-process timeout around each request deadline.
 
 `response_digest` is the tagged SHA-256 of the compact key-sorted response object before that member is inserted. Operation-specific payload/result schemas remain owned by the applicable coordinator or vector contract.
+
+## Temporal Semantics
+
+`knowledge/TIME.md` is the canonical Symphony Temporal Semantics Contract. Durable machine timestamps use the contract's UTC profiles; local time is presentation only. The target TOPS owns durable commit timestamps, while remote request time is freshness/correlation evidence. Wall-clock time is never the sole identity or causal-order mechanism. Live elapsed time and deadlines use monotonic clocks where the runtime provides them.
+
+The authority-free shared C++ foundation implements real Gregorian validation for civil dates, whole-second UTC, and exact-nanosecond UTC. Domain freshness, lifetime, sequence, journal, hash-chain, and recovery semantics remain with SSIAG, STAV, lifecycle, or the applicable vector. STSC creates no engine, time service, synchronization policy, or trading-node clock doctrine.
 
 ## Authenticated Session Model
 
