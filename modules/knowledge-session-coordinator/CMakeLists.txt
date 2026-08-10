@@ -23,6 +23,7 @@ add_executable(symphony-knowledge-session
     src/reconciliation.cpp
     src/authority_session.cpp
     src/lifecycle.cpp
+    src/lifecycle_journal.cpp
 )
 target_include_directories(symphony-knowledge-session PRIVATE src)
 target_link_libraries(symphony-knowledge-session PRIVATE Symphony::KnowledgeVectorEngine)
@@ -42,6 +43,7 @@ if(BUILD_TESTING)
         src/reconciliation.cpp
         src/authority_session.cpp
         src/lifecycle.cpp
+        src/lifecycle_journal.cpp
     )
     target_include_directories(knowledge-session-coordinator-tests PRIVATE src)
     target_link_libraries(knowledge-session-coordinator-tests PRIVATE Symphony::KnowledgeVectorEngine)
@@ -60,6 +62,7 @@ if(BUILD_TESTING)
         src/reconciliation.cpp
         src/authority_session.cpp
         src/lifecycle.cpp
+        src/lifecycle_journal.cpp
     )
     target_include_directories(knowledge-lifecycle-planner-tests PRIVATE src)
     target_link_libraries(knowledge-lifecycle-planner-tests PRIVATE Symphony::KnowledgeVectorEngine)

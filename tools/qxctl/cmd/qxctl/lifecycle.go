@@ -180,18 +180,7 @@ func runKnowledgeLifecycleReport(options knowledgeLifecycleOptions) error {
 		"desired_state":              profile.DesiredState,
 		"observation":                observation,
 		"prior_applied_state_digest": prior,
-		"client": map[string]any{
-			"client_id": "qxctl", "client_version": strings.ReplaceAll(qxversion.Version, " ", "-"),
-			"process_protocols":           []string{"symphony.knowledge.engine-process.v1"},
-			"desired_state_read_versions": []uint64{1}, "observation_read_versions": []uint64{1},
-			"plan_read_versions": []uint64{1}, "applied_state_read_versions": []uint64{1},
-			"receipt_read_versions": []uint64{1, 2},
-			"capabilities": []string{
-				"dependency-ready-set-v1", "deterministic-action-id-v1", "forward-inverse-v1",
-				"localized-blocker-isolation-v1", "ordered-safety-phases-v1",
-				"receipt-v1-adapter", "receipt-v2", "report-only-v1", "unknown-critical-block-v1",
-			},
-		},
+		"client":                     lifecyclePlannerClient(),
 	})
 	if err != nil {
 		return fmt.Errorf("encode lifecycle report request: %w", err)
@@ -216,6 +205,190 @@ func runKnowledgeLifecycleReport(options knowledgeLifecycleOptions) error {
 	if profile.BootMode == "apply-compatible" {
 		fmt.Println("Knowledge lifecycle report: apply-compatible requested; lifecycle mutation remains unavailable")
 	}
+	return nil
+}
+
+func lifecyclePlannerClient() map[string]any {
+	return map[string]any{
+		"client_id": "qxctl", "client_version": strings.ReplaceAll(qxversion.Version, " ", "-"),
+		"process_protocols":           []string{"symphony.knowledge.engine-process.v1"},
+		"desired_state_read_versions": []uint64{1}, "observation_read_versions": []uint64{1},
+		"plan_read_versions": []uint64{1}, "applied_state_read_versions": []uint64{1},
+		"receipt_read_versions": []uint64{1, 2},
+		"capabilities": []string{
+			"dependency-ready-set-v1", "deterministic-action-id-v1", "forward-inverse-v1",
+			"localized-blocker-isolation-v1", "ordered-safety-phases-v1",
+			"receipt-v1-adapter", "receipt-v2", "report-only-v1", "unknown-critical-block-v1",
+		},
+	}
+}
+
+func lifecycleJournalClient() map[string]any {
+	return map[string]any{
+		"client_id": "qxctl", "client_version": strings.ReplaceAll(qxversion.Version, " ", "-"),
+		"process_protocols":      []string{"symphony.knowledge.engine-process.v1"},
+		"journal_read_versions":  []uint64{1},
+		"journal_write_versions": []uint64{1},
+		"capabilities": []string{
+			"atomic-head-v1", "dual-slot-journal-v1", "dynamic-replanning-v1",
+			"expected-state-cas-v1", "idempotent-operation-v1",
+			"opaque-extension-preservation-v1", "recovery-forward-v1", "report-only-v1",
+		},
+	}
+}
+
+func runKnowledgeLifecycleBoot(options knowledgeLifecycleOptions) error {
+	if options.operationID == "" || options.expectedJournalDigest == "" {
+		return fmt.Errorf("--operation-id and --expected-journal-digest are required")
+	}
+	if options.expectedJournalDigest != "absent" && !validTaggedDigest(options.expectedJournalDigest) {
+		return fmt.Errorf("--expected-journal-digest must be absent or an exact tagged SHA-256 digest")
+	}
+	if options.priorAppliedStateDigest != "" && !validTaggedDigest(options.priorAppliedStateDigest) {
+		return fmt.Errorf("--prior-applied-state-digest must be an exact tagged SHA-256 digest")
+	}
+	observation, profileDigest, profile, err := buildLifecycleObservation(options, false)
+	if err != nil {
+		return err
+	}
+	stableDigest, err := knowledgelifecycle.StableInventoryDigest(observation)
+	if err != nil {
+		return err
+	}
+	decision, err := authorizeKnowledgeLifecycleDecision(options, "boot", lifecycleResource(
+		options.topsID, options.profileID, profileDigest+"\n"+
+			profile.DesiredState.DesiredStateDigest+"\n"+profile.BootMode+"\n"+stableDigest))
+	if err != nil {
+		return err
+	}
+	store, err := lifecycleStore(options)
+	if err != nil {
+		return err
+	}
+	repositoryRoot, err := resolveKnowledgeRepository(options.repository)
+	if err != nil {
+		return err
+	}
+	coordinator, err := exactBoundCoordinator(options.stateRoot)
+	if err != nil {
+		return err
+	}
+	var prior any
+	if options.priorAppliedStateDigest != "" {
+		prior = options.priorAppliedStateDigest
+	}
+	payload, err := json.Marshal(map[string]any{
+		"protocol": "symphony.knowledge.lifecycle-boot-command.v1", "operation": "lifecycle_boot",
+		"state_root": store.StateRoot(), "operation_id": options.operationID,
+		"expected_journal_digest": options.expectedJournalDigest,
+		"profile_id":              options.profileID, "tops_id": options.topsID,
+		"profile_digest": profileDigest, "stable_inventory_digest": stableDigest,
+		"mode": profile.BootMode, "desired_state": profile.DesiredState, "observation": observation,
+		"prior_applied_state_digest": prior, "authorization_decision": decision,
+		"planner_client": lifecyclePlannerClient(), "journal_client": lifecycleJournalClient(),
+	})
+	if err != nil {
+		return fmt.Errorf("encode lifecycle boot request: %w", err)
+	}
+	response, err := knowledgeengine.InvokeCoordinator(
+		context.Background(), coordinator.Prefix, coordinator.Version, repositoryRoot, "lifecycle_boot", payload)
+	if err != nil {
+		return err
+	}
+	result, err := validateLifecycleBootResult(
+		response.Result, "lifecycle_boot", options.profileID, options.topsID,
+		profileDigest, profile.DesiredState.DesiredStateDigest, observation.ObservationDigest,
+		options.priorAppliedStateDigest)
+	if err != nil {
+		return err
+	}
+	if options.jsonOutput {
+		return printIndentedJSON(result.Raw)
+	}
+	fmt.Printf("Knowledge lifecycle boot: profile=%s changed=%t state=%s generation=%d revision=%d journal_digest=%s apply_authorized=false canonical=false\n",
+		options.profileID, result.Changed, result.State, result.Generation,
+		result.PlanRevision, result.JournalDigest)
+	if profile.BootMode == "apply-compatible" {
+		fmt.Println("Knowledge lifecycle boot: apply-compatible requested; durable planning is active but action execution remains unavailable")
+	}
+	return nil
+}
+
+func runKnowledgeLifecycleBootState(operation string, options knowledgeLifecycleOptions) error {
+	expected := options.expectedJournalDigest
+	if operation == "lifecycle_boot_recover" {
+		if options.operationID == "" {
+			return fmt.Errorf("--operation-id is required")
+		}
+		if options.discover && expected != "" {
+			return fmt.Errorf("--discover and --expected-journal-digest are mutually exclusive")
+		}
+		if options.discover {
+			expected = "discover"
+		}
+		if expected == "" {
+			return fmt.Errorf("--expected-journal-digest or --discover is required")
+		}
+		if expected != "discover" && !validTaggedDigest(expected) {
+			return fmt.Errorf("--expected-journal-digest must be an exact tagged SHA-256 digest")
+		}
+	}
+	evidence := "status"
+	permission := "boot.status"
+	if operation == "lifecycle_boot_recover" {
+		evidence = expected
+		permission = "boot.recover"
+	}
+	decision, err := authorizeKnowledgeLifecycleDecision(
+		options, permission, lifecycleResource(options.topsID, options.profileID, evidence))
+	if err != nil {
+		return err
+	}
+	store, err := lifecycleStore(options)
+	if err != nil {
+		return err
+	}
+	repositoryRoot, err := resolveKnowledgeRepository(options.repository)
+	if err != nil {
+		return err
+	}
+	coordinator, err := exactBoundCoordinator(options.stateRoot)
+	if err != nil {
+		return err
+	}
+	var operationID any
+	var expectedValue any
+	if operation == "lifecycle_boot_recover" {
+		operationID = options.operationID
+		expectedValue = expected
+	}
+	payload, err := json.Marshal(map[string]any{
+		"protocol": "symphony.knowledge.lifecycle-boot-command.v1", "operation": operation,
+		"state_root": store.StateRoot(), "operation_id": operationID,
+		"expected_journal_digest": expectedValue, "profile_id": options.profileID,
+		"tops_id": options.topsID, "authorization_decision": decision,
+		"journal_client": lifecycleJournalClient(),
+	})
+	if err != nil {
+		return fmt.Errorf("encode lifecycle boot state request: %w", err)
+	}
+	response, err := knowledgeengine.InvokeCoordinator(
+		context.Background(), coordinator.Prefix, coordinator.Version, repositoryRoot, operation, payload)
+	if err != nil {
+		return err
+	}
+	result, err := validateLifecycleBootResult(
+		response.Result, operation, options.profileID, options.topsID, "", "", "", "")
+	if err != nil {
+		return err
+	}
+	if options.jsonOutput {
+		return printIndentedJSON(result.Raw)
+	}
+	fmt.Printf("Knowledge lifecycle %s: profile=%s present=%t changed=%t recovered=%t state=%s generation=%d revision=%d journal_digest=%s apply_authorized=false canonical=false\n",
+		strings.TrimPrefix(operation, "lifecycle_boot_"), options.profileID, result.JournalPresent,
+		result.Changed, result.Recovered, result.State, result.Generation,
+		result.PlanRevision, result.JournalDigest)
 	return nil
 }
 
@@ -340,25 +513,33 @@ func exactBoundCoordinator(stateRoot string) (knowledgebinding.Binding, error) {
 }
 
 func authorizeKnowledgeLifecycle(options knowledgeLifecycleOptions, operation, resource string) error {
+	_, err := authorizeKnowledgeLifecycleDecision(options, operation, resource)
+	return err
+}
+
+func authorizeKnowledgeLifecycleDecision(
+	options knowledgeLifecycleOptions,
+	operation, resource string,
+) (ssiagclient.AuthorizationDecision, error) {
 	if _, err := lifecycleStore(options); err != nil {
-		return err
+		return ssiagclient.AuthorizationDecision{}, err
 	}
 	client, err := ssiagclient.NewForTOPS(options.scope, options.topsID, 4*time.Second)
 	if err != nil {
-		return err
+		return ssiagclient.AuthorizationDecision{}, err
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
 	defer cancel()
 	if _, err := requireSSIAGStatus(ctx, client, options.topsID, options.scope); err != nil {
-		return err
+		return ssiagclient.AuthorizationDecision{}, err
 	}
 	requestID, err := randomUUID()
 	if err != nil {
-		return err
+		return ssiagclient.AuthorizationDecision{}, err
 	}
 	correlationID, err := randomUUID()
 	if err != nil {
-		return err
+		return ssiagclient.AuthorizationDecision{}, err
 	}
 	now := time.Now().UTC().Truncate(time.Second)
 	request := ssiagclient.AuthorizationRequest{
@@ -369,17 +550,215 @@ func authorizeKnowledgeLifecycle(options knowledgeLifecycleOptions, operation, r
 	}
 	decision, err := client.Authorize(ctx, request)
 	if err != nil {
-		return err
+		return ssiagclient.AuthorizationDecision{}, err
 	}
 	if err := validateSessionAuthorization(decision, request, options.topsID); err != nil {
-		return fmt.Errorf("SSIAG lifecycle authorization rejected: %w", err)
+		return ssiagclient.AuthorizationDecision{}, fmt.Errorf("SSIAG lifecycle authorization rejected: %w", err)
 	}
-	return nil
+	return decision, nil
 }
 
 func lifecycleResource(topsID, profileID, evidence string) string {
 	digest := sha256.Sum256([]byte(topsID + "\n" + profileID + "\n" + evidence))
 	return "symphony.knowledge.lifecycle:" + hex.EncodeToString(digest[:])
+}
+
+type validatedLifecycleBootResult struct {
+	Raw            any
+	JournalPresent bool
+	Changed        bool
+	Recovered      bool
+	State          string
+	Generation     uint64
+	PlanRevision   uint64
+	JournalDigest  string
+}
+
+func validateLifecycleBootResult(
+	raw json.RawMessage,
+	operation, profileID, topsID, profileDigest, desiredDigest, observationDigest, priorDigest string,
+) (validatedLifecycleBootResult, error) {
+	if err := knowledgeengine.ValidateJSONObject(raw, 4*1024*1024); err != nil {
+		return validatedLifecycleBootResult{}, fmt.Errorf("invalid lifecycle boot result JSON: %w", err)
+	}
+	var object map[string]any
+	decoder := json.NewDecoder(bytes.NewReader(raw))
+	decoder.UseNumber()
+	if err := decoder.Decode(&object); err != nil {
+		return validatedLifecycleBootResult{}, err
+	}
+	if !exactLifecycleFields(object, []string{
+		"protocol", "operation", "compatibility", "journal_present", "journal", "journal_digest",
+		"plan", "changed", "recovered", "repair_actions", "read_only", "apply_authorized", "canonical",
+	}) || object["protocol"] != "symphony.knowledge.lifecycle-boot-result.v1" ||
+		object["operation"] != operation || object["apply_authorized"] != false || object["canonical"] != false {
+		return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle boot result identity or non-apply boundary is invalid")
+	}
+	compatibility, ok := object["compatibility"].(map[string]any)
+	if !ok || !exactLifecycleFields(compatibility, []string{
+		"mode", "process_protocol", "journal_read_version", "journal_write_version",
+		"missing_capabilities", "two_way_procedural_compatibility", "reason",
+	}) || !oneOfInterface(compatibility["mode"], "full", "read_only", "blocked") ||
+		compatibility["two_way_procedural_compatibility"] != true ||
+		!validUniqueTokenArray(compatibility["missing_capabilities"], 0, 64) {
+		return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle boot compatibility envelope is invalid")
+	}
+	if reason, ok := compatibility["reason"].(string); !ok || !validPlanText(reason) {
+		return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle boot compatibility reason is invalid")
+	}
+	for _, field := range []string{"journal_read_version", "journal_write_version"} {
+		if compatibility[field] != nil && compatibility[field] != json.Number("1") {
+			return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle boot compatibility version is unsupported")
+		}
+	}
+	if compatibility["process_protocol"] != nil &&
+		compatibility["process_protocol"] != "symphony.knowledge.engine-process.v1" {
+		return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle boot process protocol is unsupported")
+	}
+	present, presentOK := object["journal_present"].(bool)
+	changed, changedOK := object["changed"].(bool)
+	recovered, recoveredOK := object["recovered"].(bool)
+	readOnly, readOnlyOK := object["read_only"].(bool)
+	if !presentOK || !changedOK || !recoveredOK || !readOnlyOK ||
+		(operation == "lifecycle_boot_status" && (!readOnly || changed || recovered)) ||
+		(operation != "lifecycle_boot_status" && readOnly) ||
+		(operation != "lifecycle_boot_recover" && recovered) {
+		return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle boot result mutation boundary is invalid")
+	}
+	actions, ok := object["repair_actions"].([]any)
+	if !ok || len(actions) > 64 {
+		return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle boot repair evidence is invalid")
+	}
+	for _, item := range actions {
+		value, ok := item.(string)
+		if !ok || !validPlanText(value) {
+			return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle boot repair evidence is invalid")
+		}
+	}
+	result := validatedLifecycleBootResult{Changed: changed, Recovered: recovered, JournalPresent: present}
+	if !present {
+		if object["journal"] != nil || object["journal_digest"] != nil || object["plan"] != nil || changed || recovered {
+			return validatedLifecycleBootResult{}, fmt.Errorf("absent lifecycle boot result carries state")
+		}
+	} else {
+		journal, ok := object["journal"].(map[string]any)
+		journalDigest, digestOK := object["journal_digest"].(string)
+		if !ok || !digestOK || !validTaggedDigest(journalDigest) || journal["journal_digest"] != journalDigest {
+			return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle boot journal identity is invalid")
+		}
+		if !exactLifecycleFields(journal, []string{
+			"protocol", "format_version", "journal_id", "transaction_id", "operation_id", "generation",
+			"previous_journal_digest", "profile_id", "profile_digest", "tops_id", "mode", "state", "desired_state_digest",
+			"observation_key", "current_observation_digest", "current_stable_inventory_digest",
+			"prior_applied_state_digest", "current_plan_digest", "current_plan_revision", "replan_count",
+			"action_attempts", "blockers", "checkpoints", "compatibility", "extensions", "recovery",
+			"started_at", "updated_at", "closed_at", "canonical", "apply_authorized", "journal_digest",
+		}) || journal["protocol"] != "symphony.knowledge.lifecycle-boot-journal.v1" ||
+			journal["format_version"] != json.Number("1") || journal["profile_id"] != profileID ||
+			journal["tops_id"] != topsID || journal["canonical"] != false || journal["apply_authorized"] != false ||
+			!tokenString(journal["journal_id"]) || !tokenString(journal["transaction_id"]) ||
+			!tokenString(journal["operation_id"]) || !oneOfInterface(journal["mode"], "report", "apply-compatible") ||
+			!oneOfInterface(journal["state"], "open", "blocked", "verified", "closed") ||
+			!digestString(journal["profile_digest"]) || !digestString(journal["desired_state_digest"]) ||
+			!digestString(journal["observation_key"]) ||
+			!digestString(journal["current_observation_digest"]) ||
+			!digestString(journal["current_stable_inventory_digest"]) ||
+			!digestString(journal["current_plan_digest"]) || !digestOrNil(journal["previous_journal_digest"]) ||
+			!digestOrNil(journal["prior_applied_state_digest"]) {
+			return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle boot journal contract is invalid")
+		}
+		if profileDigest != "" && journal["profile_digest"] != profileDigest {
+			return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle boot journal profile digest mismatch")
+		}
+		generation, generationOK := lifecycleUint(journal["generation"], 1, 9007199254740991)
+		revision, revisionOK := lifecycleUint(journal["current_plan_revision"], 1, 256)
+		if !generationOK || !revisionOK {
+			return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle boot journal generation is invalid")
+		}
+		attempts, attemptsOK := journal["action_attempts"].([]any)
+		if !attemptsOK || len(attempts) != 0 {
+			return validatedLifecycleBootResult{}, fmt.Errorf("report-only lifecycle journal contains action attempts")
+		}
+		extensions, extensionsOK := journal["extensions"].([]any)
+		if !extensionsOK || len(extensions) > 64 {
+			return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle journal extensions are invalid")
+		}
+		for _, item := range extensions {
+			extension, ok := item.(map[string]any)
+			if !ok || !exactLifecycleFields(extension, []string{"extension_id", "extension_version", "critical", "payload", "payload_digest"}) ||
+				!tokenString(extension["extension_id"]) || extension["critical"] != false || !digestString(extension["payload_digest"]) {
+				return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle journal contains an unsupported extension")
+			}
+			payload, err := json.Marshal(extension["payload"])
+			if err != nil || extension["payload_digest"] != taggedLifecycleDigest(payload) {
+				return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle journal extension digest mismatch")
+			}
+		}
+		digestInput := make(map[string]any, len(journal)-1)
+		for key, value := range journal {
+			if key != "journal_digest" {
+				digestInput[key] = value
+			}
+		}
+		encoded, err := json.Marshal(digestInput)
+		if err != nil || journalDigest != taggedLifecycleDigest(encoded) {
+			return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle boot journal digest mismatch")
+		}
+		result.State = journal["state"].(string)
+		result.Generation = generation
+		result.PlanRevision = revision
+		result.JournalDigest = journalDigest
+	}
+	if object["plan"] != nil {
+		if operation != "lifecycle_boot" || !present || desiredDigest == "" || observationDigest == "" {
+			return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle boot result carries an unexpected plan")
+		}
+		planRaw, err := json.Marshal(object["plan"])
+		if err != nil {
+			return validatedLifecycleBootResult{}, err
+		}
+		plan, err := validateLifecyclePlan(planRaw, desiredDigest, observationDigest, priorDigest)
+		if err != nil {
+			return validatedLifecycleBootResult{}, err
+		}
+		journal := object["journal"].(map[string]any)
+		if journal["current_plan_digest"] != plan.PlanDigest {
+			return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle boot plan and journal digests differ")
+		}
+	}
+	if err := json.Unmarshal(raw, &result.Raw); err != nil {
+		return validatedLifecycleBootResult{}, err
+	}
+	return result, nil
+}
+
+func exactLifecycleFields(object map[string]any, fields []string) bool {
+	if len(object) != len(fields) {
+		return false
+	}
+	for _, field := range fields {
+		if _, present := object[field]; !present {
+			return false
+		}
+	}
+	return true
+}
+
+func lifecycleUint(value any, minimum, maximum uint64) (uint64, bool) {
+	number, ok := value.(json.Number)
+	if !ok {
+		return 0, false
+	}
+	parsed, err := number.Int64()
+	if err != nil || parsed < 0 || uint64(parsed) < minimum || uint64(parsed) > maximum {
+		return 0, false
+	}
+	return uint64(parsed), true
+}
+
+func taggedLifecycleDigest(value []byte) string {
+	digest := sha256.Sum256(value)
+	return "sha256:" + hex.EncodeToString(digest[:])
 }
 
 type validatedLifecyclePlan struct {

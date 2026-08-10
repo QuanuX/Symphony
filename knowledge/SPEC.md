@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact three-record SSFV partial bootstrap, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, explicit qxctl session transitions, implemented report-only coordinator lifecycle planning, and canonical desired/observed/plan/applied/boot-journal plus receipt-v2 lifecycle contracts in `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, lifecycle persistence/observation/apply, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, or docking capability may be inferred from these contract slices.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact three-record SSFV partial bootstrap, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, explicit qxctl session transitions, implemented report-only coordinator lifecycle planning and boot-journal persistence/recovery, and canonical desired/observed/plan/applied/boot lifecycle contracts in `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, lifecycle action execution/applied-state persistence, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, host boot hook, or docking capability may be inferred from these contract slices.
 
 ## Purpose
 
@@ -57,6 +57,8 @@ The v1 identifier family is:
 | `symphony.knowledge.lifecycle-applied-state.v1` | last verified lifecycle convergence evidence |
 | `symphony.knowledge.lifecycle-boot-journal.v1` | durable boot transaction, replan, blocker, and recovery evidence |
 | `symphony.knowledge.lifecycle-boot-head.v1` | atomic dual-slot boot-journal head |
+| `symphony.knowledge.lifecycle-boot-command.v1` | SSIAG-authorized boot, status, and recovery request |
+| `symphony.knowledge.lifecycle-boot-result.v1` | report-only durable lifecycle state and recovery result |
 | `symphony.knowledge.engine-binding-registry.v1` | protected noncanonical user-scope exact-version selection |
 | `symphony.knowledge.install-receipt.v2` | immutable content-addressed package ownership and capability evidence |
 | `symphony.maestro.knowledge-engine-docking.v1` | Maestro docking projection |
@@ -84,6 +86,8 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/lifecycle-applied-state.schema.json`;
 - `knowledge/schemas/v1/lifecycle-boot-journal.schema.json`;
 - `knowledge/schemas/v1/lifecycle-boot-head.schema.json`;
+- `knowledge/schemas/v1/lifecycle-boot-command.schema.json`;
+- `knowledge/schemas/v1/lifecycle-boot-result.schema.json`;
 - `knowledge/schemas/v1/temporal.schema.json`;
 - `knowledge/schemas/v2/install-receipt.schema.json`.
 
@@ -192,7 +196,7 @@ The implemented user-scope `qxctl knowledge reconcile ...` surface resolves and 
 
 The implemented user-scope `qxctl knowledge session ...` surface revalidates the exact coordinator binding, obtains a fresh exact SSIAG decision for every underlying operation, and invokes the coordinator with the common session command. `begin` requires `absent` or the exact digest of a closed predecessor; mutations require a stable operation ID and exact current digest; explicit discovery recovery is permitted only when one unique forward state is provable. `status` is read-only. `transition` performs only the explicit idempotent composition described above and returns a digest-bound noncanonical transition result. These surfaces establish and recover noncanonical authority-epoch evidence only. They do not activate a receipt, invoke vector semantics, mutate canonical knowledge, administer policy/safeguards, use a credential provider, or dock with Maestro.
 
-The implemented `qxctl knowledge lifecycle profile list|show|set|remove` surface maintains protected noncanonical per-TOPS desired profiles beneath the selected state root. Set/remove require exact expected profile state; qxctl generates linked generations and content digests, serializes through a no-follow lock, and commits durable same-directory replacement. `observe` scans only fixed receipt paths under explicit or profile-selected roots, validates known v1 packages through exact adapters and v2 packages through content-addressed ownership evidence, and preserves unsupported or invalid packages as explicit unknown evidence. `report` re-reads the profile, re-observes the roots, obtains fresh SSIAG authorization bound to the exact evidence, revalidates one exact bound coordinator, and validates its report-only plan before presentation. Collection timestamps remain in document evidence but are excluded from the stable inventory key. No lifecycle plan is persisted, no action is executed, and `apply-compatible` profile intent still produces report-only behavior.
+The implemented `qxctl knowledge lifecycle profile list|show|set|remove` surface maintains protected noncanonical per-TOPS desired profiles beneath the selected state root. Set/remove require exact expected profile state; qxctl generates linked generations and content digests, serializes through a no-follow lock, and commits durable same-directory replacement. `observe` scans only fixed receipt paths under explicit or profile-selected roots, validates known v1 packages through exact adapters and v2 packages through content-addressed ownership evidence, and preserves unsupported or invalid packages as explicit unknown evidence. `report` re-reads the profile, re-observes the roots, obtains fresh SSIAG authorization bound to the exact evidence, revalidates one exact bound coordinator, and validates its disposable report-only plan before presentation. `boot` performs the same evidence collection but requires a stable operation ID and exact prior journal digest, then invokes the coordinator's protected per-TOPS/profile dual-slot journal. `status` is read-only; `recover` requires exact state or explicit discovery and can repair only one unique digest-linked forward chain. Collection timestamps remain in document evidence but are excluded from the persisted stable-inventory digest, so a timestamp-only rescan does not advance a generation. The journal persists plan/checkpoint identity and blockers only; no action is executed, applied state is not written, and `apply-compatible` profile intent still produces report-only behavior.
 
 ## Authority and Apply Gate
 

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-boot-command:v1",
+  "title": "Symphony durable report-only lifecycle boot command v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "operation", "state_root", "operation_id", "expected_journal_digest", "profile_id", "tops_id", "authorization_decision", "journal_client"],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.lifecycle-boot-command.v1"},
+    "operation": {"enum": ["lifecycle_boot", "lifecycle_boot_status", "lifecycle_boot_recover"]},
+    "state_root": {"$ref": "#/$defs/absolutePath"},
+    "operation_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+    "expected_journal_digest": {"oneOf": [{"type": "null"}, {"const": "absent"}, {"const": "discover"}, {"$ref": "#/$defs/digest"}]},
+    "profile_id": {"$ref": "#/$defs/token"},
+    "tops_id": {"$ref": "#/$defs/token"},
+    "profile_digest": {"$ref": "#/$defs/digest"},
+    "stable_inventory_digest": {"$ref": "#/$defs/digest"},
+    "mode": {"enum": ["report", "apply-compatible"]},
+    "desired_state": {"$ref": "urn:symphony:knowledge:lifecycle-desired-state:v1"},
+    "observation": {"$ref": "urn:symphony:knowledge:lifecycle-observation:v1"},
+    "prior_applied_state_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "authorization_decision": {"$ref": "urn:symphony:ssiag:authorization-decision:v1"},
+    "planner_client": {"$ref": "#/$defs/plannerClient"},
+    "journal_client": {"$ref": "#/$defs/journalClient"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"operation": {"const": "lifecycle_boot"}}},
+      "then": {
+        "required": ["profile_digest", "stable_inventory_digest", "mode", "desired_state", "observation", "prior_applied_state_digest", "planner_client"],
+        "properties": {"operation_id": {"$ref": "#/$defs/token"}, "expected_journal_digest": {"oneOf": [{"const": "absent"}, {"$ref": "#/$defs/digest"}]}}
+      }
+    },
+    {
+      "if": {"properties": {"operation": {"const": "lifecycle_boot_status"}}},
+      "then": {
+        "properties": {"operation_id": {"type": "null"}, "expected_journal_digest": {"type": "null"}},
+        "not": {"anyOf": [{"required": ["profile_digest"]}, {"required": ["stable_inventory_digest"]}, {"required": ["mode"]}, {"required": ["desired_state"]}, {"required": ["observation"]}, {"required": ["prior_applied_state_digest"]}, {"required": ["planner_client"]}]}
+      }
+    },
+    {
+      "if": {"properties": {"operation": {"const": "lifecycle_boot_recover"}}},
+      "then": {
+        "properties": {"operation_id": {"$ref": "#/$defs/token"}, "expected_journal_digest": {"oneOf": [{"const": "discover"}, {"$ref": "#/$defs/digest"}]}},
+        "not": {"anyOf": [{"required": ["profile_digest"]}, {"required": ["stable_inventory_digest"]}, {"required": ["mode"]}, {"required": ["desired_state"]}, {"required": ["observation"]}, {"required": ["prior_applied_state_digest"]}, {"required": ["planner_client"]}]}
+      }
+    }
+  ],
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "version": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[0-9A-Za-z.+-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "absolutePath": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "^/(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])(?:$|[^/](?:.*[^/])?)$"},
+    "tokens": {"type": "array", "minItems": 1, "maxItems": 128, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}},
+    "versions": {"type": "array", "minItems": 1, "maxItems": 16, "uniqueItems": true, "items": {"type": "integer", "minimum": 1, "maximum": 16}},
+    "plannerClient": {
+      "type": "object", "additionalProperties": false,
+      "required": ["client_id", "client_version", "process_protocols", "desired_state_read_versions", "observation_read_versions", "plan_read_versions", "applied_state_read_versions", "receipt_read_versions", "capabilities"],
+      "properties": {"client_id": {"const": "qxctl"}, "client_version": {"$ref": "#/$defs/version"}, "process_protocols": {"$ref": "#/$defs/tokens"}, "desired_state_read_versions": {"$ref": "#/$defs/versions"}, "observation_read_versions": {"$ref": "#/$defs/versions"}, "plan_read_versions": {"$ref": "#/$defs/versions"}, "applied_state_read_versions": {"$ref": "#/$defs/versions"}, "receipt_read_versions": {"$ref": "#/$defs/versions"}, "capabilities": {"$ref": "#/$defs/tokens"}}
+    },
+    "journalClient": {
+      "type": "object", "additionalProperties": false,
+      "required": ["client_id", "client_version", "process_protocols", "journal_read_versions", "journal_write_versions", "capabilities"],
+      "properties": {"client_id": {"const": "qxctl"}, "client_version": {"$ref": "#/$defs/version"}, "process_protocols": {"$ref": "#/$defs/tokens"}, "journal_read_versions": {"$ref": "#/$defs/versions"}, "journal_write_versions": {"$ref": "#/$defs/versions"}, "capabilities": {"$ref": "#/$defs/tokens"}}
+    }
+  }
+}

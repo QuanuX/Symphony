@@ -122,6 +122,9 @@ type knowledgeLifecycleOptions struct {
 	expectedProfileDigest   string
 	configuredRoots         []string
 	priorAppliedStateDigest string
+	operationID             string
+	expectedJournalDigest   string
+	discover                bool
 	ttl                     time.Duration
 	jsonOutput              bool
 }
@@ -381,7 +384,7 @@ func newKnowledgeCommand() *cobra.Command {
 		Use:  "lifecycle",
 		Args: usageOnlyArgs,
 		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge lifecycle subcommand is required: profile, observe, or report")
+			return fmt.Errorf("knowledge lifecycle subcommand is required: profile, observe, report, boot, status, or recover")
 		},
 	}
 	profile := &cobra.Command{
@@ -447,6 +450,48 @@ func newKnowledgeCommand() *cobra.Command {
 	)
 	report.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	lifecycle.AddCommand(report)
+
+	bootOptions := knowledgeLifecycleOptions{scope: "user", profileID: "default", ttl: 15 * time.Minute}
+	boot := &cobra.Command{
+		Use:  "boot",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return runKnowledgeLifecycleBoot(bootOptions)
+		},
+	}
+	addKnowledgeLifecycleCommonFlags(boot, &bootOptions)
+	boot.Flags().StringVar(&bootOptions.operationID, "operation-id", "", "stable idempotency token for this durable boot observation")
+	boot.Flags().StringVar(&bootOptions.expectedJournalDigest, "expected-journal-digest", "", "required prior journal state: absent or exact tagged SHA-256 digest")
+	boot.Flags().StringVar(&bootOptions.priorAppliedStateDigest, "prior-applied-state-digest", "", "optional exact tagged SHA-256 digest of the last applied-state evidence")
+	boot.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	lifecycle.AddCommand(boot)
+
+	statusOptions := knowledgeLifecycleOptions{scope: "user", profileID: "default", ttl: 15 * time.Minute}
+	status := &cobra.Command{
+		Use:  "status",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return runKnowledgeLifecycleBootState("lifecycle_boot_status", statusOptions)
+		},
+	}
+	addKnowledgeLifecycleCommonFlags(status, &statusOptions)
+	status.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	lifecycle.AddCommand(status)
+
+	recoverOptions := knowledgeLifecycleOptions{scope: "user", profileID: "default", ttl: 15 * time.Minute}
+	recover := &cobra.Command{
+		Use:  "recover",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return runKnowledgeLifecycleBootState("lifecycle_boot_recover", recoverOptions)
+		},
+	}
+	addKnowledgeLifecycleCommonFlags(recover, &recoverOptions)
+	recover.Flags().StringVar(&recoverOptions.operationID, "operation-id", "", "stable idempotency token for this recovery mutation")
+	recover.Flags().StringVar(&recoverOptions.expectedJournalDigest, "expected-journal-digest", "", "exact recoverable journal digest")
+	recover.Flags().BoolVar(&recoverOptions.discover, "discover", false, "recover from uniquely validated digest-linked local evidence")
+	recover.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	lifecycle.AddCommand(recover)
 	lifecycle.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	command.AddCommand(lifecycle)
 	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
@@ -880,7 +925,8 @@ func failurePrefix(args []string) string {
 			}
 		}
 		if len(args) > 2 && args[1] == "lifecycle" {
-			if args[2] == "observe" || args[2] == "report" {
+			if args[2] == "observe" || args[2] == "report" || args[2] == "boot" ||
+				args[2] == "status" || args[2] == "recover" {
 				return "knowledge lifecycle " + args[2]
 			}
 			if len(args) > 3 && args[2] == "profile" {

@@ -150,7 +150,7 @@ go run ./cmd/qxctl knowledge session transition \
 
 The selected SSIAG configuration must map the invoking effective UID/GID and contain an exact grant for each requested `symphony.knowledge.session.*` operation, the opaque `symphony.knowledge.repository:<sha256>` resource derived from the canonical repository root, audience `qxctl`, and scope `tops:<tops-id>`. With no exact grant—or if STAV is unavailable—the operation fails closed without coordinator mutation.
 
-Generic module and vector additions, removals, upgrades, rollbacks, and first-boot convergence are contractually specified in `knowledge/LIFECYCLE.md` and the common lifecycle schemas. Binding registry v1 remains fixed to its six existing roles. qxctl now persists protected per-TOPS desired profiles, collects fixed-layout configured-root observations, and invokes the exact bound C++ coordinator for a fresh report-only dependency plan. It preserves unmanaged and unsupported packages, isolates localized blockers, binds exact receptor targets, and never authorizes apply. The stable inventory key excludes observation time, so merely running the report later does not restart an unchanged transaction; real content or compatibility changes cause dynamic replanning.
+Generic module and vector additions, removals, upgrades, rollbacks, and first-boot convergence are contractually specified in `knowledge/LIFECYCLE.md` and the common lifecycle schemas. Binding registry v1 remains fixed to its six existing roles. qxctl persists protected per-TOPS desired profiles, collects fixed-layout configured-root observations, and invokes the exact bound C++ coordinator for disposable reports or protected durable boot journals. It preserves unmanaged and unsupported packages, isolates localized blockers, binds exact receptor targets, and never authorizes apply. The stable inventory key excludes observation time, so a later timestamp-only scan does not advance the journal; real content or compatibility changes create a linked plan revision.
 
 ```bash
 # First profile generation; profile.json uses lifecycle-profile-input.v1.
@@ -163,6 +163,16 @@ go run ./cmd/qxctl knowledge lifecycle observe \
   --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 --profile-id default --json
 go run ./cmd/qxctl knowledge lifecycle report \
   --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 --profile-id default --json
+
+# Durable report-only first-boot evidence. Reuse the returned digest for the next mutation.
+go run ./cmd/qxctl knowledge lifecycle boot \
+  --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 --profile-id default \
+  --operation-id node-boot-0001 --expected-journal-digest absent --json
+go run ./cmd/qxctl knowledge lifecycle status \
+  --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 --profile-id default --json
+go run ./cmd/qxctl knowledge lifecycle recover \
+  --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 --profile-id default \
+  --operation-id node-boot-recover-0001 --discover --json
 ```
 
-Each operation requires a matching exact `symphony.knowledge.lifecycle.*` SSIAG grant and committed STAV decision. Profile updates use the digest returned by `show` or `list` as the next expected state. Plans, applied state, and boot journals are not yet persisted; installation, uninstall, activation, docking, and lifecycle apply remain unavailable.
+Each operation requires a matching exact `symphony.knowledge.lifecycle.*` SSIAG grant and committed STAV decision. Profile updates use the digest returned by `show` or `list` as the next expected state. `boot` persists report-only plan/checkpoint identity through an exact expected journal digest; `status` is read-only and `recover` repairs only uniquely linked local evidence. Action attempts and applied state are not persisted; installation, uninstall, activation, docking, host boot-hook installation, and lifecycle apply remain unavailable.

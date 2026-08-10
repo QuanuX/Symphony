@@ -70,6 +70,9 @@
 - `qxctl knowledge lifecycle profile remove --tops-id UUID --expected-profile-digest DIGEST [--profile-id ID] [--scope user|system] [--state-root PATH] [--json]`
 - `qxctl knowledge lifecycle observe --tops-id UUID [--profile-id ID | --root PATH...] [--scope user|system] [--state-root PATH] [--json]`
 - `qxctl knowledge lifecycle report --tops-id UUID [--profile-id ID] [--prior-applied-state-digest DIGEST] [--scope user|system] [--state-root PATH] [--repo PATH] [--json]`
+- `qxctl knowledge lifecycle boot --tops-id UUID --operation-id ID --expected-journal-digest absent|DIGEST [--profile-id ID] [--prior-applied-state-digest DIGEST] [--scope user|system] [--state-root PATH] [--repo PATH] [--json]`
+- `qxctl knowledge lifecycle status --tops-id UUID [--profile-id ID] [--scope user|system] [--state-root PATH] [--repo PATH] [--json]`
+- `qxctl knowledge lifecycle recover --tops-id UUID --operation-id ID (--expected-journal-digest DIGEST|--discover) [--profile-id ID] [--scope user|system] [--state-root PATH] [--repo PATH] [--json]`
 - `qxctl skvi inspect --prefix PATH [--version VERSION] [--repo PATH] [--json]`
 - `qxctl skvi check --prefix PATH [--version VERSION] [--repo PATH] [--expected-index-digest DIGEST] [--json]`
 - `qxctl skvi propose --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
@@ -101,7 +104,7 @@
 - `qxctl knowledge proposals list|show|verify`
 - `qxctl knowledge apply ...` is namespace-reserved but unavailable until the common apply gate passes
 
-Lifecycle action leaves remain reserved for future reviewed implementation: boot-journal recovery, install, upgrade, rollback, dock, undock, activate, deactivate, and uninstall. The implemented profile, observe, and report leaves are noncanonical administration and disposable planning only. They do not imply action execution or apply authority.
+Lifecycle action leaves remain reserved for future reviewed implementation: install, upgrade, rollback, dock, undock, activate, deactivate, and uninstall. The implemented profile, observe, report, boot, status, and recover leaves are noncanonical administration, planning, and protected report-only journal management. They do not imply action execution or apply authority.
 
 ## Installability Posture
 qxctl is installable via standard `go build` or executable directly via `go run` using the Go standard toolchain. It does not require remote runtimes, providers, Docker, Kubernetes, or cloud infrastructure.
@@ -132,7 +135,7 @@ The session command layer reads one immutable binding snapshot to resolve and re
 
 The session transition layer performs only an explicit idempotent composition of status, bounded discovery recovery, close, begin, and checkpoint. It derives stable step identities from one host event ID, checks current journal checkpoint evidence before retry, obtains a new SSIAG decision for every step, and emits `symphony.knowledge.session-transition-result.v1`. It installs no host integration.
 
-The lifecycle layer stores protected profiles under `<state-root>/symphony/<tops-id>/qxctl/knowledge/lifecycle/profiles/`. It uses caller-neutral exact SSIAG operations and resources, a persistent no-follow lock, effective-user-owned mode-`0600` files, linked content digests, semantic retry, and durable same-directory replacement. Observation scans only `<root>/share/symphony/receipts/<module>/<version>/install-receipt.json`; known v1 identities use exact adapters and v2 uses generic content-addressed validation. Unsupported, invalid, unreadable, and ambiguous packages are preserved as unknown evidence. `report` re-observes on every invocation, validates the exact bound coordinator and full plan shape/digest, and never persists or applies the result. Lifecycle boot journaling/recovery and every action/apply leaf remain unimplemented.
+The lifecycle layer stores protected profiles under `<state-root>/symphony/<tops-id>/qxctl/knowledge/lifecycle/profiles/`. It uses caller-neutral exact SSIAG operations and resources, persistent no-follow locks, effective-user-owned mode-`0600` files, linked content digests, semantic retry, and durable replacement. Observation scans only `<root>/share/symphony/receipts/<module>/<version>/install-receipt.json`; known v1 identities use exact adapters and v2 uses generic content-addressed validation. Unsupported, invalid, unreadable, and ambiguous packages are preserved as unknown evidence. `report` re-observes on every invocation, validates the exact bound coordinator and full plan shape/digest, and does not persist its result. `boot` supplies exact expected state and stable operation identity to the coordinator's per-TOPS/profile dual-slot journal; `status` is read-only and `recover` is limited to exact or uniquely discovered digest-linked evidence. The journal persists report-only plan/checkpoint identity while qxctl rejects apply claims. Every action/apply leaf, applied-state persistence, and host boot-hook installation remain unimplemented.
 
 ## Non-authorizations
 qxctl is not authorized to write canonical generated artifacts. It may invoke ratified engines to create noncanonical proposals and disposable projections. The Architect-ratified Cobra and Viper libraries and their required cgo-free Go dependencies are authorized only for command grammar and constrained configuration mapping; Python, C bindings, remote configuration backends, in-process vector execution engines, and unrelated third-party dependencies remain prohibited. First-party Symphony libraries remain subordinate to their canonical knowledge vectors.

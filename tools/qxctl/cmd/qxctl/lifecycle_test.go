@@ -99,6 +99,116 @@ func TestLifecycleCommandGrammarIsRegistered(t *testing.T) {
 	if err != nil || command == nil || command.Name() != "report" {
 		t.Fatalf("lifecycle report grammar is absent: command=%v err=%v", command, err)
 	}
+	for _, name := range []string{"boot", "status", "recover"} {
+		command, _, err = root.Find([]string{"knowledge", "lifecycle", name})
+		if err != nil || command == nil || command.Name() != name {
+			t.Fatalf("lifecycle %s grammar is absent: command=%v err=%v", name, command, err)
+		}
+	}
+}
+
+func TestValidateLifecycleBootResultEnforcesDurableReportOnlyBoundary(t *testing.T) {
+	result := lifecycleBootResultFixture(t, "lifecycle_boot_status")
+	raw, _ := json.Marshal(result)
+	validated, err := validateLifecycleBootResult(raw, "lifecycle_boot_status", "default", "tops-test", "", "", "", "")
+	if err != nil || !validated.JournalPresent || validated.State != "verified" || validated.Generation != 1 {
+		t.Fatalf("valid lifecycle journal result was rejected: %+v err=%v", validated, err)
+	}
+	if _, err := validateLifecycleBootResult(
+		raw, "lifecycle_boot_status", "default", "tops-test",
+		lifecycleTestDigest("wrong-profile"), "", "", ""); err == nil {
+		t.Fatal("lifecycle journal with the wrong expected profile digest was accepted")
+	}
+
+	result["apply_authorized"] = true
+	raw, _ = json.Marshal(result)
+	if _, err := validateLifecycleBootResult(raw, "lifecycle_boot_status", "default", "tops-test", "", "", "", ""); err == nil {
+		t.Fatal("apply-authorized lifecycle journal result was accepted")
+	}
+	result["apply_authorized"] = false
+
+	journal := result["journal"].(map[string]any)
+	journal["format_version"] = 2
+	journal["journal_digest"] = lifecycleObjectDigest(t, journal, "journal_digest")
+	result["journal_digest"] = journal["journal_digest"]
+	raw, _ = json.Marshal(result)
+	if _, err := validateLifecycleBootResult(raw, "lifecycle_boot_status", "default", "tops-test", "", "", "", ""); err == nil {
+		t.Fatal("future lifecycle journal version was accepted")
+	}
+}
+
+func TestValidateLifecycleBootResultRejectsCriticalOrDigestDrift(t *testing.T) {
+	result := lifecycleBootResultFixture(t, "lifecycle_boot_status")
+	journal := result["journal"].(map[string]any)
+	journal["journal_id"] = "drifted"
+	raw, _ := json.Marshal(result)
+	if _, err := validateLifecycleBootResult(raw, "lifecycle_boot_status", "default", "tops-test", "", "", "", ""); err == nil {
+		t.Fatal("lifecycle journal digest drift was accepted")
+	}
+
+	result = lifecycleBootResultFixture(t, "lifecycle_boot_status")
+	journal = result["journal"].(map[string]any)
+	payload := map[string]any{"future": true}
+	payloadJSON, _ := json.Marshal(payload)
+	journal["extensions"] = []any{map[string]any{
+		"extension_id": "future-extension", "extension_version": "1", "critical": true,
+		"payload": payload, "payload_digest": taggedLifecycleDigest(payloadJSON),
+	}}
+	journal["journal_digest"] = lifecycleObjectDigest(t, journal, "journal_digest")
+	result["journal_digest"] = journal["journal_digest"]
+	raw, _ = json.Marshal(result)
+	if _, err := validateLifecycleBootResult(raw, "lifecycle_boot_status", "default", "tops-test", "", "", "", ""); err == nil {
+		t.Fatal("unknown critical lifecycle extension was accepted")
+	}
+}
+
+func lifecycleBootResultFixture(t *testing.T, operation string) map[string]any {
+	t.Helper()
+	journal := map[string]any{
+		"protocol": "symphony.knowledge.lifecycle-boot-journal.v1", "format_version": 1,
+		"journal_id": "lifecycle-journal:test", "transaction_id": "lifecycle-transaction:test",
+		"operation_id": "operation-test", "generation": 1, "previous_journal_digest": nil,
+		"profile_id": "default", "profile_digest": lifecycleTestDigest("profile"),
+		"tops_id": "tops-test", "mode": "report", "state": "verified",
+		"desired_state_digest":            lifecycleTestDigest("desired"),
+		"observation_key":                 lifecycleTestDigest("key"),
+		"current_observation_digest":      lifecycleTestDigest("observation"),
+		"current_stable_inventory_digest": lifecycleTestDigest("stable"),
+		"prior_applied_state_digest":      nil, "current_plan_digest": lifecycleTestDigest("plan"),
+		"current_plan_revision": 1, "replan_count": 0, "action_attempts": []any{},
+		"blockers": []any{}, "checkpoints": []any{map[string]any{"bounded": true}},
+		"compatibility": map[string]any{"bounded": true}, "extensions": []any{},
+		"recovery": map[string]any{"state": "clean"}, "started_at": "2026-08-10T00:00:00Z",
+		"updated_at": "2026-08-10T00:00:00Z", "closed_at": nil,
+		"canonical": false, "apply_authorized": false,
+	}
+	journal["journal_digest"] = lifecycleObjectDigest(t, journal, "journal_digest")
+	return map[string]any{
+		"protocol": "symphony.knowledge.lifecycle-boot-result.v1", "operation": operation,
+		"compatibility": map[string]any{
+			"mode": "full", "process_protocol": "symphony.knowledge.engine-process.v1",
+			"journal_read_version": 1, "journal_write_version": 1, "missing_capabilities": []any{},
+			"two_way_procedural_compatibility": true, "reason": "full bounded compatibility",
+		},
+		"journal_present": true, "journal": journal, "journal_digest": journal["journal_digest"],
+		"plan": nil, "changed": false, "recovered": false, "repair_actions": []any{},
+		"read_only": operation == "lifecycle_boot_status", "apply_authorized": false, "canonical": false,
+	}
+}
+
+func lifecycleObjectDigest(t *testing.T, object map[string]any, field string) string {
+	t.Helper()
+	copy := make(map[string]any, len(object)-1)
+	for key, value := range object {
+		if key != field {
+			copy[key] = value
+		}
+	}
+	encoded, err := json.Marshal(copy)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return taggedLifecycleDigest(encoded)
 }
 
 func lifecyclePlanDigest(t *testing.T, plan map[string]any) string {

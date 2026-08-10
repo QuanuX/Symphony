@@ -6,8 +6,9 @@
   "additionalProperties": false,
   "required": [
     "protocol", "format_version", "journal_id", "transaction_id", "operation_id",
-    "generation", "previous_journal_digest", "profile_id", "tops_id", "mode", "state",
+    "generation", "previous_journal_digest", "profile_id", "profile_digest", "tops_id", "mode", "state",
     "desired_state_digest", "observation_key", "current_observation_digest",
+    "current_stable_inventory_digest",
     "prior_applied_state_digest", "current_plan_digest", "current_plan_revision",
     "replan_count", "action_attempts", "blockers", "checkpoints", "compatibility",
     "extensions", "recovery", "started_at", "updated_at", "closed_at", "canonical",
@@ -24,12 +25,14 @@
       "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
     },
     "profile_id": {"$ref": "#/$defs/token"},
+    "profile_digest": {"$ref": "#/$defs/digest"},
     "tops_id": {"$ref": "#/$defs/token"},
     "mode": {"enum": ["report", "apply-compatible"]},
     "state": {"enum": ["open", "blocked", "verified", "closed"]},
     "desired_state_digest": {"$ref": "#/$defs/digest"},
     "observation_key": {"$ref": "#/$defs/digest"},
     "current_observation_digest": {"$ref": "#/$defs/digest"},
+    "current_stable_inventory_digest": {"$ref": "#/$defs/digest"},
     "prior_applied_state_digest": {
       "oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]
     },
@@ -37,7 +40,7 @@
     "current_plan_revision": {"type": "integer", "minimum": 1, "maximum": 256},
     "replan_count": {"type": "integer", "minimum": 0, "maximum": 256},
     "action_attempts": {
-      "type": "array", "maxItems": 32768,
+      "type": "array", "maxItems": 0,
       "items": {"$ref": "#/$defs/attempt"}
     },
     "blockers": {

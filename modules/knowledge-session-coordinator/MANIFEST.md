@@ -23,6 +23,8 @@
 - authenticated-session head: `symphony.knowledge.session-head.v1`
 - authenticated-session result: `symphony.knowledge.session-result.v1`
 - report-only lifecycle command: `symphony.knowledge.lifecycle-plan-command.v1`
+- durable lifecycle command/result: `symphony.knowledge.lifecycle-boot-command.v1` and `symphony.knowledge.lifecycle-boot-result.v1`
+- durable lifecycle journal/head: `symphony.knowledge.lifecycle-boot-journal.v1` and `symphony.knowledge.lifecycle-boot-head.v1`
 - desired/observation/plan evidence: `symphony.knowledge.lifecycle-desired-state.v1`, `symphony.knowledge.lifecycle-observation.v1`, and `symphony.knowledge.lifecycle-plan.v1`
 - SSIAG authorization evidence: `symphony.ssiag.authorization-decision.v1` and `symphony.ssiag.capability.v1`
 
@@ -36,13 +38,14 @@
 | `begin`, `status`, `checkpoint`, `close`, `recover` | implemented; noncanonical local state only | no |
 | `session_begin`, `session_status`, `session_checkpoint`, `session_close`, `session_recover` | implemented; SSIAG-authorized noncanonical authority-epoch state only | no |
 | `lifecycle_plan` | implemented; deterministic report-only result only | no |
+| `lifecycle_boot`, `lifecycle_boot_status`, `lifecycle_boot_recover` | implemented; SSIAG-authorized protected report-only journal state | no |
 | `apply` | disabled | prohibited |
 
-The implemented module scope is user-process invocation, user-scope reconciliation, authenticated-session state, and caller-supplied report-only lifecycle planning. qxctl now performs the external desired-profile, configured-root observation, authorization, and invocation responsibilities; those are not coordinator-owned filesystem operations. System/TOPS engine-binding profiles, lifecycle plan/journal persistence, action execution, and provisioning are not claimed.
+The implemented module scope is user-process invocation, user-scope reconciliation, authenticated-session state, caller-supplied report-only lifecycle planning, and protected report-only lifecycle journal persistence/recovery. qxctl performs external desired-profile and configured-root observation responsibilities; those are not coordinator-owned filesystem operations. System/TOPS engine-binding profiles, applied-state persistence, action execution, and provisioning are not claimed.
 
 ## Installability
 
-The executable installs beneath a module-and-version-specific `libexec` path, with contracts, AGPL and third-party licenses, and a deterministic receipt. Installation leaves the module `installed_undocked`, creates no global executable alias, changes no binding, and does not contact Maestro. qxctl may select the exact receipt in its separate protected user-default binding registry without changing receipt state. Uninstall removes only receipt-owned files and preserves reconciliation and authenticated-session evidence.
+The executable installs beneath a module-and-version-specific `libexec` path, with contracts, AGPL and third-party licenses, and a deterministic receipt. Installation leaves the module `installed_undocked`, creates no global executable alias, changes no binding, and does not contact Maestro. qxctl may select the exact receipt in its separate protected user-default binding registry without changing receipt state. Uninstall removes only receipt-owned files and preserves reconciliation, authenticated-session, lifecycle-journal, and desired-profile evidence.
 
 ## Dependencies
 
@@ -50,4 +53,4 @@ The coordinator statically links `knowledge-vector-engine-cpp` and has no runtim
 
 ## Boundaries
 
-There is no network listener, daemon, credential input, secret field, canonical write, hook, watcher, direct SSIAG/STAV call, vector-engine invocation, lifecycle filesystem discovery, action execution, or Maestro dock in this version. qxctl obtains SSIAG decisions and invokes reconciliation, session coordination, or report-only lifecycle planning synchronously through the exact selected receipt. Absolute repository/state paths remain only in protected local state and process payloads.
+There is no network listener, daemon, credential input, secret field, canonical write, hook, watcher, direct SSIAG/STAV call, vector-engine invocation, lifecycle receipt discovery, action execution, applied-state write, or Maestro dock in this version. qxctl obtains SSIAG decisions and invokes reconciliation, session coordination, or report-only lifecycle planning/journaling synchronously through the exact selected receipt. Absolute repository/state paths remain only in protected local state and process payloads.

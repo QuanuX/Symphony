@@ -37,8 +37,8 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/knowledge-session-coordinator`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:9b49266cf09d3f223f681a94323fdf185de79b32a0e3b5d3ba0770dffa480c5f`
-- notes: First partial bootstrap record for durable reconciliation, SSIAG-authorized authenticated sessions, explicit idempotent qxctl host-event convergence, protected desired-profile and observation administration, and report-only dependency-driven lifecycle planning; lifecycle action persistence and apply remain disabled.
+- record_digest: `sha256:f8d3dcf0d567bd5a00575b757e170106e88317364adb0b18522ea0e82c1c1dc2`
+- notes: First partial bootstrap record for durable reconciliation, SSIAG-authorized authenticated sessions, explicit idempotent qxctl host-event convergence, protected desired-profile and observation administration, report-only dependency planning, and durable lifecycle boot-journal recovery; lifecycle action persistence and apply remain disabled.
 
 - feature_id: `ssfv:symphony:knowledge-vector-engine-foundation`
 - feature_file: `libraries/knowledge-vector-engine-cpp/FEATURES.md`
