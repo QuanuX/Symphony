@@ -15,6 +15,7 @@
     "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/digest.hpp",
     "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/path.hpp",
     "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/protocol.hpp",
+    "@SYMPHONY_KVE_INCLUDE_DIR@/symphony/knowledge/engine/temporal.hpp",
     "@SYMPHONY_KVE_INCLUDE_DIR@/nlohmann/json.hpp",
     "@SYMPHONY_KVE_CMAKE_DIR@/SymphonyKnowledgeVectorEngineTargets.cmake",
     "@SYMPHONY_KVE_CMAKE_DIR@/@SYMPHONY_KVE_EXPORT_CONFIG_FILE@",

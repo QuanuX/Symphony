@@ -36,6 +36,12 @@ Portable paths are non-empty forward-slash relative paths with no absolute root,
 
 Snapshot paths are unique and sorted. Each file records a tagged content digest and byte size. The snapshot digest covers a length-delimited canonical sequence of path, size, and content digest.
 
+## Temporal Validation Contract
+
+`temporal.hpp` implements the canonical profiles in `knowledge/TIME.md` without owning time policy. `is_civil_date` accepts only real proleptic-Gregorian dates from year `0001` through `9999`. `is_utc_seconds` accepts only `YYYY-MM-DDTHH:MM:SSZ`. `is_utc_nanoseconds` accepts only the same UTC profile with a decimal point and exactly nine fractional digits. All reject impossible dates, year zero, offsets, variable precision, and leap-second text.
+
+The utility validates representations only. It does not read or synchronize a clock, infer causal order, select a timezone, establish freshness, or manufacture timestamp authority.
+
 ## Dependency Contract
 
 nlohmann/json `v3.12.0` is pinned and vendored. Its header SHA-256 MUST remain `aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63`. Replacement or upgrade requires dependency review, conformance reruns, and SCLV/SODV evidence.

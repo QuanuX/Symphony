@@ -3,6 +3,7 @@
 #include "symphony/knowledge/engine/limits.hpp"
 #include "symphony/knowledge/engine/path.hpp"
 #include "symphony/knowledge/engine/protocol.hpp"
+#include "symphony/knowledge/engine/temporal.hpp"
 
 #include <filesystem>
 #include <fstream>
@@ -77,6 +78,35 @@ void test_digest() {
     require(
         sha256_hex("abc") == "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
         "abc SHA-256 golden mismatch");
+}
+
+void test_temporal() {
+    require(is_civil_date("2024-02-29"), "valid leap date rejected");
+    require(is_civil_date("2000-02-29"), "valid Gregorian century leap date rejected");
+    require(!is_civil_date("1900-02-29"), "invalid Gregorian century leap date accepted");
+    require(!is_civil_date("2023-02-29"), "invalid non-leap date accepted");
+    require(!is_civil_date("2024-04-31"), "invalid month day accepted");
+    require(!is_civil_date("0000-01-01"), "year zero accepted");
+
+    require(is_utc_seconds("2024-02-29T23:59:59Z"), "valid whole-second UTC timestamp rejected");
+    require(!is_utc_seconds("2024-02-30T00:00:00Z"), "impossible UTC date accepted");
+    require(!is_utc_seconds("2024-01-01T24:00:00Z"), "invalid UTC hour accepted");
+    require(!is_utc_seconds("2024-01-01T23:59:60Z"), "leap-second text accepted");
+    require(!is_utc_seconds("2024-01-01T00:00:00+00:00"), "offset timestamp accepted");
+    require(!is_utc_seconds("2024-01-01t00:00:00z"), "lowercase UTC timestamp accepted");
+
+    require(
+        is_utc_nanoseconds("2024-02-29T23:59:59.123456789Z"),
+        "valid nanosecond UTC timestamp rejected");
+    require(
+        !is_utc_nanoseconds("2024-02-30T00:00:00.123456789Z"),
+        "impossible nanosecond UTC date accepted");
+    require(
+        !is_utc_nanoseconds("2024-02-29T23:59:59.123Z"),
+        "variable fractional precision accepted");
+    require(
+        !is_utc_nanoseconds("2024-02-29T23:59:60.000000000Z"),
+        "nanosecond leap-second text accepted");
 }
 
 void test_json_and_protocol() {
@@ -215,6 +245,8 @@ void test_schema_documents(const fs::path& repository_root) {
         {"knowledge/schemas/v1/engine-descriptor.schema.json", "urn:symphony:knowledge:engine-descriptor:v1"},
         {"knowledge/schemas/v1/install-receipt.schema.json", "urn:symphony:knowledge:install-receipt:v1"},
         {"knowledge/schemas/v1/engine-binding-registry.schema.json", "urn:symphony:knowledge:engine-binding-registry:v1"},
+        {"knowledge/schemas/v1/proposal.schema.json", "urn:symphony:knowledge:proposal:v1"},
+        {"knowledge/schemas/v1/provider-evidence.schema.json", "urn:symphony:knowledge:provider-evidence:v1"},
         {"knowledge/schemas/v1/reconciliation-command.schema.json", "urn:symphony:knowledge:reconciliation-command:v1"},
         {"knowledge/schemas/v1/reconciliation-head.schema.json", "urn:symphony:knowledge:reconciliation-head:v1"},
         {"knowledge/schemas/v1/reconciliation-journal.schema.json", "urn:symphony:knowledge:reconciliation-journal:v1"},
@@ -233,6 +265,7 @@ void test_schema_documents(const fs::path& repository_root) {
         {"knowledge/schemas/v1/lifecycle-applied-state.schema.json", "urn:symphony:knowledge:lifecycle-applied-state:v1"},
         {"knowledge/schemas/v1/lifecycle-boot-journal.schema.json", "urn:symphony:knowledge:lifecycle-boot-journal:v1"},
         {"knowledge/schemas/v1/lifecycle-boot-head.schema.json", "urn:symphony:knowledge:lifecycle-boot-head:v1"},
+        {"knowledge/schemas/v1/temporal.schema.json", "urn:symphony:knowledge:temporal:v1"},
         {"knowledge/schemas/v2/install-receipt.schema.json", "urn:symphony:knowledge:install-receipt:v2"},
     };
     for (const auto& [relative_path, identifier] : expected) {
@@ -290,6 +323,17 @@ void test_schema_documents(const fs::path& repository_root) {
     require(!receipt_properties.contains("active"), "receipt v2 must not own activation state");
     require(!receipt_properties.contains("default_receptor"), "receipt v2 must not own receptor selection");
     require(receipt_properties.at("files").at("items").at("$ref") == "#/$defs/file", "receipt v2 file evidence drift");
+
+    const auto temporal = load_schema("knowledge/schemas/v1/temporal.schema.json");
+    const auto& temporal_definitions = temporal.at("$defs");
+    require(
+        temporal_definitions.at("utc_seconds").at("pattern") ==
+            "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+        "whole-second UTC schema profile drift");
+    require(
+        temporal_definitions.at("utc_nanoseconds").at("pattern") ==
+            "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{9}Z$",
+        "nanosecond UTC schema profile drift");
 }
 
 }
@@ -300,6 +344,7 @@ int main(int argc, char** argv) {
             throw std::runtime_error("repository root argument is required");
         }
         test_digest();
+        test_temporal();
         test_json_and_protocol();
         test_paths_and_snapshots();
         test_schema_documents(fs::path(argv[1]));

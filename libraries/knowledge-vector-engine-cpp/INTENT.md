@@ -6,7 +6,7 @@ Provide authority-free, statically linked mechanics shared by independently inst
 
 ## Implemented Scope
 
-The `0.1.0-dev` foundation implements bounded JSON parsing, strict process-envelope parsing, stable error codes, deterministic JSON response encoding and response digests, SHA-256, safe relative-path checks, no-follow regular-file reads, and deterministic bounded file snapshots.
+The `0.1.0-dev` foundation implements bounded JSON parsing, strict process-envelope parsing, stable error codes, deterministic JSON response encoding and response digests, SHA-256, safe relative-path checks, no-follow regular-file reads, deterministic bounded file snapshots, and canonical STSC Gregorian/UTC validation.
 
 ## Non-Goals
 

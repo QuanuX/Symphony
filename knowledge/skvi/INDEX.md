@@ -696,7 +696,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: first-party shared-library intent
 - truth_role: implemented authority-free foundation purpose and boundary
 - owner: SKV foundation maintainers
-- scope: Defines bounded JSON, digest, path, snapshot, and process mechanics without semantic authority.
+- scope: Defines bounded JSON, digest, path, snapshot, process, and STSC temporal-validation mechanics without semantic authority.
 - relationships: depends_on -> `knowledge/SPEC.md`; declares -> `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
 - consumers: coordinator and future vector-engine implementers, reviewers, agentic tools
 - deferred_projections: dependency and conformance evidence
@@ -709,7 +709,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: first-party native library manifest
 - truth_role: implemented component, dependency, installability, and authority boundary
 - owner: SKV foundation maintainers
-- scope: Declares the C++26 static target, `0.1.0-dev` components, pinned JSON dependency, and versioned install paths.
+- scope: Declares the C++26 static target, `0.1.0-dev` components including canonical temporal validation, pinned JSON dependency, and versioned install paths.
 - relationships: depends_on -> `libraries/knowledge-vector-engine-cpp/INTENT.md`; implements -> `knowledge/SPEC.md`
 - consumers: coordinator and future vector engines, packagers, reviewers, agentic tools
 - deferred_projections: package inventory and SBOM evidence
@@ -735,7 +735,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: native foundation skill guidance
 - truth_role: safe implementation and review procedure
 - owner: SKV foundation maintainers
-- scope: Guides limits, strict parsing, path safety, response framing, and authority separation.
+- scope: Guides limits, strict parsing, path safety, STSC temporal validation, response framing, and authority separation.
 - relationships: depends_on -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; depends_on -> `knowledge/SKILL.md`
 - consumers: C++ implementers, reviewers, agentic tools
 - deferred_projections: conformance checklist
@@ -748,7 +748,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: native foundation specification
 - truth_role: exact implemented limits, digest, path, snapshot, and dependency contract
 - owner: SKV foundation maintainers
-- scope: Defines `0.1.0-dev` mechanics and adversarial rejection requirements.
+- scope: Defines `0.1.0-dev` mechanics, canonical Gregorian/UTC profiles, and adversarial rejection requirements.
 - relationships: depends_on -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
 - consumers: coordinator and future vector engines, testers, reviewers
 - deferred_projections: protocol conformance report
@@ -798,13 +798,39 @@ Future validator increments may add separately ratified deterministic checks wit
 - path: `libraries/knowledge-vector-engine-cpp/tests/foundation_test.cpp`
 - title: Knowledge Vector Engine Foundation Conformance Tests
 - surface_type: C++26 conformance-test implementation
-- truth_role: digest, bounded protocol, path, snapshot, schema identity, and lifecycle-invariant proof
+- truth_role: digest, bounded protocol, path, snapshot, temporal, schema identity, and lifecycle-invariant proof
 - owner: SKV foundation maintainers
-- scope: Verifies authority-free mechanics and the exact common schema identities consumed across installed engines and the coordinator.
+- scope: Verifies authority-free mechanics, canonical Gregorian/UTC conformance, and the exact common schema identities consumed across installed engines and the coordinator.
 - relationships: verifies -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; verifies -> `knowledge/schemas/v1/MANIFEST.md`; verifies -> `knowledge/schemas/v2/MANIFEST.md`
 - consumers: foundation/coordinator/vector-engine maintainers, reviewers, release gates
 - deferred_projections: portable conformance evidence
 - notes: Schema checks establish identity and invariant anchors, not domain authority or runtime activation.
+- status: canonical
+
+#### Knowledge Vector Engine Temporal API
+- path: `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/temporal.hpp`
+- title: Knowledge Vector Engine Temporal Validation API
+- surface_type: C++26 public foundation header
+- truth_role: authority-free common temporal validation interface
+- owner: SKV foundation maintainers
+- scope: Declares canonical civil-date, whole-second UTC, and exact-nanosecond UTC representation validators.
+- relationships: implements -> `knowledge/TIME.md`; governed_by -> `libraries/knowledge-vector-engine-cpp/SPEC.md`
+- consumers: coordinator and vector-engine implementations, conformance tests, reviewers
+- deferred_projections: generated native API reference
+- notes: The interface validates text only and owns no clock, timezone, freshness, sequence, or timestamp authority.
+- status: canonical
+
+#### Knowledge Vector Engine Temporal Implementation
+- path: `libraries/knowledge-vector-engine-cpp/src/temporal.cpp`
+- title: Knowledge Vector Engine Temporal Validation Implementation
+- surface_type: C++26 foundation implementation
+- truth_role: real-Gregorian and exact-UTC implementation proof
+- owner: SKV foundation maintainers
+- scope: Rejects impossible dates, year zero, invalid time fields, offsets, leap-second text, and noncanonical precision.
+- relationships: implements -> `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/temporal.hpp`; conforms_to -> `knowledge/TIME.md`
+- consumers: statically linked coordinator and vector engines, conformance tests, reviewers
+- deferred_projections: portable conformance evidence
+- notes: Domain order and freshness remain outside the foundation.
 - status: canonical
 
 ### SACV Canonical Knowledge Vector
@@ -1632,11 +1658,24 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: protected local lifecycle-state implementation
 - truth_role: exact user-default engine selection, expected-state, digest, and doctor implementation truth
 - owner: qxctl maintainers
-- scope: Records one exact inactive-undocked installation per coordinator/vector role in a noncanonical user-default profile and revalidates bound receipt and executable digests.
-- relationships: implements -> `knowledge/SPEC.md`; implements -> `knowledge/schemas/v1/engine-binding-registry.schema.json`; called_by -> `tools/qxctl/cmd/qxctl/main.go`
+- scope: Records one exact inactive-undocked installation per coordinator/vector role in a noncanonical user-default profile, emits STSC whole-second UTC, preserves legacy fractional-second read compatibility, and revalidates bound receipt and executable digests.
+- relationships: implements -> `knowledge/SPEC.md`; conforms_to -> `knowledge/TIME.md`; implements -> `knowledge/schemas/v1/engine-binding-registry.schema.json`; called_by -> `tools/qxctl/cmd/qxctl/main.go`
 - consumers: qxctl knowledge commands, reconciliation coordinator integration, tests
 - deferred_projections: repository/system/TOPS profiles and Maestro docking
 - notes: Binding is not installation, engine invocation, authentication, permission, repository activation, or docking.
+- status: canonical
+
+#### qxctl Knowledge Engine Binding Temporal Tests
+- path: `tools/qxctl/internal/knowledgebinding/registry_test.go`
+- title: qxctl Knowledge Engine Binding Temporal Tests
+- surface_type: Go conformance-test implementation
+- truth_role: STSC write normalization and legacy read-compatibility proof
+- owner: qxctl maintainers
+- scope: Proves new binding generations emit whole-second UTC and prior fractional-second v1 state remains readable across upgrade order.
+- relationships: verifies -> `tools/qxctl/internal/knowledgebinding/registry.go`; conforms_to -> `knowledge/TIME.md`
+- consumers: Go test, qxctl maintainers, reviewers
+- deferred_projections: cross-language temporal conformance report
+- notes: Compatibility acceptance does not make fractional seconds a new canonical write profile.
 - status: canonical
 
 #### qxctl Unix Knowledge Binding State
@@ -2167,7 +2206,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `knowledge/schemas/v2/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
 - consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
 - deferred_projections: apply/provider/docking schemas, conformance evidence, engine inventory, docking graph
-- notes: Twenty-five common v1 schemas and one common v2 schema are canonical; lifecycle profile persistence, configured-root observation, and report-only coordinator invocation are implemented while boot journaling/action persistence and apply are not, the three-record SSFV bootstrap is partial, and programmatic apply is disabled.
+- notes: Twenty-six common v1 schemas and one common v2 schema are canonical; lifecycle profile persistence, configured-root observation, and report-only coordinator invocation are implemented while boot journaling/action persistence and apply are not, the three-record SSFV bootstrap is partial, and programmatic apply is disabled.
 - status: canonical
 
 ##### SKILL.md
@@ -2190,10 +2229,23 @@ Future validator increments may add separately ratified deterministic checks wit
 - truth_role: explicit session-transition and generic desired-state/first-boot topology truth
 - owner: Symphony Knowledge Vector maintainers
 - scope: Defines stable host-event convergence, immutable binding-v1 compatibility, generic component identity, receipt-v2 migration, desired/observed/plan/applied separation, dependency-ready-set two-way convergence, evidence-based first boot, durable recovery, module addition/removal behavior, and the Maestro boundary.
-- relationships: depends_on -> `knowledge/SPEC.md`; governs -> `knowledge/schemas/v1/lifecycle-profile-input.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-profile.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-desired-state.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-observation.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-plan-command.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-plan.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-applied-state.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-boot-journal.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-boot-head.schema.json`; governs -> `knowledge/schemas/v2/install-receipt.schema.json`; governs -> `tools/qxctl/`; governs -> `modules/knowledge-session-coordinator/`; defers_to -> `knowledge/ssiag/SPEC.md`; defers_to -> `knowledge/stav/SPEC.md`
+- relationships: depends_on -> `knowledge/SPEC.md`; depends_on -> `knowledge/TIME.md`; governs -> `knowledge/schemas/v1/lifecycle-profile-input.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-profile.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-desired-state.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-observation.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-plan-command.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-plan.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-applied-state.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-boot-journal.schema.json`; governs -> `knowledge/schemas/v1/lifecycle-boot-head.schema.json`; governs -> `knowledge/schemas/v2/install-receipt.schema.json`; governs -> `tools/qxctl/`; governs -> `modules/knowledge-session-coordinator/`; defers_to -> `knowledge/ssiag/SPEC.md`; defers_to -> `knowledge/stav/SPEC.md`
 - consumers: qxctl and coordinator implementers, module packagers, Maestro planners, administrators, reviewers, agentic tools
 - deferred_projections: lifecycle boot-journal persistence/recovery, apply-compatible actions, docking operations
 - notes: The lifecycle schema family, protected qxctl profile persistence, fixed-layout observation, and report-only coordinator invocation are implemented; action persistence/apply and host integration remain separate gates.
+- status: canonical
+
+##### TIME.md
+- path: `knowledge/TIME.md`
+- title: Symphony Temporal Semantics Contract
+- surface_type: cross-vector common contract
+- truth_role: canonical UTC, civil-date, duration, elapsed-time, ordering, and clock-failure semantics
+- owner: Symphony Knowledge Vector maintainers
+- scope: Defines canonical seconds/nanoseconds profiles, target-host timestamp authority, local-time presentation, monotonic elapsed time, and the separation of wall-clock evidence from causal identity.
+- relationships: depends_on -> `knowledge/SPEC.md`; governs -> `knowledge/schemas/v1/temporal.schema.json`; governs -> `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/temporal.hpp`; informs -> `knowledge/LIFECYCLE.md`; informs -> `knowledge/ssiag/SPEC.md`; informs -> `knowledge/stav/SPEC.md`
+- consumers: all Symphony modules, vector engines, qxctl, validators, reviewers, agentic tools
+- deferred_projections: clock-quality attestation, timezone-database governance, and cross-node temporal analysis if separately ratified
+- notes: STSC is not a vector and creates no engine, runtime, time service, synchronization authority, or Maestro receptor.
 - status: canonical
 
 ##### Common v1 Schema Manifest
@@ -2202,7 +2254,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: common protocol schema manifest
 - truth_role: canonical inventory and boundary for exact common JSON schemas
 - owner: Symphony Knowledge Vector maintainers
-- scope: Declares twenty-five exact process, descriptor, install-receipt-v1, engine-binding, proposal, provider-evidence, reconciliation/session, profile-input/profile, and desired/observed/plan-command/plan/applied/boot lifecycle schemas.
+- scope: Declares twenty-six exact process, descriptor, install-receipt-v1, engine-binding, proposal, provider-evidence, reconciliation/session, profile-input/profile, desired/observed/plan-command/plan/applied/boot lifecycle, and temporal schemas.
 - relationships: depends_on -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; governs -> `modules/skvi-engine/SPEC.md`; governs -> `modules/sclv-engine/SPEC.md`
 - consumers: C++ foundation and engine implementers, qxctl planners, validator, reviewers
 - deferred_projections: generated schema documentation and conformance evidence
@@ -2337,6 +2389,19 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: future coordinator lifecycle recovery, validator, reviewers
 - deferred_projections: dual-slot persistence implementation
 - notes: Journal slots remain recovery evidence; the head is replaceable operational evidence.
+- status: canonical
+
+##### Temporal Semantics Schema
+- path: `knowledge/schemas/v1/temporal.schema.json`
+- title: Symphony Temporal Semantics Definitions v1
+- surface_type: JSON Schema Draft 2020-12 definition library
+- truth_role: canonical structural temporal-encoding truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Defines reusable closed structural profiles for civil dates, whole-second UTC, and exact-nine-digit nanosecond UTC.
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/TIME.md`; implemented_by -> `libraries/knowledge-vector-engine-cpp/src/temporal.cpp`
+- consumers: schema authors, C++ and Go implementers, validators, reviewers
+- deferred_projections: generated schema documentation and cross-language conformance corpus
+- notes: Regex and date-time format checks do not replace real Gregorian implementation validation.
 - status: canonical
 
 ##### Install Receipt Schema v2
@@ -3602,8 +3667,283 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: The exact versioned receipt owns nine installed files.
 - status: canonical
 
+### STSC Implementation Evidence
+
+#### Knowledge Vector Engine Install Receipt Template
+- path: `libraries/knowledge-vector-engine-cpp/cmake/install-receipt.json.in`
+- title: Knowledge Vector Engine Install Receipt Template
+- surface_type: versioned native package receipt template
+- truth_role: exact installed-file ownership implementation truth
+- owner: SKV foundation maintainers
+- scope: Enumerates the static library, public headers including temporal validation, CMake metadata, contracts, licenses, and receipt-owned uninstall boundary.
+- relationships: implements -> `libraries/knowledge-vector-engine-cpp/MANIFEST.md`; includes -> `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/temporal.hpp`
+- consumers: CMake install/uninstall, packagers, qxctl lifecycle observation, reviewers
+- deferred_projections: package SBOM evidence
+- notes: The receipt creates no runtime activation or clock authority.
+- status: canonical
+
+#### SKVI Engine Temporal Adoption
+- path: `modules/skvi-engine/src/skvi.cpp`
+- title: SKVI Engine Temporal Validation Adoption
+- surface_type: C++26 engine implementation
+- truth_role: SKVI proposal-time STSC conformance evidence
+- owner: SKVI engine maintainers
+- scope: Uses the shared whole-second UTC validator for proposal creation and expiry fields.
+- relationships: implements -> `modules/skvi-engine/SPEC.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/temporal.hpp`
+- consumers: SKVI engine tests, qxctl, reviewers
+- deferred_projections: cross-language temporal conformance evidence
+- notes: SKVI retains no clock or timestamp authority.
+- status: canonical
+
+#### SCLV Provider Temporal Adoption
+- path: `modules/sclv-engine/src/provider.cpp`
+- title: SCLV Provider Temporal Validation Adoption
+- surface_type: C++26 provider-evidence implementation
+- truth_role: normalized provider-evidence STSC conformance
+- owner: SCLV engine maintainers
+- scope: Routes provider and ledger whole-second UTC validation through the shared temporal foundation.
+- relationships: implements -> `modules/sclv-engine/SPEC.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/temporal.hpp`
+- consumers: SCLV engine and evidence adapters, tests, reviewers
+- deferred_projections: provider conformance evidence
+- notes: Provider timestamps remain evidence and cannot manufacture ratification or causal order.
+- status: canonical
+
+#### SACV Engine Temporal Adoption
+- path: `modules/sacv-engine/src/sacv.cpp`
+- title: SACV Engine Temporal Validation Adoption
+- surface_type: C++26 engine implementation
+- truth_role: SACV proposal-time STSC conformance evidence
+- owner: SACV engine maintainers
+- scope: Uses the shared whole-second UTC validator for API-contract proposal creation and expiry fields.
+- relationships: implements -> `modules/sacv-engine/SPEC.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/temporal.hpp`
+- consumers: SACV engine tests, qxctl, reviewers
+- deferred_projections: cross-language temporal conformance evidence
+- notes: SACV owns API-contract semantics, not durable timestamp authority.
+- status: canonical
+
+#### SODV Engine Temporal Adoption
+- path: `modules/sodv-engine/src/sodv.cpp`
+- title: SODV Engine Temporal Validation Adoption
+- surface_type: C++26 engine implementation
+- truth_role: release-ledger and proposal STSC conformance evidence
+- owner: SODV engine maintainers
+- scope: Uses the shared whole-second UTC validator for release records, observations, proposals, and recovery inputs.
+- relationships: implements -> `modules/sodv-engine/SPEC.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/temporal.hpp`
+- consumers: SODV engine tests, qxctl, reviewers
+- deferred_projections: release-evidence temporal conformance report
+- notes: Append-only record order remains SODV-owned and is not inferred solely from wall-clock text.
+- status: canonical
+
+#### SSFV Engine Temporal Adoption
+- path: `modules/ssfv-engine/src/ssfv.cpp`
+- title: SSFV Engine Temporal Validation Adoption
+- surface_type: C++26 engine implementation
+- truth_role: semantic-proposal STSC conformance evidence
+- owner: SSFV engine maintainers
+- scope: Uses the shared whole-second UTC validator for semantic proposal creation and expiry fields.
+- relationships: implements -> `modules/ssfv-engine/SPEC.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/temporal.hpp`
+- consumers: SSFV engine tests, qxctl, reviewers
+- deferred_projections: semantic lifecycle temporal conformance evidence
+- notes: Semantic identity and freshness remain digest-bound rather than timestamp-identified.
+- status: canonical
+
+#### Validator SODV Temporal Checker
+- path: `tools/symphony-validator/src/sodv_releases.cpp`
+- title: Independent SODV Temporal Checker
+- surface_type: C++26 read-only validator implementation
+- truth_role: independent Gregorian release-ledger conformance evidence
+- owner: symphony-validator maintainers
+- scope: Rejects impossible whole-second UTC dates without linking the shared engine foundation.
+- relationships: implements -> `tools/symphony-validator/SPEC.md`; conforms_to -> `knowledge/TIME.md`; checks -> `knowledge/sodv/RELEASES.md`
+- consumers: repository validation, reviewers, release gates
+- deferred_projections: line-oriented temporal conformance evidence
+- notes: Architectural independence from the vector-engine foundation is preserved.
+- status: canonical
+
+#### Validator SODV Temporal Tests
+- path: `tools/symphony-validator/tests/sodv_release_test.cpp`
+- title: Independent SODV Temporal Conformance Tests
+- surface_type: C++26 validator test implementation
+- truth_role: impossible-date and release-ledger regression proof
+- owner: symphony-validator maintainers
+- scope: Proves canonical release evidence passes and impossible Gregorian dates fail closed.
+- relationships: verifies -> `tools/symphony-validator/src/sodv_releases.cpp`; conforms_to -> `knowledge/TIME.md`
+- consumers: CTest, repository maintainers, reviewers
+- deferred_projections: portable validator conformance report
+- notes: Tests mutate only isolated temporary fixtures.
+- status: canonical
+
+#### Validator Required Canonical Surfaces
+- path: `tools/symphony-validator/src/canonical_surfaces.cpp`
+- title: Validator Required Canonical Surfaces
+- surface_type: C++26 read-only validator implementation
+- truth_role: exact required-surface presence evidence
+- owner: symphony-validator maintainers
+- scope: Requires the canonical STSC document alongside the existing root, vector, runtime-seed, and validator surfaces.
+- relationships: implements -> `tools/symphony-validator/SPEC.md`; requires -> `knowledge/TIME.md`
+- consumers: repository validation, fixtures, reviewers
+- deferred_projections: canonical-surface inventory evidence
+- notes: Presence does not grant the validator authorship authority.
+- status: canonical
+
+#### Validator Knowledge Contract Shapes
+- path: `tools/symphony-validator/src/knowledge_contracts.cpp`
+- title: Validator Knowledge Contract Shape Checks
+- surface_type: C++26 read-only validator implementation
+- truth_role: deterministic canonical knowledge-anchor evidence
+- owner: symphony-validator maintainers
+- scope: Checks STSC authority, purpose, UTC profiles, timestamp authority, implementation, and promotion-boundary anchors with existing knowledge contracts.
+- relationships: implements -> `tools/symphony-validator/SPEC.md`; checks -> `knowledge/TIME.md`
+- consumers: repository validation, fixtures, reviewers
+- deferred_projections: contract-shape conformance report
+- notes: Anchor presence does not interpret or rewrite temporal doctrine.
+- status: canonical
+
+#### Validator Doctrine Vocabulary Scan
+- path: `tools/symphony-validator/src/doctrine_vocab.cpp`
+- title: Validator Doctrine Vocabulary Scan
+- surface_type: C++26 read-only validator implementation
+- truth_role: bounded canonical terminology regression evidence
+- owner: symphony-validator maintainers
+- scope: Includes STSC in the fixed canonical vocabulary scan without granting semantic authority.
+- relationships: implements -> `tools/symphony-validator/SPEC.md`; scans -> `knowledge/TIME.md`
+- consumers: repository validation, fixtures, reviewers
+- deferred_projections: vocabulary conformance evidence
+- notes: The fixed scan remains deterministic and non-remediating.
+- status: canonical
+
+#### Validator STSC Valid Fixture
+- path: `tools/symphony-validator/tests/fixtures_valid/knowledge/TIME.md`
+- title: Validator STSC Valid Fixture
+- surface_type: canonical-contract test fixture
+- truth_role: required-presence and anchor-shape regression proof
+- owner: symphony-validator maintainers
+- scope: Supplies the bounded STSC headings required by the pre-SSFV valid repository fixture.
+- relationships: verifies -> `tools/symphony-validator/src/canonical_surfaces.cpp`; verifies -> `tools/symphony-validator/src/knowledge_contracts.cpp`
+- consumers: validator smoke fixtures, reviewers
+- deferred_projections: none
+- notes: The fixture is test evidence, not a competing temporal contract.
+- status: canonical
+
+#### Validator Valid Fixture Index
+- path: `tools/symphony-validator/tests/fixtures_valid/knowledge/skvi/INDEX.md`
+- title: Validator Valid Fixture Index
+- surface_type: SKVI test fixture
+- truth_role: positive fixture routing evidence
+- owner: symphony-validator maintainers
+- scope: Routes the valid pre-SSFV fixture's required temporal contract and established canonical surfaces.
+- relationships: indexes -> `tools/symphony-validator/tests/fixtures_valid/knowledge/TIME.md`; verifies -> `tools/symphony-validator/tests/smoke.sh`
+- consumers: validator smoke fixtures, reviewers
+- deferred_projections: none
+- notes: Fixture evidence only.
+- status: canonical
+
+#### Validator Sparse-Ledger STSC Fixture
+- path: `tools/symphony-validator/tests/fixtures_sclv_ledger_gap_warning/knowledge/TIME.md`
+- title: Validator Sparse-Ledger STSC Fixture
+- surface_type: canonical-contract test fixture
+- truth_role: positive sparse-ledger temporal-contract evidence
+- owner: symphony-validator maintainers
+- scope: Keeps the sparse SCLV namespace fixture valid under the required STSC surface gate.
+- relationships: verifies -> `tools/symphony-validator/tests/smoke.sh`; conforms_to -> `knowledge/TIME.md`
+- consumers: validator smoke fixtures, reviewers
+- deferred_projections: none
+- notes: Fixture evidence only.
+- status: canonical
+
+#### Validator Sparse-Ledger Fixture Index
+- path: `tools/symphony-validator/tests/fixtures_sclv_ledger_gap_warning/knowledge/skvi/INDEX.md`
+- title: Validator Sparse-Ledger Fixture Index
+- surface_type: SKVI test fixture
+- truth_role: positive fixture routing evidence
+- owner: symphony-validator maintainers
+- scope: Routes the sparse-ledger fixture's required temporal contract.
+- relationships: indexes -> `tools/symphony-validator/tests/fixtures_sclv_ledger_gap_warning/knowledge/TIME.md`; verifies -> `tools/symphony-validator/tests/smoke.sh`
+- consumers: validator smoke fixtures, reviewers
+- deferred_projections: none
+- notes: Fixture evidence only.
+- status: canonical
+
+#### Validator Unindexed-Affected-Surface STSC Fixture
+- path: `tools/symphony-validator/tests/fixtures_affected_surface_unindexed/knowledge/TIME.md`
+- title: Validator Unindexed-Affected-Surface STSC Fixture
+- surface_type: canonical-contract test fixture
+- truth_role: warning-only affected-surface temporal-contract evidence
+- owner: symphony-validator maintainers
+- scope: Keeps the intentional unindexed-affected-surface fixture otherwise valid under STSC.
+- relationships: verifies -> `tools/symphony-validator/tests/smoke.sh`; conforms_to -> `knowledge/TIME.md`
+- consumers: validator smoke fixtures, reviewers
+- deferred_projections: none
+- notes: Its intentional warning concerns another fixture path, not STSC.
+- status: canonical
+
+#### Validator Unindexed-Affected-Surface Fixture Index
+- path: `tools/symphony-validator/tests/fixtures_affected_surface_unindexed/knowledge/skvi/INDEX.md`
+- title: Validator Unindexed-Affected-Surface Fixture Index
+- surface_type: SKVI test fixture
+- truth_role: warning-only fixture routing evidence
+- owner: symphony-validator maintainers
+- scope: Routes STSC while intentionally leaving the designated affected surface unindexed.
+- relationships: indexes -> `tools/symphony-validator/tests/fixtures_affected_surface_unindexed/knowledge/TIME.md`; verifies -> `tools/symphony-validator/tests/smoke.sh`
+- consumers: validator smoke fixtures, reviewers
+- deferred_projections: none
+- notes: Fixture evidence only.
+- status: canonical
+
+#### Validator Score-Vocabulary STSC Fixture
+- path: `tools/symphony-validator/tests/fixtures_vocab_score/knowledge/TIME.md`
+- title: Validator Score-Vocabulary STSC Fixture
+- surface_type: canonical-contract test fixture
+- truth_role: positive vocabulary temporal-contract evidence
+- owner: symphony-validator maintainers
+- scope: Keeps the allowed score-vocabulary fixture valid under STSC.
+- relationships: verifies -> `tools/symphony-validator/tests/smoke.sh`; conforms_to -> `knowledge/TIME.md`
+- consumers: validator smoke fixtures, reviewers
+- deferred_projections: none
+- notes: Fixture evidence only.
+- status: canonical
+
+#### Validator Score-Vocabulary Fixture Index
+- path: `tools/symphony-validator/tests/fixtures_vocab_score/knowledge/skvi/INDEX.md`
+- title: Validator Score-Vocabulary Fixture Index
+- surface_type: SKVI test fixture
+- truth_role: positive fixture routing evidence
+- owner: symphony-validator maintainers
+- scope: Routes the score-vocabulary fixture's required temporal contract.
+- relationships: indexes -> `tools/symphony-validator/tests/fixtures_vocab_score/knowledge/TIME.md`; verifies -> `tools/symphony-validator/tests/smoke.sh`
+- consumers: validator smoke fixtures, reviewers
+- deferred_projections: none
+- notes: Fixture evidence only.
+- status: canonical
+
+#### Validator Hyphenated-Term STSC Fixture
+- path: `tools/symphony-validator/tests/fixtures_vocab_c_o_r_e/knowledge/TIME.md`
+- title: Validator Hyphenated-Term STSC Fixture
+- surface_type: canonical-contract test fixture
+- truth_role: positive vocabulary temporal-contract evidence
+- owner: symphony-validator maintainers
+- scope: Keeps the allowed hyphenated-term vocabulary fixture valid under STSC.
+- relationships: verifies -> `tools/symphony-validator/tests/smoke.sh`; conforms_to -> `knowledge/TIME.md`
+- consumers: validator smoke fixtures, reviewers
+- deferred_projections: none
+- notes: Fixture evidence only.
+- status: canonical
+
+#### Validator Hyphenated-Term Fixture Index
+- path: `tools/symphony-validator/tests/fixtures_vocab_c_o_r_e/knowledge/skvi/INDEX.md`
+- title: Validator Hyphenated-Term Fixture Index
+- surface_type: SKVI test fixture
+- truth_role: positive fixture routing evidence
+- owner: symphony-validator maintainers
+- scope: Routes the hyphenated-term fixture's required temporal contract.
+- relationships: indexes -> `tools/symphony-validator/tests/fixtures_vocab_c_o_r_e/knowledge/TIME.md`; verifies -> `tools/symphony-validator/tests/smoke.sh`
+- consumers: validator smoke fixtures, reviewers
+- deferred_projections: none
+- notes: Fixture evidence only.
+- status: canonical
+
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, twenty-five common SKV v1 JSON Schemas, one common SKV v2 JSON Schema, three SSIAG authorization JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, twenty-six common SKV v1 JSON Schemas, one common SKV v2 JSON Schema, three SSIAG authorization JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

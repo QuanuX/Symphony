@@ -108,9 +108,27 @@ bool strict_utc(std::string_view value) {
     for (const auto index : {0U, 1U, 2U, 3U, 5U, 6U, 8U, 9U, 11U, 12U, 14U, 15U, 17U, 18U}) {
         if (value[index] < '0' || value[index] > '9') { return false; }
     }
-    return value.substr(5U, 2U) >= "01" && value.substr(5U, 2U) <= "12" &&
-           value.substr(8U, 2U) >= "01" && value.substr(8U, 2U) <= "31" &&
-           value.substr(11U, 2U) <= "23" && value.substr(14U, 2U) <= "59" && value.substr(17U, 2U) <= "59";
+    const auto decimal = [&value](std::size_t begin, std::size_t count) {
+        unsigned result = 0U;
+        for (std::size_t index = begin; index < begin + count; ++index) {
+            result = result * 10U + static_cast<unsigned>(value[index] - '0');
+        }
+        return result;
+    };
+    const auto year = decimal(0U, 4U);
+    const auto month = decimal(5U, 2U);
+    const auto day = decimal(8U, 2U);
+    if (year == 0U || month == 0U || month > 12U || day == 0U ||
+        decimal(11U, 2U) > 23U || decimal(14U, 2U) > 59U || decimal(17U, 2U) > 59U) {
+        return false;
+    }
+    constexpr unsigned days_per_month[] = {
+        31U, 28U, 31U, 30U, 31U, 30U, 31U, 31U, 30U, 31U, 30U, 31U,
+    };
+    auto maximum_day = days_per_month[month - 1U];
+    const bool leap_year = year % 4U == 0U && (year % 100U != 0U || year % 400U == 0U);
+    if (month == 2U && leap_year) maximum_day = 29U;
+    return day <= maximum_day;
 }
 
 bool semantic_version(std::string_view value) {

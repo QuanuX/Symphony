@@ -31,6 +31,7 @@ add_library(symphony-knowledge-vector-engine STATIC
     src/error.cpp
     src/path.cpp
     src/protocol.cpp
+    src/temporal.cpp
 )
 add_library(Symphony::KnowledgeVectorEngine ALIAS symphony-knowledge-vector-engine)
 

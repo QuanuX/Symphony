@@ -46,8 +46,8 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `libraries/knowledge-vector-engine-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:fb489afca6d8b5520331a7a67006ee525ffbd828a268e444eace8da1675c637f`
-- notes: First partial bootstrap record for the implemented authority-free shared C++ mechanics.
+- record_digest: `sha256:c31e519f59335ed7e145874795409bbe36a555006f7bf1e18c93afea9952b4ce`
+- notes: First partial bootstrap record for the implemented authority-free shared C++ mechanics, including canonical STSC Gregorian and UTC representation validation.
 
 - feature_id: `ssfv:symphony:platform`
 - feature_file: `FEATURES.md`

@@ -6,6 +6,7 @@
 #include "symphony/knowledge/engine/error.hpp"
 #include "symphony/knowledge/engine/path.hpp"
 #include "symphony/knowledge/engine/protocol.hpp"
+#include "symphony/knowledge/engine/temporal.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -185,19 +186,6 @@ bool is_version(std::string_view text) {
     return std::all_of(text.begin(), text.end(), [](const unsigned char character) {
         return std::isalnum(character) != 0 || character == '.' || character == '+' || character == '-';
     });
-}
-
-bool is_timestamp(std::string_view text) {
-    if (text.size() != 20U || text[4] != '-' || text[7] != '-' || text[10] != 'T' ||
-        text[13] != ':' || text[16] != ':' || text[19] != 'Z') return false;
-    for (const auto index : {0U, 1U, 2U, 3U, 5U, 6U, 8U, 9U, 11U, 12U, 14U, 15U, 17U, 18U}) {
-        if (std::isdigit(static_cast<unsigned char>(text[index])) == 0) return false;
-    }
-    const auto number = [&](const std::size_t start) {
-        return static_cast<int>((text[start] - '0') * 10 + (text[start + 1U] - '0'));
-    };
-    return number(5) >= 1 && number(5) <= 12 && number(8) >= 1 && number(8) <= 31 &&
-           number(11) <= 23 && number(14) <= 59 && number(17) <= 59;
 }
 
 const std::string& text_field(
@@ -650,7 +638,7 @@ ParsedObservation parse_observation(const engine::Json& value, std::int64_t dead
         require_const(package.at("preserved"), true, "unknown package preservation");
         parsed.critical_unknown = true;
     }
-    if (!value.at("observed_at").is_string() || !is_timestamp(value.at("observed_at").get_ref<const std::string&>())) {
+    if (!value.at("observed_at").is_string() || !engine::is_utc_seconds(value.at("observed_at").get_ref<const std::string&>())) {
         invalid("lifecycle.invalid_field", "observed_at must be a normalized UTC timestamp");
     }
     auto stable_inventory = value;

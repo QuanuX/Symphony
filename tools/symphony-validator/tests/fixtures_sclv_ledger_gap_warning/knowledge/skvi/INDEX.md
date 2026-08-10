@@ -415,6 +415,19 @@ Future validator checks may verify SKVI structure.
 - notes: none
 - status: canonical
 
+##### TIME.md
+- path: `knowledge/TIME.md`
+- title: Symphony Temporal Semantics Contract
+- surface_type: cross-vector common contract fixture
+- truth_role: canonical temporal semantics fixture
+- owner: knowledge maintainer
+- scope: Proves required STSC presence and contract-shape anchors.
+- relationships: depends_on -> `knowledge/INTENT.md`
+- consumers: symphony-validator fixtures
+- deferred_projections: none
+- notes: Creates no vector or runtime.
+- status: canonical
+
 #### SKVI
 ##### INDEX.md
 - path: `knowledge/skvi/INDEX.md`
@@ -674,4 +687,3 @@ This index authorizes none of the following:
 - CI files
 
 Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
-

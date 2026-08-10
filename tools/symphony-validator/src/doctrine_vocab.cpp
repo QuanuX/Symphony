@@ -24,6 +24,7 @@ namespace {
         "modules/hotpath-runtime/INSTALL.md",
         "modules/hotpath-runtime/SKILL.md",
         "knowledge/INTENT.md",
+        "knowledge/TIME.md",
         "knowledge/skvi/INTENT.md",
         "knowledge/skvi/MANIFEST.md",
         "knowledge/skvi/SKILL.md",

@@ -115,6 +115,19 @@ void test_relationship_and_no_follow(const fs::path& repository) {
     }
 }
 
+void test_impossible_timestamp(const fs::path& repository) {
+    TemporaryDirectory temporary;
+    auto contents = read_file(repository / "knowledge/sodv/RELEASES.md");
+    const auto timestamp = contents.find("2026-07-18T07:07:20Z");
+    require(timestamp != std::string::npos, "authorization timestamp fixture absent");
+    contents.replace(timestamp, 20U, "2026-02-31T07:07:20Z");
+    write_file(temporary.path() / "go.work", "go 1.26.5\n");
+    write_file(temporary.path() / "knowledge/sodv/RELEASES.md", contents);
+    const auto result = check_sodv_releases(temporary.path().string());
+    require(!result.success && contains(result, "sodv.releases.record_shape"),
+        "impossible SODV calendar date was accepted");
+}
+
 }
 
 int main(int argc, char** argv) {
@@ -124,6 +137,7 @@ int main(int argc, char** argv) {
         test_actual(repository);
         test_duplicate(repository);
         test_relationship_and_no_follow(repository);
+        test_impossible_timestamp(repository);
         std::cout << "sodv release validator tests passed\n";
         return 0;
     } catch (const std::exception& error) {

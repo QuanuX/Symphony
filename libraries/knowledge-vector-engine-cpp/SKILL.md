@@ -9,6 +9,7 @@ Guide callers implementing bounded knowledge-vector process mechanics without mo
 - exact process-envelope parsing and response framing;
 - deterministic digests and read-only snapshots;
 - strict relative-path and no-follow file access;
+- canonical STSC civil-date and UTC representation validation;
 - stable, safe protocol errors;
 - independently versioned static linking.
 
@@ -19,6 +20,7 @@ Guide callers implementing bounded knowledge-vector process mechanics without mo
 3. Treat repository paths and contents as untrusted.
 4. Keep standard output to one bounded response in process mode.
 5. Preserve read-only behavior unless a later canonical apply gate explicitly changes the contract.
+6. Validate portable date/time text through `temporal.hpp`; keep freshness, ordering, duration units, and timestamp authority in the owning contract.
 
 ## Do Not Use For
 

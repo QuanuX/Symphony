@@ -41,7 +41,7 @@ STAV v1 uses UTF-8 I-JSON serialized with RFC 8785 JCS. A strict decoder MUST re
 
 Numbers are limited to canonical, non-negative base-10 JSON integers from `0` through `9007199254740991`. Negative values, negative zero, leading zeros, fractions, exponents, and out-of-range integers fail closed. Event sequences begin at `1`; a query cursor may use `0`. The v1 sequence MUST never wrap or silently cross the safe-integer ceiling.
 
-Registered identifiers are lowercase dotted ASCII values. UUIDs are canonical lowercase RFC 9562 values: event IDs are UUIDv4; request and correlation IDs are UUIDv4 or UUIDv7. Timestamps use UTC `YYYY-MM-DDTHH:MM:SS.NNNNNNNNNZ` with exactly nine fractional digits and no leap-second emission. Digests use `sha256:` followed by exactly 64 lowercase hexadecimal characters.
+Registered identifiers are lowercase dotted ASCII values. UUIDs are canonical lowercase RFC 9562 values: event IDs are UUIDv4; request and correlation IDs are UUIDv4 or UUIDv7. Under `knowledge/TIME.md`, STAV retains its domain-owned UTC `YYYY-MM-DDTHH:MM:SS.NNNNNNNNNZ` profile with exactly nine fractional digits and no leap-second emission. The append authority owns the durable event timestamp; producer-supplied time is not ordering authority. Digests use `sha256:` followed by exactly 64 lowercase hexadecimal characters.
 
 Typed wire decoders MUST require supplied bytes to equal their JCS re-encoding. Ordinary Go `encoding/json` struct unmarshalling is not a conforming decoder by itself.
 

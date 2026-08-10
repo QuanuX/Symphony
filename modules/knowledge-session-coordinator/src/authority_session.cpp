@@ -3,6 +3,7 @@
 #include "symphony/knowledge/engine/digest.hpp"
 #include "symphony/knowledge/engine/error.hpp"
 #include "symphony/knowledge/engine/limits.hpp"
+#include "symphony/knowledge/engine/temporal.hpp"
 
 #include <algorithm>
 #include <array>
@@ -135,36 +136,6 @@ bool lowercase_uuid(std::string_view value) {
         if (!((character >= '0' && character <= '9') || (character >= 'a' && character <= 'f'))) return false;
     }
     return true;
-}
-
-bool strict_utc(std::string_view value) {
-    if (value.size() != 20U || value[4] != '-' || value[7] != '-' || value[10] != 'T' ||
-        value[13] != ':' || value[16] != ':' || value[19] != 'Z') return false;
-    for (std::size_t i = 0; i < value.size(); ++i) {
-        if (i == 4U || i == 7U || i == 10U || i == 13U || i == 16U || i == 19U) continue;
-        if (value[i] < '0' || value[i] > '9') return false;
-    }
-    const auto decimal = [&value](const std::size_t offset, const std::size_t length) {
-        unsigned result = 0U;
-        for (std::size_t index = offset; index < offset + length; ++index) {
-            result = result * 10U + static_cast<unsigned>(value[index] - '0');
-        }
-        return result;
-    };
-    const auto year = decimal(0U, 4U);
-    const auto month = decimal(5U, 2U);
-    const auto day = decimal(8U, 2U);
-    if (year == 0U || month == 0U || month > 12U || day == 0U ||
-        decimal(11U, 2U) > 23U || decimal(14U, 2U) > 59U || decimal(17U, 2U) > 59U) {
-        return false;
-    }
-    constexpr std::array<unsigned, 12> days_per_month{
-        31U, 28U, 31U, 30U, 31U, 30U, 31U, 31U, 30U, 31U, 30U, 31U,
-    };
-    auto maximum_day = days_per_month[month - 1U];
-    const bool leap = year % 4U == 0U && (year % 100U != 0U || year % 400U == 0U);
-    if (month == 2U && leap) maximum_day = 29U;
-    return day <= maximum_day;
 }
 
 std::string utc_now() {
@@ -329,7 +300,7 @@ engine::Json validate_authorization(const engine::Json& decision, const std::str
         !safe_token(text(decision, "decision_id")) || !safe_token(text(decision, "request_id")) ||
         !safe_token(text(decision, "correlation_id")) || !safe_token(text(decision, "reason_code")) ||
         !tagged_digest(text(decision, "policy_digest")) || !tagged_digest(text(decision, "config_digest")) ||
-        !strict_utc(text(decision, "decided_at")) ||
+        !engine::is_utc_seconds(text(decision, "decided_at")) ||
         text(decision, "tops_id") != tops_id || !decision.at("caller_class_used").is_boolean() ||
         decision.at("caller_class_used").get<bool>() || !decision.at("canonical_apply").is_boolean() ||
         decision.at("canonical_apply").get<bool>() || !decision.at("capability").is_object() ||
@@ -375,7 +346,7 @@ engine::Json validate_authorization(const engine::Json& decision, const std::str
     const auto expires = text(capability, "expires_at");
     const auto now = utc_now();
     const auto binding = text(capability, "binding_digest");
-    if (!strict_utc(issued) || !strict_utc(expires) || issued > now || expires <= now || issued >= expires ||
+    if (!engine::is_utc_seconds(issued) || !engine::is_utc_seconds(expires) || issued > now || expires <= now || issued >= expires ||
         !tagged_digest(text(capability, "policy_digest")) || !tagged_digest(text(capability, "config_digest")) ||
         !tagged_digest(binding) || capability_binding(capability) != binding ||
         text(capability, "capability_id") != "ssiag-capability:" + binding.substr(7U)) {
@@ -443,7 +414,7 @@ void validate_stored_capability(const engine::Json& capability, const std::strin
         text(target, "audience") != "qxctl" || text(target, "scope") != "tops:" + tops_id ||
         (basis != "host_owner" && basis != "granted_permission") || !safe_token(text(capability, "grant_id")) ||
         !safe_token(text(capability, "request_id")) || !safe_token(text(capability, "correlation_id")) ||
-        !strict_utc(text(capability, "issued_at")) || !strict_utc(text(capability, "expires_at")) ||
+        !engine::is_utc_seconds(text(capability, "issued_at")) || !engine::is_utc_seconds(text(capability, "expires_at")) ||
         text(capability, "issued_at") >= text(capability, "expires_at") ||
         !tagged_digest(text(capability, "policy_digest")) || !tagged_digest(text(capability, "config_digest")) ||
         !tagged_digest(binding) ||
@@ -460,7 +431,7 @@ void validate_checkpoint(const engine::Json& checkpoint, std::uint64_t sequence,
     require_fields(checkpoint, {"sequence", "kind", "operation_id", "operation_fingerprint", "observed_at", "decision_id", "capability_binding_digest", "previous_checkpoint_digest", "checkpoint_digest"});
     if (number(checkpoint, "sequence") != sequence || !safe_token(text(checkpoint, "kind")) ||
         !safe_token(text(checkpoint, "operation_id")) || !tagged_digest(text(checkpoint, "operation_fingerprint")) ||
-        !strict_utc(text(checkpoint, "observed_at")) || checkpoint.at("previous_checkpoint_digest") != previous_digest ||
+        !engine::is_utc_seconds(text(checkpoint, "observed_at")) || checkpoint.at("previous_checkpoint_digest") != previous_digest ||
         !safe_token(text(checkpoint, "decision_id")) || !tagged_digest(text(checkpoint, "capability_binding_digest"))) {
         throw engine::Error("session.checkpoint_invalid", "session checkpoint identity is invalid", 5);
     }
@@ -477,8 +448,8 @@ void validate_journal(const engine::Json& journal) {
     const auto generation = number(journal, "generation");
     if (text(journal, "protocol") != journal_protocol || number(journal, "format_version") != format_version ||
         !safe_token(text(journal, "session_id")) || !tagged_digest(text(journal, "session_key")) ||
-        generation == 0U || !strict_utc(text(journal, "started_at")) ||
-        !strict_utc(text(journal, "updated_at")) || text(journal, "started_at") > text(journal, "updated_at") ||
+        generation == 0U || !engine::is_utc_seconds(text(journal, "started_at")) ||
+        !engine::is_utc_seconds(text(journal, "updated_at")) || text(journal, "started_at") > text(journal, "updated_at") ||
         !lowercase_uuid(text(journal, "tops_id")) || !journal.at("canonical").is_boolean() || journal.at("canonical").get<bool>() ||
         (!journal.at("previous_journal_digest").is_null() &&
          (!journal.at("previous_journal_digest").is_string() || !tagged_digest(journal.at("previous_journal_digest").get<std::string>())))) {
@@ -500,7 +471,7 @@ void validate_journal(const engine::Json& journal) {
         "administrator_closed", "recovery_closed",
     };
     if (state == "closed" && (!journal.at("closed_at").is_string() ||
-        !strict_utc(text(journal, "closed_at")) || text(journal, "closed_at") < text(journal, "started_at") ||
+        !engine::is_utc_seconds(text(journal, "closed_at")) || text(journal, "closed_at") < text(journal, "started_at") ||
         !journal.at("close_reason").is_string() || !close_reasons.contains(text(journal, "close_reason")))) {
         throw engine::Error("session.journal_invalid", "closed session lacks terminal fields", 5);
     }
@@ -525,8 +496,8 @@ void validate_journal(const engine::Json& journal) {
     }
     const auto& authority = journal.at("authority_epoch");
     require_fields(authority, {"decision_id", "capability", "began_at", "expires_at"});
-    if (!safe_token(text(authority, "decision_id")) || !strict_utc(text(authority, "began_at")) ||
-        !strict_utc(text(authority, "expires_at")) || text(authority, "began_at") >= text(authority, "expires_at") ||
+    if (!safe_token(text(authority, "decision_id")) || !engine::is_utc_seconds(text(authority, "began_at")) ||
+        !engine::is_utc_seconds(text(authority, "expires_at")) || text(authority, "began_at") >= text(authority, "expires_at") ||
         text(authority, "began_at") != text(journal, "started_at")) {
         throw engine::Error("session.journal_invalid", "session authority epoch is invalid", 5);
     }
@@ -543,7 +514,7 @@ void validate_journal(const engine::Json& journal) {
         require_fields(context, {"context_ref", "attached_at", "decision_id"});
         const auto reference = text(context, "context_ref");
         if (!safe_token(reference) || !context_refs.insert(reference).second ||
-            !strict_utc(text(context, "attached_at")) || text(context, "attached_at") < text(journal, "started_at") ||
+            !engine::is_utc_seconds(text(context, "attached_at")) || text(context, "attached_at") < text(journal, "started_at") ||
             text(context, "attached_at") > text(journal, "updated_at") || !safe_token(text(context, "decision_id"))) {
             throw engine::Error("session.journal_invalid", "session context reference is invalid", 5);
         }
@@ -579,7 +550,7 @@ void validate_journal(const engine::Json& journal) {
         (recovery_state == "clean" && (!recovery.at("last_recovery_at").is_null() ||
           disposition != "not_applicable" || !recovery.at("recovered_from_digest").is_null())) ||
         (recovery_state == "recovered" &&
-         (!recovery.at("last_recovery_at").is_string() || !strict_utc(text(recovery, "last_recovery_at")) ||
+         (!recovery.at("last_recovery_at").is_string() || !engine::is_utc_seconds(text(recovery, "last_recovery_at")) ||
           disposition == "not_applicable" || !recovery.at("recovered_from_digest").is_string() ||
           !tagged_digest(text(recovery, "recovered_from_digest"))))) {
         throw engine::Error("session.journal_invalid", "session recovery evidence is invalid", 5);
@@ -636,7 +607,7 @@ void validate_head(const engine::Json& head) {
     if (text(head, "protocol") != head_protocol || number(head, "format_version") != format_version ||
         !tagged_digest(text(head, "session_key")) || number(head, "active_slot") > 1U ||
         number(head, "generation") == 0U || !tagged_digest(text(head, "journal_digest")) ||
-        !strict_utc(text(head, "updated_at")) ||
+        !engine::is_utc_seconds(text(head, "updated_at")) ||
         (!head.at("previous_head_digest").is_null() &&
          (!head.at("previous_head_digest").is_string() ||
           !tagged_digest(head.at("previous_head_digest").get<std::string>())))) {
