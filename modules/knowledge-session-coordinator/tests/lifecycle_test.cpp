@@ -6,11 +6,17 @@
 #include "symphony/knowledge/engine/protocol.hpp"
 
 #include <algorithm>
+#include <array>
+#include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <sys/stat.h>
+#include <unistd.h>
 #include <vector>
 
+namespace fs = std::filesystem;
 namespace session = symphony::knowledge::session;
 namespace engine = symphony::knowledge::engine;
 
@@ -26,6 +32,38 @@ const std::vector<std::string> capabilities = {
     "receipt-v2",
     "report-only-v1",
     "unknown-critical-block-v1",
+};
+
+const std::vector<std::string> journal_capabilities = {
+    "atomic-head-v1",
+    "dual-slot-journal-v1",
+    "dynamic-replanning-v1",
+    "expected-state-cas-v1",
+    "idempotent-operation-v1",
+    "opaque-extension-preservation-v1",
+    "recovery-forward-v1",
+    "report-only-v1",
+};
+
+class TemporaryDirectory final {
+public:
+    TemporaryDirectory() {
+        std::string pattern = (fs::canonical(fs::temp_directory_path()) /
+            "symphony-lifecycle-journal-test-XXXXXX").string();
+        pattern.push_back('\0');
+        char* result = ::mkdtemp(pattern.data());
+        if (result == nullptr) throw std::runtime_error("mkdtemp failed");
+        path_ = result;
+    }
+    ~TemporaryDirectory() {
+        std::error_code ignored;
+        fs::remove_all(path_, ignored);
+    }
+    TemporaryDirectory(const TemporaryDirectory&) = delete;
+    TemporaryDirectory& operator=(const TemporaryDirectory&) = delete;
+    [[nodiscard]] const fs::path& path() const { return path_; }
+private:
+    fs::path path_;
 };
 
 void require(bool condition, const std::string& message) {
@@ -275,6 +313,163 @@ engine::Json client(bool full = true) {
     };
 }
 
+std::string lifecycle_resource(const std::string& evidence) {
+    return "symphony.knowledge.lifecycle:" +
+        engine::sha256_hex("tops-test\ndefault\n" + evidence);
+}
+
+engine::Json lifecycle_authorization(
+    const std::string& operation,
+    const std::string& evidence,
+    const std::string& suffix) {
+    const auto request_id = "lifecycle-request-" + suffix;
+    const auto correlation_id = "lifecycle-correlation-" + suffix;
+    const auto target = engine::Json{
+        {"operation", "symphony.knowledge.lifecycle." + operation},
+        {"resource", lifecycle_resource(evidence)},
+        {"audience", "qxctl"},
+        {"scope", "tops:tops-test"},
+    };
+    const auto subject = engine::Json{
+        {"id", "owner.primary"}, {"kind", "symphony.identity.owner"},
+        {"authority", "unix_peer_credentials"},
+    };
+    engine::Json capability{
+        {"protocol", "symphony.ssiag.capability.v1"}, {"capability_id", "pending"},
+        {"subject", subject}, {"tops_id", "tops-test"}, {"target", target},
+        {"authority_basis", "host_owner"}, {"grant_id", "lifecycle-" + suffix},
+        {"request_id", request_id}, {"correlation_id", correlation_id},
+        {"issued_at", "2020-01-01T00:00:00Z"}, {"expires_at", "2099-01-01T00:00:00Z"},
+        {"policy_digest", "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+        {"config_digest", "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+        {"binding_digest", "pending"}, {"transferable", false}, {"canonical_apply", false},
+    };
+    const auto values = std::array<std::string, 19>{
+        capability.at("protocol"), subject.at("id"), subject.at("kind"), subject.at("authority"),
+        "tops-test", target.at("operation"), target.at("resource"), target.at("audience"), target.at("scope"),
+        capability.at("authority_basis"), capability.at("grant_id"), request_id, correlation_id,
+        capability.at("issued_at"), capability.at("expires_at"), capability.at("policy_digest"),
+        capability.at("config_digest"), "transferable=false", "canonical_apply=false",
+    };
+    std::string joined;
+    for (std::size_t index = 0; index < values.size(); ++index) {
+        if (index != 0U) joined.push_back('\n');
+        joined += values[index];
+    }
+    capability["binding_digest"] = engine::tagged_sha256(joined);
+    capability["capability_id"] =
+        "ssiag-capability:" + capability.at("binding_digest").get<std::string>().substr(7);
+    return engine::Json{
+        {"schema", "symphony.ssiag.authorization-decision.v1"},
+        {"decision_id", "ssiag-decision:" + engine::sha256_hex(operation + suffix)},
+        {"request_id", request_id}, {"correlation_id", correlation_id}, {"tops_id", "tops-test"},
+        {"subject", subject}, {"target", target}, {"effect", "allow"},
+        {"reason_code", "symphony.ssiag.policy.exact-grant"}, {"authority_basis", "host_owner"},
+        {"capability", capability}, {"policy_digest", capability.at("policy_digest")},
+        {"config_digest", capability.at("config_digest")}, {"decided_at", capability.at("issued_at")},
+        {"expires_at", capability.at("expires_at")}, {"caller_class_used", false},
+        {"canonical_apply", false},
+    };
+}
+
+engine::Json journal_client(bool full = true) {
+    auto values = journal_capabilities;
+    if (!full) values.pop_back();
+    return engine::Json{
+        {"client_id", "qxctl"}, {"client_version", "dev"},
+        {"process_protocols", engine::Json::array({engine::process_protocol_v1})},
+        {"journal_read_versions", engine::Json::array({1})},
+        {"journal_write_versions", engine::Json::array({1})},
+        {"capabilities", values},
+    };
+}
+
+engine::Request lifecycle_boot_request(
+    const fs::path& state_root,
+    const engine::Json& desired,
+    const engine::Json& observed,
+    const std::string& operation_id,
+    const std::string& expected,
+    const std::string& suffix) {
+    const auto stable = session::lifecycle_stable_inventory_digest(
+        observed, engine::unix_time_ms() + 60000);
+    const auto profile_digest = engine::tagged_sha256("profile:" + desired.at("desired_state_digest").get<std::string>());
+    return engine::Request{
+        "boot-" + suffix, "boot-correlation-" + suffix, "lifecycle_boot", session::engine_id,
+        engine::unix_time_ms() + 60000,
+        engine::Json{
+            {"protocol", "symphony.knowledge.lifecycle-boot-command.v1"}, {"operation", "lifecycle_boot"},
+            {"state_root", fs::absolute(state_root).lexically_normal().string()}, {"operation_id", operation_id},
+            {"expected_journal_digest", expected}, {"profile_id", "default"}, {"tops_id", "tops-test"},
+            {"profile_digest", profile_digest}, {"stable_inventory_digest", stable}, {"mode", "report"},
+            {"desired_state", desired}, {"observation", observed}, {"prior_applied_state_digest", nullptr},
+            {"authorization_decision", lifecycle_authorization(
+                "boot", profile_digest + "\n" +
+                    desired.at("desired_state_digest").get<std::string>() + "\nreport\n" + stable,
+                suffix)},
+            {"planner_client", client()}, {"journal_client", journal_client()},
+        },
+    };
+}
+
+engine::Json lifecycle_boot(
+    const fs::path& state_root,
+    const engine::Json& desired,
+    const engine::Json& observed,
+    const std::string& operation_id,
+    const std::string& expected,
+    const std::string& suffix) {
+    return session::handle_request(lifecycle_boot_request(
+        state_root, desired, observed, operation_id, expected, suffix));
+}
+
+engine::Json lifecycle_boot_state(
+    const fs::path& state_root,
+    const std::string& operation,
+    const engine::Json& operation_id,
+    const engine::Json& expected,
+    const std::string& suffix,
+    bool full = true) {
+    const auto evidence = operation == "lifecycle_boot_status" ? "status" : expected.get<std::string>();
+    const auto permission = operation == "lifecycle_boot_status" ? "boot.status" : "boot.recover";
+    return session::handle_request(engine::Request{
+        "state-" + suffix, "state-correlation-" + suffix, operation, session::engine_id,
+        engine::unix_time_ms() + 60000,
+        engine::Json{
+            {"protocol", "symphony.knowledge.lifecycle-boot-command.v1"}, {"operation", operation},
+            {"state_root", fs::absolute(state_root).lexically_normal().string()}, {"operation_id", operation_id},
+            {"expected_journal_digest", expected}, {"profile_id", "default"}, {"tops_id", "tops-test"},
+            {"authorization_decision", lifecycle_authorization(permission, evidence, suffix)},
+            {"journal_client", journal_client(full)},
+        },
+    });
+}
+
+fs::path lifecycle_stream_path(const fs::path& state_root) {
+    return state_root / "symphony" / "knowledge-session-coordinator" / "lifecycle" / "v1" /
+        "tops" / engine::sha256_hex("tops:tops-test") / "profiles" /
+        engine::sha256_hex("profile:default");
+}
+
+engine::Json read_json(const fs::path& path) {
+    std::ifstream input(path, std::ios::binary);
+    if (!input) throw std::runtime_error("could not read lifecycle test JSON");
+    return engine::Json::parse(input);
+}
+
+void write_json(const fs::path& path, const engine::Json& value) {
+    std::ofstream output(path, std::ios::binary | std::ios::trunc);
+    if (!output) throw std::runtime_error("could not write lifecycle test JSON");
+    output << value.dump() << '\n';
+    output.close();
+    if (::chmod(path.c_str(), 0600) != 0) throw std::runtime_error("could not protect lifecycle test JSON");
+}
+
+void finalize_test_digest(engine::Json& value, const char* field) {
+    value.erase(field);
+    value[field] = engine::tagged_sha256(value.dump());
+}
+
 engine::Json plan(const engine::Json& desired, const engine::Json& observed, engine::Json caller = client()) {
     return session::handle_request(engine::Request{
         "lifecycle-request", "lifecycle-correlation", "lifecycle_plan", session::engine_id,
@@ -318,6 +513,204 @@ void test_descriptor() {
     });
     require(inspect.at("lifecycle").at("dynamic_replanning") == true, "inspect omitted dynamic replanning");
     require(inspect.at("lifecycle").at("action_execution_enabled") == false, "inspect enabled lifecycle actions");
+    require(inspect.at("lifecycle_journal").at("persistence_enabled") == true,
+            "inspect omitted lifecycle journal persistence");
+    require(inspect.at("lifecycle_journal").at("action_execution_enabled") == false,
+            "lifecycle journal enabled action execution");
+}
+
+void test_durable_boot_journal_replanning_and_recovery() {
+    TemporaryDirectory state;
+    TemporaryDirectory unsafe_state;
+    if (::chmod(unsafe_state.path().c_str(), 0777) != 0) {
+        throw std::runtime_error("could not create unsafe lifecycle state fixture");
+    }
+    require_error([&] {
+        static_cast<void>(lifecycle_boot_state(
+            unsafe_state.path(), "lifecycle_boot_status", nullptr, nullptr, "unsafe-status"));
+    }, "lifecycle_journal.state_directory_unsafe");
+    const auto absent_root = state.path() / "absent-state-root";
+    const auto absent = lifecycle_boot_state(
+        absent_root, "lifecycle_boot_status", nullptr, nullptr, "absent-status");
+    require(absent.at("journal_present") == false && absent.at("read_only") == true &&
+            !fs::exists(absent_root),
+            "read-only lifecycle status created an absent state root");
+    TemporaryDirectory partial_state;
+    const auto partial_stream = lifecycle_stream_path(partial_state.path());
+    fs::create_directories(partial_stream);
+    const auto partial = lifecycle_boot_state(
+        partial_state.path(), "lifecycle_boot_status", nullptr, nullptr, "partial-status");
+    require(partial.at("journal_present") == false && !fs::exists(partial_stream / ".lock"),
+            "read-only lifecycle status created a missing stream lock");
+    const auto symlink_target = state.path() / "symlink-target";
+    const auto symlink_root = state.path() / "symlink-root";
+    fs::create_directories(symlink_target);
+    fs::create_directory_symlink(symlink_target, symlink_root);
+    require_error([&] {
+        static_cast<void>(lifecycle_boot_state(
+            symlink_root, "lifecycle_boot_status", nullptr, nullptr, "symlink-status"));
+    }, "lifecycle_journal.state_directory_open_failed");
+    const auto package = receipt("durable-a");
+    const auto desired_inactive = desired_state(engine::Json::array({
+        desired_component("durable-a", package, "inactive"),
+    }));
+    const auto observed_inactive = observation(engine::Json::array({
+        observed_component("durable-a", package, "inactive"),
+    }));
+    auto wrong_inventory = lifecycle_boot_request(
+        state.path(), desired_inactive, observed_inactive,
+        "boot-operation-wrong-inventory", "absent", "wrong-inventory");
+    wrong_inventory.payload["stable_inventory_digest"] = receipt("wrong-inventory");
+    require_error([&] {
+        static_cast<void>(session::handle_request(wrong_inventory));
+    }, "lifecycle_journal.inventory_digest_mismatch");
+    auto wrong_target = lifecycle_boot_request(
+        state.path(), desired_inactive, observed_inactive,
+        "boot-operation-wrong-target", "absent", "wrong-target");
+    wrong_target.payload["authorization_decision"]["target"]["resource"] =
+        lifecycle_resource("wrong-target");
+    require_error([&] {
+        static_cast<void>(session::handle_request(wrong_target));
+    }, "session.authorization_target_mismatch");
+    const auto first = lifecycle_boot(
+        state.path(), desired_inactive, observed_inactive, "boot-operation-1", "absent", "one");
+    require(first.at("changed") == true && first.at("journal").at("state") == "verified",
+            "converged lifecycle boot did not commit verified evidence");
+    require(first.at("journal").at("generation") == 1 &&
+            first.at("journal").at("current_plan_revision") == 1 &&
+            first.at("apply_authorized") == false,
+            "initial lifecycle journal identity or apply boundary drifted");
+    const auto first_digest = first.at("journal_digest").get<std::string>();
+    const auto transaction = first.at("journal").at("transaction_id");
+    const auto directory = lifecycle_stream_path(state.path());
+    const auto linked_lock = state.path() / "linked-lock";
+    fs::create_hard_link(directory / ".lock", linked_lock);
+    require_error([&] {
+        static_cast<void>(lifecycle_boot_state(
+            state.path(), "lifecycle_boot_status", nullptr, nullptr, "linked-lock-status"));
+    }, "lifecycle_journal.lock_unsafe");
+    fs::remove(linked_lock);
+
+    const auto replay = lifecycle_boot(
+        state.path(), desired_inactive, observed_inactive, "boot-operation-1", "absent", "replay");
+    require(replay.at("changed") == false && replay.at("journal_digest") == first_digest,
+            "idempotent lifecycle boot replay changed state");
+    auto conflicting_profile = lifecycle_boot_request(
+        state.path(), desired_inactive, observed_inactive,
+        "boot-operation-1", "absent", "conflicting-profile");
+    const auto replacement_profile_digest = receipt("replacement-profile");
+    const auto stable_inventory_digest =
+        conflicting_profile.payload.at("stable_inventory_digest").get<std::string>();
+    conflicting_profile.payload["profile_digest"] = replacement_profile_digest;
+    conflicting_profile.payload["authorization_decision"] = lifecycle_authorization(
+        "boot", replacement_profile_digest + "\n" +
+            desired_inactive.at("desired_state_digest").get<std::string>() + "\nreport\n" +
+            stable_inventory_digest,
+        "conflicting-profile");
+    require_error([&] {
+        static_cast<void>(session::handle_request(conflicting_profile));
+    }, "lifecycle_journal.operation_conflict");
+
+    const auto status = lifecycle_boot_state(
+        state.path(), "lifecycle_boot_status", nullptr, nullptr, "status");
+    require(status.at("read_only") == true && status.at("journal_digest") == first_digest,
+            "lifecycle boot status was not a read-only exact snapshot");
+
+    auto timestamp_only = observed_inactive;
+    timestamp_only["observed_at"] = "2026-08-04T16:00:01Z";
+    finalize_observation(timestamp_only);
+    require(timestamp_only.at("observation_digest") != observed_inactive.at("observation_digest"),
+            "timestamp-only lifecycle fixture did not change its document digest");
+    const auto rescanned = lifecycle_boot(
+        state.path(), desired_inactive, timestamp_only, "boot-operation-rescan", first_digest, "rescan");
+    require(rescanned.at("changed") == false && rescanned.at("journal_digest") == first_digest &&
+            rescanned.at("journal").at("current_observation_digest") ==
+                observed_inactive.at("observation_digest"),
+            "timestamp-only lifecycle rescan created durable journal churn");
+
+    const auto desired_active = desired_state(engine::Json::array({
+        desired_component("durable-a", package, "active"),
+    }));
+    const auto second = lifecycle_boot(
+        state.path(), desired_active, observed_inactive, "boot-operation-2", first_digest, "two");
+    require(second.at("changed") == true && second.at("journal").at("state") == "open" &&
+            second.at("journal").at("transaction_id") == transaction &&
+            second.at("journal").at("current_plan_revision") == 2 &&
+            second.at("journal").at("replan_count") == 1 &&
+            second.at("plan").at("previous_plan_digest") == first.at("journal").at("current_plan_digest"),
+            "changed desired evidence did not create a linked in-transaction plan revision");
+    const auto second_digest = second.at("journal_digest").get<std::string>();
+
+    const auto observed_active = observation(engine::Json::array({
+        observed_component("durable-a", package, "active"),
+    }));
+    const auto healed = lifecycle_boot(
+        state.path(), desired_active, observed_active, "boot-operation-3", second_digest, "three");
+    require(healed.at("journal").at("state") == "verified" &&
+            healed.at("journal").at("transaction_id") == transaction &&
+            healed.at("journal").at("current_plan_revision") == 3 &&
+            healed.at("journal").at("checkpoints").size() == 3,
+            "verified evidence did not heal the durable transaction forward");
+    const auto healed_digest = healed.at("journal_digest").get<std::string>();
+
+    require_error([&] {
+        static_cast<void>(lifecycle_boot(
+            state.path(), desired_active, observed_active, "boot-operation-stale", second_digest, "stale"));
+    }, "lifecycle_journal.expected_state_mismatch");
+
+    write_json(directory / "head.json", engine::Json{{"broken", true}});
+    require_error([&] {
+        static_cast<void>(lifecycle_boot_state(
+            state.path(), "lifecycle_boot_status", nullptr, nullptr, "broken-status"));
+    }, "lifecycle_journal.field_set");
+    const auto recovered = lifecycle_boot_state(
+        state.path(), "lifecycle_boot_recover", "boot-recover-1", "discover", "recover");
+    require(recovered.at("changed") == true && recovered.at("recovered") == true &&
+            recovered.at("journal").at("previous_journal_digest") == healed_digest &&
+            recovered.at("journal").at("recovery").at("state") == "recovered",
+            "lifecycle discovery recovery did not preserve and advance verified evidence");
+
+    const auto head = read_json(directory / "head.json");
+    const auto active_slot = head.at("active_slot").get<int>();
+    const auto active = read_json(directory / ("journal." + std::to_string(active_slot) + ".json"));
+    auto divergent = active;
+    divergent["journal_id"] = "lifecycle-journal:divergent";
+    finalize_test_digest(divergent, "journal_digest");
+    write_json(directory / ("journal." + std::to_string(1 - active_slot) + ".json"), divergent);
+    require_error([&] {
+        static_cast<void>(lifecycle_boot_state(
+            state.path(), "lifecycle_boot_status", nullptr, nullptr, "divergent-status"));
+    }, "lifecycle_journal.recovery_ambiguous");
+
+    require_error([&] {
+        static_cast<void>(lifecycle_boot_state(
+            state.path(), "lifecycle_boot_recover", "boot-recover-read-only", "discover",
+            "recover-read-only", false));
+    }, "lifecycle_journal.compatibility_required");
+
+    TemporaryDirectory critical_state;
+    const auto critical_first = lifecycle_boot(
+        critical_state.path(), desired_inactive, observed_inactive,
+        "boot-operation-critical", "absent", "critical");
+    const auto critical_directory = lifecycle_stream_path(critical_state.path());
+    const auto critical_head = read_json(critical_directory / "head.json");
+    const auto critical_slot = critical_head.at("active_slot").get<int>();
+    auto critical_journal = critical_first.at("journal");
+    const engine::Json extension_payload{{"future_state", "requires-compatible-reader"}};
+    critical_journal["extensions"].push_back(engine::Json{
+        {"extension_id", "future-critical-v1"}, {"extension_version", "1.0.0"},
+        {"critical", true}, {"payload", extension_payload},
+        {"payload_digest", engine::tagged_sha256(extension_payload.dump())},
+    });
+    finalize_test_digest(critical_journal, "journal_digest");
+    write_json(
+        critical_directory / ("journal." + std::to_string(critical_slot) + ".json"),
+        critical_journal);
+    require_error([&] {
+        static_cast<void>(lifecycle_boot_state(
+            critical_state.path(), "lifecycle_boot_recover", "boot-recover-critical", "discover",
+            "recover-critical"));
+    }, "lifecycle_journal.compatibility_required");
 }
 
 void test_dependency_ready_set_and_replanning() {
@@ -657,6 +1050,7 @@ void test_bounded_scale_plan() {
 int main() {
     try {
         test_descriptor();
+        test_durable_boot_journal_replanning_and_recovery();
         test_dependency_ready_set_and_replanning();
         test_cycle_isolation();
         test_dependency_criticality_and_component_capabilities();

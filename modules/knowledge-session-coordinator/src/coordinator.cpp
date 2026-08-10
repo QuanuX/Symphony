@@ -1,6 +1,7 @@
 #include "coordinator.hpp"
 #include "authority_session.hpp"
 #include "lifecycle.hpp"
+#include "lifecycle_journal.hpp"
 #include "reconciliation.hpp"
 
 #include "symphony/knowledge/engine/error.hpp"
@@ -39,6 +40,7 @@ engine::Json inspect(const engine::Json& payload) {
         {"reconciliation", reconciliation_capabilities()},
         {"authenticated_session", authority_session_capabilities()},
         {"lifecycle", lifecycle_capabilities()},
+        {"lifecycle_journal", lifecycle_journal_capabilities()},
         {"canonical_apply_enabled", false},
         {"session_mutation_enabled", true},
         {"maestro_docking_enabled", false},
@@ -130,6 +132,9 @@ engine::Json descriptor() {
             engine::Json{{"name", "session_close"}, {"availability", "implemented"}, {"mutates_canonical", false}},
             engine::Json{{"name", "session_recover"}, {"availability", "implemented"}, {"mutates_canonical", false}},
             engine::Json{{"name", "lifecycle_plan"}, {"availability", "implemented_report_only"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "lifecycle_boot"}, {"availability", "implemented_report_only_persistence"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "lifecycle_boot_status"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "lifecycle_boot_recover"}, {"availability", "implemented"}, {"mutates_canonical", false}},
             engine::Json{{"name", "apply"}, {"availability", "disabled"}, {"mutates_canonical", true}},
         })},
         {"limits", engine::Json{
@@ -172,6 +177,10 @@ engine::Json handle_request(const engine::Request& request) {
     }
     if (request.operation == "lifecycle_plan") {
         return handle_lifecycle_plan(request);
+    }
+    if (request.operation == "lifecycle_boot" || request.operation == "lifecycle_boot_status" ||
+        request.operation == "lifecycle_boot_recover") {
+        return handle_lifecycle_journal(request);
     }
     throw engine::Error("operation.unsupported", "operation is reserved or unsupported", 4);
 }

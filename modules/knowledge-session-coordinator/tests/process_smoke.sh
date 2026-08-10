@@ -8,6 +8,9 @@ REPO=${2:?repository root is required}
 "$BINARY" --version | grep '^symphony-knowledge-session 0.1.0-dev$' >/dev/null
 "$BINARY" --descriptor | grep '"canonical_apply_enabled":false' >/dev/null
 "$BINARY" --descriptor | grep '"availability":"implemented_report_only","mutates_canonical":false,"name":"lifecycle_plan"' >/dev/null
+"$BINARY" --descriptor | grep '"availability":"implemented_report_only_persistence","mutates_canonical":false,"name":"lifecycle_boot"' >/dev/null
+"$BINARY" --descriptor | grep '"availability":"implemented","mutates_canonical":false,"name":"lifecycle_boot_status"' >/dev/null
+"$BINARY" --descriptor | grep '"availability":"implemented","mutates_canonical":false,"name":"lifecycle_boot_recover"' >/dev/null
 
 DEADLINE=$(( $(date +%s) * 1000 + 60000 ))
 REQUEST=$(printf '{"protocol":"symphony.knowledge.engine-process.v1","request_id":"smoke-1","correlation_id":"smoke-1","operation":"inspect","target_engine":"symphony-knowledge-session","deadline_unix_ms":%s,"payload":{}}' "$DEADLINE")
@@ -18,6 +21,7 @@ printf '%s\n' "$RESPONSE" | grep '"outcome":"ok"' >/dev/null
 printf '%s\n' "$RESPONSE" | grep '"session_mutation_enabled":true' >/dev/null
 printf '%s\n' "$RESPONSE" | grep '"dynamic_replanning":true' >/dev/null
 printf '%s\n' "$RESPONSE" | grep '"action_execution_enabled":false' >/dev/null
+printf '%s\n' "$RESPONSE" | grep '"persistence_enabled":true' >/dev/null
 printf '%s\n' "$RESPONSE" | grep '"response_digest":"sha256:' >/dev/null
 
 DEADLINE=$(( $(date +%s) * 1000 + 60000 ))

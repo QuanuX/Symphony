@@ -1306,23 +1306,33 @@ engine::Json lifecycle_capabilities() {
 }
 
 engine::Json handle_lifecycle_plan(const engine::Request& request) {
-    check_deadline(request.deadline_unix_ms);
-    exact_fields(request.payload, {
+    return build_lifecycle_plan(request.payload, request.deadline_unix_ms);
+}
+
+engine::Json build_lifecycle_plan(const engine::Json& payload, std::int64_t deadline_unix_ms) {
+    check_deadline(deadline_unix_ms);
+    exact_fields(payload, {
         "protocol", "operation", "desired_state", "observation",
         "prior_applied_state_digest", "client"
     }, "lifecycle plan command");
-    require_const(request.payload.at("protocol"),
+    require_const(payload.at("protocol"),
         "symphony.knowledge.lifecycle-plan-command.v1", "lifecycle command protocol");
-    require_const(request.payload.at("operation"), "lifecycle_plan", "lifecycle operation");
-    const auto desired = parse_desired(request.payload.at("desired_state"), request.deadline_unix_ms);
-    check_deadline(request.deadline_unix_ms);
-    const auto observation = parse_observation(request.payload.at("observation"), request.deadline_unix_ms);
-    const auto prior = optional_digest(request.payload.at("prior_applied_state_digest"), "prior_applied_state_digest");
+    require_const(payload.at("operation"), "lifecycle_plan", "lifecycle operation");
+    const auto desired = parse_desired(payload.at("desired_state"), deadline_unix_ms);
+    check_deadline(deadline_unix_ms);
+    const auto observation = parse_observation(payload.at("observation"), deadline_unix_ms);
+    const auto prior = optional_digest(payload.at("prior_applied_state_digest"), "prior_applied_state_digest");
     auto receipt_versions = desired.receipt_versions;
     receipt_versions.insert(observation.receipt_versions.begin(), observation.receipt_versions.end());
-    auto compatibility = negotiate(request.payload.at("client"), receipt_versions);
-    check_deadline(request.deadline_unix_ms);
-    return build_plan(desired, observation, prior, std::move(compatibility), request.deadline_unix_ms);
+    auto compatibility = negotiate(payload.at("client"), receipt_versions);
+    check_deadline(deadline_unix_ms);
+    return build_plan(desired, observation, prior, std::move(compatibility), deadline_unix_ms);
+}
+
+std::string lifecycle_stable_inventory_digest(
+    const engine::Json& observation,
+    std::int64_t deadline_unix_ms) {
+    return parse_observation(observation, deadline_unix_ms).stable_inventory_digest;
 }
 
 }

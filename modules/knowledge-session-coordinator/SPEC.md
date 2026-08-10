@@ -2,7 +2,7 @@
 
 ## Status
 
-Implemented reconciliation, authenticated-session, and report-only lifecycle-planning development slices, version `0.1.0-dev`. Not a published release and not a canonical mutation manager.
+Implemented reconciliation, authenticated-session, report-only lifecycle planning, and durable report-only lifecycle-journal development slices, version `0.1.0-dev`. Not a published release and not a canonical mutation manager.
 
 ## Process Contract
 
@@ -105,9 +105,19 @@ The result always declares `apply_authorized: false`. It is disposable noncanoni
 
 The observation document digest includes its normalized collection timestamp and therefore identifies exact evidence. The coordinator separately derives stable inventory from the validated observation with `observed_at` and `observation_digest` removed. Transaction, observation-key, and semantic action identities use that stable inventory digest, so repeated collection of unchanged state does not create a false transaction while real inventory, binding, platform, capability, or provider-availability changes still replan.
 
+## Durable Report-Only Lifecycle Journal
+
+`lifecycle_boot`, `lifecycle_boot_status`, and `lifecycle_boot_recover` use the exact lifecycle boot command/result contracts under `knowledge/schemas/v1/`. qxctl supplies a protected state root, exact TOPS/profile identity, one complete SSIAG authorization decision, and explicit journal client versions/capabilities. Boot also supplies its profile digest, complete desired and observed documents, independently computed stable-inventory digest, optional prior-applied-state digest, and planner client declaration. The coordinator recomputes stable inventory and the exact authorization resource before any state access.
+
+Each TOPS/profile pair maps through SHA-256 path keys to one private stream under `<state-root>/symphony/knowledge-session-coordinator/lifecycle/v1/tops/<tops-key>/profiles/<profile-key>/`. A persistent no-follow `0600` lock serializes readers and writers. Journal slots and the atomic head are regular `0600` files owned by the effective user. A mutation synchronizes the inactive slot, synchronizes the directory, atomically replaces and synchronizes the head, and never edits the active slot in place.
+
+Boot requires `absent` or the exact current journal digest. Stable operation-ID replay is idempotent; reuse with different evidence fails closed. A timestamp-only observation refresh has a different document digest but the same stable-inventory digest and therefore performs no journal write. A real profile, desired, stable-inventory, compatibility, provider, binding, receipt, mode, or prior-applied evidence change commits a linked generation and plan revision while retaining the open transaction identity. The journal persists the authorization-bound profile digest, plan identity, blockers, ready-set checkpoints, compatibility and recovery evidence, but action attempts remain empty and both `apply_authorized` and `canonical` remain false.
+
+Status is strictly read-only and does not create an absent stream. Recovery requires full write compatibility and either an exact selected digest or explicit discovery. It accepts only one valid slot, equal identical slots, or one adjacent predecessor/successor digest chain. A damaged head or uniquely linked synchronized successor is repaired through a new forward journal/checkpoint generation. Divergent equal generations, unlinked jumps, unsafe filesystem objects, unknown critical extensions, unsupported formats, stale expected state, or ambiguous evidence remain preserved and fail closed. Unknown noncritical extensions are digest-validated and preserved exactly across writes.
+
 ## Descriptor Truth
 
-`inspect`, `check`, reconciliation `compatibility|begin|status|checkpoint|close|recover`, authenticated-session `session_begin|session_status|session_checkpoint|session_close|session_recover`, and report-only `lifecycle_plan` are implemented. `apply` is disabled. The descriptor declares user-scope process invocation, C++26, freezing-path placement, `installed_undocked`, no default receptor, and no network listener.
+`inspect`, `check`, reconciliation `compatibility|begin|status|checkpoint|close|recover`, authenticated-session `session_begin|session_status|session_checkpoint|session_close|session_recover`, report-only `lifecycle_plan`, and durable report-only `lifecycle_boot|lifecycle_boot_status|lifecycle_boot_recover` are implemented. `apply` is disabled. The descriptor declares user-scope process invocation, C++26, freezing-path placement, `installed_undocked`, no default receptor, and no network listener.
 
 ## Install and Uninstall
 
@@ -115,4 +125,4 @@ Installation uses module-and-version-specific paths and creates no active alias.
 
 ## Non-Authorization
 
-This implementation does not authenticate the operating-system caller, decide permission, mutate canonical repository content, run a watcher, install a hook, discover lifecycle state, administer desired profiles, persist or apply a lifecycle plan, invoke a vector engine, directly call SSIAG/STAV, activate an install receipt, or dock with Maestro. SSIAG authenticates and decides; qxctl obtains and validates exact lifecycle permission before invoking this authority-free report operation and transports exact safe evidence for implemented protected session operations; the coordinator validates session evidence and mutates only protected noncanonical reconciliation or authenticated-session journals. `lifecycle_plan` performs no mutation.
+This implementation does not authenticate the operating-system caller, decide permission, mutate canonical repository content, run a watcher, install a hook, discover receipts, administer desired profiles, execute or apply a lifecycle action, persist applied state, invoke a vector engine, directly call SSIAG/STAV, activate an install receipt, or dock with Maestro. SSIAG authenticates and decides; qxctl obtains exact lifecycle permission and transports complete safe evidence. The coordinator independently validates stateful session and lifecycle-journal evidence and mutates only protected noncanonical reconciliation, authenticated-session, or lifecycle-journal state. `lifecycle_plan` remains non-mutating; `lifecycle_boot` persists report-only coordination evidence and never grants apply.

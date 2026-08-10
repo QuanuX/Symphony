@@ -47,6 +47,9 @@ Commands:
   knowledge lifecycle profile remove --tops-id UUID --expected-profile-digest DIGEST [--profile-id ID] [--json] Remove one protected lifecycle profile
   knowledge lifecycle observe --tops-id UUID [--profile-id ID | --root PATH...] [--json] Inventory fixed-layout receipts without execution
   knowledge lifecycle report --tops-id UUID [--profile-id ID] [--prior-applied-state-digest DIGEST] [--json] Re-observe and produce a dynamic report-only plan
+  knowledge lifecycle boot --tops-id UUID --operation-id ID --expected-journal-digest STATE [--json] Durably record or replan report-only boot evidence
+  knowledge lifecycle status --tops-id UUID [--profile-id ID] [--json] Read durable lifecycle boot state
+  knowledge lifecycle recover --tops-id UUID --operation-id ID (--expected-journal-digest DIGEST|--discover) [--json] Repair uniquely linked lifecycle boot evidence
   skvi inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SKVI engine
   skvi check --prefix PATH [--version VERSION] [--json] Check canonical SKVI index truth
   skvi propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a caller-declared proposal

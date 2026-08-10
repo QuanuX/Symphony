@@ -289,8 +289,8 @@ std::string repository_resource(const std::string& repository_root) {
     return "symphony.knowledge.repository:" + engine::sha256_hex("repository-root:" + repository_root);
 }
 
-engine::Json validate_authorization(const engine::Json& decision, const std::string& operation,
-                                    const std::string& tops_id, const std::string& repository_root) {
+engine::Json validate_authorization(const engine::Json& decision, const std::string& expected_operation,
+                                    const std::string& tops_id, const std::string& expected_resource) {
     require_fields(decision, {
         "schema", "decision_id", "request_id", "correlation_id", "tops_id", "subject", "target",
         "effect", "reason_code", "authority_basis", "capability", "policy_digest", "config_digest",
@@ -307,10 +307,9 @@ engine::Json validate_authorization(const engine::Json& decision, const std::str
         !decision.at("authority_basis").is_string() || !decision.at("expires_at").is_string()) {
         throw engine::Error("session.authorization_denied", "SSIAG decision does not carry an allowed non-apply capability", 4);
     }
-    const auto expected_operation = "symphony.knowledge.session." + operation.substr(8U);
     const auto& target = decision.at("target");
     require_fields(target, {"operation", "resource", "audience", "scope"});
-    if (text(target, "operation") != expected_operation || text(target, "resource") != repository_resource(repository_root) ||
+    if (text(target, "operation") != expected_operation || text(target, "resource") != expected_resource ||
         text(target, "audience") != "qxctl" || text(target, "scope") != "tops:" + tops_id) {
         throw engine::Error("session.authorization_target_mismatch", "SSIAG decision target does not match the session command", 4);
     }
@@ -917,8 +916,9 @@ engine::Json validate_command(const engine::Request& request) {
     static_cast<void>(string_array(payload.at("context_refs"), "context_refs", 64U));
     const auto& decision = payload.at("authorization_decision");
     const auto tops_id = text(decision, "tops_id");
-    static_cast<void>(validate_authorization(decision, request.operation, tops_id,
-                                             text(payload, "repository_root", engine::Limits::max_path_bytes)));
+    static_cast<void>(validate_authorization(
+        decision, "symphony.knowledge.session." + request.operation.substr(8U), tops_id,
+        repository_resource(text(payload, "repository_root", engine::Limits::max_path_bytes))));
     const bool read = request.operation == "session_status";
     if (read) {
         if (!payload.at("operation_id").is_null() || !payload.at("expected_journal_digest").is_null() || !payload.at("context_refs").empty()) {
@@ -1088,6 +1088,14 @@ State recover(const engine::Request& request, int directory, const std::string& 
 
 } // namespace
 
+engine::Json validate_ssiag_authorization(
+    const engine::Json& decision,
+    const std::string& expected_operation,
+    const std::string& tops_id,
+    const std::string& expected_resource) {
+    return validate_authorization(decision, expected_operation, tops_id, expected_resource);
+}
+
 engine::Json authority_session_capabilities() {
     return engine::Json{
         {"process_protocols", engine::Json::array({engine::process_protocol_v1})},
@@ -1103,7 +1111,8 @@ engine::Json handle_authority_session(const engine::Request& request) {
     const auto& decision = request.payload.at("authorization_decision");
     const auto repository = canonical_repository(request.payload.at("repository_root").get<std::string>());
     const auto capability = validate_authorization(
-        decision, request.operation, decision.at("tops_id").get<std::string>(), repository);
+        decision, "symphony.knowledge.session." + request.operation.substr(8U),
+        decision.at("tops_id").get<std::string>(), repository_resource(repository));
     const auto session_key = engine::tagged_sha256(
         "session-key:" + capability.at("tops_id").get<std::string>() + "|" +
         capability.at("subject").at("id").get<std::string>() + "|" + repository);
