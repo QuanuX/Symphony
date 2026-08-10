@@ -1849,6 +1849,19 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: The interface grants no canonical or authentication authority.
 - status: canonical
 
+#### Knowledge Session Coordinator Dispatcher
+- path: `modules/knowledge-session-coordinator/src/coordinator.cpp`
+- title: Knowledge Session Coordinator Operation Dispatcher
+- surface_type: C++ coordinator implementation surface
+- truth_role: descriptor, inspect, operation routing, deadline, and non-apply boundary implementation truth
+- owner: SKV coordinator maintainers
+- scope: Routes bounded process requests across inspect/check, reconciliation, authenticated-session, lifecycle-plan, and durable lifecycle boot/status/recovery operations while rejecting unsupported apply.
+- relationships: implements -> `modules/knowledge-session-coordinator/SPEC.md`; dispatches_to -> `modules/knowledge-session-coordinator/src/reconciliation.cpp`; dispatches_to -> `modules/knowledge-session-coordinator/src/authority_session.cpp`; dispatches_to -> `modules/knowledge-session-coordinator/src/lifecycle.cpp`; dispatches_to -> `modules/knowledge-session-coordinator/src/lifecycle_journal.cpp`
+- consumers: symphony-knowledge-session, qxctl, process tests, reviewers
+- deferred_projections: vector invocation, lifecycle action execution, canonical apply
+- notes: Operation availability is reported literally; the dispatcher grants no authority and never treats a report-only result as applied state.
+- status: canonical
+
 #### Knowledge Session Coordinator Lifecycle Header
 - path: `modules/knowledge-session-coordinator/src/lifecycle.hpp`
 - title: Knowledge Session Coordinator Lifecycle Planner Interface
@@ -1912,6 +1925,19 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: coordinator/qxctl maintainers, reviewers, release gates
 - deferred_projections: action-execution and applied-state conformance
 - notes: Tests exercise report-only planning and operational journal durability but never perform package, docking, canonical, or Maestro mutation.
+- status: canonical
+
+#### Knowledge Session Coordinator Process Smoke Tests
+- path: `modules/knowledge-session-coordinator/tests/process_smoke.sh`
+- title: Knowledge Session Coordinator Process Conformance Smoke Tests
+- surface_type: bounded process-level conformance test
+- truth_role: executable identity, descriptor, deterministic response, operation availability, disabled-apply, and error-envelope proof
+- owner: SKV coordinator maintainers
+- scope: Verifies the direct executable surface, including durable lifecycle operation descriptors and persistence/non-apply inspection claims.
+- relationships: verifies -> `modules/knowledge-session-coordinator/src/coordinator.cpp`; verifies -> `modules/knowledge-session-coordinator/SPEC.md`; verifies -> `knowledge/schemas/v1/engine-process-response.schema.json`
+- consumers: coordinator maintainers, packagers, reviewers, release gates
+- deferred_projections: installed host-boot-hook and lifecycle-action conformance
+- notes: The smoke test invokes only read/report surfaces and unsupported-operation failure; it performs no package, docking, or canonical mutation.
 - status: canonical
 
 #### Knowledge Session Coordinator Authority-Session Header
