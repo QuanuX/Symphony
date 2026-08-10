@@ -3581,3 +3581,169 @@ This PR authorizes none of the following:
   - `module tag, release artifact, package publication, public documentation, SDK generation, Mintlify publication, or launch claim`
 - notes: |
     This post-merge closure records the durable report-only lifecycle boot journal merged by PR #107. Every source-PR surface is listed and has an exact SKVI entry; the closure carrier adds the two missing implementation/test index records without changing runtime behavior. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
+
+- record_id: `SCLV-CHG-20260810-LIFECYCLE-APPLY-COMPATIBLE`
+- record_version: `3`
+- title: `Apply-compatible lifecycle execution implemented`
+- status: `canonical`
+- date: `2026-08-10`
+- change_started_at: `2026-08-10T17:42:46Z`
+- change_completed_at: `2026-08-10T17:43:10Z`
+- recorded_at: `2026-08-10T17:46:37Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `canonical_addition`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#109`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/109`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `316ae5dd3701dbac39e5c4dc7d4b420f28160659`
+- tree_digest: `sha256:1917d56e1e50951f71a9e497f8ea4c34f32c3cecfba4e0ec8390d21a8679dba0`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/109`
+- ratification_evidence_digest: `sha256:01b73d5b90d5a3647b5cd78cb58cb81664838d5af5bc2f2c6ed6095074c15a9c`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/lifecycle-applied-state.schema.json`
+  - `knowledge/schemas/v1/lifecycle-apply-command.schema.json`
+  - `knowledge/schemas/v1/lifecycle-apply-result.schema.json`
+  - `knowledge/schemas/v1/lifecycle-runtime-state.schema.json`
+  - `knowledge/schemas/v2/MANIFEST.md`
+  - `knowledge/schemas/v2/lifecycle-boot-head.schema.json`
+  - `knowledge/schemas/v2/lifecycle-boot-journal.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/knowledge-session-coordinator/FEATURES.md`
+  - `modules/knowledge-session-coordinator/INSTALL.md`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `modules/knowledge-session-coordinator/MANIFEST.md`
+  - `modules/knowledge-session-coordinator/SKILL.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `modules/knowledge-session-coordinator/src/coordinator.cpp`
+  - `modules/knowledge-session-coordinator/src/lifecycle_journal.cpp`
+  - `modules/knowledge-session-coordinator/src/lifecycle_journal.hpp`
+  - `modules/knowledge-session-coordinator/tests/lifecycle_test.cpp`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_apply.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_test.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgelifecycle/executor.go`
+  - `tools/qxctl/internal/knowledgelifecycle/executor_test.go`
+  - `tools/qxctl/internal/knowledgelifecycle/install_unix.go`
+  - `tools/qxctl/internal/knowledgelifecycle/install_unsupported.go`
+  - `tools/qxctl/internal/knowledgelifecycle/observation.go`
+  - `tools/qxctl/internal/knowledgelifecycle/runtime.go`
+  - `tools/qxctl/internal/knowledgelifecycle/runtime_unix.go`
+  - `tools/qxctl/internal/knowledgelifecycle/runtime_unsupported.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/lifecycle-applied-state.schema.json`
+  - `knowledge/schemas/v1/lifecycle-apply-command.schema.json`
+  - `knowledge/schemas/v1/lifecycle-apply-result.schema.json`
+  - `knowledge/schemas/v1/lifecycle-runtime-state.schema.json`
+  - `knowledge/schemas/v2/MANIFEST.md`
+  - `knowledge/schemas/v2/lifecycle-boot-head.schema.json`
+  - `knowledge/schemas/v2/lifecycle-boot-journal.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/knowledge-session-coordinator/FEATURES.md`
+  - `modules/knowledge-session-coordinator/INSTALL.md`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `modules/knowledge-session-coordinator/MANIFEST.md`
+  - `modules/knowledge-session-coordinator/SKILL.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `modules/knowledge-session-coordinator/src/coordinator.cpp`
+  - `modules/knowledge-session-coordinator/src/lifecycle_journal.cpp`
+  - `modules/knowledge-session-coordinator/src/lifecycle_journal.hpp`
+  - `modules/knowledge-session-coordinator/tests/lifecycle_test.cpp`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_apply.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_test.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgelifecycle/executor.go`
+  - `tools/qxctl/internal/knowledgelifecycle/executor_test.go`
+  - `tools/qxctl/internal/knowledgelifecycle/install_unix.go`
+  - `tools/qxctl/internal/knowledgelifecycle/install_unsupported.go`
+  - `tools/qxctl/internal/knowledgelifecycle/observation.go`
+  - `tools/qxctl/internal/knowledgelifecycle/runtime.go`
+  - `tools/qxctl/internal/knowledgelifecycle/runtime_unix.go`
+  - `tools/qxctl/internal/knowledgelifecycle/runtime_unsupported.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- change_summary: |
+    Under the Architect's direction, PR #109 completed the explicit local apply-compatible lifecycle circuit. The C++ coordinator now maintains a protected v2 apply stream beside the immutable v1 report source, serializes one prepared action before host mutation, verifies exact after-observation, commits content-addressed applied evidence, dynamically replans, and recovers uniquely linked state. qxctl obtains fresh exact SSIAG authorization for every phase and executes only reviewed receipt-v2 package or protected selection/activation adapters.
+- relationship_changes: |
+    Common `knowledge/` remains the source of lifecycle protocol and schema truth. The C++ coordinator owns freezing-path planning, v1/v2 journal serialization, compatibility negotiation, verified completion, and applied-evidence selection without executing host actions. qxctl remains the administrative client and external host-action executor. SSIAG remains the caller-neutral authorization-decision boundary and STAV commitment source. Package files and qxctl runtime state remain protected noncanonical operational surfaces. Maestro remains absent.
+- doctrine_changes: |
+    Report mode remains the default and the v1 report journal is never upgraded in place. An `apply-compatible` profile uses a separately identified v2 head/journal stream and names one exact v1 source report. Every external action is written as active before execution, bound to exact profile, desired, source-report, observation, plan, prior-applied, action, artifact, operation, and authorization evidence. Finalization succeeds only after direct observation proves the requested transition. Installs publish exact owned files before the immutable receipt; uninstalls require separate staged rollback proof, validate all remaining files before deletion, and remove the receipt last. Safe retry converges through `already_applied` evidence rather than fabricating success.
+- compatibility_consequences: |
+    Apply mutation requires full v2 process, read, write, and required-capability overlap. Status may remain read-only when safe read overlap exists. Older v1 report clients and journals remain valid and unchanged; newer clients dual-read supported evidence and must preserve unknown noncritical extensions. Unknown critical, future-version, ambiguous, conflicting, unlinked, or stale state fails closed. Recovery adopts only one uniquely proven digest-linked chain and records a new forward checkpoint. Dynamic ready-set replanning allows forward or inverse procedural convergence after unplanned upgrade order without bypassing prerequisites or safety phases.
+- publication_consequences: |
+    No module tag, release artifact, package coordinate, binary distribution, container, SDK, OpenAPI surface, Mintlify publication, public documentation release, marketing claim, or platform launch was published or authorized. The implementation remains active-development source on the rolling main branch.
+- projection_consequences: |
+    Apply journals, heads, plans, execution evidence, runtime state, observations, repair actions, and applied-state files are protected noncanonical operational evidence. They do not become canonical knowledge, feature truth, STAV ledger entries, authorization grants, Maestro presence, live service state, or proof of shared-root exclusivity. The coordinator descriptor reports external action coordination while continuing to report that coordinator-local host action execution is disabled.
+- evidence:
+  - `PR #109 merged into main at 2026-08-10T17:43:10Z by quantDIY as 316ae5dd3701dbac39e5c4dc7d4b420f28160659`
+  - `implementation head 494d22fd2d3c00c6b31591f84ffcf74c75362b8a; 49 files changed, 4919 insertions, 171 deletions`
+  - `local-Git adapter evidence observed at 2026-08-10T17:46:06Z has digest sha256:58e53010b6ca1a639768a3131955cbede280496c90ef36fe645c4f68364d2724 and binds tree digest sha256:1917d56e1e50951f71a9e497f8ea4c34f32c3cecfba4e0ec8390d21a8679dba0`
+  - `ratification evidence digest sha256:01b73d5b90d5a3647b5cd78cb58cb81664838d5af5bc2f2c6ed6095074c15a9c binds compact lexicographically key-sorted metadata for repository, pull request number, state, merged and draft status, title, URL, base and head refs/revisions, merge revision, creation/merge/close times, authenticated merger, commit count, changed-file count, additions, and deletions`
+  - `canonical PR metadata identified QuanuX/Symphony#109, base main at 12fa201d5c75fa94e6f76836763a3c48212fe854, head agent/lifecycle-apply-compatible at 494d22fd2d3c00c6b31591f84ffcf74c75362b8a, one commit, and merge revision 316ae5dd3701dbac39e5c4dc7d4b420f28160659`
+  - `normalized combined provider evidence has digest sha256:e899408a56ef1ea62af0d14fa2f7f4939cc7ba08cabacd850264479499292b73 and binds the revision, change request, and Architect ratification claims`
+  - `qxctl passed go test ./..., go test -race ./..., go vet ./..., and CGO-disabled Linux amd64 and arm64 builds`
+  - `fresh C++26 Release coordinator build passed all three CTests; a separate -Wall -Wextra -Wpedantic -Werror build passed all three CTests`
+  - `fresh AddressSanitizer and UndefinedBehaviorSanitizer coordinator build passed all three CTests with the supported macOS detect_leaks=0 posture`
+  - `fresh SSFV Release build passed both CTests; fresh symphony-validator Release build passed all three CTests and the complete smoke matrix`
+  - `all tracked knowledge JSON parsed and the Draft 2020-12 lifecycle dependency closure compiled across 18 schemas`
+  - `pre-closure strict validator result pass=5519 warning=164 violation=0 exit=0; all 164 warnings were the established sclv.affected_surface.unindexed historical-record advisory family`
+  - `pre-closure SCLV engine check reported 30 records, 120 passes, zero warnings, zero violations, and valid state`
+  - `fresh SCLV engine and both provider-adapter CTests passed two of two tests before this closure was authored`
+  - `closure SCLV engine check reported 31 records, 124 passes, zero warnings, zero violations, and valid state`
+  - `closure validator result pass=5729 warning=164 violation=0 exit=0; the closure introduced no new warning or warning family`
+  - `PR #109 was open, non-draft, cleanly mergeable, and verified at exact head 494d22fd2d3c00c6b31591f84ffcf74c75362b8a before authenticated merge`
+- non_authorizations:
+  - `canonical knowledge apply, proposal ratification by software, direct canonical-vector mutation, direct STAV ledger mutation, feature-worthiness decision, graph persistence, or engine-owned semantic truth`
+  - `receipt-v1 mutation, package download, implicit newest-version selection, arbitrary receipt entry-point execution, unknown-package execution, engine-binding rewrite, or automatic in-place journal-format migration`
+  - `live process or service activation, coordinator self-replacement, host boot-hook installation, PAM or login-manager integration, background lifecycle daemon, remote lifecycle API, receptor docking, receptor undocking, or Maestro orchestration`
+  - `treating one TOPS uninstall authorization as proof that independently administered TOPS profiles or separate state roots have released a shared package root; host-global shared-root ownership remains unimplemented`
+  - `authorization bypass, integrity bypass, compare-and-swap bypass, dependency-order bypass, critical-state downgrade, ambiguous recovery, destructive rewrite, unlinked state adoption, fabricated after-observation, or operation-ID reuse with changed evidence`
+  - `caller-class policy, human-only authority, AI-specific restriction, service-specific privilege, or authority inferred from actor type`
+  - `native Windows engine implementation, hot-path participation, warm-path participation, trading-node doctrine, or Go 1.27 production pin`
+  - `module tag, release artifact, package publication, public documentation, SDK generation, Mintlify publication, or launch claim`
+- notes: |
+    This post-merge closure records the explicit local apply-compatible lifecycle implementation merged by PR #109. Every source-PR surface is listed and already has an exact SKVI entry; the closure carrier changes only this forward-only canonical record and is non-recursive unless it introduces an independently significant architectural change.
