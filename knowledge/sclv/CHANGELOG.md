@@ -3259,3 +3259,171 @@ This PR authorizes none of the following:
   - `module tag, release artifact, package publication, public documentation, SDK generation, Mintlify publication, or launch claim`
 - notes: |
     This post-merge closure records the protected qxctl lifecycle profile, observation, and report circuit merged by PR #103. Every changed file is listed as an affected surface and has an exact SKVI entry, so the record introduces no knowingly unindexed surface. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
+
+- record_id: `SCLV-CHG-20260810-STSC-TEMPORAL-CONTRACT`
+- record_version: `3`
+- title: `Symphony Temporal Semantics Contract formalized and adopted`
+- status: `canonical`
+- date: `2026-08-10`
+- change_started_at: `2026-08-10T05:03:19Z`
+- change_completed_at: `2026-08-10T05:03:42Z`
+- recorded_at: `2026-08-10T05:05:32Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `canonical_addition`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#105`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/105`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `2b88910e5a42429779d12d8547747832a0ed7f4f`
+- tree_digest: `sha256:ff7afea1678cd4dfc73ac55f62c2cba1e407596e8db5385a73baa3ca7ad3fa1a`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/105`
+- ratification_evidence_digest: `sha256:51568c09abbf91c3e8552b8d92b24c9c8c08fbc911b35f86b4c4db2008225578`
+- affected_surfaces:
+  - `knowledge/INTENT.md`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/TIME.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/temporal.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/stav/SPEC.md`
+  - `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
+  - `libraries/knowledge-vector-engine-cpp/FEATURES.md`
+  - `libraries/knowledge-vector-engine-cpp/INTENT.md`
+  - `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
+  - `libraries/knowledge-vector-engine-cpp/SKILL.md`
+  - `libraries/knowledge-vector-engine-cpp/SPEC.md`
+  - `libraries/knowledge-vector-engine-cpp/cmake/install-receipt.json.in`
+  - `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/temporal.hpp`
+  - `libraries/knowledge-vector-engine-cpp/src/temporal.cpp`
+  - `libraries/knowledge-vector-engine-cpp/tests/foundation_test.cpp`
+  - `modules/knowledge-session-coordinator/src/authority_session.cpp`
+  - `modules/knowledge-session-coordinator/src/lifecycle.cpp`
+  - `modules/knowledge-session-coordinator/src/reconciliation.cpp`
+  - `modules/knowledge-session-coordinator/tests/lifecycle_test.cpp`
+  - `modules/sacv-engine/src/sacv.cpp`
+  - `modules/sclv-engine/src/provider.cpp`
+  - `modules/skvi-engine/src/skvi.cpp`
+  - `modules/sodv-engine/src/sodv.cpp`
+  - `modules/ssfv-engine/src/ssfv.cpp`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/internal/knowledgebinding/registry.go`
+  - `tools/qxctl/internal/knowledgebinding/registry_test.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/src/canonical_surfaces.cpp`
+  - `tools/symphony-validator/src/doctrine_vocab.cpp`
+  - `tools/symphony-validator/src/knowledge_contracts.cpp`
+  - `tools/symphony-validator/src/sodv_releases.cpp`
+  - `tools/symphony-validator/tests/fixtures_affected_surface_unindexed/knowledge/TIME.md`
+  - `tools/symphony-validator/tests/fixtures_affected_surface_unindexed/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_ledger_gap_warning/knowledge/TIME.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_ledger_gap_warning/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_valid/knowledge/TIME.md`
+  - `tools/symphony-validator/tests/fixtures_valid/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_c_o_r_e/knowledge/TIME.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_c_o_r_e/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_score/knowledge/TIME.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_score/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/smoke.sh`
+  - `tools/symphony-validator/tests/sodv_release_test.cpp`
+- skvi_references:
+  - `knowledge/INTENT.md`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/TIME.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/temporal.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/stav/SPEC.md`
+  - `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
+  - `libraries/knowledge-vector-engine-cpp/FEATURES.md`
+  - `libraries/knowledge-vector-engine-cpp/INTENT.md`
+  - `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
+  - `libraries/knowledge-vector-engine-cpp/SKILL.md`
+  - `libraries/knowledge-vector-engine-cpp/SPEC.md`
+  - `libraries/knowledge-vector-engine-cpp/cmake/install-receipt.json.in`
+  - `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/temporal.hpp`
+  - `libraries/knowledge-vector-engine-cpp/src/temporal.cpp`
+  - `libraries/knowledge-vector-engine-cpp/tests/foundation_test.cpp`
+  - `modules/knowledge-session-coordinator/src/authority_session.cpp`
+  - `modules/knowledge-session-coordinator/src/lifecycle.cpp`
+  - `modules/knowledge-session-coordinator/src/reconciliation.cpp`
+  - `modules/knowledge-session-coordinator/tests/lifecycle_test.cpp`
+  - `modules/sacv-engine/src/sacv.cpp`
+  - `modules/sclv-engine/src/provider.cpp`
+  - `modules/skvi-engine/src/skvi.cpp`
+  - `modules/sodv-engine/src/sodv.cpp`
+  - `modules/ssfv-engine/src/ssfv.cpp`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/internal/knowledgebinding/registry.go`
+  - `tools/qxctl/internal/knowledgebinding/registry_test.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/src/canonical_surfaces.cpp`
+  - `tools/symphony-validator/src/doctrine_vocab.cpp`
+  - `tools/symphony-validator/src/knowledge_contracts.cpp`
+  - `tools/symphony-validator/src/sodv_releases.cpp`
+  - `tools/symphony-validator/tests/fixtures_affected_surface_unindexed/knowledge/TIME.md`
+  - `tools/symphony-validator/tests/fixtures_affected_surface_unindexed/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_ledger_gap_warning/knowledge/TIME.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_ledger_gap_warning/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_valid/knowledge/TIME.md`
+  - `tools/symphony-validator/tests/fixtures_valid/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_c_o_r_e/knowledge/TIME.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_c_o_r_e/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_score/knowledge/TIME.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_score/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/smoke.sh`
+  - `tools/symphony-validator/tests/sodv_release_test.cpp`
+- change_summary: |
+    Under the Architect's direction, PR #105 established the Symphony Temporal Semantics Contract as the common application-wide truth for temporal representation and interpretation. It added strict shared Gregorian validation, adopted the contract across the knowledge engines and coordinator, preserved the STAV nanosecond profile, and aligned qxctl generation behavior with bounded legacy-read compatibility.
+- relationship_changes: |
+    Common `knowledge/` owns STSC truth. STSC is not an SKV vector, engine, runtime, service, package, or independent installation surface. The C++ knowledge-vector foundation supplies reusable implementation validation; each consuming engine retains its own semantics. qxctl remains an administrative client, STAV retains audit-event precision, and SSIAG retains security-decision ownership.
+- doctrine_changes: |
+    Durable common instants use exact UTC whole seconds, while STAV event instants use exact nine-digit UTC nanoseconds. Civil dates must be real Gregorian dates in years 0001 through 9999; leap seconds and year zero are rejected. Local time is presentation context requiring an IANA zone and explicit offset. Wall-clock time never establishes identity or causality, live elapsed intervals use monotonic clocks, and the target TOPS owns durable commit timestamps.
+- compatibility_consequences: |
+    Versioned readers may preserve previously valid pre-STSC encodings during out-of-order upgrades and normalize them only during the next ordinary compare-and-swap generation. qxctl engine-binding v1 therefore continues to read exact UTC fractional-second values already on disk but writes only whole-second UTC. No rewrite-on-read, bulk migration, silent precision coercion, or dependency on coordinated upgrade order is introduced.
+- publication_consequences: |
+    No module tag, release artifact, package coordinate, binary distribution, container, SDK, OpenAPI surface, Mintlify publication, public documentation release, marketing claim, or platform launch was published or authorized. The contract and implementation remain active-development source on the rolling main branch.
+- projection_consequences: |
+    Temporal fields remain typed facts within their owning records and projections. A formatted timestamp does not become causal order, authorization evidence, a session boundary, or proof of action merely because it conforms to STSC. Derived views may localize presentation without altering the canonical UTC instant.
+- evidence:
+  - `PR #105 merged into main at 2026-08-10T05:03:42Z by quantDIY as 2b88910e5a42429779d12d8547747832a0ed7f4f`
+  - `implementation head abcf50a6b00dbf78746cefe6d266ae10c1eeba34; 53 files changed, 968 insertions, 239 deletions`
+  - `local-Git adapter evidence observed at 2026-08-10T05:04:51Z has digest sha256:5a2b982796e9212c5d7bbbe3482142b62ff9de9f8c177e40e4debb25ca9b1d20 and binds tree digest sha256:ff7afea1678cd4dfc73ac55f62c2cba1e407596e8db5385a73baa3ca7ad3fa1a`
+  - `ratification evidence digest sha256:51568c09abbf91c3e8552b8d92b24c9c8c08fbc911b35f86b4c4db2008225578 binds compact lexicographically key-sorted metadata for repository, pull request number, state, merged and draft status, title, URL, base and head refs/revisions, merge revision, creation/merge/close times, authenticated merger, commit count, changed-file count, additions, and deletions`
+  - `the shared C++ foundation build, install/uninstall test, and installed-foundation coordinator consumer proof passed`
+  - `the coordinator and five SKV engine CTest suites passed, including impossible-date, year-zero, leap-second, precision-profile, and lifecycle-date regressions`
+  - `qxctl passed go test ./... and go vet ./...; legacy fractional-UTC read and whole-second write compatibility passed`
+  - `the symphony-validator unit and smoke suites passed; pre-closure live result was pass=5020 warning=172 violation=0 exit=0`
+  - `all 172 pre-closure warnings were the established sclv.affected_surface.unindexed historical-record advisory family; every PR #105 affected surface has an exact SKVI entry`
+  - `pre-closure SCLV engine check reported 28 records, 112 passes, zero warnings, zero violations, and valid state`
+  - `closure SCLV engine check reported 29 records, 116 passes, zero warnings, zero violations, and valid state`
+  - `closure validator result pass=5246 warning=172 violation=0 exit=0; the closure introduced no advisory delta because all 53 affected surfaces have exact SKVI entries`
+  - `PR #105 was open, non-draft, cleanly mergeable, and verified at exact head abcf50a6b00dbf78746cefe6d266ae10c1eeba34 before authenticated merge`
+- non_authorizations:
+  - `time synchronization service, NTP policy, PTP policy, clock-discipline daemon, timezone database updater, scheduler, trading-clock doctrine, exchange-calendar doctrine, market-session doctrine, or hot-path timing implementation`
+  - `using wall-clock time as record identity, causal order, authorization evidence, session authority, transaction identity, or proof that an action occurred`
+  - `rewrite-on-read, automatic historical timestamp normalization, destructive bulk migration, fabricated time, silent clock-regression acceptance, or precision coercion across incompatible profiles`
+  - `canonical knowledge mutation, proposal ratification, lifecycle action execution, package installation, package uninstall, activation, deactivation, receptor docking, receptor undocking, or Maestro orchestration`
+  - `caller-class policy, human-only authority, AI-specific restriction, service-specific privilege, or authority inferred from actor type`
+  - `native Windows engine implementation, trading-node doctrine, Go 1.27 production pin, module tag, release artifact, package publication, SDK generation, Mintlify publication, or launch claim`
+- notes: |
+    This post-merge closure records the common temporal contract and implementation merged by PR #105. Every changed file is listed as an affected surface and has an exact SKVI entry, so the record introduces no knowingly unindexed surface. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
