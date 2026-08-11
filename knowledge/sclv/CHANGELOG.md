@@ -3929,3 +3929,180 @@ This PR authorizes none of the following:
   - `module tag, release artifact, package publication, public documentation, SDK generation, Mintlify publication, or launch claim`
 - notes: |
     This post-merge closure records the Maestro receptor-presence lifecycle implementation merged by PR #111. Every source-PR surface is listed; the closure carrier adds three missing exact SKVI records discovered by the live audit and introduces no runtime behavior. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
+
+- record_id: `SCLV-CHG-20260811-SSFV-VALIDATION-CONTROLS`
+- record_version: `3`
+- title: `SSFV truth and configurable validation controls implemented`
+- status: `canonical`
+- date: `2026-08-11`
+- change_started_at: `2026-08-11T21:19:38Z`
+- change_completed_at: `2026-08-11T21:20:03Z`
+- recorded_at: `2026-08-11T21:23:09Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `canonical_addition`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#113`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/113`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `5581ecc31d1458c6fa1c256b09bb151e13e5c506`
+- tree_digest: `sha256:f6d20196e0b9d3c3084092f33a674ffec748e83f6caad887ea0c3e7696bc38e6`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/113`
+- ratification_evidence_digest: `sha256:e40503ddca331bc7c763f3898a5909cc73becc23d16a45add7ebe9dd322e69ee`
+- affected_surfaces:
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/VALIDATION.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/validation-baseline.schema.json`
+  - `knowledge/schemas/v1/validation-policy.schema.json`
+  - `knowledge/schemas/v1/validation-result.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/MANIFEST.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SKILL.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `modules/knowledge-session-coordinator/FEATURES.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `modules/knowledge-session-coordinator/src/lifecycle_journal.cpp`
+  - `modules/knowledge-session-coordinator/tests/lifecycle_test.cpp`
+  - `modules/maestro/FEATURES.md`
+  - `modules/ssfv-engine/tests/ssfv_test.cpp`
+  - `tools/qxctl/INSTALL.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/cmd/qxctl/validation.go`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/qxctl/internal/knowledgeengine/client_test.go`
+  - `tools/qxctl/internal/validation/client.go`
+  - `tools/qxctl/internal/validation/digest.go`
+  - `tools/qxctl/internal/validation/evaluate.go`
+  - `tools/qxctl/internal/validation/policy.go`
+  - `tools/qxctl/internal/validation/state_unix.go`
+  - `tools/qxctl/internal/validation/state_unsupported.go`
+  - `tools/qxctl/internal/validation/types.go`
+  - `tools/qxctl/internal/validation/validation_test.go`
+  - `tools/symphony-validator/CMakeLists.txt`
+  - `tools/symphony-validator/INSTALL.md`
+  - `tools/symphony-validator/INTENT.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SKILL.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/cmake/install-receipt.json.in`
+  - `tools/symphony-validator/cmake/uninstall.cmake.in`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/src/canonical_surfaces.cpp`
+  - `tools/symphony-validator/src/cli.cpp`
+  - `tools/symphony-validator/src/knowledge_contracts.cpp`
+  - `tools/symphony-validator/src/projector.cpp`
+  - `tools/symphony-validator/src/projector.hpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/VALIDATION.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/validation-baseline.schema.json`
+  - `knowledge/schemas/v1/validation-policy.schema.json`
+  - `knowledge/schemas/v1/validation-result.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/MANIFEST.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SKILL.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `modules/knowledge-session-coordinator/FEATURES.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `modules/knowledge-session-coordinator/src/lifecycle_journal.cpp`
+  - `modules/knowledge-session-coordinator/tests/lifecycle_test.cpp`
+  - `modules/maestro/FEATURES.md`
+  - `modules/ssfv-engine/tests/ssfv_test.cpp`
+  - `tools/qxctl/INSTALL.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/cmd/qxctl/validation.go`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/qxctl/internal/knowledgeengine/client_test.go`
+  - `tools/qxctl/internal/validation/client.go`
+  - `tools/qxctl/internal/validation/digest.go`
+  - `tools/qxctl/internal/validation/evaluate.go`
+  - `tools/qxctl/internal/validation/policy.go`
+  - `tools/qxctl/internal/validation/state_unix.go`
+  - `tools/qxctl/internal/validation/state_unsupported.go`
+  - `tools/qxctl/internal/validation/types.go`
+  - `tools/qxctl/internal/validation/validation_test.go`
+  - `tools/symphony-validator/CMakeLists.txt`
+  - `tools/symphony-validator/INSTALL.md`
+  - `tools/symphony-validator/INTENT.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SKILL.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/cmake/install-receipt.json.in`
+  - `tools/symphony-validator/cmake/uninstall.cmake.in`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/src/canonical_surfaces.cpp`
+  - `tools/symphony-validator/src/cli.cpp`
+  - `tools/symphony-validator/src/knowledge_contracts.cpp`
+  - `tools/symphony-validator/src/projector.cpp`
+  - `tools/symphony-validator/src/projector.hpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- change_summary: |
+    Under the Architect's direction, PR #113 established a common validation evidence and policy contract, deterministic structured Symphony Validator output, exact validator packaging, and caller-neutral qxctl warning profiles, baselines, delta evaluation, and debug projections. It also recorded authenticated durable Maestro presence as the fourth partial SSFV feature and corrected lifecycle dock/undock action verification.
+- relationship_changes: |
+    Common `knowledge/VALIDATION.md` owns immutable detector evidence, warning disposition, presentation, baseline, and delta semantics without becoming a vector or engine. The independently installed C++ Symphony Validator remains the complete read-only detector and structured evidence producer. qxctl validates the exact receipt and result digests, then administers protected noncanonical policy and baseline state. SSFV owns Maestro's application-level feature meaning while Maestro retains operational receptor-presence authority and the lifecycle coordinator retains action serialization and verification.
+- doctrine_changes: |
+    Detection is immutable and always complete. Profiles may classify warnings as record, review, or require and choose bounded presentation, but cannot suppress detector execution, downgrade violations, alter finding identity, or make debug filters authoritative. Baselines are explicit repository-identity and validator-version-bound acknowledgement evidence that classify new, unchanged, and resolved warnings without deleting or ratifying them. State uses exact compare-and-swap, semantic retry, owner-only no-follow persistence, synchronized atomic replacement, and RFC 9562 UUID versions 1 through 8. Maestro dock and undock attempts must be durably prepared and their exact target outcome directly re-observed before lifecycle applied evidence advances.
+- compatibility_consequences: |
+    The validator's deterministic `symphony.validation.result.v1` projection is time-free and digest-bound; qxctl rejects result, evidence, identity, summary, finding, repository, and validator-version drift. Profiles and baselines persist outside the validator installation prefix and survive uninstall or side-by-side upgrade, while version-incompatible baselines fail closed and require explicit recreation. Semantic retries accept an already-converged operation without generation churn, and changed policy state remains exact-CAS guarded. UUIDv7 TOPS identifiers now conform to the same version-1-through-8 contract used by the wider Symphony schema family.
+- publication_consequences: |
+    No module tag, release artifact, package coordinate, binary distribution, container, SDK, OpenAPI surface, Mintlify publication, public documentation release, marketing claim, or platform launch was published or authorized. The implementation remains active-development source on the rolling main branch.
+- projection_consequences: |
+    Structured validator results preserve complete raw evidence. qxctl evaluation, displayed subsets, warning summaries, debug filters, baselines, and profile listings are noncanonical administrative projections. SSFV graph output remains disposable and rebuildable. Maestro presence remains protected operational evidence rather than semantic or canonical knowledge truth.
+- evidence:
+  - `PR #113 merged into main at 2026-08-11T21:20:03Z by quantDIY as 5581ecc31d1458c6fa1c256b09bb151e13e5c506`
+  - `implementation head ccda430a6e65f95a3720a679c7301fad14c45119; 56 files changed, 3398 insertions, 160 deletions`
+  - `local-Git adapter evidence observed at 2026-08-11T21:21:28Z has digest sha256:4feaaa785e4526bc7f030d4a7509d5a4498506297144233ce167422289ceec18 and binds tree digest sha256:f6d20196e0b9d3c3084092f33a674ffec748e83f6caad887ea0c3e7696bc38e6`
+  - `ratification evidence digest sha256:e40503ddca331bc7c763f3898a5909cc73becc23d16a45add7ebe9dd322e69ee binds compact lexicographically key-sorted metadata for repository, pull request number, state, merged and draft status, title, URL, base and head refs/revisions, merge revision, creation/merge/close times, authenticated merger, commit count, changed-file count, additions, and deletions`
+  - `canonical PR metadata identified QuanuX/Symphony#113, base main at 4f5bac26b2800eb6cdb216343c19a33112665bb4, head agent/ssfv-truth-and-validation-controls at ccda430a6e65f95a3720a679c7301fad14c45119, one commit, and merge revision 5581ecc31d1458c6fa1c256b09bb151e13e5c506`
+  - `normalized combined provider evidence observed at 2026-08-11T21:22:08Z has digest sha256:d3bf00790bb1d7158a11856b31d10aa42ea61096612ad7cf90e9061d37a1fb68 and binds the revision, change request, and Architect ratification claims`
+  - `qxctl passed go test ./..., go vet ./..., and race-enabled validation, knowledge-engine, and command tests`
+  - `the Symphony Validator passed all C++ tests, its complete smoke matrix, deterministic JSON projection, and exact install/uninstall lifecycle`
+  - `the knowledge-session coordinator passed all three CTests, including exact dock/undock lifecycle preparation and re-observation; the SSFV engine passed both CTests against the four-record canonical partial catalog`
+  - `pre-closure strict validator result pass=6214 warning=158 violation=0 exit=0; all warnings were the established sclv.affected_surface.unindexed historical-record advisory family spanning 123 unique subjects`
+  - `qxctl require policy failed on 158 unacknowledged warnings and passed with new=0 unchanged=158 only after explicit baseline creation; validator uninstall preserved owner-only protected policy and baseline state`
+  - `the closure audit found and indexed three exact source surfaces omitted from SKVI: modules/ssfv-engine/tests/ssfv_test.cpp, tools/qxctl/internal/knowledgeengine/client_test.go, and tools/symphony-validator/src/cli.cpp`
+  - `the vector-specific SKVI check exposed and the closure carrier removed one literal leading plus sign left on the Maestro receptor-descriptor heading by PR #111; the forward repair restores the intended independent entry boundary without changing its content`
+  - `closure SCLV engine check reported 33 records, 132 passes, zero warnings, zero violations, and valid state`
+  - `closure SKVI engine check reported 348 entries, 2249 passes, nine pre-existing SSIAG-linkage warnings, zero violations, and valid state`
+  - `closure validator result pass=6477 warning=145 violation=0 exit=0; the three exact SKVI additions reduced the historical advisory family by 13 occurrences and three unique subjects without introducing another warning family`
+  - `PR #113 was open, non-draft, automatically mergeable, and verified at exact head ccda430a6e65f95a3720a679c7301fad14c45119 before authenticated merge; GitHub reported no configured checks`
+- non_authorizations:
+  - `partial detector execution, finding deletion, finding concealment, violation downgrade, detector-side policy, baseline-as-ratification, automatic warning resolution, canonical remediation, or debug-filter authority`
+  - `canonical knowledge mutation, proposal ratification by software, feature-worthiness decision, persistent SSFV graph, repository-completeness claim, or an additional SSFV feature record`
+  - `engine invocation, scheduling, supervision, process activation, live service activation, hardware discovery, accelerator use, hot-path participation, warm-path participation, or trading-node doctrine`
+  - `authorization bypass, integrity bypass, compare-and-swap bypass, unsafe retry, ambiguous recovery, future-version rewrite, fabricated observation, or caller-class authority`
+  - `native Windows engine implementation, Go 1.27 production pin, module tag, release artifact, package publication, SDK generation, Mintlify publication, or launch claim`
+- notes: |
+    This post-merge closure records the SSFV truth correction and configurable validation-control implementation merged by PR #113. Every source-PR surface is listed and indexed; the closure carrier adds three missing SKVI routing entries, repairs one pre-existing heading marker exposed by the vector-specific check, and introduces no runtime behavior. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
