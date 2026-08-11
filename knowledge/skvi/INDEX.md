@@ -1390,6 +1390,32 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Adding a schema requires an explicit contract, path entry, count update, and regression verification.
 - status: canonical
 
+##### Runtime Contract Validator Implementation
+- path: `tools/symphony-validator/src/runtime_contracts.cpp`
+- title: symphony-validator Runtime Contract Checks
+- surface_type: C++26 read-only validator implementation
+- truth_role: installed-module and runtime-contract conformance evidence
+- owner: validator maintainer
+- scope: Checks bounded runtime contracts, including the Maestro receptor-presence module surfaces, without invoking engines or mutating operational state.
+- relationships: implements -> `tools/symphony-validator/SPEC.md`; checks -> `modules/maestro/MANIFEST.md`; checks -> `modules/maestro/SPEC.md`
+- consumers: symphony-validator, repository reviewers, release gates
+- deferred_projections: runtime remediation, package activation, receptor docking
+- notes: Contract validation is evidence only and grants no lifecycle or canonical authority.
+- status: canonical
+
+##### SKVI Coverage Validator Implementation
+- path: `tools/symphony-validator/src/skvi_coverage.cpp`
+- title: symphony-validator SKVI Exact-Surface Coverage Checks
+- surface_type: C++26 read-only validator implementation
+- truth_role: canonical surface-index coverage and historical drift evidence
+- owner: validator maintainer
+- scope: Compares bounded repository surfaces and SCLV affected-surface references with exact SKVI path records, including Maestro module coverage.
+- relationships: implements -> `tools/symphony-validator/SPEC.md`; checks -> `knowledge/skvi/INDEX.md`; reads -> `knowledge/sclv/CHANGELOG.md`
+- consumers: symphony-validator, SKVI maintainers, repository reviewers
+- deferred_projections: automatic index mutation or warning remediation
+- notes: Missing coverage is reported deterministically; the validator never creates or rewrites SKVI records.
+- status: canonical
+
 ##### symphony-validator Smoke Regression Suite
 - path: `tools/symphony-validator/tests/smoke.sh`
 - title: symphony-validator Repository and Fixture Smoke Suite
@@ -2029,6 +2055,19 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: coordinator/qxctl maintainers, reviewers, release gates
 - deferred_projections: direct host-adapter and Maestro conformance
 - notes: Tests exercise planning, report/apply durability, attempt verification, and applied evidence but never perform package, canonical, or Maestro mutation.
+- status: canonical
+
+#### Knowledge Session Coordinator Dispatcher Tests
+- path: `modules/knowledge-session-coordinator/tests/coordinator_test.cpp`
+- title: Knowledge Session Coordinator Dispatcher Conformance Tests
+- surface_type: C++26 bounded process-dispatch conformance test
+- truth_role: Maestro-aware coordinator descriptor, routing, compatibility, and authority-boundary proof
+- owner: SKV coordinator maintainers
+- scope: Verifies coordinator operation dispatch and descriptor behavior after Maestro receptor-presence integration while preserving the coordinator's non-writer boundary.
+- relationships: verifies -> `modules/knowledge-session-coordinator/src/coordinator.cpp`; verifies -> `modules/knowledge-session-coordinator/SPEC.md`; observes -> `modules/maestro/SPEC.md`
+- consumers: coordinator maintainers, qxctl maintainers, reviewers, release gates
+- deferred_projections: Maestro state mutation, engine invocation, scheduling, or supervision
+- notes: Test evidence does not make the coordinator a Maestro writer or lifecycle action executor.
 - status: canonical
 
 #### Knowledge Session Coordinator Process Smoke Tests
