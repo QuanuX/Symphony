@@ -7,12 +7,14 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"sort"
 	"strings"
 	"time"
 
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgebinding"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgeengine"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgelifecycle"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/maestroclient"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/ssiagclient"
 	qxversion "github.com/QuanuX/Symphony/tools/qxctl/internal/version"
 )
@@ -94,7 +96,7 @@ func runKnowledgeLifecycleProfile(operation string, options knowledgeLifecycleOp
 		fmt.Printf("Knowledge lifecycle profile: operation=set profile=%s changed=%t generation=%d mode=%s digest=%s canonical=false\n",
 			profile.ProfileID, changed, profile.Generation, profile.BootMode, profile.ProfileDigest)
 		if profile.BootMode == "apply-compatible" {
-			fmt.Println("Knowledge lifecycle profile: apply-compatible requested; runtime apply remains unavailable and reports only")
+			fmt.Println("Knowledge lifecycle profile: apply-compatible requested; mutation requires a separate explicit lifecycle apply")
 		}
 		return nil
 	case "remove":
@@ -203,7 +205,7 @@ func runKnowledgeLifecycleReport(options knowledgeLifecycleOptions) error {
 		options.profileID, plan.TransactionID, plan.ActionCount, plan.ReadyCount,
 		plan.DeferredCount, plan.BlockedCount, plan.FatalCount, plan.PlanDigest)
 	if profile.BootMode == "apply-compatible" {
-		fmt.Println("Knowledge lifecycle report: apply-compatible requested; lifecycle mutation remains unavailable")
+		fmt.Println("Knowledge lifecycle report: non-mutating report complete; explicit lifecycle apply remains a separate operation")
 	}
 	return nil
 }
@@ -309,7 +311,7 @@ func runKnowledgeLifecycleBoot(options knowledgeLifecycleOptions) error {
 		options.profileID, result.Changed, result.State, result.Generation,
 		result.PlanRevision, result.JournalDigest)
 	if profile.BootMode == "apply-compatible" {
-		fmt.Println("Knowledge lifecycle boot: apply-compatible requested; durable planning is active but action execution remains unavailable")
+		fmt.Println("Knowledge lifecycle boot: durable planning is active; action execution requires a separate explicit lifecycle apply")
 	}
 	return nil
 }
@@ -477,6 +479,44 @@ func buildLifecycleObservation(
 	if err != nil {
 		return knowledgelifecycle.Observation{}, "", profile, err
 	}
+	if (options.maestroPrefix == "") != (len(options.maestroReceptorIDs) == 0) {
+		return knowledgelifecycle.Observation{}, "", profile,
+			fmt.Errorf("--maestro-prefix and --maestro-receptor-id must be supplied together")
+	}
+	receptors := append([]string(nil), options.maestroReceptorIDs...)
+	sort.Strings(receptors)
+	for index, receptorID := range receptors {
+		if !validSessionToken(receptorID) {
+			return knowledgelifecycle.Observation{}, "", profile,
+				fmt.Errorf("--maestro-receptor-id has invalid syntax")
+		}
+		if index > 0 && receptorID == receptors[index-1] {
+			return knowledgelifecycle.Observation{}, "", profile,
+				fmt.Errorf("--maestro-receptor-id values must be unique")
+		}
+	}
+	if desired != nil && len(receptors) != 0 {
+		for _, component := range desired.Components {
+			if component.Docking.Disposition == "docked" &&
+				(component.Docking.ReceptorID == nil ||
+					!containsLifecycleReceptor(receptors, *component.Docking.ReceptorID)) {
+				return knowledgelifecycle.Observation{}, "", profile,
+					fmt.Errorf("desired component %q targets a Maestro receptor outside the exhaustive configured set", component.ComponentID)
+			}
+		}
+	}
+	maestroAvailable := options.maestroPrefix != ""
+	var maestroInstallation knowledgeengine.Installation
+	if maestroAvailable {
+		version := options.maestroVersion
+		if version == "" {
+			version = "0.1.0-dev"
+		}
+		maestroInstallation, err = knowledgeengine.InspectMaestroInstallation(options.maestroPrefix, version)
+		if err != nil {
+			return knowledgelifecycle.Observation{}, "", profile, fmt.Errorf("Maestro installation is unavailable: %w", err)
+		}
+	}
 	observation, err := knowledgelifecycle.Observe(knowledgelifecycle.ObservationInput{
 		ProfileID: options.profileID, TOPSID: options.topsID, ConfiguredRoots: roots,
 		DesiredState: desired, BindingRegistryDigest: bindingDigest, SelectedReceipts: selected,
@@ -489,10 +529,58 @@ func buildLifecycleObservation(
 		ProviderAvailability: []knowledgelifecycle.ProviderAvailability{
 			{ProviderID: "ssiag", Available: true},
 			{ProviderID: "knowledge-session-coordinator", Available: coordinatorIdentity != nil},
-			{ProviderID: "maestro", Available: false},
+			{ProviderID: "maestro", Available: maestroAvailable},
 		},
 		ObservedAt: time.Now().UTC().Truncate(time.Second),
 	})
+	if err != nil || !maestroAvailable {
+		return observation, profileDigest, profile, err
+	}
+	repositoryRoot, err := resolveKnowledgeRepository(options.repository)
+	if err != nil {
+		return knowledgelifecycle.Observation{}, "", profile, err
+	}
+	effective := make(map[string]knowledgelifecycle.DockingPresence)
+	for _, receptorID := range receptors {
+		statusResource := maestroclient.Resource(
+			options.topsID, receptorID, "status", "all", "none", "status")
+		decision, authErr := authorizeMaestro(maestroOptions{
+			topsID: options.topsID, receptorID: receptorID, scope: options.scope, ttl: options.ttl,
+		}, "status", statusResource)
+		if authErr != nil {
+			return knowledgelifecycle.Observation{}, "", profile, authErr
+		}
+		status, statusErr := maestroclient.Status(context.Background(), maestroInstallation.Prefix,
+			maestroInstallation.Version, repositoryRoot, store.StateRoot(), options.topsID,
+			receptorID, "", decision)
+		if statusErr != nil {
+			return knowledgelifecycle.Observation{}, "", profile, statusErr
+		}
+		registry, decodeErr := status.DecodedRegistry()
+		if decodeErr != nil {
+			return knowledgelifecycle.Observation{}, "", profile, decodeErr
+		}
+		if registry == nil {
+			continue
+		}
+		for _, item := range registry.Components {
+			current, found := effective[item.ComponentID]
+			if item.Disposition == "docked" && found && current.Disposition == "docked" {
+				return knowledgelifecycle.Observation{}, "", profile,
+					fmt.Errorf("component %q is docked at multiple configured receptors", item.ComponentID)
+			}
+			if !found || item.Disposition == "docked" {
+				effective[item.ComponentID] = knowledgelifecycle.DockingPresence{
+					ComponentID: item.ComponentID, Disposition: item.Disposition, ReceptorID: item.ReceptorID,
+				}
+			}
+		}
+	}
+	presence := make([]knowledgelifecycle.DockingPresence, 0, len(effective))
+	for _, item := range effective {
+		presence = append(presence, item)
+	}
+	observation, err = knowledgelifecycle.OverlayDockingPresence(observation, presence)
 	return observation, profileDigest, profile, err
 }
 

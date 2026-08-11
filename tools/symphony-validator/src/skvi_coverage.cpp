@@ -38,6 +38,15 @@ SkviCoverageCheckResult check_skvi_coverage(const SkviCheckResult& index_res, co
         required_surfaces.insert(required_surfaces.end(),
             ssfv_engine_required.begin(), ssfv_engine_required.end());
     }
+    if (fs::exists(fs::path(repo_root) / "modules/maestro")) {
+        const std::vector<std::string> maestro_required = {
+            "modules/maestro/INTENT.md", "modules/maestro/MANIFEST.md",
+            "modules/maestro/INSTALL.md", "modules/maestro/SKILL.md",
+            "modules/maestro/SPEC.md", "modules/maestro/CMakeLists.txt"
+        };
+        required_surfaces.insert(required_surfaces.end(),
+            maestro_required.begin(), maestro_required.end());
+    }
     std::unordered_set<std::string> indexed_paths_set(index_res.indexed_paths.begin(), index_res.indexed_paths.end());
     
     for (const auto& req_path : required_surfaces) {

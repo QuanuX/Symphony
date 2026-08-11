@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 bool is_authorized_canonical_json(const std::string& relative_path) {
     // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, and SSFV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 106> authorized_paths = {
+    static const std::array<std::string, 112> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -71,6 +71,12 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/schemas/v1/lifecycle-apply-command.schema.json",
         "knowledge/schemas/v1/lifecycle-apply-result.schema.json",
         "knowledge/schemas/v1/temporal.schema.json",
+        "knowledge/schemas/v1/maestro-receptor-descriptor.schema.json",
+        "knowledge/schemas/v1/maestro-docking-command.schema.json",
+        "knowledge/schemas/v1/maestro-docking-presence.schema.json",
+        "knowledge/schemas/v1/maestro-docking-presence-registry.schema.json",
+        "knowledge/schemas/v1/maestro-docking-presence-head.schema.json",
+        "knowledge/schemas/v1/maestro-docking-result.schema.json",
         "knowledge/schemas/v2/install-receipt.schema.json",
         "knowledge/schemas/v2/lifecycle-boot-journal.schema.json",
         "knowledge/schemas/v2/lifecycle-boot-head.schema.json",

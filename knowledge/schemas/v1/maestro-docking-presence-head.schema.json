@@ -1,0 +1,6 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema","$id":"urn:symphony:maestro:docking-presence-head:v1","title":"Symphony Maestro docking presence head v1","type":"object","additionalProperties":false,
+  "required":["protocol","format_version","tops_id","receptor_id","active_slot","generation","registry_digest","previous_head_digest","updated_at","head_digest"],
+  "properties":{"protocol":{"const":"symphony.maestro.docking-presence-head.v1"},"format_version":{"const":1},"tops_id":{"$ref":"#/$defs/uuid"},"receptor_id":{"$ref":"#/$defs/token"},"active_slot":{"enum":[0,1]},"generation":{"type":"integer","minimum":1,"maximum":9007199254740991},"registry_digest":{"$ref":"#/$defs/digest"},"previous_head_digest":{"oneOf":[{"type":"null"},{"$ref":"#/$defs/digest"}]},"updated_at":{"$ref":"#/$defs/time"},"head_digest":{"$ref":"#/$defs/digest"}},
+  "$defs":{"token":{"type":"string","minLength":1,"maxLength":256,"pattern":"^[A-Za-z0-9._:-]+$"},"uuid":{"type":"string","pattern":"^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},"digest":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},"time":{"type":"string","format":"date-time","pattern":"Z$"}}
+}

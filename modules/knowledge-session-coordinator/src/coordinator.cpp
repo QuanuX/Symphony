@@ -43,7 +43,7 @@ engine::Json inspect(const engine::Json& payload) {
         {"lifecycle_journal", lifecycle_journal_capabilities()},
         {"canonical_apply_enabled", false},
         {"session_mutation_enabled", true},
-        {"maestro_docking_enabled", false},
+        {"maestro_docking_enabled", true},
     };
 }
 

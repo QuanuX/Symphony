@@ -32,6 +32,8 @@ const (
 	sodvEngineID     = "symphony-sodv"
 	ssfvModuleID     = "ssfv-engine"
 	ssfvEngineID     = "symphony-ssfv"
+	maestroModuleID  = "maestro"
+	maestroEngineID  = "symphony-maestro"
 	sessionModuleID  = "knowledge-session-coordinator"
 	sessionEngineID  = "symphony-knowledge-session"
 	maxReceiptBytes  = 256 * 1024
@@ -73,6 +75,11 @@ var ssfvSpec = engineSpec{
 var sessionSpec = engineSpec{
 	label: "knowledge-session coordinator", moduleID: sessionModuleID, engineID: sessionEngineID,
 	expectedFiles: expectedSessionFiles,
+}
+
+var maestroSpec = engineSpec{
+	label: "Maestro", moduleID: maestroModuleID, engineID: maestroEngineID,
+	expectedFiles: expectedMaestroFiles,
 }
 
 var engineSpecsByRole = map[string]engineSpec{
@@ -168,6 +175,12 @@ func InvokeCoordinator(ctx context.Context, prefix, version, repositoryRoot, ope
 	return invoke(ctx, sessionSpec, prefix, version, repositoryRoot, operation, payload)
 }
 
+// InvokeMaestro executes the exact receipt-validated local Maestro presence
+// authority. The process has no listener and does not execute docked engines.
+func InvokeMaestro(ctx context.Context, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
+	return invoke(ctx, maestroSpec, prefix, version, repositoryRoot, operation, payload)
+}
+
 // InspectInstallation validates an exact inactive-undocked installation and
 // returns content-addressed evidence suitable for the user-scope binding
 // registry. Installation remains distinct from activation and docking.
@@ -176,6 +189,16 @@ func InspectInstallation(role, prefix, version string) (Installation, error) {
 	if !ok {
 		return Installation{}, fmt.Errorf("unsupported knowledge engine role %q", role)
 	}
+	return inspectInstallationFor(role, spec, prefix, version)
+}
+
+// InspectMaestroInstallation validates an exact inactive-undocked Maestro
+// installation without placing it in the vector-engine binding registry.
+func InspectMaestroInstallation(prefix, version string) (Installation, error) {
+	return inspectInstallationFor("maestro", maestroSpec, prefix, version)
+}
+
+func inspectInstallationFor(role string, spec engineSpec, prefix, version string) (Installation, error) {
 	canonicalPrefix, err := canonicalDirectory(prefix, "installation prefix")
 	if err != nil {
 		return Installation{}, err
@@ -539,6 +562,22 @@ func expectedSessionFiles(version string) map[string]struct{} {
 		base + "SPEC.md",
 		license + "LICENSE-AGPL-3.0",
 		license + "nlohmann-json-LICENSE.MIT",
+	}
+	result := make(map[string]struct{}, len(paths))
+	for _, path := range paths {
+		result[path] = struct{}{}
+	}
+	return result
+}
+
+func expectedMaestroFiles(version string) map[string]struct{} {
+	base := "share/doc/symphony/maestro/" + version + "/"
+	license := "share/licenses/symphony-maestro/" + version + "/"
+	paths := []string{
+		"libexec/symphony/maestro/" + version + "/symphony-maestro",
+		"share/symphony/receipts/maestro/" + version + "/install-receipt.json",
+		base + "INTENT.md", base + "MANIFEST.md", base + "INSTALL.md", base + "SKILL.md", base + "SPEC.md",
+		license + "LICENSE-AGPL-3.0", license + "nlohmann-json-LICENSE.MIT",
 	}
 	result := make(map[string]struct{}, len(paths))
 	for _, path := range paths {

@@ -262,6 +262,27 @@ func TestSelectExecutableLifecycleActionUsesOnlyExactStagedInstallException(t *t
 	}
 }
 
+func TestSelectExecutableLifecycleActionRequiresExplicitDockingAdapter(t *testing.T) {
+	action := knowledgelifecycle.PlannedAction{
+		ActionID: "lifecycle-action:" + strings.Repeat("d", 64), ComponentID: "ssfv-engine",
+		Kind: "dock", Direction: "forward", TargetStateDigest: lifecycleTestDigest("dock-target"),
+		ExpectedArtifactDigests: []string{}, ExpectedEvidence: []string{},
+		PrerequisiteActionIDs: []string{}, Disposition: "ready", Blockers: []knowledgelifecycle.Blocker{},
+	}
+	if selected := selectExecutableLifecycleAction([]knowledgelifecycle.PlannedAction{action}, nil); selected != nil {
+		t.Fatal("dock action escaped the lifecycle adapter gate")
+	}
+	selected := selectExecutableLifecycleActionWithDocking(
+		[]knowledgelifecycle.PlannedAction{action}, nil, true)
+	if selected == nil || selected.ActionID != action.ActionID {
+		t.Fatal("ready dock action was not selected with an explicit Maestro adapter")
+	}
+	if !containsLifecycleReceptor([]string{"maestro-primary", "maestro-secondary"}, "maestro-secondary") ||
+		containsLifecycleReceptor([]string{"maestro-primary"}, "maestro-unknown") {
+		t.Fatal("configured Maestro receptor membership is incorrect")
+	}
+}
+
 func lifecycleBootResultFixture(t *testing.T, operation string) map[string]any {
 	t.Helper()
 	journal := map[string]any{

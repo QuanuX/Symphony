@@ -2156,9 +2156,6 @@ engine::Json handle_lifecycle_apply(const engine::Request& request) {
         if (selected == nullptr || !apply_action_ready(*selected, request.payload.at("available_artifact_digests"))) {
             throw engine::Error("lifecycle_apply.action_not_ready", "requested action is not ready under verified evidence", 4);
         }
-        if (selected->at("kind") == "dock" || selected->at("kind") == "undock") {
-            throw engine::Error("lifecycle_apply.maestro_unavailable", "Maestro docking is not implemented", 4);
-        }
         if (selected->at("kind") == "preserve" || selected->at("kind") == "report" || selected->at("kind") == "verify") {
             throw engine::Error("lifecycle_apply.non_mutating_action", "non-mutating report evidence is not an executable action", 4);
         }

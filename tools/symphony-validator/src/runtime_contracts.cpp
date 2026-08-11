@@ -114,6 +114,31 @@ RuntimeContractShapeResult check_runtime_contract_shapes(const std::string& repo
         targets.insert(targets.end(), ssfv_targets.begin(), ssfv_targets.end());
     }
 
+    if (fs::exists(root / "modules/maestro")) {
+        const std::vector<ContractFileTarget> maestro_targets = {
+            {"modules/maestro/INTENT.md", {{"Intent", "Intent"}, {"Purpose", "## Purpose"},
+                {"Authority", "## Authority"}, {"Non_Goals", "## Non-Goals"}}},
+            {"modules/maestro/MANIFEST.md", {{"Manifest", "Manifest"}, {"Identity", "## Identity"},
+                {"Contract", "## Contract"}, {"Installation", "## Installation"}, {"Boundaries", "## Boundaries"}}},
+            {"modules/maestro/INSTALL.md", {{"Install", "Install"}, {"Requirements", "## Requirements"},
+                {"Build", "## Build and Test"}, {"Uninstall", "## Uninstall"}}},
+            {"modules/maestro/SKILL.md", {{"Skill", "Skill"}, {"Purpose", "## Purpose"},
+                {"Procedure", "## Procedure"}, {"Boundaries", "## Boundaries"}}},
+            {"modules/maestro/SPEC.md", {{"Specification", "Specification"}, {"Status", "## Status"},
+                {"Process", "## Process"}, {"Operations", "## Operations"}, {"Authorization", "## Authorization"}}},
+            {"modules/maestro/CMakeLists.txt", {{"Project", "project(SymphonyMaestro"},
+                {"CXX26", "CXX_STANDARD 26"}, {"Receipt", "install-receipt.json"},
+                {"Uninstall", "uninstall-maestro"}}},
+            {"tools/qxctl/cmd/qxctl/commands.go", {{"Maestro_Command", "newMaestroCommand"},
+                {"Maestro_Group", "\"maestro\""}}},
+            {"tools/qxctl/internal/knowledgeengine/client.go", {{"Maestro_Invoke", "InvokeMaestro"},
+                {"Maestro_Module", "maestro"}, {"Maestro_Engine", "symphony-maestro"}}},
+            {"tools/qxctl/internal/maestroclient/client.go", {{"Maestro_Protocol", "CommandProtocol"},
+                {"Maestro_Receptor", "ReceptorKind"}, {"Maestro_Resource", "func Resource"}}}
+        };
+        targets.insert(targets.end(), maestro_targets.begin(), maestro_targets.end());
+    }
+
     for (const auto& file_target : targets) {
         fs::path p = root / file_target.path;
         if (!fs::exists(p)) {

@@ -24,7 +24,7 @@ Every process-mode error still attempts one safe protocol response. If response 
 
 Payload: exact empty object.
 
-The result returns the descriptor, `authenticated_session_foundation` readiness, implemented reconciliation and authenticated-session capability declarations, and explicit false values for canonical apply and Maestro docking.
+The result returns the descriptor, `authenticated_session_foundation` readiness, implemented reconciliation and authenticated-session capability declarations, an explicit false value for canonical apply, and an explicit true value for external Maestro docking coordination. The coordinator never writes Maestro state itself.
 
 ## `check`
 

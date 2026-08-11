@@ -6,12 +6,14 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"sort"
 	"strings"
 
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgeengine"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgelifecycle"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/maestroclient"
 	qxversion "github.com/QuanuX/Symphony/tools/qxctl/internal/version"
 )
 
@@ -80,6 +82,13 @@ func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
 	if err != nil {
 		return err
 	}
+	if options.maestroPrefix != "" || len(options.maestroReceptorIDs) != 0 {
+		adapter, adapterErr := newLifecycleMaestroAdapter(options, repositoryRoot, store.StateRoot())
+		if adapterErr != nil {
+			return adapterErr
+		}
+		executor.SetDockingAdapter(adapter)
+	}
 	status, err := invokeLifecycleApplyState(
 		options, coordinator.Prefix, coordinator.Version, repositoryRoot, "lifecycle_apply_status", "", "")
 	if err != nil {
@@ -119,7 +128,8 @@ func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
 			if err != nil {
 				return err
 			}
-			selected := selectExecutableLifecycleAction(plan.Actions, available)
+			selected := selectExecutableLifecycleActionWithDocking(
+				plan.Actions, available, options.maestroPrefix != "" && len(options.maestroReceptorIDs) != 0)
 			if selected == nil {
 				if lifecyclePlanConverged(plan.Actions, plan.FatalCount) {
 					operationID := applyOperationID(options.operationID, "converged")
@@ -368,13 +378,17 @@ func runKnowledgeLifecycleApplyState(operation string, options knowledgeLifecycl
 }
 
 func selectExecutableLifecycleAction(actions []knowledgelifecycle.PlannedAction, available []string) *knowledgelifecycle.PlannedAction {
+	return selectExecutableLifecycleActionWithDocking(actions, available, false)
+}
+
+func selectExecutableLifecycleActionWithDocking(actions []knowledgelifecycle.PlannedAction, available []string, docking bool) *knowledgelifecycle.PlannedAction {
 	availableSet := make(map[string]struct{}, len(available))
 	for _, digest := range available {
 		availableSet[digest] = struct{}{}
 	}
 	candidates := make([]knowledgelifecycle.PlannedAction, 0)
 	for _, action := range actions {
-		if action.Kind == "dock" || action.Kind == "undock" || action.Kind == "verify" ||
+		if (!docking && (action.Kind == "dock" || action.Kind == "undock")) || action.Kind == "verify" ||
 			action.Kind == "preserve" || action.Kind == "report" {
 			continue
 		}
@@ -403,6 +417,152 @@ func selectExecutableLifecycleAction(actions []knowledgelifecycle.PlannedAction,
 		return nil
 	}
 	return &candidates[0]
+}
+
+type lifecycleMaestroAdapter struct {
+	options        knowledgeLifecycleOptions
+	prefix         string
+	version        string
+	repositoryRoot string
+	stateRoot      string
+}
+
+func newLifecycleMaestroAdapter(options knowledgeLifecycleOptions, repositoryRoot, stateRoot string) (*lifecycleMaestroAdapter, error) {
+	if options.maestroPrefix == "" || len(options.maestroReceptorIDs) == 0 {
+		return nil, fmt.Errorf("--maestro-prefix and at least one --maestro-receptor-id are required for docking apply")
+	}
+	version := options.maestroVersion
+	if version == "" {
+		version = "0.1.0-dev"
+	}
+	installation, err := knowledgeengine.InspectMaestroInstallation(options.maestroPrefix, version)
+	if err != nil {
+		return nil, fmt.Errorf("Maestro installation is unavailable: %w", err)
+	}
+	return &lifecycleMaestroAdapter{
+		options: options, prefix: installation.Prefix, version: installation.Version,
+		repositoryRoot: repositoryRoot, stateRoot: stateRoot,
+	}, nil
+}
+
+func (adapter *lifecycleMaestroAdapter) ExecuteDocking(
+	action knowledgelifecycle.PlannedAction,
+	component knowledgelifecycle.DockingComponentEvidence,
+) (string, string, []string, error) {
+	receptorID := ""
+	if action.Kind == "dock" {
+		if action.TargetReceptorID == nil || !containsLifecycleReceptor(adapter.options.maestroReceptorIDs, *action.TargetReceptorID) {
+			return "", "", nil, fmt.Errorf("compatibility_blocked: lifecycle action targets an unconfigured Maestro receptor")
+		}
+		receptorID = *action.TargetReceptorID
+	}
+	evidence, err := maestroclient.NewComponentEvidence(
+		component.ComponentID, component.ModuleID, component.VectorID, component.EngineID,
+		component.ReceiptDigest, component.ExecutableDigest)
+	if err != nil {
+		return "", "", nil, fmt.Errorf("integrity_fatal: encode Maestro component evidence: %w", err)
+	}
+	var status maestroclient.Result
+	if action.Kind == "undock" {
+		for _, candidate := range adapter.options.maestroReceptorIDs {
+			observed, statusErr := adapter.componentStatus(candidate, component.ComponentID)
+			if statusErr != nil {
+				return "", "", nil, statusErr
+			}
+			if observed.PresencePresent {
+				if receptorID != "" {
+					return "", "", nil, fmt.Errorf("critical_state_unknown: component is docked at multiple configured Maestro receptors")
+				}
+				receptorID = candidate
+				status = observed
+			}
+		}
+		if receptorID == "" {
+			return "already_applied", "component is absent from every configured Maestro receptor", nil, nil
+		}
+	} else {
+		status, err = adapter.componentStatus(receptorID, component.ComponentID)
+		if err != nil {
+			return "", "", nil, err
+		}
+	}
+	expected := "absent"
+	if status.RegistryDigest != nil {
+		expected = *status.RegistryDigest
+	}
+	resource := maestroclient.Resource(adapter.options.topsID, receptorID,
+		action.Kind, component.ComponentID, component.ReceiptDigest, expected)
+	decision, err := authorizeMaestro(maestroOptions{
+		topsID: adapter.options.topsID, receptorID: receptorID,
+		scope: adapter.options.scope, ttl: adapter.options.ttl,
+	}, action.Kind, resource)
+	if err != nil {
+		return "", "", nil, fmt.Errorf("authorization_denied: %w", err)
+	}
+	operationDigest := sha256.Sum256([]byte(action.ActionID + "\n" + expected))
+	result, err := maestroclient.Mutate(context.Background(), adapter.prefix, adapter.version,
+		adapter.repositoryRoot, adapter.stateRoot, adapter.options.topsID,
+		receptorID, action.Kind,
+		"lifecycle-docking:"+hex.EncodeToString(operationDigest[:]), expected, evidence, decision)
+	if err != nil {
+		return "", "", nil, classifyMaestroAdapterError(err)
+	}
+	digests := make([]string, 0, 2)
+	if result.RegistryDigest != nil {
+		digests = append(digests, *result.RegistryDigest)
+	}
+	if result.Presence != nil {
+		digests = append(digests, result.Presence.PresenceDigest)
+	}
+	return result.Outcome,
+		"Maestro committed authenticated durable docking presence; engine execution remains disabled",
+		digests, nil
+}
+
+func (adapter *lifecycleMaestroAdapter) componentStatus(receptorID, componentID string) (maestroclient.Result, error) {
+	filterResource := maestroclient.Resource(adapter.options.topsID, receptorID,
+		"status", componentID, "none", "status")
+	decision, err := authorizeMaestro(maestroOptions{
+		topsID: adapter.options.topsID, receptorID: receptorID,
+		scope: adapter.options.scope, ttl: adapter.options.ttl,
+	}, "status", filterResource)
+	if err != nil {
+		return maestroclient.Result{}, fmt.Errorf("authorization_denied: %w", err)
+	}
+	result, err := maestroclient.Status(context.Background(), adapter.prefix, adapter.version,
+		adapter.repositoryRoot, adapter.stateRoot, adapter.options.topsID,
+		receptorID, componentID, decision)
+	if err != nil {
+		return maestroclient.Result{}, classifyMaestroAdapterError(err)
+	}
+	return result, nil
+}
+
+func containsLifecycleReceptor(values []string, wanted string) bool {
+	for _, value := range values {
+		if value == wanted {
+			return true
+		}
+	}
+	return false
+}
+
+func classifyMaestroAdapterError(err error) error {
+	var process *knowledgeengine.ProcessError
+	if !errors.As(err, &process) {
+		return fmt.Errorf("integrity_fatal: Maestro invocation failed: %w", err)
+	}
+	switch process.Code {
+	case "maestro.stale_expected_state", "maestro.lock_busy", "maestro.recovery_required",
+		"maestro.transition_required", "maestro.component_mismatch":
+		return fmt.Errorf("observation_retryable: %w", err)
+	case "maestro.compatibility_required":
+		return fmt.Errorf("compatibility_blocked: %w", err)
+	case "maestro.authorization_denied", "maestro.authorization_target_mismatch", "maestro.capability_mismatch", "maestro.capability_invalid":
+		return fmt.Errorf("authorization_denied: %w", err)
+	default:
+		return fmt.Errorf("integrity_fatal: %w", err)
+	}
 }
 
 func lifecyclePlanConverged(actions []knowledgelifecycle.PlannedAction, fatal int) bool {

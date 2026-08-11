@@ -8,6 +8,20 @@ import (
 	"time"
 )
 
+type recordingDockingAdapter struct {
+	calls     int
+	component DockingComponentEvidence
+}
+
+func (adapter *recordingDockingAdapter) ExecuteDocking(
+	_ PlannedAction,
+	component DockingComponentEvidence,
+) (string, string, []string, error) {
+	adapter.calls++
+	adapter.component = component
+	return "committed", "test Maestro presence committed", []string{tagged("maestro-registry")}, nil
+}
+
 func TestRuntimeStoreCASAndSemanticRetry(t *testing.T) {
 	stateRoot := resolvedTempDir(t)
 	store, err := NewRuntimeStore(stateRoot, testTOPSID, "default")
@@ -214,5 +228,85 @@ func TestExecutorBindsRuntimeMutationToPreparedObservation(t *testing.T) {
 	action.ExpectedBeforeDigest = &stale
 	if retried := executor.Execute(action, desired, observed); retried.Outcome != "already_applied" {
 		t.Fatalf("idempotent runtime retry did not self-heal across observation drift: %+v", retried)
+	}
+}
+
+func TestExecutorUndocksObservedPackageBeforeReplacementOrRemoval(t *testing.T) {
+	stateRoot := resolvedTempDir(t)
+	installRoot := resolvedTempDir(t)
+	executablePath := "libexec/example/symphony-example"
+	executableData := []byte("example process\n")
+	writeTestFile(t, filepath.Join(installRoot, executablePath), executableData, 0o700)
+	vectorID := "example-vector"
+	engineID := "symphony-example"
+	receipt := receiptV2{
+		Protocol: "symphony.knowledge.install-receipt.v2", FormatVersion: 2,
+		ComponentID: "example", ComponentKind: "vector_engine", ModuleID: "example",
+		VectorID: &vectorID, EngineID: &engineID, PackageID: "example", Version: "1.0.0",
+		InstallScope: "prefix", PrefixMode: "installation_prefix",
+		Files: []receiptV2File{{
+			Path: executablePath, Kind: "executable", Size: uint64(len(executableData)),
+			Digest: taggedBytes(executableData),
+		}},
+		EntryPoints: []receiptV2EntryPoint{{
+			EntryPointID: "engine", Kind: "executable", Path: executablePath,
+			Protocols: []string{"symphony.knowledge.engine-process.v1"},
+		}},
+		ProvidesCapabilities: []string{}, RequiresCapabilities: []string{},
+		CompatibleReceptors:  []string{"symphony.maestro.knowledge-engine.v1"},
+		PlatformRequirements: []receiptV2Platform{},
+	}
+	receipt.ReceiptDigest = receiptV2Digest(t, receipt)
+	receiptPath := filepath.Join(
+		installRoot, "share/symphony/receipts/example/1.0.0/install-receipt.json")
+	encoded, err := json.Marshal(receipt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	writeTestFile(t, receiptPath, encoded, 0o600)
+
+	executor, err := NewExecutor(stateRoot, testTOPSID, "default", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	adapter := &recordingDockingAdapter{}
+	executor.SetDockingAdapter(adapter)
+	selected := receipt.ReceiptDigest
+	receptor := "maestro-old"
+	before := tagged("docked-old-package")
+	observed := Observation{Components: []ObservedComponent{{
+		ComponentID: "example", ComponentKind: "vector_engine", ModuleID: "example",
+		VectorID: &vectorID, EngineID: &engineID,
+		Packages: []ObservedPackage{{
+			PackageID: receipt.PackageID, Version: receipt.Version, InstallRoot: installRoot,
+			ReceiptProtocol: receipt.Protocol, ReceiptDigest: receipt.ReceiptDigest,
+			Integrity: "valid", EntryPointsValidated: true,
+		}},
+		SelectedPackageDigest: &selected, Activation: "inactive", Docking: "docked",
+		ReceptorID: &receptor, Capabilities: []string{}, PlatformCompatibility: "compatible",
+		ObservationDigest: before,
+	}}}
+	desired := DesiredState{Components: []DesiredComponent{{
+		ComponentID: "example", Presence: "absent", InstallRoot: installRoot,
+	}}}
+	action := PlannedAction{
+		ActionID: "lifecycle-action:undock-observed", ComponentID: "example", Kind: "undock",
+		Direction: "inverse", ExpectedBeforeDigest: &before, TargetStateDigest: tagged("absent-target"),
+		ExpectedArtifactDigests: []string{receipt.ReceiptDigest}, ExpectedEvidence: []string{},
+		PrerequisiteActionIDs: []string{}, Disposition: "ready", Blockers: []Blocker{},
+	}
+	result := executor.Execute(action, desired, observed)
+	if result.Outcome != "committed" || adapter.calls != 1 ||
+		adapter.component.ReceiptDigest != receipt.ReceiptDigest ||
+		adapter.component.ExecutableDigest != taggedBytes(executableData) {
+		t.Fatalf("inverse undock did not bind the observed installed package: result=%+v adapter=%+v", result, adapter)
+	}
+
+	observed.Components[0].Docking = "undocked"
+	observed.Components[0].ReceptorID = nil
+	observed.Components[0].ObservationDigest = tagged("already-undocked")
+	retried := executor.Execute(action, desired, observed)
+	if retried.Outcome != "already_applied" || adapter.calls != 1 {
+		t.Fatalf("post-crash undock retry did not self-heal from authenticated observation: %+v", retried)
 	}
 }
