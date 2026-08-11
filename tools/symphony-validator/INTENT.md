@@ -9,7 +9,7 @@ Define the exact authority boundaries and deterministic, non-autonomous behavior
 Defines the tool contract and behavioral specification for the Symphony validator.
 
 ## Non-scope
-The implemented boundary contains a C++26 command-line parser/checker, a CMake build contract, and smoke fixtures. It does not contain a runtime service, deployment system, CI integration, qxctl mediation, executable schema generator, JSON/Markdown projector, auto-remediation path, or publication pipeline.
+The implemented boundary contains a C++26 command-line parser/checker, deterministic structured JSON projector, exact versioned CMake installation/uninstallation contract, and test fixtures. It does not contain a runtime service, deployment system, CI mutation, executable schema generator, Markdown projector, auto-remediation path, or publication pipeline.
 
 ## Role
 The validator is deterministic, explainable, and non-autonomous. It produces structured evidence for every caller, CI systems, qxctl, and agentic tools, but it does not perform interpretation, remediation, or architectural decision-making.
@@ -22,7 +22,7 @@ The validator does not make architecture decisions.
 The validator does not replace permission-backed ratification or semantic review.
 
 ## Relationship to qxctl
-The validator is currently invoked directly. Any `qxctl`-mediated invocation requires a separate contract and implementation increment.
+The validator supports direct invocation and exact receipt-validated qxctl mediation. qxctl verifies structured evidence before applying protected, noncanonical display/disposition policy; it cannot alter raw detection.
 
 ## Relationship to CI / PR gates
 The validator provides deterministic exit codes and line-oriented evidence suitable for local preflight. CI and PR-gate wiring remain separate integration work.
@@ -40,7 +40,7 @@ Choosing C++ for the validator does not ban optional isolated Python habitats.
 It prevents Python from becoming required validator infrastructure for the administrative spine.
 
 ## Non-authorization Statement
-This contract authorizes the checked-in deterministic C++26 parser/checker, its CMake build, and smoke fixtures. It does not authorize executable schema generation, JSON/Markdown projection, qxctl integration, CI mutation, publication, or remediation.
+This contract authorizes the checked-in deterministic C++26 parser/checker, its JSON evidence projection, exact versioned CMake packaging, qxctl validation integration, and fixtures. It does not authorize executable schema generation, Markdown projection, CI mutation, publication, or remediation.
 
 
 ## Caller-Authority Checking

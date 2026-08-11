@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified engine implementation and first partial-bootstrap contract. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative. The canonical registry contains exactly three experimental records; the bounded SSFV engine and qxctl client remain without canonical apply or semantic-decision authority.
+Architect-ratified engine implementation and partial-catalog contract. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative. The canonical registry contains exactly four experimental records; the bounded SSFV engine and qxctl client remain without canonical apply or semantic-decision authority.
 
 ## Purpose
 
@@ -118,7 +118,7 @@ A `FEATURES.md` file is permitted only at a source scope owning one or more rati
 - link parent and child records through stable identities;
 - remain sparse when no feature-worthy behavior exists.
 
-The first partial bootstrap is ratified and contains exactly one root owner file and two nested owner files. Any additional `FEATURES.md` or feature record remains separately gated by the complete feature-worthiness and reviewed-change procedure.
+The current partial catalog is ratified and contains exactly one root owner file and three nested owner files. Any additional `FEATURES.md` or feature record remains separately gated by the complete feature-worthiness and reviewed-change procedure.
 
 Every registered feature file uses the exact managed-region and embedded JSON-envelope grammar in `FEATURE-FILE-FORMAT.md`. The exact literal `.` represents repository-root source scope and owns root `FEATURES.md`; any other normalized directory scope owns `<source_scope>/FEATURES.md`.
 
@@ -193,4 +193,4 @@ The schemas bound individual strings, arrays, records, and snapshots. The engine
 
 ## Non-Authorization Statement
 
-This specification authorizes canonical SSFV governance, the bounded independently installed engine and qxctl client, and the exact three-record partial bootstrap. It does not authorize another distributed feature record, a repository-completeness claim, canonical apply, Maestro docking, persistent graph storage, a remote interface, public documentation, or any application capability claim beyond those three records.
+This specification authorizes canonical SSFV governance, the bounded independently installed engine and qxctl client, and the exact four-record partial catalog. It does not authorize another distributed feature record, a repository-completeness claim, canonical apply, additional Maestro behavior, persistent graph storage, a remote interface, public documentation, or any application capability claim beyond those four records.

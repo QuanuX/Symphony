@@ -254,6 +254,57 @@ func TestResolveInstalledSODVRequiresExactNineFileReceipt(t *testing.T) {
 	}
 }
 
+func TestInspectValidatorInstallationRequiresExactNineFileReceipt(t *testing.T) {
+	prefix := t.TempDir()
+	version := "0.1.0-dev"
+	files := expectedValidatorFiles(version)
+	listed := make([]string, 0, len(files))
+	for relative := range files {
+		listed = append(listed, relative)
+		path := filepath.Join(prefix, filepath.FromSlash(relative))
+		if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		mode := os.FileMode(0o644)
+		if strings.HasPrefix(relative, "libexec/") {
+			mode = 0o755
+		}
+		if err := os.WriteFile(path, []byte("fixture\n"), mode); err != nil {
+			t.Fatal(err)
+		}
+	}
+	receiptPath := filepath.Join(prefix, "share/symphony/receipts/symphony-validator", version, "install-receipt.json")
+	document := map[string]any{
+		"protocol": receiptProtocol, "module_id": validatorModuleID, "version": version,
+		"install_scope": "prefix", "prefix_mode": "installation_prefix",
+		"state": "installed_undocked", "active": false, "default_receptor": nil,
+		"files": listed,
+	}
+	data, err := json.Marshal(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(receiptPath, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	installation, err := InspectValidatorInstallation(prefix, version)
+	if err != nil {
+		t.Fatalf("valid validator installation rejected: %v", err)
+	}
+	if installation.Role != "validator" || installation.ModuleID != validatorModuleID ||
+		installation.EngineID != validatorEngineID || !strings.HasPrefix(installation.ReceiptDigest, "sha256:") {
+		t.Fatalf("unexpected validator installation: %+v", installation)
+	}
+	document["files"] = listed[:len(listed)-1]
+	data, _ = json.Marshal(document)
+	if err := os.WriteFile(receiptPath, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := InspectValidatorInstallation(prefix, version); err == nil {
+		t.Fatal("validator receipt with a missing file was accepted")
+	}
+}
+
 func TestResolveInstalledSSFVRequiresExactNineFileReceipt(t *testing.T) {
 	prefix := t.TempDir()
 	version := "0.1.0-dev"

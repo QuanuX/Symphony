@@ -9,7 +9,8 @@
 - not a Markdown template
 - not CI configuration
 - not build logic
-- not projector, qxctl-integration, or publication authorization
+- includes the deterministic JSON projector and qxctl integration contract
+- not Markdown-projector, CI, or publication authorization
 
 ## Purpose
 Define the exact behavior and authority boundaries of the implemented C++ validator.
@@ -23,7 +24,7 @@ The validator does not make architecture decisions.
 The validator does not replace permission-backed ratification or semantic review.
 
 ## Evidence Model
-The evidence model is truth. The implemented projection is deterministic, line-oriented evidence followed by one summary line. JSON and Markdown projections remain future surfaces.
+The evidence model is truth. The implemented projections are deterministic line-oriented evidence followed by one summary line and one deterministic `symphony.validation.result.v1` JSON object. Markdown remains future work.
 
 ## Dual Output Model
 Evidence model is truth.
@@ -32,7 +33,7 @@ Markdown is the caller-ingestion projection.
 Markdown must not introduce claims, conclusions, or remediation steps that are not present in the source evidence model.
 
 ## JSON Evidence Projection
-A future structured machine-readable projection may support the administrative spine and CI. It is not implemented or authorized by this contract increment.
+`check --json` emits one bounded object governed by `knowledge/schemas/v1/validation-result.schema.json`. It contains stable rule, occurrence, subject, scope, attribute, summary, evidence-digest, and result-digest fields and no collection timestamp. qxctl may attach a separately digested evaluation without changing embedded raw evidence.
 
 ## Markdown Caller-Ingestion Projection
 A future Markdown projection may provide a stable, context-friendly ingestion surface. It is not implemented or authorized by this contract increment.
@@ -46,11 +47,9 @@ Markdown must not suggest architecture unless the rule itself encodes the expect
 Any caller may consume Markdown, but validator authority remains deterministic evidence only.
 
 ## Output Modes
-- Default local mode
-- CI mode
-- Agent mode
-- Strict machine mode
-- Permission-backed review mode
+- default line-oriented local mode;
+- strict structured `--json` mode;
+- qxctl policy/baseline evaluation over verified structured evidence.
 
 ## Rule ID Taxonomy
 Families including `REPO.*`, `MODULE.*`, `INSTALL.*`, `NAMESPACE.*`, `TROLL.*`, `BUS.*`, `PYTHON.*`, `DOMAIN.*`, `INFRA.*`, `TERMS.*`, `LEAKAGE.*`, `PR.*`.
@@ -95,7 +94,7 @@ Stale names (e.g. `legacy node execution label`, `legacy native hot-path label`,
 ## Allowlist Behavior
 Allowlists must never become silent bypasses. Every allowlist entry must produce evidence in JSON and Markdown.
 
-The Architect-ratified STAV v1 JSON Schema/conformance fixtures, forty common SKV process/descriptor/receipt/binding/proposal/provider-evidence/reconciliation/session/lifecycle/temporal/Maestro schemas (thirty-seven v1 and three v2), three SSIAG authorization schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, and eighteen SSFV v1/v2 schemas are canonical protocol truth, not generated projections. The artifact checker may allow only their 112 exact paths and must emit `artifact.canonical_json_authorized` evidence for every encountered file with `knowledge/stav/SPEC.md`, `knowledge/SPEC.md`, `knowledge/ssiag/SPEC.md`, `knowledge/skvi/SPEC.md`, `knowledge/sclv/SPEC.md`, `knowledge/sacv/SPEC.md`, `knowledge/sodv/SPEC.md`, `knowledge/ssfv/SPEC.md`, or `knowledge/TIME.md` authority as applicable. Prefix or extension-wide JSON allowlisting is prohibited; any new canonical JSON artifact requires an explicit contract and validator update.
+The Architect-ratified STAV v1 JSON Schema/conformance fixtures, forty-three common SKV process/descriptor/receipt/binding/proposal/provider-evidence/reconciliation/session/lifecycle/temporal/Maestro/validation schemas (forty v1 and three v2), three SSIAG authorization schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, and eighteen SSFV v1/v2 schemas are canonical protocol truth, not generated projections. The artifact checker may allow only their 115 exact paths and must emit `artifact.canonical_json_authorized` evidence for every encountered file with its exact vector or umbrella authority. Prefix or extension-wide JSON allowlisting is prohibited.
 
 The required common knowledge surfaces include `knowledge/TIME.md`. Its contract-shape gate verifies status/authority, purpose, canonical UTC profiles, target-host durable timestamp authority, implementation/schema separation, and the no-vector promotion boundary. The validator does not synchronize clocks, interpret domain freshness, or become a temporal engine.
 
@@ -117,10 +116,10 @@ The validator independently checks `knowledge/sodv/RELEASES.md` as a bounded no-
 The validator may report failures and identify expected/observed conditions. It must not rewrite files or choose remedies.
 
 ## Relationship to qxctl
-The validator is currently invoked directly. `qxctl` mediation remains deferred.
+The validator may be invoked directly or through exact receipt-validated qxctl mediation. `knowledge/VALIDATION.md` governs qxctl policy and baseline behavior.
 
 ## Relationship to CI / PR gates
-The implementation provides deterministic line-oriented evidence, a summary, and exit status. CI/PR-gate wiring and structured artifacts remain deferred.
+The implementation provides deterministic line-oriented or structured JSON evidence and exit status. CI/PR-gate wiring remains deferred.
 
 ## Relationship to SKV / SKVI / SCLV / SACV / SODV / SSFV
 The validator does not replace SKV / SKVI / SCLV / SACV / SODV / SSFV records. It provides evidence to support them.
@@ -168,7 +167,7 @@ The maximum physical line is 64 KiB, the maximum normalized paragraph is 256 KiB
 
 The checker is read-only and non-remediating. It does not modify repository content, select a remedy, or make an authorization decision. When execution reaches this checker and it fails, the CLI emits one final summary and exits `21`. Earlier checkers retain their existing fail-fast precedence; exit `21` precedes only the checks that follow caller-authority validation in the CLI sequence.
 
-Runtime source/AST analysis, remediation, `qxctl` mediation, and CI/PR-gate integration are deferred and unauthorized by this increment.
+Runtime source/AST analysis, remediation, and CI/PR-gate integration are deferred and unauthorized by this increment.
 
 ## Troll Doctrine
 trolls are the local residents.
@@ -242,8 +241,8 @@ The parser must not:
 - decide architecture
 - generate canonical truth
 - publish documentation
-- integrate with qxctl
-- emit projections unless explicitly authorized by a future task
+- accept qxctl policy as detector input
+- emit projections other than the implemented line and JSON forms
 
 ### Checker Boundary
 
@@ -284,19 +283,16 @@ Checks must not:
 
 ### Projector Boundary
 
-Future validator projection behavior is deferred.
+The implemented JSON projector derives solely from the same complete in-memory evidence sequence as line output. It assigns stable identities and emits deterministic digests. It neither reads qxctl policy nor filters detection.
 
 Future projection targets may include:
-- JSON / JSONL portable evidence
+- JSONL portable evidence
 - DuckDB analytical projection
 - HDF5 dense quantitative / vector / compatibility substrate
 - graph view relationship projection
-- qxctl-readable evidence projection
 - readable Markdown report
 
-No projection is canonical authority.
-All projections are derived, disposable, and rebuildable.
-This spec section authorizes no generated projection.
+No projection is canonical authority. All projections are derived, disposable, and rebuildable. This section authorizes only the implemented result-v1 JSON projection.
 Future projection formats require separate planning and canonical authorization.
 
 ### Evidence Categories
@@ -339,9 +335,9 @@ This contract does not authorize:
 - JSON / JSONL projection
 - DuckDB projection
 - HDF5 projection
-- qxctl integration
-- projector implementation
-- schemas
+- additional qxctl mutation outside protected validation profiles/baselines
+- additional projector implementation
+- schemas outside the exact validation contract
 - templates
 - docs directory
 - mint.json

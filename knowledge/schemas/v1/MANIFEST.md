@@ -43,6 +43,9 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 - `maestro-docking-presence-head.schema.json`: atomic selector for the active member of a dual-slot presence registry.
 - `maestro-docking-result.schema.json`: bounded compatibility, descriptor, presence, mutation, and forward-recovery result.
 - `temporal.schema.json`: reusable structural definitions for canonical STSC civil-date, whole-second UTC, and exact-nine-digit nanosecond UTC encodings; real Gregorian validation remains a required implementation conformance check.
+- `validation-result.schema.json`: deterministic raw repository evidence and optional separately digested qxctl policy evaluation.
+- `validation-policy.schema.json`: protected noncanonical warning disposition and presentation profile.
+- `validation-baseline.schema.json`: protected noncanonical repository/version-bound warning identity inventory for delta evaluation.
 
 All schemas use JSON Schema Draft 2020-12, close every common-governed object with `additionalProperties: false`, and carry no secrets. The proposal operation's bounded `data` object is deliberately governed by the applicable vector schema; operation-specific payload/result schemas remain owned by that engine Contract Quad.
 

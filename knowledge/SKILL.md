@@ -10,11 +10,12 @@ Guide every caller in safely inspecting, proposing, implementing, installing, an
 2. `knowledge/MANIFEST.md`
 3. `knowledge/SPEC.md`
 4. `knowledge/TIME.md` when a field, deadline, freshness rule, journal, or durable event involves time
-5. the affected vector's Contract Quad
-6. `tools/qxctl/` contracts for administrative grammar
-7. `knowledge/ssiag/SPEC.md` before any apply or safeguard work
-8. `knowledge/stav/SPEC.md` before any audited outcome or recovery work
-9. `knowledge/sodv/SPEC.md` before release or publication
+5. `knowledge/VALIDATION.md` when validator evidence, warning policy, baselines, or debug filtering is involved
+6. the affected vector's Contract Quad
+7. `tools/qxctl/` contracts for administrative grammar
+8. `knowledge/ssiag/SPEC.md` before any apply or safeguard work
+9. `knowledge/stav/SPEC.md` before any audited outcome or recovery work
+10. `knowledge/sodv/SPEC.md` before release or publication
 
 ## Safe Initial Operations
 

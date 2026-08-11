@@ -20,29 +20,31 @@ import (
 )
 
 const (
-	processProtocol  = "symphony.knowledge.engine-process.v1"
-	receiptProtocol  = "symphony.knowledge.install-receipt.v1"
-	moduleID         = "skvi-engine"
-	engineID         = "symphony-skvi"
-	sclvModuleID     = "sclv-engine"
-	sclvEngineID     = "symphony-sclv"
-	sacvModuleID     = "sacv-engine"
-	sacvEngineID     = "symphony-sacv"
-	sodvModuleID     = "sodv-engine"
-	sodvEngineID     = "symphony-sodv"
-	ssfvModuleID     = "ssfv-engine"
-	ssfvEngineID     = "symphony-ssfv"
-	maestroModuleID  = "maestro"
-	maestroEngineID  = "symphony-maestro"
-	sessionModuleID  = "knowledge-session-coordinator"
-	sessionEngineID  = "symphony-knowledge-session"
-	maxReceiptBytes  = 256 * 1024
-	maxRequestBytes  = 1024 * 1024
-	maxResponseBytes = 4 * 1024 * 1024
-	maxJSONDepth     = 64
-	maxJSONValues    = 16384
-	maxStringBytes   = 65536
-	operationTimeout = 5 * time.Second
+	processProtocol   = "symphony.knowledge.engine-process.v1"
+	receiptProtocol   = "symphony.knowledge.install-receipt.v1"
+	moduleID          = "skvi-engine"
+	engineID          = "symphony-skvi"
+	sclvModuleID      = "sclv-engine"
+	sclvEngineID      = "symphony-sclv"
+	sacvModuleID      = "sacv-engine"
+	sacvEngineID      = "symphony-sacv"
+	sodvModuleID      = "sodv-engine"
+	sodvEngineID      = "symphony-sodv"
+	ssfvModuleID      = "ssfv-engine"
+	ssfvEngineID      = "symphony-ssfv"
+	maestroModuleID   = "maestro"
+	maestroEngineID   = "symphony-maestro"
+	validatorModuleID = "symphony-validator"
+	validatorEngineID = "symphony-validator"
+	sessionModuleID   = "knowledge-session-coordinator"
+	sessionEngineID   = "symphony-knowledge-session"
+	maxReceiptBytes   = 256 * 1024
+	maxRequestBytes   = 1024 * 1024
+	maxResponseBytes  = 4 * 1024 * 1024
+	maxJSONDepth      = 64
+	maxJSONValues     = 16384
+	maxStringBytes    = 65536
+	operationTimeout  = 5 * time.Second
 )
 
 type engineSpec struct {
@@ -80,6 +82,11 @@ var sessionSpec = engineSpec{
 var maestroSpec = engineSpec{
 	label: "Maestro", moduleID: maestroModuleID, engineID: maestroEngineID,
 	expectedFiles: expectedMaestroFiles,
+}
+
+var validatorSpec = engineSpec{
+	label: "Symphony Validator", moduleID: validatorModuleID, engineID: validatorEngineID,
+	expectedFiles: expectedValidatorFiles,
 }
 
 var engineSpecsByRole = map[string]engineSpec{
@@ -196,6 +203,13 @@ func InspectInstallation(role, prefix, version string) (Installation, error) {
 // installation without placing it in the vector-engine binding registry.
 func InspectMaestroInstallation(prefix, version string) (Installation, error) {
 	return inspectInstallationFor("maestro", maestroSpec, prefix, version)
+}
+
+// InspectValidatorInstallation validates one exact inactive independently
+// installed validator. The validator is a finite tool rather than a vector
+// engine and is therefore never added to the engine binding registry.
+func InspectValidatorInstallation(prefix, version string) (Installation, error) {
+	return inspectInstallationFor("validator", validatorSpec, prefix, version)
 }
 
 func inspectInstallationFor(role string, spec engineSpec, prefix, version string) (Installation, error) {
@@ -586,6 +600,22 @@ func expectedMaestroFiles(version string) map[string]struct{} {
 	return result
 }
 
+func expectedValidatorFiles(version string) map[string]struct{} {
+	base := "share/doc/symphony/symphony-validator/" + version + "/"
+	license := "share/licenses/symphony-validator/" + version + "/"
+	paths := []string{
+		"libexec/symphony/symphony-validator/" + version + "/symphony-validator",
+		"share/symphony/receipts/symphony-validator/" + version + "/install-receipt.json",
+		base + "INTENT.md", base + "MANIFEST.md", base + "INSTALL.md", base + "SKILL.md", base + "SPEC.md",
+		license + "LICENSE-AGPL-3.0", license + "nlohmann-json-LICENSE.MIT",
+	}
+	result := make(map[string]struct{}, len(paths))
+	for _, path := range paths {
+		result[path] = struct{}{}
+	}
+	return result
+}
+
 func maxInstalledFileBytes(relative string) int64 {
 	if strings.HasPrefix(relative, "libexec/") {
 		return 64 * 1024 * 1024
@@ -812,6 +842,10 @@ func requireExactFields(data []byte, fields []string) error {
 }
 
 func validateJSONObject(data []byte, maxBytes int64) error {
+	return validateJSONObjectWithValueLimit(data, maxBytes, maxJSONValues)
+}
+
+func validateJSONObjectWithValueLimit(data []byte, maxBytes int64, maxValues int) error {
 	if len(data) == 0 || int64(len(data)) > maxBytes {
 		return fmt.Errorf("JSON byte bound violated")
 	}
@@ -821,7 +855,7 @@ func validateJSONObject(data []byte, maxBytes int64) error {
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.UseNumber()
 	count := 0
-	rootObject, err := validateJSONValue(decoder, 0, &count)
+	rootObject, err := validateJSONValue(decoder, 0, &count, maxValues)
 	if err != nil {
 		return err
 	}
@@ -837,7 +871,17 @@ func ValidateJSONObject(data []byte, maxBytes int64) error {
 	return validateJSONObject(data, maxBytes)
 }
 
-func validateJSONValue(decoder *json.Decoder, depth int, count *int) (bool, error) {
+// ValidateJSONObjectWithValueLimit retains the common duplicate-key,
+// integer-only, UTF-8, depth, and string checks while allowing a caller with
+// its own explicit collection schema to select a larger total value bound.
+func ValidateJSONObjectWithValueLimit(data []byte, maxBytes int64, maxValues int) error {
+	if maxValues < 1 {
+		return fmt.Errorf("JSON value bound must be positive")
+	}
+	return validateJSONObjectWithValueLimit(data, maxBytes, maxValues)
+}
+
+func validateJSONValue(decoder *json.Decoder, depth int, count *int, maxValues int) (bool, error) {
 	if depth > maxJSONDepth {
 		return false, fmt.Errorf("JSON depth exceeds %d", maxJSONDepth)
 	}
@@ -846,8 +890,8 @@ func validateJSONValue(decoder *json.Decoder, depth int, count *int) (bool, erro
 		return false, err
 	}
 	(*count)++
-	if *count > maxJSONValues {
-		return false, fmt.Errorf("JSON value count exceeds %d", maxJSONValues)
+	if *count > maxValues {
+		return false, fmt.Errorf("JSON value count exceeds %d", maxValues)
 	}
 	switch value := token.(type) {
 	case json.Delim:
@@ -868,7 +912,10 @@ func validateJSONValue(decoder *json.Decoder, depth int, count *int) (bool, erro
 				}
 				seen[key] = struct{}{}
 				(*count)++
-				if _, valueErr := validateJSONValue(decoder, depth+1, count); valueErr != nil {
+				if *count > maxValues {
+					return false, fmt.Errorf("JSON value count exceeds %d", maxValues)
+				}
+				if _, valueErr := validateJSONValue(decoder, depth+1, count, maxValues); valueErr != nil {
 					return false, valueErr
 				}
 			}
@@ -879,7 +926,7 @@ func validateJSONValue(decoder *json.Decoder, depth int, count *int) (bool, erro
 			return true, nil
 		case '[':
 			for decoder.More() {
-				if _, valueErr := validateJSONValue(decoder, depth+1, count); valueErr != nil {
+				if _, valueErr := validateJSONValue(decoder, depth+1, count, maxValues); valueErr != nil {
 					return false, valueErr
 				}
 			}

@@ -63,6 +63,22 @@ CanonicalSurfaceCheckResult check_required_canonical_surfaces(const std::string&
         }
     }
 
+    const bool validation_surface_selected =
+        fs::exists(root / "knowledge/VALIDATION.md") ||
+        fs::exists(root / "knowledge/schemas/v1/validation-result.schema.json") ||
+        fs::exists(root / "tools/qxctl/internal/validation");
+    if (validation_surface_selected) {
+        const std::string surface = "knowledge/VALIDATION.md";
+        if (fs::exists(root / surface)) {
+            result.messages.push_back(format_evidence(EvidenceCategory::Pass,
+                "canonical_surface.exists", "path=" + surface));
+        } else {
+            result.success = false;
+            result.messages.push_back(format_evidence(EvidenceCategory::Violation,
+                "canonical_surface.missing", "path=" + surface));
+        }
+    }
+
     if (fs::exists(root / "go.work")) {
         const std::array<std::string, 6> sacv_surfaces = {
             "knowledge/sacv/INTENT.md",

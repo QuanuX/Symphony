@@ -48,7 +48,7 @@ knowledge/ssfv/
   schemas/v2/
 ```
 
-The first partial bootstrap distributes exactly three canonical records across `FEATURES.md`, `libraries/knowledge-vector-engine-cpp/FEATURES.md`, and `modules/knowledge-session-coordinator/FEATURES.md`. `REGISTRY.md` routes those records, and SKVI indexes all three owner files. No other feature record or complete-catalog claim is authorized.
+The current partial catalog distributes exactly four canonical records across `FEATURES.md`, `libraries/knowledge-vector-engine-cpp/FEATURES.md`, `modules/knowledge-session-coordinator/FEATURES.md`, and `modules/maestro/FEATURES.md`. `REGISTRY.md` routes those records, and SKVI indexes all four owner files. No other feature record or complete-catalog claim is authorized.
 
 ## Record Model
 
@@ -70,7 +70,7 @@ Every record has:
 - SODV governs feature-derived publication.
 - STAV records safe operational audit metadata where separately authorized.
 - SSIAG controls permission-backed feature administration.
-- Maestro may later persist inactive or docked engine state; it does not own feature semantics.
+- Maestro persists exact authenticated docking presence; it does not own feature semantics or execute recorded engines.
 - qxctl is the implemented inspect/check/diff/propose/graph interface and eventual lifecycle administrator; it does not own SSFV truth.
 
 ## Installability
@@ -81,8 +81,8 @@ The Go qxctl client validates the exact inactive-undocked receipt and invokes th
 
 ## Non-Authorization Statement
 
-This manifest authorizes the canonical SSFV contract, bounded engine/client implementation, and exact three-record partial bootstrap. It does not authorize an additional application `FEATURES.md`, another feature record, repository-wide completeness, canonical apply, repository mutation by tooling, graph-database persistence, Maestro docking, public documentation, or marketing claims.
+This manifest authorizes the canonical SSFV contract, bounded engine/client implementation, and exact four-record partial catalog. It does not authorize an additional application `FEATURES.md`, another feature record, repository-wide completeness, canonical apply, repository mutation by SSFV tooling, graph-database persistence, additional Maestro behavior, public documentation, or marketing claims.
 
 ## Status
 
-Architect-ratified engine implementation and first partial bootstrap. Namespace `symphony` is allocated, exactly three experimental application-feature records exist, and coverage remains explicitly partial.
+Architect-ratified engine implementation and partial catalog. Namespace `symphony` is allocated, exactly four experimental application-feature records exist, and coverage remains explicitly partial.

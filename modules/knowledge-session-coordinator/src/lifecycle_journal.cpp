@@ -1109,7 +1109,7 @@ void validate_apply_attempt(const engine::Json& attempt) {
         "evidence_digest", "started_at", "completed_at"
     }, "lifecycle apply attempt");
     static const std::set<std::string> kinds = {
-        "install", "uninstall", "select", "deselect", "activate", "deactivate"
+        "install", "uninstall", "select", "deselect", "activate", "deactivate", "dock", "undock"
     };
     static const std::set<std::string> states = {
         "started", "committed", "already_applied", "blocked", "failed"
@@ -1162,7 +1162,7 @@ void validate_apply_action(const engine::Json& action) {
         "expected_artifact_digests", "expected_evidence", "disposition", "blockers"
     }, "lifecycle apply action");
     static const std::set<std::string> kinds = {
-        "install", "uninstall", "select", "deselect", "activate", "deactivate"
+        "install", "uninstall", "select", "deselect", "activate", "deactivate", "dock", "undock"
     };
     static const std::set<std::string> directions = {"forward", "inverse", "neutral"};
     static const std::set<std::string> dispositions = {"ready", "blocked"};
@@ -1184,8 +1184,14 @@ void validate_apply_action(const engine::Json& action) {
             throw engine::Error("lifecycle_apply.journal_invalid", std::string(field) + " is invalid", 5);
         }
     }
-    if (!action.at("target_receptor_id").is_null()) {
-        throw engine::Error("lifecycle_apply.journal_invalid", "host adapter action cannot target a Maestro receptor", 5);
+    const auto kind = text(action, "kind", 32U);
+    const auto& target_receptor = action.at("target_receptor_id");
+    if ((kind == "dock") != target_receptor.is_string() ||
+        (kind != "dock" && kind != "undock" && !target_receptor.is_null())) {
+        throw engine::Error(
+            "lifecycle_apply.journal_invalid",
+            "lifecycle action carries an invalid Maestro receptor target",
+            5);
     }
     if (!action.at("expected_before_digest").is_null() &&
         (!action.at("expected_before_digest").is_string() ||
@@ -1770,6 +1776,15 @@ bool apply_action_observed(const engine::Json& action, const engine::Json& desir
     }
     if (kind == "activate") return observed != nullptr && observed->at("activation") == "active";
     if (kind == "deactivate") return observed == nullptr || observed->at("activation") == "inactive";
+    if (kind == "dock") {
+        return observed != nullptr && observed->at("docking") == "docked" &&
+            action.at("target_receptor_id").is_string() &&
+            observed->at("receptor_id") == action.at("target_receptor_id");
+    }
+    if (kind == "undock") {
+        return observed == nullptr ||
+            (observed->at("docking") == "undocked" && observed->at("receptor_id").is_null());
+    }
     return false;
 }
 

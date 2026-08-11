@@ -176,8 +176,8 @@ if ! printf '%s\n' "$OUT_REPO" | grep "caller_authority.scan_complete " | grep "
     echo "error: current repo missing expected caller_authority.scan_complete status or findings=0"
     exit 1
 fi
-if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 112 ]; then
-    echo "error: current repo should authorize exactly the 28 STAV, 29 common SKV, 3 SSIAG, 4 SKVI, 5 SCLV, 6 SACV, 8 SODV, and 18 SSFV JSON artifacts"
+if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 115 ]; then
+    echo "error: current repo should authorize exactly 115 canonical JSON artifacts"
     exit 1
 fi
 if ! printf '%s\n' "$OUT_REPO" | grep "sodv.releases.scan_complete records=3 transactions=1 violations=0" >/dev/null; then
@@ -185,6 +185,16 @@ if ! printf '%s\n' "$OUT_REPO" | grep "sodv.releases.scan_complete records=3 tra
     exit 1
 fi
 echo "current repo passed strict validation"
+
+OUT_JSON=$("$VALIDATOR_BIN" check --repo "$REPO_ROOT" --json)
+if [ "$(printf '%s\n' "$OUT_JSON" | grep -c '"protocol":"symphony.validation.result.v1"')" -ne 1 ] ||
+   [ "$(printf '%s\n' "$OUT_JSON" | grep -c '"evaluation":null')" -ne 1 ] ||
+   [ "$(printf '%s\n' "$OUT_JSON" | grep -c '"evidence_digest":"sha256:')" -ne 1 ] ||
+   [ "$(printf '%s\n' "$OUT_JSON" | grep -c '"result_digest":"sha256:')" -ne 1 ]; then
+    echo "error: structured validator projection is missing its exact protocol or digests"
+    exit 1
+fi
+echo "structured validator projection passed"
 
 # Verify invalid repo
 set +e

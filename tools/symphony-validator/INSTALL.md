@@ -40,6 +40,7 @@ cmake --build build
 
 ```bash
 ./build/symphony-validator check --repo /path/to/symphony
+./build/symphony-validator check --repo /path/to/symphony --json
 ```
 
 ## Smoke Tests
@@ -49,14 +50,32 @@ cd tools/symphony-validator
 ./tests/smoke.sh
 ```
 
-## Installation Packaging
-The validator is locally buildable as a native tool through CMake. A portable host installer and uninstall manifest remain to be implemented before distribution as an independently packaged tool.
+## Exact Versioned Installation
+
+Configure and install into any administrator-selected prefix. Versions coexist without an unversioned alias:
+
+```bash
+cmake -S tools/symphony-validator -B tools/symphony-validator/build \
+  -DCMAKE_INSTALL_PREFIX=/chosen/prefix
+cmake --build tools/symphony-validator/build
+cmake --install tools/symphony-validator/build
+```
+
+The exact executable is `/chosen/prefix/libexec/symphony/symphony-validator/0.1.0-dev/symphony-validator`. Its immutable nine-file receipt is beneath `/chosen/prefix/share/symphony/receipts/`. Installation creates no service, listener, login hook, Maestro presence, or active binding.
+
+The configured build tree retains the exact prefix. Uninstall only receipt-owned files:
+
+```bash
+cmake --build tools/symphony-validator/build --target uninstall-symphony-validator
+```
+
+Protected qxctl validation profiles and baselines are installation-external state and survive executable uninstall.
 
 ## Development Posture
-Invoked as a standalone tool during local development and preflight checks.
+Invoked directly during development or through `qxctl validate` after exact receipt validation.
 
 ## Intended Production Posture
-Future CI and administrative-spine integrations may invoke the same deterministic checker for structural and doctrinal verification after those integrations are separately authorized.
+The administrative spine invokes the same deterministic checker. CI integration remains separate.
 
 ## Python Doctrine
 Python must not be required for remote native hot-path execution or the administrative spine.

@@ -23,26 +23,27 @@ C++26
 - `SPEC.md`
 
 ## Installability
-The validator is an implemented native tool with a local CMake build and direct invocation surface.
-Portable installation packaging is not yet implemented.
+The validator is an implemented native tool with a local CMake build, exact versioned installation receipt, receipt-owned uninstall target, direct invocation surface, and qxctl mediation.
 Python must not be required for validator execution as part of the administrative spine.
 Optional isolated Python habitats may exist only when explicitly declared by a module or tool.
 
 ## Invocation Surfaces
 - Direct binary invocation
 - Local preflight invocation
+- Exact receipt-validated `qxctl validate scan|debug` invocation
 
-Deferred integration surfaces are `qxctl` mediation and CI/PR-gate invocation.
+CI/PR-gate invocation remains a separate integration surface.
 
 ## Output Surfaces
 - Deterministic line-oriented evidence
 - Deterministic summary and exit status (including `21` for caller-authority regression, `22` for SACV registry failure, and `23` for SODV release-ledger failure)
+- Deterministic `symphony.validation.result.v1` JSON through `check --json`
 
-Structured JSON and Markdown projections remain deferred. Runtime source/AST caller-authority analysis and auto-remediation are strictly deferred and unauthorized.
+Markdown projection, runtime source/AST caller-authority analysis, and auto-remediation remain deferred and unauthorized.
 
 ## Canonical JSON Boundary
 
-The artifact checker recognizes exactly 112 canonical JSON paths: 28 STAV v1 schemas/fixtures, forty common SKV process/descriptor/receipt/binding/proposal/provider-evidence/reconciliation/session/lifecycle/temporal/Maestro schemas (thirty-seven v1 and three v2), three SSIAG authorization schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, and eighteen SSFV v1/v2 schemas. It does not authorize a directory prefix, generated projection, or new JSON artifact by extension.
+The artifact checker recognizes exactly 115 canonical JSON paths: 28 STAV v1 schemas/fixtures, forty-three common SKV process/descriptor/receipt/binding/proposal/provider-evidence/reconciliation/session/lifecycle/temporal/Maestro/validation schemas (forty v1 and three v2), three SSIAG authorization schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, and eighteen SSFV v1/v2 schemas. It does not authorize a directory prefix, generated projection, or new JSON artifact by extension.
 
 The contract-shape and canonical-surface checks require the common STSC surface and its authority/profile/implementation boundaries, the SSFV governance/engine surfaces, and the independently installed Maestro Contract Quad/build/qxctl client anchors. The validator confirms anchors, presence, SKVI coverage, and exact JSON allowlisting; it does not decide feature-worthiness, duplicate vector semantics, or inspect operational presence state.
 
@@ -54,7 +55,7 @@ The SODV release checker independently validates bounded no-follow v1/v2 records
 The implemented checker reads active Markdown from the bounded repository surfaces defined in `SPEC.md`. It emits lexical-path evidence for configured caller-class authority constructions and for fail-visible discovery, stream, symlink, and resource-limit conditions. It does not follow symlink targets or modify scanned content.
 
 ## Dependencies
-A conforming C++26 compiler, CMake 3.25 or newer, and the C++ standard library. Runtime validation has no third-party library dependency.
+A conforming C++26 compiler, CMake 3.25 or newer, the shared static knowledge-vector foundation, and its vendored nlohmann JSON dependency. The installed executable has no dynamic Symphony-library dependency.
 
 The caller-authority checker depends only on the validator evidence formatter and the C++ standard library. Its direct input is a repository path; its implemented outputs are line-oriented evidence, one summary line, and the process status.
 
@@ -63,4 +64,4 @@ The validator must not choose infrastructure for users, assume Docker/Kubernetes
 It does not contain any forbidden terms (such as c-o-r-e).
 
 ## Non-authorization Statement
-This manifest authorizes the checked-in deterministic C++26 parser/checker, CMake build, and smoke fixtures. It does not authorize executable schema generation, structured projectors, qxctl integration, CI configuration, runtime residency, publication, or remediation.
+This manifest authorizes the checked-in deterministic C++26 parser/checker, structured result projector, exact installation/uninstallation surface, qxctl integration, and fixtures. It does not authorize executable schema generation, CI configuration, runtime residency, publication, or remediation.

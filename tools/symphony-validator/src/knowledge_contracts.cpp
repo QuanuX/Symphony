@@ -181,6 +181,19 @@ KnowledgeContractShapeResult check_knowledge_contract_shapes(const std::string& 
         }
     };
 
+    if (fs::exists(root / "knowledge/VALIDATION.md") ||
+        fs::exists(root / "knowledge/schemas/v1/validation-result.schema.json") ||
+        fs::exists(root / "tools/qxctl/internal/validation")) {
+        targets.push_back({"knowledge/VALIDATION.md", {
+            {"Contract", "Symphony Validation Evidence and Policy Contract"},
+            {"Authority", "## Status and Authority"}, {"Purpose", "## Purpose"},
+            {"Detection", "## Immutable Detection Boundary"},
+            {"Profiles", "## Warning Dispositions"},
+            {"Baselines", "## Baselines and Delta Semantics"},
+            {"Administration", "## qxctl Administration"},
+            {"Boundaries", "## Non-Authorization"}}});
+    }
+
     if (fs::exists(root / "go.work") || fs::exists(root / "knowledge/sacv")) {
         const std::vector<ContractFileTarget> sacv_targets = {
             {"knowledge/sacv/INTENT.md", {{"Intent", "Intent"}, {"Purpose", "## Purpose"},
