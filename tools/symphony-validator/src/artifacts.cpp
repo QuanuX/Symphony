@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 bool is_authorized_canonical_json(const std::string& relative_path) {
     // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, and SSFV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 112> authorized_paths = {
+    static const std::array<std::string, 115> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -77,6 +77,9 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/schemas/v1/maestro-docking-presence-registry.schema.json",
         "knowledge/schemas/v1/maestro-docking-presence-head.schema.json",
         "knowledge/schemas/v1/maestro-docking-result.schema.json",
+        "knowledge/schemas/v1/validation-result.schema.json",
+        "knowledge/schemas/v1/validation-policy.schema.json",
+        "knowledge/schemas/v1/validation-baseline.schema.json",
         "knowledge/schemas/v2/install-receipt.schema.json",
         "knowledge/schemas/v2/lifecycle-boot-journal.schema.json",
         "knowledge/schemas/v2/lifecycle-boot-head.schema.json",
@@ -183,7 +186,9 @@ ArtifactCheckResult check_unauthorized_artifacts(const std::string& repo_root) {
                     if (ext == proj_ext) {
                         std::string rel_path = fs::relative(dir_entry.path(), root).string();
                         if (ext == ".json" && is_authorized_canonical_json(rel_path)) {
-                            const std::string authority = rel_path == "knowledge/schemas/v1/temporal.schema.json"
+                            const std::string authority = rel_path.starts_with("knowledge/schemas/v1/validation-")
+                                ? "knowledge/VALIDATION.md"
+                                : rel_path == "knowledge/schemas/v1/temporal.schema.json"
                                 ? "knowledge/TIME.md"
                                 : rel_path.starts_with("knowledge/stav/")
                                 ? "knowledge/stav/SPEC.md"
@@ -217,21 +222,7 @@ ArtifactCheckResult check_unauthorized_artifacts(const std::string& repo_root) {
         result.messages.push_back(format_evidence(EvidenceCategory::Pass, "artifact.projection_files_absent", "root=knowledge"));
     }
 
-    // D. qxctl integration surfaces
-    const std::array<std::string, 7> qxctl_paths = {
-        "tools/symphony-validator/qxctl",
-        "tools/symphony-validator/qxctl.cpp",
-        "tools/symphony-validator/qxctl.hpp",
-        "tools/symphony-validator/src/qxctl.cpp",
-        "tools/symphony-validator/src/qxctl.hpp",
-        "tools/symphony-validator/src/qxctl_integration.cpp",
-        "tools/symphony-validator/src/qxctl_integration.hpp"
-    };
-    for (const auto& path : qxctl_paths) {
-        check_path_absence(root, path, "qxctl_integration_not_authorized", result);
-    }
-
-    // E. Schema/template artifacts
+    // D. Schema/template artifacts
     const std::array<std::string, 6> schema_paths = {
         "schemas", "schema", "templates",
         "tools/symphony-validator/schemas",

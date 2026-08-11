@@ -835,6 +835,47 @@ void test_apply_prepare_accepts_only_exact_staged_install_evidence() {
             "exact staged receipt did not satisfy only the package-absence blocker");
 }
 
+void test_apply_serializes_external_maestro_docking() {
+    TemporaryDirectory state;
+    const auto package = receipt("maestro-apply");
+    auto desired_component_value = desired_component("maestro-apply", package, "active");
+    set_desired_docking(desired_component_value, "docked", "maestro-primary");
+    const auto desired = desired_state(engine::Json::array({desired_component_value}));
+    const auto observed_undocked = observation(engine::Json::array({
+        observed_component("maestro-apply", package, "active"),
+    }));
+    const auto report = lifecycle_boot(
+        state.path(), desired, observed_undocked, "maestro-source", "absent",
+        "maestro-source", "apply-compatible");
+    const auto planned = plan(desired, observed_undocked);
+    const auto& dock = action(planned, "maestro-apply", "dock");
+    require(dock.at("disposition") == "ready" &&
+            dock.at("target_receptor_id") == "maestro-primary",
+            "Maestro docking was not an exact ready lifecycle action");
+
+    const auto prepared = lifecycle_apply_mutation(
+        state.path(), "lifecycle_apply_prepare", desired, observed_undocked,
+        report.at("journal_digest"), "absent", "absent", dock.at("action_id"),
+        nullptr, nullptr, nullptr, "maestro-prepare");
+    require(prepared.at("journal").at("state") == "acting" &&
+            prepared.at("action").at("kind") == "dock" &&
+            prepared.at("action").at("target_receptor_id") == "maestro-primary",
+            "apply journal did not durably serialize external Maestro docking");
+
+    auto observed_docked_component = observed_component("maestro-apply", package, "active");
+    set_observed_docking(observed_docked_component, "docked", "maestro-primary");
+    const auto observed_docked = observation(engine::Json::array({observed_docked_component}));
+    const auto finalized = lifecycle_apply_mutation(
+        state.path(), "lifecycle_apply_finalize", desired, observed_docked,
+        report.at("journal_digest"), prepared.at("journal_digest"), "absent",
+        dock.at("action_id"), "committed", nullptr, receipt("maestro-execution-evidence"),
+        "maestro-finalize");
+    require(finalized.at("journal").at("state") == "closed" &&
+            finalized.at("applied_state").at("components").at(0).at("docking") == "docked" &&
+            finalized.at("applied_state").at("components").at(0).at("receptor_id") == "maestro-primary",
+            "verified Maestro observation did not close the apply journal");
+}
+
 void test_durable_boot_journal_replanning_and_recovery() {
     TemporaryDirectory state;
     TemporaryDirectory unsafe_state;
@@ -1372,6 +1413,7 @@ int main() {
         test_descriptor();
         test_apply_journal_prepare_resume_finalize_close_and_recovery();
         test_apply_prepare_accepts_only_exact_staged_install_evidence();
+        test_apply_serializes_external_maestro_docking();
         test_durable_boot_journal_replanning_and_recovery();
         test_dependency_ready_set_and_replanning();
         test_cycle_isolation();

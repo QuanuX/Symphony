@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The first partial bootstrap covers the repository-root platform capability, the shared knowledge-vector engine foundation, and the knowledge-session coordinator foundation.
+Canonical SSFV feature-routing registry. The partial catalog covers the repository-root platform capability, the shared knowledge-vector engine foundation, the knowledge-session coordinator foundation, and authenticated durable Maestro docking presence.
 
 ## Purpose
 
@@ -37,8 +37,8 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/knowledge-session-coordinator`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:3ad7a8c41df1af7a5746aafe34bef686faf4f1d816b861eb3dbca4da2c4b4d8a`
-- notes: First partial bootstrap record for durable reconciliation, SSIAG-authorized authenticated sessions, explicit idempotent qxctl host-event convergence, protected desired-profile and observation administration, report-only dependency planning, and durable lifecycle boot-journal recovery; lifecycle action persistence and apply remain disabled.
+- record_digest: `sha256:0ee79cfe4019de2877cb7bff689a9c3c4d685429c2c5d6bf1e4b4e56a3b53e5b`
+- notes: Partial-catalog record for durable reconciliation, SSIAG-authorized authenticated sessions, explicit idempotent qxctl host-event convergence, protected desired-profile and observation administration, dependency planning, report/apply journal recovery, and serialized externally executed lifecycle actions including authenticated Maestro presence.
 
 - feature_id: `ssfv:symphony:knowledge-vector-engine-foundation`
 - feature_file: `libraries/knowledge-vector-engine-cpp/FEATURES.md`
@@ -48,6 +48,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:platform`
 - record_digest: `sha256:c31e519f59335ed7e145874795409bbe36a555006f7bf1e18c93afea9952b4ce`
 - notes: First partial bootstrap record for the implemented authority-free shared C++ mechanics, including canonical STSC Gregorian and UTC representation validation.
+
+- feature_id: `ssfv:symphony:maestro-presence-authority`
+- feature_file: `modules/maestro/FEATURES.md`
+- owner_contract: `modules/maestro/SPEC.md`
+- source_scope: `modules/maestro`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:12bb382db1182b67d00abc35e7dd2a679ea7aa9a03e97b65cccdeb9a6fc42ce2`
+- notes: Partial-catalog record for exact authenticated per-TOPS/per-receptor docking presence, lifecycle integration, semantic retry, and evidence-preserving recovery without engine execution.
 
 - feature_id: `ssfv:symphony:platform`
 - feature_file: `FEATURES.md`
@@ -72,4 +81,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This three-record registry is an explicitly partial catalog. It does not authorize another feature record, another distributed file, repository-wide completeness, engine-decided feature-worthiness, or canonical mutation.
+This four-record registry is an explicitly partial catalog. It does not authorize another feature record, another distributed file, repository-wide completeness, engine-decided feature-worthiness, or canonical mutation.

@@ -17,6 +17,10 @@ Commands:
   inventory [--json]                Emit deterministic runtime inventory snapshot
   inventory digest [--json]         Emit deterministic runtime inventory SHA-256 digest
   status [--json]                   Report consolidated administrative status
+  validate scan --tops-id UUID --prefix PATH [--profile-id ID] [--baseline-id ID] [--json] Run full structured repository validation
+  validate debug --tops-id UUID --prefix PATH [--rule ID|--record ID|--path PATH|--delta CLASS] [--json] Filter display after a full scan
+  validate profile list|show|set|remove --tops-id UUID [...] Administer protected warning policy
+  validate baseline create|show|remove --tops-id UUID [...] Administer protected warning baselines
   ssiag status --tops-id UUID [--scope user|system] [--json] Read safe SSIAG status
   ssiag providers --tops-id UUID [--scope user|system] [--json] List safe provider metadata
   ssiag doctor --tops-id UUID [--scope user|system] Verify local SSIAG availability

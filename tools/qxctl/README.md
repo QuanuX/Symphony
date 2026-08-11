@@ -110,13 +110,21 @@ go run ./cmd/qxctl ssfv check --prefix /chosen/prefix [--expected-namespace-dige
 go run ./cmd/qxctl ssfv diff --prefix /chosen/prefix --input diff-input.json [--json]
 go run ./cmd/qxctl ssfv propose --prefix /chosen/prefix --input proposal-input.json [--json]
 go run ./cmd/qxctl ssfv graph --prefix /chosen/prefix [--json]
+
+# Validate through one exact independently installed validator
+go run ./cmd/qxctl validate profile set --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 --profile-id default --warning record --historical summary --new full --expected-policy-digest absent
+go run ./cmd/qxctl validate baseline create --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 --prefix /chosen/prefix --baseline-id default --expected-baseline-digest absent --repo /absolute/path/to/Symphony
+go run ./cmd/qxctl validate scan --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 --prefix /chosen/prefix --profile-id default --baseline-id default --repo /absolute/path/to/Symphony [--json]
+go run ./cmd/qxctl validate debug --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 --prefix /chosen/prefix --baseline-id default --rule sclv.affected_surface.unindexed
 ```
 
 SSIAG commands require an immutable TOPS UUID through `--tops-id` or `SYMPHONY_SSIAG_TOPS_ID`. They use `SYMPHONY_SSIAG_SOCKET` only as an explicit override; otherwise the selected scope and TOPS ID determine the isolated socket. They never accept or print credential values.
 
-The ratified administrative model separates non-mutating proposal from permission-backed local apply. Implemented knowledge-session and lifecycle authorization uses exact target-host ownership or granted-permission grants and never requests or evaluates caller type. Owner-configurable safeguard administration and canonical knowledge apply remain future gates. Canonical knowledge and STAV remain read-only through qxctl. Protected engine bindings, reconciliation/session/lifecycle journals, generic lifecycle runtime state, exact local receipt-v2 package files, and verified applied-state evidence are the current mutable administrative surfaces, and qxctl never writes STAV ledger files directly.
+The ratified administrative model separates non-mutating proposal from permission-backed local apply. Implemented knowledge-session and lifecycle authorization uses exact target-host ownership or granted-permission grants and never requests or evaluates caller type. Protected validator warning-profile and baseline administration is implemented; broader safeguards and canonical knowledge apply remain future gates. Canonical knowledge and STAV remain read-only through qxctl, and qxctl never writes STAV ledger files directly.
 
-Future safeguard administration will let a target-host administrator inspect and change optional governance interlocks through supported qxctl commands, including selecting a direct profile. That future surface does not make parser bounds, path safety, atomic writes, expected-state validation, ledger framing, or secret exclusion optional. Lifecycle apply is implemented only through the current exact local contracts; safeguard management, canonical apply, and audit-deferred recovery remain unavailable.
+Validator warning sensitivity is administered without changing the detector: `record` retains a warning, `review` signals new matching warnings, and `require` fails on new matching warnings. Presentation can be `full`, `summary`, or `count`; baselines classify new, unchanged, and resolved occurrences. Violations, parser bounds, path safety, atomic writes, expected-state validation, ledger framing, and secret exclusion are never optional. Broader safeguard management, canonical apply, and audit-deferred recovery remain unavailable.
+
+Validation state is protected beneath `<state-root>/symphony/<tops-id>/qxctl/validation/`. Mutations require `absent` or the exact current digest and use caller-neutral owner-only, no-follow, synchronized atomic replacement. A baseline acknowledges observed evidence; it does not ratify, delete, or resolve a warning. A repository-identity or validator-version mismatch fails closed.
 
 The four STAV commands use mutually authenticated, TOPS-scoped Unix-socket IPC to the local append authority. `status`, `verify`, and bounded `query` return only classification-authorized read projections; `doctor` composes client-side availability and verification checks. qxctl verifies the configured authority identity before sending application bytes and never opens the ledger file. `qxctl stav append` is intentionally absent.
 

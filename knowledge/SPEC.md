@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact three-record SSFV partial bootstrap, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, explicit qxctl session transitions, implemented report-only lifecycle planning/journaling, separately authorized apply-compatible coordination, and Maestro receptor presence defined by `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, host boot hook, live process activation, receipt-v1 mutation, arbitrary entry-point execution, or Maestro behavior beyond authenticated durable presence may be inferred from these contract slices.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact four-record SSFV partial catalog, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, explicit qxctl session transitions, implemented report-only lifecycle planning/journaling, separately authorized apply-compatible coordination, and Maestro receptor presence defined by `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, host boot hook, live process activation, receipt-v1 mutation, arbitrary entry-point execution, or Maestro behavior beyond authenticated durable presence may be inferred from these contract slices.
 
 ## Purpose
 
@@ -72,6 +72,9 @@ The v1 identifier family is:
 | `symphony.maestro.docking-presence-registry.v1` | digest-linked per-receptor presence generation |
 | `symphony.maestro.docking-presence-head.v1` | atomic dual-slot registry selector |
 | `symphony.maestro.docking-result.v1` | bounded presence and recovery result |
+| `symphony.validation.result.v1` | deterministic raw validator evidence and optional qxctl evaluation |
+| `symphony.validation.policy.v1` | protected noncanonical warning disposition and presentation state |
+| `symphony.validation.baseline.v1` | repository/version-bound warning delta baseline |
 
 The initial exact schemas are:
 
@@ -108,6 +111,9 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/maestro-docking-presence-head.schema.json`;
 - `knowledge/schemas/v1/maestro-docking-result.schema.json`;
 - `knowledge/schemas/v1/temporal.schema.json`;
+- `knowledge/schemas/v1/validation-result.schema.json`;
+- `knowledge/schemas/v1/validation-policy.schema.json`;
+- `knowledge/schemas/v1/validation-baseline.schema.json`;
 - `knowledge/schemas/v2/install-receipt.schema.json`;
 - `knowledge/schemas/v2/lifecycle-boot-journal.schema.json`;
 - `knowledge/schemas/v2/lifecycle-boot-head.schema.json`.
@@ -238,6 +244,10 @@ Caller type is never requested, inferred, stored, or evaluated for authority. Ex
 
 ## Managed Freshness Gate
 
+`knowledge/VALIDATION.md` governs the independently installed validator and qxctl warning controls. Raw evidence is complete, deterministic, timestamp-free, and independent of profile, baseline, caller description, or output filter. qxctl verifies the exact nine-file validator receipt, invokes one exact version with an empty environment and hard process/output bounds, validates stable finding/subject/evidence/result digests, and only then derives policy evaluation. Its larger structured-result parser bound accommodates the schema's complete finding inventory without weakening the common vector-engine request/response bound.
+
+Profiles use `record`, `review`, or `require` only for warnings; violations always fail. Presentation uses `full`, `summary`, or `count`. Baselines bind one repository identity and validator version and classify new, unchanged, and resolved warning occurrences. Profile/baseline state is protected, noncanonical, caller-neutral, exact compare-and-swap state beneath the selected per-TOPS qxctl state root. Debug filters are applied after the complete scan and cannot narrow detection.
+
 Structural protocol-integrity violations always fail governed validation. Proposal freshness at commit, merge, or release is an owner-configurable caller-neutral safeguard administered through qxctl. A guarded profile MAY require every affected semantic proposal to be ratified, explicitly deferred with reason, or proven irrelevant. An administrator MAY disable or replace that optional freshness gate, including through a direct profile, without disabling path safety, bounded parsing, expected-state validation, atomicity, ledger framing, or secret exclusion.
 
 Ordinary authoring MAY carry a visible semantic proposal awaiting a caller with the required review permission. Disabling the freshness safeguard does not convert an unratified proposal into canonical truth.
@@ -313,8 +323,8 @@ qxctl implements a protected user-scope `default` engine binding registry beneat
 
 `modules/sodv-engine/` implements deterministic append-only v1/v2 release-ledger checks, caller-supplied external-state verification, provider-neutral v2 release-record proposals, non-mutating interrupted-session recovery, and disposable release-transaction inventories. `qxctl sodv ...` validates its exact inactive-undocked nine-file installation and invokes it under the common process-safety gates. The engine has no network access and never creates or moves tags, contacts package providers, declares completion, mutates recovery journals, appends records, publishes, or applies canonical changes.
 
-`modules/ssfv-engine/` implements deterministic `inspect`, structural and freshness-aware `check`, baseline-versus-live `diff`, caller-declared `propose`, and disposable JSON `graph`. It validates exact managed regions, namespaces, registry routing, record normalization, hierarchy, evidence paths, and SKVI coverage without deciding semantic truth. `qxctl ssfv ...` validates its exact inactive-undocked nine-file installation and adds no-follow baseline/input handling plus operation-specific authority and projection safety checks. The first three canonical records were authored and ratified through ordinary reviewed source changes; the engine and client never create feature records, apply proposals, persist graphs, activate a version, or dock with Maestro.
+`modules/ssfv-engine/` implements deterministic `inspect`, structural and freshness-aware `check`, baseline-versus-live `diff`, caller-declared `propose`, and disposable JSON `graph`. It validates exact managed regions, namespaces, registry routing, record normalization, hierarchy, evidence paths, and SKVI coverage without deciding semantic truth. `qxctl ssfv ...` validates its exact inactive-undocked nine-file installation and adds no-follow baseline/input handling plus operation-specific authority and projection safety checks. The four canonical records were authored and ratified through ordinary reviewed source changes; the engine and client never create feature records, apply proposals, persist graphs, activate a version, or administer Maestro.
 
 ## Non-Authorization Statement
 
-This specification claims only the explicitly identified foundation/coordinator reconciliation, authenticated-session, report-only lifecycle, and apply-coordination slices; qxctl session transitions and lifecycle profile/observation/report/boot/apply administration; exact local receipt-v2 and runtime-state adapters; SKVI/SCLV/SACV/SODV/SSFV slices; exact three-record SSFV partial bootstrap; user-default binding registry; and canonical lifecycle/receipt schemas. It does not claim canonical apply, receipt-v1 mutation, download, arbitrary entry-point execution, live service activation, coordinator replacement, an additional feature record or complete-catalog claim, an external package coordinate, an HTTP surface, a published release artifact, direct ledger mutation, or active Maestro integration.
+This specification claims only the explicitly identified foundation/coordinator reconciliation, authenticated-session, report-only lifecycle, and apply-coordination slices; qxctl session transitions and lifecycle profile/observation/report/boot/apply administration; exact local receipt-v2, runtime-state, and authenticated Maestro-presence adapters; SKVI/SCLV/SACV/SODV/SSFV slices; exact four-record SSFV partial catalog; user-default binding registry; and canonical lifecycle/receipt schemas. It does not claim canonical apply, receipt-v1 mutation, download, arbitrary entry-point execution, live service activation, coordinator replacement, an additional feature record or complete-catalog claim, an external package coordinate, an HTTP surface, a published release artifact, direct ledger mutation, or Maestro engine execution.

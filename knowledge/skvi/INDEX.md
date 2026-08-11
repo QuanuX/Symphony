@@ -2388,7 +2388,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/`; governs -> `modules/knowledge-session-coordinator/`; governs -> `modules/skvi-engine/`; governs -> `modules/sclv-engine/`; governs -> future cleared vector-engine module paths
 - consumers: vector maintainers, engine implementers, qxctl, Maestro planners, reviewers, agentic tools
 - deferred_projections: engine inventory, install receipts, Maestro presence graph
-- notes: Foundation/coordinator and all five vector-engine `0.1.0-dev` slices exist; SSFV has exactly three experimental records and explicitly partial coverage.
+- notes: Foundation/coordinator and all five vector-engine `0.1.0-dev` slices plus Maestro presence exist; SSFV has exactly four experimental records and explicitly partial coverage.
 - status: canonical
 
 ##### SPEC.md
@@ -2401,7 +2401,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `knowledge/schemas/v2/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
 - consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
 - deferred_projections: apply/provider/docking schemas, conformance evidence, engine inventory, docking graph
-- notes: Thirty-one common v1 schemas and three common v2 schemas are canonical; lifecycle profile/runtime persistence, observation, planning, report/apply journal recovery, exact staged receipt-v2/runtime actions, and applied-state commitment are implemented, the three-record SSFV bootstrap is partial, and canonical programmatic apply is disabled.
+- notes: Thirty-seven common v1 schemas and three common v2 schemas are canonical; lifecycle profile/runtime persistence, observation, planning, report/apply journal recovery, exact staged receipt-v2/runtime/Maestro-presence actions, and applied-state commitment are implemented, the four-record SSFV catalog is partial, and canonical programmatic apply is disabled.
 - status: canonical
 
 ##### SKILL.md
@@ -3530,7 +3530,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, agentic tools
 - deferred_projections: feature catalogs, encyclopedia views, publication inputs, graph views
-- notes: Defines the governing intent for the implemented engine and exact three-record partial bootstrap without granting additional-record authority.
+- notes: Defines the governing intent for the implemented engine and exact four-record partial catalog without granting additional-record authority.
 - status: canonical
 
 ##### MANIFEST.md
@@ -3539,11 +3539,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: vector contract truth
 - truth_role: canonical topology, identity, classification, and installability boundary
 - owner: SSFV maintainers
-- scope: Declares owned feature semantics, sparse distributed records, implemented engine identity, and exact three-record partial-bootstrap state.
+- scope: Declares owned feature semantics, sparse distributed records, implemented engine identity, and exact four-record partial-catalog state.
 - relationships: depends_on -> `knowledge/ssfv/INTENT.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, implementers, qxctl planners, packaging planners
 - deferred_projections: installation descriptors and Maestro docking descriptors after separate review
-- notes: The engine module and first three experimental records are implemented; repository-wide catalog completeness is not claimed.
+- notes: The engine module and four experimental records are implemented; repository-wide catalog completeness is not claimed.
 - status: canonical
 
 ##### SKILL.md
@@ -3569,7 +3569,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, validator
 - deferred_projections: portable JSON graph, catalogs, search, documentation, and analytical views
-- notes: Engine implementation and the exact three-record partial bootstrap are complete; every additional record remains separately reviewed.
+- notes: Engine implementation and the exact four-record partial catalog are complete; every additional record remains separately reviewed.
 - status: canonical
 
 ##### NAMESPACES.md
@@ -3591,7 +3591,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: canonical distributed-feature routing registry
 - truth_role: canonical mapping from stable feature IDs to owner records
 - owner: SSFV maintainers
-- scope: Defines the exact eight-field registry grammar and routes the three records in the current partial feature set.
+- scope: Defines the exact eight-field registry grammar and routes the four records in the current partial feature set.
 - relationships: depends_on -> `knowledge/ssfv/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, validator
 - deferred_projections: feature inventories and graph routing
@@ -4371,6 +4371,19 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
 - status: canonical
 
+### Maestro Semantic Feature Record
+- path: `modules/maestro/FEATURES.md`
+- title: Authenticated Durable Maestro Docking Presence Feature Record
+- surface_type: distributed SSFV feature record
+- truth_role: canonical application-level semantics for exact authenticated Maestro receptor presence
+- owner: Maestro and SSFV maintainers
+- scope: Records why, what, who, how, when, and where the implemented presence authority applies without claiming engine execution.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `modules/maestro/SPEC.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`; composes_with -> `modules/knowledge-session-coordinator/FEATURES.md`
+- consumers: SSFV engine, qxctl planners, reviewers, agentic tools, future documentation projections
+- deferred_projections: feature catalog, graph view, operator documentation
+- notes: Fourth partial-catalog record; authenticated docking is durable presence only and never invocation, scheduling, or supervision.
+- status: canonical
+
 ### Maestro CMake Build
 - path: `modules/maestro/CMakeLists.txt`
 - title: Maestro CMake Build
@@ -4515,8 +4528,229 @@ Future validator increments may add separately ratified deterministic checks wit
 - status: canonical
 
 
+### Common Validation Evidence and Policy Contract
+- path: `knowledge/VALIDATION.md`
+- title: Symphony Validation Evidence and Policy Contract
+- surface_type: common SKV contract
+- truth_role: deterministic evidence, warning-policy, baseline, delta, and administration truth
+- owner: common SKV maintainers
+- scope: Governs immutable raw detection and protected qxctl evaluation in the administrative freezing path.
+- relationships: declared_by -> `knowledge/SPEC.md`; implemented_by -> `tools/symphony-validator/SPEC.md`; administered_by -> `tools/qxctl/MANIFEST.md`
+- consumers: validator, qxctl, reviewers, agentic tools
+- deferred_projections: Markdown report, CI integration, automatic remediation
+- notes: Not a vector or engine; policy cannot downgrade violations or narrow detection.
+- status: canonical
+
+### Validation Result Schema
+- path: `knowledge/schemas/v1/validation-result.schema.json`
+- title: Validation Result Schema
+- surface_type: canonical JSON Schema
+- truth_role: deterministic raw evidence and optional qxctl evaluation contract
+- owner: common SKV maintainers
+- scope: Governs stable findings, digests, summaries, and evaluation identity.
+- relationships: governed_by -> `knowledge/VALIDATION.md`; implemented_by -> `tools/symphony-validator/src/projector.cpp`; consumed_by -> `tools/qxctl/internal/validation/client.go`
+- consumers: validator, qxctl, reviewers, agentic tools
+- deferred_projections: Markdown report, external analytics
+- notes: Contains no collection timestamp and preserves immutable embedded evidence.
+- status: canonical
+
+### Validation Policy Schema
+- path: `knowledge/schemas/v1/validation-policy.schema.json`
+- title: Validation Policy Schema
+- surface_type: canonical JSON Schema
+- truth_role: protected warning disposition and presentation contract
+- owner: common SKV maintainers
+- scope: Governs caller-neutral noncanonical policy generations and exact rule overrides.
+- relationships: governed_by -> `knowledge/VALIDATION.md`; implemented_by -> `tools/qxctl/internal/validation/policy.go`
+- consumers: qxctl, reviewers, agentic tools
+- deferred_projections: remote policy administration
+- notes: Optional warning policy never changes raw detector behavior.
+- status: canonical
+
+### Validation Baseline Schema
+- path: `knowledge/schemas/v1/validation-baseline.schema.json`
+- title: Validation Baseline Schema
+- surface_type: canonical JSON Schema
+- truth_role: protected repository/version-bound warning inventory contract
+- owner: common SKV maintainers
+- scope: Governs new, unchanged, and resolved warning comparison evidence.
+- relationships: governed_by -> `knowledge/VALIDATION.md`; implemented_by -> `tools/qxctl/internal/validation/policy.go`
+- consumers: qxctl, reviewers, agentic tools
+- deferred_projections: remote baseline service
+- notes: A baseline is acknowledgement evidence, not ratification or resolution.
+- status: canonical
+
+### Validator Structured Projector Interface
+- path: `tools/symphony-validator/src/projector.hpp`
+- title: Validator Structured Projector Interface
+- surface_type: implementation source
+- truth_role: deterministic result-v1 projector interface
+- owner: validator maintainers
+- scope: Declares the complete-evidence structured output boundary.
+- relationships: implements -> `tools/symphony-validator/SPEC.md`; conforms_to -> `knowledge/schemas/v1/validation-result.schema.json`
+- consumers: validator build, reviewers
+- deferred_projections: additional formats
+- notes: Authority-free and read-only.
+- status: canonical
+
+### Validator Structured Projector
+- path: `tools/symphony-validator/src/projector.cpp`
+- title: Validator Structured Projector
+- surface_type: implementation source
+- truth_role: stable finding identity and deterministic digest implementation
+- owner: validator maintainers
+- scope: Projects the complete in-memory evidence sequence without policy input.
+- relationships: implements -> `tools/symphony-validator/SPEC.md`; conforms_to -> `knowledge/schemas/v1/validation-result.schema.json`
+- consumers: validator CLI, qxctl
+- deferred_projections: additional formats
+- notes: Filters and baselines never enter this detector-side projection.
+- status: canonical
+
+### Validator Install Receipt Template
+- path: `tools/symphony-validator/cmake/install-receipt.json.in`
+- title: Validator Install Receipt Template
+- surface_type: implementation receipt template
+- truth_role: exact nine-file versioned package ownership truth
+- owner: validator maintainers
+- scope: Supports independent prefix installation and qxctl validation.
+- relationships: governed_by -> `tools/symphony-validator/INSTALL.md`; consumed_by -> `tools/qxctl/internal/knowledgeengine/client.go`
+- consumers: CMake, qxctl, administrators
+- deferred_projections: external package registries
+- notes: Installs no alias, listener, hook, or runtime presence.
+- status: canonical
+
+### Validator Uninstall Procedure
+- path: `tools/symphony-validator/cmake/uninstall.cmake.in`
+- title: Validator Uninstall Procedure
+- surface_type: implementation lifecycle surface
+- truth_role: exact receipt-owned removal procedure
+- owner: validator maintainers
+- scope: Removes only installed validator package files.
+- relationships: governed_by -> `tools/symphony-validator/INSTALL.md`; preserves -> `knowledge/VALIDATION.md`
+- consumers: CMake, administrators
+- deferred_projections: external package-manager removal
+- notes: Protected qxctl profiles and baselines remain outside the install prefix.
+- status: canonical
+
+### qxctl Validation Command Surface
+- path: `tools/qxctl/cmd/qxctl/validation.go`
+- title: qxctl Validation Command Surface
+- surface_type: implementation source
+- truth_role: Cobra scan, debug, profile, and baseline grammar
+- owner: qxctl maintainers
+- scope: Administers full-scan validation and protected noncanonical evaluation.
+- relationships: implements -> `knowledge/VALIDATION.md`; invokes -> `tools/qxctl/internal/validation/client.go`
+- consumers: qxctl, administrators, agentic tools
+- deferred_projections: remote API, CI mutation
+- notes: Debug filters apply only after full detector execution.
+- status: canonical
+
+### qxctl Validation Types
+- path: `tools/qxctl/internal/validation/types.go`
+- title: qxctl Validation Types
+- surface_type: implementation source
+- truth_role: exact Go protocol and state representations
+- owner: qxctl maintainers
+- scope: Implements result, policy, baseline, and projection structures.
+- relationships: conforms_to -> `knowledge/VALIDATION.md`; conforms_to -> `knowledge/schemas/v1/validation-result.schema.json`
+- consumers: qxctl validation client and store
+- deferred_projections: remote API
+- notes: Contains no credentials or canonical knowledge.
+- status: canonical
+
+### qxctl Validation Digests
+- path: `tools/qxctl/internal/validation/digest.go`
+- title: qxctl Validation Digests
+- surface_type: implementation source
+- truth_role: canonical JSON, identity, timestamp, and digest validation mechanics
+- owner: qxctl maintainers
+- scope: Verifies deterministic evidence and protected state identities.
+- relationships: implements -> `knowledge/VALIDATION.md`; conforms_to -> `knowledge/TIME.md`
+- consumers: qxctl validation client and store
+- deferred_projections: none
+- notes: Uses STSC whole-second UTC for durable state.
+- status: canonical
+
+### qxctl Validator Client
+- path: `tools/qxctl/internal/validation/client.go`
+- title: qxctl Validator Client
+- surface_type: implementation source
+- truth_role: exact installed process invocation and raw evidence verification
+- owner: qxctl maintainers
+- scope: Invokes one receipt-validated validator with an empty environment and hard bounds.
+- relationships: implements -> `knowledge/VALIDATION.md`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`
+- consumers: qxctl validation commands
+- deferred_projections: remote execution
+- notes: Rejects identity, summary, occurrence, subject, evidence, and result drift.
+- status: canonical
+
+### qxctl Validation Evaluation
+- path: `tools/qxctl/internal/validation/evaluate.go`
+- title: qxctl Validation Evaluation
+- surface_type: implementation source
+- truth_role: warning delta, disposition, presentation, and debug projection logic
+- owner: qxctl maintainers
+- scope: Evaluates verified raw evidence without modifying it.
+- relationships: implements -> `knowledge/VALIDATION.md`; conforms_to -> `knowledge/schemas/v1/validation-result.schema.json`
+- consumers: qxctl validation commands
+- deferred_projections: automatic remediation
+- notes: Violations always fail; incompatible baselines fail closed.
+- status: canonical
+
+### qxctl Validation Policy Store
+- path: `tools/qxctl/internal/validation/policy.go`
+- title: qxctl Validation Policy Store
+- surface_type: implementation source
+- truth_role: protected policy and baseline semantic state mechanics
+- owner: qxctl maintainers
+- scope: Implements exact compare-and-swap, lineage, retry, timestamp, and digest rules.
+- relationships: implements -> `knowledge/VALIDATION.md`; conforms_to -> `knowledge/schemas/v1/validation-policy.schema.json`; conforms_to -> `knowledge/schemas/v1/validation-baseline.schema.json`
+- consumers: qxctl validation commands
+- deferred_projections: remote state service
+- notes: Noncanonical state only.
+- status: canonical
+
+### qxctl Validation Unix State
+- path: `tools/qxctl/internal/validation/state_unix.go`
+- title: qxctl Validation Unix State
+- surface_type: implementation source
+- truth_role: protected Linux and macOS persistence mechanics
+- owner: qxctl maintainers
+- scope: Implements no-follow traversal, locks, ownership/modes, fsync, and atomic replacement.
+- relationships: implements -> `knowledge/VALIDATION.md`; called_by -> `tools/qxctl/internal/validation/policy.go`
+- consumers: qxctl validation store
+- deferred_projections: native Windows state
+- notes: Linux-first with supported macOS development behavior.
+- status: canonical
+
+### qxctl Validation Unsupported Platform Boundary
+- path: `tools/qxctl/internal/validation/state_unsupported.go`
+- title: qxctl Validation Unsupported Platform Boundary
+- surface_type: implementation source
+- truth_role: fail-closed unsupported native operating-system behavior
+- owner: qxctl maintainers
+- scope: Prevents weaker state persistence substitution.
+- relationships: implements -> `knowledge/VALIDATION.md`; complements -> `tools/qxctl/internal/validation/state_unix.go`
+- consumers: qxctl cross-builds
+- deferred_projections: native Windows engine
+- notes: Windows operation uses WSL or remote qxctl administration.
+- status: canonical
+
+### qxctl Validation Tests
+- path: `tools/qxctl/internal/validation/validation_test.go`
+- title: qxctl Validation Tests
+- surface_type: implementation test
+- truth_role: compare-and-swap, durability, delta, and fail-closed evidence
+- owner: qxctl maintainers
+- scope: Verifies protected profiles/baselines and deterministic evaluation.
+- relationships: verifies -> `tools/qxctl/internal/validation/policy.go`; verifies -> `tools/qxctl/internal/validation/evaluate.go`; verifies -> `tools/qxctl/internal/validation/state_unix.go`
+- consumers: qxctl maintainers, reviewers
+- deferred_projections: none
+- notes: Covers semantic retry, stale state, incompatible baseline, and symlink rejection.
+- status: canonical
+
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, thirty-seven common SKV v1 JSON Schemas, three common SKV v2 JSON Schemas, three SSIAG authorization JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, forty common SKV v1 JSON Schemas, three common SKV v2 JSON Schemas, three SSIAG authorization JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:validation:result:v1",
+  "title": "Symphony validation result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "format_version", "evidence", "evaluation", "result_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.validation.result.v1"},
+    "format_version": {"const": 1},
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "validator_id", "validator_version", "repository_identity_digest", "outcome",
+        "exit_code", "findings", "summary", "evidence_digest"
+      ],
+      "properties": {
+        "validator_id": {"const": "symphony-validator"},
+        "validator_version": {"$ref": "#/$defs/version"},
+        "repository_identity_digest": {"$ref": "#/$defs/digest"},
+        "outcome": {"enum": ["pass", "violation"]},
+        "exit_code": {"type": "integer", "minimum": 0, "maximum": 255},
+        "findings": {
+          "type": "array",
+          "maxItems": 16384,
+          "items": {"$ref": "#/$defs/finding"}
+        },
+        "summary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pass", "warning", "violation", "other", "total"],
+          "properties": {
+            "pass": {"type": "integer", "minimum": 0, "maximum": 16384},
+            "warning": {"type": "integer", "minimum": 0, "maximum": 16384},
+            "violation": {"type": "integer", "minimum": 0, "maximum": 16384},
+            "other": {"type": "integer", "minimum": 0, "maximum": 16384},
+            "total": {"type": "integer", "minimum": 0, "maximum": 16384}
+          }
+        },
+        "evidence_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "evaluation": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "profile_id", "policy_digest", "baseline_id", "baseline_digest", "outcome",
+            "new_warning_occurrence_ids", "unchanged_warning_occurrence_ids",
+            "resolved_warning_occurrence_ids", "review_rule_ids", "required_rule_ids",
+            "displayed_occurrence_ids", "evaluation_digest"
+          ],
+          "properties": {
+            "profile_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+            "policy_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+            "baseline_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+            "baseline_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+            "outcome": {"enum": ["pass", "review_required", "failed"]},
+            "new_warning_occurrence_ids": {"$ref": "#/$defs/digests"},
+            "unchanged_warning_occurrence_ids": {"$ref": "#/$defs/digests"},
+            "resolved_warning_occurrence_ids": {"$ref": "#/$defs/digests"},
+            "review_rule_ids": {"$ref": "#/$defs/tokens"},
+            "required_rule_ids": {"$ref": "#/$defs/tokens"},
+            "displayed_occurrence_ids": {"$ref": "#/$defs/digests"},
+            "evaluation_digest": {"$ref": "#/$defs/digest"}
+          }
+        }
+      ]
+    },
+    "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "category", "rule_id", "detail", "scope", "attributes", "occurrence_id", "subject_id"
+      ],
+      "properties": {
+        "category": {
+          "enum": ["pass", "warning", "violation", "deferred", "absent", "stale", "unknown", "blocked"]
+        },
+        "rule_id": {"$ref": "#/$defs/token"},
+        "detail": {"type": "string", "maxLength": 65536},
+        "scope": {"enum": ["active", "historical", "system"]},
+        "attributes": {
+          "type": "object",
+          "maxProperties": 32,
+          "propertyNames": {"pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,63}$"},
+          "additionalProperties": {"type": "string", "maxLength": 4096}
+        },
+        "occurrence_id": {"$ref": "#/$defs/digest"},
+        "subject_id": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "digests": {
+      "type": "array", "maxItems": 16384, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/digest"}
+    },
+    "token": {
+      "type": "string", "minLength": 1, "maxLength": 256,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "tokens": {
+      "type": "array", "maxItems": 2048, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/token"}
+    },
+    "version": {
+      "type": "string", "minLength": 1, "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
+    }
+  }
+}

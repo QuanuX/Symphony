@@ -9,9 +9,9 @@
     {
       "cross_vector_references": [
         {
-          "applicability": "not_applicable",
-          "reason": "The installed-undocked coordinator can report an exact desired receptor and rejects dock/undock execution; its bindings, report/apply journals, and applied evidence remain outside Maestro.",
-          "reference": null,
+          "applicability": "applicable",
+          "reason": "The coordinator derives and serializes exact docking actions while the separately installed Maestro presence authority owns their authenticated operational state.",
+          "reference": "modules/maestro/SPEC.md",
           "vector": "maestro"
         },
         {
@@ -54,11 +54,12 @@
         "tools/qxctl/cmd/qxctl/session_test.go verifies explicit login, refresh, logout, retry, bounded recovery, reauthentication, and interrupted-close resumption over the coordinator primitives.",
         "tools/qxctl/internal/knowledgelifecycle/profile_test.go verifies protected desired-profile compare-and-swap, semantic retry, linked generations, fixed-layout v1/v2 receipt observation, content drift, unknown-package preservation, and stable inventory identity.",
         "tools/qxctl/cmd/qxctl/lifecycle_test.go verifies report-plan safety, dynamic scheduler invariants, staged-install exception isolation, strict v1/v2 lifecycle-journal IPC validation, exact apply result validation, critical-extension refusal, and lifecycle Cobra grammar.",
-        "tools/qxctl/internal/knowledgelifecycle/executor_test.go verifies protected runtime compare-and-swap/idempotency, prepared observation-drift refusal, staged receipt-v2 install/uninstall and interruption replay, separate rollback proof, and conflicting administrator-file protection.",
+        "tools/qxctl/internal/knowledgelifecycle/executor_test.go verifies protected runtime compare-and-swap/idempotency, prepared observation-drift refusal, staged receipt-v2 install/uninstall and interruption replay, separate rollback proof, conflicting administrator-file protection, and exact Maestro docking adapter evidence.",
+        "modules/maestro/tests/maestro_test.cpp and tools/qxctl/internal/maestroclient/client_test.go verify exact receptor presence, authorization binding, receipt identity, mutation retry, and forward recovery without engine execution.",
         "tools/qxctl/cmd/qxctl/main.go, tools/qxctl/cmd/qxctl/lifecycle.go, tools/qxctl/cmd/qxctl/lifecycle_apply.go, tools/qxctl/internal/knowledgelifecycle/executor.go, tools/qxctl/internal/ssiagclient/client.go, and tools/qxctl/internal/knowledgeengine/client.go authenticate SSIAG, validate safe authorization evidence, invoke the exact bound coordinator, collect lifecycle observations, serialize external actions, and re-observe before finalization."
       ],
       "feature_id": "ssfv:symphony:knowledge-session-coordinator",
-      "how": "The C++26 symphony-knowledge-session process statically links the shared foundation, accepts the common bounded process envelope, and keeps reconciliation contexts, authenticated authority epochs, report lifecycle streams, and apply lifecycle streams separate. Each durable stream uses a private no-follow lock, fsync-backed dual slots, an atomic head, content digests, stable operation IDs, exact compare-and-swap state, opaque-extension preservation, and evidence-based forward recovery. The lifecycle planner validates complete caller-supplied desired and observed evidence and derives stable forward/inverse actions from a dependency-ready set. Report boot persists non-executable source evidence in v1. Separately authorized v2 prepare records one active attempt before external action; finalize accepts complete re-observation only when it proves the target; close selects immutable content-addressed applied evidence. Stable inventory excludes only collection-time document fields. Go qxctl revalidates the exact coordinator, obtains fresh SSIAG decisions per phase, maintains desired and generic runtime state, scans fixed receipt layouts, executes only reviewed staged receipt-v2 or selection/activation adapters, and re-observes before finalization. The planner isolates cycles and blockers, reports noncritical advisories, binds exact receptors, and safely sequences package changes without the coordinator discovering packages or performing host mutation. Explicit session transitions retain their independent stable-event recovery behavior.",
+      "how": "The C++26 symphony-knowledge-session process statically links the shared foundation, accepts the common bounded process envelope, and keeps reconciliation contexts, authenticated authority epochs, report lifecycle streams, and apply lifecycle streams separate. Each durable stream uses a private no-follow lock, fsync-backed dual slots, an atomic head, content digests, stable operation IDs, exact compare-and-swap state, opaque-extension preservation, and evidence-based forward recovery. The lifecycle planner validates complete caller-supplied desired and observed evidence and derives stable forward/inverse actions from a dependency-ready set. Report boot persists non-executable source evidence in v1. Separately authorized v2 prepare records one active attempt, including an exact ready dock or undock, before external action; finalize accepts complete re-observation only when it proves the target; close selects immutable content-addressed applied evidence. Stable inventory excludes only collection-time document fields. Go qxctl revalidates the exact coordinator, obtains fresh SSIAG decisions per phase, maintains desired and generic runtime state, scans fixed receipt layouts, executes only reviewed staged receipt-v2, selection/activation, or authenticated Maestro-presence adapters, and re-observes before finalization. The planner isolates cycles and blockers, reports noncritical advisories, binds exact receptors, and safely sequences package and receptor changes without the coordinator discovering packages, writing Maestro state, or performing host mutation. Explicit session transitions retain their independent stable-event recovery behavior.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -101,21 +102,27 @@
         "tools/qxctl/internal/knowledgelifecycle/runtime.go",
         "tools/qxctl/internal/knowledgelifecycle/scan_unix.go",
         "tools/qxctl/internal/knowledgelifecycle/state_unix.go",
+        "tools/qxctl/internal/maestroclient/client.go",
         "tools/qxctl/internal/ssiagclient/client.go"
       ],
       "kind": "feature",
       "non_claims": [
         "Does not independently authenticate the operating-system caller or decide permission; SSIAG owns those decisions, and the coordinator validates only the supplied exact safe evidence.",
         "Does not implement canonical apply; it mutates only protected noncanonical reconciliation, authenticated-session, lifecycle-journal, runtime-state, receipt-v2 package, and applied-state surfaces within the explicit lifecycle contract.",
-        "Does not call SSIAG or STAV directly, consume credentials or provider secrets, integrate Maestro, or mutate canonical repository state.",
+        "Does not call SSIAG or STAV directly, consume credentials or provider secrets, write Maestro presence, or mutate canonical repository state.",
         "The coordinator does not collect lifecycle observations, administer desired/runtime profiles, or execute host actions; qxctl performs those functions while the coordinator serializes attempts and verifies applied evidence.",
-        "Does not mutate receipt-v1 packages, download packages, execute arbitrary receipt entry points, activate live services/processes, replace the active coordinator, rewrite engine bindings, or dock with Maestro.",
+        "Does not mutate receipt-v1 packages, download packages, execute arbitrary receipt entry points, activate live services/processes, replace the active coordinator, rewrite engine bindings, or execute a docked engine.",
         "Does not claim system or TOPS provisioning, active docking, or a published module release."
       ],
       "owner_contract": "modules/knowledge-session-coordinator/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",
       "record_version": 2,
       "relationships": [
+        {
+          "rationale": "The coordinator derives, serializes, and verifies docking actions while Maestro alone persists the authenticated receptor presence outcome.",
+          "target_feature_id": "ssfv:symphony:maestro-presence-authority",
+          "type": "composes_with"
+        },
         {
           "rationale": "The coordinator statically links and relies on the shared process, digest, path, and snapshot mechanics.",
           "target_feature_id": "ssfv:symphony:knowledge-vector-engine-foundation",

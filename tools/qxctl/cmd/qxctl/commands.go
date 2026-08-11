@@ -163,6 +163,10 @@ func execute(args []string) int {
 			printUsage()
 			return 1
 		}
+		var validationFailure *validationOutcomeError
+		if errors.As(err, &validationFailure) {
+			return 1
+		}
 		fmt.Printf("%s failed: %v\n", failurePrefix(args), err)
 		return 1
 	}
@@ -218,6 +222,7 @@ func newRootCommand() (*cobra.Command, error) {
 	root.AddCommand(
 		ssiag, stav, newKnowledgeCommand(), newSKVICommand(), newSCLVCommand(),
 		newSACVCommand(), newSODVCommand(), newSSFVCommand(), newMaestroCommand(),
+		newValidateCommand(),
 	)
 	return root, nil
 }
@@ -940,7 +945,7 @@ func exactOneUsageArg(_ *cobra.Command, args []string) error {
 
 func knownTopLevel(value string) bool {
 	switch value {
-	case "--help", "--version", "doctor", "contracts", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "ssfv", "maestro":
+	case "--help", "--version", "doctor", "contracts", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "ssfv", "maestro", "validate":
 		return true
 	default:
 		return false
@@ -1037,6 +1042,13 @@ func failurePrefix(args []string) string {
 			case "inspect", "status", "recover":
 				return "maestro " + args[1]
 			}
+		}
+	case "validate":
+		if len(args) > 1 && (args[1] == "scan" || args[1] == "debug") {
+			return "validate " + args[1]
+		}
+		if len(args) > 2 && (args[1] == "profile" || args[1] == "baseline") {
+			return "validate " + args[1] + " " + args[2]
 		}
 	}
 	return args[0]

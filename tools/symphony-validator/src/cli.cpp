@@ -21,6 +21,7 @@
 #include "validator_build.hpp"
 #include "sacv_registry.hpp"
 #include "sodv_releases.hpp"
+#include "projector.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -36,7 +37,7 @@ int run_cli(const std::vector<std::string>& args) {
                   << "Commands:\n"
                   << "  --help                Show this help message\n"
                   << "  --version             Show version information\n"
-                  << "  check --repo <path>   Check repository path validity\n";
+                  << "  check --repo <path> [--json]   Check repository and optionally emit structured evidence\n";
         return 0;
     }
 
@@ -46,14 +47,19 @@ int run_cli(const std::vector<std::string>& args) {
     }
 
     if (command == "check") {
-        if (args.size() == 3 && args[1] == "--repo") {
+        const bool json_output = args.size() == 4 && args[1] == "--repo" && args[3] == "--json";
+        if ((args.size() == 3 || json_output) && args[1] == "--repo") {
             int pass_count = 0;
             int warning_count = 0;
             int violation_count = 0;
             int final_exit = 0;
+            std::vector<std::string> all_messages;
 
             auto process_msg = [&](const std::string& msg) {
-                std::cout << msg << "\n";
+                all_messages.push_back(msg);
+                if (!json_output) {
+                    std::cout << msg << "\n";
+                }
                 if (msg.find("evidence pass") == 0) pass_count++;
                 else if (msg.find("evidence warning") == 0) warning_count++;
                 else if (msg.find("evidence violation") == 0) violation_count++;
@@ -66,13 +72,15 @@ int run_cli(const std::vector<std::string>& args) {
             };
 
             auto print_summary = [&]() {
-                std::cout << "summary pass=" << pass_count << " warning=" << warning_count << " violation=" << violation_count << " exit=" << final_exit << "\n";
+                if (json_output) {
+                    std::cout << project_validation_result(args[2], all_messages, final_exit) << "\n";
+                } else {
+                    std::cout << "summary pass=" << pass_count << " warning=" << warning_count << " violation=" << violation_count << " exit=" << final_exit << "\n";
+                }
             };
 
             PathCheckResult result = check_repository_path(args[2]);
-            if (!result.message.empty()) {
-                std::cout << result.message << "\n";
-            }
+            process_msg(format_evidence(result.evidence, "repository.path", result.message));
             if (!result.is_valid_directory) {
                 final_exit = 2;
                 print_summary();
@@ -259,7 +267,7 @@ int run_cli(const std::vector<std::string>& args) {
             print_summary();
             return final_exit;
         } else {
-            std::cerr << "error: check requires --repo <path>\n";
+            std::cerr << "error: check requires --repo <path> [--json]\n";
             return 1;
         }
     }
