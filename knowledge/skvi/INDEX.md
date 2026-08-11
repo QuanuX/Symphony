@@ -4228,7 +4228,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Fixture evidence only.
 - status: canonical
 
-+### Maestro Receptor Descriptor Schema
+### Maestro Receptor Descriptor Schema
 - path: `knowledge/schemas/v1/maestro-receptor-descriptor.schema.json`
 - title: Maestro Receptor Descriptor Schema
 - surface_type: canonical JSON Schema
@@ -4747,6 +4747,45 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: qxctl maintainers, reviewers
 - deferred_projections: none
 - notes: Covers semantic retry, stale state, incompatible baseline, and symlink rejection.
+- status: canonical
+
+### SSFV Engine Canonical Repository Tests
+- path: `modules/ssfv-engine/tests/ssfv_test.cpp`
+- title: SSFV Engine Canonical Repository Tests
+- surface_type: implementation test
+- truth_role: canonical-catalog count, graph, hierarchy, freshness, and proposal-boundary evidence
+- owner: SSFV engine maintainers
+- scope: Verifies the exact partial SSFV catalog together with bounded fixture, graph, proposal, and failure behavior.
+- relationships: verifies -> `modules/ssfv-engine/src/ssfv.cpp`; conforms_to -> `knowledge/ssfv/SPEC.md`
+- consumers: SSFV engine maintainers, validator, reviewers
+- deferred_projections: none
+- notes: Current canonical assertions cover four records and four owner files without claiming repository-wide completeness.
+- status: canonical
+
+### qxctl Knowledge Engine Client Tests
+- path: `tools/qxctl/internal/knowledgeengine/client_test.go`
+- title: qxctl Knowledge Engine Client Tests
+- surface_type: implementation test
+- truth_role: exact receipt, bounded JSON, and installed-process trust evidence
+- owner: qxctl maintainers
+- scope: Verifies exact installation identity, receipt-owned files, bounded response parsing, and validator package inspection.
+- relationships: verifies -> `tools/qxctl/internal/knowledgeengine/client.go`; governed_by -> `tools/qxctl/MANIFEST.md`
+- consumers: qxctl maintainers, validator integration, reviewers
+- deferred_projections: none
+- notes: Does not authorize installation mutation, process activation, or weaker receipt traversal.
+- status: canonical
+
+### Symphony Validator CLI Implementation
+- path: `tools/symphony-validator/src/cli.cpp`
+- title: Symphony Validator CLI Implementation
+- surface_type: implementation source
+- truth_role: complete detector orchestration, exit status, and line/JSON projection dispatch truth
+- owner: validator maintainers
+- scope: Runs the full read-only checker set and emits either deterministic line evidence or the complete structured result projection.
+- relationships: implements -> `tools/symphony-validator/SPEC.md`; invokes -> `tools/symphony-validator/src/projector.cpp`; conforms_to -> `knowledge/VALIDATION.md`
+- consumers: validator executable, qxctl, tests, reviewers
+- deferred_projections: additional output formats
+- notes: Policy, baselines, filters, remediation, and canonical mutation remain outside the detector process.
 - status: canonical
 
 ## Deferred Projections
