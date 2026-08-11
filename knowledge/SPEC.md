@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact three-record SSFV partial bootstrap, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, explicit qxctl session transitions, implemented report-only lifecycle planning/journaling, and separately authorized apply-compatible coordination defined by `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, host boot hook, live process activation, receipt-v1 mutation, arbitrary entry-point execution, or docking capability may be inferred from these contract slices.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact three-record SSFV partial bootstrap, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, explicit qxctl session transitions, implemented report-only lifecycle planning/journaling, separately authorized apply-compatible coordination, and Maestro receptor presence defined by `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, host boot hook, live process activation, receipt-v1 mutation, arbitrary entry-point execution, or Maestro behavior beyond authenticated durable presence may be inferred from these contract slices.
 
 ## Purpose
 
@@ -66,7 +66,12 @@ The v1 identifier family is:
 | `symphony.knowledge.install-receipt.v2` | immutable content-addressed package ownership and capability evidence |
 | `symphony.knowledge.lifecycle-boot-journal.v2` | separately locked apply-capable lifecycle transaction and attempt evidence |
 | `symphony.knowledge.lifecycle-boot-head.v2` | atomic dual-slot apply-journal head |
-| `symphony.maestro.knowledge-engine-docking.v1` | Maestro docking projection |
+| `symphony.maestro.knowledge-engine-docking.v1` | exact qxctl-to-Maestro presence command |
+| `symphony.maestro.receptor-descriptor.v1` | exact receptor identity and compatibility |
+| `symphony.maestro.docking-presence.v1` | one authenticated component disposition |
+| `symphony.maestro.docking-presence-registry.v1` | digest-linked per-receptor presence generation |
+| `symphony.maestro.docking-presence-head.v1` | atomic dual-slot registry selector |
+| `symphony.maestro.docking-result.v1` | bounded presence and recovery result |
 
 The initial exact schemas are:
 
@@ -96,6 +101,12 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/lifecycle-boot-result.schema.json`;
 - `knowledge/schemas/v1/lifecycle-apply-command.schema.json`;
 - `knowledge/schemas/v1/lifecycle-apply-result.schema.json`;
+- `knowledge/schemas/v1/maestro-receptor-descriptor.schema.json`;
+- `knowledge/schemas/v1/maestro-docking-command.schema.json`;
+- `knowledge/schemas/v1/maestro-docking-presence.schema.json`;
+- `knowledge/schemas/v1/maestro-docking-presence-registry.schema.json`;
+- `knowledge/schemas/v1/maestro-docking-presence-head.schema.json`;
+- `knowledge/schemas/v1/maestro-docking-result.schema.json`;
 - `knowledge/schemas/v1/temporal.schema.json`;
 - `knowledge/schemas/v2/install-receipt.schema.json`;
 - `knowledge/schemas/v2/lifecycle-boot-journal.schema.json`;
@@ -185,6 +196,7 @@ qxctl knowledge session transition --event login|refresh|logout --event-id ID ..
 qxctl knowledge lifecycle profile list|show|set|remove ...
 qxctl knowledge lifecycle observe|report|boot|status|recover ...
 qxctl knowledge lifecycle apply|apply-status|apply-recover ...
+qxctl maestro inspect|status|recover ...
 qxctl knowledge proposals ...
 qxctl knowledge apply ...        # canonical knowledge apply; reserved and disabled
 ```
@@ -209,7 +221,7 @@ The implemented user-scope `qxctl knowledge session ...` surface revalidates the
 
 The implemented `qxctl knowledge lifecycle profile list|show|set|remove` surface maintains protected noncanonical per-TOPS desired profiles beneath the selected state root. Set/remove require exact expected profile state; qxctl generates linked generations and content digests, serializes through a no-follow lock, and commits durable same-directory replacement. `observe` scans only fixed receipt paths under explicit or profile-selected roots, validates known v1 packages through exact observation adapters and v2 packages through content-addressed ownership evidence, and preserves unsupported or invalid packages as explicit unknown evidence. `report` re-reads the profile, re-observes the roots, obtains fresh SSIAG authorization bound to exact evidence, and validates a disposable plan. `boot` persists a report-only v1 source journal; `status` and `recover` inspect or repair only that chain.
 
-An `apply-compatible` profile may be converged only through explicit `knowledge lifecycle apply`. The caller supplies a stable base operation ID, exact report source digest, exact apply-journal and applied-state compare-and-swap values, and any trusted staged receipt-v2 roots. qxctl re-observes and replans before each action, obtains a fresh exact SSIAG decision for status/prepare/finalize/close, and asks the coordinator to commit a prepared attempt before invoking an adapter. Generic adapters install/uninstall exact receipt-v2 files with receipt-last commit semantics or update protected selection/activation state; they never download, run receipt entry points, mutate receipt v1, change engine bindings, replace the coordinator, or dock. qxctl re-observes after every attempt and the coordinator finalizes only when the evidence proves the transition. A separate v2 dual-slot stream persists attempts and selects content-addressed applied state. `apply-status` is read-only and `apply-recover` repairs only one unique digest-linked chain while preserving an active action. Collection timestamps remain documentary and do not change semantic transaction identities.
+An `apply-compatible` profile may be converged only through explicit `knowledge lifecycle apply`. The caller supplies a stable base operation ID, exact report source digest, exact apply-journal and applied-state compare-and-swap values, and any trusted staged receipt-v2 roots. qxctl re-observes and replans before each action, obtains a fresh exact SSIAG decision for status/prepare/finalize/close, and asks the coordinator to commit a prepared attempt before invoking an adapter. Generic adapters install/uninstall exact receipt-v2 files with receipt-last commit semantics, update protected selection/activation state, or commit exact Maestro presence; they never download, run receipt entry points, mutate receipt v1, change engine bindings, replace the coordinator, or ask Maestro to execute an engine. qxctl re-observes after every attempt and the coordinator finalizes only when the evidence proves the transition. A separate v2 dual-slot stream persists attempts and selects content-addressed applied state. `apply-status` is read-only and `apply-recover` repairs only one unique digest-linked chain while preserving an active action. Collection timestamps remain documentary and do not change semantic transaction identities.
 
 ## Authority and Apply Gate
 
@@ -245,6 +257,8 @@ JSON/JSONL, search, graph, database, documentation, SDK, and analytical outputs 
 Every engine and the coordinator MUST support independent install, upgrade, rollback, and uninstall. Installation never silently changes repository hooks, canonical files, engine bindings, or Maestro state. Uninstall removes only files owned by the selected receipt and preserves canonical knowledge, binding diagnostics, and session/recovery evidence.
 
 Every package declares compatible receptors; protected desired state carries any administrator-selected receptor. Installation without Maestro is valid and reports `installed_undocked`. Multiple compatible versions may coexist, dock, undock, and activate under explicit administrator selection. A newer installation MUST NOT silently replace the active version.
+
+The independently installed `modules/maestro/` C++ process is the single serialized writer of `symphony.maestro.knowledge-engine.v1` presence. `inspect` is safe metadata. `status`, lifecycle-only `dock|undock`, and `recover` require fresh exact caller-neutral SSIAG capability evidence. Per-TOPS/per-receptor state uses a private lock, alternating registry slots, an atomic head, content digests, expected-state compare-and-swap, stable operation identities, file/directory synchronization, and explicit unique-forward recovery. qxctl observes that presence and supplies it to the coordinator; the coordinator prepares and verifies the action but never writes Maestro state. Presence is not package installation, activation, process execution, supervision, semantic authority, or canonical knowledge.
 
 Binding registry v1 remains closed to its six ratified roles and MUST NOT be expanded in place to simulate generic lifecycle support. Canonical cross-vector desired-state, observed-state, dependency-driven plan, runtime-state, applied-state, generic receipt v2, and report/apply transaction contracts are defined in `knowledge/LIFECYCLE.md` and their exact schemas. Additions, removals, upgrades, and rollbacks are digest differences to be planned, not implicit permission to mutate. Unmanaged packages and temporarily missing selected packages are preserved; no first-boot path may infer newest-version preference, delete a degraded binding, execute unknown discovered code, or rewrite a v1 receipt. `report` remains the default; explicit authenticated `apply-compatible` execution uses its own v2 stream and exact source-report evidence.
 

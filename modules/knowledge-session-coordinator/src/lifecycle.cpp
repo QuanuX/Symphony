@@ -1046,7 +1046,7 @@ engine::Json build_plan(
                     auto effective_activation = observed->activation;
                     if (must_undock) {
                         previous = add_action(actions, component_id, "undock", observed->observation_digest,
-                            component.target_state_digest, {*component.selected_receipt},
+                            component.target_state_digest, {*observed->selected_receipt},
                             {"authorization_required_at_apply", "maestro_receptor_evidence"},
                             std::nullopt, previous);
                     }
@@ -1130,7 +1130,7 @@ engine::Json build_plan(
             } else if (observed != nullptr) {
                 if (observed->docking == "docked") {
                     previous = add_action(actions, component_id, "undock", observed->observation_digest,
-                        component.target_state_digest, {},
+                        component.target_state_digest, {*observed->selected_receipt},
                         {"authorization_required_at_apply", "maestro_receptor_evidence"},
                         std::nullopt, previous);
                 }

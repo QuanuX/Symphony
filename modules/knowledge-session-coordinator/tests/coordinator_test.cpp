@@ -288,7 +288,8 @@ void test_descriptor_and_inspect() {
             "reconciliation compatibility declaration missing");
     require(result.at("authenticated_session").at("two_way_procedural_compatibility") == true,
             "authenticated session compatibility declaration missing");
-    require(result.at("maestro_docking_enabled") == false, "docking must remain disabled");
+    require(result.at("maestro_docking_enabled") == true,
+            "external Maestro docking coordination must be enabled");
 
     require_error([&] {
         static_cast<void>(session::handle_request(request("inspect", engine::Json{{"extra", true}})));

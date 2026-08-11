@@ -2410,7 +2410,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: common protocol schema manifest
 - truth_role: canonical inventory and boundary for exact common JSON schemas
 - owner: Symphony Knowledge Vector maintainers
-- scope: Declares thirty-one exact process, descriptor, install-receipt-v1, engine-binding, proposal, provider-evidence, reconciliation/session, profile-input/profile, desired/observed/plan/runtime/applied/report-boot/apply lifecycle, and temporal schemas.
+- scope: Declares thirty-seven exact process, descriptor, install-receipt-v1, engine-binding, proposal, provider-evidence, reconciliation/session, profile-input/profile, desired/observed/plan/runtime/applied/report-boot/apply lifecycle, temporal, and Maestro presence schemas.
 - relationships: depends_on -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; governs -> `modules/skvi-engine/SPEC.md`; governs -> `modules/sclv-engine/SPEC.md`
 - consumers: C++ foundation and engine implementers, qxctl planners, validator, reviewers
 - deferred_projections: generated schema documentation and conformance evidence
@@ -4189,8 +4189,295 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Fixture evidence only.
 - status: canonical
 
++### Maestro Receptor Descriptor Schema
+- path: `knowledge/schemas/v1/maestro-receptor-descriptor.schema.json`
+- title: Maestro Receptor Descriptor Schema
+- surface_type: canonical JSON Schema
+- truth_role: Maestro receptor identity and compatibility truth
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro Docking Command Schema
+- path: `knowledge/schemas/v1/maestro-docking-command.schema.json`
+- title: Maestro Docking Command Schema
+- surface_type: canonical JSON Schema
+- truth_role: qxctl-to-Maestro operation contract truth
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro Docking Presence Schema
+- path: `knowledge/schemas/v1/maestro-docking-presence.schema.json`
+- title: Maestro Docking Presence Schema
+- surface_type: canonical JSON Schema
+- truth_role: component docking disposition contract truth
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro Presence Registry Schema
+- path: `knowledge/schemas/v1/maestro-docking-presence-registry.schema.json`
+- title: Maestro Presence Registry Schema
+- surface_type: canonical JSON Schema
+- truth_role: durable receptor registry contract truth
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro Presence Head Schema
+- path: `knowledge/schemas/v1/maestro-docking-presence-head.schema.json`
+- title: Maestro Presence Head Schema
+- surface_type: canonical JSON Schema
+- truth_role: atomic presence selector contract truth
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro Docking Result Schema
+- path: `knowledge/schemas/v1/maestro-docking-result.schema.json`
+- title: Maestro Docking Result Schema
+- surface_type: canonical JSON Schema
+- truth_role: bounded presence result contract truth
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro Intent
+- path: `modules/maestro/INTENT.md`
+- title: Maestro Intent
+- surface_type: module contract
+- truth_role: Maestro purpose and authority boundary
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro Manifest
+- path: `modules/maestro/MANIFEST.md`
+- title: Maestro Manifest
+- surface_type: module contract
+- truth_role: Maestro identity, installability, and ownership truth
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro Installation Contract
+- path: `modules/maestro/INSTALL.md`
+- title: Maestro Installation Contract
+- surface_type: module install contract
+- truth_role: independent build, install, and removal procedure
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro Administration Skill
+- path: `modules/maestro/SKILL.md`
+- title: Maestro Administration Skill
+- surface_type: module skill contract
+- truth_role: safe qxctl administration procedure
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro Receptor Presence Specification
+- path: `modules/maestro/SPEC.md`
+- title: Maestro Receptor Presence Specification
+- surface_type: module specification
+- truth_role: implemented process, authorization, durability, and operation truth
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro CMake Build
+- path: `modules/maestro/CMakeLists.txt`
+- title: Maestro CMake Build
+- surface_type: implementation build surface
+- truth_role: C++26 build, test, install, and uninstall wiring
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro Install Receipt Template
+- path: `modules/maestro/cmake/install-receipt.json.in`
+- title: Maestro Install Receipt Template
+- surface_type: implementation receipt template
+- truth_role: exact inactive-undocked package ownership template
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro Uninstall Procedure
+- path: `modules/maestro/cmake/uninstall.cmake.in`
+- title: Maestro Uninstall Procedure
+- surface_type: implementation lifecycle surface
+- truth_role: receipt-bounded file removal procedure
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro C++ Interface
+- path: `modules/maestro/src/maestro.hpp`
+- title: Maestro C++ Interface
+- surface_type: implementation source
+- truth_role: presence authority interface identity
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro C++ Authority
+- path: `modules/maestro/src/maestro.cpp`
+- title: Maestro C++ Authority
+- surface_type: implementation source
+- truth_role: authenticated durable receptor presence implementation
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro Process Entry
+- path: `modules/maestro/src/main.cpp`
+- title: Maestro Process Entry
+- surface_type: implementation source
+- truth_role: bounded process-envelope entrypoint
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro Conformance Tests
+- path: `modules/maestro/tests/maestro_test.cpp`
+- title: Maestro Conformance Tests
+- surface_type: implementation test
+- truth_role: state, authorization, recovery, and safety evidence
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### Maestro Process Smoke Test
+- path: `modules/maestro/tests/process_smoke.sh`
+- title: Maestro Process Smoke Test
+- surface_type: implementation test
+- truth_role: installed process-envelope evidence
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### qxctl Maestro Administration
+- path: `tools/qxctl/cmd/qxctl/maestro.go`
+- title: qxctl Maestro Administration
+- surface_type: implementation source
+- truth_role: Cobra inspect, status, recovery, and SSIAG composition
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### qxctl Maestro Client
+- path: `tools/qxctl/internal/maestroclient/client.go`
+- title: qxctl Maestro Client
+- surface_type: implementation source
+- truth_role: exact installation, process, evidence, and result adapter
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+### qxctl Maestro Client Tests
+- path: `tools/qxctl/internal/maestroclient/client_test.go`
+- title: qxctl Maestro Client Tests
+- surface_type: implementation test
+- truth_role: deterministic resource, evidence, and exact result-boundary evidence
+- owner: common SKV / Maestro maintainers
+- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
+- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
+- deferred_projections: engine invocation, supervision, scheduling, remote API
+- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
+- status: canonical
+
+
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, thirty-one common SKV v1 JSON Schemas, three common SKV v2 JSON Schemas, three SSIAG authorization JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, thirty-seven common SKV v1 JSON Schemas, three common SKV v2 JSON Schemas, three SSIAG authorization JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

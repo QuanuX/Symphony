@@ -45,11 +45,29 @@ type ExecutionResult struct {
 	EvidenceDigest        string   `json:"evidence_digest"`
 }
 
+type DockingComponentEvidence struct {
+	ComponentID      string
+	ModuleID         string
+	VectorID         string
+	EngineID         string
+	ReceiptDigest    string
+	ExecutableDigest string
+}
+
+type DockingAdapter interface {
+	ExecuteDocking(action PlannedAction, component DockingComponentEvidence) (outcome string, detail string, evidence []string, err error)
+}
+
 type Executor struct {
 	stateRoot   string
 	topsID      string
 	profileID   string
 	sourceRoots []string
+	docking     DockingAdapter
+}
+
+func (e *Executor) SetDockingAdapter(adapter DockingAdapter) {
+	e.docking = adapter
 }
 
 func NewExecutor(stateRoot, topsID, profileID string, sourceRoots []string) (*Executor, error) {
@@ -231,7 +249,67 @@ func (e *Executor) execute(result *ExecutionResult, action PlannedAction, desire
 			return err
 		}
 	case "dock", "undock":
-		return fmt.Errorf("compatibility_blocked: Maestro receptor execution is not implemented")
+		if e.docking == nil {
+			return fmt.Errorf("compatibility_blocked: exact Maestro receptor execution is unavailable")
+		}
+		if !present {
+			return fmt.Errorf("observation_retryable: docking requires an observed component")
+		}
+		targetObserved := action.Kind == "undock" && observedComponent.Docking != "docked"
+		if action.Kind == "dock" {
+			targetObserved = wanted && component.SelectedPackage != nil &&
+				observedComponent.SelectedPackageDigest != nil &&
+				*observedComponent.SelectedPackageDigest == component.SelectedPackage.ReceiptDigest &&
+				observedComponent.Docking == "docked" && action.TargetReceptorID != nil &&
+				observedComponent.ReceptorID != nil && *observedComponent.ReceptorID == *action.TargetReceptorID
+		}
+		if targetObserved {
+			result.Outcome = "already_applied"
+			result.AfterEvidenceDigests = append(result.AfterEvidenceDigests, observedComponent.ObservationDigest)
+			result.Detail = "authenticated Maestro observation already reflects the requested docking target"
+			return nil
+		}
+		if !actionBeforeMatches(action, observedComponent, true) {
+			return fmt.Errorf("observation_retryable: docking target changed after action preparation")
+		}
+		installRoot := ""
+		receiptDigest := ""
+		if action.Kind == "dock" {
+			if !wanted || component.SelectedPackage == nil ||
+				observedComponent.SelectedPackageDigest == nil ||
+				*observedComponent.SelectedPackageDigest != component.SelectedPackage.ReceiptDigest {
+				return fmt.Errorf("observation_retryable: dock requires the exact desired selected package")
+			}
+			installRoot = component.InstallRoot
+			receiptDigest = component.SelectedPackage.ReceiptDigest
+		} else {
+			if observedComponent.SelectedPackageDigest == nil {
+				return fmt.Errorf("critical_state_unknown: live Maestro presence lacks a selected package")
+			}
+			selected, ok := findObservedPackage(observedComponent, *observedComponent.SelectedPackageDigest)
+			if !ok || selected.Integrity != "valid" || !selected.EntryPointsValidated {
+				return fmt.Errorf("integrity_fatal: live Maestro presence lacks exact valid installed receipt evidence")
+			}
+			installRoot = selected.InstallRoot
+			receiptDigest = selected.ReceiptDigest
+		}
+		if !containsString(action.ExpectedArtifactDigests, receiptDigest) {
+			return fmt.Errorf("integrity_fatal: docking action does not bind the active receipt evidence")
+		}
+		evidence, err := e.resolveDockingComponent(action.ComponentID, installRoot, receiptDigest)
+		if err != nil {
+			return err
+		}
+		outcome, detail, digests, err := e.docking.ExecuteDocking(action, evidence)
+		if err != nil {
+			return err
+		}
+		if outcome != "committed" && outcome != "already_applied" {
+			return fmt.Errorf("critical_state_unknown: Maestro returned unsupported outcome %q", outcome)
+		}
+		result.Outcome = outcome
+		result.Detail = detail
+		result.AfterEvidenceDigests = append(result.AfterEvidenceDigests, digests...)
 	case "verify", "preserve", "report":
 		result.Outcome = "already_applied"
 		result.Detail = "non-mutating lifecycle evidence requires no host action"
@@ -239,6 +317,52 @@ func (e *Executor) execute(result *ExecutionResult, action PlannedAction, desire
 		return fmt.Errorf("critical_state_unknown: unsupported lifecycle action kind")
 	}
 	return nil
+}
+
+func (e *Executor) resolveDockingComponent(componentID, installRoot, receiptDigest string) (DockingComponentEvidence, error) {
+	if componentID == "" || installRoot == "" || receiptDigest == "" {
+		return DockingComponentEvidence{}, fmt.Errorf("integrity_fatal: docking lacks exact package identity")
+	}
+	candidates, err := scanReceiptRoot(installRoot)
+	if err != nil {
+		return DockingComponentEvidence{}, err
+	}
+	for _, candidate := range candidates {
+		var receipt receiptV2
+		if !candidate.readable || decodeExact(candidate.data, &receipt) != nil ||
+			validateReceiptV2(candidate, receipt) != nil ||
+			receipt.ReceiptDigest != receiptDigest {
+			continue
+		}
+		if receipt.ComponentID != componentID || receipt.ComponentKind != "vector_engine" ||
+			receipt.VectorID == nil || receipt.EngineID == nil ||
+			!containsString(receipt.CompatibleReceptors, "symphony.maestro.knowledge-engine.v1") {
+			return DockingComponentEvidence{}, fmt.Errorf("compatibility_blocked: selected receipt does not declare the Maestro vector-engine receptor")
+		}
+		executableDigest := ""
+		for _, entry := range receipt.EntryPoints {
+			if !containsString(entry.Protocols, "symphony.knowledge.engine-process.v1") {
+				continue
+			}
+			for _, file := range receipt.Files {
+				if file.Path == entry.Path && file.Kind == "executable" {
+					if executableDigest != "" && executableDigest != file.Digest {
+						return DockingComponentEvidence{}, fmt.Errorf("integrity_fatal: receipt declares ambiguous Maestro process entrypoints")
+					}
+					executableDigest = file.Digest
+				}
+			}
+		}
+		if executableDigest == "" {
+			return DockingComponentEvidence{}, fmt.Errorf("compatibility_blocked: receipt lacks a validated process entrypoint for Maestro")
+		}
+		return DockingComponentEvidence{
+			ComponentID: receipt.ComponentID, ModuleID: receipt.ModuleID, VectorID: *receipt.VectorID,
+			EngineID: *receipt.EngineID, ReceiptDigest: receipt.ReceiptDigest,
+			ExecutableDigest: executableDigest,
+		}, nil
+	}
+	return DockingComponentEvidence{}, fmt.Errorf("integrity_fatal: exact installed receipt-v2 docking evidence is unavailable")
 }
 
 func actionBeforeMatches(action PlannedAction, observed ObservedComponent, present bool) bool {

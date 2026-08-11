@@ -128,6 +128,9 @@ type knowledgeLifecycleOptions struct {
 	expectedAppliedDigest   string
 	sourceJournalDigest     string
 	stagedRoots             []string
+	maestroPrefix           string
+	maestroVersion          string
+	maestroReceptorIDs      []string
 	maxActions              uint64
 	discover                bool
 	ttl                     time.Duration
@@ -214,7 +217,7 @@ func newRootCommand() (*cobra.Command, error) {
 	stav := newSTAVCommand()
 	root.AddCommand(
 		ssiag, stav, newKnowledgeCommand(), newSKVICommand(), newSCLVCommand(),
-		newSACVCommand(), newSODVCommand(), newSSFVCommand(),
+		newSACVCommand(), newSODVCommand(), newSSFVCommand(), newMaestroCommand(),
 	)
 	return root, nil
 }
@@ -549,10 +552,16 @@ func newKnowledgeCommand() *cobra.Command {
 }
 
 func addKnowledgeLifecycleCommonFlags(command *cobra.Command, options *knowledgeLifecycleOptions) {
+	if options.maestroVersion == "" {
+		options.maestroVersion = "0.1.0-dev"
+	}
 	command.Flags().StringVar(&options.topsID, "tops-id", "", "immutable TOPS UUID")
 	command.Flags().StringVar(&options.scope, "scope", "user", "SSIAG installation scope: user or system")
 	command.Flags().StringVar(&options.stateRoot, "state-root", "", "state root; defaults to XDG_STATE_HOME or ~/.local/state")
 	command.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
+	command.Flags().StringVar(&options.maestroPrefix, "maestro-prefix", "", "exact Maestro installation prefix for docking observation and apply")
+	command.Flags().StringVar(&options.maestroVersion, "maestro-version", "0.1.0-dev", "exact Maestro version")
+	command.Flags().StringSliceVar(&options.maestroReceptorIDs, "maestro-receptor-id", nil, "exact receptor to observe or mutate; repeat for receptor-switch recovery")
 	command.Flags().StringVar(&options.profileID, "profile-id", "default", "exact lifecycle profile identity")
 	command.Flags().DurationVar(&options.ttl, "ttl", 15*time.Minute, "requested lifecycle authorization lifetime")
 	command.Flags().BoolVar(&options.jsonOutput, "json", false, "emit JSON")
@@ -931,7 +940,7 @@ func exactOneUsageArg(_ *cobra.Command, args []string) error {
 
 func knownTopLevel(value string) bool {
 	switch value {
-	case "--help", "--version", "doctor", "contracts", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "ssfv":
+	case "--help", "--version", "doctor", "contracts", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "ssfv", "maestro":
 		return true
 	default:
 		return false
@@ -1020,6 +1029,13 @@ func failurePrefix(args []string) string {
 			switch args[1] {
 			case "inspect", "check", "diff", "propose", "graph":
 				return "ssfv " + args[1]
+			}
+		}
+	case "maestro":
+		if len(args) > 1 {
+			switch args[1] {
+			case "inspect", "status", "recover":
+				return "maestro " + args[1]
 			}
 		}
 	}

@@ -255,6 +255,53 @@ func TestObservationTreatsFutureAbsentRootAsEmptyEvidence(t *testing.T) {
 	}
 }
 
+func TestOverlayDockingPresenceRecomputesEvidenceAndRejectsAmbiguity(t *testing.T) {
+	root := resolvedTempDir(t)
+	observed, err := Observe(observationInput(root, time.Date(2026, 8, 10, 12, 0, 0, 0, time.UTC)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	observed.Components = []ObservedComponent{{
+		ComponentID: "ssfv-engine", ComponentKind: "vector_engine", ModuleID: "ssfv-engine",
+		VectorID: stringPointer("ssfv"), EngineID: stringPointer("symphony-ssfv"),
+		Packages: []ObservedPackage{}, Activation: "inactive", Docking: "undocked",
+		Capabilities: []string{}, PlatformCompatibility: "compatible",
+	}}
+	observed.Components[0].ObservationDigest, err = componentObservationDigest(observed.Components[0])
+	if err != nil {
+		t.Fatal(err)
+	}
+	observed.ObservationDigest, err = observationDigest(observed)
+	if err != nil {
+		t.Fatal(err)
+	}
+	beforeComponent := observed.Components[0].ObservationDigest
+	beforeDocument := observed.ObservationDigest
+	docked, err := OverlayDockingPresence(observed, []DockingPresence{{
+		ComponentID: "ssfv-engine", Disposition: "docked", ReceptorID: "maestro-primary",
+	}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if docked.Components[0].Docking != "docked" || docked.Components[0].ReceptorID == nil ||
+		*docked.Components[0].ReceptorID != "maestro-primary" ||
+		docked.Components[0].ObservationDigest == beforeComponent || docked.ObservationDigest == beforeDocument {
+		t.Fatalf("Maestro presence was not incorporated into evidence: %+v", docked.Components[0])
+	}
+	undocked, err := OverlayDockingPresence(docked, []DockingPresence{{
+		ComponentID: "ssfv-engine", Disposition: "undocked", ReceptorID: "maestro-primary",
+	}})
+	if err != nil || undocked.Components[0].Docking != "undocked" || undocked.Components[0].ReceptorID != nil {
+		t.Fatalf("Maestro tombstone did not clear receptor presence: %+v err=%v", undocked.Components[0], err)
+	}
+	if _, err := OverlayDockingPresence(observed, []DockingPresence{
+		{ComponentID: "ssfv-engine", Disposition: "docked", ReceptorID: "maestro-primary"},
+		{ComponentID: "ssfv-engine", Disposition: "docked", ReceptorID: "maestro-secondary"},
+	}); err == nil {
+		t.Fatal("ambiguous multi-receptor presence was accepted")
+	}
+}
+
 func observationInput(root string, observedAt time.Time) ObservationInput {
 	return ObservationInput{
 		ProfileID: "default", TOPSID: testTOPSID, ConfiguredRoots: []string{root},

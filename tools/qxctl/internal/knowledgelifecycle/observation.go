@@ -101,6 +101,51 @@ type ObservationInput struct {
 	ObservedAt            time.Time
 }
 
+type DockingPresence struct {
+	ComponentID string
+	Disposition string
+	ReceptorID  string
+}
+
+// OverlayDockingPresence incorporates authenticated Maestro presence into a
+// receipt/runtime observation, then recomputes every affected digest. It does
+// not infer presence from desired state or from installation alone.
+func OverlayDockingPresence(observation Observation, presence []DockingPresence) (Observation, error) {
+	byComponent := make(map[string]DockingPresence, len(presence))
+	for _, item := range presence {
+		if !safeToken(item.ComponentID, 256) || !safeToken(item.ReceptorID, 256) ||
+			!oneOf(item.Disposition, "docked", "undocked") {
+			return Observation{}, fmt.Errorf("Maestro docking presence is invalid")
+		}
+		if _, duplicate := byComponent[item.ComponentID]; duplicate {
+			return Observation{}, fmt.Errorf("Maestro docking presence is duplicated")
+		}
+		byComponent[item.ComponentID] = item
+	}
+	for index := range observation.Components {
+		component := &observation.Components[index]
+		item, found := byComponent[component.ComponentID]
+		if !found || item.Disposition == "undocked" {
+			component.Docking = "undocked"
+			component.ReceptorID = nil
+		} else {
+			component.Docking = "docked"
+			component.ReceptorID = stringPointer(item.ReceptorID)
+		}
+		digest, err := componentObservationDigest(*component)
+		if err != nil {
+			return Observation{}, err
+		}
+		component.ObservationDigest = digest
+	}
+	digest, err := observationDigest(observation)
+	if err != nil {
+		return Observation{}, err
+	}
+	observation.ObservationDigest = digest
+	return observation, nil
+}
+
 type receiptCandidate struct {
 	root         string
 	relativePath string

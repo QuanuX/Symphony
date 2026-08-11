@@ -1233,6 +1233,10 @@ void test_receptor_switch_and_safe_package_sequence() {
             "package transition docked before activation completed");
     require(safe_dock.at("target_receptor_id") == "maestro-receptor-a",
             "package transition did not restore the exact receptor");
+    require(safe_undock.at("expected_artifact_digests") == engine::Json::array({old_receipt}),
+            "inverse undock did not bind the currently observed receipt");
+    require(safe_dock.at("expected_artifact_digests") == engine::Json::array({new_receipt}),
+            "forward dock did not bind the desired replacement receipt");
 }
 
 void test_compatibility_integrity_and_digest_fail_closed() {
