@@ -34,7 +34,7 @@
         },
         {
           "applicability": "applicable",
-          "reason": "SSIAG owns the authorization decisions consumed by protected qxctl operations.",
+          "reason": "SSIAG owns the authorization decisions and protected local policy contracts consumed by qxctl.",
           "reference": "knowledge/ssiag/SPEC.md",
           "vector": "ssiag"
         },
@@ -53,10 +53,11 @@
       ],
       "evidence": [
         "The qxctl Go suites exercise command grammar, exact installation resolution, endpoint trust, digest validation, state durability, replay, recovery, and lifecycle compatibility.",
-        "The root command exposes implemented administrative surfaces while namespace-reserved or unauthorized mutation leaves fail closed."
+        "The root command exposes implemented administrative surfaces while namespace-reserved or unauthorized mutation leaves fail closed.",
+        "SSIAG client and CLI tests cover bounded no-follow policy input, closed proposal/apply/recovery protocols, TOPS binding, and caller-neutral result checks."
       ],
       "feature_id": "ssfv:symphony:qxctl",
-      "how": "Cobra/Viper grammar invokes exact installed components, authenticates local endpoints, requests fresh operation-bound SSIAG decisions, validates nested evidence and digests, preserves compare-and-swap state, and presents bounded human or JSON output.",
+      "how": "Cobra/Viper grammar invokes exact installed components, authenticates local endpoints, requests fresh operation-bound SSIAG decisions, administers server-owned policy protocols from bounded files, validates nested evidence and digests, preserves compare-and-swap state, and presents bounded human or JSON output.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -99,7 +100,7 @@
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "Caller-neutral Symphony administrative CLI",
-      "what": "Provides Symphony's canonical command-line administration and query surface across repository inspection, validation, SSIAG, STAV, knowledge engines, sessions, lifecycle convergence, and Maestro presence.",
+      "what": "Provides Symphony's canonical command-line administration and query surface across repository inspection, validation, SSIAG decisions and local policy administration, STAV, knowledge engines, sessions, lifecycle convergence, and Maestro presence.",
       "when": "Runs only on explicit invocation or a separately reviewed host integration; no command becomes a hidden daemon or hot-path dependency.",
       "where": "Executes on a supported administrative node and may administer local or later explicitly contracted remote TOPS nodes while remaining outside trading hot and warm paths.",
       "who": "Target-host owners, administrators, maintainers, agentic tools, automation, and any caller operating within effective host permission.",

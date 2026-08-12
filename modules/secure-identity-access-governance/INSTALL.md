@@ -2,7 +2,7 @@
 
 ## Status and Requirements
 
-The host installer, per-TOPS enrollment lifecycle, native supervision, safe metadata API, and audited deny-by-default authorization endpoint are implemented. Operational credential providers, policy mutation, safeguard administration, and canonical apply remain intentionally disabled.
+The host installer, per-TOPS enrollment lifecycle, native supervision, safe metadata API, audited deny-by-default authorization, and protected local policy overlay administration are implemented. Operational credential providers, general safeguard administration, and canonical knowledge apply remain intentionally disabled.
 
 Requirements: a supported TOPS operating system and Go 1.26.5 for source builds. Python, cgo, containers, Kubernetes, NATS, and cloud infrastructure are not required.
 

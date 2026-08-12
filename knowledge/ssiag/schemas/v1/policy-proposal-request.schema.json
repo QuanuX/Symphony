@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:policy-proposal-request:v1",
+  "title": "SSIAG local policy proposal request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "operation_id", "request_id", "correlation_id", "authority_basis", "expected_policy_digest", "change", "desired_policy", "requested_at", "expires_at"],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.policy-proposal-request.v1"},
+    "operation_id": {"$ref": "#/$defs/token"},
+    "request_id": {"$ref": "#/$defs/token"},
+    "correlation_id": {"$ref": "#/$defs/token"},
+    "authority_basis": {"enum": ["host_owner", "granted_permission"]},
+    "expected_policy_digest": {"$ref": "#/$defs/digest"},
+    "change": {"enum": ["replace", "reset"]},
+    "desired_policy": {"oneOf": [{"$ref": "authorization-policy.schema.json"}, {"type": "null"}]},
+    "requested_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"}
+  },
+  "allOf": [
+    {"if": {"properties": {"change": {"const": "replace"}}}, "then": {"properties": {"desired_policy": {"$ref": "authorization-policy.schema.json"}}}},
+    {"if": {"properties": {"change": {"const": "reset"}}}, "then": {"properties": {"desired_policy": {"type": "null"}}}}
+  ],
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

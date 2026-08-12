@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:policy-attempt:v1",
+  "title": "SSIAG durable local policy attempt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "tops_id", "proposal", "stage", "prepared_at", "audited_at", "attempt_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.policy-attempt.v1"},
+    "tops_id": {"type": "string", "format": "uuid"},
+    "proposal": {"$ref": "policy-proposal.schema.json"},
+    "stage": {"enum": ["prepared", "audited"]},
+    "prepared_at": {"type": "string", "format": "date-time"},
+    "audited_at": {"oneOf": [{"type": "string", "format": "date-time"}, {"type": "null"}]},
+    "receipt_digest": {"$ref": "#/$defs/digest"},
+    "attempt_digest": {"$ref": "#/$defs/digest"}
+  },
+  "allOf": [
+    {"if": {"properties": {"stage": {"const": "prepared"}}}, "then": {"properties": {"audited_at": {"type": "null"}}, "not": {"required": ["receipt_digest"]}}},
+    {"if": {"properties": {"stage": {"const": "audited"}}}, "then": {"properties": {"audited_at": {"type": "string", "format": "date-time"}}, "required": ["receipt_digest"]}}
+  ],
+  "$defs": {"digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}
+}

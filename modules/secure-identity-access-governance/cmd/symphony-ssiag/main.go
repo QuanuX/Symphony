@@ -17,6 +17,7 @@ import (
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/lifecycle"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/model"
 	ssiagpaths "github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/paths"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/policyadmin"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/provider"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/server"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/stavproducer"
@@ -118,7 +119,11 @@ func runServe(args []string) error {
 		fmt.Fprintf(os.Stderr, "symphony-ssiag: STAV audit unavailable; authorization endpoint will fail closed: %v\n", err)
 		audit = nil
 	}
-	ssiagServer, err := server.NewWithAudit(cfg, registry, audit)
+	policyManager, err := policyadmin.New(layout.StateDir, cfg, time.Now)
+	if err != nil {
+		return fmt.Errorf("open protected SSIAG policy state: %w", err)
+	}
+	ssiagServer, err := server.NewWithPolicyAdministration(cfg, registry, audit, policyManager)
 	if err != nil {
 		return err
 	}

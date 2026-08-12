@@ -112,6 +112,86 @@ type AuthorizationDecision struct {
 	CanonicalApply  bool            `json:"canonical_apply"`
 }
 
+type AuthorizationGrant struct {
+	ID             string `json:"id"`
+	SubjectID      string `json:"subject_id"`
+	AuthorityBasis string `json:"authority_basis"`
+	Operation      string `json:"operation"`
+	Resource       string `json:"resource"`
+	Audience       string `json:"audience"`
+	Scope          string `json:"scope"`
+}
+
+type AuthorizationPolicy struct {
+	DefaultEffect        string               `json:"default_effect"`
+	MaxCapabilitySeconds uint64               `json:"max_capability_seconds"`
+	Grants               []AuthorizationGrant `json:"grants"`
+}
+
+type PolicyProposalRequest struct {
+	Protocol             string               `json:"protocol"`
+	OperationID          string               `json:"operation_id"`
+	RequestID            string               `json:"request_id"`
+	CorrelationID        string               `json:"correlation_id"`
+	AuthorityBasis       string               `json:"authority_basis"`
+	ExpectedPolicyDigest string               `json:"expected_policy_digest"`
+	Change               string               `json:"change"`
+	DesiredPolicy        *AuthorizationPolicy `json:"desired_policy"`
+	RequestedAt          time.Time            `json:"requested_at"`
+	ExpiresAt            time.Time            `json:"expires_at"`
+}
+
+type PolicyProposal struct {
+	Protocol             string               `json:"protocol"`
+	OperationID          string               `json:"operation_id"`
+	RequestID            string               `json:"request_id"`
+	CorrelationID        string               `json:"correlation_id"`
+	TOPSID               string               `json:"tops_id"`
+	Subject              DecisionSubject      `json:"subject"`
+	AuthorityBasis       string               `json:"authority_basis"`
+	ExpectedPolicyDigest string               `json:"expected_policy_digest"`
+	Change               string               `json:"change"`
+	DesiredPolicy        *AuthorizationPolicy `json:"desired_policy"`
+	DesiredPolicyDigest  string               `json:"desired_policy_digest"`
+	ConfigDigest         string               `json:"config_digest"`
+	CreatedAt            time.Time            `json:"created_at"`
+	ExpiresAt            time.Time            `json:"expires_at"`
+	CallerClassUsed      bool                 `json:"caller_class_used"`
+	Canonical            bool                 `json:"canonical"`
+	Applied              bool                 `json:"applied"`
+	ProposalDigest       string               `json:"proposal_digest"`
+}
+
+type PolicyApplyRequest struct {
+	Protocol string         `json:"protocol"`
+	Proposal PolicyProposal `json:"proposal"`
+}
+
+type PolicyRecoveryRequest struct {
+	Protocol              string `json:"protocol"`
+	OperationID           string `json:"operation_id"`
+	ExpectedAttemptDigest string `json:"expected_attempt_digest,omitempty"`
+	Discover              bool   `json:"discover"`
+}
+
+type PolicyResult struct {
+	Protocol         string    `json:"protocol"`
+	Operation        string    `json:"operation"`
+	TOPSID           string    `json:"tops_id"`
+	Source           string    `json:"source"`
+	Generation       uint64    `json:"generation"`
+	PolicyDigest     string    `json:"policy_digest"`
+	StateDigest      string    `json:"state_digest"`
+	RecoveryRequired bool      `json:"recovery_required"`
+	AttemptDigest    string    `json:"attempt_digest,omitempty"`
+	Changed          bool      `json:"changed"`
+	Recovered        bool      `json:"recovered"`
+	ObservedAt       time.Time `json:"observed_at"`
+	ReadOnly         bool      `json:"read_only"`
+	CallerClassUsed  bool      `json:"caller_class_used"`
+	Canonical        bool      `json:"canonical"`
+}
+
 type Client struct {
 	httpClient *http.Client
 	baseURL    string
@@ -435,6 +515,72 @@ func (c *Client) Authorize(ctx context.Context, request AuthorizationRequest) (A
 	return result, nil
 }
 
+func (c *Client) PolicyStatus(ctx context.Context) (PolicyResult, error) {
+	var result PolicyResult
+	if err := c.get(ctx, "/v1/policy/status", &result); err != nil {
+		return result, err
+	}
+	if result.Protocol != "symphony.ssiag.policy-result.v1" {
+		return result, fmt.Errorf("unsupported SSIAG policy result protocol %q", result.Protocol)
+	}
+	return result, nil
+}
+
+func (c *Client) ProposePolicy(ctx context.Context, request PolicyProposalRequest) (PolicyProposal, error) {
+	var result PolicyProposal
+	if err := c.post(ctx, "/v1/policy/proposals", request, &result); err != nil {
+		return result, err
+	}
+	if result.Protocol != "symphony.ssiag.policy-proposal.v1" {
+		return result, fmt.Errorf("unsupported SSIAG policy proposal protocol %q", result.Protocol)
+	}
+	return result, nil
+}
+
+func (c *Client) ApplyPolicy(ctx context.Context, request PolicyApplyRequest) (PolicyResult, error) {
+	var result PolicyResult
+	if err := c.post(ctx, "/v1/policy/apply", request, &result); err != nil {
+		return result, err
+	}
+	if result.Protocol != "symphony.ssiag.policy-result.v1" {
+		return result, fmt.Errorf("unsupported SSIAG policy result protocol %q", result.Protocol)
+	}
+	return result, nil
+}
+
+func (c *Client) RecoverPolicy(ctx context.Context, request PolicyRecoveryRequest) (PolicyResult, error) {
+	var result PolicyResult
+	if err := c.post(ctx, "/v1/policy/recover", request, &result); err != nil {
+		return result, err
+	}
+	if result.Protocol != "symphony.ssiag.policy-result.v1" {
+		return result, fmt.Errorf("unsupported SSIAG policy result protocol %q", result.Protocol)
+	}
+	return result, nil
+}
+
+func ReadBoundedJSON(path string, target any) error {
+	file, err := openNoFollow(path)
+	if err != nil {
+		return fmt.Errorf("open SSIAG policy input: %w", err)
+	}
+	defer file.Close()
+	info, err := file.Stat()
+	if err != nil || !info.Mode().IsRegular() || info.Size() <= 0 || info.Size() > maxConfigBytes {
+		return fmt.Errorf("SSIAG policy input is not a bounded regular file")
+	}
+	decoder := json.NewDecoder(io.LimitReader(file, maxConfigBytes+1))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(target); err != nil {
+		return fmt.Errorf("decode SSIAG policy input: %w", err)
+	}
+	var extra any
+	if err := decoder.Decode(&extra); err != io.EOF {
+		return fmt.Errorf("SSIAG policy input must contain exactly one JSON value")
+	}
+	return nil
+}
+
 func (c *Client) get(ctx context.Context, path string, target any) error {
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, c.baseURL+path, nil)
 	if err != nil {
@@ -497,7 +643,7 @@ func (c *Client) post(ctx context.Context, path string, value, target any) error
 			Code string `json:"code"`
 		}
 		if json.Unmarshal(responsePayload, &failure) == nil && failure.Code != "" {
-			return fmt.Errorf("SSIAG authorization failed: %s", failure.Code)
+			return fmt.Errorf("SSIAG request rejected: %s", failure.Code)
 		}
 		return fmt.Errorf("SSIAG returned HTTP %d", response.StatusCode)
 	}

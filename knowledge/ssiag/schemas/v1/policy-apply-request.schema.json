@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:policy-apply-request:v1",
+  "title": "SSIAG local policy apply request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "proposal"],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.policy-apply-request.v1"},
+    "proposal": {"$ref": "policy-proposal.schema.json"}
+  }
+}

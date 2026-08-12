@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:policy-recovery-request:v1",
+  "title": "SSIAG local policy recovery request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "operation_id", "discover"],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.policy-recovery-request.v1"},
+    "operation_id": {"$ref": "#/$defs/token"},
+    "expected_attempt_digest": {"$ref": "#/$defs/digest"},
+    "discover": {"type": "boolean"}
+  },
+  "oneOf": [
+    {"properties": {"discover": {"const": true}}, "not": {"required": ["expected_attempt_digest"]}},
+    {"properties": {"discover": {"const": false}}, "required": ["expected_attempt_digest"]}
+  ],
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

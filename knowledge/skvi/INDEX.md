@@ -1132,8 +1132,112 @@ Future validator increments may add separately ratified deterministic checks wit
 - scope: Closes one exact caller-neutral subject, authority basis, TOPS/profile resource, domain-separated and separately permissioned per-TOPS profile-catalog read resource, audience, scope, complete lifecycle operation set, and disabled apply boundary.
 - relationships: depends_on -> `knowledge/ssiag/schemas/v1/MANIFEST.md`; generated_by -> `tools/qxctl/cmd/qxctl/main.go`; governed_by -> `knowledge/LIFECYCLE.md`
 - consumers: SSIAG administrators, qxctl, validators, conformance tests, reviewers
-- deferred_projections: SSIAG policy proposal/apply mutation
+- deferred_projections: rendered grant-install guidance
 - notes: Generation does not edit SSIAG configuration, grant authority, or authorize lifecycle execution.
+- status: canonical
+
+#### SSIAG Authorization Policy Schema
+- path: `knowledge/ssiag/schemas/v1/authorization-policy.schema.json`
+- title: SSIAG Local Authorization Policy v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical deny-by-default operational policy truth
+- owner: SSIAG knowledge maintainer
+- scope: Closes bounded capability lifetime and exact caller-neutral grants for configured subjects.
+- relationships: depends_on -> `knowledge/ssiag/schemas/v1/MANIFEST.md`; implemented_by -> `modules/secure-identity-access-governance/internal/policyadmin/manager.go`
+- consumers: SSIAG, qxctl, validators, conformance tests, reviewers
+- deferred_projections: rendered protocol documentation
+- notes: It contains policy but no credentials, proofs, provider payloads, or caller class.
+- status: canonical
+
+#### SSIAG Policy Proposal Request Schema
+- path: `knowledge/ssiag/schemas/v1/policy-proposal-request.schema.json`
+- title: SSIAG Policy Proposal Request v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical subject-free local policy intent truth
+- owner: SSIAG knowledge maintainer
+- scope: Closes operation/request/correlation IDs, authority basis, expected digest, replace/reset intent, desired policy, and UTC lifetime.
+- relationships: depends_on -> `knowledge/ssiag/schemas/v1/authorization-policy.schema.json`; consumed_by -> `modules/secure-identity-access-governance/internal/policyadmin/manager.go`; emitted_by -> `tools/qxctl/internal/ssiagclient/client.go`
+- consumers: SSIAG, qxctl, validators, conformance tests, reviewers
+- deferred_projections: rendered protocol documentation
+- notes: Subject identity is intentionally absent and is derived by SSIAG from kernel peer evidence.
+- status: canonical
+
+#### SSIAG Policy Proposal Schema
+- path: `knowledge/ssiag/schemas/v1/policy-proposal.schema.json`
+- title: SSIAG Policy Proposal v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical subject-bound digest proposal truth
+- owner: SSIAG knowledge maintainer
+- scope: Binds target-host authority, TOPS, config/current/desired digests, complete intent, UTC lifetime, and proposal digest.
+- relationships: depends_on -> `knowledge/ssiag/schemas/v1/policy-proposal-request.schema.json`; emitted_by -> `modules/secure-identity-access-governance/internal/policyadmin/manager.go`; consumed_by -> `tools/qxctl/internal/ssiagclient/client.go`
+- consumers: SSIAG, qxctl, validators, conformance tests, reviewers
+- deferred_projections: rendered protocol documentation
+- notes: Always reports caller-class unused, canonical false, and applied false.
+- status: canonical
+
+#### SSIAG Policy Apply Request Schema
+- path: `knowledge/ssiag/schemas/v1/policy-apply-request.schema.json`
+- title: SSIAG Policy Apply Request v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical exact-proposal replay truth
+- owner: SSIAG knowledge maintainer
+- scope: Carries one complete digest-bound proposal to the local audit-before-commit apply circuit.
+- relationships: depends_on -> `knowledge/ssiag/schemas/v1/policy-proposal.schema.json`; implemented_by -> `modules/secure-identity-access-governance/internal/server/server.go`; consumed_by -> `tools/qxctl/internal/ssiagclient/client.go`
+- consumers: SSIAG, qxctl, validators, conformance tests, reviewers
+- deferred_projections: rendered protocol documentation
+- notes: The request grants no authority by possession; SSIAG re-authenticates and revalidates it.
+- status: canonical
+
+#### SSIAG Policy Recovery Request Schema
+- path: `knowledge/ssiag/schemas/v1/policy-recovery-request.schema.json`
+- title: SSIAG Policy Recovery Request v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical explicit attempt-recovery truth
+- owner: SSIAG knowledge maintainer
+- scope: Requires an exact operation and either expected attempt digest or explicit discovery.
+- relationships: depends_on -> `knowledge/ssiag/schemas/v1/MANIFEST.md`; implemented_by -> `modules/secure-identity-access-governance/internal/policyadmin/manager.go`; consumed_by -> `tools/qxctl/internal/ssiagclient/client.go`
+- consumers: SSIAG, qxctl, validators, conformance tests, reviewers
+- deferred_projections: rendered protocol documentation
+- notes: It rolls uniquely linked evidence forward and does not bypass STAV.
+- status: canonical
+
+#### SSIAG Policy Result Schema
+- path: `knowledge/ssiag/schemas/v1/policy-result.schema.json`
+- title: SSIAG Policy Result v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical metadata-only policy operation result truth
+- owner: SSIAG knowledge maintainer
+- scope: Reports source, generation, policy/state/attempt digests, recovery need, change/recovery state, and UTC observation.
+- relationships: depends_on -> `knowledge/ssiag/schemas/v1/MANIFEST.md`; emitted_by -> `modules/secure-identity-access-governance/internal/policyadmin/manager.go`; consumed_by -> `tools/qxctl/internal/ssiagclient/client.go`
+- consumers: SSIAG, qxctl, validators, conformance tests, reviewers
+- deferred_projections: rendered protocol documentation
+- notes: Contains no policy body and always reports caller-class unused and canonical false.
+- status: canonical
+
+#### SSIAG Policy State Schema
+- path: `knowledge/ssiag/schemas/v1/policy-state.schema.json`
+- title: SSIAG Protected Policy State v1
+- surface_type: JSON Schema Draft 2020-12 persistence contract
+- truth_role: canonical protected local generation-state truth
+- owner: SSIAG knowledge maintainer
+- scope: Closes config/overlay source, prior/current/config/state digests, monotonic generation, policy presence, and UTC commit time.
+- relationships: depends_on -> `knowledge/ssiag/schemas/v1/authorization-policy.schema.json`; persisted_by -> `modules/secure-identity-access-governance/internal/policyadmin/storage_unix.go`
+- consumers: SSIAG, validators, recovery logic, reviewers
+- deferred_projections: safe metadata status
+- notes: Operational per-TOPS state; never repository source truth or canonical knowledge apply.
+- status: canonical
+
+#### SSIAG Policy Attempt Schema
+- path: `knowledge/ssiag/schemas/v1/policy-attempt.schema.json`
+- title: SSIAG Durable Policy Attempt v1
+- surface_type: JSON Schema Draft 2020-12 persistence contract
+- truth_role: canonical crash-recovery stage truth
+- owner: SSIAG knowledge maintainer
+- scope: Closes prepared/audited stages, proposal, preparation/audit time, committed receipt digest, and attempt digest.
+- relationships: depends_on -> `knowledge/ssiag/schemas/v1/policy-proposal.schema.json`; persisted_by -> `modules/secure-identity-access-governance/internal/policyadmin/storage_unix.go`
+- consumers: SSIAG, validators, recovery logic, reviewers
+- deferred_projections: safe recovery status
+- notes: A pending attempt blocks competing mutation; recovery is explicit and audit-required.
 - status: canonical
 
 ### STAV Canonical Knowledge Vector
@@ -5253,7 +5357,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `modules/secure-identity-access-governance/SPEC.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`
 - consumers: symphony-ssfv, qxctl, SSIAG maintainers, reviewers, agentic tools
 - deferred_projections: feature catalog and portable graph
-- notes: Records current caller-neutral decision behavior; credential delivery and policy mutation remain unavailable.
+- notes: Records caller-neutral decisions and protected local operational policy administration; credential delivery and canonical knowledge mutation remain unavailable.
 - status: canonical
 
 ### SSIAG macOS Keychain Metadata Semantic Feature Record
@@ -5369,8 +5473,34 @@ Future validator increments may add separately ratified deterministic checks wit
 - scope: Derives the authenticated subject from local peer evidence, evaluates exact operation/resource grants, and releases decisions only after safe STAV evidence commits.
 - relationships: implements -> `knowledge/ssiag/SPEC.md`; conforms_to -> `knowledge/ssiag/schemas/v1/authorization-decision.schema.json`
 - consumers: SSIAG server, qxctl, coordinator, tests, reviewers
-- deferred_projections: separately gated policy administration
-- notes: Current policy is configuration-derived and mutation remains disabled.
+- deferred_projections: policy explanation projection
+- notes: The evaluator atomically exchanges one complete validated snapshot after protected state commit.
+- status: canonical
+
+### SSIAG Policy Administration Implementation
+- path: `modules/secure-identity-access-governance/internal/policyadmin/manager.go`
+- title: SSIAG Protected Local Policy Administration
+- surface_type: Go operational state-machine implementation
+- truth_role: exact proposal, CAS, attempt, commit, reset, and recovery implementation truth
+- owner: SSIAG foundation maintainers
+- scope: Selects config or overlay policy and binds target-host authority to durable audit-before-commit local mutation.
+- relationships: implements -> `knowledge/ssiag/SPEC.md`; conforms_to -> `knowledge/ssiag/schemas/v1/policy-proposal.schema.json`; persists -> `knowledge/ssiag/schemas/v1/policy-state.schema.json`; persists -> `knowledge/ssiag/schemas/v1/policy-attempt.schema.json`
+- consumers: SSIAG server, qxctl, tests, reviewers
+- deferred_projections: policy explanation and history projection
+- notes: Operational per-TOPS state only; canonical knowledge and enrolled config remain unchanged.
+- status: canonical
+
+### SSIAG Policy State Storage Implementation
+- path: `modules/secure-identity-access-governance/internal/policyadmin/storage_unix.go`
+- title: SSIAG Protected Policy State Storage
+- surface_type: Go Darwin/Linux durable storage implementation
+- truth_role: no-follow locked atomic persistence truth
+- owner: SSIAG foundation maintainers
+- scope: Opens owner-controlled per-TOPS state without following path components and serializes bounded fsynced state replacement.
+- relationships: implements -> `knowledge/ssiag/schemas/v1/policy-state.schema.json`; implements -> `knowledge/ssiag/schemas/v1/policy-attempt.schema.json`
+- consumers: SSIAG policy administration, tests, reviewers
+- deferred_projections: none
+- notes: Linux-first and macOS-supported; no Windows engine is provided.
 - status: canonical
 
 ### qxctl SSIAG Client
@@ -5383,11 +5513,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: conforms_to -> `knowledge/ssiag/schemas/v1/authorization-decision.schema.json`; implements -> `tools/qxctl/MANIFEST.md`
 - consumers: qxctl protected commands, tests, reviewers
 - deferred_projections: remote node transport under a future contract
-- notes: The client cannot grant permission, mutate policy, or infer authority from caller type.
+- notes: The client cannot grant permission or infer authority from caller type; policy mutation succeeds only after the authenticated server independently proves authority and evidence.
 - status: canonical
 
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, forty-six common SKV v1 JSON Schemas, three common SKV v2 JSON Schemas, four SSIAG authorization and grant-planning JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, forty-six common SKV v1 JSON Schemas, three common SKV v2 JSON Schemas, twelve SSIAG authorization, grant-planning, and policy-administration JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

@@ -15,7 +15,7 @@
 
 SSIAG owns the canonical semantics for identities, authentication results, authorization decisions, capabilities, credential references, leases, provider operations, safe outcomes, provider compatibility, configuration extensions, and their allowed relationships.
 
-The vector also owns `schemas/v1/lifecycle-grant-plan.schema.json`, the proposal-only contract used by qxctl to generate deterministic caller-neutral grants for one exact TOPS/profile lifecycle boundary and its separately permissioned per-TOPS profile-catalog read resource. It does not add a policy-apply route.
+The vector owns the authorization/capability schemas, deterministic lifecycle-grant planning, and the protected local policy-administration contracts under `schemas/v1/`. Policy administration changes an operational per-TOPS overlay; it never edits canonical knowledge or the enrolled configuration file.
 
 ## Authority Split
 
@@ -39,7 +39,7 @@ Immutable opaque IDs and mutable display names are separate fields. Paths, socke
 
 Local peer-credential authentication, foundational supervision, exact deny-by-default authorization, proposal/apply separation, provider mutual executable trust, protected one-shot secret delivery, and per-user macOS Keychain operation are ratified architectural directions. The Go foundation implements kernel credential extraction, exact UID/GID-to-subject mapping, exact-grant policy decisions, and bounded non-transferable capabilities for accepted Darwin/Linux connections. These decisions enable only the explicitly granted noncanonical administrative operation and do not enable canonical apply or provider operations.
 
-Kernel peer authentication, endpoint trust, native per-TOPS supervision/runtime ownership, exact caller-neutral policy evaluation, audited authorization decisions, and the typed mutually authenticated SSIAG-to-STAV producer are implemented. An authorization decision is safe, expiring evidence bound to its subject, TOPS, exact operation/resource/audience/scope, policy/configuration digests, request, and correlation; it is non-transferable and reports `canonical_apply: false`. Credential release, policy mutation, provider mutation, operational Keychain behavior, safeguard administration, and canonical apply remain disabled for every caller until their exact contracts and verification gates pass. Provider fallback, network listeners, graph-database deployment, and secret-bearing general administrative surfaces remain unauthorized.
+Kernel peer authentication, endpoint trust, native per-TOPS supervision/runtime ownership, exact caller-neutral policy evaluation, audited authorization decisions, protected local policy proposal/apply/recovery, and the typed mutually authenticated SSIAG-to-STAV producer are implemented. Local policy apply is compare-and-swap, audit-before-commit, crash-recoverable, and restricted to kernel-derived target-host ownership or exact current grants. Credential release, provider mutation, operational Keychain behavior, general safeguard administration, and canonical knowledge apply remain disabled until their exact contracts and gates pass. Provider fallback, network listeners, graph-database deployment, and secret-bearing general administrative surfaces remain unauthorized.
 
 ## Status
 

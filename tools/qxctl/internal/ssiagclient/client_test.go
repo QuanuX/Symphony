@@ -2,6 +2,7 @@ package ssiagclient
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -35,6 +36,64 @@ func TestClientReadsStatusAndProviders(t *testing.T) {
 	providers, err := client.Providers(context.Background())
 	if err != nil || len(providers.Providers) != 0 {
 		t.Fatalf("unexpected providers: %+v error=%v", providers, err)
+	}
+}
+
+func TestClientUsesClosedPolicyAdministrationProtocols(t *testing.T) {
+	seen := make(map[string]bool)
+	transport := roundTripFunc(func(request *http.Request) (*http.Response, error) {
+		seen[request.URL.Path] = true
+		payload := `{"protocol":"symphony.ssiag.policy-result.v1","operation":"status","tops_id":"` + testTOPSID + `","source":"config","generation":0,"policy_digest":"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","state_digest":"absent","recovery_required":false,"changed":false,"recovered":false,"observed_at":"2026-08-12T12:00:00Z","read_only":true,"caller_class_used":false,"canonical":false}`
+		if request.URL.Path == "/v1/policy/proposals" {
+			var candidate PolicyProposalRequest
+			if err := json.NewDecoder(request.Body).Decode(&candidate); err != nil || candidate.Protocol != "symphony.ssiag.policy-proposal-request.v1" {
+				t.Fatalf("invalid proposal request: %+v error=%v", candidate, err)
+			}
+			payload = `{"protocol":"symphony.ssiag.policy-proposal.v1","operation_id":"operation-1","request_id":"request-1","correlation_id":"correlation-1","tops_id":"` + testTOPSID + `","subject":{"id":"owner","kind":"owner","authority":"unix_peer_credentials"},"authority_basis":"host_owner","expected_policy_digest":"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","change":"reset","desired_policy":null,"desired_policy_digest":"sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","config_digest":"sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc","created_at":"2026-08-12T12:00:00Z","expires_at":"2026-08-12T12:05:00Z","caller_class_used":false,"canonical":false,"applied":false,"proposal_digest":"sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"}`
+		} else if request.URL.Path == "/v1/policy/apply" {
+			payload = strings.Replace(payload, `"operation":"status"`, `"operation":"apply"`, 1)
+		} else if request.URL.Path == "/v1/policy/recover" {
+			payload = strings.Replace(payload, `"operation":"status"`, `"operation":"recover"`, 1)
+		}
+		return &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(strings.NewReader(payload)), Request: request}, nil
+	})
+	client := &Client{httpClient: &http.Client{Transport: transport}, baseURL: "http://unix"}
+	if _, err := client.PolicyStatus(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+	proposal, err := client.ProposePolicy(context.Background(), PolicyProposalRequest{Protocol: "symphony.ssiag.policy-proposal-request.v1"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := client.ApplyPolicy(context.Background(), PolicyApplyRequest{Protocol: "symphony.ssiag.policy-apply-request.v1", Proposal: proposal}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := client.RecoverPolicy(context.Background(), PolicyRecoveryRequest{Protocol: "symphony.ssiag.policy-recovery-request.v1", Discover: true}); err != nil {
+		t.Fatal(err)
+	}
+	for _, path := range []string{"/v1/policy/status", "/v1/policy/proposals", "/v1/policy/apply", "/v1/policy/recover"} {
+		if !seen[path] {
+			t.Fatalf("policy client did not call %s", path)
+		}
+	}
+}
+
+func TestReadBoundedJSONRejectsSymlink(t *testing.T) {
+	directory := t.TempDir()
+	target := filepath.Join(directory, "policy.json")
+	if err := os.WriteFile(target, []byte(`{"default_effect":"deny","max_capability_seconds":60,"grants":[]}`), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	link := filepath.Join(directory, "link.json")
+	if err := os.Symlink(target, link); err != nil {
+		t.Fatal(err)
+	}
+	var policy AuthorizationPolicy
+	if err := ReadBoundedJSON(link, &policy); err == nil {
+		t.Fatal("symlinked policy input was accepted")
+	}
+	if err := ReadBoundedJSON(target, &policy); err != nil || policy.Grants == nil {
+		t.Fatalf("valid bounded policy input failed: %+v %v", policy, err)
 	}
 }
 

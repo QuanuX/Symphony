@@ -77,11 +77,11 @@ macOS uses per-TOPS launchd jobs under the `io.github.quanux.symphony.*` namespa
 
 `internal/server` exposes `GET /v1/status` and `GET /v1/providers` over a local Unix socket. Before dispatch it captures kernel credentials from the accepted connection and rejects requests without authenticated peer context. It returns schema, runtime version, mode, TOPS identity/display name, readiness, and allowlisted descriptors. TCP and mutation endpoints are absent.
 
-`internal/peerauth` uses build-tagged, cgo-free wrappers: Darwin `LOCAL_PEERCRED` plus `LOCAL_PEERPID`, and Linux/WSL `SO_PEERCRED`. Mapping uses the exact effective UID/GID pair. PID is retained only as connection evidence. An unmapped authenticated peer may query the current safe metadata routes but `SubjectFromContext` fails closed, preserving the mutation gate.
+`internal/peerauth` uses build-tagged, cgo-free wrappers: Darwin `LOCAL_PEERCRED` plus `LOCAL_PEERPID`, and Linux/WSL `SO_PEERCRED`. Mapping uses the exact effective UID/GID pair. PID is retained only as connection evidence. An unmapped authenticated peer may query safe metadata and otherwise fails subject resolution. The sole mutation exception is policy administration with `host_owner`: SSIAG derives a deterministic subject only after the kernel UID proves ownership of the target user service, or UID zero for system scope.
 
 ### Decision Packages
 
-`internal/identity`, `internal/policy`, and `internal/credential` keep proof summaries, subjects, deny-by-default decisions, references, leases, and operations separate. The policy package implements exact-grant audited authorization and non-transferable capability evidence for protected noncanonical knowledge-session operations. Credential, lease, provider, policy-mutation, safeguard, and canonical-apply types remain scaffolding or disabled.
+`internal/identity`, `internal/policy`, and `internal/credential` keep proof summaries, subjects, deny-by-default decisions, references, leases, and operations separate. The policy package implements exact-grant audited authorization and supports atomic replacement of one complete effective snapshot. `internal/policyadmin` owns the protected config-or-overlay state, proposal/apply/recovery state machine, CAS, durable attempt journal, and no-follow atomic storage. Credential, lease, provider, general safeguard, and canonical-apply types remain scaffolding or disabled.
 
 ### Provider Registry
 

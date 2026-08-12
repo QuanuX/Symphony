@@ -2,7 +2,7 @@
 
 ## Status
 
-Safe metadata and audited authorization API plus the STAV producer foundation implementing the Architect-ratified architecture in `knowledge/ssiag/SPEC.md`. Kernel caller authentication, native foundation supervision, exact deny-by-default policy evaluation, non-transferable capability evidence, and mutually authenticated typed STAV submission are implemented. Protected noncanonical knowledge-session coordination may consume that evidence; no policy mutation, safeguard administration, canonical apply, credential delivery, or provider operation is enabled. Canonical relationship and provider semantics remain owned by that Knowledge Vector.
+Safe metadata, audited authorization, protected local policy administration, and the STAV producer foundation implementing the Architect-ratified architecture in `knowledge/ssiag/SPEC.md`. Kernel caller authentication, native supervision, exact deny-by-default evaluation, non-transferable capability evidence, local policy proposal/apply/recovery, and mutually authenticated typed STAV submission are implemented. Local policy apply is operational and noncanonical; safeguard administration, canonical knowledge apply, credential delivery, and provider operation remain disabled. Canonical relationship and provider semantics remain owned by that Knowledge Vector.
 
 ## Invariants
 
@@ -51,8 +51,14 @@ The foundation listens on one Unix socket for one TOPS and exposes:
 - `GET /v1/status`: version, readiness, mode, TOPS ID/name, transport, provider count;
 - `GET /v1/providers`: safe declared descriptors.
 - `POST /v1/authorization/decisions`: a bounded strict request containing request/correlation IDs, exact operation/resource/audience/scope, and fresh UTC issue/expiry intent. It contains no subject or caller-class field.
+- `GET /v1/policy/status`: safe effective-policy digest, source, generation, state digest, and recovery metadata; never policy content.
+- `POST /v1/policy/proposals`: subject-free desired policy or reset intent bound by SSIAG to kernel-derived authority and exact current/config/desired digests.
+- `POST /v1/policy/apply`: exact proposal replay, compare-and-swap, durable prepare, committed STAV safe evidence, atomic generation commit, and live evaluator replacement.
+- `POST /v1/policy/recover`: exact-operation recovery by attempt digest or explicit discovery, with idempotent audit replay and roll-forward only.
 
-SSIAG derives the authorization subject from kernel connection context, evaluates exact non-overlapping grants, and returns allow or deny only after the safe STAV policy event commits. Duplicate grants for the same subject and target tuple invalidate configuration rather than creating an order-dependent result. An allow may include an expiring capability bound to the complete target, subject, TOPS, authority basis, grant, request/correlation pair, and policy/configuration digests. The capability is explicitly non-transferable and has no canonical apply authority. TCP binding, policy mutation, provider operation, credential, lease, safeguard, and apply routes are prohibited. Socket paths are absolute, restrictive, and collision-safe. The runtime rejects non-socket objects rather than replacing them. Every request must carry connection context produced from Darwin `LOCAL_PEERCRED`/`LOCAL_PEERPID` or Linux/WSL `SO_PEERCRED`; missing or invalid kernel credentials return a safe authentication failure. Unmapped peers remain limited to read-only metadata routes and cannot request a decision.
+SSIAG derives the authorization subject from kernel connection context, evaluates exact non-overlapping grants, and returns allow or deny only after the safe STAV policy event commits. Duplicate grants for the same subject and target tuple invalidate policy rather than creating an order-dependent result. An allow may include an expiring capability bound to the complete target, subject, TOPS, authority basis, grant, request/correlation pair, and policy/configuration digests. The capability is explicitly non-transferable and has no canonical apply authority. TCP binding, provider operation, credential, lease, general safeguard, and canonical apply routes are prohibited. Socket paths are absolute, restrictive, and collision-safe. Every request carries Darwin `LOCAL_PEERCRED`/`LOCAL_PEERPID` or Linux/WSL `SO_PEERCRED` context. Unmapped peers cannot request a normal decision; only a peer whose UID independently proves target-host ownership may receive the deterministic host-owner subject for local policy administration.
+
+The enrolled config is not rewritten. Policy state lives under the selected per-TOPS state root in a private `policy/` directory. State and attempt files are bounded, no-follow, owner-controlled, digest-verified, fsynced, and atomically replaced under `policy.lock`. A prepared attempt blocks competing proposals until apply or recovery closes it. Older binaries ignore this separate state and safely evaluate enrolled config only. Reset creates a new `source=config` generation, preserving evidence instead of erasing history.
 
 ## Supervision and Socket Lifecycle
 
@@ -62,7 +68,7 @@ The Go server verifies its service identity, locks the persistent adjacent `ssia
 
 ## qxctl Contract
 
-`qxctl ssiag status|providers|doctor --tops-id UUID [--scope user|system]` resolves the same TOPS-isolated socket, rejects unsupported schemas, bounds responses, and binds every operation to a ready status response with the requested TOPS identity and scope before output. It accepts and prints no secret values.
+`qxctl ssiag status|providers|doctor|policy ... --tops-id UUID [--scope user|system]` resolves the same TOPS-isolated socket, rejects unsupported schemas, bounds files/responses, and binds every operation to a ready status response with the requested TOPS identity and scope. `policy propose` consumes a bounded deny-by-default policy or reset intent; `apply` consumes the exact returned proposal; `recover` requires explicit evidence. It accepts and prints no secret values.
 
 ## Provider Contract
 
@@ -74,4 +80,4 @@ SSIAG submits only the closed safe outcome vocabulary defined by `knowledge/ssia
 
 ## Implemented and Disabled Gates
 
-Local peer authentication, exact UID/GID subject resolution, endpoint verification, native supervision/runtime ownership, serialized socket recovery, exact-grant authorization decisions, non-transferable capability evidence, and typed SSIAG STAV submission are implemented. Protected noncanonical authenticated-session coordination is the only current mutation consumer. Policy mutation, proposal/apply mutation, safeguard administration, audit-deferred recovery, lease issuance, credential delivery, and operational provider calls remain disabled for every caller. Future apply authority must derive from effective target-host permission without evaluating caller type. Remote access and any non-permission-backed apply path are unauthorized.
+Local peer authentication, exact UID/GID subject resolution, target-host-owner derivation, endpoint verification, native supervision/runtime ownership, serialized socket recovery, exact-grant authorization decisions, non-transferable capability evidence, protected policy overlay administration, and typed SSIAG STAV submission are implemented. Policy recovery still requires STAV and is not the separately deferred-audit recovery concept. General safeguard administration, audit-deferred recovery, lease issuance, credential delivery, operational providers, and canonical knowledge apply remain disabled. Remote access and any non-permission-backed apply path are unauthorized.

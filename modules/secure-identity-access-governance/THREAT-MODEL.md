@@ -69,7 +69,21 @@ Draft threat model for the scaffold and planned provider phases. It uses assets,
 - persistent no-follow socket lifecycle lock acquired after service-identity verification;
 - conservative stale-socket proof and lock-last shutdown cleanup;
 
-Socket permissions and ownership alone are not endpoint authentication; the post-dial kernel credential check is authoritative. Exact policy decisions and noncanonical knowledge-session coordination are implemented. Canonical mutation and provider operations remain disabled pending their separate replay/binding, adapter-trust, safeguard, and apply gates rather than endpoint-authentication review.
+Socket permissions and ownership alone are not endpoint authentication; the post-dial kernel credential check is authoritative. Exact policy decisions, protected local policy administration, and noncanonical knowledge-session coordination are implemented. Canonical mutation and provider operations remain disabled pending their separate replay/binding, adapter-trust, safeguard, and apply gates rather than endpoint-authentication review.
+
+### Policy State Replacement or Interrupted Apply
+**Threat:** A caller races expected state, tampers with an overlay, exploits a symlink, replays another subject's proposal, or crashes the service between audit and commit.
+
+**Controls:**
+- subject-free proposal requests and kernel-derived target-host authority;
+- exact current-policy compare-and-swap and config binding;
+- private no-follow state directory, persistent lock, bounded strict JSON, ownership/mode checks, and content digests;
+- prepared/audited attempt stages fsynced before the next external effect;
+- idempotent STAV request identity and audit-before-state-commit;
+- atomic state replacement, generation increments, and explicit recovery evidence;
+- subject/TOPS/config/proposal/desired-state binding on apply and recovery;
+- reset by a new config-backed generation rather than deletion;
+- metadata-only status and safe digest/reference-only STAV records.
 
 ### Supervisor Authority or Restart Abuse
 **Threat:** A service manager grants itself application authority, tightly couples bootstrap services, restarts in a hot loop, or leaves a second process racing the endpoint.

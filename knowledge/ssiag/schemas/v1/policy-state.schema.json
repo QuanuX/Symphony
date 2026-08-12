@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:policy-state:v1",
+  "title": "SSIAG protected local policy state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "tops_id", "generation", "source", "previous_policy_digest", "policy", "policy_digest", "config_digest", "updated_at", "state_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.policy-state.v1"},
+    "tops_id": {"type": "string", "format": "uuid"},
+    "generation": {"type": "integer", "minimum": 1},
+    "source": {"enum": ["config", "overlay"]},
+    "previous_policy_digest": {"$ref": "#/$defs/digest"},
+    "policy": {"oneOf": [{"$ref": "authorization-policy.schema.json"}, {"type": "null"}]},
+    "policy_digest": {"$ref": "#/$defs/digest"},
+    "config_digest": {"$ref": "#/$defs/digest"},
+    "updated_at": {"type": "string", "format": "date-time"},
+    "state_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {"digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}
+}

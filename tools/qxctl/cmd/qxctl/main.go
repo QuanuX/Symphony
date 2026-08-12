@@ -60,6 +60,10 @@ func printUsage() {
 	fmt.Println("  ssiag providers --tops-id UUID [--scope user|system] [--json] List safe provider metadata")
 	fmt.Println("  ssiag doctor --tops-id UUID [--scope user|system] Verify local SSIAG availability")
 	fmt.Println("  ssiag grants lifecycle --tops-id UUID --subject-id ID [--profile-id ID] [--json] Generate exact caller-neutral lifecycle grant input")
+	fmt.Println("  ssiag policy status --tops-id UUID [--scope user|system] [--json] Read protected local policy metadata")
+	fmt.Println("  ssiag policy propose --tops-id UUID --operation-id ID --expected-policy-digest DIGEST (--input FILE|--reset) [--json] Prepare a caller-neutral local policy proposal")
+	fmt.Println("  ssiag policy apply --tops-id UUID --input FILE [--json] Audit and atomically apply an exact policy proposal")
+	fmt.Println("  ssiag policy recover --tops-id UUID --operation-id ID (--expected-attempt-digest DIGEST|--discover) [--json] Recover a durable policy attempt")
 	fmt.Println("  stav status --tops-id UUID [--scope user|system] [--json] Read authenticated STAV status")
 	fmt.Println("  stav verify --tops-id UUID [--scope user|system] [--json] Verify the STAV digest chain")
 	fmt.Println("  stav query --tops-id UUID [--scope user|system] [bounded filters] [--json] Query authorized STAV projections")
@@ -2639,6 +2643,128 @@ func runSSIAG(subcommand string, options ssiagOptions) error {
 	default:
 		return fmt.Errorf("unknown SSIAG subcommand %q", subcommand)
 	}
+}
+
+func runSSIAGPolicy(operation string, options ssiagOptions) error {
+	if options.topsID == "" {
+		return fmt.Errorf("--tops-id is required")
+	}
+	client, err := ssiagclient.NewForTOPS(options.scope, options.topsID, 8*time.Second)
+	if err != nil {
+		return err
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
+	defer cancel()
+	if _, err := requireSSIAGStatus(ctx, client, options.topsID, options.scope); err != nil {
+		return err
+	}
+	switch operation {
+	case "status":
+		result, err := client.PolicyStatus(ctx)
+		if err != nil {
+			return err
+		}
+		return printSSIAGPolicyResult(result, options.topsID, options.jsonOutput)
+	case "propose":
+		if options.operationID == "" || options.expectedPolicy == "" {
+			return fmt.Errorf("--operation-id and --expected-policy-digest are required")
+		}
+		if options.reset == (options.input != "") {
+			return fmt.Errorf("exactly one of --input or --reset is required")
+		}
+		if options.ttl <= 0 || options.ttl > 10*time.Minute {
+			return fmt.Errorf("--ttl must be greater than zero and at most 10m")
+		}
+		var desired *ssiagclient.AuthorizationPolicy
+		change := "reset"
+		if options.input != "" {
+			var policyValue ssiagclient.AuthorizationPolicy
+			if err := ssiagclient.ReadBoundedJSON(options.input, &policyValue); err != nil {
+				return err
+			}
+			desired = &policyValue
+			change = "replace"
+		}
+		requestID, err := stavprotocol.GenerateUUIDv4()
+		if err != nil {
+			return err
+		}
+		correlationID, err := stavprotocol.GenerateUUIDv4()
+		if err != nil {
+			return err
+		}
+		now := time.Now().UTC().Truncate(time.Second)
+		proposal, err := client.ProposePolicy(ctx, ssiagclient.PolicyProposalRequest{
+			Protocol: "symphony.ssiag.policy-proposal-request.v1", OperationID: options.operationID,
+			RequestID: requestID, CorrelationID: correlationID, AuthorityBasis: options.authorityBasis,
+			ExpectedPolicyDigest: options.expectedPolicy, Change: change, DesiredPolicy: desired,
+			RequestedAt: now, ExpiresAt: now.Add(options.ttl).UTC().Truncate(time.Second),
+		})
+		if err != nil {
+			return err
+		}
+		if proposal.TOPSID != options.topsID || proposal.CallerClassUsed || proposal.Canonical || proposal.Applied {
+			return fmt.Errorf("SSIAG returned an invalid policy proposal binding")
+		}
+		if options.jsonOutput {
+			return printSSIAGJSON(proposal)
+		}
+		fmt.Printf("SSIAG policy proposal: tops_id=%s operation_id=%s change=%s expected=%s desired=%s expires_at=%s digest=%s caller_class_used=false canonical=false applied=false\n",
+			proposal.TOPSID, proposal.OperationID, proposal.Change, proposal.ExpectedPolicyDigest,
+			proposal.DesiredPolicyDigest, proposal.ExpiresAt.Format(time.RFC3339), proposal.ProposalDigest)
+		return nil
+	case "apply":
+		if options.input == "" {
+			return fmt.Errorf("--input is required")
+		}
+		var proposal ssiagclient.PolicyProposal
+		if err := ssiagclient.ReadBoundedJSON(options.input, &proposal); err != nil {
+			return err
+		}
+		if proposal.TOPSID != options.topsID {
+			return fmt.Errorf("SSIAG policy proposal TOPS ID does not match --tops-id")
+		}
+		result, err := client.ApplyPolicy(ctx, ssiagclient.PolicyApplyRequest{
+			Protocol: "symphony.ssiag.policy-apply-request.v1", Proposal: proposal,
+		})
+		if err != nil {
+			return err
+		}
+		return printSSIAGPolicyResult(result, options.topsID, options.jsonOutput)
+	case "recover":
+		if options.operationID == "" {
+			return fmt.Errorf("--operation-id is required")
+		}
+		if options.discover == (options.expectedAttempt != "") {
+			return fmt.Errorf("exactly one of --expected-attempt-digest or --discover is required")
+		}
+		result, err := client.RecoverPolicy(ctx, ssiagclient.PolicyRecoveryRequest{
+			Protocol: "symphony.ssiag.policy-recovery-request.v1", OperationID: options.operationID,
+			ExpectedAttemptDigest: options.expectedAttempt, Discover: options.discover,
+		})
+		if err != nil {
+			return err
+		}
+		return printSSIAGPolicyResult(result, options.topsID, options.jsonOutput)
+	default:
+		return fmt.Errorf("unknown SSIAG policy operation %q", operation)
+	}
+}
+
+func printSSIAGPolicyResult(result ssiagclient.PolicyResult, topsID string, jsonOutput bool) error {
+	if result.TOPSID != topsID || result.CallerClassUsed || result.Canonical {
+		return fmt.Errorf("SSIAG returned an invalid policy result binding")
+	}
+	if jsonOutput {
+		return printSSIAGJSON(result)
+	}
+	fmt.Printf("SSIAG policy %s: tops_id=%s source=%s generation=%d policy_digest=%s state_digest=%s recovery_required=%t changed=%t recovered=%t caller_class_used=false canonical=false\n",
+		result.Operation, result.TOPSID, result.Source, result.Generation, result.PolicyDigest,
+		result.StateDigest, result.RecoveryRequired, result.Changed, result.Recovered)
+	if result.RecoveryRequired {
+		fmt.Printf("SSIAG policy recovery: attempt_digest=%s\n", result.AttemptDigest)
+	}
+	return nil
 }
 
 type ssiagLifecycleGrant struct {

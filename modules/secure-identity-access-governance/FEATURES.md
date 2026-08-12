@@ -47,10 +47,11 @@
       ],
       "evidence": [
         "Peer-authentication tests cover Darwin/Linux credential extraction, exact mapping, ambiguity refusal, and endpoint mismatch.",
-        "Policy, server, STAV producer, lifecycle, and supervision tests cover exact grants, non-transferable bindings, audit-before-release, and per-TOPS isolation."
+        "Policy, server, STAV producer, lifecycle, and supervision tests cover exact grants, non-transferable bindings, audit-before-release, and per-TOPS isolation.",
+        "Policy-administration tests cover config/overlay selection, CAS, durable prepare/audit/commit stages, exact recovery evidence, reset, tamper and symlink refusal, and live evaluator activation."
       ],
       "feature_id": "ssfv:symphony:ssiag-foundation",
-      "how": "Darwin and Linux kernel peer credentials map exact UID/GID identities to canonical subjects; exact grants evaluate operation, resource, audience, and scope; SSIAG releases a decision only after the corresponding safe STAV event commits.",
+      "how": "Darwin and Linux kernel peer credentials map exact UID/GID identities to canonical subjects; target-host ownership or exact current grants authorize protected local policy proposals; CAS, a durable attempt journal, idempotent STAV audit, atomic state replacement, and live snapshot exchange complete apply or recovery.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -61,6 +62,8 @@
         "modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go",
         "modules/secure-identity-access-governance/internal/peerauth/peerauth.go",
         "modules/secure-identity-access-governance/internal/policy/policy.go",
+        "modules/secure-identity-access-governance/internal/policyadmin/manager.go",
+        "modules/secure-identity-access-governance/internal/policyadmin/storage_unix.go",
         "modules/secure-identity-access-governance/internal/server/server.go",
         "modules/secure-identity-access-governance/internal/server/server_test.go",
         "modules/secure-identity-access-governance/internal/stavproducer/producer.go"
@@ -83,7 +86,7 @@
       "source_scope": "modules/secure-identity-access-governance",
       "status": "experimental",
       "title": "Caller-neutral secure identity and access governance foundation",
-      "what": "Provides independently installable per-TOPS local identity, authentication, exact deny-by-default authorization, non-transferable capability evidence, safe provider metadata, and audited decision services.",
+      "what": "Provides independently installable per-TOPS local identity, authentication, exact deny-by-default authorization, protected operational policy administration, non-transferable capability evidence, safe provider metadata, and audited decision services.",
       "when": "Used for explicit administrative cold or freezing-path operations requiring fresh target-host authorization; it is not consulted inline by hot or warm trading work.",
       "where": "Runs on the target TOPS node over a protected Unix socket with isolated configuration, service identity, runtime state, and native supervision.",
       "who": "Any target-host-authorized caller, qxctl, protected Symphony administrative consumers, TOPS owners, maintainers, and provider adapters.",

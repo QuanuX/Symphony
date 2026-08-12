@@ -251,6 +251,15 @@ func validateAuthorization(authorization *AuthorizationConfig, authentication *A
 	return nil
 }
 
+// ValidateAuthorization validates a local authorization-policy overlay against
+// the enrolled subject namespace without changing the enrolled configuration.
+func ValidateAuthorization(authorization *AuthorizationConfig, authentication *AuthenticationConfig) error {
+	if authorization == nil {
+		return fmt.Errorf("authorization policy is required")
+	}
+	return validateAuthorization(authorization, authentication)
+}
+
 func validPolicyToken(value string) bool {
 	if value == "" || len(value) > 256 || strings.TrimSpace(value) != value {
 		return false

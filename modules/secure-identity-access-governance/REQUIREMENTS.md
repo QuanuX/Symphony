@@ -51,6 +51,8 @@ Architect-ratified architecture with phased implementation requirements. “Must
 - **SSIAG-F-023**: qxctl must not import provider-specific dependencies.
 - **SSIAG-F-024**: qxctl must return a nonzero exit code when the SSIAG is unavailable or unhealthy.
 - **SSIAG-F-025**: qxctl status and doctor must reject a response whose TOPS ID differs from the requested ID.
+- **SSIAG-F-026**: qxctl must expose local policy status, proposal, apply, and explicit recovery without gaining schema ownership.
+- **SSIAG-F-027**: Policy input and proposal files must be bounded regular no-follow JSON and reject unknown fields or trailing values.
 
 ### Identity and Authorization
 - **SSIAG-F-030**: Every future mutation request must resolve to a subject.
@@ -63,6 +65,10 @@ Architect-ratified architecture with phased implementation requirements. “Must
 - **SSIAG-F-037**: Administrative change must separate non-mutating proposal from permission-backed apply; caller type must not be requested or evaluated.
 - **SSIAG-F-038**: Apply requests must bind TOPS, subject, operation, target, request/correlation identifiers, intent, expiry, idempotency, and expected prior-state digest.
 - **SSIAG-F-039**: Callers with the same effective target-host permission and operation context must receive the same supported authorization result, and the target-host administrator must be able to control caller-neutral configurable safeguards through qxctl once that surface is implemented.
+- **SSIAG-F-046**: Local policy proposal requests must contain no caller-supplied subject; SSIAG must derive either a mapped subject with exact current grants or a deterministic subject from kernel-proven target-host ownership.
+- **SSIAG-F-047**: Local policy apply must leave enrolled configuration immutable and store an isolated per-TOPS overlay with generation, prior/current/config/state digests, and exact UTC time.
+- **SSIAG-F-048**: Policy apply must durably prepare before audit, require committed idempotent STAV evidence before state commit, atomically replace state, and activate one consistent policy view.
+- **SSIAG-F-049**: Policy recovery must require an exact operation plus attempt digest or explicit unique discovery, reject divergence, and roll prepared/audited evidence forward without bypassing STAV.
 
 ### Credential Use
 - **SSIAG-F-040**: Credential references must be opaque outside the SSIAG/provider boundary.
@@ -91,6 +97,8 @@ Architect-ratified architecture with phased implementation requirements. “Must
 - **SSIAG-S-016**: Provider control messages must not carry secret bytes.
 - **SSIAG-S-017**: An explicitly exportable secret must use a request-bound, bounded, one-shot protected local descriptor/channel and must never traverse qxctl, OpenAPI, STAV, arguments, environment variables, or logs.
 - **SSIAG-S-018**: The macOS adapter must authenticate the invoking SSIAG executable under the ratified path, ownership, and code-signing policy before operational access.
+- **SSIAG-S-019**: Policy state, attempts, and locks must be owner-controlled, no-follow, bounded, fsynced, digest-validated, and symlink/tamper resistant.
+- **SSIAG-S-020**: Policy bodies may traverse qxctl only as explicit bounded local administration input or proposal; policy status, logs, and STAV must contain digests and safe references only.
 
 ## Operational Requirements
 - **SSIAG-O-001**: Every provider must report declared, ready, degraded, locked, unavailable, or disabled status without revealing sensitive detail.
@@ -108,6 +116,8 @@ Architect-ratified architecture with phased implementation requirements. “Must
 - **SSIAG-O-013**: Supervisor uninstall must stop the selected service by default and preserve all configuration/state; owner-provided managers may explicitly use descriptor-only no-start/no-stop operation.
 - **SSIAG-O-014**: Audit-deferred recovery must never be implicit; it must preserve protocol integrity, durably journal exact permission/operation/expected-state/outcome evidence before completion, mark the outcome audit-deferred, and reconcile forward into STAV when available.
 - **SSIAG-O-015**: Host administrators must be able to select a direct safeguard profile without optional governance interlocks while path safety, bounded parsing, atomic writes, expected-state validation, ledger framing, and secret exclusion remain mandatory.
+- **SSIAG-O-016**: An older SSIAG binary must ignore the separate policy overlay and fall back to enrolled deny-by-default configuration rather than partially interpreting newer state.
+- **SSIAG-O-017**: A reset must commit a new config-backed generation instead of erasing prior state identity; identical desired state retries must be idempotent.
 
 ## Portability Requirements
 - **SSIAG-P-001**: All Symphony-authored SSIAG foundation source must be Go and must compile without cgo.
@@ -138,7 +148,7 @@ Architect-ratified architecture with phased implementation requirements. “Must
 - User install is idempotent, uninstall is digest-safe, and multiple TOPS enrollments remain isolated.
 - qxctl can report SSIAG status/providers and request exact knowledge-session authorization through the authenticated local socket.
 - Every accepted Darwin/Linux connection must carry kernel peer credentials before request dispatch.
-- Exact UID/GID subject mappings must validate as one-to-one; an unmapped peer cannot resolve a mutation subject.
+- Exact UID/GID subject mappings must validate as one-to-one; an unmapped peer cannot resolve a normal authorization subject. The sole exception is the deterministic subject SSIAG derives after kernel UID independently proves `host_owner` policy-administration authority.
 - Authorization defaults to deny, accepts no caller-supplied subject/class, matches only an exact configured tuple, audits before release, and marks capability evidence non-transferable and canonical-apply disabled.
 - Existing qxctl inventory/status tests account for the new module.
 - symphony-validator reports no new violation.
