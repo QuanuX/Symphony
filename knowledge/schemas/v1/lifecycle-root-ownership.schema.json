@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-root-ownership:v1",
+  "title": "Symphony lifecycle shared-root ownership registry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "format_version", "install_root", "enforcement_state", "generation",
+    "previous_ownership_registry_digest", "claims", "observed_receipt_digests",
+    "released_receipt_digests", "updated_at", "canonical", "ownership_registry_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.lifecycle-root-ownership.v1"},
+    "format_version": {"const": 1},
+    "install_root": {"$ref": "#/$defs/absolute_path"},
+    "enforcement_state": {"enum": ["adoption_required", "enforced"]},
+    "generation": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "previous_ownership_registry_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "claims": {"type": "array", "maxItems": 16384, "items": {"$ref": "#/$defs/claim"}},
+    "observed_receipt_digests": {"$ref": "#/$defs/digest_set"},
+    "released_receipt_digests": {"$ref": "#/$defs/digest_set"},
+    "updated_at": {"$ref": "#/$defs/timestamp"},
+    "canonical": {"const": false},
+    "ownership_registry_digest": {"$ref": "#/$defs/digest"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"generation": {"const": 1}}},
+      "then": {"properties": {"previous_ownership_registry_digest": {"type": "null"}}},
+      "else": {"properties": {"previous_ownership_registry_digest": {"$ref": "#/$defs/digest"}}}
+    }
+  ],
+  "$defs": {
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id", "claim_kind", "control_domain_id", "tops_id", "profile_id",
+        "component_id", "receipt_digest", "disposition"
+      ],
+      "properties": {
+        "claim_id": {"$ref": "#/$defs/digest"},
+        "claim_kind": {"enum": ["profile", "legacy"]},
+        "control_domain_id": {"oneOf": [{"const": "not_applicable"}, {"$ref": "#/$defs/digest"}]},
+        "tops_id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "profile_id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "component_id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "receipt_digest": {"$ref": "#/$defs/digest"},
+        "disposition": {"enum": ["retained", "retiring", "legacy_preserve"]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"claim_kind": {"const": "legacy"}}},
+          "then": {"properties": {
+            "control_domain_id": {"const": "not_applicable"},
+            "tops_id": {"const": "not_applicable"},
+            "profile_id": {"const": "not_applicable"},
+            "component_id": {"const": "not_applicable"},
+            "disposition": {"const": "legacy_preserve"}
+          }},
+          "else": {"properties": {
+            "control_domain_id": {"$ref": "#/$defs/digest"},
+            "tops_id": {"$ref": "#/$defs/token"},
+            "profile_id": {"$ref": "#/$defs/token"},
+            "component_id": {"$ref": "#/$defs/token"},
+            "disposition": {"enum": ["retained", "retiring"]}
+          }}
+        }
+      ]
+    },
+    "digest_set": {
+      "type": "array", "maxItems": 4096, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/digest"}
+    },
+    "absolute_path": {"type": "string", "minLength": 2, "maxLength": 4096, "pattern": "^/[^\\u0000]*$"},
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "timestamp": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"}
+  }
+}

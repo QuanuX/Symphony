@@ -17,8 +17,6 @@ import (
 	"golang.org/x/sys/unix"
 )
 
-const packageMutationLock = ".symphony-lifecycle.lock"
-
 type installLock struct {
 	root *os.File
 	lock *os.File
@@ -37,7 +35,7 @@ func (l *installLock) close() {
 	}
 }
 
-func installReceiptV2(sourceRoot, targetRoot, receiptPath string, receipt receiptV2) error {
+func installReceiptV2(sourceRoot, targetRoot, receiptPath string, receipt receiptV2, owner *OwnershipStore) error {
 	if sourceRoot == targetRoot || !safeAbsolutePath(sourceRoot) || !safeAbsolutePath(targetRoot) ||
 		!safeRelativePath(receiptPath) {
 		return fmt.Errorf("integrity_fatal: staged and target package roots are invalid")
@@ -50,6 +48,10 @@ func installReceiptV2(sourceRoot, targetRoot, receiptPath string, receipt receip
 		return fmt.Errorf("integrity_fatal: lock package target: %w", err)
 	}
 	defer locked.close()
+	if err := ownershipInstallAllowedAt(
+		int(locked.root.Fd()), targetRoot, owner, receipt.ComponentID, receipt.ReceiptDigest); err != nil {
+		return err
+	}
 
 	created := make([]string, 0, len(receipt.Files)+1)
 	rollback := func() {
@@ -89,7 +91,7 @@ func installReceiptV2(sourceRoot, targetRoot, receiptPath string, receipt receip
 	return nil
 }
 
-func uninstallReceiptV2(targetRoot, sourceRoot, receiptPath string, receipt receiptV2) error {
+func uninstallReceiptV2(targetRoot, sourceRoot, receiptPath string, receipt receiptV2, owner *OwnershipStore) error {
 	if sourceRoot == targetRoot || !safeAbsolutePath(sourceRoot) || !safeAbsolutePath(targetRoot) ||
 		!safeRelativePath(receiptPath) {
 		return fmt.Errorf("integrity_fatal: staged rollback and target package roots are invalid")
@@ -109,16 +111,27 @@ func uninstallReceiptV2(targetRoot, sourceRoot, receiptPath string, receipt rece
 	// Validate every remaining owned file before deleting any of them. Missing
 	// files are accepted only as forward-resumable evidence from an interrupted
 	// prior attempt; a conflicting file always stops the operation.
+	remaining := false
 	for _, owned := range receipt.Files {
 		matches, exists, err := relativeFileMatches(int(locked.root.Fd()), owned.Path, owned.Size, owned.Digest)
 		if err != nil || exists && !matches {
 			return fmt.Errorf("integrity_fatal: installed file %s no longer matches its rollback proof", owned.Path)
 		}
+		remaining = remaining || exists
 	}
 	receiptMatches, receiptExists, err := relativeBytesMatch(
 		int(locked.root.Fd()), receiptPath, mustJSON(receipt), receipt.ReceiptDigest, true)
 	if err != nil || receiptExists && !receiptMatches {
 		return fmt.Errorf("integrity_fatal: installed receipt no longer matches rollback proof")
+	}
+	remaining = remaining || receiptExists
+	if !remaining {
+		return nil
+	}
+	registry, err := ownershipReclaimAllowedAt(
+		int(locked.root.Fd()), targetRoot, owner, receipt.ComponentID, receipt.ReceiptDigest)
+	if err != nil {
+		return err
 	}
 
 	for _, owned := range receipt.Files {
@@ -132,6 +145,10 @@ func uninstallReceiptV2(targetRoot, sourceRoot, receiptPath string, receipt rece
 	}
 	if err := unix.Fsync(int(locked.root.Fd())); err != nil {
 		return fmt.Errorf("integrity_fatal: synchronize package root: %w", err)
+	}
+	if err := commitOwnershipReclaimedAt(
+		int(locked.root.Fd()), registry, owner, receipt.ReceiptDigest); err != nil {
+		return fmt.Errorf("observation_retryable: package was reclaimed but ownership state needs recovery: %w", err)
 	}
 	return nil
 }

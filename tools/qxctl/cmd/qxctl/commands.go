@@ -152,6 +152,9 @@ type knowledgeLifecycleOptions struct {
 	expectedAppliedDigest   string
 	sourceJournalDigest     string
 	stagedRoots             []string
+	ownershipRoot           string
+	expectedOwnershipDigest string
+	receiptDigest           string
 	maestroPrefix           string
 	maestroVersion          string
 	maestroReceptorIDs      []string
@@ -462,7 +465,7 @@ func newKnowledgeCommand() *cobra.Command {
 		Use:  "lifecycle",
 		Args: usageOnlyArgs,
 		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge lifecycle subcommand is required: profile, observe, report, boot, status, recover, apply, apply-status, or apply-recover")
+			return fmt.Errorf("knowledge lifecycle subcommand is required: profile, ownership, observe, report, boot, status, recover, apply, apply-status, or apply-recover")
 		},
 	}
 	profile := &cobra.Command{
@@ -496,6 +499,36 @@ func newKnowledgeCommand() *cobra.Command {
 	}
 	profile.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	lifecycle.AddCommand(profile)
+
+	ownership := &cobra.Command{
+		Use:  "ownership",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return fmt.Errorf("knowledge lifecycle ownership subcommand is required: status, reconcile, adopt, or release")
+		},
+	}
+	for _, operation := range []string{"status", "reconcile", "adopt", "release"} {
+		options := knowledgeLifecycleOptions{scope: "user", profileID: "default", ttl: 15 * time.Minute}
+		child := &cobra.Command{
+			Use:  operation,
+			Args: usageOnlyArgs,
+			RunE: func(*cobra.Command, []string) error {
+				return runKnowledgeLifecycleOwnership(operation, options)
+			},
+		}
+		addKnowledgeLifecycleCommonFlags(child, &options)
+		child.Flags().StringVar(&options.ownershipRoot, "root", "", "exact configured shared installation root")
+		if operation == "adopt" || operation == "release" {
+			child.Flags().StringVar(&options.expectedOwnershipDigest, "expected-ownership-registry-digest", "", "exact ownership registry compare-and-swap digest")
+		}
+		if operation == "release" {
+			child.Flags().StringVar(&options.receiptDigest, "receipt-digest", "", "exact legacy-preserve receipt digest to release")
+		}
+		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+		ownership.AddCommand(child)
+	}
+	ownership.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	lifecycle.AddCommand(ownership)
 
 	observeOptions := knowledgeLifecycleOptions{scope: "user", profileID: "default", ttl: 15 * time.Minute}
 	observe := &cobra.Command{
@@ -1140,6 +1173,12 @@ func failurePrefix(args []string) string {
 				switch args[3] {
 				case "list", "show", "set", "remove":
 					return "knowledge lifecycle profile " + args[3]
+				}
+			}
+			if len(args) > 3 && args[2] == "ownership" {
+				switch args[3] {
+				case "status", "reconcile", "adopt", "release":
+					return "knowledge lifecycle ownership " + args[3]
 				}
 			}
 		}

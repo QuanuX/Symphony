@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-root-ownership-fence:v1",
+  "title": "Symphony lifecycle shared-root old-client compatibility fence v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["canonical", "format_version", "protocol", "purpose"],
+  "properties": {
+    "canonical": {"const": false},
+    "format_version": {"const": 1},
+    "protocol": {"const": "symphony.knowledge.lifecycle-root-ownership-fence.v1"},
+    "purpose": {"const": "require_ownership_aware_lifecycle_mutation"}
+  }
+}

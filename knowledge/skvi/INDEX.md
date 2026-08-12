@@ -1658,8 +1658,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: administrative CLI implementation surface
 - truth_role: protected profile, SSIAG authorization, observation, coordinator invocation, plan validation, and presentation implementation truth
 - owner: qxctl maintainers
-- scope: Implements profile list/show/set/remove, fixed-layout observe, dynamic planning, report-only boot/status/recovery invocation, shared lifecycle evidence validation, and presentation.
-- relationships: implements -> `tools/qxctl/MANIFEST.md`; implements -> `knowledge/LIFECYCLE.md`; invokes -> `tools/qxctl/internal/knowledgelifecycle/profile.go`; invokes -> `tools/qxctl/internal/knowledgelifecycle/observation.go`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`; invokes -> `tools/qxctl/internal/ssiagclient/client.go`
+- scope: Implements claim-continuous profile list/show/set/remove, shared-root ownership status/reconcile/adopt/release, fixed-layout observe, dynamic planning, report-only boot/status/recovery invocation, shared lifecycle evidence validation, and presentation.
+- relationships: implements -> `tools/qxctl/MANIFEST.md`; implements -> `knowledge/LIFECYCLE.md`; invokes -> `tools/qxctl/internal/knowledgelifecycle/profile.go`; invokes -> `tools/qxctl/internal/knowledgelifecycle/observation.go`; invokes -> `tools/qxctl/internal/knowledgelifecycle/ownership.go`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`; invokes -> `tools/qxctl/internal/ssiagclient/client.go`
 - consumers: qxctl executable, lifecycle tests, administrators, reviewers
 - deferred_projections: host boot integration and generated lifecycle command documentation
 - notes: Boot remains report-only; apply-compatible execution is implemented separately in lifecycle_apply.go.
@@ -1671,7 +1671,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: administrative CLI implementation surface
 - truth_role: exact source/CAS binding, dynamic ready-set execution, per-phase authorization, re-observation, and result-validation implementation truth
 - owner: qxctl maintainers
-- scope: Implements apply, apply-status, and apply-recover by binding one report-journal source, preparing one coordinator action, executing only a reviewed adapter, re-observing complete state, finalizing evidence, dynamically replanning, and explicitly closing convergence.
+- scope: Implements apply, apply-status, and apply-recover by binding one report-journal source, preparing one coordinator action, reconciling shared-root claims, executing only a reviewed adapter, re-observing complete state, finalizing evidence, dynamically replanning, and explicitly closing convergence.
 - relationships: implements -> `knowledge/LIFECYCLE.md`; implements -> `knowledge/schemas/v1/lifecycle-apply-command.schema.json`; implements -> `knowledge/schemas/v1/lifecycle-apply-result.schema.json`; invokes -> `tools/qxctl/internal/knowledgelifecycle/executor.go`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`; invokes -> `tools/qxctl/internal/ssiagclient/client.go`
 - consumers: qxctl executable, lifecycle tests, administrators, reviewers
 - deferred_projections: additional separately reviewed lifecycle action adapters
@@ -1697,8 +1697,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: bounded Go observation implementation
 - truth_role: normalized platform, component, package, binding, stable-inventory, and document-digest implementation truth
 - owner: qxctl maintainers
-- scope: Builds exact disposable lifecycle-observation v1 evidence and separates stable inventory identity from collection-time document evidence.
-- relationships: implements -> `knowledge/schemas/v1/lifecycle-observation.schema.json`; called_by -> `tools/qxctl/cmd/qxctl/lifecycle.go`; populated_by -> `tools/qxctl/internal/knowledgelifecycle/scan_unix.go`
+- scope: Builds exact disposable lifecycle-observation v1 evidence, consumes only the exact ownership compatibility fence, and separates stable inventory identity from collection-time document evidence.
+- relationships: implements -> `knowledge/schemas/v1/lifecycle-observation.schema.json`; consumes -> `knowledge/schemas/v1/lifecycle-root-ownership-fence.schema.json`; called_by -> `tools/qxctl/cmd/qxctl/lifecycle.go`; populated_by -> `tools/qxctl/internal/knowledgelifecycle/scan_unix.go`
 - consumers: qxctl lifecycle commands, coordinator planner, tests, reviewers
 - deferred_projections: Maestro presence observation
 - notes: Excluding observed_at from stable inventory prevents timestamp-only false transactions without weakening document evidence.
@@ -1710,8 +1710,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: bounded Go lifecycle adapter dispatcher
 - truth_role: deterministic action-to-adapter routing, staged-artifact, target-state, and execution-evidence implementation truth
 - owner: qxctl maintainers
-- scope: Validates the coordinator-selected action against desired/observed evidence, routes receipt-v2 install/uninstall or protected select/deselect/activate/deactivate, reports idempotent outcomes, and rejects dock/undock and non-mutating planner actions.
-- relationships: implements -> `knowledge/LIFECYCLE.md`; called_by -> `tools/qxctl/cmd/qxctl/lifecycle_apply.go`; invokes -> `tools/qxctl/internal/knowledgelifecycle/install_unix.go`; invokes -> `tools/qxctl/internal/knowledgelifecycle/runtime.go`
+- scope: Validates the coordinator-selected action against desired/observed evidence, routes receipt-v2 install/claim-governed uninstall or protected select/deselect/activate/deactivate, reports idempotent outcomes, and rejects dock/undock and non-mutating planner actions.
+- relationships: implements -> `knowledge/LIFECYCLE.md`; called_by -> `tools/qxctl/cmd/qxctl/lifecycle_apply.go`; invokes -> `tools/qxctl/internal/knowledgelifecycle/install_unix.go`; invokes -> `tools/qxctl/internal/knowledgelifecycle/ownership.go`; invokes -> `tools/qxctl/internal/knowledgelifecycle/runtime.go`
 - consumers: qxctl lifecycle apply, tests, reviewers
 - deferred_projections: live service/process, receipt-v1, coordinator-handoff, and Maestro adapters
 - notes: It uses no network, shell, receipt entry point, implicit version choice, or arbitrary command.
@@ -1723,11 +1723,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: platform-specific secure package mutation implementation
 - truth_role: no-follow staged copy, receipt-last commit, rollback-proof, owned removal, and retry implementation truth
 - owner: qxctl maintainers
-- scope: Installs exact receipt-v2 files from a separate trusted staged root and uninstalls only after a separate staged rollback proof validates every remaining owned path; missing paths permit forward retry while conflicts fail closed.
-- relationships: implements -> `knowledge/schemas/v2/install-receipt.schema.json`; governed_by -> `knowledge/LIFECYCLE.md`; called_by -> `tools/qxctl/internal/knowledgelifecycle/executor.go`
+- scope: Installs exact receipt-v2 files from a separate trusted staged root only under an exact retained claim and uninstalls only after a separate staged rollback proof validates every remaining owned path and the root-local registry proves unanimous release; missing paths permit forward retry while conflicts fail closed.
+- relationships: implements -> `knowledge/schemas/v2/install-receipt.schema.json`; implements -> `knowledge/schemas/v1/lifecycle-root-ownership.schema.json`; governed_by -> `knowledge/LIFECYCLE.md`; called_by -> `tools/qxctl/internal/knowledgelifecycle/executor.go`
 - consumers: qxctl lifecycle apply, tests, packagers, reviewers
 - deferred_projections: package-manager-specific staging adapters
-- notes: Installation publishes the receipt last; uninstall removes it last; no download or entry-point execution occurs.
+- notes: Installation publishes the receipt last; uninstall removes it last and commits satisfied retiring claims under the same root lock; no download or entry-point execution occurs.
 - status: canonical
 
 #### qxctl Unsupported Native Receipt-v2 Lifecycle Adapter
@@ -2518,7 +2518,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `knowledge/schemas/v2/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
 - consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
 - deferred_projections: apply/provider/docking schemas, conformance evidence, engine inventory, docking graph
-- notes: Forty-six common v1 schemas and three common v2 schemas are canonical; lifecycle profile/runtime persistence, observation, planning, report/apply journal recovery, exact staged receipt-v2/runtime/Maestro-presence actions, and applied-state commitment are implemented, the fifteen-record SSFV catalog is partial, and canonical programmatic apply is disabled.
+- notes: Fifty common v1 schemas and three common v2 schemas are canonical; lifecycle profile/runtime persistence, observation, planning, report/apply journal recovery, exact staged receipt-v2/runtime/Maestro-presence actions, shared-root ownership fencing, and applied-state commitment are implemented, the fifteen-record SSFV catalog is partial, and canonical programmatic apply is disabled.
 - status: canonical
 
 ##### SKILL.md
@@ -2787,7 +2787,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: JSON Schema Draft 2020-12 contract
 - truth_role: canonical immutable package ownership, integrity, capability, and compatibility truth
 - owner: Symphony Knowledge Vector maintainers
-- scope: Closes component/package identity, exact owned-file sizes/digests/kinds, explicit entry points, provided/required capabilities, compatible receptors, platform requirements, and receipt digest.
+- scope: Closes component/package identity, exact owned-file sizes/digests/kinds, reserved control/receipt namespaces, explicit entry points, provided/required capabilities, compatible receptors, platform requirements, and receipt digest.
 - relationships: depends_on -> `knowledge/schemas/v2/MANIFEST.md`; governed_by -> `knowledge/LIFECYCLE.md`
 - consumers: packagers, qxctl inventory/executor, coordinator lifecycle planner, installers, uninstallers, validator, reviewers
 - deferred_projections: package-manager-specific receipt emission and additional strict v1 adapters
@@ -2800,7 +2800,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: common CMake packaging implementation
 - truth_role: deterministic receipt-v2 installation-order and package-registration truth
 - owner: Symphony Knowledge Vector maintainers
-- scope: Registers an existing-receipt preflight before owned-file install rules and receipt-v2 generation after every other package install rule; binds exact package identity, entry points, capabilities, receptors, and platform requirements.
+- scope: Registers an existing-receipt preflight before owned-file install rules and receipt-v2 generation after every other package install rule; rejects reserved lifecycle/receipt ownership paths; and binds exact package identity, entry points, capabilities, receptors, and platform requirements.
 - relationships: implements -> `knowledge/schemas/v2/install-receipt.schema.json`; configures -> `cmake/SymphonyInstallReceiptV2Preflight.cmake.in`, `cmake/SymphonyInstallReceiptV2.cmake.in`; copies_for_build_local_use -> `cmake/SymphonyUninstallReceiptV2.cmake`; governed_by -> `knowledge/LIFECYCLE.md`
 - consumers: independently installable C++ foundation, coordinator, Maestro, vector-engine, and validator packages
 - deferred_projections: package-manager-native manifest adapters
@@ -2826,11 +2826,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: configured CMake install script
 - truth_role: exact-version overwrite prevention and receipt immutability implementation truth
 - owner: Symphony Knowledge Vector maintainers
-- scope: Runs before any package-owned file install rule and rejects a final or dangling-link receipt already committed at the exact module/version path.
+- scope: Runs before any package-owned file install rule and rejects a final or dangling-link receipt already committed at the exact module/version path or any direct install into a root carrying the qxctl registry or compatibility fence.
 - relationships: implements -> `knowledge/schemas/v2/install-receipt.schema.json`; configured_by -> `cmake/SymphonyInstallReceiptV2.cmake`; governed_by -> `knowledge/LIFECYCLE.md`
 - consumers: independently installable C++ foundation, coordinator, Maestro, vector-engine, and validator packages
 - deferred_projections: package-manager-native pre-transaction guards
-- notes: An existing exact version must be explicitly uninstalled or a different side-by-side version selected; direct CMake install cannot silently replace committed receipt-v2 ownership evidence.
+- notes: An existing exact version must be explicitly uninstalled or a different side-by-side version selected; direct CMake install cannot silently replace committed receipt-v2 ownership evidence or race qxctl root administration.
 - status: canonical
 
 ##### Shared Install Receipt v2 Uninstall Guard
@@ -2839,11 +2839,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: common CMake lifecycle implementation
 - truth_role: receipt-set validation, content-integrity preflight, receipt-last removal, and idempotent retry truth
 - owner: Symphony Knowledge Vector maintainers
-- scope: Requires the generated package's configured path set to equal its receipt-v2 owned set, validates every remaining no-follow regular file against its recorded size and SHA-256 before mutation, treats already-missing files as resumable prior work, and removes the receipt last.
+- scope: Requires the generated package's configured path set to equal its receipt-v2 owned set, validates every remaining no-follow regular file against its recorded size and SHA-256 before mutation, refuses a present package beneath a root carrying the qxctl registry or compatibility fence, treats already-missing files as resumable prior work, and removes the receipt last.
 - relationships: implements -> `knowledge/schemas/v2/install-receipt.schema.json`; copied_by -> `cmake/SymphonyInstallReceiptV2.cmake`; governed_by -> `knowledge/LIFECYCLE.md`
 - consumers: build-local uninstall programs for the C++ foundation, coordinator, Maestro, vector engines, and Symphony Validator
 - deferred_projections: package-manager-native transactional uninstallers
-- notes: An absent receipt is accepted only when every configured owned path is also absent; content drift, links, directories, and incomplete configured/receipt ownership sets fail closed before removal.
+- notes: An absent receipt is accepted only when every configured owned path is also absent; content drift, links, directories, incomplete configured/receipt ownership sets, and direct bypass of shared-root claims fail closed before removal.
 - status: canonical
 
 ##### Foundation Receipt-v1 Template Retirement Tombstone
@@ -5109,8 +5109,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - scope: Generates the build-local uninstaller that validates receipt-v2 ownership, remaining-file digests, and receipt-last removal for the installed C++ foundation package.
 - relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `libraries/knowledge-vector-engine-cpp/INSTALL.md`
 - consumers: CMake, qxctl lifecycle administration, package maintainers, tests
-- deferred_projections: host-global shared-root ownership accounting
-- notes: The generated uninstaller cannot infer authority across independent TOPS profiles.
+- deferred_projections: package-manager-native ownership claim adapters
+- notes: The generated uninstaller refuses a present package when qxctl's root registry exists; authenticated qxctl lifecycle apply owns cross-profile reclamation.
 - status: canonical
 
 ### Knowledge Engine Process Protocol Interface
@@ -5148,8 +5148,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - scope: Generates the exact receipt-v2 coordinator uninstaller with staged rollback proof and receipt-last removal.
 - relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/knowledge-session-coordinator/INSTALL.md`
 - consumers: CMake, qxctl lifecycle administration, tests
-- deferred_projections: host-global shared-root ownership accounting
-- notes: Uninstall does not remove protected journals or unrelated administrator files.
+- deferred_projections: package-manager-native ownership claim adapters
+- notes: Uninstall does not remove protected journals or unrelated administrator files and refuses a present package when qxctl's root registry exists.
 - status: canonical
 
 ### SACV Engine Receipt-v2 Install Template
@@ -5174,8 +5174,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - scope: Generates the receipt-v2 SACV uninstaller with exact owned-file validation and receipt-last removal.
 - relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/sacv-engine/INSTALL.md`
 - consumers: CMake, qxctl lifecycle administration, tests
-- deferred_projections: host-global shared-root ownership accounting
-- notes: Shared-root reclamation remains separately gated.
+- deferred_projections: package-manager-native ownership claim adapters
+- notes: The package-local uninstaller refuses a present package when qxctl's root registry exists; authenticated lifecycle apply owns reclamation.
 - status: canonical
 
 ### SCLV Engine Receipt-v2 Install Template
@@ -5200,8 +5200,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - scope: Generates the receipt-v2 SCLV uninstaller with exact owned-file validation and receipt-last removal.
 - relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/sclv-engine/INSTALL.md`
 - consumers: CMake, qxctl lifecycle administration, tests
-- deferred_projections: host-global shared-root ownership accounting
-- notes: Shared-root reclamation remains separately gated.
+- deferred_projections: package-manager-native ownership claim adapters
+- notes: The package-local uninstaller refuses a present package when qxctl's root registry exists; authenticated lifecycle apply owns reclamation.
 - status: canonical
 
 ### SKVI Engine Receipt-v2 Install Template
@@ -5226,8 +5226,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - scope: Generates the receipt-v2 SKVI uninstaller with exact owned-file validation and receipt-last removal.
 - relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/skvi-engine/INSTALL.md`
 - consumers: CMake, qxctl lifecycle administration, tests
-- deferred_projections: host-global shared-root ownership accounting
-- notes: Shared-root reclamation remains separately gated.
+- deferred_projections: package-manager-native ownership claim adapters
+- notes: The package-local uninstaller refuses a present package when qxctl's root registry exists; authenticated lifecycle apply owns reclamation.
 - status: canonical
 
 ### SODV Engine Receipt-v2 Install Template
@@ -5252,8 +5252,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - scope: Generates the receipt-v2 SODV uninstaller with exact owned-file validation and receipt-last removal.
 - relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/sodv-engine/INSTALL.md`
 - consumers: CMake, qxctl lifecycle administration, tests
-- deferred_projections: host-global shared-root ownership accounting
-- notes: Shared-root reclamation remains separately gated.
+- deferred_projections: package-manager-native ownership claim adapters
+- notes: The package-local uninstaller refuses a present package when qxctl's root registry exists; authenticated lifecycle apply owns reclamation.
 - status: canonical
 
 ### SSFV Engine Receipt-v2 Install Template
@@ -5278,8 +5278,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - scope: Generates the receipt-v2 SSFV uninstaller with exact owned-file validation and receipt-last removal.
 - relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/ssfv-engine/INSTALL.md`
 - consumers: CMake, qxctl lifecycle administration, tests
-- deferred_projections: host-global shared-root ownership accounting
-- notes: Shared-root reclamation remains separately gated.
+- deferred_projections: package-manager-native ownership claim adapters
+- notes: The package-local uninstaller refuses a present package when qxctl's root registry exists; authenticated lifecycle apply owns reclamation.
 - status: canonical
 
 ### qxctl Lifecycle Binding Transition Tests
@@ -5516,6 +5516,110 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: The client cannot grant permission or infer authority from caller type; policy mutation succeeds only after the authenticated server independently proves authority and evidence.
 - status: canonical
 
+### Shared-Root Ownership Schema
+- path: `knowledge/schemas/v1/lifecycle-root-ownership.schema.json`
+- title: Shared-Root Lifecycle Ownership Registry Schema
+- surface_type: common SKV JSON Schema
+- truth_role: canonical root-local multi-profile receipt claim and reclamation protocol truth
+- owner: Symphony Knowledge Vector umbrella maintainers
+- scope: Defines enforced/adoption-required generations, retained/retiring/legacy claims, observed receipts, explicit releases, and digests.
+- relationships: governed_by -> `knowledge/LIFECYCLE.md`; implemented_by -> `tools/qxctl/internal/knowledgelifecycle/ownership.go`
+- consumers: qxctl lifecycle administration, package executor, validator, tests, reviewers
+- deferred_projections: host-wide ownership graph
+- notes: Operational claims do not grant permission or become canonical module truth.
+- status: canonical
+
+### Shared-Root Ownership Compatibility Fence Schema
+- path: `knowledge/schemas/v1/lifecycle-root-ownership-fence.schema.json`
+- title: Shared-Root Ownership Old-Client Compatibility Fence Schema
+- surface_type: common SKV JSON Schema
+- truth_role: canonical static receipt-layout fail-closed compatibility evidence truth
+- owner: Symphony Knowledge Vector umbrella maintainers
+- scope: Defines the exact document that ownership-aware clients consume and ownership-unaware lifecycle clients preserve as an unsupported critical package.
+- relationships: governed_by -> `knowledge/LIFECYCLE.md`; implemented_by -> `tools/qxctl/internal/knowledgelifecycle/ownership_unix.go`
+- consumers: qxctl lifecycle observation and ownership administration, direct package guards, validator, tests, reviewers
+- deferred_projections: package-manager-native compatibility fences
+- notes: The fence grants no permission, owns no package, and exists only to prevent an older mutation path from ignoring a newer root registry.
+- status: canonical
+
+### Shared-Root Ownership Result Schema
+- path: `knowledge/schemas/v1/lifecycle-root-ownership-result.schema.json`
+- title: Shared-Root Lifecycle Ownership Result Schema
+- surface_type: common SKV JSON Schema
+- truth_role: canonical bounded ownership administration response truth
+- owner: Symphony Knowledge Vector umbrella maintainers
+- scope: Defines status, reconciliation, adoption, and release results for one exact configured root.
+- relationships: governed_by -> `knowledge/LIFECYCLE.md`; depends_on -> `knowledge/schemas/v1/lifecycle-root-ownership.schema.json`
+- consumers: qxctl lifecycle administration, tests, reviewers
+- deferred_projections: ownership dashboard
+- notes: Results are noncanonical operational evidence.
+- status: canonical
+
+### Shared-Root Ownership Reconciliation Schema
+- path: `knowledge/schemas/v1/lifecycle-root-ownership-reconciliation.schema.json`
+- title: Shared-Root Lifecycle Reconciliation Schema
+- surface_type: common SKV JSON Schema
+- truth_role: canonical multi-root pre-action reconciliation evidence truth
+- owner: Symphony Knowledge Vector umbrella maintainers
+- scope: Defines deterministic ownership-result collection for one exact TOPS/profile action boundary.
+- relationships: governed_by -> `knowledge/LIFECYCLE.md`; depends_on -> `knowledge/schemas/v1/lifecycle-root-ownership-result.schema.json`
+- consumers: qxctl lifecycle apply, tests, reviewers
+- deferred_projections: ownership dashboard
+- notes: Reconciliation cannot bypass the coordinator's prepared action or SSIAG authorization.
+- status: canonical
+
+### qxctl Shared-Root Ownership Implementation
+- path: `tools/qxctl/internal/knowledgelifecycle/ownership.go`
+- title: qxctl Shared-Root Ownership State Machine
+- surface_type: Go operational lifecycle implementation
+- truth_role: exact multi-profile claim, adoption, release, and reclamation decision truth
+- owner: qxctl maintainers
+- scope: Derives stable control-domain claims, preserves legacy/unclaimed packages, authorizes reclamation only after all competing claims release, and prunes satisfied non-retention claims after observed durable absence.
+- relationships: implements -> `knowledge/schemas/v1/lifecycle-root-ownership.schema.json`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl lifecycle apply and ownership commands, tests, reviewers
+- deferred_projections: host-wide ownership graph
+- notes: Caller class, version recency, and one profile's desired absence cannot establish reclamation authority.
+- status: canonical
+
+### qxctl Shared-Root Ownership Storage
+- path: `tools/qxctl/internal/knowledgelifecycle/ownership_unix.go`
+- title: qxctl Shared-Root Ownership Unix Storage
+- surface_type: Go Darwin/Linux durable storage implementation
+- truth_role: exact root-lock, no-follow, atomic replacement, and reclamation-gate truth
+- owner: qxctl maintainers
+- scope: Serializes registry and package mutation at the exact configured root, commits the receipt-layout compatibility fence before the first registry, and fails closed on untrusted paths or claim conflicts.
+- relationships: implements -> `knowledge/schemas/v1/lifecycle-root-ownership.schema.json`; implements -> `knowledge/schemas/v1/lifecycle-root-ownership-fence.schema.json`; composes_with -> `tools/qxctl/internal/knowledgelifecycle/install_unix.go`
+- consumers: qxctl lifecycle ownership and package executor, tests, reviewers
+- deferred_projections: none
+- notes: Native Windows is unsupported; Linux and the macOS development path use equivalent no-follow behavior.
+- status: canonical
+
+### qxctl Shared-Root Ownership Unsupported Platform Gate
+- path: `tools/qxctl/internal/knowledgelifecycle/ownership_unsupported.go`
+- title: qxctl Shared-Root Ownership Unsupported Platform Gate
+- surface_type: Go fail-closed platform implementation
+- truth_role: exact unsupported native-platform refusal truth
+- owner: qxctl maintainers
+- scope: Refuses shared-root ownership mutation outside Linux and macOS rather than substituting weaker filesystem semantics.
+- relationships: governed_by -> `knowledge/LIFECYCLE.md`; complements -> `tools/qxctl/internal/knowledgelifecycle/ownership_unix.go`
+- consumers: qxctl cross-platform builds, tests, reviewers
+- deferred_projections: none
+- notes: Windows users operate through WSL or a remote Linux node.
+- status: canonical
+
+### qxctl Shared-Root Ownership Regression Matrix
+- path: `tools/qxctl/internal/knowledgelifecycle/ownership_test.go`
+- title: qxctl Shared-Root Ownership Regression Matrix
+- surface_type: Go deterministic lifecycle regression evidence
+- truth_role: exact multi-profile, mixed-version, adoption, release, and symlink-failure test truth
+- owner: qxctl maintainers
+- scope: Exercises independent state roots, competing and unanimous retiring claims, interrupted-removal healing, legacy preservation, old-client fencing, unexpected old-writer inventory, and no-follow rejection.
+- relationships: verifies -> `tools/qxctl/internal/knowledgelifecycle/ownership.go`; verifies -> `tools/qxctl/internal/knowledgelifecycle/ownership_unix.go`
+- consumers: qxctl maintainers, reviewers, release validation
+- deferred_projections: test-report projection
+- notes: Passing tests do not grant permission or authorize unattended reclamation.
+- status: canonical
+
 ### SSIAG Process Entrypoint
 - path: `modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go`
 - title: SSIAG Supervised Process Entrypoint
@@ -5595,7 +5699,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - status: canonical
 
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, forty-six common SKV v1 JSON Schemas, three common SKV v2 JSON Schemas, twelve SSIAG authorization, grant-planning, and policy-administration JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, fifty common SKV v1 JSON Schemas, three common SKV v2 JSON Schemas, twelve SSIAG authorization, grant-planning, and policy-administration JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

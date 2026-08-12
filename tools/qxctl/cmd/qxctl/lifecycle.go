@@ -86,7 +86,13 @@ func runKnowledgeLifecycleProfile(operation string, options knowledgeLifecycleOp
 			options.topsID, options.profileID, options.expectedProfileDigest+"\n"+inputDigest)); err != nil {
 			return err
 		}
-		profile, changed, err := store.Set(input, options.expectedProfileDigest)
+		profile, changed, err := store.SetGuarded(input, options.expectedProfileDigest,
+			func(current knowledgelifecycle.Profile, exists bool) error {
+				if !exists {
+					return nil
+				}
+				return requireRetainedProfileClaims(store.StateRoot(), options, current, input)
+			})
 		if err != nil {
 			return err
 		}
@@ -107,7 +113,10 @@ func runKnowledgeLifecycleProfile(operation string, options knowledgeLifecycleOp
 			options.topsID, options.profileID, options.expectedProfileDigest)); err != nil {
 			return err
 		}
-		changed, err := store.Remove(options.profileID, options.expectedProfileDigest)
+		changed, err := store.RemoveGuarded(options.profileID, options.expectedProfileDigest,
+			func(current knowledgelifecycle.Profile) error {
+				return requireReleasedProfileClaims(store.StateRoot(), options, current)
+			})
 		if err != nil {
 			return err
 		}
@@ -124,6 +133,178 @@ func runKnowledgeLifecycleProfile(operation string, options knowledgeLifecycleOp
 	default:
 		return fmt.Errorf("unsupported knowledge lifecycle profile operation")
 	}
+}
+
+func requireRetainedProfileClaims(
+	stateRoot string,
+	options knowledgeLifecycleOptions,
+	current knowledgelifecycle.Profile,
+	input knowledgelifecycle.ProfileInput,
+) error {
+	for _, root := range current.ConfiguredRoots {
+		ownership, err := knowledgelifecycle.NewOwnershipStore(
+			root, stateRoot, options.topsID, options.profileID)
+		if err != nil {
+			return err
+		}
+		claims, err := ownership.ProfileClaims()
+		if err != nil {
+			return fmt.Errorf("inspect shared-root ownership before profile update: %w", err)
+		}
+		for _, claim := range claims {
+			if !profileInputRetainsClaim(input, root, claim.ComponentID) {
+				return fmt.Errorf("profile still owns or retires component %s under %s; converge desired absence before removing or relocating it", claim.ComponentID, root)
+			}
+		}
+	}
+	return nil
+}
+
+func requireReleasedProfileClaims(
+	stateRoot string,
+	options knowledgeLifecycleOptions,
+	current knowledgelifecycle.Profile,
+) error {
+	for _, root := range current.ConfiguredRoots {
+		ownership, err := knowledgelifecycle.NewOwnershipStore(
+			root, stateRoot, options.topsID, options.profileID)
+		if err != nil {
+			return err
+		}
+		claimed, err := ownership.HasProfileClaims()
+		if err != nil {
+			return fmt.Errorf("inspect shared-root ownership before profile removal: %w", err)
+		}
+		if claimed {
+			return fmt.Errorf("profile still owns or retires packages under %s; converge desired absence before removal", root)
+		}
+	}
+	return nil
+}
+
+func profileInputRetainsClaim(input knowledgelifecycle.ProfileInput, root, componentID string) bool {
+	configured := false
+	for _, candidate := range input.ConfiguredRoots {
+		configured = configured || candidate == root
+	}
+	if !configured {
+		return false
+	}
+	for _, component := range input.Components {
+		if component.ComponentID == componentID && component.InstallRoot == root {
+			return true
+		}
+	}
+	return false
+}
+
+func runKnowledgeLifecycleOwnership(operation string, options knowledgeLifecycleOptions) error {
+	if options.ownershipRoot == "" {
+		return fmt.Errorf("--root is required")
+	}
+	store, err := lifecycleStore(options)
+	if err != nil {
+		return err
+	}
+	snapshot, err := store.Snapshot(options.profileID)
+	if err != nil {
+		return err
+	}
+	if !snapshot.Exists {
+		return fmt.Errorf("lifecycle profile %q is absent", options.profileID)
+	}
+	configured := false
+	for _, root := range snapshot.Profile.ConfiguredRoots {
+		if root == options.ownershipRoot {
+			configured = true
+			break
+		}
+	}
+	if !configured {
+		return fmt.Errorf("ownership root is not an exact configured root of the selected profile")
+	}
+	if err := authorizeKnowledgeLifecycle(options, "ownership."+operation, lifecycleResource(
+		options.topsID, options.profileID, options.ownershipRoot)); err != nil {
+		return err
+	}
+	var observation knowledgelifecycle.Observation
+	expectedProfileDigest := snapshot.Profile.ProfileDigest
+	if operation == "reconcile" {
+		var observedProfile knowledgelifecycle.Profile
+		observation, expectedProfileDigest, observedProfile, err = buildLifecycleObservation(options, false)
+		if err != nil {
+			return err
+		}
+		if observedProfile.ProfileDigest != expectedProfileDigest {
+			return fmt.Errorf("lifecycle observation returned mismatched profile evidence")
+		}
+	}
+	if (operation == "adopt" || operation == "release") && !validTaggedDigest(options.expectedOwnershipDigest) {
+		return fmt.Errorf("--expected-ownership-registry-digest is required and must be an exact tagged SHA-256 digest")
+	}
+	if operation == "release" && !validTaggedDigest(options.receiptDigest) {
+		return fmt.Errorf("--receipt-digest is required and must be an exact tagged SHA-256 digest")
+	}
+	var result knowledgelifecycle.OwnershipResult
+	err = store.WithProfileSnapshot(options.profileID, func(profile knowledgelifecycle.Profile) error {
+		if profile.ProfileDigest != expectedProfileDigest {
+			return fmt.Errorf("lifecycle profile changed before ownership %s; observe and retry", operation)
+		}
+		configured := false
+		for _, root := range profile.ConfiguredRoots {
+			configured = configured || root == options.ownershipRoot
+		}
+		if !configured {
+			return fmt.Errorf("ownership root is no longer an exact configured root of the selected profile")
+		}
+		ownership, err := knowledgelifecycle.NewOwnershipStore(
+			options.ownershipRoot, store.StateRoot(), options.topsID, options.profileID)
+		if err != nil {
+			return err
+		}
+		switch operation {
+		case "status":
+			state, snapshotErr := ownership.Snapshot()
+			if snapshotErr != nil {
+				return snapshotErr
+			}
+			result = knowledgelifecycle.OwnershipView("status", state)
+			return nil
+		case "reconcile":
+			var reconcileErr error
+			result, reconcileErr = ownership.Reconcile(profile.DesiredState, observation)
+			return reconcileErr
+		case "adopt":
+			var adoptErr error
+			result, adoptErr = ownership.Adopt(options.expectedOwnershipDigest)
+			return adoptErr
+		case "release":
+			var releaseErr error
+			result, releaseErr = ownership.ReleaseLegacy(options.receiptDigest, options.expectedOwnershipDigest)
+			return releaseErr
+		default:
+			return fmt.Errorf("unsupported knowledge lifecycle ownership operation")
+		}
+	})
+	if err != nil {
+		return err
+	}
+	if options.jsonOutput {
+		return printIndentedJSON(result)
+	}
+	state := "absent"
+	generation := uint64(0)
+	digest := "absent"
+	claims := 0
+	if result.Snapshot.Exists && result.Snapshot.Registry != nil {
+		state = result.Snapshot.Registry.EnforcementState
+		generation = result.Snapshot.Registry.Generation
+		digest = result.Snapshot.Registry.OwnershipRegistryDigest
+		claims = len(result.Snapshot.Registry.Claims)
+	}
+	fmt.Printf("Knowledge lifecycle ownership: operation=%s root=%s state=%s changed=%t generation=%d claims=%d digest=%s canonical=false\n",
+		operation, options.ownershipRoot, state, result.Changed, generation, claims, digest)
+	return nil
 }
 
 func runKnowledgeLifecycleObserve(options knowledgeLifecycleOptions) error {

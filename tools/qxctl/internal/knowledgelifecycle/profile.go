@@ -206,6 +206,35 @@ func (s *Store) Snapshot(profileID string) (Snapshot, error) {
 	return snapshot, err
 }
 
+// WithProfileSnapshot holds the shared profile lock for the complete operation.
+// Callers that reconcile or mutate resources derived from a profile use this
+// lease to prevent a concurrent profile update from changing those resources.
+func (s *Store) WithProfileSnapshot(profileID string, operation func(Profile) error) error {
+	if !safeToken(profileID, 256) {
+		return fmt.Errorf("profile ID has invalid syntax")
+	}
+	if operation == nil {
+		return fmt.Errorf("profile snapshot operation is required")
+	}
+	return s.withProfileLock(false, func(directory *os.File) error {
+		data, exists, err := readProfileFile(directory, profileID)
+		if err != nil {
+			return err
+		}
+		if !exists {
+			return fmt.Errorf("lifecycle profile %q is absent", profileID)
+		}
+		profile, err := decodeProfile(data)
+		if err != nil {
+			return err
+		}
+		if profile.ProfileID != profileID || profile.TOPSID != s.topsID {
+			return fmt.Errorf("lifecycle profile storage identity mismatch")
+		}
+		return operation(profile)
+	})
+}
+
 func (s *Store) List() (ListResult, error) {
 	result := ListResult{
 		Schema: "qxctl.knowledge.lifecycle-profile-list.v1",
@@ -251,6 +280,17 @@ func (s *Store) List() (ListResult, error) {
 }
 
 func (s *Store) Set(input ProfileInput, expected string) (Profile, bool, error) {
+	return s.SetGuarded(input, expected, nil)
+}
+
+// SetGuarded evaluates guard while holding the exclusive profile lock and
+// before committing a changed profile. Idempotent same-intent retries do not
+// invoke the guard because they cannot change a resource mapping.
+func (s *Store) SetGuarded(
+	input ProfileInput,
+	expected string,
+	guard func(current Profile, exists bool) error,
+) (Profile, bool, error) {
 	if input.TOPSID != s.topsID {
 		return Profile{}, false, fmt.Errorf("profile input TOPS does not match the selected TOPS")
 	}
@@ -281,6 +321,11 @@ func (s *Store) Set(input ProfileInput, expected string) (Profile, bool, error) 
 		if err := requireExpected(current, exists, expected); err != nil {
 			return err
 		}
+		if guard != nil {
+			if err := guard(current, exists); err != nil {
+				return err
+			}
+		}
 		next, err := buildProfile(input, current, exists)
 		if err != nil {
 			return err
@@ -300,6 +345,12 @@ func (s *Store) Set(input ProfileInput, expected string) (Profile, bool, error) 
 }
 
 func (s *Store) Remove(profileID, expected string) (bool, error) {
+	return s.RemoveGuarded(profileID, expected, nil)
+}
+
+// RemoveGuarded evaluates guard while holding the exclusive profile lock and
+// immediately before unlinking the exact expected profile generation.
+func (s *Store) RemoveGuarded(profileID, expected string, guard func(Profile) error) (bool, error) {
 	if !safeToken(profileID, 256) {
 		return false, fmt.Errorf("profile ID has invalid syntax")
 	}
@@ -324,6 +375,11 @@ func (s *Store) Remove(profileID, expected string) (bool, error) {
 		}
 		if err := requireExpected(current, true, expected); err != nil {
 			return err
+		}
+		if guard != nil {
+			if err := guard(current); err != nil {
+				return err
+			}
 		}
 		if err := removeProfileFile(directory, profileID); err != nil {
 			return err

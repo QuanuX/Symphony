@@ -4,8 +4,10 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 )
@@ -89,6 +91,55 @@ func TestProfileStoreCASIdempotencyAndRemoval(t *testing.T) {
 	removed, err = store.Remove("default", second.ProfileDigest)
 	if err != nil || removed {
 		t.Fatalf("profile removal retry was not idempotent: removed=%t err=%v", removed, err)
+	}
+}
+
+func TestProfileStoreGuardedMutationAndSharedLease(t *testing.T) {
+	stateRoot := t.TempDir()
+	installRoot := t.TempDir()
+	store, err := NewStore(stateRoot, testTOPSID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	input := profileInput(installRoot)
+	first, _, err := store.Set(input, "absent")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	modified := profileInput(installRoot)
+	modified.BootMode = "apply-compatible"
+	guarded := false
+	if _, _, err := store.SetGuarded(modified, first.ProfileDigest, func(current Profile, exists bool) error {
+		guarded = exists && current.ProfileDigest == first.ProfileDigest
+		return errors.New("blocked by resource ownership")
+	}); err == nil || !guarded {
+		t.Fatalf("guarded update was not rejected against the exact current profile: guarded=%t err=%v", guarded, err)
+	}
+	snapshot, err := store.Snapshot("default")
+	if err != nil || snapshot.Profile.ProfileDigest != first.ProfileDigest {
+		t.Fatalf("rejected guarded update changed the profile: %+v err=%v", snapshot, err)
+	}
+
+	leased := false
+	err = store.WithProfileSnapshot("default", func(current Profile) error {
+		leased = current.ProfileDigest == first.ProfileDigest
+		if _, _, updateErr := store.SetGuarded(modified, first.ProfileDigest, nil); updateErr == nil ||
+			!strings.Contains(updateErr.Error(), "store is busy") {
+			t.Fatalf("exclusive update entered during shared lease: %v", updateErr)
+		}
+		return nil
+	})
+	if err != nil || !leased {
+		t.Fatalf("shared profile lease failed: leased=%t err=%v", leased, err)
+	}
+
+	removeGuarded := false
+	if _, err := store.RemoveGuarded("default", first.ProfileDigest, func(Profile) error {
+		removeGuarded = true
+		return errors.New("claims remain")
+	}); err == nil || !removeGuarded {
+		t.Fatalf("guarded removal was not rejected: guarded=%t err=%v", removeGuarded, err)
 	}
 }
 

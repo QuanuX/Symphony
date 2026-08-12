@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-root-ownership-reconciliation:v1",
+  "title": "Symphony lifecycle shared-root ownership reconciliation v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "tops_id", "profile_id", "results", "changed", "canonical", "reconciliation_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.lifecycle-root-ownership-reconciliation.v1"},
+    "tops_id": {"$ref": "#/$defs/token"},
+    "profile_id": {"$ref": "#/$defs/token"},
+    "results": {
+      "type": "array", "maxItems": 64,
+      "items": {"$ref": "urn:symphony:knowledge:lifecycle-root-ownership-result:v1"}
+    },
+    "changed": {"type": "boolean"},
+    "canonical": {"const": false},
+    "reconciliation_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

@@ -29,6 +29,15 @@ if(NOT EXISTS "${_receipt_path}")
   return()
 endif()
 
+set(_ownership_registry "${INSTALL_PREFIX}/.symphony-lifecycle-ownership-v1.json")
+set(_ownership_fence "${INSTALL_PREFIX}/share/symphony/receipts/symphony-root-ownership/1/install-receipt.json")
+if(EXISTS "${_ownership_registry}" OR IS_SYMLINK "${_ownership_registry}" OR
+   EXISTS "${_ownership_fence}" OR IS_SYMLINK "${_ownership_fence}")
+  message(FATAL_ERROR
+    "this installation root is administered by qxctl shared-root ownership; "
+    "use the authenticated lifecycle apply circuit for package reclamation")
+endif()
+
 file(READ "${_receipt_path}" _receipt_json LIMIT 262145)
 string(LENGTH "${_receipt_json}" _receipt_size)
 if(_receipt_size GREATER 262144)

@@ -57,7 +57,7 @@
         "SSIAG client and CLI tests cover bounded no-follow policy input, closed proposal/apply/recovery protocols, TOPS binding, and caller-neutral result checks."
       ],
       "feature_id": "ssfv:symphony:qxctl",
-      "how": "Cobra/Viper grammar invokes exact installed components, authenticates local endpoints, requests fresh operation-bound SSIAG decisions, administers server-owned policy protocols from bounded files, validates nested evidence and digests, preserves compare-and-swap state, and presents bounded human or JSON output.",
+      "how": "Cobra/Viper grammar invokes exact installed components, authenticates local endpoints, requests fresh operation-bound SSIAG decisions, administers server-owned policy protocols from bounded files, serializes shared-root multi-profile receipt claims with receipt-layout old-client fencing and conservative reclamation, validates nested evidence and digests, preserves compare-and-swap state, and presents bounded human or JSON output.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -69,6 +69,7 @@
         "tools/qxctl/cmd/qxctl/main.go",
         "tools/qxctl/internal/knowledgeengine/client.go",
         "tools/qxctl/internal/knowledgelifecycle/executor.go",
+        "tools/qxctl/internal/knowledgelifecycle/ownership.go",
         "tools/qxctl/internal/ssiagclient/client.go",
         "tools/qxctl/internal/stavclient/client.go"
       ],

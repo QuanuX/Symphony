@@ -34,6 +34,10 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 - `lifecycle-plan.schema.json`: deterministic dependency-ready-set action graph, forward/inverse relationships, exact receptor and target-state binding, typed blockers, noncritical dependency advisories, bounded dynamic replanning, and immutable safety-phase order.
 - `lifecycle-applied-state.schema.json`: durable noncanonical last-verified component state and actual execution-order evidence anchored to exact desired, observation, plan, and transaction identities.
 - `lifecycle-runtime-state.schema.json`: protected qxctl-owned exact package selection and administrative activation evidence for generic lifecycle components; docking remains closed to `undocked`.
+- `lifecycle-root-ownership.schema.json`: protected root-local multi-profile package claims, conservative legacy preservation, explicit release evidence, enforcement state, and digest-linked generations for shared installation roots.
+- `lifecycle-root-ownership-fence.schema.json`: static noncanonical receipt-layout compatibility evidence that makes ownership-unaware lifecycle clients preserve the root and fail closed before mutation.
+- `lifecycle-root-ownership-result.schema.json`: bounded status, reconcile, adopt, and legacy-release result for one exact shared installation root.
+- `lifecycle-root-ownership-reconciliation.schema.json`: deterministic per-profile collection of root ownership results used before reviewed lifecycle actions.
 - `lifecycle-boot-journal.schema.json`: dual-read-compatible lifecycle transaction with authorization-bound profile digest, replan, attempt, blocker, checkpoint, compatibility, and recovery evidence.
 - `lifecycle-boot-head.schema.json`: atomic selector for the active member of a dual-slot lifecycle boot journal.
 - `lifecycle-boot-command.schema.json`: exact SSIAG-authorized boot, status, and recovery invocation contract, including expected-state, stable-inventory, and two-way client capabilities.
