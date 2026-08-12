@@ -4278,3 +4278,218 @@ This PR authorizes none of the following:
   - `native Windows engine implementation, Go 1.27 production pin, module tag, release artifact, package publication, SDK generation, Mintlify publication, or launch claim`
 - notes: |
     This post-merge closure records the persistent SSFV maintenance and complete derived Maestro inventory implementation merged by PR #115. Every source-PR surface is listed and was already routed by SKVI; the closure carrier changes only this forward-only canonical record and introduces no runtime behavior. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
+- record_id: `SCLV-CHG-20260812-LIFECYCLE-VERSION-TRANSITIONS`
+- record_version: `3`
+- title: `Self-healing lifecycle version transitions implemented`
+- status: `canonical`
+- date: `2026-08-12`
+- change_started_at: `2026-08-12T17:11:37Z`
+- change_completed_at: `2026-08-12T17:16:07Z`
+- recorded_at: `2026-08-12T17:35:00Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `canonical_addition`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#117`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/117`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `28ef863a369620bd46c116d2be98b5d9d67722ee`
+- tree_digest: `sha256:4619c8154b483e07a903a06341d57a2962506ea0d611dde4f785352ae28a3537`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/117`
+- ratification_evidence_digest: `sha256:8f6d70c2d7b1fe956bc42235f5172e38dad30b9b1c42fa27a74aae50cb7f15f6`
+- affected_surfaces:
+  - `cmake/SymphonyInstallReceiptV2.cmake`
+  - `cmake/SymphonyInstallReceiptV2.cmake.in`
+  - `cmake/SymphonyInstallReceiptV2Preflight.cmake.in`
+  - `cmake/SymphonyUninstallReceiptV2.cmake`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssiag/MANIFEST.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/ssiag/schemas/v1/MANIFEST.md`
+  - `knowledge/ssiag/schemas/v1/lifecycle-grant-plan.schema.json`
+  - `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
+  - `libraries/knowledge-vector-engine-cpp/INSTALL.md`
+  - `libraries/knowledge-vector-engine-cpp/cmake/install-receipt.json.in`
+  - `libraries/knowledge-vector-engine-cpp/cmake/uninstall.cmake.in`
+  - `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/protocol.hpp`
+  - `modules/knowledge-session-coordinator/CMakeLists.txt`
+  - `modules/knowledge-session-coordinator/FEATURES.md`
+  - `modules/knowledge-session-coordinator/INSTALL.md`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `modules/knowledge-session-coordinator/MANIFEST.md`
+  - `modules/knowledge-session-coordinator/SKILL.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `modules/knowledge-session-coordinator/cmake/install-receipt.json.in`
+  - `modules/knowledge-session-coordinator/cmake/uninstall.cmake.in`
+  - `modules/maestro/CMakeLists.txt`
+  - `modules/maestro/INSTALL.md`
+  - `modules/maestro/cmake/install-receipt.json.in`
+  - `modules/maestro/cmake/uninstall.cmake.in`
+  - `modules/sacv-engine/CMakeLists.txt`
+  - `modules/sacv-engine/INSTALL.md`
+  - `modules/sacv-engine/cmake/install-receipt.json.in`
+  - `modules/sacv-engine/cmake/uninstall.cmake.in`
+  - `modules/sclv-engine/CMakeLists.txt`
+  - `modules/sclv-engine/INSTALL.md`
+  - `modules/sclv-engine/MANIFEST.md`
+  - `modules/sclv-engine/cmake/install-receipt.json.in`
+  - `modules/sclv-engine/cmake/uninstall.cmake.in`
+  - `modules/skvi-engine/CMakeLists.txt`
+  - `modules/skvi-engine/INSTALL.md`
+  - `modules/skvi-engine/MANIFEST.md`
+  - `modules/skvi-engine/cmake/install-receipt.json.in`
+  - `modules/skvi-engine/cmake/uninstall.cmake.in`
+  - `modules/sodv-engine/CMakeLists.txt`
+  - `modules/sodv-engine/INSTALL.md`
+  - `modules/sodv-engine/cmake/install-receipt.json.in`
+  - `modules/sodv-engine/cmake/uninstall.cmake.in`
+  - `modules/ssfv-engine/CMakeLists.txt`
+  - `modules/ssfv-engine/INSTALL.md`
+  - `modules/ssfv-engine/cmake/install-receipt.json.in`
+  - `modules/ssfv-engine/cmake/uninstall.cmake.in`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_apply.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_binding_test.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/ssiag_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/qxctl/internal/knowledgeengine/client_test.go`
+  - `tools/qxctl/internal/knowledgelifecycle/executor.go`
+  - `tools/qxctl/internal/knowledgelifecycle/executor_test.go`
+  - `tools/symphony-validator/CMakeLists.txt`
+  - `tools/symphony-validator/INSTALL.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/cmake/install-receipt.json.in`
+  - `tools/symphony-validator/cmake/uninstall.cmake.in`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `cmake/SymphonyInstallReceiptV2.cmake`
+  - `cmake/SymphonyInstallReceiptV2.cmake.in`
+  - `cmake/SymphonyInstallReceiptV2Preflight.cmake.in`
+  - `cmake/SymphonyUninstallReceiptV2.cmake`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssiag/MANIFEST.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/ssiag/schemas/v1/MANIFEST.md`
+  - `knowledge/ssiag/schemas/v1/lifecycle-grant-plan.schema.json`
+  - `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
+  - `libraries/knowledge-vector-engine-cpp/INSTALL.md`
+  - `libraries/knowledge-vector-engine-cpp/cmake/install-receipt.json.in`
+  - `libraries/knowledge-vector-engine-cpp/cmake/uninstall.cmake.in`
+  - `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/protocol.hpp`
+  - `modules/knowledge-session-coordinator/CMakeLists.txt`
+  - `modules/knowledge-session-coordinator/FEATURES.md`
+  - `modules/knowledge-session-coordinator/INSTALL.md`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `modules/knowledge-session-coordinator/MANIFEST.md`
+  - `modules/knowledge-session-coordinator/SKILL.md`
+  - `modules/knowledge-session-coordinator/SPEC.md`
+  - `modules/knowledge-session-coordinator/cmake/install-receipt.json.in`
+  - `modules/knowledge-session-coordinator/cmake/uninstall.cmake.in`
+  - `modules/maestro/CMakeLists.txt`
+  - `modules/maestro/INSTALL.md`
+  - `modules/maestro/cmake/install-receipt.json.in`
+  - `modules/maestro/cmake/uninstall.cmake.in`
+  - `modules/sacv-engine/CMakeLists.txt`
+  - `modules/sacv-engine/INSTALL.md`
+  - `modules/sacv-engine/cmake/install-receipt.json.in`
+  - `modules/sacv-engine/cmake/uninstall.cmake.in`
+  - `modules/sclv-engine/CMakeLists.txt`
+  - `modules/sclv-engine/INSTALL.md`
+  - `modules/sclv-engine/MANIFEST.md`
+  - `modules/sclv-engine/cmake/install-receipt.json.in`
+  - `modules/sclv-engine/cmake/uninstall.cmake.in`
+  - `modules/skvi-engine/CMakeLists.txt`
+  - `modules/skvi-engine/INSTALL.md`
+  - `modules/skvi-engine/MANIFEST.md`
+  - `modules/skvi-engine/cmake/install-receipt.json.in`
+  - `modules/skvi-engine/cmake/uninstall.cmake.in`
+  - `modules/sodv-engine/CMakeLists.txt`
+  - `modules/sodv-engine/INSTALL.md`
+  - `modules/sodv-engine/cmake/install-receipt.json.in`
+  - `modules/sodv-engine/cmake/uninstall.cmake.in`
+  - `modules/ssfv-engine/CMakeLists.txt`
+  - `modules/ssfv-engine/INSTALL.md`
+  - `modules/ssfv-engine/cmake/install-receipt.json.in`
+  - `modules/ssfv-engine/cmake/uninstall.cmake.in`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_apply.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_binding_test.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/ssiag_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/qxctl/internal/knowledgeengine/client_test.go`
+  - `tools/qxctl/internal/knowledgelifecycle/executor.go`
+  - `tools/qxctl/internal/knowledgelifecycle/executor_test.go`
+  - `tools/symphony-validator/CMakeLists.txt`
+  - `tools/symphony-validator/INSTALL.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/cmake/install-receipt.json.in`
+  - `tools/symphony-validator/cmake/uninstall.cmake.in`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- change_summary: |
+    Under the Architect's direction, PR #117 implemented the self-healing lifecycle version-transition circuit. Immutable receipt-v2 packages now cover the C++ knowledge foundation, coordinator, Maestro, five vector engines, and Symphony Validator. qxctl dual-reads supported receipt generations, administers explicit receipt-v2 install and uninstall, performs exact side-by-side selection and established-role binding transitions, verifies coordinator handoff, proposes the full caller-neutral SSIAG lifecycle grant set, and preserves rollback identities instead of inferring a newest version.
+- relationship_changes: |
+    Immutable package receipts own package identity and files; protected qxctl runtime state owns selected active/inactive eligibility; binding registry v1 continues to own the six established engine-role selections; Maestro owns authenticated docking presence only. qxctl composes these independently authorized surfaces and the C++ coordinator serializes durable action attempts, while canonical knowledge remains declarative truth and neither receipts nor operational state become semantic authority.
+- doctrine_changes: |
+    Upgrade and rollback are equal exact-identity transitions. New and old compatible components may arrive in either order, committed versions cannot be overwritten in place, interrupted transitions resume from durable semantic evidence, and old versions remain installed by default. Missing owned files may prove an idempotent retry, but digest conflict, unexpected administrator content, ambiguous binding, unsupported critical state, authorization denial, or incompatible handoff fails closed. SSIAG grants bind exact operation and stable TOPS/profile resources without classifying the caller.
+- compatibility_consequences: |
+    Existing receipt-v1 packages remain readable and observation-only; they are never rewritten or inferred into v2. Receipt-v2 readers validate bounded receipt-declared ownership so compatible newer packages may add owned files without requiring qxctl to upgrade first. Generic selected-state transitions preserve binding-registry v1 rather than expanding its closed role enum, and coordinator upgrade or rollback requires the candidate to reproduce the exact prepared journal before selection changes.
+- publication_consequences: |
+    No module tag, release artifact, package coordinate, binary distribution, container, SDK, OpenAPI surface, Mintlify publication, public documentation release, marketing claim, or platform launch was published or authorized. The implementation remains active-development source on the rolling main branch.
+- projection_consequences: |
+    Desired profiles, observations, report/apply journals, runtime selections, applied state, Maestro presence, SSIAG grant plans, qxctl output, and install receipts remain bounded operational or package evidence under their respective contracts. They do not become canonical feature truth, a generated knowledge vector, a second Maestro registry, authorization evidence, or proof that an installed or docked engine executed.
+- evidence:
+  - `PR #117 merged into main at 2026-08-12T17:16:07Z by quantDIY as 28ef863a369620bd46c116d2be98b5d9d67722ee`
+  - `implementation head 01f5e597f7503053e1a95c91eabf1a9876dffb50; 76 files changed, 2068 insertions, 438 deletions`
+  - `local-Git adapter evidence observed at 2026-08-12T17:32:11Z has digest sha256:baa48f4e5abbb2d01a2aa0b62be5c49df3f0c4e436d73a5d1e2bd0f04287c8d5 and binds tree digest sha256:4619c8154b483e07a903a06341d57a2962506ea0d611dde4f785352ae28a3537`
+  - `ratification evidence digest sha256:8f6d70c2d7b1fe956bc42235f5172e38dad30b9b1c42fa27a74aae50cb7f15f6 binds compact lexicographically key-sorted metadata for repository, pull request number, state, merged and draft status, title, URL, base and head refs/revisions, merge revision, creation/merge/close times, authenticated merger, commit count, changed-file count, additions, and deletions`
+  - `canonical PR metadata identified QuanuX/Symphony#117, base main at 7ac5d6463f089361b810cde5de687ebb37ad6f5d, head agent/lifecycle-version-transition-circuit at 01f5e597f7503053e1a95c91eabf1a9876dffb50, one commit, and merge revision 28ef863a369620bd46c116d2be98b5d9d67722ee`
+  - `normalized combined provider evidence observed at 2026-08-12T17:34:37Z has digest sha256:d161f060caa5d076029854754386a774ada3daa2e54294b76bf9709e3cbd845e and binds the revision, change request, and Architect ratification claims`
+  - `fresh C++26 validation passed 20 CTests across the common engine foundation, knowledge-session coordinator, Maestro, five vector engines, Symphony Validator, and their process-smoke surfaces`
+  - `qxctl passed go test ./..., including exact receipt-v2 observation, install/uninstall, side-by-side binding switch and rollback, coordinator handoff, SSIAG lifecycle grant planning, retry, compare-and-swap, and compatibility tests`
+  - `pre-closure main validation reported pass=6778 warning=145 violation=0; every warning belonged to the established sclv.affected_surface.unindexed historical-record advisory family`
+  - `the closure audit found and indexed 16 exact PR #117 source surfaces: fourteen receipt-v2 packaging/interface files and two qxctl regression-test files`
+  - `after the SKVI routing repair and before this record, strict validator result pass=6857 warning=130 violation=0 exit=0; the repair reduced the historical advisory family by 15 occurrences without introducing another warning family`
+  - `closure SCLV engine check reported 35 records, 140 passes, zero warnings, zero violations, and valid state`
+  - `closure SKVI engine check reported 380 entries, 2463 passes, nine pre-existing SSIAG-linkage warnings, zero violations, and valid state`
+  - `closure validator result pass=7175 warning=130 violation=0 exit=0; every PR #117 affected surface is indexed and the remaining warnings are only the established historical advisory family`
+  - `PR #117 was merged from the exact implementation head after Architect ratification; GitHub reported no configured checks`
+- non_authorizations:
+  - `implicit or unattended apply, hidden host hook, watcher, background daemon, package download, arbitrary executable discovery or execution, live process/service activation, or hot/warm participation`
+  - `receipt-v1 mutation, receipt rewriting, implicit newest-version selection, in-place overwrite, automatic old-version reclamation, host-global shared-root ownership inference, or concurrent uninstall authority across independent profiles`
+  - `unconstrained engine binding, binding-registry v1 expansion, coordinator self-replacement without handoff proof, Maestro engine execution, supervision, scheduling, or fabricated docking absence`
+  - `SSIAG policy apply, authorization bypass, caller-class authority, integrity bypass, compare-and-swap bypass, unsafe retry, ambiguous recovery, future-version rewrite, or fabricated observation`
+  - `canonical knowledge mutation, proposal ratification by software, feature-worthiness decision, persistent SSFV graph ownership, or repository-completeness claim`
+  - `native Windows engine implementation, Go 1.27 production pin, module tag, release artifact, package publication, SDK generation, Mintlify publication, or launch claim`
+- notes: |
+    This post-merge closure records the self-healing lifecycle version-transition implementation merged by PR #117. The closure carrier adds exact SKVI routes for 16 source-PR surfaces omitted from the merge and appends this forward-only canonical record; it introduces no runtime behavior. The closure-carrier PR is non-recursive unless it introduces an independently significant architectural change.
