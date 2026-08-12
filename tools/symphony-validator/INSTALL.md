@@ -71,6 +71,8 @@ cmake --build tools/symphony-validator/build --target uninstall-symphony-validat
 
 Protected qxctl validation profiles and baselines are installation-external state and survive executable uninstall.
 
+The receipt is immutable for one exact module/version path. A repeated install fails before any owned-file install rule; install another version side by side or run the receipt-verified uninstaller first. Uninstall validates the configured ownership set and every remaining file's recorded size and SHA-256, removes the receipt last, and treats already-missing owned files only as idempotent retry evidence.
+
 ## Development Posture
 Invoked directly during development or through `qxctl validate` after exact receipt validation.
 

@@ -22,4 +22,4 @@ The local-Git adapter invokes `/usr/bin/git` directly with fixed arguments and a
 
 ## Installability
 
-The exact version installs under a caller-selected prefix as inactive `installed_undocked`. qxctl currently requires that prefix and version. Uninstall removes only the eleven receipt-owned files and never removes containing directories or canonical knowledge.
+The exact version installs under a caller-selected prefix and is initially observed as inactive `installed_undocked`. qxctl currently requires that prefix and version. Mutable lifecycle state remains outside the receipt. Uninstall removes only the eleven receipt-owned files and never removes containing directories or canonical knowledge.

@@ -18,7 +18,7 @@
 - proposal: `symphony.knowledge.proposal.v1`
 - check result: `symphony.skvi.check-result.v1`
 - projection: `symphony.skvi.projection.v1`
-- install receipt: `symphony.knowledge.install-receipt.v1`
+- install receipt: `symphony.knowledge.install-receipt.v2`
 
 ## Implemented Operations
 
@@ -36,7 +36,7 @@ The engine reads the repository-relative SKVI index, SKVI contracts, and indexed
 
 ## Installability
 
-The executable, contracts, receipt, and licenses install beneath module-and-version-specific paths. Installation reports `installed_undocked`, creates no global alias, selects no receptor, changes no active version, and contacts no service. Uninstall removes only receipt-owned files.
+The executable, contracts, receipt, and licenses install beneath module-and-version-specific paths. Installation is initially observed as `installed_undocked`, creates no global alias, selects no receptor, changes no active version, and contacts no service. Mutable lifecycle state remains outside the receipt. Uninstall removes only receipt-owned files.
 
 ## Dependencies and Boundaries
 

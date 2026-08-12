@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:lifecycle-grant-plan:v1",
+  "title": "SSIAG lifecycle grant plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "format_version", "tops_id", "profile_id", "subject_id",
+    "authority_basis", "resource", "catalog_resource", "audience", "scope", "grants",
+    "apply_enabled", "canonical", "plan_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.lifecycle-grant-plan.v1"},
+    "format_version": {"const": 1},
+    "tops_id": {"type": "string", "format": "uuid"},
+    "profile_id": {"$ref": "#/$defs/token"},
+    "subject_id": {"$ref": "#/$defs/token"},
+    "authority_basis": {"enum": ["host_owner", "granted_permission"]},
+    "resource": {"$ref": "#/$defs/token"},
+    "catalog_resource": {"$ref": "#/$defs/token"},
+    "audience": {"const": "qxctl"},
+    "scope": {"$ref": "#/$defs/token"},
+    "grants": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "items": {"$ref": "#/$defs/grant"}
+    },
+    "apply_enabled": {"const": false},
+    "canonical": {"const": false},
+    "plan_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "grant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "subject_id", "authority_basis", "operation", "resource", "audience", "scope"],
+      "properties": {
+        "id": {"$ref": "#/$defs/token"},
+        "subject_id": {"$ref": "#/$defs/token"},
+        "authority_basis": {"enum": ["host_owner", "granted_permission"]},
+        "operation": {"$ref": "#/$defs/token"},
+        "resource": {"$ref": "#/$defs/token"},
+        "audience": {"const": "qxctl"},
+        "scope": {"$ref": "#/$defs/token"}
+      }
+    },
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

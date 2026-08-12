@@ -659,9 +659,21 @@ func authorizeKnowledgeLifecycleDecision(
 	return decision, nil
 }
 
-func lifecycleResource(topsID, profileID, evidence string) string {
-	digest := sha256.Sum256([]byte(topsID + "\n" + profileID + "\n" + evidence))
+func lifecycleResource(topsID, profileID, _ string) string {
+	// SSIAG grants bind the stable TOPS/profile administration boundary. Exact
+	// evidence remains independently bound by operation-specific schemas,
+	// coordinator validation, receipt digests, and compare-and-swap state. This
+	// avoids requiring a new policy grant for every content digest while never
+	// widening an operation grant or bypassing evidence validation.
+	digest := sha256.Sum256([]byte("profile\n" + topsID + "\n" + profileID))
 	return "symphony.knowledge.lifecycle:" + hex.EncodeToString(digest[:])
+}
+
+func lifecycleCatalogResource(topsID string) string {
+	// Catalog enumeration is a distinct read boundary, not a synthetic profile.
+	// Domain separation prevents any valid profile ID from colliding with it.
+	digest := sha256.Sum256([]byte("profile-catalog\n" + topsID))
+	return "symphony.knowledge.lifecycle-catalog:" + hex.EncodeToString(digest[:])
 }
 
 type validatedLifecycleBootResult struct {

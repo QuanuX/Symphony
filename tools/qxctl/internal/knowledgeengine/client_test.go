@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
@@ -433,6 +434,107 @@ func TestInspectInstallationSupportsExactCoordinatorReceipt(t *testing.T) {
 	}
 }
 
+func TestInspectInstallationSupportsImmutableReceiptV2AndDetectsTampering(t *testing.T) {
+	prefix := t.TempDir()
+	version := "0.1.0-dev"
+	receiptPath, document := createInstalledV2Fixture(t, skviSpec, prefix, version)
+	installed, err := InspectInstallation("skvi", prefix, version)
+	if err != nil {
+		t.Fatalf("valid receipt-v2 installation rejected: %v", err)
+	}
+	if installed.ReceiptProtocol != receiptProtocolV2 || installed.ReceiptDigest != document.ReceiptDigest {
+		t.Fatalf("receipt-v2 identity was not preserved: %+v", installed)
+	}
+
+	binaryPath := filepath.Join(prefix, filepath.FromSlash(
+		"libexec/symphony/skvi-engine/"+version+"/symphony-skvi"))
+	if err := os.WriteFile(binaryPath, []byte("tampered\n"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := InspectInstallation("skvi", prefix, version); err == nil {
+		t.Fatal("receipt-v2 content tampering was accepted")
+	}
+
+	createInstalledV2Fixture(t, skviSpec, prefix, version)
+	document.ReceiptDigest = taggedDigestForTest("forged-receipt")
+	encoded, _ := json.Marshal(document)
+	if err := os.WriteFile(receiptPath, encoded, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := InspectInstallation("skvi", prefix, version); err == nil {
+		t.Fatal("forged intrinsic receipt-v2 digest was accepted")
+	}
+}
+
+func TestReceiptV2SupportsForwardFileGrowthAndRejectsSemanticDrift(t *testing.T) {
+	prefix := t.TempDir()
+	version := "0.1.0-dev"
+	receiptPath, document := createInstalledV2Fixture(t, skviSpec, prefix, version)
+	extraPath := "share/doc/symphony/skvi-engine/" + version + "/FORWARD-COMPATIBILITY.md"
+	extra := []byte("future package-owned evidence\n")
+	absoluteExtra := filepath.Join(prefix, filepath.FromSlash(extraPath))
+	if err := os.WriteFile(absoluteExtra, extra, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	extraDigest := sha256.Sum256(extra)
+	document.Files = append(document.Files, receiptV2File{
+		Path: extraPath, Kind: "regular", Size: uint64(len(extra)),
+		Digest: "sha256:" + hex.EncodeToString(extraDigest[:]),
+	})
+	writeReceiptV2Fixture(t, receiptPath, &document)
+	if _, err := InspectInstallation("skvi", prefix, version); err != nil {
+		t.Fatalf("forward-compatible receipt-owned file was rejected: %v", err)
+	}
+
+	document.ComponentKind = "module"
+	writeReceiptV2Fixture(t, receiptPath, &document)
+	if _, err := InspectInstallation("skvi", prefix, version); err == nil {
+		t.Fatal("receipt-v2 component-kind drift was accepted")
+	}
+	document.ComponentKind = "vector_engine"
+	document.VectorID = nil
+	writeReceiptV2Fixture(t, receiptPath, &document)
+	if _, err := InspectInstallation("skvi", prefix, version); err == nil {
+		t.Fatal("receipt-v2 vector identity drift was accepted")
+	}
+	vectorID := "skvi"
+	document.VectorID = &vectorID
+	originalPlatform := append([]receiptV2Platform(nil), document.PlatformRequirements...)
+	document.PlatformRequirements = []receiptV2Platform{}
+	writeReceiptV2Fixture(t, receiptPath, &document)
+	if _, err := InspectInstallation("skvi", prefix, version); err == nil {
+		t.Fatal("receipt-v2 without a critical host platform was accepted")
+	}
+	document.PlatformRequirements = originalPlatform
+	document.CompatibleReceptors = append(document.CompatibleReceptors, document.CompatibleReceptors[0])
+	writeReceiptV2Fixture(t, receiptPath, &document)
+	if _, err := InspectInstallation("skvi", prefix, version); err == nil {
+		t.Fatal("receipt-v2 duplicate receptor was accepted")
+	}
+	document.CompatibleReceptors = document.CompatibleReceptors[:1]
+	document.EntryPoints = append(document.EntryPoints, receiptV2EntryPoint{
+		EntryPointID: "unowned-descriptor", Kind: "descriptor",
+		Path: "share/doc/unowned.json", Protocols: []string{},
+	})
+	writeReceiptV2Fixture(t, receiptPath, &document)
+	if _, err := InspectInstallation("skvi", prefix, version); err == nil {
+		t.Fatal("receipt-v2 unowned entry point was accepted")
+	}
+}
+
+func TestInspectValidatorInstallationSupportsReceiptV2Protocol(t *testing.T) {
+	prefix := t.TempDir()
+	_, document := createInstalledV2Fixture(t, validatorSpec, prefix, "0.1.0-dev")
+	installed, err := InspectValidatorInstallation(prefix, "0.1.0-dev")
+	if err != nil {
+		t.Fatalf("valid validator receipt-v2 installation rejected: %v", err)
+	}
+	if installed.ReceiptProtocol != receiptProtocolV2 || installed.ReceiptDigest != document.ReceiptDigest ||
+		installed.ModuleID != validatorModuleID || installed.EngineID != validatorEngineID {
+		t.Fatalf("unexpected validator receipt-v2 identity: %+v", installed)
+	}
+}
+
 func TestInvokeEnforcesCallerDeadlineAroundChildProcess(t *testing.T) {
 	prefix := t.TempDir()
 	createInstalledFixture(t, prefix, "#!/bin/sh\n/bin/sleep 10\n")
@@ -486,6 +588,95 @@ func createInstalledFixture(t *testing.T, prefix, binaryContents string) (string
 		t.Fatal(err)
 	}
 	return receiptPath, document
+}
+
+func createInstalledV2Fixture(t *testing.T, spec engineSpec, prefix, version string) (string, receiptV2) {
+	t.Helper()
+	receiptRelative := filepath.ToSlash(filepath.Join(
+		"share", "symphony", "receipts", spec.moduleID, version, "install-receipt.json"))
+	files := make([]receiptV2File, 0)
+	for relative := range spec.expectedFiles(version) {
+		if relative == receiptRelative {
+			continue
+		}
+		path := filepath.Join(prefix, filepath.FromSlash(relative))
+		if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		mode := os.FileMode(0o644)
+		kind := "regular"
+		if strings.HasPrefix(relative, "libexec/") {
+			mode = 0o755
+			kind = "executable"
+		}
+		contents := []byte(relative + "\n")
+		if err := os.WriteFile(path, contents, mode); err != nil {
+			t.Fatal(err)
+		}
+		digest := sha256.Sum256(contents)
+		files = append(files, receiptV2File{
+			Path: relative, Kind: kind, Size: uint64(len(contents)),
+			Digest: "sha256:" + hex.EncodeToString(digest[:]),
+		})
+	}
+	binaryRelative := filepath.ToSlash(filepath.Join(
+		"libexec", "symphony", spec.moduleID, version, spec.engineID))
+	engine := spec.engineID
+	vector := spec.vectorID
+	var vectorID *string
+	if vector != "" {
+		vectorID = &vector
+	}
+	platformOS := runtime.GOOS
+	if platformOS == "darwin" {
+		platformOS = "macos"
+	}
+	document := receiptV2{
+		Protocol: receiptProtocolV2, FormatVersion: 2,
+		ComponentID: spec.moduleID, ComponentKind: spec.componentKind, ModuleID: spec.moduleID,
+		VectorID: vectorID, EngineID: &engine, PackageID: spec.moduleID, Version: version,
+		InstallScope: "prefix", PrefixMode: "installation_prefix", Files: files,
+		EntryPoints: []receiptV2EntryPoint{{
+			EntryPointID: spec.engineID, Kind: "executable", Path: binaryRelative,
+			Protocols: []string{spec.processProtocol},
+		}},
+		ProvidesCapabilities: []string{}, RequiresCapabilities: []string{},
+		CompatibleReceptors: append([]string{}, spec.requiredReceptors...),
+		PlatformRequirements: []receiptV2Platform{{
+			OS: platformOS, Architecture: runtime.GOARCH, KernelABI: nil, Critical: true,
+		}},
+	}
+	receiptPath := filepath.Join(prefix, filepath.FromSlash(receiptRelative))
+	writeReceiptV2Fixture(t, receiptPath, &document)
+	return receiptPath, document
+}
+
+func writeReceiptV2Fixture(t *testing.T, receiptPath string, document *receiptV2) {
+	t.Helper()
+	document.ReceiptDigest = ""
+	encoded, _ := json.Marshal(document)
+	var object map[string]any
+	decoder := json.NewDecoder(strings.NewReader(string(encoded)))
+	decoder.UseNumber()
+	if err := decoder.Decode(&object); err != nil {
+		t.Fatal(err)
+	}
+	delete(object, "receipt_digest")
+	canonical, _ := json.Marshal(object)
+	digest := sha256.Sum256(canonical)
+	document.ReceiptDigest = "sha256:" + hex.EncodeToString(digest[:])
+	encoded, _ = json.Marshal(document)
+	if err := os.MkdirAll(filepath.Dir(receiptPath), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(receiptPath, encoded, 0o644); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func taggedDigestForTest(seed string) string {
+	digest := sha256.Sum256([]byte(seed))
+	return "sha256:" + hex.EncodeToString(digest[:])
 }
 
 func TestValidateResponseBindsIdentityAndDigest(t *testing.T) {

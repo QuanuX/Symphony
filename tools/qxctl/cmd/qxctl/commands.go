@@ -14,9 +14,12 @@ import (
 var errUsageOnly = errors.New("print qxctl usage")
 
 type ssiagOptions struct {
-	topsID     string
-	scope      string
-	jsonOutput bool
+	topsID         string
+	scope          string
+	profileID      string
+	subjectID      string
+	authorityBasis string
+	jsonOutput     bool
 }
 
 type stavOptions struct {
@@ -877,7 +880,7 @@ func newSSIAGCommand() (*cobra.Command, error) {
 		Use:  "ssiag",
 		Args: usageOnlyArgs,
 		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("SSIAG subcommand is required: status, providers, or doctor")
+			return fmt.Errorf("SSIAG subcommand is required: status, providers, doctor, or grants")
 		},
 	}
 	for _, subcommand := range []string{"status", "providers", "doctor"} {
@@ -887,6 +890,29 @@ func newSSIAGCommand() (*cobra.Command, error) {
 		}
 		command.AddCommand(child)
 	}
+	grants := &cobra.Command{
+		Use:  "grants",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return fmt.Errorf("SSIAG grants subcommand is required: lifecycle")
+		},
+	}
+	grantOptions := ssiagOptions{scope: "user", profileID: "default", authorityBasis: "host_owner"}
+	lifecycle := &cobra.Command{
+		Use:  "lifecycle",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return runSSIAGLifecycleGrantPlan(grantOptions)
+		},
+	}
+	lifecycle.Flags().StringVar(&grantOptions.topsID, "tops-id", "", "immutable TOPS UUID")
+	lifecycle.Flags().StringVar(&grantOptions.scope, "scope", "user", "SSIAG scope: user or system")
+	lifecycle.Flags().StringVar(&grantOptions.profileID, "profile-id", "default", "exact lifecycle profile identity")
+	lifecycle.Flags().StringVar(&grantOptions.subjectID, "subject-id", "", "configured canonical SSIAG subject identity")
+	lifecycle.Flags().StringVar(&grantOptions.authorityBasis, "authority-basis", "host_owner", "host_owner or granted_permission")
+	lifecycle.Flags().BoolVar(&grantOptions.jsonOutput, "json", false, "emit JSON")
+	grants.AddCommand(lifecycle)
+	command.AddCommand(grants)
 	return command, nil
 }
 

@@ -13,7 +13,7 @@
 
 - process: `symphony.knowledge.engine-process.v1`
 - descriptor: `symphony.knowledge.engine-descriptor.v1`
-- install receipt: `symphony.knowledge.install-receipt.v1`
+- install receipt: `symphony.knowledge.install-receipt.v2`
 - reconciliation command: `symphony.knowledge.reconciliation-command.v1`
 - reconciliation journal: `symphony.knowledge.reconciliation-journal.v1`
 - reconciliation head: `symphony.knowledge.reconciliation-head.v1`
@@ -53,7 +53,7 @@ The implemented module scope is user-process invocation, user-scope reconciliati
 
 ## Installability
 
-The executable installs beneath a module-and-version-specific `libexec` path, with contracts, AGPL and third-party licenses, and a deterministic receipt. Installation leaves the module `installed_undocked`, creates no global executable alias, changes no binding, and does not contact Maestro. qxctl may select the exact receipt in its separate protected user-default binding registry without changing receipt state. Uninstall removes only receipt-owned files and preserves reconciliation, authenticated-session, SSFV-maintenance, lifecycle-journal, and desired-profile evidence.
+The executable installs beneath a module-and-version-specific `libexec` path, with contracts, AGPL and third-party licenses, and a deterministic receipt. Installation is initially observed as `installed_undocked`, creates no global executable alias, changes no binding, and does not contact Maestro. qxctl may select the exact receipt in its separate protected user-default binding registry without writing mutable lifecycle state into the receipt. Uninstall removes only receipt-owned files and preserves reconciliation, authenticated-session, SSFV-maintenance, lifecycle-journal, and desired-profile evidence.
 
 ## Dependencies
 

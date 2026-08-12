@@ -13,6 +13,26 @@ type recordingDockingAdapter struct {
 	component DockingComponentEvidence
 }
 
+type recordingBindingAdapter struct {
+	calls int
+}
+
+func (adapter *recordingBindingAdapter) Handles(componentID string) bool {
+	return componentID == "skvi-engine" || componentID == "knowledge-session-coordinator"
+}
+
+func (adapter *recordingBindingAdapter) ExecuteBinding(
+	_ PlannedAction,
+	_ DesiredComponent,
+	_ bool,
+	_ ObservedComponent,
+	_ bool,
+	_ Observation,
+) (string, string, []string, error) {
+	adapter.calls++
+	return "committed", "test binding committed", []string{tagged("binding-registry")}, nil
+}
+
 func (adapter *recordingDockingAdapter) ExecuteDocking(
 	_ PlannedAction,
 	component DockingComponentEvidence,
@@ -228,6 +248,53 @@ func TestExecutorBindsRuntimeMutationToPreparedObservation(t *testing.T) {
 	action.ExpectedBeforeDigest = &stale
 	if retried := executor.Execute(action, desired, observed); retried.Outcome != "already_applied" {
 		t.Fatalf("idempotent runtime retry did not self-heal across observation drift: %+v", retried)
+	}
+}
+
+func TestExecutorRoutesEstablishedSelectionThroughBindingAdapter(t *testing.T) {
+	executor, err := NewExecutor(resolvedTempDir(t), testTOPSID, "default", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	adapter := &recordingBindingAdapter{}
+	executor.SetBindingAdapter(adapter)
+	receiptDigest := tagged("established-selected-package")
+	desired := DesiredState{Components: []DesiredComponent{{
+		ComponentID: "skvi-engine", Presence: "present",
+		SelectedPackage: &PackageIdentity{
+			PackageID: "skvi-engine", Version: "2.0.0",
+			ReceiptProtocol: "symphony.knowledge.install-receipt.v2", ReceiptDigest: receiptDigest,
+		},
+	}}}
+	before := tagged("established-before")
+	observed := Observation{BindingRegistryDigest: stringPointer(tagged("registry-before")), Components: []ObservedComponent{{
+		ComponentID: "skvi-engine", Activation: "inactive", Docking: "undocked",
+		Packages: []ObservedPackage{{
+			PackageID: "skvi-engine", Version: "2.0.0",
+			ReceiptProtocol: "symphony.knowledge.install-receipt.v2", ReceiptDigest: receiptDigest,
+			Integrity: "valid", EntryPointsValidated: true,
+		}},
+		ObservationDigest: before,
+	}}}
+	action := PlannedAction{
+		ActionID: "lifecycle-action:established-select", ComponentID: "skvi-engine",
+		Kind: "select", Direction: "forward", ExpectedBeforeDigest: &before,
+		TargetStateDigest: tagged("established-target"), ExpectedArtifactDigests: []string{receiptDigest},
+		ExpectedEvidence: []string{}, PrerequisiteActionIDs: []string{}, Disposition: "ready", Blockers: []Blocker{},
+	}
+	result := executor.Execute(action, desired, observed)
+	if result.Outcome != "committed" || adapter.calls != 1 ||
+		!containsString(result.AfterEvidenceDigests, tagged("binding-registry")) {
+		t.Fatalf("established selection did not use binding adapter: result=%+v calls=%d", result, adapter.calls)
+	}
+
+	coordinator := action
+	coordinator.ActionID = "lifecycle-action:coordinator-deselect"
+	coordinator.ComponentID = "knowledge-session-coordinator"
+	coordinator.Kind = "deselect"
+	blocked := executor.Execute(coordinator, DesiredState{}, Observation{})
+	if blocked.Outcome != "failed" || blocked.BlockerClass == nil || *blocked.BlockerClass != "compatibility_blocked" || adapter.calls != 1 {
+		t.Fatalf("coordinator deselection was not blocked before adapter mutation: %+v", blocked)
 	}
 }
 

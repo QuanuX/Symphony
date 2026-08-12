@@ -6,6 +6,7 @@ include(GNUInstallDirs)
 
 option(SYMPHONY_KVE_USE_INSTALLED "Use an installed Symphony knowledge-vector foundation" OFF)
 get_filename_component(SYMPHONY_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
+include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SymphonyInstallReceiptV2.cmake")
 if(SYMPHONY_KVE_USE_INSTALLED)
     find_package(SymphonyKnowledgeVectorEngine 0.1 REQUIRED CONFIG)
 elseif(NOT TARGET Symphony::KnowledgeVectorEngine)
@@ -107,11 +108,6 @@ if(BUILD_TESTING)
 endif()
 
 configure_file(
-    cmake/install-receipt.json.in
-    ${CMAKE_CURRENT_BINARY_DIR}/install-receipt.json
-    @ONLY
-)
-configure_file(
     cmake/uninstall.cmake.in
     ${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake
     @ONLY
@@ -124,14 +120,32 @@ set(SYMPHONY_SESSION_DATA_DIR
 set(SYMPHONY_SESSION_LICENSE_DIR
     "${CMAKE_INSTALL_DATADIR}/licenses/symphony-knowledge-session/0.1.0-dev")
 
+symphony_install_receipt_v2_preflight(
+    RECEIPT_PATH share/symphony/receipts/knowledge-session-coordinator/0.1.0-dev/install-receipt.json)
+
 install(TARGETS symphony-knowledge-session RUNTIME DESTINATION ${SYMPHONY_SESSION_LIBEXEC_DIR})
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/install-receipt.json
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/symphony/receipts/knowledge-session-coordinator/0.1.0-dev)
 install(FILES INTENT.md MANIFEST.md INSTALL.md SKILL.md SPEC.md DESTINATION ${SYMPHONY_SESSION_DATA_DIR})
 install(FILES ../../LICENSE DESTINATION ${SYMPHONY_SESSION_LICENSE_DIR} RENAME LICENSE-AGPL-3.0)
 install(FILES ../../libraries/knowledge-vector-engine-cpp/third_party/nlohmann/LICENSE.MIT
     DESTINATION ${SYMPHONY_SESSION_LICENSE_DIR}
     RENAME nlohmann-json-LICENSE.MIT)
+
+symphony_install_receipt_v2(
+    COMPONENT_ID knowledge-session-coordinator COMPONENT_KIND coordinator
+    MODULE_ID knowledge-session-coordinator ENGINE_ID symphony-knowledge-session
+    PACKAGE_ID knowledge-session-coordinator VERSION 0.1.0-dev
+    RECEIPT_PATH share/symphony/receipts/knowledge-session-coordinator/0.1.0-dev/install-receipt.json
+    OWNED_FILES
+        "libexec/symphony/knowledge-session-coordinator/0.1.0-dev/symphony-knowledge-session|executable"
+        "share/doc/symphony/knowledge-session-coordinator/0.1.0-dev/INSTALL.md|regular"
+        "share/doc/symphony/knowledge-session-coordinator/0.1.0-dev/INTENT.md|regular"
+        "share/doc/symphony/knowledge-session-coordinator/0.1.0-dev/MANIFEST.md|regular"
+        "share/doc/symphony/knowledge-session-coordinator/0.1.0-dev/SKILL.md|regular"
+        "share/doc/symphony/knowledge-session-coordinator/0.1.0-dev/SPEC.md|regular"
+        "share/licenses/symphony-knowledge-session/0.1.0-dev/LICENSE-AGPL-3.0|regular"
+        "share/licenses/symphony-knowledge-session/0.1.0-dev/nlohmann-json-LICENSE.MIT|regular"
+    ENTRY_POINTS
+        "symphony-knowledge-session|executable|libexec/symphony/knowledge-session-coordinator/0.1.0-dev/symphony-knowledge-session|symphony.knowledge.engine-process.v1")
 
 add_custom_target(uninstall-knowledge-session-coordinator
     COMMAND ${CMAKE_COMMAND} -DINSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}

@@ -5,6 +5,9 @@ include(CTest)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
+get_filename_component(SYMPHONY_KVE_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
+include("${SYMPHONY_KVE_REPOSITORY_ROOT}/cmake/SymphonyInstallReceiptV2.cmake")
+
 if(CMAKE_CONFIGURATION_TYPES)
     message(FATAL_ERROR
         "knowledge-vector-engine-cpp 0.1.0-dev requires a single-configuration "
@@ -57,7 +60,6 @@ target_compile_options(symphony-knowledge-vector-engine PRIVATE
 
 option(SYMPHONY_KVE_BUILD_TESTING "Build knowledge-vector foundation tests" ${BUILD_TESTING})
 if(SYMPHONY_KVE_BUILD_TESTING)
-    get_filename_component(SYMPHONY_KVE_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
     add_executable(knowledge-vector-engine-foundation-tests tests/foundation_test.cpp)
     target_link_libraries(knowledge-vector-engine-foundation-tests PRIVATE Symphony::KnowledgeVectorEngine)
     set_target_properties(knowledge-vector-engine-foundation-tests PROPERTIES
@@ -73,6 +75,9 @@ if(SYMPHONY_KVE_BUILD_TESTING)
         COMMAND knowledge-vector-engine-foundation-tests ${SYMPHONY_KVE_REPOSITORY_ROOT}
     )
 endif()
+
+symphony_install_receipt_v2_preflight(
+    RECEIPT_PATH share/symphony/receipts/knowledge-vector-engine-cpp/0.1.0-dev/install-receipt.json)
 
 install(TARGETS symphony-knowledge-vector-engine
     EXPORT SymphonyKnowledgeVectorEngineTargets
@@ -107,15 +112,38 @@ install(FILES
     DESTINATION ${SYMPHONY_KVE_CMAKE_DIR}
 )
 
-configure_file(cmake/install-receipt.json.in ${CMAKE_CURRENT_BINARY_DIR}/install-receipt.json @ONLY)
 configure_file(cmake/uninstall.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake @ONLY)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/install-receipt.json
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/symphony/receipts/knowledge-vector-engine-cpp/0.1.0-dev)
 install(FILES INTENT.md MANIFEST.md INSTALL.md SKILL.md SPEC.md
     DESTINATION ${CMAKE_INSTALL_DATADIR}/doc/symphony/knowledge-vector-engine-cpp/0.1.0-dev)
 install(FILES ../../LICENSE
     DESTINATION ${CMAKE_INSTALL_DATADIR}/licenses/symphony-knowledge-vector-engine/0.1.0-dev
     RENAME LICENSE-AGPL-3.0)
+
+symphony_install_receipt_v2(
+    COMPONENT_ID knowledge-vector-engine-cpp COMPONENT_KIND module
+    MODULE_ID knowledge-vector-engine-cpp PACKAGE_ID knowledge-vector-engine-cpp VERSION 0.1.0-dev
+    RECEIPT_PATH share/symphony/receipts/knowledge-vector-engine-cpp/0.1.0-dev/install-receipt.json
+    OWNED_FILES
+        "${CMAKE_INSTALL_LIBDIR}/symphony/knowledge-vector-engine/0.1.0-dev/${CMAKE_STATIC_LIBRARY_PREFIX}symphony-knowledge-vector-engine${CMAKE_STATIC_LIBRARY_SUFFIX}|regular"
+        "${SYMPHONY_KVE_INCLUDE_DIR}/nlohmann/json.hpp|regular"
+        "${SYMPHONY_KVE_INCLUDE_DIR}/symphony/knowledge/engine/digest.hpp|regular"
+        "${SYMPHONY_KVE_INCLUDE_DIR}/symphony/knowledge/engine/error.hpp|regular"
+        "${SYMPHONY_KVE_INCLUDE_DIR}/symphony/knowledge/engine/json.hpp|regular"
+        "${SYMPHONY_KVE_INCLUDE_DIR}/symphony/knowledge/engine/limits.hpp|regular"
+        "${SYMPHONY_KVE_INCLUDE_DIR}/symphony/knowledge/engine/path.hpp|regular"
+        "${SYMPHONY_KVE_INCLUDE_DIR}/symphony/knowledge/engine/protocol.hpp|regular"
+        "${SYMPHONY_KVE_INCLUDE_DIR}/symphony/knowledge/engine/temporal.hpp|regular"
+        "${SYMPHONY_KVE_CMAKE_DIR}/SymphonyKnowledgeVectorEngineConfig.cmake|regular"
+        "${SYMPHONY_KVE_CMAKE_DIR}/SymphonyKnowledgeVectorEngineConfigVersion.cmake|regular"
+        "${SYMPHONY_KVE_CMAKE_DIR}/SymphonyKnowledgeVectorEngineTargets.cmake|regular"
+        "${SYMPHONY_KVE_CMAKE_DIR}/${SYMPHONY_KVE_EXPORT_CONFIG_FILE}|regular"
+        "share/doc/symphony/knowledge-vector-engine-cpp/0.1.0-dev/INSTALL.md|regular"
+        "share/doc/symphony/knowledge-vector-engine-cpp/0.1.0-dev/INTENT.md|regular"
+        "share/doc/symphony/knowledge-vector-engine-cpp/0.1.0-dev/MANIFEST.md|regular"
+        "share/doc/symphony/knowledge-vector-engine-cpp/0.1.0-dev/SKILL.md|regular"
+        "share/doc/symphony/knowledge-vector-engine-cpp/0.1.0-dev/SPEC.md|regular"
+        "share/licenses/symphony-knowledge-vector-engine/0.1.0-dev/LICENSE-AGPL-3.0|regular"
+        "share/licenses/symphony-knowledge-vector-engine/0.1.0-dev/nlohmann-json-LICENSE.MIT|regular")
 
 add_custom_target(uninstall-knowledge-vector-engine-cpp
     COMMAND ${CMAKE_COMMAND} -DINSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}

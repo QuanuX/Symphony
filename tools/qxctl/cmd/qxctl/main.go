@@ -59,6 +59,7 @@ func printUsage() {
 	fmt.Println("  ssiag status --tops-id UUID [--scope user|system] [--json] Read safe SSIAG status")
 	fmt.Println("  ssiag providers --tops-id UUID [--scope user|system] [--json] List safe provider metadata")
 	fmt.Println("  ssiag doctor --tops-id UUID [--scope user|system] Verify local SSIAG availability")
+	fmt.Println("  ssiag grants lifecycle --tops-id UUID --subject-id ID [--profile-id ID] [--json] Generate exact caller-neutral lifecycle grant input")
 	fmt.Println("  stav status --tops-id UUID [--scope user|system] [--json] Read authenticated STAV status")
 	fmt.Println("  stav verify --tops-id UUID [--scope user|system] [--json] Verify the STAV digest chain")
 	fmt.Println("  stav query --tops-id UUID [--scope user|system] [bounded filters] [--json] Query authorized STAV projections")
@@ -2638,6 +2639,98 @@ func runSSIAG(subcommand string, options ssiagOptions) error {
 	default:
 		return fmt.Errorf("unknown SSIAG subcommand %q", subcommand)
 	}
+}
+
+type ssiagLifecycleGrant struct {
+	ID             string `json:"id"`
+	SubjectID      string `json:"subject_id"`
+	AuthorityBasis string `json:"authority_basis"`
+	Operation      string `json:"operation"`
+	Resource       string `json:"resource"`
+	Audience       string `json:"audience"`
+	Scope          string `json:"scope"`
+}
+
+type ssiagLifecycleGrantPlan struct {
+	Protocol        string                `json:"protocol"`
+	FormatVersion   uint64                `json:"format_version"`
+	TOPSID          string                `json:"tops_id"`
+	ProfileID       string                `json:"profile_id"`
+	SubjectID       string                `json:"subject_id"`
+	AuthorityBasis  string                `json:"authority_basis"`
+	Resource        string                `json:"resource"`
+	CatalogResource string                `json:"catalog_resource"`
+	Audience        string                `json:"audience"`
+	Scope           string                `json:"scope"`
+	Grants          []ssiagLifecycleGrant `json:"grants"`
+	ApplyEnabled    bool                  `json:"apply_enabled"`
+	Canonical       bool                  `json:"canonical"`
+	PlanDigest      string                `json:"plan_digest"`
+}
+
+func runSSIAGLifecycleGrantPlan(options ssiagOptions) error {
+	if options.topsID == "" || options.subjectID == "" {
+		return fmt.Errorf("--tops-id and --subject-id are required")
+	}
+	if _, err := ssiagclient.ConfigForTOPS(options.scope, options.topsID); err != nil {
+		return err
+	}
+	if !validSessionToken(options.profileID) || !validSessionToken(options.subjectID) ||
+		(options.authorityBasis != "host_owner" && options.authorityBasis != "granted_permission") {
+		return fmt.Errorf("lifecycle grant identity or authority basis is invalid")
+	}
+	permissions := []string{
+		"apply.close", "apply.finalize", "apply.prepare", "apply.recover", "apply.status",
+		"boot", "boot.recover", "boot.status", "observe",
+		"profile.list", "profile.remove", "profile.set", "profile.show", "report",
+	}
+	resource := lifecycleResource(options.topsID, options.profileID, "")
+	catalogResource := lifecycleCatalogResource(options.topsID)
+	grants := make([]ssiagLifecycleGrant, 0, len(permissions))
+	for _, permission := range permissions {
+		operation := "symphony.knowledge.lifecycle." + permission
+		grantResource := resource
+		if permission == "profile.list" {
+			grantResource = catalogResource
+		}
+		scope := "tops:" + options.topsID
+		idDigest := sha256.Sum256([]byte(options.subjectID + "\n" + options.authorityBasis + "\n" +
+			operation + "\n" + grantResource + "\nqxctl\n" + scope))
+		grants = append(grants, ssiagLifecycleGrant{
+			ID:        "ssiag-grant:lifecycle:" + hex.EncodeToString(idDigest[:12]),
+			SubjectID: options.subjectID, AuthorityBasis: options.authorityBasis,
+			Operation: operation, Resource: grantResource, Audience: "qxctl", Scope: scope,
+		})
+	}
+	plan := ssiagLifecycleGrantPlan{
+		Protocol: "symphony.ssiag.lifecycle-grant-plan.v1", FormatVersion: 1,
+		TOPSID: options.topsID, ProfileID: options.profileID, SubjectID: options.subjectID,
+		AuthorityBasis: options.authorityBasis, Resource: resource, CatalogResource: catalogResource, Audience: "qxctl",
+		Scope: "tops:" + options.topsID, Grants: grants, ApplyEnabled: false, Canonical: false,
+	}
+	encoded, err := json.Marshal(plan)
+	if err != nil {
+		return err
+	}
+	var object map[string]any
+	decoder := json.NewDecoder(bytes.NewReader(encoded))
+	decoder.UseNumber()
+	if err := decoder.Decode(&object); err != nil {
+		return err
+	}
+	delete(object, "plan_digest")
+	canonical, err := json.Marshal(object)
+	if err != nil {
+		return err
+	}
+	digest := sha256.Sum256(canonical)
+	plan.PlanDigest = "sha256:" + hex.EncodeToString(digest[:])
+	if options.jsonOutput {
+		return printIndentedJSON(plan)
+	}
+	fmt.Printf("SSIAG lifecycle grant plan: tops_id=%s profile=%s subject=%s grants=%d resource=%s digest=%s apply_enabled=false canonical=false\n",
+		plan.TOPSID, plan.ProfileID, plan.SubjectID, len(plan.Grants), plan.Resource, plan.PlanDigest)
+	return nil
 }
 
 func requireSSIAGStatus(ctx context.Context, client *ssiagclient.Client, topsID, scope string) (ssiagclient.Status, error) {

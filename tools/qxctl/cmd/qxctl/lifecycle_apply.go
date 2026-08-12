@@ -11,6 +11,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgebinding"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgeengine"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgelifecycle"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/maestroclient"
@@ -82,6 +83,11 @@ func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
 	if err != nil {
 		return err
 	}
+	bindingAdapter, err := newLifecycleBindingAdapter(options.stateRoot)
+	if err != nil {
+		return err
+	}
+	executor.SetBindingAdapter(bindingAdapter)
 	if options.maestroPrefix != "" || len(options.maestroReceptorIDs) != 0 {
 		adapter, adapterErr := newLifecycleMaestroAdapter(options, repositoryRoot, store.StateRoot())
 		if adapterErr != nil {
@@ -167,6 +173,13 @@ func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
 			last.SourceDigest != options.sourceJournalDigest {
 			return fmt.Errorf("prepared lifecycle action belongs to different profile, desired-state, or source-journal evidence; restore that evidence before resuming")
 		}
+		coordinatorHandoff := active.ComponentID == "knowledge-session-coordinator" && active.Kind == "select"
+		if coordinatorHandoff {
+			if err := preflightCoordinatorHandoff(
+				options, repositoryRoot, profile.DesiredState, observation, *active, last); err != nil {
+				return err
+			}
+		}
 
 		execution := executor.Execute(*active, profile.DesiredState, observation)
 		after, afterProfileDigest, afterProfile, err := buildLifecycleObservation(options, false)
@@ -198,11 +211,207 @@ func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
 		if execution.Outcome != "committed" && execution.Outcome != "already_applied" {
 			return fmt.Errorf("lifecycle action %s was durably recorded as %s: %s", execution.ActionID, execution.Outcome, execution.Detail)
 		}
+		if coordinatorHandoff {
+			coordinator, err = exactBoundCoordinator(options.stateRoot)
+			if err != nil {
+				return fmt.Errorf("coordinator handoff finalized but the selected coordinator cannot be reopened: %w", err)
+			}
+		}
 		if finalized.State == "closed" {
 			return printLifecycleApplyResult(options, finalized, sequence+1)
 		}
 	}
 	return fmt.Errorf("lifecycle apply reached its --max-actions bound at journal %s; resume with exact returned state", last.JournalDigest)
+}
+
+func preflightCoordinatorHandoff(
+	options knowledgeLifecycleOptions,
+	repositoryRoot string,
+	desired knowledgelifecycle.DesiredState,
+	observation knowledgelifecycle.Observation,
+	action knowledgelifecycle.PlannedAction,
+	prepared validatedLifecycleApplyResult,
+) error {
+	desiredComponent, ok := lifecycleDesiredComponent(desired, action.ComponentID)
+	if !ok || desiredComponent.SelectedPackage == nil {
+		return fmt.Errorf("compatibility_blocked: coordinator handoff lacks an exact desired replacement")
+	}
+	observedComponent, ok := lifecycleObservedComponent(observation, action.ComponentID)
+	if !ok {
+		return fmt.Errorf("observation_retryable: coordinator replacement is not observed")
+	}
+	var candidate *knowledgelifecycle.ObservedPackage
+	for index := range observedComponent.Packages {
+		installed := &observedComponent.Packages[index]
+		if installed.ReceiptDigest == desiredComponent.SelectedPackage.ReceiptDigest {
+			candidate = installed
+			break
+		}
+	}
+	if candidate == nil || candidate.ReceiptProtocol != "symphony.knowledge.install-receipt.v2" ||
+		candidate.Integrity != "valid" || !candidate.EntryPointsValidated {
+		return fmt.Errorf("integrity_fatal: coordinator replacement lacks exact valid receipt-v2 evidence")
+	}
+	installation, err := knowledgeengine.InspectInstallation("coordinator", candidate.InstallRoot, candidate.Version)
+	if err != nil || installation.ReceiptDigest != candidate.ReceiptDigest {
+		if err == nil {
+			err = fmt.Errorf("receipt digest mismatch")
+		}
+		return fmt.Errorf("integrity_fatal: coordinator replacement validation failed: %w", err)
+	}
+	status, err := invokeLifecycleApplyState(
+		options, installation.Prefix, installation.Version, repositoryRoot,
+		"lifecycle_apply_status", "", "")
+	if err != nil {
+		return fmt.Errorf("compatibility_blocked: coordinator replacement cannot read the prepared journal: %w", err)
+	}
+	if !status.JournalPresent || status.JournalDigest != prepared.JournalDigest ||
+		status.ActiveAction == nil || !sameLifecycleAction(*status.ActiveAction, action) ||
+		status.ProfileDigest != prepared.ProfileDigest || status.DesiredDigest != prepared.DesiredDigest ||
+		status.SourceDigest != prepared.SourceDigest {
+		return fmt.Errorf("compatibility_blocked: coordinator replacement did not reproduce the exact prepared handoff state")
+	}
+	return nil
+}
+
+func lifecycleDesiredComponent(state knowledgelifecycle.DesiredState, componentID string) (knowledgelifecycle.DesiredComponent, bool) {
+	for _, component := range state.Components {
+		if component.ComponentID == componentID {
+			return component, true
+		}
+	}
+	return knowledgelifecycle.DesiredComponent{}, false
+}
+
+func lifecycleObservedComponent(observation knowledgelifecycle.Observation, componentID string) (knowledgelifecycle.ObservedComponent, bool) {
+	for _, component := range observation.Components {
+		if component.ComponentID == componentID {
+			return component, true
+		}
+	}
+	return knowledgelifecycle.ObservedComponent{}, false
+}
+
+func sameLifecycleAction(left, right knowledgelifecycle.PlannedAction) bool {
+	leftJSON, leftErr := json.Marshal(left)
+	rightJSON, rightErr := json.Marshal(right)
+	return leftErr == nil && rightErr == nil && bytes.Equal(leftJSON, rightJSON)
+}
+
+var lifecycleBindingRoles = map[string]string{
+	"knowledge-session-coordinator": "coordinator",
+	"sacv-engine":                   "sacv",
+	"sclv-engine":                   "sclv",
+	"skvi-engine":                   "skvi",
+	"sodv-engine":                   "sodv",
+	"ssfv-engine":                   "ssfv",
+}
+
+type lifecycleBindingAdapter struct {
+	store *knowledgebinding.Store
+}
+
+func newLifecycleBindingAdapter(stateRoot string) (*lifecycleBindingAdapter, error) {
+	store, err := knowledgebinding.NewStore(stateRoot)
+	if err != nil {
+		return nil, err
+	}
+	return &lifecycleBindingAdapter{store: store}, nil
+}
+
+func (adapter *lifecycleBindingAdapter) Handles(componentID string) bool {
+	_, ok := lifecycleBindingRoles[componentID]
+	return ok
+}
+
+func (adapter *lifecycleBindingAdapter) ExecuteBinding(
+	action knowledgelifecycle.PlannedAction,
+	desired knowledgelifecycle.DesiredComponent,
+	wanted bool,
+	observed knowledgelifecycle.ObservedComponent,
+	present bool,
+	observation knowledgelifecycle.Observation,
+) (string, string, []string, error) {
+	role, ok := lifecycleBindingRoles[action.ComponentID]
+	if !ok {
+		return "", "", nil, fmt.Errorf("compatibility_blocked: component has no established binding role")
+	}
+	expected := "absent"
+	if observation.BindingRegistryDigest != nil {
+		expected = *observation.BindingRegistryDigest
+	}
+	if action.Kind == "deselect" {
+		if role == "coordinator" {
+			return "", "", nil, fmt.Errorf("compatibility_blocked: the active coordinator cannot be deselected without an exact replacement")
+		}
+		registry, changed, err := adapter.store.Unbind(role, expected)
+		if err != nil {
+			return "", "", nil, classifyBindingAdapterError(err)
+		}
+		outcome := "committed"
+		if !changed {
+			outcome = "already_applied"
+		}
+		return outcome, "binding registry durably deselected the exact established role",
+			[]string{registry.RegistryDigest}, nil
+	}
+	if action.Kind != "select" || !wanted || desired.SelectedPackage == nil || !present {
+		return "", "", nil, fmt.Errorf("observation_retryable: binding selection lacks exact desired and observed package evidence")
+	}
+	wantedDigest := desired.SelectedPackage.ReceiptDigest
+	if !containsLifecycleDigest(action.ExpectedArtifactDigests, wantedDigest) {
+		return "", "", nil, fmt.Errorf("integrity_fatal: binding action does not name the desired receipt digest")
+	}
+	var selected *knowledgelifecycle.ObservedPackage
+	for index := range observed.Packages {
+		candidate := &observed.Packages[index]
+		if candidate.ReceiptDigest == wantedDigest {
+			selected = candidate
+			break
+		}
+	}
+	if selected == nil || selected.Integrity != "valid" || !selected.EntryPointsValidated ||
+		selected.ReceiptProtocol != "symphony.knowledge.install-receipt.v2" {
+		return "", "", nil, fmt.Errorf("integrity_fatal: exact selected receipt-v2 installation is unavailable")
+	}
+	registry, changed, err := adapter.store.Bind(role, selected.InstallRoot, selected.Version, expected)
+	if err != nil {
+		return "", "", nil, classifyBindingAdapterError(err)
+	}
+	bound := false
+	for _, binding := range registry.Bindings {
+		if binding.Role == role && binding.ReceiptDigest == wantedDigest {
+			bound = true
+			break
+		}
+	}
+	if !bound {
+		return "", "", nil, fmt.Errorf("critical_state_unknown: binding registry committed a different exact package identity")
+	}
+	outcome := "committed"
+	if !changed {
+		outcome = "already_applied"
+	}
+	return outcome, "binding registry atomically selected the exact receipt-v2 installation",
+		[]string{registry.RegistryDigest, wantedDigest}, nil
+}
+
+func containsLifecycleDigest(values []string, wanted string) bool {
+	for _, value := range values {
+		if value == wanted {
+			return true
+		}
+	}
+	return false
+}
+
+func classifyBindingAdapterError(err error) error {
+	text := err.Error()
+	if strings.Contains(text, "expected") || strings.Contains(text, "changed") ||
+		strings.Contains(text, "lock") || strings.Contains(text, "busy") {
+		return fmt.Errorf("observation_retryable: binding registry compare-and-swap failed: %w", err)
+	}
+	return fmt.Errorf("integrity_fatal: exact binding mutation failed: %w", err)
 }
 
 func invokeLifecyclePlan(

@@ -24,6 +24,7 @@ Commands:
   ssiag status --tops-id UUID [--scope user|system] [--json] Read safe SSIAG status
   ssiag providers --tops-id UUID [--scope user|system] [--json] List safe provider metadata
   ssiag doctor --tops-id UUID [--scope user|system] Verify local SSIAG availability
+  ssiag grants lifecycle --tops-id UUID --subject-id ID [--profile-id ID] [--json] Generate exact caller-neutral lifecycle grant input
   stav status --tops-id UUID [--scope user|system] [--json] Read authenticated STAV status
   stav verify --tops-id UUID [--scope user|system] [--json] Verify the STAV digest chain
   stav query --tops-id UUID [--scope user|system] [bounded filters] [--json] Query authorized STAV projections

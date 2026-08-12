@@ -26,3 +26,5 @@ cmake --build /tmp/sodv-build --target uninstall-sodv-engine
 ```
 
 The uninstall target removes only the nine paths named by the exact receipt and preserves `knowledge/sodv/RELEASES.md`, local session/recovery evidence, other versions, and unrelated prefix content. Custom `libexec` or `share` directory names are rejected because qxctl deliberately resolves one receipt layout.
+
+The receipt is immutable for one exact module/version path. A repeated install fails before any owned-file install rule; install another version side by side or run the receipt-verified uninstaller first. Uninstall validates the configured ownership set and every remaining file's recorded size and SHA-256, removes the receipt last, and treats already-missing owned files only as idempotent retry evidence.

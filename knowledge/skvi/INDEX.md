@@ -1123,6 +1123,19 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: SSIAG releases the decision only after its safe STAV policy-decision append commits.
 - status: canonical
 
+#### SSIAG Lifecycle Grant Plan Schema
+- path: `knowledge/ssiag/schemas/v1/lifecycle-grant-plan.schema.json`
+- title: SSIAG Lifecycle Grant Plan v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical deterministic proposal-only lifecycle grant input truth
+- owner: SSIAG knowledge maintainer
+- scope: Closes one exact caller-neutral subject, authority basis, TOPS/profile resource, domain-separated and separately permissioned per-TOPS profile-catalog read resource, audience, scope, complete lifecycle operation set, and disabled apply boundary.
+- relationships: depends_on -> `knowledge/ssiag/schemas/v1/MANIFEST.md`; generated_by -> `tools/qxctl/cmd/qxctl/main.go`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: SSIAG administrators, qxctl, validators, conformance tests, reviewers
+- deferred_projections: SSIAG policy proposal/apply mutation
+- notes: Generation does not edit SSIAG configuration, grant authority, or authorize lifecycle execution.
+- status: canonical
+
 ### STAV Canonical Knowledge Vector
 
 #### STAV INTENT.md
@@ -1558,7 +1571,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: implements -> `knowledge/LIFECYCLE.md`; implements -> `knowledge/schemas/v1/lifecycle-apply-command.schema.json`; implements -> `knowledge/schemas/v1/lifecycle-apply-result.schema.json`; invokes -> `tools/qxctl/internal/knowledgelifecycle/executor.go`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`; invokes -> `tools/qxctl/internal/ssiagclient/client.go`
 - consumers: qxctl executable, lifecycle tests, administrators, reviewers
 - deferred_projections: additional separately reviewed lifecycle action adapters
-- notes: Callers cannot select action order directly; package download, receipt-v1 mutation, live service activation, coordinator replacement, Maestro docking, and canonical apply are absent.
+- notes: Callers cannot select action order directly; package download, receipt-v1 mutation, live service activation, in-place coordinator replacement, unconstrained/new-role rebinding, Maestro engine execution, and canonical apply are absent. Exact established-role binding, candidate-verified coordinator handoff, and Maestro presence docking are implemented through reviewed external adapters.
 - status: canonical
 
 #### qxctl Lifecycle Profile Model
@@ -2675,6 +2688,97 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: packagers, qxctl inventory/executor, coordinator lifecycle planner, installers, uninstallers, validator, reviewers
 - deferred_projections: package-manager-specific receipt emission and additional strict v1 adapters
 - notes: Mutable activation, selection, and docking state are deliberately absent; discovery never authorizes execution.
+- status: canonical
+
+##### Shared Install Receipt v2 Registration
+- path: `cmake/SymphonyInstallReceiptV2.cmake`
+- title: Symphony Shared Install Receipt v2 Registration
+- surface_type: common CMake packaging implementation
+- truth_role: deterministic receipt-v2 installation-order and package-registration truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Registers an existing-receipt preflight before owned-file install rules and receipt-v2 generation after every other package install rule; binds exact package identity, entry points, capabilities, receptors, and platform requirements.
+- relationships: implements -> `knowledge/schemas/v2/install-receipt.schema.json`; configures -> `cmake/SymphonyInstallReceiptV2Preflight.cmake.in`, `cmake/SymphonyInstallReceiptV2.cmake.in`; copies_for_build_local_use -> `cmake/SymphonyUninstallReceiptV2.cmake`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: independently installable C++ foundation, coordinator, Maestro, vector-engine, and validator packages
+- deferred_projections: package-manager-native manifest adapters
+- notes: The shared registration is packaging mechanics only; it selects, activates, docks, or executes no package.
+- status: canonical
+
+##### Shared Install Receipt v2 Generator
+- path: `cmake/SymphonyInstallReceiptV2.cmake.in`
+- title: Symphony Shared Install Receipt v2 Generator
+- surface_type: configured CMake install script
+- truth_role: exact installed-file inventory, digest, ownership, and intrinsic receipt-digest implementation truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Validates the declared completed installation without following links, records every owned non-receipt path with size and SHA-256, rejects an existing final or temporary receipt target, and emits the immutable content-addressed receipt last.
+- relationships: implements -> `knowledge/schemas/v2/install-receipt.schema.json`; configured_by -> `cmake/SymphonyInstallReceiptV2.cmake`; validated_by -> `tools/qxctl/internal/knowledgeengine/client.go`
+- consumers: CMake installers and uninstallers, qxctl lifecycle observation and binding, coordinator planning, validator, reviewers
+- deferred_projections: signed package attestations and platform package-manager receipts
+- notes: The receipt digest is intrinsic canonical JSON content; the receipt does not include itself in its owned-file set.
+- status: canonical
+
+##### Shared Install Receipt v2 Preflight
+- path: `cmake/SymphonyInstallReceiptV2Preflight.cmake.in`
+- title: Symphony Shared Install Receipt v2 Preflight
+- surface_type: configured CMake install script
+- truth_role: exact-version overwrite prevention and receipt immutability implementation truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Runs before any package-owned file install rule and rejects a final or dangling-link receipt already committed at the exact module/version path.
+- relationships: implements -> `knowledge/schemas/v2/install-receipt.schema.json`; configured_by -> `cmake/SymphonyInstallReceiptV2.cmake`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: independently installable C++ foundation, coordinator, Maestro, vector-engine, and validator packages
+- deferred_projections: package-manager-native pre-transaction guards
+- notes: An existing exact version must be explicitly uninstalled or a different side-by-side version selected; direct CMake install cannot silently replace committed receipt-v2 ownership evidence.
+- status: canonical
+
+##### Shared Install Receipt v2 Uninstall Guard
+- path: `cmake/SymphonyUninstallReceiptV2.cmake`
+- title: Symphony Shared Install Receipt v2 Uninstall Guard
+- surface_type: common CMake lifecycle implementation
+- truth_role: receipt-set validation, content-integrity preflight, receipt-last removal, and idempotent retry truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Requires the generated package's configured path set to equal its receipt-v2 owned set, validates every remaining no-follow regular file against its recorded size and SHA-256 before mutation, treats already-missing files as resumable prior work, and removes the receipt last.
+- relationships: implements -> `knowledge/schemas/v2/install-receipt.schema.json`; copied_by -> `cmake/SymphonyInstallReceiptV2.cmake`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: build-local uninstall programs for the C++ foundation, coordinator, Maestro, vector engines, and Symphony Validator
+- deferred_projections: package-manager-native transactional uninstallers
+- notes: An absent receipt is accepted only when every configured owned path is also absent; content drift, links, directories, and incomplete configured/receipt ownership sets fail closed before removal.
+- status: canonical
+
+##### Foundation Receipt-v1 Template Retirement Tombstone
+- path: `libraries/knowledge-vector-engine-cpp/cmake/install-receipt.json.in`
+- title: Foundation Receipt-v1 Template Retirement Tombstone
+- surface_type: retired packaging compatibility surface
+- truth_role: immutable SCLV path-continuity and receipt-v2 migration truth
+- owner: SKV foundation maintainers
+- scope: Preserves the historically referenced template path while declaring it nonoperational and routing all current packaging to the shared receipt-v2 generator.
+- relationships: superseded_by -> `cmake/SymphonyInstallReceiptV2.cmake`; preserves -> `knowledge/sclv/CHANGELOG.md`
+- consumers: SCLV reference validation, repository archaeology, reviewers
+- deferred_projections: none
+- notes: No CMake target consumes this tombstone and it cannot generate an install receipt.
+- status: canonical
+
+##### Maestro Receipt-v1 Template Retirement Tombstone
+- path: `modules/maestro/cmake/install-receipt.json.in`
+- title: Maestro Receipt-v1 Template Retirement Tombstone
+- surface_type: retired packaging compatibility surface
+- truth_role: immutable SCLV path-continuity and receipt-v2 migration truth
+- owner: common SKV / Maestro maintainers
+- scope: Preserves the historically referenced template path while declaring it nonoperational and routing all current packaging to the shared receipt-v2 generator.
+- relationships: superseded_by -> `cmake/SymphonyInstallReceiptV2.cmake`; preserves -> `knowledge/sclv/CHANGELOG.md`
+- consumers: SCLV reference validation, repository archaeology, reviewers
+- deferred_projections: none
+- notes: No CMake target consumes this tombstone and it cannot generate an install receipt.
+- status: canonical
+
+##### Validator Receipt-v1 Template Retirement Tombstone
+- path: `tools/symphony-validator/cmake/install-receipt.json.in`
+- title: Validator Receipt-v1 Template Retirement Tombstone
+- surface_type: retired packaging compatibility surface
+- truth_role: immutable SCLV path-continuity and receipt-v2 migration truth
+- owner: validator maintainers
+- scope: Preserves the historically referenced template path while declaring it nonoperational and routing all current packaging to the shared receipt-v2 generator.
+- relationships: superseded_by -> `cmake/SymphonyInstallReceiptV2.cmake`; preserves -> `knowledge/sclv/CHANGELOG.md`
+- consumers: SCLV reference validation, repository archaeology, reviewers
+- deferred_projections: none
+- notes: No CMake target consumes this tombstone and it cannot generate an install receipt.
 - status: canonical
 
 ##### Lifecycle Apply Journal Schema v2
@@ -3955,19 +4059,6 @@ Future validator increments may add separately ratified deterministic checks wit
 
 ### STSC Implementation Evidence
 
-#### Knowledge Vector Engine Install Receipt Template
-- path: `libraries/knowledge-vector-engine-cpp/cmake/install-receipt.json.in`
-- title: Knowledge Vector Engine Install Receipt Template
-- surface_type: versioned native package receipt template
-- truth_role: exact installed-file ownership implementation truth
-- owner: SKV foundation maintainers
-- scope: Enumerates the static library, public headers including temporal validation, CMake metadata, contracts, licenses, and receipt-owned uninstall boundary.
-- relationships: implements -> `libraries/knowledge-vector-engine-cpp/MANIFEST.md`; includes -> `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/temporal.hpp`
-- consumers: CMake install/uninstall, packagers, qxctl lifecycle observation, reviewers
-- deferred_projections: package SBOM evidence
-- notes: The receipt creates no runtime activation or clock authority.
-- status: canonical
-
 #### SKVI Engine Temporal Adoption
 - path: `modules/skvi-engine/src/skvi.cpp`
 - title: SKVI Engine Temporal Validation Adoption
@@ -4397,19 +4488,6 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
 - status: canonical
 
-### Maestro Install Receipt Template
-- path: `modules/maestro/cmake/install-receipt.json.in`
-- title: Maestro Install Receipt Template
-- surface_type: implementation receipt template
-- truth_role: exact inactive-undocked package ownership template
-- owner: common SKV / Maestro maintainers
-- scope: Implements or governs the original Step 7 authenticated durable presence circuit without engine execution.
-- relationships: conforms_to -> `knowledge/SPEC.md`; governed_by -> `knowledge/LIFECYCLE.md`
-- consumers: qxctl, Maestro, lifecycle coordinator, validator, reviewers
-- deferred_projections: engine invocation, supervision, scheduling, remote API
-- notes: Freezing-path and caller-neutral; presence is not semantic or canonical authority.
-- status: canonical
-
 ### Maestro Uninstall Procedure
 - path: `modules/maestro/cmake/uninstall.cmake.in`
 - title: Maestro Uninstall Procedure
@@ -4604,19 +4682,6 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: validator CLI, qxctl
 - deferred_projections: additional formats
 - notes: Filters and baselines never enter this detector-side projection.
-- status: canonical
-
-### Validator Install Receipt Template
-- path: `tools/symphony-validator/cmake/install-receipt.json.in`
-- title: Validator Install Receipt Template
-- surface_type: implementation receipt template
-- truth_role: exact nine-file versioned package ownership truth
-- owner: validator maintainers
-- scope: Supports independent prefix installation and qxctl validation.
-- relationships: governed_by -> `tools/symphony-validator/INSTALL.md`; consumed_by -> `tools/qxctl/internal/knowledgeengine/client.go`
-- consumers: CMake, qxctl, administrators
-- deferred_projections: external package registries
-- notes: Installs no alias, listener, hook, or runtime presence.
 - status: canonical
 
 ### Validator Uninstall Procedure
@@ -4932,7 +4997,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - status: canonical
 
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, forty-six common SKV v1 JSON Schemas, three common SKV v2 JSON Schemas, three SSIAG authorization JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, forty-six common SKV v1 JSON Schemas, three common SKV v2 JSON Schemas, four SSIAG authorization and grant-planning JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

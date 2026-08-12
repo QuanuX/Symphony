@@ -58,16 +58,36 @@ type DockingAdapter interface {
 	ExecuteDocking(action PlannedAction, component DockingComponentEvidence) (outcome string, detail string, evidence []string, err error)
 }
 
+// BindingAdapter bridges the six established knowledge roles to the closed
+// binding-registry-v1 compatibility surface. Generic and future components
+// continue to use lifecycle runtime state until their own receptor is ratified.
+type BindingAdapter interface {
+	Handles(componentID string) bool
+	ExecuteBinding(
+		action PlannedAction,
+		desired DesiredComponent,
+		wanted bool,
+		observed ObservedComponent,
+		present bool,
+		observation Observation,
+	) (outcome string, detail string, evidence []string, err error)
+}
+
 type Executor struct {
 	stateRoot   string
 	topsID      string
 	profileID   string
 	sourceRoots []string
 	docking     DockingAdapter
+	binding     BindingAdapter
 }
 
 func (e *Executor) SetDockingAdapter(adapter DockingAdapter) {
 	e.docking = adapter
+}
+
+func (e *Executor) SetBindingAdapter(adapter BindingAdapter) {
+	e.binding = adapter
 }
 
 func NewExecutor(stateRoot, topsID, profileID string, sourceRoots []string) (*Executor, error) {
@@ -234,8 +254,8 @@ func (e *Executor) execute(result *ExecutionResult, action PlannedAction, desire
 			result.Detail = "all receipt-v2 package targets are already absent"
 		}
 	case "select", "deselect", "activate", "deactivate":
-		if action.ComponentID == "knowledge-session-coordinator" && (action.Kind == "select" || action.Kind == "deselect") {
-			return fmt.Errorf("compatibility_blocked: the active coordinator requires a separately verified handoff")
+		if action.ComponentID == "knowledge-session-coordinator" && action.Kind == "deselect" {
+			return fmt.Errorf("compatibility_blocked: the active coordinator cannot be deselected without an exact replacement")
 		}
 		if runtimeActionAlreadyApplied(action.Kind, component, wanted, observedComponent, present) {
 			result.Outcome = "already_applied"
@@ -244,6 +264,23 @@ func (e *Executor) execute(result *ExecutionResult, action PlannedAction, desire
 		}
 		if !actionBeforeMatches(action, observedComponent, present) {
 			return fmt.Errorf("observation_retryable: lifecycle runtime target changed after action preparation")
+		}
+		if (action.Kind == "select" || action.Kind == "deselect") && e.binding != nil && e.binding.Handles(action.ComponentID) {
+			outcome, detail, evidence, err := e.binding.ExecuteBinding(
+				action, component, wanted, observedComponent, present, observed)
+			if err != nil {
+				return err
+			}
+			if outcome != "committed" && outcome != "already_applied" {
+				return fmt.Errorf("critical_state_unknown: binding adapter returned unsupported outcome %q", outcome)
+			}
+			result.Outcome = outcome
+			result.Detail = detail
+			result.AfterEvidenceDigests = append(result.AfterEvidenceDigests, evidence...)
+			return nil
+		}
+		if action.ComponentID == "knowledge-session-coordinator" && (action.Kind == "select" || action.Kind == "deselect") {
+			return fmt.Errorf("compatibility_blocked: the active coordinator requires a separately verified handoff")
 		}
 		if err := e.mutateRuntime(action, component, wanted, observedComponent, present); err != nil {
 			return err
