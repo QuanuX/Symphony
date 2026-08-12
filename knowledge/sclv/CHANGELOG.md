@@ -4611,3 +4611,155 @@ This PR authorizes none of the following:
   - `native Windows engines, Go 1.27 production pin, module release, SDK publication, public documentation launch, or marketing readiness claim`
 - notes: |
     This post-merge closure records the SSFV owner-scope coverage increment merged by PR #119. All 29 source-PR surfaces were already routed by SKVI before merge. The closure carrier appends only this forward-only canonical record and introduces no runtime behavior; it is non-recursive unless it adds an independently significant architectural change.
+- record_id: `SCLV-CHG-20260812-SSIAG-LOCAL-POLICY-ADMINISTRATION`
+- record_version: `3`
+- title: `Protected SSIAG local policy administration implemented`
+- status: `canonical`
+- date: `2026-08-12`
+- change_started_at: `2026-08-12T19:14:52Z`
+- change_completed_at: `2026-08-12T19:15:44Z`
+- recorded_at: `2026-08-12T19:16:57Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `canonical_addition`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#121`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/121`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `3ce78cc5f34bd65f93b204cc51cd4b61d94f4ad4`
+- tree_digest: `sha256:a92385ce0ceb57768606c9b91e379f0a0824def79336b27e7d959814786d3b03`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/121`
+- ratification_evidence_digest: `sha256:e43e79f6b1b19f690f1b86537bb6a2cf4d2751122e6c92cf2a3f6fb043be6a46`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssiag/INTENT.md`
+  - `knowledge/ssiag/MANIFEST.md`
+  - `knowledge/ssiag/SKILL.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/ssiag/schemas/v1/MANIFEST.md`
+  - `knowledge/ssiag/schemas/v1/authorization-policy.schema.json`
+  - `knowledge/ssiag/schemas/v1/policy-apply-request.schema.json`
+  - `knowledge/ssiag/schemas/v1/policy-attempt.schema.json`
+  - `knowledge/ssiag/schemas/v1/policy-proposal-request.schema.json`
+  - `knowledge/ssiag/schemas/v1/policy-proposal.schema.json`
+  - `knowledge/ssiag/schemas/v1/policy-recovery-request.schema.json`
+  - `knowledge/ssiag/schemas/v1/policy-result.schema.json`
+  - `knowledge/ssiag/schemas/v1/policy-state.schema.json`
+  - `modules/secure-identity-access-governance/ARCHITECTURE.md`
+  - `modules/secure-identity-access-governance/FEATURES.md`
+  - `modules/secure-identity-access-governance/IMPLEMENTATION.md`
+  - `modules/secure-identity-access-governance/INSTALL.md`
+  - `modules/secure-identity-access-governance/INTENT.md`
+  - `modules/secure-identity-access-governance/MANIFEST.md`
+  - `modules/secure-identity-access-governance/README.md`
+  - `modules/secure-identity-access-governance/REQUIREMENTS.md`
+  - `modules/secure-identity-access-governance/SKILL.md`
+  - `modules/secure-identity-access-governance/SPEC.md`
+  - `modules/secure-identity-access-governance/THREAT-MODEL.md`
+  - `modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go`
+  - `modules/secure-identity-access-governance/internal/config/config.go`
+  - `modules/secure-identity-access-governance/internal/policy/policy.go`
+  - `modules/secure-identity-access-governance/internal/policyadmin/manager.go`
+  - `modules/secure-identity-access-governance/internal/policyadmin/manager_test.go`
+  - `modules/secure-identity-access-governance/internal/policyadmin/storage_unix.go`
+  - `modules/secure-identity-access-governance/internal/server/server.go`
+  - `modules/secure-identity-access-governance/internal/server/server_test.go`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/ssiagclient/client.go`
+  - `tools/qxctl/internal/ssiagclient/client_test.go`
+  - `tools/symphony-validator/src/artifacts.cpp`
+- skvi_references:
+  - `README.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssiag/INTENT.md`
+  - `knowledge/ssiag/MANIFEST.md`
+  - `knowledge/ssiag/SKILL.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/ssiag/schemas/v1/MANIFEST.md`
+  - `knowledge/ssiag/schemas/v1/authorization-policy.schema.json`
+  - `knowledge/ssiag/schemas/v1/policy-apply-request.schema.json`
+  - `knowledge/ssiag/schemas/v1/policy-attempt.schema.json`
+  - `knowledge/ssiag/schemas/v1/policy-proposal-request.schema.json`
+  - `knowledge/ssiag/schemas/v1/policy-proposal.schema.json`
+  - `knowledge/ssiag/schemas/v1/policy-recovery-request.schema.json`
+  - `knowledge/ssiag/schemas/v1/policy-result.schema.json`
+  - `knowledge/ssiag/schemas/v1/policy-state.schema.json`
+  - `modules/secure-identity-access-governance/ARCHITECTURE.md`
+  - `modules/secure-identity-access-governance/FEATURES.md`
+  - `modules/secure-identity-access-governance/IMPLEMENTATION.md`
+  - `modules/secure-identity-access-governance/INSTALL.md`
+  - `modules/secure-identity-access-governance/INTENT.md`
+  - `modules/secure-identity-access-governance/MANIFEST.md`
+  - `modules/secure-identity-access-governance/README.md`
+  - `modules/secure-identity-access-governance/REQUIREMENTS.md`
+  - `modules/secure-identity-access-governance/SKILL.md`
+  - `modules/secure-identity-access-governance/SPEC.md`
+  - `modules/secure-identity-access-governance/THREAT-MODEL.md`
+  - `modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go`
+  - `modules/secure-identity-access-governance/internal/config/config.go`
+  - `modules/secure-identity-access-governance/internal/policy/policy.go`
+  - `modules/secure-identity-access-governance/internal/policyadmin/manager.go`
+  - `modules/secure-identity-access-governance/internal/policyadmin/manager_test.go`
+  - `modules/secure-identity-access-governance/internal/policyadmin/storage_unix.go`
+  - `modules/secure-identity-access-governance/internal/server/server.go`
+  - `modules/secure-identity-access-governance/internal/server/server_test.go`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/ssiagclient/client.go`
+  - `tools/qxctl/internal/ssiagclient/client_test.go`
+  - `tools/symphony-validator/src/artifacts.cpp`
+- change_summary: |
+    Under the Architect's direction, PR #121 implemented protected, caller-neutral SSIAG local authorization-policy administration. Canonical knowledge now defines bounded proposal, apply, recovery, state, attempt, result, and policy schemas; SSIAG provides host-authorized status/propose/apply/recover endpoints; and qxctl exposes the administrative grammar over the existing protected local socket.
+- relationship_changes: |
+    Canonical SSIAG knowledge owns the mutation protocol. qxctl remains the administrative client, SSIAG authenticates the local peer and evaluates exact grants, the policy-administration manager serializes durable state transitions, STAV supplies the required committed audit receipt, and the live policy engine atomically activates only a fully committed generation. Neither qxctl, STAV, the caller, nor an operational overlay becomes canonical policy truth.
+- doctrine_changes: |
+    Policy mutation authority is based on authenticated host ownership and explicit permission, never human, AI, or another caller class. Proposal and apply are separate bound operations; compare-and-swap digests prevent lost updates; a prepared or audited attempt is recoverable by exact identity; divergence and tampering fail closed; and reset creates a new audited generation sourced from the immutable enrolled configuration.
+- compatibility_consequences: |
+    Existing configuration-only SSIAG installations remain valid. New binaries load a protected overlay when present and otherwise use the enrolled configuration. Older binaries ignore the separate overlay and therefore retain configuration-only, fail-closed behavior rather than partially interpreting new state. Recovery reuses the original STAV request identity so interrupted operations may complete idempotently without duplicate durable audit events.
+- publication_consequences: |
+    No module tag, release artifact, binary package, SDK, OpenAPI endpoint, Mintlify publication, public documentation launch, marketing claim, or platform release was published or authorized. This remains active-development source on the rolling main branch.
+- projection_consequences: |
+    Policy status and qxctl output are bounded operational views of protected SSIAG state. Proposal documents and attempts are immutable operational evidence, not canonical knowledge, authorization proofs, reusable credentials, or semantic feature projections. STAV receives safe actor and target references plus digests, never raw policy or credential values.
+- evidence:
+  - `PR #121 merged into main at 2026-08-12T19:15:44Z by quantDIY as 3ce78cc5f34bd65f93b204cc51cd4b61d94f4ad4`
+  - `implementation head 5098d49db208ef1eb86367a5825ddc63e0a9a6d1; 46 files changed, 2340 insertions, 72 deletions`
+  - `tree digest sha256:a92385ce0ceb57768606c9b91e379f0a0824def79336b27e7d959814786d3b03 binds the exact recursive Git tree listing for the merge revision`
+  - `ratification evidence digest sha256:e43e79f6b1b19f690f1b86537bb6a2cf4d2751122e6c92cf2a3f6fb043be6a46 binds compact lexicographically key-sorted PR identity, base/head/merge revisions, timestamps, authenticated merger, and diff counts`
+  - `SSIAG and qxctl passed their complete Go test, Go vet, race-detector, cgo-disabled native-build, and cgo-disabled Linux-amd64 cross-build gates`
+  - `live protected Unix-socket integration passed proposal, exact apply, committed STAV receipt binding, effective-policy activation, and authorization regression checks`
+  - `Symphony Validator passed all three CTests and its complete adversarial smoke matrix`
+  - `strict repository validation reported pass=7434 warning=126 violation=0 exit=0; all 126 warnings remain the single established historical sclv.affected_surface.unindexed advisory family`
+  - `SKVI and SSFV engines passed their complete CTest suites, and every added SSIAG JSON schema parsed successfully`
+  - `the closure audit found and indexed six exact source-PR implementation and regression-test surfaces omitted from the merge`
+  - `closure SCLV engine check reported 37 records, 148 passes, zero warnings, zero violations, and valid state; both SCLV CTests passed`
+  - `closure SKVI engine passed both CTests after the six exact routes were added`
+  - `closure validator result pass=7666 warning=116 violation=0 exit=0; the remaining warnings are only the established historical advisory family`
+- non_authorizations:
+  - `caller-class authority, unauthenticated mutation, permission inference, policy self-ratification, apply-only proposal fabrication, compare-and-swap bypass, audit bypass, unsafe retry, or ambiguous recovery`
+  - `credential delivery, operational Keychain access, raw proof/token/secret/provider-payload persistence, remote SSIAG mutation, REST exposure, or OpenAPI publication`
+  - `canonical knowledge mutation by SSIAG or qxctl, replacement of enrolled configuration, STAV ownership of policy truth, proposal promotion without permission, or automatic safeguard removal`
+  - `background watcher, unattended host hook, arbitrary executable discovery, hot/warm-path participation, native Windows engine, or trading-node doctrine`
+  - `shared-root reclamation, live package installation or swapping beyond the existing lifecycle circuit, automatic old-version deletion, Go 1.27 production pin, module release, or product-launch claim`
+- notes: |
+    This post-merge closure records the protected SSIAG local policy-administration implementation merged by PR #121. The closure carrier adds exact SKVI routes for six source-PR implementation and regression-test surfaces omitted from the merge and appends this forward-only canonical record; it introduces no runtime behavior and is non-recursive unless it adds an independently significant architectural change.

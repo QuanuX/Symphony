@@ -5516,6 +5516,84 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: The client cannot grant permission or infer authority from caller type; policy mutation succeeds only after the authenticated server independently proves authority and evidence.
 - status: canonical
 
+### SSIAG Process Entrypoint
+- path: `modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go`
+- title: SSIAG Supervised Process Entrypoint
+- surface_type: Go process assembly implementation
+- truth_role: exact configuration, policy-overlay, audit-producer, and protected-server assembly truth
+- owner: SSIAG foundation maintainers
+- scope: Loads the enrolled configuration, restores validated local policy state, constructs STAV production, and starts the protected local server.
+- relationships: implements -> `modules/secure-identity-access-governance/SPEC.md`; depends_on -> `modules/secure-identity-access-governance/internal/policyadmin/manager.go`
+- consumers: SSIAG installers, supervisors, operators, tests, reviewers
+- deferred_projections: process topology projection
+- notes: Assembly does not confer authority or permit canonical knowledge mutation.
+- status: canonical
+
+### SSIAG Configuration Validation
+- path: `modules/secure-identity-access-governance/internal/config/config.go`
+- title: SSIAG Configuration Validation
+- surface_type: Go configuration implementation
+- truth_role: exact enrolled configuration and authorization-policy validation truth
+- owner: SSIAG foundation maintainers
+- scope: Parses bounded configuration and validates the complete authorization snapshot used by initial and reset policy generations.
+- relationships: implements -> `modules/secure-identity-access-governance/SPEC.md`; conforms_to -> `knowledge/ssiag/schemas/v1/authorization-policy.schema.json`
+- consumers: SSIAG process entrypoint, policy administration, tests, reviewers
+- deferred_projections: configuration explanation projection
+- notes: Validation never promotes operational state to canonical knowledge.
+- status: canonical
+
+### SSIAG Policy Administration Regression Matrix
+- path: `modules/secure-identity-access-governance/internal/policyadmin/manager_test.go`
+- title: SSIAG Policy Administration Regression Matrix
+- surface_type: Go deterministic regression evidence
+- truth_role: exact CAS, receipt-binding, recovery, reset, and tamper-response test truth
+- owner: SSIAG foundation maintainers
+- scope: Exercises protected policy generations and interruption boundaries without granting runtime permission.
+- relationships: verifies -> `modules/secure-identity-access-governance/internal/policyadmin/manager.go`; conforms_to -> `knowledge/ssiag/SPEC.md`
+- consumers: SSIAG maintainers, reviewers, release validation
+- deferred_projections: test-report projection
+- notes: Passing tests are implementation evidence, not authorization or publication evidence.
+- status: canonical
+
+### SSIAG Protected Server
+- path: `modules/secure-identity-access-governance/internal/server/server.go`
+- title: SSIAG Protected Local Server
+- surface_type: Go authenticated local IPC implementation
+- truth_role: exact caller-neutral peer authentication and policy-administration endpoint truth
+- owner: SSIAG foundation maintainers
+- scope: Maps bounded local requests to status, proposal, apply, recovery, and authorization decisions after peer and permission validation.
+- relationships: implements -> `modules/secure-identity-access-governance/SPEC.md`; depends_on -> `modules/secure-identity-access-governance/internal/policyadmin/manager.go`; conforms_to -> `knowledge/ssiag/schemas/v1/policy-result.schema.json`
+- consumers: qxctl, SSIAG policy administration, tests, reviewers
+- deferred_projections: remote transport under a future contract
+- notes: No network listener, REST surface, caller-class authority, or unaudited mutation is authorized.
+- status: canonical
+
+### SSIAG Protected Server Regression Matrix
+- path: `modules/secure-identity-access-governance/internal/server/server_test.go`
+- title: SSIAG Protected Server Regression Matrix
+- surface_type: Go local IPC regression evidence
+- truth_role: exact host-owner, proposal binding, committed receipt, and live policy activation test truth
+- owner: SSIAG foundation maintainers
+- scope: Exercises the protected Unix-socket circuit and negative authority boundaries with isolated per-test state.
+- relationships: verifies -> `modules/secure-identity-access-governance/internal/server/server.go`; verifies -> `modules/secure-identity-access-governance/internal/policyadmin/manager.go`
+- consumers: SSIAG maintainers, qxctl maintainers, reviewers, release validation
+- deferred_projections: test-report projection
+- notes: Test fixtures do not become reusable credentials, policy truth, or audit evidence.
+- status: canonical
+
+### qxctl SSIAG Client Regression Matrix
+- path: `tools/qxctl/internal/ssiagclient/client_test.go`
+- title: qxctl SSIAG Client Regression Matrix
+- surface_type: Go client regression evidence
+- truth_role: exact bounded response, protocol, and error-handling test truth
+- owner: qxctl and SSIAG maintainers
+- scope: Verifies administrative response decoding and rejection behavior without manufacturing server authority.
+- relationships: verifies -> `tools/qxctl/internal/ssiagclient/client.go`; conforms_to -> `knowledge/ssiag/SPEC.md`
+- consumers: qxctl maintainers, SSIAG maintainers, reviewers, release validation
+- deferred_projections: test-report projection
+- notes: Client success cannot substitute for SSIAG peer authentication, permission evaluation, or STAV commitment.
+- status: canonical
+
 ## Deferred Projections
 Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, forty-six common SKV v1 JSON Schemas, three common SKV v2 JSON Schemas, twelve SSIAG authorization, grant-planning, and policy-administration JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
