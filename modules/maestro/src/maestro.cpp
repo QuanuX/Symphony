@@ -12,6 +12,7 @@
 #include <chrono>
 #include <cstdint>
 #include <cstring>
+#include <dirent.h>
 #include <fcntl.h>
 #include <filesystem>
 #include <iomanip>
@@ -39,6 +40,9 @@ constexpr const char* descriptor_protocol = "symphony.maestro.receptor-descripto
 constexpr const char* registry_protocol = "symphony.maestro.docking-presence-registry.v1";
 constexpr const char* head_protocol = "symphony.maestro.docking-presence-head.v1";
 constexpr const char* presence_protocol = "symphony.maestro.docking-presence.v1";
+constexpr const char* inventory_command_protocol = "symphony.maestro.receptor-inventory-command.v1";
+constexpr const char* inventory_protocol = "symphony.maestro.receptor-inventory.v1";
+constexpr const char* inventory_result_protocol = "symphony.maestro.receptor-inventory-result.v1";
 constexpr const char* receptor_kind = "symphony.maestro.knowledge-engine.v1";
 constexpr const char* decision_protocol = "symphony.ssiag.authorization-decision.v1";
 constexpr const char* capability_protocol = "symphony.ssiag.capability.v1";
@@ -58,8 +62,13 @@ const std::vector<std::string> required_capabilities = {
 
 const std::vector<std::string> optional_capabilities = {
     "discovery-recovery-v1",
+    "derived-receptor-inventory-v1",
     "nonblocking-lock-v1",
 };
+
+constexpr const char* inventory_capability = "derived-receptor-inventory-v1";
+
+[[noreturn]] void system_error(const std::string& code, const std::string& detail);
 
 class FileDescriptor final {
 public:
@@ -97,6 +106,28 @@ public:
 private:
     FileDescriptor directory_;
     FileDescriptor lock_;
+};
+
+class DirectoryStream final {
+public:
+    explicit DirectoryStream(int directory) {
+        const int duplicate = ::dup(directory);
+        if (duplicate < 0) system_error("maestro.inventory_scan_failed", "could not duplicate receptors directory");
+        value_ = ::fdopendir(duplicate);
+        if (value_ == nullptr) {
+            const int saved = errno;
+            static_cast<void>(::close(duplicate));
+            errno = saved;
+            system_error("maestro.inventory_scan_failed", "could not enumerate receptors directory");
+        }
+    }
+    ~DirectoryStream() { if (value_ != nullptr) static_cast<void>(::closedir(value_)); }
+    DirectoryStream(const DirectoryStream&) = delete;
+    DirectoryStream& operator=(const DirectoryStream&) = delete;
+    [[nodiscard]] DIR* get() const noexcept { return value_; }
+
+private:
+    DIR* value_ = nullptr;
 };
 
 struct Candidate final {
@@ -420,6 +451,22 @@ engine::Json compatibility_result(const engine::Json& client, const engine::Json
     };
 }
 
+engine::Json inventory_compatibility_result(const engine::Json& client) {
+    auto result = compatibility_result(client, nullptr);
+    const auto capabilities = token_array(client.at("capabilities"), "capabilities", 64U);
+    if (!contains(capabilities, std::string(inventory_capability))) {
+        auto missing = result.at("missing_capabilities");
+        missing.push_back(inventory_capability);
+        std::sort(missing.begin(), missing.end());
+        result["mode"] = "blocked";
+        result["missing_capabilities"] = std::move(missing);
+        result["reason"] = "client lacks the derived receptor inventory capability";
+    } else if (result.at("mode") == "full") {
+        result["reason"] = "client and Maestro share the read-only receptor inventory v1 contract";
+    }
+    return result;
+}
+
 engine::Json descriptor_for(const std::string& tops_id, const std::string& receptor_id) {
     engine::Json value{
         {"protocol", descriptor_protocol}, {"format_version", format_version},
@@ -656,6 +703,91 @@ std::optional<PresenceLock> open_stream(const std::string& root, const std::stri
     return PresenceLock(std::move(current), std::move(lock));
 }
 
+std::optional<FileDescriptor> open_receptors_directory(const std::string& root,
+                                                       const std::string& tops_id) {
+    auto opened_root = open_absolute_directory(root, false);
+    if (!opened_root.has_value()) return std::nullopt;
+    FileDescriptor current = std::move(*opened_root);
+    const std::array<std::string, 7> components = {
+        "symphony", "maestro", "docking", "v1", "tops",
+        engine::sha256_hex("tops:" + tops_id), "receptors",
+    };
+    for (const auto& component : components) {
+        auto child = open_child_directory(std::move(current), component, false);
+        if (!child.has_value()) return std::nullopt;
+        current = std::move(*child);
+    }
+    return std::optional<FileDescriptor>(std::move(current));
+}
+
+bool lowercase_hex_key(std::string_view value) {
+    return value.size() == 64U &&
+        std::all_of(value.begin(), value.end(), [](const unsigned char character) {
+            return (character >= '0' && character <= '9') ||
+                (character >= 'a' && character <= 'f');
+        });
+}
+
+std::vector<std::string> receptor_directory_keys(int directory) {
+    DirectoryStream stream(directory);
+    std::vector<std::string> keys;
+    errno = 0;
+    while (const auto* entry = ::readdir(stream.get())) {
+        const std::string name(entry->d_name);
+        if (name == "." || name == "..") continue;
+        if (!lowercase_hex_key(name)) {
+            throw engine::Error("maestro.inventory_unknown_state",
+                                "receptors directory contains an unrecognized entry", 5);
+        }
+        struct stat status {};
+        if (::fstatat(directory, name.c_str(), &status, AT_SYMLINK_NOFOLLOW) != 0) {
+            system_error("maestro.inventory_scan_failed", "could not inspect receptor entry");
+        }
+        if (!S_ISDIR(status.st_mode) || status.st_uid != ::geteuid() ||
+            (status.st_mode & 0777) != 0700) {
+            throw engine::Error("maestro.inventory_unknown_state",
+                                "receptor entry is not a protected caller-owned directory", 5);
+        }
+        keys.push_back(name);
+        errno = 0;
+    }
+    if (errno != 0) {
+        system_error("maestro.inventory_scan_failed", "could not finish receptor enumeration");
+    }
+    std::sort(keys.begin(), keys.end());
+    if (std::adjacent_find(keys.begin(), keys.end()) != keys.end() || keys.size() > max_components) {
+        throw engine::Error("maestro.inventory_bound", "receptor inventory exceeds its bound", 5);
+    }
+    return keys;
+}
+
+PresenceLock open_inventory_stream(int receptors_directory, const std::string& key) {
+    const int parent = ::dup(receptors_directory);
+    if (parent < 0) {
+        system_error("maestro.inventory_scan_failed", "could not duplicate receptors directory");
+    }
+    auto child = open_child_directory(FileDescriptor(parent), key, false);
+    if (!child.has_value()) {
+        throw engine::Error("maestro.inventory_changed", "receptor entry disappeared during inventory", 5);
+    }
+    FileDescriptor directory = std::move(*child);
+    const int raw = ::openat(directory.get(), ".lock", O_RDONLY | O_NONBLOCK | O_NOFOLLOW | O_CLOEXEC);
+    if (raw < 0) system_error("maestro.lock_open_failed", "could not open receptor inventory lock");
+    FileDescriptor lock(raw);
+    struct stat status {};
+    if (::fstat(lock.get(), &status) != 0 || !S_ISREG(status.st_mode) ||
+        (status.st_mode & 0777) != 0600 || status.st_uid != ::geteuid() || status.st_nlink != 1) {
+        throw engine::Error("maestro.lock_unsafe", "receptor inventory lock metadata is unsafe", 5);
+    }
+    if (::flock(lock.get(), LOCK_SH | LOCK_NB) != 0) {
+        if (errno == EWOULDBLOCK) {
+            throw engine::Error("maestro.lock_busy", "receptor inventory is changing; retry", 4);
+        }
+        system_error("maestro.lock_failed", "could not lock receptor inventory stream");
+    }
+    return PresenceLock(std::move(directory), std::move(lock));
+}
+
 std::optional<std::string> read_file(int directory, const std::string& name) {
     const int raw = ::openat(directory, name.c_str(), O_RDONLY | O_NONBLOCK | O_NOFOLLOW | O_CLOEXEC);
     if (raw < 0) {
@@ -799,6 +931,77 @@ State load_state(int directory) {
     return State{*head, active.registry, true};
 }
 
+engine::Json derive_receptor_inventory(const std::string& state_root,
+                                       const std::string& tops_id) {
+    engine::Json entries = engine::Json::array();
+    std::uint64_t component_count = 0U;
+    auto receptors = open_receptors_directory(state_root, tops_id);
+    if (receptors.has_value()) {
+        for (const auto& key : receptor_directory_keys(receptors->get())) {
+            auto stream = open_inventory_stream(receptors->get(), key);
+            const auto state = load_state(stream.directory_fd());
+            if (!state.present) {
+                throw engine::Error("maestro.inventory_unknown_state",
+                                    "registered receptor directory has no selected state", 5);
+            }
+            const auto receptor_id = text(state.registry, "receptor_id");
+            if (engine::sha256_hex("receptor:" + receptor_id) != key ||
+                state.registry.at("tops_id") != tops_id) {
+                throw engine::Error("maestro.inventory_scope_mismatch",
+                                    "receptor directory identity does not match its registry", 5);
+            }
+            engine::Json docked = engine::Json::array();
+            for (const auto& component : state.registry.at("components")) {
+                if (component.at("disposition") == "docked") {
+                    docked.push_back(engine::Json{
+                        {"component_id", component.at("component_id")},
+                        {"module_id", component.at("module_id")},
+                        {"vector_id", component.at("vector_id")},
+                        {"engine_id", component.at("engine_id")},
+                        {"receipt_digest", component.at("receipt_digest")},
+                        {"executable_digest", component.at("executable_digest")},
+                        {"presence_digest", component.at("presence_digest")},
+                    });
+                }
+            }
+            std::sort(docked.begin(), docked.end(), [](const engine::Json& left, const engine::Json& right) {
+                return left.at("component_id").get<std::string>() <
+                    right.at("component_id").get<std::string>();
+            });
+            component_count += docked.size();
+            if (component_count > max_components) {
+                throw engine::Error("maestro.inventory_bound",
+                                    "docked component inventory exceeds its bound", 5);
+            }
+            entries.push_back(engine::Json{
+                {"receptor_id", receptor_id},
+                {"receptor_kind", state.registry.at("receptor_kind")},
+                {"registry_digest", state.registry.at("registry_digest")},
+                {"generation", state.registry.at("generation")},
+                {"registry_updated_at", state.registry.at("updated_at")},
+                {"docked_components", std::move(docked)},
+            });
+        }
+    }
+    std::sort(entries.begin(), entries.end(), [](const engine::Json& left, const engine::Json& right) {
+        return left.at("receptor_id").get<std::string>() <
+            right.at("receptor_id").get<std::string>();
+    });
+    engine::Json inventory{
+        {"protocol", inventory_protocol},
+        {"format_version", format_version},
+        {"tops_id", tops_id},
+        {"receptors", std::move(entries)},
+        {"receptor_count", 0U},
+        {"docked_component_count", component_count},
+        {"derived", true},
+        {"canonical", false},
+    };
+    inventory["receptor_count"] = inventory.at("receptors").size();
+    finalize_digest(inventory, "inventory_digest");
+    return inventory;
+}
+
 void write_all(int file, const std::string& data) {
     std::size_t offset = 0U;
     while (offset < data.size()) {
@@ -889,6 +1092,11 @@ std::string docking_resource(const std::string& tops_id, const std::string& rece
         receipt_digest + "\n" + expected);
 }
 
+std::string inventory_resource(const std::string& tops_id) {
+    return "symphony.maestro.receptor-inventory:" +
+        engine::sha256_hex(tops_id + "\nall\ninventory-v1");
+}
+
 engine::Json select_presence(const engine::Json& registry, const std::string& component_id) {
     for (const auto& presence : registry.at("components")) {
         if (presence.at("component_id") == component_id) return presence;
@@ -928,6 +1136,25 @@ engine::Json make_result(const std::string& operation, const std::string& tops_i
         {"changed", changed}, {"recovered", recovered}, {"repair_actions", std::move(repair_actions)},
         {"read_only", read_only}, {"execution_enabled", false}, {"canonical", false},
     };
+}
+
+engine::Json make_inventory_result(const std::string& tops_id,
+                                   const engine::Json& compatibility,
+                                   engine::Json inventory) {
+    engine::Json result{
+        {"protocol", inventory_result_protocol},
+        {"format_version", format_version},
+        {"operation", "inventory"},
+        {"tops_id", tops_id},
+        {"compatibility", compatibility},
+        {"inventory", std::move(inventory)},
+        {"observed_at", utc_now()},
+        {"read_only", true},
+        {"derived", true},
+        {"canonical", false},
+    };
+    finalize_digest(result, "observation_digest");
+    return result;
 }
 
 engine::Json clean_recovery() {
@@ -1013,6 +1240,30 @@ Candidate choose_recovery_candidate(int directory) {
     return newer;
 }
 
+engine::Json validate_inventory_command(const engine::Request& request) {
+    exact_fields(request.payload, {
+        "protocol", "format_version", "operation", "state_root", "tops_id",
+        "authorization_decision", "client",
+    }, "Maestro receptor inventory command");
+    if (request.operation != "inventory" ||
+        text(request.payload, "protocol") != inventory_command_protocol ||
+        number(request.payload, "format_version") != format_version ||
+        text(request.payload, "operation") != request.operation ||
+        !request.payload.at("state_root").is_string() ||
+        !safe_absolute_path(request.payload.at("state_root").get<std::string>()) ||
+        !lowercase_uuid(text(request.payload, "tops_id")) ||
+        !request.payload.at("authorization_decision").is_object()) {
+        throw engine::Error("maestro.inventory_command_invalid",
+                            "receptor inventory command is invalid", 4);
+    }
+    auto compatibility = inventory_compatibility_result(request.payload.at("client"));
+    if (compatibility.at("mode") != "full") {
+        throw engine::Error("maestro.compatibility_required",
+                            "receptor inventory requires explicit read compatibility", 4);
+    }
+    return compatibility;
+}
+
 engine::Json validate_command(const engine::Request& request) {
     exact_fields(request.payload, {
         "protocol", "format_version", "operation", "state_root", "tops_id", "receptor_id",
@@ -1042,6 +1293,17 @@ engine::Json descriptor(const std::string& receptor_id) {
 }
 
 engine::Json handle_request(const engine::Request& request) {
+    if (request.operation == "inventory") {
+        const auto compatibility = validate_inventory_command(request);
+        const auto tops_id = text(request.payload, "tops_id");
+        static_cast<void>(validate_authorization(
+            request.payload.at("authorization_decision"),
+            "symphony.maestro.receptor-inventory.read", tops_id,
+            inventory_resource(tops_id)));
+        auto inventory = derive_receptor_inventory(
+            request.payload.at("state_root").get<std::string>(), tops_id);
+        return make_inventory_result(tops_id, compatibility, std::move(inventory));
+    }
     auto compatibility = validate_command(request);
     const auto tops_id = text(request.payload, "tops_id");
     const auto receptor_id = text(request.payload, "receptor_id");

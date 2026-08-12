@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:maestro:receptor-inventory-result:v1",
+  "title": "Symphony Maestro derived receptor inventory result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "format_version", "operation", "tops_id", "compatibility", "inventory", "observed_at", "read_only", "derived", "canonical", "observation_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.maestro.receptor-inventory-result.v1"},
+    "format_version": {"const": 1},
+    "operation": {"const": "inventory"},
+    "tops_id": {"$ref": "#/$defs/uuid"},
+    "compatibility": {"$ref": "#/$defs/compatibility"},
+    "inventory": {"$ref": "#/$defs/inventory"},
+    "observed_at": {"$ref": "#/$defs/timestamp"},
+    "read_only": {"const": true},
+    "derived": {"const": true},
+    "canonical": {"const": false},
+    "observation_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "uuid": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "timestamp": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"},
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "process_protocol", "presence_read_version", "presence_write_version", "missing_capabilities", "two_way_procedural_compatibility", "reason"],
+      "properties": {
+        "mode": {"const": "full"},
+        "process_protocol": {"const": "symphony.knowledge.engine-process.v1"},
+        "presence_read_version": {"const": 1},
+        "presence_write_version": {"const": 1},
+        "missing_capabilities": {"const": []},
+        "two_way_procedural_compatibility": {"const": true},
+        "reason": {"type": "string", "minLength": 1, "maxLength": 4096}
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["component_id", "module_id", "vector_id", "engine_id", "receipt_digest", "executable_digest", "presence_digest"],
+      "properties": {
+        "component_id": {"$ref": "#/$defs/token"},
+        "module_id": {"$ref": "#/$defs/token"},
+        "vector_id": {"$ref": "#/$defs/token"},
+        "engine_id": {"$ref": "#/$defs/token"},
+        "receipt_digest": {"$ref": "#/$defs/digest"},
+        "executable_digest": {"$ref": "#/$defs/digest"},
+        "presence_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "receptor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["receptor_id", "receptor_kind", "registry_digest", "generation", "registry_updated_at", "docked_components"],
+      "properties": {
+        "receptor_id": {"$ref": "#/$defs/token"},
+        "receptor_kind": {"const": "symphony.maestro.knowledge-engine.v1"},
+        "registry_digest": {"$ref": "#/$defs/digest"},
+        "generation": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+        "registry_updated_at": {"$ref": "#/$defs/timestamp"},
+        "docked_components": {"type": "array", "maxItems": 4096, "items": {"$ref": "#/$defs/component"}}
+      }
+    },
+    "inventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol", "format_version", "tops_id", "receptors", "receptor_count", "docked_component_count", "derived", "canonical", "inventory_digest"],
+      "properties": {
+        "protocol": {"const": "symphony.maestro.receptor-inventory.v1"},
+        "format_version": {"const": 1},
+        "tops_id": {"$ref": "#/$defs/uuid"},
+        "receptors": {"type": "array", "maxItems": 4096, "items": {"$ref": "#/$defs/receptor"}},
+        "receptor_count": {"type": "integer", "minimum": 0, "maximum": 4096},
+        "docked_component_count": {"type": "integer", "minimum": 0, "maximum": 4096},
+        "derived": {"const": true},
+        "canonical": {"const": false},
+        "inventory_digest": {"$ref": "#/$defs/digest"}
+      }
+    }
+  }
+}

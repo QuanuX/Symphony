@@ -24,6 +24,9 @@ Any caller operating within its effective target-host permission should use `qxc
 - `go run ./cmd/qxctl knowledge reconcile close --operation-id ID --expected-journal-digest sha256:...`
 - `go run ./cmd/qxctl knowledge reconcile recover --operation-id ID --discover`
 - `go run ./cmd/qxctl knowledge session transition --tops-id UUID --event login --event-id HOST-EVENT-ID --json`
+- `go run ./cmd/qxctl knowledge session features begin --tops-id UUID --operation-id FEATURE-SESSION-ID --expected-journal-digest absent --json`
+- `go run ./cmd/qxctl knowledge session features checkpoint --tops-id UUID --operation-id FEATURE-CHECKPOINT-ID --expected-journal-digest sha256:... --json`
+- `go run ./cmd/qxctl maestro inventory --prefix /chosen/maestro-prefix --tops-id UUID --json`
 - `go run ./cmd/qxctl knowledge lifecycle profile set --tops-id UUID --input profile.json --expected-profile-digest absent --json`
 - `go run ./cmd/qxctl knowledge lifecycle observe --tops-id UUID --profile-id default --json`
 - `go run ./cmd/qxctl knowledge lifecycle report --tops-id UUID --profile-id default --json`
@@ -73,6 +76,8 @@ Any caller operating within its effective target-host permission should use `qxc
 - For repository validation, use `validate scan` with one exact installed validator. Use `profile` to adjust optional warning disposition/presentation and `baseline` to classify warning deltas. `debug` filters display only after a complete scan. Never treat a baseline as ratification or use policy to downgrade a violation or alter detector scope.
 - Treat the default knowledge session as a login/authentication-to-logout/expiry/revocation authority epoch containing separate worktree reconciliation contexts. Never extend authority across a required re-authentication boundary.
 - Use `knowledge session transition` only from an explicit reviewed host integration. Reuse one stable event ID for retry, and use `--recover` only when damaged local head/journal evidence should be reconciled. Do not convert denial, incompatibility, or ambiguity into recovery and do not imply that qxctl installs a login or boot integration.
+- Use `knowledge session features` only inside an open authenticated session. Preserve the first SSFV snapshot as the immutable baseline, reuse stable operation IDs for retry, and supply the exact current maintenance digest. Optional Maestro observation must be complete and authenticated; omit `--maestro-prefix` to record explicit `not_configured` evidence. Treat `review_required` as a review signal, never ratification or write authority.
+- Use `maestro inventory` for a complete derived TOPS-wide view. Do not treat an inventory error as an empty deployment and do not use its timestamped observation digest where stable inventory identity is required.
 - Keep `symphony.knowledge.engine-binding-registry.v1` fixed to its six roles. Treat profile input, desired, observed, runtime, planned, report-journal, apply-journal, and applied state as separate evidence governed by `knowledge/LIFECYCLE.md`; discovering a new or missing package is never implicit permission to execute, remove, switch, bind, or dock it. Use `boot` only to establish the exact report-only source. Use `apply` only for an `apply-compatible` profile with exact source/report/apply/applied digests and explicit staged receipt-v2 roots. Safe retry reuses the base operation ID and current compare-and-swap state. Use `apply-status` without mutation and `apply-recover --discover` only for one unique digest-linked v2 chain. Never hand-edit a prepared action, runtime state, journal slot, head, or applied file.
 - Treat receipt-v2 installation and removal as local content-addressed file operations, not package download or script execution. Installation publishes the receipt last. Uninstall requires a separate trusted rollback source, validates every remaining owned path before deletion, and removes the receipt last. A conflicting administrator file is an integrity stop.
 - Treat generic `active` runtime state as administrative eligibility, not proof that a process, service, engine binding, or receipt entry point ran. Dock/undock and coordinator self-replacement remain stop conditions.
@@ -99,4 +104,5 @@ Any caller operating within its effective target-host permission should use `qxc
 9. `go run ./cmd/qxctl knowledge reconcile compatibility --json`
 10. `go run ./cmd/qxctl knowledge reconcile status --json`
 11. `go run ./cmd/qxctl knowledge session status --tops-id UUID --json` when the exact SSIAG session grants and coordinator binding are available
-12. `go run ./cmd/qxctl knowledge lifecycle apply-status --tops-id UUID --json` when exact lifecycle grants and coordinator binding are available
+12. `go run ./cmd/qxctl knowledge session features status --tops-id UUID --json` when the SSFV maintenance grant and coordinator binding are available
+13. `go run ./cmd/qxctl knowledge lifecycle apply-status --tops-id UUID --json` when exact lifecycle grants and coordinator binding are available

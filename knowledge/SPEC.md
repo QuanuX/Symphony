@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact four-record SSFV partial catalog, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, explicit qxctl session transitions, implemented report-only lifecycle planning/journaling, separately authorized apply-compatible coordination, and Maestro receptor presence defined by `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, host boot hook, live process activation, receipt-v1 mutation, arbitrary entry-point execution, or Maestro behavior beyond authenticated durable presence may be inferred from these contract slices.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact four-record SSFV partial catalog, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, persistent SSFV maintenance journals, explicit qxctl session transitions, implemented report-only lifecycle planning/journaling, separately authorized apply-compatible coordination, and Maestro receptor presence plus derived inventory defined by `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No additional feature record, complete-catalog claim, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, host boot hook, live process activation, receipt-v1 mutation, arbitrary entry-point execution, or Maestro engine-execution behavior may be inferred from these contract slices.
 
 ## Purpose
 
@@ -44,6 +44,10 @@ The v1 identifier family is:
 | `symphony.knowledge.session-command.v1` | qxctl-to-coordinator authenticated-session command |
 | `symphony.knowledge.session-result.v1` | coordinator authenticated-session result |
 | `symphony.knowledge.session-transition-result.v1` | qxctl explicit host-event convergence result |
+| `symphony.knowledge.ssfv-maintenance-command.v1` | authenticated persistent SSFV maintenance command |
+| `symphony.knowledge.ssfv-maintenance-journal.v1` | semantic baseline and checkpoint lineage |
+| `symphony.knowledge.ssfv-maintenance-head.v1` | atomic dual-slot SSFV-maintenance head |
+| `symphony.knowledge.ssfv-maintenance-result.v1` | SSFV-maintenance state and recovery result |
 | `symphony.knowledge.reconciliation-journal.v1` | noncanonical worktree coordination journal |
 | `symphony.knowledge.reconciliation-head.v1` | atomic dual-slot journal head |
 | `symphony.knowledge.reconciliation-command.v1` | qxctl-to-coordinator reconciliation command |
@@ -72,6 +76,9 @@ The v1 identifier family is:
 | `symphony.maestro.docking-presence-registry.v1` | digest-linked per-receptor presence generation |
 | `symphony.maestro.docking-presence-head.v1` | atomic dual-slot registry selector |
 | `symphony.maestro.docking-result.v1` | bounded presence and recovery result |
+| `symphony.maestro.receptor-inventory-command.v1` | authenticated TOPS-wide derived inventory request |
+| `symphony.maestro.receptor-inventory.v1` | stable derived receptor/component inventory |
+| `symphony.maestro.receptor-inventory-result.v1` | timestamped read-only inventory observation |
 | `symphony.validation.result.v1` | deterministic raw validator evidence and optional qxctl evaluation |
 | `symphony.validation.policy.v1` | protected noncanonical warning disposition and presentation state |
 | `symphony.validation.baseline.v1` | repository/version-bound warning delta baseline |
@@ -92,6 +99,10 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/session-command.schema.json`;
 - `knowledge/schemas/v1/session-result.schema.json`;
 - `knowledge/schemas/v1/session-transition-result.schema.json`;
+- `knowledge/schemas/v1/ssfv-maintenance-command.schema.json`;
+- `knowledge/schemas/v1/ssfv-maintenance-journal.schema.json`;
+- `knowledge/schemas/v1/ssfv-maintenance-head.schema.json`;
+- `knowledge/schemas/v1/ssfv-maintenance-result.schema.json`;
 - `knowledge/schemas/v1/lifecycle-desired-state.schema.json`;
 - `knowledge/schemas/v1/lifecycle-observation.schema.json`;
 - `knowledge/schemas/v1/lifecycle-plan-command.schema.json`;
@@ -110,6 +121,8 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/maestro-docking-presence-registry.schema.json`;
 - `knowledge/schemas/v1/maestro-docking-presence-head.schema.json`;
 - `knowledge/schemas/v1/maestro-docking-result.schema.json`;
+- `knowledge/schemas/v1/maestro-receptor-inventory-command.schema.json`;
+- `knowledge/schemas/v1/maestro-receptor-inventory-result.schema.json`;
 - `knowledge/schemas/v1/temporal.schema.json`;
 - `knowledge/schemas/v1/validation-result.schema.json`;
 - `knowledge/schemas/v1/validation-policy.schema.json`;
@@ -199,10 +212,11 @@ qxctl knowledge engines ...
 qxctl knowledge reconcile compatibility|begin|status|checkpoint|close|recover ...
 qxctl knowledge session begin|status|checkpoint|close|recover ...
 qxctl knowledge session transition --event login|refresh|logout --event-id ID ...
+qxctl knowledge session features begin|status|checkpoint|close|recover ...
 qxctl knowledge lifecycle profile list|show|set|remove ...
 qxctl knowledge lifecycle observe|report|boot|status|recover ...
 qxctl knowledge lifecycle apply|apply-status|apply-recover ...
-qxctl maestro inspect|status|recover ...
+qxctl maestro inspect|inventory|status|recover ...
 qxctl knowledge proposals ...
 qxctl knowledge apply ...        # canonical knowledge apply; reserved and disabled
 ```
@@ -224,6 +238,10 @@ The implemented user-scope `qxctl knowledge engines list|inspect|doctor|bind|unb
 The implemented user-scope `qxctl knowledge reconcile ...` surface resolves and revalidates the exact bound coordinator, performs an explicit compatibility handshake, and invokes it through bounded local process IPC. `begin` requires a caller-declared bounded path inventory and exact expected journal state. `checkpoint`, `close`, and ordinary `recover` require the exact current digest. An administrator may request discovery recovery only explicitly when ordinary status cannot validate the head. Reconciliation mutates protected noncanonical coordination state only; it does not authenticate a caller, invoke a vector engine, mutate a canonical repository file, install a hook, run an observer, append STAV, or dock with Maestro.
 
 The implemented user-scope `qxctl knowledge session ...` surface revalidates the exact coordinator binding, obtains a fresh exact SSIAG decision for every underlying operation, and invokes the coordinator with the common session command. `begin` requires `absent` or the exact digest of a closed predecessor; mutations require a stable operation ID and exact current digest; explicit discovery recovery is permitted only when one unique forward state is provable. `status` is read-only. `transition` performs only the explicit idempotent composition described above and returns a digest-bound noncanonical transition result. These surfaces establish and recover noncanonical authority-epoch evidence only. They do not activate a receipt, invoke vector semantics, mutate canonical knowledge, administer policy/safeguards, use a credential provider, or dock with Maestro.
+
+The implemented `qxctl knowledge session features ...` surface is a separate persistent maintenance circuit inside an open authenticated session. qxctl revalidates exact coordinator and SSFV bindings, obtains a content-addressed semantic snapshot, optionally obtains a complete authenticated derived Maestro inventory, computes SSFV v2 change evidence after begin, and supplies the complete evidence under fresh operation-bound SSIAG authorization. The coordinator persists one immutable baseline with its original engine identity and later current engine identities independently, allowing compatible engine upgrade or rollback order without reinterpreting historical evidence. Status is read-only; mutations use exact compare-and-swap and idempotent operation IDs; recovery selects only one valid digest-linked forward chain. A review-required result remains noncanonical and never authorizes `FEATURES.md` creation, semantic ratification, proposal apply, or canonical mutation.
+
+The implemented `qxctl maestro inventory` surface authenticates a complete TOPS-wide read and derives a sorted view from Maestro's authoritative receptor registries. Stable inventory identity excludes observation time. Any unsafe, busy, damaged, incompatible, or ambiguous existing receptor stream fails the complete observation; it cannot be represented as an empty receptor.
 
 The implemented `qxctl knowledge lifecycle profile list|show|set|remove` surface maintains protected noncanonical per-TOPS desired profiles beneath the selected state root. Set/remove require exact expected profile state; qxctl generates linked generations and content digests, serializes through a no-follow lock, and commits durable same-directory replacement. `observe` scans only fixed receipt paths under explicit or profile-selected roots, validates known v1 packages through exact observation adapters and v2 packages through content-addressed ownership evidence, and preserves unsupported or invalid packages as explicit unknown evidence. `report` re-reads the profile, re-observes the roots, obtains fresh SSIAG authorization bound to exact evidence, and validates a disposable plan. `boot` persists a report-only v1 source journal; `status` and `recover` inspect or repair only that chain.
 

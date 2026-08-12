@@ -6,11 +6,11 @@ Persist exact freezing-path deployment presence for independently installed Symp
 
 ## Scope
 
-This initial slice implements bounded receptor inspection, read-only presence status, exact compare-and-swap dock and undock transitions, and evidence-preserving recovery through an independently installed C++26 process administered by qxctl.
+This initial slice implements bounded receptor inspection, read-only presence status, an authenticated TOPS-wide derived receptor inventory, exact compare-and-swap dock and undock transitions, and evidence-preserving recovery through an independently installed C++26 process administered by qxctl.
 
 ## Authority
 
-Maestro records operational docking presence. It does not own vector semantics, desired-state policy, installation truth, permission, or canonical knowledge. Every mutation requires fresh caller-neutral SSIAG capability evidence released only after the corresponding STAV policy-decision event commits.
+Maestro records operational docking presence and derives inventory only from those authoritative per-receptor registries. Inventory is read-only observation, not a second source of truth. It does not own vector semantics, desired-state policy, installation truth, permission, or canonical knowledge. Every protected read or mutation requires fresh caller-neutral SSIAG capability evidence released only after the corresponding STAV policy-decision event commits.
 
 ## Non-Goals
 

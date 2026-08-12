@@ -45,6 +45,7 @@ Commands:
   knowledge session close --tops-id UUID --operation-id ID --expected-journal-digest DIGEST [--json] Close an authenticated session
   knowledge session recover --tops-id UUID --operation-id ID (--expected-journal-digest DIGEST|--discover) [--json] Recover authenticated session evidence
   knowledge session transition --tops-id UUID --event login|refresh|logout --event-id ID [--recover] [--json] Converge an explicit host lifecycle event
+  knowledge session features begin|status|checkpoint|close|recover --tops-id UUID [...] Maintain persistent SSFV session evidence
   knowledge lifecycle profile list --tops-id UUID [--profile-id ID] [--json] List protected lifecycle profiles
   knowledge lifecycle profile show --tops-id UUID [--profile-id ID] [--json] Read one protected lifecycle profile
   knowledge lifecycle profile set --tops-id UUID --input FILE --expected-profile-digest STATE [--profile-id ID] [--json] Commit exact desired profile intent
@@ -58,6 +59,7 @@ Commands:
   knowledge lifecycle apply-status --tops-id UUID [--profile-id ID] [--json] Read durable apply-capable lifecycle state
   knowledge lifecycle apply-recover --tops-id UUID --operation-id ID (--expected-apply-journal-digest DIGEST|--discover) [--json] Repair uniquely linked apply-capable lifecycle evidence
   maestro inspect --prefix PATH --tops-id UUID --receptor-id ID [--version VERSION] [--json] Inspect an exact local receptor
+  maestro inventory --prefix PATH --tops-id UUID [--version VERSION] [--json] Read derived receptor inventory
   maestro status --prefix PATH --tops-id UUID --receptor-id ID [--component-id ID] [--json] Read authenticated presence
   maestro recover --prefix PATH --tops-id UUID --receptor-id ID --operation-id ID (--expected-registry-digest DIGEST|--discover) [--json] Repair unique presence evidence
   skvi inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SKVI engine

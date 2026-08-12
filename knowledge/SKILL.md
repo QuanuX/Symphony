@@ -27,6 +27,7 @@ After this contract transition is merged, authorized implementation work may:
 - begin, inspect, checkpoint, close, and recover a protected noncanonical worktree reconciliation context through the exact bound coordinator;
 - compute content digests and deterministic validation evidence;
 - maintain noncanonical authenticated-session, worktree, report-only lifecycle, and separately authorized apply-capable lifecycle journals;
+- maintain a separate noncanonical SSFV semantic baseline/checkpoint stream during an open authenticated session and attach explicit complete or not-configured Maestro inventory evidence;
 - create immutable proposals;
 - produce vector-authorized disposable projections;
 - expose implemented proposal/read operations through qxctl;
@@ -45,6 +46,8 @@ The implemented `qxctl knowledge engines list|inspect|doctor|bind|unbind` surfac
 The implemented `qxctl knowledge reconcile compatibility|begin|status|checkpoint|close|recover` surface uses one exact bound coordinator. Supply a stable operation identifier for every mutation and the exact current journal digest; use discovery recovery only when ordinary status cannot validate local state. Treat two-slot recovery as evidence-based forward repair, never permission to discard an incompatible journal or unknown critical extension.
 
 The implemented `qxctl knowledge session begin|status|checkpoint|close|recover` surface uses the same exact bound coordinator and one TOPS-scoped SSIAG endpoint. Every call requests a fresh exact grant and validates subject, target, policy/configuration, expiry, caller-class neutrality, non-transferability, canonical-apply disablement, and capability binding. Session evidence authorizes only the named protected noncanonical operation. Keep session and reconciliation journals separate and use context references only to associate them.
+
+Use `qxctl knowledge session features begin|status|checkpoint|close|recover` for the separate persistent SSFV maintenance stream. Mutations require an open authenticated session, exact coordinator/SSFV bindings, stable operation IDs, exact compare-and-swap, and fresh SSIAG evidence. Preserve the baseline snapshot and its original engine identity across compatible upgrades or rollbacks. Optional Maestro evidence must be a complete authenticated inventory; when Maestro is intentionally absent, record the explicit not-configured reason. `review_required` is evidence for caller review, not feature-worthiness, ratification, or apply authority.
 
 ## Prohibited Initial Operations
 

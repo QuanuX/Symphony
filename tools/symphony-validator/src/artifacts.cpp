@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 bool is_authorized_canonical_json(const std::string& relative_path) {
     // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, and SSFV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 115> authorized_paths = {
+    static const std::array<std::string, 121> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -56,6 +56,10 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/schemas/v1/session-journal.schema.json",
         "knowledge/schemas/v1/session-result.schema.json",
         "knowledge/schemas/v1/session-transition-result.schema.json",
+        "knowledge/schemas/v1/ssfv-maintenance-command.schema.json",
+        "knowledge/schemas/v1/ssfv-maintenance-head.schema.json",
+        "knowledge/schemas/v1/ssfv-maintenance-journal.schema.json",
+        "knowledge/schemas/v1/ssfv-maintenance-result.schema.json",
         "knowledge/schemas/v1/lifecycle-profile-input.schema.json",
         "knowledge/schemas/v1/lifecycle-profile.schema.json",
         "knowledge/schemas/v1/lifecycle-desired-state.schema.json",
@@ -77,6 +81,8 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/schemas/v1/maestro-docking-presence-registry.schema.json",
         "knowledge/schemas/v1/maestro-docking-presence-head.schema.json",
         "knowledge/schemas/v1/maestro-docking-result.schema.json",
+        "knowledge/schemas/v1/maestro-receptor-inventory-command.schema.json",
+        "knowledge/schemas/v1/maestro-receptor-inventory-result.schema.json",
         "knowledge/schemas/v1/validation-result.schema.json",
         "knowledge/schemas/v1/validation-policy.schema.json",
         "knowledge/schemas/v1/validation-baseline.schema.json",

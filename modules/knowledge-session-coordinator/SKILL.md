@@ -12,7 +12,7 @@ symphony-knowledge-session --version
 symphony-knowledge-session --descriptor
 ```
 
-Without arguments, send exactly one bounded `symphony.knowledge.engine-process.v1` request on standard input. `inspect` accepts an empty payload. `check` accepts exactly `paths` and `expected_snapshot_digest`, runs relative to the process working directory, follows no symlinks, and returns digests rather than file contents. Reconciliation, authenticated-session, report-only `lifecycle_plan`, durable report-only `lifecycle_boot|lifecycle_boot_status|lifecycle_boot_recover`, and apply-capable `lifecycle_apply_prepare|lifecycle_apply_finalize|lifecycle_apply_close|lifecycle_apply_status|lifecycle_apply_recover` operations accept their exact common command schemas and return their exact common results.
+Without arguments, send exactly one bounded `symphony.knowledge.engine-process.v1` request on standard input. `inspect` accepts an empty payload. `check` accepts exactly `paths` and `expected_snapshot_digest`, runs relative to the process working directory, follows no symlinks, and returns digests rather than file contents. Reconciliation, authenticated-session, persistent `ssfv_maintenance_begin|status|checkpoint|close|recover`, report-only `lifecycle_plan`, durable report-only `lifecycle_boot|lifecycle_boot_status|lifecycle_boot_recover`, and apply-capable `lifecycle_apply_prepare|lifecycle_apply_finalize|lifecycle_apply_close|lifecycle_apply_status|lifecycle_apply_recover` operations accept their exact common command schemas and return their exact common results.
 
 ## Safety Rules
 
@@ -27,6 +27,8 @@ Without arguments, send exactly one bounded `symphony.knowledge.engine-process.v
 - Never delete slots, bypass a critical extension, or rewrite an incompatible journal to make it appear current.
 - For every session operation, require a fresh exact SSIAG allow decision and recompute its non-transferable capability binding; never treat the JSON object as bearer authority.
 - Keep session and reconciliation journals separate. Context references may attach to an authority epoch but never become identity or permission evidence.
+- Keep the SSFV maintenance journal separate from both. Preserve its original baseline snapshot and baseline engine identity across compatible engine upgrades; checkpoint only with the exact current journal digest, live session digest, binding digest, current SSFV evidence, and explicit observed/not-configured Maestro evidence.
+- Treat `review_required` as noncanonical evidence for caller review. Never convert it into feature-worthiness, ratification, `FEATURES.md` generation, or apply authority.
 - Treat lifecycle desired state and observation as caller-supplied, digest-bound evidence. Require full explicit protocol/capability overlap, preserve blocked components, and use the returned dependency-ready set rather than array order or version recency.
 - Treat observation collection time as document evidence only. Verify timestamp-only refresh preserves the stable inventory key, transaction, and semantic action identities.
 - For lifecycle boot mutation, require a fresh exact SSIAG decision, a stable operation ID, and `absent` or the exact current journal digest. Use discovery recovery only when the local head cannot be trusted and the slot chain is unique.

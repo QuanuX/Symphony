@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:ssfv-maintenance-command:v1",
+  "title": "Symphony SSFV session-maintenance command v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "operation", "state_root", "tops_id", "operation_id", "expected_journal_digest", "repository_root", "session_journal_digest", "binding_registry_digest", "engine", "semantic_snapshot", "diff_result", "maestro_inventory", "authorization_decision", "client"],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.ssfv-maintenance-command.v1"},
+    "operation": {"enum": ["ssfv_maintenance_begin", "ssfv_maintenance_status", "ssfv_maintenance_checkpoint", "ssfv_maintenance_close", "ssfv_maintenance_recover"]},
+    "state_root": {"$ref": "#/$defs/absolutePath"},
+    "tops_id": {"$ref": "#/$defs/uuid"},
+    "operation_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+    "expected_journal_digest": {"oneOf": [{"type": "null"}, {"const": "absent"}, {"const": "discover"}, {"$ref": "#/$defs/digest"}]},
+    "repository_root": {"$ref": "#/$defs/absolutePath"},
+    "session_journal_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "binding_registry_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "engine": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/engine"}]},
+    "semantic_snapshot": {"oneOf": [{"type": "null"}, {"$ref": "urn:symphony:ssfv:semantic-snapshot:v1"}]},
+    "diff_result": {"oneOf": [{"type": "null"}, {"$ref": "urn:symphony:ssfv:diff-result:v2"}]},
+    "maestro_inventory": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/maestroEvidence"}]},
+    "authorization_decision": {"$ref": "urn:symphony:ssiag:authorization-decision:v1"},
+    "client": {"$ref": "#/$defs/client"}
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "version": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[0-9A-Za-z.+-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "uuid": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "absolutePath": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "^/(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])(?:$|[^/](?:.*[^/])?)$"},
+    "engine": {"type": "object", "additionalProperties": false, "required": ["module_id", "engine_id", "vector_id", "version", "receipt_digest", "executable_digest", "evidence_digest"], "properties": {"module_id": {"const": "ssfv-engine"}, "engine_id": {"const": "symphony-ssfv"}, "vector_id": {"const": "ssfv"}, "version": {"$ref": "#/$defs/version"}, "receipt_digest": {"$ref": "#/$defs/digest"}, "executable_digest": {"$ref": "#/$defs/digest"}, "evidence_digest": {"$ref": "#/$defs/digest"}}},
+    "maestroEvidence": {"type": "object", "additionalProperties": false, "required": ["availability", "reason", "observation", "evidence_digest"], "properties": {"availability": {"enum": ["observed", "not_configured"]}, "reason": {"type": "string", "minLength": 1, "maxLength": 4096}, "observation": {"oneOf": [{"type": "null"}, {"$ref": "urn:symphony:maestro:receptor-inventory-result:v1"}]}, "evidence_digest": {"$ref": "#/$defs/digest"}}},
+    "client": {"type": "object", "additionalProperties": false, "required": ["client_id", "client_version", "process_protocols", "journal_read_versions", "journal_write_versions", "capabilities"], "properties": {"client_id": {"const": "qxctl"}, "client_version": {"$ref": "#/$defs/version"}, "process_protocols": {"type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}}, "journal_read_versions": {"type": "array", "minItems": 1, "maxItems": 16, "uniqueItems": true, "items": {"type": "integer", "minimum": 1, "maximum": 16}}, "journal_write_versions": {"type": "array", "minItems": 1, "maxItems": 16, "uniqueItems": true, "items": {"type": "integer", "minimum": 1, "maximum": 16}}, "capabilities": {"type": "array", "minItems": 1, "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}}}}
+  }
+}

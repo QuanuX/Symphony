@@ -71,6 +71,10 @@
 - `qxctl knowledge session close --tops-id UUID --operation-id ID --expected-journal-digest DIGEST [--scope user|system] [--state-root PATH] [--repo PATH] [--ttl DURATION] [--json]`
 - `qxctl knowledge session recover --tops-id UUID --operation-id ID (--expected-journal-digest DIGEST|--discover) [--scope user|system] [--state-root PATH] [--repo PATH] [--ttl DURATION] [--json]`
 - `qxctl knowledge session transition --tops-id UUID --event login|refresh|logout --event-id ID [--context-ref REF...] [--recover] [--scope user|system] [--state-root PATH] [--repo PATH] [--ttl DURATION] [--json]`
+- `qxctl knowledge session features begin --tops-id UUID --operation-id ID --expected-journal-digest absent|DIGEST [--maestro-prefix PATH] [--maestro-version VERSION] [--scope user|system] [--state-root PATH] [--repo PATH] [--ttl DURATION] [--json]`
+- `qxctl knowledge session features status --tops-id UUID [--scope user|system] [--state-root PATH] [--repo PATH] [--ttl DURATION] [--json]`
+- `qxctl knowledge session features checkpoint|close --tops-id UUID --operation-id ID --expected-journal-digest DIGEST [--maestro-prefix PATH] [--maestro-version VERSION] [--scope user|system] [--state-root PATH] [--repo PATH] [--ttl DURATION] [--json]`
+- `qxctl knowledge session features recover --tops-id UUID --operation-id ID (--expected-journal-digest DIGEST|--discover) [--scope user|system] [--state-root PATH] [--repo PATH] [--ttl DURATION] [--json]`
 - `qxctl knowledge lifecycle profile list --tops-id UUID [--profile-id ID] [--scope user|system] [--state-root PATH] [--json]`
 - `qxctl knowledge lifecycle profile show --tops-id UUID [--profile-id ID] [--scope user|system] [--state-root PATH] [--json]`
 - `qxctl knowledge lifecycle profile set --tops-id UUID --input FILE --expected-profile-digest absent|DIGEST [--profile-id ID] [--scope user|system] [--state-root PATH] [--json]`
@@ -83,6 +87,7 @@
 - `qxctl knowledge lifecycle apply --tops-id UUID --operation-id ID --source-journal-digest DIGEST --expected-apply-journal-digest absent|DIGEST --expected-applied-state-digest absent|DIGEST [--source-root PATH...] [--max-actions 1..4096] [--profile-id ID] [--scope user|system] [--state-root PATH] [--repo PATH] [--json]`
 - `qxctl knowledge lifecycle apply-status --tops-id UUID [--profile-id ID] [--scope user|system] [--state-root PATH] [--repo PATH] [--json]`
 - `qxctl knowledge lifecycle apply-recover --tops-id UUID --operation-id ID (--expected-apply-journal-digest DIGEST|--discover) [--profile-id ID] [--scope user|system] [--state-root PATH] [--repo PATH] [--json]`
+- `qxctl maestro inventory --prefix PATH --tops-id UUID [--version VERSION] [--scope user|system] [--state-root PATH] [--repo PATH] [--ttl DURATION] [--json]`
 - `qxctl skvi inspect --prefix PATH [--version VERSION] [--repo PATH] [--json]`
 - `qxctl skvi check --prefix PATH [--version VERSION] [--repo PATH] [--expected-index-digest DIGEST] [--json]`
 - `qxctl skvi propose --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`

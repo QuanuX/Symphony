@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:ssfv-maintenance-result:v1",
+  "title": "Symphony SSFV session-maintenance result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "format_version", "operation", "compatibility", "journal_present", "journal", "journal_digest", "effective_state", "review_state", "changed", "recovered", "repair_actions", "read_only", "canonical_apply_enabled", "canonical"],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.ssfv-maintenance-result.v1"}, "format_version": {"const": 1},
+    "operation": {"enum": ["ssfv_maintenance_begin", "ssfv_maintenance_status", "ssfv_maintenance_checkpoint", "ssfv_maintenance_close", "ssfv_maintenance_recover"]},
+    "compatibility": {"$ref": "#/$defs/compatibility"}, "journal_present": {"type": "boolean"},
+    "journal": {"oneOf": [{"type": "null"}, {"$ref": "urn:symphony:knowledge:ssfv-maintenance-journal:v1"}]},
+    "journal_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "effective_state": {"enum": ["absent", "open", "closed"]}, "review_state": {"enum": ["not_evaluated", "current", "review_required"]},
+    "changed": {"type": "boolean"}, "recovered": {"type": "boolean"}, "repair_actions": {"type": "array", "maxItems": 32, "items": {"type": "string", "minLength": 1, "maxLength": 4096}},
+    "read_only": {"type": "boolean"}, "canonical_apply_enabled": {"const": false}, "canonical": {"const": false}
+  },
+  "$defs": {"token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"}, "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}, "compatibility": {"type": "object", "additionalProperties": false, "required": ["mode", "process_protocol", "journal_read_version", "journal_write_version", "missing_capabilities", "two_way_procedural_compatibility", "reason"], "properties": {"mode": {"enum": ["full", "read_only", "blocked"]}, "process_protocol": {"oneOf": [{"type": "null"}, {"const": "symphony.knowledge.engine-process.v1"}]}, "journal_read_version": {"oneOf": [{"type": "null"}, {"const": 1}]}, "journal_write_version": {"oneOf": [{"type": "null"}, {"const": 1}]}, "missing_capabilities": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}}, "two_way_procedural_compatibility": {"const": true}, "reason": {"type": "string", "minLength": 1, "maxLength": 4096}}}}
+}

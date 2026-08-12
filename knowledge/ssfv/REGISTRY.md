@@ -37,8 +37,8 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/knowledge-session-coordinator`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:0ee79cfe4019de2877cb7bff689a9c3c4d685429c2c5d6bf1e4b4e56a3b53e5b`
-- notes: Partial-catalog record for durable reconciliation, SSIAG-authorized authenticated sessions, explicit idempotent qxctl host-event convergence, protected desired-profile and observation administration, dependency planning, report/apply journal recovery, and serialized externally executed lifecycle actions including authenticated Maestro presence.
+- record_digest: `sha256:318d553656389fd63d3c4e0e303e4b351e798ec594b1dbb21d76d1d65e855bd6`
+- notes: Partial-catalog record for durable reconciliation, SSIAG-authorized authenticated sessions, persistent SSFV baseline maintenance, explicit idempotent qxctl host-event convergence, protected desired-profile and observation administration, dependency planning, report/apply journal recovery, and serialized externally executed lifecycle actions including authenticated Maestro presence.
 
 - feature_id: `ssfv:symphony:knowledge-vector-engine-foundation`
 - feature_file: `libraries/knowledge-vector-engine-cpp/FEATURES.md`
@@ -55,8 +55,8 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/maestro`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:12bb382db1182b67d00abc35e7dd2a679ea7aa9a03e97b65cccdeb9a6fc42ce2`
-- notes: Partial-catalog record for exact authenticated per-TOPS/per-receptor docking presence, lifecycle integration, semantic retry, and evidence-preserving recovery without engine execution.
+- record_digest: `sha256:89076bde7da3ddc19c185e1c05025e5d822c5e31ab6e299d6c4c6df5e86c5084`
+- notes: Partial-catalog record for exact authenticated per-TOPS/per-receptor docking presence, complete read-only derived inventory, lifecycle integration, semantic retry, and evidence-preserving recovery without engine execution.
 
 - feature_id: `ssfv:symphony:platform`
 - feature_file: `FEATURES.md`

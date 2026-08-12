@@ -37,7 +37,7 @@ func TestCLICompatibility(t *testing.T) {
 		{name: "missing knowledge reconcile subcommand", args: []string{"knowledge", "reconcile"}, status: 1, output: "knowledge failed: knowledge reconcile subcommand is required: compatibility, begin, status, checkpoint, close, or recover\n"},
 		{name: "reconcile begin operation id required", args: []string{"knowledge", "reconcile", "begin"}, status: 1, output: "knowledge reconcile begin failed: --operation-id is required\n"},
 		{name: "reconcile recover operation id required", args: []string{"knowledge", "reconcile", "recover"}, status: 1, output: "knowledge reconcile recover failed: --operation-id is required\n"},
-		{name: "missing knowledge session subcommand", args: []string{"knowledge", "session"}, status: 1, output: "knowledge failed: knowledge session subcommand is required: begin, status, checkpoint, close, recover, or transition\n"},
+		{name: "missing knowledge session subcommand", args: []string{"knowledge", "session"}, status: 1, output: "knowledge failed: knowledge session subcommand is required: begin, status, checkpoint, close, recover, transition, or features\n"},
 		{name: "session begin TOPS required", args: []string{"knowledge", "session", "begin"}, status: 1, output: "knowledge session begin failed: --tops-id is required\n"},
 		{name: "session transition event required", args: []string{"knowledge", "session", "transition"}, status: 1, output: "knowledge session transition failed: --event must be login, refresh, or logout\n"},
 		{name: "missing knowledge lifecycle subcommand", args: []string{"knowledge", "lifecycle"}, status: 1, output: "knowledge failed: knowledge lifecycle subcommand is required: profile, observe, report, boot, status, recover, apply, apply-status, or apply-recover\n"},
