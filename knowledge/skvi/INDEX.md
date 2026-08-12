@@ -4996,6 +4996,214 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: The tests authorize no canonical mutation or automatic session hook.
 - status: canonical
 
+### Knowledge Engine Foundation Receipt-v2 Uninstall Template
+- path: `libraries/knowledge-vector-engine-cpp/cmake/uninstall.cmake.in`
+- title: Knowledge Engine Foundation Receipt-v2 Uninstall Template
+- surface_type: CMake package-lifecycle implementation template
+- truth_role: receipt-owned integrity validation and idempotent removal implementation truth
+- owner: common SKV engine-foundation maintainers
+- scope: Generates the build-local uninstaller that validates receipt-v2 ownership, remaining-file digests, and receipt-last removal for the installed C++ foundation package.
+- relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `libraries/knowledge-vector-engine-cpp/INSTALL.md`
+- consumers: CMake, qxctl lifecycle administration, package maintainers, tests
+- deferred_projections: host-global shared-root ownership accounting
+- notes: The generated uninstaller cannot infer authority across independent TOPS profiles.
+- status: canonical
+
+### Knowledge Engine Process Protocol Interface
+- path: `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/protocol.hpp`
+- title: Knowledge Engine Process Protocol Interface
+- surface_type: C++26 foundation interface
+- truth_role: bounded engine-process protocol and receipt-version compatibility implementation truth
+- owner: common SKV engine-foundation maintainers
+- scope: Declares shared engine-process parsing, response, descriptor, and supported immutable receipt-version constants.
+- relationships: implements -> `knowledge/SPEC.md`; consumed_by -> independently installed C++ knowledge engines
+- consumers: C++ vector engines, coordinator, Maestro, Symphony Validator, tests
+- deferred_projections: additional compatible receipt readers
+- notes: A supported reader version does not authorize package mutation.
+- status: canonical
+
+### Knowledge Session Coordinator Receipt-v2 Install Template
+- path: `modules/knowledge-session-coordinator/cmake/install-receipt.json.in`
+- title: Knowledge Session Coordinator Receipt-v2 Install Template
+- surface_type: immutable package-receipt template
+- truth_role: coordinator package identity and owned-file installation truth
+- owner: knowledge-session coordinator maintainers
+- scope: Defines the coordinator's exact receipt-v2 package identity, entry point, descriptors, and digest-bound owned paths.
+- relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/knowledge-session-coordinator/INSTALL.md`
+- consumers: CMake, qxctl lifecycle observation and apply, validators, administrators
+- deferred_projections: package catalog
+- notes: Installation presence is distinct from binding, activation, or execution.
+- status: canonical
+
+### Knowledge Session Coordinator Receipt-v2 Uninstall Template
+- path: `modules/knowledge-session-coordinator/cmake/uninstall.cmake.in`
+- title: Knowledge Session Coordinator Receipt-v2 Uninstall Template
+- surface_type: CMake package-lifecycle implementation template
+- truth_role: coordinator receipt-owned integrity validation and idempotent removal truth
+- owner: knowledge-session coordinator maintainers
+- scope: Generates the exact receipt-v2 coordinator uninstaller with staged rollback proof and receipt-last removal.
+- relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/knowledge-session-coordinator/INSTALL.md`
+- consumers: CMake, qxctl lifecycle administration, tests
+- deferred_projections: host-global shared-root ownership accounting
+- notes: Uninstall does not remove protected journals or unrelated administrator files.
+- status: canonical
+
+### SACV Engine Receipt-v2 Install Template
+- path: `modules/sacv-engine/cmake/install-receipt.json.in`
+- title: SACV Engine Receipt-v2 Install Template
+- surface_type: immutable package-receipt template
+- truth_role: SACV engine package identity and owned-file installation truth
+- owner: SACV engine maintainers
+- scope: Defines exact receipt-v2 package and owned-file evidence for one independently installed SACV engine version.
+- relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/sacv-engine/INSTALL.md`
+- consumers: CMake, qxctl lifecycle observation and apply, validators
+- deferred_projections: package catalog
+- notes: Receipt identity does not imply selection, activation, docking, or execution.
+- status: canonical
+
+### SACV Engine Receipt-v2 Uninstall Template
+- path: `modules/sacv-engine/cmake/uninstall.cmake.in`
+- title: SACV Engine Receipt-v2 Uninstall Template
+- surface_type: CMake package-lifecycle implementation template
+- truth_role: SACV receipt-owned integrity validation and idempotent removal truth
+- owner: SACV engine maintainers
+- scope: Generates the receipt-v2 SACV uninstaller with exact owned-file validation and receipt-last removal.
+- relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/sacv-engine/INSTALL.md`
+- consumers: CMake, qxctl lifecycle administration, tests
+- deferred_projections: host-global shared-root ownership accounting
+- notes: Shared-root reclamation remains separately gated.
+- status: canonical
+
+### SCLV Engine Receipt-v2 Install Template
+- path: `modules/sclv-engine/cmake/install-receipt.json.in`
+- title: SCLV Engine Receipt-v2 Install Template
+- surface_type: immutable package-receipt template
+- truth_role: SCLV engine package identity and owned-file installation truth
+- owner: SCLV engine maintainers
+- scope: Defines exact receipt-v2 package and owned-file evidence for one independently installed SCLV engine version and its evidence adapters.
+- relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/sclv-engine/INSTALL.md`
+- consumers: CMake, qxctl lifecycle observation and apply, validators
+- deferred_projections: package catalog
+- notes: Receipt identity does not imply selection, activation, docking, or execution.
+- status: canonical
+
+### SCLV Engine Receipt-v2 Uninstall Template
+- path: `modules/sclv-engine/cmake/uninstall.cmake.in`
+- title: SCLV Engine Receipt-v2 Uninstall Template
+- surface_type: CMake package-lifecycle implementation template
+- truth_role: SCLV receipt-owned integrity validation and idempotent removal truth
+- owner: SCLV engine maintainers
+- scope: Generates the receipt-v2 SCLV uninstaller with exact owned-file validation and receipt-last removal.
+- relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/sclv-engine/INSTALL.md`
+- consumers: CMake, qxctl lifecycle administration, tests
+- deferred_projections: host-global shared-root ownership accounting
+- notes: Shared-root reclamation remains separately gated.
+- status: canonical
+
+### SKVI Engine Receipt-v2 Install Template
+- path: `modules/skvi-engine/cmake/install-receipt.json.in`
+- title: SKVI Engine Receipt-v2 Install Template
+- surface_type: immutable package-receipt template
+- truth_role: SKVI engine package identity and owned-file installation truth
+- owner: SKVI engine maintainers
+- scope: Defines exact receipt-v2 package and owned-file evidence for one independently installed SKVI engine version.
+- relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/skvi-engine/INSTALL.md`
+- consumers: CMake, qxctl lifecycle observation and apply, validators
+- deferred_projections: package catalog
+- notes: Receipt identity does not imply selection, activation, docking, or execution.
+- status: canonical
+
+### SKVI Engine Receipt-v2 Uninstall Template
+- path: `modules/skvi-engine/cmake/uninstall.cmake.in`
+- title: SKVI Engine Receipt-v2 Uninstall Template
+- surface_type: CMake package-lifecycle implementation template
+- truth_role: SKVI receipt-owned integrity validation and idempotent removal truth
+- owner: SKVI engine maintainers
+- scope: Generates the receipt-v2 SKVI uninstaller with exact owned-file validation and receipt-last removal.
+- relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/skvi-engine/INSTALL.md`
+- consumers: CMake, qxctl lifecycle administration, tests
+- deferred_projections: host-global shared-root ownership accounting
+- notes: Shared-root reclamation remains separately gated.
+- status: canonical
+
+### SODV Engine Receipt-v2 Install Template
+- path: `modules/sodv-engine/cmake/install-receipt.json.in`
+- title: SODV Engine Receipt-v2 Install Template
+- surface_type: immutable package-receipt template
+- truth_role: SODV engine package identity and owned-file installation truth
+- owner: SODV engine maintainers
+- scope: Defines exact receipt-v2 package and owned-file evidence for one independently installed SODV engine version.
+- relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/sodv-engine/INSTALL.md`
+- consumers: CMake, qxctl lifecycle observation and apply, validators
+- deferred_projections: package catalog
+- notes: Receipt identity does not imply selection, activation, docking, or execution.
+- status: canonical
+
+### SODV Engine Receipt-v2 Uninstall Template
+- path: `modules/sodv-engine/cmake/uninstall.cmake.in`
+- title: SODV Engine Receipt-v2 Uninstall Template
+- surface_type: CMake package-lifecycle implementation template
+- truth_role: SODV receipt-owned integrity validation and idempotent removal truth
+- owner: SODV engine maintainers
+- scope: Generates the receipt-v2 SODV uninstaller with exact owned-file validation and receipt-last removal.
+- relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/sodv-engine/INSTALL.md`
+- consumers: CMake, qxctl lifecycle administration, tests
+- deferred_projections: host-global shared-root ownership accounting
+- notes: Shared-root reclamation remains separately gated.
+- status: canonical
+
+### SSFV Engine Receipt-v2 Install Template
+- path: `modules/ssfv-engine/cmake/install-receipt.json.in`
+- title: SSFV Engine Receipt-v2 Install Template
+- surface_type: immutable package-receipt template
+- truth_role: SSFV engine package identity and owned-file installation truth
+- owner: SSFV engine maintainers
+- scope: Defines exact receipt-v2 package and owned-file evidence for one independently installed SSFV engine version.
+- relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/ssfv-engine/INSTALL.md`
+- consumers: CMake, qxctl lifecycle observation and apply, validators
+- deferred_projections: package catalog
+- notes: Receipt identity does not imply selection, activation, docking, or execution.
+- status: canonical
+
+### SSFV Engine Receipt-v2 Uninstall Template
+- path: `modules/ssfv-engine/cmake/uninstall.cmake.in`
+- title: SSFV Engine Receipt-v2 Uninstall Template
+- surface_type: CMake package-lifecycle implementation template
+- truth_role: SSFV receipt-owned integrity validation and idempotent removal truth
+- owner: SSFV engine maintainers
+- scope: Generates the receipt-v2 SSFV uninstaller with exact owned-file validation and receipt-last removal.
+- relationships: implements -> `knowledge/LIFECYCLE.md`; governed_by -> `modules/ssfv-engine/INSTALL.md`
+- consumers: CMake, qxctl lifecycle administration, tests
+- deferred_projections: host-global shared-root ownership accounting
+- notes: Shared-root reclamation remains separately gated.
+- status: canonical
+
+### qxctl Lifecycle Binding Transition Tests
+- path: `tools/qxctl/cmd/qxctl/lifecycle_binding_test.go`
+- title: qxctl Lifecycle Binding Transition Tests
+- surface_type: Go conformance-test implementation
+- truth_role: exact side-by-side binding-switch and rollback proof
+- owner: qxctl and lifecycle maintainers
+- scope: Verifies exact receipt-v2 selection changes, inverse rollback, expected-state enforcement, and refusal of unsupported binding identities.
+- relationships: verifies -> `tools/qxctl/cmd/qxctl/lifecycle_apply.go`; conforms_to -> `knowledge/LIFECYCLE.md`
+- consumers: qxctl maintainers, reviewers, release gates
+- deferred_projections: installed multi-version host matrix
+- notes: The tests use private fixtures and grant no live-host authority.
+- status: canonical
+
+### qxctl SSIAG Lifecycle Grant Tests
+- path: `tools/qxctl/cmd/qxctl/ssiag_test.go`
+- title: qxctl SSIAG Lifecycle Grant Tests
+- surface_type: Go conformance-test implementation
+- truth_role: deterministic caller-neutral lifecycle grant-plan proof
+- owner: qxctl and SSIAG maintainers
+- scope: Verifies exact lifecycle operation/resource grant proposals, bounded identities, and disabled policy apply.
+- relationships: verifies -> `tools/qxctl/cmd/qxctl/main.go`; conforms_to -> `knowledge/ssiag/SPEC.md`
+- consumers: qxctl and SSIAG maintainers, reviewers, release gates
+- deferred_projections: separately gated SSIAG policy administration
+- notes: A generated plan is proposal evidence and never mutates SSIAG policy.
+- status: canonical
+
 ## Deferred Projections
 Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, forty-six common SKV v1 JSON Schemas, three common SKV v2 JSON Schemas, four SSIAG authorization and grant-planning JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
