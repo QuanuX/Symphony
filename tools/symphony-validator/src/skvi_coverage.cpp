@@ -20,6 +20,7 @@ SkviCoverageCheckResult check_skvi_coverage(const SkviCheckResult& index_res, co
             "knowledge/ssfv/MANIFEST.md",
             "knowledge/ssfv/SKILL.md",
             "knowledge/ssfv/SPEC.md",
+            "knowledge/ssfv/COVERAGE.md",
             "knowledge/ssfv/NAMESPACES.md",
             "knowledge/ssfv/REGISTRY.md",
             "knowledge/ssfv/FEATURE-FILE-FORMAT.md"

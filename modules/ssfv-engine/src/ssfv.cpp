@@ -56,6 +56,7 @@ const std::vector<std::string> contract_paths = {
     "knowledge/ssfv/MANIFEST.md",
     "knowledge/ssfv/SKILL.md",
     "knowledge/ssfv/SPEC.md",
+    "knowledge/ssfv/COVERAGE.md",
     namespaces_path,
     registry_path,
     "knowledge/ssfv/FEATURE-FILE-FORMAT.md",

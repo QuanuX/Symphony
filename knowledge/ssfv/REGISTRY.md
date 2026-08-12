@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog covers the repository-root platform capability, the shared knowledge-vector engine foundation, the knowledge-session coordinator foundation, and authenticated durable Maestro docking presence.
+Canonical SSFV feature-routing registry. The partial catalog routes fifteen experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -67,6 +67,105 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:700f02746603ccebdb94711291414c5f840b5c28039dc525dc9b0837f041c0fd`
 - notes: Repository-root capability record; bootstrap coverage is explicitly partial and does not imply production readiness or complete catalog coverage.
 
+- feature_id: `ssfv:symphony:qxctl`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:c3d306de2dcbc433d75a6329cbca92929adae35e5470e33b2d29c81dd86fbc84`
+- notes: Partial-catalog record for the Go Cobra/Viper administrative and query surface across independently installed Symphony modules.
+
+- feature_id: `ssfv:symphony:sacv-engine`
+- feature_file: `modules/sacv-engine/FEATURES.md`
+- owner_contract: `modules/sacv-engine/SPEC.md`
+- source_scope: `modules/sacv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:30ea222966c890b7da45cbebc3341d0c5ecd1e3e54f8b299f6a77e152ab03895`
+- notes: Partial-catalog record for bounded read-only SACV API-contract governance behavior.
+
+- feature_id: `ssfv:symphony:sclv-engine`
+- feature_file: `modules/sclv-engine/FEATURES.md`
+- owner_contract: `modules/sclv-engine/SPEC.md`
+- source_scope: `modules/sclv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:d75de6d50edef708c273e859de397893b2adb6b87ff456fad0d62464880cf8ca`
+- notes: Partial-catalog record for bounded read-only SCLV change-truth governance behavior.
+
+- feature_id: `ssfv:symphony:skvi-engine`
+- feature_file: `modules/skvi-engine/FEATURES.md`
+- owner_contract: `modules/skvi-engine/SPEC.md`
+- source_scope: `modules/skvi-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:a5530ebd69cf7f364ff993df14992a1219e3d0992381bfeb134d0a3e2b728d99`
+- notes: Partial-catalog record for bounded read-only SKVI routing governance behavior.
+
+- feature_id: `ssfv:symphony:sodv-engine`
+- feature_file: `modules/sodv-engine/FEATURES.md`
+- owner_contract: `modules/sodv-engine/SPEC.md`
+- source_scope: `modules/sodv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:624a05a6b051f515b7c901f6f98eef29528867f850caf045ce19c5d1df42be4b`
+- notes: Partial-catalog record for bounded read-only SODV release-publication governance behavior.
+
+- feature_id: `ssfv:symphony:ssfv-engine`
+- feature_file: `modules/ssfv-engine/FEATURES.md`
+- owner_contract: `modules/ssfv-engine/SPEC.md`
+- source_scope: `modules/ssfv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:d3d68409048baff8784665c45d4363c084d14fbfb50ea40ebe74e61d233d789b`
+- notes: Partial-catalog record for bounded read-only SSFV semantic-feature governance behavior.
+
+- feature_id: `ssfv:symphony:ssiag-foundation`
+- feature_file: `modules/secure-identity-access-governance/FEATURES.md`
+- owner_contract: `modules/secure-identity-access-governance/SPEC.md`
+- source_scope: `modules/secure-identity-access-governance`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:0c50bcf800c8c5f130fc42ed14311bc2f64273251729708aa593b20698a5d811`
+- notes: Partial-catalog record for caller-neutral local identity, endpoint trust, authorization decisions, supervision, and safe STAV production.
+
+- feature_id: `ssfv:symphony:ssiag.macos-keychain-metadata`
+- feature_file: `modules/ssiag-provider-macos-keychain/FEATURES.md`
+- owner_contract: `modules/ssiag-provider-macos-keychain/SPEC.md`
+- source_scope: `modules/ssiag-provider-macos-keychain`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssiag-foundation`
+- record_digest: `sha256:6063491fec631ed5bf6297da786c230239ea421ae98edd53425c8536f6fd73c4`
+- notes: Partial-catalog subfeature record for the isolated Swift metadata-only macOS Keychain adapter; operational secret access remains disabled.
+
+- feature_id: `ssfv:symphony:stav-append-authority`
+- feature_file: `modules/stav-append-authority/FEATURES.md`
+- owner_contract: `modules/stav-append-authority/SPEC.md`
+- source_scope: `modules/stav-append-authority`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:f0004091a329f063c799cd10cc89a5ce200e9c1e26698c0ea3f32c9e376a1f69`
+- notes: Partial-catalog record for serialized durable tamper-evident STAV append, recovery, and bounded query behavior.
+
+- feature_id: `ssfv:symphony:stav-protocol-kernel`
+- feature_file: `libraries/stav-protocol-go/FEATURES.md`
+- owner_contract: `libraries/stav-protocol-go/MANIFEST.md`
+- source_scope: `libraries/stav-protocol-go`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:a4039a8fc93043847546eae3a6ae71436e51ed4b4c4e861eb052aa3512ef4d0d`
+- notes: Partial-catalog record for the authority-free Go STAV protocol, validation, digest, framing, and conformance kernel.
+
+- feature_id: `ssfv:symphony:symphony-validator`
+- feature_file: `tools/symphony-validator/FEATURES.md`
+- owner_contract: `tools/symphony-validator/SPEC.md`
+- source_scope: `tools/symphony-validator`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:2016b2ff8e63382ad2f24068e1e327815a2d4a8a8f9b9dcf9486fb2d37170590`
+- notes: Partial-catalog record for deterministic read-only repository validation and structured evidence projection.
+
 ## Prohibited Entries
 
 Do not register:
@@ -81,4 +180,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This four-record registry is an explicitly partial catalog. It does not authorize another feature record, another distributed file, repository-wide completeness, engine-decided feature-worthiness, or canonical mutation.
+This fifteen-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide completeness, engine-decided feature-worthiness, or canonical mutation.

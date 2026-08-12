@@ -100,6 +100,7 @@ const std::vector<std::string> contract_paths = {
     "knowledge/ssfv/MANIFEST.md",
     "knowledge/ssfv/SKILL.md",
     "knowledge/ssfv/SPEC.md",
+    "knowledge/ssfv/COVERAGE.md",
     "knowledge/ssfv/NAMESPACES.md",
     "knowledge/ssfv/REGISTRY.md",
     "knowledge/ssfv/FEATURE-FILE-FORMAT.md",
@@ -330,12 +331,12 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
     require(check.at("summary").at("state") == "valid", "canonical partial registry invalid");
     require(check.at("coverage_state") == "partial",
             "canonical bootstrap must not imply repository-wide completeness");
-    require(check.at("feature_count") == 4U && check.at("feature_file_count") == 4U,
-            "canonical bootstrap record counts mismatch");
+    require(check.at("feature_count") == 15U && check.at("feature_file_count") == 15U,
+            "canonical partial-catalog record counts mismatch");
     const auto graph = ssfv::handle_request(
         request("graph", engine::Json{{"format", "json"}}));
-    require(graph.at("node_count") == 4U && graph.at("edge_count") == 11U,
-            "canonical bootstrap graph count mismatch");
+    require(graph.at("node_count") == 15U && graph.at("edge_count") == 47U,
+            "canonical partial-catalog graph count mismatch");
     require(graph.at("noncanonical") == true && graph.at("rebuildable") == true,
             "graph authority escalated");
 }

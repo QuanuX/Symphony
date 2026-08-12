@@ -41,6 +41,7 @@ knowledge/ssfv/
   MANIFEST.md
   SKILL.md
   SPEC.md
+  COVERAGE.md
   NAMESPACES.md
   REGISTRY.md
   FEATURE-FILE-FORMAT.md
@@ -48,7 +49,7 @@ knowledge/ssfv/
   schemas/v2/
 ```
 
-The current partial catalog distributes exactly four canonical records across `FEATURES.md`, `libraries/knowledge-vector-engine-cpp/FEATURES.md`, `modules/knowledge-session-coordinator/FEATURES.md`, and `modules/maestro/FEATURES.md`. `REGISTRY.md` routes those records, and SKVI indexes all four owner files. No other feature record or complete-catalog claim is authorized.
+The current partial catalog distributes fifteen canonical experimental records across the repository root and fourteen implemented owner scopes. `COVERAGE.md` enumerates the top-level source universe and exclusions, `REGISTRY.md` routes every record, and SKVI indexes every owner file. Nested subfeature and microfeature review is not complete.
 
 ## Record Model
 
@@ -81,8 +82,8 @@ The Go qxctl client validates the exact inactive-undocked receipt and invokes th
 
 ## Non-Authorization Statement
 
-This manifest authorizes the canonical SSFV contract, bounded engine/client implementation, exact four-record partial catalog, and protected noncanonical session-maintenance evidence. It does not authorize an additional application `FEATURES.md`, another feature record, repository-wide completeness, canonical apply, repository mutation by SSFV tooling, graph-database persistence, Maestro state mutation by SSFV, public documentation, or marketing claims.
+This manifest authorizes the canonical SSFV contract, bounded engine/client implementation, exact fifteen-record partial catalog, explicit owner-scope inventory, and protected noncanonical session-maintenance evidence. It does not authorize an unreviewed application `FEATURES.md`, an unratified feature record, repository-wide completeness, canonical apply, repository mutation by SSFV tooling, graph-database persistence, Maestro state mutation by SSFV, public documentation, or marketing claims.
 
 ## Status
 
-Architect-ratified engine implementation and partial catalog. Namespace `symphony` is allocated, exactly four experimental application-feature records exist, and coverage remains explicitly partial.
+Architect-ratified engine implementation and partial catalog. Namespace `symphony` is allocated, exactly fifteen experimental application-feature records exist, and coverage remains explicitly partial pending nested review.

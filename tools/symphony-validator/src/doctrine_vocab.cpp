@@ -43,6 +43,7 @@ namespace {
         "knowledge/ssfv/MANIFEST.md",
         "knowledge/ssfv/SKILL.md",
         "knowledge/ssfv/SPEC.md",
+        "knowledge/ssfv/COVERAGE.md",
         "knowledge/ssfv/NAMESPACES.md",
         "knowledge/ssfv/REGISTRY.md",
         "tools/symphony-validator/INTENT.md",
