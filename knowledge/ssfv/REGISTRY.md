@@ -73,7 +73,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:c3d306de2dcbc433d75a6329cbca92929adae35e5470e33b2d29c81dd86fbc84`
+- record_digest: `sha256:a19a077a9e4b954b25aa879984e31a359e334ee713c7a100eeabbb21af6610c3`
 - notes: Partial-catalog record for the Go Cobra/Viper administrative and query surface across independently installed Symphony modules.
 
 - feature_id: `ssfv:symphony:sacv-engine`
@@ -127,7 +127,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/secure-identity-access-governance`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:0c50bcf800c8c5f130fc42ed14311bc2f64273251729708aa593b20698a5d811`
+- record_digest: `sha256:32a1d25fef5364661bd42662d1deb1f19f2de23b38088550053bbe94c58840e6`
 - notes: Partial-catalog record for caller-neutral local identity, endpoint trust, authorization decisions, supervision, and safe STAV production.
 
 - feature_id: `ssfv:symphony:ssiag.macos-keychain-metadata`

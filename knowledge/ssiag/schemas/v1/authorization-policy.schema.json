@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:authorization-policy:v1",
+  "title": "SSIAG local authorization policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["default_effect", "max_capability_seconds", "grants"],
+  "properties": {
+    "default_effect": {"const": "deny"},
+    "max_capability_seconds": {"type": "integer", "minimum": 1, "maximum": 86400},
+    "grants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "subject_id", "authority_basis", "operation", "resource", "audience", "scope"],
+        "properties": {
+          "id": {"$ref": "#/$defs/token"},
+          "subject_id": {"$ref": "#/$defs/token"},
+          "authority_basis": {"enum": ["host_owner", "granted_permission"]},
+          "operation": {"$ref": "#/$defs/token"},
+          "resource": {"$ref": "#/$defs/token"},
+          "audience": {"$ref": "#/$defs/token"},
+          "scope": {"$ref": "#/$defs/token"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"}
+  }
+}

@@ -9,7 +9,7 @@
 - **environment prefix**: `SYMPHONY_SSIAG_*`
 - **language/runtime**: Go 1.26.5 with pinned `golang.org/x/sys` for cgo-free kernel peer credentials
 - **cgo**: prohibited
-- **status**: DRAFT foundation; supervised metadata and audited authorization runtime
+- **status**: DRAFT foundation; supervised metadata, audited authorization, and protected local policy administration
 
 ## Canonical Authority
 
@@ -32,7 +32,8 @@
 - owner-provisioned system identity validation, distinct service-owned state/runtime children, bounded restart/shutdown, and serialized stale-socket recovery;
 - `status` / `providers`: safe local inspection;
 - `POST /v1/authorization/decisions`: kernel-subject-derived, exact-grant, deny-by-default authorization with fail-closed STAV audit and non-transferable capability evidence;
-- `qxctl ssiag status|providers|doctor`: provider-neutral query interface.
+- `GET /v1/policy/status` plus `POST /v1/policy/proposals|apply|recover`: protected per-TOPS operational policy administration with exact host authority, CAS, atomic state, STAV-before-commit, and explicit recovery;
+- `qxctl ssiag status|providers|doctor|policy ...`: provider-neutral query and local policy administration interface.
 
 ## Install and Enrollment Separation
 
@@ -40,8 +41,8 @@ Host uninstall never deletes per-TOPS state. `unenroll` preserves state by defau
 
 ## Provider Boundary
 
-No operational credential provider or canonical apply route is enabled. Native dependencies remain in independently installed adapters. The first adapter scaffold is `modules/ssiag-provider-macos-keychain/`, a separate Swift executable whose current capability is metadata only.
+No operational credential provider or canonical knowledge apply route is enabled. Local policy apply affects only SSIAG's protected operational overlay. Native dependencies remain in independently installed adapters. The first adapter scaffold is `modules/ssiag-provider-macos-keychain/`, a separate Swift executable whose current capability is metadata only.
 
 ## Contamination Boundary
 
-Secret values, proofs, assertions, raw tokens, provider payloads, policy contents, and native errors must not cross into qxctl, SKV, SKVI, SCLV, SODV, STAV, manifests, inventories, logs, or status responses.
+Secret values, proofs, assertions, raw tokens, provider payloads, and native errors must not cross into qxctl, SKV, SKVI, SCLV, SODV, STAV, manifests, inventories, logs, or status responses. A bounded local policy file and proposal may cross qxctl only for the explicit policy-administration operation; status and STAV expose digests and safe references, never the policy body.

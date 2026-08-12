@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
@@ -27,11 +28,41 @@ type Evaluator interface {
 }
 
 type Engine struct {
+	mu           sync.RWMutex
 	topsID       string
 	policy       *config.AuthorizationConfig
 	policyDigest string
 	configDigest string
 	now          func() time.Time
+}
+
+// Replace atomically swaps the effective local policy after its protected
+// state commit. In-flight evaluations retain one internally consistent view.
+func (e *Engine) Replace(authorization *config.AuthorizationConfig, digest string) error {
+	if authorization == nil || !validTaggedDigest(digest) {
+		return fmt.Errorf("replacement authorization policy and digest are required")
+	}
+	encoded, err := json.Marshal(authorization)
+	if err != nil {
+		return fmt.Errorf("encode replacement authorization policy: %w", err)
+	}
+	if taggedDigest(encoded) != digest {
+		return fmt.Errorf("replacement authorization policy digest mismatch")
+	}
+	copyValue := *authorization
+	copyValue.Grants = make([]config.AuthorizationGrant, len(authorization.Grants))
+	copy(copyValue.Grants, authorization.Grants)
+	e.mu.Lock()
+	e.policy = &copyValue
+	e.policyDigest = digest
+	e.mu.Unlock()
+	return nil
+}
+
+func (e *Engine) PolicyDigest() string {
+	e.mu.RLock()
+	defer e.mu.RUnlock()
+	return e.policyDigest
 }
 
 func New(cfg config.Config, now func() time.Time) (*Engine, error) {
@@ -94,6 +125,12 @@ func ValidateRequest(request model.AuthorizationRequest, now time.Time) error {
 }
 
 func (e *Engine) Evaluate(_ context.Context, subject identity.Subject, request model.AuthorizationRequest) model.AuthorizationDecision {
+	e.mu.RLock()
+	policyValue := *e.policy
+	policyValue.Grants = make([]config.AuthorizationGrant, len(e.policy.Grants))
+	copy(policyValue.Grants, e.policy.Grants)
+	policyDigest := e.policyDigest
+	e.mu.RUnlock()
 	now := e.now().UTC().Truncate(time.Second)
 	target := model.DecisionTarget{
 		Operation: request.Operation, Resource: request.Resource,
@@ -104,11 +141,11 @@ func (e *Engine) Evaluate(_ context.Context, subject identity.Subject, request m
 		Schema: decisionSchema, RequestID: request.RequestID, CorrelationID: request.CorrelationID,
 		TOPSID: e.topsID, Subject: decisionSubject, Target: target,
 		Effect: "deny", ReasonCode: "symphony.ssiag.policy.no-matching-grant",
-		PolicyDigest: e.policyDigest, ConfigDigest: e.configDigest,
+		PolicyDigest: policyDigest, ConfigDigest: e.configDigest,
 		DecidedAt: now, CallerClassUsed: false, CanonicalApply: false,
 	}
 
-	grants := append([]config.AuthorizationGrant(nil), e.policy.Grants...)
+	grants := append([]config.AuthorizationGrant(nil), policyValue.Grants...)
 	sort.Slice(grants, func(i, j int) bool { return grants[i].ID < grants[j].ID })
 	for _, grant := range grants {
 		if grant.SubjectID != subject.ID || grant.Operation != request.Operation ||
@@ -116,7 +153,7 @@ func (e *Engine) Evaluate(_ context.Context, subject identity.Subject, request m
 			grant.Scope != request.Scope {
 			continue
 		}
-		expires := now.Add(time.Duration(e.policy.MaxCapabilitySeconds) * time.Second)
+		expires := now.Add(time.Duration(policyValue.MaxCapabilitySeconds) * time.Second)
 		if request.RequestedExpiresAt.Before(expires) {
 			expires = request.RequestedExpiresAt.UTC().Truncate(time.Second)
 		}
@@ -125,7 +162,7 @@ func (e *Engine) Evaluate(_ context.Context, subject identity.Subject, request m
 			Protocol: capabilitySchema, Subject: decisionSubject, TOPSID: e.topsID,
 			Target: target, AuthorityBasis: basis, GrantID: grant.ID,
 			RequestID: request.RequestID, CorrelationID: request.CorrelationID,
-			IssuedAt: now, ExpiresAt: expires, PolicyDigest: e.policyDigest,
+			IssuedAt: now, ExpiresAt: expires, PolicyDigest: policyDigest,
 			ConfigDigest: e.configDigest, Transferable: false, CanonicalApply: false,
 		}
 		capability.BindingDigest = taggedDigest([]byte(capabilityBinding(capability)))
@@ -185,4 +222,12 @@ func safeToken(value string) bool {
 		return false
 	}
 	return true
+}
+
+func validTaggedDigest(value string) bool {
+	if len(value) != 71 || !strings.HasPrefix(value, "sha256:") {
+		return false
+	}
+	_, err := hex.DecodeString(strings.TrimPrefix(value, "sha256:"))
+	return err == nil
 }

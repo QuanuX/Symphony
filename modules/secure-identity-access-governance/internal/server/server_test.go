@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"net"
 	"net/http"
 	"net/http/httptest"
@@ -16,6 +17,7 @@ import (
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/model"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/policyadmin"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/provider"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/stavproducer"
 )
@@ -28,7 +30,7 @@ type recordingAudit struct {
 
 func (audit *recordingAudit) Submit(_ context.Context, record stavproducer.Record) (stavprotocol.Receipt, error) {
 	audit.record = record
-	return stavprotocol.Receipt{}, nil
+	return stavprotocol.Receipt{Disposition: "committed", RequestID: record.RequestID, TOPSID: testTOPSID}, nil
 }
 
 func TestAuthorizationOverKernelAuthenticatedSocketIsAudited(t *testing.T) {
@@ -114,6 +116,141 @@ func TestAuthorizationOverKernelAuthenticatedSocketIsAudited(t *testing.T) {
 		audit.record.Actor.ID != "owner.primary" || audit.record.Configuration.State != "digests" {
 		cancel()
 		t.Fatalf("safe STAV policy evidence was not submitted: %+v", audit.record)
+	}
+	cancel()
+	if err := <-done; err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestHostOwnerCanProposeApplyAndActivateLocalPolicy(t *testing.T) {
+	socket := shortSocketPath(t)
+	probe, err := net.Listen("unix", socket)
+	if err != nil {
+		t.Skipf("unix sockets are unavailable in this test environment: %v", err)
+	}
+	if err := probe.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Remove(socket); err != nil && !os.IsNotExist(err) {
+		t.Fatal(err)
+	}
+	uid, gid := uint32(os.Geteuid()), uint32(os.Getegid())
+	authentication := serviceAuthentication(uid, gid)
+	authentication.Subjects = []config.SubjectConfig{{ID: "owner.primary", Kind: "owner", UID: &uid, GID: &gid}}
+	cfg := config.Config{
+		Schema: "symphony.ssiag.config.v1", Mode: "development",
+		TOPS:           config.TOPSConfig{ID: testTOPSID, Name: "Test TOPS"},
+		Listen:         config.ListenConfig{Network: "unix", Address: socket},
+		Authentication: authentication,
+		Authorization:  &config.AuthorizationConfig{DefaultEffect: "deny", MaxCapabilitySeconds: 900, Grants: []config.AuthorizationGrant{}},
+		Providers:      []config.ProviderConfig{},
+	}
+	registry, _ := provider.New(nil)
+	audit := &recordingAudit{}
+	manager, err := policyadmin.New(t.TempDir(), cfg, time.Now)
+	if err != nil {
+		t.Fatal(err)
+	}
+	instance, err := NewWithPolicyAdministration(cfg, registry, audit, manager)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	done := make(chan error, 1)
+	go func() { done <- instance.Run(ctx) }()
+	time.Sleep(20 * time.Millisecond)
+	select {
+	case runErr := <-done:
+		t.Fatalf("policy administration server stopped before creating its socket: %v", runErr)
+	default:
+	}
+	waitForSocket(t, socket)
+	transport := &http.Transport{DialContext: func(ctx context.Context, _, _ string) (net.Conn, error) {
+		return (&net.Dialer{}).DialContext(ctx, "unix", socket)
+	}}
+	client := &http.Client{Transport: transport, Timeout: 2 * time.Second}
+
+	statusResponse, err := client.Get("http://unix/v1/policy/status")
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	var status policyadmin.Result
+	if err := json.NewDecoder(statusResponse.Body).Decode(&status); err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	_ = statusResponse.Body.Close()
+	now := time.Now().UTC().Truncate(time.Second)
+	proposalRequest := policyadmin.ProposalRequest{
+		Protocol: policyadmin.ProposalRequestProtocol, OperationID: "policy-operation-1",
+		RequestID: "policy-request-1", CorrelationID: "policy-correlation-1", AuthorityBasis: "host_owner",
+		ExpectedPolicyDigest: status.PolicyDigest, Change: "replace",
+		DesiredPolicy: &config.AuthorizationConfig{
+			DefaultEffect: "deny", MaxCapabilitySeconds: 300,
+			Grants: []config.AuthorizationGrant{{
+				ID: "allow-test", SubjectID: "owner.primary", AuthorityBasis: "host_owner",
+				Operation: "symphony.test.read", Resource: "symphony.test:one", Audience: "qxctl", Scope: "tops:" + testTOPSID,
+			}},
+		},
+		RequestedAt: now, ExpiresAt: now.Add(5 * time.Minute),
+	}
+	proposalPayload, _ := json.Marshal(proposalRequest)
+	proposalResponse, err := client.Post("http://unix/v1/policy/proposals", "application/json", bytes.NewReader(proposalPayload))
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	var proposal policyadmin.Proposal
+	if err := json.NewDecoder(proposalResponse.Body).Decode(&proposal); err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	_ = proposalResponse.Body.Close()
+	if proposalResponse.StatusCode != http.StatusOK || proposal.Subject.ID != fmt.Sprintf("symphony.host.owner.uid.%d", uid) || proposal.CallerClassUsed {
+		cancel()
+		t.Fatalf("unexpected policy proposal: status=%d proposal=%+v", proposalResponse.StatusCode, proposal)
+	}
+	applyPayload, _ := json.Marshal(policyadmin.ApplyRequest{Protocol: policyadmin.ApplyRequestProtocol, Proposal: proposal})
+	applyResponse, err := client.Post("http://unix/v1/policy/apply", "application/json", bytes.NewReader(applyPayload))
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	var result policyadmin.Result
+	if err := json.NewDecoder(applyResponse.Body).Decode(&result); err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	_ = applyResponse.Body.Close()
+	if applyResponse.StatusCode != http.StatusOK || !result.Changed || result.Generation != 1 || result.RecoveryRequired {
+		cancel()
+		t.Fatalf("unexpected policy apply: status=%d result=%+v", applyResponse.StatusCode, result)
+	}
+	if audit.record.Target.ID != "symphony.ssiag.policy:"+testTOPSID || audit.record.Configuration.NewDigest != result.PolicyDigest {
+		cancel()
+		t.Fatalf("policy mutation was not safely audited: %+v", audit.record)
+	}
+	authorizationPayload, _ := json.Marshal(model.AuthorizationRequest{
+		Schema: "symphony.ssiag.authorization-request.v1", RequestID: "authorization-request-1", CorrelationID: "authorization-correlation-1",
+		Operation: "symphony.test.read", Resource: "symphony.test:one", Audience: "qxctl", Scope: "tops:" + testTOPSID,
+		RequestedAt: now, RequestedExpiresAt: now.Add(time.Minute),
+	})
+	authorizationResponse, err := client.Post("http://unix/v1/authorization/decisions", "application/json", bytes.NewReader(authorizationPayload))
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	var decision model.AuthorizationDecision
+	if err := json.NewDecoder(authorizationResponse.Body).Decode(&decision); err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	_ = authorizationResponse.Body.Close()
+	if decision.Effect != "allow" || decision.PolicyDigest != result.PolicyDigest {
+		cancel()
+		t.Fatalf("committed policy was not activated: %+v", decision)
 	}
 	cancel()
 	if err := <-done; err != nil {

@@ -20,7 +20,7 @@ Exit gate: one Architect-ratified namespace map, no mixed executable/API grammar
 2. Define extension rules without authorizing a graph database.
 3. Define STAV authority, storage, ten-group envelope, append behavior, and exclusions in `knowledge/stav/`.
 4. State that qxctl implements but does not own either schema.
-5. State that caller type does not determine authority, the current administrative surface is read-only for every caller, and no caller edits a ledger through a supported interface.
+5. State that caller type does not determine authority, local policy mutation requires target-host permission and audit-before-commit, and no caller edits a ledger through a supported interface.
 6. Add every new canonical Markdown surface to SKVI.
 7. Do not create SCLV merge evidence before a real PR and merge commit exist.
 
@@ -113,7 +113,7 @@ Ratified architecture:
 1. Local v1 uses kernel-attested Unix-socket peer credentials mapped to canonical SSIAG subjects.
 2. SSIAG and STAV occupy a foundational bootstrap stratum anchored by a native OS supervisor or explicit owner-provided equivalent.
 3. Supervision owns liveness only and never expands security authority.
-4. qxctl separates proposal from permission-backed apply; caller type is not an authorization input, and no apply route is currently implemented for any caller.
+4. qxctl separates proposal from permission-backed apply; caller type is not an authorization input. Protected local policy status/proposal/apply/recovery is implemented in Phase 8A and remains distinct from canonical knowledge apply.
 
 Implemented: build-tagged Darwin `LOCAL_PEERCRED`/`LOCAL_PEERPID` and Linux/WSL `SO_PEERCRED`; exact UID/GID subject and service mapping; scope-exact trusted configuration; client endpoint authentication before HTTP; per-TOPS launchd/systemd installation; owner-provisioned system identities; distinct service-owned runtime/state children; bounded restart and shutdown; supervisor-independent SSIAG/STAV startup; explicit direct-run policy; and exclusive socket lifecycle locks with conservative stale recovery. Older metadata-only v1 configuration remains structurally readable but cannot start a trusted service/client until re-enrolled.
 
@@ -155,7 +155,7 @@ Exit gate: qxctl, SSIAG, node-troll, producers, and all other callers cannot wri
 
 ## Phase 8 — Implement Deny-by-Default Policy (implemented for bounded authorization evidence)
 
-Implemented scope: strict canonical authorization request/decision/capability schemas; exact subject and operation/resource/audience/scope grants; `host_owner` and `granted_permission` authority bases; empty-policy compatibility for older v1 enrollments; short-lived capability binding; caller-class-neutral property tests; and fail-closed STAV submission. The capability is non-transferable safe evidence with canonical apply disabled. It authorizes no provider dispatch, policy mutation, safeguard change, credential release, or canonical write.
+Implemented scope: strict canonical authorization request/decision/capability schemas; exact subject and operation/resource/audience/scope grants; `host_owner` and `granted_permission` authority bases; empty-policy compatibility for older v1 enrollments; short-lived capability binding; caller-class-neutral property tests; fail-closed STAV submission; and atomic live policy-snapshot replacement. The capability is non-transferable safe evidence with canonical apply disabled. It authorizes no provider dispatch, safeguard change, credential release, or canonical write.
 
 1. Canonicalize subject, proof summary, requested operation, provider, target, audience, scope, interaction, and time inputs.
 2. Reject absent or unknown fields.
@@ -166,6 +166,29 @@ Implemented scope: strict canonical authorization request/decision/capability sc
 7. Submit safe policy outcomes to the STAV append authority.
 
 Exit gate passed for noncanonical knowledge-session authorization: no decision is released without exact evaluation and an auditable safe result. Provider dispatch remains disabled and retains its separate Phase 9/10 gates.
+
+## Phase 8A — Protected Local Policy Administration (implemented)
+
+1. Keep enrolled `config.json` immutable and select either its policy or one protected per-TOPS overlay.
+2. Expose metadata-only status and subject-free proposal requests through SSIAG; administer them through `qxctl ssiag policy`.
+3. Derive `host_owner` from the accepted connection's kernel UID, or require an explicit mapped subject and exact current grants for propose/apply/recover.
+4. Bind proposals to TOPS, subject, authority basis, operation/request/correlation IDs, exact current/desired/config digests, UTC expiry, and proposal digest; durably retain the one current server-issued proposal so apply cannot bypass issuance.
+5. Persist a no-follow, owner-controlled `prepared` attempt under an exclusive lock before STAV interaction.
+6. Submit only safe references and prior/new digests through the closed SSIAG policy-decision producer; require its committed idempotent receipt.
+7. Persist `audited`, atomically commit the next generation, remove the attempt, and replace the live evaluator snapshot.
+8. Recover by exact operation plus attempt digest or explicit discovery; replay prepared audit idempotently and roll audited evidence forward.
+9. Reject stale proposals, CAS drift, changed subjects/config, tampering, symlinks, oversized files, ambiguous recovery, and concurrent attempts.
+10. Reset by committing `source=config`; do not erase generation evidence. Older binaries remain config-only and fail safely across upgrade-order differences.
+
+Verification:
+
+```bash
+go test ./internal/policyadmin ./internal/policy ./internal/server
+go test ./... # SSIAG and qxctl modules
+CGO_ENABLED=0 go build -trimpath ./cmd/symphony-ssiag
+```
+
+Exit gate: local policy apply is caller-neutral, target-host-permission-backed, STAV-before-commit, CAS-safe, crash-recoverable, and explicitly noncanonical. It does not enable general safeguards, providers, credentials, or canonical knowledge apply.
 
 ## Phase 9 — Implement Ratified Provider Trust and Channel Separation
 

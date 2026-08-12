@@ -15,19 +15,22 @@ import (
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/identity"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/model"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/peerauth"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/policy"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/policyadmin"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/provider"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/stavproducer"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/version"
 )
 
 const (
-	maxHeaderBytes           = 16 << 10
-	shutdownTimeout          = 5 * time.Second
-	activeSocketProbeTimeout = 250 * time.Millisecond
-	maxRequestBytes          = 64 << 10
+	maxHeaderBytes               = 16 << 10
+	shutdownTimeout              = 5 * time.Second
+	activeSocketProbeTimeout     = 250 * time.Millisecond
+	maxAuthorizationRequestBytes = 64 << 10
+	maxPolicyRequestBytes        = 1 << 20
 )
 
 type auditSink interface {
@@ -38,7 +41,8 @@ type Server struct {
 	config   config.Config
 	registry *provider.Registry
 	resolver peerauth.Resolver
-	policy   policy.Evaluator
+	policy   *policy.Engine
+	admin    *policyadmin.Manager
 	audit    auditSink
 	now      func() time.Time
 }
@@ -48,6 +52,17 @@ func New(cfg config.Config, registry *provider.Registry) (*Server, error) {
 }
 
 func NewWithAudit(cfg config.Config, registry *provider.Registry, audit auditSink) (*Server, error) {
+	return newServer(cfg, registry, audit, nil)
+}
+
+func NewWithPolicyAdministration(cfg config.Config, registry *provider.Registry, audit auditSink, admin *policyadmin.Manager) (*Server, error) {
+	if admin == nil {
+		return nil, fmt.Errorf("policy administration manager is required")
+	}
+	return newServer(cfg, registry, audit, admin)
+}
+
+func newServer(cfg config.Config, registry *provider.Registry, audit auditSink, admin *policyadmin.Manager) (*Server, error) {
 	if err := cfg.Validate(); err != nil {
 		return nil, err
 	}
@@ -74,9 +89,18 @@ func NewWithAudit(cfg config.Config, registry *provider.Registry, audit auditSin
 	if err != nil {
 		return nil, fmt.Errorf("configure authorization policy: %w", err)
 	}
+	if admin != nil {
+		effective, digest, err := admin.Effective()
+		if err != nil {
+			return nil, fmt.Errorf("load effective authorization policy: %w", err)
+		}
+		if err := policyEngine.Replace(effective, digest); err != nil {
+			return nil, fmt.Errorf("activate effective authorization policy: %w", err)
+		}
+	}
 	return &Server{
 		config: cfg, registry: registry, resolver: resolver,
-		policy: policyEngine, audit: audit, now: time.Now,
+		policy: policyEngine, admin: admin, audit: audit, now: time.Now,
 	}, nil
 }
 
@@ -85,7 +109,237 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("/v1/status", s.handleStatus)
 	mux.HandleFunc("/v1/providers", s.handleProviders)
 	mux.HandleFunc("/v1/authorization/decisions", s.handleAuthorization)
+	if s.admin != nil {
+		mux.HandleFunc("/v1/policy/status", s.handlePolicyStatus)
+		mux.HandleFunc("/v1/policy/proposals", s.handlePolicyProposal)
+		mux.HandleFunc("/v1/policy/apply", s.handlePolicyApply)
+		mux.HandleFunc("/v1/policy/recover", s.handlePolicyRecover)
+	}
 	return s.requireAuthenticatedPeer(mux)
+}
+
+func (s *Server) handlePolicyStatus(writer http.ResponseWriter, request *http.Request) {
+	if request.Method != http.MethodGet {
+		writeError(writer, http.StatusMethodNotAllowed, "request.method_not_allowed", "method not allowed")
+		return
+	}
+	result, err := s.admin.Status()
+	if err != nil {
+		writeError(writer, http.StatusServiceUnavailable, "policy.state_unavailable", "SSIAG policy state is unavailable")
+		return
+	}
+	writeJSON(writer, http.StatusOK, result)
+}
+
+func (s *Server) handlePolicyProposal(writer http.ResponseWriter, request *http.Request) {
+	if request.Method != http.MethodPost {
+		writeError(writer, http.StatusMethodNotAllowed, "request.method_not_allowed", "method not allowed")
+		return
+	}
+	var candidate policyadmin.ProposalRequest
+	if !decodeBoundedJSON(writer, request, &candidate) {
+		return
+	}
+	subject, err := s.policyAdministrator(request.Context(), candidate.AuthorityBasis, "symphony.ssiag.policy.propose")
+	if err != nil {
+		writeError(writer, http.StatusForbidden, "policy.permission_denied", "target-host authority or an exact SSIAG permission is required")
+		return
+	}
+	proposal, err := s.admin.Propose(subject, candidate)
+	if err != nil {
+		writePolicyAdminError(writer, err)
+		return
+	}
+	writeJSON(writer, http.StatusOK, proposal)
+}
+
+func (s *Server) handlePolicyApply(writer http.ResponseWriter, request *http.Request) {
+	if request.Method != http.MethodPost {
+		writeError(writer, http.StatusMethodNotAllowed, "request.method_not_allowed", "method not allowed")
+		return
+	}
+	var candidate policyadmin.ApplyRequest
+	if !decodeBoundedJSON(writer, request, &candidate) {
+		return
+	}
+	if candidate.Protocol != policyadmin.ApplyRequestProtocol {
+		writeError(writer, http.StatusBadRequest, "policy.request_invalid", "unsupported SSIAG policy apply protocol")
+		return
+	}
+	subject, err := s.policyAdministrator(request.Context(), candidate.Proposal.AuthorityBasis, "symphony.ssiag.policy.apply")
+	if err != nil || subject.ID != candidate.Proposal.Subject.ID || subject.Kind != candidate.Proposal.Subject.Kind || subject.Authority != candidate.Proposal.Subject.Authority {
+		writeError(writer, http.StatusForbidden, "policy.permission_denied", "policy proposal is not bound to the authenticated target-host authority")
+		return
+	}
+	attempt, alreadyApplied, err := s.admin.Prepare(candidate.Proposal)
+	if err != nil {
+		writePolicyAdminError(writer, err)
+		return
+	}
+	if alreadyApplied {
+		result, statusErr := s.admin.Status()
+		if statusErr != nil {
+			writePolicyAdminError(writer, statusErr)
+			return
+		}
+		result.Operation = "apply"
+		result.ReadOnly = false
+		writeJSON(writer, http.StatusOK, result)
+		return
+	}
+	if attempt.Stage == "prepared" {
+		receipt, err := s.auditPolicyChange(request.Context(), attempt.Proposal)
+		if err != nil {
+			writeError(writer, http.StatusServiceUnavailable, "audit.append_failed", "policy mutation is prepared but cannot proceed until STAV audit succeeds")
+			return
+		}
+		attempt, err = s.admin.MarkAudited(attempt.Proposal.ProposalDigest, receipt)
+		if err != nil {
+			writePolicyAdminError(writer, err)
+			return
+		}
+	}
+	result, effective, err := s.admin.Commit(attempt.Proposal.ProposalDigest, false)
+	if err != nil {
+		writePolicyAdminError(writer, err)
+		return
+	}
+	if err := s.policy.Replace(effective, result.PolicyDigest); err != nil {
+		writeError(writer, http.StatusInternalServerError, "policy.activation_failed", "policy state committed but runtime activation requires service restart")
+		return
+	}
+	writeJSON(writer, http.StatusOK, result)
+}
+
+func (s *Server) handlePolicyRecover(writer http.ResponseWriter, request *http.Request) {
+	if request.Method != http.MethodPost {
+		writeError(writer, http.StatusMethodNotAllowed, "request.method_not_allowed", "method not allowed")
+		return
+	}
+	var candidate policyadmin.RecoveryRequest
+	if !decodeBoundedJSON(writer, request, &candidate) {
+		return
+	}
+	pending, err := s.admin.Pending(candidate)
+	if err != nil {
+		writePolicyAdminError(writer, err)
+		return
+	}
+	subject, err := s.policyAdministrator(request.Context(), pending.Proposal.AuthorityBasis, "symphony.ssiag.policy.recover")
+	if err != nil || subject.ID != pending.Proposal.Subject.ID || subject.Kind != pending.Proposal.Subject.Kind || subject.Authority != pending.Proposal.Subject.Authority {
+		writeError(writer, http.StatusForbidden, "policy.permission_denied", "recovery is not bound to the authenticated target-host authority")
+		return
+	}
+	if pending.Stage == "prepared" {
+		receipt, err := s.auditPolicyChange(request.Context(), pending.Proposal)
+		if err != nil {
+			writeError(writer, http.StatusServiceUnavailable, "audit.append_failed", "policy recovery cannot proceed until the idempotent STAV audit succeeds")
+			return
+		}
+		pending, err = s.admin.MarkAudited(pending.Proposal.ProposalDigest, receipt)
+		if err != nil {
+			writePolicyAdminError(writer, err)
+			return
+		}
+	}
+	result, effective, err := s.admin.Commit(pending.Proposal.ProposalDigest, true)
+	if err != nil {
+		writePolicyAdminError(writer, err)
+		return
+	}
+	result.Operation = "recover"
+	if err := s.policy.Replace(effective, result.PolicyDigest); err != nil {
+		writeError(writer, http.StatusInternalServerError, "policy.activation_failed", "recovered policy committed but runtime activation requires service restart")
+		return
+	}
+	writeJSON(writer, http.StatusOK, result)
+}
+
+func (s *Server) policyAdministrator(ctx context.Context, basis, operation string) (identity.Subject, error) {
+	peer, err := peerauth.PeerFromContext(ctx)
+	if err != nil {
+		return identity.Subject{}, err
+	}
+	if basis == "host_owner" {
+		if !s.isHostOwner(peer) {
+			return identity.Subject{}, fmt.Errorf("peer is not the target-host owner")
+		}
+		return identity.Subject{
+			ID:   fmt.Sprintf("symphony.host.owner.uid.%d", peer.Credentials.UID),
+			Kind: "symphony.identity.host-owner", Authority: peerauth.Mechanism,
+		}, nil
+	}
+	if basis != "granted_permission" || !peer.Mapped {
+		return identity.Subject{}, fmt.Errorf("peer lacks an exact SSIAG subject mapping")
+	}
+	now := s.now().UTC().Truncate(time.Second)
+	decision := s.policy.Evaluate(ctx, peer.Subject, model.AuthorizationRequest{
+		Schema:    "symphony.ssiag.authorization-request.v1",
+		RequestID: "ssiag-policy-admin-check", CorrelationID: "ssiag-policy-admin-check",
+		Operation: operation, Resource: "symphony.ssiag.policy:" + s.config.TOPS.ID,
+		Audience: "ssiag", Scope: "tops:" + s.config.TOPS.ID,
+		RequestedAt: now, RequestedExpiresAt: now.Add(time.Minute),
+	})
+	if decision.Effect != "allow" {
+		return identity.Subject{}, fmt.Errorf("peer lacks exact policy administration permission")
+	}
+	return peer.Subject, nil
+}
+
+func (s *Server) isHostOwner(peer peerauth.Peer) bool {
+	if s.config.Mode == "system" {
+		return peer.Credentials.UID == 0
+	}
+	return s.config.Authentication != nil && s.config.Authentication.Service != nil &&
+		s.config.Authentication.Service.UID != nil && peer.Credentials.UID == *s.config.Authentication.Service.UID
+}
+
+func (s *Server) auditPolicyChange(ctx context.Context, proposal policyadmin.Proposal) (stavprotocol.Receipt, error) {
+	if s.audit == nil {
+		return stavprotocol.Receipt{}, fmt.Errorf("STAV append authority is unavailable")
+	}
+	return s.audit.Submit(ctx, stavproducer.Record{
+		Kind: stavproducer.PolicyDecision, RequestID: proposal.RequestID, CorrelationID: proposal.CorrelationID,
+		Actor:          stavprotocol.SafeReference{ID: proposal.Subject.ID, Kind: proposal.Subject.Kind},
+		Authentication: stavprotocol.Authentication{MethodID: "symphony.ssiag.local-peer", State: "identified"},
+		Target:         stavprotocol.SafeReference{ID: "symphony.ssiag.policy:" + proposal.TOPSID, Kind: "symphony.ssiag.policy"},
+		Outcome:        "allowed",
+		Configuration:  stavprotocol.Configuration{PreviousDigest: proposal.ExpectedPolicyDigest, NewDigest: proposal.DesiredPolicyDigest, State: "digests"},
+		TROG:           stavprotocol.TROG{ReasonCode: "symphony.stav.trog.not-applicable", State: "not_applicable"},
+		Classification: "administrative_metadata",
+	})
+}
+
+func decodeBoundedJSON(writer http.ResponseWriter, request *http.Request, target any) bool {
+	request.Body = http.MaxBytesReader(writer, request.Body, maxPolicyRequestBytes)
+	decoder := json.NewDecoder(request.Body)
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(target); err != nil {
+		writeError(writer, http.StatusBadRequest, "request.invalid_json", "request is not valid bounded JSON")
+		return false
+	}
+	var extra any
+	if err := decoder.Decode(&extra); err == nil {
+		writeError(writer, http.StatusBadRequest, "request.multiple_values", "request contains multiple JSON values")
+		return false
+	} else if !errors.Is(err, io.EOF) {
+		writeError(writer, http.StatusBadRequest, "request.invalid_trailing_data", "request contains invalid trailing data")
+		return false
+	}
+	return true
+}
+
+func writePolicyAdminError(writer http.ResponseWriter, err error) {
+	switch {
+	case errors.Is(err, policyadmin.ErrConflict):
+		writeError(writer, http.StatusConflict, "policy.compare_and_swap_conflict", err.Error())
+	case errors.Is(err, policyadmin.ErrRecoveryRequired):
+		writeError(writer, http.StatusConflict, "policy.recovery_required", err.Error())
+	case errors.Is(err, policyadmin.ErrNoRecovery):
+		writeError(writer, http.StatusNotFound, "policy.recovery_absent", err.Error())
+	default:
+		writeError(writer, http.StatusBadRequest, "policy.request_invalid", err.Error())
+	}
 }
 
 func (s *Server) handleAuthorization(writer http.ResponseWriter, request *http.Request) {
@@ -98,7 +352,7 @@ func (s *Server) handleAuthorization(writer http.ResponseWriter, request *http.R
 		writeError(writer, http.StatusForbidden, "request.subject_unmapped", "authenticated peer has no canonical subject mapping")
 		return
 	}
-	request.Body = http.MaxBytesReader(writer, request.Body, maxRequestBytes)
+	request.Body = http.MaxBytesReader(writer, request.Body, maxAuthorizationRequestBytes)
 	decoder := json.NewDecoder(request.Body)
 	decoder.DisallowUnknownFields()
 	var candidate model.AuthorizationRequest

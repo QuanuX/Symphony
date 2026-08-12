@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:policy-result:v1",
+  "title": "SSIAG local policy operation result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "operation", "tops_id", "source", "generation", "policy_digest", "state_digest", "recovery_required", "changed", "recovered", "observed_at", "read_only", "caller_class_used", "canonical"],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.policy-result.v1"},
+    "operation": {"enum": ["status", "apply", "recover"]},
+    "tops_id": {"type": "string", "format": "uuid"},
+    "source": {"enum": ["config", "overlay"]},
+    "generation": {"type": "integer", "minimum": 0},
+    "policy_digest": {"$ref": "#/$defs/digest"},
+    "state_digest": {"oneOf": [{"const": "absent"}, {"$ref": "#/$defs/digest"}]},
+    "recovery_required": {"type": "boolean"},
+    "attempt_digest": {"$ref": "#/$defs/digest"},
+    "changed": {"type": "boolean"},
+    "recovered": {"type": "boolean"},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "read_only": {"type": "boolean"},
+    "caller_class_used": {"const": false},
+    "canonical": {"const": false}
+  },
+  "$defs": {"digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}
+}

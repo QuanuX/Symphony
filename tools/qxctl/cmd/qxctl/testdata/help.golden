@@ -25,6 +25,10 @@ Commands:
   ssiag providers --tops-id UUID [--scope user|system] [--json] List safe provider metadata
   ssiag doctor --tops-id UUID [--scope user|system] Verify local SSIAG availability
   ssiag grants lifecycle --tops-id UUID --subject-id ID [--profile-id ID] [--json] Generate exact caller-neutral lifecycle grant input
+  ssiag policy status --tops-id UUID [--scope user|system] [--json] Read protected local policy metadata
+  ssiag policy propose --tops-id UUID --operation-id ID --expected-policy-digest DIGEST (--input FILE|--reset) [--json] Prepare a caller-neutral local policy proposal
+  ssiag policy apply --tops-id UUID --input FILE [--json] Audit and atomically apply an exact policy proposal
+  ssiag policy recover --tops-id UUID --operation-id ID (--expected-attempt-digest DIGEST|--discover) [--json] Recover a durable policy attempt
   stav status --tops-id UUID [--scope user|system] [--json] Read authenticated STAV status
   stav verify --tops-id UUID [--scope user|system] [--json] Verify the STAV digest chain
   stav query --tops-id UUID [--scope user|system] [bounded filters] [--json] Query authorized STAV projections

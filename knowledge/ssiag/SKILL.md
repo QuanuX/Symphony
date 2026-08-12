@@ -35,7 +35,7 @@ Caller type is not an authorization input. A caller may inspect canonical contra
 3. Maintain the implemented dedicated per-TOPS STAV append authority integration.
 4. Maintain the implemented exact-grant deny-by-default authorization decision and non-transferable capability surface.
 5. Maintain qxctl/coordinator authenticated-session use without converting decision evidence into bearer or canonical apply authority.
-6. Implement local proposal/apply mutation with replay, idempotency, expected-state, safeguard, and audit gates.
+6. Preserve the implemented local policy proposal/apply/recovery circuit: kernel-derived authority, CAS, idempotent STAV-before-commit, protected attempt/state files, and noncanonical result binding.
 7. Implement provider mutual executable trust and separate control/secret channels.
 8. Enable per-user macOS Keychain operations beginning with non-exportable capability where suitable.
 

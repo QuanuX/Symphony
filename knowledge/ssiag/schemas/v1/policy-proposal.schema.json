@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:policy-proposal:v1",
+  "title": "SSIAG local policy proposal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "operation_id", "request_id", "correlation_id", "tops_id", "subject", "authority_basis", "expected_policy_digest", "change", "desired_policy", "desired_policy_digest", "config_digest", "created_at", "expires_at", "caller_class_used", "canonical", "applied", "proposal_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.policy-proposal.v1"},
+    "operation_id": {"$ref": "#/$defs/token"},
+    "request_id": {"$ref": "#/$defs/token"},
+    "correlation_id": {"$ref": "#/$defs/token"},
+    "tops_id": {"type": "string", "format": "uuid"},
+    "subject": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "authority"],
+      "properties": {"id": {"$ref": "#/$defs/token"}, "kind": {"$ref": "#/$defs/token"}, "authority": {"$ref": "#/$defs/token"}, "attributes": {"type": "object", "additionalProperties": {"type": "string"}}}
+    },
+    "authority_basis": {"enum": ["host_owner", "granted_permission"]},
+    "expected_policy_digest": {"$ref": "#/$defs/digest"},
+    "change": {"enum": ["replace", "reset"]},
+    "desired_policy": {"oneOf": [{"$ref": "authorization-policy.schema.json"}, {"type": "null"}]},
+    "desired_policy_digest": {"$ref": "#/$defs/digest"},
+    "config_digest": {"$ref": "#/$defs/digest"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "caller_class_used": {"const": false},
+    "canonical": {"const": false},
+    "applied": {"const": false},
+    "proposal_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

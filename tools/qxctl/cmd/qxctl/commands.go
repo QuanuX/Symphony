@@ -14,12 +14,19 @@ import (
 var errUsageOnly = errors.New("print qxctl usage")
 
 type ssiagOptions struct {
-	topsID         string
-	scope          string
-	profileID      string
-	subjectID      string
-	authorityBasis string
-	jsonOutput     bool
+	topsID          string
+	scope           string
+	profileID       string
+	subjectID       string
+	authorityBasis  string
+	input           string
+	expectedPolicy  string
+	operationID     string
+	expectedAttempt string
+	reset           bool
+	discover        bool
+	ttl             time.Duration
+	jsonOutput      bool
 }
 
 type stavOptions struct {
@@ -880,7 +887,7 @@ func newSSIAGCommand() (*cobra.Command, error) {
 		Use:  "ssiag",
 		Args: usageOnlyArgs,
 		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("SSIAG subcommand is required: status, providers, doctor, or grants")
+			return fmt.Errorf("SSIAG subcommand is required: status, providers, doctor, grants, or policy")
 		},
 	}
 	for _, subcommand := range []string{"status", "providers", "doctor"} {
@@ -913,7 +920,61 @@ func newSSIAGCommand() (*cobra.Command, error) {
 	lifecycle.Flags().BoolVar(&grantOptions.jsonOutput, "json", false, "emit JSON")
 	grants.AddCommand(lifecycle)
 	command.AddCommand(grants)
+	command.AddCommand(newSSIAGPolicyCommand())
 	return command, nil
+}
+
+func newSSIAGPolicyCommand() *cobra.Command {
+	command := &cobra.Command{
+		Use: "policy", Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return fmt.Errorf("SSIAG policy subcommand is required: status, propose, apply, or recover")
+		},
+	}
+	statusOptions := ssiagOptions{scope: "user"}
+	status := &cobra.Command{Use: "status", Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error {
+		return runSSIAGPolicy("status", statusOptions)
+	}}
+	addSSIAGPolicyCommonFlags(status, &statusOptions)
+	command.AddCommand(status)
+
+	proposalOptions := ssiagOptions{scope: "user", authorityBasis: "host_owner", ttl: 5 * time.Minute}
+	propose := &cobra.Command{Use: "propose", Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error {
+		return runSSIAGPolicy("propose", proposalOptions)
+	}}
+	addSSIAGPolicyCommonFlags(propose, &proposalOptions)
+	propose.Flags().StringVar(&proposalOptions.input, "input", "", "bounded authorization policy JSON")
+	propose.Flags().StringVar(&proposalOptions.expectedPolicy, "expected-policy-digest", "", "exact current policy digest")
+	propose.Flags().StringVar(&proposalOptions.operationID, "operation-id", "", "stable retry/recovery operation identity")
+	propose.Flags().StringVar(&proposalOptions.authorityBasis, "authority-basis", "host_owner", "host_owner or granted_permission")
+	propose.Flags().BoolVar(&proposalOptions.reset, "reset", false, "restore the enrolled config policy")
+	propose.Flags().DurationVar(&proposalOptions.ttl, "ttl", 5*time.Minute, "proposal lifetime, at most 10m")
+	command.AddCommand(propose)
+
+	applyOptions := ssiagOptions{scope: "user"}
+	apply := &cobra.Command{Use: "apply", Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error {
+		return runSSIAGPolicy("apply", applyOptions)
+	}}
+	addSSIAGPolicyCommonFlags(apply, &applyOptions)
+	apply.Flags().StringVar(&applyOptions.input, "input", "", "bounded SSIAG policy proposal JSON")
+	command.AddCommand(apply)
+
+	recoverOptions := ssiagOptions{scope: "user"}
+	recover := &cobra.Command{Use: "recover", Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error {
+		return runSSIAGPolicy("recover", recoverOptions)
+	}}
+	addSSIAGPolicyCommonFlags(recover, &recoverOptions)
+	recover.Flags().StringVar(&recoverOptions.operationID, "operation-id", "", "stable operation identity")
+	recover.Flags().StringVar(&recoverOptions.expectedAttempt, "expected-attempt-digest", "", "exact pending attempt digest")
+	recover.Flags().BoolVar(&recoverOptions.discover, "discover", false, "discover the unique pending attempt for the operation")
+	command.AddCommand(recover)
+	return command
+}
+
+func addSSIAGPolicyCommonFlags(command *cobra.Command, options *ssiagOptions) {
+	command.Flags().StringVar(&options.topsID, "tops-id", "", "immutable TOPS UUID")
+	command.Flags().StringVar(&options.scope, "scope", "user", "SSIAG scope: user or system")
+	command.Flags().BoolVar(&options.jsonOutput, "json", false, "emit JSON")
 }
 
 func newSSIAGLeaf(subcommand string) (*cobra.Command, error) {
