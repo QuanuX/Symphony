@@ -4763,3 +4763,157 @@ This PR authorizes none of the following:
   - `shared-root reclamation, live package installation or swapping beyond the existing lifecycle circuit, automatic old-version deletion, Go 1.27 production pin, module release, or product-launch claim`
 - notes: |
     This post-merge closure records the protected SSIAG local policy-administration implementation merged by PR #121. The closure carrier adds exact SKVI routes for six source-PR implementation and regression-test surfaces omitted from the merge and appends this forward-only canonical record; it introduces no runtime behavior and is non-recursive unless it adds an independently significant architectural change.
+- record_id: `SCLV-CHG-20260812-SHARED-ROOT-OWNERSHIP`
+- record_version: `3`
+- title: `Shared-root lifecycle ownership and reclamation implemented`
+- status: `canonical`
+- date: `2026-08-12`
+- change_started_at: `2026-08-12T20:40:52Z`
+- change_completed_at: `2026-08-12T20:41:25Z`
+- recorded_at: `2026-08-12T20:42:43Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `canonical_addition`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#123`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/123`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `ad409e45b94e7983ac4a917c668e2fd424f0a941`
+- tree_digest: `sha256:21d63aa8c9f0b84076b3df2e19f56d00110d2eca275106ca423dbb7acd00a203`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/123`
+- ratification_evidence_digest: `sha256:24a4ba7d2c19191deca0bf8d9046875c53b0025b67094c60e8c402080c964490`
+- affected_surfaces:
+  - `README.md`
+  - `cmake/SymphonyInstallReceiptV2.cmake`
+  - `cmake/SymphonyInstallReceiptV2.cmake.in`
+  - `cmake/SymphonyInstallReceiptV2Preflight.cmake.in`
+  - `cmake/SymphonyUninstallReceiptV2.cmake`
+  - `knowledge/INTENT.md`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/lifecycle-root-ownership-fence.schema.json`
+  - `knowledge/schemas/v1/lifecycle-root-ownership-reconciliation.schema.json`
+  - `knowledge/schemas/v1/lifecycle-root-ownership-result.schema.json`
+  - `knowledge/schemas/v1/lifecycle-root-ownership.schema.json`
+  - `knowledge/schemas/v2/MANIFEST.md`
+  - `knowledge/schemas/v2/install-receipt.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssiag/schemas/v1/lifecycle-grant-plan.schema.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_apply.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_test.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/ssiag_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgelifecycle/executor.go`
+  - `tools/qxctl/internal/knowledgelifecycle/executor_test.go`
+  - `tools/qxctl/internal/knowledgelifecycle/install_unix.go`
+  - `tools/qxctl/internal/knowledgelifecycle/install_unsupported.go`
+  - `tools/qxctl/internal/knowledgelifecycle/observation.go`
+  - `tools/qxctl/internal/knowledgelifecycle/ownership.go`
+  - `tools/qxctl/internal/knowledgelifecycle/ownership_test.go`
+  - `tools/qxctl/internal/knowledgelifecycle/ownership_unix.go`
+  - `tools/qxctl/internal/knowledgelifecycle/ownership_unsupported.go`
+  - `tools/qxctl/internal/knowledgelifecycle/profile.go`
+  - `tools/qxctl/internal/knowledgelifecycle/profile_test.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `README.md`
+  - `cmake/SymphonyInstallReceiptV2.cmake`
+  - `cmake/SymphonyInstallReceiptV2.cmake.in`
+  - `cmake/SymphonyInstallReceiptV2Preflight.cmake.in`
+  - `cmake/SymphonyUninstallReceiptV2.cmake`
+  - `knowledge/INTENT.md`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SKILL.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/lifecycle-root-ownership-fence.schema.json`
+  - `knowledge/schemas/v1/lifecycle-root-ownership-reconciliation.schema.json`
+  - `knowledge/schemas/v1/lifecycle-root-ownership-result.schema.json`
+  - `knowledge/schemas/v1/lifecycle-root-ownership.schema.json`
+  - `knowledge/schemas/v2/MANIFEST.md`
+  - `knowledge/schemas/v2/install-receipt.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssiag/schemas/v1/lifecycle-grant-plan.schema.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_apply.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_test.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/ssiag_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgelifecycle/executor.go`
+  - `tools/qxctl/internal/knowledgelifecycle/executor_test.go`
+  - `tools/qxctl/internal/knowledgelifecycle/install_unix.go`
+  - `tools/qxctl/internal/knowledgelifecycle/install_unsupported.go`
+  - `tools/qxctl/internal/knowledgelifecycle/observation.go`
+  - `tools/qxctl/internal/knowledgelifecycle/ownership.go`
+  - `tools/qxctl/internal/knowledgelifecycle/ownership_test.go`
+  - `tools/qxctl/internal/knowledgelifecycle/ownership_unix.go`
+  - `tools/qxctl/internal/knowledgelifecycle/ownership_unsupported.go`
+  - `tools/qxctl/internal/knowledgelifecycle/profile.go`
+  - `tools/qxctl/internal/knowledgelifecycle/profile_test.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- change_summary: |
+    Under the Architect's direction, PR #123 implemented root-local, multi-profile ownership for receipt-v2 packages. qxctl now creates retained, retiring, and legacy-preserve claims; requires explicit adoption and digest-bound legacy release for pre-existing roots; and reclaims a package only after every participating profile releases retention.
+- relationship_changes: |
+    The common SKV lifecycle contracts own the ownership protocol. qxctl administers operational claims under fresh SSIAG authorization, profile state supplies desired identity, fixed-layout observation supplies package evidence, and the package executor serializes ownership and file mutation under one installation-root lock. Static receipt-layout fencing makes older lifecycle clients invoke their existing unsupported-package blocker, while direct CMake paths refuse roots already governed by qxctl.
+- doctrine_changes: |
+    Desired absence in one control domain is not deletion authority over another domain's package. Profile mutation holds the exclusive profile lock while validating claims; ownership administration, reconciliation, and action execution hold a shared profile lease before the installation-root lock. Package ownership cannot include lifecycle control files or receipt namespaces, and caller class, version recency, or process arrival order grants no authority.
+- compatibility_consequences: |
+    New clients can adopt old roots conservatively, and old clients encountering a fenced root fail closed through their existing unknown-package behavior. New roots enforce claims immediately. Interrupted file removal before registry commit converges forward by pruning only absent retiring or legacy claims; retained claims survive absence. A file fence cannot retroactively cancel an older action already prepared before the fence, so adoption remains the explicit drain barrier and the next complete observation repairs any late result.
+- publication_consequences: |
+    No module tag, release artifact, binary package, SDK, OpenAPI endpoint, Mintlify publication, public documentation launch, marketing claim, or platform release was published or authorized. This remains active-development source on the rolling main branch.
+- projection_consequences: |
+    Ownership status and reconciliation results are bounded noncanonical operational evidence. The root-local registry is not canonical knowledge, semantic feature truth, permission, a host-wide ownership graph, or a publication record. Any future dashboard or graph remains derived and rebuildable from authorized evidence.
+- evidence:
+  - `PR #123 merged into main at 2026-08-12T20:41:25Z by quantDIY as ad409e45b94e7983ac4a917c668e2fd424f0a941`
+  - `implementation head 032bfff0a9817f911b1ec2cfb715d20b9b74e688; 48 files changed, 2021 insertions, 77 deletions`
+  - `tree digest sha256:21d63aa8c9f0b84076b3df2e19f56d00110d2eca275106ca423dbb7acd00a203 binds the exact recursive Git tree listing for the merge revision`
+  - `ratification evidence digest sha256:24a4ba7d2c19191deca0bf8d9046875c53b0025b67094c60e8c402080c964490 binds compact lexicographically key-sorted PR identity, base/head/merge revisions, timestamps, authenticated merger, and diff counts`
+  - `qxctl passed its complete Go test, Go vet, race-detector, Linux-amd64 cross-build, and Linux-arm64 cross-build gates`
+  - `shared-root regression tests passed two-profile retention, unanimous retirement, legacy adoption and release, unexpected old-writer inventory, interrupted-removal healing, exact compatibility fencing, reserved-path rejection, and symlink failure cases`
+  - `Symphony Validator passed all three CTests and the complete adversarial smoke matrix`
+  - `strict repository validation reported pass=7702 warning=116 violation=0 exit=0; all 116 warnings remain the established historical sclv.affected_surface.unindexed advisory family`
+  - `SKVI and SSFV engines each passed both CTests, including their local process smoke checks, and all added canonical schemas parsed successfully`
+  - `closure SCLV engine check reported 38 records, 152 passes, zero warnings, zero violations, and valid state; both SCLV CTests passed`
+  - `closure validator result pass=7908 warning=116 violation=0 exit=0; the remaining warnings are only the established historical advisory family`
+- non_authorizations:
+  - `unattended apply, implicit newest-version selection, one-profile deletion authority, automatic superseded-version reclamation, package download, receipt-v1 mutation, arbitrary entry-point execution, or live process activation`
+  - `canonical knowledge mutation, claim-created permission, SSIAG bypass, STAV bypass, caller-class authority, engine-decided ownership, profile relocation with live claims, or reclamation while any retained or legacy claim remains`
+  - `retroactive cancellation of a pre-fence prepared old-client action, hidden old-client state interpretation, ambiguous recovery, unverified file deletion, lifecycle-control-file package ownership, or direct CMake bypass of an administered root`
+  - `host boot-hook installation, background watcher, Maestro engine execution or supervision, remote lifecycle API, hot/warm-path participation, native Windows engine, or trading-node doctrine`
+  - `Go 1.27 production pin, module release, SDK publication, product-launch claim, or repository-wide SSFV completeness`
+- notes: |
+    This post-merge closure records the shared-root lifecycle ownership and reclamation implementation merged by PR #123. Every source-PR surface was already routed through SKVI before merge. The closure carrier appends only this forward-only canonical record and introduces no runtime behavior; it is non-recursive unless it adds an independently significant architectural change.
