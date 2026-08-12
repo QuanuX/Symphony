@@ -32,10 +32,10 @@ func newMaestroCommand() *cobra.Command {
 	command := &cobra.Command{
 		Use: "maestro", Args: usageOnlyArgs,
 		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("maestro subcommand is required: inspect, status, or recover")
+			return fmt.Errorf("maestro subcommand is required: inspect, inventory, status, or recover")
 		},
 	}
-	for _, operation := range []string{"inspect", "status", "recover"} {
+	for _, operation := range []string{"inspect", "inventory", "status", "recover"} {
 		options := maestroOptions{version: "0.1.0-dev", scope: "user", ttl: 15 * time.Minute}
 		child := &cobra.Command{
 			Use: operation, Args: usageOnlyArgs,
@@ -68,8 +68,11 @@ func newMaestroCommand() *cobra.Command {
 }
 
 func runMaestro(operation string, options maestroOptions) error {
-	if options.prefix == "" || options.topsID == "" || options.receptorID == "" {
-		return fmt.Errorf("--prefix, --tops-id, and --receptor-id are required")
+	if options.prefix == "" || options.topsID == "" {
+		return fmt.Errorf("--prefix and --tops-id are required")
+	}
+	if operation != "inventory" && options.receptorID == "" {
+		return fmt.Errorf("--receptor-id is required")
 	}
 	installation, err := knowledgeengine.InspectMaestroInstallation(options.prefix, options.version)
 	if err != nil {
@@ -101,6 +104,28 @@ func runMaestro(operation string, options maestroOptions) error {
 		}
 		result, err = maestroclient.Status(ctx, installation.Prefix, installation.Version,
 			repositoryRoot, stateRoot, options.topsID, options.receptorID, options.componentID, decision)
+	case "inventory":
+		stateRoot, stateErr := maestroStateRoot(options.stateRoot, options.topsID)
+		if stateErr != nil {
+			return stateErr
+		}
+		decision, authErr := authorizeMaestroInventory(options)
+		if authErr != nil {
+			return authErr
+		}
+		inventory, inventoryErr := maestroclient.Inventory(
+			ctx, installation.Prefix, installation.Version, repositoryRoot,
+			stateRoot, options.topsID, decision)
+		if inventoryErr != nil {
+			return inventoryErr
+		}
+		if options.jsonOutput {
+			return printIndentedJSON(inventory)
+		}
+		fmt.Printf("Maestro inventory: tops_id=%s receptors=%d docked_components=%d digest=%s derived=true canonical=false\n",
+			inventory.TOPSID, inventory.Inventory.ReceptorCount,
+			inventory.Inventory.DockedComponentCount, inventory.Inventory.InventoryDigest)
+		return nil
 	case "recover":
 		if options.operationID == "" || options.discover == (options.expectedRegistryDigest != "") {
 			return fmt.Errorf("--operation-id and exactly one of --expected-registry-digest or --discover are required")
@@ -132,6 +157,42 @@ func runMaestro(operation string, options maestroOptions) error {
 	fmt.Printf("Maestro %s: tops_id=%s receptor=%s outcome=%s changed=%t registry=%s execution_enabled=false canonical=false\n",
 		operation, result.TOPSID, result.ReceptorID, result.Outcome, result.Changed, nullableString(result.RegistryDigest))
 	return nil
+}
+
+func authorizeMaestroInventory(options maestroOptions) (ssiagclient.AuthorizationDecision, error) {
+	client, err := ssiagclient.NewForTOPS(options.scope, options.topsID, 4*time.Second)
+	if err != nil {
+		return ssiagclient.AuthorizationDecision{}, err
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
+	defer cancel()
+	if _, err := requireSSIAGStatus(ctx, client, options.topsID, options.scope); err != nil {
+		return ssiagclient.AuthorizationDecision{}, err
+	}
+	requestID, err := randomUUID()
+	if err != nil {
+		return ssiagclient.AuthorizationDecision{}, err
+	}
+	correlationID, err := randomUUID()
+	if err != nil {
+		return ssiagclient.AuthorizationDecision{}, err
+	}
+	now := time.Now().UTC().Truncate(time.Second)
+	request := ssiagclient.AuthorizationRequest{
+		Schema: "symphony.ssiag.authorization-request.v1", RequestID: requestID,
+		CorrelationID: correlationID, Operation: "symphony.maestro.receptor-inventory.read",
+		Resource: maestroclient.InventoryResource(options.topsID), Audience: "qxctl",
+		Scope: "tops:" + options.topsID, RequestedAt: now,
+		RequestedExpiresAt: now.Add(options.ttl).UTC().Truncate(time.Second),
+	}
+	decision, err := client.Authorize(ctx, request)
+	if err != nil {
+		return ssiagclient.AuthorizationDecision{}, err
+	}
+	if err := validateSessionAuthorization(decision, request, options.topsID); err != nil {
+		return ssiagclient.AuthorizationDecision{}, fmt.Errorf("SSIAG Maestro inventory authorization rejected: %w", err)
+	}
+	return decision, nil
 }
 
 func maestroStateRoot(value, topsID string) (string, error) {

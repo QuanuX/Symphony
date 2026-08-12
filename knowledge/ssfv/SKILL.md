@@ -48,7 +48,7 @@ No caller operation may:
 ## Engine Procedure
 
 1. Identify the exact installed `ssfv-engine` prefix and version.
-2. Run `qxctl ssfv inspect` and verify the engine reports no apply, session mutation, listener, docking, or semantic-decision authority.
+2. Run `qxctl ssfv inspect` and verify the engine reports no apply, canonical session mutation, listener, docking, or semantic-decision authority.
 3. Run `qxctl ssfv check` before a diff or proposal and preserve the returned semantic snapshot as bounded noncanonical evidence.
 4. Use `--freshness report` or `--freshness require` only with a prior semantic snapshot.
 5. Use `diff` to compare that bounded baseline with live canonical repository truth.
@@ -64,7 +64,9 @@ Create a `FEATURES.md` file only when at least one ratified feature record is ow
 
 A working session begins when the effective caller authenticates and ends on logout or mandatory reauthentication unless the administrator configures a different bounded session policy through the eventual qxctl surface.
 
-Engine results bind to content-addressed contract and source snapshots. Structural integrity is mandatory. Per-invocation semantic freshness is `disabled`, `report`, or `require`; persistent safeguard profiles and automatic session-close behavior remain deferred.
+Engine results bind to content-addressed contract and source snapshots. Structural integrity is mandatory. Per-invocation semantic freshness is `disabled`, `report`, or `require`; persistent safeguard profiles and automatic background/session-close hooks remain deferred.
+
+Within an open authenticated qxctl session, use `qxctl knowledge session features begin` once to capture the immutable baseline. Use `status` without mutation, `checkpoint` to record explicit current diff evidence, `close` to finalize the stream, and `recover` only after inspecting damaged-head evidence and supplying the exact expected state. Every mutation obtains fresh SSIAG authorization and records the current binding registry plus complete Maestro inventory evidence or an explicit not-configured disposition. Treat `review_required` as evidence for permission-backed owner review, never as authorization to change canonical feature truth.
 
 ## Stop Conditions
 
@@ -72,4 +74,4 @@ Stop and obtain permission-backed owner ratification before allocating a public 
 
 ## Non-Authorization Statement
 
-This skill is procedural contract guidance for the implemented engine, qxctl client, and reviewed sparse-record workflow. The existing four-record partial catalog authorizes no additional feature record, distributed application `FEATURES.md` file, complete-catalog claim, canonical mutation, graph database, additional Maestro state, public documentation, or marketing output.
+This skill is procedural contract guidance for the implemented engine, qxctl client, reviewed sparse-record workflow, and protected noncanonical session-maintenance circuit. The existing four-record partial catalog authorizes no additional feature record, distributed application `FEATURES.md` file, complete-catalog claim, canonical mutation, graph database, Maestro state mutation through SSFV, public documentation, or marketing output.

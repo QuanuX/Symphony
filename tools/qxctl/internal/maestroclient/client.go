@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"strings"
+	"time"
 
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgeengine"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/ssiagclient"
@@ -25,6 +26,8 @@ var requiredCapabilities = []string{
 	"expected-state-cas-v1", "idempotent-operation-v1", "recovery-forward-v1",
 	"ssiag-capability-binding-v1",
 }
+
+const inventoryCapability = "derived-receptor-inventory-v1"
 
 type ClientEvidence struct {
 	ClientID              string   `json:"client_id"`
@@ -153,6 +156,61 @@ type Result struct {
 	Canonical        bool            `json:"canonical"`
 }
 
+type InventoryComponent struct {
+	ComponentID      string `json:"component_id"`
+	ModuleID         string `json:"module_id"`
+	VectorID         string `json:"vector_id"`
+	EngineID         string `json:"engine_id"`
+	ReceiptDigest    string `json:"receipt_digest"`
+	ExecutableDigest string `json:"executable_digest"`
+	PresenceDigest   string `json:"presence_digest"`
+}
+
+type ReceptorInventoryEntry struct {
+	ReceptorID        string               `json:"receptor_id"`
+	ReceptorKind      string               `json:"receptor_kind"`
+	RegistryDigest    string               `json:"registry_digest"`
+	Generation        uint64               `json:"generation"`
+	RegistryUpdatedAt string               `json:"registry_updated_at"`
+	DockedComponents  []InventoryComponent `json:"docked_components"`
+}
+
+type ReceptorInventory struct {
+	Protocol             string                   `json:"protocol"`
+	FormatVersion        uint64                   `json:"format_version"`
+	TOPSID               string                   `json:"tops_id"`
+	Receptors            []ReceptorInventoryEntry `json:"receptors"`
+	ReceptorCount        uint64                   `json:"receptor_count"`
+	DockedComponentCount uint64                   `json:"docked_component_count"`
+	Derived              bool                     `json:"derived"`
+	Canonical            bool                     `json:"canonical"`
+	InventoryDigest      string                   `json:"inventory_digest"`
+}
+
+type InventoryResult struct {
+	Protocol          string            `json:"protocol"`
+	FormatVersion     uint64            `json:"format_version"`
+	Operation         string            `json:"operation"`
+	TOPSID            string            `json:"tops_id"`
+	Compatibility     Compatibility     `json:"compatibility"`
+	Inventory         ReceptorInventory `json:"inventory"`
+	ObservedAt        string            `json:"observed_at"`
+	ReadOnly          bool              `json:"read_only"`
+	Derived           bool              `json:"derived"`
+	Canonical         bool              `json:"canonical"`
+	ObservationDigest string            `json:"observation_digest"`
+}
+
+type inventoryCommand struct {
+	Protocol              string         `json:"protocol"`
+	FormatVersion         uint64         `json:"format_version"`
+	Operation             string         `json:"operation"`
+	StateRoot             string         `json:"state_root"`
+	TOPSID                string         `json:"tops_id"`
+	AuthorizationDecision any            `json:"authorization_decision"`
+	Client                ClientEvidence `json:"client"`
+}
+
 type command struct {
 	Protocol               string         `json:"protocol"`
 	FormatVersion          uint64         `json:"format_version"`
@@ -176,10 +234,21 @@ func Client() ClientEvidence {
 	}
 }
 
+func InventoryClient() ClientEvidence {
+	client := Client()
+	client.Capabilities = append(client.Capabilities, inventoryCapability)
+	return client
+}
+
 func Resource(topsID, receptorID, operation, componentID, receiptDigest, expected string) string {
 	digest := sha256.Sum256([]byte(strings.Join(
 		[]string{topsID, receptorID, operation, componentID, receiptDigest, expected}, "\n")))
 	return "symphony.maestro.docking:" + hex.EncodeToString(digest[:])
+}
+
+func InventoryResource(topsID string) string {
+	digest := sha256.Sum256([]byte(strings.Join([]string{topsID, "all", "inventory-v1"}, "\n")))
+	return "symphony.maestro.receptor-inventory:" + hex.EncodeToString(digest[:])
 }
 
 func NewComponentEvidence(componentID, moduleID, vectorID, engineID, receiptDigest, executableDigest string) (ComponentEvidence, error) {
@@ -265,6 +334,84 @@ func Recover(ctx context.Context, prefix, version, repositoryRoot, stateRoot, to
 	})
 }
 
+func Inventory(ctx context.Context, prefix, version, repositoryRoot, stateRoot, topsID string,
+	decision ssiagclient.AuthorizationDecision) (InventoryResult, error) {
+	payload, err := json.Marshal(inventoryCommand{
+		Protocol: "symphony.maestro.receptor-inventory-command.v1", FormatVersion: 1,
+		Operation: "inventory", StateRoot: stateRoot, TOPSID: topsID,
+		AuthorizationDecision: decision, Client: InventoryClient(),
+	})
+	if err != nil {
+		return InventoryResult{}, fmt.Errorf("encode Maestro inventory command: %w", err)
+	}
+	response, err := knowledgeengine.InvokeMaestro(
+		ctx, prefix, version, repositoryRoot, "inventory", payload)
+	if err != nil {
+		return InventoryResult{}, err
+	}
+	if err := knowledgeengine.ValidateJSONObject(response.Result, 4*1024*1024); err != nil {
+		return InventoryResult{}, fmt.Errorf("invalid Maestro inventory result: %w", err)
+	}
+	var result InventoryResult
+	if err := decodeExact(response.Result, &result); err != nil {
+		return InventoryResult{}, fmt.Errorf("decode Maestro inventory result: %w", err)
+	}
+	if result.Protocol != "symphony.maestro.receptor-inventory-result.v1" ||
+		result.FormatVersion != 1 || result.Operation != "inventory" || result.TOPSID != topsID ||
+		result.Inventory.Protocol != "symphony.maestro.receptor-inventory.v1" ||
+		result.Inventory.FormatVersion != 1 || result.Inventory.TOPSID != topsID ||
+		result.Inventory.ReceptorCount != uint64(len(result.Inventory.Receptors)) ||
+		!result.Inventory.Derived || result.Inventory.Canonical || !result.ReadOnly ||
+		!result.Derived || result.Canonical || result.Compatibility.Mode != "full" ||
+		result.Compatibility.ProcessProtocol == nil ||
+		*result.Compatibility.ProcessProtocol != "symphony.knowledge.engine-process.v1" ||
+		result.Compatibility.PresenceReadVersion == nil ||
+		*result.Compatibility.PresenceReadVersion != 1 ||
+		result.Compatibility.PresenceWriteVersion == nil ||
+		*result.Compatibility.PresenceWriteVersion != 1 ||
+		len(result.Compatibility.MissingCapabilities) != 0 ||
+		!result.Compatibility.TwoWayProceduralCompatibility || result.Compatibility.Reason == "" ||
+		!validStrictUTCTimestamp(result.ObservedAt) {
+		return InventoryResult{}, fmt.Errorf("Maestro inventory result violates its read-only derived contract")
+	}
+	var componentCount uint64
+	previousReceptor := ""
+	for _, receptor := range result.Inventory.Receptors {
+		if receptor.ReceptorID == "" || receptor.ReceptorID <= previousReceptor ||
+			receptor.ReceptorKind != ReceptorKind || !validDigest(receptor.RegistryDigest) ||
+			receptor.Generation == 0 || !validStrictUTCTimestamp(receptor.RegistryUpdatedAt) ||
+			receptor.DockedComponents == nil {
+			return InventoryResult{}, fmt.Errorf("Maestro inventory contains invalid receptor evidence")
+		}
+		previousReceptor = receptor.ReceptorID
+		previousComponent := ""
+		for _, component := range receptor.DockedComponents {
+			if component.ComponentID == "" || component.ComponentID <= previousComponent ||
+				!validDigest(component.ReceiptDigest) || !validDigest(component.ExecutableDigest) ||
+				!validDigest(component.PresenceDigest) {
+				return InventoryResult{}, fmt.Errorf("Maestro inventory contains invalid component evidence")
+			}
+			previousComponent = component.ComponentID
+			componentCount++
+		}
+	}
+	if componentCount != result.Inventory.DockedComponentCount ||
+		!validDigest(result.Inventory.InventoryDigest) || !validDigest(result.ObservationDigest) {
+		return InventoryResult{}, fmt.Errorf("Maestro inventory counts or digests are invalid")
+	}
+	if err := validateObjectDigest(response.Result, "observation_digest", result.ObservationDigest); err != nil {
+		return InventoryResult{}, err
+	}
+	inventoryBytes, err := json.Marshal(result.Inventory)
+	if err != nil {
+		return InventoryResult{}, err
+	}
+	if err := validateObjectDigest(inventoryBytes, "inventory_digest", result.Inventory.InventoryDigest); err != nil {
+		return InventoryResult{}, err
+	}
+	return result, nil
+}
+
 func invoke(ctx context.Context, prefix, version, repositoryRoot string, request command) (Result, error) {
 	payload, err := json.Marshal(request)
 	if err != nil {
@@ -324,6 +471,42 @@ func decodeExact(data []byte, target any) error {
 			return fmt.Errorf("unexpected trailing JSON value")
 		}
 		return err
+	}
+	return nil
+}
+
+func validDigest(value string) bool {
+	if len(value) != 71 || !strings.HasPrefix(value, "sha256:") {
+		return false
+	}
+	_, err := hex.DecodeString(strings.TrimPrefix(value, "sha256:"))
+	return err == nil
+}
+
+func validStrictUTCTimestamp(value string) bool {
+	parsed, err := time.Parse("2006-01-02T15:04:05Z", value)
+	return err == nil && parsed.UTC().Format("2006-01-02T15:04:05Z") == value
+}
+
+func validateObjectDigest(data []byte, field, supplied string) error {
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.UseNumber()
+	var object map[string]any
+	if err := decoder.Decode(&object); err != nil {
+		return fmt.Errorf("decode Maestro %s object: %w", field, err)
+	}
+	if err := decoder.Decode(&struct{}{}); err != io.EOF {
+		return fmt.Errorf("Maestro %s object contains trailing JSON", field)
+	}
+	delete(object, field)
+	canonical, err := json.Marshal(object)
+	if err != nil {
+		return fmt.Errorf("canonicalize Maestro %s object: %w", field, err)
+	}
+	digest := sha256.Sum256(canonical)
+	expected := "sha256:" + hex.EncodeToString(digest[:])
+	if supplied != expected {
+		return fmt.Errorf("Maestro %s mismatch", field)
 	}
 	return nil
 }

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Provide the domain-neutral, independently installable process that coordinates authenticated knowledge sessions, separately locked worktree reconciliation contexts, bounded cross-vector lifecycle planning, protected report-only boot journals, and separately authorized apply-capable lifecycle journals without absorbing vector semantics or executing host actions itself.
+Provide the domain-neutral, independently installable process that coordinates authenticated knowledge sessions, persistent SSFV maintenance evidence, separately locked worktree reconciliation contexts, bounded cross-vector lifecycle planning, protected report-only boot journals, and separately authorized apply-capable lifecycle journals without absorbing vector semantics or executing host actions itself.
 
 ## Implemented Scope
 
@@ -13,6 +13,7 @@ Development version `0.1.0-dev` implements user-scope reconciliation and authent
 - `compatibility` negotiates exact process, journal-format, and capability overlap with qxctl;
 - `begin`, `status`, `checkpoint`, `close`, and `recover` manage a protected noncanonical worktree context through a dual-slot journal, atomic head, expected-state generations, and content-addressed snapshots;
 - `session_begin`, `session_status`, `session_checkpoint`, `session_close`, and `session_recover` validate exact SSIAG decision/capability evidence and manage a separate protected noncanonical authority epoch through the same evidence-preserving durability model;
+- `ssfv_maintenance_begin`, `ssfv_maintenance_status`, `ssfv_maintenance_checkpoint`, `ssfv_maintenance_close`, and `ssfv_maintenance_recover` preserve a content-addressed semantic baseline and exact read-only SSFV, binding-registry, authority-session, and optional Maestro inventory lineage in a separate per-TOPS/subject/repository stream;
 - `lifecycle_plan` validates exact desired-state and caller-supplied observation evidence, negotiates receipt/protocol capabilities, and emits a deterministic dependency-ready-set plan with forward/inverse identities, localized blockers, exact receptor targets, and disabled apply;
 - `lifecycle_boot`, `lifecycle_boot_status`, and `lifecycle_boot_recover` independently validate exact SSIAG evidence, recompute the stable inventory binding, and administer protected per-TOPS/profile dual-slot report-only journals with exact compare-and-swap, idempotent operation replay, timestamp-stable no-op detection, linked plan revisions, and unambiguous forward recovery;
 - `lifecycle_apply_prepare`, `lifecycle_apply_finalize`, `lifecycle_apply_close`, `lifecycle_apply_status`, and `lifecycle_apply_recover` validate fresh exact SSIAG evidence and administer a separate apply-capable v2 stream that binds one exact report journal, serializes attempts before external mutation, verifies post-action observations, and selects content-addressed applied-state evidence only through a durable head commit;
@@ -27,4 +28,4 @@ qxctl may explicitly compose session primitives into an idempotent login, refres
 
 ## Authority
 
-The coordinator never decides vector meaning or caller authority. SSIAG makes the authorization decision; the coordinator validates the supplied bounded evidence and mutates only protected noncanonical reconciliation, authenticated-session, lifecycle-journal, or applied-state files. It cannot mutate canonical files or host package/runtime state. Self-healing uses verifiable slot/head, linked-epoch, and digest-linked lifecycle evidence and never guesses across incompatible state, invents successful execution, or manufactures authority.
+The coordinator never decides vector meaning or caller authority. SSIAG makes the authorization decision; the coordinator validates the supplied bounded evidence and mutates only protected noncanonical reconciliation, authenticated-session, SSFV-maintenance, lifecycle-journal, or applied-state files. An SSFV maintenance review state is evidence about change, never a decision that a feature is worthy, correct, or ratified. It cannot mutate canonical files or host package/runtime state. Self-healing uses verifiable slot/head, linked-epoch, and digest-linked lifecycle evidence and never guesses across incompatible state, invents successful execution, or manufactures authority.

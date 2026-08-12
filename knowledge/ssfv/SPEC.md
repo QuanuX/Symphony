@@ -167,7 +167,11 @@ The executable is `symphony-ssfv`, module ID is `ssfv-engine`, and qxctl namespa
 
 Every result MUST bind to content-addressed canonical-contract, namespace, registry, distributed-record, and relevant source snapshots. A result from stale inputs MUST NOT be represented as current.
 
-Structural integrity checking is mandatory. The implemented per-invocation freshness modes are `disabled`, `report`, and `require`. `report` produces caller-neutral semantic-review candidates; `require` makes unresolved stale semantics unsuccessful. Persistent safeguard profiles, automatic session-close execution, and canonical apply remain deferred. Session boundaries remain configurable direction; the default spans authentication through logout or mandatory reauthentication.
+Structural integrity checking is mandatory. The implemented per-invocation freshness modes are `disabled`, `report`, and `require`. `report` produces caller-neutral semantic-review candidates; `require` makes unresolved stale semantics unsuccessful. Persistent safeguard profiles, automatic background execution, and canonical apply remain deferred. Session boundaries remain configurable direction; the implemented default spans authentication through logout or mandatory reauthentication.
+
+The separately installed knowledge-session coordinator owns a protected noncanonical SSFV maintenance stream keyed by TOPS, authenticated subject, and repository. `qxctl knowledge session features begin` stores the initial complete semantic snapshot and its exact engine identity. `checkpoint` and `close` obtain a current snapshot, compare it to that immutable baseline through the selected SSFV engine, and persist the result as review evidence. `status` is read-only. `recover` is explicit, compare-and-swap bound, and may select only one uniquely valid forward state. The baseline engine and current engine are recorded separately so compatible upgrade or rollback order cannot reinterpret the original evidence.
+
+Every mutating maintenance operation requires an open authenticated-session journal digest, the exact qxctl binding-registry digest, a fresh operation/resource-bound SSIAG decision, and either a complete read-only Maestro inventory observation or an explicit `not_configured` evidence object. The derived Maestro inventory binds current docking lineage without becoming feature truth. A finding can change maintenance state to `review_required`; no maintenance operation edits a `FEATURES.md`, registry, namespace, SKVI entry, or other canonical surface.
 
 No unresolved structural error may be silently carried into a later session as canonical truth.
 
@@ -177,7 +181,7 @@ No unresolved structural error may be silently carried into a later session as c
 
 An engine proposal may coordinate a bounded update to a distributed `FEATURES.md`, `REGISTRY.md`, `NAMESPACES.md`, and SKVI. It includes exact expected digests, paths, operation intent, expiry, affected feature IDs, and one caller-declared desired namespace or feature record.
 
-`propose` never mutates canonical files. Canonical apply, recovery, rollback, locking, permission evaluation, session-close behavior, and audit emission require a separately ratified qxctl mutation design.
+`propose` never mutates canonical files. The implemented coordinator recovery and locking mechanisms apply only to protected noncanonical maintenance evidence. Canonical apply, canonical rollback, semantic permission to edit source truth, automatic session-close hooks, and audit emission require separately ratified designs.
 
 A prospective new path binds a typed path-specific absence digest plus `target_must_be_absent`; absence is not represented as an empty-file digest.
 
@@ -189,8 +193,8 @@ No graph database, daemon, network listener, or persistent graph store is author
 
 ## Resource Bounds
 
-The schemas bound individual strings, arrays, records, and snapshots. The engine additionally bounds requests to 1 MiB, responses to 4 MiB, a file to 4 MiB, total SSFV evidence reads to 64 MiB, feature files to 1,024, feature records to 8,192, graph edges to 32,768 within the response ceiling, and deadlines to the common 300-second maximum. It fails closed on unreadable files, symlinks, traversal, special files, duplicate identities, invalid parent progression, cycles, digest mismatch, ambiguous markers, incomplete records, or excessive output.
+The schemas bound individual strings, arrays, records, and snapshots. The engine additionally bounds requests to 1 MiB, responses to 4 MiB, a file to 4 MiB, total SSFV evidence reads to 64 MiB, feature files to 1,024, feature records to 8,192, graph edges to 32,768 within the response ceiling, and deadlines to the common 300-second maximum. Maintenance commands embed their complete semantic evidence and therefore share the coordinator's 1 MiB request ceiling; qxctl and the coordinator fail before journal mutation when that bound is exceeded. It fails closed on unreadable files, symlinks, traversal, special files, duplicate identities, invalid parent progression, cycles, digest mismatch, ambiguous markers, incomplete records, or excessive output.
 
 ## Non-Authorization Statement
 
-This specification authorizes canonical SSFV governance, the bounded independently installed engine and qxctl client, and the exact four-record partial catalog. It does not authorize another distributed feature record, a repository-completeness claim, canonical apply, additional Maestro behavior, persistent graph storage, a remote interface, public documentation, or any application capability claim beyond those four records.
+This specification authorizes canonical SSFV governance, the bounded independently installed engine and qxctl client, the exact four-record partial catalog, and the protected noncanonical maintenance composition above. It does not authorize another distributed feature record, a repository-completeness claim, canonical apply, Maestro state mutation through SSFV, persistent graph storage, a remote interface, public documentation, or any application capability claim beyond those four records.

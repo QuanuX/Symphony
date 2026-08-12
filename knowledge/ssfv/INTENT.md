@@ -56,10 +56,10 @@ Owner-configured safeguards may constrain operations by permission, scope, risk,
 
 ## Implementation Boundary
 
-The independently installable C++ `ssfv-engine` and Go qxctl client implement bounded inspect, check, diff, proposal, and disposable graph operations. They provide application-owned mechanics without deciding feature-worthiness or mutating canonical truth.
+The independently installable C++ `ssfv-engine` and Go qxctl client implement bounded inspect, check, diff, proposal, and disposable graph operations. They provide application-owned mechanics without deciding feature-worthiness or mutating canonical truth. The separate C++ knowledge-session coordinator and qxctl session surface persist content-addressed SSFV baselines and review evidence across an authenticated session; this maintenance stream remains noncanonical and cannot apply its findings.
 
 The current partial semantic catalog contains exactly four Architect-ratified records: the repository-root platform capability, the shared knowledge-vector engine foundation, the knowledge-session coordinator foundation with durable reconciliation, and authenticated durable Maestro docking presence. It proves sparse root and nested ownership without claiming repository-wide feature coverage.
 
 ## Non-Authorization Statement
 
-This vector and its engine do not autonomously create application `FEATURES.md` records, decide feature-worthiness, enable canonical mutation, administer Maestro, publish documentation, or authorize a graph database. The four current records authorize no additional record or complete-catalog claim.
+This vector and its engine do not autonomously create application `FEATURES.md` records, decide feature-worthiness, enable canonical mutation, administer Maestro, publish documentation, or authorize a graph database. Session maintenance may consume a complete derived Maestro receptor inventory only as lineage evidence; neither SSFV nor the coordinator owns Maestro state. The four current records authorize no additional record or complete-catalog claim.

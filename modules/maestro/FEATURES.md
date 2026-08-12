@@ -50,7 +50,7 @@
         }
       ],
       "evidence": [
-        "modules/maestro/tests/maestro_test.cpp verifies exact receptor identity, authorization binding, semantic retry, compare-and-swap generations, replacement refusal, recovery, symlink rejection, lock contention, and unknown-state preservation.",
+        "modules/maestro/tests/maestro_test.cpp verifies exact receptor identity, authorization binding, semantic retry, compare-and-swap generations, replacement refusal, recovery, symlink rejection, lock contention, unknown-state preservation, complete sorted derived inventory, stable inventory digests, and capability refusal.",
         "modules/maestro/tests/process_smoke.sh verifies the bounded local process envelope and descriptor surface.",
         "modules/maestro/src/maestro.cpp implements authenticated inspect, status, dock, undock, and recovery over protected dual-slot receptor registries.",
         "tools/qxctl/cmd/qxctl/maestro.go and tools/qxctl/internal/maestroclient/client.go validate exact installed Maestro identity, obtain SSIAG evidence, invoke bounded operations, and verify response digests.",
@@ -58,7 +58,7 @@
         "modules/maestro/CMakeLists.txt builds, tests, installs, receipts, and uninstalls the exact versioned process."
       ],
       "feature_id": "ssfv:symphony:maestro-presence-authority",
-      "how": "The independently installed C++26 symphony-maestro process accepts bounded local process requests and maintains one protected per-TOPS/per-receptor registry stream. Each stream uses a private no-follow lock, alternating synchronized slots, an atomic head, linked generations, exact compare-and-swap state, content digests, semantic operation identities, and unique forward recovery. qxctl validates the exact installation, obtains fresh SSIAG evidence for each operation, supplies exact receipt and executable digests, and verifies the response. Lifecycle apply supplies an exhaustive receptor set, discovers existing presence before inverse work, serializes dock or undock through the coordinator, commits presence through Maestro, and re-observes before applied evidence can advance.",
+      "how": "The independently installed C++26 symphony-maestro process accepts bounded local process requests and maintains one protected per-TOPS/per-receptor registry stream. Each stream uses a private no-follow lock, alternating synchronized slots, an atomic head, linked generations, exact compare-and-swap state, content digests, semantic operation identities, and unique forward recovery. Its authenticated inventory operation locks and validates every existing receptor stream, fails closed rather than returning a partial view, sorts exact receptor/component evidence, computes a timestamp-independent stable inventory digest, and wraps it in separately timestamped observation evidence without persisting a second registry. qxctl validates the exact installation, obtains fresh SSIAG evidence for each protected operation, and verifies all response digests. Lifecycle apply supplies an exhaustive receptor set, discovers existing presence before inverse work, serializes dock or undock through the coordinator, commits presence through Maestro, and re-observes before applied evidence can advance.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -113,7 +113,7 @@
       "source_scope": "modules/maestro",
       "status": "experimental",
       "title": "Authenticated durable Maestro docking presence",
-      "what": "Provides the independently installable freezing-path authority that records which exact compatible vector-engine installation is docked to which Maestro receptor for one TOPS, with safe inspection, mutation, retry, and recovery.",
+      "what": "Provides the independently installable freezing-path authority that records which exact compatible vector-engine installation is docked to which Maestro receptor for one TOPS, with safe inspection, complete derived inventory, mutation, retry, and recovery.",
       "when": "Runs only on explicit qxctl inspection, status, lifecycle docking/undocking, or recovery under a bounded deadline and fresh SSIAG authorization. It is not continuously resident and does not execute when recorded engines perform their own work.",
       "where": "Executes locally on the Maestro-hosting TOPS node and stores protected noncanonical state under the selected per-TOPS Maestro state boundary. Its work remains outside hot and warm trading paths.",
       "who": "Any target-host-authorized caller using qxctl, lifecycle administrators, the knowledge-session coordination circuit, maintainers, and tests that need exact engine-to-receptor presence evidence.",

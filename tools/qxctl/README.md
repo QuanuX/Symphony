@@ -138,6 +138,10 @@ The SKVI, SCLV, SACV, SODV, and SSFV commands are cold/freezing-path local proce
 
 `knowledge session transition` provides an explicit idempotent adapter for a host lifecycle integration. A stable event ID composes freshly authorized status, optional bounded discovery recovery, close, begin, and checkpoint operations for `login`, `refresh`, or `logout`. Retry with the same event ID observes journal operation evidence and does not repeat a completed transition. qxctl installs no PAM module, login-manager hook, watcher, service, or boot unit.
 
+`knowledge session features begin|status|checkpoint|close|recover` administers a separate persistent SSFV maintenance stream during an open authenticated session. Begin captures the exact bound SSFV engine and a content-addressed semantic baseline. Checkpoint and close re-run the exact installation, compute an SSFV v2 diff against that immutable baseline, and record `current` or `review_required` without deciding semantic truth. `--maestro-prefix` adds a complete authenticated derived receptor inventory; omitting it records explicit `not_configured` evidence. Every mutation uses a stable operation ID, exact journal compare-and-swap, fresh SSIAG authorization, dual-slot durability, and evidence-preserving recovery. This circuit never creates or edits `FEATURES.md` and never applies an SSFV proposal.
+
+`maestro inventory` returns the sorted derived inventory for every receptor in one TOPS. Its stable inventory digest excludes the outer observation timestamp. If any receptor stream is busy, unsafe, damaged, or ambiguous, the complete request fails rather than presenting a partial deployment as complete.
+
 ```bash
 go run ./cmd/qxctl knowledge session begin \
   --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 \
@@ -154,9 +158,26 @@ go run ./cmd/qxctl knowledge session transition \
   --event login \
   --event-id host-login-0001 \
   --repo /absolute/path/to/Symphony --json
+
+go run ./cmd/qxctl knowledge session features begin \
+  --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 \
+  --operation-id features-begin-0001 \
+  --expected-journal-digest absent \
+  --repo /absolute/path/to/Symphony --json
+
+go run ./cmd/qxctl knowledge session features checkpoint \
+  --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 \
+  --operation-id features-checkpoint-0001 \
+  --expected-journal-digest sha256:... \
+  --maestro-prefix /absolute/maestro/prefix \
+  --repo /absolute/path/to/Symphony --json
+
+go run ./cmd/qxctl maestro inventory \
+  --prefix /absolute/maestro/prefix \
+  --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 --json
 ```
 
-The selected SSIAG configuration must map the invoking effective UID/GID and contain an exact grant for each requested `symphony.knowledge.session.*` operation, the opaque `symphony.knowledge.repository:<sha256>` resource derived from the canonical repository root, audience `qxctl`, and scope `tops:<tops-id>`. With no exact grant—or if STAV is unavailable—the operation fails closed without coordinator mutation.
+The selected SSIAG configuration must map the invoking effective UID/GID and contain an exact grant for each requested `symphony.knowledge.session.*`, `symphony.knowledge.ssfv_maintenance_*`, or `symphony.maestro.receptor-inventory.read` operation and its exact opaque resource, audience `qxctl`, and scope `tops:<tops-id>`. With no exact grant—or if STAV is unavailable—the operation fails closed without coordinator mutation.
 
 Generic module and vector additions, removals, upgrades, rollbacks, and first-boot convergence are contractually specified in `knowledge/LIFECYCLE.md` and the common lifecycle schemas. Binding registry v1 remains fixed to its six existing roles. qxctl persists protected per-TOPS desired profiles, collects fixed-layout configured-root observations, and invokes the exact bound C++ coordinator for disposable reports, protected durable boot journals, or the separate apply-capable v2 journal. It preserves unmanaged and unsupported packages, isolates localized blockers, binds exact receptor targets, and requires fresh exact SSIAG permission at every apply phase. The stable inventory key excludes observation time, so a later timestamp-only scan does not advance the journal; real content or compatibility changes create a linked plan revision.
 
@@ -199,6 +220,6 @@ go run ./cmd/qxctl knowledge lifecycle apply-recover \
   --operation-id node-apply-recover-0001 --discover --json
 ```
 
-Each operation requires a matching exact `symphony.knowledge.lifecycle.*` SSIAG grant and committed STAV decision. Profile updates use the digest returned by `show` or `list` as the next expected state. `boot` persists report-only plan/checkpoint identity through an exact expected journal digest; `status` is read-only and `recover` repairs only uniquely linked v1 evidence. `apply` uses that exact report journal as immutable source authority, prepares each action durably before execution, re-observes after it, and commits content-addressed applied evidence only after full convergence. A trusted staged receipt resolves only the isolated package-absence blocker for an install with no graph prerequisite or additional blocker; staged availability cannot bypass dependency order. `apply-status` is read-only and `apply-recover` repairs only uniquely linked v2 evidence while preserving an active action. Generic package mutation is restricted to exact receipt-v2 packages in explicit trusted staged roots. Exact Maestro docking presence requires `--maestro-prefix` plus one or more repeatable `--maestro-receptor-id` values, a compatible v2 vector-engine receipt, and fresh `symphony.maestro.docking.*` SSIAG capability evidence. The supplied receptor list is exhaustive for that lifecycle invocation: it must include every receptor that could currently hold a component plus every desired target receptor. This permits safe old-receptor discovery, inverse undock, and forward docking when upgrades or receptor changes occur out of order; ambiguity fails closed instead of fabricating an undocked observation. Direct Maestro administration exposes inspect, status, and bounded recovery only; lifecycle apply owns dock/undock. Package download, receipt-v1 mutation, arbitrary entry-point execution, live service or Maestro engine activation, coordinator replacement, engine rebinding, canonical knowledge apply, and host boot-hook installation remain unavailable.
+Each operation requires a matching exact `symphony.knowledge.lifecycle.*` SSIAG grant and committed STAV decision. Profile updates use the digest returned by `show` or `list` as the next expected state. `boot` persists report-only plan/checkpoint identity through an exact expected journal digest; `status` is read-only and `recover` repairs only uniquely linked v1 evidence. `apply` uses that exact report journal as immutable source authority, prepares each action durably before execution, re-observes after it, and commits content-addressed applied evidence only after full convergence. A trusted staged receipt resolves only the isolated package-absence blocker for an install with no graph prerequisite or additional blocker; staged availability cannot bypass dependency order. `apply-status` is read-only and `apply-recover` repairs only uniquely linked v2 evidence while preserving an active action. Generic package mutation is restricted to exact receipt-v2 packages in explicit trusted staged roots. Exact Maestro docking presence requires `--maestro-prefix` plus one or more repeatable `--maestro-receptor-id` values, a compatible v2 vector-engine receipt, and fresh `symphony.maestro.docking.*` SSIAG capability evidence. The supplied receptor list is exhaustive for that lifecycle invocation: it must include every receptor that could currently hold a component plus every desired target receptor. This permits safe old-receptor discovery, inverse undock, and forward docking when upgrades or receptor changes occur out of order; ambiguity fails closed instead of fabricating an undocked observation. Direct Maestro administration exposes inspect, status, bounded recovery, and complete read-only derived inventory; lifecycle apply owns dock/undock. Package download, receipt-v1 mutation, arbitrary entry-point execution, live service or Maestro engine activation, coordinator replacement, engine rebinding, canonical knowledge apply, and host boot-hook installation remain unavailable.
 
 Package mutation is serialized per target root. qxctl does not yet aggregate receipt ownership across independently administered TOPS profiles or separate state roots, so one exact uninstall authorization is not a global reference-count proof. Administrators must not grant concurrent uninstall control over the same package root to independent profiles until the shared-root ownership protocol is implemented.

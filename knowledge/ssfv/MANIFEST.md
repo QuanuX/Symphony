@@ -70,18 +70,18 @@ Every record has:
 - SODV governs feature-derived publication.
 - STAV records safe operational audit metadata where separately authorized.
 - SSIAG controls permission-backed feature administration.
-- Maestro persists exact authenticated docking presence; it does not own feature semantics or execute recorded engines.
-- qxctl is the implemented inspect/check/diff/propose/graph interface and eventual lifecycle administrator; it does not own SSFV truth.
+- Maestro persists exact authenticated docking presence and derives complete read-only receptor inventory evidence; it does not own feature semantics or execute recorded engines.
+- qxctl is the implemented inspect/check/diff/propose/graph interface and session-maintenance administrator; it does not own SSFV truth.
 
 ## Installability
 
 The independently installable C++ engine lives at `modules/ssfv-engine/` with executable `symphony-ssfv` and module identifier `ssfv-engine`. It installs under an exact versioned prefix as inactive `installed_undocked`, including alongside other compatible engine versions. Its operation vocabulary is `inspect`, `check`, `diff`, `propose`, and `graph`.
 
-The Go qxctl client validates the exact inactive-undocked receipt and invokes the selected version out of process. Generic qxctl installation, activation, receptor selection, docking, and canonical apply remain deferred.
+The Go qxctl client validates the exact inactive-undocked receipt and invokes the selected version out of process. `qxctl knowledge session features begin|status|checkpoint|close|recover` composes exact SSFV engine evidence, an open authenticated-session digest, optional complete Maestro inventory evidence, and the separately installed knowledge-session coordinator. Generic engine installation, activation, receptor selection, and canonical apply remain deferred; lifecycle-administered installation, activation, and docking are governed separately by `knowledge/LIFECYCLE.md`.
 
 ## Non-Authorization Statement
 
-This manifest authorizes the canonical SSFV contract, bounded engine/client implementation, and exact four-record partial catalog. It does not authorize an additional application `FEATURES.md`, another feature record, repository-wide completeness, canonical apply, repository mutation by SSFV tooling, graph-database persistence, additional Maestro behavior, public documentation, or marketing claims.
+This manifest authorizes the canonical SSFV contract, bounded engine/client implementation, exact four-record partial catalog, and protected noncanonical session-maintenance evidence. It does not authorize an additional application `FEATURES.md`, another feature record, repository-wide completeness, canonical apply, repository mutation by SSFV tooling, graph-database persistence, Maestro state mutation by SSFV, public documentation, or marketing claims.
 
 ## Status
 

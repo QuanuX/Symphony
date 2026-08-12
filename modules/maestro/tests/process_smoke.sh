@@ -11,3 +11,4 @@ response=$(printf '%s\n' "{\"protocol\":\"symphony.knowledge.engine-process.v1\"
 printf '%s\n' "$response" | grep -q '"outcome":"ok"'
 printf '%s\n' "$response" | grep -q '"receptor_kind":"symphony.maestro.knowledge-engine.v1"'
 printf '%s\n' "$response" | grep -q '"execution_enabled":false'
+printf '%s\n' "$response" | grep -q '"derived-receptor-inventory-v1"'

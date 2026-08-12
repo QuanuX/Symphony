@@ -3,6 +3,7 @@
 #include "lifecycle.hpp"
 #include "lifecycle_journal.hpp"
 #include "reconciliation.hpp"
+#include "ssfv_maintenance.hpp"
 
 #include "symphony/knowledge/engine/error.hpp"
 #include "symphony/knowledge/engine/limits.hpp"
@@ -41,6 +42,7 @@ engine::Json inspect(const engine::Json& payload) {
         {"authenticated_session", authority_session_capabilities()},
         {"lifecycle", lifecycle_capabilities()},
         {"lifecycle_journal", lifecycle_journal_capabilities()},
+        {"ssfv_maintenance", ssfv_maintenance_capabilities()},
         {"canonical_apply_enabled", false},
         {"session_mutation_enabled", true},
         {"maestro_docking_enabled", true},
@@ -131,6 +133,11 @@ engine::Json descriptor() {
             engine::Json{{"name", "session_checkpoint"}, {"availability", "implemented"}, {"mutates_canonical", false}},
             engine::Json{{"name", "session_close"}, {"availability", "implemented"}, {"mutates_canonical", false}},
             engine::Json{{"name", "session_recover"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "ssfv_maintenance_begin"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "ssfv_maintenance_status"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "ssfv_maintenance_checkpoint"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "ssfv_maintenance_close"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "ssfv_maintenance_recover"}, {"availability", "implemented"}, {"mutates_canonical", false}},
             engine::Json{{"name", "lifecycle_plan"}, {"availability", "implemented_report_only"}, {"mutates_canonical", false}},
             engine::Json{{"name", "lifecycle_boot"}, {"availability", "implemented_report_only_persistence"}, {"mutates_canonical", false}},
             engine::Json{{"name", "lifecycle_boot_status"}, {"availability", "implemented"}, {"mutates_canonical", false}},
@@ -179,6 +186,13 @@ engine::Json handle_request(const engine::Request& request) {
         request.operation == "session_checkpoint" || request.operation == "session_close" ||
         request.operation == "session_recover") {
         return handle_authority_session(request);
+    }
+    if (request.operation == "ssfv_maintenance_begin" ||
+        request.operation == "ssfv_maintenance_status" ||
+        request.operation == "ssfv_maintenance_checkpoint" ||
+        request.operation == "ssfv_maintenance_close" ||
+        request.operation == "ssfv_maintenance_recover") {
+        return handle_ssfv_maintenance(request);
     }
     if (request.operation == "lifecycle_plan") {
         return handle_lifecycle_plan(request);

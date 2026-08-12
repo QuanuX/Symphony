@@ -1933,24 +1933,24 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: coordinator module specification
 - truth_role: exact read/check/reconciliation/session/report/apply lifecycle operation, compatibility, durability, recovery, exit, descriptor, install, and non-authorization contract
 - owner: SKV coordinator maintainers
-- scope: Defines process inspect/check, durable reconciliation and authority epochs, deterministic planning, report-only lifecycle boot/status/recovery, and separately authorized v2 prepare/finalize/close/status/recovery with verified applied-state commitment; canonical apply remains disabled.
-- relationships: depends_on -> `knowledge/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; implements -> `knowledge/schemas/v1/engine-process-request.schema.json`; implements -> `knowledge/schemas/v1/engine-process-response.schema.json`; implements -> `knowledge/schemas/v1/reconciliation-command.schema.json`; implements -> `knowledge/schemas/v1/reconciliation-result.schema.json`; persists -> `knowledge/schemas/v1/reconciliation-journal.schema.json`; persists -> `knowledge/schemas/v1/reconciliation-head.schema.json`; implements -> `knowledge/schemas/v1/session-command.schema.json`; implements -> `knowledge/schemas/v1/session-result.schema.json`; persists -> `knowledge/schemas/v1/session-journal.schema.json`; persists -> `knowledge/schemas/v1/session-head.schema.json`; implements -> `knowledge/schemas/v1/lifecycle-plan-command.schema.json`; emits -> `knowledge/schemas/v1/lifecycle-plan.schema.json`; implements -> `knowledge/schemas/v1/lifecycle-boot-command.schema.json`; emits -> `knowledge/schemas/v1/lifecycle-boot-result.schema.json`; persists -> `knowledge/schemas/v1/lifecycle-boot-journal.schema.json`; persists -> `knowledge/schemas/v1/lifecycle-boot-head.schema.json`; implements -> `knowledge/schemas/v1/lifecycle-apply-command.schema.json`; emits -> `knowledge/schemas/v1/lifecycle-apply-result.schema.json`; persists -> `knowledge/schemas/v2/lifecycle-boot-journal.schema.json`; persists -> `knowledge/schemas/v2/lifecycle-boot-head.schema.json`; persists -> `knowledge/schemas/v1/lifecycle-applied-state.schema.json`
+- scope: Defines process inspect/check, durable reconciliation and authority epochs, persistent SSFV maintenance, deterministic planning, report-only lifecycle boot/status/recovery, and separately authorized v2 prepare/finalize/close/status/recovery with verified applied-state commitment; canonical apply remains disabled.
+- relationships: depends_on -> `knowledge/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; implements -> `knowledge/schemas/v1/engine-process-request.schema.json`; implements -> `knowledge/schemas/v1/engine-process-response.schema.json`; implements -> `knowledge/schemas/v1/reconciliation-command.schema.json`; implements -> `knowledge/schemas/v1/reconciliation-result.schema.json`; persists -> `knowledge/schemas/v1/reconciliation-journal.schema.json`; persists -> `knowledge/schemas/v1/reconciliation-head.schema.json`; implements -> `knowledge/schemas/v1/session-command.schema.json`; implements -> `knowledge/schemas/v1/session-result.schema.json`; persists -> `knowledge/schemas/v1/session-journal.schema.json`; persists -> `knowledge/schemas/v1/session-head.schema.json`; implements -> `knowledge/schemas/v1/ssfv-maintenance-command.schema.json`; emits -> `knowledge/schemas/v1/ssfv-maintenance-result.schema.json`; persists -> `knowledge/schemas/v1/ssfv-maintenance-journal.schema.json`; persists -> `knowledge/schemas/v1/ssfv-maintenance-head.schema.json`; implements -> `knowledge/schemas/v1/lifecycle-plan-command.schema.json`; emits -> `knowledge/schemas/v1/lifecycle-plan.schema.json`; implements -> `knowledge/schemas/v1/lifecycle-boot-command.schema.json`; emits -> `knowledge/schemas/v1/lifecycle-boot-result.schema.json`; persists -> `knowledge/schemas/v1/lifecycle-boot-journal.schema.json`; persists -> `knowledge/schemas/v1/lifecycle-boot-head.schema.json`; implements -> `knowledge/schemas/v1/lifecycle-apply-command.schema.json`; emits -> `knowledge/schemas/v1/lifecycle-apply-result.schema.json`; persists -> `knowledge/schemas/v2/lifecycle-boot-journal.schema.json`; persists -> `knowledge/schemas/v2/lifecycle-boot-head.schema.json`; persists -> `knowledge/schemas/v1/lifecycle-applied-state.schema.json`
 - consumers: C++ implementers, qxctl, testers, reviewers
-- deferred_projections: host boot hooks, live action adapters, and Maestro operations
-- notes: qxctl owns desired/runtime administration, observation, SSIAG exchange, and host adapters; the coordinator owns protected journals, attempt serialization, verification, applied-state selection, and recovery. Direct SSIAG/STAV calls, vector invocation, canonical apply, and live Maestro remain unimplemented.
+- deferred_projections: host boot hooks and live action adapters
+- notes: qxctl owns desired/runtime administration, read-only vector/Maestro evidence collection, SSIAG exchange, and host adapters; the coordinator owns protected journals, attempt serialization, verification, applied-state selection, and recovery. Direct SSIAG/STAV calls, vector invocation, canonical apply, and Maestro state writes remain unimplemented.
 - status: canonical
 
 #### Knowledge Session Coordinator FEATURES.md
 - path: `modules/knowledge-session-coordinator/FEATURES.md`
 - title: Knowledge Session Coordinator Semantic Features
 - surface_type: distributed SSFV feature record
-- truth_role: canonical semantic feature truth for durable reconciliation, authenticated-session, report-only lifecycle, and apply coordination
+- truth_role: canonical semantic feature truth for durable reconciliation, authenticated-session, persistent SSFV maintenance, report-only lifecycle, and apply coordination
 - owner: SKV coordinator maintainers
 - scope: Owns the experimental `ssfv:symphony:knowledge-session-coordinator` record for exact source scope `modules/knowledge-session-coordinator`.
 - relationships: depends_on -> `knowledge/ssfv/SPEC.md`; depends_on -> `modules/knowledge-session-coordinator/SPEC.md`; declares -> `ssfv:symphony:knowledge-session-coordinator`
 - consumers: symphony-ssfv, qxctl, coordinator maintainers, reviewers, administrators, agentic tools
 - deferred_projections: portable SSFV graph, authenticated-session capability lineage, operator documentation
-- notes: Records implemented inspect/check/reconciliation, SSIAG-authorized session behavior, qxctl lifecycle profile/observation/report/apply administration, staged receipt-v2/runtime adapters, report/apply journal durability, and applied-state commitment; canonical apply and live Maestro remain unimplemented.
+- notes: Records implemented inspect/check/reconciliation, SSIAG-authorized session behavior, persistent SSFV baseline/review maintenance, qxctl lifecycle profile/observation/report/apply administration, staged receipt-v2/runtime adapters, report/apply journal durability, derived Maestro inventory consumption, and applied-state commitment; canonical apply and Maestro engine execution remain unimplemented.
 - status: canonical
 
 #### Knowledge Session Coordinator CMakeLists.txt
@@ -1985,8 +1985,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: C++ coordinator implementation surface
 - truth_role: descriptor, inspect, operation routing, deadline, and canonical-non-apply boundary implementation truth
 - owner: SKV coordinator maintainers
-- scope: Routes bounded process requests across inspect/check, reconciliation, authenticated-session, lifecycle-plan, report boot/status/recovery, and apply prepare/finalize/close/status/recovery while keeping canonical apply disabled.
-- relationships: implements -> `modules/knowledge-session-coordinator/SPEC.md`; dispatches_to -> `modules/knowledge-session-coordinator/src/reconciliation.cpp`; dispatches_to -> `modules/knowledge-session-coordinator/src/authority_session.cpp`; dispatches_to -> `modules/knowledge-session-coordinator/src/lifecycle.cpp`; dispatches_to -> `modules/knowledge-session-coordinator/src/lifecycle_journal.cpp`
+- scope: Routes bounded process requests across inspect/check, reconciliation, authenticated-session, persistent SSFV maintenance, lifecycle-plan, report boot/status/recovery, and apply prepare/finalize/close/status/recovery while keeping canonical apply disabled.
+- relationships: implements -> `modules/knowledge-session-coordinator/SPEC.md`; dispatches_to -> `modules/knowledge-session-coordinator/src/reconciliation.cpp`; dispatches_to -> `modules/knowledge-session-coordinator/src/authority_session.cpp`; dispatches_to -> `modules/knowledge-session-coordinator/src/ssfv_maintenance.cpp`; dispatches_to -> `modules/knowledge-session-coordinator/src/lifecycle.cpp`; dispatches_to -> `modules/knowledge-session-coordinator/src/lifecycle_journal.cpp`
 - consumers: symphony-knowledge-session, qxctl, process tests, reviewers
 - deferred_projections: vector invocation, coordinator-owned host actions, canonical apply
 - notes: Operation availability is reported literally; capability availability grants no caller authority and report-only results never become applied state.
@@ -4788,8 +4788,151 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Policy, baselines, filters, remediation, and canonical mutation remain outside the detector process.
 - status: canonical
 
+### Maestro Receptor Inventory Command Schema
+- path: `knowledge/schemas/v1/maestro-receptor-inventory-command.schema.json`
+- title: Maestro Receptor Inventory Command Schema
+- surface_type: canonical JSON Schema
+- truth_role: authenticated complete derived-inventory request contract truth
+- owner: common SKV and Maestro maintainers
+- scope: Defines the bounded read-only inventory command, exact TOPS identity, fresh SSIAG evidence, and compatible qxctl client declaration.
+- relationships: governed_by -> `modules/maestro/SPEC.md`; implemented_by -> `modules/maestro/src/maestro.cpp`; consumed_by -> `tools/qxctl/internal/maestroclient/client.go`
+- consumers: Maestro, qxctl, SSFV maintenance, validator, reviewers
+- deferred_projections: inventory analytics and graph views
+- notes: The command authorizes no registry mutation, engine execution, or partial inventory.
+- status: canonical
+
+### Maestro Receptor Inventory Result Schema
+- path: `knowledge/schemas/v1/maestro-receptor-inventory-result.schema.json`
+- title: Maestro Receptor Inventory Result Schema
+- surface_type: canonical JSON Schema
+- truth_role: complete read-only derived receptor inventory evidence truth
+- owner: common SKV and Maestro maintainers
+- scope: Defines sorted receptor/component evidence, stable timestamp-independent inventory identity, timestamped observation identity, and fail-complete compatibility.
+- relationships: governed_by -> `modules/maestro/SPEC.md`; emitted_by -> `modules/maestro/src/maestro.cpp`; consumed_by -> `tools/qxctl/internal/maestroclient/client.go`
+- consumers: qxctl, SSFV maintenance, lifecycle administration, validator, reviewers
+- deferred_projections: inventory analytics and graph views
+- notes: Derived inventory is not a second registry, feature truth, desired state, or execution authority.
+- status: canonical
+
+### SSFV Maintenance Command Schema
+- path: `knowledge/schemas/v1/ssfv-maintenance-command.schema.json`
+- title: SSFV Maintenance Command Schema
+- surface_type: canonical JSON Schema
+- truth_role: persistent noncanonical semantic-maintenance request contract truth
+- owner: common SKV, SSFV, and coordinator maintainers
+- scope: Defines begin, status, checkpoint, close, and explicit recovery inputs with exact session, binding, engine, semantic, Maestro, compare-and-swap, and SSIAG evidence.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; implemented_by -> `modules/knowledge-session-coordinator/src/ssfv_maintenance.cpp`; emitted_by -> `tools/qxctl/cmd/qxctl/ssfv_maintenance.go`
+- consumers: qxctl, knowledge-session coordinator, validator, reviewers
+- deferred_projections: operator review reports
+- notes: The command cannot carry canonical apply authority or decide feature-worthiness.
+- status: canonical
+
+### SSFV Maintenance Head Schema
+- path: `knowledge/schemas/v1/ssfv-maintenance-head.schema.json`
+- title: SSFV Maintenance Head Schema
+- surface_type: canonical JSON Schema
+- truth_role: atomic maintenance-journal selector contract truth
+- owner: common SKV, SSFV, and coordinator maintainers
+- scope: Defines one exact dual-slot generation and journal digest selector for a protected maintenance context.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; persisted_by -> `modules/knowledge-session-coordinator/src/ssfv_maintenance.cpp`
+- consumers: knowledge-session coordinator, recovery tooling, validator, reviewers
+- deferred_projections: none
+- notes: A head selects noncanonical evidence and is never semantic or authorization truth.
+- status: canonical
+
+### SSFV Maintenance Journal Schema
+- path: `knowledge/schemas/v1/ssfv-maintenance-journal.schema.json`
+- title: SSFV Maintenance Journal Schema
+- surface_type: canonical JSON Schema
+- truth_role: persistent semantic baseline, checkpoint, lineage, and recovery evidence truth
+- owner: common SKV, SSFV, and coordinator maintainers
+- scope: Defines immutable baseline snapshot/engine evidence, separate current-engine lineage, linked checkpoints, review disposition, compatibility, extensions, and forward recovery.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; persisted_by -> `modules/knowledge-session-coordinator/src/ssfv_maintenance.cpp`; reads -> `knowledge/ssfv/schemas/v1/semantic-snapshot.schema.json`; reads -> `knowledge/ssfv/schemas/v2/diff-result.schema.json`
+- consumers: knowledge-session coordinator, qxctl, recovery tooling, validator, reviewers
+- deferred_projections: operator review reports
+- notes: Journal state is protected and noncanonical; review-required evidence cannot mutate feature truth.
+- status: canonical
+
+### SSFV Maintenance Result Schema
+- path: `knowledge/schemas/v1/ssfv-maintenance-result.schema.json`
+- title: SSFV Maintenance Result Schema
+- surface_type: canonical JSON Schema
+- truth_role: bounded maintenance status, mutation, and recovery result truth
+- owner: common SKV, SSFV, and coordinator maintainers
+- scope: Defines exact journal evidence, effective/review state, repair actions, read-only disposition, and disabled canonical apply.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; emitted_by -> `modules/knowledge-session-coordinator/src/ssfv_maintenance.cpp`; consumed_by -> `tools/qxctl/cmd/qxctl/ssfv_maintenance.go`
+- consumers: qxctl, administrators, reviewers, validator
+- deferred_projections: operator review reports
+- notes: A successful result proves maintenance-state handling, not canonical semantic ratification.
+- status: canonical
+
+### Knowledge Session Coordinator SSFV Maintenance Interface
+- path: `modules/knowledge-session-coordinator/src/ssfv_maintenance.hpp`
+- title: Knowledge Session Coordinator SSFV Maintenance Interface
+- surface_type: C++ coordinator implementation surface
+- truth_role: persistent SSFV maintenance capability and request-handler boundary
+- owner: SKV coordinator and SSFV maintainers
+- scope: Declares the bounded compatibility descriptor and maintenance dispatcher without canonical mutation authority.
+- relationships: implements -> `modules/knowledge-session-coordinator/SPEC.md`; implemented_by -> `modules/knowledge-session-coordinator/src/ssfv_maintenance.cpp`
+- consumers: coordinator dispatcher, tests, reviewers
+- deferred_projections: automatic session-close hooks
+- notes: The interface grants no feature-worthiness, Maestro-write, or canonical-apply authority.
+- status: canonical
+
+### Knowledge Session Coordinator SSFV Maintenance Implementation
+- path: `modules/knowledge-session-coordinator/src/ssfv_maintenance.cpp`
+- title: Knowledge Session Coordinator Persistent SSFV Maintenance
+- surface_type: C++ freezing-path state implementation
+- truth_role: baseline durability, upgrade-order lineage, compare-and-swap, review, and recovery implementation truth
+- owner: SKV coordinator and SSFV maintainers
+- scope: Implements protected per-TOPS/subject/repository dual-slot streams, immutable semantic baselines, separate baseline/current engines, linked checkpoints, explicit Maestro lineage, idempotency, and unique-forward recovery.
+- relationships: implements -> `modules/knowledge-session-coordinator/SPEC.md`; implements -> `knowledge/schemas/v1/ssfv-maintenance-command.schema.json`; persists -> `knowledge/schemas/v1/ssfv-maintenance-journal.schema.json`; persists -> `knowledge/schemas/v1/ssfv-maintenance-head.schema.json`; emits -> `knowledge/schemas/v1/ssfv-maintenance-result.schema.json`
+- consumers: symphony-knowledge-session, qxctl, tests, reviewers
+- deferred_projections: automatic hooks and review-report projections
+- notes: Consumes caller-supplied SSFV/Maestro evidence and never invokes an engine, edits canonical files, or writes Maestro state.
+- status: canonical
+
+### Knowledge Session Coordinator SSFV Maintenance Tests
+- path: `modules/knowledge-session-coordinator/tests/ssfv_maintenance_test.cpp`
+- title: Knowledge Session Coordinator SSFV Maintenance Tests
+- surface_type: C++26 conformance-test implementation
+- truth_role: persistence, replay, compare-and-swap, upgrade-order, corruption, and recovery proof
+- owner: SKV coordinator and SSFV maintainers
+- scope: Verifies baseline capture, semantic replay, separate engine lineage, stale-state refusal, read-only status, damaged-head detection, and explicit digest-linked forward repair.
+- relationships: verifies -> `modules/knowledge-session-coordinator/src/ssfv_maintenance.cpp`; conforms_to -> `knowledge/ssfv/SPEC.md`
+- consumers: coordinator and SSFV maintainers, reviewers, release gates
+- deferred_projections: large-corpus performance fixtures
+- notes: Tests mutate only private temporary noncanonical state.
+- status: canonical
+
+### qxctl SSFV Session Maintenance Administration
+- path: `tools/qxctl/cmd/qxctl/ssfv_maintenance.go`
+- title: qxctl SSFV Session Maintenance Administration
+- surface_type: Go freezing-path orchestration source
+- truth_role: cross-vector evidence collection, authorization, and maintenance-command composition truth
+- owner: qxctl, SSFV, and coordinator maintainers
+- scope: Implements `knowledge session features begin|status|checkpoint|close|recover` using exact coordinator/SSFV bindings, open-session evidence, read-only SSFV operations, optional complete Maestro inventory, and fresh SSIAG decisions.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; invokes -> `modules/knowledge-session-coordinator/src/ssfv_maintenance.cpp`; invokes -> `modules/ssfv-engine/src/ssfv.cpp`; invokes -> `modules/maestro/src/maestro.cpp`
+- consumers: qxctl users, administrators, tests, reviewers
+- deferred_projections: automatic hooks and canonical apply
+- notes: qxctl composes evidence but does not decide semantic truth or bypass review.
+- status: canonical
+
+### qxctl SSFV Session Maintenance Tests
+- path: `tools/qxctl/cmd/qxctl/ssfv_maintenance_test.go`
+- title: qxctl SSFV Session Maintenance Tests
+- surface_type: Go conformance-test implementation
+- truth_role: grammar, authorization binding, digest, and canonical-boundary proof
+- owner: qxctl, SSFV, and coordinator maintainers
+- scope: Verifies the command tree, operation resource, recursive canonical evidence identity, canonical-apply refusal, and exact journal-digest validation.
+- relationships: verifies -> `tools/qxctl/cmd/qxctl/ssfv_maintenance.go`; conforms_to -> `knowledge/ssfv/SPEC.md`
+- consumers: qxctl maintainers, reviewers, release gates
+- deferred_projections: installed multi-version integration fixture
+- notes: The tests authorize no canonical mutation or automatic session hook.
+- status: canonical
+
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, forty common SKV v1 JSON Schemas, three common SKV v2 JSON Schemas, three SSIAG authorization JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, forty-six common SKV v1 JSON Schemas, three common SKV v2 JSON Schemas, three SSIAG authorization JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

@@ -63,12 +63,13 @@ std::string resource(const std::string& operation, const std::string& component_
         component_id + "\n" + receipt_digest + "\n" + expected);
 }
 
-engine::Json authorization(const std::string& operation, const std::string& target_resource,
-                           const std::string& suffix) {
+engine::Json authorization_exact(const std::string& exact_operation,
+                                 const std::string& target_resource,
+                                 const std::string& suffix) {
     const auto request_id = "request-" + suffix;
     const auto correlation_id = "correlation-" + suffix;
     const auto target = engine::Json{
-        {"operation", "symphony.maestro.docking." + operation},
+        {"operation", exact_operation},
         {"resource", target_resource}, {"audience", "qxctl"},
         {"scope", "tops:" + std::string(tops_id)},
     };
@@ -79,7 +80,7 @@ engine::Json authorization(const std::string& operation, const std::string& targ
     engine::Json capability{
         {"protocol", "symphony.ssiag.capability.v1"}, {"capability_id", "pending"},
         {"subject", subject}, {"tops_id", tops_id}, {"target", target},
-        {"authority_basis", "host_owner"}, {"grant_id", "maestro-" + operation},
+        {"authority_basis", "host_owner"}, {"grant_id", "maestro-" + suffix},
         {"request_id", request_id}, {"correlation_id", correlation_id},
         {"issued_at", "2020-01-01T00:00:00Z"}, {"expires_at", "2099-01-01T00:00:00Z"},
         {"policy_digest", "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
@@ -103,7 +104,7 @@ engine::Json authorization(const std::string& operation, const std::string& targ
         "ssiag-capability:" + capability.at("binding_digest").get<std::string>().substr(7U);
     return engine::Json{
         {"schema", "symphony.ssiag.authorization-decision.v1"},
-        {"decision_id", "ssiag-decision:" + engine::sha256_hex(operation + suffix)},
+        {"decision_id", "ssiag-decision:" + engine::sha256_hex(exact_operation + suffix)},
         {"request_id", request_id}, {"correlation_id", correlation_id}, {"tops_id", tops_id},
         {"subject", subject}, {"target", target}, {"effect", "allow"},
         {"reason_code", "symphony.ssiag.policy.exact-grant"}, {"authority_basis", "host_owner"},
@@ -112,6 +113,12 @@ engine::Json authorization(const std::string& operation, const std::string& targ
         {"expires_at", capability.at("expires_at")}, {"caller_class_used", false},
         {"canonical_apply", false},
     };
+}
+
+engine::Json authorization(const std::string& operation, const std::string& target_resource,
+                           const std::string& suffix) {
+    return authorization_exact("symphony.maestro.docking." + operation,
+                               target_resource, suffix);
 }
 
 engine::Json client(bool full = true) {
@@ -158,6 +165,25 @@ engine::Request command(const std::string& operation, const fs::path& root,
     };
 }
 
+engine::Request inventory_command(const fs::path& root, bool compatible = true) {
+    auto inventory_client = client();
+    if (compatible) inventory_client["capabilities"].push_back("derived-receptor-inventory-v1");
+    const auto inventory_resource = "symphony.maestro.receptor-inventory:" +
+        engine::sha256_hex(std::string(tops_id) + "\nall\ninventory-v1");
+    return engine::Request{
+        "request-inventory", "correlation-inventory", "inventory", maestro::engine_id,
+        engine::unix_time_ms() + 60000,
+        engine::Json{
+            {"protocol", "symphony.maestro.receptor-inventory-command.v1"},
+            {"format_version", 1}, {"operation", "inventory"},
+            {"state_root", root.string()}, {"tops_id", tops_id},
+            {"authorization_decision", authorization_exact(
+                "symphony.maestro.receptor-inventory.read", inventory_resource, "inventory")},
+            {"client", std::move(inventory_client)},
+        },
+    };
+}
+
 engine::Json inspect() {
     return maestro::handle_request(command("inspect", {}, nullptr, nullptr, nullptr, nullptr));
 }
@@ -188,6 +214,38 @@ void test_descriptor_and_status_are_bounded() {
     const auto absent = maestro_status(root.path());
     require(absent.at("registry_present") == false, "status should report absent state");
     require(!fs::exists(root.path() / "symphony"), "absent status must not create state");
+}
+
+void test_derived_inventory_is_complete_stable_and_read_only() {
+    TemporaryDirectory root;
+    const auto empty = maestro::handle_request(inventory_command(root.path()));
+    require(empty.at("inventory").at("receptor_count") == 0U &&
+            empty.at("inventory").at("docked_component_count") == 0U,
+            "empty inventory reported false presence");
+    require(empty.at("read_only") == true && empty.at("derived") == true &&
+            empty.at("canonical") == false && !fs::exists(root.path() / "symphony"),
+            "empty inventory changed state or authority");
+
+    const auto docked = mutate("dock", root.path(), "absent", "inventory-dock");
+    const auto first = maestro::handle_request(inventory_command(root.path()));
+    const auto second = maestro::handle_request(inventory_command(root.path()));
+    require(first.at("inventory") == second.at("inventory"),
+            "unchanged receptor state produced a different stable inventory");
+    require(first.at("observation_digest") != second.at("observation_digest") ||
+            first.at("observed_at") == second.at("observed_at"),
+            "observation digest did not bind its UTC collection time");
+    require(first.at("inventory").at("receptor_count") == 1U &&
+            first.at("inventory").at("docked_component_count") == 1U &&
+            first.at("inventory").at("receptors").at(0).at("receptor_id") == receptor_id &&
+            first.at("inventory").at("receptors").at(0).at("registry_digest") ==
+                docked.at("registry_digest") &&
+            first.at("inventory").at("receptors").at(0).at("docked_components").at(0).at("component_id") ==
+                "skvi-engine",
+            "derived inventory omitted exact receptor presence");
+
+    require_error([&] {
+        static_cast<void>(maestro::handle_request(inventory_command(root.path(), false)));
+    }, "maestro.compatibility_required");
 }
 
 void test_dock_idempotency_cas_and_undock() {
@@ -317,6 +375,7 @@ void test_symlink_state_root_is_rejected() {
 int main() {
     try {
         test_descriptor_and_status_are_bounded();
+        test_derived_inventory_is_complete_stable_and_read_only();
         test_dock_idempotency_cas_and_undock();
         test_authorization_compatibility_and_component_fail_closed();
         test_forward_recovery_and_scope_isolation();

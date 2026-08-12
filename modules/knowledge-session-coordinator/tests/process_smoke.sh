@@ -22,6 +22,9 @@ printf '%s\n' "$RESPONSE" | grep '"session_mutation_enabled":true' >/dev/null
 printf '%s\n' "$RESPONSE" | grep '"dynamic_replanning":true' >/dev/null
 printf '%s\n' "$RESPONSE" | grep '"action_execution_enabled":false' >/dev/null
 printf '%s\n' "$RESPONSE" | grep '"persistence_enabled":true' >/dev/null
+printf '%s\n' "$RESPONSE" | grep '"name":"ssfv_maintenance_begin"' >/dev/null
+printf '%s\n' "$RESPONSE" | grep '"name":"ssfv_maintenance_recover"' >/dev/null
+printf '%s\n' "$RESPONSE" | grep '"ssfv_maintenance":{' >/dev/null
 printf '%s\n' "$RESPONSE" | grep '"response_digest":"sha256:' >/dev/null
 
 DEADLINE=$(( $(date +%s) * 1000 + 60000 ))

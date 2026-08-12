@@ -112,6 +112,20 @@ type knowledgeSessionOptions struct {
 	jsonOutput            bool
 }
 
+type knowledgeSSFVMaintenanceOptions struct {
+	topsID                string
+	scope                 string
+	stateRoot             string
+	repository            string
+	operationID           string
+	expectedJournalDigest string
+	discover              bool
+	ttl                   time.Duration
+	maestroPrefix         string
+	maestroVersion        string
+	jsonOutput            bool
+}
+
 type knowledgeLifecycleOptions struct {
 	topsID                  string
 	scope                   string
@@ -339,7 +353,7 @@ func newKnowledgeCommand() *cobra.Command {
 		Use:  "session",
 		Args: usageOnlyArgs,
 		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge session subcommand is required: begin, status, checkpoint, close, recover, or transition")
+			return fmt.Errorf("knowledge session subcommand is required: begin, status, checkpoint, close, recover, transition, or features")
 		},
 	}
 	for _, operation := range []string{"begin", "status", "checkpoint", "close", "recover"} {
@@ -390,6 +404,47 @@ func newKnowledgeCommand() *cobra.Command {
 	transition.Flags().BoolVar(&transitionOptions.jsonOutput, "json", false, "emit transition result JSON")
 	transition.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	session.AddCommand(transition)
+
+	features := &cobra.Command{
+		Use:  "features",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return fmt.Errorf("knowledge session features subcommand is required: begin, status, checkpoint, close, or recover")
+		},
+	}
+	for _, operation := range []string{"begin", "status", "checkpoint", "close", "recover"} {
+		options := knowledgeSSFVMaintenanceOptions{
+			scope: "user", ttl: 15 * time.Minute, maestroVersion: "0.1.0-dev",
+		}
+		child := &cobra.Command{
+			Use:  operation,
+			Args: usageOnlyArgs,
+			RunE: func(*cobra.Command, []string) error {
+				return runKnowledgeSSFVMaintenance(operation, options)
+			},
+		}
+		child.Flags().StringVar(&options.topsID, "tops-id", "", "immutable TOPS UUID")
+		child.Flags().StringVar(&options.scope, "scope", "user", "SSIAG installation scope: user or system")
+		child.Flags().StringVar(&options.stateRoot, "state-root", "", "state root; defaults to XDG_STATE_HOME or ~/.local/state")
+		child.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
+		child.Flags().DurationVar(&options.ttl, "ttl", 15*time.Minute, "requested maintenance authorization lifetime")
+		child.Flags().BoolVar(&options.jsonOutput, "json", false, "emit operation result JSON")
+		if operation != "status" {
+			child.Flags().StringVar(&options.operationID, "operation-id", "", "stable idempotency token for this maintenance mutation")
+			child.Flags().StringVar(&options.expectedJournalDigest, "expected-journal-digest", "", "required prior maintenance state: absent or exact tagged SHA-256 digest")
+		}
+		if operation == "begin" || operation == "checkpoint" || operation == "close" {
+			child.Flags().StringVar(&options.maestroPrefix, "maestro-prefix", "", "optional exact Maestro installation prefix for derived receptor inventory evidence")
+			child.Flags().StringVar(&options.maestroVersion, "maestro-version", "0.1.0-dev", "exact Maestro version when inventory evidence is enabled")
+		}
+		if operation == "recover" {
+			child.Flags().BoolVar(&options.discover, "discover", false, "recover from uniquely validated digest-linked local maintenance evidence")
+		}
+		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+		features.AddCommand(child)
+	}
+	features.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	session.AddCommand(features)
 	session.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	command.AddCommand(session)
 

@@ -28,6 +28,26 @@ func TestResourceAndComponentEvidenceAreDeterministic(t *testing.T) {
 	}
 }
 
+func TestInventoryResourceAndTimestampsAreStrict(t *testing.T) {
+	resource := InventoryResource("123e4567-e89b-42d3-a456-426614174000")
+	if resource != "symphony.maestro.receptor-inventory:690e82610512cb3175d39b67ca75b08d0efd15463a6ecb865659cacec01c4e71" {
+		t.Fatalf("Maestro inventory authorization resource drifted: %s", resource)
+	}
+	if !validStrictUTCTimestamp("2026-08-11T12:34:56Z") {
+		t.Fatal("canonical whole-second UTC timestamp was rejected")
+	}
+	for _, invalid := range []string{
+		"2026-08-11T12:34:56.001Z",
+		"2026-08-11T08:34:56-04:00",
+		"2026-02-31T12:34:56Z",
+		"2026-8-11T12:34:56Z",
+	} {
+		if validStrictUTCTimestamp(invalid) {
+			t.Fatalf("noncanonical inventory timestamp was accepted: %s", invalid)
+		}
+	}
+}
+
 func TestDecodedRegistryRejectsIdentityAndDigestDrift(t *testing.T) {
 	digest := "sha256:" + strings.Repeat("c", 64)
 	registry := Registry{
