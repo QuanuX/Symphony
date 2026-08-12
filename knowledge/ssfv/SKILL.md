@@ -10,12 +10,13 @@ Guide every authorized caller in reading, evaluating, proposing, reviewing, and 
 2. `knowledge/ssfv/MANIFEST.md`
 3. `knowledge/ssfv/SPEC.md`
 4. `knowledge/ssfv/NAMESPACES.md`
-5. `knowledge/ssfv/REGISTRY.md`
-6. `knowledge/ssfv/FEATURE-FILE-FORMAT.md`
-7. `knowledge/SPEC.md`
-8. `knowledge/skvi/SPEC.md`
-9. the owning module or vector contracts and implementation evidence
-10. `knowledge/sodv/SPEC.md` before proposing publication
+5. `knowledge/ssfv/COVERAGE.md`
+6. `knowledge/ssfv/REGISTRY.md`
+7. `knowledge/ssfv/FEATURE-FILE-FORMAT.md`
+8. `knowledge/SPEC.md`
+9. `knowledge/skvi/SPEC.md`
+10. the owning module or vector contracts and implementation evidence
+11. `knowledge/sodv/SPEC.md` before proposing publication
 
 ## Caller Authority
 
@@ -74,4 +75,4 @@ Stop and obtain permission-backed owner ratification before allocating a public 
 
 ## Non-Authorization Statement
 
-This skill is procedural contract guidance for the implemented engine, qxctl client, reviewed sparse-record workflow, and protected noncanonical session-maintenance circuit. The existing four-record partial catalog authorizes no additional feature record, distributed application `FEATURES.md` file, complete-catalog claim, canonical mutation, graph database, Maestro state mutation through SSFV, public documentation, or marketing output.
+This skill is procedural contract guidance for the implemented engine, qxctl client, reviewed sparse-record workflow, explicit owner-scope coverage inventory, and protected noncanonical session-maintenance circuit. The existing fifteen-record partial catalog authorizes no unreviewed feature record, unregistered application `FEATURES.md`, complete-catalog claim, canonical mutation, graph database, Maestro state mutation through SSFV, public documentation, or marketing output.

@@ -2401,7 +2401,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/`; governs -> `modules/knowledge-session-coordinator/`; governs -> `modules/skvi-engine/`; governs -> `modules/sclv-engine/`; governs -> future cleared vector-engine module paths
 - consumers: vector maintainers, engine implementers, qxctl, Maestro planners, reviewers, agentic tools
 - deferred_projections: engine inventory, install receipts, Maestro presence graph
-- notes: Foundation/coordinator and all five vector-engine `0.1.0-dev` slices plus Maestro presence exist; SSFV has exactly four experimental records and explicitly partial coverage.
+- notes: Foundation/coordinator and all five vector-engine `0.1.0-dev` slices plus Maestro presence exist; SSFV has exactly fifteen experimental records, explicit top-level owner-scope coverage, and incomplete nested review.
 - status: canonical
 
 ##### SPEC.md
@@ -2414,7 +2414,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `knowledge/schemas/v2/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
 - consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
 - deferred_projections: apply/provider/docking schemas, conformance evidence, engine inventory, docking graph
-- notes: Thirty-seven common v1 schemas and three common v2 schemas are canonical; lifecycle profile/runtime persistence, observation, planning, report/apply journal recovery, exact staged receipt-v2/runtime/Maestro-presence actions, and applied-state commitment are implemented, the four-record SSFV catalog is partial, and canonical programmatic apply is disabled.
+- notes: Forty-six common v1 schemas and three common v2 schemas are canonical; lifecycle profile/runtime persistence, observation, planning, report/apply journal recovery, exact staged receipt-v2/runtime/Maestro-presence actions, and applied-state commitment are implemented, the fifteen-record SSFV catalog is partial, and canonical programmatic apply is disabled.
 - status: canonical
 
 ##### SKILL.md
@@ -3634,7 +3634,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, agentic tools
 - deferred_projections: feature catalogs, encyclopedia views, publication inputs, graph views
-- notes: Defines the governing intent for the implemented engine and exact four-record partial catalog without granting additional-record authority.
+- notes: Defines the governing intent for the implemented engine and exact fifteen-record partial catalog without granting unratified-record authority.
 - status: canonical
 
 ##### MANIFEST.md
@@ -3643,11 +3643,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: vector contract truth
 - truth_role: canonical topology, identity, classification, and installability boundary
 - owner: SSFV maintainers
-- scope: Declares owned feature semantics, sparse distributed records, implemented engine identity, and exact four-record partial-catalog state.
+- scope: Declares owned feature semantics, sparse distributed records, implemented engine identity, explicit coverage inventory, and exact fifteen-record partial-catalog state.
 - relationships: depends_on -> `knowledge/ssfv/INTENT.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, implementers, qxctl planners, packaging planners
 - deferred_projections: installation descriptors and Maestro docking descriptors after separate review
-- notes: The engine module and four experimental records are implemented; repository-wide catalog completeness is not claimed.
+- notes: The engine module and fifteen experimental records are implemented; nested review and repository-wide catalog completeness are not claimed.
 - status: canonical
 
 ##### SKILL.md
@@ -3673,7 +3673,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, validator
 - deferred_projections: portable JSON graph, catalogs, search, documentation, and analytical views
-- notes: Engine implementation and the exact four-record partial catalog are complete; every additional record remains separately reviewed.
+- notes: Engine implementation and the exact fifteen-record partial catalog are current; every additional record remains separately reviewed and nested coverage remains incomplete.
 - status: canonical
 
 ##### NAMESPACES.md
@@ -3695,7 +3695,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: canonical distributed-feature routing registry
 - truth_role: canonical mapping from stable feature IDs to owner records
 - owner: SSFV maintainers
-- scope: Defines the exact eight-field registry grammar and routes the four records in the current partial feature set.
+- scope: Defines the exact eight-field registry grammar and routes the fifteen records in the current partial feature set.
 - relationships: depends_on -> `knowledge/ssfv/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, validator
 - deferred_projections: feature inventories and graph routing
@@ -4824,7 +4824,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: verifies -> `modules/ssfv-engine/src/ssfv.cpp`; conforms_to -> `knowledge/ssfv/SPEC.md`
 - consumers: SSFV engine maintainers, validator, reviewers
 - deferred_projections: none
-- notes: Current canonical assertions cover four records and four owner files without claiming repository-wide completeness.
+- notes: Current canonical assertions cover fifteen records and fifteen owner files without claiming nested-review or repository-wide completeness.
 - status: canonical
 
 ### qxctl Knowledge Engine Client Tests
@@ -5202,6 +5202,188 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: qxctl and SSIAG maintainers, reviewers, release gates
 - deferred_projections: separately gated SSIAG policy administration
 - notes: A generated plan is proposal evidence and never mutates SSIAG policy.
+- status: canonical
+
+### SSFV Coverage Contract
+- path: `knowledge/ssfv/COVERAGE.md`
+- title: Symphony Semantic Feature Vector Coverage
+- surface_type: canonical coverage inventory
+- truth_role: explicit SSFV source-universe, exclusion, freshness, and completion truth
+- owner: SSFV maintainers
+- scope: Enumerates every top-level application owner scope, three proposal-only exclusions, and the conditions required before coverage may become complete.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; routes_through -> `knowledge/ssfv/REGISTRY.md`
+- consumers: symphony-ssfv, Symphony Validator, qxctl, maintainers, reviewers, agentic tools
+- deferred_projections: nested feature-adjudication inventory
+- notes: Top-level owner routing is covered; nested feature, subfeature, and microfeature review remains incomplete, so coverage is partial.
+- status: canonical
+
+### STAV Protocol Kernel Semantic Feature Record
+- path: `libraries/stav-protocol-go/FEATURES.md`
+- title: STAV Protocol Kernel Semantic Features
+- surface_type: distributed SSFV feature record
+- truth_role: canonical semantic feature truth for the authority-free Go protocol kernel
+- owner: STAV protocol maintainers
+- scope: Owns `ssfv:symphony:stav-protocol-kernel` for exact source scope `libraries/stav-protocol-go`.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `libraries/stav-protocol-go/MANIFEST.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`
+- consumers: symphony-ssfv, qxctl, STAV implementers, reviewers, agentic tools
+- deferred_projections: feature catalog and portable graph
+- notes: Records protocol mechanics without append, persistence, supervision, or authorization authority.
+- status: canonical
+
+### STAV Append Authority Semantic Feature Record
+- path: `modules/stav-append-authority/FEATURES.md`
+- title: STAV Append Authority Semantic Features
+- surface_type: distributed SSFV feature record
+- truth_role: canonical semantic feature truth for serialized durable STAV append and query behavior
+- owner: STAV append-authority maintainers
+- scope: Owns `ssfv:symphony:stav-append-authority` for exact source scope `modules/stav-append-authority`.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `modules/stav-append-authority/SPEC.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`
+- consumers: symphony-ssfv, qxctl, STAV maintainers, reviewers, agentic tools
+- deferred_projections: feature catalog and portable graph
+- notes: Records implemented append, recovery, and bounded query behavior without producer or policy authority.
+- status: canonical
+
+### SSIAG Foundation Semantic Feature Record
+- path: `modules/secure-identity-access-governance/FEATURES.md`
+- title: SSIAG Foundation Semantic Features
+- surface_type: distributed SSFV feature record
+- truth_role: canonical semantic feature truth for local identity, endpoint trust, decisions, and audit production
+- owner: SSIAG foundation maintainers
+- scope: Owns `ssfv:symphony:ssiag-foundation` for exact source scope `modules/secure-identity-access-governance`.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `modules/secure-identity-access-governance/SPEC.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`
+- consumers: symphony-ssfv, qxctl, SSIAG maintainers, reviewers, agentic tools
+- deferred_projections: feature catalog and portable graph
+- notes: Records current caller-neutral decision behavior; credential delivery and policy mutation remain unavailable.
+- status: canonical
+
+### SSIAG macOS Keychain Metadata Semantic Feature Record
+- path: `modules/ssiag-provider-macos-keychain/FEATURES.md`
+- title: SSIAG macOS Keychain Metadata Semantic Features
+- surface_type: distributed SSFV subfeature record
+- truth_role: canonical semantic truth for the isolated metadata-only Swift provider adapter
+- owner: SSIAG macOS provider maintainers
+- scope: Owns `ssfv:symphony:ssiag.macos-keychain-metadata` for exact source scope `modules/ssiag-provider-macos-keychain`.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `modules/ssiag-provider-macos-keychain/SPEC.md`; parent -> `ssfv:symphony:ssiag-foundation`
+- consumers: symphony-ssfv, qxctl, provider maintainers, reviewers, agentic tools
+- deferred_projections: provider capability catalog
+- notes: Operational Keychain access and secret delivery remain deliberately disabled.
+- status: canonical
+
+### SKVI Engine Semantic Feature Record
+- path: `modules/skvi-engine/FEATURES.md`
+- title: SKVI Engine Semantic Features
+- surface_type: distributed SSFV feature record
+- truth_role: canonical semantic feature truth for the independently installed SKVI engine
+- owner: SKVI engine maintainers
+- scope: Owns `ssfv:symphony:skvi-engine` for exact source scope `modules/skvi-engine`.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `modules/skvi-engine/SPEC.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`
+- consumers: symphony-ssfv, qxctl, SKVI maintainers, reviewers, agentic tools
+- deferred_projections: feature catalog and portable graph
+- notes: Records bounded evidence and proposal behavior without canonical apply or membership authority.
+- status: canonical
+
+### SCLV Engine Semantic Feature Record
+- path: `modules/sclv-engine/FEATURES.md`
+- title: SCLV Engine Semantic Features
+- surface_type: distributed SSFV feature record
+- truth_role: canonical semantic feature truth for the independently installed SCLV engine
+- owner: SCLV engine maintainers
+- scope: Owns `ssfv:symphony:sclv-engine` for exact source scope `modules/sclv-engine`.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `modules/sclv-engine/SPEC.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`
+- consumers: symphony-ssfv, qxctl, SCLV maintainers, reviewers, agentic tools
+- deferred_projections: feature catalog and portable graph
+- notes: Records change-truth evidence behavior without ratification, Git-provider dependency, or canonical append authority.
+- status: canonical
+
+### SACV Engine Semantic Feature Record
+- path: `modules/sacv-engine/FEATURES.md`
+- title: SACV Engine Semantic Features
+- surface_type: distributed SSFV feature record
+- truth_role: canonical semantic feature truth for the independently installed SACV engine
+- owner: SACV engine maintainers
+- scope: Owns `ssfv:symphony:sacv-engine` for exact source scope `modules/sacv-engine`.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `modules/sacv-engine/SPEC.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`
+- consumers: symphony-ssfv, qxctl, SACV maintainers, reviewers, agentic tools
+- deferred_projections: feature catalog and portable graph
+- notes: Records API-contract governance behavior without claiming an endpoint, SDK, publication, or canonical apply.
+- status: canonical
+
+### SODV Engine Semantic Feature Record
+- path: `modules/sodv-engine/FEATURES.md`
+- title: SODV Engine Semantic Features
+- surface_type: distributed SSFV feature record
+- truth_role: canonical semantic feature truth for the independently installed SODV engine
+- owner: SODV engine maintainers
+- scope: Owns `ssfv:symphony:sodv-engine` for exact source scope `modules/sodv-engine`.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `modules/sodv-engine/SPEC.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`
+- consumers: symphony-ssfv, qxctl, SODV maintainers, reviewers, agentic tools
+- deferred_projections: feature catalog and portable graph
+- notes: Records provider-neutral release evidence behavior without network, tag, upload, or completion authority.
+- status: canonical
+
+### SSFV Engine Semantic Feature Record
+- path: `modules/ssfv-engine/FEATURES.md`
+- title: SSFV Engine Semantic Features
+- surface_type: distributed SSFV feature record
+- truth_role: canonical semantic feature truth for the independently installed SSFV engine
+- owner: SSFV engine maintainers
+- scope: Owns `ssfv:symphony:ssfv-engine` for exact source scope `modules/ssfv-engine`.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `modules/ssfv-engine/SPEC.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`
+- consumers: symphony-ssfv, qxctl, SSFV maintainers, reviewers, agentic tools
+- deferred_projections: feature catalog and portable graph
+- notes: Records semantic evidence and proposal behavior without feature-worthiness or canonical mutation authority.
+- status: canonical
+
+### qxctl Semantic Feature Record
+- path: `tools/qxctl/FEATURES.md`
+- title: qxctl Semantic Features
+- surface_type: distributed SSFV feature record
+- truth_role: canonical semantic feature truth for the Go administrative and query CLI
+- owner: qxctl maintainers
+- scope: Owns `ssfv:symphony:qxctl` for exact source scope `tools/qxctl`.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `tools/qxctl/MANIFEST.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`
+- consumers: symphony-ssfv, qxctl maintainers, reviewers, agentic tools
+- deferred_projections: command and capability catalog
+- notes: Records the administrative interface without transferring vector-schema, policy, ledger, or runtime authority to the CLI.
+- status: canonical
+
+### Symphony Validator Semantic Feature Record
+- path: `tools/symphony-validator/FEATURES.md`
+- title: Symphony Validator Semantic Features
+- surface_type: distributed SSFV feature record
+- truth_role: canonical semantic feature truth for deterministic read-only repository validation
+- owner: Symphony Validator maintainers
+- scope: Owns `ssfv:symphony:symphony-validator` for exact source scope `tools/symphony-validator`.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `tools/symphony-validator/SPEC.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`
+- consumers: symphony-ssfv, qxctl, validator maintainers, reviewers, agentic tools
+- deferred_projections: Markdown validation projection
+- notes: Records deterministic line and JSON evidence behavior without remediation, ratification, or runtime residency.
+- status: canonical
+
+### SSIAG Policy Implementation
+- path: `modules/secure-identity-access-governance/internal/policy/policy.go`
+- title: SSIAG Authorization Policy Implementation
+- surface_type: Go authorization implementation
+- truth_role: exact caller-neutral local allow/deny decision implementation truth
+- owner: SSIAG foundation maintainers
+- scope: Derives the authenticated subject from local peer evidence, evaluates exact operation/resource grants, and releases decisions only after safe STAV evidence commits.
+- relationships: implements -> `knowledge/ssiag/SPEC.md`; conforms_to -> `knowledge/ssiag/schemas/v1/authorization-decision.schema.json`
+- consumers: SSIAG server, qxctl, coordinator, tests, reviewers
+- deferred_projections: separately gated policy administration
+- notes: Current policy is configuration-derived and mutation remains disabled.
+- status: canonical
+
+### qxctl SSIAG Client
+- path: `tools/qxctl/internal/ssiagclient/client.go`
+- title: qxctl SSIAG Client
+- surface_type: Go authenticated local-client implementation
+- truth_role: exact SSIAG endpoint authentication and decision-validation truth
+- owner: qxctl and SSIAG maintainers
+- scope: Authenticates the configured local SSIAG endpoint and validates operation-bound caller-neutral authorization evidence for protected qxctl operations.
+- relationships: conforms_to -> `knowledge/ssiag/schemas/v1/authorization-decision.schema.json`; implements -> `tools/qxctl/MANIFEST.md`
+- consumers: qxctl protected commands, tests, reviewers
+- deferred_projections: remote node transport under a future contract
+- notes: The client cannot grant permission, mutate policy, or infer authority from caller type.
 - status: canonical
 
 ## Deferred Projections

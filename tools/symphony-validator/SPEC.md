@@ -102,7 +102,7 @@ When `modules/maestro/` exists, the validator requires its Contract Quad, instal
 
 ### SSFV Contract Boundary
 
-The validator requires `knowledge/ssfv/INTENT.md`, `MANIFEST.md`, `SKILL.md`, `SPEC.md`, `NAMESPACES.md`, `REGISTRY.md`, and `FEATURE-FILE-FORMAT.md`, checks their declared anchors, and requires SKVI coverage for those seven surfaces. When `modules/ssfv-engine/` exists, it also requires the module Contract Quad, `INSTALL.md`, `CMakeLists.txt`, and qxctl SSFV grammar/client anchors. It recognizes exactly the eighteen SSFV v1/v2 JSON paths declared above. It does not parse distributed `FEATURES.md` records, decide feature-worthiness or lifecycle, generate a graph, create proposals, or duplicate `symphony-ssfv`.
+The validator requires `knowledge/ssfv/INTENT.md`, `MANIFEST.md`, `SKILL.md`, `SPEC.md`, `COVERAGE.md`, `NAMESPACES.md`, `REGISTRY.md`, and `FEATURE-FILE-FORMAT.md`, checks their declared anchors, and requires SKVI coverage for those eight surfaces. When `modules/ssfv-engine/` exists, it also requires the module Contract Quad, `INSTALL.md`, `CMakeLists.txt`, and qxctl SSFV grammar/client anchors. It recognizes exactly the eighteen SSFV v1/v2 JSON paths declared above. It does not parse distributed `FEATURES.md` records, decide feature-worthiness or lifecycle, generate a graph, create proposals, or duplicate `symphony-ssfv`.
 
 ### SACV Registry Boundary
 
