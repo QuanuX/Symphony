@@ -208,7 +208,11 @@ func (e *Executor) execute(result *ExecutionResult, action PlannedAction, desire
 		if err != nil {
 			return err
 		}
-		if err := installReceiptV2(source.root, component.InstallRoot, source.relativePath, receipt); err != nil {
+		owner, err := NewOwnershipStore(component.InstallRoot, e.stateRoot, e.topsID, e.profileID)
+		if err != nil {
+			return err
+		}
+		if err := installReceiptV2(source.root, component.InstallRoot, source.relativePath, receipt, owner); err != nil {
 			return err
 		}
 		result.AfterEvidenceDigests = append(result.AfterEvidenceDigests, receipt.ReceiptDigest)
@@ -241,7 +245,11 @@ func (e *Executor) execute(result *ExecutionResult, action PlannedAction, desire
 			if source.root == component.InstallRoot {
 				return fmt.Errorf("integrity_fatal: rollback source must be separate from the installed package root")
 			}
-			if err := uninstallReceiptV2(component.InstallRoot, source.root, source.relativePath, receipt); err != nil {
+			owner, err := NewOwnershipStore(component.InstallRoot, e.stateRoot, e.topsID, e.profileID)
+			if err != nil {
+				return err
+			}
+			if err := uninstallReceiptV2(component.InstallRoot, source.root, source.relativePath, receipt, owner); err != nil {
 				return err
 			}
 			result.AfterEvidenceDigests = append(result.AfterEvidenceDigests, digest)

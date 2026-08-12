@@ -181,7 +181,25 @@ func runKnowledgeLifecycleApply(options knowledgeLifecycleOptions) error {
 			}
 		}
 
-		execution := executor.Execute(*active, profile.DesiredState, observation)
+		if err := authorizeKnowledgeLifecycle(options, "ownership.reconcile", lifecycleResource(
+			options.topsID, options.profileID, profileDigest+"\n"+observation.ObservationDigest)); err != nil {
+			return err
+		}
+		var execution knowledgelifecycle.ExecutionResult
+		err = store.WithProfileSnapshot(options.profileID, func(locked knowledgelifecycle.Profile) error {
+			if locked.ProfileDigest != profileDigest ||
+				locked.DesiredState.DesiredStateDigest != profile.DesiredState.DesiredStateDigest {
+				return fmt.Errorf("lifecycle profile changed before ownership reconciliation; observe and retry")
+			}
+			if _, reconcileErr := executor.ReconcileOwnership(locked.DesiredState, observation); reconcileErr != nil {
+				return fmt.Errorf("reconcile shared-root ownership before lifecycle action: %w", reconcileErr)
+			}
+			execution = executor.Execute(*active, locked.DesiredState, observation)
+			return nil
+		})
+		if err != nil {
+			return err
+		}
 		after, afterProfileDigest, afterProfile, err := buildLifecycleObservation(options, false)
 		if err != nil {
 			return err

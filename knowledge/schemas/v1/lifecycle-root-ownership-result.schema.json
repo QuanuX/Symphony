@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-root-ownership-result:v1",
+  "title": "Symphony lifecycle shared-root ownership result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "operation", "changed", "snapshot", "canonical", "result_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.lifecycle-root-ownership-result.v1"},
+    "operation": {"enum": ["status", "reconcile", "adopt", "release"]},
+    "changed": {"type": "boolean"},
+    "snapshot": {"$ref": "#/$defs/snapshot"},
+    "canonical": {"const": false},
+    "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "snapshot": {
+      "type": "object", "additionalProperties": false,
+      "required": ["exists", "registry"],
+      "properties": {
+        "exists": {"type": "boolean"},
+        "registry": {"oneOf": [{"type": "null"}, {"$ref": "urn:symphony:knowledge:lifecycle-root-ownership:v1"}]}
+      },
+      "allOf": [
+        {"if": {"properties": {"exists": {"const": false}}}, "then": {"properties": {"registry": {"type": "null"}}}},
+        {"if": {"properties": {"exists": {"const": true}}}, "then": {"properties": {"registry": {"$ref": "urn:symphony:knowledge:lifecycle-root-ownership:v1"}}}}
+      ]
+    },
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

@@ -93,7 +93,10 @@ foreach(spec IN LISTS owned_specs)
     endif()
     list(GET fields 0 relative)
     list(GET fields 1 kind)
-    if(NOT kind MATCHES "^(regular|executable)$" OR relative MATCHES "(^/|(^|/)\\.\\.?(/|$)|//|\\\\)")
+    if(NOT kind MATCHES "^(regular|executable)$" OR
+       relative MATCHES "(^/|(^|/)\\.\\.?(/|$)|//|\\\\)" OR
+       relative MATCHES "^\\.symphony-" OR
+       relative MATCHES "^share/symphony/receipts(/|$)")
         message(FATAL_ERROR "unsafe receipt-v2 owned-file declaration: ${spec}")
     endif()
     list(FIND owned_paths "${relative}" duplicate_owned_path)

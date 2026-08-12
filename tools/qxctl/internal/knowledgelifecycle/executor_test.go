@@ -101,13 +101,20 @@ func TestExecutorInstallsAndUninstallsV2WithRollbackProof(t *testing.T) {
 		PackageID: receipt.PackageID, Version: receipt.Version,
 		ReceiptProtocol: receipt.Protocol, ReceiptDigest: receipt.ReceiptDigest,
 	}
-	desired := DesiredState{Components: []DesiredComponent{{
+	desired := DesiredState{TOPSID: testTOPSID, ProfileID: "default", Components: []DesiredComponent{{
 		ComponentID: "example", Presence: "present", InstallRoot: targetRoot, SelectedPackage: &selected,
 	}}}
 	install := PlannedAction{
 		ActionID: "lifecycle-action:install", ComponentID: "example", Kind: "install", Direction: "forward",
 		TargetStateDigest: tagged("install-target"), ExpectedArtifactDigests: []string{receipt.ReceiptDigest},
 		ExpectedEvidence: []string{}, PrerequisiteActionIDs: []string{}, Disposition: "waiting", Blockers: []Blocker{},
+	}
+	unclaimed := executor.Execute(install, desired, Observation{})
+	if unclaimed.Outcome != "failed" || unclaimed.BlockerClass == nil || *unclaimed.BlockerClass != "dependency_wait" {
+		t.Fatalf("package install bypassed the exact retained ownership claim: %+v", unclaimed)
+	}
+	if _, err := executor.ReconcileOwnership(desired, Observation{TOPSID: testTOPSID, ProfileID: "default"}); err != nil {
+		t.Fatal(err)
 	}
 	result := executor.Execute(install, desired, Observation{})
 	if result.Outcome != "committed" || !taggedDigest(result.EvidenceDigest) {
@@ -141,9 +148,12 @@ func TestExecutorInstallsAndUninstallsV2WithRollbackProof(t *testing.T) {
 		t.Fatalf("generic runtime state was not projected into observation: %+v err=%v", runtimeObserved, err)
 	}
 
-	absent := DesiredState{Components: []DesiredComponent{{
+	absent := DesiredState{TOPSID: testTOPSID, ProfileID: "default", Components: []DesiredComponent{{
 		ComponentID: "example", Presence: "absent", InstallRoot: targetRoot,
 	}}}
+	if _, err := executor.ReconcileOwnership(absent, observed); err != nil {
+		t.Fatal(err)
+	}
 	uninstall := PlannedAction{
 		ActionID: "lifecycle-action:uninstall", ComponentID: "example", Kind: "uninstall", Direction: "inverse",
 		TargetStateDigest: tagged("uninstall-target"), ExpectedArtifactDigests: []string{receipt.ReceiptDigest},
@@ -185,10 +195,13 @@ func TestExecutorRefusesConflictingTargetAndUnprovenRemoval(t *testing.T) {
 	writeTestFile(t, filepath.Join(stagedRoot, receiptRelative), encoded, 0o600)
 	writeTestFile(t, filepath.Join(targetRoot, ownedPath), []byte("administrator data"), 0o600)
 	executor, _ := NewExecutor(stateRoot, testTOPSID, "default", []string{stagedRoot})
-	desired := DesiredState{Components: []DesiredComponent{{
+	desired := DesiredState{TOPSID: testTOPSID, ProfileID: "default", Components: []DesiredComponent{{
 		ComponentID: "example", Presence: "present", InstallRoot: targetRoot,
 		SelectedPackage: &PackageIdentity{PackageID: "example", Version: "1", ReceiptProtocol: receipt.Protocol, ReceiptDigest: receipt.ReceiptDigest},
 	}}}
+	if _, err := executor.ReconcileOwnership(desired, Observation{TOPSID: testTOPSID, ProfileID: "default"}); err != nil {
+		t.Fatal(err)
+	}
 	action := PlannedAction{
 		ActionID: "lifecycle-action:conflict", ComponentID: "example", Kind: "install", Direction: "forward",
 		TargetStateDigest: tagged("target"), ExpectedArtifactDigests: []string{receipt.ReceiptDigest},

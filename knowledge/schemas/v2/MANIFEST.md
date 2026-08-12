@@ -6,7 +6,7 @@ These exact JSON Schema files are canonical common lifecycle contract truth owne
 
 ## Schemas
 
-- `install-receipt.schema.json`: immutable content-addressed package ownership, entry-point, capability, receptor-compatibility, and platform-requirement evidence. Activation, docking, selected-version, and mutable installation state are deliberately excluded.
+- `install-receipt.schema.json`: immutable content-addressed package ownership, entry-point, capability, receptor-compatibility, and platform-requirement evidence. Root-level `.symphony-*` control files and the complete `share/symphony/receipts/` namespace are reserved and cannot be package-owned. Activation, docking, selected-version, and mutable installation state are deliberately excluded.
 - `lifecycle-boot-journal.schema.json`: apply-capable dual-slot transaction evidence that links one exact report-only source journal to prepared and finalized action attempts, dynamic plan revisions, recovery, and content-addressed applied-state commitment.
 - `lifecycle-boot-head.schema.json`: atomic selector for the active member of the apply-capable dual-slot journal without replacing or rewriting report-only v1 evidence.
 

@@ -73,7 +73,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:a19a077a9e4b954b25aa879984e31a359e334ee713c7a100eeabbb21af6610c3`
+- record_digest: `sha256:1f7334704d8a26290772267a1c23581bfe05815e582970705f2a44ddf13f1d0d`
 - notes: Partial-catalog record for the Go Cobra/Viper administrative and query surface across independently installed Symphony modules.
 
 - feature_id: `ssfv:symphony:sacv-engine`

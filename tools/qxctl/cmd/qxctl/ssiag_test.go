@@ -49,7 +49,7 @@ func TestSSIAGLifecycleGrantPlanUsesStableProfileResource(t *testing.T) {
 	if err := decoder.Decode(&plan); err != nil {
 		t.Fatal(err)
 	}
-	if len(plan.Grants) != 14 || plan.ApplyEnabled || plan.Canonical || !validTaggedDigest(plan.PlanDigest) {
+	if len(plan.Grants) != 18 || plan.ApplyEnabled || plan.Canonical || !validTaggedDigest(plan.PlanDigest) {
 		t.Fatalf("unexpected lifecycle grant plan: %+v", plan)
 	}
 	wantResource := lifecycleResource(ssiagTestTOPSID, "default", "changing-evidence-does-not-change-policy")

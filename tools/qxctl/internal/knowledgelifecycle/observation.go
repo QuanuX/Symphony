@@ -319,6 +319,12 @@ func Observe(input ObservationInput) (Observation, error) {
 	evidence := make([]packageEvidence, 0, len(candidates))
 	unknown := make([]UnknownPackage, 0)
 	for _, candidate := range candidates {
+		if isOwnershipFenceCandidate(candidate) {
+			if !candidate.readable || !validOwnershipFence(candidate.data) {
+				unknown = append(unknown, unknownFrom(candidate, "invalid_receipt"))
+			}
+			continue
+		}
 		if !candidate.readable {
 			unknown = append(unknown, unknownFrom(candidate, "unreadable"))
 			continue
@@ -582,7 +588,8 @@ func validateReceiptV2(candidate receiptCandidate, receipt receiptV2) error {
 	}
 	seenFiles := make(map[string]struct{}, len(receipt.Files))
 	for _, file := range receipt.Files {
-		if !safeRelativePath(file.Path) || !oneOf(file.Kind, "regular", "executable") || !taggedDigest(file.Digest) {
+		if !safeRelativePath(file.Path) || reservedPackageOwnedPath(file.Path) ||
+			!oneOf(file.Kind, "regular", "executable") || !taggedDigest(file.Digest) {
 			return fmt.Errorf("v2 receipt file entry is invalid")
 		}
 		if _, duplicate := seenFiles[file.Path]; duplicate {
@@ -626,6 +633,11 @@ func validateReceiptV2(candidate receiptCandidate, receipt receiptV2) error {
 		return fmt.Errorf("v2 receipt digest mismatch")
 	}
 	return nil
+}
+
+func reservedPackageOwnedPath(value string) bool {
+	return value == packageMutationLock || value == ownershipRegistryFile || strings.HasPrefix(value, ".symphony-") ||
+		value == "share/symphony/receipts" || strings.HasPrefix(value, "share/symphony/receipts/")
 }
 
 func receiptProtocol(data []byte) (string, error) {

@@ -22,8 +22,8 @@
     "scope": {"$ref": "#/$defs/token"},
     "grants": {
       "type": "array",
-      "minItems": 14,
-      "maxItems": 14,
+      "minItems": 18,
+      "maxItems": 18,
       "items": {"$ref": "#/$defs/grant"}
     },
     "apply_enabled": {"const": false},

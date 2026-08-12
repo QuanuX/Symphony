@@ -55,6 +55,7 @@ Commands:
   knowledge lifecycle profile show --tops-id UUID [--profile-id ID] [--json] Read one protected lifecycle profile
   knowledge lifecycle profile set --tops-id UUID --input FILE --expected-profile-digest STATE [--profile-id ID] [--json] Commit exact desired profile intent
   knowledge lifecycle profile remove --tops-id UUID --expected-profile-digest DIGEST [--profile-id ID] [--json] Remove one protected lifecycle profile
+  knowledge lifecycle ownership status|reconcile|adopt|release --tops-id UUID --root PATH [--profile-id ID] [...] Administer shared-root claims
   knowledge lifecycle observe --tops-id UUID [--profile-id ID | --root PATH...] [--json] Inventory fixed-layout receipts without execution
   knowledge lifecycle report --tops-id UUID [--profile-id ID] [--prior-applied-state-digest DIGEST] [--json] Re-observe and produce a dynamic report-only plan
   knowledge lifecycle boot --tops-id UUID --operation-id ID --expected-journal-digest STATE [--json] Durably record or replan report-only boot evidence

@@ -90,6 +90,7 @@ func printUsage() {
 	fmt.Println("  knowledge lifecycle profile show --tops-id UUID [--profile-id ID] [--json] Read one protected lifecycle profile")
 	fmt.Println("  knowledge lifecycle profile set --tops-id UUID --input FILE --expected-profile-digest STATE [--profile-id ID] [--json] Commit exact desired profile intent")
 	fmt.Println("  knowledge lifecycle profile remove --tops-id UUID --expected-profile-digest DIGEST [--profile-id ID] [--json] Remove one protected lifecycle profile")
+	fmt.Println("  knowledge lifecycle ownership status|reconcile|adopt|release --tops-id UUID --root PATH [--profile-id ID] [...] Administer shared-root claims")
 	fmt.Println("  knowledge lifecycle observe --tops-id UUID [--profile-id ID | --root PATH...] [--json] Inventory fixed-layout receipts without execution")
 	fmt.Println("  knowledge lifecycle report --tops-id UUID [--profile-id ID] [--prior-applied-state-digest DIGEST] [--json] Re-observe and produce a dynamic report-only plan")
 	fmt.Println("  knowledge lifecycle boot --tops-id UUID --operation-id ID --expected-journal-digest STATE [--json] Durably record or replan report-only boot evidence")
@@ -2808,6 +2809,7 @@ func runSSIAGLifecycleGrantPlan(options ssiagOptions) error {
 	permissions := []string{
 		"apply.close", "apply.finalize", "apply.prepare", "apply.recover", "apply.status",
 		"boot", "boot.recover", "boot.status", "observe",
+		"ownership.adopt", "ownership.reconcile", "ownership.release", "ownership.status",
 		"profile.list", "profile.remove", "profile.set", "profile.show", "report",
 	}
 	resource := lifecycleResource(options.topsID, options.profileID, "")

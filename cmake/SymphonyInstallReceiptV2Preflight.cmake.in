@@ -1,6 +1,19 @@
 set(receipt_relative "@SYMPHONY_RECEIPT_PREFLIGHT_PATH@")
 set(install_root "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}")
 set(receipt_absolute "${install_root}/${receipt_relative}")
+set(ownership_registry "${install_root}/.symphony-lifecycle-ownership-v1.json")
+set(ownership_fence "${install_root}/share/symphony/receipts/symphony-root-ownership/1/install-receipt.json")
+
+# Once qxctl establishes the shared-root ownership fence or registry, direct
+# package installers must not race the authenticated lifecycle circuit or
+# create unclaimed inventory. Staged installs remain valid because their
+# private root has neither marker; qxctl performs the serialized final mutation.
+if(IS_SYMLINK "${ownership_registry}" OR EXISTS "${ownership_registry}" OR
+   IS_SYMLINK "${ownership_fence}" OR EXISTS "${ownership_fence}")
+    message(FATAL_ERROR
+        "this installation root is administered by qxctl shared-root ownership; "
+        "stage the package and use the authenticated lifecycle apply circuit")
+endif()
 
 # The receipt is the immutable commit marker for one exact package version.
 # This preflight is deliberately registered before any owned-file install rule,

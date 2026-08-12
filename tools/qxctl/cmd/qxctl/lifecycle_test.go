@@ -10,6 +10,32 @@ import (
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgelifecycle"
 )
 
+func TestProfileInputRetainsClaimUntilComponentAbsenceConverges(t *testing.T) {
+	root := "/opt/symphony"
+	input := knowledgelifecycle.ProfileInput{
+		ConfiguredRoots: []string{root},
+		Components: []knowledgelifecycle.DesiredComponent{{
+			ComponentID: "example", InstallRoot: root, Presence: "absent",
+		}},
+	}
+	if !profileInputRetainsClaim(input, root, "example") {
+		t.Fatal("explicit desired absence did not retain the claimed component mapping for convergence")
+	}
+	input.Components = nil
+	if profileInputRetainsClaim(input, root, "example") {
+		t.Fatal("removed component silently retained an ownership claim")
+	}
+	input.Components = []knowledgelifecycle.DesiredComponent{{ComponentID: "example", InstallRoot: "/opt/other"}}
+	if profileInputRetainsClaim(input, root, "example") {
+		t.Fatal("relocated component silently retained the old-root ownership claim")
+	}
+	input.ConfiguredRoots = nil
+	input.Components[0].InstallRoot = root
+	if profileInputRetainsClaim(input, root, "example") {
+		t.Fatal("removed configured root silently retained an ownership claim")
+	}
+}
+
 func TestValidateLifecyclePlanRejectsApplyAndAcceptsDynamicReport(t *testing.T) {
 	desired := lifecycleTestDigest("desired")
 	observed := lifecycleTestDigest("observed")

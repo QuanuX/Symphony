@@ -24,6 +24,9 @@
 - `internal/knowledgebinding/state_unsupported.go`
 - `internal/knowledgelifecycle/profile.go`
 - `internal/knowledgelifecycle/observation.go`
+- `internal/knowledgelifecycle/ownership.go`
+- `internal/knowledgelifecycle/ownership_unix.go`
+- `internal/knowledgelifecycle/ownership_unsupported.go`
 - `internal/knowledgelifecycle/executor.go`
 - `internal/knowledgelifecycle/install_unix.go`
 - `internal/knowledgelifecycle/install_unsupported.go`
@@ -80,6 +83,10 @@
 - `qxctl knowledge lifecycle profile show --tops-id UUID [--profile-id ID] [--scope user|system] [--state-root PATH] [--json]`
 - `qxctl knowledge lifecycle profile set --tops-id UUID --input FILE --expected-profile-digest absent|DIGEST [--profile-id ID] [--scope user|system] [--state-root PATH] [--json]`
 - `qxctl knowledge lifecycle profile remove --tops-id UUID --expected-profile-digest DIGEST [--profile-id ID] [--scope user|system] [--state-root PATH] [--json]`
+- `qxctl knowledge lifecycle ownership status --tops-id UUID --root PATH [--profile-id ID] [--scope user|system] [--state-root PATH] [--json]`
+- `qxctl knowledge lifecycle ownership reconcile --tops-id UUID --root PATH [--profile-id ID] [--scope user|system] [--state-root PATH] [--json]`
+- `qxctl knowledge lifecycle ownership adopt --tops-id UUID --root PATH --expected-ownership-registry-digest DIGEST [--profile-id ID] [--scope user|system] [--state-root PATH] [--json]`
+- `qxctl knowledge lifecycle ownership release --tops-id UUID --root PATH --receipt-digest DIGEST --expected-ownership-registry-digest DIGEST [--profile-id ID] [--scope user|system] [--state-root PATH] [--json]`
 - `qxctl knowledge lifecycle observe --tops-id UUID [--profile-id ID | --root PATH...] [--scope user|system] [--state-root PATH] [--json]`
 - `qxctl knowledge lifecycle report --tops-id UUID [--profile-id ID] [--prior-applied-state-digest DIGEST] [--scope user|system] [--state-root PATH] [--repo PATH] [--json]`
 - `qxctl knowledge lifecycle boot --tops-id UUID --operation-id ID --expected-journal-digest absent|DIGEST [--profile-id ID] [--prior-applied-state-digest DIGEST] [--scope user|system] [--state-root PATH] [--repo PATH] [--json]`
@@ -124,7 +131,7 @@
 - `qxctl knowledge proposals list|show|verify`
 - `qxctl knowledge apply ...` remains namespace-reserved for future canonical knowledge proposal application; it is distinct from implemented noncanonical `knowledge lifecycle apply`
 
-Individual lifecycle action leaves remain intentionally absent. The implemented `knowledge lifecycle apply` command derives dependency-ready order from verified evidence and never accepts a caller-selected action kind. It can install/uninstall exact receipt-v2 packages from explicit trusted staged roots, update protected generic selection/activation state, atomically select exact receipt-v2 installations for the six established binding roles, perform a candidate-verified coordinator handoff, and commit exact authenticated Maestro docking presence when the caller supplies an exact Maestro installation plus an exhaustive receptor set. It cannot download, mutate receipt v1, run arbitrary entry points, add roles to the closed registry, replace a coordinator in place, execute a docked engine, or write canonical knowledge.
+Individual lifecycle action leaves remain intentionally absent. The implemented `knowledge lifecycle apply` command derives dependency-ready order from verified evidence and never accepts a caller-selected action kind. It can install exact receipt-v2 packages from explicit trusted staged roots and reclaim them only after enforced root-local multi-profile claim resolution, update protected generic selection/activation state, atomically select exact receipt-v2 installations for the six established binding roles, perform a candidate-verified coordinator handoff, and commit exact authenticated Maestro docking presence when the caller supplies an exact Maestro installation plus an exhaustive receptor set. It cannot download, mutate receipt v1, run arbitrary entry points, add roles to the closed registry, replace a coordinator in place, execute a docked engine, or write canonical knowledge.
 
 ## Installability Posture
 qxctl is installable via standard `go build` or executable directly via `go run` using the Go standard toolchain. It does not require remote runtimes, providers, Docker, Kubernetes, or cloud infrastructure.
