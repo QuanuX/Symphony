@@ -13,6 +13,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -22,6 +23,7 @@ import (
 const (
 	processProtocol   = "symphony.knowledge.engine-process.v1"
 	receiptProtocol   = "symphony.knowledge.install-receipt.v1"
+	receiptProtocolV2 = "symphony.knowledge.install-receipt.v2"
 	moduleID          = "skvi-engine"
 	engineID          = "symphony-skvi"
 	sclvModuleID      = "sclv-engine"
@@ -48,45 +50,59 @@ const (
 )
 
 type engineSpec struct {
-	label         string
-	moduleID      string
-	engineID      string
-	expectedFiles func(string) map[string]struct{}
+	label             string
+	moduleID          string
+	engineID          string
+	componentKind     string
+	vectorID          string
+	processProtocol   string
+	requiredReceptors []string
+	expectedFiles     func(string) map[string]struct{}
 }
 
 var skviSpec = engineSpec{
-	label: "SKVI", moduleID: moduleID, engineID: engineID, expectedFiles: expectedFiles,
+	label: "SKVI", moduleID: moduleID, engineID: engineID, componentKind: "vector_engine",
+	vectorID: "skvi", processProtocol: processProtocol,
+	requiredReceptors: []string{"symphony.maestro.knowledge-engine.v1"}, expectedFiles: expectedFiles,
 }
 
 var sclvSpec = engineSpec{
-	label: "SCLV", moduleID: sclvModuleID, engineID: sclvEngineID, expectedFiles: expectedSCLVFiles,
+	label: "SCLV", moduleID: sclvModuleID, engineID: sclvEngineID, componentKind: "vector_engine",
+	vectorID: "sclv", processProtocol: processProtocol,
+	requiredReceptors: []string{"symphony.maestro.knowledge-engine.v1"}, expectedFiles: expectedSCLVFiles,
 }
 
 var sacvSpec = engineSpec{
-	label: "SACV", moduleID: sacvModuleID, engineID: sacvEngineID, expectedFiles: expectedSACVFiles,
+	label: "SACV", moduleID: sacvModuleID, engineID: sacvEngineID, componentKind: "vector_engine",
+	vectorID: "sacv", processProtocol: processProtocol,
+	requiredReceptors: []string{"symphony.maestro.knowledge-engine.v1"}, expectedFiles: expectedSACVFiles,
 }
 
 var sodvSpec = engineSpec{
-	label: "SODV", moduleID: sodvModuleID, engineID: sodvEngineID, expectedFiles: expectedSODVFiles,
+	label: "SODV", moduleID: sodvModuleID, engineID: sodvEngineID, componentKind: "vector_engine",
+	vectorID: "sodv", processProtocol: processProtocol,
+	requiredReceptors: []string{"symphony.maestro.knowledge-engine.v1"}, expectedFiles: expectedSODVFiles,
 }
 
 var ssfvSpec = engineSpec{
-	label: "SSFV", moduleID: ssfvModuleID, engineID: ssfvEngineID, expectedFiles: expectedSSFVFiles,
+	label: "SSFV", moduleID: ssfvModuleID, engineID: ssfvEngineID, componentKind: "vector_engine",
+	vectorID: "ssfv", processProtocol: processProtocol,
+	requiredReceptors: []string{"symphony.maestro.knowledge-engine.v1"}, expectedFiles: expectedSSFVFiles,
 }
 
 var sessionSpec = engineSpec{
 	label: "knowledge-session coordinator", moduleID: sessionModuleID, engineID: sessionEngineID,
-	expectedFiles: expectedSessionFiles,
+	componentKind: "coordinator", processProtocol: processProtocol, expectedFiles: expectedSessionFiles,
 }
 
 var maestroSpec = engineSpec{
 	label: "Maestro", moduleID: maestroModuleID, engineID: maestroEngineID,
-	expectedFiles: expectedMaestroFiles,
+	componentKind: "module", processProtocol: processProtocol, expectedFiles: expectedMaestroFiles,
 }
 
 var validatorSpec = engineSpec{
 	label: "Symphony Validator", moduleID: validatorModuleID, engineID: validatorEngineID,
-	expectedFiles: expectedValidatorFiles,
+	componentKind: "module", processProtocol: "symphony.validation.result.v1", expectedFiles: expectedValidatorFiles,
 }
 
 var engineSpecsByRole = map[string]engineSpec{
@@ -108,6 +124,7 @@ type Installation struct {
 	Prefix           string
 	ReceiptPath      string
 	ReceiptDigest    string
+	ReceiptProtocol  string
 	ExecutablePath   string
 	ExecutableDigest string
 }
@@ -122,6 +139,48 @@ type receipt struct {
 	Active          bool     `json:"active"`
 	DefaultReceptor *string  `json:"default_receptor"`
 	Files           []string `json:"files"`
+}
+
+type receiptV2File struct {
+	Path   string `json:"path"`
+	Kind   string `json:"kind"`
+	Size   uint64 `json:"size"`
+	Digest string `json:"digest"`
+}
+
+type receiptV2EntryPoint struct {
+	EntryPointID string   `json:"entry_point_id"`
+	Kind         string   `json:"kind"`
+	Path         string   `json:"path"`
+	Protocols    []string `json:"protocols"`
+}
+
+type receiptV2Platform struct {
+	OS           string  `json:"os"`
+	Architecture string  `json:"architecture"`
+	KernelABI    *string `json:"kernel_abi"`
+	Critical     bool    `json:"critical"`
+}
+
+type receiptV2 struct {
+	Protocol             string                `json:"protocol"`
+	FormatVersion        uint64                `json:"format_version"`
+	ComponentID          string                `json:"component_id"`
+	ComponentKind        string                `json:"component_kind"`
+	ModuleID             string                `json:"module_id"`
+	VectorID             *string               `json:"vector_id"`
+	EngineID             *string               `json:"engine_id"`
+	PackageID            string                `json:"package_id"`
+	Version              string                `json:"version"`
+	InstallScope         string                `json:"install_scope"`
+	PrefixMode           string                `json:"prefix_mode"`
+	Files                []receiptV2File       `json:"files"`
+	EntryPoints          []receiptV2EntryPoint `json:"entry_points"`
+	ProvidesCapabilities []string              `json:"provides_capabilities"`
+	RequiresCapabilities []string              `json:"requires_capabilities"`
+	CompatibleReceptors  []string              `json:"compatible_receptors"`
+	PlatformRequirements []receiptV2Platform   `json:"platform_requirements"`
+	ReceiptDigest        string                `json:"receipt_digest"`
 }
 
 type processRequest struct {
@@ -234,7 +293,10 @@ func inspectInstallationFor(role string, spec engineSpec, prefix, version string
 	if err != nil {
 		return Installation{}, fmt.Errorf("read validated %s executable: %w", spec.label, err)
 	}
-	receiptHash := sha256.Sum256(receiptBytes)
+	receiptDigest, receiptProtocolName, err := validatedReceiptIdentity(receiptBytes)
+	if err != nil {
+		return Installation{}, fmt.Errorf("read validated %s receipt identity: %w", spec.label, err)
+	}
 	binaryHash := sha256.Sum256(binaryBytes)
 	return Installation{
 		Role:             role,
@@ -243,7 +305,8 @@ func inspectInstallationFor(role string, spec engineSpec, prefix, version string
 		Version:          version,
 		Prefix:           canonicalPrefix,
 		ReceiptPath:      filepath.Join(canonicalPrefix, filepath.FromSlash(receiptRelative)),
-		ReceiptDigest:    "sha256:" + hex.EncodeToString(receiptHash[:]),
+		ReceiptDigest:    receiptDigest,
+		ReceiptProtocol:  receiptProtocolName,
 		ExecutablePath:   binary,
 		ExecutableDigest: "sha256:" + hex.EncodeToString(binaryHash[:]),
 	}, nil
@@ -406,6 +469,18 @@ func resolveInstalledFor(spec engineSpec, prefix, version string) (string, error
 	if err := validateJSONObject(receiptBytes, maxReceiptBytes); err != nil {
 		return "", fmt.Errorf("invalid %s install receipt JSON: %w", spec.label, err)
 	}
+	var header struct {
+		Protocol string `json:"protocol"`
+	}
+	if err := json.Unmarshal(receiptBytes, &header); err != nil {
+		return "", fmt.Errorf("decode %s install receipt protocol: %w", spec.label, err)
+	}
+	if header.Protocol == receiptProtocolV2 {
+		return resolveInstalledV2(spec, prefix, version, receiptBytes, binaryRelative)
+	}
+	if header.Protocol != receiptProtocol {
+		return "", fmt.Errorf("%s install receipt protocol is unsupported", spec.label)
+	}
 	if err := requireExactFields(receiptBytes, []string{
 		"protocol", "module_id", "version", "install_scope", "prefix_mode",
 		"state", "active", "default_receptor", "files",
@@ -454,6 +529,216 @@ func resolveInstalledFor(spec engineSpec, prefix, version string) (string, error
 		return "", fmt.Errorf("%s installed engine is not a no-follow executable regular file", spec.label)
 	}
 	return binary, nil
+}
+
+func resolveInstalledV2(spec engineSpec, prefix, version string, receiptBytes []byte, binaryRelative string) (string, error) {
+	if err := requireExactFields(receiptBytes, []string{
+		"protocol", "format_version", "component_id", "component_kind", "module_id",
+		"vector_id", "engine_id", "package_id", "version", "install_scope", "prefix_mode",
+		"files", "entry_points", "provides_capabilities", "requires_capabilities",
+		"compatible_receptors", "platform_requirements", "receipt_digest",
+	}); err != nil {
+		return "", fmt.Errorf("invalid %s receipt-v2 fields: %w", spec.label, err)
+	}
+	var installed receiptV2
+	if err := decodeExact(receiptBytes, &installed); err != nil {
+		return "", fmt.Errorf("decode %s receipt-v2: %w", spec.label, err)
+	}
+	if installed.Protocol != receiptProtocolV2 || installed.FormatVersion != 2 ||
+		installed.ComponentID != spec.moduleID || installed.ModuleID != spec.moduleID ||
+		installed.PackageID != spec.moduleID || installed.Version != version ||
+		installed.ComponentKind != spec.componentKind || !receiptVectorMatches(installed.VectorID, spec.vectorID) ||
+		installed.EngineID == nil || *installed.EngineID != spec.engineID ||
+		installed.InstallScope != "prefix" || installed.PrefixMode != "installation_prefix" ||
+		len(installed.Files) == 0 || len(installed.Files) > 4096 || installed.EntryPoints == nil ||
+		installed.ProvidesCapabilities == nil || installed.RequiresCapabilities == nil ||
+		installed.CompatibleReceptors == nil || installed.PlatformRequirements == nil {
+		return "", fmt.Errorf("%s receipt-v2 identity or collection contract mismatch", spec.label)
+	}
+	if digest, protocol, err := validatedReceiptIdentity(receiptBytes); err != nil ||
+		protocol != receiptProtocolV2 || digest != installed.ReceiptDigest {
+		if err != nil {
+			return "", fmt.Errorf("validate %s receipt-v2 digest: %w", spec.label, err)
+		}
+		return "", fmt.Errorf("validate %s receipt-v2 digest", spec.label)
+	}
+	receiptRelative := filepath.ToSlash(filepath.Join(
+		"share", "symphony", "receipts", spec.moduleID, version, "install-receipt.json"))
+	seen := make(map[string]struct{}, len(installed.Files))
+	for _, file := range installed.Files {
+		if !safeRelativePath(file.Path) || (file.Kind != "regular" && file.Kind != "executable") ||
+			!taggedSHA256(file.Digest) || file.Path == receiptRelative {
+			return "", fmt.Errorf("%s receipt-v2 contains an invalid file entry", spec.label)
+		}
+		if _, duplicate := seen[file.Path]; duplicate {
+			return "", fmt.Errorf("%s receipt-v2 contains a duplicate path", spec.label)
+		}
+		seen[file.Path] = struct{}{}
+		data, err := readTrustedNoFollowRelative(prefix, file.Path, maxInstalledFileBytes(file.Path))
+		if err != nil {
+			return "", fmt.Errorf("validate receipt-v2-owned file %s: %w", file.Path, err)
+		}
+		digest := sha256.Sum256(data)
+		if uint64(len(data)) != file.Size || "sha256:"+hex.EncodeToString(digest[:]) != file.Digest {
+			return "", fmt.Errorf("receipt-v2-owned file content mismatch: %s", file.Path)
+		}
+	}
+	if !validUniqueTokens(installed.ProvidesCapabilities, 128) ||
+		!validUniqueTokens(installed.RequiresCapabilities, 128) ||
+		!validUniqueTokens(installed.CompatibleReceptors, 128) {
+		return "", fmt.Errorf("%s receipt-v2 capability or receptor set is invalid", spec.label)
+	}
+	for _, receptor := range spec.requiredReceptors {
+		if !containsExact(installed.CompatibleReceptors, receptor) {
+			return "", fmt.Errorf("%s receipt-v2 lacks required receptor compatibility", spec.label)
+		}
+	}
+	platformOS := runtime.GOOS
+	if platformOS == "darwin" {
+		platformOS = "macos"
+	}
+	if len(installed.PlatformRequirements) == 0 || len(installed.PlatformRequirements) > 128 {
+		return "", fmt.Errorf("%s receipt-v2 lacks bounded platform requirements", spec.label)
+	}
+	seenPlatforms := make(map[string]struct{}, len(installed.PlatformRequirements))
+	matchingCriticalPlatform := false
+	for _, requirement := range installed.PlatformRequirements {
+		if requirement.OS != "linux" && requirement.OS != "macos" || !safeToken(requirement.Architecture, 256) ||
+			requirement.KernelABI != nil && !safeToken(*requirement.KernelABI, 256) {
+			return "", fmt.Errorf("%s receipt-v2 platform requirement is invalid", spec.label)
+		}
+		kernelABI := ""
+		if requirement.KernelABI != nil {
+			kernelABI = *requirement.KernelABI
+		}
+		platformKey := requirement.OS + "\n" + requirement.Architecture + "\n" + kernelABI + "\n" + strconv.FormatBool(requirement.Critical)
+		if _, duplicate := seenPlatforms[platformKey]; duplicate {
+			return "", fmt.Errorf("%s receipt-v2 platform requirement is duplicated", spec.label)
+		}
+		seenPlatforms[platformKey] = struct{}{}
+		if requirement.Critical && (requirement.OS != platformOS || requirement.Architecture != runtime.GOARCH || requirement.KernelABI != nil) {
+			return "", fmt.Errorf("%s receipt-v2 is incompatible with this platform", spec.label)
+		}
+		if requirement.Critical {
+			matchingCriticalPlatform = true
+		}
+	}
+	if !matchingCriticalPlatform {
+		return "", fmt.Errorf("%s receipt-v2 lacks an exact critical host platform requirement", spec.label)
+	}
+	seenEntries := make(map[string]struct{}, len(installed.EntryPoints))
+	mainEntry := false
+	for _, entry := range installed.EntryPoints {
+		if !safeToken(entry.EntryPointID, 256) || !safeRelativePath(entry.Path) ||
+			(entry.Kind != "executable" && entry.Kind != "adapter" && entry.Kind != "descriptor") ||
+			!validUniqueTokens(entry.Protocols, 64) {
+			return "", fmt.Errorf("%s receipt-v2 entry point is invalid", spec.label)
+		}
+		if _, duplicate := seenEntries[entry.EntryPointID]; duplicate {
+			return "", fmt.Errorf("%s receipt-v2 entry point is duplicated", spec.label)
+		}
+		seenEntries[entry.EntryPointID] = struct{}{}
+		if _, owned := seen[entry.Path]; !owned {
+			return "", fmt.Errorf("%s receipt-v2 entry point is not receipt-owned", spec.label)
+		}
+		if entry.Path == binaryRelative && entry.Kind == "executable" &&
+			containsExact(entry.Protocols, spec.processProtocol) {
+			mainEntry = true
+		}
+	}
+	if !mainEntry {
+		return "", fmt.Errorf("%s receipt-v2 lacks the exact engine process entry point", spec.label)
+	}
+	binary := filepath.Join(prefix, filepath.FromSlash(binaryRelative))
+	info, err := os.Lstat(binary)
+	if err != nil || info.Mode()&os.ModeSymlink != 0 || !info.Mode().IsRegular() || info.Mode().Perm()&0o111 == 0 {
+		return "", fmt.Errorf("%s installed engine is not a no-follow executable regular file", spec.label)
+	}
+	return binary, nil
+}
+
+func receiptVectorMatches(actual *string, expected string) bool {
+	if expected == "" {
+		return actual == nil
+	}
+	return actual != nil && *actual == expected
+}
+
+func validUniqueTokens(values []string, maximum int) bool {
+	if values == nil || len(values) > maximum {
+		return false
+	}
+	seen := make(map[string]struct{}, len(values))
+	for _, value := range values {
+		if !safeToken(value, 256) {
+			return false
+		}
+		if _, duplicate := seen[value]; duplicate {
+			return false
+		}
+		seen[value] = struct{}{}
+	}
+	return true
+}
+
+func validatedReceiptIdentity(receiptBytes []byte) (string, string, error) {
+	var header struct {
+		Protocol string `json:"protocol"`
+	}
+	if err := json.Unmarshal(receiptBytes, &header); err != nil {
+		return "", "", err
+	}
+	if header.Protocol == receiptProtocol {
+		digest := sha256.Sum256(receiptBytes)
+		return "sha256:" + hex.EncodeToString(digest[:]), header.Protocol, nil
+	}
+	if header.Protocol != receiptProtocolV2 {
+		return "", "", fmt.Errorf("unsupported receipt protocol")
+	}
+	var installed receiptV2
+	if err := decodeExact(receiptBytes, &installed); err != nil {
+		return "", "", err
+	}
+	want := installed.ReceiptDigest
+	installed.ReceiptDigest = ""
+	encoded, err := json.Marshal(installed)
+	if err != nil {
+		return "", "", err
+	}
+	var object map[string]any
+	decoder := json.NewDecoder(bytes.NewReader(encoded))
+	decoder.UseNumber()
+	if err := decoder.Decode(&object); err != nil {
+		return "", "", err
+	}
+	delete(object, "receipt_digest")
+	canonical, err := json.Marshal(object)
+	if err != nil {
+		return "", "", err
+	}
+	digest := sha256.Sum256(canonical)
+	actual := "sha256:" + hex.EncodeToString(digest[:])
+	if !taggedSHA256(want) || actual != want {
+		return "", "", fmt.Errorf("receipt-v2 intrinsic digest mismatch")
+	}
+	return actual, header.Protocol, nil
+}
+
+func containsExact(values []string, target string) bool {
+	for _, value := range values {
+		if value == target {
+			return true
+		}
+	}
+	return false
+}
+
+func taggedSHA256(value string) bool {
+	if len(value) != len("sha256:")+64 || !strings.HasPrefix(value, "sha256:") {
+		return false
+	}
+	_, err := hex.DecodeString(strings.TrimPrefix(value, "sha256:"))
+	return err == nil && value == strings.ToLower(value)
 }
 
 func expectedFiles(version string) map[string]struct{} {

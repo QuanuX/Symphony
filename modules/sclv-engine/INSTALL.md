@@ -24,7 +24,7 @@ Use `-DSYMPHONY_KVE_USE_INSTALLED=ON -DCMAKE_PREFIX_PATH=/foundation/prefix` to 
 cmake --install build/sclv-engine --prefix /chosen/prefix
 ```
 
-The executables install below `libexec/symphony/sclv-engine/0.1.0-dev/`. The receipt remains inactive and undocked. No default prefix, active version, hook, journal, or Maestro receptor is selected.
+The executables install below `libexec/symphony/sclv-engine/0.1.0-dev/`. Installation is initially observed as inactive and undocked; mutable selection and receptor state remain outside the receipt. No default prefix, active version, hook, journal, or Maestro receptor is selected.
 
 qxctl invokes only an exact installed engine after validating the full eleven-file receipt:
 
@@ -41,3 +41,5 @@ cmake -DINSTALL_PREFIX=/chosen/prefix -P build/sclv-engine/uninstall.cmake
 ```
 
 Only the eleven receipt-owned files are removed.
+
+The receipt is immutable for one exact module/version path. A repeated install fails before any owned-file install rule; install another version side by side or run the receipt-verified uninstaller first. Uninstall validates the configured ownership set and every remaining file's recorded size and SHA-256, removes the receipt last, and treats already-missing owned files only as idempotent retry evidence.

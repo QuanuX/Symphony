@@ -28,7 +28,7 @@
         },
         {
           "applicability": "applicable",
-          "reason": "Every authenticated-session and qxctl lifecycle administration operation consumes a fresh exact caller-neutral SSIAG decision derived from kernel peer identity; the coordinator validates session capability evidence without deciding authority, while qxctl binds lifecycle decisions to exact profile or observation evidence.",
+          "reason": "Every authenticated-session and qxctl lifecycle administration operation consumes a fresh exact caller-neutral SSIAG decision derived from kernel peer identity. Stable TOPS/profile policy resources avoid artifact-driven grant churn, while qxctl and the coordinator independently bind exact profile, receipt, observation, journal, applied-state, and registry evidence.",
           "reference": "knowledge/ssiag/SPEC.md",
           "vector": "ssiag"
         },
@@ -57,11 +57,12 @@
         "tools/qxctl/cmd/qxctl/lifecycle_test.go verifies report-plan safety, dynamic scheduler invariants, staged-install exception isolation, strict v1/v2 lifecycle-journal IPC validation, exact apply result validation, critical-extension refusal, and lifecycle Cobra grammar.",
         "tools/qxctl/cmd/qxctl/ssfv_maintenance_test.go verifies the cross-vector Cobra grammar, fully bound authorization resource, recursively canonical evidence digest, canonical-apply refusal, and journal-digest enforcement.",
         "tools/qxctl/internal/knowledgelifecycle/executor_test.go verifies protected runtime compare-and-swap/idempotency, prepared observation-drift refusal, staged receipt-v2 install/uninstall and interruption replay, separate rollback proof, conflicting administrator-file protection, and exact Maestro docking adapter evidence.",
+        "tools/qxctl/cmd/qxctl/lifecycle_binding_test.go verifies exact receipt-v2 established-role selection, forward upgrade, inverse rollback, and binding-registry predecessor evidence; tools/qxctl/internal/knowledgeengine/client_test.go verifies receipt-v1/v2 dual-read behavior, compatible forward growth of the v2 owned-file set, stable role semantics, and receipt-v2 content/digest tamper rejection.",
         "modules/maestro/tests/maestro_test.cpp and tools/qxctl/internal/maestroclient/client_test.go verify exact receptor presence, authorization binding, receipt identity, mutation retry, and forward recovery without engine execution.",
         "tools/qxctl/cmd/qxctl/main.go, tools/qxctl/cmd/qxctl/lifecycle.go, tools/qxctl/cmd/qxctl/lifecycle_apply.go, tools/qxctl/internal/knowledgelifecycle/executor.go, tools/qxctl/internal/ssiagclient/client.go, and tools/qxctl/internal/knowledgeengine/client.go authenticate SSIAG, validate safe authorization evidence, invoke the exact bound coordinator, collect lifecycle observations, serialize external actions, and re-observe before finalization."
       ],
       "feature_id": "ssfv:symphony:knowledge-session-coordinator",
-      "how": "The C++26 symphony-knowledge-session process statically links the shared foundation, accepts the common bounded process envelope, and keeps reconciliation contexts, authenticated authority epochs, SSFV maintenance contexts, report lifecycle streams, and apply lifecycle streams separate. Each durable stream uses a private no-follow lock, fsync-backed dual slots, an atomic head, content digests, stable operation IDs, exact compare-and-swap state, opaque-extension preservation, and evidence-based forward recovery. SSFV maintenance preserves the initial semantic snapshot and baseline engine separately from current engine evidence, so compatible upgrades and rollbacks cannot reinterpret the baseline; qxctl supplies exact read-only SSFV diff evidence and explicit complete or not-configured Maestro inventory evidence under fresh SSIAG authorization. The lifecycle planner validates complete caller-supplied desired and observed evidence and derives stable forward/inverse actions from a dependency-ready set. Report boot persists non-executable source evidence in v1. Separately authorized v2 prepare records one active attempt before external action; finalize accepts complete re-observation only when it proves the target; close selects immutable content-addressed applied evidence. Go qxctl revalidates exact installations, obtains fresh SSIAG decisions per phase, maintains desired and generic runtime state, scans fixed receipt layouts, executes only reviewed adapters, and re-observes before finalization. The planner isolates cycles and blockers, reports noncritical advisories, binds exact receptors, and safely sequences package and receptor changes without the coordinator discovering packages, writing Maestro state, deciding feature-worthiness, or performing host mutation.",
+      "how": "The C++26 symphony-knowledge-session process statically links the shared foundation, accepts the common bounded process envelope, and keeps reconciliation contexts, authenticated authority epochs, SSFV maintenance contexts, report lifecycle streams, and apply lifecycle streams separate. Each durable stream uses a private no-follow lock, fsync-backed dual slots, an atomic head, content digests, stable operation IDs, exact compare-and-swap state, opaque-extension preservation, and evidence-based forward recovery. SSFV maintenance preserves the initial semantic snapshot and baseline engine separately from current engine evidence, so compatible upgrades and rollbacks cannot reinterpret the baseline; qxctl supplies exact read-only SSFV diff evidence and explicit complete or not-configured Maestro inventory evidence under fresh SSIAG authorization. The lifecycle planner validates complete caller-supplied desired and observed evidence and derives stable forward/inverse actions from a dependency-ready set. Report boot persists non-executable source evidence in v1. Separately authorized v2 prepare records one active attempt before external action; finalize accepts complete re-observation only when it proves the target; close selects immutable content-addressed applied evidence. Go qxctl revalidates legacy and immutable receipt formats, obtains fresh SSIAG decisions per phase, maintains desired and generic runtime state, scans fixed receipt layouts, executes only reviewed adapters, and re-observes before finalization. Established roles select through binding-registry compare-and-swap. Coordinator changes install side by side, require the candidate to reproduce the exact prepared journal, retain the invoking coordinator for uninterrupted finalization, and recover after a switch through the same durable active action. The planner isolates cycles and blockers, reports noncritical advisories, binds exact receptors, and safely sequences package and receptor changes without the coordinator discovering packages, writing Maestro state, deciding feature-worthiness, or performing host mutation.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -69,14 +70,16 @@
         },
         {
           "language": "CMake",
-          "role": "Builds and installs the exact versioned executable, module contracts, receipt, tests, and receipt-owned uninstall surface."
+          "role": "Builds and installs the exact versioned executable, module contracts, immutable receipt-v2 generated last from installed content, tests, and receipt-owned uninstall surface."
         },
         {
           "language": "Go",
-          "role": "Implements qxctl binding revalidation, kernel-authenticated SSIAG authorization requests, decision-boundary validation, exact coordinator invocation, reconciliation/session/lifecycle command grammar, protected lifecycle desired/runtime state, fixed-layout receipt observation, staged receipt-v2 install/uninstall, selection/activation adapters, explicit login/refresh/logout transition composition, operation identity, expected-state input, and bound-engine inventory delivery."
+          "role": "Implements qxctl receipt-v1/v2 binding revalidation, stable-resource kernel-authenticated SSIAG authorization requests, proposal-only lifecycle grant generation, decision-boundary validation, exact coordinator invocation, candidate-verified coordinator handoff, reconciliation/session/lifecycle command grammar, protected lifecycle desired/runtime state, fixed-layout receipt observation, staged receipt-v2 install/uninstall, established binding and generic selection/activation adapters, explicit login/refresh/logout transition composition, operation identity, expected-state input, and bound-engine inventory delivery."
         }
       ],
       "implementation_paths": [
+        "cmake/SymphonyInstallReceiptV2.cmake",
+        "cmake/SymphonyInstallReceiptV2.cmake.in",
         "modules/knowledge-session-coordinator/CMakeLists.txt",
         "modules/knowledge-session-coordinator/src/authority_session.cpp",
         "modules/knowledge-session-coordinator/src/authority_session.hpp",
@@ -98,6 +101,7 @@
         "tools/qxctl/cmd/qxctl/commands.go",
         "tools/qxctl/cmd/qxctl/lifecycle.go",
         "tools/qxctl/cmd/qxctl/lifecycle_apply.go",
+        "tools/qxctl/cmd/qxctl/lifecycle_binding_test.go",
         "tools/qxctl/cmd/qxctl/main.go",
         "tools/qxctl/cmd/qxctl/ssfv_maintenance.go",
         "tools/qxctl/internal/knowledgeengine/client.go",
@@ -117,7 +121,7 @@
         "Does not implement canonical apply; it mutates only protected noncanonical reconciliation, authenticated-session, lifecycle-journal, runtime-state, receipt-v2 package, and applied-state surfaces within the explicit lifecycle contract.",
         "Does not call SSIAG or STAV directly, consume credentials or provider secrets, write Maestro presence, or mutate canonical repository state.",
         "The coordinator does not collect lifecycle observations, administer desired/runtime profiles, or execute host actions; qxctl performs those functions while the coordinator serializes attempts and verifies applied evidence.",
-        "Does not mutate receipt-v1 packages, download packages, execute arbitrary receipt entry points, activate live services/processes, replace the active coordinator, rewrite engine bindings, or execute a docked engine.",
+        "Does not mutate receipt-v1 packages, download packages, execute arbitrary receipt entry points, activate live services/processes, replace itself in place, rewrite engine bindings directly, or execute a docked engine. qxctl may externally select an exact receipt-v2 candidate only after that candidate reproduces the prepared journal.",
         "Does not claim system or TOPS provisioning, active docking, or a published module release."
       ],
       "owner_contract": "modules/knowledge-session-coordinator/SPEC.md",
@@ -138,7 +142,7 @@
       "source_scope": "modules/knowledge-session-coordinator",
       "status": "experimental",
       "title": "Durable knowledge session, reconciliation, and lifecycle coordinator",
-      "what": "Provides an independently installable administrative process that reports exact capabilities, computes deterministic snapshots, maintains recoverable noncanonical reconciliation, authority-epoch, and persistent SSFV semantic-baseline state, converts complete desired/observed lifecycle evidence into a deterministic dependency plan, preserves report-only boot evidence, and separately coordinates prepared actions, verified completion, applied-state commitment, and recovery per TOPS and profile.",
+      "what": "Provides an independently installable receipt-v2 administrative process that reports exact capabilities, computes deterministic snapshots, maintains recoverable noncanonical reconciliation, authority-epoch, and persistent SSFV semantic-baseline state, converts complete desired/observed lifecycle evidence into a deterministic dependency plan, preserves report-only boot evidence, and separately coordinates prepared actions, established-role version handoff, verified completion, applied-state commitment, and recovery per TOPS and profile.",
       "when": "Runs only on explicit user-scope qxctl or exact process invocation under a bounded deadline. Reconciliation begins with an explicit inventory. Session and lifecycle operations each require fresh exact SSIAG evidence. Report/boot re-read protected profiles and re-observe configured roots. Explicit apply is eligible only for apply-compatible profiles with exact source/journal/applied compare-and-swap; every external action is prepared durably and followed by complete re-observation. Status is read-only and recovery is explicit. No operation acquires canonical apply authority.",
       "where": "Executes as the inactive, installed-undocked symphony-knowledge-session C++ process in the administrative freezing path and roots checks at its current repository working directory.",
       "who": "Any host-authorized caller using qxctl, plus maintainers and tests that need caller-neutral, domain-neutral authority-epoch and reconciliation boundaries across independently versioned SKV engines.",

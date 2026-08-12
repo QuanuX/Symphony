@@ -32,7 +32,7 @@ cmake -S modules/skvi-engine \
 cmake --install build/skvi-engine --prefix /chosen/prefix
 ```
 
-The versioned executable is installed at `libexec/symphony/skvi-engine/0.1.0-dev/symphony-skvi`. No unversioned alias is created. The installed receipt remains inactive and undocked.
+The versioned executable is installed at `libexec/symphony/skvi-engine/0.1.0-dev/symphony-skvi`. No unversioned alias is created. Installation is initially observed as inactive and undocked; mutable selection and receptor state remain outside the receipt.
 
 ## qxctl Development Invocation
 
@@ -52,3 +52,5 @@ cmake -DINSTALL_PREFIX=/chosen/prefix -P build/skvi-engine/uninstall.cmake
 ```
 
 Only receipt-owned files are removed. Canonical knowledge, projections, proposals, other versions, and containing directories are preserved.
+
+The receipt is immutable for one exact module/version path. A repeated install fails before any owned-file install rule; install another version side by side or run the receipt-verified uninstaller first. Uninstall validates the configured ownership set and every remaining file's recorded size and SHA-256, removes the receipt last, and treats already-missing owned files only as idempotent retry evidence.

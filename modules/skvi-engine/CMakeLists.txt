@@ -12,6 +12,7 @@ endif()
 
 option(SYMPHONY_KVE_USE_INSTALLED "Use an installed Symphony knowledge-vector foundation" OFF)
 get_filename_component(SYMPHONY_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
+include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SymphonyInstallReceiptV2.cmake")
 if(SYMPHONY_KVE_USE_INSTALLED)
     find_package(SymphonyKnowledgeVectorEngine 0.1 REQUIRED CONFIG)
 elseif(NOT TARGET Symphony::KnowledgeVectorEngine)
@@ -63,17 +64,35 @@ set(SYMPHONY_SKVI_DATA_DIR
 set(SYMPHONY_SKVI_LICENSE_DIR
     "${CMAKE_INSTALL_DATADIR}/licenses/symphony-skvi-engine/0.1.0-dev")
 
-configure_file(cmake/install-receipt.json.in ${CMAKE_CURRENT_BINARY_DIR}/install-receipt.json @ONLY)
 configure_file(cmake/uninstall.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake @ONLY)
 
+symphony_install_receipt_v2_preflight(
+    RECEIPT_PATH share/symphony/receipts/skvi-engine/0.1.0-dev/install-receipt.json)
+
 install(TARGETS symphony-skvi RUNTIME DESTINATION ${SYMPHONY_SKVI_LIBEXEC_DIR})
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/install-receipt.json
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/symphony/receipts/skvi-engine/0.1.0-dev)
 install(FILES INTENT.md MANIFEST.md INSTALL.md SKILL.md SPEC.md DESTINATION ${SYMPHONY_SKVI_DATA_DIR})
 install(FILES ../../LICENSE DESTINATION ${SYMPHONY_SKVI_LICENSE_DIR} RENAME LICENSE-AGPL-3.0)
 install(FILES ../../libraries/knowledge-vector-engine-cpp/third_party/nlohmann/LICENSE.MIT
     DESTINATION ${SYMPHONY_SKVI_LICENSE_DIR}
     RENAME nlohmann-json-LICENSE.MIT)
+
+symphony_install_receipt_v2(
+    COMPONENT_ID skvi-engine COMPONENT_KIND vector_engine
+    MODULE_ID skvi-engine VECTOR_ID skvi ENGINE_ID symphony-skvi
+    PACKAGE_ID skvi-engine VERSION 0.1.0-dev
+    RECEIPT_PATH share/symphony/receipts/skvi-engine/0.1.0-dev/install-receipt.json
+    OWNED_FILES
+        "libexec/symphony/skvi-engine/0.1.0-dev/symphony-skvi|executable"
+        "share/doc/symphony/skvi-engine/0.1.0-dev/INSTALL.md|regular"
+        "share/doc/symphony/skvi-engine/0.1.0-dev/INTENT.md|regular"
+        "share/doc/symphony/skvi-engine/0.1.0-dev/MANIFEST.md|regular"
+        "share/doc/symphony/skvi-engine/0.1.0-dev/SKILL.md|regular"
+        "share/doc/symphony/skvi-engine/0.1.0-dev/SPEC.md|regular"
+        "share/licenses/symphony-skvi-engine/0.1.0-dev/LICENSE-AGPL-3.0|regular"
+        "share/licenses/symphony-skvi-engine/0.1.0-dev/nlohmann-json-LICENSE.MIT|regular"
+    ENTRY_POINTS
+        "symphony-skvi|executable|libexec/symphony/skvi-engine/0.1.0-dev/symphony-skvi|symphony.knowledge.engine-process.v1"
+    COMPATIBLE_RECEPTORS symphony.maestro.knowledge-engine.v1)
 
 add_custom_target(uninstall-skvi-engine
     COMMAND ${CMAKE_COMMAND} -DINSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}

@@ -26,7 +26,7 @@ Use a caller-selected prefix. Installation does not activate an engine, edit a r
 cmake --install build/knowledge-vector-engine-cpp --prefix /chosen/prefix
 ```
 
-Headers, the static archive, CMake package metadata, licenses, contracts, and `symphony.knowledge.install-receipt.v1` receipt are installed under versioned paths.
+Headers, the static archive, CMake package metadata, licenses, contracts, and immutable content-addressed `symphony.knowledge.install-receipt.v2` receipt are installed under versioned paths. The receipt is generated last from the installed regular-file content and excludes itself from ownership hashing.
 
 ## Use from Another Build
 
@@ -46,4 +46,6 @@ cmake -DINSTALL_PREFIX=/chosen/prefix \
   -P build/knowledge-vector-engine-cpp/uninstall.cmake
 ```
 
-It does not remove canonical knowledge, engine state, other versions, or directories it does not own. qxctl lifecycle administration remains a later vertical slice.
+It does not remove canonical knowledge, engine state, other versions, or directories it does not own. The protected qxctl lifecycle circuit is the separate operational administration path for staged receipt-v2 package convergence.
+
+The receipt is immutable for one exact module/version path. A repeated install fails before any owned-file install rule; install another version side by side or run this receipt-verified uninstaller first. Uninstall verifies the configured ownership set plus every remaining file's recorded size and SHA-256 before removal, removes the receipt last, and accepts already-missing owned files only as idempotent retry evidence.

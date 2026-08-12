@@ -11,6 +11,7 @@ endif()
 
 option(SYMPHONY_KVE_USE_INSTALLED "Use an installed Symphony knowledge-vector foundation" OFF)
 get_filename_component(SYMPHONY_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
+include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SymphonyInstallReceiptV2.cmake")
 if(SYMPHONY_KVE_USE_INSTALLED)
     find_package(SymphonyKnowledgeVectorEngine 0.1 REQUIRED CONFIG)
 elseif(NOT TARGET Symphony::KnowledgeVectorEngine)
@@ -45,16 +46,31 @@ set(SYMPHONY_MAESTRO_LIBEXEC_DIR "${CMAKE_INSTALL_LIBEXECDIR}/symphony/maestro/0
 set(SYMPHONY_MAESTRO_DATA_DIR "${CMAKE_INSTALL_DATADIR}/doc/symphony/maestro/0.1.0-dev")
 set(SYMPHONY_MAESTRO_LICENSE_DIR "${CMAKE_INSTALL_DATADIR}/licenses/symphony-maestro/0.1.0-dev")
 
-configure_file(cmake/install-receipt.json.in ${CMAKE_CURRENT_BINARY_DIR}/install-receipt.json @ONLY)
 configure_file(cmake/uninstall.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake @ONLY)
 
+symphony_install_receipt_v2_preflight(
+    RECEIPT_PATH share/symphony/receipts/maestro/0.1.0-dev/install-receipt.json)
+
 install(TARGETS symphony-maestro RUNTIME DESTINATION ${SYMPHONY_MAESTRO_LIBEXEC_DIR})
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/install-receipt.json
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/symphony/receipts/maestro/0.1.0-dev)
 install(FILES INTENT.md MANIFEST.md INSTALL.md SKILL.md SPEC.md DESTINATION ${SYMPHONY_MAESTRO_DATA_DIR})
 install(FILES ../../LICENSE DESTINATION ${SYMPHONY_MAESTRO_LICENSE_DIR} RENAME LICENSE-AGPL-3.0)
 install(FILES ../../libraries/knowledge-vector-engine-cpp/third_party/nlohmann/LICENSE.MIT
     DESTINATION ${SYMPHONY_MAESTRO_LICENSE_DIR} RENAME nlohmann-json-LICENSE.MIT)
+
+symphony_install_receipt_v2(
+    COMPONENT_ID maestro COMPONENT_KIND module MODULE_ID maestro
+    ENGINE_ID symphony-maestro PACKAGE_ID maestro VERSION 0.1.0-dev
+    RECEIPT_PATH share/symphony/receipts/maestro/0.1.0-dev/install-receipt.json
+    OWNED_FILES
+        "libexec/symphony/maestro/0.1.0-dev/symphony-maestro|executable"
+        "share/doc/symphony/maestro/0.1.0-dev/INSTALL.md|regular"
+        "share/doc/symphony/maestro/0.1.0-dev/INTENT.md|regular"
+        "share/doc/symphony/maestro/0.1.0-dev/MANIFEST.md|regular"
+        "share/doc/symphony/maestro/0.1.0-dev/SKILL.md|regular"
+        "share/doc/symphony/maestro/0.1.0-dev/SPEC.md|regular"
+        "share/licenses/symphony-maestro/0.1.0-dev/LICENSE-AGPL-3.0|regular"
+        "share/licenses/symphony-maestro/0.1.0-dev/nlohmann-json-LICENSE.MIT|regular"
+    ENTRY_POINTS "symphony-maestro|executable|libexec/symphony/maestro/0.1.0-dev/symphony-maestro|symphony.knowledge.engine-process.v1")
 
 add_custom_target(uninstall-maestro
     COMMAND ${CMAKE_COMMAND} -DINSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}

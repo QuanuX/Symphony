@@ -11,6 +11,7 @@ namespace symphony::knowledge::engine {
 inline constexpr const char* process_protocol_v1 = "symphony.knowledge.engine-process.v1";
 inline constexpr const char* descriptor_protocol_v1 = "symphony.knowledge.engine-descriptor.v1";
 inline constexpr const char* install_receipt_protocol_v1 = "symphony.knowledge.install-receipt.v1";
+inline constexpr const char* install_receipt_protocol_v2 = "symphony.knowledge.install-receipt.v2";
 
 struct Request final {
     std::string request_id;

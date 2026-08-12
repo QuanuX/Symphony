@@ -1,0 +1,12 @@
+set(receipt_relative "@SYMPHONY_RECEIPT_PREFLIGHT_PATH@")
+set(install_root "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}")
+set(receipt_absolute "${install_root}/${receipt_relative}")
+
+# The receipt is the immutable commit marker for one exact package version.
+# This preflight is deliberately registered before any owned-file install rule,
+# so a direct CMake reinstall cannot overwrite an already committed version.
+if(IS_SYMLINK "${receipt_absolute}" OR EXISTS "${receipt_absolute}")
+    message(FATAL_ERROR
+        "receipt-v2 already commits this exact package version at ${receipt_relative}; "
+        "install a side-by-side version or run the package's exact uninstaller first")
+endif()

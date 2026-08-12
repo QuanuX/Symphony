@@ -143,7 +143,7 @@ Finalize requires the exact active action, journal, applied state, source report
 
 Applied state is an immutable content-addressed `applied.<digest>.json` document. It is synchronized before a journal references it; the journal and head are the selection/commit point. An orphan content-addressed file left by an interruption is harmless and is never selected by discovery alone. `lifecycle_apply_close` handles an already-converged report by committing applied evidence without inventing an action. A closed journal requires a non-null applied-state digest and verified close time.
 
-The current external action vocabulary is intentionally narrower than the planner vocabulary. qxctl may install or uninstall only exact immutable receipt-v2 packages from explicit trusted staged roots, update only its protected generic selection/activation state, and commit exact authenticated Maestro presence through an explicitly configured exhaustive receptor set. The coordinator serializes and verifies dock/undock actions but never writes Maestro state or replaces its own running installation. Receipt-v1 mutation, download, arbitrary receipt entry-point execution, live service/process activation, engine-binding rewrite, Maestro engine execution, and canonical writes are absent.
+The current external action vocabulary is intentionally narrower than the planner vocabulary. qxctl may install or uninstall only exact immutable receipt-v2 packages from explicit trusted staged roots, update its protected generic selection/activation state, select exact receipt-v2 packages for the closed six-role binding registry, perform a candidate-verified out-of-place coordinator handoff, and commit exact authenticated Maestro presence through an explicitly configured exhaustive receptor set. The coordinator serializes and verifies those actions but never writes qxctl binding/runtime state or Maestro state, mutates its running package, or replaces itself in place. Receipt-v1 mutation, download, arbitrary receipt entry-point execution, live service/process activation, unconstrained or new-role binding rewrite, coordinator-owned self-handoff, Maestro engine execution, and canonical writes are absent.
 
 ## Descriptor Truth
 
@@ -151,7 +151,7 @@ The current external action vocabulary is intentionally narrower than the planne
 
 ## Install and Uninstall
 
-Installation uses module-and-version-specific paths and creates no active alias. The receipt uses `prefix_mode: installation_prefix`, lists all owned relative files, and carries no host-specific secret or timestamp. qxctl may bind the exact validated receipt and executable digests in its separate user-default registry; that does not alter this receipt's inactive-undocked state. The generated uninstall script removes those files only and refuses directory removal.
+Installation uses module-and-version-specific paths and creates no active alias. The receipt uses `prefix_mode: installation_prefix`, lists all owned relative files, and carries no mutable lifecycle state, host-specific secret, or timestamp. qxctl may bind the exact validated receipt and executable digests in its separate user-default registry; selection remains external protected state and never rewrites the receipt. The generated uninstaller verifies the configured ownership set and all remaining content before receipt-last removal.
 
 ## Non-Authorization
 

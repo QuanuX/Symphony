@@ -15,6 +15,8 @@
 
 SSIAG owns the canonical semantics for identities, authentication results, authorization decisions, capabilities, credential references, leases, provider operations, safe outcomes, provider compatibility, configuration extensions, and their allowed relationships.
 
+The vector also owns `schemas/v1/lifecycle-grant-plan.schema.json`, the proposal-only contract used by qxctl to generate deterministic caller-neutral grants for one exact TOPS/profile lifecycle boundary and its separately permissioned per-TOPS profile-catalog read resource. It does not add a policy-apply route.
+
 ## Authority Split
 
 - `knowledge/ssiag/` owns protocol and relationship truth.
