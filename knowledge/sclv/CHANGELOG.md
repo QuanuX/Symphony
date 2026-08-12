@@ -4917,3 +4917,132 @@ This PR authorizes none of the following:
   - `Go 1.27 production pin, module release, SDK publication, product-launch claim, or repository-wide SSFV completeness`
 - notes: |
     This post-merge closure records the shared-root lifecycle ownership and reclamation implementation merged by PR #123. Every source-PR surface was already routed through SKVI before merge. The closure carrier appends only this forward-only canonical record and introduces no runtime behavior; it is non-recursive unless it adds an independently significant architectural change.
+
+- record_id: `SCLV-CHG-20260812-LINUX-LIFECYCLE-HOST-RECEPTOR`
+- record_version: `3`
+- title: `Linux report-only lifecycle host receptor implemented`
+- status: `canonical`
+- date: `2026-08-12`
+- change_started_at: `2026-08-12T21:48:56Z`
+- change_completed_at: `2026-08-12T21:54:31Z`
+- recorded_at: `2026-08-12T21:57:41Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `canonical_addition`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#125`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/125`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `ac5d1b00ce113e273031eaf3818c6b73b214af47`
+- tree_digest: `sha256:9a30404efcc150525823a958e2db5cce0a1f6d4658de37a48a2e6c2b9583ebb3`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/125`
+- ratification_evidence_digest: `sha256:f4fda3e58284cbd873fd841dd9abd385a84f870e725488859e224a447678d160`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/lifecycle-host-boot-result.schema.json`
+  - `knowledge/schemas/v1/lifecycle-host-integration-result.schema.json`
+  - `knowledge/schemas/v1/lifecycle-host-integration.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/ssiag/schemas/v1/MANIFEST.md`
+  - `knowledge/ssiag/schemas/v1/lifecycle-grant-plan.schema.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_host.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_test.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/ssiag_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgelifecycle/host.go`
+  - `tools/qxctl/internal/knowledgelifecycle/host_admin_unix.go`
+  - `tools/qxctl/internal/knowledgelifecycle/host_admin_unsupported.go`
+  - `tools/qxctl/internal/knowledgelifecycle/host_test.go`
+  - `tools/qxctl/internal/knowledgelifecycle/state_unix.go`
+  - `tools/qxctl/internal/knowledgelifecycle/state_unsupported.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `README.md`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/schemas/v1/MANIFEST.md`
+  - `knowledge/schemas/v1/lifecycle-host-boot-result.schema.json`
+  - `knowledge/schemas/v1/lifecycle-host-integration-result.schema.json`
+  - `knowledge/schemas/v1/lifecycle-host-integration.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssiag/SPEC.md`
+  - `knowledge/ssiag/schemas/v1/MANIFEST.md`
+  - `knowledge/ssiag/schemas/v1/lifecycle-grant-plan.schema.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_host.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_test.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/ssiag_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgelifecycle/host.go`
+  - `tools/qxctl/internal/knowledgelifecycle/host_admin_unix.go`
+  - `tools/qxctl/internal/knowledgelifecycle/host_admin_unsupported.go`
+  - `tools/qxctl/internal/knowledgelifecycle/host_test.go`
+  - `tools/qxctl/internal/knowledgelifecycle/state_unix.go`
+  - `tools/qxctl/internal/knowledgelifecycle/state_unsupported.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- change_summary: |
+    Under the Architect's direction, PR #125 implemented the Linux-first, report-only host receptor for qxctl lifecycle administration. qxctl can now install, update, inspect, reconcile, enable, disable, uninstall, and execute a stable per-TOPS/profile systemd boot unit whose root-owned executor slots preserve exact accepted qxctl versions and recover safely from unplanned upgrade order.
+- relationship_changes: |
+    The common SKV lifecycle contracts own the host-integration protocol. qxctl administers the receptor only after a fresh SSIAG grant, systemd invokes an immutable content-addressed qxctl copy, and the installed executor re-enters the existing lifecycle observation and reconciliation circuit. The host layer may select only exact accepted executors already recorded in protected state; it cannot infer a newest version or bypass package, profile, ownership, or action guards.
+- doctrine_changes: |
+    Linux systemd is the first host integration target; native Windows engines remain unauthorized. A stable unit is configuration, not executable truth: executable identity is bound to exact content-addressed slots. Boot UUID idempotency, compare-and-swap descriptors, resumable retirement, marker-owned cleanup, no-follow reads, and fail-closed ownership checks make interruption and out-of-order upgrades recoverable without granting authority from arrival order, version recency, or caller class.
+- compatibility_consequences: |
+    Up to eight exact qxctl executor versions can coexist in newest-recorded-first accepted order, permitting old desired state to remain operable while a newer client is installed and permitting deterministic fallback when a preferred slot is absent or invalid. Descriptor drift, masking, partial uninstall, and interrupted slot rotation converge on the next explicit host operation or boot invocation. Moving an integration root requires an explicit uninstall/install transition; no hidden relocation is attempted.
+- publication_consequences: |
+    No module tag, release artifact, binary package, SDK, OpenAPI endpoint, Mintlify publication, public documentation launch, marketing claim, or platform release was published or authorized. This remains active-development source on the rolling main branch.
+- projection_consequences: |
+    Host status and boot results are bounded noncanonical operational evidence. Installed descriptors, unit files, executor slots, and boot UUID records are not canonical knowledge, semantic feature truth, permission, an installation receipt, or a publication record. Future UI, graph, and remote-node projections remain derived and rebuildable from authorized evidence.
+- evidence:
+  - `PR #125 merged into main at 2026-08-12T21:54:31Z by quantDIY as ac5d1b00ce113e273031eaf3818c6b73b214af47`
+  - `implementation head 5556292c9105866bb3efda74e52a3f0d9a313b4d; 35 files changed, 2104 insertions, 80 deletions`
+  - `local-Git adapter evidence sha256:fc2dc6b64c1533e508e055c3566417b4bd9616cde19d23a68aeb9cc8edd3332a binds revision ac5d1b00ce113e273031eaf3818c6b73b214af47 to tree digest sha256:9a30404efcc150525823a958e2db5cce0a1f6d4658de37a48a2e6c2b9583ebb3`
+  - `ratification evidence digest sha256:f4fda3e58284cbd873fd841dd9abd385a84f870e725488859e224a447678d160 binds compact lexicographically key-sorted PR identity, base/head/merge revisions, timestamps, authenticated merger, and diff counts`
+  - `qxctl passed its complete Go test, Go vet, race-detector, cgo-free Linux-amd64 cross-build, and host-integration regression gates`
+  - `host regression coverage passed exact executor selection and fallback, eight-slot bounding, descriptor compare-and-swap, boot UUID replay, masking and drift repair, resumable retirement, strict ownership and no-follow checks, unsupported-platform failure, and marker-owned cleanup`
+  - `Symphony Validator passed all three CTests and the complete adversarial smoke matrix; the source branch added no warning or violation`
+  - `SKVI and SSFV engine checks each reported valid state with zero warnings and zero violations; SSFV coverage remains explicitly partial pending nested feature adjudication`
+  - `all three added Draft 2020-12 JSON schemas compiled under AJV 8, and the generated SSIAG lifecycle grant plan validated with exactly 26 operations including the eight host operations`
+  - `closure SCLV engine check reported 39 records, 156 passes, zero warnings, zero violations, and valid state`
+  - `closure validator result pass=8097 warning=116 violation=0 exit=0; all 116 warnings remain the established historical sclv.affected_surface.unindexed advisory family`
+- non_authorizations:
+  - `unattended lifecycle apply, component execution, package download, receipt-v1 mutation, arbitrary entry-point execution, implicit newest-version selection, or live process activation`
+  - `canonical knowledge mutation, host-created permission, SSIAG bypass, STAV bypass, caller-class authority, engine-decided desired state, or automatic integration-root relocation`
+  - `hidden login hook, background watcher, timer-driven mutation, unbounded executor retention, semantic-version fallback, unverified executable promotion, or deletion outside marker-owned host artifacts`
+  - `Maestro engine execution or supervision, remote lifecycle API, hot/warm-path participation, native Windows engine, or trading-node doctrine`
+  - `Go 1.27 production pin, module release, SDK publication, product-launch claim, or repository-wide SSFV completeness`
+- notes: |
+    This post-merge closure records the Linux report-only lifecycle host receptor merged by PR #125. Every source-PR surface was already routed through SKVI before merge. The closure carrier appends only this forward-only canonical record and introduces no runtime behavior; it is non-recursive unless it adds an independently significant architectural change.
