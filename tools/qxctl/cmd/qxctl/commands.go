@@ -155,6 +155,11 @@ type knowledgeLifecycleOptions struct {
 	ownershipRoot           string
 	expectedOwnershipDigest string
 	receiptDigest           string
+	expectedHostDigest      string
+	integrationRoot         string
+	recoveryMode            string
+	hostDisabled            bool
+	bootResultSink          *validatedLifecycleBootResult
 	maestroPrefix           string
 	maestroVersion          string
 	maestroReceptorIDs      []string
@@ -465,7 +470,7 @@ func newKnowledgeCommand() *cobra.Command {
 		Use:  "lifecycle",
 		Args: usageOnlyArgs,
 		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge lifecycle subcommand is required: profile, ownership, observe, report, boot, status, recover, apply, apply-status, or apply-recover")
+			return fmt.Errorf("knowledge lifecycle subcommand is required: profile, ownership, host, observe, report, boot, status, recover, apply, apply-status, or apply-recover")
 		},
 	}
 	profile := &cobra.Command{
@@ -529,6 +534,37 @@ func newKnowledgeCommand() *cobra.Command {
 	}
 	ownership.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	lifecycle.AddCommand(ownership)
+
+	host := &cobra.Command{
+		Use:  "host",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return fmt.Errorf("knowledge lifecycle host subcommand is required: install, update, status, reconcile, enable, disable, uninstall, or run")
+		},
+	}
+	for _, operation := range []string{"install", "update", "status", "reconcile", "enable", "disable", "uninstall", "run"} {
+		options := knowledgeLifecycleOptions{scope: "system", profileID: "default", ttl: 15 * time.Minute, recoveryMode: "discover"}
+		child := &cobra.Command{
+			Use:  operation,
+			Args: usageOnlyArgs,
+			RunE: func(*cobra.Command, []string) error {
+				return runKnowledgeLifecycleHost(operation, options)
+			},
+		}
+		addKnowledgeLifecycleHostFlags(child, &options)
+		if operation == "install" || operation == "update" {
+			child.Flags().StringVar(&options.integrationRoot, "integration-root", "", "exact protected systemd integration root; defaults per TOPS/profile")
+			child.Flags().StringVar(&options.recoveryMode, "recovery-mode", "discover", "boot evidence recovery: strict or discover")
+			child.Flags().BoolVar(&options.hostDisabled, "disabled", false, "install the unit without enabling it for host boot")
+		}
+		if operation == "install" || operation == "update" || operation == "enable" || operation == "disable" || operation == "uninstall" {
+			child.Flags().StringVar(&options.expectedHostDigest, "expected-host-digest", "", "required prior host integration state: absent or exact tagged SHA-256 digest")
+		}
+		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+		host.AddCommand(child)
+	}
+	host.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	lifecycle.AddCommand(host)
 
 	observeOptions := knowledgeLifecycleOptions{scope: "user", profileID: "default", ttl: 15 * time.Minute}
 	observe := &cobra.Command{
@@ -665,6 +701,16 @@ func addKnowledgeLifecycleCommonFlags(command *cobra.Command, options *knowledge
 	command.Flags().StringVar(&options.maestroPrefix, "maestro-prefix", "", "exact Maestro installation prefix for docking observation and apply")
 	command.Flags().StringVar(&options.maestroVersion, "maestro-version", "0.1.0-dev", "exact Maestro version")
 	command.Flags().StringSliceVar(&options.maestroReceptorIDs, "maestro-receptor-id", nil, "exact receptor to observe or mutate; repeat for receptor-switch recovery")
+	command.Flags().StringVar(&options.profileID, "profile-id", "default", "exact lifecycle profile identity")
+	command.Flags().DurationVar(&options.ttl, "ttl", 15*time.Minute, "requested lifecycle authorization lifetime")
+	command.Flags().BoolVar(&options.jsonOutput, "json", false, "emit JSON")
+}
+
+func addKnowledgeLifecycleHostFlags(command *cobra.Command, options *knowledgeLifecycleOptions) {
+	command.Flags().StringVar(&options.topsID, "tops-id", "", "immutable TOPS UUID")
+	command.Flags().StringVar(&options.scope, "scope", "system", "SSIAG installation scope; host integration requires system")
+	command.Flags().StringVar(&options.stateRoot, "state-root", "", "state root; Linux host integration defaults to /var/lib")
+	command.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
 	command.Flags().StringVar(&options.profileID, "profile-id", "default", "exact lifecycle profile identity")
 	command.Flags().DurationVar(&options.ttl, "ttl", 15*time.Minute, "requested lifecycle authorization lifetime")
 	command.Flags().BoolVar(&options.jsonOutput, "json", false, "emit JSON")
@@ -1179,6 +1225,12 @@ func failurePrefix(args []string) string {
 				switch args[3] {
 				case "status", "reconcile", "adopt", "release":
 					return "knowledge lifecycle ownership " + args[3]
+				}
+			}
+			if len(args) > 3 && args[2] == "host" {
+				switch args[3] {
+				case "install", "update", "status", "reconcile", "enable", "disable", "uninstall", "run":
+					return "knowledge lifecycle host " + args[3]
 				}
 			}
 		}

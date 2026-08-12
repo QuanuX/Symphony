@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-host-boot-result:v1",
+  "title": "Symphony idempotent host-boot dispatch result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "tops_id", "profile_id", "boot_id", "journal_digest", "changed", "replayed", "apply_authorized", "canonical"],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.lifecycle-host-boot-result.v1"},
+    "tops_id": {"type": "string", "format": "uuid"},
+    "profile_id": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "boot_id": {"type": "string", "format": "uuid"},
+    "journal_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "changed": {"type": "boolean"},
+    "replayed": {"type": "boolean"},
+    "apply_authorized": {"const": false},
+    "canonical": {"const": false}
+  }
+}

@@ -49,7 +49,7 @@ func TestSSIAGLifecycleGrantPlanUsesStableProfileResource(t *testing.T) {
 	if err := decoder.Decode(&plan); err != nil {
 		t.Fatal(err)
 	}
-	if len(plan.Grants) != 18 || plan.ApplyEnabled || plan.Canonical || !validTaggedDigest(plan.PlanDigest) {
+	if len(plan.Grants) != 26 || plan.ApplyEnabled || plan.Canonical || !validTaggedDigest(plan.PlanDigest) {
 		t.Fatalf("unexpected lifecycle grant plan: %+v", plan)
 	}
 	wantResource := lifecycleResource(ssiagTestTOPSID, "default", "changing-evidence-does-not-change-policy")
@@ -57,7 +57,23 @@ func TestSSIAGLifecycleGrantPlanUsesStableProfileResource(t *testing.T) {
 	if plan.Resource != wantResource || plan.CatalogResource != wantCatalogResource {
 		t.Fatalf("grant-plan resources are not exact and stable: %+v", plan)
 	}
+	wantOperations := map[string]bool{
+		"symphony.knowledge.lifecycle.host.disable":   true,
+		"symphony.knowledge.lifecycle.host.enable":    true,
+		"symphony.knowledge.lifecycle.host.install":   true,
+		"symphony.knowledge.lifecycle.host.reconcile": true,
+		"symphony.knowledge.lifecycle.host.run":       true,
+		"symphony.knowledge.lifecycle.host.status":    true,
+		"symphony.knowledge.lifecycle.host.uninstall": true,
+		"symphony.knowledge.lifecycle.host.update":    true,
+	}
+	seen := make(map[string]bool, len(plan.Grants))
 	for _, grant := range plan.Grants {
+		if seen[grant.Operation] {
+			t.Fatalf("grant-plan operation is duplicated: %s", grant.Operation)
+		}
+		seen[grant.Operation] = true
+		delete(wantOperations, grant.Operation)
 		expectedResource := wantResource
 		if grant.Operation == "symphony.knowledge.lifecycle.profile.list" {
 			expectedResource = wantCatalogResource
@@ -65,6 +81,9 @@ func TestSSIAGLifecycleGrantPlanUsesStableProfileResource(t *testing.T) {
 		if grant.Resource != expectedResource || grant.SubjectID != "host-owner" || grant.Scope != "tops:"+ssiagTestTOPSID {
 			t.Fatalf("grant escaped exact stable target: %+v", grant)
 		}
+	}
+	if len(wantOperations) != 0 {
+		t.Fatalf("host lifecycle operations are absent from the grant plan: %v", wantOperations)
 	}
 }
 

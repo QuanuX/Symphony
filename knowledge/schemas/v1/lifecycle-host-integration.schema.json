@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-host-integration:v1",
+  "title": "Symphony Linux lifecycle host integration v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "format_version", "tops_id", "profile_id", "scope", "manager", "state",
+    "desired_enabled", "boot_policy", "recovery_mode", "state_root", "repository_root",
+    "integration_root", "unit_name", "unit_digest", "active_executor", "fallback_executors",
+    "generation", "previous_integration_digest", "updated_at", "canonical", "integration_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.lifecycle-host-integration.v1"},
+    "format_version": {"const": 1},
+    "tops_id": {"type": "string", "format": "uuid"},
+    "profile_id": {"$ref": "#/$defs/token"},
+    "scope": {"const": "system"},
+    "manager": {"const": "systemd"},
+    "state": {"enum": ["installed", "retiring"]},
+    "desired_enabled": {"type": "boolean"},
+    "boot_policy": {"const": "report_only"},
+    "recovery_mode": {"enum": ["strict", "discover"]},
+    "state_root": {"$ref": "#/$defs/path"},
+    "repository_root": {"$ref": "#/$defs/path"},
+    "integration_root": {"$ref": "#/$defs/path"},
+    "unit_name": {"type": "string", "pattern": "^symphony-qxctl-lifecycle@[0-9a-f-]{36}-[0-9a-f]{64}\\.service$"},
+    "unit_digest": {"$ref": "#/$defs/digest"},
+    "active_executor": {"$ref": "#/$defs/executor"},
+    "fallback_executors": {"type": "array", "maxItems": 8, "items": {"$ref": "#/$defs/executor"}},
+    "generation": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "previous_integration_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "updated_at": {"$ref": "urn:symphony:knowledge:temporal:v1#/$defs/timestamp"},
+    "canonical": {"const": false},
+    "integration_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "executor": {
+      "type": "object", "additionalProperties": false, "required": ["digest", "path"],
+      "properties": {"digest": {"$ref": "#/$defs/digest"}, "path": {"$ref": "#/$defs/path"}}
+    },
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "path": {"type": "string", "minLength": 2, "maxLength": 4096, "pattern": "^/(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[%$])(?!.*[\\u0000-\\u001F\\u007F])[^/](?:.*[^/])?$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:lifecycle-host-integration-result:v1",
+  "title": "Symphony lifecycle host integration administration result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "operation", "tops_id", "profile_id", "present", "integration", "drift", "repair_actions", "changed", "recovered", "apply_authorized", "canonical"],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.lifecycle-host-integration-result.v1"},
+    "operation": {"enum": ["install", "update", "status", "reconcile", "enable", "disable", "uninstall"]},
+    "tops_id": {"type": "string", "format": "uuid"},
+    "profile_id": {"$ref": "#/$defs/token"},
+    "present": {"type": "boolean"},
+    "integration": {"oneOf": [{"type": "null"}, {"$ref": "urn:symphony:knowledge:lifecycle-host-integration:v1"}]},
+    "drift": {"type": "array", "maxItems": 16, "items": {"$ref": "#/$defs/drift"}},
+    "repair_actions": {"type": "array", "maxItems": 16, "items": {"$ref": "#/$defs/text"}},
+    "changed": {"type": "boolean"},
+    "recovered": {"type": "boolean"},
+    "apply_authorized": {"const": false},
+    "canonical": {"const": false}
+  },
+  "allOf": [
+    {"if": {"properties": {"present": {"const": false}}}, "then": {"properties": {"integration": {"type": "null"}}}},
+    {"if": {"properties": {"present": {"const": true}}}, "then": {"properties": {"integration": {"$ref": "urn:symphony:knowledge:lifecycle-host-integration:v1"}}}}
+  ],
+  "$defs": {
+    "drift": {
+      "type": "object", "additionalProperties": false, "required": ["code", "detail"],
+      "properties": {"code": {"$ref": "#/$defs/token"}, "detail": {"$ref": "#/$defs/text"}}
+    },
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "text": {"type": "string", "minLength": 1, "maxLength": 4096}
+  }
+}
