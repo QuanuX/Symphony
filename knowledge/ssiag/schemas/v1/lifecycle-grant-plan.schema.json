@@ -22,9 +22,37 @@
     "scope": {"$ref": "#/$defs/token"},
     "grants": {
       "type": "array",
-      "minItems": 18,
-      "maxItems": 18,
-      "items": {"$ref": "#/$defs/grant"}
+      "minItems": 26,
+      "maxItems": 26,
+      "items": {"$ref": "#/$defs/grant"},
+      "allOf": [
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.apply.close"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.apply.finalize"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.apply.prepare"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.apply.recover"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.apply.status"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.boot"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.boot.recover"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.boot.status"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.host.disable"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.host.enable"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.host.install"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.host.reconcile"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.host.run"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.host.status"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.host.uninstall"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.host.update"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.observe"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.ownership.adopt"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.ownership.reconcile"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.ownership.release"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.ownership.status"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.profile.list"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.profile.remove"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.profile.set"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.profile.show"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"operation": {"const": "symphony.knowledge.lifecycle.report"}}, "required": ["operation"]}, "minContains": 1, "maxContains": 1}
+      ]
     },
     "apply_enabled": {"const": false},
     "canonical": {"const": false},
@@ -39,7 +67,15 @@
         "id": {"$ref": "#/$defs/token"},
         "subject_id": {"$ref": "#/$defs/token"},
         "authority_basis": {"enum": ["host_owner", "granted_permission"]},
-        "operation": {"$ref": "#/$defs/token"},
+        "operation": {
+          "enum": [
+            "symphony.knowledge.lifecycle.apply.close", "symphony.knowledge.lifecycle.apply.finalize", "symphony.knowledge.lifecycle.apply.prepare", "symphony.knowledge.lifecycle.apply.recover", "symphony.knowledge.lifecycle.apply.status",
+            "symphony.knowledge.lifecycle.boot", "symphony.knowledge.lifecycle.boot.recover", "symphony.knowledge.lifecycle.boot.status",
+            "symphony.knowledge.lifecycle.host.disable", "symphony.knowledge.lifecycle.host.enable", "symphony.knowledge.lifecycle.host.install", "symphony.knowledge.lifecycle.host.reconcile", "symphony.knowledge.lifecycle.host.run", "symphony.knowledge.lifecycle.host.status", "symphony.knowledge.lifecycle.host.uninstall", "symphony.knowledge.lifecycle.host.update",
+            "symphony.knowledge.lifecycle.observe", "symphony.knowledge.lifecycle.ownership.adopt", "symphony.knowledge.lifecycle.ownership.reconcile", "symphony.knowledge.lifecycle.ownership.release", "symphony.knowledge.lifecycle.ownership.status",
+            "symphony.knowledge.lifecycle.profile.list", "symphony.knowledge.lifecycle.profile.remove", "symphony.knowledge.lifecycle.profile.set", "symphony.knowledge.lifecycle.profile.show", "symphony.knowledge.lifecycle.report"
+          ]
+        },
         "resource": {"$ref": "#/$defs/token"},
         "audience": {"const": "qxctl"},
         "scope": {"$ref": "#/$defs/token"}

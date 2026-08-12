@@ -168,25 +168,28 @@ func validateOwnedRegular(fd int) error {
 }
 
 func readProfileFile(directory *os.File, profileID string) ([]byte, bool, error) {
-	name := profileFileName(profileID)
+	return readStateFile(directory, profileFileName(profileID), maxProfileBytes, "lifecycle profile")
+}
+
+func readStateFile(directory *os.File, name string, maximum int64, label string) ([]byte, bool, error) {
 	fd, err := unix.Openat(int(directory.Fd()), name, unix.O_RDONLY|unix.O_CLOEXEC|unix.O_NOFOLLOW|unix.O_NONBLOCK, 0)
 	if errors.Is(err, syscall.ENOENT) {
 		return nil, false, nil
 	}
 	if err != nil {
-		return nil, false, fmt.Errorf("open lifecycle profile: %w", err)
+		return nil, false, fmt.Errorf("open %s: %w", label, err)
 	}
 	file := os.NewFile(uintptr(fd), name)
 	defer file.Close()
 	if err := validateOwnedRegular(fd); err != nil {
-		return nil, false, fmt.Errorf("validate lifecycle profile: %w", err)
+		return nil, false, fmt.Errorf("validate %s: %w", label, err)
 	}
-	data, err := io.ReadAll(io.LimitReader(file, maxProfileBytes+1))
+	data, err := io.ReadAll(io.LimitReader(file, maximum+1))
 	if err != nil {
-		return nil, false, fmt.Errorf("read lifecycle profile: %w", err)
+		return nil, false, fmt.Errorf("read %s: %w", label, err)
 	}
-	if len(data) > maxProfileBytes {
-		return nil, false, fmt.Errorf("lifecycle profile exceeds %d bytes", maxProfileBytes)
+	if int64(len(data)) > maximum {
+		return nil, false, fmt.Errorf("%s exceeds %d bytes", label, maximum)
 	}
 	return data, true, nil
 }
@@ -244,15 +247,18 @@ func listProfileFiles(directory *os.File) ([]listedProfileFile, error) {
 }
 
 func writeProfileFile(directory *os.File, profileID string, data []byte) error {
+	return writeStateFile(directory, profileFileName(profileID), data, "lifecycle profile")
+}
+
+func writeStateFile(directory *os.File, name string, data []byte, label string) error {
 	random := make([]byte, 16)
 	if _, err := rand.Read(random); err != nil {
-		return fmt.Errorf("generate lifecycle profile temporary name: %w", err)
+		return fmt.Errorf("generate %s temporary name: %w", label, err)
 	}
-	name := profileFileName(profileID)
 	temp := "." + name + ".tmp-" + hex.EncodeToString(random)
 	fd, err := unix.Openat(int(directory.Fd()), temp, unix.O_CREAT|unix.O_EXCL|unix.O_WRONLY|unix.O_CLOEXEC|unix.O_NOFOLLOW, 0o600)
 	if err != nil {
-		return fmt.Errorf("create lifecycle profile temporary file: %w", err)
+		return fmt.Errorf("create %s temporary file: %w", label, err)
 	}
 	file := os.NewFile(uintptr(fd), temp)
 	cleanup := func() {
@@ -265,32 +271,36 @@ func writeProfileFile(directory *os.File, profileID string, data []byte) error {
 	}
 	if _, err := file.Write(data); err != nil {
 		cleanup()
-		return fmt.Errorf("write lifecycle profile: %w", err)
+		return fmt.Errorf("write %s: %w", label, err)
 	}
 	if err := file.Sync(); err != nil {
 		cleanup()
-		return fmt.Errorf("durably write lifecycle profile: %w", err)
+		return fmt.Errorf("durably write %s: %w", label, err)
 	}
 	if err := file.Close(); err != nil {
 		_ = unix.Unlinkat(int(directory.Fd()), temp, 0)
-		return fmt.Errorf("close lifecycle profile temporary file: %w", err)
+		return fmt.Errorf("close %s temporary file: %w", label, err)
 	}
 	if err := unix.Renameat(int(directory.Fd()), temp, int(directory.Fd()), name); err != nil {
 		_ = unix.Unlinkat(int(directory.Fd()), temp, 0)
-		return fmt.Errorf("atomically replace lifecycle profile: %w", err)
+		return fmt.Errorf("atomically replace %s: %w", label, err)
 	}
 	if err := unix.Fsync(int(directory.Fd())); err != nil {
-		return fmt.Errorf("durably commit lifecycle profile directory: %w", err)
+		return fmt.Errorf("durably commit %s directory: %w", label, err)
 	}
 	return nil
 }
 
 func removeProfileFile(directory *os.File, profileID string) error {
-	if err := unix.Unlinkat(int(directory.Fd()), profileFileName(profileID), 0); err != nil {
-		return fmt.Errorf("remove lifecycle profile: %w", err)
+	return removeStateFile(directory, profileFileName(profileID), "lifecycle profile")
+}
+
+func removeStateFile(directory *os.File, name, label string) error {
+	if err := unix.Unlinkat(int(directory.Fd()), name, 0); err != nil {
+		return fmt.Errorf("remove %s: %w", label, err)
 	}
 	if err := unix.Fsync(int(directory.Fd())); err != nil {
-		return fmt.Errorf("durably commit lifecycle profile removal: %w", err)
+		return fmt.Errorf("durably commit %s removal: %w", label, err)
 	}
 	return nil
 }

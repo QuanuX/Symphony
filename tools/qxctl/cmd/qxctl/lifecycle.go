@@ -485,6 +485,10 @@ func runKnowledgeLifecycleBoot(options knowledgeLifecycleOptions) error {
 	if err != nil {
 		return err
 	}
+	if options.bootResultSink != nil {
+		*options.bootResultSink = result
+		return nil
+	}
 	if options.jsonOutput {
 		return printIndentedJSON(result.Raw)
 	}
@@ -498,22 +502,37 @@ func runKnowledgeLifecycleBoot(options knowledgeLifecycleOptions) error {
 }
 
 func runKnowledgeLifecycleBootState(operation string, options knowledgeLifecycleOptions) error {
+	result, err := invokeKnowledgeLifecycleBootState(operation, options)
+	if err != nil {
+		return err
+	}
+	if options.jsonOutput {
+		return printIndentedJSON(result.Raw)
+	}
+	fmt.Printf("Knowledge lifecycle %s: profile=%s present=%t changed=%t recovered=%t state=%s generation=%d revision=%d journal_digest=%s apply_authorized=false canonical=false\n",
+		strings.TrimPrefix(operation, "lifecycle_boot_"), options.profileID, result.JournalPresent,
+		result.Changed, result.Recovered, result.State, result.Generation,
+		result.PlanRevision, result.JournalDigest)
+	return nil
+}
+
+func invokeKnowledgeLifecycleBootState(operation string, options knowledgeLifecycleOptions) (validatedLifecycleBootResult, error) {
 	expected := options.expectedJournalDigest
 	if operation == "lifecycle_boot_recover" {
 		if options.operationID == "" {
-			return fmt.Errorf("--operation-id is required")
+			return validatedLifecycleBootResult{}, fmt.Errorf("--operation-id is required")
 		}
 		if options.discover && expected != "" {
-			return fmt.Errorf("--discover and --expected-journal-digest are mutually exclusive")
+			return validatedLifecycleBootResult{}, fmt.Errorf("--discover and --expected-journal-digest are mutually exclusive")
 		}
 		if options.discover {
 			expected = "discover"
 		}
 		if expected == "" {
-			return fmt.Errorf("--expected-journal-digest or --discover is required")
+			return validatedLifecycleBootResult{}, fmt.Errorf("--expected-journal-digest or --discover is required")
 		}
 		if expected != "discover" && !validTaggedDigest(expected) {
-			return fmt.Errorf("--expected-journal-digest must be an exact tagged SHA-256 digest")
+			return validatedLifecycleBootResult{}, fmt.Errorf("--expected-journal-digest must be an exact tagged SHA-256 digest")
 		}
 	}
 	evidence := "status"
@@ -525,19 +544,19 @@ func runKnowledgeLifecycleBootState(operation string, options knowledgeLifecycle
 	decision, err := authorizeKnowledgeLifecycleDecision(
 		options, permission, lifecycleResource(options.topsID, options.profileID, evidence))
 	if err != nil {
-		return err
+		return validatedLifecycleBootResult{}, err
 	}
 	store, err := lifecycleStore(options)
 	if err != nil {
-		return err
+		return validatedLifecycleBootResult{}, err
 	}
 	repositoryRoot, err := resolveKnowledgeRepository(options.repository)
 	if err != nil {
-		return err
+		return validatedLifecycleBootResult{}, err
 	}
 	coordinator, err := exactBoundCoordinator(options.stateRoot)
 	if err != nil {
-		return err
+		return validatedLifecycleBootResult{}, err
 	}
 	var operationID any
 	var expectedValue any
@@ -553,26 +572,19 @@ func runKnowledgeLifecycleBootState(operation string, options knowledgeLifecycle
 		"journal_client": lifecycleJournalClient(),
 	})
 	if err != nil {
-		return fmt.Errorf("encode lifecycle boot state request: %w", err)
+		return validatedLifecycleBootResult{}, fmt.Errorf("encode lifecycle boot state request: %w", err)
 	}
 	response, err := knowledgeengine.InvokeCoordinator(
 		context.Background(), coordinator.Prefix, coordinator.Version, repositoryRoot, operation, payload)
 	if err != nil {
-		return err
+		return validatedLifecycleBootResult{}, err
 	}
 	result, err := validateLifecycleBootResult(
 		response.Result, operation, options.profileID, options.topsID, "", "", "", "")
 	if err != nil {
-		return err
+		return validatedLifecycleBootResult{}, err
 	}
-	if options.jsonOutput {
-		return printIndentedJSON(result.Raw)
-	}
-	fmt.Printf("Knowledge lifecycle %s: profile=%s present=%t changed=%t recovered=%t state=%s generation=%d revision=%d journal_digest=%s apply_authorized=false canonical=false\n",
-		strings.TrimPrefix(operation, "lifecycle_boot_"), options.profileID, result.JournalPresent,
-		result.Changed, result.Recovered, result.State, result.Generation,
-		result.PlanRevision, result.JournalDigest)
-	return nil
+	return result, nil
 }
 
 func lifecycleStore(options knowledgeLifecycleOptions) (*knowledgelifecycle.Store, error) {
@@ -866,6 +878,7 @@ type validatedLifecycleBootResult struct {
 	Generation     uint64
 	PlanRevision   uint64
 	JournalDigest  string
+	OperationID    string
 }
 
 func validateLifecycleBootResult(
@@ -999,6 +1012,7 @@ func validateLifecycleBootResult(
 			return validatedLifecycleBootResult{}, fmt.Errorf("lifecycle boot journal digest mismatch")
 		}
 		result.State = journal["state"].(string)
+		result.OperationID = journal["operation_id"].(string)
 		result.Generation = generation
 		result.PlanRevision = revision
 		result.JournalDigest = journalDigest

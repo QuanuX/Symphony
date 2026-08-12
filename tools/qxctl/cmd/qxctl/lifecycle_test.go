@@ -133,6 +133,12 @@ func TestLifecycleCommandGrammarIsRegistered(t *testing.T) {
 			t.Fatalf("lifecycle %s grammar is absent: command=%v err=%v", name, command, err)
 		}
 	}
+	for _, name := range []string{"install", "update", "status", "reconcile", "enable", "disable", "uninstall", "run"} {
+		command, _, err = root.Find([]string{"knowledge", "lifecycle", "host", name})
+		if err != nil || command == nil || command.Name() != name {
+			t.Fatalf("lifecycle host %s grammar is absent: command=%v err=%v", name, command, err)
+		}
+	}
 }
 
 func TestValidateLifecycleBootResultEnforcesDurableReportOnlyBoundary(t *testing.T) {

@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 bool is_authorized_canonical_json(const std::string& relative_path) {
     // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, and SSFV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 134> authorized_paths = {
+    static const std::array<std::string, 137> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -78,6 +78,9 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/schemas/v1/lifecycle-boot-result.schema.json",
         "knowledge/schemas/v1/lifecycle-apply-command.schema.json",
         "knowledge/schemas/v1/lifecycle-apply-result.schema.json",
+        "knowledge/schemas/v1/lifecycle-host-integration.schema.json",
+        "knowledge/schemas/v1/lifecycle-host-integration-result.schema.json",
+        "knowledge/schemas/v1/lifecycle-host-boot-result.schema.json",
         "knowledge/schemas/v1/temporal.schema.json",
         "knowledge/schemas/v1/maestro-receptor-descriptor.schema.json",
         "knowledge/schemas/v1/maestro-docking-command.schema.json",
