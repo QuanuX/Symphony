@@ -168,6 +168,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:platform",
+          "interaction": "discover"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "query"
         }
@@ -357,6 +361,14 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.lifecycle-apply-coordination",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:maestro-presence-authority",
+          "interaction": "lifecycle"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl.lifecycle-convergence",
           "interaction": "apply"
         }
@@ -383,6 +395,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.lifecycle-apply-coordination",
+          "interaction": "recover"
+        },
         {
           "feature_id": "ssfv:symphony:qxctl.lifecycle-convergence",
           "interaction": "recover"
@@ -411,6 +427,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.lifecycle-apply-coordination",
+          "interaction": "query"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl.lifecycle-convergence",
           "interaction": "query"
         }
@@ -437,6 +457,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.lifecycle-planning",
+          "interaction": "lifecycle"
+        },
         {
           "feature_id": "ssfv:symphony:qxctl.lifecycle-convergence",
           "interaction": "lifecycle"
@@ -680,6 +704,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.lifecycle-planning",
+          "interaction": "inspect"
+        },
         {
           "feature_id": "ssfv:symphony:qxctl.lifecycle-convergence",
           "interaction": "inspect"
@@ -951,6 +979,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.lifecycle-planning",
+          "interaction": "query"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl.lifecycle-convergence",
           "interaction": "query"
         }
@@ -977,6 +1009,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.lifecycle-planning",
+          "interaction": "query"
+        },
         {
           "feature_id": "ssfv:symphony:qxctl.lifecycle-convergence",
           "interaction": "query"
@@ -1005,6 +1041,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.reconciliation",
+          "interaction": "lifecycle"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "lifecycle"
         }
@@ -1031,6 +1071,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.reconciliation",
+          "interaction": "lifecycle"
+        },
         {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "lifecycle"
@@ -1059,6 +1103,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.reconciliation",
+          "interaction": "lifecycle"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "lifecycle"
         }
@@ -1085,6 +1133,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.reconciliation",
+          "interaction": "query"
+        },
         {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "query"
@@ -1113,6 +1165,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.reconciliation",
+          "interaction": "recover"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "recover"
         }
@@ -1139,6 +1195,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.reconciliation",
+          "interaction": "query"
+        },
         {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "query"
@@ -1167,6 +1227,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.authority-epochs",
+          "interaction": "lifecycle"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl.authenticated-sessions",
           "interaction": "lifecycle"
         }
@@ -1193,6 +1257,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.authority-epochs",
+          "interaction": "lifecycle"
+        },
         {
           "feature_id": "ssfv:symphony:qxctl.authenticated-sessions",
           "interaction": "lifecycle"
@@ -1221,6 +1289,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.authority-epochs",
+          "interaction": "lifecycle"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl.authenticated-sessions",
           "interaction": "lifecycle"
         }
@@ -1247,6 +1319,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.semantic-maintenance",
+          "interaction": "lifecycle"
+        },
         {
           "feature_id": "ssfv:symphony:qxctl.authenticated-sessions",
           "interaction": "lifecycle"
@@ -1275,6 +1351,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.semantic-maintenance",
+          "interaction": "lifecycle"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl.authenticated-sessions",
           "interaction": "lifecycle"
         }
@@ -1301,6 +1381,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.semantic-maintenance",
+          "interaction": "lifecycle"
+        },
         {
           "feature_id": "ssfv:symphony:qxctl.authenticated-sessions",
           "interaction": "lifecycle"
@@ -1329,6 +1413,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.semantic-maintenance",
+          "interaction": "recover"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl.authenticated-sessions",
           "interaction": "recover"
         }
@@ -1355,6 +1443,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.semantic-maintenance",
+          "interaction": "query"
+        },
         {
           "feature_id": "ssfv:symphony:qxctl.authenticated-sessions",
           "interaction": "query"
@@ -1383,6 +1475,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.authority-epochs",
+          "interaction": "recover"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl.authenticated-sessions",
           "interaction": "recover"
         }
@@ -1409,6 +1505,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.authority-epochs",
+          "interaction": "query"
+        },
         {
           "feature_id": "ssfv:symphony:qxctl.authenticated-sessions",
           "interaction": "query"
@@ -1437,6 +1537,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.authority-epochs",
+          "interaction": "lifecycle"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl.authenticated-sessions",
           "interaction": "lifecycle"
         }
@@ -1463,6 +1567,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:maestro-presence-authority",
+          "interaction": "inspect"
+        },
         {
           "feature_id": "ssfv:symphony:qxctl.maestro-administration",
           "interaction": "inspect"
@@ -1491,6 +1599,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:maestro-presence-authority.complete-inventory",
+          "interaction": "query"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl.maestro-administration",
           "interaction": "discover"
         }
@@ -1517,6 +1629,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:maestro-presence-authority",
+          "interaction": "recover"
+        },
         {
           "feature_id": "ssfv:symphony:qxctl.maestro-administration",
           "interaction": "recover"
@@ -1545,6 +1661,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:maestro-presence-authority",
+          "interaction": "query"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl.maestro-administration",
           "interaction": "query"
         }
@@ -1572,6 +1692,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator",
+          "interaction": "validate"
+        },
+        {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "validate"
         }
@@ -1598,6 +1722,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator",
+          "interaction": "inspect"
+        },
         {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "inspect"
@@ -1652,6 +1780,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:platform",
+          "interaction": "discover"
+        },
         {
           "feature_id": "ssfv:symphony:qxctl",
           "interaction": "discover"
@@ -2510,6 +2642,10 @@
         {
           "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
           "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation",
+          "interaction": "validate"
         }
       ],
       "infrastructure_purpose": null,
@@ -2564,6 +2700,10 @@
         {
           "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
           "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.policy-administration",
+          "interaction": "apply"
         }
       ],
       "infrastructure_purpose": null,
@@ -2590,6 +2730,10 @@
       "feature_bindings": [
         {
           "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.policy-administration",
           "interaction": "propose"
         }
       ],
@@ -2618,6 +2762,10 @@
         {
           "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
           "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.policy-administration",
+          "interaction": "recover"
         }
       ],
       "infrastructure_purpose": null,
@@ -2644,6 +2792,10 @@
       "feature_bindings": [
         {
           "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.policy-administration",
           "interaction": "query"
         }
       ],
@@ -2672,6 +2824,14 @@
         {
           "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
           "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.provider-metadata-registry",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag.macos-keychain-metadata",
+          "interaction": "discover"
         }
       ],
       "infrastructure_purpose": null,
@@ -2698,6 +2858,10 @@
       "feature_bindings": [
         {
           "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation",
           "interaction": "query"
         }
       ],
@@ -2780,6 +2944,10 @@
         {
           "feature_id": "ssfv:symphony:qxctl.stav-administration",
           "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:stav-append-authority",
+          "interaction": "validate"
         }
       ],
       "infrastructure_purpose": null,
@@ -2806,6 +2974,10 @@
       "feature_bindings": [
         {
           "feature_id": "ssfv:symphony:qxctl.stav-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:stav-append-authority.authorized-query",
           "interaction": "query"
         }
       ],
@@ -2834,6 +3006,10 @@
         {
           "feature_id": "ssfv:symphony:qxctl.stav-administration",
           "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:stav-append-authority",
+          "interaction": "query"
         }
       ],
       "infrastructure_purpose": null,
@@ -2860,6 +3036,10 @@
       "feature_bindings": [
         {
           "feature_id": "ssfv:symphony:qxctl.stav-administration",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:stav-append-authority.ledger-durability",
           "interaction": "validate"
         }
       ],
@@ -3104,6 +3284,10 @@
         {
           "feature_id": "ssfv:symphony:qxctl.governed-validation",
           "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:symphony-validator",
+          "interaction": "validate"
         }
       ],
       "infrastructure_purpose": null,
@@ -3119,5 +3303,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:ab314800fe998ee7f6d59aee68ef23e7cd9d3cb6ff48b30fd8999eb46966647c"
+  "registry_digest": "sha256:a19fab9cfa16a9b041d2f25f378ab8742a578b8beca1660f8c29dfd5485d81a1"
 }

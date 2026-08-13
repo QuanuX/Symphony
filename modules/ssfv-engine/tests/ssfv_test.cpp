@@ -510,6 +510,38 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
                 canonical_administration.at("module_integrations").at(0)
                     .at("docking_ready") == true,
             "ratified SSFV administration mapping is not integration ready");
+
+    const auto full_administration = ssfv::handle_request(request(
+        "administration-check", administration_payload(
+            check.at("semantic_snapshot"),
+            read_json("knowledge/FEATURE-ADMINISTRATION-PROFILE.json"),
+            read_json("tools/qxctl/COMMANDS.json"), "not_evaluated", nullptr,
+            engine::Json::array({descriptor_v2}), nullptr)));
+    require(full_administration.at("summary").at("features_checked") == 69U &&
+                full_administration.at("summary").at("surfaces_checked") == 128U &&
+                full_administration.at("summary").at("satisfied") == 103U &&
+                full_administration.at("summary").at("uncovered") == 4U &&
+                full_administration.at("summary").at("exempt") == 13U &&
+                full_administration.at("summary").at("prohibited") == 8U &&
+                full_administration.at("summary").at("stale") == 0U &&
+                full_administration.at("summary").at("unresolved") == 0U,
+            "canonical administration baseline counts mismatch");
+    std::vector<std::string> uncovered_features;
+    for (const auto& surface : full_administration.at("surfaces")) {
+        if (surface.at("design_state") == "uncovered") {
+            require(surface.at("interaction") == "lifecycle" &&
+                        surface.at("command_ids").empty(),
+                    "canonical uncovered surface is not a missing lifecycle route");
+            uncovered_features.push_back(surface.at("feature_id").get<std::string>());
+        }
+    }
+    require(uncovered_features == std::vector<std::string>{
+                "ssfv:symphony:ssiag-foundation.native-supervision",
+                "ssfv:symphony:ssiag-foundation.tops-enrollment",
+                "ssfv:symphony:stav-append-authority.native-supervision",
+                "ssfv:symphony:stav-append-authority.tops-enrollment",
+            },
+            "canonical uncovered administration surfaces changed");
 }
 
 void test_administration_coverage_and_module_admission() {

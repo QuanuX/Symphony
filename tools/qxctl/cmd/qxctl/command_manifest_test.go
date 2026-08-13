@@ -108,6 +108,61 @@ func TestCommandRegistryBindsVectorCapabilitiesNotBindingSelection(t *testing.T)
 	}
 }
 
+func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
+	if len(reviewedBackendFeatureBindings) != 44 {
+		t.Fatalf("reviewed backend command count = %d, want 44", len(reviewedBackendFeatureBindings))
+	}
+	secondaryBindingCount := 0
+	for key, bindings := range reviewedBackendFeatureBindings {
+		if key == "" || len(bindings) == 0 {
+			t.Fatalf("empty reviewed backend binding entry for %q", key)
+		}
+		secondaryBindingCount += len(bindings)
+	}
+	if secondaryBindingCount != 46 {
+		t.Fatalf("reviewed backend binding count = %d, want 46", secondaryBindingCount)
+	}
+
+	root, err := newRootCommand()
+	if err != nil {
+		t.Fatal(err)
+	}
+	manifest, err := commandregistry.BuildExpected(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	found := 0
+	for _, command := range manifest.Commands {
+		key := strings.TrimPrefix(command.CommandID, "qxcmd:symphony:")
+		bindings, expected := reviewedBackendFeatureBindings[key]
+		if !expected {
+			continue
+		}
+		found++
+		if len(command.FeatureBindings) != len(bindings)+1 {
+			t.Errorf("%s bindings = %#v, want one wrapper plus %#v", command.CommandID, command.FeatureBindings, bindings)
+			continue
+		}
+		for _, binding := range bindings {
+			if !containsFeatureBinding(command.FeatureBindings, binding) {
+				t.Errorf("%s is missing reviewed backend binding %#v", command.CommandID, binding)
+			}
+		}
+	}
+	if found != len(reviewedBackendFeatureBindings) {
+		t.Fatalf("registered reviewed backend command count = %d, want %d", found, len(reviewedBackendFeatureBindings))
+	}
+}
+
+func containsFeatureBinding(bindings []commandregistry.FeatureBinding, want commandregistry.FeatureBinding) bool {
+	for _, binding := range bindings {
+		if binding == want {
+			return true
+		}
+	}
+	return false
+}
+
 func TestReadExpectedRegistryRejectsTrailingValueAndSymlink(t *testing.T) {
 	root, err := newRootCommand()
 	if err != nil {
