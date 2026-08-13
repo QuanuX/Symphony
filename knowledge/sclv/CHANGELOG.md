@@ -5135,3 +5135,95 @@ This PR authorizes none of the following:
   - `Go 1.27 production pin, module release, SDK publication, API publication, product-launch claim, or public documentation completion`
 - notes: |
     This post-merge closure records the fourteen Architect-ratified SSFV F1 subfeatures merged by PR #127. Every source-PR surface was already routed through SKVI before merge. The closure carrier appends only this forward-only canonical record and introduces no runtime behavior; it is non-recursive unless it adds an independently significant architectural change.
+
+- record_id: `SCLV-CHG-20260813-SSFV-F2-SECURITY-AUDIT`
+- record_version: `3`
+- title: `SSFV F2 security and audit subfeatures cataloged`
+- status: `canonical`
+- date: `2026-08-13`
+- change_started_at: `2026-08-13T02:25:30Z`
+- change_completed_at: `2026-08-13T02:26:57Z`
+- recorded_at: `2026-08-13T02:29:30Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `canonical_addition`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#129`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/129`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `0915c4d2804ad4ab23aaf310c43ac547fa6f5e8b`
+- tree_digest: `sha256:8a99d2fa323ebfa3b83df18bcceb7454f79e8f42324cbc12b1f7605344b49aa0`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/129`
+- ratification_evidence_digest: `sha256:d450b2eee70e044aa04b245b097b213c3bea0716d8f3239a03e7c8437255d1be`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/MANIFEST.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SKILL.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `libraries/stav-protocol-go/FEATURES.md`
+  - `modules/secure-identity-access-governance/FEATURES.md`
+  - `modules/ssfv-engine/tests/ssfv_test.cpp`
+  - `modules/ssiag-provider-macos-keychain/FEATURES.md`
+  - `modules/stav-append-authority/FEATURES.md`
+- skvi_references:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/MANIFEST.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SKILL.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `libraries/stav-protocol-go/FEATURES.md`
+  - `modules/secure-identity-access-governance/FEATURES.md`
+  - `modules/ssfv-engine/tests/ssfv_test.cpp`
+  - `modules/ssiag-provider-macos-keychain/FEATURES.md`
+  - `modules/stav-append-authority/FEATURES.md`
+- change_summary: |
+    Under the Architect's direction, PR #129 expanded the canonical SSFV partial catalog from twenty-nine to forty-three experimental records. Seven SSIAG-foundation subsystems, five STAV append-authority subsystems, and two STAV protocol-kernel subsystems are now separately identifiable application subfeatures with exact who, what, how, when, where, why, evidence, relationship, distinction, cross-vector, language-role, and non-claim semantics.
+- relationship_changes: |
+    The existing SSIAG foundation, STAV append authority, and STAV protocol-kernel records remain the primary feature boundaries. The fourteen new children expose their implemented internal responsibilities without transferring ownership: SSIAG retains TOPS enrollment, kernel trust, capability authorization, policy administration, provider metadata, safe audit production, and native supervision; the append authority retains enrollment, serialized append, durability, authorized query, and supervision; the protocol kernel retains canonical wire representation and semantic validation. The independently installed Swift macOS adapter remains metadata-only, is not invoked by the Go foundation or qxctl, and receives no nested F2 child.
+- doctrine_changes: |
+    Security and audit subsystems remain feature-worthy when they pass the same five-part semantic gate as larger application capabilities. Feature records do not create permission or runtime authority. The STAV protocol kernel owns canonical bytes, digests, typed codecs, semantic validation, and bounded four-byte IPC framing; the append authority owns durable checksummed ledger frames. Event-class language replaces ambiguous classification language where necessary to preserve the exact protocol meaning without suggesting caller-class authorization. SSFV proposal output remains authority-free, and only the Architect-ratified reviewed source change established canonical feature truth.
+- compatibility_consequences: |
+    This change adds semantic records and updates canonical counts and graph assertions only; it changes no executable behavior, command grammar, wire byte, ledger byte, provider capability, authorization result, installation receipt, service definition, or runtime dependency. The prior twenty-nine records retain their established identities, the fourteen additions use stable parent-linked identities, and coverage remains explicitly partial for incremental later adjudication.
+- publication_consequences: |
+    No module tag, release artifact, binary package, SDK, OpenAPI endpoint, Mintlify publication, public documentation launch, marketing claim, or platform release was published or authorized. The repository remains active-development source on the rolling main branch.
+- projection_consequences: |
+    The disposable SSFV graph now deterministically projects forty-three nodes and one hundred thirty-nine edges and remains noncanonical and rebuildable. Coverage records exact F1/F2 progress but not repository-wide completion; future feature catalogs, graph databases, documentation, marketing, and encyclopedic projections remain derived and separately governed.
+- evidence:
+  - `PR #129 merged into main at 2026-08-13T02:26:57Z by quantDIY as 0915c4d2804ad4ab23aaf310c43ac547fa6f5e8b`
+  - `implementation head ae0ae5d569ea79d6b8e7912945d4351e9544ad59; 16 files changed, 1290 insertions, 48 deletions`
+  - `local-Git adapter evidence sha256:cfad41de7539d19522f17106122cd3a39f95823e3651d225b526abd9f716558f binds revision 0915c4d2804ad4ab23aaf310c43ac547fa6f5e8b to tree digest sha256:8a99d2fa323ebfa3b83df18bcceb7454f79e8f42324cbc12b1f7605344b49aa0`
+  - `ratification evidence digest sha256:d450b2eee70e044aa04b245b097b213c3bea0716d8f3239a03e7c8437255d1be binds compact lexicographically key-sorted provider, repository, change-request, base/head/merge revisions, timestamps, authenticated merger, and diff counts`
+  - `representative SSFV proposal ssfv-proposal:33f5f270acd5f9987d404328355eac3be8c832c5f6de44eb had digest sha256:22a709cc4526e2b64a506f5d3da7528d91efb7b6679a52505215cb82eaafee47, engine_decided_domain_truth false, ratified false, and canonical apply disabled; its proposed record digest sha256:298951250d97626de73bf7dcba19e0e2009bb2063ae9f33a5dca1a2936a8946a matches the final TOPS-enrollment record`
+  - `SSFV canonical check reported 43 records across 15 owner files, partial coverage, three passes, zero warnings, zero violations, and valid structure; graph projection reported 43 nodes and 139 edges`
+  - `SSFV passed both CTests and symphony-validator passed all three CTests; SSIAG, STAV append-authority, STAV protocol, and qxctl Go tests passed, including all race-detector gates; the independently built Swift adapter passed all five tests`
+  - `strict repository validation reported pass=8171 warning=116 violation=0 exit=0; every warning remained in the established historical sclv.affected_surface.unindexed family, and a clean-main comparison at the implementation base confirmed zero warning drift`
+  - `pre-closure SCLV engine check reported 40 records, 160 passes, zero warnings, zero violations, and valid state`
+  - `closure SCLV engine check reported 41 records, 164 passes, zero warnings, zero violations, and valid state; both SCLV CTests passed`
+  - `closure validator result pass=8249 warning=116 violation=0 exit=0; every warning remains in the established historical sclv.affected_surface.unindexed family and none is attached to the PR #129 record`
+- non_authorizations:
+  - `repository-wide SSFV completeness, unreviewed nested feature or non-feature disposition, engine-decided feature-worthiness, automated ratification, canonical apply, canonical rollback, or repository mutation by SSFV tooling`
+  - `new runtime behavior, module installation or activation, new binding role, service activation, package download, receipt mutation, executable dispatch, or implicit newest-version selection`
+  - `operational Keychain access, credential or secret delivery, provider execution, remote SSIAG access, transferable bearer authority, caller-class authorization, or permission inferred from feature records`
+  - `STAV wire-format change, ledger-format change, alternate append authority, producer grant, reader grant, retention change, rotation, non-repudiation, signed checkpoint, or qxctl ledger authority`
+  - `Maestro engine execution, scheduling, supervision, health checking, graph-database persistence, hot/warm-path participation, native Windows engine, or trading-node doctrine`
+  - `Go 1.27 production pin, module release, SDK publication, API publication, product-launch claim, or public documentation completion`
+- notes: |
+    This post-merge closure records the fourteen Architect-ratified SSFV F2 security and audit subfeatures merged by PR #129. Every source-PR surface was already routed through SKVI before merge. The closure carrier appends only this forward-only canonical record and introduces no runtime behavior; it is non-recursive unless it adds an independently significant architectural change.
