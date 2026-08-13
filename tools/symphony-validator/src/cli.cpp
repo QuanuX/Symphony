@@ -22,6 +22,7 @@
 #include "sacv_registry.hpp"
 #include "sodv_releases.hpp"
 #include "projector.hpp"
+#include "feature_administration.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -203,6 +204,15 @@ int run_cli(const std::vector<std::string>& args) {
             process_messages(caller_auth_result.messages);
             if (!caller_auth_result.success) {
                 final_exit = 21;
+                print_summary();
+                return final_exit;
+            }
+
+            FeatureAdministrationCheckResult feature_admin_result =
+                check_feature_administration(args[2]);
+            process_messages(feature_admin_result.messages);
+            if (!feature_admin_result.success) {
+                final_exit = 24;
                 print_summary();
                 return final_exit;
             }

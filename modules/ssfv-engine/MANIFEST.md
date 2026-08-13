@@ -15,7 +15,7 @@ The engine implements `knowledge/ssfv/` and the common knowledge-engine process/
 
 ## Operations
 
-`inspect`, `check`, `diff`, `propose`, and `graph` are implemented. `apply`, feature bootstrap, listener, session mutation, activation, and docking operations are disabled.
+`inspect`, `check`, `diff`, `propose`, `graph`, and read-only `administration-check` are implemented. `apply`, feature bootstrap, listener, session mutation, activation, and docking operations are disabled. Descriptor v2 publishes stable engine-operation IDs from the same registry used for dispatch while descriptor v1 remains compatible.
 
 ## Installation
 
@@ -23,4 +23,4 @@ The exact `0.1.0-dev` receipt owns one versioned executable, one receipt, five c
 
 ## Boundaries
 
-The engine has no network access, writes no repository or state file, decides no semantic claim, classifies no caller, and cannot grant permission or ratification. Its graph and snapshots are noncanonical evidence.
+The engine has no network access, writes no repository or state file, decides no semantic claim, classifies no caller, and cannot grant permission or ratification. Its graph, snapshots, coverage findings, module-integration readiness, and remediation constraints are noncanonical evidence. It never invents feature/command identities or grammar.

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/commandregistry"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/version"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -218,17 +219,11 @@ func executeCommand(args []string) error {
 }
 
 func newRootCommand() (*cobra.Command, error) {
-	root := &cobra.Command{
-		Use:           "qxctl",
-		SilenceErrors: true,
-		SilenceUsage:  true,
-		Args:          usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return errUsageOnly
-		},
-	}
+	root := structural("qxctl", errUsageOnly)
+	root.SilenceErrors = true
+	root.SilenceUsage = true
 	root.CompletionOptions.DisableDefaultCmd = true
-	root.SetHelpCommand(&cobra.Command{Use: "__help", Hidden: true})
+	root.SetHelpCommand(commandregistry.Internal(&cobra.Command{Use: "__help"}))
 	root.SetHelpFunc(func(*cobra.Command, []string) { printUsage() })
 	root.SetUsageFunc(func(*cobra.Command) error {
 		printUsage()
@@ -238,12 +233,13 @@ func newRootCommand() (*cobra.Command, error) {
 	root.SetVersionTemplate("qxctl version {{.Version}}\n")
 
 	root.AddCommand(
-		operationCommand("doctor", runDoctor),
-		operationCommand("contracts", runContracts),
+		operationCommand("doctor", featureQXCTL, "validate", runDoctor),
+		operationCommand("contracts", featureQXCTL, "validate", runContracts),
 		newInventoryCommand(),
-		jsonOperationCommand("status", runStatus),
+		jsonOperationCommand("status", featureQXCTL, "query", runStatus),
 		newModulesCommand(),
 		newModuleCommand(),
+		newCommandsCommand(root),
 	)
 
 	ssiag, err := newSSIAGCommand()
@@ -256,24 +252,15 @@ func newRootCommand() (*cobra.Command, error) {
 		newSACVCommand(), newSODVCommand(), newSSFVCommand(), newMaestroCommand(),
 		newValidateCommand(),
 	)
+	if err := commandregistry.Validate(root); err != nil {
+		return nil, fmt.Errorf("qxctl command registry parity failed: %w", err)
+	}
 	return root, nil
 }
 
 func newKnowledgeCommand() *cobra.Command {
-	command := &cobra.Command{
-		Use:  "knowledge",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge subcommand is required: engines, reconcile, session, or lifecycle")
-		},
-	}
-	engines := &cobra.Command{
-		Use:  "engines",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge engines subcommand is required: list, inspect, doctor, bind, or unbind")
-		},
-	}
+	command := structural("knowledge", fmt.Errorf("knowledge subcommand is required: engines, reconcile, session, or lifecycle"))
+	engines := structural("engines", fmt.Errorf("knowledge engines subcommand is required: list, inspect, doctor, bind, or unbind"))
 	for _, operation := range []string{"list", "inspect", "doctor", "bind", "unbind"} {
 		options := knowledgeEngineOptions{version: "0.1.0-dev"}
 		child := &cobra.Command{
@@ -291,6 +278,13 @@ func newKnowledgeCommand() *cobra.Command {
 			RunE: func(*cobra.Command, []string) error {
 				return runKnowledgeEngines(operation, options)
 			},
+		}
+		if operation == "bind" || operation == "unbind" {
+			registeredMutation(child, "knowledge.engines."+operation, featureBindings, "configure", "target_host_permission", "")
+		} else {
+			registered(child, "knowledge.engines."+operation, featureBindings, map[string]string{
+				"list": "discover", "inspect": "inspect", "doctor": "validate",
+			}[operation])
 		}
 		child.Flags().StringVar(
 			&options.stateRoot, "state-root", "",
@@ -313,13 +307,7 @@ func newKnowledgeCommand() *cobra.Command {
 	engines.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	command.AddCommand(engines)
 
-	reconcile := &cobra.Command{
-		Use:  "reconcile",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge reconcile subcommand is required: compatibility, begin, status, checkpoint, close, or recover")
-		},
-	}
+	reconcile := structural("reconcile", fmt.Errorf("knowledge reconcile subcommand is required: compatibility, begin, status, checkpoint, close, or recover"))
 	for _, operation := range []string{"compatibility", "begin", "status", "checkpoint", "close", "recover"} {
 		options := knowledgeReconcileOptions{}
 		child := &cobra.Command{
@@ -328,6 +316,17 @@ func newKnowledgeCommand() *cobra.Command {
 			RunE: func(*cobra.Command, []string) error {
 				return runKnowledgeReconcile(operation, options)
 			},
+		}
+		interaction := "lifecycle"
+		if operation == "compatibility" || operation == "status" {
+			interaction = "query"
+		} else if operation == "recover" {
+			interaction = "recover"
+		}
+		if operation == "compatibility" || operation == "status" {
+			registered(child, "knowledge.reconcile."+operation, featureQXCTL, interaction)
+		} else {
+			registeredMutation(child, "knowledge.reconcile."+operation, featureQXCTL, interaction, "target_host_permission", "knowledge.reconcile.recover")
 		}
 		child.Flags().StringVar(
 			&options.stateRoot, "state-root", "",
@@ -367,13 +366,7 @@ func newKnowledgeCommand() *cobra.Command {
 	reconcile.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	command.AddCommand(reconcile)
 
-	session := &cobra.Command{
-		Use:  "session",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge session subcommand is required: begin, status, checkpoint, close, recover, transition, or features")
-		},
-	}
+	session := structural("session", fmt.Errorf("knowledge session subcommand is required: begin, status, checkpoint, close, recover, transition, or features"))
 	for _, operation := range []string{"begin", "status", "checkpoint", "close", "recover"} {
 		options := knowledgeSessionOptions{scope: "user", ttl: 15 * time.Minute}
 		child := &cobra.Command{
@@ -382,6 +375,15 @@ func newKnowledgeCommand() *cobra.Command {
 			RunE: func(*cobra.Command, []string) error {
 				return runKnowledgeSession(operation, options)
 			},
+		}
+		if operation == "status" {
+			registered(child, "knowledge.session.status", featureSessions, "query")
+		} else {
+			interaction := "lifecycle"
+			if operation == "recover" {
+				interaction = "recover"
+			}
+			registeredMutation(child, "knowledge.session."+operation, featureSessions, interaction, "ssiag", "knowledge.session.recover")
 		}
 		child.Flags().StringVar(&options.topsID, "tops-id", "", "immutable TOPS UUID")
 		child.Flags().StringVar(&options.scope, "scope", "user", "SSIAG installation scope: user or system")
@@ -410,6 +412,7 @@ func newKnowledgeCommand() *cobra.Command {
 			return runKnowledgeSessionTransition(transitionOptions)
 		},
 	}
+	registeredMutation(transition, "knowledge.session.transition", featureSessions, "lifecycle", "ssiag", "knowledge.session.recover")
 	transition.Flags().StringVar(&transitionOptions.topsID, "tops-id", "", "immutable TOPS UUID")
 	transition.Flags().StringVar(&transitionOptions.scope, "scope", "user", "SSIAG installation scope: user or system")
 	transition.Flags().StringVar(&transitionOptions.stateRoot, "state-root", "", "user state root; defaults to XDG_STATE_HOME or ~/.local/state")
@@ -423,13 +426,7 @@ func newKnowledgeCommand() *cobra.Command {
 	transition.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	session.AddCommand(transition)
 
-	features := &cobra.Command{
-		Use:  "features",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge session features subcommand is required: begin, status, checkpoint, close, or recover")
-		},
-	}
+	features := structural("features", fmt.Errorf("knowledge session features subcommand is required: begin, status, checkpoint, close, or recover"))
 	for _, operation := range []string{"begin", "status", "checkpoint", "close", "recover"} {
 		options := knowledgeSSFVMaintenanceOptions{
 			scope: "user", ttl: 15 * time.Minute, maestroVersion: "0.1.0-dev",
@@ -440,6 +437,15 @@ func newKnowledgeCommand() *cobra.Command {
 			RunE: func(*cobra.Command, []string) error {
 				return runKnowledgeSSFVMaintenance(operation, options)
 			},
+		}
+		if operation == "status" {
+			registered(child, "knowledge.session.features.status", featureSessions, "query")
+		} else {
+			interaction := "lifecycle"
+			if operation == "recover" {
+				interaction = "recover"
+			}
+			registeredMutation(child, "knowledge.session.features."+operation, featureSessions, interaction, "ssiag", "knowledge.session.features.recover")
 		}
 		child.Flags().StringVar(&options.topsID, "tops-id", "", "immutable TOPS UUID")
 		child.Flags().StringVar(&options.scope, "scope", "user", "SSIAG installation scope: user or system")
@@ -466,20 +472,8 @@ func newKnowledgeCommand() *cobra.Command {
 	session.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	command.AddCommand(session)
 
-	lifecycle := &cobra.Command{
-		Use:  "lifecycle",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge lifecycle subcommand is required: profile, ownership, host, observe, report, boot, status, recover, apply, apply-status, or apply-recover")
-		},
-	}
-	profile := &cobra.Command{
-		Use:  "profile",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge lifecycle profile subcommand is required: list, show, set, or remove")
-		},
-	}
+	lifecycle := structural("lifecycle", fmt.Errorf("knowledge lifecycle subcommand is required: profile, ownership, host, observe, report, boot, status, recover, apply, apply-status, or apply-recover"))
+	profile := structural("profile", fmt.Errorf("knowledge lifecycle profile subcommand is required: list, show, set, or remove"))
 	for _, operation := range []string{"list", "show", "set", "remove"} {
 		options := knowledgeLifecycleOptions{scope: "user", profileID: "default", ttl: 15 * time.Minute}
 		child := &cobra.Command{
@@ -488,6 +482,11 @@ func newKnowledgeCommand() *cobra.Command {
 			RunE: func(*cobra.Command, []string) error {
 				return runKnowledgeLifecycleProfile(operation, options)
 			},
+		}
+		if operation == "list" || operation == "show" {
+			registered(child, "knowledge.lifecycle.profile."+operation, featureLifecycle, map[string]string{"list": "discover", "show": "inspect"}[operation])
+		} else {
+			registeredMutation(child, "knowledge.lifecycle.profile."+operation, featureLifecycle, "configure", "ssiag", "knowledge.lifecycle.recover")
 		}
 		addKnowledgeLifecycleCommonFlags(child, &options)
 		if operation == "set" {
@@ -505,13 +504,7 @@ func newKnowledgeCommand() *cobra.Command {
 	profile.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	lifecycle.AddCommand(profile)
 
-	ownership := &cobra.Command{
-		Use:  "ownership",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge lifecycle ownership subcommand is required: status, reconcile, adopt, or release")
-		},
-	}
+	ownership := structural("ownership", fmt.Errorf("knowledge lifecycle ownership subcommand is required: status, reconcile, adopt, or release"))
 	for _, operation := range []string{"status", "reconcile", "adopt", "release"} {
 		options := knowledgeLifecycleOptions{scope: "user", profileID: "default", ttl: 15 * time.Minute}
 		child := &cobra.Command{
@@ -520,6 +513,11 @@ func newKnowledgeCommand() *cobra.Command {
 			RunE: func(*cobra.Command, []string) error {
 				return runKnowledgeLifecycleOwnership(operation, options)
 			},
+		}
+		if operation == "status" {
+			registered(child, "knowledge.lifecycle.ownership.status", featureLifecycle, "query")
+		} else {
+			registeredMutation(child, "knowledge.lifecycle.ownership."+operation, featureLifecycle, "lifecycle", "ssiag", "knowledge.lifecycle.recover")
 		}
 		addKnowledgeLifecycleCommonFlags(child, &options)
 		child.Flags().StringVar(&options.ownershipRoot, "root", "", "exact configured shared installation root")
@@ -535,13 +533,7 @@ func newKnowledgeCommand() *cobra.Command {
 	ownership.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	lifecycle.AddCommand(ownership)
 
-	host := &cobra.Command{
-		Use:  "host",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("knowledge lifecycle host subcommand is required: install, update, status, reconcile, enable, disable, uninstall, or run")
-		},
-	}
+	host := structural("host", fmt.Errorf("knowledge lifecycle host subcommand is required: install, update, status, reconcile, enable, disable, uninstall, or run"))
 	for _, operation := range []string{"install", "update", "status", "reconcile", "enable", "disable", "uninstall", "run"} {
 		options := knowledgeLifecycleOptions{scope: "system", profileID: "default", ttl: 15 * time.Minute, recoveryMode: "discover"}
 		child := &cobra.Command{
@@ -550,6 +542,15 @@ func newKnowledgeCommand() *cobra.Command {
 			RunE: func(*cobra.Command, []string) error {
 				return runKnowledgeLifecycleHost(operation, options)
 			},
+		}
+		if operation == "status" {
+			registered(child, "knowledge.lifecycle.host.status", featureHost, "query")
+		} else {
+			recovery := "knowledge.lifecycle.host.reconcile"
+			if operation == "run" {
+				recovery = "knowledge.lifecycle.recover"
+			}
+			registeredMutation(child, "knowledge.lifecycle.host."+operation, featureHost, "lifecycle", "target_host_permission", recovery)
 		}
 		addKnowledgeLifecycleHostFlags(child, &options)
 		if operation == "install" || operation == "update" {
@@ -574,6 +575,7 @@ func newKnowledgeCommand() *cobra.Command {
 			return runKnowledgeLifecycleObserve(observeOptions)
 		},
 	}
+	registered(observe, "knowledge.lifecycle.observe", featureLifecycle, "inspect")
 	addKnowledgeLifecycleCommonFlags(observe, &observeOptions)
 	observe.Flags().StringSliceVar(
 		&observeOptions.configuredRoots, "root", nil,
@@ -590,6 +592,7 @@ func newKnowledgeCommand() *cobra.Command {
 			return runKnowledgeLifecycleReport(reportOptions)
 		},
 	}
+	registered(report, "knowledge.lifecycle.report", featureLifecycle, "query")
 	addKnowledgeLifecycleCommonFlags(report, &reportOptions)
 	report.Flags().StringVar(
 		&reportOptions.priorAppliedStateDigest, "prior-applied-state-digest", "",
@@ -606,6 +609,7 @@ func newKnowledgeCommand() *cobra.Command {
 			return runKnowledgeLifecycleBoot(bootOptions)
 		},
 	}
+	registeredMutation(boot, "knowledge.lifecycle.boot", featureLifecycle, "lifecycle", "ssiag", "knowledge.lifecycle.recover")
 	addKnowledgeLifecycleCommonFlags(boot, &bootOptions)
 	boot.Flags().StringVar(&bootOptions.operationID, "operation-id", "", "stable idempotency token for this durable boot observation")
 	boot.Flags().StringVar(&bootOptions.expectedJournalDigest, "expected-journal-digest", "", "required prior journal state: absent or exact tagged SHA-256 digest")
@@ -621,6 +625,7 @@ func newKnowledgeCommand() *cobra.Command {
 			return runKnowledgeLifecycleBootState("lifecycle_boot_status", statusOptions)
 		},
 	}
+	registered(status, "knowledge.lifecycle.status", featureLifecycle, "query")
 	addKnowledgeLifecycleCommonFlags(status, &statusOptions)
 	status.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	lifecycle.AddCommand(status)
@@ -633,6 +638,7 @@ func newKnowledgeCommand() *cobra.Command {
 			return runKnowledgeLifecycleBootState("lifecycle_boot_recover", recoverOptions)
 		},
 	}
+	registeredMutation(recover, "knowledge.lifecycle.recover", featureLifecycle, "recover", "ssiag", "knowledge.lifecycle.recover")
 	addKnowledgeLifecycleCommonFlags(recover, &recoverOptions)
 	recover.Flags().StringVar(&recoverOptions.operationID, "operation-id", "", "stable idempotency token for this recovery mutation")
 	recover.Flags().StringVar(&recoverOptions.expectedJournalDigest, "expected-journal-digest", "", "exact recoverable journal digest")
@@ -648,6 +654,7 @@ func newKnowledgeCommand() *cobra.Command {
 			return runKnowledgeLifecycleApply(applyOptions)
 		},
 	}
+	registeredMutation(apply, "knowledge.lifecycle.apply", featureLifecycle, "apply", "ssiag", "knowledge.lifecycle.apply-recover")
 	addKnowledgeLifecycleCommonFlags(apply, &applyOptions)
 	apply.Flags().StringVar(&applyOptions.operationID, "operation-id", "", "stable base idempotency token for this apply transaction")
 	apply.Flags().StringVar(&applyOptions.sourceJournalDigest, "source-journal-digest", "", "exact apply-compatible report journal digest")
@@ -666,6 +673,7 @@ func newKnowledgeCommand() *cobra.Command {
 			return runKnowledgeLifecycleApplyState("lifecycle_apply_status", applyStatusOptions)
 		},
 	}
+	registered(applyStatus, "knowledge.lifecycle.apply-status", featureLifecycle, "query")
 	addKnowledgeLifecycleCommonFlags(applyStatus, &applyStatusOptions)
 	applyStatus.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	lifecycle.AddCommand(applyStatus)
@@ -678,6 +686,7 @@ func newKnowledgeCommand() *cobra.Command {
 			return runKnowledgeLifecycleApplyState("lifecycle_apply_recover", applyRecoverOptions)
 		},
 	}
+	registeredMutation(applyRecover, "knowledge.lifecycle.apply-recover", featureLifecycle, "recover", "ssiag", "knowledge.lifecycle.apply-recover")
 	addKnowledgeLifecycleCommonFlags(applyRecover, &applyRecoverOptions)
 	applyRecover.Flags().StringVar(&applyRecoverOptions.operationID, "operation-id", "", "stable idempotency token for apply recovery")
 	applyRecover.Flags().StringVar(&applyRecoverOptions.expectedApplyDigest, "expected-apply-journal-digest", "", "exact recoverable apply journal digest")
@@ -717,14 +726,8 @@ func addKnowledgeLifecycleHostFlags(command *cobra.Command, options *knowledgeLi
 }
 
 func newSSFVCommand() *cobra.Command {
-	command := &cobra.Command{
-		Use:  "ssfv",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("SSFV subcommand is required: inspect, check, diff, propose, or graph")
-		},
-	}
-	for _, operation := range []string{"inspect", "check", "diff", "propose", "graph"} {
+	command := structural("ssfv", fmt.Errorf("SSFV subcommand is required: inspect, check, diff, propose, graph, or administration-check"))
+	for _, operation := range []string{"inspect", "check", "diff", "propose", "graph", "administration-check"} {
 		options := ssfvOptions{version: "0.1.0-dev", freshness: "disabled"}
 		child := &cobra.Command{
 			Use:  operation,
@@ -737,6 +740,29 @@ func newSSFVCommand() *cobra.Command {
 				return runSSFV(operation, options)
 			},
 		}
+		featureID := map[string]string{
+			"inspect": featureSSFV, "check": featureSSFVSnapshot,
+			"diff": featureSSFVComparison, "propose": featureSSFVProposal,
+			"graph":                featureSSFVProjection,
+			"administration-check": featureAdministrationAssurance,
+		}[operation]
+		if operation == "propose" {
+			registeredProposal(child, "ssfv.propose", featureID)
+		} else if operation == "administration-check" {
+			registeredEvidence(child, "ssfv.administration-check", featureID, "validate")
+		} else {
+			interaction := map[string]string{"inspect": "inspect", "check": "validate", "diff": "validate", "graph": "query"}[operation]
+			registered(child, "ssfv."+operation, featureID, interaction)
+		}
+		if spec, err := commandregistry.Spec(child); err == nil {
+			spec.BackendOperationIDs = []string{"engop:symphony:ssfv." + operation}
+			if operation == "administration-check" {
+				spec.InputProtocols = []string{"symphony.knowledge.administration-coverage-input.v1"}
+				spec.OutputProtocols = []string{"symphony.knowledge.administration-coverage-result.v1"}
+				spec.ResultValidationProtocols = []string{"symphony.knowledge.administration-coverage-result.v1"}
+			}
+			commandregistry.Attach(child, spec)
+		}
 		child.Flags().StringVar(&options.prefix, "prefix", "", "exact SSFV installation prefix")
 		child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed SSFV engine version")
 		child.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
@@ -747,7 +773,7 @@ func newSSFVCommand() *cobra.Command {
 			child.Flags().StringVar(&options.baseline, "baseline", "", "bounded no-follow semantic snapshot JSON file")
 			child.Flags().StringVar(&options.freshness, "freshness", "disabled", "semantic freshness mode: disabled, report, or require")
 		}
-		if operation == "diff" || operation == "propose" {
+		if operation == "diff" || operation == "propose" || operation == "administration-check" {
 			child.Flags().StringVar(&options.input, "input", "", "no-follow JSON operation payload file")
 		}
 		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
@@ -758,19 +784,26 @@ func newSSFVCommand() *cobra.Command {
 }
 
 func newSODVCommand() *cobra.Command {
-	command := &cobra.Command{
-		Use:  "sodv",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("SODV subcommand is required: inspect, check, verify, propose, recover, or project")
-		},
-	}
+	command := structural("sodv", fmt.Errorf("SODV subcommand is required: inspect, check, verify, propose, recover, or project"))
 	for _, operation := range []string{"inspect", "check", "verify", "propose", "recover", "project"} {
 		options := sodvOptions{version: "0.1.0-dev"}
 		child := &cobra.Command{
 			Use:  operation,
 			Args: usageOnlyArgs,
 			RunE: func(*cobra.Command, []string) error { return runSODV(operation, options) },
+		}
+		featureID := map[string]string{
+			"inspect": featureSODV, "check": featureSODVLedger,
+			"verify": featureSODVVerification, "propose": featureSODVProposal,
+			"recover": featureSODVRecovery, "project": featureSODVProjection,
+		}[operation]
+		if operation == "propose" {
+			registeredProposal(child, "sodv.propose", featureID)
+		} else if operation == "recover" {
+			registeredEvidence(child, "sodv.recover", featureID, "recover")
+		} else {
+			interaction := map[string]string{"inspect": "inspect", "check": "validate", "verify": "validate", "recover": "recover", "project": "query"}[operation]
+			registered(child, "sodv."+operation, featureID, interaction)
 		}
 		child.Flags().StringVar(&options.prefix, "prefix", "", "exact SODV installation prefix")
 		child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed SODV engine version")
@@ -790,19 +823,24 @@ func newSODVCommand() *cobra.Command {
 }
 
 func newSACVCommand() *cobra.Command {
-	command := &cobra.Command{
-		Use:  "sacv",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("SACV subcommand is required: inspect, check, diff, propose, or project")
-		},
-	}
+	command := structural("sacv", fmt.Errorf("SACV subcommand is required: inspect, check, diff, propose, or project"))
 	for _, operation := range []string{"inspect", "check", "diff", "propose", "project"} {
 		options := sacvOptions{version: "0.1.0-dev"}
 		child := &cobra.Command{
 			Use:  operation,
 			Args: usageOnlyArgs,
 			RunE: func(*cobra.Command, []string) error { return runSACV(operation, options) },
+		}
+		featureID := map[string]string{
+			"inspect": featureSACV, "check": featureSACVConformance,
+			"diff": featureSACVCompatibility, "propose": featureSACVProposal,
+			"project": featureSACVProjection,
+		}[operation]
+		if operation == "propose" {
+			registeredProposal(child, "sacv.propose", featureID)
+		} else {
+			interaction := map[string]string{"inspect": "inspect", "check": "validate", "diff": "validate", "project": "query"}[operation]
+			registered(child, "sacv."+operation, featureID, interaction)
 		}
 		child.Flags().StringVar(&options.prefix, "prefix", "", "exact SACV installation prefix")
 		child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed SACV engine version")
@@ -822,19 +860,26 @@ func newSACVCommand() *cobra.Command {
 }
 
 func newSCLVCommand() *cobra.Command {
-	command := &cobra.Command{
-		Use:  "sclv",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("SCLV subcommand is required: inspect, check, propose, recover, project, or evidence")
-		},
-	}
+	command := structural("sclv", fmt.Errorf("SCLV subcommand is required: inspect, check, propose, recover, project, or evidence"))
 	for _, operation := range []string{"inspect", "check", "propose", "recover", "project"} {
 		options := sclvOptions{version: "0.1.0-dev"}
 		child := &cobra.Command{
 			Use:  operation,
 			Args: usageOnlyArgs,
 			RunE: func(*cobra.Command, []string) error { return runSCLV(operation, options) },
+		}
+		featureID := map[string]string{
+			"inspect": featureSCLV, "check": featureSCLVAssurance,
+			"propose": featureSCLVProposal, "recover": featureSCLVRecovery,
+			"project": featureSCLVProjection,
+		}[operation]
+		if operation == "propose" {
+			registeredProposal(child, "sclv.propose", featureID)
+		} else if operation == "recover" {
+			registeredEvidence(child, "sclv.recover", featureID, "recover")
+		} else {
+			interaction := map[string]string{"inspect": "inspect", "check": "validate", "recover": "recover", "project": "query"}[operation]
+			registered(child, "sclv."+operation, featureID, interaction)
 		}
 		child.Flags().StringVar(&options.prefix, "prefix", "", "exact SCLV installation prefix")
 		child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed SCLV engine version")
@@ -849,13 +894,7 @@ func newSCLVCommand() *cobra.Command {
 		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 		command.AddCommand(child)
 	}
-	evidence := &cobra.Command{
-		Use:  "evidence",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("SCLV evidence adapter is required: local-git or airgap")
-		},
-	}
+	evidence := structural("evidence", fmt.Errorf("SCLV evidence adapter is required: local-git or airgap"))
 	for _, adapter := range []string{"local-git", "airgap"} {
 		options := sclvOptions{version: "0.1.0-dev"}
 		child := &cobra.Command{
@@ -863,6 +902,7 @@ func newSCLVCommand() *cobra.Command {
 			Args: usageOnlyArgs,
 			RunE: func(*cobra.Command, []string) error { return runSCLVEvidence(adapter, options) },
 		}
+		registeredEvidence(child, "sclv.evidence."+adapter, featureSCLVEvidence, "invoke")
 		child.Flags().StringVar(&options.prefix, "prefix", "", "exact SCLV installation prefix")
 		child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed SCLV package version")
 		child.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
@@ -878,19 +918,23 @@ func newSCLVCommand() *cobra.Command {
 }
 
 func newSKVICommand() *cobra.Command {
-	command := &cobra.Command{
-		Use:  "skvi",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("SKVI subcommand is required: inspect, check, propose, or project")
-		},
-	}
+	command := structural("skvi", fmt.Errorf("SKVI subcommand is required: inspect, check, propose, or project"))
 	for _, operation := range []string{"inspect", "check", "propose", "project"} {
 		options := skviOptions{version: "0.1.0-dev"}
 		child := &cobra.Command{
 			Use:  operation,
 			Args: usageOnlyArgs,
 			RunE: func(*cobra.Command, []string) error { return runSKVI(operation, options) },
+		}
+		featureID := map[string]string{
+			"inspect": featureSKVI, "check": featureSKVIAssurance,
+			"propose": featureSKVIProposal, "project": featureSKVIProjection,
+		}[operation]
+		if operation == "propose" {
+			registeredProposal(child, "skvi.propose", featureID)
+		} else {
+			interaction := map[string]string{"inspect": "inspect", "check": "validate", "project": "query"}[operation]
+			registered(child, "skvi."+operation, featureID, interaction)
 		}
 		child.Flags().StringVar(&options.prefix, "prefix", "", "exact SKVI installation prefix")
 		child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed SKVI engine version")
@@ -909,64 +953,68 @@ func newSKVICommand() *cobra.Command {
 	return command
 }
 
-func operationCommand(use string, run func() error) *cobra.Command {
+func operationCommand(use, featureID, interaction string, run func() error) *cobra.Command {
 	command := &cobra.Command{
 		Use:  use,
 		Args: usageOnlyArgs,
 		RunE: func(*cobra.Command, []string) error { return run() },
 	}
+	registered(command, use, featureID, interaction)
 	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	return command
 }
 
-func jsonOperationCommand(use string, run func(bool) error) *cobra.Command {
+func jsonOperationCommand(use, featureID, interaction string, run func(bool) error) *cobra.Command {
 	var jsonOutput bool
 	command := &cobra.Command{
 		Use:  use,
 		Args: usageOnlyArgs,
 		RunE: func(*cobra.Command, []string) error { return run(jsonOutput) },
 	}
+	registered(command, use, featureID, interaction)
 	command.Flags().BoolVar(&jsonOutput, "json", false, "emit JSON")
 	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	return command
 }
 
 func newInventoryCommand() *cobra.Command {
-	command := jsonOperationCommand("inventory", runInventory)
-	command.AddCommand(jsonOperationCommand("digest", runInventoryDigest))
+	command := jsonOperationCommand("inventory", featureQXCTL, "query", runInventory)
+	digest := jsonOperationCommand("digest", featureQXCTL, "query", runInventoryDigest)
+	registered(digest, "inventory.digest", featureQXCTL, "query")
+	command.AddCommand(digest)
 	return command
 }
 
 func newModulesCommand() *cobra.Command {
-	command := operationCommand("modules", runModules)
+	command := operationCommand("modules", featureQXCTL, "discover", runModules)
 	command.AddCommand(
-		operationCommand("check", runModulesCheck),
-		jsonOperationCommand("metadata", runModulesMetadata),
+		operationCommand("check", featureQXCTL, "validate", runModulesCheck),
+		jsonOperationCommand("metadata", featureQXCTL, "inspect", runModulesMetadata),
 	)
+	for _, child := range command.Commands() {
+		registered(child, "modules."+child.Name(), featureQXCTL, map[string]string{"check": "validate", "metadata": "inspect"}[child.Name()])
+	}
 	return command
 }
 
 func newModuleCommand() *cobra.Command {
-	command := &cobra.Command{
-		Use:  "module",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error { return errUsageOnly },
-	}
+	command := structural("module", errUsageOnly)
 	command.AddCommand(
-		namedModuleCommand("inspect", runModuleInspect),
-		namedModuleCommand("check", runModuleCheck),
+		namedModuleCommand("inspect", "inspect", runModuleInspect),
+		namedModuleCommand("check", "validate", runModuleCheck),
 		namedModuleMetadataCommand(),
 	)
 	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	return command
 }
 
-func namedModuleCommand(use string, run func(string) error) *cobra.Command {
+func namedModuleCommand(use, interaction string, run func(string) error) *cobra.Command {
 	command := &cobra.Command{
 		Use:  use + " <module-name>",
 		Args: exactOneUsageArg,
 		RunE: func(_ *cobra.Command, args []string) error { return run(args[0]) },
 	}
+	registered(command, "module."+use, featureQXCTL, interaction)
 	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	return command
 }
@@ -980,19 +1028,14 @@ func namedModuleMetadataCommand() *cobra.Command {
 			return runModuleMetadata(args[0], jsonOutput)
 		},
 	}
+	registered(command, "module.metadata", featureQXCTL, "inspect")
 	command.Flags().BoolVar(&jsonOutput, "json", false, "emit JSON")
 	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	return command
 }
 
 func newSSIAGCommand() (*cobra.Command, error) {
-	command := &cobra.Command{
-		Use:  "ssiag",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("SSIAG subcommand is required: status, providers, doctor, grants, or policy")
-		},
-	}
+	command := structural("ssiag", fmt.Errorf("SSIAG subcommand is required: status, providers, doctor, grants, or policy"))
 	for _, subcommand := range []string{"status", "providers", "doctor"} {
 		child, err := newSSIAGLeaf(subcommand)
 		if err != nil {
@@ -1000,13 +1043,7 @@ func newSSIAGCommand() (*cobra.Command, error) {
 		}
 		command.AddCommand(child)
 	}
-	grants := &cobra.Command{
-		Use:  "grants",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("SSIAG grants subcommand is required: lifecycle")
-		},
-	}
+	grants := structural("grants", fmt.Errorf("SSIAG grants subcommand is required: lifecycle"))
 	grantOptions := ssiagOptions{scope: "user", profileID: "default", authorityBasis: "host_owner"}
 	lifecycle := &cobra.Command{
 		Use:  "lifecycle",
@@ -1015,6 +1052,7 @@ func newSSIAGCommand() (*cobra.Command, error) {
 			return runSSIAGLifecycleGrantPlan(grantOptions)
 		},
 	}
+	registeredProposal(lifecycle, "ssiag.grants.lifecycle", featureSSIAG)
 	lifecycle.Flags().StringVar(&grantOptions.topsID, "tops-id", "", "immutable TOPS UUID")
 	lifecycle.Flags().StringVar(&grantOptions.scope, "scope", "user", "SSIAG scope: user or system")
 	lifecycle.Flags().StringVar(&grantOptions.profileID, "profile-id", "default", "exact lifecycle profile identity")
@@ -1028,16 +1066,12 @@ func newSSIAGCommand() (*cobra.Command, error) {
 }
 
 func newSSIAGPolicyCommand() *cobra.Command {
-	command := &cobra.Command{
-		Use: "policy", Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("SSIAG policy subcommand is required: status, propose, apply, or recover")
-		},
-	}
+	command := structural("policy", fmt.Errorf("SSIAG policy subcommand is required: status, propose, apply, or recover"))
 	statusOptions := ssiagOptions{scope: "user"}
 	status := &cobra.Command{Use: "status", Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error {
 		return runSSIAGPolicy("status", statusOptions)
 	}}
+	registered(status, "ssiag.policy.status", featureSSIAG, "query")
 	addSSIAGPolicyCommonFlags(status, &statusOptions)
 	command.AddCommand(status)
 
@@ -1045,6 +1079,7 @@ func newSSIAGPolicyCommand() *cobra.Command {
 	propose := &cobra.Command{Use: "propose", Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error {
 		return runSSIAGPolicy("propose", proposalOptions)
 	}}
+	registeredProposal(propose, "ssiag.policy.propose", featureSSIAG)
 	addSSIAGPolicyCommonFlags(propose, &proposalOptions)
 	propose.Flags().StringVar(&proposalOptions.input, "input", "", "bounded authorization policy JSON")
 	propose.Flags().StringVar(&proposalOptions.expectedPolicy, "expected-policy-digest", "", "exact current policy digest")
@@ -1058,6 +1093,7 @@ func newSSIAGPolicyCommand() *cobra.Command {
 	apply := &cobra.Command{Use: "apply", Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error {
 		return runSSIAGPolicy("apply", applyOptions)
 	}}
+	registeredMutation(apply, "ssiag.policy.apply", featureSSIAG, "apply", "ssiag", "ssiag.policy.recover")
 	addSSIAGPolicyCommonFlags(apply, &applyOptions)
 	apply.Flags().StringVar(&applyOptions.input, "input", "", "bounded SSIAG policy proposal JSON")
 	command.AddCommand(apply)
@@ -1066,6 +1102,7 @@ func newSSIAGPolicyCommand() *cobra.Command {
 	recover := &cobra.Command{Use: "recover", Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error {
 		return runSSIAGPolicy("recover", recoverOptions)
 	}}
+	registeredMutation(recover, "ssiag.policy.recover", featureSSIAG, "recover", "ssiag", "ssiag.policy.recover")
 	addSSIAGPolicyCommonFlags(recover, &recoverOptions)
 	recover.Flags().StringVar(&recoverOptions.operationID, "operation-id", "", "stable operation identity")
 	recover.Flags().StringVar(&recoverOptions.expectedAttempt, "expected-attempt-digest", "", "exact pending attempt digest")
@@ -1098,6 +1135,13 @@ func newSSIAGLeaf(subcommand string) (*cobra.Command, error) {
 			})
 		},
 	}
+	registered(command, "ssiag."+subcommand, featureSSIAG, map[string]string{"status": "query", "providers": "discover", "doctor": "validate"}[subcommand])
+	if subcommand == "doctor" {
+		spec, _ := commandregistry.Spec(command)
+		unsupported := false
+		spec.JSONOutput = &unsupported
+		commandregistry.Attach(command, spec)
+	}
 	command.Flags().String("tops-id", "", "immutable TOPS UUID")
 	command.Flags().String("scope", "user", "SSIAG scope: user or system")
 	command.Flags().Bool("json", false, "emit JSON")
@@ -1113,20 +1157,18 @@ func newSSIAGLeaf(subcommand string) (*cobra.Command, error) {
 }
 
 func newSTAVCommand() *cobra.Command {
-	command := &cobra.Command{
-		Use:  "stav",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("STAV subcommand is required: status, verify, query, or doctor")
-		},
-	}
-	command.AddCommand(&cobra.Command{
+	command := structural("stav", fmt.Errorf("STAV subcommand is required: status, verify, query, or doctor"))
+	appendCommand := &cobra.Command{
 		Use:                "append",
+		Hidden:             true,
 		DisableFlagParsing: true,
 		RunE: func(*cobra.Command, []string) error {
 			return fmt.Errorf("qxctl stav append is prohibited; qxctl never submits arbitrary events or edits ledgers")
 		},
-	})
+	}
+	appendSpec := commandSpec("stav.append", featureSTAV, "apply")
+	appendSpec.Mutability = "prohibited"
+	command.AddCommand(commandregistry.Attach(appendCommand, appendSpec))
 	for _, subcommand := range []string{"status", "verify", "query", "doctor"} {
 		command.AddCommand(newSTAVLeaf(subcommand))
 	}
@@ -1145,6 +1187,7 @@ func newSTAVLeaf(subcommand string) *cobra.Command {
 		},
 		RunE: func(*cobra.Command, []string) error { return runSTAV(subcommand, options) },
 	}
+	registered(command, "stav."+subcommand, featureSTAV, map[string]string{"status": "query", "verify": "validate", "query": "query", "doctor": "validate"}[subcommand])
 	command.Flags().StringVar(&options.topsID, "tops-id", "", "immutable TOPS UUID")
 	command.Flags().StringVar(&options.scope, "scope", "user", "STAV scope: user or system")
 	if subcommand != "doctor" {
@@ -1190,7 +1233,7 @@ func exactOneUsageArg(_ *cobra.Command, args []string) error {
 
 func knownTopLevel(value string) bool {
 	switch value {
-	case "--help", "--version", "doctor", "contracts", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "ssfv", "maestro", "validate":
+	case "--help", "--version", "doctor", "contracts", "commands", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "ssfv", "maestro", "validate":
 		return true
 	default:
 		return false

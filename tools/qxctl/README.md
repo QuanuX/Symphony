@@ -22,6 +22,13 @@ go run ./cmd/qxctl --help
 # Perform local repository checks
 go run ./cmd/qxctl doctor
 
+# Emit or verify the stable expected command registry
+go run ./cmd/qxctl commands expected --json
+go run ./cmd/qxctl commands verify --input COMMANDS.json --json
+
+# Bind the same registry to the exact running qxctl executable
+go run ./cmd/qxctl commands manifest --json
+
 # Verify the first runtime-set module contract surfaces
 go run ./cmd/qxctl contracts
 
@@ -130,6 +137,7 @@ go run ./cmd/qxctl ssfv check --prefix /chosen/prefix [--expected-namespace-dige
 go run ./cmd/qxctl ssfv diff --prefix /chosen/prefix --input diff-input.json [--json]
 go run ./cmd/qxctl ssfv propose --prefix /chosen/prefix --input proposal-input.json [--json]
 go run ./cmd/qxctl ssfv graph --prefix /chosen/prefix [--json]
+go run ./cmd/qxctl ssfv administration-check --prefix /chosen/prefix --input administration-input.json --json
 
 # Validate through one exact independently installed validator
 go run ./cmd/qxctl validate profile set --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 --profile-id default --warning record --historical summary --new full --expected-policy-digest absent
@@ -141,6 +149,8 @@ go run ./cmd/qxctl validate debug --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002
 SSIAG commands require an immutable TOPS UUID through `--tops-id` or `SYMPHONY_SSIAG_TOPS_ID`. They use `SYMPHONY_SSIAG_SOCKET` only as an explicit override; otherwise the selected scope and TOPS ID determine the isolated socket. They never accept or print credential values.
 
 The ratified administrative model separates non-mutating proposal from permission-backed local apply. Implemented knowledge-session and lifecycle authorization uses exact target-host ownership or granted-permission grants and never requests or evaluates caller type. Protected validator warning-profile and baseline administration is implemented; broader safeguards and canonical knowledge apply remain future gates. Canonical knowledge and STAV remain read-only through qxctl, and qxctl never writes STAV ledger files directly.
+
+`COMMANDS.json` is the checked-in client-independent registry for engine-first administration coverage when qxctl is absent. It is generated from the same attached `CommandSpec` and Cobra tree as runtime help and the executable-bound observed manifest; `commands verify` rejects drift, malformed or trailing JSON, and unsafe input paths. The SSFV `administration-check` route accepts only bounded no-follow JSON, works from an installed host without a repository checkout, invokes the exact installed engine operation, and validates its read-only noncanonical digest-bound result. qxctl records stable identities and exact evidence; it does not suggest names, inject commands, or decide coverage policy.
 
 Validator warning sensitivity is administered without changing the detector: `record` retains a warning, `review` signals new matching warnings, and `require` fails on new matching warnings. Presentation can be `full`, `summary`, or `count`; baselines classify new, unchanged, and resolved occurrences. Violations, parser bounds, path safety, atomic writes, expected-state validation, ledger framing, and secret exclusion are never optional. Broader safeguard management, canonical apply, and audit-deferred recovery remain unavailable.
 

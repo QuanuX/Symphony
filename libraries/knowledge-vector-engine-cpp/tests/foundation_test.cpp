@@ -1,6 +1,7 @@
 #include "symphony/knowledge/engine/digest.hpp"
 #include "symphony/knowledge/engine/error.hpp"
 #include "symphony/knowledge/engine/limits.hpp"
+#include "symphony/knowledge/engine/operation.hpp"
 #include "symphony/knowledge/engine/path.hpp"
 #include "symphony/knowledge/engine/protocol.hpp"
 #include "symphony/knowledge/engine/temporal.hpp"
@@ -190,6 +191,54 @@ void test_json_and_protocol() {
     }, "input.too_large");
 }
 
+void test_operation_registry() {
+    const std::vector<OperationSpec> operations = {
+        OperationSpec{
+            "engop:symphony:test.inspect", "inspect", "implemented", false, true,
+            {"ssfv:symphony:test"}, {"inspect"}, "qxctl_required",
+            "symphony.test.inspect-input.v1", "symphony.test.inspect-result.v1",
+            "read_only", "idempotent", false, "none", "", "supported", "freezing",
+        },
+        OperationSpec{
+            "engop:symphony:test.apply", "apply", "disabled", true, true,
+            {"ssfv:symphony:test"}, {"apply"}, "prohibited",
+            "symphony.test.apply-input.v1", "symphony.test.apply-result.v1",
+            "prohibited", "not_applicable", true, "ssiag", "", "prohibited", "freezing",
+        },
+    };
+    validate_operation_specs(operations);
+    require(find_operation(operations, "inspect") == &operations.front(),
+            "operation lookup did not return the registered operation");
+    require(find_operation(operations, "missing") == nullptr,
+            "operation lookup returned an unregistered operation");
+
+    const auto legacy = legacy_operation_descriptors(operations);
+    require(legacy == Json::array({
+        Json{{"name", "inspect"}, {"availability", "implemented"},
+             {"mutates_canonical", false}},
+        Json{{"name", "apply"}, {"availability", "disabled"},
+             {"mutates_canonical", true}},
+    }), "legacy operation projection changed shape");
+    const auto administration = administration_operation_descriptors(operations);
+    require(administration.at(0).at("engine_operation_id") == "engop:symphony:test.inspect",
+            "administration operation identity mismatch");
+    require(operation_registry_digest(operations) ==
+                tagged_sha256(administration.dump()),
+            "operation registry digest mismatch");
+
+    auto duplicated = operations;
+    duplicated.push_back(operations.front());
+    require_error([&] { validate_operation_specs(duplicated); }, "operation.identity");
+    auto missing_feature = operations;
+    missing_feature.front().feature_ids.clear();
+    missing_feature.front().administration_disposition = "unreviewed";
+    validate_operation_specs(missing_feature);
+    auto invalid_recovery = operations;
+    invalid_recovery.front().recovery_operation_id = "engop:symphony:test.recover";
+    require_error([&] { validate_operation_specs(invalid_recovery); },
+                  "operation.recovery_missing");
+}
+
 void test_paths_and_snapshots() {
     require(is_safe_relative_path("knowledge/INTENT.md"), "expected safe path");
     require(!is_safe_relative_path("../INTENT.md"), "traversal accepted");
@@ -346,6 +395,7 @@ int main(int argc, char** argv) {
         test_digest();
         test_temporal();
         test_json_and_protocol();
+        test_operation_registry();
         test_paths_and_snapshots();
         test_schema_documents(fs::path(argv[1]));
         std::cout << "knowledge vector engine foundation tests passed\n";

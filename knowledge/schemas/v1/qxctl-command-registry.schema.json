@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:qxctl:command-registry:v1",
+  "title": "qxctl command registry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "format_version", "registry_kind", "client_id", "client_version", "client_trust", "executable_digest", "receipt_digest", "commands", "registry_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.qxctl.command-registry.v1"},
+    "format_version": {"const": 1},
+    "registry_kind": {"enum": ["expected", "observed"]},
+    "client_id": {"const": "qxctl"},
+    "client_version": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/version"}]},
+    "client_trust": {"enum": ["receipted", "unreceipted"]},
+    "executable_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "receipt_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "commands": {"type": "array", "maxItems": 1024, "items": {"$ref": "#/$defs/command"}},
+    "registry_digest": {"$ref": "#/$defs/digest"}
+  },
+  "allOf": [
+    {"if": {"properties": {"client_trust": {"const": "receipted"}}}, "then": {"properties": {"receipt_digest": {"$ref": "#/$defs/digest"}}}, "else": {"properties": {"receipt_digest": {"type": "null"}}}},
+    {"if": {"properties": {"registry_kind": {"const": "expected"}}}, "then": {"properties": {"client_version": {"type": "null"}, "client_trust": {"const": "unreceipted"}, "executable_digest": {"type": "null"}, "receipt_digest": {"type": "null"}}}, "else": {"properties": {"client_version": {"$ref": "#/$defs/version"}, "executable_digest": {"$ref": "#/$defs/digest"}}}}
+  ],
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "version": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[0-9A-Za-z.+-]+$"},
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "commandId": {"type": "string", "maxLength": 256, "pattern": "^qxcmd:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "operationId": {"type": "string", "maxLength": 256, "pattern": "^engop:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "featureId": {"type": "string", "maxLength": 256, "pattern": "^ssfv:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "interaction": {"enum": ["discover", "inspect", "query", "validate", "configure", "propose", "invoke", "apply", "lifecycle", "recover"]},
+    "featureBinding": {
+      "type": "object", "additionalProperties": false, "required": ["feature_id", "interaction"],
+      "properties": {"feature_id": {"$ref": "#/$defs/featureId"}, "interaction": {"$ref": "#/$defs/interaction"}}
+    },
+    "command": {
+      "type": "object", "additionalProperties": false,
+      "required": ["command_id", "status", "introduced_in", "deprecated_in", "replacement_ids", "grammar", "aliases", "visibility", "feature_bindings", "infrastructure_purpose", "backend_operation_ids", "mutability", "authority_mode", "target_scope", "input_protocols", "output_protocols", "result_validation_protocols", "recovery_command_id", "noninteractive", "json_output"],
+      "properties": {
+        "command_id": {"$ref": "#/$defs/commandId"}, "status": {"enum": ["experimental", "stable", "deprecated", "retired"]},
+        "introduced_in": {"$ref": "#/$defs/version"}, "deprecated_in": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/version"}]},
+        "replacement_ids": {"type": "array", "maxItems": 32, "uniqueItems": true, "items": {"$ref": "#/$defs/commandId"}},
+        "grammar": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1, "maxLength": 1024}]},
+        "aliases": {"type": "array", "maxItems": 32, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 1024}},
+        "visibility": {"enum": ["public", "hidden"]},
+        "feature_bindings": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/featureBinding"}},
+        "infrastructure_purpose": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1, "maxLength": 4096}]},
+        "backend_operation_ids": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"$ref": "#/$defs/operationId"}},
+        "mutability": {"enum": ["read_only", "evidence_only", "proposal_only", "permission_backed_mutation", "prohibited"]},
+        "authority_mode": {"enum": ["none", "target_host_permission", "ssiag"]}, "target_scope": {"enum": ["local", "target_host"]},
+        "input_protocols": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}},
+        "output_protocols": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}},
+        "result_validation_protocols": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}},
+        "recovery_command_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/commandId"}]},
+        "noninteractive": {"type": "boolean"}, "json_output": {"type": "boolean"}
+      },
+      "allOf": [
+        {"if": {"properties": {"status": {"const": "retired"}}}, "then": {"properties": {"grammar": {"type": "null"}, "aliases": {"maxItems": 0}, "visibility": {"const": "hidden"}, "mutability": {"const": "prohibited"}}}, "else": {"properties": {"grammar": {"type": "string", "minLength": 1, "maxLength": 1024}}}},
+        {"if": {"properties": {"status": {"enum": ["deprecated", "retired"]}}}, "then": {"properties": {"deprecated_in": {"$ref": "#/$defs/version"}}}, "else": {"properties": {"deprecated_in": {"type": "null"}}}},
+        {"if": {"properties": {"status": {"const": "deprecated"}}}, "then": {"properties": {"replacement_ids": {"minItems": 1}}}},
+        {"oneOf": [{"properties": {"feature_bindings": {"minItems": 1}, "infrastructure_purpose": {"type": "null"}}}, {"properties": {"feature_bindings": {"maxItems": 0}, "infrastructure_purpose": {"type": "string", "minLength": 1}}}]}
+      ]
+    }
+  }
+}

@@ -2,12 +2,16 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
+
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgeengine"
 )
 
 func withSSFVDigest(t *testing.T, object map[string]any, field string) json.RawMessage {
@@ -213,5 +217,96 @@ func TestMarshalSSFVCanonicalMatchesUTF8EngineEncoding(t *testing.T) {
 	want := []byte("{\"line_separator\":\"\u2028\",\"literal_escape\":\"\\\\u2028\",\"paragraph_separator_after_backslash\":\"\\\\\u2029\"}")
 	if !bytes.Equal(got, want) {
 		t.Fatalf("canonical UTF-8 JSON mismatch:\n got %q\nwant %q", got, want)
+	}
+}
+
+func validSSFVAdministrationResult(t *testing.T) json.RawMessage {
+	t.Helper()
+	return withSSFVDigest(t, map[string]any{
+		"protocol":                         "symphony.knowledge.administration-coverage-result.v1",
+		"format_version":                   1,
+		"semantic_snapshot_digest":         "sha256:" + strings.Repeat("1", 64),
+		"profile_digest":                   "sha256:" + strings.Repeat("2", 64),
+		"expected_command_registry_digest": "sha256:" + strings.Repeat("3", 64),
+		"observed_command_registry_digest": nil,
+		"engine_descriptor_digests":        []any{},
+		"feature_findings":                 []any{}, "surfaces": []any{},
+		"module_integrations": []any{}, "remediation_constraints": []any{},
+		"summary": map[string]any{
+			"features_checked": 0, "surfaces_checked": 0, "satisfied": 0,
+			"uncovered": 0, "exempt": 0, "prohibited": 0, "stale": 0, "unresolved": 0,
+		},
+		"read_only": true, "canonical": false,
+	}, "result_digest")
+}
+
+func TestSSFVAdministrationCheckValidatesCanonicalEnvelope(t *testing.T) {
+	valid := validSSFVAdministrationResult(t)
+	if accepted, err := validateSSFVResult("administration-check", valid); err != nil || !accepted {
+		t.Fatalf("valid administration result rejected: accepted=%v err=%v", accepted, err)
+	}
+	var unknown map[string]any
+	if err := json.Unmarshal(valid, &unknown); err != nil {
+		t.Fatal(err)
+	}
+	unknown["unexpected"] = true
+	unknownBytes, _ := json.Marshal(unknown)
+	if _, err := validateSSFVResult("administration-check", unknownBytes); err == nil {
+		t.Fatal("administration result with unknown field was accepted")
+	}
+	delete(unknown, "unexpected")
+	unknown["canonical"] = true
+	tampered, _ := json.Marshal(unknown)
+	if _, err := validateSSFVResult("administration-check", tampered); err == nil {
+		t.Fatal("authority-escalated administration result was accepted")
+	}
+}
+
+func TestSSFVAdministrationCheckRunsHeadlessFromNonRepository(t *testing.T) {
+	working := t.TempDir()
+	priorWorking, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Chdir(working); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = os.Chdir(priorWorking) })
+	canonicalWorking, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	payload := []byte(`{"protocol":"fixture.administration-input.v1"}`)
+	input := filepath.Join(working, "input.json")
+	if err := os.WriteFile(input, payload, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	priorInvoke := invokeSSFV
+	t.Cleanup(func() { invokeSSFV = priorInvoke })
+	invoked := false
+	invokeSSFV = func(_ context.Context, prefix, version, root, operation string, got []byte) (knowledgeengine.Response, error) {
+		invoked = true
+		if prefix != "/fixture/prefix" || version != "0.1.0-dev" || root != canonicalWorking ||
+			operation != "administration-check" || !bytes.Equal(got, payload) {
+			t.Fatalf("unexpected invocation: prefix=%q version=%q root=%q operation=%q payload=%s",
+				prefix, version, root, operation, got)
+		}
+		return knowledgeengine.Response{Result: validSSFVAdministrationResult(t)}, nil
+	}
+	if err := runSSFV("administration-check", ssfvOptions{
+		prefix: "/fixture/prefix", input: input, version: "0.1.0-dev", jsonOutput: true,
+	}); err != nil {
+		t.Fatalf("headless administration-check failed: %v", err)
+	}
+	if !invoked {
+		t.Fatal("headless administration-check did not invoke SSFV")
+	}
+}
+
+func TestSSFVAdministrationCheckRequiresMachineContract(t *testing.T) {
+	if err := runSSFV("administration-check", ssfvOptions{}); err == nil ||
+		!strings.Contains(err.Error(), "--json is required") {
+		t.Fatalf("administration-check accepted non-JSON mode: %v", err)
 	}
 }

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:engine-descriptor:v2",
+  "title": "Symphony knowledge engine descriptor v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "format_version", "module_id", "engine_id", "vector_id", "engine_version", "process_protocols", "contract_versions", "operations", "limits", "supported_scopes", "language", "thermal_path", "canonical_apply_enabled", "session_mutation_enabled", "network_listener", "descriptor_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.engine-descriptor.v2"},
+    "format_version": {"const": 2},
+    "module_id": {"$ref": "#/$defs/token"},
+    "engine_id": {"$ref": "#/$defs/token"},
+    "vector_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+    "engine_version": {"$ref": "#/$defs/version"},
+    "process_protocols": {"type": "array", "minItems": 1, "maxItems": 16, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}},
+    "contract_versions": {"type": "array", "minItems": 1, "maxItems": 64, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 256}},
+    "operations": {"type": "array", "minItems": 1, "maxItems": 1024, "items": {"$ref": "#/$defs/operation"}},
+    "limits": {"$ref": "#/$defs/limits"},
+    "supported_scopes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["user", "system", "tops"]}},
+    "language": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[A-Za-z0-9+.#_-]+$"},
+    "thermal_path": {"enum": ["freezing", "warm", "hot"]},
+    "canonical_apply_enabled": {"type": "boolean"},
+    "session_mutation_enabled": {"type": "boolean"},
+    "network_listener": {"type": "boolean"},
+    "descriptor_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "version": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[0-9A-Za-z.+-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "featureId": {"type": "string", "maxLength": 256, "pattern": "^ssfv:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "operationId": {"type": "string", "maxLength": 256, "pattern": "^engop:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["engine_operation_id", "operation_name", "availability", "feature_ids", "administrative_interactions", "administration_disposition", "input_protocol", "output_protocol", "mutability", "idempotency", "expected_state_required", "authorization_requirement", "recovery_operation_id", "direct_invocation", "thermal_path"],
+      "properties": {
+        "engine_operation_id": {"$ref": "#/$defs/operationId"},
+        "operation_name": {"$ref": "#/$defs/token"},
+        "availability": {"enum": ["implemented", "reserved", "disabled"]},
+        "feature_ids": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"$ref": "#/$defs/featureId"}},
+        "administrative_interactions": {"type": "array", "minItems": 1, "maxItems": 10, "uniqueItems": true, "items": {"$ref": "#/$defs/interaction"}},
+        "administration_disposition": {"enum": ["unreviewed", "qxctl_required", "lifecycle_only", "runtime_only", "system_orchestrated", "prohibited", "not_applicable"]},
+        "input_protocol": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+        "output_protocol": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+        "mutability": {"enum": ["read_only", "evidence_only", "proposal_only", "permission_backed_mutation", "prohibited"]},
+        "idempotency": {"enum": ["not_applicable", "idempotent", "idempotent_with_invocation_id", "non_idempotent"]},
+        "expected_state_required": {"type": "boolean"},
+        "authorization_requirement": {"enum": ["none", "target_host_permission", "ssiag"]},
+        "recovery_operation_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/operationId"}]},
+        "direct_invocation": {"enum": ["supported", "diagnostic_only", "prohibited"]},
+        "thermal_path": {"enum": ["freezing", "warm", "hot"]}
+      }
+    },
+    "interaction": {"enum": ["discover", "inspect", "query", "validate", "configure", "propose", "invoke", "apply", "lifecycle", "recover"]},
+    "limits": {
+      "type": "object", "additionalProperties": false,
+      "required": ["request_bytes", "response_bytes", "json_depth", "json_values", "path_bytes", "snapshot_files", "snapshot_file_bytes", "deadline_ahead_ms"],
+      "properties": {
+        "request_bytes": {"type": "integer", "minimum": 1}, "response_bytes": {"type": "integer", "minimum": 1},
+        "json_depth": {"type": "integer", "minimum": 1}, "json_values": {"type": "integer", "minimum": 1},
+        "path_bytes": {"type": "integer", "minimum": 1}, "snapshot_files": {"type": "integer", "minimum": 1},
+        "snapshot_file_bytes": {"type": "integer", "minimum": 1}, "deadline_ahead_ms": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

@@ -6,7 +6,7 @@ Implemented read/comparison/proposal development slice, version `0.1.0-dev`. It 
 
 ## Process Contract
 
-The engine uses `symphony.knowledge.engine-process.v1`. Direct diagnostics are `--help`, `--version`, and `--descriptor`. Exit statuses are 0 completed, 2 malformed input, 3 process protocol or deadline mismatch, 4 invalid operation semantics, and 5 bounded repository/internal failure.
+The engine uses `symphony.knowledge.engine-process.v1`. Direct diagnostics are `--help`, `--version`, `--descriptor`, and `--descriptor-v2`. Descriptor v1 remains exactly backward compatible; descriptor v2 adds stable `engop:` identities and administration metadata without claiming installation state. Exit statuses are 0 completed, 2 malformed input, 3 process protocol or deadline mismatch, 4 invalid operation semantics, and 5 bounded repository/internal failure.
 
 ## Operations
 
@@ -15,6 +15,7 @@ The engine uses `symphony.knowledge.engine-process.v1`. Direct diagnostics are `
 - `diff`: exact SSFV v2 diff input; compares one caller-supplied semantic snapshot with live canonical state.
 - `propose`: exact SSFV v2 proposal input; creates one immutable namespace or feature proposal with a bounded multi-file write set.
 - `graph`: exact `{"format":"json"}` payload; emits the complete bounded portable feature graph.
+- `administration-check`: exact caller-supplied semantic snapshot, administration profile, expected and optional observed qxctl registries, and engine descriptors; emits read-only design/live/authorization surfaces, module-integration admission, and non-inventive remediation constraints.
 
 Feature proposals validate namespace allocation, strict prospective hierarchy, route ownership, owner and implementation evidence, applicable cross-vector references, and typed absence for an unregistered target file before rendering a write set. Existing but unregistered target files are never treated as absent.
 
@@ -35,3 +36,5 @@ Freshness evidence means cited implementation content changed. It does not decid
 ## Non-Authorization
 
 No operation writes a file, creates a feature record, authenticates or classifies a caller, grants permission, ratifies a proposal, persists a snapshot/graph, invokes Git or a provider, starts a listener, mutates a session, activates a version, or docks with Maestro.
+
+Administration checking is repository-independent after its bounded request is supplied. Missing feature or administration declarations remain unreviewed gaps; qxctl absence is a live state rather than a design failure. Installation may proceed independently, but semantic-registration or required-administration gaps make integration and docking readiness false. Remediation output describes required evidence and never generates canonical feature IDs, command IDs, grammar, or AI-specific authority.

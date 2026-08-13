@@ -36,20 +36,22 @@ CI/PR-gate invocation remains a separate integration surface.
 
 ## Output Surfaces
 - Deterministic line-oriented evidence
-- Deterministic summary and exit status (including `21` for caller-authority regression, `22` for SACV registry failure, and `23` for SODV release-ledger failure)
+- Deterministic summary and exit status (including `21` for caller-authority regression, `22` for SACV registry failure, `23` for SODV release-ledger failure, and `24` for feature-administration contract failure)
 - Deterministic `symphony.validation.result.v1` JSON through `check --json`
 
 Markdown projection, runtime source/AST caller-authority analysis, and auto-remediation remain deferred and unauthorized.
 
 ## Canonical JSON Boundary
 
-The artifact checker recognizes exactly 137 canonical JSON paths: 28 STAV v1 schemas/fixtures, fifty-six common SKV process/descriptor/receipt/binding/proposal/provider-evidence/reconciliation/session/SSFV-maintenance/lifecycle/ownership/temporal/Maestro/validation schemas (fifty-three v1 and three v2), twelve SSIAG authorization/grant-planning/policy-administration schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, and eighteen SSFV v1/v2 schemas. It does not authorize a directory prefix, generated projection, or new JSON artifact by extension.
+The artifact checker recognizes exactly 143 canonical JSON paths: 28 STAV v1 schemas/fixtures, sixty-one common SKV process/descriptor/receipt/binding/proposal/provider-evidence/reconciliation/session/SSFV-maintenance/lifecycle/ownership/temporal/Maestro/validation/feature-administration schemas (fifty-seven v1 and four v2), twelve SSIAG authorization/grant-planning/policy-administration schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, eighteen SSFV v1/v2 schemas, and the exact feature-administration profile JSON. It does not authorize a directory prefix, generated projection, or new JSON artifact by extension.
 
 The contract-shape and canonical-surface checks require the common STSC surface and its authority/profile/implementation boundaries, the SSFV governance/engine surfaces, and the independently installed Maestro Contract Quad/build/qxctl client anchors. The validator confirms anchors, presence, SKVI coverage, and exact JSON allowlisting; it does not decide feature-worthiness, duplicate vector semantics, or inspect operational presence state.
 
 The SACV registry checker independently validates the empty marker or exact thirteen-field entry grammar, identity/path uniqueness, owner-path containment, OpenAPI/profile enums, SKVI coverage, and no-follow document presence. OpenAPI semantic validation remains in the independently installed SACV engine rather than being duplicated through an unsafe partial parser.
 
 The SODV release checker independently validates bounded no-follow v1/v2 records, identity and time order, type/status coupling, immutable authorization relationships, publication-unit shape, and one completion per authorization. Provider observation, network resolution, proposal generation, and recovery recommendations remain in the independently installed SODV engine.
+
+The feature-administration checker independently validates the bounded no-follow profile, exact SSFV registry byte digest and dynamic registered set, and checked-in expected qxctl command registry. It verifies omit-self JSON digests, profile coverage, sorted unique command IDs, registered feature bindings, profile command references, inheritance closure, and report-only versus enforcement-gate treatment of unreviewed debt. It reads declarative data only; it does not execute qxctl, require qxctl installation, invent names or grammar, assess feature semantics, or suggest remediation.
 
 ## Caller-Authority Capability
 The implemented checker reads active Markdown from the bounded repository surfaces defined in `SPEC.md`. It emits lexical-path evidence for configured caller-class authority constructions and for fail-visible discovery, stream, symlink, and resource-limit conditions. It does not follow symlink targets or modify scanned content.

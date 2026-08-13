@@ -2,6 +2,7 @@
 
 #include "symphony/knowledge/engine/digest.hpp"
 #include "symphony/knowledge/engine/error.hpp"
+#include "symphony/knowledge/engine/limits.hpp"
 #include "symphony/knowledge/engine/protocol.hpp"
 
 #include <algorithm>
@@ -266,6 +267,128 @@ void refresh_snapshot_digest(engine::Json& snapshot) {
     snapshot["snapshot_digest"] = engine::tagged_sha256(snapshot.dump());
 }
 
+void refresh_self_digest(engine::Json& value, const char* field) {
+    value.erase(field);
+    value[field] = engine::tagged_sha256(value.dump());
+}
+
+engine::Json administration_command(const std::string& command_id,
+                                    const std::string& feature_id,
+                                    const std::string& interaction,
+                                    const std::string& operation_id) {
+    return engine::Json{
+        {"command_id", command_id}, {"status", "experimental"},
+        {"introduced_in", "0.1.0-dev"}, {"deprecated_in", nullptr},
+        {"replacement_ids", engine::Json::array()},
+        {"grammar", "qxctl fixture inspect"}, {"aliases", engine::Json::array()},
+        {"visibility", "public"},
+        {"feature_bindings", engine::Json::array({engine::Json{
+            {"feature_id", feature_id}, {"interaction", interaction}}})},
+        {"infrastructure_purpose", nullptr},
+        {"backend_operation_ids", engine::Json::array({operation_id})},
+        {"mutability", "read_only"}, {"authority_mode", "none"},
+        {"target_scope", "local"}, {"input_protocols", engine::Json::array()},
+        {"output_protocols", engine::Json::array()},
+        {"result_validation_protocols", engine::Json::array()},
+        {"recovery_command_id", nullptr}, {"noninteractive", true},
+        {"json_output", true},
+    };
+}
+
+engine::Json command_registry(const std::string& kind, engine::Json commands) {
+    engine::Json result{
+        {"protocol", "symphony.qxctl.command-registry.v1"}, {"format_version", 1},
+        {"registry_kind", kind},
+        {"client_id", "qxctl"},
+        {"client_version", kind == "observed" ? engine::Json("0.1.0-dev") : engine::Json(nullptr)},
+        {"client_trust", "unreceipted"},
+        {"executable_digest", kind == "observed"
+            ? engine::Json("sha256:1111111111111111111111111111111111111111111111111111111111111111")
+            : engine::Json(nullptr)},
+        {"receipt_digest", nullptr}, {"commands", std::move(commands)},
+    };
+    refresh_self_digest(result, "registry_digest");
+    return result;
+}
+
+engine::Json administration_profile(const engine::Json& snapshot,
+                                    const std::string& feature_id,
+                                    const std::string& command_id,
+                                    const std::string& operation_id) {
+    const engine::Json expectation{
+        {"interaction", "inspect"}, {"requirement", "required"},
+        {"delivery", "direct"},
+        {"command_ids", engine::Json::array({command_id})},
+        {"engine_operation_ids", engine::Json::array({operation_id})},
+        {"inherited_from_feature_id", nullptr},
+        {"rationale", "Fixture administration is explicitly required."},
+        {"evidence", engine::Json::array({"fixture administration evidence"})},
+    };
+    engine::Json features = engine::Json::array();
+    for (const auto& record : snapshot.at("records")) {
+        const auto candidate = record.at("feature_id").get<std::string>();
+        features.push_back(engine::Json{
+            {"feature_id", candidate},
+            {"expectations", candidate == feature_id
+                ? engine::Json::array({expectation}) : engine::Json::array()},
+        });
+    }
+    engine::Json result{
+        {"protocol", "symphony.knowledge.feature-administration-profile.v1"},
+        {"format_version", 1}, {"profile_id", "fixture-administration"},
+        {"ssfv_registry_digest", snapshot.at("registry_digest")},
+        {"catalog_scope", "registered_partial_catalog"}, {"catalog_complete", false},
+        {"registered_feature_count", snapshot.at("records").size()},
+        {"forward_gate", "report_only"},
+        {"features", std::move(features)},
+    };
+    refresh_self_digest(result, "profile_digest");
+    return result;
+}
+
+engine::Json fixture_engine_descriptor(const engine::Json& feature_ids,
+                                       const std::string& disposition,
+                                       const std::string& availability = "implemented") {
+    auto result = ssfv::descriptor_v2();
+    result["module_id"] = "fixture-engine";
+    result["engine_id"] = "fixture-engine";
+    const engine::Json operation{
+        {"engine_operation_id", "engop:fixture:engine.inspect"},
+        {"operation_name", "inspect"}, {"availability", availability},
+        {"feature_ids", feature_ids},
+        {"administrative_interactions", engine::Json::array({"inspect"})},
+        {"administration_disposition", disposition},
+        {"input_protocol", "fixture.engine.inspect-input.v1"},
+        {"output_protocol", "fixture.engine.inspect-result.v1"},
+        {"mutability", "read_only"}, {"idempotency", "idempotent"},
+        {"expected_state_required", false}, {"authorization_requirement", "none"},
+        {"recovery_operation_id", nullptr}, {"direct_invocation", "supported"},
+        {"thermal_path", "freezing"},
+    };
+    result["operations"] = engine::Json::array({operation});
+    refresh_self_digest(result, "descriptor_digest");
+    return result;
+}
+
+engine::Json administration_payload(const engine::Json& snapshot,
+                                    engine::Json profile,
+                                    engine::Json expected_registry,
+                                    const std::string& observed_state,
+                                    engine::Json observed_registry,
+                                    engine::Json descriptors,
+                                    const engine::Json& requested_feature_id) {
+    return engine::Json{
+        {"protocol", "symphony.knowledge.administration-coverage-input.v1"},
+        {"format_version", 1}, {"semantic_snapshot", snapshot},
+        {"profile", std::move(profile)},
+        {"expected_command_registry", std::move(expected_registry)},
+        {"observed_qxctl_state", observed_state},
+        {"observed_command_registry", std::move(observed_registry)},
+        {"engine_descriptors", std::move(descriptors)},
+        {"requested_feature_id", requested_feature_id},
+    };
+}
+
 engine::Json proposal_payload(const engine::Json& state, const std::string& type,
                               const engine::Json& record,
                               const engine::Json& expected_feature_digest,
@@ -316,12 +439,37 @@ engine::Json check_fixture_records(const std::vector<engine::Json>& records) {
 
 void test_descriptor_and_actual_repository(const fs::path& repository_root) {
     const auto descriptor = ssfv::descriptor();
+    require(engine::sha256_hex(descriptor.dump()) ==
+                "e3ae6f7cc29402c9df275c0bb7a34553c1358ea5667f68c15bf35d493f8910ab",
+            "engine-descriptor.v1 compatibility changed");
+    require(descriptor.at("protocol") == engine::descriptor_protocol_v1 &&
+                descriptor.at("operations").size() == 6U &&
+                !descriptor.at("operations").at(0).contains("engine_operation_id"),
+            "legacy descriptor negotiation surface changed");
     require(descriptor.at("language") == "C++26", "language contract mismatch");
     require(descriptor.at("thermal_path") == "freezing", "thermal-path contract mismatch");
     require(descriptor.at("install_state") == "installed_undocked", "install state mismatch");
     require(descriptor.at("canonical_apply_enabled") == false, "apply enabled");
     require(descriptor.at("session_mutation_enabled") == false, "session mutation enabled");
     require(descriptor.at("network_listener") == false, "network listener enabled");
+    const auto descriptor_v2 = ssfv::descriptor_v2();
+    require(descriptor_v2.at("protocol") == engine::descriptor_protocol_v2 &&
+                descriptor_v2.at("format_version") == 2 &&
+                !descriptor_v2.contains("install_state") &&
+                descriptor_v2.at("operations").size() == 7U,
+            "engine-descriptor.v2 negotiation surface mismatch");
+    const auto descriptor_digest = descriptor_v2.at("descriptor_digest");
+    auto descriptor_v2_preimage = descriptor_v2;
+    descriptor_v2_preimage.erase("descriptor_digest");
+    require(descriptor_digest == engine::tagged_sha256(descriptor_v2_preimage.dump()),
+            "engine-descriptor.v2 digest mismatch");
+    require(std::any_of(descriptor_v2.at("operations").begin(),
+                        descriptor_v2.at("operations").end(),
+                        [](const engine::Json& operation) {
+        return operation.at("engine_operation_id") ==
+                   "engop:symphony:ssfv.administration-check" &&
+               operation.at("operation_name") == "administration-check";
+    }), "administration-check stable operation identity is absent");
 
     CurrentDirectory current(repository_root);
     const auto inspect = ssfv::handle_request(request("inspect", engine::Json::object()));
@@ -331,14 +479,376 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
     require(check.at("summary").at("state") == "valid", "canonical partial registry invalid");
     require(check.at("coverage_state") == "partial",
             "canonical bootstrap must not imply repository-wide completeness");
-    require(check.at("feature_count") == 67U && check.at("feature_file_count") == 15U,
+    require(check.at("feature_count") == 69U && check.at("feature_file_count") == 15U,
             "canonical partial-catalog record counts mismatch");
     const auto graph = ssfv::handle_request(
         request("graph", engine::Json{{"format", "json"}}));
-    require(graph.at("node_count") == 67U && graph.at("edge_count") == 271U,
+    require(graph.at("node_count") == 69U && graph.at("edge_count") == 279U,
             "canonical partial-catalog graph count mismatch");
     require(graph.at("noncanonical") == true && graph.at("rebuildable") == true,
             "graph authority escalated");
+
+    const auto read_json = [&](const fs::path& relative_path) {
+        std::ifstream input(repository_root / relative_path, std::ios::binary);
+        require(input.good(), "canonical administration input is unreadable");
+        return engine::parse_bounded_json(
+            engine::read_bounded(input, engine::Limits::max_response_bytes),
+            engine::Limits::max_response_bytes);
+    };
+    const auto canonical_administration = ssfv::handle_request(request(
+        "administration-check", administration_payload(
+            check.at("semantic_snapshot"),
+            read_json("knowledge/FEATURE-ADMINISTRATION-PROFILE.json"),
+            read_json("tools/qxctl/COMMANDS.json"), "not_evaluated", nullptr,
+            engine::Json::array({descriptor_v2}),
+            "ssfv:symphony:ssfv-engine.administration-assurance")));
+    require(canonical_administration.at("feature_findings").size() == 1U &&
+                canonical_administration.at("summary").at("unresolved") == 1U &&
+                canonical_administration.at("module_integrations").at(0)
+                    .at("integration_state") == "administration_unintegrated" &&
+                canonical_administration.at("module_integrations").at(0)
+                    .at("docking_ready") == false,
+            "canonical report-only administration debt was hidden or admitted");
+}
+
+void test_administration_coverage_and_module_admission() {
+    TemporaryDirectory temporary;
+    create_fixture(temporary.path());
+    CurrentDirectory current(temporary.path());
+    const auto snapshot = ssfv::handle_request(
+        request("check", disabled_check())).at("semantic_snapshot");
+    const std::string feature_id = "ssfv:symphony:fixture-feature";
+    const std::string command_id = "qxcmd:fixture:engine.inspect";
+    const std::string operation_id = "engop:fixture:engine.inspect";
+    const auto profile = administration_profile(
+        snapshot, feature_id, command_id, operation_id);
+    const auto expected = command_registry("expected", engine::Json::array({
+        administration_command(command_id, feature_id, "inspect", operation_id),
+    }));
+    const auto descriptor = fixture_engine_descriptor(
+        engine::Json::array({feature_id}), "qxctl_required");
+
+    const auto absent_payload = administration_payload(
+        snapshot, profile, expected, "absent", nullptr,
+        engine::Json::array({descriptor}), feature_id);
+    const auto first = ssfv::handle_request(
+        request("administration-check", absent_payload));
+    const auto second = ssfv::handle_request(
+        request("administration-check", absent_payload));
+    require(first == second, "administration coverage result is nondeterministic");
+    require(first.at("surfaces").at(0).at("design_state") == "satisfied" &&
+                first.at("surfaces").at(0).at("live_state") == "qxctl_absent" &&
+                first.at("surfaces").at(0).at("authorization_state") == "not_evaluated" &&
+                first.at("module_integrations").at(0).at("integration_state") ==
+                    "integration_ready",
+            "qxctl absence was confused with a design or integration gap");
+    require(first.at("module_integrations").at(0).at("docking_ready") == true &&
+                first.at("read_only") == true &&
+                first.at("canonical") == false,
+            "integrated module readiness or read-only boundary mismatch");
+    auto without_digest = first;
+    const auto result_digest = without_digest.at("result_digest");
+    without_digest.erase("result_digest");
+    require(result_digest == engine::tagged_sha256(without_digest.dump()),
+            "administration coverage result digest mismatch");
+
+    {
+        TemporaryDirectory empty;
+        CurrentDirectory engine_only(empty.path());
+        const auto engine_only_first = ssfv::handle_request(
+            request("administration-check", absent_payload));
+        const auto engine_only_second = ssfv::handle_request(
+            request("administration-check", absent_payload));
+        require(engine_only_first == first && engine_only_second == first,
+                "administration-check depends on repository or qxctl files");
+    }
+
+    const auto observed = command_registry("observed", engine::Json::array({
+        administration_command(command_id, feature_id, "inspect", operation_id),
+    }));
+    const auto ready = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, expected, "present", observed,
+            engine::Json::array({descriptor}), feature_id)));
+    require(ready.at("surfaces").at(0).at("live_state") == "ready",
+            "matching observed qxctl registry was not ready");
+
+    const auto incompatible = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, expected, "present",
+            command_registry("observed", engine::Json::array()),
+            engine::Json::array({descriptor}), feature_id)));
+    require(incompatible.at("surfaces").at(0).at("design_state") == "satisfied" &&
+                incompatible.at("surfaces").at(0).at("live_state") == "incompatible",
+            "observed client incompatibility changed design coverage");
+    auto semantically_incompatible_observed = observed;
+    semantically_incompatible_observed["commands"].at(0)["backend_operation_ids"] =
+        engine::Json::array();
+    refresh_self_digest(semantically_incompatible_observed, "registry_digest");
+    const auto semantic_incompatibility = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, expected, "present",
+            semantically_incompatible_observed, engine::Json::array({descriptor}), feature_id)));
+    require(semantic_incompatibility.at("surfaces").at(0).at("live_state") ==
+                "incompatible" &&
+                !semantic_incompatibility.at("surfaces").at(0).at("findings").empty(),
+            "observed stable ID masked incompatible semantic command evidence");
+
+    const auto expected_without_route = command_registry(
+        "expected", engine::Json::array());
+    const auto uncovered = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, expected_without_route, "absent", nullptr,
+            engine::Json::array({descriptor}), feature_id)));
+    require(uncovered.at("surfaces").at(0).at("design_state") == "uncovered" &&
+                uncovered.at("module_integrations").at(0).at("integration_state") ==
+                    "administration_unintegrated" &&
+                uncovered.at("module_integrations").at(0).at("docking_ready") == false,
+            "missing required qxctl route did not fail integration/docking readiness");
+    require(!uncovered.at("remediation_constraints").empty() &&
+                uncovered.at("remediation_constraints").at(0).at("proposed_command_id").is_null() &&
+                uncovered.at("remediation_constraints").at(0).at("proposed_grammar").is_null(),
+            "remediation constraints invented command identity or grammar");
+
+    auto expected_without_backend = expected;
+    expected_without_backend["commands"].at(0)["backend_operation_ids"] =
+        engine::Json::array();
+    refresh_self_digest(expected_without_backend, "registry_digest");
+    const auto uncovered_backend = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, expected_without_backend, "absent", nullptr,
+            engine::Json::array({descriptor}), feature_id)));
+    require(uncovered_backend.at("surfaces").at(0).at("design_state") == "uncovered" &&
+                uncovered_backend.at("module_integrations").at(0).at("docking_ready") == false,
+            "command identity without an exact backend binding satisfied coverage");
+
+    auto retired_expected = expected;
+    retired_expected["commands"].at(0)["status"] = "retired";
+    retired_expected["commands"].at(0)["deprecated_in"] = "0.2.0";
+    retired_expected["commands"].at(0)["grammar"] = nullptr;
+    refresh_self_digest(retired_expected, "registry_digest");
+    const auto retired_route = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, retired_expected, "absent", nullptr,
+            engine::Json::array({descriptor}), feature_id)));
+    require(retired_route.at("surfaces").at(0).at("design_state") == "uncovered" &&
+                retired_route.at("module_integrations").at(0).at("docking_ready") == false,
+            "retired expected command satisfied design or module coverage");
+
+    auto prohibited_expected = expected;
+    prohibited_expected["commands"].at(0)["mutability"] = "prohibited";
+    refresh_self_digest(prohibited_expected, "registry_digest");
+    const auto prohibited_route = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, prohibited_expected, "absent", nullptr,
+            engine::Json::array({descriptor}), feature_id)));
+    require(prohibited_route.at("surfaces").at(0).at("design_state") == "uncovered" &&
+                prohibited_route.at("module_integrations").at(0).at("docking_ready") == false,
+            "prohibited expected command satisfied design or module coverage");
+
+    require_error([&] {
+        static_cast<void>(ssfv::handle_request(request("administration-check",
+            administration_payload(snapshot, profile, nullptr, "absent", nullptr,
+                engine::Json::array(), feature_id))));
+    }, "administration.input.expected_registry");
+
+    const auto missing_semantics = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, expected, "not_evaluated", nullptr,
+            engine::Json::array({fixture_engine_descriptor(
+                engine::Json::array(), "unreviewed")}), feature_id)));
+    require(missing_semantics.at("module_integrations").at(0).at("integration_state") ==
+                "semantic_registration_required" &&
+                missing_semantics.at("module_integrations").at(0).at("docking_ready") == false,
+            "undeclared engine semantics did not block integration readiness");
+
+    const auto unreviewed = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, expected, "not_evaluated", nullptr,
+            engine::Json::array({fixture_engine_descriptor(
+                engine::Json::array({feature_id}), "unreviewed")}), feature_id)));
+    require(unreviewed.at("module_integrations").at(0).at("integration_state") ==
+                "administration_unintegrated",
+            "missing administration declaration was normalized to not-applicable");
+
+    auto unreviewed_profile = profile;
+    auto& unreviewed_expectation = unreviewed_profile["features"].at(1)
+        ["expectations"].at(0);
+    unreviewed_expectation["delivery"] = "unreviewed";
+    unreviewed_expectation["command_ids"] = engine::Json::array();
+    unreviewed_expectation["engine_operation_ids"] = engine::Json::array();
+    refresh_self_digest(unreviewed_profile, "profile_digest");
+    const auto known_unreviewed = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, unreviewed_profile, expected, "not_evaluated", nullptr,
+            engine::Json::array(), feature_id)));
+    require(known_unreviewed.at("surfaces").at(0).at("design_state") == "unresolved" &&
+                known_unreviewed.at("summary").at("unresolved") == 1U,
+            "known unreviewed interaction did not remain explicit unresolved debt");
+
+    auto invalid_unreviewed_profile = unreviewed_profile;
+    invalid_unreviewed_profile["features"].at(1)["expectations"].at(0)
+        ["command_ids"] = engine::Json::array({command_id});
+    refresh_self_digest(invalid_unreviewed_profile, "profile_digest");
+    require_error([&] {
+        static_cast<void>(ssfv::handle_request(request("administration-check",
+            administration_payload(snapshot, invalid_unreviewed_profile, expected,
+                "not_evaluated", nullptr, engine::Json::array(), feature_id))));
+    }, "administration.profile.disposition");
+
+    const std::string child_feature_id = "ssfv:symphony:fixture-subfeature";
+    auto inherited_profile = profile;
+    auto inherited_expectation = inherited_profile["features"].at(1)
+        ["expectations"].at(0);
+    inherited_expectation["delivery"] = "delegated";
+    inherited_expectation["command_ids"] = engine::Json::array();
+    inherited_expectation["engine_operation_ids"] = engine::Json::array();
+    inherited_expectation["inherited_from_feature_id"] = feature_id;
+    inherited_profile["features"].at(3)["expectations"] =
+        engine::Json::array({inherited_expectation});
+    refresh_self_digest(inherited_profile, "profile_digest");
+    auto inherited_command = administration_command(
+        command_id, feature_id, "inspect", operation_id);
+    inherited_command["feature_bindings"].push_back(engine::Json{
+        {"feature_id", child_feature_id}, {"interaction", "inspect"}});
+    const auto inherited_expected = command_registry(
+        "expected", engine::Json::array({inherited_command}));
+    const auto inherited_descriptor = fixture_engine_descriptor(
+        engine::Json::array({feature_id, child_feature_id}), "qxctl_required");
+    const auto inherited_result = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, inherited_profile, inherited_expected,
+            "not_evaluated", nullptr, engine::Json::array({inherited_descriptor}),
+            child_feature_id)));
+    require(inherited_result.at("surfaces").at(0).at("design_state") == "satisfied" &&
+                inherited_result.at("surfaces").at(0).at("command_ids").at(0) == command_id,
+            "finite compatible administration inheritance did not resolve delivery");
+
+    auto nullable_protocol_descriptor = descriptor;
+    nullable_protocol_descriptor["language"] = "Rust-1.90";
+    nullable_protocol_descriptor["thermal_path"] = "warm";
+    nullable_protocol_descriptor["operations"].at(0)["input_protocol"] = nullptr;
+    nullable_protocol_descriptor["operations"].at(0)["output_protocol"] = nullptr;
+    refresh_self_digest(nullable_protocol_descriptor, "descriptor_digest");
+    const auto nullable_protocol = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, expected, "not_evaluated", nullptr,
+            engine::Json::array({nullable_protocol_descriptor}), feature_id)));
+    require(nullable_protocol.at("module_integrations").at(0).at("integration_state") ==
+                "integration_ready",
+            "schema-valid nullable protocols, language, or warm path were rejected");
+
+    auto pair_descriptor = descriptor;
+    pair_descriptor["operations"].at(0)["administrative_interactions"] =
+        engine::Json::array({"inspect", "query"});
+    refresh_self_digest(pair_descriptor, "descriptor_digest");
+    const auto missing_pair = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, expected, "not_evaluated", nullptr,
+            engine::Json::array({pair_descriptor}), feature_id)));
+    require(missing_pair.at("module_integrations").at(0).at("integration_state") ==
+                "administration_unintegrated",
+            "one mapped interaction masked another uncovered engine-operation surface");
+
+    auto second_descriptor = descriptor;
+    second_descriptor["module_id"] = "fixture-second-engine";
+    second_descriptor["engine_id"] = "fixture-second-engine";
+    second_descriptor["operations"].at(0)["engine_operation_id"] =
+        "engop:fixture:second.inspect";
+    second_descriptor["operations"].at(0)["administration_disposition"] = "not_applicable";
+    refresh_self_digest(second_descriptor, "descriptor_digest");
+    const auto ordered = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, expected, "not_evaluated", nullptr,
+            engine::Json::array({descriptor, second_descriptor}), feature_id)));
+    const auto reversed = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, expected, "not_evaluated", nullptr,
+            engine::Json::array({second_descriptor, descriptor}), feature_id)));
+    require(ordered == reversed, "engine descriptor input order changed coverage evidence");
+    require_error([&] {
+        static_cast<void>(ssfv::handle_request(request("administration-check",
+            administration_payload(snapshot, profile, expected, "not_evaluated", nullptr,
+                engine::Json::array({descriptor, descriptor}), feature_id))));
+    }, "administration.engine_descriptor.duplicate_digest");
+
+    auto duplicate_operation_descriptor = descriptor;
+    auto duplicate_operation = duplicate_operation_descriptor["operations"].at(0);
+    duplicate_operation["operation_name"] = "inspect-again";
+    duplicate_operation_descriptor["operations"].push_back(duplicate_operation);
+    refresh_self_digest(duplicate_operation_descriptor, "descriptor_digest");
+    const auto duplicate_operation_result = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, expected, "not_evaluated", nullptr,
+            engine::Json::array({duplicate_operation_descriptor}), feature_id)));
+    require(duplicate_operation_result.at("module_integrations").at(0)
+                .at("integration_state") == "descriptor_invalid",
+            "duplicated engine operation identity was admitted");
+
+    auto missing_recovery_descriptor = descriptor;
+    missing_recovery_descriptor["operations"].at(0)["recovery_operation_id"] =
+        "engop:fixture:engine.recover";
+    refresh_self_digest(missing_recovery_descriptor, "descriptor_digest");
+    const auto missing_recovery_result = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, expected, "not_evaluated", nullptr,
+            engine::Json::array({missing_recovery_descriptor}), feature_id)));
+    require(missing_recovery_result.at("module_integrations").at(0)
+                .at("integration_state") == "descriptor_invalid",
+            "missing engine recovery identity was admitted");
+
+    auto invalid_language_descriptor = descriptor;
+    invalid_language_descriptor["language"] = "Rust:1.90";
+    refresh_self_digest(invalid_language_descriptor, "descriptor_digest");
+    const auto invalid_language_result = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, expected, "not_evaluated", nullptr,
+            engine::Json::array({invalid_language_descriptor}), feature_id)));
+    require(invalid_language_result.at("module_integrations").at(0)
+                .at("integration_state") == "descriptor_invalid",
+            "schema-invalid descriptor language was admitted");
+
+    auto omitted_profile = profile;
+    omitted_profile["features"].erase(omitted_profile["features"].begin());
+    refresh_self_digest(omitted_profile, "profile_digest");
+    require_error([&] {
+        static_cast<void>(ssfv::handle_request(request("administration-check",
+            administration_payload(snapshot, omitted_profile, expected, "absent", nullptr,
+                engine::Json::array(), feature_id))));
+    }, "administration.profile.catalog_set");
+    auto enforced_profile = profile;
+    enforced_profile["forward_gate"] = "enforce_all_records";
+    refresh_self_digest(enforced_profile, "profile_digest");
+    require_error([&] {
+        static_cast<void>(ssfv::handle_request(request("administration-check",
+            administration_payload(snapshot, enforced_profile, expected, "absent", nullptr,
+                engine::Json::array(), feature_id))));
+    }, "administration.profile.forward_gate");
+
+    auto invalid_expected = expected;
+    invalid_expected["client_id"] = "not-qxctl";
+    refresh_self_digest(invalid_expected, "registry_digest");
+    require_error([&] {
+        static_cast<void>(ssfv::handle_request(request("administration-check",
+            administration_payload(snapshot, profile, invalid_expected, "absent", nullptr,
+                engine::Json::array(), feature_id))));
+    }, "administration.command_registry.identity");
+    invalid_expected = expected;
+    invalid_expected["commands"].at(0)["mutability"] = "invented";
+    refresh_self_digest(invalid_expected, "registry_digest");
+    require_error([&] {
+        static_cast<void>(ssfv::handle_request(request("administration-check",
+            administration_payload(snapshot, profile, invalid_expected, "absent", nullptr,
+                engine::Json::array(), feature_id))));
+    }, "administration.command.classification");
+
+    auto stale_profile = profile;
+    stale_profile["ssfv_registry_digest"] =
+        "sha256:2222222222222222222222222222222222222222222222222222222222222222";
+    refresh_self_digest(stale_profile, "profile_digest");
+    const auto stale = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, stale_profile, expected, "absent", nullptr,
+            engine::Json::array(), feature_id)));
+    require(stale.at("surfaces").at(0).at("design_state") == "stale",
+            "profile-to-SSFV digest drift was not reported as stale");
+
+    auto invalid_descriptor = descriptor;
+    invalid_descriptor["descriptor_digest"] =
+        "sha256:3333333333333333333333333333333333333333333333333333333333333333";
+    const auto invalid = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, profile, expected, "absent", nullptr,
+            engine::Json::array({invalid_descriptor}), feature_id)));
+    require(invalid.at("module_integrations").at(0).at("integration_state") ==
+                "descriptor_invalid" &&
+                invalid.at("module_integrations").at(0).at("docking_ready") == false,
+            "invalid descriptor was admitted");
+
+    auto expired = request("administration-check", absent_payload);
+    expired.deadline_unix_ms = engine::unix_time_ms() - 1;
+    require_error([&] { static_cast<void>(ssfv::handle_request(expired)); },
+                  "request.deadline_expired");
 }
 
 void test_valid_hierarchy_and_deterministic_graph() {
@@ -1246,6 +1756,7 @@ int main(int argc, char** argv) {
             throw std::runtime_error("repository root argument is required");
         }
         test_descriptor_and_actual_repository(fs::canonical(argv[1]));
+        test_administration_coverage_and_module_admission();
         test_valid_hierarchy_and_deterministic_graph();
         test_root_scope_and_crosslinks();
         test_freshness_and_diff();

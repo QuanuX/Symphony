@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
     if (argc == 2) {
         const std::string argument = argv[1];
         if (argument == "--help") {
-            std::cout << "Usage: symphony-ssfv [--help|--version|--descriptor]\n"
+            std::cout << "Usage: symphony-ssfv [--help|--version|--descriptor|--descriptor-v2]\n"
                          "Without arguments, reads one bounded process request from standard input.\n";
             return 0;
         }
@@ -41,6 +41,10 @@ int main(int argc, char** argv) {
         }
         if (argument == "--descriptor") {
             std::cout << ssfv::descriptor().dump() << '\n';
+            return 0;
+        }
+        if (argument == "--descriptor-v2") {
+            std::cout << ssfv::descriptor_v2().dump() << '\n';
             return 0;
         }
         return emit_error(engine::Error("argument.unsupported", "unsupported argument", 2));

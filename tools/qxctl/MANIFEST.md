@@ -11,11 +11,17 @@
 - `INSTALL.md`
 - `SKILL.md`
 - `README.md`
+- `COMMANDS.md`
+- `COMMANDS.json`
+- `FEATURES.md`
 - `cmd/qxctl/main.go`
 - `cmd/qxctl/commands.go`
+- `cmd/qxctl/command_manifest.go`
+- `cmd/qxctl/command_specs.go`
 - `cmd/qxctl/lifecycle.go`
 - `cmd/qxctl/lifecycle_apply.go`
 - `cmd/qxctl/ssfv.go`
+- `internal/commandregistry/registry.go`
 - `internal/knowledgeengine/client.go`
 - `internal/knowledgeengine/open_relative_unix.go`
 - `internal/knowledgeengine/open_relative_unsupported.go`
@@ -39,6 +45,9 @@
 - `internal/knowledgelifecycle/state_unsupported.go`
 
 ## Supported Commands
+- `qxctl commands manifest --json`
+- `qxctl commands expected --json`
+- `qxctl commands verify --input FILE --json`
 - `qxctl doctor`
 - `qxctl contracts`
 - `qxctl modules`
@@ -123,6 +132,7 @@
 - `qxctl ssfv diff --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
 - `qxctl ssfv propose --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
 - `qxctl ssfv graph --prefix PATH [--version VERSION] [--repo PATH] [--json]`
+- `qxctl ssfv administration-check --prefix PATH --input FILE --json [--version VERSION] [--repo PATH]`
 - `qxctl validate scan --tops-id UUID --prefix PATH [--version VERSION] [--repo PATH] [--state-root PATH] [--profile-id ID] [--baseline-id ID] [--json]`
 - `qxctl validate debug --tops-id UUID --prefix PATH [--version VERSION] [--repo PATH] [--state-root PATH] [--profile-id ID] [--baseline-id ID] [--rule ID] [--record ID] [--path PATH] [--delta new|unchanged|resolved] [--json]`
 - `qxctl validate profile list|show|set|remove --tops-id UUID [protected policy flags] [--json]`
@@ -139,6 +149,8 @@ Individual lifecycle action leaves remain intentionally absent. The implemented 
 qxctl is installable via standard `go build` or executable directly via `go run` using the Go standard toolchain. It does not require remote runtimes, providers, Docker, Kubernetes, or cloud infrastructure.
 
 Cobra owns the command tree and flag grammar. Viper is restricted to a new private instance for each command configuration: keys and environment variables are bound explicitly, and automatic environment discovery, remote providers, file discovery, watch/reload, write-back, and secret values are prohibited. Viper does not load SSIAG or STAV trust configuration. Endpoint configuration, filesystem trust, and kernel peer verification remain in their dedicated clients.
+
+Every public or hidden executable Cobra leaf also owns one attached stable `CommandSpec`. Tree construction fails closed when executable grammar is unclassified, duplicated, or disguised as a structural namespace. `commands expected` and the checked-in `COMMANDS.json` provide client-independent design evidence for engine-first evaluation; `commands manifest` binds the same projection to the exact running executable; `commands verify` strictly validates a bounded no-follow expected registry against the current tree. Hidden prohibited leaves remain explicit identity evidence but cannot satisfy required coverage. These commands do not inject grammar, infer command names, decide feature worthiness, or grant authority.
 
 The SSIAG command group is a cgo-free client for a local Unix domain socket. It loads scope-exact per-TOPS endpoint trust, rejects unsafe configuration/socket metadata, and verifies the connected service through native kernel peer credentials before HTTP exchange. Provider implementations remain inside the independently installed SSIAG module.
 

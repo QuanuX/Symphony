@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:feature-administration-profile:v1",
+  "title": "Symphony feature administration profile v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "format_version", "profile_id", "ssfv_registry_digest", "catalog_scope", "catalog_complete", "registered_feature_count", "forward_gate", "features", "profile_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.feature-administration-profile.v1"},
+    "format_version": {"const": 1},
+    "profile_id": {"$ref": "#/$defs/token"},
+    "ssfv_registry_digest": {"$ref": "#/$defs/digest"},
+    "catalog_scope": {"const": "registered_partial_catalog"},
+    "catalog_complete": {"const": false},
+    "registered_feature_count": {"type": "integer", "minimum": 0, "maximum": 8192},
+    "forward_gate": {"enum": ["report_only", "enforce_new_records", "enforce_all_records"]},
+    "features": {"type": "array", "maxItems": 8192, "items": {"$ref": "#/$defs/feature"}},
+    "profile_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "featureId": {"type": "string", "maxLength": 256, "pattern": "^ssfv:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "commandId": {"type": "string", "maxLength": 256, "pattern": "^qxcmd:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "operationId": {"type": "string", "maxLength": 256, "pattern": "^engop:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "interaction": {"enum": ["discover", "inspect", "query", "validate", "configure", "propose", "invoke", "apply", "lifecycle", "recover"]},
+    "feature": {
+      "type": "object", "additionalProperties": false, "required": ["feature_id", "expectations"],
+      "properties": {"feature_id": {"$ref": "#/$defs/featureId"}, "expectations": {"type": "array", "maxItems": 10, "items": {"$ref": "#/$defs/expectation"}}}
+    },
+    "expectation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["interaction", "requirement", "delivery", "command_ids", "engine_operation_ids", "inherited_from_feature_id", "rationale", "evidence"],
+      "properties": {
+        "interaction": {"$ref": "#/$defs/interaction"},
+        "requirement": {"enum": ["required", "optional", "prohibited", "not_applicable"]},
+        "delivery": {"enum": ["direct", "composed", "delegated", "lifecycle_only", "observation_only", "runtime_only", "system_orchestrated", "none", "unreviewed"]},
+        "command_ids": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"$ref": "#/$defs/commandId"}},
+        "engine_operation_ids": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"$ref": "#/$defs/operationId"}},
+        "inherited_from_feature_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/featureId"}]},
+        "rationale": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "evidence": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 4096}}
+      },
+      "allOf": [
+        {"if": {"properties": {"requirement": {"enum": ["prohibited", "not_applicable"]}}}, "then": {"properties": {"delivery": {"const": "none"}, "command_ids": {"maxItems": 0}, "engine_operation_ids": {"maxItems": 0}, "inherited_from_feature_id": {"type": "null"}}}},
+        {"if": {"properties": {"delivery": {"const": "unreviewed"}}}, "then": {"properties": {"command_ids": {"maxItems": 0}, "engine_operation_ids": {"maxItems": 0}, "inherited_from_feature_id": {"type": "null"}}}}
+      ]
+    }
+  }
+}

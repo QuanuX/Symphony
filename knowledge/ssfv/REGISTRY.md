@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes sixty-seven experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes sixty-nine experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -165,6 +165,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:qxctl`
 - record_digest: `sha256:1849a565bec4f523feef072dd22afdeec3a46934cec827adc852e250427200ae`
 - notes: Architect-ratified F1 nested record for Authenticated knowledge-session administration; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:qxctl.command-registry`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:3bc82d569b3020164cb42dee284138b84d2c53201d0c4c6bd67e88cfcb3537f9`
+- notes: Architect-ratified command identity and coverage registry for deterministic headless administration evidence; coverage remains partial and no dynamic command or authority claim is implied.
 
 - feature_id: `ssfv:symphony:qxctl.engine-bindings`
 - feature_file: `tools/qxctl/FEATURES.md`
@@ -427,6 +436,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:e7faae1c0008cbd373a0a9786a0ebc8cdf3b47c3460d40b273caff1c58c5c0f5`
 - notes: Partial-catalog record for bounded read-only SSFV semantic-feature governance behavior.
 
+- feature_id: `ssfv:symphony:ssfv-engine.administration-assurance`
+- feature_file: `modules/ssfv-engine/FEATURES.md`
+- owner_contract: `modules/ssfv-engine/SPEC.md`
+- source_scope: `modules/ssfv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssfv-engine`
+- record_digest: `sha256:aaa2f34e07d9cb6eecd6a146468bae4b40585c6193f6b3747f657e7e9f492e2d`
+- notes: Architect-ratified engine-first feature-administration coverage and independent-module integration assessment; coverage remains partial and docking readiness grants no docking authority.
+
 - feature_id: `ssfv:symphony:ssfv-engine.catalog-change-proposal`
 - feature_file: `modules/ssfv-engine/FEATURES.md`
 - owner_contract: `modules/ssfv-engine/SPEC.md`
@@ -631,7 +649,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/symphony-validator`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:2016b2ff8e63382ad2f24068e1e327815a2d4a8a8f9b9dcf9486fb2d37170590`
+- record_digest: `sha256:2ce39998bc064984d03971777493e9261659a4dccf08fb0fe8c75688c6608a45`
 - notes: Partial-catalog record for deterministic read-only repository validation and structured evidence projection.
 
 ## Prohibited Entries
@@ -648,4 +666,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This sixty-seven-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide completeness, engine-decided feature-worthiness, or canonical mutation.
+This sixty-nine-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide completeness, engine-decided feature-worthiness, or canonical mutation.

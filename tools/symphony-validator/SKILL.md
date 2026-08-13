@@ -18,7 +18,7 @@ The repository check includes SACV registry shape, ownership, classification, SK
 
 The repository check also includes SODV local release-record shape, time order, lineage, publication-unit preservation, and no-follow ledger presence. Use `qxctl sodv check|verify|recover` with an exact installed engine for richer release evidence and caller-supplied external observations; do not mistake the validator for a Git-host or package-provider client.
 
-The repository check requires the canonical SSFV contract, namespace, empty-or-future registry, feature-file format, engine Contract Quad/build surface, and qxctl grammar/client anchors. It recognizes eighteen exact v1/v2 JSON schemas. It does not decide feature-worthiness, validate distributed semantic records, or substitute for the independently installed `symphony-ssfv` engine.
+The repository check requires the canonical SSFV contract, namespace, empty-or-future registry, feature-file format, engine Contract Quad/build surface, and qxctl grammar/client anchors. It recognizes eighteen exact SSFV v1/v2 JSON schemas. Its static feature-administration check also binds the exact current SSFV registry, complete profile set, and expected qxctl command inventory without running qxctl. It does not decide feature-worthiness, validate distributed semantic records, infer missing interaction semantics, recommend command names, or substitute for the independently installed `symphony-ssfv` engine.
 
 ## Deterministic, Non-Autonomous Behavior
 The validator is deterministic, explainable, and non-autonomous.
@@ -34,7 +34,8 @@ Every permission-bearing caller may consume either implemented projection. A fut
 4. Treat exit `21` as a bounded caller-authority, discovery, symlink, stream, or resource failure and use the stable rule ID and lexical path to locate the evidence.
 5. Treat exit `22` as a SACV registry failure and use `sacv.registry.*` evidence to locate the exact entry boundary.
 6. Treat exit `23` as a SODV release-ledger failure and use `sodv.releases.*` evidence to locate the record boundary.
-7. Refer to the normative Caller-Authority Regression Check, SACV Registry Boundary, and SODV Release Ledger Boundary in `SPEC.md` before interpreting scope or exclusions.
+7. Treat exit `24` as a feature-administration contract failure and use `feature_administration.*` evidence to distinguish profile, registry digest/set, command inventory/binding, reference, and forward-gate failures.
+8. Refer to the normative Caller-Authority Regression Check, SACV Registry Boundary, SODV Release Ledger Boundary, and Feature Administration Assurance Boundary in `SPEC.md` before interpreting scope or exclusions.
 
 ## Output Consumption Behavior
 Evidence lines plus the summary and the structured JSON result are equivalent current projections. Consumers must retain the complete selected projection and process status. qxctl verifies evidence/result digests, evaluates warning policy only after the complete scan, and keeps filters presentation-only. Any future Markdown projection must introduce no claims, conclusions, or remediation steps absent from that model. A clean bounded scan is not universal semantic proof.

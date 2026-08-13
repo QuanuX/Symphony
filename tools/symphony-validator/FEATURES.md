@@ -35,10 +35,11 @@
       ],
       "evidence": [
         "Validator CTests and the smoke matrix exercise deterministic line/JSON parity, path safety, resource bounds, caller-authority rules, temporal rules, release rules, installation, and uninstall.",
-        "qxctl validation tests verify exact installed invocation, complete-scan policy evaluation, baselines, and display-only debugging filters."
+        "qxctl validation tests verify exact installed invocation, complete-scan policy evaluation, baselines, and display-only debugging filters.",
+        "Feature-administration tests exercise dynamic SSFV registry/profile closure, omit-self digests, expected qxctl command ordering and bindings, reference resolution, enforcement gates, and no-follow rejection without executing qxctl."
       ],
       "feature_id": "ssfv:symphony:symphony-validator",
-      "how": "Bounded no-follow discovery and purpose-built detectors inspect canonical and implementation surfaces; every finding receives deterministic rule, subject, and occurrence identity before line or structured projection.",
+      "how": "Bounded no-follow discovery and purpose-built detectors inspect canonical and implementation surfaces; feature-administration assurance derives the current SSFV set from its registry and validates the digest-bound profile and expected qxctl command inventory; every finding receives deterministic rule, subject, and occurrence identity before line or structured projection.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -53,6 +54,7 @@
         "tools/symphony-validator/CMakeLists.txt",
         "tools/symphony-validator/src/caller_authority.cpp",
         "tools/symphony-validator/src/cli.cpp",
+        "tools/symphony-validator/src/feature_administration.cpp",
         "tools/symphony-validator/src/projector.cpp",
         "tools/symphony-validator/tests/smoke.sh"
       ],
@@ -79,7 +81,7 @@
       "source_scope": "tools/symphony-validator",
       "status": "experimental",
       "title": "Deterministic repository validation tool",
-      "what": "Provides a deterministic read-only repository checker that executes the complete configured rule set and emits stable finding identities, summaries, JSON evidence, and exit status.",
+      "what": "Provides a deterministic read-only repository checker that executes the complete configured rule set, including static feature-to-administration closure, and emits stable finding identities, summaries, JSON evidence, and exit status.",
       "when": "Runs on explicit direct or qxctl invocation for repository review, debugging, baselining, or a separately wired gate.",
       "where": "Executes locally against one repository root from an exact receipt-v2 installation and writes no scanned content.",
       "who": "Repository maintainers, reviewers, qxctl callers, agentic tools, release gates, and debugging workflows.",

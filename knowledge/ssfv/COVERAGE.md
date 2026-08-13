@@ -39,11 +39,11 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 
 ## Ratified Nested Review Progress
 
-The F1 through F3 nested reviews record fifty-two implemented `subfeature` boundaries inside twelve already registered owner scopes:
+The F1 through F3 review plus the feature-administration assurance slice record fifty-four implemented `subfeature` boundaries inside twelve already registered owner scopes:
 
 | Owner scope | Ratified nested records | Review disposition |
 |---|---:|---|
-| `tools/qxctl` | 8 | Exact engine bindings, authenticated sessions, lifecycle convergence, Linux report-only host receptor, SSIAG administration, STAV administration, Maestro administration, and governed validation are registered. |
+| `tools/qxctl` | 9 | Exact engine bindings, authenticated sessions, lifecycle convergence, Linux report-only host receptor, SSIAG administration, STAV administration, Maestro administration, governed validation, and the stable command registry are registered. |
 | `modules/knowledge-session-coordinator` | 5 | Reconciliation, authority epochs, semantic maintenance, lifecycle planning, and lifecycle apply coordination are registered. |
 | `modules/maestro` | 1 | Complete derived receptor inventory is registered separately from durable receptor presence. |
 | `libraries/stav-protocol-go` | 2 | Canonical bytes, digests, and bounded local frames are separated from exact content and identifier validation; durable checksummed ledger framing is explicitly owned by the append authority. |
@@ -54,7 +54,7 @@ The F1 through F3 nested reviews record fifty-two implemented `subfeature` bound
 | `modules/sclv-engine` | 5 | Append-only ledger assurance, provider-neutral evidence normalization, evidence-bound append proposals, forward-only closure recovery, and disposable provider-neutral history are registered. |
 | `modules/sacv-engine` | 4 | API-contract conformance, OpenAPI compatibility evidence, contract-registration proposals, and rebuildable contract inventory are registered. |
 | `modules/sodv-engine` | 5 | Release-ledger validation, observed-publication verification, forward release-record proposals, interrupted-publication reconciliation, and rebuildable release-transaction projection are registered. |
-| `modules/ssfv-engine` | 4 | Catalog-integrity snapshots, semantic-freshness comparison, catalog-change proposals, and portable semantic-graph projection are registered. |
+| `modules/ssfv-engine` | 5 | Catalog-integrity snapshots, semantic-freshness comparison, catalog-change proposals, portable semantic-graph projection, and engine-first administration assurance are registered. |
 
 The existing macOS Keychain metadata adapter remains one narrow registered subfeature with no child record. Its corrected record states that the Go SSIAG foundation and qxctl do not invoke the Swift executable and that operational trust, provider execution, Keychain access, and secret delivery remain unimplemented.
 
