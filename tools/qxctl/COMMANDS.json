@@ -2661,6 +2661,201 @@
       "json_output": false
     },
     {
+      "command_id": "qxcmd:symphony:ssiag.enrollment.apply",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag enrollment apply [--expected-attempt-digest VALUE] [--json] [--plan VALUE] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.tops-enrollment",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.enrollment.apply"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:ssiag.enrollment.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:ssiag.enrollment.apply-status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag enrollment apply-status [--json] [--operation-id VALUE] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.tops-enrollment",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.enrollment.apply-status"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:ssiag.enrollment.plan",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag enrollment plan [--audit-mode VALUE] [--desired-state VALUE] [--expected-state-digest VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--scope VALUE] [--service-gid VALUE] [--service-uid VALUE] [--tops-id VALUE] [--tops-name VALUE] [--ttl DURATION] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.tops-enrollment",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.enrollment.plan"
+      ],
+      "mutability": "proposal_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:ssiag.enrollment.recover",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag enrollment recover [--discover] [--expected-attempt-digest VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.tops-enrollment",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.enrollment.recover"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:ssiag.enrollment.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:ssiag.enrollment.status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag enrollment status [--json] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.tops-enrollment",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.enrollment.observe"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:ssiag.grants.lifecycle",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -2878,6 +3073,201 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:ssiag.supervisor.apply",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag supervisor apply [--expected-attempt-digest VALUE] [--json] [--plan VALUE] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.native-supervision",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.supervisor.apply"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:ssiag.supervisor.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:ssiag.supervisor.apply-status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag supervisor apply-status [--json] [--operation-id VALUE] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.native-supervision",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.supervisor.apply-status"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:ssiag.supervisor.plan",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag supervisor plan [--audit-mode VALUE] [--desired-state VALUE] [--expected-state-digest VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--ttl DURATION] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.native-supervision",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.supervisor.plan"
+      ],
+      "mutability": "proposal_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:ssiag.supervisor.recover",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag supervisor recover [--discover] [--expected-attempt-digest VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.native-supervision",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.supervisor.recover"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:ssiag.supervisor.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:ssiag.supervisor.status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag supervisor status [--json] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.native-supervision",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.supervisor.observe"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:status",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -2963,6 +3353,201 @@
       "json_output": false
     },
     {
+      "command_id": "qxcmd:symphony:stav.enrollment.apply",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl stav enrollment apply [--expected-attempt-digest VALUE] [--json] [--plan VALUE] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.stav-administration",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:stav-append-authority.tops-enrollment",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:stav.enrollment.apply"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:stav.enrollment.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:stav.enrollment.apply-status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl stav enrollment apply-status [--json] [--operation-id VALUE] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.stav-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:stav-append-authority.tops-enrollment",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:stav.enrollment.apply-status"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:stav.enrollment.plan",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl stav enrollment plan [--audit-mode VALUE] [--authority-gid VALUE] [--authority-uid VALUE] [--desired-state VALUE] [--expected-state-digest VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--ttl DURATION] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.stav-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:stav-append-authority.tops-enrollment",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:stav.enrollment.plan"
+      ],
+      "mutability": "proposal_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:stav.enrollment.recover",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl stav enrollment recover [--discover] [--expected-attempt-digest VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.stav-administration",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:stav-append-authority.tops-enrollment",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:stav.enrollment.recover"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:stav.enrollment.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:stav.enrollment.status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl stav enrollment status [--json] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.stav-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:stav-append-authority.tops-enrollment",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:stav.enrollment.observe"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:stav.query",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -3020,6 +3605,201 @@
       "input_protocols": [],
       "output_protocols": [],
       "result_validation_protocols": [],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:stav.supervisor.apply",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl stav supervisor apply [--expected-attempt-digest VALUE] [--json] [--plan VALUE] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.stav-administration",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:stav-append-authority.native-supervision",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:stav.supervisor.apply"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:stav.supervisor.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:stav.supervisor.apply-status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl stav supervisor apply-status [--json] [--operation-id VALUE] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.stav-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:stav-append-authority.native-supervision",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:stav.supervisor.apply-status"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:stav.supervisor.plan",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl stav supervisor plan [--audit-mode VALUE] [--desired-state VALUE] [--expected-state-digest VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--ttl DURATION] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.stav-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:stav-append-authority.native-supervision",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:stav.supervisor.plan"
+      ],
+      "mutability": "proposal_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:stav.supervisor.recover",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl stav supervisor recover [--discover] [--expected-attempt-digest VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.stav-administration",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:stav-append-authority.native-supervision",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:stav.supervisor.recover"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:stav.supervisor.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:stav.supervisor.status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl stav supervisor status [--json] [--prefix VALUE] [--scope VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.stav-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:stav-append-authority.native-supervision",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:stav.supervisor.observe"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.foundation.lifecycle-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.foundation.lifecycle-result.v1"
+      ],
       "recovery_command_id": null,
       "noninteractive": true,
       "json_output": true
@@ -3303,5 +4083,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:a19fab9cfa16a9b041d2f25f378ab8742a578b8beca1660f8c29dfd5485d81a1"
+  "registry_digest": "sha256:9707fa39c15da4bc28fdd4cd1b3efee1ae9b7f611621d6cc6bfcc2bd88983f0c"
 }

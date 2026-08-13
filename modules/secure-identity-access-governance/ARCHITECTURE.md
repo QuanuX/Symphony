@@ -25,11 +25,12 @@ The monorepo is intentional: agents and humans can inspect doctrine, runtime mod
 
 ## Host and TOPS Topology
 
-One installation is shared; instances are not:
+One immutable receipt-v2 package version (or a verified legacy fixed-path installation) is shared; instances are not:
 
 ```text
 TOPS host
-├── symphony-ssiag                         one installed Go binary
+├── libexec/.../<version>/symphony-ssiag   one receipt-owned Go binary
+├── state/ssiag/lifecycle/                 protected cross-purge attempts
 ├── TOPS 018f...0002
 │   ├── config/<id>/ssiag/config.json
 │   ├── state/<id>/ssiag/
@@ -47,12 +48,13 @@ IDs are immutable opaque UUIDs. Names are mutable display metadata. Concatenated
 
 ## Install Versus Enrollment
 
-Host installation owns only the SSIAG executable and install manifest. TOPS enrollment owns one configuration, state directory, enrollment manifest, and runtime socket namespace. Therefore:
+Receipt-v2 host installation owns only the exact immutable SSIAG executable and receipt; legacy installation owns its fixed executable and manifest. TOPS enrollment owns one configuration, state directory, enrollment manifest, and runtime socket namespace. Protected lifecycle attempts use a separate host-scoped root. Therefore:
 
 - installing again updates one binary, not every configuration;
 - adding another TOPS does not duplicate the binary;
 - host uninstall cannot destroy TOPS state;
 - per-TOPS purge cannot target a sibling instance;
+- per-TOPS purge cannot erase unresolved lifecycle evidence;
 - display-name updates do not move files.
 
 SSIAG and the STAV append authority occupy a foundational bootstrap stratum. A native OS supervisor or explicit owner-provided equivalent anchors them in production; direct-run remains a separate development mode. Supervision owns liveness only. It does not confer policy, provider, apply, producer, or ledger authority, and node-troll does not inherit authority by supervising another component.
@@ -67,7 +69,9 @@ macOS uses per-TOPS launchd jobs under the `io.github.quanux.symphony.*` namespa
 
 ### Paths and Lifecycle
 
-`internal/paths` validates scopes and canonical UUIDs and resolves host versus instance layouts. `internal/lifecycle` uses digest-bearing manifests, atomic replacement, restrictive permissions, non-regular-file rejection, explicit force, and explicit per-TOPS purge.
+`internal/paths` validates scopes and canonical UUIDs and resolves host, protected lifecycle, and instance layouts. `internal/packageinstall` commits strict receipt-v2 evidence last, enforces compiled/path/receipt version identity, and refuses retained references. `internal/lifecycle` dual-reads the legacy layout, uses digest-bearing manifests, atomic replacement, restrictive permissions, non-regular-file rejection, and explicit per-TOPS purge. `internal/foundationlifecycle` supplies one bounded JSON adapter and the shared native transaction engine for enrollment and supervisor state.
+
+The lifecycle engine observes offline, plans against a full stable state digest, applies with state and attempt CAS, and records digest-linked fsynced attempts before mutation. Replays are idempotent and interrupted work must be recovered by exact operation and plan evidence. Ordinary audit fails before attempt creation until the lifecycle STAV endpoint exists. Explicit deferred audit is durable and remains reconciliation-required; a typed binding hook is present, but it is not itself receipt validation or a completed endpoint.
 
 ### Configuration
 
@@ -128,11 +132,18 @@ qxctl ssiag doctor --tops-id UUID [--scope user|system]
 
 qxctl is provider-neutral. Cobra owns its command grammar and tightly bounded private Viper instances bind only explicitly declared command configuration; SSIAG/STAV trust loading remains in dedicated cgo-free clients. It uses the authority-free first-party STAV protocol kernel only for STAV contract mechanics. It verifies status responses are for the requested TOPS. It must not bypass SSIAG, accept secret flags, call Keychain APIs, edit STAV files, or own schemas.
 
+For foundational convergence, qxctl executes the installed adapter's exact receipt-bound `foundation-lifecycle` entry point and the engine operation IDs `engop:symphony:ssiag.{enrollment|supervisor}.{observe|plan|apply|apply-status|recover}`. The adapter is the protocol authority for its native mutations; qxctl supplies intent and CAS evidence. Purge remains an explicit native-only operation in v1.
+
 ## Failure Model
 
 - invalid identity: reject before path resolution;
 - path collision or symlink target: reject rather than replace;
 - changed installed binary: require explicit force;
+- receipt/path/compiled version mismatch: reject before installation or adapter trust;
+- retained supervisor, endpoint, or active lifecycle attempt: refuse package uninstall;
+- expired command or stale state/attempt CAS: refuse before mutation;
+- unavailable native manager: observe truthfully and refuse supervisor mutation before attempt creation;
+- interrupted lifecycle mutation: preserve exact recovery evidence outside purge scope;
 - missing enrollment: refuse to serve;
 - returned TOPS mismatch: qxctl and direct CLI fail;
 - missing/incompatible provider: fail closed;

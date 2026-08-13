@@ -2,7 +2,7 @@
 
 ## Status
 
-Safe metadata, audited authorization, protected local policy administration, and the STAV producer foundation implementing the Architect-ratified architecture in `knowledge/ssiag/SPEC.md`. Kernel caller authentication, native supervision, exact deny-by-default evaluation, non-transferable capability evidence, local policy proposal/apply/recovery, and mutually authenticated typed STAV submission are implemented. Local policy apply is operational and noncanonical; safeguard administration, canonical knowledge apply, credential delivery, and provider operation remain disabled. Canonical relationship and provider semantics remain owned by that Knowledge Vector.
+Safe metadata, audited authorization, protected local policy administration, receipt-v2 packaging, and a module-owned foundational lifecycle adapter implement the Architect-ratified architecture in `knowledge/ssiag/SPEC.md`. Kernel caller authentication, native supervision, exact deny-by-default evaluation, non-transferable capability evidence, local policy proposal/apply/recovery, mutually authenticated typed STAV submission, and enrollment/supervisor observe-plan-apply-status-recover are implemented. Local policy apply is operational and noncanonical; safeguard administration, canonical knowledge apply, credential delivery, provider operation, and the foundational lifecycle STAV reconciliation endpoint remain disabled.
 
 ## Invariants
 
@@ -18,15 +18,23 @@ Safe metadata, audited authorization, protected local policy administration, and
 
 ## Host Lifecycle
 
-`install --scope user|system` atomically copies one binary and writes `symphony.ssiag.install.v1` containing scope, version, exact binary path, and SHA-256 digest. Identical installation is idempotent. Replacing or removing a changed binary requires `--force`.
+`package install --prefix ABSOLUTE --version VERSION` installs the binary at `libexec/symphony/secure-identity-access-governance/<version>/symphony-ssiag` and commits a strict `symphony.knowledge.install-receipt.v2` last. Requested, path, receipt, and compiled versions must agree. The receipt binds the exact bytes, platform, `ssiag.foundation-lifecycle` adapter entry point, command protocol, and lifecycle capability. `package uninstall` validates owned bytes and refuses retained supervisor, live-endpoint, or unresolved lifecycle-attempt references.
 
-`uninstall` validates that record and removes only the host binary and install manifest. It cannot purge per-TOPS configuration or state.
+The historical `install --scope user|system` and `symphony.ssiag.install.v1` fixed-path layout remain a verified dual-read migration path.
+
+Both uninstall paths remove only owned package evidence. They refuse active TOPS references and cannot purge per-TOPS configuration or state.
+
+## Foundational Lifecycle Adapter
+
+`foundation-lifecycle describe --json` emits one digest-bearing adapter descriptor. The machine form accepts exactly one bounded strict `symphony.foundation.lifecycle-command.v1` JSON value on stdin and emits exactly one bounded result on stdout. It supports enrollment and supervisor `observe`, `plan`, `apply`, `apply_status`, and `recover`, with exact state/attempt compare-and-swap, deadline and future-skew validation, immutable installation evidence, result digests, STSC timestamps, replay, and crash recovery. Attempts are no-follow, owner-controlled, fsynced, digest-linked, and stored in a host lifecycle root outside every per-TOPS purge subtree.
+
+Observation is offline and does not invoke the native manager. Apply refuses an unavailable manager before attempt creation. Ordinary mutation fails before persistent attempt or external mutation until a real committed STAV receipt path is wired. Explicit `audit_deferred` mutation journals the state and returns `reconciliation_required=true`; the typed receipt-binding hook cannot itself validate or manufacture a receipt and is not a completed reconciliation endpoint. Purge is absent from qxctl/foundation lifecycle v1.
 
 ## TOPS Enrollment
 
 `enroll --tops-id UUID --tops-name NAME` requires an existing host installation and creates `symphony.ssiag.config.v1` plus `symphony.ssiag.enrollment.v1` under one TOPS namespace. The ID is a canonical lowercase UUID. The non-empty display name is mutable safe metadata.
 
-`unenroll` removes the enrollment marker and preserves data. `unenroll --purge` removes only the selected TOPS SSIAG configuration, state, and socket after path and object-type validation.
+`unenroll` removes the enrollment marker and preserves data. Native-only `unenroll --purge` removes only the selected TOPS SSIAG configuration and state after proving the supervisor descriptor absent, refusing live/foreign endpoints, and acquiring the same adjacent socket lifecycle lock. It never deletes protected lifecycle attempts.
 
 ## Configuration
 
@@ -62,7 +70,7 @@ The enrolled config is not rewritten. Policy state lives under the selected per-
 
 ## Supervision and Socket Lifecycle
 
-`supervisor install|uninstall --tops-id UUID --scope user|system` manages one per-TOPS launchd job or systemd unit without touching configuration or state. User services run as the invoking user. System service accounts are provisioned by the owner/package manager; the descriptor consumes the exact numeric UID/GID already recorded during enrollment. SSIAG and STAV units are deliberately independent.
+`supervisor install|uninstall --tops-id UUID --scope user|system` manages one per-TOPS launchd job or systemd unit through the same lifecycle transaction engine without touching configuration or state. Receipt-v2 descriptors pin the exact immutable invoked libexec path, not the legacy fixed path. User services run as the invoking user. System service accounts are provisioned by the owner/package manager; the descriptor consumes the exact numeric UID/GID already recorded during enrollment. SSIAG and STAV units are deliberately independent.
 
 The Go server verifies its service identity, locks the persistent adjacent `ssiag.sock.lock`, proves any existing socket stale, binds the socket, and releases the lock only after graceful SIGTERM drain and socket removal. Native restart rate and shutdown time are bounded. System `serve` requires `--supervised`; direct user `serve` remains an explicit development diagnostic.
 
@@ -80,4 +88,4 @@ SSIAG submits only the closed safe outcome vocabulary defined by `knowledge/ssia
 
 ## Implemented and Disabled Gates
 
-Local peer authentication, exact UID/GID subject resolution, target-host-owner derivation, endpoint verification, native supervision/runtime ownership, serialized socket recovery, exact-grant authorization decisions, non-transferable capability evidence, protected policy overlay administration, and typed SSIAG STAV submission are implemented. Policy recovery still requires STAV and is not the separately deferred-audit recovery concept. General safeguard administration, audit-deferred recovery, lease issuance, credential delivery, operational providers, and canonical knowledge apply remain disabled. Remote access and any non-permission-backed apply path are unauthorized.
+Local peer authentication, exact UID/GID subject resolution, target-host-owner derivation, endpoint verification, native supervision/runtime ownership, serialized socket recovery, receipt-v2 installation identity, transactional enrollment/supervisor recovery, explicit lifecycle audit-deferred journaling, exact-grant authorization decisions, non-transferable capability evidence, protected policy overlay administration, and typed SSIAG STAV submission are implemented. Policy recovery still requires STAV and is distinct from lifecycle deferred audit. The endpoint that validates and binds committed STAV lifecycle receipts remains disabled, so deferred results remain reconciliation-required. General safeguard administration, lease issuance, credential delivery, operational providers, and canonical knowledge apply remain disabled. Remote access and any non-permission-backed apply path are unauthorized.

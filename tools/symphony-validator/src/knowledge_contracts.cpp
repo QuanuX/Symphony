@@ -46,6 +46,19 @@ KnowledgeContractShapeResult check_knowledge_contract_shapes(const std::string& 
             }
         },
         {
+            "knowledge/FOUNDATIONAL-LIFECYCLE.md",
+            {
+                {"Contract", "Symphony Foundational Service Lifecycle"},
+                {"Authority", "## Authority"},
+                {"Identity", "## Stable Identities"},
+                {"Ownership", "## Ownership Boundary"},
+                {"Recovery", "## Attempt and Recovery"},
+                {"Compatibility", "## Installation and Version Compatibility"},
+                {"Audit", "## Audit and Deferred Recovery"},
+                {"Platform", "## Platform Boundary"}
+            }
+        },
+        {
             "knowledge/skvi/INTENT.md",
             {
                 {"Intent", "Intent"},

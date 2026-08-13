@@ -21,7 +21,8 @@ The published versions are immutable public Go source modules, not GitHub binary
 
 ## Implemented Capabilities
 
-- atomic user/system executable install and conservative uninstall;
+- immutable side-by-side receipt-v2 user/system executable install and receipt-last conservative uninstall, with read-only legacy install-v1 inspection;
+- bounded common foundational-lifecycle JSON adapter, offline observation, exact plans and CAS, protected digest-linked attempts, explicit audit-deferred recovery, and stable machine results;
 - per-TOPS enroll, preserve-by-default unenroll, and explicit one-TOPS purge;
 - strict configuration/status/local-envelope contracts;
 - mutually authenticated local IPC using Darwin/Linux kernel peer credentials;
@@ -43,5 +44,6 @@ The published versions are immutable public Go source modules, not GitHub binary
 - signed checkpoints, non-repudiation, and remote export;
 - secret values, assertions, tokens, provider payloads, or routine telemetry;
 - inherited supervisor authority, supervisor socket activation, or SSIAG startup coupling.
+- ordinary foundational mutation success before a real closed SSIAG/STAV receipt, or completed audit reconciliation without an exact later STAV receipt.
 
 Host uninstall always preserves per-TOPS configuration and ledgers. Purge requires the selected TOPS ID and refuses an active listener.

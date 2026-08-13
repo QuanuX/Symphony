@@ -21,3 +21,5 @@ The accept loop captures kernel peer credentials before dispatch. Producer crede
 Append assignment and durable storage occur under one mutex. A partial write or sync failure poisons the running ledger instance; retry is resolved after restart from the persisted event/idempotency index. Queries operate over verified in-memory entries and omit ungranted classifications.
 
 Canonical direction is always knowledge → protocol kernel → implementation. Runtime types and code never become schema truth.
+
+The cold foundational lifecycle lane is separate from append/query IPC. qxctl or the human CLI invokes the exact receipt-v2 adapter entry point; the module observes paths and manager state, validates a digest-bound plan, persists an attempt under the sibling per-TOPS `foundation-lifecycle/stav` root, mutates through module-owned enrollment/supervision code, and closes only from re-observation. This lane never reads or rewrites ledger bytes. Deferred audit evidence remains open to later closed SSIAG producer reconciliation and is not a second STAV writer.

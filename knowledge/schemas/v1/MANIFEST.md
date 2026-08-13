@@ -63,11 +63,17 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 - `validation-result.schema.json`: deterministic raw repository evidence and optional separately digested qxctl policy evaluation.
 - `validation-policy.schema.json`: protected noncanonical warning disposition and presentation profile.
 - `validation-baseline.schema.json`: protected noncanonical repository/version-bound warning identity inventory for delta evaluation.
+- `foundation-lifecycle-adapter.schema.json`: exact installed SSIAG/STAV adapter identity, capabilities, compatibility, limits, and operation IDs.
+- `foundation-lifecycle-command.schema.json`: bounded observe/plan/apply/apply-status/recover process command with caller intent and exact state.
+- `foundation-lifecycle-observation.schema.json`: safe installation, enrollment, native-manager, endpoint, activation, and recovery evidence.
+- `foundation-lifecycle-plan.schema.json`: immutable desired-state, identity, audit-mode, expiry, and expected-state proposal.
+- `foundation-lifecycle-attempt.schema.json`: protected pre-mutation phase, predecessor, audit, and recovery evidence.
+- `foundation-lifecycle-result.schema.json`: validated observation/plan/mutation/replay/recovery and audit disposition.
 
 All schemas use JSON Schema Draft 2020-12, close every common-governed object with `additionalProperties: false`, and carry no secrets. The proposal operation's bounded `data` object is deliberately governed by the applicable vector schema; operation-specific payload/result schemas remain owned by that engine Contract Quad.
 
 ## Boundary
 
-The host-integration schemas authorize only an explicit Linux systemd receptor for report-only boot planning; they grant no lifecycle apply, component execution, login/session hook, native Windows receptor, or hidden watcher.
+The host-integration schemas authorize only an explicit Linux systemd receptor for report-only boot planning; they grant no lifecycle apply, component execution, login/session hook, native Windows receptor, or hidden watcher. The separate foundational-lifecycle schemas authorize only exact installation-proven SSIAG/STAV module adapters and do not widen generic executable or service activation.
 
 The binding schema authorizes only explicit user-scope selection among exact validated local installations. Session artifacts preserve SSIAG decision evidence but are not transferable bearer credentials and grant no canonical write authority by possession. qxctl implements protected desired-profile persistence, fixed-layout configured-root observation, report-only planner invocation, SSIAG-authorized lifecycle administration, and an explicit `apply-compatible` convergence surface for generic receipt-v2 packages, protected runtime state, and Maestro docking presence. The coordinator serializes attempts and commits applied evidence only after verified re-observation. These artifacts do not authorize canonical knowledge mutation, network package acquisition, receipt-v1 package mutation, arbitrary entry-point execution, system/TOPS engine-binding changes, repository-specific overrides, or vector-specific semantic decisions. The SSFV maintenance stream records exact read-only engine evidence and noncanonical review state; it never decides feature-worthiness or applies `FEATURES.md`. Maestro records authenticated durable presence for exact compatible receipt-v2 vector engines and derives inventory from that state; it does not start, supervise, schedule, or invoke them.

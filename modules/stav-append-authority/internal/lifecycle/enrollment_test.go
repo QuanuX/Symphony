@@ -54,3 +54,35 @@ func TestEnrollPreserveAndExplicitPurge(t *testing.T) {
 		t.Fatalf("explicit purge left state: %v", err)
 	}
 }
+
+func TestPurgeContendsWithPersistentSocketLifecycleLock(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	t.Setenv("XDG_CONFIG_HOME", "")
+	t.Setenv("XDG_STATE_HOME", "")
+	t.Setenv("XDG_RUNTIME_DIR", "")
+	source := filepath.Join(t.TempDir(), stavpaths.BinaryName)
+	if err := os.WriteFile(source, []byte("lock-test"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Install(source, stavpaths.ScopeUser, false); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Enroll(stavpaths.ScopeUser, enrollmentTOPSID, uint64(os.Geteuid()), uint64(os.Getegid())); err != nil {
+		t.Fatal(err)
+	}
+	layout, _ := stavpaths.ResolveInstance(stavpaths.ScopeUser, enrollmentTOPSID)
+	lease, err := acquireSocketLifecycleLease(layout.Socket)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Unenroll(stavpaths.ScopeUser, enrollmentTOPSID, true); err == nil {
+		t.Fatal("purge bypassed the server socket lifecycle lock")
+	}
+	if err := lease.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Unenroll(stavpaths.ScopeUser, enrollmentTOPSID, true); err != nil {
+		t.Fatal(err)
+	}
+}

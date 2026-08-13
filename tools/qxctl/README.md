@@ -68,6 +68,14 @@ go run ./cmd/qxctl ssiag providers --tops-id UUID [--json] [--scope user|system]
 # Verify local SSIAG availability
 go run ./cmd/qxctl ssiag doctor --tops-id UUID [--scope user|system]
 
+# Administer the exact installed SSIAG enrollment and native supervisor adapters
+go run ./cmd/qxctl ssiag enrollment status --prefix /chosen/prefix --tops-id UUID [--version VERSION] --json
+go run ./cmd/qxctl ssiag enrollment plan --prefix /chosen/prefix --tops-id UUID --operation-id ID --expected-state-digest sha256:... --desired-state enrolled --tops-name NAME [--audit-mode ordinary|audit_deferred] --json
+go run ./cmd/qxctl ssiag enrollment apply --prefix /chosen/prefix --tops-id UUID --plan plan-result.json --expected-attempt-digest absent --json
+go run ./cmd/qxctl ssiag enrollment apply-status --prefix /chosen/prefix --tops-id UUID [--operation-id ID] --json
+go run ./cmd/qxctl ssiag enrollment recover --prefix /chosen/prefix --tops-id UUID --operation-id ID (--expected-attempt-digest sha256:...|--discover) --json
+go run ./cmd/qxctl ssiag supervisor status|plan|apply|apply-status|recover --prefix /chosen/prefix --tops-id UUID [operation flags] --json
+
 # Generate deterministic proposal-only lifecycle grants for one configured subject
 go run ./cmd/qxctl ssiag grants lifecycle --tops-id UUID --subject-id ID [--profile-id ID] [--authority-basis host_owner|granted_permission] --json
 
@@ -84,6 +92,10 @@ go run ./cmd/qxctl stav status --tops-id UUID [--scope user|system] [--json]
 go run ./cmd/qxctl stav verify --tops-id UUID [--scope user|system] [--json]
 go run ./cmd/qxctl stav query --tops-id UUID [--scope user|system] [--after-sequence N] [--through-sequence N] [--from-time UTC] [--through-time UTC] [--event-class ID]... [--outcome VALUE]... [--correlation-id UUID] [--request-id UUID] [--limit 1..1000] [--json]
 go run ./cmd/qxctl stav doctor --tops-id UUID [--scope user|system]
+
+# Administer the exact installed STAV enrollment and native supervisor adapters
+go run ./cmd/qxctl stav enrollment status|plan|apply|apply-status|recover --prefix /chosen/prefix --tops-id UUID [--version VERSION] [operation flags] --json
+go run ./cmd/qxctl stav supervisor status|plan|apply|apply-status|recover --prefix /chosen/prefix --tops-id UUID [--version VERSION] [operation flags] --json
 
 # Manage the protected user-default exact engine bindings
 go run ./cmd/qxctl knowledge engines list [--state-root /chosen/state/root] [--json]
@@ -150,7 +162,7 @@ SSIAG commands require an immutable TOPS UUID through `--tops-id` or `SYMPHONY_S
 
 The ratified administrative model separates non-mutating proposal from permission-backed local apply. Implemented knowledge-session and lifecycle authorization uses exact target-host ownership or granted-permission grants and never requests or evaluates caller type. Protected validator warning-profile and baseline administration is implemented; broader safeguards and canonical knowledge apply remain future gates. Canonical knowledge and STAV remain read-only through qxctl, and qxctl never writes STAV ledger files directly.
 
-`COMMANDS.json` is the checked-in client-independent registry for engine-first administration coverage when qxctl is absent. It is generated from the same attached `CommandSpec` and Cobra tree as runtime help and the executable-bound observed manifest; `commands verify` rejects drift, malformed or trailing JSON, and unsafe input paths. Each command preserves its qxctl wrapper binding and may carry reviewed backend feature/interaction bindings from one explicit table. The current projection binds forty-four existing commands to forty-six backend interactions without changing grammar or authority; only the four not-yet-implemented SSIAG/STAV supervision and TOPS-enrollment routes remain uncovered. The SSFV `administration-check` route accepts only bounded no-follow JSON, works from an installed host without a repository checkout, invokes the exact installed engine operation, and validates its read-only noncanonical digest-bound result. qxctl records stable identities and exact evidence; it does not suggest names, inject commands, or decide coverage policy.
+`COMMANDS.json` is the checked-in client-independent registry for engine-first administration coverage when qxctl is absent. It is generated from the same attached `CommandSpec` and Cobra tree as runtime help and the executable-bound observed manifest; `commands verify` rejects drift, malformed or trailing JSON, and unsafe input paths. Each command preserves its qxctl wrapper binding and may carry reviewed backend feature/interaction bindings from one explicit table. The registry now contains 134 commands, including five exact leaves for each of the four SSIAG/STAV enrollment and native-supervision features; their separate backend-operation identities close the previously uncovered administration surfaces. The SSFV `administration-check` route accepts only bounded no-follow JSON, works from an installed host without a repository checkout, invokes the exact installed engine operation, and validates its read-only noncanonical digest-bound result. qxctl records stable identities and exact evidence; it does not suggest names, inject commands, or decide coverage policy.
 
 Validator warning sensitivity is administered without changing the detector: `record` retains a warning, `review` signals new matching warnings, and `require` fails on new matching warnings. Presentation can be `full`, `summary`, or `count`; baselines classify new, unchanged, and resolved occurrences. Violations, parser bounds, path safety, atomic writes, expected-state validation, ledger framing, and secret exclusion are never optional. Broader safeguard management, canonical apply, and audit-deferred recovery remain unavailable.
 

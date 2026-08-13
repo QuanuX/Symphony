@@ -2625,13 +2625,26 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: STSC is not a vector and creates no engine, runtime, time service, synchronization authority, or Maestro receptor.
 - status: canonical
 
+##### FOUNDATIONAL-LIFECYCLE.md
+- path: `knowledge/FOUNDATIONAL-LIFECYCLE.md`
+- title: Symphony Foundational Service Lifecycle
+- surface_type: cross-vector common lifecycle contract
+- truth_role: canonical SSIAG/STAV enrollment, native-supervision, bootstrap-authority, compatibility, attempt, and audit-recovery envelope
+- owner: Symphony Knowledge Vector maintainers
+- scope: Governs the four exact module-owned SSIAG/STAV lifecycle families without widening generic executable or live-service activation.
+- relationships: depends_on -> `knowledge/SPEC.md`; depends_on -> `knowledge/TIME.md`; defers_to -> `knowledge/ssiag/SPEC.md`; defers_to -> `knowledge/stav/SPEC.md`; governs -> `knowledge/schemas/v1/foundation-lifecycle-adapter.schema.json`; governs -> `knowledge/schemas/v1/foundation-lifecycle-command.schema.json`; governs -> `knowledge/schemas/v1/foundation-lifecycle-observation.schema.json`; governs -> `knowledge/schemas/v1/foundation-lifecycle-plan.schema.json`; governs -> `knowledge/schemas/v1/foundation-lifecycle-attempt.schema.json`; governs -> `knowledge/schemas/v1/foundation-lifecycle-result.schema.json`
+- consumers: SSIAG and STAV module adapters, qxctl, SSFV administration assurance, reviewers, agentic tools
+- deferred_projections: remote target-host transport and separately ratified permanent-retirement handling
+- notes: qxctl never becomes the module implementation or a raw STAV producer.
+- status: canonical
+
 ##### Common v1 Schema Manifest
 - path: `knowledge/schemas/v1/MANIFEST.md`
 - title: Symphony Knowledge Vector Common Schemas v1
 - surface_type: common protocol schema manifest
 - truth_role: canonical inventory and boundary for exact common JSON schemas
 - owner: Symphony Knowledge Vector maintainers
-- scope: Declares fifty-seven exact process, descriptor, install-receipt-v1, engine-binding, proposal, provider-evidence, reconciliation/session, profile-input/profile, desired/observed/plan/runtime/applied/report-boot/apply lifecycle, feature-administration, qxctl-registry, temporal, and Maestro presence schemas.
+- scope: Declares sixty-three exact process, descriptor, install-receipt-v1, engine-binding, proposal, provider-evidence, reconciliation/session, profile-input/profile, generic and foundational lifecycle, feature-administration, qxctl-registry, temporal, and Maestro presence schemas.
 - relationships: depends_on -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; governs -> `modules/skvi-engine/SPEC.md`; governs -> `modules/sclv-engine/SPEC.md`
 - consumers: C++ foundation and engine implementers, qxctl planners, validator, reviewers
 - deferred_projections: generated schema documentation and conformance evidence
@@ -2649,6 +2662,84 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: lifecycle implementers, qxctl planners, packagers, validator, reviewers
 - deferred_projections: generated schema documentation and conformance evidence
 - notes: Version 2 never authorizes rewriting or guessing fields for a version 1 receipt.
+- status: canonical
+
+##### Foundational Lifecycle Adapter Schema
+- path: `knowledge/schemas/v1/foundation-lifecycle-adapter.schema.json`
+- title: Foundational Lifecycle Adapter Descriptor v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: exact installed SSIAG/STAV adapter identity, capability, compatibility, and limit truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes the fixed module-owned adapter descriptor without authorizing arbitrary executables.
+- relationships: governed_by -> `knowledge/FOUNDATIONAL-LIFECYCLE.md`; depends_on -> `knowledge/schemas/v1/MANIFEST.md`
+- consumers: SSIAG, STAV, qxctl, SSFV administration assurance
+- deferred_projections: separately ratified remote transport capabilities
+- notes: The descriptor recognizes only receipt-owned SSIAG and STAV adapters and grants no mutation authority.
+- status: canonical
+
+##### Foundational Lifecycle Command Schema
+- path: `knowledge/schemas/v1/foundation-lifecycle-command.schema.json`
+- title: Foundational Lifecycle Command v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: exact bounded observe, plan, apply, apply-status, and recovery input truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Binds caller intent, exact expected state, immutable plan, attempt state, and deadline.
+- relationships: governed_by -> `knowledge/FOUNDATIONAL-LIFECYCLE.md`; depends_on -> `knowledge/schemas/v1/foundation-lifecycle-plan.schema.json`
+- consumers: SSIAG and STAV adapters, qxctl
+- deferred_projections: remote target-host transport envelopes
+- notes: The operation-specific shape closes omitted and surplus mutation evidence before adapter execution.
+- status: canonical
+
+##### Foundational Lifecycle Observation Schema
+- path: `knowledge/schemas/v1/foundation-lifecycle-observation.schema.json`
+- title: Foundational Lifecycle Observation v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: safe installed, enrollment, supervisor, endpoint, activation, and recovery evidence
+- owner: Symphony Knowledge Vector maintainers
+- scope: Separates stable state identity from timestamped observation evidence.
+- relationships: governed_by -> `knowledge/FOUNDATIONAL-LIFECYCLE.md`; conforms_to -> `knowledge/TIME.md`
+- consumers: SSIAG and STAV adapters, qxctl, recovery tooling
+- deferred_projections: cross-node observation aggregation
+- notes: Stable-state identity excludes only documentary time and digest fields while retaining recovery evidence.
+- status: canonical
+
+##### Foundational Lifecycle Plan Schema
+- path: `knowledge/schemas/v1/foundation-lifecycle-plan.schema.json`
+- title: Foundational Lifecycle Plan v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: immutable expected-state and desired-state proposal truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Carries domain identity inputs, explicit audit mode, expiry, and self-digest.
+- relationships: governed_by -> `knowledge/FOUNDATIONAL-LIFECYCLE.md`; conforms_to -> `knowledge/TIME.md`
+- consumers: SSIAG and STAV adapters, qxctl
+- deferred_projections: future domain intents introduced through a compatible schema version
+- notes: Expiry and wall-clock evidence never select package versions or recovery direction.
+- status: canonical
+
+##### Foundational Lifecycle Attempt Schema
+- path: `knowledge/schemas/v1/foundation-lifecycle-attempt.schema.json`
+- title: Foundational Lifecycle Attempt v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: protected pre-mutation phase, predecessor, audit, and forward-recovery evidence
+- owner: Symphony Knowledge Vector maintainers
+- scope: Prevents unjournaled host mutation and ambiguous recovery.
+- relationships: governed_by -> `knowledge/FOUNDATIONAL-LIFECYCLE.md`; conforms_to -> `knowledge/TIME.md`
+- consumers: SSIAG and STAV transaction engines, qxctl status and recovery
+- deferred_projections: a separately ratified permanent-retirement record
+- notes: Protected attempt evidence remains outside any module subtree the recorded operation may remove.
+- status: canonical
+
+##### Foundational Lifecycle Result Schema
+- path: `knowledge/schemas/v1/foundation-lifecycle-result.schema.json`
+- title: Foundational Lifecycle Result v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: validated observation, proposal, mutation, replay, recovery, and audit-disposition evidence
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes every qxctl-visible foundational lifecycle outcome with exact digests.
+- relationships: governed_by -> `knowledge/FOUNDATIONAL-LIFECYCLE.md`; depends_on -> `knowledge/schemas/v1/foundation-lifecycle-observation.schema.json`; depends_on -> `knowledge/schemas/v1/foundation-lifecycle-plan.schema.json`
+- consumers: SSIAG and STAV adapters, qxctl, SSFV administration assurance
+- deferred_projections: remote presentation envelopes that preserve this result unchanged
+- notes: Results are noncanonical administration evidence and cannot substitute for a STAV audit receipt.
 - status: canonical
 
 ##### Feature Administration Assurance Contract
@@ -6130,7 +6221,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - status: canonical
 
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, fifty-seven common SKV v1 JSON Schemas, four common SKV v2 JSON Schemas, twelve SSIAG authorization, grant-planning, and policy-administration JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, sixty-three common SKV v1 JSON Schemas, four common SKV v2 JSON Schemas, twelve SSIAG authorization, grant-planning, and policy-administration JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

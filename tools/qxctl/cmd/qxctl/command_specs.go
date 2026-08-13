@@ -53,10 +53,14 @@ const (
 	backendFeatureMaestroInventory = "ssfv:symphony:maestro-presence-authority.complete-inventory"
 	backendFeaturePlatform         = "ssfv:symphony:platform"
 	backendFeatureSSIAG            = "ssfv:symphony:ssiag-foundation"
+	backendFeatureSSIAGEnrollment  = "ssfv:symphony:ssiag-foundation.tops-enrollment"
+	backendFeatureSSIAGSupervisor  = "ssfv:symphony:ssiag-foundation.native-supervision"
 	backendFeatureSSIAGPolicy      = "ssfv:symphony:ssiag-foundation.policy-administration"
 	backendFeatureSSIAGProviders   = "ssfv:symphony:ssiag-foundation.provider-metadata-registry"
 	backendFeatureKeychainMetadata = "ssfv:symphony:ssiag.macos-keychain-metadata"
 	backendFeatureSTAV             = "ssfv:symphony:stav-append-authority"
+	backendFeatureSTAVEnrollment   = "ssfv:symphony:stav-append-authority.tops-enrollment"
+	backendFeatureSTAVSupervisor   = "ssfv:symphony:stav-append-authority.native-supervision"
 	backendFeatureSTAVQuery        = "ssfv:symphony:stav-append-authority.authorized-query"
 	backendFeatureSTAVDurability   = "ssfv:symphony:stav-append-authority.ledger-durability"
 	backendFeatureValidator        = "ssfv:symphony:symphony-validator"
@@ -111,6 +115,11 @@ var reviewedBackendFeatureBindings = map[string][]commandregistry.FeatureBinding
 	"module.inspect":                     {{FeatureID: backendFeatureCoordinator, Interaction: "inspect"}},
 	"modules":                            {{FeatureID: backendFeaturePlatform, Interaction: "discover"}},
 	"ssiag.doctor":                       {{FeatureID: backendFeatureSSIAG, Interaction: "validate"}},
+	"ssiag.enrollment.status":            {{FeatureID: backendFeatureSSIAGEnrollment, Interaction: "lifecycle"}},
+	"ssiag.enrollment.plan":              {{FeatureID: backendFeatureSSIAGEnrollment, Interaction: "lifecycle"}},
+	"ssiag.enrollment.apply":             {{FeatureID: backendFeatureSSIAGEnrollment, Interaction: "lifecycle"}},
+	"ssiag.enrollment.apply-status":      {{FeatureID: backendFeatureSSIAGEnrollment, Interaction: "lifecycle"}},
+	"ssiag.enrollment.recover":           {{FeatureID: backendFeatureSSIAGEnrollment, Interaction: "lifecycle"}},
 	"ssiag.policy.apply":                 {{FeatureID: backendFeatureSSIAGPolicy, Interaction: "apply"}},
 	"ssiag.policy.propose":               {{FeatureID: backendFeatureSSIAGPolicy, Interaction: "propose"}},
 	"ssiag.policy.recover":               {{FeatureID: backendFeatureSSIAGPolicy, Interaction: "recover"}},
@@ -119,12 +128,27 @@ var reviewedBackendFeatureBindings = map[string][]commandregistry.FeatureBinding
 		{FeatureID: backendFeatureSSIAGProviders, Interaction: "discover"},
 		{FeatureID: backendFeatureKeychainMetadata, Interaction: "discover"},
 	},
-	"ssiag.status":  {{FeatureID: backendFeatureSSIAG, Interaction: "query"}},
-	"stav.doctor":   {{FeatureID: backendFeatureSTAV, Interaction: "validate"}},
-	"stav.query":    {{FeatureID: backendFeatureSTAVQuery, Interaction: "query"}},
-	"stav.status":   {{FeatureID: backendFeatureSTAV, Interaction: "query"}},
-	"stav.verify":   {{FeatureID: backendFeatureSTAVDurability, Interaction: "validate"}},
-	"validate.scan": {{FeatureID: backendFeatureValidator, Interaction: "validate"}},
+	"ssiag.status":                  {{FeatureID: backendFeatureSSIAG, Interaction: "query"}},
+	"ssiag.supervisor.status":       {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
+	"ssiag.supervisor.plan":         {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
+	"ssiag.supervisor.apply":        {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
+	"ssiag.supervisor.apply-status": {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
+	"ssiag.supervisor.recover":      {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
+	"stav.doctor":                   {{FeatureID: backendFeatureSTAV, Interaction: "validate"}},
+	"stav.enrollment.status":        {{FeatureID: backendFeatureSTAVEnrollment, Interaction: "lifecycle"}},
+	"stav.enrollment.plan":          {{FeatureID: backendFeatureSTAVEnrollment, Interaction: "lifecycle"}},
+	"stav.enrollment.apply":         {{FeatureID: backendFeatureSTAVEnrollment, Interaction: "lifecycle"}},
+	"stav.enrollment.apply-status":  {{FeatureID: backendFeatureSTAVEnrollment, Interaction: "lifecycle"}},
+	"stav.enrollment.recover":       {{FeatureID: backendFeatureSTAVEnrollment, Interaction: "lifecycle"}},
+	"stav.query":                    {{FeatureID: backendFeatureSTAVQuery, Interaction: "query"}},
+	"stav.status":                   {{FeatureID: backendFeatureSTAV, Interaction: "query"}},
+	"stav.supervisor.status":        {{FeatureID: backendFeatureSTAVSupervisor, Interaction: "lifecycle"}},
+	"stav.supervisor.plan":          {{FeatureID: backendFeatureSTAVSupervisor, Interaction: "lifecycle"}},
+	"stav.supervisor.apply":         {{FeatureID: backendFeatureSTAVSupervisor, Interaction: "lifecycle"}},
+	"stav.supervisor.apply-status":  {{FeatureID: backendFeatureSTAVSupervisor, Interaction: "lifecycle"}},
+	"stav.supervisor.recover":       {{FeatureID: backendFeatureSTAVSupervisor, Interaction: "lifecycle"}},
+	"stav.verify":                   {{FeatureID: backendFeatureSTAVDurability, Interaction: "validate"}},
+	"validate.scan":                 {{FeatureID: backendFeatureValidator, Interaction: "validate"}},
 }
 
 func registered(command *cobra.Command, key, featureID, interaction string) *cobra.Command {
@@ -152,6 +176,37 @@ func registeredMutation(command *cobra.Command, key, featureID, interaction, aut
 	} else {
 		spec.RecoveryCommandID = stringPointer("qxcmd:symphony:" + key)
 	}
+	return commandregistry.Attach(command, spec)
+}
+
+func registeredFoundationLifecycle(
+	command *cobra.Command,
+	component, surface, leaf, wrapperFeature string,
+) *cobra.Command {
+	key := component + "." + surface + "." + leaf
+	interaction := map[string]string{
+		"status": "query", "plan": "propose", "apply": "apply",
+		"apply-status": "query", "recover": "recover",
+	}[leaf]
+	spec := commandSpec(key, wrapperFeature, interaction)
+	switch leaf {
+	case "plan":
+		spec.Mutability = "proposal_only"
+	case "apply", "recover":
+		spec.Mutability = "permission_backed_mutation"
+		spec.AuthorityMode = "target_host_permission"
+		spec.RecoveryCommandID = stringPointer("qxcmd:symphony:" + component + "." + surface + ".recover")
+	}
+	backendOperation := leaf
+	if leaf == "status" {
+		backendOperation = "observe"
+	}
+	spec.BackendOperationIDs = []string{
+		"engop:symphony:" + component + "." + surface + "." + backendOperation,
+	}
+	spec.InputProtocols = []string{"symphony.foundation.lifecycle-command.v1"}
+	spec.OutputProtocols = []string{"symphony.foundation.lifecycle-result.v1"}
+	spec.ResultValidationProtocols = []string{"symphony.foundation.lifecycle-result.v1"}
 	return commandregistry.Attach(command, spec)
 }
 

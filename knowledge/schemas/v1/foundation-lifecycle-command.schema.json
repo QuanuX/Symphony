@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:foundation-lifecycle-command:v1",
+  "title": "Symphony foundational lifecycle command v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "format_version", "operation", "component", "surface", "scope", "tops_id", "operation_id", "request_id", "correlation_id", "expected_state_digest", "expected_attempt_digest", "intent", "plan", "discover", "requested_at", "deadline_at"],
+  "properties": {
+    "protocol": {"const": "symphony.foundation.lifecycle-command.v1"},
+    "format_version": {"const": 1},
+    "operation": {"enum": ["observe", "plan", "apply", "apply_status", "recover"]},
+    "component": {"enum": ["ssiag", "stav"]},
+    "surface": {"enum": ["enrollment", "supervisor"]},
+    "scope": {"enum": ["user", "system"]},
+    "tops_id": {"$ref": "#/$defs/uuid"},
+    "operation_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+    "request_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/uuid"}]},
+    "correlation_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/uuid"}]},
+    "expected_state_digest": {"oneOf": [{"type": "null"}, {"const": "absent"}, {"$ref": "#/$defs/digest"}]},
+    "expected_attempt_digest": {"oneOf": [{"type": "null"}, {"const": "absent"}, {"$ref": "#/$defs/digest"}]},
+    "intent": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/intent"}]},
+    "plan": {"oneOf": [{"type": "null"}, {"$ref": "urn:symphony:knowledge:foundation-lifecycle-plan:v1"}]},
+    "discover": {"type": "boolean"},
+    "requested_at": {"$ref": "#/$defs/timestamp"},
+    "deadline_at": {"$ref": "#/$defs/timestamp"}
+  },
+  "allOf": [
+    {"if": {"properties": {"operation": {"const": "observe"}}, "required": ["operation"]}, "then": {"properties": {"operation_id": {"type": "null"}, "expected_state_digest": {"type": "null"}, "expected_attempt_digest": {"type": "null"}, "intent": {"type": "null"}, "plan": {"type": "null"}, "discover": {"const": false}}}},
+    {"if": {"properties": {"operation": {"const": "plan"}}, "required": ["operation"]}, "then": {"properties": {"operation_id": {"$ref": "#/$defs/token"}, "request_id": {"$ref": "#/$defs/uuid"}, "correlation_id": {"$ref": "#/$defs/uuid"}, "expected_state_digest": {"oneOf": [{"const": "absent"}, {"$ref": "#/$defs/digest"}]}, "expected_attempt_digest": {"type": "null"}, "intent": {"$ref": "#/$defs/intent"}, "plan": {"type": "null"}, "discover": {"const": false}}}},
+    {"if": {"properties": {"operation": {"const": "apply"}}, "required": ["operation"]}, "then": {"properties": {"operation_id": {"$ref": "#/$defs/token"}, "request_id": {"$ref": "#/$defs/uuid"}, "correlation_id": {"$ref": "#/$defs/uuid"}, "expected_state_digest": {"oneOf": [{"const": "absent"}, {"$ref": "#/$defs/digest"}]}, "expected_attempt_digest": {"oneOf": [{"const": "absent"}, {"$ref": "#/$defs/digest"}]}, "intent": {"type": "null"}, "plan": {"$ref": "urn:symphony:knowledge:foundation-lifecycle-plan:v1"}, "discover": {"const": false}}}},
+    {"if": {"properties": {"operation": {"const": "apply_status"}}, "required": ["operation"]}, "then": {"properties": {"expected_state_digest": {"type": "null"}, "expected_attempt_digest": {"type": "null"}, "intent": {"type": "null"}, "plan": {"type": "null"}, "discover": {"const": false}}}},
+    {"if": {"properties": {"operation": {"const": "recover"}}, "required": ["operation"]}, "then": {"properties": {"operation_id": {"$ref": "#/$defs/token"}, "request_id": {"$ref": "#/$defs/uuid"}, "correlation_id": {"$ref": "#/$defs/uuid"}, "expected_state_digest": {"type": "null"}, "intent": {"type": "null"}, "plan": {"type": "null"}}, "oneOf": [{"properties": {"discover": {"const": true}, "expected_attempt_digest": {"type": "null"}}}, {"properties": {"discover": {"const": false}, "expected_attempt_digest": {"$ref": "#/$defs/digest"}}}]}}
+  ],
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "uuid": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "timestamp": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"},
+    "uint32": {"type": "integer", "minimum": 0, "maximum": 4294967295},
+    "intent": {
+      "type": "object", "additionalProperties": false,
+      "required": ["desired_state", "tops_name", "service_uid", "service_gid", "authority_uid", "authority_gid", "audit_mode", "ttl_seconds"],
+      "properties": {
+        "desired_state": {"enum": ["enrolled", "unenrolled_preserved", "native_running", "native_installed_stopped", "absent_stopped"]},
+        "tops_name": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1, "maxLength": 256}]},
+        "service_uid": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/uint32"}]}, "service_gid": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/uint32"}]},
+        "authority_uid": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/uint32"}]}, "authority_gid": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/uint32"}]},
+        "audit_mode": {"enum": ["ordinary", "audit_deferred"]},
+        "ttl_seconds": {"type": "integer", "minimum": 1, "maximum": 600}
+      }
+    }
+  }
+}

@@ -20,12 +20,14 @@ CGO_ENABLED=0 go build -o ./symphony-stav-append-authority ./cmd/symphony-stav-a
 ./symphony-stav-append-authority install --scope user
 ```
 
-Use `sudo ... install --scope system` for `/usr/local/bin`. The module uses the first-party STAV protocol kernel and `golang.org/x/sys` for cgo-free kernel peer credentials.
+Use `sudo ... install --scope system` for `/usr/local`. Current writes install the versioned executable beneath `libexec/symphony/stav-append-authority/<version>/` and publish its immutable receipt last beneath `share/symphony/receipts/stav-append-authority/<version>/`. Historical fixed-bin/install-v1 evidence remains inspection-only compatibility evidence. The module uses the first-party STAV protocol kernel and `golang.org/x/sys` for cgo-free kernel peer credentials.
+
+The machine adapter is `symphony-stav-append-authority foundation-lifecycle`; it accepts one bounded `symphony.foundation.lifecycle-command.v1` JSON document on stdin and emits one bounded result on stdout. `foundation-lifecycle describe --json` publishes exact executable, receipt, capability, operation, platform, and limit evidence. Human enroll/unenroll and supervisor operations call the same transaction engine and currently require explicit `--audit-deferred`; ordinary audited apply remains fail-closed until the closed SSIAG producer route is connected.
 
 ## Enroll One TOPS
 
 ```text
-symphony-stav-append-authority enroll --scope user --tops-id <UUID>
+symphony-stav-append-authority enroll --scope user --tops-id <UUID> --audit-deferred
 ```
 
 User enrollment records the current effective UID/GID as the expected authority identity and rejects an override. System enrollment requires both explicit `--authority-uid` and `--authority-gid`; repeated enrollment must match the preserved identity. Every enrollment creates explicit empty `producers` and `readers` arrays. Review `append-authority.json`, then add only the exact producer tuples and reader classifications required. A production authority and producer should use distinct OS identities.
@@ -37,7 +39,7 @@ The fixed policies are `fsync-before-receipt`, `preserve-incomplete-tail`, `pres
 ## Install Native Supervision
 
 ```text
-symphony-stav-append-authority supervisor install --scope user --tops-id <UUID>
+symphony-stav-append-authority supervisor install --scope user --tops-id <UUID> --audit-deferred
 ```
 
 This installs and starts `io.github.quanux.symphony.stav.<tops-id>` as a user launchd agent on macOS or `symphony-stav@<tops-id>.service` as a systemd user unit on Linux. The STAV unit has no SSIAG dependency. `--no-start` writes the deterministic descriptor for an owner-provided supervisor without invoking the native manager. Direct user-scope `serve` is a development diagnostic and emits a warning.
@@ -45,8 +47,8 @@ This installs and starts `io.github.quanux.symphony.stav.<tops-id>` as a user la
 For system scope, the owner or package manager provisions the authority account first. Enrollment receives its exact numeric UID/GID and makes only the selected TOPS state, recovery, and runtime children authority-owned and `0700`; it never creates an account or infers root. Then install the system service:
 
 ```text
-sudo symphony-stav-append-authority enroll --scope system --tops-id <UUID> --authority-uid <uid> --authority-gid <gid>
-sudo symphony-stav-append-authority supervisor install --scope system --tops-id <UUID>
+sudo symphony-stav-append-authority enroll --scope system --tops-id <UUID> --authority-uid <uid> --authority-gid <gid> --audit-deferred
+sudo symphony-stav-append-authority supervisor install --scope system --tops-id <UUID> --audit-deferred
 ```
 
 The process owns `append.sock`, acquires the persistent adjacent `append.sock.lock` before stale inspection, drains accepted bounded requests on SIGTERM, removes its socket, and releases the lock last. Native restart cadence is bounded. System direct-run requires the explicit `--supervised` assertion from the installed profile or an owner-controlled equivalent; it is not authorization evidence.
@@ -71,14 +73,14 @@ symphony-stav-append-authority uninstall --scope user
 Remove a selected supervisor first; this stops only that TOPS service and preserves every configuration, ledger, and recovery artifact:
 
 ```text
-symphony-stav-append-authority supervisor uninstall --scope user --tops-id <UUID>
+symphony-stav-append-authority supervisor uninstall --scope user --tops-id <UUID> --audit-deferred
 ```
 
-Use `--no-stop` only when an owner-provided manager already owns process shutdown.
+`--no-stop` and raw `--force` are rejected by the transaction path; descriptor mutation uses exact expected-state evidence. `--no-start` maps to the explicit `native_installed_stopped` desired state.
 
 Default per-TOPS unenrollment also preserves data. Destructive one-TOPS removal requires explicit purge and refuses an active listener:
 
 ```text
-symphony-stav-append-authority unenroll --scope user --tops-id <UUID>
+symphony-stav-append-authority unenroll --scope user --tops-id <UUID> --audit-deferred
 symphony-stav-append-authority unenroll --scope user --tops-id <UUID> --purge
 ```

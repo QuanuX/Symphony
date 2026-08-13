@@ -10,12 +10,13 @@ Guide every caller in safely inspecting, proposing, implementing, installing, an
 2. `knowledge/MANIFEST.md`
 3. `knowledge/SPEC.md`
 4. `knowledge/TIME.md` when a field, deadline, freshness rule, journal, or durable event involves time
-5. `knowledge/VALIDATION.md` when validator evidence, warning policy, baselines, or debug filtering is involved
-6. the affected vector's Contract Quad
-7. `tools/qxctl/` contracts for administrative grammar
-8. `knowledge/ssiag/SPEC.md` before any apply or safeguard work
-9. `knowledge/stav/SPEC.md` before any audited outcome or recovery work
-10. `knowledge/sodv/SPEC.md` before release or publication
+5. `knowledge/FOUNDATIONAL-LIFECYCLE.md` before SSIAG/STAV enrollment or supervision administration
+6. `knowledge/VALIDATION.md` when validator evidence, warning policy, baselines, or debug filtering is involved
+7. the affected vector's Contract Quad
+8. `tools/qxctl/` contracts for administrative grammar
+9. `knowledge/ssiag/SPEC.md` before any apply or safeguard work
+10. `knowledge/stav/SPEC.md` before any audited outcome or recovery work
+11. `knowledge/sodv/SPEC.md` before release or publication
 
 ## Safe Initial Operations
 
@@ -38,6 +39,8 @@ The implemented `0.1.0-dev` foundation supports direct coordinator `inspect`, ex
 Use `qxctl knowledge session transition --event login|refresh|logout --event-id ID` only when an explicit host lifecycle integration supplies a stable event identity. Safe retries reuse the same event ID. Add `--recover` only when discovery recovery from damaged local session evidence is intended; it does not recover denial, incompatible critical state, or ambiguity. Symphony does not install a login hook, watcher, or boot unit through this command.
 
 For modular installation planning, read `knowledge/LIFECYCLE.md` with this Contract Quad and the exact common lifecycle schemas. Preserve binding registry v1, receipt v1, and report-journal v1 evidence exactly. Treat profile input, desired, observed, runtime, planned, report-journal, apply-journal, and applied state as separate noncanonical evidence. A new or missing module is a plan input, not implicit permission to execute, remove, upgrade, downgrade, bind, or dock it. Use qxctl to generate protected state and observe configured receipt roots; do not hand-edit it. The coordinator consumes complete digest-bound desired/observed evidence and derives component action order only from the explicit dependency ready set. Preserve blockers, replan only after verified evidence changes, bind dock actions to exact receptor identities, and never reorder the enclosing safety phases.
+
+For SSIAG or STAV enrollment and native supervision, use the separate `knowledge/FOUNDATIONAL-LIFECYCLE.md` envelope. Invoke only the exact installation-proven module adapter; never import module internals, parse its human output, render descriptors in qxctl, invoke `serve`, select an implicit newest version, or bypass a protected attempt. Use status before plan, apply only an exact unexpired plan, use apply-status for its attempt, and recover only a unique digest-linked transition. Audit-deferred bootstrap must be explicit and remains reconciliation-required until the closed SSIAG producer binds a STAV receipt.
 
 Use `qxctl knowledge lifecycle profile set --tops-id UUID --input FILE --expected-profile-digest absent|DIGEST` for exact profile compare-and-swap. Use `ownership status|reconcile` to inspect or refresh one configured shared root; use `ownership adopt` only after reviewing every conservative legacy claim, and `ownership release` only for one exact legacy receipt intentionally made reclaimable. Never delete or rewrite the root-local registry or its `symphony-root-ownership/1` receipt-layout compatibility fence by hand; older lifecycle clients must encounter that fence and stop on their existing unknown-package blocker. Use `observe` for disposable fixed-layout receipt evidence, `report` for a fresh disposable plan, and `boot` with a stable operation ID plus exact journal state for durable report-only progression. Use `status` for v1 inspection and `recover --discover` only for one unique v1 chain. For an `apply-compatible` profile, call `apply` only with the exact boot source digest, apply-journal compare-and-swap, applied-state compare-and-swap, stable operation ID, and explicit staged roots. Use `apply-status` or bounded `apply-recover`; never choose an action manually or edit protected state. A timestamp-only observation refresh must change document evidence without advancing stable semantic identities.
 

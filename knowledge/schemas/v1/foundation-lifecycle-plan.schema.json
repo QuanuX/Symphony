@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:foundation-lifecycle-plan:v1",
+  "title": "Symphony foundational lifecycle plan v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "format_version", "component", "surface", "scope", "tops_id", "operation_id", "request_id", "correlation_id", "expected_state_digest", "desired_state", "tops_name", "service_uid", "service_gid", "authority_uid", "authority_gid", "audit_mode", "created_at", "expires_at", "plan_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.foundation.lifecycle-plan.v1"}, "format_version": {"const": 1},
+    "component": {"enum": ["ssiag", "stav"]}, "surface": {"enum": ["enrollment", "supervisor"]}, "scope": {"enum": ["user", "system"]},
+    "tops_id": {"$ref": "#/$defs/uuid"}, "operation_id": {"$ref": "#/$defs/token"}, "request_id": {"$ref": "#/$defs/uuid"}, "correlation_id": {"$ref": "#/$defs/uuid"},
+    "expected_state_digest": {"oneOf": [{"const": "absent"}, {"$ref": "#/$defs/digest"}]},
+    "desired_state": {"enum": ["enrolled", "unenrolled_preserved", "native_running", "native_installed_stopped", "absent_stopped"]},
+    "tops_name": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1, "maxLength": 256}]},
+    "service_uid": {"$ref": "#/$defs/nullableUint32"}, "service_gid": {"$ref": "#/$defs/nullableUint32"}, "authority_uid": {"$ref": "#/$defs/nullableUint32"}, "authority_gid": {"$ref": "#/$defs/nullableUint32"},
+    "audit_mode": {"enum": ["ordinary", "audit_deferred"]}, "created_at": {"$ref": "#/$defs/timestamp"}, "expires_at": {"$ref": "#/$defs/timestamp"}, "plan_digest": {"$ref": "#/$defs/digest"}
+  },
+  "allOf": [
+    {"if": {"properties": {"surface": {"const": "supervisor"}}, "required": ["surface"]}, "then": {"properties": {"desired_state": {"enum": ["native_running", "native_installed_stopped", "absent_stopped"]}, "tops_name": {"type": "null"}, "service_uid": {"type": "null"}, "service_gid": {"type": "null"}, "authority_uid": {"type": "null"}, "authority_gid": {"type": "null"}}}},
+    {"if": {"properties": {"surface": {"const": "enrollment"}}, "required": ["surface"]}, "then": {"properties": {"desired_state": {"enum": ["enrolled", "unenrolled_preserved"]}}}},
+    {"if": {"properties": {"component": {"const": "ssiag"}}, "required": ["component"]}, "then": {"properties": {"authority_uid": {"type": "null"}, "authority_gid": {"type": "null"}}, "oneOf": [{"properties": {"service_uid": {"type": "null"}, "service_gid": {"type": "null"}}}, {"properties": {"service_uid": {"type": "integer", "minimum": 0, "maximum": 4294967295}, "service_gid": {"type": "integer", "minimum": 0, "maximum": 4294967295}}}]}},
+    {"if": {"properties": {"component": {"const": "stav"}}, "required": ["component"]}, "then": {"properties": {"tops_name": {"type": "null"}, "service_uid": {"type": "null"}, "service_gid": {"type": "null"}}, "oneOf": [{"properties": {"authority_uid": {"type": "null"}, "authority_gid": {"type": "null"}}}, {"properties": {"authority_uid": {"type": "integer", "minimum": 0, "maximum": 4294967295}, "authority_gid": {"type": "integer", "minimum": 0, "maximum": 4294967295}}}]}},
+    {"if": {"properties": {"component": {"const": "ssiag"}, "surface": {"const": "enrollment"}, "desired_state": {"const": "enrolled"}}, "required": ["component", "surface", "desired_state"]}, "then": {"properties": {"tops_name": {"type": "string", "minLength": 1, "maxLength": 256}}}},
+    {"if": {"properties": {"surface": {"const": "enrollment"}, "desired_state": {"const": "unenrolled_preserved"}}, "required": ["surface", "desired_state"]}, "then": {"properties": {"tops_name": {"type": "null"}, "service_uid": {"type": "null"}, "service_gid": {"type": "null"}, "authority_uid": {"type": "null"}, "authority_gid": {"type": "null"}}}},
+    {"if": {"properties": {"component": {"const": "ssiag"}, "surface": {"const": "enrollment"}, "scope": {"const": "system"}, "desired_state": {"const": "enrolled"}}, "required": ["component", "surface", "scope", "desired_state"]}, "then": {"properties": {"service_uid": {"type": "integer", "minimum": 0, "maximum": 4294967295}, "service_gid": {"type": "integer", "minimum": 0, "maximum": 4294967295}}}},
+    {"if": {"properties": {"component": {"const": "stav"}, "surface": {"const": "enrollment"}, "scope": {"const": "system"}, "desired_state": {"const": "enrolled"}}, "required": ["component", "surface", "scope", "desired_state"]}, "then": {"properties": {"authority_uid": {"type": "integer", "minimum": 0, "maximum": 4294967295}, "authority_gid": {"type": "integer", "minimum": 0, "maximum": 4294967295}}}}
+  ],
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "uuid": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "nullableUint32": {"oneOf": [{"type": "null"}, {"type": "integer", "minimum": 0, "maximum": 4294967295}]},
+    "timestamp": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"}
+  }
+}

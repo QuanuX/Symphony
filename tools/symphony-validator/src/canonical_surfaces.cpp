@@ -5,7 +5,7 @@
 
 namespace fs = std::filesystem;
 
-const std::array<std::string, 36> REQUIRED_SURFACES_ARRAY = {
+const std::array<std::string, 37> REQUIRED_SURFACES_ARRAY = {
     "README.md",
     "INTENT.md",
     "modules/node-troll/INTENT.md",
@@ -21,6 +21,7 @@ const std::array<std::string, 36> REQUIRED_SURFACES_ARRAY = {
     "modules/hotpath-runtime/INSTALL.md",
     "modules/hotpath-runtime/SKILL.md",
     "knowledge/INTENT.md",
+    "knowledge/FOUNDATIONAL-LIFECYCLE.md",
     "knowledge/TIME.md",
     "knowledge/skvi/INTENT.md",
     "knowledge/skvi/MANIFEST.md",

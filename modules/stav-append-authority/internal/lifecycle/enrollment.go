@@ -26,17 +26,82 @@ type EnrollmentRecord struct {
 	Socket      string          `json:"socket"`
 }
 
-func Enroll(scope stavpaths.Scope, topsID string, authorityUID, authorityGID uint64) (EnrollmentRecord, error) {
-	if scope == stavpaths.ScopeSystem && os.Geteuid() != 0 {
-		return EnrollmentRecord{}, fmt.Errorf("system enrollment requires administrator privileges")
+type EnrollmentInspection struct {
+	State         string
+	Record        EnrollmentRecord
+	RecordDigest  string
+	ConfigDigest  string
+	AuthorityUID  *uint32
+	AuthorityGID  *uint32
+	DataPreserved bool
+}
+
+// InspectEnrollment validates durable enrollment evidence without requiring a
+// live append-authority endpoint.
+func InspectEnrollment(scope stavpaths.Scope, topsID string) (EnrollmentInspection, error) {
+	layout, err := stavpaths.ResolveInstance(scope, topsID)
+	if err != nil {
+		return EnrollmentInspection{}, err
 	}
+	result := EnrollmentInspection{State: "unenrolled"}
+	if info, statErr := os.Lstat(layout.StateDir); statErr == nil && info.IsDir() && info.Mode()&os.ModeSymlink == 0 {
+		result.DataPreserved = true
+	} else if statErr != nil && !os.IsNotExist(statErr) {
+		return EnrollmentInspection{}, statErr
+	}
+	info, statErr := os.Lstat(layout.EnrollmentFile)
+	if os.IsNotExist(statErr) {
+		return result, nil
+	}
+	if statErr != nil || !info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0 {
+		result.State = "unsafe"
+		return result, nil
+	}
+	recordData, err := os.ReadFile(layout.EnrollmentFile)
+	if err != nil {
+		return EnrollmentInspection{}, err
+	}
+	record, err := readEnrollment(layout)
+	if err != nil {
+		result.State = "drifted"
+		return result, nil
+	}
+	result.Record = record
+	result.RecordDigest = digestBytes(recordData)
+	cfg, err := config.Load(layout.ConfigFile)
+	if err != nil || config.ValidateLayout(cfg, layout) != nil {
+		result.State = "drifted"
+		return result, nil
+	}
+	configData, err := os.ReadFile(layout.ConfigFile)
+	if err != nil {
+		return EnrollmentInspection{}, err
+	}
+	uid, gid := uint32(cfg.Authentication.Authority.UID), uint32(cfg.Authentication.Authority.GID)
+	result.AuthorityUID, result.AuthorityGID = &uid, &gid
+	result.ConfigDigest = digestBytes(configData)
+	result.State = "enrolled"
+	return result, nil
+}
+
+func Enroll(scope stavpaths.Scope, topsID string, authorityUID, authorityGID uint64) (EnrollmentRecord, error) {
 	install, err := stavpaths.ResolveInstall(scope)
 	if err != nil {
 		return EnrollmentRecord{}, err
 	}
-	info, err := os.Lstat(install.Binary)
-	if err != nil || !info.Mode().IsRegular() {
-		return EnrollmentRecord{}, fmt.Errorf("STAV append authority must be installed before enrollment")
+	return EnrollWithExecutable(scope, topsID, authorityUID, authorityGID, install.Binary)
+}
+
+func EnrollWithExecutable(scope stavpaths.Scope, topsID string, authorityUID, authorityGID uint64, executable string) (EnrollmentRecord, error) {
+	if scope == stavpaths.ScopeSystem && os.Geteuid() != 0 {
+		return EnrollmentRecord{}, fmt.Errorf("system enrollment requires administrator privileges")
+	}
+	install, installRecord, _, err := VerifyExecutable(executable, scope)
+	if err != nil {
+		return EnrollmentRecord{}, fmt.Errorf("STAV append authority must have verified installation evidence before enrollment: %w", err)
+	}
+	if installRecord.Binary != install.Binary {
+		return EnrollmentRecord{}, fmt.Errorf("STAV installed binary evidence does not match selected scope")
 	}
 	layout, err := stavpaths.ResolveInstance(scope, topsID)
 	if err != nil {
@@ -137,6 +202,11 @@ func Unenroll(scope stavpaths.Scope, topsID string, purge bool) (EnrollmentRecor
 		return EnrollmentRecord{}, err
 	}
 	if purge {
+		lease, err := acquireSocketLifecycleLease(layout.Socket)
+		if err != nil {
+			return EnrollmentRecord{}, err
+		}
+		defer lease.Close()
 		if err := rejectActiveSocket(layout.Socket); err != nil {
 			return EnrollmentRecord{}, err
 		}

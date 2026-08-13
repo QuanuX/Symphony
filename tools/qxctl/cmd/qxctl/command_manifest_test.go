@@ -23,8 +23,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 114 {
-		t.Fatalf("registered command count = %d, want 114", len(manifest.Commands))
+	if len(manifest.Commands) != 134 {
+		t.Fatalf("registered command count = %d, want 134", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -46,6 +46,10 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 		"qxcmd:symphony:ssfv.check",
 		"qxcmd:symphony:ssfv.administration-check",
 		"qxcmd:symphony:knowledge.lifecycle.apply",
+		"qxcmd:symphony:ssiag.enrollment.apply",
+		"qxcmd:symphony:ssiag.supervisor.recover",
+		"qxcmd:symphony:stav.enrollment.plan",
+		"qxcmd:symphony:stav.supervisor.status",
 	} {
 		if _, ok := seen[required]; !ok {
 			t.Errorf("required stable command ID %q is absent", required)
@@ -109,8 +113,8 @@ func TestCommandRegistryBindsVectorCapabilitiesNotBindingSelection(t *testing.T)
 }
 
 func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
-	if len(reviewedBackendFeatureBindings) != 44 {
-		t.Fatalf("reviewed backend command count = %d, want 44", len(reviewedBackendFeatureBindings))
+	if len(reviewedBackendFeatureBindings) != 64 {
+		t.Fatalf("reviewed backend command count = %d, want 64", len(reviewedBackendFeatureBindings))
 	}
 	secondaryBindingCount := 0
 	for key, bindings := range reviewedBackendFeatureBindings {
@@ -119,8 +123,8 @@ func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
 		}
 		secondaryBindingCount += len(bindings)
 	}
-	if secondaryBindingCount != 46 {
-		t.Fatalf("reviewed backend binding count = %d, want 46", secondaryBindingCount)
+	if secondaryBindingCount != 66 {
+		t.Fatalf("reviewed backend binding count = %d, want 66", secondaryBindingCount)
 	}
 
 	root, err := newRootCommand()
@@ -161,6 +165,63 @@ func containsFeatureBinding(bindings []commandregistry.FeatureBinding, want comm
 		}
 	}
 	return false
+}
+
+func TestFoundationLifecycleRegistryContracts(t *testing.T) {
+	root, err := newRootCommand()
+	if err != nil {
+		t.Fatal(err)
+	}
+	manifest, err := commandregistry.BuildExpected(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	records := make(map[string]commandregistry.CommandRecord)
+	for _, record := range manifest.Commands {
+		records[record.CommandID] = record
+	}
+	for _, component := range []string{"ssiag", "stav"} {
+		for _, surface := range []string{"enrollment", "supervisor"} {
+			backendFeature := map[string]string{
+				"ssiag.enrollment": backendFeatureSSIAGEnrollment,
+				"ssiag.supervisor": backendFeatureSSIAGSupervisor,
+				"stav.enrollment":  backendFeatureSTAVEnrollment,
+				"stav.supervisor":  backendFeatureSTAVSupervisor,
+			}[component+"."+surface]
+			for _, leaf := range []string{"status", "plan", "apply", "apply-status", "recover"} {
+				id := "qxcmd:symphony:" + component + "." + surface + "." + leaf
+				record, ok := records[id]
+				if !ok {
+					t.Errorf("foundational lifecycle command %s is absent", id)
+					continue
+				}
+				operation := leaf
+				if leaf == "status" {
+					operation = "observe"
+				}
+				wantOperation := "engop:symphony:" + component + "." + surface + "." + operation
+				if len(record.BackendOperationIDs) != 1 || record.BackendOperationIDs[0] != wantOperation ||
+					!containsFeatureBinding(record.FeatureBindings, commandregistry.FeatureBinding{FeatureID: backendFeature, Interaction: "lifecycle"}) ||
+					len(record.InputProtocols) != 1 || record.InputProtocols[0] != "symphony.foundation.lifecycle-command.v1" ||
+					len(record.OutputProtocols) != 1 || record.OutputProtocols[0] != "symphony.foundation.lifecycle-result.v1" ||
+					len(record.ResultValidationProtocols) != 1 || record.ResultValidationProtocols[0] != "symphony.foundation.lifecycle-result.v1" ||
+					record.TargetScope != "local" || !record.JSONOutput {
+					t.Errorf("foundational lifecycle command contract drifted: %#v", record)
+				}
+				if leaf == "apply" || leaf == "recover" {
+					wantRecovery := "qxcmd:symphony:" + component + "." + surface + ".recover"
+					if record.Mutability != "permission_backed_mutation" || record.AuthorityMode != "target_host_permission" ||
+						record.RecoveryCommandID == nil || *record.RecoveryCommandID != wantRecovery {
+						t.Errorf("mutation/recovery posture drifted: %#v", record)
+					}
+				} else if leaf == "plan" && record.Mutability != "proposal_only" {
+					t.Errorf("plan is not proposal-only: %#v", record)
+				} else if leaf != "plan" && record.Mutability != "read_only" {
+					t.Errorf("read leaf is not read-only: %#v", record)
+				}
+			}
+		}
+	}
 }
 
 func TestReadExpectedRegistryRejectsTrailingValueAndSymlink(t *testing.T) {

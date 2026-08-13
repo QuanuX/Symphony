@@ -59,6 +59,15 @@ Implemented evidence includes strict operational schemas/fixtures, exclusive-loc
 5. Acquire a persistent no-follow exclusive socket lifecycle lock after identity verification and release it only after graceful drain and socket cleanup.
 6. Bound native restart cadence and SIGTERM shutdown; preserve descriptor-only no-start/no-stop integration for other owner-provided supervisors.
 
+## Phase 7 — Foundational Administration Adapter (Implemented, Reconciliation Composition Pending)
+
+1. Install side-by-side receipt-v2 packages and derive adapter provenance from the exact running executable and receipt.
+2. Expose bounded common JSON descriptor, observation, plan, apply, apply-status, and recovery operations for enrollment and supervision.
+3. Persist exact digest-linked attempts outside the purge subtree and require expected-state/expected-attempt compare-and-swap.
+4. Share the transaction engine with human commands; reject raw force/no-stop bypass and omit purge from machine v1.
+5. Observe native manager, descriptor, process, endpoint, enrollment, and package evidence without requiring the STAV listener.
+6. Fail ordinary audit closed before host mutation. Explicit deferred audit remains reconciliation-required until the separately integrated closed SSIAG producer binds a real STAV receipt.
+
 ## Go 1.27 Migration (Confirmed Release Only)
 
 1. Keep `go.mod` and the root workspace pinned to Go 1.26.5 while 1.27 is unreleased.

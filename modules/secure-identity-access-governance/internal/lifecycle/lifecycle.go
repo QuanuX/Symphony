@@ -4,15 +4,20 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
+	"net"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"syscall"
+	"time"
 
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
 	ssiagpaths "github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/paths"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/supervision"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/version"
 )
 
@@ -96,6 +101,13 @@ func Uninstall(scope ssiagpaths.Scope, force bool) (InstallRecord, error) {
 	if err != nil {
 		return InstallRecord{}, err
 	}
+	references, err := installationReferences(scope, layout)
+	if err != nil {
+		return InstallRecord{}, err
+	}
+	if len(references) != 0 {
+		return InstallRecord{}, fmt.Errorf("refusing to uninstall SSIAG while referenced by TOPS %s", strings.Join(references, ","))
+	}
 	digest, exists, err := regularFileDigest(layout.Binary)
 	if err != nil {
 		return InstallRecord{}, fmt.Errorf("inspect installed binary: %w", err)
@@ -116,6 +128,24 @@ func Uninstall(scope ssiagpaths.Scope, force bool) (InstallRecord, error) {
 }
 
 func Enroll(scope ssiagpaths.Scope, topsID, topsName string, serviceUID, serviceGID *uint32) (EnrollmentRecord, error) {
+	return enroll(scope, topsID, topsName, serviceUID, serviceGID, "", "")
+}
+
+// EnrollVerifiedPackage accepts an immutable receipt-v2 entry point after
+// independently rechecking the exact binary bytes. It exists so current
+// package installs do not need a second, legacy fixed-path installation.
+func EnrollVerifiedPackage(scope ssiagpaths.Scope, topsID, topsName string, serviceUID, serviceGID *uint32, binary, binaryDigest string) (EnrollmentRecord, error) {
+	if !filepath.IsAbs(binary) || !strings.HasPrefix(binaryDigest, "sha256:") {
+		return EnrollmentRecord{}, fmt.Errorf("verified SSIAG package evidence is invalid")
+	}
+	digest, present, err := regularFileDigest(filepath.Clean(binary))
+	if err != nil || !present || "sha256:"+digest != binaryDigest {
+		return EnrollmentRecord{}, fmt.Errorf("verified SSIAG package binary differs from receipt evidence")
+	}
+	return enroll(scope, topsID, topsName, serviceUID, serviceGID, filepath.Clean(binary), binaryDigest)
+}
+
+func enroll(scope ssiagpaths.Scope, topsID, topsName string, serviceUID, serviceGID *uint32, packageBinary, packageDigest string) (EnrollmentRecord, error) {
 	if (serviceUID == nil) != (serviceGID == nil) {
 		return EnrollmentRecord{}, fmt.Errorf("service UID and GID must be supplied together")
 	}
@@ -129,8 +159,12 @@ func Enroll(scope ssiagpaths.Scope, topsID, topsName string, serviceUID, service
 	if err != nil {
 		return EnrollmentRecord{}, err
 	}
-	if _, err := verifyInstalled(installLayout); err != nil {
-		return EnrollmentRecord{}, fmt.Errorf("SSIAG must be installed before enrollment: %w", err)
+	if packageBinary == "" {
+		if _, err := verifyInstalled(installLayout); err != nil {
+			return EnrollmentRecord{}, fmt.Errorf("SSIAG must be installed before enrollment: %w", err)
+		}
+	} else if packageDigest == "" {
+		return EnrollmentRecord{}, fmt.Errorf("verified SSIAG package digest is required")
 	}
 	layout, err := ssiagpaths.ResolveInstance(scope, topsID)
 	if err != nil {
@@ -243,13 +277,27 @@ func Unenroll(scope ssiagpaths.Scope, topsID string, purge bool) (EnrollmentReco
 	if err != nil {
 		return EnrollmentRecord{}, err
 	}
+	if purge {
+		status, err := supervision.ObserveOffline(scope, topsID, nil)
+		if err != nil {
+			return EnrollmentRecord{}, err
+		}
+		if status.DescriptorState != "absent" {
+			return EnrollmentRecord{}, fmt.Errorf("refusing to purge SSIAG while supervisor descriptor state is %s", status.DescriptorState)
+		}
+		lease, err := acquirePurgeSocketLease(layout.Socket)
+		if err != nil {
+			return EnrollmentRecord{}, err
+		}
+		defer lease.Close()
+		if err := removeSocketIfPresent(layout.Socket); err != nil {
+			return EnrollmentRecord{}, err
+		}
+	}
 	if err := os.Remove(layout.EnrollmentManifest); err != nil && !os.IsNotExist(err) {
 		return EnrollmentRecord{}, fmt.Errorf("remove enrollment manifest: %w", err)
 	}
 	if purge {
-		if err := removeSocketIfPresent(layout.Socket); err != nil {
-			return EnrollmentRecord{}, err
-		}
 		if err := removeTree(layout.ConfigDir, "configuration"); err != nil {
 			return EnrollmentRecord{}, err
 		}
@@ -259,6 +307,68 @@ func Unenroll(scope ssiagpaths.Scope, topsID string, purge bool) (EnrollmentReco
 		_ = os.Remove(layout.RuntimeDir)
 	}
 	return record, nil
+}
+
+// InspectEnrollment reads the exact protected marker for one TOPS. Absence is
+// returned explicitly; unsafe or malformed evidence remains an error.
+func InspectEnrollment(scope ssiagpaths.Scope, topsID string) (EnrollmentRecord, bool, error) {
+	layout, err := ssiagpaths.ResolveInstance(scope, topsID)
+	if err != nil {
+		return EnrollmentRecord{}, false, err
+	}
+	if _, err := os.Lstat(layout.EnrollmentManifest); os.IsNotExist(err) {
+		return EnrollmentRecord{}, false, nil
+	} else if err != nil {
+		return EnrollmentRecord{}, false, err
+	}
+	record, err := readEnrollmentRecord(layout)
+	return record, err == nil, err
+}
+
+// VerifyInstalled exposes the existing install-v1 verification to the
+// module-owned lifecycle adapter without weakening its digest checks.
+func VerifyInstalled(scope ssiagpaths.Scope) (InstallRecord, error) {
+	layout, err := ssiagpaths.ResolveInstall(scope)
+	if err != nil {
+		return InstallRecord{}, err
+	}
+	return verifyInstalled(layout)
+}
+
+func installationReferences(scope ssiagpaths.Scope, layout ssiagpaths.InstallLayout) ([]string, error) {
+	references := make(map[string]struct{})
+	root := filepath.Dir(layout.StateDir)
+	entries, err := os.ReadDir(root)
+	if err != nil && !os.IsNotExist(err) {
+		return nil, fmt.Errorf("inspect SSIAG enrollment root: %w", err)
+	}
+	for _, entry := range entries {
+		if !entry.IsDir() || ssiagpaths.ValidateTOPSID(entry.Name()) != nil {
+			continue
+		}
+		marker := filepath.Join(root, entry.Name(), "ssiag", "enrollment.json")
+		info, statErr := os.Lstat(marker)
+		if os.IsNotExist(statErr) {
+			continue
+		}
+		if statErr != nil || !info.Mode().IsRegular() {
+			return nil, fmt.Errorf("unsafe SSIAG enrollment reference for TOPS %s", entry.Name())
+		}
+		references[entry.Name()] = struct{}{}
+	}
+	descriptorTOPS, err := supervision.ReferencedTOPS(scope)
+	if err != nil {
+		return nil, err
+	}
+	for _, topsID := range descriptorTOPS {
+		references[topsID] = struct{}{}
+	}
+	result := make([]string, 0, len(references))
+	for topsID := range references {
+		result = append(result, topsID)
+	}
+	sort.Strings(result)
+	return result, nil
 }
 
 func readInstallRecord(layout ssiagpaths.InstallLayout) (InstallRecord, error) {
@@ -694,6 +804,14 @@ func removeSocketIfPresent(path string) error {
 	}
 	if info.Mode()&os.ModeSocket == 0 {
 		return fmt.Errorf("refusing to purge non-socket path %s", path)
+	}
+	connection, dialErr := net.DialTimeout("unix", path, 200*time.Millisecond)
+	if dialErr == nil {
+		_ = connection.Close()
+		return fmt.Errorf("refusing to purge an active SSIAG socket")
+	}
+	if !errors.Is(dialErr, syscall.ECONNREFUSED) && !errors.Is(dialErr, syscall.ENOENT) {
+		return fmt.Errorf("cannot prove SSIAG socket is stale: %w", dialErr)
 	}
 	if err := os.Remove(path); err != nil {
 		return fmt.Errorf("remove socket during purge: %w", err)

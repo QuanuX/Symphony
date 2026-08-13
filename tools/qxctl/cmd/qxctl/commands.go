@@ -1035,7 +1035,7 @@ func namedModuleMetadataCommand() *cobra.Command {
 }
 
 func newSSIAGCommand() (*cobra.Command, error) {
-	command := structural("ssiag", fmt.Errorf("SSIAG subcommand is required: status, providers, doctor, grants, or policy"))
+	command := structural("ssiag", fmt.Errorf("SSIAG subcommand is required: status, providers, doctor, grants, policy, enrollment, or supervisor"))
 	for _, subcommand := range []string{"status", "providers", "doctor"} {
 		child, err := newSSIAGLeaf(subcommand)
 		if err != nil {
@@ -1062,6 +1062,10 @@ func newSSIAGCommand() (*cobra.Command, error) {
 	grants.AddCommand(lifecycle)
 	command.AddCommand(grants)
 	command.AddCommand(newSSIAGPolicyCommand())
+	command.AddCommand(
+		newFoundationLifecycleFamily("ssiag", "enrollment", featureSSIAG),
+		newFoundationLifecycleFamily("ssiag", "supervisor", featureSSIAG),
+	)
 	return command, nil
 }
 
@@ -1157,7 +1161,7 @@ func newSSIAGLeaf(subcommand string) (*cobra.Command, error) {
 }
 
 func newSTAVCommand() *cobra.Command {
-	command := structural("stav", fmt.Errorf("STAV subcommand is required: status, verify, query, or doctor"))
+	command := structural("stav", fmt.Errorf("STAV subcommand is required: status, verify, query, doctor, enrollment, or supervisor"))
 	appendCommand := &cobra.Command{
 		Use:                "append",
 		Hidden:             true,
@@ -1172,6 +1176,10 @@ func newSTAVCommand() *cobra.Command {
 	for _, subcommand := range []string{"status", "verify", "query", "doctor"} {
 		command.AddCommand(newSTAVLeaf(subcommand))
 	}
+	command.AddCommand(
+		newFoundationLifecycleFamily("stav", "enrollment", featureSTAV),
+		newFoundationLifecycleFamily("stav", "supervisor", featureSTAV),
+	)
 	return command
 }
 
@@ -1256,6 +1264,13 @@ func failurePrefix(args []string) string {
 	case "module":
 		if len(args) > 1 && (args[1] == "inspect" || args[1] == "check" || args[1] == "metadata") {
 			return "module " + args[1]
+		}
+	case "ssiag", "stav":
+		if len(args) > 2 && (args[1] == "enrollment" || args[1] == "supervisor") {
+			switch args[2] {
+			case "status", "plan", "apply", "apply-status", "recover":
+				return args[0] + " " + args[1] + " " + args[2]
+			}
 		}
 	case "knowledge":
 		if len(args) > 2 && args[1] == "engines" {
@@ -1363,7 +1378,7 @@ func validateLegacySubcommand(args []string) error {
 		return nil
 	}
 	switch args[1] {
-	case "status", "verify", "query", "doctor", "append", "--help", "-h":
+	case "status", "verify", "query", "doctor", "append", "enrollment", "supervisor", "--help", "-h":
 		return nil
 	default:
 		return fmt.Errorf("unknown STAV subcommand %q", args[1])
