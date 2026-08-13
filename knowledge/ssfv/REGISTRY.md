@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes twenty-nine experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes forty-three experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -256,14 +256,77 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:32a1d25fef5364661bd42662d1deb1f19f2de23b38088550053bbe94c58840e6`
 - notes: Partial-catalog record for caller-neutral local identity, endpoint trust, authorization decisions, supervision, and safe STAV production.
 
+- feature_id: `ssfv:symphony:ssiag-foundation.authorization-capabilities`
+- feature_file: `modules/secure-identity-access-governance/FEATURES.md`
+- owner_contract: `modules/secure-identity-access-governance/SPEC.md`
+- source_scope: `modules/secure-identity-access-governance`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssiag-foundation`
+- record_digest: `sha256:74ebe85a8c00c0f70742b2b1c39d339016bcd20e34140b3f24d84320a83e10b5`
+- notes: Architect-ratified F2 subfeature for exact caller-neutral authorization and bounded capability evidence; coverage remains partial.
+
+- feature_id: `ssfv:symphony:ssiag-foundation.kernel-peer-trust`
+- feature_file: `modules/secure-identity-access-governance/FEATURES.md`
+- owner_contract: `modules/secure-identity-access-governance/SPEC.md`
+- source_scope: `modules/secure-identity-access-governance`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssiag-foundation`
+- record_digest: `sha256:19b98511edda84a906a439155c43730cfddcc8cb1fe8f79a0d2396cfe98d2560`
+- notes: Architect-ratified F2 subfeature for kernel-attested local peer and endpoint trust; coverage remains partial.
+
+- feature_id: `ssfv:symphony:ssiag-foundation.native-supervision`
+- feature_file: `modules/secure-identity-access-governance/FEATURES.md`
+- owner_contract: `modules/secure-identity-access-governance/SPEC.md`
+- source_scope: `modules/secure-identity-access-governance`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssiag-foundation`
+- record_digest: `sha256:ed81b13d2a31aeccc983b2e8b4e707b9b463e23e7518c86135172f161ab369ac`
+- notes: Architect-ratified F2 subfeature for per-TOPS native SSIAG supervision; coverage remains partial.
+
+- feature_id: `ssfv:symphony:ssiag-foundation.policy-administration`
+- feature_file: `modules/secure-identity-access-governance/FEATURES.md`
+- owner_contract: `modules/secure-identity-access-governance/SPEC.md`
+- source_scope: `modules/secure-identity-access-governance`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssiag-foundation`
+- record_digest: `sha256:5aaa607e1b8959183eaf78b825eaa810c6ce5e06b1e17357a82cd6217f6042a4`
+- notes: Architect-ratified F2 subfeature for durable local SSIAG policy administration; coverage remains partial.
+
+- feature_id: `ssfv:symphony:ssiag-foundation.provider-metadata-registry`
+- feature_file: `modules/secure-identity-access-governance/FEATURES.md`
+- owner_contract: `modules/secure-identity-access-governance/SPEC.md`
+- source_scope: `modules/secure-identity-access-governance`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssiag-foundation`
+- record_digest: `sha256:0c323365fa8425f562fb3124df4c47936a22d030208fdf5a09bb085391487dc5`
+- notes: Architect-ratified F2 subfeature for safe configured provider metadata; no operational adapter bridge is claimed.
+
+- feature_id: `ssfv:symphony:ssiag-foundation.safe-audit-production`
+- feature_file: `modules/secure-identity-access-governance/FEATURES.md`
+- owner_contract: `modules/secure-identity-access-governance/SPEC.md`
+- source_scope: `modules/secure-identity-access-governance`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssiag-foundation`
+- record_digest: `sha256:1b399689c832b297451a8304392a6c61b46889f7f3a59ea0ec7925a44624b73b`
+- notes: Architect-ratified F2 subfeature for closed safe SSIAG audit production; coverage remains partial.
+
+- feature_id: `ssfv:symphony:ssiag-foundation.tops-enrollment`
+- feature_file: `modules/secure-identity-access-governance/FEATURES.md`
+- owner_contract: `modules/secure-identity-access-governance/SPEC.md`
+- source_scope: `modules/secure-identity-access-governance`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssiag-foundation`
+- record_digest: `sha256:298951250d97626de73bf7dcba19e0e2009bb2063ae9f33a5dca1a2936a8946a`
+- notes: Architect-ratified F2 subfeature for per-TOPS SSIAG enrollment and isolation; coverage remains partial.
+
 - feature_id: `ssfv:symphony:ssiag.macos-keychain-metadata`
 - feature_file: `modules/ssiag-provider-macos-keychain/FEATURES.md`
 - owner_contract: `modules/ssiag-provider-macos-keychain/SPEC.md`
 - source_scope: `modules/ssiag-provider-macos-keychain`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:ssiag-foundation`
-- record_digest: `sha256:6063491fec631ed5bf6297da786c230239ea421ae98edd53425c8536f6fd73c4`
-- notes: Partial-catalog subfeature record for the isolated Swift metadata-only macOS Keychain adapter; operational secret access remains disabled.
+- record_digest: `sha256:0c648fe3bca0ceb876989cf2f3ff95b7d338a7ef3f35a0dd1a931b7e597b9149`
+- notes: Partial-catalog subfeature for the isolated Swift metadata-only macOS Keychain adapter; no Go-foundation or qxctl invocation bridge exists and operational secret access remains disabled.
 
 - feature_id: `ssfv:symphony:stav-append-authority`
 - feature_file: `modules/stav-append-authority/FEATURES.md`
@@ -274,14 +337,77 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:f0004091a329f063c799cd10cc89a5ce200e9c1e26698c0ea3f32c9e376a1f69`
 - notes: Partial-catalog record for serialized durable tamper-evident STAV append, recovery, and bounded query behavior.
 
+- feature_id: `ssfv:symphony:stav-append-authority.authorized-query`
+- feature_file: `modules/stav-append-authority/FEATURES.md`
+- owner_contract: `modules/stav-append-authority/SPEC.md`
+- source_scope: `modules/stav-append-authority`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:stav-append-authority`
+- record_digest: `sha256:a29998983331a6468a0ffe7b716ea99b7afb441aeac28ac7ff32c47f8254ee18`
+- notes: Architect-ratified F2 subfeature for event-class-scoped STAV query and verification; coverage remains partial.
+
+- feature_id: `ssfv:symphony:stav-append-authority.ledger-durability`
+- feature_file: `modules/stav-append-authority/FEATURES.md`
+- owner_contract: `modules/stav-append-authority/SPEC.md`
+- source_scope: `modules/stav-append-authority`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:stav-append-authority`
+- record_digest: `sha256:d0fc1b99ff45577951f991379661c692a2e55f3ee2672672da071e046eb62dc5`
+- notes: Architect-ratified F2 subfeature for checksummed tamper-evident ledger durability and bounded tail recovery; coverage remains partial.
+
+- feature_id: `ssfv:symphony:stav-append-authority.native-supervision`
+- feature_file: `modules/stav-append-authority/FEATURES.md`
+- owner_contract: `modules/stav-append-authority/SPEC.md`
+- source_scope: `modules/stav-append-authority`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:stav-append-authority`
+- record_digest: `sha256:316603a09ae6c5ca158c1915c6554490c31db11c3a8c40a7484247aad6e2e3c8`
+- notes: Architect-ratified F2 subfeature for per-TOPS native append-authority supervision; coverage remains partial.
+
+- feature_id: `ssfv:symphony:stav-append-authority.serialized-append`
+- feature_file: `modules/stav-append-authority/FEATURES.md`
+- owner_contract: `modules/stav-append-authority/SPEC.md`
+- source_scope: `modules/stav-append-authority`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:stav-append-authority`
+- record_digest: `sha256:7679344baa9d42d7e5b2c0db3126e8264a054493677eeeeb39738947f3fb4c10`
+- notes: Architect-ratified F2 subfeature for authenticated serialized STAV commitment; coverage remains partial.
+
+- feature_id: `ssfv:symphony:stav-append-authority.tops-enrollment`
+- feature_file: `modules/stav-append-authority/FEATURES.md`
+- owner_contract: `modules/stav-append-authority/SPEC.md`
+- source_scope: `modules/stav-append-authority`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:stav-append-authority`
+- record_digest: `sha256:3d3dac76cf53a0c631fbfbde3f4c0ef69f7e051c51f1422bc88da8295e7f5d5d`
+- notes: Architect-ratified F2 subfeature for per-TOPS STAV serialization-domain enrollment; coverage remains partial.
+
 - feature_id: `ssfv:symphony:stav-protocol-kernel`
 - feature_file: `libraries/stav-protocol-go/FEATURES.md`
 - owner_contract: `libraries/stav-protocol-go/MANIFEST.md`
 - source_scope: `libraries/stav-protocol-go`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:a4039a8fc93043847546eae3a6ae71436e51ed4b4c4e861eb052aa3512ef4d0d`
-- notes: Partial-catalog record for the authority-free Go STAV protocol, validation, digest, framing, and conformance kernel.
+- record_digest: `sha256:aa8715b51e5dd82a84d3de0de27101798f298a6cd1597d41a08f50ffeca11515`
+- notes: Partial-catalog record for authority-free canonical STAV bytes, digests, typed codecs, semantic validation, and bounded local IPC framing; durable checksummed ledger framing belongs to the append authority.
+
+- feature_id: `ssfv:symphony:stav-protocol-kernel.canonical-wire-representation`
+- feature_file: `libraries/stav-protocol-go/FEATURES.md`
+- owner_contract: `libraries/stav-protocol-go/MANIFEST.md`
+- source_scope: `libraries/stav-protocol-go`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:stav-protocol-kernel`
+- record_digest: `sha256:1d077453494e50d6ec211ba4ed52213be3d120916778764471d315833dbba8be`
+- notes: Architect-ratified F2 subfeature for canonical STAV bytes, digests, and bounded local frames; coverage remains partial.
+
+- feature_id: `ssfv:symphony:stav-protocol-kernel.semantic-validation`
+- feature_file: `libraries/stav-protocol-go/FEATURES.md`
+- owner_contract: `libraries/stav-protocol-go/MANIFEST.md`
+- source_scope: `libraries/stav-protocol-go`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:stav-protocol-kernel`
+- record_digest: `sha256:c2931ce80338d4be722c2f9cf7d7d198dc0be8d3c1e834dfdd12afeda6628609`
+- notes: Architect-ratified F2 subfeature for exact STAV content and identifier validation; coverage remains partial.
 
 - feature_id: `ssfv:symphony:symphony-validator`
 - feature_file: `tools/symphony-validator/FEATURES.md`
@@ -306,4 +432,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This twenty-nine-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide completeness, engine-decided feature-worthiness, or canonical mutation.
+This forty-three-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide completeness, engine-decided feature-worthiness, or canonical mutation.

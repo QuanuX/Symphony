@@ -39,15 +39,34 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 
 ## Ratified Nested Review Progress
 
-The F1 nested review records fourteen implemented `subfeature` boundaries inside three already registered owner scopes:
+The F1 and F2 nested reviews record twenty-eight implemented `subfeature` boundaries inside six already registered owner scopes:
 
 | Owner scope | Ratified nested records | Review disposition |
 |---|---:|---|
 | `tools/qxctl` | 8 | Exact engine bindings, authenticated sessions, lifecycle convergence, Linux report-only host receptor, SSIAG administration, STAV administration, Maestro administration, and governed validation are registered. |
 | `modules/knowledge-session-coordinator` | 5 | Reconciliation, authority epochs, semantic maintenance, lifecycle planning, and lifecycle apply coordination are registered. |
 | `modules/maestro` | 1 | Complete derived receptor inventory is registered separately from durable receptor presence. |
+| `libraries/stav-protocol-go` | 2 | Canonical bytes, digests, and bounded local frames are separated from exact content and identifier validation; durable checksummed ledger framing is explicitly owned by the append authority. |
+| `modules/secure-identity-access-governance` | 7 | TOPS enrollment, kernel peer trust, authorization capabilities, policy administration, provider metadata, safe audit production, and native supervision are registered. |
+| `modules/stav-append-authority` | 5 | TOPS enrollment, serialized append, ledger durability, authorized query, and native supervision are registered. |
 
-This review advances completion condition 2 for those exact boundaries only. It does not imply that every other nested application boundary has been adjudicated or that an unlisted boundary has an explicit non-feature disposition.
+The existing macOS Keychain metadata adapter remains one narrow registered subfeature with no child record. Its corrected record states that the Go SSIAG foundation and qxctl do not invoke the Swift executable and that operational trust, provider execution, Keychain access, and secret delivery remain unimplemented.
+
+These reviews advance completion condition 2 for those exact boundaries only. They do not imply that every other nested application boundary has been adjudicated or that an unlisted boundary has an explicit non-feature disposition.
+
+## F2 Explicit Non-Feature Dispositions
+
+The F2 security and audit review keeps these boundaries as implementation evidence rather than independent semantic records:
+
+- host binary copy or removal and install manifests;
+- command flag wiring that only exposes a recorded capability;
+- build-tag credential and filesystem shims implementing one recorded Darwin or Linux behavior;
+- safe path, digest, JSON, error, copy, and atomic-file helpers without an independently observable purpose;
+- persistent socket locks and stale-socket recovery as durability qualities of native supervision;
+- the STAV client package as shared transport evidence rather than a second authority;
+- protocol constants and model structs as evidence for canonical-wire and semantic-validation behavior;
+- tests, fixtures, and Swift lifecycle or protocol helpers as evidence or internals rather than separate application capabilities;
+- operational Keychain access, provider mutual executable trust, secret delivery, credential or lease operations, safeguards, audit-deferred recovery, STAV signed checkpoints or non-repudiation, remote export, automatic rotation or retention, and general repair because those behaviors remain disabled, deferred, or unimplemented.
 
 ## Exclusion Rules
 
@@ -75,7 +94,7 @@ Each registered inventory row must route through `REGISTRY.md`, have an SKVI ent
 4. no unregistered `FEATURES.md`, stale route, missing owner contract, missing SKVI entry, broken relationship, or unresolved semantic-freshness finding remains;
 5. one reviewed change records the exact inventory revision and evidence establishing completeness.
 
-The current inventory satisfies top-level owner-scope routing and the exact F1 nested-review progress recorded above. Other nested feature, subfeature, microfeature, and non-feature adjudication remains incomplete. Therefore the canonical and engine-reported state remains `partial`.
+The current inventory satisfies top-level owner-scope routing and the exact F1 and F2 nested-review progress recorded above. Other nested feature, subfeature, microfeature, and non-feature adjudication remains incomplete. Therefore the canonical and engine-reported state remains `partial`.
 
 ## Non-Authorization Statement
 
