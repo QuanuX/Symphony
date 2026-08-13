@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes forty-three experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes sixty-seven experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -91,8 +91,35 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `libraries/knowledge-vector-engine-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:c31e519f59335ed7e145874795409bbe36a555006f7bf1e18c93afea9952b4ce`
+- record_digest: `sha256:9d5669b210fc3be63d1eae2ccf7bad377df79a9579d2377b18f4e5daf3b4c409`
 - notes: First partial bootstrap record for the implemented authority-free shared C++ mechanics, including canonical STSC Gregorian and UTC representation validation.
+
+- feature_id: `ssfv:symphony:knowledge-vector-engine-foundation.bounded-process-protocol`
+- feature_file: `libraries/knowledge-vector-engine-cpp/FEATURES.md`
+- owner_contract: `libraries/knowledge-vector-engine-cpp/SPEC.md`
+- source_scope: `libraries/knowledge-vector-engine-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:knowledge-vector-engine-foundation`
+- record_digest: `sha256:a9b520d54e4c82877c4529cba9d812dc2e15ff7da6375cc90615c616731ced88`
+- notes: Architect-ratified F3 nested record for bounded deterministic engine-process protocol behavior; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:knowledge-vector-engine-foundation.content-addressed-evidence-snapshots`
+- feature_file: `libraries/knowledge-vector-engine-cpp/FEATURES.md`
+- owner_contract: `libraries/knowledge-vector-engine-cpp/SPEC.md`
+- source_scope: `libraries/knowledge-vector-engine-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:knowledge-vector-engine-foundation`
+- record_digest: `sha256:f8f78501ea292af6cc8f98819c072015920f19b71701e8d79865eecb23650e69`
+- notes: Architect-ratified F3 nested record for no-follow content-addressed evidence snapshots; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:knowledge-vector-engine-foundation.temporal-representation-conformance`
+- feature_file: `libraries/knowledge-vector-engine-cpp/FEATURES.md`
+- owner_contract: `libraries/knowledge-vector-engine-cpp/SPEC.md`
+- source_scope: `libraries/knowledge-vector-engine-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:knowledge-vector-engine-foundation`
+- record_digest: `sha256:dd17771aaf383b03a26c60b5b9de7f3488bccbe6d6dca644ad9cb1fc988fc1eb`
+- notes: Architect-ratified F3 nested record for canonical temporal representation conformance; coverage remains partial and no broader runtime or canonical authority is implied.
 
 - feature_id: `ssfv:symphony:maestro-presence-authority`
 - feature_file: `modules/maestro/FEATURES.md`
@@ -145,7 +172,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:38f4af7c29bf5c853cf94f1148b310acd17b52937a677ad7eb8f8d78cbaba26b`
+- record_digest: `sha256:0a44e8d17d8914cc468a957d59e34bb1d77d1873964b60cf56d50445b5070b40`
 - notes: Architect-ratified F1 nested record for Exact installed knowledge-engine bindings; coverage remains partial and no broader runtime or canonical authority is implied.
 
 - feature_id: `ssfv:symphony:qxctl.governed-validation`
@@ -208,8 +235,44 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sacv-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:30ea222966c890b7da45cbebc3341d0c5ecd1e3e54f8b299f6a77e152ab03895`
+- record_digest: `sha256:c9e2817a941b4c6e36943ea78d510141d64fb2c13df6c8125b8c4337d2fdf94c`
 - notes: Partial-catalog record for bounded read-only SACV API-contract governance behavior.
+
+- feature_id: `ssfv:symphony:sacv-engine.api-contract-conformance`
+- feature_file: `modules/sacv-engine/FEATURES.md`
+- owner_contract: `modules/sacv-engine/SPEC.md`
+- source_scope: `modules/sacv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sacv-engine`
+- record_digest: `sha256:8d425abfcf727a291f71e2c4bee05db30f1cd89fa1409324bdeeb60c3f220a42`
+- notes: Architect-ratified F3 nested record for registered OpenAPI contract conformance; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:sacv-engine.contract-inventory-projection`
+- feature_file: `modules/sacv-engine/FEATURES.md`
+- owner_contract: `modules/sacv-engine/SPEC.md`
+- source_scope: `modules/sacv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sacv-engine`
+- record_digest: `sha256:ea0c7675b59fb152538cc476f0a467187570ac4dbbdd4147eb99a184fdc72e57`
+- notes: Architect-ratified F3 nested record for a rebuildable API contract inventory; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:sacv-engine.contract-registration-proposal`
+- feature_file: `modules/sacv-engine/FEATURES.md`
+- owner_contract: `modules/sacv-engine/SPEC.md`
+- source_scope: `modules/sacv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sacv-engine`
+- record_digest: `sha256:042c13f44a424ce8197db9208c7fd49bac7f2b875be44c92dbd33b6ccbd4ea46`
+- notes: Architect-ratified F3 nested record for content-addressed API registration proposals; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:sacv-engine.openapi-compatibility-evidence`
+- feature_file: `modules/sacv-engine/FEATURES.md`
+- owner_contract: `modules/sacv-engine/SPEC.md`
+- source_scope: `modules/sacv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sacv-engine`
+- record_digest: `sha256:7e50a78ac6d732c6b2fbfae9402c97eea487e1a59c7c377aa2aa736aebe65b6c`
+- notes: Architect-ratified F3 nested record for bounded OpenAPI compatibility evidence; coverage remains partial and no broader runtime or canonical authority is implied.
 
 - feature_id: `ssfv:symphony:sclv-engine`
 - feature_file: `modules/sclv-engine/FEATURES.md`
@@ -217,8 +280,53 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sclv-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:d75de6d50edef708c273e859de397893b2adb6b87ff456fad0d62464880cf8ca`
+- record_digest: `sha256:a176d14b53adab08034965e2a3cbe5f279cefc31bcf988a30ef0d8058080e5a1`
 - notes: Partial-catalog record for bounded read-only SCLV change-truth governance behavior.
+
+- feature_id: `ssfv:symphony:sclv-engine.append-only-ledger-assurance`
+- feature_file: `modules/sclv-engine/FEATURES.md`
+- owner_contract: `modules/sclv-engine/SPEC.md`
+- source_scope: `modules/sclv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sclv-engine`
+- record_digest: `sha256:52e3c1cf4c3145a72bb17b375842369262fc907a8a2a78116be0ff9e2192b35b`
+- notes: Architect-ratified F3 nested record for append-only change-ledger assurance; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:sclv-engine.disposable-provider-neutral-history`
+- feature_file: `modules/sclv-engine/FEATURES.md`
+- owner_contract: `modules/sclv-engine/SPEC.md`
+- source_scope: `modules/sclv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sclv-engine`
+- record_digest: `sha256:9b25a1a1cdf8865fb9ee9e0ee2e750206fcea35d75a730a07685049d4ac74fff`
+- notes: Architect-ratified F3 nested record for a disposable provider-neutral change-history projection; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:sclv-engine.evidence-bound-append-proposals`
+- feature_file: `modules/sclv-engine/FEATURES.md`
+- owner_contract: `modules/sclv-engine/SPEC.md`
+- source_scope: `modules/sclv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sclv-engine`
+- record_digest: `sha256:595f2ccf0bb49d624931a559f3440e022066a3b67c7ead9b52fa55bda5981496`
+- notes: Architect-ratified F3 nested record for evidence-bound SCLV append proposals; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:sclv-engine.forward-only-closure-recovery`
+- feature_file: `modules/sclv-engine/FEATURES.md`
+- owner_contract: `modules/sclv-engine/SPEC.md`
+- source_scope: `modules/sclv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sclv-engine`
+- record_digest: `sha256:64a6aa753c4ae9bee4f103566f83938b6de197ed846c1e470e2adec0272bfb00`
+- notes: Architect-ratified F3 nested record for forward-only interrupted-closure recovery; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:sclv-engine.provider-neutral-evidence-normalization`
+- feature_file: `modules/sclv-engine/FEATURES.md`
+- owner_contract: `modules/sclv-engine/SPEC.md`
+- source_scope: `modules/sclv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sclv-engine`
+- record_digest: `sha256:fa19e3b49c6c34cd552da01b1b163dce6e46d24cb3c4bf90cf0f78dc71dffe5d`
+- notes: Architect-ratified F3 nested record for provider-neutral local-Git and air-gap evidence normalization; coverage remains partial and no broader runtime or canonical authority is implied.
 
 - feature_id: `ssfv:symphony:skvi-engine`
 - feature_file: `modules/skvi-engine/FEATURES.md`
@@ -226,8 +334,35 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/skvi-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:a5530ebd69cf7f364ff993df14992a1219e3d0992381bfeb134d0a3e2b728d99`
+- record_digest: `sha256:cb89dfa3ad4ec4400d2e3ef1b108cbccb102f41c0ee613aac312553d2daf18b2`
 - notes: Partial-catalog record for bounded read-only SKVI routing governance behavior.
+
+- feature_id: `ssfv:symphony:skvi-engine.content-addressed-index-change-proposals`
+- feature_file: `modules/skvi-engine/FEATURES.md`
+- owner_contract: `modules/skvi-engine/SPEC.md`
+- source_scope: `modules/skvi-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:skvi-engine`
+- record_digest: `sha256:729e7ed87d7945b93be320e45907ca78576318e23f727d73f1ff876c2fb26cbf`
+- notes: Architect-ratified F3 nested record for content-addressed SKVI change proposals; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:skvi-engine.disposable-structural-projection`
+- feature_file: `modules/skvi-engine/FEATURES.md`
+- owner_contract: `modules/skvi-engine/SPEC.md`
+- source_scope: `modules/skvi-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:skvi-engine`
+- record_digest: `sha256:9cb53a42eae790bb36c1f06fe7588814edf982d5b9480659c6cec66080803b11`
+- notes: Architect-ratified F3 nested record for a disposable SKVI structural projection; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:skvi-engine.structural-index-assurance`
+- feature_file: `modules/skvi-engine/FEATURES.md`
+- owner_contract: `modules/skvi-engine/SPEC.md`
+- source_scope: `modules/skvi-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:skvi-engine`
+- record_digest: `sha256:09c351ecc7d218aeee76b3f9369c98c65ceee20878a1cb57a752dd3b94bc30c3`
+- notes: Architect-ratified F3 nested record for canonical index structural assurance; coverage remains partial and no broader runtime or canonical authority is implied.
 
 - feature_id: `ssfv:symphony:sodv-engine`
 - feature_file: `modules/sodv-engine/FEATURES.md`
@@ -235,8 +370,53 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sodv-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:624a05a6b051f515b7c901f6f98eef29528867f850caf045ce19c5d1df42be4b`
+- record_digest: `sha256:441de39e7b84f7315ebc37c0cc67c3736679b867c05bc0510f55a4aedbdefde7`
 - notes: Partial-catalog record for bounded read-only SODV release-publication governance behavior.
+
+- feature_id: `ssfv:symphony:sodv-engine.forward-release-record-proposal`
+- feature_file: `modules/sodv-engine/FEATURES.md`
+- owner_contract: `modules/sodv-engine/SPEC.md`
+- source_scope: `modules/sodv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sodv-engine`
+- record_digest: `sha256:b797ba4812fba1de31d3469336cc401cd8c9ea807a4353c68c11413817122e66`
+- notes: Architect-ratified F3 nested record for forward-only release-record proposals; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:sodv-engine.interrupted-publication-reconciliation`
+- feature_file: `modules/sodv-engine/FEATURES.md`
+- owner_contract: `modules/sodv-engine/SPEC.md`
+- source_scope: `modules/sodv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sodv-engine`
+- record_digest: `sha256:076668f893a27bee4e2ec9c1022340c4a5413a73189de5ed035b82a9ffb4e90c`
+- notes: Architect-ratified F3 nested record for interrupted publication reconciliation; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:sodv-engine.observed-publication-verification`
+- feature_file: `modules/sodv-engine/FEATURES.md`
+- owner_contract: `modules/sodv-engine/SPEC.md`
+- source_scope: `modules/sodv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sodv-engine`
+- record_digest: `sha256:7f265627e98145308be5f3b7ebef8025f0bffab01a07749b4e1a86fee564e427`
+- notes: Architect-ratified F3 nested record for caller-observed publication verification; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:sodv-engine.release-ledger-validation`
+- feature_file: `modules/sodv-engine/FEATURES.md`
+- owner_contract: `modules/sodv-engine/SPEC.md`
+- source_scope: `modules/sodv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sodv-engine`
+- record_digest: `sha256:3afc15b5952a1e5f3026495180761ac1b7d5846f13adfc3848b146956e330260`
+- notes: Architect-ratified F3 nested record for append-only release-ledger validation; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:sodv-engine.release-transaction-projection`
+- feature_file: `modules/sodv-engine/FEATURES.md`
+- owner_contract: `modules/sodv-engine/SPEC.md`
+- source_scope: `modules/sodv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sodv-engine`
+- record_digest: `sha256:4b4f58ad687266e33feb00ca7c0a97a9488dd4ac8c0ee5e88dc597e1c2552ea7`
+- notes: Architect-ratified F3 nested record for a rebuildable release-transaction projection; coverage remains partial and no broader runtime or canonical authority is implied.
 
 - feature_id: `ssfv:symphony:ssfv-engine`
 - feature_file: `modules/ssfv-engine/FEATURES.md`
@@ -244,8 +424,44 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/ssfv-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:d3d68409048baff8784665c45d4363c084d14fbfb50ea40ebe74e61d233d789b`
+- record_digest: `sha256:e7faae1c0008cbd373a0a9786a0ebc8cdf3b47c3460d40b273caff1c58c5c0f5`
 - notes: Partial-catalog record for bounded read-only SSFV semantic-feature governance behavior.
+
+- feature_id: `ssfv:symphony:ssfv-engine.catalog-change-proposal`
+- feature_file: `modules/ssfv-engine/FEATURES.md`
+- owner_contract: `modules/ssfv-engine/SPEC.md`
+- source_scope: `modules/ssfv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssfv-engine`
+- record_digest: `sha256:e774c4b836ba10e76e9de72bb09145196be16f91b09b47b0a23e5117c6a87e1e`
+- notes: Architect-ratified F3 nested record for content-addressed semantic-catalog proposals; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:ssfv-engine.catalog-integrity-snapshot`
+- feature_file: `modules/ssfv-engine/FEATURES.md`
+- owner_contract: `modules/ssfv-engine/SPEC.md`
+- source_scope: `modules/ssfv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssfv-engine`
+- record_digest: `sha256:1305843de665b58d039d0428d935d41871f75d53b3c4caf31b74e74e05bdcb38`
+- notes: Architect-ratified F3 nested record for semantic-catalog integrity snapshots; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:ssfv-engine.semantic-freshness-comparison`
+- feature_file: `modules/ssfv-engine/FEATURES.md`
+- owner_contract: `modules/ssfv-engine/SPEC.md`
+- source_scope: `modules/ssfv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssfv-engine`
+- record_digest: `sha256:5c72d2434f507fc64de466314b556c636bc9c176ba64a12b3dfb374ddce4ecc5`
+- notes: Architect-ratified F3 nested record for bounded semantic-freshness comparison; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:ssfv-engine.semantic-graph-projection`
+- feature_file: `modules/ssfv-engine/FEATURES.md`
+- owner_contract: `modules/ssfv-engine/SPEC.md`
+- source_scope: `modules/ssfv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssfv-engine`
+- record_digest: `sha256:390115d0aac23d35d012f268ce5a229238e0d32e964c5facb93436f9716d3a45`
+- notes: Architect-ratified F3 nested record for a portable semantic-feature graph projection; coverage remains partial and no broader runtime or canonical authority is implied.
 
 - feature_id: `ssfv:symphony:ssiag-foundation`
 - feature_file: `modules/secure-identity-access-governance/FEATURES.md`
@@ -432,4 +648,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This forty-three-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide completeness, engine-decided feature-worthiness, or canonical mutation.
+This sixty-seven-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide completeness, engine-decided feature-worthiness, or canonical mutation.

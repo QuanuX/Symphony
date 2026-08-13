@@ -216,10 +216,11 @@
       ],
       "evidence": [
         "tools/qxctl/internal/knowledgebinding/registry_test.go verifies protected compare-and-swap binding state and exact installation identity.",
-        "tools/qxctl/internal/knowledgeengine/client_test.go verifies receipt-v1/v2 dual-read behavior, role closure, and content/digest tamper rejection."
+        "tools/qxctl/internal/knowledgeengine/client_test.go verifies receipt-v1/v2 dual-read behavior, role closure, content/digest tamper rejection, and exact receipt-v2 typed SCLV evidence-adapter resolution.",
+        "tools/qxctl/cmd/qxctl/sclv_test.go verifies adapter identity, exact normalized result fields, nested evidence semantics, evidence digests, and rejection of ratification escalation."
       ],
       "feature_id": "ssfv:symphony:qxctl.engine-bindings",
-      "how": "qxctl validates immutable install receipts and executable digests, stores a no-follow owner-only compare-and-swap registry, preserves receipt-v1/v2 compatibility, and invokes only the exact recorded local process through the bounded engine protocol.",
+      "how": "qxctl validates immutable install receipts and executable digests, stores a no-follow owner-only compare-and-swap registry, preserves receipt-v1/v2 compatibility for main engines, and invokes only the exact recorded local process through the bounded engine protocol. SCLV evidence normalization additionally requires an exact receipt-v2 typed adapter entry point, revalidates the complete package, and validates the adapter response identity, exact field set, nested semantics, whole-second UTC timestamp, and content digest before presentation.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -239,7 +240,7 @@
       "kind": "subfeature",
       "non_claims": [
         "Does not install, uninstall, activate, dock, download, or infer the newest engine version.",
-        "Does not grant permission, establish an authenticated session, or mutate canonical knowledge."
+        "Does not grant permission, establish an authenticated session, decide truth or ratification, mutate canonical knowledge, or apply an adapter result."
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",
@@ -249,13 +250,18 @@
           "rationale": "The binding client invokes engines that implement the common bounded process and receipt contracts.",
           "target_feature_id": "ssfv:symphony:knowledge-vector-engine-foundation",
           "type": "composes_with"
+        },
+        {
+          "rationale": "qxctl invokes the exact receipt-owned SCLV adapter and validates its bounded normalization result without converting source evidence into truth, permission, ratification, or canonical apply authority.",
+          "target_feature_id": "ssfv:symphony:sclv-engine.provider-neutral-evidence-normalization",
+          "type": "composes_with"
         }
       ],
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "Exact installed knowledge-engine bindings",
-      "what": "Binds each closed knowledge-engine role to one exact inactive-undocked installed version and revalidates that installation before every invocation.",
-      "when": "Runs only on explicit binding list, show, set, remove, doctor, or an operation that resolves a bound engine.",
+      "what": "Binds each closed knowledge-engine role to one exact inactive-undocked installed version, revalidates that installation before every invocation, and exposes exact receipt-owned SCLV evidence normalization adapters without adding them as binding roles.",
+      "when": "Runs only on explicit binding list, show, set, remove, doctor, an operation that resolves a bound engine, or explicit SCLV local-Git or air-gap evidence normalization.",
       "where": "Stores noncanonical user-scope state below the configured qxctl state root and executes the selected local installation outside hot and warm paths.",
       "who": "Any caller holding effective target-host permission and using qxctl to administer its protected user-default engine bindings.",
       "why": "Lets independently installed engine versions be selected and swapped without mutable aliases, version-recency inference, or implementation absorption into qxctl."

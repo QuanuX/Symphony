@@ -49,7 +49,7 @@ knowledge/ssfv/
   schemas/v2/
 ```
 
-The current partial catalog distributes forty-three canonical experimental records across the repository root and fourteen implemented owner scopes. Twenty-eight nested F1 and F2 subfeatures are recorded inside six existing owner files; `COVERAGE.md` enumerates that progress, the reviewed macOS adapter no-child disposition, explicit non-feature boundaries, the top-level source universe, and exclusions, `REGISTRY.md` routes every record, and SKVI indexes every owner file. Remaining nested subfeature and microfeature review is not complete.
+The current partial catalog distributes sixty-seven canonical experimental records across the repository root and fourteen implemented owner scopes. Fifty-two nested F1 through F3 subfeatures are recorded inside twelve existing owner files; `COVERAGE.md` enumerates that progress, the reviewed macOS adapter no-child disposition, explicit non-feature boundaries, the top-level source universe, and exclusions, `REGISTRY.md` routes every record, and SKVI indexes every owner file. Remaining nested subfeature and microfeature review is not complete.
 
 ## Record Model
 
@@ -82,8 +82,8 @@ The Go qxctl client validates the exact inactive-undocked receipt and invokes th
 
 ## Non-Authorization Statement
 
-This manifest authorizes the canonical SSFV contract, bounded engine/client implementation, exact forty-three-record partial catalog, explicit owner-scope inventory, ratified F1 and F2 nested-review progress, and protected noncanonical session-maintenance evidence. It does not authorize an unreviewed application `FEATURES.md`, an unratified feature record, repository-wide completeness, canonical apply, repository mutation by SSFV tooling, graph-database persistence, Maestro state mutation by SSFV, public documentation, or marketing claims.
+This manifest authorizes the canonical SSFV contract, bounded engine/client implementation, exact sixty-seven-record partial catalog, explicit owner-scope inventory, ratified F1 through F3 nested-review progress, and protected noncanonical session-maintenance evidence. It does not authorize an unreviewed application `FEATURES.md`, an unratified feature record, repository-wide completeness, canonical apply, repository mutation by SSFV tooling, graph-database persistence, Maestro state mutation by SSFV, public documentation, or marketing claims.
 
 ## Status
 
-Architect-ratified engine implementation and partial catalog. Namespace `symphony` is allocated, exactly forty-three experimental application-feature records exist, and coverage remains explicitly partial pending the remaining nested review.
+Architect-ratified engine implementation and partial catalog. Namespace `symphony` is allocated, exactly sixty-seven experimental application-feature records exist, and coverage remains explicitly partial pending the remaining nested review.

@@ -39,7 +39,7 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 
 ## Ratified Nested Review Progress
 
-The F1 and F2 nested reviews record twenty-eight implemented `subfeature` boundaries inside six already registered owner scopes:
+The F1 through F3 nested reviews record fifty-two implemented `subfeature` boundaries inside twelve already registered owner scopes:
 
 | Owner scope | Ratified nested records | Review disposition |
 |---|---:|---|
@@ -49,6 +49,12 @@ The F1 and F2 nested reviews record twenty-eight implemented `subfeature` bounda
 | `libraries/stav-protocol-go` | 2 | Canonical bytes, digests, and bounded local frames are separated from exact content and identifier validation; durable checksummed ledger framing is explicitly owned by the append authority. |
 | `modules/secure-identity-access-governance` | 7 | TOPS enrollment, kernel peer trust, authorization capabilities, policy administration, provider metadata, safe audit production, and native supervision are registered. |
 | `modules/stav-append-authority` | 5 | TOPS enrollment, serialized append, ledger durability, authorized query, and native supervision are registered. |
+| `libraries/knowledge-vector-engine-cpp` | 3 | Bounded process protocol, content-addressed evidence snapshots, and temporal representation conformance are registered without turning the static foundation into a runtime engine. |
+| `modules/skvi-engine` | 3 | Structural index assurance, content-addressed change proposals, and disposable structural projection are registered. |
+| `modules/sclv-engine` | 5 | Append-only ledger assurance, provider-neutral evidence normalization, evidence-bound append proposals, forward-only closure recovery, and disposable provider-neutral history are registered. |
+| `modules/sacv-engine` | 4 | API-contract conformance, OpenAPI compatibility evidence, contract-registration proposals, and rebuildable contract inventory are registered. |
+| `modules/sodv-engine` | 5 | Release-ledger validation, observed-publication verification, forward release-record proposals, interrupted-publication reconciliation, and rebuildable release-transaction projection are registered. |
+| `modules/ssfv-engine` | 4 | Catalog-integrity snapshots, semantic-freshness comparison, catalog-change proposals, and portable semantic-graph projection are registered. |
 
 The existing macOS Keychain metadata adapter remains one narrow registered subfeature with no child record. Its corrected record states that the Go SSIAG foundation and qxctl do not invoke the Swift executable and that operational trust, provider execution, Keychain access, and secret delivery remain unimplemented.
 
@@ -67,6 +73,19 @@ The F2 security and audit review keeps these boundaries as implementation eviden
 - protocol constants and model structs as evidence for canonical-wire and semantic-validation behavior;
 - tests, fixtures, and Swift lifecycle or protocol helpers as evidence or internals rather than separate application capabilities;
 - operational Keychain access, provider mutual executable trust, secret delivery, credential or lease operations, safeguards, audit-deferred recovery, STAV signed checkpoints or non-repudiation, remote export, automatic rotation or retention, and general repair because those behaviors remain disabled, deferred, or unimplemented.
+
+## F3 Explicit Non-Feature Dispositions
+
+The F3 shared-foundation and knowledge-engine review keeps these boundaries as implementation evidence or facets of the registered records rather than independent semantic records:
+
+- foundation SHA-256 rounds, JSON aliases, stable-error types, limit constants, file-descriptor RAII, string sanitization, vendored dependencies, and individual conformance cases;
+- engine `inspect`, descriptors, main-process wrappers, diagnostic flags, error emission, exit-status mapping, and operation dispatch;
+- Markdown parsers, field detectors, trimming, scalar/list rendering, digest helpers, counters, individual finding codes, and per-rule validation branches;
+- CMake targets, receipt generation, install/uninstall mechanics, licenses, tests, and fixtures as packaging or evidence rather than new semantic purposes;
+- individual SKVI add/replace/remove choices, SCLV recovery outcomes, SODV observation states, or freshness modes when those choices are bounded variants of one registered capability;
+- local-Git and air-gap adapters as separate records because their feature-worthy outcome is the shared provider-neutral evidence-normalization boundary;
+- schemas, templates, legacy-normalization branches, compatibility-model helpers, and projection encoders as contract or implementation evidence for the registered engine behaviors;
+- speculative JSONL, search-index, graph-database, endpoint, publication, provider-network, persistent-projection, canonical-apply, or semantic-decision behavior that is not implemented.
 
 ## Exclusion Rules
 
@@ -94,7 +113,7 @@ Each registered inventory row must route through `REGISTRY.md`, have an SKVI ent
 4. no unregistered `FEATURES.md`, stale route, missing owner contract, missing SKVI entry, broken relationship, or unresolved semantic-freshness finding remains;
 5. one reviewed change records the exact inventory revision and evidence establishing completeness.
 
-The current inventory satisfies top-level owner-scope routing and the exact F1 and F2 nested-review progress recorded above. Other nested feature, subfeature, microfeature, and non-feature adjudication remains incomplete. Therefore the canonical and engine-reported state remains `partial`.
+The current inventory satisfies top-level owner-scope routing and the exact F1 through F3 nested-review progress recorded above. Other nested feature, subfeature, microfeature, and non-feature adjudication remains incomplete. Therefore the canonical and engine-reported state remains `partial`.
 
 ## Non-Authorization Statement
 

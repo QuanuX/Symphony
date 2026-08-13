@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"testing"
 )
@@ -95,4 +97,126 @@ func TestPrintSCLVResultRejectsInvalidPlainCheck(t *testing.T) {
 	if err := printSCLVResult("check", result); err == nil {
 		t.Fatal("plain invalid SCLV check did not return an error")
 	}
+}
+
+func TestValidateSCLVEvidenceResultBindsAdapterSemanticsAndDigest(t *testing.T) {
+	local := sclvEvidenceFixture(t, "local-git")
+	result, err := validateSCLVEvidenceResult("local-git", "0.1.0-dev", local)
+	if err != nil {
+		t.Fatalf("valid local-Git evidence rejected: %v", err)
+	}
+	if result.ProviderNamespace != "local-git" || result.EvidenceKind != "revision" {
+		t.Fatalf("unexpected local-Git evidence: %+v", result)
+	}
+
+	airgap := sclvEvidenceFixture(t, "airgap")
+	if _, err := validateSCLVEvidenceResult("airgap", "0.1.0-dev", airgap); err != nil {
+		t.Fatalf("valid air-gap evidence rejected: %v", err)
+	}
+	if _, err := validateSCLVEvidenceResult("local-git", "0.1.0-dev", airgap); err == nil {
+		t.Fatal("air-gap evidence was accepted as local-Git evidence")
+	}
+
+	var tampered map[string]any
+	if err := json.Unmarshal(local, &tampered); err != nil {
+		t.Fatal(err)
+	}
+	tampered["source_reference"] = "changed after normalization"
+	encoded, err := json.Marshal(tampered)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := validateSCLVEvidenceResult("local-git", "0.1.0-dev", encoded); err == nil {
+		t.Fatal("provider evidence with a stale digest was accepted")
+	}
+
+	tampered = nil
+	if err := json.Unmarshal(local, &tampered); err != nil {
+		t.Fatal(err)
+	}
+	tampered["canonical"] = true
+	encoded, err = json.Marshal(tampered)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := validateSCLVEvidenceResult("local-git", "0.1.0-dev", encoded); err == nil {
+		t.Fatal("provider evidence claiming an extra canonical field was accepted")
+	}
+}
+
+func TestValidateSCLVEvidenceResultRejectsRatificationEscalation(t *testing.T) {
+	var value map[string]any
+	if err := json.Unmarshal(sclvEvidenceFixture(t, "local-git"), &value); err != nil {
+		t.Fatal(err)
+	}
+	value["ratification"] = map[string]any{
+		"state": "asserted", "subject": "architect", "effective_permission": "ratify",
+		"method": "fixture", "evidence_reference": "fixture:1",
+		"evidence_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+		"absence_reason":  "not_applicable",
+	}
+	delete(value, "evidence_digest")
+	canonical, err := marshalDigestCanonical(value)
+	if err != nil {
+		t.Fatal(err)
+	}
+	digest := sha256.Sum256(canonical)
+	value["evidence_digest"] = "sha256:" + hex.EncodeToString(digest[:])
+	encoded, err := json.Marshal(value)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := validateSCLVEvidenceResult("local-git", "0.1.0-dev", encoded); err == nil {
+		t.Fatal("local-Git normalization that asserted ratification was accepted")
+	}
+}
+
+func sclvEvidenceFixture(t *testing.T, adapter string) json.RawMessage {
+	t.Helper()
+	changeRequest := map[string]any{
+		"state": "not_applicable", "provider": "not_applicable", "id": "not_applicable",
+		"reference": "not_applicable", "absence_reason": "no change request in this evidence",
+	}
+	ratification := map[string]any{
+		"state": "not_asserted", "subject": "not_applicable",
+		"effective_permission": "not_applicable", "method": "not_applicable",
+		"evidence_reference": "not_applicable", "evidence_digest": "not_applicable",
+		"absence_reason": "this evidence does not assert ratification",
+	}
+	adapterID, provider, kind := "symphony-sclv-evidence-local-git", "local-git", "revision"
+	if adapter == "airgap" {
+		adapterID, provider, kind = "symphony-sclv-evidence-airgap", "airgap", "combined"
+		changeRequest = map[string]any{
+			"state": "present", "provider": "gitlab", "id": "change-42",
+			"reference": "gitlab:change-42", "absence_reason": "not_applicable",
+		}
+		ratification = map[string]any{
+			"state": "asserted", "subject": "architect", "effective_permission": "ratify",
+			"method": "airgap-record", "evidence_reference": "airgap:record-1",
+			"evidence_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+			"absence_reason":  "not_applicable",
+		}
+	}
+	value := map[string]any{
+		"protocol": "symphony.knowledge.provider-evidence.v1", "adapter_id": adapterID,
+		"adapter_version": "0.1.0-dev", "provider_namespace": provider,
+		"evidence_kind": kind, "observed_at": "2026-08-12T12:00:00Z",
+		"source_reference": "fixture:<source>&bounded",
+		"repository": map[string]any{
+			"revision_scheme": "git-sha1", "revision_value": "1111111111111111111111111111111111111111",
+			"tree_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+		},
+		"change_request": changeRequest, "ratification": ratification,
+	}
+	canonical, err := marshalDigestCanonical(value)
+	if err != nil {
+		t.Fatal(err)
+	}
+	digest := sha256.Sum256(canonical)
+	value["evidence_digest"] = "sha256:" + hex.EncodeToString(digest[:])
+	encoded, err := json.Marshal(value)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return encoded
 }

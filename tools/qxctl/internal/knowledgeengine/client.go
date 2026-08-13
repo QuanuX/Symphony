@@ -21,32 +21,35 @@ import (
 )
 
 const (
-	processProtocol   = "symphony.knowledge.engine-process.v1"
-	receiptProtocol   = "symphony.knowledge.install-receipt.v1"
-	receiptProtocolV2 = "symphony.knowledge.install-receipt.v2"
-	moduleID          = "skvi-engine"
-	engineID          = "symphony-skvi"
-	sclvModuleID      = "sclv-engine"
-	sclvEngineID      = "symphony-sclv"
-	sacvModuleID      = "sacv-engine"
-	sacvEngineID      = "symphony-sacv"
-	sodvModuleID      = "sodv-engine"
-	sodvEngineID      = "symphony-sodv"
-	ssfvModuleID      = "ssfv-engine"
-	ssfvEngineID      = "symphony-ssfv"
-	maestroModuleID   = "maestro"
-	maestroEngineID   = "symphony-maestro"
-	validatorModuleID = "symphony-validator"
-	validatorEngineID = "symphony-validator"
-	sessionModuleID   = "knowledge-session-coordinator"
-	sessionEngineID   = "symphony-knowledge-session"
-	maxReceiptBytes   = 256 * 1024
-	maxRequestBytes   = 1024 * 1024
-	maxResponseBytes  = 4 * 1024 * 1024
-	maxJSONDepth      = 64
-	maxJSONValues     = 16384
-	maxStringBytes    = 65536
-	operationTimeout  = 5 * time.Second
+	processProtocol          = "symphony.knowledge.engine-process.v1"
+	receiptProtocol          = "symphony.knowledge.install-receipt.v1"
+	receiptProtocolV2        = "symphony.knowledge.install-receipt.v2"
+	moduleID                 = "skvi-engine"
+	engineID                 = "symphony-skvi"
+	sclvModuleID             = "sclv-engine"
+	sclvEngineID             = "symphony-sclv"
+	sacvModuleID             = "sacv-engine"
+	sacvEngineID             = "symphony-sacv"
+	sodvModuleID             = "sodv-engine"
+	sodvEngineID             = "symphony-sodv"
+	ssfvModuleID             = "ssfv-engine"
+	ssfvEngineID             = "symphony-ssfv"
+	sclvLocalGitID           = "symphony-sclv-evidence-local-git"
+	sclvAirgapID             = "symphony-sclv-evidence-airgap"
+	providerEvidenceProtocol = "symphony.knowledge.provider-evidence.v1"
+	maestroModuleID          = "maestro"
+	maestroEngineID          = "symphony-maestro"
+	validatorModuleID        = "symphony-validator"
+	validatorEngineID        = "symphony-validator"
+	sessionModuleID          = "knowledge-session-coordinator"
+	sessionEngineID          = "symphony-knowledge-session"
+	maxReceiptBytes          = 256 * 1024
+	maxRequestBytes          = 1024 * 1024
+	maxResponseBytes         = 4 * 1024 * 1024
+	maxJSONDepth             = 64
+	maxJSONValues            = 16384
+	maxStringBytes           = 65536
+	operationTimeout         = 5 * time.Second
 )
 
 type engineSpec struct {
@@ -223,6 +226,36 @@ func InvokeSCLV(ctx context.Context, prefix, version, repositoryRoot, operation 
 	return invoke(ctx, sclvSpec, prefix, version, repositoryRoot, operation, payload)
 }
 
+// InvokeSCLVEvidence executes one exact receipt-v2-declared SCLV evidence
+// adapter. The adapter normalizes caller/provider evidence only; qxctl does not
+// convert a successful normalization into truth, permission, or ratification.
+func InvokeSCLVEvidence(
+	ctx context.Context,
+	prefix, version, repositoryRoot, adapter string,
+	payload []byte,
+) (Response, error) {
+	var spec engineSpec
+	switch adapter {
+	case "local-git":
+		spec = engineSpec{label: "SCLV local-Git evidence adapter", engineID: sclvLocalGitID}
+	case "airgap":
+		spec = engineSpec{label: "SCLV air-gapped evidence adapter", engineID: sclvAirgapID}
+	default:
+		return Response{}, fmt.Errorf("unsupported SCLV evidence adapter %q", adapter)
+	}
+	if !safeVersion(version) {
+		return Response{}, fmt.Errorf("invalid %s version", spec.label)
+	}
+	if err := validateJSONObject(payload, maxRequestBytes); err != nil {
+		return Response{}, fmt.Errorf("invalid %s operation payload: %w", spec.label, err)
+	}
+	binary, err := resolveSCLVEvidenceAdapter(prefix, version, spec.engineID)
+	if err != nil {
+		return Response{}, err
+	}
+	return invokeResolved(ctx, spec, binary, version, repositoryRoot, "normalize", payload)
+}
+
 func InvokeSACV(ctx context.Context, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
 	return invoke(ctx, sacvSpec, prefix, version, repositoryRoot, operation, payload)
 }
@@ -327,10 +360,20 @@ func invoke(ctx context.Context, spec engineSpec, prefix, version, repositoryRoo
 	if err != nil {
 		return Response{}, err
 	}
-	repositoryRoot, err = canonicalDirectory(repositoryRoot, "repository root")
+	return invokeResolved(ctx, spec, binary, version, repositoryRoot, operation, payload)
+}
+
+func invokeResolved(
+	ctx context.Context,
+	spec engineSpec,
+	binary, version, repositoryRoot, operation string,
+	payload []byte,
+) (Response, error) {
+	canonicalRepositoryRoot, err := canonicalDirectory(repositoryRoot, "repository root")
 	if err != nil {
 		return Response{}, err
 	}
+	repositoryRoot = canonicalRepositoryRoot
 
 	requestID, err := randomToken()
 	if err != nil {
@@ -527,6 +570,65 @@ func resolveInstalledFor(spec engineSpec, prefix, version string) (string, error
 	info, err := os.Lstat(binary)
 	if err != nil || info.Mode()&os.ModeSymlink != 0 || !info.Mode().IsRegular() || info.Mode().Perm()&0o111 == 0 {
 		return "", fmt.Errorf("%s installed engine is not a no-follow executable regular file", spec.label)
+	}
+	return binary, nil
+}
+
+func resolveSCLVEvidenceAdapter(prefix, version, adapterID string) (string, error) {
+	if adapterID != sclvLocalGitID && adapterID != sclvAirgapID {
+		return "", fmt.Errorf("unsupported SCLV evidence adapter identity")
+	}
+	canonicalPrefix, err := canonicalDirectory(prefix, "installation prefix")
+	if err != nil {
+		return "", err
+	}
+	// Validate the complete package before trusting any auxiliary entry point.
+	// This binds the adapter to the same immutable receipt as the main SCLV
+	// engine instead of treating an executable found under the prefix as enough.
+	if _, err := resolveInstalledFor(sclvSpec, canonicalPrefix, version); err != nil {
+		return "", err
+	}
+	receiptRelative := filepath.ToSlash(filepath.Join(
+		"share", "symphony", "receipts", sclvModuleID, version, "install-receipt.json"))
+	receiptBytes, err := readTrustedNoFollowRelative(canonicalPrefix, receiptRelative, maxReceiptBytes)
+	if err != nil {
+		return "", fmt.Errorf("read validated SCLV receipt: %w", err)
+	}
+	var header struct {
+		Protocol string `json:"protocol"`
+	}
+	if err := json.Unmarshal(receiptBytes, &header); err != nil {
+		return "", fmt.Errorf("decode SCLV receipt protocol: %w", err)
+	}
+	if header.Protocol != receiptProtocolV2 {
+		return "", fmt.Errorf("SCLV evidence adapters require a receipt-v2 typed entry point")
+	}
+	mainRelative := filepath.ToSlash(filepath.Join(
+		"libexec", "symphony", sclvModuleID, version, sclvEngineID))
+	if _, err := resolveInstalledV2(sclvSpec, canonicalPrefix, version, receiptBytes, mainRelative); err != nil {
+		return "", err
+	}
+	var installed receiptV2
+	if err := decodeExact(receiptBytes, &installed); err != nil {
+		return "", fmt.Errorf("decode SCLV receipt-v2: %w", err)
+	}
+	adapterRelative := filepath.ToSlash(filepath.Join(
+		"libexec", "symphony", sclvModuleID, version, adapterID))
+	matched := false
+	for _, entry := range installed.EntryPoints {
+		if entry.EntryPointID == adapterID && entry.Kind == "adapter" &&
+			entry.Path == adapterRelative && containsExact(entry.Protocols, providerEvidenceProtocol) {
+			matched = true
+			break
+		}
+	}
+	if !matched {
+		return "", fmt.Errorf("SCLV receipt-v2 lacks the exact %s provider-evidence entry point", adapterID)
+	}
+	binary := filepath.Join(canonicalPrefix, filepath.FromSlash(adapterRelative))
+	info, err := os.Lstat(binary)
+	if err != nil || info.Mode()&os.ModeSymlink != 0 || !info.Mode().IsRegular() || info.Mode().Perm()&0o111 == 0 {
+		return "", fmt.Errorf("SCLV evidence adapter is not a no-follow executable regular file")
 	}
 	return binary, nil
 }
