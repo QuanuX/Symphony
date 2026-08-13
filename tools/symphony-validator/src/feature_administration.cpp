@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cctype>
 #include <filesystem>
 #include <initializer_list>
 #include <map>
@@ -33,6 +34,7 @@ constexpr std::size_t maximum_features = 8192U;
 constexpr std::size_t maximum_commands = 1024U;
 constexpr std::size_t maximum_expectations = 10U;
 constexpr std::size_t maximum_references = 256U;
+constexpr std::size_t maximum_modules = 1024U;
 
 using Json = engine::Json;
 
@@ -209,6 +211,186 @@ struct ProfileEvidence {
     std::set<std::string> command_references;
     std::size_t unreviewed = 0U;
 };
+
+struct ModuleCensus {
+    std::vector<std::string> implemented_scopes;
+    std::size_t documentation_only = 0U;
+};
+
+bool safe_module_name(const std::string& name) {
+    return !name.empty() && name.size() <= 256U &&
+        std::isalnum(static_cast<unsigned char>(name.front())) &&
+        std::all_of(name.begin(), name.end(), [](const unsigned char character) {
+            return std::isalnum(character) || character == '.' || character == '_' || character == '-';
+        });
+}
+
+bool implementation_marker(
+    const fs::path& path,
+    const bool directory,
+    const std::string& relative,
+    FeatureAdministrationCheckResult& result) {
+    std::error_code error;
+    const auto status = fs::symlink_status(path, error);
+    if (error || status.type() == fs::file_type::not_found) {
+        return false;
+    }
+    if (status.type() == fs::file_type::symlink ||
+        (directory && status.type() != fs::file_type::directory) ||
+        (!directory && status.type() != fs::file_type::regular)) {
+        finding(result, EvidenceCategory::Violation, "feature_administration.module_admission",
+            "scope=" + relative.substr(0U, relative.find_last_of('/')) +
+            " marker=" + relative + " reason=unsafe_implementation_marker");
+        return true;
+    }
+    return true;
+}
+
+ModuleCensus module_census(
+    const fs::path& root,
+    FeatureAdministrationCheckResult& result) {
+    ModuleCensus census;
+    std::error_code error;
+    const auto modules_status = fs::symlink_status(root / "modules", error);
+    if (error || modules_status.type() == fs::file_type::not_found) {
+        return census;
+    }
+    if (modules_status.type() != fs::file_type::directory) {
+        finding(result, EvidenceCategory::Violation, "feature_administration.module_admission",
+            "scope=modules reason=unsafe_module_root");
+        return census;
+    }
+    std::vector<fs::path> entries;
+    fs::directory_iterator iterator(root / "modules", error);
+    const fs::directory_iterator end;
+    while (!error && iterator != end) {
+        if (entries.size() >= maximum_modules) {
+            finding(result, EvidenceCategory::Violation, "feature_administration.module_admission",
+                "scope=modules reason=module_count_limit");
+            return census;
+        }
+        entries.push_back(iterator->path());
+        iterator.increment(error);
+    }
+    if (error) {
+        finding(result, EvidenceCategory::Violation, "feature_administration.module_admission",
+            "scope=modules reason=discovery_failed");
+        return census;
+    }
+    std::sort(entries.begin(), entries.end());
+    for (const auto& path : entries) {
+        const auto name = path.filename().string();
+        const auto scope = "modules/" + name;
+        const auto status = fs::symlink_status(path, error);
+        if (error || status.type() == fs::file_type::symlink) {
+            finding(result, EvidenceCategory::Violation, "feature_administration.module_admission",
+                "scope=" + scope + " reason=unsafe_module_entry");
+            error.clear();
+            continue;
+        }
+        if (status.type() != fs::file_type::directory) {
+            continue;
+        }
+        if (!safe_module_name(name)) {
+            finding(result, EvidenceCategory::Violation, "feature_administration.module_admission",
+                "scope=" + scope + " reason=unsafe_module_name");
+            continue;
+        }
+        bool implemented = false;
+        for (const auto* marker : {"CMakeLists.txt", "go.mod", "Package.swift"}) {
+            implemented = implementation_marker(path / marker, false, scope + "/" + marker, result) ||
+                implemented;
+        }
+        for (const auto* marker : {"src", "cmd", "Sources"}) {
+            implemented = implementation_marker(path / marker, true, scope + "/" + marker, result) ||
+                implemented;
+        }
+        if (implemented) {
+            census.implemented_scopes.push_back(scope);
+        } else {
+            ++census.documentation_only;
+        }
+    }
+    return census;
+}
+
+std::optional<std::string> backtick_value(
+    const std::string& line,
+    const std::string_view prefix) {
+    if (!line.starts_with(prefix) || line.size() <= prefix.size() || line.back() != '`') {
+        return std::nullopt;
+    }
+    return line.substr(prefix.size(), line.size() - prefix.size() - 1U);
+}
+
+struct RegistryRoute {
+    std::string feature_id;
+    std::string feature_file;
+};
+
+std::map<std::string, std::vector<RegistryRoute>> registry_module_routes(
+    const std::string& contents) {
+    constexpr std::string_view feature_prefix = "- feature_id: `";
+    constexpr std::string_view file_prefix = "- feature_file: `";
+    constexpr std::string_view scope_prefix = "- source_scope: `";
+    std::map<std::string, std::vector<RegistryRoute>> routes;
+    std::istringstream input(contents);
+    std::string line;
+    std::string feature_id;
+    std::string feature_file;
+    while (std::getline(input, line)) {
+        if (const auto value = backtick_value(line, feature_prefix)) {
+            feature_id = *value;
+            feature_file.clear();
+        } else if (const auto value = backtick_value(line, file_prefix)) {
+            feature_file = *value;
+        } else if (const auto value = backtick_value(line, scope_prefix)) {
+            if (!feature_id.empty() && !feature_file.empty() && value->starts_with("modules/")) {
+                routes[*value].push_back(RegistryRoute{feature_id, feature_file});
+            }
+        }
+    }
+    return routes;
+}
+
+void check_module_admission(
+    const fs::path& root,
+    const ModuleCensus& census,
+    const std::string& registry_contents,
+    const ProfileEvidence& profile,
+    FeatureAdministrationCheckResult& result) {
+    const auto routes = registry_module_routes(registry_contents);
+    const std::set<std::string> profile_ids(profile.feature_ids.begin(), profile.feature_ids.end());
+    for (const auto& scope : census.implemented_scopes) {
+        const auto feature_file = scope + "/FEATURES.md";
+        if (!bounded_read(root, feature_file, result)) {
+            finding(result, EvidenceCategory::Violation, "feature_administration.module_admission",
+                "scope=" + scope + " reason=features_missing");
+        }
+        const auto found = routes.find(scope);
+        bool exact_route = false;
+        bool profile_entry = false;
+        if (found != routes.end()) {
+            for (const auto& route : found->second) {
+                if (route.feature_file == feature_file) {
+                    exact_route = true;
+                    profile_entry = profile_entry || profile_ids.contains(route.feature_id);
+                }
+            }
+        }
+        if (!exact_route) {
+            finding(result, EvidenceCategory::Violation, "feature_administration.module_admission",
+                "scope=" + scope + " reason=registry_route_missing");
+        }
+        if (!profile_entry) {
+            finding(result, EvidenceCategory::Violation, "feature_administration.module_admission",
+                "scope=" + scope + " reason=profile_mapping_missing");
+        }
+    }
+    finding(result, EvidenceCategory::Pass, "feature_administration.module_admission",
+        "implemented=" + std::to_string(census.implemented_scopes.size()) +
+        " documentation_only=" + std::to_string(census.documentation_only));
+}
 
 ProfileEvidence check_profile(
     const Json& profile,
@@ -465,6 +647,7 @@ FeatureAdministrationCheckResult check_feature_administration(const std::string&
             "path=. code=root_unreadable");
         return result;
     }
+    const auto census = module_census(root, result);
     const std::array<std::string, 3> paths = {
         std::string(profile_path), std::string(feature_registry_path), std::string(command_registry_path),
     };
@@ -474,6 +657,13 @@ FeatureAdministrationCheckResult check_feature_administration(const std::string&
         return !status_error && status.type() != fs::file_type::not_found;
     });
     if (present == 0) {
+        for (const auto& scope : census.implemented_scopes) {
+            finding(result, EvidenceCategory::Violation, "feature_administration.module_admission",
+                "scope=" + scope + " reason=administration_surfaces_absent");
+        }
+        if (!census.implemented_scopes.empty()) {
+            return result;
+        }
         finding(result, EvidenceCategory::Absent, "feature_administration.absent",
             "profile=false commands=false registry=false");
         return result;
@@ -502,6 +692,7 @@ FeatureAdministrationCheckResult check_feature_administration(const std::string&
     }
     const auto registry_ids = registry_feature_ids(*registry_contents, result);
     const auto profile_evidence = check_profile(*profile, registry_ids, *registry_contents, result);
+    check_module_admission(root, census, *registry_contents, profile_evidence, result);
     result.features_checked = profile_evidence.feature_ids.size();
     result.unreviewed_features = profile_evidence.unreviewed;
     const std::set<std::string> registered_features(registry_ids.begin(), registry_ids.end());

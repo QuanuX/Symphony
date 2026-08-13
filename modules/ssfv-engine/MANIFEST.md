@@ -15,7 +15,7 @@ The engine implements `knowledge/ssfv/` and the common knowledge-engine process/
 
 ## Operations
 
-`inspect`, `check`, `diff`, `propose`, `graph`, and read-only `administration-check` are implemented. `apply`, feature bootstrap, listener, session mutation, activation, and docking operations are disabled. Descriptor v2 publishes stable engine-operation IDs from the same registry used for dispatch while descriptor v1 remains compatible.
+`inspect`, `check`, `diff`, `propose`, `graph`, and read-only `administration-check` are implemented. `apply`, feature bootstrap, listener, session mutation, activation, and docking operations are disabled. Descriptor v2 publishes stable engine-operation IDs from the same registry used for dispatch and an exact 65,536-value process bound for complete administration envelopes, while descriptor v1 remains byte-for-byte compatible.
 
 ## Installation
 

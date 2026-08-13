@@ -122,11 +122,11 @@
         }
       ],
       "evidence": [
-        "libraries/knowledge-vector-engine-cpp/tests/foundation_test.cpp verifies strict JSON limits, duplicate-key and invalid-value rejection, target and deadline checks, stable errors, response digests, and newline-terminated compact output.",
+        "libraries/knowledge-vector-engine-cpp/tests/foundation_test.cpp verifies the strict shared JSON defaults, explicit finite per-engine value-count override, duplicate-key and invalid-value rejection, target and deadline checks, stable errors, response digests, and newline-terminated compact output.",
         "knowledge/schemas/v1/engine-process-request.schema.json and knowledge/schemas/v1/engine-process-response.schema.json define the canonical envelopes implemented by the foundation."
       ],
       "feature_id": "ssfv:symphony:knowledge-vector-engine-foundation.bounded-process-protocol",
-      "how": "Parses one size-bounded strict JSON request, rejects unknown or duplicate fields and unsafe scalar forms, validates target identity and a caller-supplied deadline, and emits one bounded compact success or stable-error response whose digest covers the canonical response before digest insertion.",
+      "how": "Parses one size-bounded strict JSON request under the unchanged shared defaults or an explicitly supplied finite engine value-count limit, rejects unknown or duplicate fields and unsafe scalar forms, validates target identity and a caller-supplied deadline, and emits one bounded compact success or stable-error response whose digest covers the canonical response before digest insertion.",
       "implementation_languages": [
         {
           "language": "C++26",

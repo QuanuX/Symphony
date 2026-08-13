@@ -9,6 +9,10 @@ Any caller operating within its effective target-host permission should use `qxc
 - `go run ./cmd/qxctl commands expected --json`
 - `go run ./cmd/qxctl commands verify --input COMMANDS.json --json`
 - `go run ./cmd/qxctl commands manifest --json`
+- `go run ./cmd/qxctl knowledge invariant status --json`
+- `go run ./cmd/qxctl knowledge invariant list --json`
+- `go run ./cmd/qxctl knowledge invariant show --invariant-id invariant:symphony:foundation.audit-closure --json`
+- `go run ./cmd/qxctl knowledge invariant check --prefix /chosen/prefix --json`
 - `go run ./cmd/qxctl inventory digest`
 - `go run ./cmd/qxctl modules check`
 - `go run ./cmd/qxctl ssiag doctor --tops-id UUID`
@@ -67,6 +71,7 @@ Any caller operating within its effective target-host permission should use `qxc
 - Use the Go standard library, ratified first-party Go libraries, and only their approved cgo-free platform dependencies.
 - Treat Cobra as the command grammar and Viper only as a private, explicitly bound command-configuration mapper. Do not enable `AutomaticEnv`, configuration-file discovery, remote providers, watch/reload, or write-back.
 - Treat stable command IDs and attached `CommandSpec` data as ratified protocol evidence. Preserve the command's qxctl wrapper binding and add reviewed backend feature/interaction bindings only through `reviewedBackendFeatureBindings` in `cmd/qxctl/command_specs.go`; never fabricate a binding for a route that does not exist. Generate `COMMANDS.json` only with `commands expected`, verify it before review, and use `commands manifest` only for exact executable-bound observation. Never hand-edit the projection, infer identities or engine-operation IDs, or let any proposal bypass feature and command ratification.
+- Use `knowledge invariant status|list|show` for bounded structural projection of the canonical common registry. Validate the `symphony.knowledge.invariant-query-result.v1` result digest and retain `semantic_validity=not_asserted`; a direct query is not evidence that referenced implementation or regression tests pass. Use `knowledge invariant check` with one exact installed validator for the complete repository check, preserve the returned `symphony.validation.result.v1` and exit 26, and never filter the invocation to invariant-only evidence. Do not edit the registry, manufacture ownership, duplicate domain rules, apply remediation, or treat any of these read-only freezing-path commands as canonical apply.
 - Keep SSIAG/STAV trust configuration and endpoint authentication outside Viper in their dedicated clients.
 - Run commands synchronously in the active execution session.
 - SSIAG commands may read safe metadata and request exact audited authorization decisions. Treat every capability as non-transferable evidence for its bound operation, never a bearer token or canonical apply authority. Never pass secret values through qxctl arguments, input, output, logs, or fixtures.
@@ -109,13 +114,15 @@ Any caller operating within its effective target-host permission should use `qxc
 1. `go run ./cmd/qxctl doctor`
 2. `go run ./cmd/qxctl contracts`
 3. `go run ./cmd/qxctl modules check`
-4. `go run ./cmd/qxctl inventory digest`
-5. `go run ./cmd/qxctl status`
-6. `go run ./cmd/qxctl ssiag doctor --tops-id UUID` when the selected SSIAG enrollment is running
-7. `go run ./cmd/qxctl stav doctor --tops-id UUID` when the selected STAV enrollment is running
-8. `go run ./cmd/qxctl knowledge engines doctor`
-9. `go run ./cmd/qxctl knowledge reconcile compatibility --json`
-10. `go run ./cmd/qxctl knowledge reconcile status --json`
-11. `go run ./cmd/qxctl knowledge session status --tops-id UUID --json` when the exact SSIAG session grants and coordinator binding are available
-12. `go run ./cmd/qxctl knowledge session features status --tops-id UUID --json` when the SSFV maintenance grant and coordinator binding are available
-13. `go run ./cmd/qxctl knowledge lifecycle apply-status --tops-id UUID --json` when exact lifecycle grants and coordinator binding are available
+4. `go run ./cmd/qxctl knowledge invariant status --json`
+5. `go run ./cmd/qxctl knowledge invariant check --prefix PATH --json` when the exact Symphony Validator installation is available
+6. `go run ./cmd/qxctl inventory digest`
+7. `go run ./cmd/qxctl status`
+8. `go run ./cmd/qxctl ssiag doctor --tops-id UUID` when the selected SSIAG enrollment is running
+9. `go run ./cmd/qxctl stav doctor --tops-id UUID` when the selected STAV enrollment is running
+10. `go run ./cmd/qxctl knowledge engines doctor`
+11. `go run ./cmd/qxctl knowledge reconcile compatibility --json`
+12. `go run ./cmd/qxctl knowledge reconcile status --json`
+13. `go run ./cmd/qxctl knowledge session status --tops-id UUID --json` when the exact SSIAG session grants and coordinator binding are available
+14. `go run ./cmd/qxctl knowledge session features status --tops-id UUID --json` when the SSFV maintenance grant and coordinator binding are available
+15. `go run ./cmd/qxctl knowledge lifecycle apply-status --tops-id UUID --json` when exact lifecycle grants and coordinator binding are available

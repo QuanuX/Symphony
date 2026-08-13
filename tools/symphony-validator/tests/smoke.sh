@@ -12,6 +12,7 @@ CALLER_AUTHORITY_TEST_BIN=${CALLER_AUTHORITY_TEST_BIN:-"$VALIDATOR_ROOT/build/ca
 SODV_RELEASE_TEST_BIN=${SODV_RELEASE_TEST_BIN:-"$VALIDATOR_ROOT/build/sodv-release-tests"}
 FEATURE_ADMIN_TEST_BIN=${FEATURE_ADMINISTRATION_TEST_BIN:-"$VALIDATOR_ROOT/build/feature-administration-tests"}
 ROOT_SUMMARY_TEST_BIN=${ROOT_SUMMARY_TEST_BIN:-"$VALIDATOR_ROOT/build/root-summary-tests"}
+INVARIANT_OWNERSHIP_TEST_BIN=${INVARIANT_OWNERSHIP_TEST_BIN:-"$VALIDATOR_ROOT/build/invariant-ownership-tests"}
 
 cd "$VALIDATOR_ROOT"
 
@@ -36,6 +37,9 @@ echo "Feature administration validator tests passed"
 "$ROOT_SUMMARY_TEST_BIN" "$REPO_ROOT"
 echo "Root summary validator tests passed"
 
+"$INVARIANT_OWNERSHIP_TEST_BIN" "$REPO_ROOT"
+echo "Invariant ownership validator tests passed"
+
 ROOT_SUMMARY_JSON=$("$VALIDATOR_BIN" root-summary --repo "$REPO_ROOT" --json)
 if ! printf '%s\n' "$ROOT_SUMMARY_JSON" | grep '"protocol": "symphony.repository.root-summary.v1"' >/dev/null ||
    ! printf '%s\n' "$ROOT_SUMMARY_JSON" | grep '"summary_digest": "sha256:' >/dev/null; then
@@ -58,6 +62,19 @@ echo "--help passed"
 # Verify --version
 "$VALIDATOR_BIN" --version > /dev/null
 echo "--version passed"
+
+# The validator has no mutation surface. Keep the direct prohibition stable so
+# clients cannot mistake an unknown future grammar for canonical apply.
+set +e
+OUT_APPLY=$("$VALIDATOR_BIN" apply --repo "$REPO_ROOT" 2>&1)
+EXIT_CODE=$?
+set -e
+if [ $EXIT_CODE -ne 1 ] ||
+   [ "$OUT_APPLY" != "error: apply is unavailable; symphony-validator is read-only" ]; then
+    echo "error: validator apply prohibition drifted"
+    exit 1
+fi
+echo "validator apply prohibition passed"
 
 # Verify perfectly valid fixture
 if [ -e ./tests/fixtures_valid/modules/ssfv-engine ] ||
@@ -224,6 +241,34 @@ rm -rf "$TEMP_FIXTURE"
 trap - EXIT
 echo "feature-administration validation passed"
 
+# Verify common invariant-ownership registry regression (exit 26).
+TEMP_FIXTURE=$(mktemp -d)
+trap 'rm -rf "$TEMP_FIXTURE"' EXIT
+cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
+sed 's/"registry_digest": "sha256:/"registry_digest": "sha257:/' \
+    "$REPO_ROOT/knowledge/INVARIANT-OWNERSHIP.json" > \
+    "$TEMP_FIXTURE/knowledge/INVARIANT-OWNERSHIP.json"
+set +e
+OUT_INVARIANTS=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" 2>&1)
+EXIT_CODE=$?
+set -e
+if [ $EXIT_CODE -ne 26 ]; then
+    echo "error: invariant-ownership violation should exit 26, got $EXIT_CODE"
+    exit 1
+fi
+if ! printf '%s\n' "$OUT_INVARIANTS" |
+    grep "evidence violation invariant_ownership.registry_digest" >/dev/null; then
+    echo "error: missing expected invariant-ownership digest evidence"
+    exit 1
+fi
+if [ "$(printf '%s\n' "$OUT_INVARIANTS" | grep -c "^summary ")" -ne 1 ]; then
+    echo "error: invalid invariant-ownership fixture should have exactly one summary footer"
+    exit 1
+fi
+rm -rf "$TEMP_FIXTURE"
+trap - EXIT
+echo "invariant-ownership validation passed"
+
 # Verify current repo
 OUT_REPO=$("$VALIDATOR_BIN" check --repo "$REPO_ROOT")
 if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "^summary ")" -ne 1 ]; then
@@ -238,8 +283,8 @@ if ! printf '%s\n' "$OUT_REPO" | grep "caller_authority.scan_complete " | grep "
     echo "error: current repo missing expected caller_authority.scan_complete status or findings=0"
     exit 1
 fi
-if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 152 ]; then
-    echo "error: current repo should authorize exactly 152 canonical JSON artifacts"
+if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 153 ]; then
+    echo "error: current repo should authorize exactly 153 canonical JSON artifacts"
     exit 1
 fi
 if ! printf '%s\n' "$OUT_REPO" | grep "sodv.releases.scan_complete records=3 transactions=1 violations=0" >/dev/null; then

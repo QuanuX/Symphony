@@ -133,14 +133,20 @@ void test_stale_and_missing_regions(const fs::path& repository) {
     const auto count = marker + std::string("registered features: **").size();
     readme.insert(count, "0");
     write_file(temporary.path() / "README.md", readme);
+    const auto stale_before = read_file(temporary.path() / "README.md");
     const auto stale = check_root_summary(temporary.path().string(), releases);
     require(!stale.success && contains(stale, "root_summary.stale"),
         "stale generated count passed");
+    require(read_file(temporary.path() / "README.md") == stale_before,
+        "stale root-summary validation changed repository bytes");
 
     write_file(temporary.path() / "README.md", "# Fixture\n");
+    const auto missing_before = read_file(temporary.path() / "README.md");
     const auto missing = check_root_summary(temporary.path().string(), releases);
     require(!missing.success && contains(missing, "root_summary.readme_region"),
         "missing generated region passed");
+    require(read_file(temporary.path() / "README.md") == missing_before,
+        "malformed root-summary validation changed repository bytes");
 
     auto inline_marker = read_file(repository / "README.md");
     const auto inline_begin = inline_marker.find("<!-- symphony:root-summary:v1:begin -->");

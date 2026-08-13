@@ -13,6 +13,7 @@ REPO=${2:?repository root is required}
 "$BINARY" --descriptor | grep '"protocol":"symphony.knowledge.engine-descriptor.v1"' >/dev/null
 "$BINARY" --descriptor-v2 | grep '"protocol":"symphony.knowledge.engine-descriptor.v2"' >/dev/null
 "$BINARY" --descriptor-v2 | grep '"engine_operation_id":"engop:symphony:ssfv.administration-check"' >/dev/null
+"$BINARY" --descriptor-v2 | grep '"json_values":65536' >/dev/null
 if "$BINARY" --descriptor-v2 | grep '"install_state"' >/dev/null; then
     echo "descriptor v2 must not claim installation state" >&2
     exit 1
@@ -23,6 +24,30 @@ INSPECT=$(printf '{"protocol":"symphony.knowledge.engine-process.v1","request_id
 INSPECT_RESPONSE=$(printf '%s' "$INSPECT" | "$BINARY")
 printf '%s\n' "$INSPECT_RESPONSE" | grep '"outcome":"ok"' >/dev/null
 printf '%s\n' "$INSPECT_RESPONSE" | grep '"engine_decides_feature_worthiness":false' >/dev/null
+
+# The complete administration envelope is intentionally larger than the
+# shared foundation's default value-count bound. Prove the SSFV process uses
+# its advertised finite limit while ordinary invalid-operation checks remain
+# downstream of parsing.
+DEADLINE=$(( $(date +%s) * 1000 + 60000 ))
+LARGE_REQUEST=$(awk -v deadline="$DEADLINE" 'BEGIN {
+    printf "{\"protocol\":\"symphony.knowledge.engine-process.v1\",\"request_id\":\"smoke-large\",\"correlation_id\":\"smoke-large\",\"operation\":\"inspect\",\"target_engine\":\"symphony-ssfv\",\"deadline_unix_ms\":%s,\"payload\":{\"padding\":[", deadline
+    for (i = 0; i < 17000; ++i) {
+        if (i) printf ","
+        printf "null"
+    }
+    printf "]}}"
+}')
+set +e
+LARGE_RESPONSE=$(printf '%s' "$LARGE_REQUEST" | "$BINARY")
+LARGE_STATUS=$?
+set -e
+test "$LARGE_STATUS" -eq 4
+printf '%s\n' "$LARGE_RESPONSE" | grep '"code":"payload.field_set"' >/dev/null
+if printf '%s\n' "$LARGE_RESPONSE" | grep 'json.value_count_exceeded' >/dev/null; then
+    echo "SSFV process used the smaller foundation JSON value bound" >&2
+    exit 1
+fi
 
 DEADLINE=$(( $(date +%s) * 1000 + 60000 ))
 CHECK=$(printf '{"protocol":"symphony.knowledge.engine-process.v1","request_id":"smoke-check","correlation_id":"smoke-check","operation":"check","target_engine":"symphony-ssfv","deadline_unix_ms":%s,"payload":{"expected_namespace_digest":null,"expected_registry_digest":null,"freshness":"disabled","baseline":null}}' "$DEADLINE")

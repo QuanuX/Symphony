@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:invariant-query-result:v1",
+  "title": "Symphony invariant ownership query result v1",
+  "oneOf": [
+    {"$ref": "#/$defs/statusResult"},
+    {"$ref": "#/$defs/listResult"},
+    {"$ref": "#/$defs/showResult"}
+  ],
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "path": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "^[A-Za-z0-9._/-]+$"},
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "invariantId": {"type": "string", "maxLength": 256, "pattern": "^invariant:symphony:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "adapterId": {"type": "string", "maxLength": 256, "pattern": "^adapter:symphony:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "testReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "cases"],
+      "properties": {
+        "path": {"$ref": "#/$defs/path"},
+        "cases": {"type": "array", "minItems": 1, "maxItems": 128, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}}
+      }
+    },
+    "invariantSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["invariant_id", "title", "owner_component", "owner_contract", "ipc_boundary", "status"],
+      "properties": {
+        "invariant_id": {"$ref": "#/$defs/invariantId"},
+        "title": {"type": "string", "minLength": 1, "maxLength": 256},
+        "owner_component": {"$ref": "#/$defs/token"},
+        "owner_contract": {"$ref": "#/$defs/path"},
+        "ipc_boundary": {"type": "boolean"},
+        "status": {"const": "active"}
+      }
+    },
+    "invariant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["invariant_id", "title", "owner_contract", "owner_component", "statement", "producer_implementations", "producer_regressions", "consumer_boundary_rejections", "allowed_adapter_ids", "ipc_boundary", "real_process_regressions", "status"],
+      "properties": {
+        "invariant_id": {"$ref": "#/$defs/invariantId"},
+        "title": {"type": "string", "minLength": 1, "maxLength": 256},
+        "owner_contract": {"$ref": "#/$defs/path"},
+        "owner_component": {"$ref": "#/$defs/token"},
+        "statement": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "producer_implementations": {"type": "array", "minItems": 1, "maxItems": 128, "uniqueItems": true, "items": {"$ref": "#/$defs/path"}},
+        "producer_regressions": {"type": "array", "minItems": 1, "maxItems": 128, "items": {"$ref": "#/$defs/testReference"}},
+        "consumer_boundary_rejections": {"type": "array", "minItems": 1, "maxItems": 128, "items": {"$ref": "#/$defs/testReference"}},
+        "allowed_adapter_ids": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/adapterId"}},
+        "ipc_boundary": {"type": "boolean"},
+        "real_process_regressions": {"type": "array", "maxItems": 128, "items": {"$ref": "#/$defs/testReference"}},
+        "status": {"const": "active"}
+      }
+    },
+    "statusResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol", "format_version", "operation", "source_path", "registry_digest", "consumer_check", "semantic_validity", "complete_check_command_id", "result_digest", "scope", "catalog_scope", "catalog_complete", "forward_gate", "invariant_count", "adapter_count"],
+      "properties": {
+        "protocol": {"const": "symphony.knowledge.invariant-query-result.v1"},
+        "format_version": {"const": 1},
+        "operation": {"const": "status"},
+        "source_path": {"const": "knowledge/INVARIANT-OWNERSHIP.json"},
+        "registry_digest": {"$ref": "#/$defs/digest"},
+        "consumer_check": {"const": "identity_shape_digest_passed"},
+        "semantic_validity": {"const": "not_asserted"},
+        "complete_check_command_id": {"const": "qxcmd:symphony:knowledge.invariant.check"},
+        "result_digest": {"$ref": "#/$defs/digest"},
+        "scope": {"const": "common_lowest_authoritative_layer"},
+        "catalog_scope": {"const": "registered_incremental"},
+        "catalog_complete": {"const": false},
+        "forward_gate": {"const": "enforce_new_or_modified"},
+        "invariant_count": {"type": "integer", "minimum": 1, "maximum": 4096},
+        "adapter_count": {"type": "integer", "minimum": 0, "maximum": 64}
+      }
+    },
+    "listResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol", "format_version", "operation", "source_path", "registry_digest", "consumer_check", "semantic_validity", "complete_check_command_id", "result_digest", "invariants"],
+      "properties": {
+        "protocol": {"const": "symphony.knowledge.invariant-query-result.v1"},
+        "format_version": {"const": 1},
+        "operation": {"const": "list"},
+        "source_path": {"const": "knowledge/INVARIANT-OWNERSHIP.json"},
+        "registry_digest": {"$ref": "#/$defs/digest"},
+        "consumer_check": {"const": "identity_shape_digest_passed"},
+        "semantic_validity": {"const": "not_asserted"},
+        "complete_check_command_id": {"const": "qxcmd:symphony:knowledge.invariant.check"},
+        "result_digest": {"$ref": "#/$defs/digest"},
+        "invariants": {"type": "array", "minItems": 1, "maxItems": 4096, "items": {"$ref": "#/$defs/invariantSummary"}}
+      }
+    },
+    "showResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol", "format_version", "operation", "source_path", "registry_digest", "consumer_check", "semantic_validity", "complete_check_command_id", "result_digest", "invariant"],
+      "properties": {
+        "protocol": {"const": "symphony.knowledge.invariant-query-result.v1"},
+        "format_version": {"const": 1},
+        "operation": {"const": "show"},
+        "source_path": {"const": "knowledge/INVARIANT-OWNERSHIP.json"},
+        "registry_digest": {"$ref": "#/$defs/digest"},
+        "consumer_check": {"const": "identity_shape_digest_passed"},
+        "semantic_validity": {"const": "not_asserted"},
+        "complete_check_command_id": {"const": "qxcmd:symphony:knowledge.invariant.check"},
+        "result_digest": {"$ref": "#/$defs/digest"},
+        "invariant": {"$ref": "#/$defs/invariant"}
+      }
+    }
+  }
+}

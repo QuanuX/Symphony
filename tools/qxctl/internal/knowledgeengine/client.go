@@ -482,6 +482,38 @@ func ReadPayload(path string) ([]byte, error) {
 	return data, nil
 }
 
+// ReadRepositoryJSONObject reads one bounded JSON object beneath a canonical
+// repository root without following any path component. It is intentionally
+// narrower than ReadPayload: callers supply a fixed repository-relative path,
+// and the returned bytes have already passed the common duplicate-key,
+// integer-only, UTF-8, depth, string, and value-count checks.
+func ReadRepositoryJSONObject(repositoryRoot, relative string, maxBytes int64, maxValues int) ([]byte, error) {
+	if repositoryRoot == "" {
+		repositoryRoot = "."
+	}
+	if maxBytes < 1 || maxBytes > maxRequestBytes {
+		return nil, fmt.Errorf("repository JSON byte bound must be between 1 and %d", maxRequestBytes)
+	}
+	if maxValues < 1 || maxValues > 262144 {
+		return nil, fmt.Errorf("repository JSON value bound must be between 1 and 262144")
+	}
+	root, err := canonicalDirectory(repositoryRoot, "repository root")
+	if err != nil {
+		return nil, err
+	}
+	if !safeRelativePath(relative) {
+		return nil, fmt.Errorf("repository JSON path is unsafe")
+	}
+	data, err := readNoFollowRelative(root, relative, maxBytes)
+	if err != nil {
+		return nil, fmt.Errorf("read repository JSON %s: %w", relative, err)
+	}
+	if err := validateJSONObjectWithValueLimit(data, maxBytes, maxValues); err != nil {
+		return nil, fmt.Errorf("invalid repository JSON %s: %w", relative, err)
+	}
+	return data, nil
+}
+
 func resolveInstalled(prefix, version string) (string, error) {
 	return resolveInstalledFor(skviSpec, prefix, version)
 }

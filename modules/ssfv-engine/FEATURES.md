@@ -122,10 +122,11 @@
       ],
       "evidence": [
         "modules/ssfv-engine/src/ssfv.cpp implements stable engine-operation identity, descriptor v2, repository-independent coverage comparison, module admission, and non-inventive remediation constraints.",
-        "modules/ssfv-engine/tests/ssfv_test.cpp verifies descriptor-v1 compatibility, engine-only execution, qxctl absence, semantic compatibility, uncovered pairs, unreviewed declarations, profile gates, ordering, bounds, and docking-readiness refusal."
+        "modules/ssfv-engine/tests/ssfv_test.cpp verifies descriptor-v1 compatibility, engine-only execution, qxctl absence, semantic compatibility, uncovered pairs, unreviewed declarations, profile gates, ordering, bounds, and docking-readiness refusal.",
+        "modules/ssfv-engine/tests/process_smoke.sh verifies descriptor-v2's 65,536-value finite envelope through the real process parser while preserving the smaller shared default for other engines."
       ],
       "feature_id": "ssfv:symphony:ssfv-engine.administration-assurance",
-      "how": "Validates bounded digest-bound semantic snapshots, administration profiles, expected and observed qxctl registries, and engine descriptors; compares every declared feature-interaction-operation pair; separates design, live, authorization, and module-integration evidence; and emits proposal-only remediation constraints with null command identity and grammar.",
+      "how": "Accepts the complete caller-supplied administration document through a descriptor-v2-advertised 65,536-value finite process envelope while preserving descriptor-v1 compatibility; validates digest-bound semantic snapshots, administration profiles, expected and observed qxctl registries, and engine descriptors; compares every declared feature-interaction-operation pair; separates design, live, authorization, and module-integration evidence; and emits proposal-only remediation constraints with null command identity and grammar.",
       "implementation_languages": [
         {
           "language": "C++26",

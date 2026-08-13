@@ -23,6 +23,7 @@
 #include "sodv_releases.hpp"
 #include "projector.hpp"
 #include "feature_administration.hpp"
+#include "invariant_ownership.hpp"
 #include "root_summary.hpp"
 #include <iostream>
 
@@ -47,6 +48,11 @@ int run_cli(const std::vector<std::string>& args) {
     if (command == "--version") {
         std::cout << "symphony-validator 0.1.0-dev\n";
         return 0;
+    }
+
+    if (command == "apply") {
+        std::cerr << "error: apply is unavailable; symphony-validator is read-only\n";
+        return 1;
     }
 
     if (command == "root-summary") {
@@ -238,6 +244,15 @@ int run_cli(const std::vector<std::string>& args) {
             process_messages(feature_admin_result.messages);
             if (!feature_admin_result.success) {
                 final_exit = 24;
+                print_summary();
+                return final_exit;
+            }
+
+            InvariantOwnershipCheckResult invariant_result =
+                check_invariant_ownership(args[2]);
+            process_messages(invariant_result.messages);
+            if (!invariant_result.success) {
+                final_exit = 26;
                 print_summary();
                 return final_exit;
             }

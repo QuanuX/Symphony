@@ -748,7 +748,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: native foundation specification
 - truth_role: exact implemented limits, digest, path, snapshot, and dependency contract
 - owner: SKV foundation maintainers
-- scope: Defines `0.1.0-dev` mechanics, canonical Gregorian/UTC profiles, and adversarial rejection requirements.
+- scope: Defines `0.1.0-dev` mechanics, the strict shared parser defaults and explicit per-engine finite value-count override, canonical Gregorian/UTC profiles, and adversarial rejection requirements.
 - relationships: depends_on -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
 - consumers: coordinator and future vector engines, testers, reviewers
 - deferred_projections: protocol conformance report
@@ -2570,7 +2570,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; declares -> `knowledge/INVARIANTS.md`; governs -> `libraries/knowledge-vector-engine-cpp/`; governs -> `modules/knowledge-session-coordinator/`; governs -> `modules/skvi-engine/`; governs -> `modules/sclv-engine/`; governs -> future cleared vector-engine module paths
 - consumers: vector maintainers, engine implementers, qxctl, Maestro planners, reviewers, agentic tools
 - deferred_projections: engine inventory, install receipts, Maestro presence graph
-- notes: Foundation/coordinator and all five vector-engine `0.1.0-dev` slices plus Maestro presence exist; SSFV has exactly seventy experimental records, explicit top-level owner-scope coverage, fifty-five ratified nested subfeatures, reviewed F2 and F3 non-feature dispositions, and incomplete remaining nested review.
+- notes: Foundation/coordinator and all five vector-engine `0.1.0-dev` slices plus Maestro presence exist; SSFV has exactly seventy-two experimental records, explicit top-level owner-scope coverage, fifty-seven ratified nested subfeatures, reviewed F2 and F3 non-feature dispositions, and incomplete remaining nested review.
 - status: canonical
 
 ##### SPEC.md
@@ -2583,7 +2583,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `knowledge/schemas/v2/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
 - consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
 - deferred_projections: apply/provider/docking schemas, conformance evidence, engine inventory, docking graph
-- notes: Sixty-five common v1 schemas and four common v2 schemas are canonical; lifecycle profile/runtime persistence, observation, planning, report/apply journal recovery, feature-administration assurance, common invariant ownership, exact staged receipt-v2/runtime/Maestro-presence actions, shared-root ownership fencing, the explicit Linux report-only host receptor, and applied-state commitment are implemented, the seventy-record SSFV catalog is partial, and canonical programmatic apply is disabled.
+- notes: Sixty-six common v1 schemas and four common v2 schemas are canonical; lifecycle profile/runtime persistence, observation, planning, report/apply journal recovery, feature-administration assurance, common invariant ownership, exact staged receipt-v2/runtime/Maestro-presence actions, shared-root ownership fencing, the explicit Linux report-only host receptor, and applied-state commitment are implemented, the seventy-two-record SSFV catalog is partial, and canonical programmatic apply is disabled.
 - status: canonical
 
 ##### SKILL.md
@@ -2670,7 +2670,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: common protocol schema manifest
 - truth_role: canonical inventory and boundary for exact common JSON schemas
 - owner: Symphony Knowledge Vector maintainers
-- scope: Declares sixty-five exact process, descriptor, install-receipt-v1, engine-binding, proposal, provider-evidence, reconciliation/session, profile-input/profile, generic and foundational lifecycle, feature-administration, invariant-ownership, qxctl-registry, temporal, validation warning-state, and Maestro presence schemas.
+- scope: Declares sixty-six exact process, descriptor, install-receipt-v1, engine-binding, proposal, provider-evidence, reconciliation/session, profile-input/profile, generic and foundational lifecycle, feature-administration, invariant-ownership/query, qxctl-registry, temporal, validation warning-state, and Maestro presence schemas.
 - relationships: depends_on -> `knowledge/SPEC.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; governs -> `modules/skvi-engine/SPEC.md`; governs -> `modules/sclv-engine/SPEC.md`
 - consumers: C++ foundation and engine implementers, qxctl planners, validator, reviewers
 - deferred_projections: generated schema documentation and conformance evidence
@@ -2688,6 +2688,19 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: module owners, validators, CI, reviewers, agentic tools
 - deferred_projections: referential and test-execution result schemas
 - notes: JSON Schema enforces structure; repository validation must additionally enforce ordering, digest, referential integrity, path existence, and named-test execution.
+- status: canonical
+
+##### Invariant Query Result Schema
+- path: `knowledge/schemas/v1/invariant-query-result.schema.json`
+- title: Symphony Invariant Ownership Query Result v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical closed status, list, and show result shape for read-only invariant administration
+- owner: Symphony Knowledge Vector maintainers
+- scope: Closes digest-bearing qxctl projections over the canonical registry while explicitly reserving semantic validity for complete validator assurance.
+- relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/INVARIANTS.md`; consumes -> `knowledge/INVARIANT-OWNERSHIP.json`
+- consumers: qxctl, headless administrators, reviewers, agentic tools
+- deferred_projections: remote invariant inventory transport
+- notes: A valid query result proves bounded consumer-side identity, shape, ordering, and digest checks; it does not claim complete semantic validation or test execution.
 - status: canonical
 
 ##### Common v2 Schema Manifest
@@ -2787,7 +2800,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: cross-vector common contract
 - truth_role: canonical engine-first administrative coverage, identity, exception, admission, and headless-machine semantics
 - owner: Symphony Knowledge Vector maintainers
-- scope: Defines stable feature, engine-operation, and qxctl-command identities; expected versus observed truth; three-axis coverage; explicit dispositions; third-party module admission; remediation evidence; and the seventy-record bootstrap gate.
+- scope: Defines stable feature, engine-operation, and qxctl-command identities; expected versus observed truth; three-axis coverage; explicit dispositions; third-party module admission; remediation evidence; and the seventy-two-record forward gate.
 - relationships: depends_on -> `knowledge/SPEC.md`; depends_on -> `knowledge/INVARIANTS.md`; depends_on -> `knowledge/ssfv/SPEC.md`; governs -> `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`; governs -> `knowledge/schemas/v1/feature-administration-profile.schema.json`; governs -> `knowledge/schemas/v1/qxctl-command-registry.schema.json`; governs -> `knowledge/schemas/v1/administration-coverage-input.schema.json`; governs -> `knowledge/schemas/v1/administration-coverage-result.schema.json`; governs -> `knowledge/schemas/v2/engine-descriptor.schema.json`
 - consumers: independent module developers, SSFV engine, qxctl, validators, reviewers, agentic tools
 - deferred_projections: AI-assisted names, command-design proposals, Cobra scaffolding, and enforce-all-records coverage
@@ -2800,10 +2813,10 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: cross-vector canonical bootstrap profile
 - truth_role: exact registered-partial-catalog administration review and forward-gate policy
 - owner: Symphony Knowledge Vector maintainers
-- scope: Requires explicit representation of all seventy current SSFV records, treats unreviewed interactions as debt, and defines advancement from report-only to forward enforcement without claiming catalog completeness.
+- scope: Requires explicit representation of all seventy-two current SSFV records, treats unreviewed interactions as debt, and defines the active forward-enforcement gate without claiming catalog completeness.
 - relationships: governed_by -> `knowledge/FEATURE-ADMINISTRATION.md`; derives_from -> `knowledge/ssfv/REGISTRY.md`; declares -> `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`; conforms_to -> `knowledge/schemas/v1/feature-administration-profile.schema.json`
 - consumers: SSFV engine, qxctl, validators, maintainers, reviewers, agentic tools
-- deferred_projections: completed reviewed seventy-record expectation mapping
+- deferred_projections: future complete-catalog adjudication and installed-host inventory closure
 - notes: Absence never means not applicable, and inheritance must be finite and acyclic.
 - status: canonical
 
@@ -2813,11 +2826,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: checked-in canonical-derived JSON profile
 - truth_role: machine-evaluable report-only bootstrap coverage for the exact current registered SSFV set
 - owner: Symphony Knowledge Vector maintainers
-- scope: Represents all seventy current feature IDs exactly once and preserves every pending adjudication as explicit unreviewed debt.
+- scope: Represents all seventy-two current feature IDs exactly once with 137 reviewed expectations under `enforce_new_records`.
 - relationships: governed_by -> `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`; derives_from -> `knowledge/ssfv/REGISTRY.md`; conforms_to -> `knowledge/schemas/v1/feature-administration-profile.schema.json`
 - consumers: SSFV engine, qxctl, validators, direct diagnostic callers, reviewers
-- deferred_projections: reviewed expectation, exception, command, and engine-operation mappings
-- notes: The profile is report-only, digest-bound, and makes no repository-completeness claim.
+- deferred_projections: complete-catalog and installed-host inventory advancement
+- notes: The profile is digest-bound and forward-gated but makes no repository- or installed-host-completeness claim.
 - status: canonical
 
 ##### qxctl Command Registry Schema
@@ -2855,7 +2868,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - scope: Closes registered feature interactions, requirement and delivery enums, stable command and engine-operation mappings, explicit inheritance, rationale, evidence, and forward-gate state.
 - relationships: depends_on -> `knowledge/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/FEATURE-ADMINISTRATION.md`; derives_from -> `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
 - consumers: SSFV engine, qxctl, validators, reviewers
-- deferred_projections: completed seventy-record normalized profile
+- deferred_projections: complete-catalog normalized profile
 - notes: Cross-record uniqueness and finite acyclic inheritance are semantic conformance requirements.
 - status: canonical
 
@@ -4089,7 +4102,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, agentic tools
 - deferred_projections: feature catalogs, encyclopedia views, publication inputs, graph views
-- notes: Defines the governing intent for the implemented engine and exact seventy-record partial catalog without granting unratified-record authority.
+- notes: Defines the governing intent for the implemented engine and exact seventy-two-record partial catalog without granting unratified-record authority.
 - status: canonical
 
 ##### MANIFEST.md
@@ -4098,11 +4111,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: vector contract truth
 - truth_role: canonical topology, identity, classification, and installability boundary
 - owner: SSFV maintainers
-- scope: Declares owned feature semantics, sparse distributed records, implemented engine identity, explicit coverage inventory, and exact seventy-record partial-catalog state.
+- scope: Declares owned feature semantics, sparse distributed records, implemented engine identity, explicit coverage inventory, and exact seventy-two-record partial-catalog state.
 - relationships: depends_on -> `knowledge/ssfv/INTENT.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, implementers, qxctl planners, packaging planners
 - deferred_projections: installation descriptors and Maestro docking descriptors after separate review
-- notes: The engine module and seventy experimental records are implemented; fifty-five nested subfeatures are ratified while remaining nested review and repository-wide catalog completeness are not claimed.
+- notes: The engine module and seventy-two experimental records are implemented; fifty-seven nested subfeatures are ratified while remaining nested review and repository-wide catalog completeness are not claimed.
 - status: canonical
 
 ##### SKILL.md
@@ -4128,7 +4141,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, validator
 - deferred_projections: portable JSON graph, catalogs, search, documentation, and analytical views
-- notes: Engine implementation and the exact seventy-record partial catalog are current; every additional record remains separately reviewed and remaining nested coverage remains incomplete.
+- notes: Engine implementation and the exact seventy-two-record partial catalog are current; every additional record remains separately reviewed and remaining nested coverage remains incomplete.
 - status: canonical
 
 ##### NAMESPACES.md
@@ -4150,7 +4163,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: canonical distributed-feature routing registry
 - truth_role: canonical mapping from stable feature IDs to owner records
 - owner: SSFV maintainers
-- scope: Defines the exact eight-field registry grammar and routes the seventy records in the current partial feature set.
+- scope: Defines the exact eight-field registry grammar and routes the seventy-two records in the current partial feature set.
 - relationships: depends_on -> `knowledge/ssfv/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, validator
 - deferred_projections: feature inventories and graph routing
@@ -4492,7 +4505,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: module implementation specification
 - truth_role: exact process, operation, parser, bound, freshness, and authority behavior
 - owner: SSFV engine maintainers
-- scope: Defines deterministic managed-region parsing, snapshots, diffs, proposals, graphs, and disabled apply.
+- scope: Defines deterministic managed-region parsing, snapshots, diffs, proposals, graphs, the exact descriptor-v2 65,536-value complete-administration envelope, and disabled apply.
 - relationships: implements -> `knowledge/ssfv/SPEC.md`; depends_on -> `knowledge/SPEC.md`; depends_on -> `libraries/knowledge-vector-engine-cpp/SPEC.md`
 - consumers: implementers, qxctl, conformance tests, validator, reviewers
 - deferred_projections: persistent graph, mutation, lifecycle activation, and docking
@@ -5305,7 +5318,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: verifies -> `modules/ssfv-engine/src/ssfv.cpp`; conforms_to -> `knowledge/ssfv/SPEC.md`
 - consumers: SSFV engine maintainers, validator, reviewers
 - deferred_projections: none
-- notes: Current canonical assertions cover seventy records, fifteen owner files, and the exact 283-edge derived graph without claiming completion of the remaining nested review or repository-wide completeness.
+- notes: Current canonical assertions cover seventy-two records, fifteen owner files, and the exact 290-edge derived graph without claiming completion of the remaining nested review or repository-wide completeness.
 - status: canonical
 
 ### qxctl SCLV Evidence Adapter Command Tests
@@ -5708,7 +5721,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: governed_by -> `knowledge/ssfv/SPEC.md`; routes_through -> `knowledge/ssfv/REGISTRY.md`
 - consumers: symphony-ssfv, Symphony Validator, qxctl, maintainers, reviewers, agentic tools
 - deferred_projections: remaining nested feature-adjudication inventory
-- notes: Top-level owner routing and fifty-five exact nested subfeatures are covered with reviewed F2 and F3 non-feature dispositions; remaining nested feature, subfeature, microfeature, and non-feature review is incomplete, so coverage is partial.
+- notes: Top-level owner routing and fifty-seven exact nested subfeatures are covered with reviewed F2 and F3 non-feature dispositions; remaining nested feature, subfeature, microfeature, and non-feature review is incomplete, so coverage is partial.
 - status: canonical
 
 ### STAV Protocol Kernel Semantic Feature Record
@@ -5834,11 +5847,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: distributed SSFV feature record
 - truth_role: canonical semantic feature truth for the Go administrative and query CLI
 - owner: qxctl maintainers
-- scope: Owns the experimental qxctl feature plus eight ratified F1 subfeatures for engine bindings, authenticated sessions, lifecycle convergence, the Linux host receptor, SSIAG/STAV/Maestro administration, and governed validation in exact source scope `tools/qxctl`.
-- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `tools/qxctl/MANIFEST.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`; declares -> eight `ssfv:symphony:qxctl.*` F1 subfeatures
+- scope: Owns the experimental qxctl feature plus nine ratified F1 subfeatures for engine bindings, authenticated sessions, lifecycle convergence, the Linux host receptor, SSIAG/STAV/Maestro administration, governed validation, and invariant assurance in exact source scope `tools/qxctl`.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `tools/qxctl/MANIFEST.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`; declares -> nine `ssfv:symphony:qxctl.*` F1 subfeatures
 - consumers: symphony-ssfv, qxctl maintainers, reviewers, agentic tools
 - deferred_projections: command and capability catalog
-- notes: Records the parent administrative interface and eight separately identified implemented subsystems without transferring vector-schema, policy, ledger, coordinator, Maestro, validator-detection, or runtime authority to the CLI.
+- notes: Records the parent administrative interface and nine separately identified implemented subsystems without transferring vector-schema, policy, ledger, coordinator, Maestro, validator-detection, or runtime authority to the CLI.
 - status: canonical
 
 ### Symphony Validator Semantic Feature Record
@@ -5847,11 +5860,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: distributed SSFV feature record
 - truth_role: canonical semantic feature truth for deterministic read-only repository validation
 - owner: Symphony Validator maintainers
-- scope: Owns `ssfv:symphony:symphony-validator` for exact source scope `tools/symphony-validator`.
+- scope: Owns `ssfv:symphony:symphony-validator` plus root-summary and invariant-ownership assurance subfeatures for exact source scope `tools/symphony-validator`.
 - relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `tools/symphony-validator/SPEC.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`
 - consumers: symphony-ssfv, qxctl, validator maintainers, reviewers, agentic tools
 - deferred_projections: Markdown validation projection
-- notes: Records deterministic line and JSON evidence behavior without remediation, ratification, or runtime residency.
+- notes: Records deterministic line and JSON evidence, source-module admission, and derived-summary behavior without remediation, ratification, or runtime residency.
 - status: canonical
 
 ### SSIAG Policy Implementation
@@ -6148,7 +6161,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: POSIX shell process-conformance evidence
 - truth_role: exact descriptor, bounded process, error, and read-only response regression truth
 - owner: SSFV engine maintainers
-- scope: Exercises executable help/version/descriptor surfaces and direct bounded engine requests including administration-assurance process behavior.
+- scope: Exercises executable help/version/descriptor surfaces, the descriptor-v2 finite value-count envelope above the unchanged shared default, and direct bounded engine requests including administration-assurance process behavior.
 - relationships: verifies -> `modules/ssfv-engine/src/main.cpp`; verifies -> `modules/ssfv-engine/src/ssfv.cpp`; conforms_to -> `modules/ssfv-engine/SPEC.md`
 - consumers: SSFV maintainers, packagers, reviewers, release validation
 - deferred_projections: installed-package process matrix
@@ -6246,17 +6259,108 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Fixtures are test evidence and cannot allocate production command identities.
 - status: canonical
 
+### qxctl Invariant Administration Operations
+- path: `tools/qxctl/cmd/qxctl/knowledge_invariant.go`
+- title: qxctl Common Invariant Administration
+- surface_type: Go administrative CLI implementation
+- truth_role: stable headless status, list, show, and complete-check operation truth
+- owner: qxctl maintainers
+- scope: Implements bounded read-only registry projections and exact receipt-validated Symphony Validator invocation while preserving complete result evidence and exit 26.
+- relationships: implements -> `knowledge/INVARIANTS.md`; conforms_to -> `knowledge/schemas/v1/invariant-query-result.schema.json`; depends_on -> `tools/qxctl/internal/invariantregistry/registry.go`; invokes -> `tools/qxctl/internal/knowledgeengine/client.go`
+- consumers: headless administrators, module developers, reviewers, agentic tools
+- deferred_projections: remote invariant-assurance transport
+- notes: Direct queries state `semantic_validity: not_asserted`; only the exact complete validator operation supplies semantic assurance.
+- status: canonical
+
+### qxctl Invariant Administration Regression
+- path: `tools/qxctl/cmd/qxctl/knowledge_invariant_test.go`
+- title: qxctl Invariant Administration Regression Matrix
+- surface_type: Go deterministic regression evidence
+- truth_role: command identity, query shape, exact-validator, and exit-preservation test truth
+- owner: qxctl maintainers
+- scope: Verifies the four stable leaves, closed digest-bearing projections, hostile input rejection, exact installed validator invocation, and invariant exit-code preservation.
+- relationships: verifies -> `tools/qxctl/cmd/qxctl/knowledge_invariant.go`; conforms_to -> `knowledge/INVARIANTS.md`
+- consumers: qxctl and validator maintainers, reviewers, release validation
+- deferred_projections: installed multi-version compatibility matrix
+- notes: Fixtures provide bounded evidence and grant no authority to mutate the invariant registry.
+- status: canonical
+
+### qxctl Invariant Registry Consumer
+- path: `tools/qxctl/internal/invariantregistry/registry.go`
+- title: qxctl Invariant Registry Consumer
+- surface_type: bounded Go registry-consumer implementation
+- truth_role: consumer-side shape, identity, ordering, reference, and omit-self digest truth
+- owner: qxctl maintainers
+- scope: Loads one no-follow registry, rejects unsafe or ambiguous JSON, and emits deterministic status/list/show results without asserting semantic validity.
+- relationships: consumes -> `knowledge/INVARIANT-OWNERSHIP.json`; conforms_to -> `knowledge/schemas/v1/invariant-query-result.schema.json`; governed_by -> `knowledge/INVARIANTS.md`
+- consumers: qxctl invariant commands, tests, headless callers
+- deferred_projections: generic remote registry client
+- notes: This consumer does not duplicate validator semantics, execute regressions, allocate IDs, or write canonical truth.
+- status: canonical
+
+### qxctl Invariant Registry Consumer Regression
+- path: `tools/qxctl/internal/invariantregistry/registry_test.go`
+- title: qxctl Invariant Registry Consumer Regression Matrix
+- surface_type: Go deterministic regression evidence
+- truth_role: bounded parsing, no-follow, ordering, digest, and projection test truth
+- owner: qxctl maintainers
+- scope: Exercises duplicate keys, unknown fields, trailing values, control bytes, stale digests, invalid ordering and references, unsafe paths, and deterministic query results.
+- relationships: verifies -> `tools/qxctl/internal/invariantregistry/registry.go`; conforms_to -> `knowledge/INVARIANTS.md`
+- consumers: qxctl maintainers, validator maintainers, reviewers, release validation
+- deferred_projections: cross-version query compatibility fixtures
+- notes: Consumer tests do not replace complete validator or producer regression execution.
+- status: canonical
+
+### Validator Invariant Ownership Check
+- path: `tools/symphony-validator/src/invariant_ownership.cpp`
+- title: Symphony Validator Invariant Ownership Check
+- surface_type: C++26 repository validation implementation
+- truth_role: exact registry shape, identity, ownership, regression, adapter, and IPC evidence truth
+- owner: Symphony Validator maintainers
+- scope: Validates bounded no-follow registry access, exact constants and digest, ordering, owner/consumer evidence separation, named regressions, finite adapter closure, and receipt-backed real-process IPC evidence.
+- relationships: implements -> `tools/symphony-validator/SPEC.md`; governed_by -> `knowledge/INVARIANTS.md`; declared_by -> `tools/symphony-validator/src/invariant_ownership.hpp`
+- consumers: repository validation, qxctl complete invariant check, reviewers
+- deferred_projections: test-execution report projection and generic adapter protocol
+- notes: Named-test discovery proves traceability only; applicable compiled and process suites remain separate execution evidence.
+- status: canonical
+
+### Validator Invariant Ownership Interface
+- path: `tools/symphony-validator/src/invariant_ownership.hpp`
+- title: Symphony Validator Invariant Ownership Interface
+- surface_type: C++26 repository validation interface
+- truth_role: exact invariant checker entrypoint declaration
+- owner: Symphony Validator maintainers
+- scope: Declares the read-only invariant-assurance result used by the complete validator and focused regressions.
+- relationships: implements -> `tools/symphony-validator/SPEC.md`; implemented_by -> `tools/symphony-validator/src/invariant_ownership.cpp`
+- consumers: Symphony Validator CLI, unit tests, reviewers
+- deferred_projections: none
+- notes: The interface grants no registry repair or test-execution authority.
+- status: canonical
+
+### Validator Invariant Ownership Regression
+- path: `tools/symphony-validator/tests/invariant_ownership_test.cpp`
+- title: Symphony Validator Invariant Ownership Regression Matrix
+- surface_type: C++26 deterministic regression evidence
+- truth_role: malformed registry, ownership, adapter, path, test-reference, and IPC-boundary test truth
+- owner: Symphony Validator maintainers
+- scope: Exercises exact identifiers, omit-self digest, ordering, no-follow paths, role separation, finite adapters, named cases, real-process mechanics, and malformed input bounds.
+- relationships: verifies -> `tools/symphony-validator/src/invariant_ownership.cpp`; conforms_to -> `knowledge/INVARIANTS.md`
+- consumers: validator maintainers, module owners, reviewers, release validation
+- deferred_projections: generic-adapter and complete installed-inventory matrices
+- notes: The suite proves checker behavior against fixtures and does not claim the incremental registry is a complete legacy catalog.
+- status: canonical
+
 ### Validator Feature Administration Check
 - path: `tools/symphony-validator/src/feature_administration.cpp`
 - title: Symphony Validator Feature Administration Check
 - surface_type: C++26 repository validation implementation
 - truth_role: exact static profile, registry, descriptor, digest, ordering, reference, and forward-gate conformance truth
 - owner: Symphony Validator maintainers
-- scope: Validates bounded no-follow feature-administration artifacts without executing qxctl or an engine and emits explicit report-only profile debt.
+- scope: Validates bounded no-follow feature-administration artifacts and enumerates source-implemented direct module scopes without executing qxctl or an engine.
 - relationships: implements -> `tools/symphony-validator/SPEC.md`; governed_by -> `knowledge/FEATURE-ADMINISTRATION.md`; declared_by -> `tools/symphony-validator/src/feature_administration.hpp`
 - consumers: repository validation, qxctl validation surfaces, reviewers
 - deferred_projections: forward-gate enforcement after profile adjudication
-- notes: Static validation does not establish live backend availability, authorization, installation, or docking.
+- notes: Static validation detects missing source-module feature/profile routing but does not establish installed-host inventory completeness, live backend availability, authorization, or docking.
 - status: canonical
 
 ### Validator Feature Administration Interface
@@ -6278,11 +6382,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: C++26 deterministic regression evidence
 - truth_role: exact malformed, stale, unordered, unsafe-path, unreviewed, and valid-artifact test truth
 - owner: Symphony Validator maintainers
-- scope: Exercises the static checker across profile, expected command registry, engine descriptor, semantic record, digest, reference, and report-only warning boundaries.
+- scope: Exercises the static checker across profile, expected command registry, engine descriptor, semantic record, digest, reference, forward-gate, and implemented-module admission boundaries.
 - relationships: verifies -> `tools/symphony-validator/src/feature_administration.cpp`; conforms_to -> `knowledge/FEATURE-ADMINISTRATION.md`
 - consumers: validator maintainers, SSFV and qxctl maintainers, reviewers, release validation
 - deferred_projections: enforce-new and enforce-all regression matrices after ratification
-- notes: Test success cannot adjudicate the seventy unreviewed feature expectations.
+- notes: Test success proves the declared static checks executed; it does not establish repository-wide or installed-host feature completeness.
 - status: canonical
 
 ### Validator Root Summary Interface
@@ -6325,7 +6429,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - status: canonical
 
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, sixty-five common SKV v1 JSON Schemas, four common SKV v2 JSON Schemas, twelve SSIAG authorization, grant-planning, and policy-administration JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, sixty-six common SKV v1 JSON Schemas, four common SKV v2 JSON Schemas, twelve SSIAG authorization, grant-planning, and policy-administration JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

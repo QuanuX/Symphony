@@ -370,7 +370,7 @@ func TestRunRootSummaryUsesExactInstalledProjectionAndExposesExit25(t *testing.T
 		"printf '%s\\n' '" + string(encoded) + "'\n"
 	prefix := installValidationFixture(t, script)
 	observed, err := RunRootSummary(t.Context(), prefix, "0.1.0-dev", repository)
-	if err != nil || observed.SummaryDigest != summary.SummaryDigest || observed.QXCTL.RegisteredCommands != 144 {
+	if err != nil || observed.SummaryDigest != summary.SummaryDigest || observed.QXCTL.RegisteredCommands != 148 {
 		t.Fatalf("exact root-summary invocation failed: observed=%+v err=%v", observed, err)
 	}
 
@@ -420,7 +420,7 @@ func sampleRootSummary(t *testing.T) RootSummary {
 			Coordinate: "github.com/QuanuX/Symphony/tools/qxctl", Revision: strings.Repeat("a", 40),
 			Tag: "tools/qxctl/v0.1.0", Version: "v0.1.0",
 		}},
-		QXCTL: RootSummaryQXCTL{RegisteredCommands: 144},
+		QXCTL: RootSummaryQXCTL{RegisteredCommands: 148},
 		SSFV: RootSummarySSFV{
 			CatalogState: "partial", NestedFeatures: 8, RegisteredFeatures: 10,
 			RegisteredOwnerFeatures: []string{"ssfv:symphony:qxctl", "ssfv:symphony:symphony-validator"},

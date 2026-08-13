@@ -6,65 +6,67 @@ import (
 )
 
 const (
-	featureQXCTL                   = "ssfv:symphony:qxctl"
-	featureBindings                = "ssfv:symphony:qxctl.engine-bindings"
-	featureCommandRegistry         = "ssfv:symphony:qxctl.command-registry"
-	featureLifecycle               = "ssfv:symphony:qxctl.lifecycle-convergence"
-	featureHost                    = "ssfv:symphony:qxctl.linux-host-receptor"
-	featureMaestro                 = "ssfv:symphony:qxctl.maestro-administration"
-	featureSessions                = "ssfv:symphony:qxctl.authenticated-sessions"
-	featureSSIAG                   = "ssfv:symphony:qxctl.ssiag-administration"
-	featureSTAV                    = "ssfv:symphony:qxctl.stav-administration"
-	featureValidation              = "ssfv:symphony:qxctl.governed-validation"
-	featureSKVI                    = "ssfv:symphony:skvi-engine"
-	featureSKVIAssurance           = "ssfv:symphony:skvi-engine.structural-index-assurance"
-	featureSKVIProposal            = "ssfv:symphony:skvi-engine.content-addressed-index-change-proposals"
-	featureSKVIProjection          = "ssfv:symphony:skvi-engine.disposable-structural-projection"
-	featureSCLV                    = "ssfv:symphony:sclv-engine"
-	featureSCLVAssurance           = "ssfv:symphony:sclv-engine.append-only-ledger-assurance"
-	featureSCLVProposal            = "ssfv:symphony:sclv-engine.evidence-bound-append-proposals"
-	featureSCLVRecovery            = "ssfv:symphony:sclv-engine.forward-only-closure-recovery"
-	featureSCLVProjection          = "ssfv:symphony:sclv-engine.disposable-provider-neutral-history"
-	featureSCLVEvidence            = "ssfv:symphony:sclv-engine.provider-neutral-evidence-normalization"
-	featureSACV                    = "ssfv:symphony:sacv-engine"
-	featureSACVConformance         = "ssfv:symphony:sacv-engine.api-contract-conformance"
-	featureSACVCompatibility       = "ssfv:symphony:sacv-engine.openapi-compatibility-evidence"
-	featureSACVProposal            = "ssfv:symphony:sacv-engine.contract-registration-proposal"
-	featureSACVProjection          = "ssfv:symphony:sacv-engine.contract-inventory-projection"
-	featureSODV                    = "ssfv:symphony:sodv-engine"
-	featureSODVLedger              = "ssfv:symphony:sodv-engine.release-ledger-validation"
-	featureSODVVerification        = "ssfv:symphony:sodv-engine.observed-publication-verification"
-	featureSODVProposal            = "ssfv:symphony:sodv-engine.forward-release-record-proposal"
-	featureSODVRecovery            = "ssfv:symphony:sodv-engine.interrupted-publication-reconciliation"
-	featureSODVProjection          = "ssfv:symphony:sodv-engine.release-transaction-projection"
-	featureSSFV                    = "ssfv:symphony:ssfv-engine"
-	featureSSFVSnapshot            = "ssfv:symphony:ssfv-engine.catalog-integrity-snapshot"
-	featureSSFVComparison          = "ssfv:symphony:ssfv-engine.semantic-freshness-comparison"
-	featureSSFVProposal            = "ssfv:symphony:ssfv-engine.catalog-change-proposal"
-	featureSSFVProjection          = "ssfv:symphony:ssfv-engine.semantic-graph-projection"
-	featureAdministrationAssurance = "ssfv:symphony:ssfv-engine.administration-assurance"
-	backendFeatureCoordinator      = "ssfv:symphony:knowledge-session-coordinator"
-	backendFeatureAuthorityEpochs  = "ssfv:symphony:knowledge-session-coordinator.authority-epochs"
-	backendFeatureLifecycleApply   = "ssfv:symphony:knowledge-session-coordinator.lifecycle-apply-coordination"
-	backendFeatureLifecyclePlan    = "ssfv:symphony:knowledge-session-coordinator.lifecycle-planning"
-	backendFeatureReconciliation   = "ssfv:symphony:knowledge-session-coordinator.reconciliation"
-	backendFeatureSemanticMaintain = "ssfv:symphony:knowledge-session-coordinator.semantic-maintenance"
-	backendFeatureMaestroPresence  = "ssfv:symphony:maestro-presence-authority"
-	backendFeatureMaestroInventory = "ssfv:symphony:maestro-presence-authority.complete-inventory"
-	backendFeaturePlatform         = "ssfv:symphony:platform"
-	backendFeatureSSIAG            = "ssfv:symphony:ssiag-foundation"
-	backendFeatureSSIAGEnrollment  = "ssfv:symphony:ssiag-foundation.tops-enrollment"
-	backendFeatureSSIAGSupervisor  = "ssfv:symphony:ssiag-foundation.native-supervision"
-	backendFeatureSSIAGPolicy      = "ssfv:symphony:ssiag-foundation.policy-administration"
-	backendFeatureSSIAGProviders   = "ssfv:symphony:ssiag-foundation.provider-metadata-registry"
-	backendFeatureKeychainMetadata = "ssfv:symphony:ssiag.macos-keychain-metadata"
-	backendFeatureSTAV             = "ssfv:symphony:stav-append-authority"
-	backendFeatureSTAVEnrollment   = "ssfv:symphony:stav-append-authority.tops-enrollment"
-	backendFeatureSTAVSupervisor   = "ssfv:symphony:stav-append-authority.native-supervision"
-	backendFeatureSTAVQuery        = "ssfv:symphony:stav-append-authority.authorized-query"
-	backendFeatureSTAVDurability   = "ssfv:symphony:stav-append-authority.ledger-durability"
-	backendFeatureValidator        = "ssfv:symphony:symphony-validator"
-	backendFeatureRootSummary      = "ssfv:symphony:symphony-validator.root-summary-assurance"
+	featureQXCTL                     = "ssfv:symphony:qxctl"
+	featureBindings                  = "ssfv:symphony:qxctl.engine-bindings"
+	featureCommandRegistry           = "ssfv:symphony:qxctl.command-registry"
+	featureLifecycle                 = "ssfv:symphony:qxctl.lifecycle-convergence"
+	featureHost                      = "ssfv:symphony:qxctl.linux-host-receptor"
+	featureInvariantAssurance        = "ssfv:symphony:qxctl.invariant-assurance"
+	featureMaestro                   = "ssfv:symphony:qxctl.maestro-administration"
+	featureSessions                  = "ssfv:symphony:qxctl.authenticated-sessions"
+	featureSSIAG                     = "ssfv:symphony:qxctl.ssiag-administration"
+	featureSTAV                      = "ssfv:symphony:qxctl.stav-administration"
+	featureValidation                = "ssfv:symphony:qxctl.governed-validation"
+	featureSKVI                      = "ssfv:symphony:skvi-engine"
+	featureSKVIAssurance             = "ssfv:symphony:skvi-engine.structural-index-assurance"
+	featureSKVIProposal              = "ssfv:symphony:skvi-engine.content-addressed-index-change-proposals"
+	featureSKVIProjection            = "ssfv:symphony:skvi-engine.disposable-structural-projection"
+	featureSCLV                      = "ssfv:symphony:sclv-engine"
+	featureSCLVAssurance             = "ssfv:symphony:sclv-engine.append-only-ledger-assurance"
+	featureSCLVProposal              = "ssfv:symphony:sclv-engine.evidence-bound-append-proposals"
+	featureSCLVRecovery              = "ssfv:symphony:sclv-engine.forward-only-closure-recovery"
+	featureSCLVProjection            = "ssfv:symphony:sclv-engine.disposable-provider-neutral-history"
+	featureSCLVEvidence              = "ssfv:symphony:sclv-engine.provider-neutral-evidence-normalization"
+	featureSACV                      = "ssfv:symphony:sacv-engine"
+	featureSACVConformance           = "ssfv:symphony:sacv-engine.api-contract-conformance"
+	featureSACVCompatibility         = "ssfv:symphony:sacv-engine.openapi-compatibility-evidence"
+	featureSACVProposal              = "ssfv:symphony:sacv-engine.contract-registration-proposal"
+	featureSACVProjection            = "ssfv:symphony:sacv-engine.contract-inventory-projection"
+	featureSODV                      = "ssfv:symphony:sodv-engine"
+	featureSODVLedger                = "ssfv:symphony:sodv-engine.release-ledger-validation"
+	featureSODVVerification          = "ssfv:symphony:sodv-engine.observed-publication-verification"
+	featureSODVProposal              = "ssfv:symphony:sodv-engine.forward-release-record-proposal"
+	featureSODVRecovery              = "ssfv:symphony:sodv-engine.interrupted-publication-reconciliation"
+	featureSODVProjection            = "ssfv:symphony:sodv-engine.release-transaction-projection"
+	featureSSFV                      = "ssfv:symphony:ssfv-engine"
+	featureSSFVSnapshot              = "ssfv:symphony:ssfv-engine.catalog-integrity-snapshot"
+	featureSSFVComparison            = "ssfv:symphony:ssfv-engine.semantic-freshness-comparison"
+	featureSSFVProposal              = "ssfv:symphony:ssfv-engine.catalog-change-proposal"
+	featureSSFVProjection            = "ssfv:symphony:ssfv-engine.semantic-graph-projection"
+	featureAdministrationAssurance   = "ssfv:symphony:ssfv-engine.administration-assurance"
+	backendFeatureCoordinator        = "ssfv:symphony:knowledge-session-coordinator"
+	backendFeatureAuthorityEpochs    = "ssfv:symphony:knowledge-session-coordinator.authority-epochs"
+	backendFeatureLifecycleApply     = "ssfv:symphony:knowledge-session-coordinator.lifecycle-apply-coordination"
+	backendFeatureLifecyclePlan      = "ssfv:symphony:knowledge-session-coordinator.lifecycle-planning"
+	backendFeatureReconciliation     = "ssfv:symphony:knowledge-session-coordinator.reconciliation"
+	backendFeatureSemanticMaintain   = "ssfv:symphony:knowledge-session-coordinator.semantic-maintenance"
+	backendFeatureMaestroPresence    = "ssfv:symphony:maestro-presence-authority"
+	backendFeatureMaestroInventory   = "ssfv:symphony:maestro-presence-authority.complete-inventory"
+	backendFeaturePlatform           = "ssfv:symphony:platform"
+	backendFeatureSSIAG              = "ssfv:symphony:ssiag-foundation"
+	backendFeatureSSIAGEnrollment    = "ssfv:symphony:ssiag-foundation.tops-enrollment"
+	backendFeatureSSIAGSupervisor    = "ssfv:symphony:ssiag-foundation.native-supervision"
+	backendFeatureSSIAGPolicy        = "ssfv:symphony:ssiag-foundation.policy-administration"
+	backendFeatureSSIAGProviders     = "ssfv:symphony:ssiag-foundation.provider-metadata-registry"
+	backendFeatureKeychainMetadata   = "ssfv:symphony:ssiag.macos-keychain-metadata"
+	backendFeatureSTAV               = "ssfv:symphony:stav-append-authority"
+	backendFeatureSTAVEnrollment     = "ssfv:symphony:stav-append-authority.tops-enrollment"
+	backendFeatureSTAVSupervisor     = "ssfv:symphony:stav-append-authority.native-supervision"
+	backendFeatureSTAVQuery          = "ssfv:symphony:stav-append-authority.authorized-query"
+	backendFeatureSTAVDurability     = "ssfv:symphony:stav-append-authority.ledger-durability"
+	backendFeatureValidator          = "ssfv:symphony:symphony-validator"
+	backendFeatureRootSummary        = "ssfv:symphony:symphony-validator.root-summary-assurance"
+	backendFeatureInvariantAssurance = "ssfv:symphony:symphony-validator.invariant-ownership-assurance"
 )
 
 // reviewedBackendFeatureBindings is the ratified semantic bridge from stable
@@ -74,7 +76,8 @@ const (
 // authority; the SSFV engine independently evaluates it against the canonical
 // administration profile.
 var reviewedBackendFeatureBindings = map[string][]commandregistry.FeatureBinding{
-	"inventory": {{FeatureID: backendFeaturePlatform, Interaction: "discover"}},
+	"inventory":                 {{FeatureID: backendFeaturePlatform, Interaction: "discover"}},
+	"knowledge.invariant.check": {{FeatureID: backendFeatureInvariantAssurance, Interaction: "validate"}},
 	"knowledge.lifecycle.apply": {
 		{FeatureID: backendFeatureLifecycleApply, Interaction: "apply"},
 		{FeatureID: backendFeatureMaestroPresence, Interaction: "lifecycle"},
@@ -189,6 +192,20 @@ func registeredRootSummary(command *cobra.Command) *cobra.Command {
 	spec := commandSpec("validate.root-summary", featureValidation, "inspect")
 	spec.OutputProtocols = []string{"symphony.repository.root-summary.v1"}
 	spec.ResultValidationProtocols = []string{"symphony.repository.root-summary.v1"}
+	return commandregistry.Attach(command, spec)
+}
+
+func registeredInvariantQuery(command *cobra.Command, key, interaction string) *cobra.Command {
+	spec := commandSpec(key, featureInvariantAssurance, interaction)
+	spec.OutputProtocols = []string{"symphony.knowledge.invariant-query-result.v1"}
+	spec.ResultValidationProtocols = []string{"symphony.knowledge.invariant-query-result.v1"}
+	return commandregistry.Attach(command, spec)
+}
+
+func registeredInvariantCheck(command *cobra.Command) *cobra.Command {
+	spec := commandSpec("knowledge.invariant.check", featureInvariantAssurance, "validate")
+	spec.OutputProtocols = []string{"symphony.validation.result.v1"}
+	spec.ResultValidationProtocols = []string{"symphony.validation.result.v1"}
 	return commandregistry.Attach(command, spec)
 }
 

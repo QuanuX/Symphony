@@ -456,7 +456,9 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
     require(descriptor_v2.at("protocol") == engine::descriptor_protocol_v2 &&
                 descriptor_v2.at("format_version") == 2 &&
                 !descriptor_v2.contains("install_state") &&
-                descriptor_v2.at("operations").size() == 7U,
+                descriptor_v2.at("operations").size() == 7U &&
+                descriptor_v2.at("limits").at("json_values") ==
+                    ssfv::max_process_json_values,
             "engine-descriptor.v2 negotiation surface mismatch");
     const auto descriptor_digest = descriptor_v2.at("descriptor_digest");
     auto descriptor_v2_preimage = descriptor_v2;
@@ -479,11 +481,11 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
     require(check.at("summary").at("state") == "valid", "canonical partial registry invalid");
     require(check.at("coverage_state") == "partial",
             "canonical bootstrap must not imply repository-wide completeness");
-    require(check.at("feature_count") == 70U && check.at("feature_file_count") == 15U,
+    require(check.at("feature_count") == 72U && check.at("feature_file_count") == 15U,
             "canonical partial-catalog record counts mismatch");
     const auto graph = ssfv::handle_request(
         request("graph", engine::Json{{"format", "json"}}));
-    require(graph.at("node_count") == 70U && graph.at("edge_count") == 283U,
+    require(graph.at("node_count") == 72U && graph.at("edge_count") == 290U,
             "canonical partial-catalog graph count mismatch");
     require(graph.at("noncanonical") == true && graph.at("rebuildable") == true,
             "graph authority escalated");
@@ -509,7 +511,8 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
                     .at("integration_state") == "integration_ready" &&
                 canonical_administration.at("module_integrations").at(0)
                     .at("docking_ready") == true,
-            "ratified SSFV administration mapping is not integration ready");
+            "ratified SSFV administration mapping is not integration ready: " +
+                canonical_administration.dump());
 
     const auto full_administration = ssfv::handle_request(request(
         "administration-check", administration_payload(
@@ -517,15 +520,16 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
             read_json("knowledge/FEATURE-ADMINISTRATION-PROFILE.json"),
             read_json("tools/qxctl/COMMANDS.json"), "not_evaluated", nullptr,
             engine::Json::array({descriptor_v2}), nullptr)));
-    require(full_administration.at("summary").at("features_checked") == 70U &&
-                full_administration.at("summary").at("surfaces_checked") == 131U &&
-                full_administration.at("summary").at("satisfied") == 109U &&
+    require(full_administration.at("summary").at("features_checked") == 72U &&
+                full_administration.at("summary").at("surfaces_checked") == 137U &&
+                full_administration.at("summary").at("satisfied") == 114U &&
                 full_administration.at("summary").at("uncovered") == 0U &&
                 full_administration.at("summary").at("exempt") == 13U &&
-                full_administration.at("summary").at("prohibited") == 9U &&
+                full_administration.at("summary").at("prohibited") == 10U &&
                 full_administration.at("summary").at("stale") == 0U &&
                 full_administration.at("summary").at("unresolved") == 0U,
-            "canonical administration baseline counts mismatch");
+            "canonical administration baseline counts mismatch: " +
+                full_administration.at("summary").dump());
     require(std::none_of(full_administration.at("surfaces").begin(),
                          full_administration.at("surfaces").end(),
                          [](const engine::Json& surface) {
