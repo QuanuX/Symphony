@@ -5932,6 +5932,203 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Client success cannot substitute for SSIAG peer authentication, permission evaluation, or STAV commitment.
 - status: canonical
 
+## Feature Administration Assurance Implementation Evidence
+
+### Knowledge Engine Operation Specification API
+- path: `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/operation.hpp`
+- title: Knowledge Engine Stable Operation Specification API
+- surface_type: C++26 public foundation header
+- truth_role: exact stable engine-operation declaration and descriptor projection interface
+- owner: SKV foundation maintainers
+- scope: Defines operation identities and the reviewed administrative, protocol, authority, recovery, invocation, and thermal metadata projected by participating engines.
+- relationships: implements -> `knowledge/FEATURE-ADMINISTRATION.md`; conforms_to -> `knowledge/schemas/v2/engine-descriptor.schema.json`; implemented_by -> `libraries/knowledge-vector-engine-cpp/src/operation.cpp`
+- consumers: SSFV engine, participating knowledge engines, qxctl, validators, tests, reviewers
+- deferred_projections: additional reviewed engine descriptor v2 implementations
+- notes: Operation declarations record implementation evidence and confer no installation, authorization, or docking state.
+- status: canonical
+
+### Knowledge Engine Operation Specification Implementation
+- path: `libraries/knowledge-vector-engine-cpp/src/operation.cpp`
+- title: Knowledge Engine Stable Operation Specification Implementation
+- surface_type: C++26 foundation implementation
+- truth_role: deterministic operation validation, lookup, dispatch, and descriptor v2 projection truth
+- owner: SKV foundation maintainers
+- scope: Validates stable identifiers and exact metadata, rejects duplicate or unresolved recovery relationships, dispatches only declared operations, and projects digest-bound descriptor v2 evidence.
+- relationships: implements -> `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/operation.hpp`; governed_by -> `knowledge/FEATURE-ADMINISTRATION.md`
+- consumers: participating C++ knowledge engines, foundation tests, SSFV administration assurance
+- deferred_projections: additional engine operation tables
+- notes: The implementation neither discovers executables nor changes installation or lifecycle state.
+- status: canonical
+
+### SSFV Engine Process Entrypoint
+- path: `modules/ssfv-engine/src/main.cpp`
+- title: SSFV Engine Process Entrypoint
+- surface_type: C++26 engine process implementation
+- truth_role: exact argument, descriptor-version, bounded-request, dispatch, and deterministic-error assembly truth
+- owner: SSFV engine maintainers
+- scope: Exposes descriptor v1, side-by-side descriptor v2, and bounded engine-process operation dispatch without a repository or qxctl presence assumption.
+- relationships: implements -> `modules/ssfv-engine/SPEC.md`; invokes -> `modules/ssfv-engine/src/ssfv.cpp`; depends_on -> `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/operation.hpp`
+- consumers: direct diagnostic callers, qxctl, packagers, process tests, reviewers
+- deferred_projections: supervised installed-engine invocation
+- notes: Direct invocation remains read-only or proposal-only according to the selected operation and confers no canonical apply authority.
+- status: canonical
+
+### SSFV Engine Public Interface
+- path: `modules/ssfv-engine/src/ssfv.hpp`
+- title: SSFV Engine Public Operation Interface
+- surface_type: C++26 engine interface
+- truth_role: exact SSFV operation declaration and dispatch interface
+- owner: SSFV engine maintainers
+- scope: Declares the SSFV operation table and bounded operation dispatcher used by the process entrypoint and tests.
+- relationships: implements -> `modules/ssfv-engine/SPEC.md`; implemented_by -> `modules/ssfv-engine/src/ssfv.cpp`
+- consumers: SSFV process entrypoint, tests, reviewers
+- deferred_projections: none
+- notes: The interface carries no installation, authorization, feature-worthiness, or canonical-mutation claim.
+- status: canonical
+
+### SSFV Engine Process Regression
+- path: `modules/ssfv-engine/tests/process_smoke.sh`
+- title: SSFV Engine Process Regression Matrix
+- surface_type: POSIX shell process-conformance evidence
+- truth_role: exact descriptor, bounded process, error, and read-only response regression truth
+- owner: SSFV engine maintainers
+- scope: Exercises executable help/version/descriptor surfaces and direct bounded engine requests including administration-assurance process behavior.
+- relationships: verifies -> `modules/ssfv-engine/src/main.cpp`; verifies -> `modules/ssfv-engine/src/ssfv.cpp`; conforms_to -> `modules/ssfv-engine/SPEC.md`
+- consumers: SSFV maintainers, packagers, reviewers, release validation
+- deferred_projections: installed-package process matrix
+- notes: Passing process tests do not establish feature completeness, installation, docking, or authorization.
+- status: canonical
+
+### qxctl Command Registry Contract
+- path: `tools/qxctl/COMMANDS.md`
+- title: qxctl Stable Command Registry Contract
+- surface_type: qxctl administrative protocol documentation
+- truth_role: exact expected/observed registry generation, identity lifecycle, and non-authorization behavior
+- owner: qxctl maintainers under the cross-vector feature-administration contract
+- scope: Documents the single-source CommandSpec/Cobra projection, client-independent and executable-bound evidence, parity verification, prohibited leaves, and retired fail-closed tombstones.
+- relationships: governed_by -> `knowledge/FEATURE-ADMINISTRATION.md`; describes -> `tools/qxctl/COMMANDS.json`; implemented_by -> `tools/qxctl/internal/commandregistry/registry.go`
+- consumers: qxctl maintainers, module developers, SSFV engine, validators, reviewers, agentic tools
+- deferred_projections: reviewed command-design assistance
+- notes: The registry cannot inject commands, allocate names, decide feature-worthiness, or grant authority.
+- status: canonical
+
+### qxctl Command Manifest Operations
+- path: `tools/qxctl/cmd/qxctl/command_manifest.go`
+- title: qxctl Command Manifest Operations
+- surface_type: Go administrative CLI implementation
+- truth_role: exact expected, observed, and verification command behavior
+- owner: qxctl maintainers
+- scope: Emits the expected or executable-bound command registry and validates bounded no-follow packaged registry evidence against the complete current tree.
+- relationships: implements -> `tools/qxctl/COMMANDS.md`; depends_on -> `tools/qxctl/internal/commandregistry/registry.go`; conforms_to -> `knowledge/schemas/v1/qxctl-command-registry.schema.json`
+- consumers: headless callers, SSFV coverage collection, tests, reviewers
+- deferred_projections: installation-receipt-bound client inventory
+- notes: Successful verification proves parity with this qxctl source, not permission or live backend availability.
+- status: canonical
+
+### qxctl Command Manifest Regression
+- path: `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+- title: qxctl Command Manifest Regression Matrix
+- surface_type: Go deterministic regression evidence
+- truth_role: exact command-count, stable-identity, feature-binding, parity, digest, path-safety, and JSON-debt test truth
+- owner: qxctl maintainers
+- scope: Verifies all registered executable leaves, expected-registry reproduction, exact hidden/prohibited behavior, bounded input rejection, and semantic vector bindings.
+- relationships: verifies -> `tools/qxctl/cmd/qxctl/command_manifest.go`; verifies -> `tools/qxctl/internal/commandregistry/registry.go`; conforms_to -> `tools/qxctl/COMMANDS.md`
+- consumers: qxctl maintainers, SSFV maintainers, validators, reviewers
+- deferred_projections: cross-version client compatibility matrix
+- notes: Passing tests neither ratify future command identities nor hide current non-JSON debt.
+- status: canonical
+
+### qxctl Command Specifications
+- path: `tools/qxctl/cmd/qxctl/command_specs.go`
+- title: qxctl Stable Command Specification Definitions
+- surface_type: Go administrative CLI implementation
+- truth_role: exact stable semantic specification attached to each constructed Cobra executable leaf
+- owner: qxctl maintainers
+- scope: Supplies identity, lifecycle, feature interaction, backend operation, protocols, mutability, authority, target, recovery, and machine-output declarations to the common command registry.
+- relationships: implements -> `knowledge/FEATURE-ADMINISTRATION.md`; consumed_by -> `tools/qxctl/cmd/qxctl/commands.go`; projected_by -> `tools/qxctl/internal/commandregistry/registry.go`
+- consumers: qxctl command construction, manifest generation, tests, SSFV administration assurance
+- deferred_projections: reviewed specifications for future command leaves
+- notes: A CommandSpec does not dynamically create grammar and cannot grant backend authority.
+- status: canonical
+
+### qxctl SSFV Regression Matrix
+- path: `tools/qxctl/cmd/qxctl/ssfv_test.go`
+- title: qxctl SSFV Administration Regression Matrix
+- surface_type: Go deterministic regression evidence
+- truth_role: exact SSFV result validation and administration-assurance CLI test truth
+- owner: qxctl and SSFV maintainers
+- scope: Verifies bounded administration input, complete result shape, self-digests, state enums, module admission, and rejection of malformed or authority-expanding engine responses.
+- relationships: verifies -> `tools/qxctl/cmd/qxctl/ssfv.go`; conforms_to -> `knowledge/schemas/v1/administration-coverage-result.schema.json`
+- consumers: qxctl maintainers, SSFV maintainers, reviewers, release validation
+- deferred_projections: installed multi-version SSFV compatibility matrix
+- notes: Successful result validation does not convert coverage evidence into installation, docking, authorization, or canonical truth.
+- status: canonical
+
+### qxctl Command Registry Implementation
+- path: `tools/qxctl/internal/commandregistry/registry.go`
+- title: qxctl Stable Command Registry Implementation
+- surface_type: Go administrative foundation implementation
+- truth_role: single-source executable-tree classification, deterministic projection, digest, and command-lifecycle truth
+- owner: qxctl maintainers
+- scope: Attaches CommandSpec records, enforces full-tree role parity, projects grammar from Cobra, binds executable identity, rejects duplicates and unsafe metadata, and preserves retired IDs as hidden null-grammar tombstones.
+- relationships: implements -> `tools/qxctl/COMMANDS.md`; conforms_to -> `knowledge/schemas/v1/qxctl-command-registry.schema.json`; consumes -> `tools/qxctl/cmd/qxctl/command_specs.go`
+- consumers: qxctl construction, manifest commands, SSFV administration assurance, validators, tests
+- deferred_projections: additional reviewed command namespaces
+- notes: Prohibited and retired leaves cannot satisfy required feature-administration coverage.
+- status: canonical
+
+### qxctl Command Registry Regression
+- path: `tools/qxctl/internal/commandregistry/registry_test.go`
+- title: qxctl Stable Command Registry Regression Matrix
+- surface_type: Go deterministic regression evidence
+- truth_role: exact structural parity, identity collision, schema, digest, trust, and retirement test truth
+- owner: qxctl maintainers
+- scope: Exercises missing registration, structural-handler replacement, duplicate identity, invalid metadata, deterministic aliases, observed trust, and fail-closed retirement tombstones.
+- relationships: verifies -> `tools/qxctl/internal/commandregistry/registry.go`; conforms_to -> `knowledge/FEATURE-ADMINISTRATION.md`
+- consumers: qxctl maintainers, reviewers, release validation
+- deferred_projections: cross-version tombstone compatibility matrix
+- notes: Fixtures are test evidence and cannot allocate production command identities.
+- status: canonical
+
+### Validator Feature Administration Check
+- path: `tools/symphony-validator/src/feature_administration.cpp`
+- title: Symphony Validator Feature Administration Check
+- surface_type: C++26 repository validation implementation
+- truth_role: exact static profile, registry, descriptor, digest, ordering, reference, and forward-gate conformance truth
+- owner: Symphony Validator maintainers
+- scope: Validates bounded no-follow feature-administration artifacts without executing qxctl or an engine and emits explicit report-only profile debt.
+- relationships: implements -> `tools/symphony-validator/SPEC.md`; governed_by -> `knowledge/FEATURE-ADMINISTRATION.md`; declared_by -> `tools/symphony-validator/src/feature_administration.hpp`
+- consumers: repository validation, qxctl validation surfaces, reviewers
+- deferred_projections: forward-gate enforcement after profile adjudication
+- notes: Static validation does not establish live backend availability, authorization, installation, or docking.
+- status: canonical
+
+### Validator Feature Administration Interface
+- path: `tools/symphony-validator/src/feature_administration.hpp`
+- title: Symphony Validator Feature Administration Interface
+- surface_type: C++26 repository validation interface
+- truth_role: exact feature-administration checker entrypoint declaration
+- owner: Symphony Validator maintainers
+- scope: Declares the bounded static checker used by the validator CLI and regression suite.
+- relationships: implements -> `tools/symphony-validator/SPEC.md`; implemented_by -> `tools/symphony-validator/src/feature_administration.cpp`
+- consumers: Symphony Validator CLI, unit tests, reviewers
+- deferred_projections: none
+- notes: The interface authorizes no repository mutation or dynamic command discovery.
+- status: canonical
+
+### Validator Feature Administration Regression
+- path: `tools/symphony-validator/tests/feature_administration_test.cpp`
+- title: Symphony Validator Feature Administration Regression Matrix
+- surface_type: C++26 deterministic regression evidence
+- truth_role: exact malformed, stale, unordered, unsafe-path, unreviewed, and valid-artifact test truth
+- owner: Symphony Validator maintainers
+- scope: Exercises the static checker across profile, expected command registry, engine descriptor, semantic record, digest, reference, and report-only warning boundaries.
+- relationships: verifies -> `tools/symphony-validator/src/feature_administration.cpp`; conforms_to -> `knowledge/FEATURE-ADMINISTRATION.md`
+- consumers: validator maintainers, SSFV and qxctl maintainers, reviewers, release validation
+- deferred_projections: enforce-new and enforce-all regression matrices after ratification
+- notes: Test success cannot adjudicate the sixty-nine unreviewed feature expectations.
+- status: canonical
+
 ## Deferred Projections
 Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, fifty-seven common SKV v1 JSON Schemas, four common SKV v2 JSON Schemas, twelve SSIAG authorization, grant-planning, and policy-administration JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
