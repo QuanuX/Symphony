@@ -358,15 +358,15 @@
         }
       ],
       "evidence": [
-        "tools/qxctl/internal/validation/validation_test.go verifies exact process output, finding identities, immutable detection, profiles, baselines, compare-and-swap state, and filters that never narrow scanning.",
-        "tools/qxctl/cmd/qxctl/validation.go implements scan, debug, profile, and baseline grammar over the bounded client and protected state."
+        "tools/qxctl/internal/validation/validation_test.go verifies exact process output, finding identities, immutable detection, subject and occurrence history, classifications, expiry, supersession, presentation-only mute, compare-and-swap state, root-summary exit 25, and filters that never narrow scanning.",
+        "tools/qxctl/cmd/qxctl/validation.go implements scan, debug, profile, baseline, warning-lifecycle, and root-summary grammar over the bounded client and protected state."
       ],
       "feature_id": "ssfv:symphony:qxctl.governed-validation",
-      "how": "qxctl validates the validator receipt, invokes deterministic JSON mode with an empty environment and deadline, verifies repository/version/finding identities and nested digests, then applies protected record/review/require and full/summary/count policy after detection.",
+      "how": "qxctl validates the validator receipt, invokes complete validation or the distinct root-summary projection with an empty environment and deadline, verifies exact identities and nested digests, then applies protected record/review/require policy and a side-by-side subject-aware warning lifecycle after detection.",
       "implementation_languages": [
         {
           "language": "Go",
-          "role": "Implements exact validator invocation, nested evidence validation, immutable detection evaluation, protected warning profiles and baselines, and debug presentation."
+          "role": "Implements exact validator invocation, nested evidence and root-summary validation, immutable detection evaluation, protected warning profiles/baselines/subject lifecycle, and actionable/debug presentation."
         }
       ],
       "implementation_paths": [
@@ -377,12 +377,13 @@
         "tools/qxctl/internal/validation/evaluate.go",
         "tools/qxctl/internal/validation/policy.go",
         "tools/qxctl/internal/validation/state_unix.go",
-        "tools/qxctl/internal/validation/validation_test.go"
+        "tools/qxctl/internal/validation/validation_test.go",
+        "tools/qxctl/internal/validation/warnings.go"
       ],
       "kind": "subfeature",
       "non_claims": [
-        "Does not suppress, rewrite, resolve, or ratify raw findings and does not change detector execution sensitivity.",
-        "Does not make a baseline canonical truth, grant permission, or mutate repository source."
+        "Does not suppress, rewrite, delete, administratively declare resolution of, or ratify raw findings and does not change detector execution sensitivity.",
+        "Does not make a baseline or warning classification canonical truth, grant permission, mutate repository source, or write README."
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",
@@ -397,11 +398,11 @@
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "Governed repository validation evidence",
-      "what": "Runs the exact installed Symphony Validator and administers mutable warning disposition and presentation without changing raw detector truth.",
-      "when": "Runs on explicit validate scan, debug, profile, or baseline commands and during reviewed gates that request validator evidence.",
+      "what": "Runs the exact installed Symphony Validator, inspects its root-summary projection, and administers warning disposition, actionable subject lifecycle, occurrence history, and presentation without changing raw detector truth.",
+      "when": "Runs on explicit validate scan, debug, root-summary, profile, baseline, or warning commands and during reviewed gates that request validator evidence.",
       "where": "Executes on an administrative node against a selected repository and protected per-TOPS validation state outside runtime trading paths.",
       "who": "Any caller with effective target-host permission using qxctl for repository review, debugging, baselining, or release evidence.",
-      "why": "Separates immutable defect and drift detection from administrator-controlled sensitivity, acknowledgement, and presentation so historical warnings remain visible and diagnosable."
+      "why": "Separates immutable defect and drift detection from administrator-controlled sensitivity, acknowledgement, lifecycle classification, and presentation so ordinary output is actionable while complete historical evidence remains visible and diagnosable."
     },
     {
       "cross_vector_references": [

@@ -7,9 +7,11 @@ REPO_ROOT=$(CDPATH= cd -- "$VALIDATOR_ROOT/../.." && pwd)
 
 VALIDATOR_BIN=${SYMPHONY_VALIDATOR_BIN:-"$VALIDATOR_ROOT/build/symphony-validator"}
 SCLV_TEST_BIN=${SCLV_TEMPORAL_TEST_BIN:-"$VALIDATOR_ROOT/build/sclv-temporal-tests"}
+SCLV_CROSS_REFERENCE_TEST_BIN=${SCLV_CROSS_REFERENCE_TEST_BIN:-"$VALIDATOR_ROOT/build/sclv-cross-reference-tests"}
 CALLER_AUTHORITY_TEST_BIN=${CALLER_AUTHORITY_TEST_BIN:-"$VALIDATOR_ROOT/build/caller-authority-tests"}
 SODV_RELEASE_TEST_BIN=${SODV_RELEASE_TEST_BIN:-"$VALIDATOR_ROOT/build/sodv-release-tests"}
 FEATURE_ADMIN_TEST_BIN=${FEATURE_ADMINISTRATION_TEST_BIN:-"$VALIDATOR_ROOT/build/feature-administration-tests"}
+ROOT_SUMMARY_TEST_BIN=${ROOT_SUMMARY_TEST_BIN:-"$VALIDATOR_ROOT/build/root-summary-tests"}
 
 cd "$VALIDATOR_ROOT"
 
@@ -17,6 +19,9 @@ echo "Running smoke tests..."
 
 "$SCLV_TEST_BIN"
 echo "SCLV temporal tests passed"
+
+"$SCLV_CROSS_REFERENCE_TEST_BIN"
+echo "SCLV cross-reference tests passed"
 
 # Verify caller authority
 "$CALLER_AUTHORITY_TEST_BIN"
@@ -27,6 +32,23 @@ echo "SODV release validator tests passed"
 
 "$FEATURE_ADMIN_TEST_BIN" "$REPO_ROOT"
 echo "Feature administration validator tests passed"
+
+"$ROOT_SUMMARY_TEST_BIN" "$REPO_ROOT"
+echo "Root summary validator tests passed"
+
+ROOT_SUMMARY_JSON=$("$VALIDATOR_BIN" root-summary --repo "$REPO_ROOT" --json)
+if ! printf '%s\n' "$ROOT_SUMMARY_JSON" | grep '"protocol": "symphony.repository.root-summary.v1"' >/dev/null ||
+   ! printf '%s\n' "$ROOT_SUMMARY_JSON" | grep '"summary_digest": "sha256:' >/dev/null; then
+    echo "error: root-summary JSON projection is missing protocol or digest"
+    exit 1
+fi
+ROOT_SUMMARY_MARKDOWN=$("$VALIDATOR_BIN" root-summary --repo "$REPO_ROOT")
+if [ "$(printf '%s\n' "$ROOT_SUMMARY_MARKDOWN" | grep -c '^<!-- symphony:root-summary:v1:begin -->$')" -ne 1 ] ||
+   [ "$(printf '%s\n' "$ROOT_SUMMARY_MARKDOWN" | grep -c '^<!-- symphony:root-summary:v1:end -->$')" -ne 1 ]; then
+    echo "error: root-summary Markdown projection has invalid markers"
+    exit 1
+fi
+echo "Root summary standalone projections passed"
 
 
 # Verify --help
@@ -216,8 +238,8 @@ if ! printf '%s\n' "$OUT_REPO" | grep "caller_authority.scan_complete " | grep "
     echo "error: current repo missing expected caller_authority.scan_complete status or findings=0"
     exit 1
 fi
-if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 149 ]; then
-    echo "error: current repo should authorize exactly 149 canonical JSON artifacts"
+if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 152 ]; then
+    echo "error: current repo should authorize exactly 152 canonical JSON artifacts"
     exit 1
 fi
 if ! printf '%s\n' "$OUT_REPO" | grep "sodv.releases.scan_complete records=3 transactions=1 violations=0" >/dev/null; then
@@ -383,7 +405,12 @@ fi
 echo "fixtures_sclv_duplicate_merge_commit failed as expected"
 
 # Verify sparse SCLV PR-number namespace
-OUT_SPARSE=$("$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_ledger_gap_warning)
+TEMP_FIXTURE=$(mktemp -d)
+trap 'rm -rf "$TEMP_FIXTURE"' EXIT
+cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
+cp ./tests/fixtures_sclv_ledger_gap_warning/knowledge/sclv/CHANGELOG.md \
+    "$TEMP_FIXTURE/knowledge/sclv/CHANGELOG.md"
+OUT_SPARSE=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE")
 if ! printf '%s\n' "$OUT_SPARSE" | grep "sclv_ledger.sparse_pr_namespace" >/dev/null; then
     echo "error: sparse SCLV fixture missing sparse namespace evidence"
     exit 1
@@ -392,6 +419,8 @@ if printf '%s\n' "$OUT_SPARSE" | grep "sclv_ledger.record_gap" >/dev/null; then
     echo "error: sparse SCLV fixture emitted a false record-gap warning"
     exit 1
 fi
+rm -rf "$TEMP_FIXTURE"
+trap - EXIT
 echo "sparse SCLV PR-number namespace passed"
 
 # Verify skvi_references path not indexed
@@ -408,20 +437,47 @@ if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_skvi_reference_unindexed 
 fi
 echo "fixtures_sclv_skvi_reference_unindexed fixture failed as expected"
 
-# Verify affected_surfaces path absent
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_affected_surface_absent > /dev/null 2>&1; then
-    echo "error: affected_surface_absent fixture should fail"
+# Verify a historical affected_surfaces path may later be absent without becoming a current obligation.
+TEMP_FIXTURE=$(mktemp -d)
+trap 'rm -rf "$TEMP_FIXTURE"' EXIT
+cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
+cp ./tests/fixtures_affected_surface_absent/knowledge/sclv/CHANGELOG.md \
+    "$TEMP_FIXTURE/knowledge/sclv/CHANGELOG.md"
+OUT_ABSENT=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE")
+if ! printf '%s\n' "$OUT_ABSENT" | grep "sclv.affected_surface.provenance_summary records=1 occurrences=1 unique_paths=1 present_paths=0 absent_paths=1 unknown_paths=0 indexed_paths=0 unindexed_paths=1" >/dev/null; then
+    echo "error: affected_surface_absent missing exact historical provenance summary"
     exit 1
 fi
-echo "affected_surface_absent fixture failed as expected"
+if printf '%s\n' "$OUT_ABSENT" | grep -E "sclv\.affected_surface\.(absent|unindexed)" >/dev/null; then
+    echo "error: affected_surface_absent emitted obsolete warning or violation evidence"
+    exit 1
+fi
+rm -rf "$TEMP_FIXTURE"
+trap - EXIT
+echo "affected_surface_absent passed as historical provenance"
 
-# Verify affected_surfaces path existing but unindexed
-OUT_WARN=$("$VALIDATOR_BIN" check --repo ./tests/fixtures_affected_surface_unindexed)
-if ! printf '%s\n' "$OUT_WARN" | grep -E "summary pass=.* warning=[1-9][0-9]* violation=0 exit=0" >/dev/null; then
-    echo "error: affected_surface_unindexed missing warning > 0 or exit=0"
+# Verify unindexed implementation, test, and build affected_surfaces are summarized without warning noise.
+TEMP_FIXTURE=$(mktemp -d)
+trap 'rm -rf "$TEMP_FIXTURE"' EXIT
+cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
+cp ./tests/fixtures_affected_surface_unindexed/knowledge/sclv/CHANGELOG.md \
+    "$TEMP_FIXTURE/knowledge/sclv/CHANGELOG.md"
+cp ./tests/fixtures_affected_surface_unindexed/existing_unindexed.md "$TEMP_FIXTURE/"
+cp -a ./tests/fixtures_affected_surface_unindexed/src "$TEMP_FIXTURE/"
+cp -a ./tests/fixtures_affected_surface_unindexed/tests "$TEMP_FIXTURE/"
+cp -a ./tests/fixtures_affected_surface_unindexed/cmake "$TEMP_FIXTURE/"
+OUT_WARN=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE")
+if ! printf '%s\n' "$OUT_WARN" | grep "sclv.affected_surface.provenance_summary records=2 occurrences=5 unique_paths=4 present_paths=4 absent_paths=0 unknown_paths=0 indexed_paths=0 unindexed_paths=4" >/dev/null; then
+    echo "error: affected_surface_unindexed missing exact historical provenance summary"
     exit 1
 fi
-echo "affected_surface_unindexed fixture passed with warning"
+if printf '%s\n' "$OUT_WARN" | grep -E "sclv\.affected_surface\.(absent|unindexed)" >/dev/null; then
+    echo "error: affected_surface_unindexed emitted obsolete warning or violation evidence"
+    exit 1
+fi
+rm -rf "$TEMP_FIXTURE"
+trap - EXIT
+echo "affected_surface_unindexed passed without warning noise"
 
 # Verify invalid SKVI status
 if "$VALIDATOR_BIN" check --repo ./tests/fixtures_invalid_skvi_status > /dev/null 2>&1; then
@@ -516,16 +572,28 @@ if "$VALIDATOR_BIN" check --repo ./tests/fixtures_vocab_core > /dev/null 2>&1; t
 fi
 echo "fixtures_vocab_core failed as expected"
 
-if ! "$VALIDATOR_BIN" check --repo ./tests/fixtures_vocab_score > /dev/null 2>&1; then
+TEMP_FIXTURE=$(mktemp -d)
+trap 'rm -rf "$TEMP_FIXTURE"' EXIT
+cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
+cp ./tests/fixtures_vocab_score/README.md "$TEMP_FIXTURE/README.md"
+if ! "$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" > /dev/null 2>&1; then
     echo "error: fixtures_vocab_score should pass"
     exit 1
 fi
+rm -rf "$TEMP_FIXTURE"
+trap - EXIT
 echo "fixtures_vocab_score passed as expected"
 
-if ! "$VALIDATOR_BIN" check --repo ./tests/fixtures_vocab_c_o_r_e > /dev/null 2>&1; then
+TEMP_FIXTURE=$(mktemp -d)
+trap 'rm -rf "$TEMP_FIXTURE"' EXIT
+cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
+cp ./tests/fixtures_vocab_c_o_r_e/README.md "$TEMP_FIXTURE/README.md"
+if ! "$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" > /dev/null 2>&1; then
     echo "error: fixtures_vocab_c_o_r_e should pass"
     exit 1
 fi
+rm -rf "$TEMP_FIXTURE"
+trap - EXIT
 echo "fixtures_vocab_c_o_r_e passed as expected"
 
 if "$VALIDATOR_BIN" check --repo ./tests/fixtures_vocab_markdown_wins > /dev/null 2>&1; then
@@ -595,13 +663,6 @@ if "$VALIDATOR_BIN" check --repo ./tests/fixtures_skvi_paths_directory > /dev/nu
 fi
 echo "fixtures_skvi_paths_directory failed as expected"
 
-# Verify SCLV reference missing affected path
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_reference_missing_affected > /dev/null 2>&1; then
-    echo "error: fixtures_sclv_reference_missing_affected should fail"
-    exit 1
-fi
-echo "fixtures_sclv_reference_missing_affected failed as expected"
-
 # Verify SCLV reference missing skvi path
 if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_reference_missing_skvi > /dev/null 2>&1; then
     echo "error: fixtures_sclv_reference_missing_skvi should fail"
@@ -623,11 +684,6 @@ if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_reference_traversal > /de
 fi
 echo "fixtures_sclv_reference_traversal failed as expected"
 
-# Verify SCLV reference directory path
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_reference_directory > /dev/null 2>&1; then
-    echo "error: fixtures_sclv_reference_directory should fail"
-    exit 1
-fi
 # Verify SCLV-SKVI unindexed reference
 if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_skvi_reference_unindexed > /dev/null 2>&1; then
     echo "error: fixtures_sclv_skvi_reference_unindexed should fail"

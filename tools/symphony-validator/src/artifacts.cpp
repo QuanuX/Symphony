@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 bool is_authorized_canonical_json(const std::string& relative_path) {
     // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, and SSFV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 149> authorized_paths = {
+    static const std::array<std::string, 152> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -103,6 +103,8 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/schemas/v1/validation-result.schema.json",
         "knowledge/schemas/v1/validation-policy.schema.json",
         "knowledge/schemas/v1/validation-baseline.schema.json",
+        "knowledge/schemas/v1/validation-warning-state.schema.json",
+        "knowledge/schemas/v1/invariant-ownership-registry.schema.json",
         "knowledge/schemas/v2/install-receipt.schema.json",
         "knowledge/schemas/v2/engine-descriptor.schema.json",
         "knowledge/schemas/v2/lifecycle-boot-journal.schema.json",
@@ -160,7 +162,8 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/ssfv/schemas/v2/diff-input.schema.json",
         "knowledge/ssfv/schemas/v2/diff-result.schema.json",
         "knowledge/ssfv/schemas/v2/proposal-input.schema.json",
-        "knowledge/FEATURE-ADMINISTRATION-PROFILE.json"
+        "knowledge/FEATURE-ADMINISTRATION-PROFILE.json",
+        "knowledge/INVARIANT-OWNERSHIP.json"
     };
     return std::find(authorized_paths.begin(), authorized_paths.end(), relative_path) != authorized_paths.end();
 }

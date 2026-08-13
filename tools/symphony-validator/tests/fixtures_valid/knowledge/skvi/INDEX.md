@@ -428,6 +428,19 @@ Future validator checks may verify SKVI structure.
 - notes: Creates no vector or runtime.
 - status: canonical
 
+##### FOUNDATIONAL-LIFECYCLE.md
+- path: `knowledge/FOUNDATIONAL-LIFECYCLE.md`
+- title: Symphony Foundational Service Lifecycle
+- surface_type: cross-vector common contract fixture
+- truth_role: canonical foundational lifecycle fixture
+- owner: knowledge maintainer
+- scope: Proves required foundational lifecycle presence and contract-shape anchors.
+- relationships: depends_on -> `knowledge/INTENT.md`
+- consumers: symphony-validator fixtures
+- deferred_projections: none
+- notes: Creates no vector or runtime.
+- status: canonical
+
 #### SKVI
 ##### INDEX.md
 - path: `knowledge/skvi/INDEX.md`

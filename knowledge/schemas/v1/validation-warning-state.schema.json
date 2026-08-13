@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:validation:warning-state:v1",
+  "title": "Symphony validation warning state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "format_version", "state_id", "tops_id", "generation",
+    "previous_state_digest", "updated_at", "repository_identity_digest",
+    "validator_id", "validator_version", "last_evidence_digest", "last_sync",
+    "subjects", "transitions", "canonical", "state_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.validation.warning-state.v1"},
+    "format_version": {"const": 1},
+    "state_id": {"$ref": "#/$defs/token"},
+    "tops_id": {"$ref": "#/$defs/tops_id"},
+    "generation": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "previous_state_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "updated_at": {"$ref": "#/$defs/timestamp"},
+    "repository_identity_digest": {"$ref": "#/$defs/digest"},
+    "validator_id": {"const": "symphony-validator"},
+    "validator_version": {"$ref": "#/$defs/version"},
+    "last_evidence_digest": {"$ref": "#/$defs/digest"},
+    "last_sync": {"$ref": "#/$defs/sync"},
+    "subjects": {
+      "type": "array", "maxItems": 4096,
+      "items": {"$ref": "#/$defs/subject"}
+    },
+    "transitions": {
+      "type": "array", "maxItems": 32768,
+      "items": {"$ref": "#/$defs/transition"}
+    },
+    "canonical": {"const": false},
+    "state_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "sync": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "evidence_digest", "new_subject_ids", "known_subject_new_occurrence_ids",
+        "observed_occurrence_ids", "unchanged_occurrence_ids", "reopened_subject_ids",
+        "resolved_subject_ids", "sync_digest"
+      ],
+      "properties": {
+        "evidence_digest": {"$ref": "#/$defs/digest"},
+        "new_subject_ids": {"$ref": "#/$defs/digests"},
+        "known_subject_new_occurrence_ids": {"$ref": "#/$defs/digests"},
+        "observed_occurrence_ids": {"$ref": "#/$defs/digests"},
+        "unchanged_occurrence_ids": {"$ref": "#/$defs/digests"},
+        "reopened_subject_ids": {"$ref": "#/$defs/digests"},
+        "resolved_subject_ids": {"$ref": "#/$defs/digests"},
+        "sync_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "subject": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "subject_id", "rule_id", "classification", "muted_presentation_only",
+        "rationale", "valid_until", "superseded_by_subject_id", "first_observed_at",
+        "last_observed_at", "occurrence_ids", "occurrences"
+      ],
+      "properties": {
+        "subject_id": {"$ref": "#/$defs/digest"},
+        "rule_id": {"$ref": "#/$defs/token"},
+        "classification": {"$ref": "#/$defs/classification"},
+        "muted_presentation_only": {"type": "boolean"},
+        "rationale": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1, "maxLength": 4096}]},
+        "valid_until": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/timestamp"}]},
+        "superseded_by_subject_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+        "first_observed_at": {"$ref": "#/$defs/timestamp"},
+        "last_observed_at": {"$ref": "#/$defs/timestamp"},
+        "occurrence_ids": {"$ref": "#/$defs/digests"},
+        "occurrences": {
+          "type": "array", "maxItems": 16384,
+          "items": {"$ref": "#/$defs/occurrence"}
+        }
+      }
+    },
+    "occurrence": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "occurrence_id", "active", "first_observed_at", "last_observed_at",
+        "evidence_digests", "finding"
+      ],
+      "properties": {
+        "occurrence_id": {"$ref": "#/$defs/digest"},
+        "active": {"type": "boolean"},
+        "first_observed_at": {"$ref": "#/$defs/timestamp"},
+        "last_observed_at": {"$ref": "#/$defs/timestamp"},
+        "evidence_digests": {"$ref": "#/$defs/digests"},
+        "finding": {"$ref": "#/$defs/finding"}
+      }
+    },
+    "transition": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "sequence", "at", "operation", "subject_id", "occurrence_id",
+        "from_classification", "to_classification", "rationale", "valid_until",
+        "superseded_by_subject_id", "previous_transition_digest", "transition_digest"
+      ],
+      "properties": {
+        "sequence": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+        "at": {"$ref": "#/$defs/timestamp"},
+        "operation": {
+          "enum": [
+            "detected", "occurrence_observed", "not_observed", "recurred",
+            "acceptance_expired", "accepted", "reopened", "superseded", "muted", "unmuted"
+          ]
+        },
+        "subject_id": {"$ref": "#/$defs/digest"},
+        "occurrence_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+        "from_classification": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/classification"}]},
+        "to_classification": {"$ref": "#/$defs/classification"},
+        "rationale": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1, "maxLength": 4096}]},
+        "valid_until": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/timestamp"}]},
+        "superseded_by_subject_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+        "previous_transition_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+        "transition_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "finding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["category", "rule_id", "detail", "scope", "attributes", "occurrence_id", "subject_id"],
+      "properties": {
+        "category": {"const": "warning"},
+        "rule_id": {"$ref": "#/$defs/token"},
+        "detail": {"type": "string", "maxLength": 65536},
+        "scope": {"enum": ["active", "historical", "system"]},
+        "attributes": {
+          "type": "object", "maxProperties": 32,
+          "propertyNames": {"pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,63}$"},
+          "additionalProperties": {"type": "string", "maxLength": 4096}
+        },
+        "occurrence_id": {"$ref": "#/$defs/digest"},
+        "subject_id": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "classification": {"enum": ["open", "accepted", "resolved", "superseded"]},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "digests": {
+      "type": "array", "maxItems": 16384, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/digest"}
+    },
+    "timestamp": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"
+    },
+    "token": {
+      "type": "string", "minLength": 1, "maxLength": 256,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "tops_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "version": {
+      "type": "string", "minLength": 1, "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
+    }
+  }
+}

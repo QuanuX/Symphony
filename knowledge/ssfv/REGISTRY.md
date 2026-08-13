@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes sixty-nine experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes seventy experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -190,7 +190,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:d2bba969301b203f04186fa2f4996e25270bbf0f13c17b71af4d1853d8a0ba1b`
+- record_digest: `sha256:17ab959cdacbe9de37bf57af1da8410c6cf67a45982a91a964bf80472f56614d`
 - notes: Architect-ratified F1 nested record for Governed repository validation evidence; coverage remains partial and no broader runtime or canonical authority is implied.
 
 - feature_id: `ssfv:symphony:qxctl.lifecycle-convergence`
@@ -649,8 +649,17 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/symphony-validator`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:2ce39998bc064984d03971777493e9261659a4dccf08fb0fe8c75688c6608a45`
-- notes: Partial-catalog record for deterministic read-only repository validation and structured evidence projection.
+- record_digest: `sha256:76179d193e1d14af2fbfc6f573eb4857cf0d066599360d0721fa5e88323d8e07`
+- notes: Partial-catalog record for deterministic read-only repository validation, structured evidence, and bounded root-summary assurance.
+
+- feature_id: `ssfv:symphony:symphony-validator.root-summary-assurance`
+- feature_file: `tools/symphony-validator/FEATURES.md`
+- owner_contract: `tools/symphony-validator/SPEC.md`
+- source_scope: `tools/symphony-validator`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:symphony-validator`
+- record_digest: `sha256:99ae4416c59203eeeebff4497de8020de6e23c32b7625e5dd4113f27ff041556`
+- notes: Architect-ratified W4 subfeature for deterministic root-summary projection and managed-region freshness assurance; coverage remains partial.
 
 ## Prohibited Entries
 
@@ -666,4 +675,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This sixty-nine-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide completeness, engine-decided feature-worthiness, or canonical mutation.
+This seventy-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide completeness, engine-decided feature-worthiness, or canonical mutation.

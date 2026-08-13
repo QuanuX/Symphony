@@ -425,7 +425,7 @@
           ],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
-            "knowledge/stsc/SPEC.md",
+            "knowledge/TIME.md",
             "libraries/knowledge-vector-engine-cpp/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
@@ -878,7 +878,13 @@
             "qxcmd:symphony:validate.baseline.create",
             "qxcmd:symphony:validate.baseline.remove",
             "qxcmd:symphony:validate.profile.remove",
-            "qxcmd:symphony:validate.profile.set"
+            "qxcmd:symphony:validate.profile.set",
+            "qxcmd:symphony:validate.warning.accept",
+            "qxcmd:symphony:validate.warning.mute",
+            "qxcmd:symphony:validate.warning.reopen",
+            "qxcmd:symphony:validate.warning.supersede",
+            "qxcmd:symphony:validate.warning.sync",
+            "qxcmd:symphony:validate.warning.unmute"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -896,7 +902,8 @@
         },
         {
           "command_ids": [
-            "qxcmd:symphony:validate.profile.list"
+            "qxcmd:symphony:validate.profile.list",
+            "qxcmd:symphony:validate.warning.list"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
@@ -915,7 +922,8 @@
         {
           "command_ids": [
             "qxcmd:symphony:validate.baseline.show",
-            "qxcmd:symphony:validate.profile.show"
+            "qxcmd:symphony:validate.profile.show",
+            "qxcmd:symphony:validate.warning.show"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -929,6 +937,24 @@
           "inherited_from_feature_id": null,
           "interaction": "inspect",
           "rationale": "The reviewed qxctl command specifications provide the exact headless inspect surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:validate.warning.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Protected warning lifecycle state remains independently queryable without narrowing detector execution.",
           "requirement": "required"
         },
         {
@@ -1474,7 +1500,8 @@
           ],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
-            "knowledge/ssfv/REGISTRY.md"
+            "knowledge/ssfv/REGISTRY.md",
+            "modules/sacv-engine/SPEC.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
@@ -1606,7 +1633,8 @@
           ],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
-            "knowledge/ssfv/REGISTRY.md"
+            "knowledge/ssfv/REGISTRY.md",
+            "modules/sclv-engine/SPEC.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
@@ -1716,7 +1744,8 @@
           ],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
-            "knowledge/ssfv/REGISTRY.md"
+            "knowledge/ssfv/REGISTRY.md",
+            "modules/skvi-engine/SPEC.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
@@ -1825,7 +1854,8 @@
           ],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
-            "knowledge/ssfv/REGISTRY.md"
+            "knowledge/ssfv/REGISTRY.md",
+            "modules/sodv-engine/SPEC.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
@@ -2003,7 +2033,8 @@
           ],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
-            "knowledge/ssfv/REGISTRY.md"
+            "knowledge/ssfv/REGISTRY.md",
+            "modules/ssfv-engine/SPEC.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
@@ -2727,13 +2758,54 @@
         }
       ],
       "feature_id": "ssfv:symphony:symphony-validator"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+
+          ],
+          "delivery": "none",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/symphony-validator/FEATURES.md",
+            "tools/symphony-validator/SPEC.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Root-summary assurance is a deterministic projection and freshness check; neither the validator nor qxctl writes the README or canonical sources.",
+          "requirement": "prohibited"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:validate.root-summary"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/symphony-validator/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The exact receipt-backed qxctl route projects and validates the deterministic digest-bearing root summary for headless callers.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:symphony-validator.root-summary-assurance"
     }
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:74bd75cf2da0c46ac05a0e2a1687cf3742643a7b19d55ef81c9ec0752cf75efd",
+  "profile_digest": "sha256:b04e003ddf26185a794c2aee72ea5e277006477f9142800996d2b670070be9ff",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 69,
-  "ssfv_registry_digest": "sha256:9347a96f0b98ad00d42259ca61877e2b369bc051de0701ce47afed7a59d4543d"
+  "registered_feature_count": 70,
+  "ssfv_registry_digest": "sha256:5c1dfad607ee5df102942ea2c04b2ed3f54bef90217f33cca2875f89b687a2c5"
 }

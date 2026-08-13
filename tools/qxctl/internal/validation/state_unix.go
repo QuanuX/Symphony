@@ -43,7 +43,7 @@ func canonicalStateRoot(root string) (string, error) {
 }
 
 func (s *Store) withStateLock(area string, exclusive bool, operation func(*os.File) error) error {
-	if area != "profiles" && area != "baselines" {
+	if area != "profiles" && area != "baselines" && area != "warnings" {
 		return fmt.Errorf("unknown validation state area")
 	}
 	baseFD, areaFD, err := openValidationState(s.stateRoot, s.topsID, area)

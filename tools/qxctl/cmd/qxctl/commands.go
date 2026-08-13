@@ -7,6 +7,7 @@ import (
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/commandregistry"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/validation"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/version"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -198,6 +199,14 @@ func execute(args []string) int {
 		}
 		var validationFailure *validationOutcomeError
 		if errors.As(err, &validationFailure) {
+			return 1
+		}
+		var validatorExit *validation.ValidatorExitError
+		if errors.As(err, &validatorExit) {
+			fmt.Printf("%s failed: %v\n", failurePrefix(args), err)
+			if validatorExit.ExitCode > 0 && validatorExit.ExitCode <= 125 {
+				return validatorExit.ExitCode
+			}
 			return 1
 		}
 		fmt.Printf("%s failed: %v\n", failurePrefix(args), err)
@@ -1363,10 +1372,10 @@ func failurePrefix(args []string) string {
 			}
 		}
 	case "validate":
-		if len(args) > 1 && (args[1] == "scan" || args[1] == "debug") {
+		if len(args) > 1 && (args[1] == "scan" || args[1] == "debug" || args[1] == "root-summary") {
 			return "validate " + args[1]
 		}
-		if len(args) > 2 && (args[1] == "profile" || args[1] == "baseline") {
+		if len(args) > 2 && (args[1] == "profile" || args[1] == "baseline" || args[1] == "warning") {
 			return "validate " + args[1] + " " + args[2]
 		}
 	}

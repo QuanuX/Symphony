@@ -22,8 +22,10 @@ Commands:
   status [--json]                   Report consolidated administrative status
   validate scan --tops-id UUID --prefix PATH [--profile-id ID] [--baseline-id ID] [--json] Run full structured repository validation
   validate debug --tops-id UUID --prefix PATH [--rule ID|--record ID|--path PATH|--delta CLASS] [--json] Filter display after a full scan
+  validate root-summary --prefix PATH [--repo PATH] [--json] Project exact machine-checked root summary evidence
   validate profile list|show|set|remove --tops-id UUID [...] Administer protected warning policy
   validate baseline create|show|remove --tops-id UUID [...] Administer protected warning baselines
+  validate warning status|list|show|sync|accept|reopen|supersede|mute|unmute --tops-id UUID [...] Administer actionable warning lifecycle state
   ssiag status --tops-id UUID [--scope user|system] [--json] Read safe SSIAG status
   ssiag providers --tops-id UUID [--scope user|system] [--json] List safe provider metadata
   ssiag doctor --tops-id UUID [--scope user|system] Verify local SSIAG availability

@@ -57,6 +57,8 @@ Permission denial and missing installation do not change design coverage. A comm
 
 ## Independent Module Admission
 
+`invariant:symphony:module-administration.declaration` in `knowledge/INVARIANT-OWNERSHIP.json` makes this admission boundary mechanically traceable to the SSFV producer and validator regressions. It applies when a new installable module, adapter entry point, backend operation, or administrator-facing interaction first enters review; forgetting to request qxctl work is the exact case it is designed to expose.
+
 An independently developed engine may ship with empty `feature_ids` or `unreviewed` administration disposition so the platform can report what the developer omitted. Omission of descriptor fields is invalid; omission of semantic registration is `semantic_registration_required`.
 
 Integration states are `unassessed`, `descriptor_invalid`, `semantic_registration_required`, `administration_unintegrated`, `integration_ready`, `blocked_incompatible`, and `retired`. Each result records the exact descriptor digest when available and an explicit `docking_ready` projection, which is true if and only if integration state is `integration_ready`. These are derived assessment states and MUST NOT be stored as, inferred from, or substituted for receipt installation, activation, or docking state; docking-ready evidence is not docking presence or authority.
@@ -71,7 +73,7 @@ Checks operate feature-to-command, command-to-feature, command-to-engine, engine
 
 ## Bootstrap and Forward Gate
 
-The current SSFV registry contains exactly sixty-nine experimental records and is explicitly partial. Its report-only bootstrap is complete: every registered record has a reviewed expectation or evidence-backed exception, and the profile is `enforce_new_records`. Every newly ratified feature must therefore include its administration disposition in the same reviewed change. Existing expected routes that lack exact command feature bindings or backend-operation identity remain uncovered implementation work; gate advancement does not deem them satisfied. `enforce_all_records` requires separate evidence that the registered catalog is fully profiled. None of these states claims repository-wide feature completeness.
+The current SSFV registry contains exactly seventy experimental records and is explicitly partial. Its report-only bootstrap is complete: every registered record has a reviewed expectation or evidence-backed exception, and the profile is `enforce_new_records`. Every newly ratified feature must therefore include its administration disposition in the same reviewed change. Existing expected routes that lack exact command feature bindings or backend-operation identity remain uncovered implementation work; gate advancement does not deem them satisfied. Root-summary assurance is covered by one stable read-only qxctl command identity and an explicit apply prohibition. `enforce_all_records` requires separate evidence that the registered catalog is fully profiled. None of these states claims repository-wide feature completeness.
 
 ## Non-Authorization
 

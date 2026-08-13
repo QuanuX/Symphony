@@ -39,7 +39,7 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 
 ## Ratified Nested Review Progress
 
-The F1 through F3 review plus the feature-administration assurance slice record fifty-four implemented `subfeature` boundaries inside twelve already registered owner scopes:
+The F1 through F3 review, feature-administration assurance slice, and root-summary assurance slice record fifty-five implemented `subfeature` boundaries inside thirteen already registered owner scopes:
 
 | Owner scope | Ratified nested records | Review disposition |
 |---|---:|---|
@@ -55,6 +55,7 @@ The F1 through F3 review plus the feature-administration assurance slice record 
 | `modules/sacv-engine` | 4 | API-contract conformance, OpenAPI compatibility evidence, contract-registration proposals, and rebuildable contract inventory are registered. |
 | `modules/sodv-engine` | 5 | Release-ledger validation, observed-publication verification, forward release-record proposals, interrupted-publication reconciliation, and rebuildable release-transaction projection are registered. |
 | `modules/ssfv-engine` | 5 | Catalog-integrity snapshots, semantic-freshness comparison, catalog-change proposals, portable semantic-graph projection, and engine-first administration assurance are registered. |
+| `tools/symphony-validator` | 1 | Deterministic root-summary projection and exact README managed-region freshness assurance are registered separately from the complete repository checker. |
 
 The existing macOS Keychain metadata adapter remains one narrow registered subfeature with no child record. Its corrected record states that the Go SSIAG foundation and qxctl do not invoke the Swift executable and that operational trust, provider execution, Keychain access, and secret delivery remain unimplemented.
 

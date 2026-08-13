@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact sixty-nine-record SSFV partial catalog and coverage inventory, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, persistent SSFV maintenance journals, explicit qxctl session transitions, implemented report-only lifecycle planning/journaling, separately authorized apply-compatible coordination, and Maestro receptor presence plus derived inventory defined by `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No unratified feature record, complete-catalog claim, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, login/session hook, native Windows host integration, live process activation, receipt-v1 mutation, arbitrary entry-point execution, or Maestro engine-execution behavior may be inferred from these contract slices.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact seventy-record SSFV partial catalog and coverage inventory, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, persistent SSFV maintenance journals, explicit qxctl session transitions, implemented report-only lifecycle planning/journaling, separately authorized apply-compatible coordination, and Maestro receptor presence plus derived inventory defined by `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No unratified feature record, complete-catalog claim, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, login/session hook, native Windows host integration, live process activation, receipt-v1 mutation, arbitrary entry-point execution, or Maestro engine-execution behavior may be inferred from these contract slices.
 
 ## Purpose
 
@@ -13,6 +13,10 @@ Define the common process, authority, lifecycle, proposal, projection, installat
 Canonical Markdown and typed artifacts owned by a vector remain source truth. A vector engine implements that vector's declared behavior but does not own the contract. qxctl owns command grammar and presentation, not vector semantics. Provider adapters supply bounded evidence, not canonical authority. Maestro records deployment presence and docking, not vector truth.
 
 Shared C++ mechanics MUST remain domain-neutral and authority-free. They MAY implement bounded parsing, snapshots, digests, path safety, protocol framing, journals, proposal assembly, transaction staging, and install-receipt mechanics. They MUST NOT decide feature-worthiness, architectural purpose, compatibility acceptance, publication approval, legal capacity, or ratification.
+
+`knowledge/INVARIANTS.md` owns the common lowest-authoritative-layer assignment rule. Every new or materially modified cross-component invariant MUST have one stable `invariant:` ID and one owner contract/component in `knowledge/INVARIANT-OWNERSHIP.json`, with owner producer regression, consumer boundary rejection, and allowed-adapter evidence. An IPC invariant additionally requires a real-process test of the receipt-backed executable boundary. The v1 inventory is explicitly incremental and makes no legacy-completeness claim. A client or validator may reject owner evidence but cannot become the owner by reimplementing it.
+
+New installable modules and administrator-facing interactions are incomplete until the same reviewed change supplies their stable SSFV owner-scope/feature identity and feature-administration mapping or explicit evidence-backed disposition. The SSFV engine detects uncovered declarations from supplied canonical registries and descriptors without qxctl or AI. C++ evaluates identities; it does not generate names, decide feature semantics, or infer exemption from absence.
 
 ## Engine Topology
 
@@ -44,6 +48,7 @@ The v1 identifier family is:
 | `symphony.knowledge.feature-administration-profile.v1` | registered-feature administration expectation and disposition profile |
 | `symphony.knowledge.administration-coverage-input.v1` | bounded repository-independent administration-check input |
 | `symphony.knowledge.administration-coverage-result.v1` | deterministic three-axis administration coverage and module-integration evidence |
+| `symphony.knowledge.invariant-ownership-registry.v1` | lowest-authoritative-layer invariant, regression, and allowed-adapter registry |
 | `symphony.knowledge.session-journal.v1` | authenticated authority-epoch journal |
 | `symphony.knowledge.session-head.v1` | atomic dual-slot session-journal head |
 | `symphony.knowledge.session-command.v1` | qxctl-to-coordinator authenticated-session command |
@@ -88,6 +93,8 @@ The v1 identifier family is:
 | `symphony.validation.result.v1` | deterministic raw validator evidence and optional qxctl evaluation |
 | `symphony.validation.policy.v1` | protected noncanonical warning disposition and presentation state |
 | `symphony.validation.baseline.v1` | repository/version-bound warning delta baseline |
+| `symphony.validation.warning-state.v1` | subject-aware warning classification, occurrence history, and digest-linked transitions |
+| `symphony.repository.root-summary.v1` | deterministic machine-checked root documentation evidence |
 
 The initial exact schemas are:
 
@@ -98,6 +105,7 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/feature-administration-profile.schema.json`;
 - `knowledge/schemas/v1/administration-coverage-input.schema.json`;
 - `knowledge/schemas/v1/administration-coverage-result.schema.json`;
+- `knowledge/schemas/v1/invariant-ownership-registry.schema.json`;
 - `knowledge/schemas/v1/install-receipt.schema.json`;
 - `knowledge/schemas/v1/engine-binding-registry.schema.json`;
 - `knowledge/schemas/v1/reconciliation-journal.schema.json`;
@@ -143,6 +151,7 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/validation-result.schema.json`;
 - `knowledge/schemas/v1/validation-policy.schema.json`;
 - `knowledge/schemas/v1/validation-baseline.schema.json`;
+- `knowledge/schemas/v1/validation-warning-state.schema.json`;
 - `knowledge/schemas/v2/install-receipt.schema.json`;
 - `knowledge/schemas/v2/engine-descriptor.schema.json`;
 - `knowledge/schemas/v2/lifecycle-boot-journal.schema.json`;
@@ -268,7 +277,7 @@ An `apply-compatible` profile may be converged only through explicit `knowledge 
 
 ## Foundational SSIAG/STAV Lifecycle
 
-`knowledge/FOUNDATIONAL-LIFECYCLE.md` and its six common v1 schemas govern a separate narrow lifecycle lane for SSIAG/STAV TOPS enrollment and native supervision. Each Go module owns one exact installed standard-input/standard-output adapter and the protected transaction engine shared by its human CLI. qxctl exposes four symmetric `status|plan|apply|apply-status|recover` families, validates exact adapter capabilities and results, and never renders descriptors, parses human output, invokes `serve`, or discovers arbitrary executables.
+`knowledge/FOUNDATIONAL-LIFECYCLE.md` and its six common v1 schemas govern a separate narrow lifecycle lane for SSIAG/STAV TOPS enrollment and native supervision. Its foundational invariants are registered by stable ID in `knowledge/INVARIANT-OWNERSHIP.json`. Each Go module owns one exact installed standard-input/standard-output adapter and the protected transaction engine shared by its human CLI. qxctl exposes four symmetric `status|plan|apply|apply-status|recover` families, validates exact adapter capabilities and results, and never renders descriptors, parses human output, invokes `serve`, or discovers arbitrary executables.
 
 Read-only status and proposal-only planning require no application authority. Apply and recovery require exact target-host permission because neither SSIAG nor STAV can be a mandatory prerequisite for its own bootstrap. User authority is kernel-derived; system mutation requires administrator privilege and the applicable explicit service identity. Caller class is absent. Every mutation is expected-state bound and durably prepared before host change. Recovery is evidence-driven and never chooses by wall clock, semantic-version recency, or process age.
 
@@ -348,7 +357,7 @@ Scaffolding every engine in advance is prohibited. Each slice must pass its cont
 
 The Architect has ratified `knowledge/ssfv/` with stable identifiers, feature-worthiness criteria, hierarchy, sparse distributed-file ownership, typed relationships, lifecycle, 5W1H semantics, content-addressed freshness, and portable JSON graph contracts. This completes the semantic contract gate.
 
-The implementation gate, F1 through F3 review gates, and feature-administration assurance slice are complete. Exactly sixty-nine ratified records cover the repository-root platform capability, fourteen implemented owner scopes, and fifty-four nested subfeatures. All sixty-nine records now carry 128 reviewed administration expectations or explicit evidence-backed dispositions, and the profile gate is `enforce_new_records`. Every previously identified qxctl backend-binding gap is closed. SSIAG supervision, SSIAG TOPS enrollment, STAV supervision, and STAV TOPS enrollment each publish five stable qxctl command identities and five separately owned engine-operation identities, closing the final four uncovered administration surfaces without collapsing command and backend identity. Stable engine-operation identity remains owned by each backend contract. That bounded result does not authorize another distributed `FEATURES.md`, another canonical feature entry, a complete-catalog claim, a persistent graph store, or any capability outside the registered records.
+The implementation gate, F1 through F3 review gates, feature-administration assurance slice, warning-lifecycle administration slice, and root-summary assurance slice are complete. Exactly seventy ratified records cover the repository-root platform capability, fourteen implemented owner scopes, and fifty-five nested subfeatures. All seventy records now carry 131 reviewed administration expectations or explicit evidence-backed dispositions, and the profile gate is `enforce_new_records`. Every previously identified qxctl backend-binding gap is closed. SSIAG supervision, SSIAG TOPS enrollment, STAV supervision, and STAV TOPS enrollment each publish five stable qxctl command identities and five separately owned engine-operation identities, closing the final four uncovered administration surfaces without collapsing command and backend identity. Warning lifecycle adds protected query/configuration routes without changing detection. Root-summary assurance adds one exact read-only qxctl identity and prohibits canonical apply. Stable engine-operation identity remains owned by each backend contract. That bounded result does not authorize another distributed `FEATURES.md`, another canonical feature entry, a complete-catalog claim, a persistent graph store, or any capability outside the registered records.
 
 ## Historical and Validator Boundary
 
@@ -370,8 +379,8 @@ qxctl implements a protected user-scope `default` engine binding registry beneat
 
 `modules/sodv-engine/` implements deterministic append-only v1/v2 release-ledger checks, caller-supplied external-state verification, provider-neutral v2 release-record proposals, non-mutating interrupted-session recovery, and disposable release-transaction inventories. `qxctl sodv ...` validates its exact inactive-undocked nine-file installation and invokes it under the common process-safety gates. The engine has no network access and never creates or moves tags, contacts package providers, declares completion, mutates recovery journals, appends records, publishes, or applies canonical changes.
 
-`modules/ssfv-engine/` implements deterministic `inspect`, structural and freshness-aware `check`, baseline-versus-live `diff`, caller-declared `propose`, disposable JSON `graph`, and engine-first `administration-check`. It validates exact managed regions, namespaces, registry routing, record normalization, hierarchy, evidence paths, SKVI coverage, content-addressed coverage, and caller-supplied feature/command/operation administration evidence without deciding semantic truth. `qxctl ssfv ...` validates its exact inactive-undocked installation and adds no-follow baseline/input handling plus operation-specific authority and projection safety checks. The sixty-nine canonical records, explicit top-level owner-scope inventory, and fifty-four-record nested-review progress were authored and ratified through ordinary reviewed source changes; the engine and client never create feature records, apply proposals, persist graphs, activate a version, or administer Maestro.
+`modules/ssfv-engine/` implements deterministic `inspect`, structural and freshness-aware `check`, baseline-versus-live `diff`, caller-declared `propose`, disposable JSON `graph`, and engine-first `administration-check`. It validates exact managed regions, namespaces, registry routing, record normalization, hierarchy, evidence paths, SKVI coverage, content-addressed coverage, and caller-supplied feature/command/operation administration evidence without deciding semantic truth. `qxctl ssfv ...` validates its exact inactive-undocked installation and adds no-follow baseline/input handling plus operation-specific authority and projection safety checks. The seventy canonical records, explicit top-level owner-scope inventory, and fifty-five-record nested-review progress were authored and ratified through ordinary reviewed source changes; the engine and client never create feature records, apply proposals, persist graphs, activate a version, or administer Maestro.
 
 ## Non-Authorization Statement
 
-This specification claims only the explicitly identified foundation/coordinator reconciliation, authenticated-session, report-only lifecycle, and apply-coordination slices; qxctl session transitions and lifecycle profile/ownership/observation/report/boot/apply administration; exact local receipt-v2, shared-root claims/reclamation, runtime-state, established-binding, candidate-verified coordinator-handoff, and authenticated Maestro-presence adapters; SKVI/SCLV/SACV/SODV/SSFV slices; exact sixty-nine-record SSFV partial catalog and owner-scope coverage inventory; user-default binding registry; and canonical lifecycle/receipt schemas. It does not claim canonical apply, receipt-v1 mutation, download, arbitrary entry-point execution, live service activation, in-place coordinator replacement, unattended or recency-based old-version reclamation, an unratified feature record or complete-catalog claim, an external package coordinate, an HTTP surface, a published release artifact, direct ledger mutation, or Maestro engine execution.
+This specification claims only the explicitly identified foundation/coordinator reconciliation, authenticated-session, report-only lifecycle, and apply-coordination slices; qxctl session transitions and lifecycle profile/ownership/observation/report/boot/apply administration; exact local receipt-v2, shared-root claims/reclamation, runtime-state, established-binding, candidate-verified coordinator-handoff, and authenticated Maestro-presence adapters; SKVI/SCLV/SACV/SODV/SSFV slices; exact seventy-record SSFV partial catalog and owner-scope coverage inventory; user-default binding registry; and canonical lifecycle/receipt schemas. It does not claim canonical apply, receipt-v1 mutation, download, arbitrary entry-point execution, live service activation, in-place coordinator replacement, unattended or recency-based old-version reclamation, an unratified feature record or complete-catalog claim, an external package coordinate, an HTTP surface, a published release artifact, direct ledger mutation, or Maestro engine execution.

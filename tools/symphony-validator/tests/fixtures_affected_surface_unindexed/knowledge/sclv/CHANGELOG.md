@@ -10,6 +10,9 @@
 - merge_commit: `f2d65890f679107fdd114e51c5c8a22ab6eb2af2`
 - affected_surfaces:
   - `existing_unindexed.md`
+  - `src/example.cpp`
+  - `tests/example_test.cpp`
+  - `cmake/example.cmake`
 - skvi_references:
   - `knowledge/skvi/INDEX.md`
 - change_summary: `summary`
@@ -30,7 +33,8 @@
 - change_type: `canonical_addition`
 - related_pr: `https://github.com/QuanuX/Symphony/pull/11`
 - merge_commit: `8b92a843e15652d1eab07978fcbb459cd840a318`
-- affected_surfaces: `none`
+- affected_surfaces:
+  - `src/example.cpp`
 - skvi_references: `none`
 - change_summary: `summary`
 - relationship_changes: `none`

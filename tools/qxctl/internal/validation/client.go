@@ -30,6 +30,20 @@ type boundedBuffer struct {
 	limit int
 }
 
+type ValidatorExitError struct {
+	Diagnostics string
+	ExitCode    int
+	Operation   string
+}
+
+func (failure *ValidatorExitError) Error() string {
+	message := fmt.Sprintf("validator %s exited with status %d", failure.Operation, failure.ExitCode)
+	if failure.Diagnostics != "" {
+		message += ": " + failure.Diagnostics
+	}
+	return message
+}
+
 func (buffer *boundedBuffer) Write(data []byte) (int, error) {
 	if buffer.Len()+len(data) > buffer.limit {
 		return 0, fmt.Errorf("process output exceeds %d bytes", buffer.limit)
@@ -83,6 +97,123 @@ func Run(ctx context.Context, prefix, version, repositoryRoot string) (Result, e
 		return Result{}, fmt.Errorf("validator emitted unexpected diagnostics: %s", strings.TrimSpace(stderr.String()))
 	}
 	return result, nil
+}
+
+// RunRootSummary invokes only the exact receipt-owned validator projection.
+// A projection failure remains distinguishable as exit 25; qxctl does not
+// replace that evidence with a partial or locally inferred summary.
+func RunRootSummary(ctx context.Context, prefix, version, repositoryRoot string) (RootSummary, error) {
+	installation, err := knowledgeengine.InspectValidatorInstallation(prefix, version)
+	if err != nil {
+		return RootSummary{}, fmt.Errorf("validator installation is unavailable: %w", err)
+	}
+	repositoryRoot, err = canonicalRepository(repositoryRoot)
+	if err != nil {
+		return RootSummary{}, err
+	}
+	deadlineContext, cancel := context.WithTimeout(ctx, validatorTimeout)
+	defer cancel()
+	command := exec.CommandContext(
+		deadlineContext, installation.ExecutablePath,
+		"root-summary", "--repo", repositoryRoot, "--json")
+	command.Env = []string{}
+	command.Dir = repositoryRoot
+	stdout := &boundedBuffer{limit: maxValidatorOutput}
+	stderr := &boundedBuffer{limit: maxValidatorStderr}
+	command.Stdout = stdout
+	command.Stderr = stderr
+	runErr := command.Run()
+	if deadlineContext.Err() != nil {
+		return RootSummary{}, fmt.Errorf("validator root-summary exceeded its hard process deadline")
+	}
+	if runErr != nil {
+		var exitError *exec.ExitError
+		if !errors.As(runErr, &exitError) {
+			return RootSummary{}, fmt.Errorf("execute validator root-summary: %w", runErr)
+		}
+		return RootSummary{}, &ValidatorExitError{
+			Diagnostics: strings.TrimSpace(stderr.String()), ExitCode: exitError.ExitCode(), Operation: "root-summary",
+		}
+	}
+	if stderr.Len() != 0 {
+		return RootSummary{}, fmt.Errorf("validator root-summary emitted unexpected diagnostics: %s", strings.TrimSpace(stderr.String()))
+	}
+	return decodeRootSummary(stdout.Bytes())
+}
+
+func decodeRootSummary(data []byte) (RootSummary, error) {
+	if err := knowledgeengine.ValidateJSONObjectWithValueLimit(data, maxValidatorOutput, maxValidatorValues); err != nil {
+		return RootSummary{}, fmt.Errorf("invalid validator root-summary JSON: %w", err)
+	}
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	var summary RootSummary
+	if err := decoder.Decode(&summary); err != nil {
+		return RootSummary{}, fmt.Errorf("decode validator root-summary: %w", err)
+	}
+	if decoder.Decode(&struct{}{}) == nil {
+		return RootSummary{}, fmt.Errorf("decode validator root-summary: trailing JSON value")
+	}
+	if summary.Protocol != RootSummaryProtocol || summary.FormatVersion != 1 || !taggedDigest(summary.SummaryDigest) ||
+		summary.SSFV.CatalogState != "partial" || summary.SSFV.RegisteredFeatures == 0 ||
+		summary.SSFV.NestedFeatures >= summary.SSFV.RegisteredFeatures ||
+		summary.SSFV.RegisteredOwnerScopes != uint64(len(summary.SSFV.RegisteredOwnerFeatures)) ||
+		summary.QXCTL.RegisteredCommands == 0 || summary.FeatureAdministration.Expectations == 0 ||
+		len(summary.SSFV.RegisteredOwnerFeatures) > 4096 || len(summary.PublishedSourceVersions) == 0 ||
+		len(summary.PublishedSourceVersions) > 4096 {
+		return RootSummary{}, fmt.Errorf("validator root-summary identity or count is invalid")
+	}
+	priorOwner := ""
+	for _, featureID := range summary.SSFV.RegisteredOwnerFeatures {
+		if !safeToken(featureID) || !strings.HasPrefix(featureID, "ssfv:") || priorOwner >= featureID && priorOwner != "" {
+			return RootSummary{}, fmt.Errorf("validator root-summary owner feature ordering is invalid")
+		}
+		priorOwner = featureID
+	}
+	published := map[string]bool{}
+	for _, publication := range summary.PublishedSourceVersions {
+		key := publication.Coordinate + "\n" + publication.Version
+		if !boundedProjectionText(publication.Coordinate, 512) || !safeVersion(publication.Version) ||
+			!boundedProjectionText(publication.Tag, 512) || !lowerHexRevision(publication.Revision) || published[key] {
+			return RootSummary{}, fmt.Errorf("validator root-summary publication identity is invalid")
+		}
+		published[key] = true
+	}
+	basis, err := objectWithout(summary, "summary_digest")
+	if err != nil {
+		return RootSummary{}, err
+	}
+	expected, err := digestValue(basis)
+	if err != nil || expected != summary.SummaryDigest {
+		return RootSummary{}, fmt.Errorf("validator root-summary digest mismatch")
+	}
+	return summary, nil
+}
+
+func boundedProjectionText(value string, limit int) bool {
+	if value == "" || len(value) > limit {
+		return false
+	}
+	for _, character := range value {
+		if character < 0x20 || character > 0x7e {
+			return false
+		}
+	}
+	return true
+}
+
+func lowerHexRevision(value string) bool {
+	if len(value) != 40 && len(value) != 64 {
+		return false
+	}
+	for _, character := range value {
+		if character < '0' || character > '9' {
+			if character < 'a' || character > 'f' {
+				return false
+			}
+		}
+	}
+	return true
 }
 
 func canonicalRepository(path string) (string, error) {

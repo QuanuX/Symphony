@@ -78,7 +78,8 @@ ParsedEvidence parse_evidence(const std::string& message) {
 }
 
 std::string finding_scope(const ParsedEvidence& finding) {
-    if (finding.rule_id == "sclv.affected_surface.unindexed") {
+    if (finding.rule_id == "sclv.affected_surface.provenance_summary" ||
+        finding.rule_id == "sclv.affected_surface.unindexed") {
         return "historical";
     }
     if (finding.rule_id == "repository.path") {
