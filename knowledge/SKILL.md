@@ -9,14 +9,15 @@ Guide every caller in safely inspecting, proposing, implementing, installing, an
 1. `knowledge/INTENT.md`
 2. `knowledge/MANIFEST.md`
 3. `knowledge/SPEC.md`
-4. `knowledge/TIME.md` when a field, deadline, freshness rule, journal, or durable event involves time
-5. `knowledge/FOUNDATIONAL-LIFECYCLE.md` before SSIAG/STAV enrollment or supervision administration
-6. `knowledge/VALIDATION.md` when validator evidence, warning policy, baselines, or debug filtering is involved
-7. the affected vector's Contract Quad
-8. `tools/qxctl/` contracts for administrative grammar
-9. `knowledge/ssiag/SPEC.md` before any apply or safeguard work
-10. `knowledge/stav/SPEC.md` before any audited outcome or recovery work
-11. `knowledge/sodv/SPEC.md` before release or publication
+4. `knowledge/INVARIANTS.md` and `knowledge/INVARIANT-OWNERSHIP.json` when a rule crosses an implementation or process boundary
+5. `knowledge/TIME.md` when a field, deadline, freshness rule, journal, or durable event involves time
+6. `knowledge/FOUNDATIONAL-LIFECYCLE.md` before SSIAG/STAV enrollment or supervision administration
+7. `knowledge/VALIDATION.md` when validator evidence, warning policy, baselines, or debug filtering is involved
+8. the affected vector's Contract Quad
+9. `tools/qxctl/` contracts for administrative grammar
+10. `knowledge/ssiag/SPEC.md` before any apply or safeguard work
+11. `knowledge/stav/SPEC.md` before any audited outcome or recovery work
+12. `knowledge/sodv/SPEC.md` before release or publication
 
 ## Safe Initial Operations
 
@@ -77,6 +78,8 @@ Use `qxctl knowledge session features begin|status|checkpoint|close|recover` for
 
 ## Review Rules
 
+- Verify every new installable module, adapter entry point, backend operation, and administrator-facing interaction has a same-change stable feature declaration plus qxctl/backend mapping or explicit evidence-backed disposition; absence is uncovered.
+- Verify each affected `invariant:` record resolves to one owner, existing implementation and test paths, owner producer regression, consumer boundary rejection, and only allowed versioned adapters. For IPC, run the real receipt-backed process regression rather than accepting only an in-process codec test.
 - Verify exact process and message bounds before calling a protocol operational.
 - Verify path ownership, symlink handling, special-file rejection, expected-state binding, and stable output.
 - Verify separate worktrees never share a writer lock or mutable journal.

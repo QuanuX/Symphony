@@ -336,7 +336,7 @@ void violation(SodvReleaseCheckResult& result, const std::string& code,
 }
 
 SodvReleaseCheckResult check_sodv_releases(const std::string& repo_root) {
-    SodvReleaseCheckResult result{true, {}, 0, 0};
+    SodvReleaseCheckResult result{true, {}, 0, 0, {}};
     const fs::path root(repo_root);
     const auto ledger = root / "knowledge/sodv/RELEASES.md";
     std::error_code error;
@@ -461,7 +461,17 @@ SodvReleaseCheckResult check_sodv_releases(const std::string& repo_root) {
                     "coordinate_version_tag_or_revision_changed");
             }
         }
+        if (record.type == "completion") {
+            for (const auto& unit : record.units) {
+                result.published_units.push_back(SodvPublishedUnit{
+                    unit.coordinate, unit.version, unit.tag, unit.revision,
+                });
+            }
+        }
     }
+    std::ranges::sort(result.published_units, {}, [](const SodvPublishedUnit& unit) {
+        return unit.coordinate + "\n" + unit.version + "\n" + unit.tag;
+    });
     result.messages.push_back(format_evidence(EvidenceCategory::Pass,
         "sodv.releases.scan_complete", "records=" + std::to_string(result.records_checked) +
         " transactions=" + std::to_string(result.transactions_checked) +

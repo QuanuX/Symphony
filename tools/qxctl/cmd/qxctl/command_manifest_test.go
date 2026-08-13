@@ -23,8 +23,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 134 {
-		t.Fatalf("registered command count = %d, want 134", len(manifest.Commands))
+	if len(manifest.Commands) != 144 {
+		t.Fatalf("registered command count = %d, want 144", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -50,6 +50,10 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 		"qxcmd:symphony:ssiag.supervisor.recover",
 		"qxcmd:symphony:stav.enrollment.plan",
 		"qxcmd:symphony:stav.supervisor.status",
+		"qxcmd:symphony:validate.warning.sync",
+		"qxcmd:symphony:validate.warning.accept",
+		"qxcmd:symphony:validate.warning.show",
+		"qxcmd:symphony:validate.root-summary",
 	} {
 		if _, ok := seen[required]; !ok {
 			t.Errorf("required stable command ID %q is absent", required)
@@ -113,8 +117,8 @@ func TestCommandRegistryBindsVectorCapabilitiesNotBindingSelection(t *testing.T)
 }
 
 func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
-	if len(reviewedBackendFeatureBindings) != 64 {
-		t.Fatalf("reviewed backend command count = %d, want 64", len(reviewedBackendFeatureBindings))
+	if len(reviewedBackendFeatureBindings) != 65 {
+		t.Fatalf("reviewed backend command count = %d, want 65", len(reviewedBackendFeatureBindings))
 	}
 	secondaryBindingCount := 0
 	for key, bindings := range reviewedBackendFeatureBindings {
@@ -123,8 +127,8 @@ func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
 		}
 		secondaryBindingCount += len(bindings)
 	}
-	if secondaryBindingCount != 66 {
-		t.Fatalf("reviewed backend binding count = %d, want 66", secondaryBindingCount)
+	if secondaryBindingCount != 67 {
+		t.Fatalf("reviewed backend binding count = %d, want 67", secondaryBindingCount)
 	}
 
 	root, err := newRootCommand()
@@ -165,6 +169,47 @@ func containsFeatureBinding(bindings []commandregistry.FeatureBinding, want comm
 		}
 	}
 	return false
+}
+
+func TestValidationLifecycleRegistryContracts(t *testing.T) {
+	root, err := newRootCommand()
+	if err != nil {
+		t.Fatal(err)
+	}
+	manifest, err := commandregistry.BuildExpected(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	records := make(map[string]commandregistry.CommandRecord)
+	for _, record := range manifest.Commands {
+		records[record.CommandID] = record
+	}
+	rootSummary := records["qxcmd:symphony:validate.root-summary"]
+	if !containsFeatureBinding(rootSummary.FeatureBindings, commandregistry.FeatureBinding{
+		FeatureID: backendFeatureRootSummary, Interaction: "inspect",
+	}) || len(rootSummary.OutputProtocols) != 1 || rootSummary.OutputProtocols[0] != "symphony.repository.root-summary.v1" ||
+		len(rootSummary.ResultValidationProtocols) != 1 || rootSummary.ResultValidationProtocols[0] != "symphony.repository.root-summary.v1" ||
+		rootSummary.Mutability != "read_only" {
+		t.Fatalf("root-summary command contract drifted: %#v", rootSummary)
+	}
+	for _, operation := range []string{"status", "list", "show", "sync", "accept", "reopen", "supersede", "mute", "unmute"} {
+		record := records["qxcmd:symphony:validate.warning."+operation]
+		exactState := operation != "status" && operation != "list"
+		if exactState && (len(record.OutputProtocols) != 1 || record.OutputProtocols[0] != "symphony.validation.warning-state.v1" ||
+			len(record.ResultValidationProtocols) != 1 || record.ResultValidationProtocols[0] != "symphony.validation.warning-state.v1") {
+			t.Errorf("warning lifecycle protocol contract drifted: %#v", record)
+		}
+		if !exactState && (len(record.OutputProtocols) != 0 || len(record.ResultValidationProtocols) != 0) {
+			t.Errorf("warning lifecycle summary command falsely claimed an exact state protocol: %#v", record)
+		}
+		mutation := operation != "status" && operation != "list" && operation != "show"
+		if mutation && (record.Mutability != "permission_backed_mutation" || record.AuthorityMode != "target_host_permission" || record.RecoveryCommandID == nil) {
+			t.Errorf("warning lifecycle mutation posture drifted: %#v", record)
+		}
+		if !mutation && record.Mutability != "read_only" {
+			t.Errorf("warning lifecycle read posture drifted: %#v", record)
+		}
+	}
 }
 
 func TestFoundationLifecycleRegistryContracts(t *testing.T) {

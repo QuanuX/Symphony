@@ -12,7 +12,7 @@ Provide deterministic, structured evidence of repository compliance with Symphon
 - agentic tools consuming reports
 
 ## Planned Skill Surface
-The implemented skill surface is direct execution through `symphony-validator check --repo <path> [--json]` and exact installed invocation through `qxctl validate scan|debug`. It emits deterministic line evidence or one `symphony.validation.result.v1` object plus a process status. CI invocation and Markdown projection remain planned but unimplemented.
+The implemented skill surface is direct execution through `symphony-validator check --repo <path> [--json]`, bounded root-summary projection through `symphony-validator root-summary --repo <path> [--json]`, and exact installed invocation through `qxctl validate scan|debug|root-summary`. It emits deterministic line evidence, one `symphony.validation.result.v1` object, or one `symphony.repository.root-summary.v1` JSON/Markdown projection plus process status. CI invocation and general documentation projection remain planned but unimplemented.
 
 The repository check includes SACV registry shape, ownership, classification, SKVI coverage, and no-follow owner-document presence. Use `qxctl sacv check` with an exact installed engine for OpenAPI syntax/profile, reference, security, example-safety, and registry/document alignment evidence; do not mistake the validator's registry check for a partial OpenAPI parser.
 
@@ -25,7 +25,7 @@ The validator is deterministic, explainable, and non-autonomous.
 The validator produces evidence, including caller-authority regression findings (exit code 21).
 The validator does not fix the repository.
 The validator does not choose remedies.
-Every permission-bearing caller may consume either implemented projection. A future Markdown projection remains deferred. The validator itself remains non-autonomous and authority-free. Caller types remain descriptive.
+Every permission-bearing caller may consume the implemented projections. The bounded root-summary Markdown region introduces no claims beyond its validated JSON source evidence. The validator itself remains non-autonomous and authority-free. Caller types remain descriptive.
 
 ## Invocation Procedure
 1. Build the checked-in C++26 target according to `INSTALL.md`.
@@ -35,10 +35,11 @@ Every permission-bearing caller may consume either implemented projection. A fut
 5. Treat exit `22` as a SACV registry failure and use `sacv.registry.*` evidence to locate the exact entry boundary.
 6. Treat exit `23` as a SODV release-ledger failure and use `sodv.releases.*` evidence to locate the record boundary.
 7. Treat exit `24` as a feature-administration contract failure and use `feature_administration.*` evidence to distinguish profile, registry digest/set, command inventory/binding, reference, and forward-gate failures.
-8. Refer to the normative Caller-Authority Regression Check, SACV Registry Boundary, SODV Release Ledger Boundary, and Feature Administration Assurance Boundary in `SPEC.md` before interpreting scope or exclusions.
+8. Treat exit `25` as root-summary source or managed-region drift; inspect the exact source finding, then use the read-only `root-summary --repo <path>` projection to compare expected evidence without asking the validator to mutate README.
+9. Refer to the normative Caller-Authority Regression Check, SACV Registry Boundary, SODV Release Ledger Boundary, Feature Administration Assurance Boundary, and Root Summary Assurance Boundary in `SPEC.md` before interpreting scope or exclusions.
 
 ## Output Consumption Behavior
-Evidence lines plus the summary and the structured JSON result are equivalent current projections. Consumers must retain the complete selected projection and process status. qxctl verifies evidence/result digests, evaluates warning policy only after the complete scan, and keeps filters presentation-only. Any future Markdown projection must introduce no claims, conclusions, or remediation steps absent from that model. A clean bounded scan is not universal semantic proof.
+Evidence lines plus the summary and the structured JSON result are equivalent complete-check projections. The root-summary JSON and Markdown forms are equivalent bounded projections of the separately validated summary inputs. Consumers must retain the complete selected projection and process status. qxctl verifies evidence/result digests, evaluates warning policy only after the complete scan, and keeps filters presentation-only. A clean bounded scan is not universal semantic proof.
 
 ## Refusal/non-remediation Behavior
 The validator does not infer intent.

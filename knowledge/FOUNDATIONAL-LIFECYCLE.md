@@ -32,6 +32,12 @@ The installed module adapter owns canonical paths, configuration interpretation,
 
 The human module CLI and machine adapter MUST call the same transaction implementation. Direct administration without qxctl remains supported and cannot bypass attempt, expected-state, purge-safety, or recovery invariants.
 
+## Invariant Ownership and Evidence
+
+`knowledge/INVARIANTS.md` defines the common lowest-authoritative-layer rule, and `knowledge/INVARIANT-OWNERSHIP.json` assigns stable IDs to this contract's adapter provenance, bounded process framing, stable observation digests, plan/attempt compare-and-swap, evidence-driven recovery, audit closure, and shared transaction-core invariants. Those IDs are protocol identifiers; neither the Go modules, qxctl, the C++ engine, nor AI derives them from display names.
+
+For each registered invariant, the owning module MUST keep a producer regression beside its implementation and every consuming trust boundary MUST retain a negative rejection test. Because the machine adapter crosses stdin/stdout IPC, each allowed adapter MUST also be exercised as a real receipt-backed child process. An in-process decoder or engine test alone cannot prove executable selection, argument forwarding, clean standard output, environment independence, framing, or exit propagation.
+
 ## Machine Adapter
 
 The adapter is invoked from the exact installed module executable using protected standard input and standard output. The invoking client supplies a bounded JSON command, an empty or contract-defined environment, a hard monotonic deadline, no repository working-directory dependency, and bounded output. The adapter emits exactly one bounded JSON result and no human diagnostics on standard output.

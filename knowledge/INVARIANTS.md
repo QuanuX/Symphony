@@ -1,0 +1,67 @@
+# Symphony Common Invariant Ownership
+
+## Authority
+
+This contract assigns every cross-component invariant to the lowest layer that can authoritatively enforce it. A caller, client, validator, or AI assistant may detect a violation, but it MUST NOT duplicate, weaken, rename, or manufacture the owning rule. The canonical machine inventory is `knowledge/INVARIANT-OWNERSHIP.json`, governed by `knowledge/schemas/v1/invariant-ownership-registry.schema.json`.
+
+## Stable Identity
+
+An invariant ID is an actual stable alphanumeric protocol identifier of the form `invariant:symphony:<name>`. It is not a display label, generated recommendation, C++ symbol, qxctl command, feature ID, or engine-operation ID. A human owner assigns it in a reviewed contract change. Implementations compare the exact ID; they do not infer one from prose or ask an engine to name it.
+
+The same separation applies to feature administration. A feature ID identifies ratified product semantics, a `qxcmd:` ID identifies one qxctl executable leaf, and an `engop:` ID identifies one backend operation. The C++ engine evaluates supplied identities and evidence. It does not recommend names or decide that an undeclared capability is a feature.
+
+## Lowest-Authoritative-Layer Rule
+
+Each invariant has exactly one `owner_contract` and one `owner_component`. The owner defines the rule and must reject invalid producer state before exporting it. Consumers independently validate the evidence at their trust boundary and fail closed, but consumer acceptance never becomes the source of truth. A higher layer may compose owner results; it may not recreate the mutation, recovery, digest, authority, or domain decision.
+
+Every active registry record MUST link:
+
+- the stable invariant ID and normative statement;
+- the owning contract and component;
+- every authoritative producer implementation;
+- at least one owner-side producer regression;
+- at least one consumer-side boundary rejection regression;
+- the finite set of allowed versioned adapters, or an empty set when no adapter is permitted; and
+- for an IPC invariant, at least one real-process regression that invokes a receipt-backed executable across its actual stdin/stdout boundary.
+
+A source-only helper test does not satisfy the real-process requirement. An IPC test must be able to catch wrong executable selection, argument forwarding, environment assumptions, extra standard-output text, malformed framing, exit-status loss, and installation-evidence drift.
+
+The v1 registry is an explicitly incremental inventory, not a claim that every legacy invariant has already been enumerated. Its forward gate is `enforce_new_or_modified`: any new cross-component invariant, or material change to a registered invariant, MUST add or update its record and evidence in the same reviewed change. Advancing to a complete-catalog claim requires a separate bounded audit of legacy contracts and implementations.
+
+## Module Admission and Uncovered Administration
+
+A new independently developed module cannot opt out by forgetting qxctl. Its admission change MUST declare a stable module/owner-scope feature record and review each administrator-facing interaction under `knowledge/FEATURE-ADMINISTRATION.md`. Each interaction must bind stable `qxcmd:` and, where applicable, `engop:` identities, or carry an explicit evidence-backed `runtime_only`, `system_orchestrated`, `prohibited`, or `not_applicable` disposition. Omission is an uncovered surface, not an exemption.
+
+The module admission check is engine-first and headless. The SSFV engine consumes the canonical feature registry, administration profile, qxctl command registry, and backend descriptors and reports unresolved or uncovered surfaces. qxctl may later present, scaffold, or recommend Cobra/Viper commands, but it is not required for detection and cannot silently close coverage. Until the module supplies a reviewed mapping or disposition, integration remains incomplete.
+
+This closes the independent-developer edge case only when module admission itself is enforced. Repository review and validation MUST therefore treat a new installable module, adapter entry point, backend operation, or administrator-facing interaction without the same-change registry evidence as a boundary failure.
+
+## Foundational Lifecycle Invariants
+
+The foundational SSIAG/STAV lane applies the registry to the following rule families:
+
+- exact receipt-backed adapter identity and capability negotiation;
+- bounded one-value JSON process framing;
+- stable observation and transaction digests;
+- plan and attempt compare-and-swap before mutation;
+- evidence-driven forward recovery;
+- audit commitment or explicit durable audit deferral before successful closure; and
+- one module-owned transaction implementation shared by human and machine entry points.
+
+`knowledge/FOUNDATIONAL-LIFECYCLE.md` remains the normative owner of those semantics. The registry makes their ownership and regression evidence mechanically discoverable; it does not create another lifecycle authority.
+
+## Versioned Adapters
+
+An allowed adapter record names an exact entry-point ID, protocol major, owner contract, implementation path, and version-selection policy. Version permission is never “latest.” The current foundational adapters are allowed only when an immutable receipt-v2 package proves the exact executable and entry point and capability compatibility accepts the command protocol. Adding a component, entry point, protocol major, or adapter authority requires a reviewed registry and owner-contract change.
+
+## AI and Agent Use
+
+AI is optional. To assist without inventing protocol, it needs the exact owner contract, invariant registry and digest, SSFV feature registry, feature-administration profile, expected qxctl registry, relevant backend descriptor, and the affected implementation/test paths. It may propose human-readable names or candidate stable IDs, explain uncovered evidence, and scaffold code for review. It MUST label suggestions as proposals, preserve existing IDs, emit no coverage claim without machine evidence, and never infer authority from being AI or from possessing a command.
+
+## Digest and Ordering
+
+`registry_digest` is tagged SHA-256 over compact UTF-8 recursively key-sorted JSON with `registry_digest` omitted. Invariants sort by `invariant_id`; adapters sort by `adapter_id`; path, case, operation, and adapter-reference arrays are unique and lexicographically sorted. Digest validity does not prove that a referenced test passed; validation must also resolve every path and execute the applicable producer, boundary, and real-process suites.
+
+## Non-Authorization
+
+This contract does not authorize canonical apply, invent feature semantics, add arbitrary adapter execution, require qxctl at runtime, or let a validator repair missing coverage. The engine itself remains the only guaranteed executable in an engine-first assessment; registries and contracts are supplied evidence, and optional clients or AI remain replaceable consumers.

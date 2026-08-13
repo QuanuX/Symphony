@@ -3,16 +3,30 @@ package validation
 import (
 	"fmt"
 	"sort"
+	"time"
 )
 
 type DisplayFilter struct {
-	Delta    string
-	Path     string
-	RecordID string
-	RuleID   string
+	Classification string
+	Delta          string
+	Path           string
+	RecordID       string
+	RuleID         string
+	SubjectID      string
 }
 
 func Evaluate(raw Result, policy *Policy, baseline *Baseline, filter DisplayFilter) (Projection, error) {
+	return EvaluateWithWarningState(raw, policy, baseline, nil, filter, time.Time{}, true)
+}
+
+// EvaluateWithWarningState keeps raw evidence and v1 policy evaluation exact,
+// while limiting ordinary presentation to actionable open warning subjects.
+// Debug presentation may inspect accepted, superseded, muted, and resolved
+// history without changing detector execution or its result.
+func EvaluateWithWarningState(
+	raw Result, policy *Policy, baseline *Baseline, warningState *WarningState,
+	filter DisplayFilter, now time.Time, debug bool,
+) (Projection, error) {
 	if policy != nil && policy.TOPSID == "" {
 		return Projection{}, fmt.Errorf("validation policy identity is incomplete")
 	}
@@ -26,6 +40,18 @@ func Evaluate(raw Result, policy *Policy, baseline *Baseline, filter DisplayFilt
 	}
 	if filter.Delta != "" && filter.Delta != "new" && filter.Delta != "unchanged" && filter.Delta != "resolved" {
 		return Projection{}, fmt.Errorf("debug delta must be new, unchanged, or resolved")
+	}
+	if filter.Classification != "" && filter.Classification != "open" && filter.Classification != "accepted" &&
+		filter.Classification != "resolved" && filter.Classification != "superseded" && filter.Classification != "muted" {
+		return Projection{}, fmt.Errorf("debug classification must be open, accepted, resolved, superseded, or muted")
+	}
+	if warningState != nil {
+		if warningState.RepositoryIdentityDigest != raw.Evidence.RepositoryIdentityDigest {
+			return Projection{}, fmt.Errorf("validation warning state repository identity mismatch")
+		}
+		if warningState.ValidatorID != raw.Evidence.ValidatorID || warningState.ValidatorVersion != raw.Evidence.ValidatorVersion {
+			return Projection{}, fmt.Errorf("validation warning state validator identity mismatch")
+		}
 	}
 	baselineSet := map[string]bool{}
 	if baseline != nil {
@@ -83,6 +109,7 @@ func Evaluate(raw Result, policy *Policy, baseline *Baseline, filter DisplayFilt
 	requiredRules := map[string]bool{}
 	displayed := []Finding{}
 	displayedIDs := []string{}
+	classifications := map[string]string{}
 	summarySeen := map[string]bool{}
 	for _, finding := range raw.Evidence.Findings {
 		if finding.Category == "pass" && filter == (DisplayFilter{}) {
@@ -93,6 +120,8 @@ func Evaluate(raw Result, policy *Policy, baseline *Baseline, filter DisplayFilt
 		}
 		presentation := "full"
 		if finding.Category == "warning" {
+			classification, muted := currentWarningClassification(warningState, finding.SubjectID, now)
+			classifications[finding.OccurrenceID] = classification
 			disposition := defaultDisposition
 			if rule, ok := rules[finding.RuleID]; ok {
 				disposition = rule.Disposition
@@ -102,13 +131,22 @@ func Evaluate(raw Result, policy *Policy, baseline *Baseline, filter DisplayFilt
 			} else {
 				presentation = newPresentation
 			}
-			if newSet[finding.OccurrenceID] {
+			// Muting is presentation-only and therefore cannot alter a policy
+			// gate. Accepted/superseded/resolved subjects are nonactionable;
+			// expired acceptance is projected as open immediately.
+			if classification == "open" && newSet[finding.OccurrenceID] {
 				switch disposition {
 				case "review":
 					reviewRules[finding.RuleID] = true
 				case "require":
 					requiredRules[finding.RuleID] = true
 				}
+			}
+			if !debug && (classification != "open" || muted) {
+				continue
+			}
+			if debug && !matchesLifecycleFilter(classification, muted, finding.SubjectID, filter) {
+				continue
 			}
 		}
 		if presentation == "count" {
@@ -161,7 +199,61 @@ func Evaluate(raw Result, policy *Policy, baseline *Baseline, filter DisplayFilt
 	if err != nil {
 		return Projection{}, err
 	}
-	return Projection{Result: projected, RawJSON: encoded, Displayed: displayed}, nil
+	historical := historicalWarningEvidence(warningState, filter, debug)
+	return Projection{
+		Result: projected, RawJSON: encoded, Displayed: displayed, Historical: historical,
+		WarningClassifications: classifications,
+	}, nil
+}
+
+func currentWarningClassification(state *WarningState, subjectID string, now time.Time) (string, bool) {
+	if state == nil {
+		return "open", false
+	}
+	index := sort.Search(len(state.Subjects), func(i int) bool { return state.Subjects[i].SubjectID >= subjectID })
+	if index == len(state.Subjects) || state.Subjects[index].SubjectID != subjectID {
+		return "open", false
+	}
+	subject := state.Subjects[index]
+	classification := subject.Classification
+	if classification == "accepted" && subject.ValidUntil != nil && !now.IsZero() &&
+		!now.UTC().Before(mustParseUTC(*subject.ValidUntil)) {
+		classification = "open"
+	}
+	return classification, subject.Muted
+}
+
+func matchesLifecycleFilter(classification string, muted bool, subjectID string, filter DisplayFilter) bool {
+	if filter.SubjectID != "" && filter.SubjectID != subjectID {
+		return false
+	}
+	if filter.Classification == "muted" {
+		return muted
+	}
+	return filter.Classification == "" || filter.Classification == classification
+}
+
+func historicalWarningEvidence(state *WarningState, filter DisplayFilter, debug bool) []WarningOccurrence {
+	if !debug || state == nil || filter.Classification != "resolved" && filter.Delta != "resolved" {
+		return []WarningOccurrence{}
+	}
+	result := []WarningOccurrence{}
+	for _, subject := range state.Subjects {
+		if subject.Classification != "resolved" || filter.SubjectID != "" && filter.SubjectID != subject.SubjectID {
+			continue
+		}
+		for _, occurrence := range subject.Occurrences {
+			finding := occurrence.Finding
+			if filter.RuleID != "" && finding.RuleID != filter.RuleID ||
+				filter.RecordID != "" && finding.Attributes["record_id"] != filter.RecordID ||
+				filter.Path != "" && finding.Attributes["path"] != filter.Path {
+				continue
+			}
+			result = append(result, occurrence)
+		}
+	}
+	sort.Slice(result, func(i, j int) bool { return result[i].OccurrenceID < result[j].OccurrenceID })
+	return result
 }
 
 func matchesFilter(finding Finding, filter DisplayFilter, newSet, unchangedSet map[string]bool) bool {

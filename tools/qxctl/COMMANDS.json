@@ -3922,7 +3922,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl validate debug [--baseline-id VALUE] [--delta VALUE] [--json] [--path VALUE] [--prefix VALUE] [--profile-id VALUE] [--record VALUE] [--repo VALUE] [--rule VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "grammar": "qxctl validate debug [--baseline-id VALUE] [--classification VALUE] [--delta VALUE] [--json] [--path VALUE] [--prefix VALUE] [--profile-id VALUE] [--record VALUE] [--repo VALUE] [--rule VALUE] [--state-root VALUE] [--subject VALUE] [--tops-id VALUE] [--version VALUE] [--warning-state-id VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4052,12 +4052,47 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:validate.root-summary",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl validate root-summary [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.governed-validation",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:symphony-validator.root-summary-assurance",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.repository.root-summary.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.repository.root-summary.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:validate.scan",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl validate scan [--baseline-id VALUE] [--json] [--prefix VALUE] [--profile-id VALUE] [--repo VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "grammar": "qxctl validate scan [--baseline-id VALUE] [--json] [--prefix VALUE] [--profile-id VALUE] [--repo VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE] [--warning-state-id VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -4081,7 +4116,278 @@
       "recovery_command_id": null,
       "noninteractive": true,
       "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:validate.warning.accept",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl validate warning accept [--expected-state-digest VALUE] [--json] [--rationale VALUE] [--state-root VALUE] [--subject-id VALUE] [--tops-id VALUE] [--valid-until VALUE] [--warning-state-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.governed-validation",
+          "interaction": "configure"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:validate.warning.reopen",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:validate.warning.list",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl validate warning list [--classification VALUE] [--json] [--state-root VALUE] [--tops-id VALUE] [--warning-state-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.governed-validation",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [],
+      "result_validation_protocols": [],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:validate.warning.mute",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl validate warning mute [--expected-state-digest VALUE] [--json] [--rationale VALUE] [--state-root VALUE] [--subject-id VALUE] [--tops-id VALUE] [--warning-state-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.governed-validation",
+          "interaction": "configure"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:validate.warning.unmute",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:validate.warning.reopen",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl validate warning reopen [--expected-state-digest VALUE] [--json] [--rationale VALUE] [--state-root VALUE] [--subject-id VALUE] [--tops-id VALUE] [--warning-state-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.governed-validation",
+          "interaction": "configure"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:validate.warning.reopen",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:validate.warning.show",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl validate warning show [--json] [--state-root VALUE] [--subject-id VALUE] [--tops-id VALUE] [--warning-state-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.governed-validation",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:validate.warning.status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl validate warning status [--json] [--state-root VALUE] [--tops-id VALUE] [--warning-state-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.governed-validation",
+          "interaction": "query"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [],
+      "result_validation_protocols": [],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:validate.warning.supersede",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl validate warning supersede [--expected-state-digest VALUE] [--json] [--rationale VALUE] [--state-root VALUE] [--subject-id VALUE] [--superseded-by-subject-id VALUE] [--tops-id VALUE] [--warning-state-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.governed-validation",
+          "interaction": "configure"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:validate.warning.reopen",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:validate.warning.sync",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl validate warning sync [--expected-state-digest VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE] [--warning-state-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.governed-validation",
+          "interaction": "configure"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:validate.warning.sync",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:validate.warning.unmute",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl validate warning unmute [--expected-state-digest VALUE] [--json] [--rationale VALUE] [--state-root VALUE] [--subject-id VALUE] [--tops-id VALUE] [--warning-state-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.governed-validation",
+          "interaction": "configure"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:validate.warning.mute",
+      "noninteractive": true,
+      "json_output": true
     }
   ],
-  "registry_digest": "sha256:9707fa39c15da4bc28fdd4cd1b3efee1ae9b7f611621d6cc6bfcc2bd88983f0c"
+  "registry_digest": "sha256:560b023fb5656a2619815e84ee770b829ce076f8ce15931baaa63c56f7f87e3c"
 }

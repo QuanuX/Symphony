@@ -23,6 +23,7 @@
 #include "sodv_releases.hpp"
 #include "projector.hpp"
 #include "feature_administration.hpp"
+#include "root_summary.hpp"
 #include <iostream>
 
 int run_cli(const std::vector<std::string>& args) {
@@ -38,12 +39,36 @@ int run_cli(const std::vector<std::string>& args) {
                   << "Commands:\n"
                   << "  --help                Show this help message\n"
                   << "  --version             Show version information\n"
-                  << "  check --repo <path> [--json]   Check repository and optionally emit structured evidence\n";
+                  << "  check --repo <path> [--json]   Check repository and optionally emit structured evidence\n"
+                  << "  root-summary --repo <path> [--json]   Project the canonical root README summary\n";
         return 0;
     }
 
     if (command == "--version") {
         std::cout << "symphony-validator 0.1.0-dev\n";
+        return 0;
+    }
+
+    if (command == "root-summary") {
+        const bool json_output = args.size() == 4 && args[1] == "--repo" && args[3] == "--json";
+        if ((args.size() != 3 && !json_output) || args[1] != "--repo") {
+            std::cerr << "error: root-summary requires --repo <path> [--json]\n";
+            return 1;
+        }
+        const auto releases = check_sodv_releases(args[2]);
+        const auto result = project_root_summary(args[2], releases);
+        if (!result.success) {
+            for (const auto& message : releases.messages) {
+                if (message.find("evidence violation") == 0) {
+                    std::cerr << message << "\n";
+                }
+            }
+            for (const auto& message : result.messages) {
+                std::cerr << message << "\n";
+            }
+            return 25;
+        }
+        std::cout << (json_output ? result.projection_json : result.projection_markdown);
         return 0;
     }
 
@@ -271,6 +296,16 @@ int run_cli(const std::vector<std::string>& args) {
                 final_exit = 19;
                 print_summary();
                 return final_exit;
+            }
+
+            if (root_summary_is_selected(args[2])) {
+                RootSummaryResult root_summary_result = check_root_summary(args[2], sodv_result);
+                process_messages(root_summary_result.messages);
+                if (!root_summary_result.success) {
+                    final_exit = 25;
+                    print_summary();
+                    return final_exit;
+                }
             }
 
             final_exit = 0;

@@ -51,6 +51,7 @@ add_executable(symphony-validator
     src/validator_build.cpp
     src/projector.cpp
     src/feature_administration.cpp
+    src/root_summary.cpp
 )
 
 target_include_directories(symphony-validator PRIVATE src)
@@ -68,6 +69,22 @@ add_executable(sclv-temporal-tests
     src/sclv_changelog.cpp
     src/sclv_ledger.cpp
     src/sclv_shape.cpp
+)
+
+add_executable(sclv-cross-reference-tests
+    tests/sclv_cross_reference_test.cpp
+    src/cross_reference.cpp
+    src/sclv_references.cpp
+    src/sclv_skvi_references.cpp
+    src/evidence.cpp
+)
+
+target_include_directories(sclv-cross-reference-tests PRIVATE src)
+
+set_target_properties(sclv-cross-reference-tests PROPERTIES
+  CXX_STANDARD 26
+  CXX_STANDARD_REQUIRED ON
+  CXX_EXTENSIONS OFF
 )
 
 target_include_directories(sclv-temporal-tests PRIVATE src)
@@ -94,6 +111,23 @@ add_executable(feature-administration-tests
     tests/feature_administration_test.cpp
     src/feature_administration.cpp
     src/evidence.cpp
+)
+
+add_executable(root-summary-tests
+    tests/root_summary_test.cpp
+    src/root_summary.cpp
+    src/feature_administration.cpp
+    src/sodv_releases.cpp
+    src/evidence.cpp
+)
+
+target_include_directories(root-summary-tests PRIVATE src)
+target_link_libraries(root-summary-tests PRIVATE Symphony::KnowledgeVectorEngine)
+
+set_target_properties(root-summary-tests PROPERTIES
+  CXX_STANDARD 26
+  CXX_STANDARD_REQUIRED ON
+  CXX_EXTENSIONS OFF
 )
 
 target_include_directories(feature-administration-tests PRIVATE src)
@@ -127,10 +161,12 @@ set_target_properties(caller-authority-tests PROPERTIES
 
 if(BUILD_TESTING)
   add_test(NAME sclv-temporal-tests COMMAND sclv-temporal-tests)
+  add_test(NAME sclv-cross-reference-tests COMMAND sclv-cross-reference-tests)
   add_test(NAME caller-authority-tests COMMAND caller-authority-tests)
   get_filename_component(SYMPHONY_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
   add_test(NAME sodv-release-tests COMMAND sodv-release-tests ${SYMPHONY_REPOSITORY_ROOT})
   add_test(NAME feature-administration-tests COMMAND feature-administration-tests ${SYMPHONY_REPOSITORY_ROOT})
+  add_test(NAME root-summary-tests COMMAND root-summary-tests ${SYMPHONY_REPOSITORY_ROOT})
 endif()
 
 set(SYMPHONY_VALIDATOR_LIBEXEC_DIR "${CMAKE_INSTALL_LIBEXECDIR}/symphony/symphony-validator/0.1.0-dev")

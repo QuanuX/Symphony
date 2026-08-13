@@ -479,11 +479,11 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
     require(check.at("summary").at("state") == "valid", "canonical partial registry invalid");
     require(check.at("coverage_state") == "partial",
             "canonical bootstrap must not imply repository-wide completeness");
-    require(check.at("feature_count") == 69U && check.at("feature_file_count") == 15U,
+    require(check.at("feature_count") == 70U && check.at("feature_file_count") == 15U,
             "canonical partial-catalog record counts mismatch");
     const auto graph = ssfv::handle_request(
         request("graph", engine::Json{{"format", "json"}}));
-    require(graph.at("node_count") == 69U && graph.at("edge_count") == 279U,
+    require(graph.at("node_count") == 70U && graph.at("edge_count") == 283U,
             "canonical partial-catalog graph count mismatch");
     require(graph.at("noncanonical") == true && graph.at("rebuildable") == true,
             "graph authority escalated");
@@ -517,31 +517,21 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
             read_json("knowledge/FEATURE-ADMINISTRATION-PROFILE.json"),
             read_json("tools/qxctl/COMMANDS.json"), "not_evaluated", nullptr,
             engine::Json::array({descriptor_v2}), nullptr)));
-    require(full_administration.at("summary").at("features_checked") == 69U &&
-                full_administration.at("summary").at("surfaces_checked") == 128U &&
-                full_administration.at("summary").at("satisfied") == 103U &&
-                full_administration.at("summary").at("uncovered") == 4U &&
+    require(full_administration.at("summary").at("features_checked") == 70U &&
+                full_administration.at("summary").at("surfaces_checked") == 131U &&
+                full_administration.at("summary").at("satisfied") == 109U &&
+                full_administration.at("summary").at("uncovered") == 0U &&
                 full_administration.at("summary").at("exempt") == 13U &&
-                full_administration.at("summary").at("prohibited") == 8U &&
+                full_administration.at("summary").at("prohibited") == 9U &&
                 full_administration.at("summary").at("stale") == 0U &&
                 full_administration.at("summary").at("unresolved") == 0U,
             "canonical administration baseline counts mismatch");
-    std::vector<std::string> uncovered_features;
-    for (const auto& surface : full_administration.at("surfaces")) {
-        if (surface.at("design_state") == "uncovered") {
-            require(surface.at("interaction") == "lifecycle" &&
-                        surface.at("command_ids").empty(),
-                    "canonical uncovered surface is not a missing lifecycle route");
-            uncovered_features.push_back(surface.at("feature_id").get<std::string>());
-        }
-    }
-    require(uncovered_features == std::vector<std::string>{
-                "ssfv:symphony:ssiag-foundation.native-supervision",
-                "ssfv:symphony:ssiag-foundation.tops-enrollment",
-                "ssfv:symphony:stav-append-authority.native-supervision",
-                "ssfv:symphony:stav-append-authority.tops-enrollment",
-            },
-            "canonical uncovered administration surfaces changed");
+    require(std::none_of(full_administration.at("surfaces").begin(),
+                         full_administration.at("surfaces").end(),
+                         [](const engine::Json& surface) {
+                             return surface.at("design_state") == "uncovered";
+                         }),
+            "canonical administration profile retained an uncovered surface");
 }
 
 void test_administration_coverage_and_module_admission() {

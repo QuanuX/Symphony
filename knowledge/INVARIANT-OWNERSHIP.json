@@ -1,0 +1,401 @@
+{
+  "adapters": [
+    {
+      "adapter_id": "adapter:symphony:ssiag.foundation-lifecycle.v1",
+      "command_protocol": "symphony.foundation.lifecycle-command.v1",
+      "component": "ssiag",
+      "entry_point_id": "ssiag.foundation-lifecycle",
+      "format_version": 1,
+      "implementation_path": "modules/secure-identity-access-governance/internal/foundationlifecycle",
+      "operation_ids": [
+        "engop:symphony:ssiag.enrollment.apply",
+        "engop:symphony:ssiag.enrollment.apply-status",
+        "engop:symphony:ssiag.enrollment.observe",
+        "engop:symphony:ssiag.enrollment.plan",
+        "engop:symphony:ssiag.enrollment.recover",
+        "engop:symphony:ssiag.supervisor.apply",
+        "engop:symphony:ssiag.supervisor.apply-status",
+        "engop:symphony:ssiag.supervisor.observe",
+        "engop:symphony:ssiag.supervisor.plan",
+        "engop:symphony:ssiag.supervisor.recover"
+      ],
+      "owner_contract": "modules/secure-identity-access-governance/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:stav.foundation-lifecycle.v1",
+      "command_protocol": "symphony.foundation.lifecycle-command.v1",
+      "component": "stav",
+      "entry_point_id": "stav.foundation-lifecycle",
+      "format_version": 1,
+      "implementation_path": "modules/stav-append-authority/internal/foundation",
+      "operation_ids": [
+        "engop:symphony:stav.enrollment.apply",
+        "engop:symphony:stav.enrollment.apply-status",
+        "engop:symphony:stav.enrollment.observe",
+        "engop:symphony:stav.enrollment.plan",
+        "engop:symphony:stav.enrollment.recover",
+        "engop:symphony:stav.supervisor.apply",
+        "engop:symphony:stav.supervisor.apply-status",
+        "engop:symphony:stav.supervisor.observe",
+        "engop:symphony:stav.supervisor.plan",
+        "engop:symphony:stav.supervisor.recover"
+      ],
+      "owner_contract": "modules/stav-append-authority/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    }
+  ],
+  "catalog_complete": false,
+  "catalog_scope": "registered_incremental",
+  "format_version": 1,
+  "forward_gate": "enforce_new_or_modified",
+  "invariants": [
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:ssiag.foundation-lifecycle.v1",
+        "adapter:symphony:stav.foundation-lifecycle.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestResultValidationPreservesDeferredAuditReconciliation"
+          ],
+          "path": "tools/qxctl/internal/foundationlifecycle/client_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:foundation.audit-closure",
+      "ipc_boundary": false,
+      "owner_component": "foundation-lifecycle",
+      "owner_contract": "knowledge/FOUNDATIONAL-LIFECYCLE.md",
+      "producer_implementations": [
+        "modules/secure-identity-access-governance/internal/foundationlifecycle/engine.go",
+        "modules/stav-append-authority/internal/foundation/transaction.go"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestOrdinaryAuditFailsBeforeAttemptOrMutation"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/foundationlifecycle/engine_test.go"
+        },
+        {
+          "cases": [
+            "TestAuditDeferredApplyCrashAndRecover"
+          ],
+          "path": "modules/stav-append-authority/internal/foundation/engine_test.go"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "A successful foundational mutation closes only with committed audit evidence or an explicit durable audit-deferred state that remains reconciliation-required.",
+      "status": "active",
+      "title": "Audit closure precedes successful outcome"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:ssiag.foundation-lifecycle.v1",
+        "adapter:symphony:stav.foundation-lifecycle.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestOperationShapesFailClosedBeforeInvocation"
+          ],
+          "path": "tools/qxctl/internal/foundationlifecycle/client_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:foundation.bounded-process-framing",
+      "ipc_boundary": true,
+      "owner_component": "foundation-lifecycle",
+      "owner_contract": "knowledge/FOUNDATIONAL-LIFECYCLE.md",
+      "producer_implementations": [
+        "modules/secure-identity-access-governance/internal/foundationlifecycle/codec.go",
+        "modules/stav-append-authority/internal/foundation/engine.go"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestExecuteRejectsExpiredDeadlineBeforeStateAccess"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/foundationlifecycle/engine_test.go"
+        },
+        {
+          "cases": [
+            "TestDecodeRejectsOversizeAndUnknownFields"
+          ],
+          "path": "modules/stav-append-authority/internal/foundation/engine_test.go"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "TestFoundationLifecycleRealProcessBoundary"
+          ],
+          "path": "modules/secure-identity-access-governance/cmd/symphony-ssiag/foundation_lifecycle_process_test.go"
+        },
+        {
+          "cases": [
+            "TestFoundationLifecycleRealProcessBoundary"
+          ],
+          "path": "modules/stav-append-authority/cmd/symphony-stav-append-authority/main_test.go"
+        }
+      ],
+      "statement": "The installed adapter accepts exactly one bounded closed-shape JSON command on standard input and emits exactly one bounded JSON result on standard output.",
+      "status": "active",
+      "title": "Bounded one-value process framing"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:ssiag.foundation-lifecycle.v1",
+        "adapter:symphony:stav.foundation-lifecycle.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestReadPlanAcceptsOnlyDigestBoundPlanResult"
+          ],
+          "path": "tools/qxctl/internal/foundationlifecycle/client_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:foundation.evidence-driven-recovery",
+      "ipc_boundary": false,
+      "owner_component": "foundation-lifecycle",
+      "owner_contract": "knowledge/FOUNDATIONAL-LIFECYCLE.md",
+      "producer_implementations": [
+        "modules/secure-identity-access-governance/internal/foundationlifecycle/engine.go",
+        "modules/stav-append-authority/internal/foundation/transaction.go"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestCrashAfterMutationRecoversFromExactAttempt"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/foundationlifecycle/engine_test.go"
+        },
+        {
+          "cases": [
+            "TestRecoverMissingPlanBindsExactActiveAttempt"
+          ],
+          "path": "modules/stav-append-authority/internal/foundation/engine_test.go"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Recovery advances only from exact predecessor, active-attempt, and re-observed state evidence and never from time, recency, or process age.",
+      "status": "active",
+      "title": "Evidence-driven forward recovery"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:ssiag.foundation-lifecycle.v1",
+        "adapter:symphony:stav.foundation-lifecycle.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestAdapterValidationBindsIndependentReceiptEvidence",
+            "TestInstallationSelectionRequiresExactReceiptV2AndRejectsAmbiguity"
+          ],
+          "path": "tools/qxctl/internal/foundationlifecycle/client_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:foundation.exact-adapter-provenance",
+      "ipc_boundary": true,
+      "owner_component": "foundation-lifecycle",
+      "owner_contract": "knowledge/FOUNDATIONAL-LIFECYCLE.md",
+      "producer_implementations": [
+        "modules/secure-identity-access-governance/internal/packageinstall/package.go",
+        "modules/stav-append-authority/internal/lifecycle/lifecycle.go"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestReceiptV2EvidenceWorksWithoutLegacyInstallation"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/foundationlifecycle/engine_test.go"
+        },
+        {
+          "cases": [
+            "TestDescriptorBindsExactReceiptAndOperations"
+          ],
+          "path": "modules/stav-append-authority/internal/foundation/engine_test.go"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "TestFoundationLifecycleRealProcessBoundary"
+          ],
+          "path": "modules/secure-identity-access-governance/cmd/symphony-ssiag/foundation_lifecycle_process_test.go"
+        },
+        {
+          "cases": [
+            "TestFoundationLifecycleRealProcessBoundary"
+          ],
+          "path": "modules/stav-append-authority/cmd/symphony-stav-append-authority/main_test.go"
+        }
+      ],
+      "statement": "Invocation and description bind the exact immutable receipt-v2 executable, entry point, digests, protocol, and compatible capability set without newest-version selection.",
+      "status": "active",
+      "title": "Exact adapter provenance"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:ssiag.foundation-lifecycle.v1",
+        "adapter:symphony:stav.foundation-lifecycle.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestReadPlanAcceptsOnlyDigestBoundPlanResult"
+          ],
+          "path": "tools/qxctl/internal/foundationlifecycle/client_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:foundation.plan-attempt-cas",
+      "ipc_boundary": false,
+      "owner_component": "foundation-lifecycle",
+      "owner_contract": "knowledge/FOUNDATIONAL-LIFECYCLE.md",
+      "producer_implementations": [
+        "modules/secure-identity-access-governance/internal/foundationlifecycle/engine.go",
+        "modules/stav-append-authority/internal/foundation/transaction.go"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestApplyRefusesObservationDrift"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/foundationlifecycle/engine_test.go"
+        },
+        {
+          "cases": [
+            "TestPlanRejectsMachinePurgeAndSupervisorDriftRequiresCAS"
+          ],
+          "path": "modules/stav-append-authority/internal/foundation/engine_test.go"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "A mutation is permitted only for an unexpired immutable plan bound to the exact observed state and exact expected durable attempt state, with the attempt committed before host mutation.",
+      "status": "active",
+      "title": "Plan and attempt compare-and-swap"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:ssiag.foundation-lifecycle.v1",
+        "adapter:symphony:stav.foundation-lifecycle.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestOperationShapesFailClosedBeforeInvocation"
+          ],
+          "path": "tools/qxctl/internal/foundationlifecycle/client_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:foundation.shared-transaction-core",
+      "ipc_boundary": false,
+      "owner_component": "foundation-lifecycle",
+      "owner_contract": "knowledge/FOUNDATIONAL-LIFECYCLE.md",
+      "producer_implementations": [
+        "modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go",
+        "modules/secure-identity-access-governance/internal/foundationlifecycle/engine.go",
+        "modules/stav-append-authority/cmd/symphony-stav-append-authority/main.go",
+        "modules/stav-append-authority/internal/foundation/engine.go"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestDeferredAuditAttemptCannotBeOverwrittenBeforeReconciliation"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/foundationlifecycle/engine_test.go"
+        },
+        {
+          "cases": [
+            "TestFailedPlanRemainsReadOnly"
+          ],
+          "path": "modules/stav-append-authority/internal/foundation/engine_test.go"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Human CLI and machine adapter entry points delegate to the same module-owned transaction engine and expose no bypass around expected-state, attempt, purge-safety, audit, or recovery rules.",
+      "status": "active",
+      "title": "Shared module transaction core"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:ssiag.foundation-lifecycle.v1",
+        "adapter:symphony:stav.foundation-lifecycle.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestObservationValidationRecomputesStableStateIncludingRecovery"
+          ],
+          "path": "tools/qxctl/internal/foundationlifecycle/client_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:foundation.stable-observation-digests",
+      "ipc_boundary": false,
+      "owner_component": "foundation-lifecycle",
+      "owner_contract": "knowledge/FOUNDATIONAL-LIFECYCLE.md",
+      "producer_implementations": [
+        "modules/secure-identity-access-governance/internal/foundationlifecycle/engine.go",
+        "modules/stav-append-authority/internal/foundation/engine.go"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestStableDigestIncludesRecoveryAndIgnoresJSONFieldOrder"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/foundationlifecycle/engine_test.go"
+        },
+        {
+          "cases": [
+            "TestObserveStableDigestExcludesCollectionTime"
+          ],
+          "path": "modules/stav-append-authority/internal/foundation/engine_test.go"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Stable state identity includes all mutation-relevant and recovery evidence while excluding documentary observation time; the full observation digest binds both.",
+      "status": "active",
+      "title": "Stable observation digests"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "test_forward_gate_and_command_reference"
+          ],
+          "path": "tools/symphony-validator/tests/feature_administration_test.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:module-administration.declaration",
+      "ipc_boundary": false,
+      "owner_component": "ssfv-engine",
+      "owner_contract": "knowledge/FEATURE-ADMINISTRATION.md",
+      "producer_implementations": [
+        "modules/ssfv-engine/src/ssfv.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "test_administration_coverage_and_module_admission"
+          ],
+          "path": "modules/ssfv-engine/tests/ssfv_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Every new installable module or administrator-facing interaction declares a stable feature identity and reviewed qxctl and backend mapping or an explicit evidence-backed disposition in the same admission change; omission remains uncovered.",
+      "status": "active",
+      "title": "Module administration declaration"
+    }
+  ],
+  "protocol": "symphony.knowledge.invariant-ownership-registry.v1",
+  "registry_digest": "sha256:60e9b43e283c0b4c16f3075494fa319bc3f76f379c1d6049814a17f235ad8898",
+  "scope": "common_lowest_authoritative_layer",
+  "test_policy": {
+    "consumer_boundary_rejection_required": true,
+    "owner_producer_regression_required": true,
+    "real_process_required_for_ipc": true
+  }
+}

@@ -11,6 +11,7 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 - `engine-descriptor.schema.json`: installed engine/coordinator identity and capability truth.
 - `qxctl-command-registry.schema.json`: canonical expected or exact observed qxctl executable-leaf identity, grammar, feature, backend, machine-output, and trust evidence.
 - `feature-administration-profile.schema.json`: registered-feature interaction requirements, explicit dispositions, finite inheritance, and bootstrap forward-gate truth.
+- `invariant-ownership-registry.schema.json`: lowest-authoritative-layer invariant IDs, owner contracts/components, producer and consumer regressions, real-process IPC evidence, and finite allowed versioned adapters.
 - `administration-coverage-input.schema.json`: bounded repository-independent SSFV administration-check input with optional observed qxctl evidence.
 - `administration-coverage-result.schema.json`: digest-bound design, live, authorization, uncovered-surface, remediation, and module-integration evidence.
 - `install-receipt.schema.json`: versioned, prefix-relative package ownership and docking state.
@@ -63,6 +64,7 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 - `validation-result.schema.json`: deterministic raw repository evidence and optional separately digested qxctl policy evaluation.
 - `validation-policy.schema.json`: protected noncanonical warning disposition and presentation profile.
 - `validation-baseline.schema.json`: protected noncanonical repository/version-bound warning identity inventory for delta evaluation.
+- `validation-warning-state.schema.json`: protected noncanonical subject-aware warning lifecycle, occurrence/evidence history, administrative classifications, presentation-only mute state, and digest-linked transition chain.
 - `foundation-lifecycle-adapter.schema.json`: exact installed SSIAG/STAV adapter identity, capabilities, compatibility, limits, and operation IDs.
 - `foundation-lifecycle-command.schema.json`: bounded observe/plan/apply/apply-status/recover process command with caller intent and exact state.
 - `foundation-lifecycle-observation.schema.json`: safe installation, enrollment, native-manager, endpoint, activation, and recovery evidence.

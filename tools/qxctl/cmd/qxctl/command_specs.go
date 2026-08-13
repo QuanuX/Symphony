@@ -64,6 +64,7 @@ const (
 	backendFeatureSTAVQuery        = "ssfv:symphony:stav-append-authority.authorized-query"
 	backendFeatureSTAVDurability   = "ssfv:symphony:stav-append-authority.ledger-durability"
 	backendFeatureValidator        = "ssfv:symphony:symphony-validator"
+	backendFeatureRootSummary      = "ssfv:symphony:symphony-validator.root-summary-assurance"
 )
 
 // reviewedBackendFeatureBindings is the ratified semantic bridge from stable
@@ -149,6 +150,7 @@ var reviewedBackendFeatureBindings = map[string][]commandregistry.FeatureBinding
 	"stav.supervisor.recover":       {{FeatureID: backendFeatureSTAVSupervisor, Interaction: "lifecycle"}},
 	"stav.verify":                   {{FeatureID: backendFeatureSTAVDurability, Interaction: "validate"}},
 	"validate.scan":                 {{FeatureID: backendFeatureValidator, Interaction: "validate"}},
+	"validate.root-summary":         {{FeatureID: backendFeatureRootSummary, Interaction: "inspect"}},
 }
 
 func registered(command *cobra.Command, key, featureID, interaction string) *cobra.Command {
@@ -164,6 +166,29 @@ func registeredProposal(command *cobra.Command, key, featureID string) *cobra.Co
 func registeredEvidence(command *cobra.Command, key, featureID, interaction string) *cobra.Command {
 	spec := commandSpec(key, featureID, interaction)
 	spec.Mutability = "evidence_only"
+	return commandregistry.Attach(command, spec)
+}
+
+func registeredValidationWarning(
+	command *cobra.Command, key, interaction string, exactState, mutation bool, recoveryID string,
+) *cobra.Command {
+	spec := commandSpec(key, featureValidation, interaction)
+	if exactState {
+		spec.OutputProtocols = []string{"symphony.validation.warning-state.v1"}
+		spec.ResultValidationProtocols = []string{"symphony.validation.warning-state.v1"}
+	}
+	if mutation {
+		spec.Mutability = "permission_backed_mutation"
+		spec.AuthorityMode = "target_host_permission"
+		spec.RecoveryCommandID = stringPointer("qxcmd:symphony:" + recoveryID)
+	}
+	return commandregistry.Attach(command, spec)
+}
+
+func registeredRootSummary(command *cobra.Command) *cobra.Command {
+	spec := commandSpec("validate.root-summary", featureValidation, "inspect")
+	spec.OutputProtocols = []string{"symphony.repository.root-summary.v1"}
+	spec.ResultValidationProtocols = []string{"symphony.repository.root-summary.v1"}
 	return commandregistry.Attach(command, spec)
 }
 
