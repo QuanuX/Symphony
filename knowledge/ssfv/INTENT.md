@@ -58,7 +58,7 @@ Owner-configured safeguards may constrain operations by permission, scope, risk,
 
 The independently installable C++ `ssfv-engine` and Go qxctl client implement bounded inspect, check, diff, proposal, and disposable graph operations. They provide application-owned mechanics without deciding feature-worthiness or mutating canonical truth. The separate C++ knowledge-session coordinator and qxctl session surface persist content-addressed SSFV baselines and review evidence across an authenticated session; this maintenance stream remains noncanonical and cannot apply its findings.
 
-The current partial semantic catalog contains twenty-nine Architect-ratified experimental records across the repository root and fourteen implemented owner scopes. Fourteen nested F1 subfeatures are now recorded across qxctl, the knowledge-session coordinator, and Maestro; `COVERAGE.md` records that exact progress alongside the top-level source universe, three proposal-only exclusions, freshness rule, and the remaining nested-review conditions reserved for a future `complete` state.
+The current partial semantic catalog contains forty-three Architect-ratified experimental records across the repository root and fourteen implemented owner scopes. Twenty-eight nested F1 and F2 subfeatures are now recorded across qxctl, the knowledge-session coordinator, Maestro, the SSIAG foundation, the STAV append authority, and the STAV Go protocol kernel; `COVERAGE.md` records that exact progress, the reviewed macOS adapter no-child disposition, explicit non-feature boundaries, the top-level source universe, three proposal-only exclusions, freshness rule, and the remaining conditions reserved for a future `complete` state.
 
 ## Non-Authorization Statement
 

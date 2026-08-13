@@ -59,14 +59,15 @@
       "kind": "subfeature",
       "non_claims": [
         "Does not read, write, sign with, decrypt with, rotate, export, or deliver any Keychain credential.",
-        "Does not create an implicit fallback, accept secrets through JSON, or claim operational readiness."
+        "Does not create an implicit fallback, accept secrets through JSON, or claim operational readiness.",
+        "The current Go SSIAG foundation and qxctl do not invoke this adapter; operational trust, provider execution, Keychain access, and secret delivery remain unimplemented."
       ],
       "owner_contract": "modules/ssiag-provider-macos-keychain/SPEC.md",
       "parent_feature_id": "ssfv:symphony:ssiag-foundation",
       "record_version": 2,
       "relationships": [
         {
-          "rationale": "The adapter supplies platform-native provider metadata through SSIAG's independent provider boundary.",
+          "rationale": "The adapter independently demonstrates the platform-native metadata protocol intended for SSIAG's future provider boundary, but no Go-foundation invocation bridge is implemented.",
           "target_feature_id": "ssfv:symphony:ssiag-foundation",
           "type": "extends"
         }
@@ -77,7 +78,7 @@
       "what": "Provides an independently buildable macOS adapter that reports provider identity, status, and capabilities while proving that operational Keychain access is disabled.",
       "when": "Invoked explicitly for provider metadata during macOS development or administration; no supported request accesses Keychain values.",
       "where": "Runs as a separate Swift executable on macOS 13 or later and never links native Apple frameworks into SSIAG's Go process.",
-      "who": "SSIAG administrators, the SSIAG provider registry, qxctl metadata queries, maintainers, and macOS integration tests.",
+      "who": "Maintainers, macOS integration tests, and administrators who invoke the independently installed adapter directly for its bounded metadata handshake.",
       "why": "Establishes the correct native-language and out-of-process provider boundary before sensitive Keychain operations are separately authorized."
     }
   ],

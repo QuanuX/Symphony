@@ -331,11 +331,11 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
     require(check.at("summary").at("state") == "valid", "canonical partial registry invalid");
     require(check.at("coverage_state") == "partial",
             "canonical bootstrap must not imply repository-wide completeness");
-    require(check.at("feature_count") == 29U && check.at("feature_file_count") == 15U,
+    require(check.at("feature_count") == 43U && check.at("feature_file_count") == 15U,
             "canonical partial-catalog record counts mismatch");
     const auto graph = ssfv::handle_request(
         request("graph", engine::Json{{"format", "json"}}));
-    require(graph.at("node_count") == 29U && graph.at("edge_count") == 96U,
+    require(graph.at("node_count") == 43U && graph.at("edge_count") == 139U,
             "canonical partial-catalog graph count mismatch");
     require(graph.at("noncanonical") == true && graph.at("rebuildable") == true,
             "graph authority escalated");
