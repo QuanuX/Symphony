@@ -5227,3 +5227,127 @@ This PR authorizes none of the following:
   - `Go 1.27 production pin, module release, SDK publication, API publication, product-launch claim, or public documentation completion`
 - notes: |
     This post-merge closure records the fourteen Architect-ratified SSFV F2 security and audit subfeatures merged by PR #129. Every source-PR surface was already routed through SKVI before merge. The closure carrier appends only this forward-only canonical record and introduces no runtime behavior; it is non-recursive unless it adds an independently significant architectural change.
+
+- record_id: `SCLV-CHG-20260813-SSFV-F3-KNOWLEDGE-ENGINES`
+- record_version: `3`
+- title: `SSFV F3 knowledge-engine subfeatures and qxctl evidence adapters completed`
+- status: `canonical`
+- date: `2026-08-13`
+- change_started_at: `2026-08-13T03:46:20Z`
+- change_completed_at: `2026-08-13T03:58:28Z`
+- recorded_at: `2026-08-13T04:00:04Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `canonical_addition`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#131`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/131`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `eba16904a5b5991936c951744ef2ea98c7114aa1`
+- tree_digest: `sha256:a3ff66f6e8ad3c11b433d83253c390ddca59b209aad06c40e1a535d47c5d1004`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/131`
+- ratification_evidence_digest: `sha256:8df5f5548428de2819f58acc363f240f84a4c441e884b42fd5c5d3bc811d37fa`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/MANIFEST.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SKILL.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `libraries/knowledge-vector-engine-cpp/FEATURES.md`
+  - `modules/sacv-engine/FEATURES.md`
+  - `modules/sclv-engine/FEATURES.md`
+  - `modules/sclv-engine/INSTALL.md`
+  - `modules/skvi-engine/FEATURES.md`
+  - `modules/sodv-engine/FEATURES.md`
+  - `modules/ssfv-engine/FEATURES.md`
+  - `modules/ssfv-engine/tests/ssfv_test.cpp`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/sclv_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/qxctl/internal/knowledgeengine/client_test.go`
+- skvi_references:
+  - `README.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/MANIFEST.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SKILL.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `libraries/knowledge-vector-engine-cpp/FEATURES.md`
+  - `modules/sacv-engine/FEATURES.md`
+  - `modules/sclv-engine/FEATURES.md`
+  - `modules/sclv-engine/INSTALL.md`
+  - `modules/skvi-engine/FEATURES.md`
+  - `modules/sodv-engine/FEATURES.md`
+  - `modules/ssfv-engine/FEATURES.md`
+  - `modules/ssfv-engine/tests/ssfv_test.cpp`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/sclv_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/knowledgeengine/client.go`
+  - `tools/qxctl/internal/knowledgeengine/client_test.go`
+- change_summary: |
+    Under the Architect's direction, PR #131 completed the F3 semantic review of the shared knowledge-vector C++ foundation and the SKVI, SCLV, SACV, SODV, and SSFV engines. Twenty-four implemented subsystem records expand the canonical partial catalog from forty-three to sixty-seven records. The same change closes the discovered qxctl administration gap for the SCLV package's receipt-owned local-Git and air-gap evidence adapters through exact installed-package validation and bounded typed invocation.
+- relationship_changes: |
+    The six existing owner records remain primary feature boundaries while their twenty-four children record bounded process, evidence, temporal, validation, compatibility, proposal, recovery, and projection outcomes. qxctl now administers both auxiliary SCLV evidence adapters through the existing SCLV installation rather than inventing new engine-binding roles. SCLV retains provider-evidence semantics, SKVI retains routing, SSFV retains feature truth, and qxctl remains the headless administrative client without inheriting any vector's authority. The closure gate identified and forward-corrected the missing exact SKVI route for the new qxctl SCLV adapter command test rather than suppressing the deterministic finding or creating a persistent unindexed-surface warning.
+- doctrine_changes: |
+    Shared foundation behaviors and small vector-engine subsystems are feature-worthy only when they pass the established semantic gate; helpers, parsers, schemas, build mechanics, and operation variants remain evidence unless independently capability-bearing. qxctl may normalize provider evidence but cannot convert well-formed evidence into truth, permission, ratification, or canonical acceptance. Receipt-v1 SCLV installations fail closed for typed adapter invocation because they cannot prove receipt-owned auxiliary entry points.
+- compatibility_consequences: |
+    The new qxctl leaves require an exact receipt-v2 SCLV installation whose complete package and declared adapter entry point validate before invocation. Old qxctl versions continue to operate the established primary SCLV role but cannot invoke these new leaves; older receipt-v1 packages remain inspectable through their supported boundary and are explicitly refused for typed adapter invocation. No binding-role set, engine-process protocol, ledger record shape, canonical apply boundary, or previously registered feature identity changes.
+- publication_consequences: |
+    No module tag, release artifact, SDK, OpenAPI endpoint, Mintlify publication, public documentation launch, product claim, or platform release was published or authorized. This remains active-development source on the rolling main branch.
+- projection_consequences: |
+    The disposable SSFV graph now deterministically projects sixty-seven nodes and two hundred seventy-one edges and remains noncanonical and rebuildable. SCLV provider-neutral history and all other engine projections remain disposable evidence rather than canonical substitutes. Coverage stays explicitly partial pending the remaining nested feature and non-feature adjudication.
+- evidence:
+  - `PR #131 merged into main at 2026-08-13T03:58:28Z by quantDIY as eba16904a5b5991936c951744ef2ea98c7114aa1`
+  - `implementation head de66ad79f8b740be0975a73007dd887833cd10bb; 31 files changed, 2923 insertions, 95 deletions`
+  - `local-Git adapter evidence sha256:8f4aaabb1666fa202c724a8ce9792354ecb4e9df3e1e366c93b3360fe5e40d6b binds revision eba16904a5b5991936c951744ef2ea98c7114aa1 to tree digest sha256:a3ff66f6e8ad3c11b433d83253c390ddca59b209aad06c40e1a535d47c5d1004`
+  - `ratification evidence digest sha256:8df5f5548428de2819f58acc363f240f84a4c441e884b42fd5c5d3bc811d37fa binds compact lexicographically key-sorted provider, repository, change-request, base/head/merge revisions, timestamps, authenticated merger, and diff counts`
+  - `the shared C++ foundation and all five affected vector-engine CTest suites passed`
+  - `qxctl passed its complete Go test and race-detector suites, including strict typed adapter entrypoint and normalized-result validation`
+  - `installed-package end-to-end tests invoked both SCLV evidence adapters successfully through qxctl with no truth, permission, ratification, or canonical-apply claim`
+  - `SSFV canonical check reported 67 records across 15 owner files, partial coverage, zero warnings, zero violations, and valid structure; graph projection reported 67 nodes and 271 edges`
+  - `pre-closure Symphony Validator result pass=8249 warning=116 violation=0 exit=0; all 116 warnings remained the established historical sclv.affected_surface.unindexed advisory family`
+  - `caller-authority validation scanned 173 files and 3494 paragraphs with two structural exemptions and zero findings`
+  - `the post-merge SCLV closure gate initially refused tools/qxctl/cmd/qxctl/sclv_test.go as an unindexed reference; the closure carrier adds its exact canonical SKVI test-evidence route and revalidates the complete record instead of weakening the check`
+  - `closure SCLV engine check reported 42 records, 168 passes, zero warnings, zero violations, and valid state`
+  - `closure SKVI engine check reported 2794 passes, zero warnings, zero violations, and valid state`
+  - `closure Symphony Validator result pass=8393 warning=114 violation=0 exit=0; the exact test route resolves two prior historical sclv.affected_surface.unindexed advisories and introduces no new warning class or warning`
+- non_authorizations:
+  - `repository-wide SSFV completeness, unreviewed feature or non-feature disposition, engine-decided feature-worthiness, autonomous canonical record generation, canonical apply, canonical rollback, or repository mutation by SSFV tooling`
+  - `truth, permission, legal capacity, ratification, signature proof, or canonical acceptance inferred from normalized local-Git or air-gap evidence`
+  - `new engine-binding role, implicit newest-version selection, receipt-v1 adapter inference, package download, arbitrary entry-point execution, service activation, or execution of a discovered module`
+  - `SCLV ledger mutation by qxctl, history rewrite, provider-state mutation, Git mutation, hidden closure recovery, or automatic correction of canonical records`
+  - `remote control plane, persistent graph database, hot/warm-path participation, native Windows engine, trading-node doctrine, Go 1.27 production pin, module release, SDK publication, or product-launch claim`
+- notes: |
+    This post-merge closure records the Architect-ratified F3 knowledge-engine feature catalog and qxctl SCLV evidence-adapter integration merged by PR #131. One affected conformance-test surface was missing its exact SKVI route at merge; the closure carrier adds that evidence route forward and appends this canonical record. The correction changes no runtime behavior, feature semantics, authority, or command grammar and is not an independently significant architectural change requiring recursive closure.

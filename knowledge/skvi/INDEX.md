@@ -5035,6 +5035,19 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Current canonical assertions cover sixty-seven records, fifteen owner files, and the exact 271-edge derived graph without claiming completion of the remaining nested review or repository-wide completeness.
 - status: canonical
 
+### qxctl SCLV Evidence Adapter Command Tests
+- path: `tools/qxctl/cmd/qxctl/sclv_test.go`
+- title: qxctl SCLV Evidence Adapter Command Tests
+- surface_type: Go conformance-test implementation
+- truth_role: typed adapter command, normalized evidence, and authority-boundary proof
+- owner: qxctl maintainers
+- scope: Verifies local-Git and air-gap result identity, exact field presence, nested evidence semantics, temporal and digest validation, adapter mismatch refusal, and disabled truth, permission, ratification, and canonical-apply claims.
+- relationships: verifies -> `tools/qxctl/cmd/qxctl/main.go`; verifies -> `tools/qxctl/cmd/qxctl/commands.go`; verifies -> `tools/qxctl/internal/knowledgeengine/client.go`; conforms_to -> `knowledge/sclv/SPEC.md`
+- consumers: qxctl and SCLV maintainers, validator integration, reviewers
+- deferred_projections: installed multi-version adapter compatibility matrix
+- notes: Successful provider-evidence normalization remains bounded evidence and never grants authority or establishes canonical truth.
+- status: canonical
+
 ### qxctl Knowledge Engine Client Tests
 - path: `tools/qxctl/internal/knowledgeengine/client_test.go`
 - title: qxctl Knowledge Engine Client Tests
