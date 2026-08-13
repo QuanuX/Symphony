@@ -35,6 +35,8 @@ The interaction vocabulary is `discover`, `inspect`, `query`, `validate`, `confi
 
 Exceptions are explicit and evidence-backed. `prohibited` and `not_applicable` require `none`, no command or operation mapping, and a rationale. In report-only bootstrap, an explicitly present feature with an empty expectation array is feature-level unreviewed debt and invents no interaction; `unreviewed` delivery represents a known interaction whose route is unreviewed. Neither form is an exception or passes an enforcement gate. Parent inheritance is permitted only for the same interaction and compatible requirement; every reference must resolve within the profile and the inheritance graph must be finite and acyclic. A materially distinct child interaction requires its own expectation.
 
+For a composed interaction, every declared command must bind the exact feature and interaction, and the union of those commands' backend-operation bindings must cover every declared operation. A composed surface does not require every command to target every operation. Missing commands and missing operation coverage remain separate findings so a multi-step workflow can identify the exact broken edge without rejecting valid many-to-many composition.
+
 Permission-backed mutation normally requires inspect/status, proposal or plan, apply, apply-status, and recovery coverage plus expected-state, stable invocation identity, SSIAG binding, result validation, and required STAV evidence. An evidence-backed contract may state why one family member is not applicable.
 
 ## Engine-First Evaluation
@@ -67,7 +69,7 @@ Checks operate feature-to-command, command-to-feature, command-to-engine, engine
 
 ## Bootstrap and Forward Gate
 
-The current SSFV registry contains exactly sixty-nine experimental records and is explicitly partial. Bootstrap begins report-only with every registered record represented, including `unreviewed` debt. After all sixty-nine records have a reviewed expectation or exception, the profile may move to `enforce_new_records`; every newly ratified feature must then include its administration disposition in the same reviewed change. `enforce_all_records` requires separate evidence that the registered catalog is fully profiled. None of these states claims repository-wide feature completeness.
+The current SSFV registry contains exactly sixty-nine experimental records and is explicitly partial. Its report-only bootstrap is complete: every registered record has a reviewed expectation or evidence-backed exception, and the profile is `enforce_new_records`. Every newly ratified feature must therefore include its administration disposition in the same reviewed change. Existing expected routes that lack exact command feature bindings or backend-operation identity remain uncovered implementation work; gate advancement does not deem them satisfied. `enforce_all_records` requires separate evidence that the registered catalog is fully profiled. None of these states claims repository-wide feature completeness.
 
 ## Non-Authorization
 

@@ -82,8 +82,8 @@ The Go qxctl client validates the exact inactive-undocked receipt and invokes th
 
 ## Non-Authorization Statement
 
-This manifest authorizes the canonical SSFV contract, bounded engine/client implementation, exact sixty-nine-record partial catalog, explicit owner-scope inventory, ratified nested-review progress, and protected noncanonical session-maintenance evidence. It does not authorize an unreviewed application `FEATURES.md`, an unratified feature record, repository-wide completeness, canonical apply, repository mutation by SSFV tooling, graph-database persistence, Maestro state mutation by SSFV, public documentation, or marketing claims.
+This manifest authorizes the canonical SSFV contract, bounded engine/client implementation, exact sixty-nine-record partial catalog, explicit owner-scope inventory, 128 reviewed feature-administration expectations under `enforce_new_records`, ratified nested-review progress, and protected noncanonical session-maintenance evidence. Expected routes remain subject to exact qxctl binding and engine-descriptor evidence and may remain uncovered. It does not authorize an unreviewed application `FEATURES.md`, an unratified feature record, repository-wide completeness, canonical apply, repository mutation by SSFV tooling, graph-database persistence, Maestro state mutation by SSFV, public documentation, or marketing claims.
 
 ## Status
 
-Architect-ratified engine implementation and partial catalog. Namespace `symphony` is allocated, exactly sixty-nine experimental application-feature records exist, and coverage remains explicitly partial pending the remaining nested review.
+Architect-ratified engine implementation and partial catalog. Namespace `symphony` is allocated, exactly sixty-nine experimental application-feature records exist, their registered administration expectations are reviewed with `enforce_new_records`, and semantic coverage remains explicitly partial pending the remaining nested review.

@@ -169,10 +169,26 @@ void test_profile_bindings(const fs::path& repository) {
         refresh_digest(profile, "profile_digest");
         write_json(temporary.path() / "knowledge/FEATURE-ADMINISTRATION-PROFILE.json", profile);
         const auto result = check_feature_administration(temporary.path().string());
-        require(result.success,
-            "a digest-bound future registry/profile feature was rejected:" + messages(result));
+        require(!result.success && contains(result,
+            "feature_administration.profile_unreviewed feature_id=ssfv:zzzz:future-feature"),
+            "an unreviewed future feature passed enforce_new_records");
         require(result.features_checked == registry_feature_count(repository) + 1U,
             "future feature count was not derived from the registry");
+        profile["features"].back()["expectations"] = engine::Json::array({engine::Json{
+            {"command_ids", engine::Json::array()},
+            {"delivery", "none"},
+            {"engine_operation_ids", engine::Json::array()},
+            {"evidence", engine::Json::array({"fixture review evidence"})},
+            {"inherited_from_feature_id", nullptr},
+            {"interaction", "apply"},
+            {"rationale", "Fixture feature has no applicable apply behavior."},
+            {"requirement", "not_applicable"},
+        }});
+        refresh_digest(profile, "profile_digest");
+        write_json(temporary.path() / "knowledge/FEATURE-ADMINISTRATION-PROFILE.json", profile);
+        const auto reviewed = check_feature_administration(temporary.path().string());
+        require(reviewed.success && reviewed.unreviewed_features == 0U,
+            "a reviewed future feature did not pass enforce_new_records:" + messages(reviewed));
     }
     {
         TemporaryDirectory temporary;
@@ -260,6 +276,7 @@ void test_forward_gate_and_command_reference(const fs::path& repository) {
         copy_inputs(repository, temporary.path());
         auto profile = read_json(temporary.path() / "knowledge/FEATURE-ADMINISTRATION-PROFILE.json");
         profile["forward_gate"] = gate;
+        profile["features"][0]["expectations"] = engine::Json::array();
         refresh_digest(profile, "profile_digest");
         write_json(temporary.path() / "knowledge/FEATURE-ADMINISTRATION-PROFILE.json", profile);
         const auto result = check_feature_administration(temporary.path().string());

@@ -3161,12 +3161,7 @@ engine::Json administration_check(const engine::Json& payload,
                 if (command == expected.commands.end() ||
                     command->second.at("status") == "retired" ||
                     command->second.at("mutability") == "prohibited" ||
-                    !command_binds(command->second, feature_id, expectation.interaction) ||
-                    std::any_of(delivery_expectation.engine_operation_ids.begin(),
-                                delivery_expectation.engine_operation_ids.end(),
-                                [&](const std::string& operation_id) {
-                        return !command_targets_operation(command->second, operation_id);
-                    })) {
+                    !command_binds(command->second, feature_id, expectation.interaction)) {
                     design_state = profile_stale ? "stale" : "uncovered";
                     auto gap = finding("violation", feature_id, expectation.interaction,
                         nullptr, command_id,
@@ -3178,6 +3173,34 @@ engine::Json administration_check(const engine::Json& payload,
                         engine::Json::array({"backend_binding", "cobra_leaf", "command_spec",
                             "feature_binding", "implementation_test", "result_validator"}));
                 }
+            }
+            for (const auto& operation_id : delivery_expectation.engine_operation_ids) {
+                const bool covered = std::any_of(
+                    delivery_expectation.command_ids.begin(),
+                    delivery_expectation.command_ids.end(),
+                    [&](const std::string& command_id) {
+                        const auto command = expected.commands.find(command_id);
+                        return command != expected.commands.end() &&
+                               command->second.at("status") != "retired" &&
+                               command->second.at("mutability") != "prohibited" &&
+                               command_binds(command->second, feature_id,
+                                             expectation.interaction) &&
+                               command_targets_operation(command->second, operation_id);
+                    });
+                if (covered) {
+                    continue;
+                }
+                design_state = profile_stale ? "stale" : "uncovered";
+                auto gap = finding("violation", feature_id, expectation.interaction,
+                    operation_id, nullptr,
+                    "expected backend operation has no exact qxctl command binding",
+                    engine::Json::array({"backend_binding", "qxctl_command"}));
+                surface_findings.push_back(gap);
+                add_remediation(gap, feature_id, expectation.interaction,
+                    {operation_id}, "read_only", "none",
+                    engine::Json::array({"backend_binding", "cobra_leaf", "command_spec",
+                        "feature_binding", "implementation_test", "json_output",
+                        "noninteractive_support", "result_validator"}));
             }
             std::string live_state = "not_evaluated";
             if (observed_state == "absent") {

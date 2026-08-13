@@ -502,13 +502,14 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
             read_json("tools/qxctl/COMMANDS.json"), "not_evaluated", nullptr,
             engine::Json::array({descriptor_v2}),
             "ssfv:symphony:ssfv-engine.administration-assurance")));
-    require(canonical_administration.at("feature_findings").size() == 1U &&
-                canonical_administration.at("summary").at("unresolved") == 1U &&
+    require(canonical_administration.at("feature_findings").empty() &&
+                canonical_administration.at("summary").at("satisfied") == 1U &&
+                canonical_administration.at("summary").at("unresolved") == 0U &&
                 canonical_administration.at("module_integrations").at(0)
-                    .at("integration_state") == "administration_unintegrated" &&
+                    .at("integration_state") == "integration_ready" &&
                 canonical_administration.at("module_integrations").at(0)
-                    .at("docking_ready") == false,
-            "canonical report-only administration debt was hidden or admitted");
+                    .at("docking_ready") == true,
+            "ratified SSFV administration mapping is not integration ready");
 }
 
 void test_administration_coverage_and_module_admission() {
@@ -616,6 +617,28 @@ void test_administration_coverage_and_module_admission() {
     require(uncovered_backend.at("surfaces").at(0).at("design_state") == "uncovered" &&
                 uncovered_backend.at("module_integrations").at(0).at("docking_ready") == false,
             "command identity without an exact backend binding satisfied coverage");
+
+    const std::string second_command_id = "qxcmd:fixture:engine.query";
+    const std::string second_operation_id = "engop:fixture:engine.query";
+    auto composed_profile = profile;
+    auto& composed_expectation = composed_profile["features"].at(1)
+        ["expectations"].at(0);
+    composed_expectation["delivery"] = "composed";
+    composed_expectation["command_ids"] =
+        engine::Json::array({command_id, second_command_id});
+    composed_expectation["engine_operation_ids"] =
+        engine::Json::array({operation_id, second_operation_id});
+    refresh_self_digest(composed_profile, "profile_digest");
+    const auto composed_expected = command_registry("expected", engine::Json::array({
+        administration_command(command_id, feature_id, "inspect", operation_id),
+        administration_command(second_command_id, feature_id, "inspect", second_operation_id),
+    }));
+    const auto composed = ssfv::handle_request(request("administration-check",
+        administration_payload(snapshot, composed_profile, composed_expected,
+            "not_evaluated", nullptr, engine::Json::array(), feature_id)));
+    require(composed.at("surfaces").at(0).at("design_state") == "satisfied" &&
+                composed.at("surfaces").at(0).at("findings").empty(),
+            "composed commands did not satisfy their distinct backend-operation union");
 
     auto retired_expected = expected;
     retired_expected["commands"].at(0)["status"] = "retired";
