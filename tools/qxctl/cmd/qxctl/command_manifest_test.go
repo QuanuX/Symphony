@@ -23,8 +23,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 144 {
-		t.Fatalf("registered command count = %d, want 144", len(manifest.Commands))
+	if len(manifest.Commands) != 148 {
+		t.Fatalf("registered command count = %d, want 148", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -46,6 +46,10 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 		"qxcmd:symphony:ssfv.check",
 		"qxcmd:symphony:ssfv.administration-check",
 		"qxcmd:symphony:knowledge.lifecycle.apply",
+		"qxcmd:symphony:knowledge.invariant.status",
+		"qxcmd:symphony:knowledge.invariant.list",
+		"qxcmd:symphony:knowledge.invariant.show",
+		"qxcmd:symphony:knowledge.invariant.check",
 		"qxcmd:symphony:ssiag.enrollment.apply",
 		"qxcmd:symphony:ssiag.supervisor.recover",
 		"qxcmd:symphony:stav.enrollment.plan",
@@ -117,8 +121,8 @@ func TestCommandRegistryBindsVectorCapabilitiesNotBindingSelection(t *testing.T)
 }
 
 func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
-	if len(reviewedBackendFeatureBindings) != 65 {
-		t.Fatalf("reviewed backend command count = %d, want 65", len(reviewedBackendFeatureBindings))
+	if len(reviewedBackendFeatureBindings) != 66 {
+		t.Fatalf("reviewed backend command count = %d, want 66", len(reviewedBackendFeatureBindings))
 	}
 	secondaryBindingCount := 0
 	for key, bindings := range reviewedBackendFeatureBindings {
@@ -127,8 +131,8 @@ func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
 		}
 		secondaryBindingCount += len(bindings)
 	}
-	if secondaryBindingCount != 67 {
-		t.Fatalf("reviewed backend binding count = %d, want 67", secondaryBindingCount)
+	if secondaryBindingCount != 68 {
+		t.Fatalf("reviewed backend binding count = %d, want 68", secondaryBindingCount)
 	}
 
 	root, err := newRootCommand()

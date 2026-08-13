@@ -7,7 +7,7 @@ Use `symphony-ssfv` through qxctl to inspect and validate SSFV truth, compare a 
 ## Procedure
 
 1. Read `knowledge/ssfv/` and identify the exact installed version and prefix.
-2. Run `qxctl ssfv inspect` and confirm all authority and mutation surfaces remain false or disabled.
+2. Run `qxctl ssfv inspect` and confirm all authority and mutation surfaces remain false or disabled; for descriptor v2, confirm the exact 65,536 JSON value/event process limit before supplying a complete administration envelope.
 3. Run `qxctl ssfv check`; preserve its semantic snapshot when later freshness or diff evidence is required.
 4. Use freshness `report` or `require` only with a prior snapshot.
 5. Use `diff` for baseline-versus-live evidence, not for feature-worthiness acceptance.

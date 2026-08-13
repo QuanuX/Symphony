@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes seventy experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes seventy-two experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -100,7 +100,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `libraries/knowledge-vector-engine-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:knowledge-vector-engine-foundation`
-- record_digest: `sha256:a9b520d54e4c82877c4529cba9d812dc2e15ff7da6375cc90615c616731ced88`
+- record_digest: `sha256:08cc7ed6934aa426fea21eb91a102f31f950c7534587843e351bacf628fb49a6`
 - notes: Architect-ratified F3 nested record for bounded deterministic engine-process protocol behavior; coverage remains partial and no broader runtime or canonical authority is implied.
 
 - feature_id: `ssfv:symphony:knowledge-vector-engine-foundation.content-addressed-evidence-snapshots`
@@ -192,6 +192,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:qxctl`
 - record_digest: `sha256:17ab959cdacbe9de37bf57af1da8410c6cf67a45982a91a964bf80472f56614d`
 - notes: Architect-ratified F1 nested record for Governed repository validation evidence; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:qxctl.invariant-assurance`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:431602ffeb5eea64aa2f148498b78b0c181ceeafac2a947293ce1059ccd0c783`
+- notes: Architect-ratified headless invariant status, list, show, and exact-validator check administration; coverage remains partial and qxctl does not own invariant semantics.
 
 - feature_id: `ssfv:symphony:qxctl.lifecycle-convergence`
 - feature_file: `tools/qxctl/FEATURES.md`
@@ -442,7 +451,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/ssfv-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:ssfv-engine`
-- record_digest: `sha256:aaa2f34e07d9cb6eecd6a146468bae4b40585c6193f6b3747f657e7e9f492e2d`
+- record_digest: `sha256:2b9314e31e80176a11e7f8e131b62a87a8f10cc236a7b000e45bb2114e59685e`
 - notes: Architect-ratified engine-first feature-administration coverage and independent-module integration assessment; coverage remains partial and docking readiness grants no docking authority.
 
 - feature_id: `ssfv:symphony:ssfv-engine.catalog-change-proposal`
@@ -652,6 +661,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:76179d193e1d14af2fbfc6f573eb4857cf0d066599360d0721fa5e88323d8e07`
 - notes: Partial-catalog record for deterministic read-only repository validation, structured evidence, and bounded root-summary assurance.
 
+- feature_id: `ssfv:symphony:symphony-validator.invariant-ownership-assurance`
+- feature_file: `tools/symphony-validator/FEATURES.md`
+- owner_contract: `tools/symphony-validator/SPEC.md`
+- source_scope: `tools/symphony-validator`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:symphony-validator`
+- record_digest: `sha256:4e1b358e46a2c625356a7c5e17b45b0008a681abe8b325902f2f80277e8beff3`
+- notes: Architect-ratified common invariant ownership and implemented-module admission assurance; coverage remains partial and the registry does not claim complete legacy coverage.
+
 - feature_id: `ssfv:symphony:symphony-validator.root-summary-assurance`
 - feature_file: `tools/symphony-validator/FEATURES.md`
 - owner_contract: `tools/symphony-validator/SPEC.md`
@@ -675,4 +693,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This seventy-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide completeness, engine-decided feature-worthiness, or canonical mutation.
+This seventy-two-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

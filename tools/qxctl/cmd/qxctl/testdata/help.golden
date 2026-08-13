@@ -45,6 +45,9 @@ Commands:
   knowledge engines doctor [--state-root PATH] [--json] Verify every bound installation
   knowledge engines bind ROLE --prefix PATH [--version VERSION] --expected-registry-digest STATE [--json] Bind an exact installation
   knowledge engines unbind ROLE --expected-registry-digest DIGEST [--json] Remove one exact binding
+  knowledge invariant status|list [--repo PATH] [--json] Project the canonical invariant registry through bounded consumer checks
+  knowledge invariant show --invariant-id ID [--repo PATH] [--json] Project one exact registered invariant
+  knowledge invariant check --prefix PATH [--version VERSION] [--repo PATH] [--json] Run the complete exact installed validator check
   knowledge reconcile compatibility [--state-root PATH] [--repo PATH] [--json] Negotiate coordinator compatibility
   knowledge reconcile begin --operation-id ID --expected-journal-digest STATE --path FILE... [--json] Begin a durable context
   knowledge reconcile status [--state-root PATH] [--repo PATH] [--json] Read durable context status

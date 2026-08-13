@@ -93,6 +93,76 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
+          "reason": "SCLV records reviewed invariant-assurance implementation changes.",
+          "reference": "knowledge/sclv/CHANGELOG.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes the invariant contracts, machine registry, validator implementation, and evidence tests.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        }
+      ],
+      "distinctions": [
+        {
+          "distinction": "Root-summary assurance projects public repository counts; invariant ownership assurance validates exact owner and regression routing and the implemented-module admission boundary.",
+          "target_feature_id": "ssfv:symphony:symphony-validator.root-summary-assurance"
+        }
+      ],
+      "evidence": [
+        "The invariant-ownership CTest covers exact identifiers, recursive omit-self digest, ordering, adapter closure, evidence-role separation, named regressions, no-follow paths, IPC process mechanics, and malformed inputs.",
+        "The feature-administration CTest proves an implemented independent module without FEATURES, SSFV routing, and profile mapping is rejected while documentation-only proposal seeds remain excluded.",
+        "The smoke suite reserves exit 26 for invariant failure and proves direct apply rejection plus read-only repository-byte preservation."
+      ],
+      "feature_id": "ssfv:symphony:symphony-validator.invariant-ownership-assurance",
+      "how": "A purpose-built C++ checker validates the incremental registry's exact constants, identifiers, digest, ordering, single ownership, referenced files and named tests, finite adapters, and IPC real-process evidence; the feature-administration checker separately enumerates implemented module roots from bounded build/source markers and rejects undeclared admission.",
+      "implementation_languages": [
+        {
+          "language": "C++26",
+          "role": "Implements deterministic read-only invariant and module-admission evidence with bounded no-follow filesystem access and stable exit behavior."
+        }
+      ],
+      "implementation_paths": [
+        "tools/symphony-validator/src/feature_administration.cpp",
+        "tools/symphony-validator/src/invariant_ownership.cpp",
+        "tools/symphony-validator/src/invariant_ownership.hpp",
+        "tools/symphony-validator/tests/feature_administration_test.cpp",
+        "tools/symphony-validator/tests/invariant_ownership_test.cpp"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "Does not execute tests merely by finding named regression definitions; the build and test campaign remains separate execution evidence.",
+        "Does not claim a complete legacy-invariant catalog, discover installed-host packages, authorize generic IPC adapters, mutate canonical knowledge, or remediate failures."
+      ],
+      "owner_contract": "tools/symphony-validator/SPEC.md",
+      "parent_feature_id": "ssfv:symphony:symphony-validator",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "qxctl supplies the stable headless query and exact installed-validator command surface.",
+          "target_feature_id": "ssfv:symphony:qxctl.invariant-assurance",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "Invariant assurance is one purpose-built rule family in the complete deterministic validator.",
+          "target_feature_id": "ssfv:symphony:symphony-validator",
+          "type": "extends"
+        }
+      ],
+      "source_scope": "tools/symphony-validator",
+      "status": "experimental",
+      "title": "Invariant ownership and module-admission assurance",
+      "what": "Verifies common cross-component invariant ownership and evidence routing and detects implemented source modules that omitted their same-change semantic and administrative declarations.",
+      "when": "Runs during every complete repository validation and through the focused qxctl knowledge invariant check surface.",
+      "where": "Executes locally inside the independently installed validator against one repository without following links or writing source.",
+      "who": "Repository maintainers, independent module developers, reviewers, qxctl callers, and agentic integration workflows.",
+      "why": "Closes the omission case where a new module supplies no descriptor or feature declaration while keeping semantic invention out of the engine, validator, qxctl, and AI."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
           "reason": "SCLV records reviewed changes to this implemented capability.",
           "reference": "knowledge/sclv/CHANGELOG.md",
           "vector": "sclv"

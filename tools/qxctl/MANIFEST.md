@@ -18,6 +18,7 @@
 - `cmd/qxctl/commands.go`
 - `cmd/qxctl/command_manifest.go`
 - `cmd/qxctl/command_specs.go`
+- `cmd/qxctl/knowledge_invariant.go`
 - `cmd/qxctl/foundation_lifecycle.go`
 - `cmd/qxctl/lifecycle.go`
 - `cmd/qxctl/lifecycle_apply.go`
@@ -27,6 +28,7 @@
 - `internal/knowledgeengine/client.go`
 - `internal/knowledgeengine/open_relative_unix.go`
 - `internal/knowledgeengine/open_relative_unsupported.go`
+- `internal/invariantregistry/registry.go`
 - `internal/knowledgebinding/registry.go`
 - `internal/knowledgebinding/state_unix.go`
 - `internal/knowledgebinding/state_unsupported.go`
@@ -78,6 +80,10 @@
 - `qxctl knowledge engines doctor [--state-root PATH] [--json]`
 - `qxctl knowledge engines bind ROLE --prefix PATH [--version VERSION] --expected-registry-digest absent|DIGEST [--state-root PATH] [--json]`
 - `qxctl knowledge engines unbind ROLE --expected-registry-digest DIGEST [--state-root PATH] [--json]`
+- `qxctl knowledge invariant status [--repo PATH] [--json]`
+- `qxctl knowledge invariant list [--repo PATH] [--json]`
+- `qxctl knowledge invariant show --invariant-id ID [--repo PATH] [--json]`
+- `qxctl knowledge invariant check --prefix PATH [--version VERSION] [--repo PATH] [--json]`
 - `qxctl knowledge reconcile compatibility [--state-root PATH] [--repo PATH] [--json]`
 - `qxctl knowledge reconcile begin --operation-id ID --expected-journal-digest absent|DIGEST --path FILE... [--state-root PATH] [--repo PATH] [--json]`
 - `qxctl knowledge reconcile status [--state-root PATH] [--repo PATH] [--json]`
@@ -158,7 +164,7 @@ qxctl is installable via standard `go build` or executable directly via `go run`
 
 Cobra owns the command tree and flag grammar. Viper is restricted to a new private instance for each command configuration: keys and environment variables are bound explicitly, and automatic environment discovery, remote providers, file discovery, watch/reload, write-back, and secret values are prohibited. Viper does not load SSIAG or STAV trust configuration. Endpoint configuration, filesystem trust, and kernel peer verification remain in their dedicated clients.
 
-Every public or hidden executable Cobra leaf also owns one attached stable `CommandSpec`. Tree construction fails closed when executable grammar is unclassified, duplicated, or disguised as a structural namespace. `commands expected` and the checked-in `COMMANDS.json` provide client-independent design evidence for engine-first evaluation; `commands manifest` binds the same projection to the exact running executable; `commands verify` strictly validates a bounded no-follow expected registry against the current tree. The four foundational lifecycle features each register five stable qxctl commands and five distinct module operations. Hidden prohibited leaves remain explicit identity evidence but cannot satisfy required coverage. These commands do not inject grammar, infer command names, decide feature worthiness, invent backend operation identities, or grant authority.
+Every public or hidden executable Cobra leaf also owns one attached stable `CommandSpec`. Tree construction fails closed when executable grammar is unclassified, duplicated, or disguised as a structural namespace. `commands expected` and the checked-in `COMMANDS.json` provide client-independent design evidence for engine-first evaluation; `commands manifest` binds the same projection to the exact running executable; `commands verify` strictly validates a bounded no-follow expected registry against the current tree. The registry contains 148 commands. The four foundational lifecycle features each register five stable qxctl commands and five distinct module operations. The four read-only invariant leaves bind `ssfv:symphony:qxctl.invariant-assurance`; `knowledge invariant check` additionally binds `ssfv:symphony:symphony-validator.invariant-ownership-assurance`. Hidden prohibited leaves remain explicit identity evidence but cannot satisfy required coverage. These commands do not inject grammar, infer command names, decide feature worthiness, invent backend operation identities, or grant authority.
 
 The SSIAG command group is a cgo-free client for a local Unix domain socket. It loads scope-exact per-TOPS endpoint trust, rejects unsafe configuration/socket metadata, and verifies the connected service through native kernel peer credentials before HTTP exchange. Provider implementations remain inside the independently installed SSIAG module.
 
@@ -176,7 +182,9 @@ Validator warning administration provides the same supported inspection and cont
 
 `knowledge/SPEC.md` governs the cross-vector process, engine-binding, authenticated-session, worktree-reconciliation, proposal, projection, install-receipt, and docking boundaries. Vector engines are independent C++ processes; qxctl remains Go and does not dynamically link them or absorb their domain logic.
 
-The shared knowledge-engine process client has six implemented vector/coordinator invocation consumers and validates six binding roles including the reconciliation coordinator. SCLV's two evidence-normalization adapters are not new roles: their explicit commands revalidate the complete SCLV receipt-v2 package, require the exact typed adapter entry point and provider-evidence protocol, invoke it through the same bounded empty-environment process boundary, and validate the complete normalized result and digest. Normalized evidence does not give qxctl truth, permission, ratification, or canonical apply authority. A separate exact-receipt path validates the independently installed nine-file Symphony Validator without adding it to the engine-binding registry. qxctl invokes complete validation or the distinct root-summary projection with an empty environment and hard deadline, then strictly validates repository/version/finding or summary identity and nested digests before downstream evaluation. Root-summary failure preserves exit 25 and never becomes a qxctl-authored projection. Filters never narrow detector execution.
+The shared knowledge-engine process client has six implemented vector/coordinator invocation consumers and validates six binding roles including the reconciliation coordinator. SCLV's two evidence-normalization adapters are not new roles: their explicit commands revalidate the complete SCLV receipt-v2 package, require the exact typed adapter entry point and provider-evidence protocol, invoke it through the same bounded empty-environment process boundary, and validate the complete normalized result and digest. Normalized evidence does not give qxctl truth, permission, ratification, or canonical apply authority. A separate exact-receipt path validates the independently installed nine-file Symphony Validator without adding it to the engine-binding registry. qxctl invokes complete validation, complete invariant assurance, or the distinct root-summary projection with an empty environment and hard deadline, then strictly validates repository/version/finding or summary identity and nested digests before downstream evaluation. Invariant `check` returns the exact complete `symphony.validation.result.v1` and preserves exit 26; root-summary failure preserves exit 25 and never becomes a qxctl-authored projection. Filters and invariant presentation never narrow detector execution.
+
+The direct `knowledge invariant status|list|show` path is a bounded, no-follow consumer of `knowledge/INVARIANT-OWNERSHIP.json`. It rejects malformed shape, identity, ordering, references, controls, or digest evidence and emits digest-bound `symphony.knowledge.invariant-query-result.v1` projections with `semantic_validity=not_asserted`. This makes invariant ownership discoverable to a headless installation but does not reimplement the owning rule or assert that producer, consumer, or real-process evidence passes. All invariant operations are local, noninteractive, read-only freezing-path commands and expose no canonical mutation or remediation authority.
 
 Validation profiles, baselines, and warning-state streams live below `<state-root>/symphony/<tops-id>/qxctl/validation/`. Their owner-only no-follow locks/files, exact compare-and-swap, bounded history, STSC whole-second UTC timestamps, synchronized temporary files, atomic replacement, and directory synchronization match the common validation contract. A baseline is noncanonical acknowledgement evidence, not warning deletion, resolution, or ratification. A lifecycle classification never rewrites the raw result; repository or validator-version mismatch fails closed.
 

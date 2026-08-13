@@ -123,6 +123,14 @@ void test_json_and_protocol() {
         Limits::max_request_bytes);
     require(nested_siblings.at("items").size() == 2U, "valid sibling objects were rejected");
     require_error([&] {
+        static_cast<void>(parse_bounded_json("{\"a\":1}", Limits::max_request_bytes, 2U));
+    }, "json.value_count_exceeded");
+    require(parse_bounded_json("{\"a\":1}", Limits::max_request_bytes, 3U).at("a") == 1,
+            "explicit bounded JSON value limit was not honored");
+    require_error([&] {
+        static_cast<void>(parse_request(request_json(now + 1000), "symphony-test", now, 1U));
+    }, "json.value_count_exceeded");
+    require_error([&] {
         static_cast<void>(parse_bounded_json("{\"value\":1.5}", Limits::max_request_bytes));
     }, "json.float_prohibited");
     require_error([&] {

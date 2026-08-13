@@ -201,6 +201,13 @@ func execute(args []string) int {
 		if errors.As(err, &validationFailure) {
 			return 1
 		}
+		var exactEvidenceExit *exactEvidenceExitError
+		if errors.As(err, &exactEvidenceExit) {
+			if exactEvidenceExit.code > 0 && exactEvidenceExit.code <= 125 {
+				return exactEvidenceExit.code
+			}
+			return 1
+		}
 		var validatorExit *validation.ValidatorExitError
 		if errors.As(err, &validatorExit) {
 			fmt.Printf("%s failed: %v\n", failurePrefix(args), err)
@@ -268,7 +275,8 @@ func newRootCommand() (*cobra.Command, error) {
 }
 
 func newKnowledgeCommand() *cobra.Command {
-	command := structural("knowledge", fmt.Errorf("knowledge subcommand is required: engines, reconcile, session, or lifecycle"))
+	command := structural("knowledge", fmt.Errorf("knowledge subcommand is required: invariant, engines, reconcile, session, or lifecycle"))
+	command.AddCommand(newKnowledgeInvariantCommand())
 	engines := structural("engines", fmt.Errorf("knowledge engines subcommand is required: list, inspect, doctor, bind, or unbind"))
 	for _, operation := range []string{"list", "inspect", "doctor", "bind", "unbind"} {
 		options := knowledgeEngineOptions{version: "0.1.0-dev"}
@@ -1282,6 +1290,12 @@ func failurePrefix(args []string) string {
 			}
 		}
 	case "knowledge":
+		if len(args) > 2 && args[1] == "invariant" {
+			switch args[2] {
+			case "status", "list", "show", "check":
+				return "knowledge invariant " + args[2]
+			}
+		}
 		if len(args) > 2 && args[1] == "engines" {
 			switch args[2] {
 			case "list", "inspect", "doctor", "bind", "unbind":

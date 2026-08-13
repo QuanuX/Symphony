@@ -61,7 +61,7 @@ Families including `REPO.*`, `MODULE.*`, `INSTALL.*`, `NAMESPACE.*`, `TROLL.*`, 
 Status reflects the deterministic outcome of a rule check.
 
 ## Exit-code Model
-`0` to `25`, mapping to passes, errors, blockers, malformed repositories, or internal failures. The exact mapping is:
+`0` to `26`, mapping to passes, errors, blockers, malformed repositories, or internal failures. The exact mapping is:
 
 - `0`: success;
 - `1`: invalid CLI usage or unknown command;
@@ -87,8 +87,9 @@ Status reflects the deterministic outcome of a rule check.
 - `21`: caller-authority regression;
 - `22`: SACV registry grammar, ownership, classification, SKVI coverage, or no-follow document failure;
 - `23`: SODV release-record grammar, ordering, lineage, publication-unit, or no-follow ledger failure;
-- `24`: feature-administration profile, SSFV registry binding, expected command registry, or cross-reference failure.
-- `25`: root-summary source validation, projection, marker integrity, or freshness failure.
+- `24`: feature-administration profile, SSFV registry binding, expected command registry, module-admission census, or cross-reference failure;
+- `25`: root-summary source validation, projection, marker integrity, or freshness failure;
+- `26`: invariant-ownership registry shape, digest, identity, ordering, owner/evidence reference, adapter closure, or IPC real-process evidence failure.
 
 ## Historical/Migration Exception Behavior
 Stale names (e.g. `legacy node execution label`, `legacy native hot-path label`, `legacy bus residency label`) are rejected except in historical contexts or rename records. SCLV `affected_surfaces` are immutable historical provenance: their bounded path shape remains validated and their current presence/index state is summarized, but absence or non-indexing is not a current warning or failure. Only explicit `skvi_references` create current file-presence and SKVI-membership obligations.
@@ -96,7 +97,7 @@ Stale names (e.g. `legacy node execution label`, `legacy native hot-path label`,
 ## Allowlist Behavior
 Allowlists must never become silent bypasses. Every allowlist entry must produce evidence in JSON and Markdown.
 
-The Architect-ratified STAV v1 JSON Schema/conformance fixtures, sixty-nine common SKV process/descriptor/receipt/binding/proposal/provider-evidence/reconciliation/session/SSFV-maintenance/generic-lifecycle/foundational-lifecycle/ownership/temporal/Maestro/validation/feature-administration/invariant schemas (sixty-five v1 and four v2), twelve SSIAG authorization/grant-planning/policy-administration schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, eighteen SSFV v1/v2 schemas, the exact `knowledge/FEATURE-ADMINISTRATION-PROFILE.json` object, and the exact common invariant-ownership registry are canonical protocol truth, not generated projections. The artifact checker may allow only their 152 exact paths and must emit `artifact.canonical_json_authorized` evidence for every encountered file with its exact vector or umbrella authority. Prefix or extension-wide JSON allowlisting is prohibited.
+The Architect-ratified STAV v1 JSON Schema/conformance fixtures, seventy common SKV process/descriptor/receipt/binding/proposal/provider-evidence/reconciliation/session/SSFV-maintenance/generic-lifecycle/foundational-lifecycle/ownership/temporal/Maestro/validation/feature-administration/invariant schemas (sixty-six v1 and four v2), twelve SSIAG authorization/grant-planning/policy-administration schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, eighteen SSFV v1/v2 schemas, the exact `knowledge/FEATURE-ADMINISTRATION-PROFILE.json` object, and the exact common invariant-ownership registry are canonical protocol truth, not generated projections. The artifact checker may allow only their 153 exact paths and must emit `artifact.canonical_json_authorized` evidence for every encountered file with its exact vector or umbrella authority. Prefix or extension-wide JSON allowlisting is prohibited.
 
 The required common knowledge surfaces include `knowledge/TIME.md`. Its contract-shape gate verifies status/authority, purpose, canonical UTC profiles, target-host durable timestamp authority, implementation/schema separation, and the no-vector promotion boundary. The validator does not synchronize clocks, interpret domain freshness, or become a temporal engine.
 
@@ -116,6 +117,16 @@ The checked-in qxctl registry must be the exact expected, unreceipted registry i
 
 This is static cross-surface assurance. The checker does not execute or discover qxctl, inspect an installed binary, validate live coverage, invent feature IDs or English names, infer which administration interactions should exist, recommend Cobra/Viper grammar, or duplicate the independent SSFV engine's semantic coverage evaluation. It makes missing or unreviewed declarative ownership visible so an independently developed module cannot silently imply administrative coverage.
 
+The checker also enumerates direct children of `modules/` without following symlinks and applies a bounded 1,024-module ceiling. `CMakeLists.txt`, `go.mod`, `Package.swift`, or a direct `src`, `cmd`, or `Sources` directory is an implementation marker. Every implemented scope must expose an exact no-follow `<module>/FEATURES.md`, route that exact scope/file pair from the SSFV registry, and have at least one routed feature represented in the profile. A direct module containing none of those markers remains documentation-only and is not promoted from a Contract Quad proposal seed by the census. Discovery, unsafe-marker, missing-file, missing-route, and missing-profile evidence use `feature_administration.module_admission`; failure retains exit `24`.
+
+### Invariant Ownership Assurance Boundary
+
+When `knowledge/INVARIANT-OWNERSHIP.json` is absent, the validator emits explicit absence evidence for repositories predating the contract. When present, it must be a no-follow regular file bounded to 4 MiB and conform to the exact v1 fixed values and closed field sets. `registry_digest` is tagged SHA-256 over recursively key-sorted compact JSON with that field omitted. Invariant and adapter identities use their exact schema grammar; invariants, adapters, operations, paths, cases, and references are sorted and unique where the canonical contract requires it.
+
+Every owner contract, producer implementation, and regression path must resolve through a bounded no-follow read. Every named Go or C++ regression must have a mechanically discoverable source definition. Producer and consumer roles may not be satisfied by the same path/case relation. Allowed adapters must resolve, each operation has one adapter owner, and every registered adapter must be referenced. An IPC invariant requires real-process evidence for each allowed adapter, and that source must visibly execute a process with standard input and captured output. These checks prove bounded identity, traceability, and declared boundary mechanics; named source presence does not prove that a test executed or passed. Applicable suites must be run by build/test orchestration. Failure returns exit `26`.
+
+The checker never executes a referenced test, loads an adapter, invokes qxctl, mutates the registry, or assumes catalog completeness. qxctl `knowledge invariant status|list|show` are bounded consumer projections with `semantic_validity: not_asserted`; `qxctl knowledge invariant check` mediates the complete validator result rather than elevating those projections into semantic proof.
+
 ### Root Summary Assurance Boundary
 
 `root-summary --repo <path>` projects one exact Markdown managed region; `--json` projects the equivalent `symphony.repository.root-summary.v1` object. Both derive registered feature and owner-scope identity from validated SSFV registry and coverage contracts, reviewed expectation counts from the valid feature-administration profile, stable command count from the valid expected qxctl registry, and source publication units only from valid completed SODV records. The JSON projection carries an omit-self tagged SHA-256 digest. Output order is deterministic.
@@ -133,7 +144,7 @@ The validator independently checks `knowledge/sacv/REGISTRY.md`. An explicitly e
 The validator independently checks `knowledge/sodv/RELEASES.md` as a bounded no-follow regular file. It recognizes immutable historical v1 and prospective provider-neutral v2 records, rejects duplicate/unsafe identities, canonical pending state, type/status drift, timestamp reversal, missing or forward subjects, duplicate completion, malformed publication units, and authorization-lineage changes to coordinate, version, tag, or revision. Failure returns exit status `23`. It never contacts Git hosts or package providers, interprets caller observation payloads, moves tags, validates remote checksums, or declares release completion; those richer proposal/read behaviors remain in the independently installed `symphony-sodv` engine.
 
 ## Refusal/Non-Remediation Behavior
-The validator may report failures and identify expected/observed conditions. It must not rewrite files or choose remedies.
+The validator may report failures and identify expected/observed conditions. It must not rewrite files or choose remedies. Direct `apply` invocation returns stable invalid-usage status `1` with `error: apply is unavailable; symphony-validator is read-only`. Root-summary and complete validation preserve repository bytes on success and failure.
 
 ## Relationship to qxctl
 The validator may be invoked directly or through exact receipt-validated qxctl mediation. `knowledge/VALIDATION.md` governs qxctl policy and baseline behavior.

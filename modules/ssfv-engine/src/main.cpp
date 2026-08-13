@@ -55,7 +55,8 @@ int main(int argc, char** argv) {
 
     try {
         const auto input = engine::read_bounded(std::cin, engine::Limits::max_request_bytes);
-        const auto request = engine::parse_request(input, ssfv::engine_id, engine::unix_time_ms());
+        const auto request = engine::parse_request(
+            input, ssfv::engine_id, engine::unix_time_ms(), ssfv::max_process_json_values);
         try {
             auto result = ssfv::handle_request(request);
             std::cout << engine::serialize_response(engine::success_response(

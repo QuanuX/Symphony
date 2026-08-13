@@ -1,6 +1,7 @@
 #pragma once
 
 #include "symphony/knowledge/engine/json.hpp"
+#include "symphony/knowledge/engine/limits.hpp"
 
 #include <cstdint>
 #include <istream>
@@ -25,11 +26,15 @@ struct Request final {
 
 [[nodiscard]] std::int64_t unix_time_ms();
 [[nodiscard]] std::string read_bounded(std::istream& input, std::size_t max_bytes);
-[[nodiscard]] Json parse_bounded_json(const std::string& input, std::size_t max_bytes);
+[[nodiscard]] Json parse_bounded_json(
+    const std::string& input,
+    std::size_t max_bytes,
+    std::size_t max_json_values = Limits::max_json_values);
 [[nodiscard]] Request parse_request(
     const std::string& input,
     const std::string& expected_engine,
-    std::int64_t now_unix_ms);
+    std::int64_t now_unix_ms,
+    std::size_t max_json_values = Limits::max_json_values);
 [[nodiscard]] Json success_response(
     const Request& request,
     const std::string& engine_id,

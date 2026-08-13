@@ -51,6 +51,7 @@ add_executable(symphony-validator
     src/validator_build.cpp
     src/projector.cpp
     src/feature_administration.cpp
+    src/invariant_ownership.cpp
     src/root_summary.cpp
 )
 
@@ -121,6 +122,21 @@ add_executable(root-summary-tests
     src/evidence.cpp
 )
 
+add_executable(invariant-ownership-tests
+    tests/invariant_ownership_test.cpp
+    src/invariant_ownership.cpp
+    src/evidence.cpp
+)
+
+target_include_directories(invariant-ownership-tests PRIVATE src)
+target_link_libraries(invariant-ownership-tests PRIVATE Symphony::KnowledgeVectorEngine)
+
+set_target_properties(invariant-ownership-tests PROPERTIES
+  CXX_STANDARD 26
+  CXX_STANDARD_REQUIRED ON
+  CXX_EXTENSIONS OFF
+)
+
 target_include_directories(root-summary-tests PRIVATE src)
 target_link_libraries(root-summary-tests PRIVATE Symphony::KnowledgeVectorEngine)
 
@@ -167,6 +183,7 @@ if(BUILD_TESTING)
   add_test(NAME sodv-release-tests COMMAND sodv-release-tests ${SYMPHONY_REPOSITORY_ROOT})
   add_test(NAME feature-administration-tests COMMAND feature-administration-tests ${SYMPHONY_REPOSITORY_ROOT})
   add_test(NAME root-summary-tests COMMAND root-summary-tests ${SYMPHONY_REPOSITORY_ROOT})
+  add_test(NAME invariant-ownership-tests COMMAND invariant-ownership-tests ${SYMPHONY_REPOSITORY_ROOT})
 endif()
 
 set(SYMPHONY_VALIDATOR_LIBEXEC_DIR "${CMAKE_INSTALL_LIBEXECDIR}/symphony/symphony-validator/0.1.0-dev")

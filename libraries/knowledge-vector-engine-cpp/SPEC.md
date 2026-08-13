@@ -11,7 +11,7 @@ Implemented development foundation, version `0.1.0-dev`. It is not a published m
 | request | 1 MiB |
 | response | 4 MiB |
 | JSON depth | 64 |
-| JSON values/events | 16,384 |
+| JSON values/events | 16,384 by default |
 | JSON string or key | 65,536 bytes |
 | request/correlation/engine token | 128 bytes |
 | operation token | 64 bytes |
@@ -20,7 +20,7 @@ Implemented development foundation, version `0.1.0-dev`. It is not a published m
 | one snapshot file | 4 MiB |
 | deadline window | 300,000 ms |
 
-JSON objects reject duplicate names. Process JSON rejects floating-point values, integers outside the interoperable range `[-9007199254740991, 9007199254740991]`, invalid UTF-8, unknown envelope fields, trailing bytes, excess nesting/count/size, unsupported protocol versions, expired or excessively distant deadlines, and target-engine mismatches.
+JSON objects reject duplicate names. Process JSON rejects floating-point values, integers outside the interoperable range `[-9007199254740991, 9007199254740991]`, invalid UTF-8, unknown envelope fields, trailing bytes, excess nesting/count/size, unsupported protocol versions, expired or excessively distant deadlines, and target-engine mismatches. The parsing API accepts an explicit finite value-count bound so an engine whose closed protocol legitimately carries a larger aggregate document can advertise and enforce its own limit without widening the shared default or another engine. The 1 MiB request, depth, string, integer, duplicate-key, and deadline bounds remain unchanged.
 
 Snapshot reads check the request deadline before and between file-read chunks. The future qxctl process client must also enforce that deadline on the child lifetime; the shared library does not claim that a cooperative check can cancel a blocked kernel/filesystem call.
 

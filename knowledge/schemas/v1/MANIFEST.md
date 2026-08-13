@@ -12,6 +12,7 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 - `qxctl-command-registry.schema.json`: canonical expected or exact observed qxctl executable-leaf identity, grammar, feature, backend, machine-output, and trust evidence.
 - `feature-administration-profile.schema.json`: registered-feature interaction requirements, explicit dispositions, finite inheritance, and bootstrap forward-gate truth.
 - `invariant-ownership-registry.schema.json`: lowest-authoritative-layer invariant IDs, owner contracts/components, producer and consumer regressions, real-process IPC evidence, and finite allowed versioned adapters.
+- `invariant-query-result.schema.json`: bounded digest-bearing qxctl status, list, and show projections over the canonical invariant-ownership registry, with semantic validity explicitly reserved for the complete validator check.
 - `administration-coverage-input.schema.json`: bounded repository-independent SSFV administration-check input with optional observed qxctl evidence.
 - `administration-coverage-result.schema.json`: digest-bound design, live, authorization, uncovered-surface, remediation, and module-integration evidence.
 - `install-receipt.schema.json`: versioned, prefix-relative package ownership and docking state.

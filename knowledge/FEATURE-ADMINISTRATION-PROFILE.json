@@ -9,9 +9,7 @@
             "qxcmd:symphony:module.inspect"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/FEATURES.md",
@@ -27,9 +25,7 @@
             "qxcmd:symphony:module.check"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/SPEC.md",
@@ -53,9 +49,7 @@
             "qxcmd:symphony:knowledge.session.transition"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/FEATURES.md",
@@ -71,9 +65,7 @@
             "qxcmd:symphony:knowledge.session.status"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/FEATURES.md",
@@ -89,9 +81,7 @@
             "qxcmd:symphony:knowledge.session.recover"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/FEATURES.md",
@@ -112,9 +102,7 @@
             "qxcmd:symphony:knowledge.lifecycle.apply"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/FEATURES.md",
@@ -130,9 +118,7 @@
             "qxcmd:symphony:knowledge.lifecycle.apply-status"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/FEATURES.md",
@@ -148,9 +134,7 @@
             "qxcmd:symphony:knowledge.lifecycle.apply-recover"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/FEATURES.md",
@@ -171,9 +155,7 @@
             "qxcmd:symphony:knowledge.lifecycle.observe"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/FEATURES.md",
@@ -189,9 +171,7 @@
             "qxcmd:symphony:knowledge.lifecycle.boot"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/FEATURES.md",
@@ -208,9 +188,7 @@
             "qxcmd:symphony:knowledge.lifecycle.status"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/FEATURES.md",
@@ -233,9 +211,7 @@
             "qxcmd:symphony:knowledge.reconcile.close"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/FEATURES.md",
@@ -252,9 +228,7 @@
             "qxcmd:symphony:knowledge.reconcile.status"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/FEATURES.md",
@@ -270,9 +244,7 @@
             "qxcmd:symphony:knowledge.reconcile.recover"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/FEATURES.md",
@@ -295,9 +267,7 @@
             "qxcmd:symphony:knowledge.session.features.close"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/FEATURES.md",
@@ -313,9 +283,7 @@
             "qxcmd:symphony:knowledge.session.features.status"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/FEATURES.md",
@@ -331,9 +299,7 @@
             "qxcmd:symphony:knowledge.session.features.recover"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/knowledge-session-coordinator/FEATURES.md",
@@ -350,13 +316,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "runtime_only",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "libraries/knowledge-vector-engine-cpp/FEATURES.md"
@@ -372,13 +334,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "runtime_only",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "libraries/knowledge-vector-engine-cpp/FEATURES.md"
@@ -394,13 +352,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "runtime_only",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "libraries/knowledge-vector-engine-cpp/FEATURES.md"
@@ -416,13 +370,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "runtime_only",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "knowledge/TIME.md",
@@ -443,9 +393,7 @@
             "qxcmd:symphony:maestro.inspect"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/maestro/FEATURES.md",
@@ -461,9 +409,7 @@
             "qxcmd:symphony:knowledge.lifecycle.apply"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/maestro/FEATURES.md",
@@ -479,9 +425,7 @@
             "qxcmd:symphony:maestro.status"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/maestro/FEATURES.md",
@@ -497,9 +441,7 @@
             "qxcmd:symphony:maestro.recover"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/maestro/FEATURES.md",
@@ -520,9 +462,7 @@
             "qxcmd:symphony:maestro.inventory"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/maestro/FEATURES.md",
@@ -544,9 +484,7 @@
             "qxcmd:symphony:modules"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "FEATURES.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -567,9 +505,7 @@
             "qxcmd:symphony:modules"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -587,9 +523,7 @@
             "qxcmd:symphony:modules.metadata"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -607,9 +541,7 @@
             "qxcmd:symphony:knowledge.reconcile.close"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -629,9 +561,7 @@
             "qxcmd:symphony:status"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -647,9 +577,7 @@
             "qxcmd:symphony:knowledge.reconcile.recover"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -668,9 +596,7 @@
             "qxcmd:symphony:modules.check"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -697,9 +623,7 @@
             "qxcmd:symphony:knowledge.session.transition"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -716,9 +640,7 @@
             "qxcmd:symphony:knowledge.session.status"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -735,9 +657,7 @@
             "qxcmd:symphony:knowledge.session.recover"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -759,9 +679,7 @@
             "qxcmd:symphony:commands.manifest"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -777,9 +695,7 @@
             "qxcmd:symphony:commands.verify"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -801,9 +717,7 @@
             "qxcmd:symphony:knowledge.engines.unbind"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -819,9 +733,7 @@
             "qxcmd:symphony:knowledge.engines.list"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -837,9 +749,7 @@
             "qxcmd:symphony:knowledge.engines.inspect"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -855,9 +765,7 @@
             "qxcmd:symphony:knowledge.engines.doctor"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -887,9 +795,7 @@
             "qxcmd:symphony:validate.warning.unmute"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -906,9 +812,7 @@
             "qxcmd:symphony:validate.warning.list"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -926,9 +830,7 @@
             "qxcmd:symphony:validate.warning.show"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -944,9 +846,7 @@
             "qxcmd:symphony:validate.warning.status"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -963,9 +863,7 @@
             "qxcmd:symphony:validate.scan"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -983,12 +881,83 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:knowledge.invariant.list"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/INVARIANTS.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The exact read-only qxctl list route projects every registered invariant summary for headless callers without asserting semantic validity.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.invariant.show"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/INVARIANTS.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The exact read-only qxctl show route exposes one stable invariant and its owner and evidence references.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.invariant.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/INVARIANTS.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The exact read-only qxctl status route reports registry identity, incremental scope, forward gate, and bounded counts.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.invariant.check"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/INVARIANTS.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The exact receipt-backed qxctl route runs the complete validator and preserves invariant-assurance exit status 26.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:qxctl.invariant-assurance"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:knowledge.lifecycle.apply"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1005,9 +974,7 @@
             "qxcmd:symphony:knowledge.lifecycle.profile.set"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1023,9 +990,7 @@
             "qxcmd:symphony:knowledge.lifecycle.profile.list"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1042,9 +1007,7 @@
             "qxcmd:symphony:knowledge.lifecycle.profile.show"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1063,9 +1026,7 @@
             "qxcmd:symphony:knowledge.lifecycle.ownership.release"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1084,9 +1045,7 @@
             "qxcmd:symphony:knowledge.lifecycle.status"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1103,9 +1062,7 @@
             "qxcmd:symphony:knowledge.lifecycle.recover"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1132,9 +1089,7 @@
             "qxcmd:symphony:knowledge.lifecycle.host.update"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1150,9 +1105,7 @@
             "qxcmd:symphony:knowledge.lifecycle.host.status"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1173,9 +1126,7 @@
             "qxcmd:symphony:maestro.inventory"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1191,9 +1142,7 @@
             "qxcmd:symphony:maestro.inspect"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1209,9 +1158,7 @@
             "qxcmd:symphony:maestro.status"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1227,9 +1174,7 @@
             "qxcmd:symphony:maestro.recover"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1250,9 +1195,7 @@
             "qxcmd:symphony:ssiag.policy.apply"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1268,9 +1211,7 @@
             "qxcmd:symphony:ssiag.providers"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1287,9 +1228,7 @@
             "qxcmd:symphony:ssiag.policy.propose"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1306,9 +1245,7 @@
             "qxcmd:symphony:ssiag.status"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1324,9 +1261,7 @@
             "qxcmd:symphony:ssiag.policy.recover"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1342,9 +1277,7 @@
             "qxcmd:symphony:ssiag.doctor"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1361,13 +1294,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "none",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "knowledge/stav/SPEC.md",
@@ -1384,9 +1313,7 @@
             "qxcmd:symphony:stav.status"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1403,9 +1330,7 @@
             "qxcmd:symphony:stav.verify"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1426,9 +1351,7 @@
             "qxcmd:symphony:sacv.inspect"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1449,9 +1372,7 @@
             "qxcmd:symphony:sacv.check"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1472,9 +1393,7 @@
             "qxcmd:symphony:sacv.project"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1491,13 +1410,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "none",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "knowledge/ssfv/REGISTRY.md",
@@ -1513,9 +1428,7 @@
             "qxcmd:symphony:sacv.propose"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1536,9 +1449,7 @@
             "qxcmd:symphony:sacv.diff"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1559,9 +1470,7 @@
             "qxcmd:symphony:sclv.inspect"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1582,9 +1491,7 @@
             "qxcmd:symphony:sclv.check"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1605,9 +1512,7 @@
             "qxcmd:symphony:sclv.project"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1624,13 +1529,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "none",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "knowledge/ssfv/REGISTRY.md",
@@ -1646,9 +1547,7 @@
             "qxcmd:symphony:sclv.propose"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1669,9 +1568,7 @@
             "qxcmd:symphony:sclv.recover"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1693,9 +1590,7 @@
             "qxcmd:symphony:sclv.evidence.local-git"
           ],
           "delivery": "composed",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1716,9 +1611,7 @@
             "qxcmd:symphony:skvi.inspect"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1735,13 +1628,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "none",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "knowledge/ssfv/REGISTRY.md",
@@ -1757,9 +1646,7 @@
             "qxcmd:symphony:skvi.propose"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1780,9 +1667,7 @@
             "qxcmd:symphony:skvi.project"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1803,9 +1688,7 @@
             "qxcmd:symphony:skvi.check"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1826,9 +1709,7 @@
             "qxcmd:symphony:sodv.inspect"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1845,13 +1726,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "none",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "knowledge/ssfv/REGISTRY.md",
@@ -1867,9 +1744,7 @@
             "qxcmd:symphony:sodv.propose"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1890,9 +1765,7 @@
             "qxcmd:symphony:sodv.recover"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1913,9 +1786,7 @@
             "qxcmd:symphony:sodv.verify"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1936,9 +1807,7 @@
             "qxcmd:symphony:sodv.check"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1959,9 +1828,7 @@
             "qxcmd:symphony:sodv.project"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -2024,13 +1891,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "none",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "knowledge/ssfv/REGISTRY.md",
@@ -2138,9 +2001,7 @@
             "qxcmd:symphony:ssiag.status"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/secure-identity-access-governance/FEATURES.md",
@@ -2156,9 +2017,7 @@
             "qxcmd:symphony:ssiag.doctor"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/secure-identity-access-governance/FEATURES.md",
@@ -2175,13 +2034,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "system_orchestrated",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "knowledge/ssiag/SPEC.md",
@@ -2198,13 +2053,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "runtime_only",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/secure-identity-access-governance/FEATURES.md"
@@ -2235,9 +2086,9 @@
             "engop:symphony:ssiag.supervisor.plan",
             "engop:symphony:ssiag.supervisor.recover"
           ],
-      "evidence": [
-        "knowledge/FEATURE-ADMINISTRATION.md",
-        "knowledge/FOUNDATIONAL-LIFECYCLE.md",
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/FOUNDATIONAL-LIFECYCLE.md",
             "modules/secure-identity-access-governance/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
@@ -2256,9 +2107,7 @@
             "qxcmd:symphony:ssiag.policy.apply"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/secure-identity-access-governance/FEATURES.md",
@@ -2274,9 +2123,7 @@
             "qxcmd:symphony:ssiag.policy.propose"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/secure-identity-access-governance/FEATURES.md",
@@ -2292,9 +2139,7 @@
             "qxcmd:symphony:ssiag.policy.status"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/secure-identity-access-governance/FEATURES.md",
@@ -2310,9 +2155,7 @@
             "qxcmd:symphony:ssiag.policy.recover"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/secure-identity-access-governance/FEATURES.md",
@@ -2333,9 +2176,7 @@
             "qxcmd:symphony:ssiag.providers"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/secure-identity-access-governance/FEATURES.md",
@@ -2352,13 +2193,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "system_orchestrated",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "knowledge/stav/SPEC.md",
@@ -2390,9 +2227,9 @@
             "engop:symphony:ssiag.enrollment.plan",
             "engop:symphony:ssiag.enrollment.recover"
           ],
-      "evidence": [
-        "knowledge/FEATURE-ADMINISTRATION.md",
-        "knowledge/FOUNDATIONAL-LIFECYCLE.md",
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/FOUNDATIONAL-LIFECYCLE.md",
             "modules/secure-identity-access-governance/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
@@ -2407,13 +2244,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "none",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/ssiag-provider-macos-keychain/FEATURES.md"
@@ -2428,9 +2261,7 @@
             "qxcmd:symphony:ssiag.providers"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/ssiag-provider-macos-keychain/FEATURES.md",
@@ -2451,9 +2282,7 @@
             "qxcmd:symphony:stav.status"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/stav-append-authority/FEATURES.md",
@@ -2469,9 +2298,7 @@
             "qxcmd:symphony:stav.doctor"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/stav-append-authority/FEATURES.md",
@@ -2492,9 +2319,7 @@
             "qxcmd:symphony:stav.query"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/stav-append-authority/FEATURES.md",
@@ -2511,13 +2336,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "system_orchestrated",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/stav-append-authority/FEATURES.md"
@@ -2532,9 +2353,7 @@
             "qxcmd:symphony:stav.verify"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/stav-append-authority/FEATURES.md",
@@ -2566,9 +2385,9 @@
             "engop:symphony:stav.supervisor.plan",
             "engop:symphony:stav.supervisor.recover"
           ],
-      "evidence": [
-        "knowledge/FEATURE-ADMINISTRATION.md",
-        "knowledge/FOUNDATIONAL-LIFECYCLE.md",
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/FOUNDATIONAL-LIFECYCLE.md",
             "modules/stav-append-authority/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
@@ -2583,13 +2402,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "none",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "knowledge/stav/SPEC.md",
@@ -2601,13 +2416,9 @@
           "requirement": "prohibited"
         },
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "system_orchestrated",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "knowledge/stav/SPEC.md",
@@ -2639,9 +2450,9 @@
             "engop:symphony:stav.enrollment.plan",
             "engop:symphony:stav.enrollment.recover"
           ],
-      "evidence": [
-        "knowledge/FEATURE-ADMINISTRATION.md",
-        "knowledge/FOUNDATIONAL-LIFECYCLE.md",
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/FOUNDATIONAL-LIFECYCLE.md",
             "modules/stav-append-authority/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
@@ -2656,13 +2467,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "runtime_only",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "libraries/stav-protocol-go/FEATURES.md"
@@ -2678,13 +2485,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "runtime_only",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "libraries/stav-protocol-go/FEATURES.md"
@@ -2700,13 +2503,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "runtime_only",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "libraries/stav-protocol-go/FEATURES.md"
@@ -2722,13 +2521,9 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "none",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "tools/symphony-validator/FEATURES.md"
@@ -2743,9 +2538,7 @@
             "qxcmd:symphony:validate.scan"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "tools/qxctl/COMMANDS.json",
@@ -2762,13 +2555,46 @@
     {
       "expectations": [
         {
-          "command_ids": [
-
-          ],
+          "command_ids": [],
           "delivery": "none",
-          "engine_operation_ids": [
-
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/INVARIANTS.md",
+            "tools/symphony-validator/FEATURES.md",
+            "tools/symphony-validator/SPEC.md"
           ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Invariant ownership assurance and module admission are deterministic read-only checks and cannot alter source, registries, or evidence.",
+          "requirement": "prohibited"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.invariant.check"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/INVARIANTS.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/symphony-validator/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The focused qxctl command invokes the complete exact validator whose invariant checker emits stable evidence and exit 26.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:symphony-validator.invariant-ownership-assurance"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [],
+          "delivery": "none",
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "tools/symphony-validator/FEATURES.md",
@@ -2784,9 +2610,7 @@
             "qxcmd:symphony:validate.root-summary"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [
-
-          ],
+          "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "tools/qxctl/COMMANDS.json",
@@ -2803,9 +2627,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:b04e003ddf26185a794c2aee72ea5e277006477f9142800996d2b670070be9ff",
+  "profile_digest": "sha256:6f667226448888950b8f8dd79fcfd2762b79ff19fd9658a43c91eb6441c60e35",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 70,
-  "ssfv_registry_digest": "sha256:5c1dfad607ee5df102942ea2c04b2ed3f54bef90217f33cca2875f89b687a2c5"
+  "registered_feature_count": 72,
+  "ssfv_registry_digest": "sha256:819b7cd6bb1ee14b04c51ced8783a0ac66c9226376694d7700ce6e61e5d67b1a"
 }

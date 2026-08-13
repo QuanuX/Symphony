@@ -41,7 +41,10 @@ cmake --build build
 ```bash
 ./build/symphony-validator check --repo /path/to/symphony
 ./build/symphony-validator check --repo /path/to/symphony --json
+./build/symphony-validator root-summary --repo /path/to/symphony --json
 ```
+
+The complete check includes implemented-module admission and invariant-ownership assurance. A discovered regression name is traceability evidence, not proof that its suite ran; use the build and test commands below to execute the applicable validator tests. The executable is deliberately read-only: `symphony-validator apply` returns stable invalid-usage status and no validation or projection command writes repository content.
 
 ## Smoke Tests
 

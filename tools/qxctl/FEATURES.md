@@ -408,6 +408,70 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
+          "reason": "SCLV records reviewed invariant-administration and assurance changes.",
+          "reference": "knowledge/sclv/CHANGELOG.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes the common invariant contracts, query schema, qxctl implementation, and validator evidence.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        }
+      ],
+      "distinctions": [
+        {
+          "distinction": "The command registry records executable qxctl leaves; invariant assurance exposes the separately owned rule-to-owner and regression registry without inventing commands or invariants.",
+          "target_feature_id": "ssfv:symphony:qxctl.command-registry"
+        }
+      ],
+      "evidence": [
+        "tools/qxctl/internal/invariantregistry/registry_test.go verifies bounded no-follow loading, exact shape and digest checks, ordering, hostile-text refusal, and digest-bearing status/list/show projections.",
+        "tools/qxctl/cmd/qxctl/knowledge_invariant_test.go verifies four stable read-only noninteractive commands and preservation of the installed validator's exact invariant-assurance exit status.",
+        "knowledge/INVARIANTS.md keeps semantic ownership in the common contract while qxctl remains a replaceable consumer and administrative projection."
+      ],
+      "feature_id": "ssfv:symphony:qxctl.invariant-assurance",
+      "how": "qxctl performs a bounded consumer-side identity, shape, ordering, reference, and omit-self digest check for status/list/show, marks semantic validity as not asserted, and delegates complete assurance to one exact receipt-validated Symphony Validator invocation.",
+      "implementation_languages": [
+        {
+          "language": "Go",
+          "role": "Implements caller-neutral Cobra grammar, bounded no-follow registry consumption, deterministic digest-bearing projections, and exact installed-validator mediation."
+        }
+      ],
+      "implementation_paths": [
+        "tools/qxctl/cmd/qxctl/knowledge_invariant.go",
+        "tools/qxctl/cmd/qxctl/knowledge_invariant_test.go",
+        "tools/qxctl/internal/invariantregistry/registry.go",
+        "tools/qxctl/internal/invariantregistry/registry_test.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "Does not create, name, modify, ratify, execute, or repair an invariant or its regression suite.",
+        "Does not claim a partial query proves semantic validity, complete legacy coverage, installed-host inventory completeness, or authorization."
+      ],
+      "owner_contract": "tools/qxctl/MANIFEST.md",
+      "parent_feature_id": "ssfv:symphony:qxctl",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "The validator produces complete repository assurance while qxctl provides stable headless inspection and exact installed invocation.",
+          "target_feature_id": "ssfv:symphony:symphony-validator.invariant-ownership-assurance",
+          "type": "composes_with"
+        }
+      ],
+      "source_scope": "tools/qxctl",
+      "status": "experimental",
+      "title": "Headless invariant ownership administration",
+      "what": "Provides stable status, list, show, and complete-check commands for the common incremental invariant ownership registry with deterministic structured output for headless callers.",
+      "when": "Runs only on explicit local qxctl invocation during development, review, integration admission, or diagnostics.",
+      "where": "Executes on an administrative node against one selected repository and one exact independently installed validator, outside hot and warm paths.",
+      "who": "Target-host administrators, independent module developers, automated release gates, and agentic callers using qxctl as the administrative spine.",
+      "why": "Makes lowest-owner obligations and missing evidence directly inspectable without requiring AI, guessing semantic names, or turning qxctl into the rule authority."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
           "reason": "Maestro owns exact authenticated receptor-presence outcomes.",
           "reference": "modules/maestro/SPEC.md",
           "vector": "maestro"

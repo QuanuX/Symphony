@@ -84,7 +84,10 @@ std::string read_bounded(std::istream& input, std::size_t max_bytes) {
     return contents;
 }
 
-Json parse_bounded_json(const std::string& input, std::size_t max_bytes) {
+Json parse_bounded_json(
+    const std::string& input,
+    std::size_t max_bytes,
+    const std::size_t max_json_values) {
     if (input.empty()) {
         throw Error("input.empty", "request is empty", 2);
     }
@@ -103,7 +106,7 @@ Json parse_bounded_json(const std::string& input, std::size_t max_bytes) {
             event == Json::parse_event_t::key ||
             event == Json::parse_event_t::value) {
             ++value_count;
-            if (value_count > Limits::max_json_values) {
+            if (value_count > max_json_values) {
                 throw Error("json.value_count_exceeded", "JSON value-count limit exceeded", 2);
             }
         }
@@ -158,8 +161,10 @@ Json parse_bounded_json(const std::string& input, std::size_t max_bytes) {
 Request parse_request(
     const std::string& input,
     const std::string& expected_engine,
-    std::int64_t now_unix_ms) {
-    const auto document = parse_bounded_json(input, Limits::max_request_bytes);
+    std::int64_t now_unix_ms,
+    const std::size_t max_json_values) {
+    const auto document = parse_bounded_json(
+        input, Limits::max_request_bytes, max_json_values);
     if (!document.is_object()) {
         throw Error("request.not_object", "request must be a JSON object", 2);
     }

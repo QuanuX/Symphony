@@ -28,13 +28,19 @@ A source-only helper test does not satisfy the real-process requirement. An IPC 
 
 The v1 registry is an explicitly incremental inventory, not a claim that every legacy invariant has already been enumerated. Its forward gate is `enforce_new_or_modified`: any new cross-component invariant, or material change to a registered invariant, MUST add or update its record and evidence in the same reviewed change. Advancing to a complete-catalog claim requires a separate bounded audit of legacy contracts and implementations.
 
+The deterministic C++ validator enforces the registry's closed shape, stable identifiers, recursive omit-self digest, ordering, single ownership, referenced paths and named regression definitions, evidence-role separation, finite adapter closure, and mandatory per-adapter real-process evidence for IPC records. It exits `26` when this rule family fails. Discovering a named test proves traceability, not execution; the applicable build and test campaign remains the execution evidence.
+
+`qxctl knowledge invariant status|list|show` provides digest-bearing read-only projections under `symphony.knowledge.invariant-query-result.v1`. These consumer checks explicitly report `semantic_validity: not_asserted`. `qxctl knowledge invariant check` invokes one exact receipt-validated Symphony Validator and preserves its complete `symphony.validation.result.v1` evidence and exit status. Neither surface allocates identities or writes the registry.
+
 ## Module Admission and Uncovered Administration
 
 A new independently developed module cannot opt out by forgetting qxctl. Its admission change MUST declare a stable module/owner-scope feature record and review each administrator-facing interaction under `knowledge/FEATURE-ADMINISTRATION.md`. Each interaction must bind stable `qxcmd:` and, where applicable, `engop:` identities, or carry an explicit evidence-backed `runtime_only`, `system_orchestrated`, `prohibited`, or `not_applicable` disposition. Omission is an uncovered surface, not an exemption.
 
 The module admission check is engine-first and headless. The SSFV engine consumes the canonical feature registry, administration profile, qxctl command registry, and backend descriptors and reports unresolved or uncovered surfaces. qxctl may later present, scaffold, or recommend Cobra/Viper commands, but it is not required for detection and cannot silently close coverage. Until the module supplies a reviewed mapping or disposition, integration remains incomplete.
 
-This closes the independent-developer edge case only when module admission itself is enforced. Repository review and validation MUST therefore treat a new installable module, adapter entry point, backend operation, or administrator-facing interaction without the same-change registry evidence as a boundary failure.
+Repository validation closes the source-level independent-developer omission case by enumerating bounded direct children of `modules/` with actual build or source markers. Each implemented module requires its exact `FEATURES.md`, SSFV source-scope route, and feature-administration profile mapping in the same change. Contract-Quad-only proposal seeds remain explicit documentation-only exclusions. The SSFV engine stays repository-independent and evaluates only supplied bounded evidence; it does not infer feature-worthiness from ambient files.
+
+Installed-host completeness is a separate future gate. A caller-supplied engine descriptor is not proof that every installed package was supplied or that it matches an immutable receipt. A future versioned inventory contract must bind a declared-complete package/receipt inventory to every executable descriptor and non-engine administration declaration before installed admission can claim completeness. Until then, installed-host assessment remains explicit and partial rather than silently complete.
 
 ## Foundational Lifecycle Invariants
 
@@ -53,6 +59,8 @@ The foundational SSIAG/STAV lane applies the registry to the following rule fami
 ## Versioned Adapters
 
 An allowed adapter record names an exact entry-point ID, protocol major, owner contract, implementation path, and version-selection policy. Version permission is never “latest.” The current foundational adapters are allowed only when an immutable receipt-v2 package proves the exact executable and entry point and capability compatibility accepts the command protocol. Adding a component, entry point, protocol major, or adapter authority requires a reviewed registry and owner-contract change.
+
+Registry v1 intentionally admits only the two SSIAG/STAV foundational-lifecycle adapters. Other process and socket boundaries—including vector engines, Maestro, the coordinator, validator results, SSIAG authorization, and STAV local requests—must not be mislabeled as non-IPC or forced through those adapters. They require a separately reviewed generic-adapter protocol version plus receipt-backed real-process evidence.
 
 ## AI and Agent Use
 

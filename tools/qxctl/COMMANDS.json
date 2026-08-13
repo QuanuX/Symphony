@@ -351,6 +351,134 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:knowledge.invariant.check",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl knowledge invariant check [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.invariant-assurance",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:symphony-validator.invariant-ownership-assurance",
+          "interaction": "validate"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.validation.result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.validation.result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:knowledge.invariant.list",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl knowledge invariant list [--json] [--repo VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.invariant-assurance",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.knowledge.invariant-query-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.knowledge.invariant-query-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:knowledge.invariant.show",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl knowledge invariant show [--invariant-id VALUE] [--json] [--repo VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.invariant-assurance",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.knowledge.invariant-query-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.knowledge.invariant-query-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:knowledge.invariant.status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl knowledge invariant status [--json] [--repo VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.invariant-assurance",
+          "interaction": "query"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.knowledge.invariant-query-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.knowledge.invariant-query-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:knowledge.lifecycle.apply",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -4389,5 +4517,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:560b023fb5656a2619815e84ee770b829ce076f8ce15931baaa63c56f7f87e3c"
+  "registry_digest": "sha256:a57dc4eaf40b1684bc0256b3a3e3d488317f88dc865be4a92bf6f0bf9233d05d"
 }

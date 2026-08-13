@@ -332,6 +332,47 @@ void test_surface_closure(const fs::path& repository) {
         "partial feature-administration surface was accepted");
 }
 
+void test_module_admission(const fs::path& repository) {
+    {
+        TemporaryDirectory temporary;
+        copy_inputs(repository, temporary.path());
+        write_file(temporary.path() / "modules/independent-engine/CMakeLists.txt",
+            "cmake_minimum_required(VERSION 3.25)\n");
+        const auto result = check_feature_administration(temporary.path().string());
+        require(!result.success && contains(result,
+            "feature_administration.module_admission scope=modules/independent-engine reason=features_missing") &&
+            contains(result,
+            "feature_administration.module_admission scope=modules/independent-engine reason=registry_route_missing") &&
+            contains(result,
+            "feature_administration.module_admission scope=modules/independent-engine reason=profile_mapping_missing"),
+            "implemented independent module without feature administration passed");
+    }
+    {
+        TemporaryDirectory temporary;
+        copy_inputs(repository, temporary.path());
+        for (const auto* document : {"INTENT.md", "MANIFEST.md", "SPEC.md", "SKILL.md"}) {
+            write_file(temporary.path() / "modules/documentation-seed" / document,
+                "# Proposal-only Contract Quad seed\n");
+        }
+        const auto result = check_feature_administration(temporary.path().string());
+        require(result.success && contains(result,
+            "feature_administration.module_admission implemented=0 documentation_only=1"),
+            "documentation-only proposal seed was treated as implementation:" + messages(result));
+    }
+    {
+        TemporaryDirectory temporary;
+        copy_inputs(repository, temporary.path());
+        write_file(temporary.path() / "outside-go.mod", "module example.invalid\n");
+        fs::create_directories(temporary.path() / "modules/symlink-module");
+        fs::create_symlink(temporary.path() / "outside-go.mod",
+            temporary.path() / "modules/symlink-module/go.mod");
+        const auto result = check_feature_administration(temporary.path().string());
+        require(!result.success && contains(result,
+            "feature_administration.module_admission scope=modules/symlink-module marker=modules/symlink-module/go.mod reason=unsafe_implementation_marker"),
+            "symlinked implementation marker bypassed module admission");
+    }
+}
+
 }
 
 int main(int argc, char** argv) {
@@ -346,6 +387,7 @@ int main(int argc, char** argv) {
         test_forward_gate_and_command_reference(repository);
         test_no_follow(repository);
         test_surface_closure(repository);
+        test_module_admission(repository);
         std::cout << "feature administration validator tests passed\n";
         return 0;
     } catch (const std::exception& error) {

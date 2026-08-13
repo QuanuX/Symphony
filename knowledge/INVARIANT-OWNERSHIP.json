@@ -364,7 +364,8 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
-            "test_forward_gate_and_command_reference"
+            "test_forward_gate_and_command_reference",
+            "test_module_admission"
           ],
           "path": "tools/symphony-validator/tests/feature_administration_test.cpp"
         }
@@ -388,10 +389,52 @@
       "statement": "Every new installable module or administrator-facing interaction declares a stable feature identity and reviewed qxctl and backend mapping or an explicit evidence-backed disposition in the same admission change; omission remains uncovered.",
       "status": "active",
       "title": "Module administration declaration"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "test_administration_coverage_and_module_admission"
+          ],
+          "path": "modules/ssfv-engine/tests/ssfv_test.cpp"
+        },
+        {
+          "cases": [
+            "test_command_registry",
+            "test_forward_gate_and_command_reference"
+          ],
+          "path": "tools/symphony-validator/tests/feature_administration_test.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:qxctl.command-registry-parity",
+      "ipc_boundary": false,
+      "owner_component": "feature-administration",
+      "owner_contract": "knowledge/FEATURE-ADMINISTRATION.md",
+      "producer_implementations": [
+        "tools/qxctl/cmd/qxctl/command_manifest.go",
+        "tools/qxctl/cmd/qxctl/command_specs.go",
+        "tools/qxctl/cmd/qxctl/commands.go",
+        "tools/qxctl/internal/commandregistry/registry.go"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestCheckedInExpectedRegistryMatchesCommandTree",
+            "TestCommandRegistryCobraParityAndStableIdentity",
+            "TestReviewedBackendFeatureBindingsReachExpectedRegistry"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/command_manifest_test.go"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Every executable qxctl Cobra leaf has one stable qxcmd identity and exact reviewed grammar, feature and interaction binding, backend-operation binding, mutability, authority, target-scope, noninteractive, structured-result, and recovery metadata; the checked-in expected registry is byte-semantically equal to the executable command tree.",
+      "status": "active",
+      "title": "qxctl command registry parity"
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v1",
-  "registry_digest": "sha256:60e9b43e283c0b4c16f3075494fa319bc3f76f379c1d6049814a17f235ad8898",
+  "registry_digest": "sha256:69c53a576f8fc62a7e09b0b258e2efcb484d7aa19168b66ee16d56e3dcd00d80",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

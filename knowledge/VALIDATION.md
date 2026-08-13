@@ -132,6 +132,8 @@ Every caller holding the applicable target-host authority receives the same supp
 
 The validator is an independently installable, versioned C++26 tool. Multiple versions MAY coexist under one prefix. qxctl resolves one exact version through its immutable receipt, validates every receipt-owned file and the executable under no-follow ownership/mode rules, invokes it with an empty environment and hard deadline, and verifies both structured digests before applying a profile.
 
+The complete check includes common invariant-ownership and implemented-module admission assurance. Registry identity, ordering, references, adapters, and regression traceability failures use stable `invariant_ownership.*` evidence and exit `26`. Direct `apply` is a stable rejected operation; neither complete validation nor root-summary validation changes repository bytes.
+
 Direct invocation remains available for diagnostics. qxctl does not scrape line-oriented output.
 
 ## Thermal and Execution Boundaries

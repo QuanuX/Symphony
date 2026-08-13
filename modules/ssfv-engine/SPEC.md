@@ -21,7 +21,7 @@ Feature proposals validate namespace allocation, strict prospective hierarchy, r
 
 ## Bounds
 
-The common 1 MiB request, 4 MiB response, JSON, path, and deadline bounds apply. One file is at most 4 MiB, all SSFV evidence reads total at most 64 MiB, and one operation accepts at most 4,096 namespaces, 1,024 feature files, 8,192 feature records, and 32,768 graph edges within the response ceiling.
+The common 1 MiB request, 4 MiB response, depth, string, path, and deadline bounds apply. Descriptor v1 preserves its exact historical 16,384-value declaration. Descriptor v2 advertises and the process enforces a finite 65,536 JSON value/event limit so one complete caller-supplied feature-administration envelope can carry the bounded semantic snapshot, profile, command registry, and descriptors without weakening another engine's shared default. One file is at most 4 MiB, all SSFV evidence reads total at most 64 MiB, and one operation accepts at most 4,096 namespaces, 1,024 feature files, 8,192 feature records, and 32,768 graph edges within the response ceiling.
 
 ## Freshness
 

@@ -3634,7 +3634,7 @@ engine::Json descriptor_v2() {
             {"request_bytes", engine::Limits::max_request_bytes},
             {"response_bytes", engine::Limits::max_response_bytes},
             {"json_depth", engine::Limits::max_json_depth},
-            {"json_values", engine::Limits::max_json_values},
+            {"json_values", max_process_json_values},
             {"path_bytes", engine::Limits::max_path_bytes},
             {"snapshot_files", engine::Limits::max_snapshot_files},
             {"snapshot_file_bytes", engine::Limits::max_snapshot_file_bytes},

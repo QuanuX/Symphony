@@ -49,7 +49,7 @@ knowledge/ssfv/
   schemas/v2/
 ```
 
-The current partial catalog distributes seventy canonical experimental records across the repository root and fourteen implemented owner scopes. Fifty-five nested subfeatures are recorded inside thirteen existing owner files; `COVERAGE.md` enumerates that progress, the reviewed macOS adapter no-child disposition, explicit non-feature boundaries, the top-level source universe, and exclusions, `REGISTRY.md` routes every record, and SKVI indexes every owner file. Remaining nested subfeature and microfeature review is not complete.
+The current partial catalog distributes seventy-two canonical experimental records across the repository root and fourteen implemented owner scopes. Fifty-seven nested subfeatures are recorded inside thirteen existing owner files; the newest records cover qxctl invariant assurance and validator-owned invariant-ownership and implemented-module-admission assurance. `COVERAGE.md` enumerates that progress, the reviewed macOS adapter no-child disposition, explicit non-feature boundaries, the top-level source universe, and exclusions, `REGISTRY.md` routes every record, and SKVI indexes every owner file. Remaining nested subfeature and microfeature review is not complete.
 
 ## Record Model
 
@@ -82,8 +82,8 @@ The Go qxctl client validates the exact inactive-undocked receipt and invokes th
 
 ## Non-Authorization Statement
 
-This manifest authorizes the canonical SSFV contract, bounded engine/client implementation, exact seventy-record partial catalog, explicit owner-scope inventory, 131 reviewed feature-administration expectations under `enforce_new_records`, ratified nested-review progress, and protected noncanonical session-maintenance evidence. Expected routes remain subject to exact qxctl binding and engine-descriptor evidence and may remain uncovered. It does not authorize an unreviewed application `FEATURES.md`, an unratified feature record, repository-wide completeness, canonical apply, repository mutation by SSFV tooling, graph-database persistence, Maestro state mutation by SSFV, public documentation, or marketing claims.
+This manifest authorizes the canonical SSFV contract, bounded engine/client implementation, exact seventy-two-record partial catalog, explicit owner-scope inventory, 137 reviewed feature-administration expectations under `enforce_new_records` (126 required, ten prohibited, and one not applicable), ratified nested-review progress, the 148-leaf stable qxctl command registry, the nine-record incremental invariant registry, and protected noncanonical session-maintenance evidence. Expected routes remain subject to exact qxctl binding and engine-descriptor evidence and may remain uncovered. It does not authorize an unreviewed application `FEATURES.md`, an unratified feature record, repository-wide or installed-host completeness, complete legacy-invariant coverage, canonical apply, repository mutation by SSFV tooling, graph-database persistence, Maestro state mutation by SSFV, public documentation, or marketing claims.
 
 ## Status
 
-Architect-ratified engine implementation and partial catalog. Namespace `symphony` is allocated, exactly seventy experimental application-feature records exist, their registered administration expectations are reviewed with `enforce_new_records`, and semantic coverage remains explicitly partial pending the remaining nested review.
+Architect-ratified engine implementation and partial catalog. Namespace `symphony` is allocated, exactly seventy-two experimental application-feature records exist, their registered administration expectations are reviewed with `enforce_new_records`, and semantic coverage remains explicitly partial pending the remaining nested review.
