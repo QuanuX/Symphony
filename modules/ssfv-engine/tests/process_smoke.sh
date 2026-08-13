@@ -10,6 +10,13 @@ REPO=${2:?repository root is required}
 "$BINARY" --descriptor | grep '"thermal_path":"freezing"' >/dev/null
 "$BINARY" --descriptor | grep '"install_state":"installed_undocked"' >/dev/null
 "$BINARY" --descriptor | grep '"network_listener":false' >/dev/null
+"$BINARY" --descriptor | grep '"protocol":"symphony.knowledge.engine-descriptor.v1"' >/dev/null
+"$BINARY" --descriptor-v2 | grep '"protocol":"symphony.knowledge.engine-descriptor.v2"' >/dev/null
+"$BINARY" --descriptor-v2 | grep '"engine_operation_id":"engop:symphony:ssfv.administration-check"' >/dev/null
+if "$BINARY" --descriptor-v2 | grep '"install_state"' >/dev/null; then
+    echo "descriptor v2 must not claim installation state" >&2
+    exit 1
+fi
 
 DEADLINE=$(( $(date +%s) * 1000 + 60000 ))
 INSPECT=$(printf '{"protocol":"symphony.knowledge.engine-process.v1","request_id":"smoke-inspect","correlation_id":"smoke-inspect","operation":"inspect","target_engine":"symphony-ssfv","deadline_unix_ms":%s,"payload":{}}' "$DEADLINE")

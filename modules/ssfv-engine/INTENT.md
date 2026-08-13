@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Implement bounded, deterministic SSFV structural validation, semantic snapshots, baseline comparison, caller-declared multi-file proposals, and disposable graph projection without deciding feature-worthiness or mutating canonical truth.
+Implement bounded, deterministic SSFV structural validation, semantic snapshots, baseline comparison, caller-declared multi-file proposals, disposable graph projection, and engine-first administration assurance without deciding feature-worthiness or mutating canonical truth.
 
 ## Authority Boundary
 
@@ -10,7 +10,7 @@ Implement bounded, deterministic SSFV structural validation, semantic snapshots,
 
 ## Operational Outcome
 
-Every permission-bearing caller can use the same independently installed process to inspect SSFV compatibility, validate empty or populated feature truth, detect stale cited implementation evidence, compare semantic snapshots, prepare one immutable semantic operation, and build a portable feature graph.
+Every permission-bearing caller can use the same independently installed process to inspect SSFV compatibility, validate empty or populated feature truth, detect stale cited implementation evidence, compare semantic snapshots, prepare one immutable semantic operation, build a portable feature graph, and evaluate qxctl/module integration from explicit evidence even when qxctl and repository files are absent.
 
 ## Non-Goals
 

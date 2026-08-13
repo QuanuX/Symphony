@@ -74,7 +74,7 @@ func TestCLICompatibility(t *testing.T) {
 		{name: "SACV prefix required", args: []string{"sacv", "inspect"}, status: 1, output: "sacv inspect failed: --prefix is required\n"},
 		{name: "missing SODV subcommand", args: []string{"sodv"}, status: 1, output: "sodv failed: SODV subcommand is required: inspect, check, verify, propose, recover, or project\n"},
 		{name: "SODV prefix required", args: []string{"sodv", "inspect"}, status: 1, output: "sodv inspect failed: --prefix is required\n"},
-		{name: "missing SSFV subcommand", args: []string{"ssfv"}, status: 1, output: "ssfv failed: SSFV subcommand is required: inspect, check, diff, propose, or graph\n"},
+		{name: "missing SSFV subcommand", args: []string{"ssfv"}, status: 1, output: "ssfv failed: SSFV subcommand is required: inspect, check, diff, propose, graph, or administration-check\n"},
 		{name: "SSFV prefix required", args: []string{"ssfv", "inspect"}, status: 1, output: "ssfv inspect failed: --prefix is required\n"},
 	}
 	for _, test := range tests {

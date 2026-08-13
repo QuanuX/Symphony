@@ -6,6 +6,9 @@ Any caller operating within its effective target-host permission should use `qxc
 ## Command Examples
 - `go run ./cmd/qxctl status`
 - `go run ./cmd/qxctl status --json`
+- `go run ./cmd/qxctl commands expected --json`
+- `go run ./cmd/qxctl commands verify --input COMMANDS.json --json`
+- `go run ./cmd/qxctl commands manifest --json`
 - `go run ./cmd/qxctl inventory digest`
 - `go run ./cmd/qxctl modules check`
 - `go run ./cmd/qxctl ssiag doctor --tops-id UUID`
@@ -58,10 +61,12 @@ Any caller operating within its effective target-host permission should use `qxc
 - `go run ./cmd/qxctl ssfv diff --prefix /chosen/prefix --input diff-input.json`
 - `go run ./cmd/qxctl ssfv propose --prefix /chosen/prefix --input proposal-input.json`
 - `go run ./cmd/qxctl ssfv graph --prefix /chosen/prefix --json`
+- `go run ./cmd/qxctl ssfv administration-check --prefix /chosen/prefix --input administration-input.json --json`
 
 ## Constraints
 - Use the Go standard library, ratified first-party Go libraries, and only their approved cgo-free platform dependencies.
 - Treat Cobra as the command grammar and Viper only as a private, explicitly bound command-configuration mapper. Do not enable `AutomaticEnv`, configuration-file discovery, remote providers, watch/reload, or write-back.
+- Treat stable command IDs and attached `CommandSpec` data as ratified protocol evidence. Generate `COMMANDS.json` only with `commands expected`, verify it before review, and use `commands manifest` only for exact executable-bound observation. Never hand-edit the projection, infer identities, or let any proposal bypass feature and command ratification.
 - Keep SSIAG/STAV trust configuration and endpoint authentication outside Viper in their dedicated clients.
 - Run commands synchronously in the active execution session.
 - SSIAG commands may read safe metadata and request exact audited authorization decisions. Treat every capability as non-transferable evidence for its bound operation, never a bearer token or canonical apply authority. Never pass secret values through qxctl arguments, input, output, logs, or fixtures.
@@ -77,6 +82,7 @@ Any caller operating within its effective target-host permission should use `qxc
 - For implemented SACV commands, use an exact inactive-undocked installation and treat check/diff output as evidence, proposals as unratified, and projections as disposable. The development engine validates JSON OpenAPI 3.2.0 entry documents and reports YAML parser availability fail-closed; never use qxctl to invent ownership, endpoints, security profiles, publication approval, SDK eligibility, or runtime bindings.
 - For implemented SODV commands, use an exact inactive-undocked installation and provide external tag/package observations only through a bounded no-follow JSON file. Treat verification and recovery as noncanonical evidence, proposals as unratified, and projections as disposable. qxctl and the engine never create or move tags, contact providers, declare completion, append release records, mutate recovery journals, or publish artifacts.
 - For implemented SSFV commands, use an exact inactive-undocked installation. Treat snapshots, diffs, and graphs as noncanonical evidence and proposals as unratified. Supply baseline/proposal input only through bounded no-follow JSON files. Never use qxctl to decide feature-worthiness, ratify semantics, apply a proposal, create a `FEATURES.md`, or persist a graph.
+- Use `ssfv administration-check` with its complete repository-independent input when evaluating design, live, authorization, and module-integration coverage. qxctl absence is an evaluated live state, not a design failure; missing registered command or engine-operation bindings remain uncovered evidence. Treat remediation as constraints requiring review, never generated command identity or authority.
 - For repository validation, use `validate scan` with one exact installed validator. Use `profile` to adjust optional warning disposition/presentation and `baseline` to classify warning deltas. `debug` filters display only after a complete scan. Never treat a baseline as ratification or use policy to downgrade a violation or alter detector scope.
 - Treat the default knowledge session as a login/authentication-to-logout/expiry/revocation authority epoch containing separate worktree reconciliation contexts. Never extend authority across a required re-authentication boundary.
 - Use `knowledge session transition` only from an explicit reviewed host integration. Reuse one stable event ID for retry, and use `--recover` only when damaged local head/journal evidence should be reconciled. Do not convert denial, incompatibility, or ambiguity into recovery and do not imply that qxctl installs a login or boot integration.

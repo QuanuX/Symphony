@@ -93,6 +93,85 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
+          "reason": "SCLV records reviewed engine administration-assurance changes.",
+          "reference": "knowledge/sclv/CHANGELOG.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "The cross-vector feature-administration contract owns coverage and module-admission policy.",
+          "reference": "knowledge/FEATURE-ADMINISTRATION.md",
+          "vector": "skvi"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SODV governs any future release of the administration-assurance implementation.",
+          "reference": "knowledge/sodv/SPEC.md",
+          "vector": "sodv"
+        }
+      ],
+      "distinctions": [
+        {
+          "distinction": "The SSFV engine evaluates caller-supplied coverage and admission evidence; qxctl owns command implementation and live client presentation.",
+          "target_feature_id": "ssfv:symphony:qxctl.command-registry"
+        },
+        {
+          "distinction": "Administration assurance reports registration and delivery gaps without deciding whether an undeclared operation is feature-worthy.",
+          "target_feature_id": "ssfv:symphony:ssfv-engine.catalog-integrity-snapshot"
+        }
+      ],
+      "evidence": [
+        "modules/ssfv-engine/src/ssfv.cpp implements stable engine-operation identity, descriptor v2, repository-independent coverage comparison, module admission, and non-inventive remediation constraints.",
+        "modules/ssfv-engine/tests/ssfv_test.cpp verifies descriptor-v1 compatibility, engine-only execution, qxctl absence, semantic compatibility, uncovered pairs, unreviewed declarations, profile gates, ordering, bounds, and docking-readiness refusal."
+      ],
+      "feature_id": "ssfv:symphony:ssfv-engine.administration-assurance",
+      "how": "Validates bounded digest-bound semantic snapshots, administration profiles, expected and observed qxctl registries, and engine descriptors; compares every declared feature-interaction-operation pair; separates design, live, authorization, and module-integration evidence; and emits proposal-only remediation constraints with null command identity and grammar.",
+      "implementation_languages": [
+        {
+          "language": "C++26",
+          "role": "Implements deterministic engine-first command coverage, descriptor validation, module admission, and remediation evidence."
+        }
+      ],
+      "implementation_paths": [
+        "modules/ssfv-engine/src/main.cpp",
+        "modules/ssfv-engine/src/ssfv.cpp",
+        "modules/ssfv-engine/src/ssfv.hpp",
+        "modules/ssfv-engine/tests/process_smoke.sh",
+        "modules/ssfv-engine/tests/ssfv_test.cpp"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "Does not require qxctl or repository files at evaluation time, generate command IDs or grammar, implement missing commands, authorize a caller, install a module, or dock it.",
+        "Integration readiness is admission evidence only; it never rewrites installation, activation, binding, authorization, or Maestro presence state."
+      ],
+      "owner_contract": "modules/ssfv-engine/SPEC.md",
+      "parent_feature_id": "ssfv:symphony:ssfv-engine",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "The expected and observed qxctl command registry supplies stable command identity and semantic delivery evidence.",
+          "target_feature_id": "ssfv:symphony:qxctl.command-registry",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "The engine uses common bounded JSON, deadlines, tagged digests, and single-source operation registration.",
+          "target_feature_id": "ssfv:symphony:knowledge-vector-engine-foundation",
+          "type": "depends_on"
+        }
+      ],
+      "source_scope": "modules/ssfv-engine",
+      "status": "experimental",
+      "title": "Engine-first feature-administration assurance",
+      "what": "Evaluates declared feature-administration design, exact live qxctl compatibility, and independent module integration readiness from caller-supplied evidence, even when only the engine is installed.",
+      "when": "Runs on explicit bounded administration-check invocation during module admission, integration review, client compatibility inspection, or uncovered-surface diagnosis.",
+      "where": "Executes entirely inside the SSFV process over its request payload and requires no repository checkout, qxctl binary, ambient configuration, network, or AI service.",
+      "who": "Independent module developers, host-authorized integrators, qxctl, validation workflows, reviewers, and agents using the same caller-neutral protocol.",
+      "why": "Makes forgotten SSFV registration or qxctl administration a deterministic visible integration gap before an independent module is treated as integrated or docking-ready."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
           "reason": "SCLV records reviewed catalog-proposal changes.",
           "reference": "knowledge/sclv/CHANGELOG.md",
           "vector": "sclv"

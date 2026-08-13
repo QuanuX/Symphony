@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact sixty-seven-record SSFV partial catalog and coverage inventory, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, persistent SSFV maintenance journals, explicit qxctl session transitions, implemented report-only lifecycle planning/journaling, separately authorized apply-compatible coordination, and Maestro receptor presence plus derived inventory defined by `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No unratified feature record, complete-catalog claim, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, login/session hook, native Windows host integration, live process activation, receipt-v1 mutation, arbitrary entry-point execution, or Maestro engine-execution behavior may be inferred from these contract slices.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact sixty-nine-record SSFV partial catalog and coverage inventory, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, persistent SSFV maintenance journals, explicit qxctl session transitions, implemented report-only lifecycle planning/journaling, separately authorized apply-compatible coordination, and Maestro receptor presence plus derived inventory defined by `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No unratified feature record, complete-catalog claim, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, login/session hook, native Windows host integration, live process activation, receipt-v1 mutation, arbitrary entry-point execution, or Maestro engine-execution behavior may be inferred from these contract slices.
 
 ## Purpose
 
@@ -39,6 +39,11 @@ The v1 identifier family is:
 | `symphony.knowledge.engine-process.v1` | process request/response envelope |
 | `symphony.knowledge.proposal.v1` | immutable proposal |
 | `symphony.knowledge.engine-descriptor.v1` | engine identity and capability descriptor |
+| `symphony.knowledge.engine-descriptor.v2` | side-by-side stable engine-operation and administration descriptor without installation state |
+| `symphony.qxctl.command-registry.v1` | canonical expected or exact observed stable qxctl command registry |
+| `symphony.knowledge.feature-administration-profile.v1` | registered-feature administration expectation and disposition profile |
+| `symphony.knowledge.administration-coverage-input.v1` | bounded repository-independent administration-check input |
+| `symphony.knowledge.administration-coverage-result.v1` | deterministic three-axis administration coverage and module-integration evidence |
 | `symphony.knowledge.session-journal.v1` | authenticated authority-epoch journal |
 | `symphony.knowledge.session-head.v1` | atomic dual-slot session-journal head |
 | `symphony.knowledge.session-command.v1` | qxctl-to-coordinator authenticated-session command |
@@ -89,6 +94,10 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/engine-process-request.schema.json`;
 - `knowledge/schemas/v1/engine-process-response.schema.json`;
 - `knowledge/schemas/v1/engine-descriptor.schema.json`;
+- `knowledge/schemas/v1/qxctl-command-registry.schema.json`;
+- `knowledge/schemas/v1/feature-administration-profile.schema.json`;
+- `knowledge/schemas/v1/administration-coverage-input.schema.json`;
+- `knowledge/schemas/v1/administration-coverage-result.schema.json`;
 - `knowledge/schemas/v1/install-receipt.schema.json`;
 - `knowledge/schemas/v1/engine-binding-registry.schema.json`;
 - `knowledge/schemas/v1/reconciliation-journal.schema.json`;
@@ -129,6 +138,7 @@ The initial exact schemas are:
 - `knowledge/schemas/v1/validation-policy.schema.json`;
 - `knowledge/schemas/v1/validation-baseline.schema.json`;
 - `knowledge/schemas/v2/install-receipt.schema.json`;
+- `knowledge/schemas/v2/engine-descriptor.schema.json`;
 - `knowledge/schemas/v2/lifecycle-boot-journal.schema.json`;
 - `knowledge/schemas/v2/lifecycle-boot-head.schema.json`.
 
@@ -322,7 +332,7 @@ Scaffolding every engine in advance is prohibited. Each slice must pass its cont
 
 The Architect has ratified `knowledge/ssfv/` with stable identifiers, feature-worthiness criteria, hierarchy, sparse distributed-file ownership, typed relationships, lifecycle, 5W1H semantics, content-addressed freshness, and portable JSON graph contracts. This completes the semantic contract gate.
 
-The implementation gate and the F1 through F3 partial-catalog review gates are complete. Exactly sixty-seven ratified records cover the repository-root platform capability, fourteen implemented owner scopes, and fifty-two nested subfeatures. That bounded result does not authorize another distributed `FEATURES.md`, another canonical feature entry, a complete-catalog claim, a persistent graph store, or any capability outside the registered records.
+The implementation gate, F1 through F3 review gates, and feature-administration assurance slice are complete. Exactly sixty-nine ratified records cover the repository-root platform capability, fourteen implemented owner scopes, and fifty-four nested subfeatures. That bounded result does not authorize another distributed `FEATURES.md`, another canonical feature entry, a complete-catalog claim, a persistent graph store, or any capability outside the registered records.
 
 ## Historical and Validator Boundary
 
@@ -344,8 +354,8 @@ qxctl implements a protected user-scope `default` engine binding registry beneat
 
 `modules/sodv-engine/` implements deterministic append-only v1/v2 release-ledger checks, caller-supplied external-state verification, provider-neutral v2 release-record proposals, non-mutating interrupted-session recovery, and disposable release-transaction inventories. `qxctl sodv ...` validates its exact inactive-undocked nine-file installation and invokes it under the common process-safety gates. The engine has no network access and never creates or moves tags, contacts package providers, declares completion, mutates recovery journals, appends records, publishes, or applies canonical changes.
 
-`modules/ssfv-engine/` implements deterministic `inspect`, structural and freshness-aware `check`, baseline-versus-live `diff`, caller-declared `propose`, and disposable JSON `graph`. It validates exact managed regions, namespaces, registry routing, record normalization, hierarchy, evidence paths, SKVI coverage, and the content-addressed coverage contract without deciding semantic truth. `qxctl ssfv ...` validates its exact inactive-undocked nine-file installation and adds no-follow baseline/input handling plus operation-specific authority and projection safety checks. The sixty-seven canonical records, explicit top-level owner-scope inventory, and fifty-two-record F1 through F3 nested-review progress were authored and ratified through ordinary reviewed source changes; the engine and client never create feature records, apply proposals, persist graphs, activate a version, or administer Maestro.
+`modules/ssfv-engine/` implements deterministic `inspect`, structural and freshness-aware `check`, baseline-versus-live `diff`, caller-declared `propose`, disposable JSON `graph`, and engine-first `administration-check`. It validates exact managed regions, namespaces, registry routing, record normalization, hierarchy, evidence paths, SKVI coverage, content-addressed coverage, and caller-supplied feature/command/operation administration evidence without deciding semantic truth. `qxctl ssfv ...` validates its exact inactive-undocked installation and adds no-follow baseline/input handling plus operation-specific authority and projection safety checks. The sixty-nine canonical records, explicit top-level owner-scope inventory, and fifty-four-record nested-review progress were authored and ratified through ordinary reviewed source changes; the engine and client never create feature records, apply proposals, persist graphs, activate a version, or administer Maestro.
 
 ## Non-Authorization Statement
 
-This specification claims only the explicitly identified foundation/coordinator reconciliation, authenticated-session, report-only lifecycle, and apply-coordination slices; qxctl session transitions and lifecycle profile/ownership/observation/report/boot/apply administration; exact local receipt-v2, shared-root claims/reclamation, runtime-state, established-binding, candidate-verified coordinator-handoff, and authenticated Maestro-presence adapters; SKVI/SCLV/SACV/SODV/SSFV slices; exact sixty-seven-record SSFV partial catalog and owner-scope coverage inventory; user-default binding registry; and canonical lifecycle/receipt schemas. It does not claim canonical apply, receipt-v1 mutation, download, arbitrary entry-point execution, live service activation, in-place coordinator replacement, unattended or recency-based old-version reclamation, an unratified feature record or complete-catalog claim, an external package coordinate, an HTTP surface, a published release artifact, direct ledger mutation, or Maestro engine execution.
+This specification claims only the explicitly identified foundation/coordinator reconciliation, authenticated-session, report-only lifecycle, and apply-coordination slices; qxctl session transitions and lifecycle profile/ownership/observation/report/boot/apply administration; exact local receipt-v2, shared-root claims/reclamation, runtime-state, established-binding, candidate-verified coordinator-handoff, and authenticated Maestro-presence adapters; SKVI/SCLV/SACV/SODV/SSFV slices; exact sixty-nine-record SSFV partial catalog and owner-scope coverage inventory; user-default binding registry; and canonical lifecycle/receipt schemas. It does not claim canonical apply, receipt-v1 mutation, download, arbitrary entry-point execution, live service activation, in-place coordinator replacement, unattended or recency-based old-version reclamation, an unratified feature record or complete-catalog claim, an external package coordinate, an HTTP surface, a published release artifact, direct ledger mutation, or Maestro engine execution.

@@ -50,6 +50,7 @@ add_executable(symphony-validator
     src/caller_authority.cpp
     src/validator_build.cpp
     src/projector.cpp
+    src/feature_administration.cpp
 )
 
 target_include_directories(symphony-validator PRIVATE src)
@@ -89,6 +90,21 @@ add_executable(sodv-release-tests
     src/evidence.cpp
 )
 
+add_executable(feature-administration-tests
+    tests/feature_administration_test.cpp
+    src/feature_administration.cpp
+    src/evidence.cpp
+)
+
+target_include_directories(feature-administration-tests PRIVATE src)
+target_link_libraries(feature-administration-tests PRIVATE Symphony::KnowledgeVectorEngine)
+
+set_target_properties(feature-administration-tests PROPERTIES
+  CXX_STANDARD 26
+  CXX_STANDARD_REQUIRED ON
+  CXX_EXTENSIONS OFF
+)
+
 target_include_directories(sodv-release-tests PRIVATE src)
 
 set_target_properties(sodv-release-tests PROPERTIES
@@ -114,6 +130,7 @@ if(BUILD_TESTING)
   add_test(NAME caller-authority-tests COMMAND caller-authority-tests)
   get_filename_component(SYMPHONY_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
   add_test(NAME sodv-release-tests COMMAND sodv-release-tests ${SYMPHONY_REPOSITORY_ROOT})
+  add_test(NAME feature-administration-tests COMMAND feature-administration-tests ${SYMPHONY_REPOSITORY_ROOT})
 endif()
 
 set(SYMPHONY_VALIDATOR_LIBEXEC_DIR "${CMAKE_INSTALL_LIBEXECDIR}/symphony/symphony-validator/0.1.0-dev")

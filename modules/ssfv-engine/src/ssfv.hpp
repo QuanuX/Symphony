@@ -11,6 +11,7 @@ inline constexpr const char* vector_id = "ssfv";
 inline constexpr const char* engine_version = "0.1.0-dev";
 
 [[nodiscard]] engine::Json descriptor();
+[[nodiscard]] engine::Json descriptor_v2();
 [[nodiscard]] engine::Json handle_request(const engine::Request& request);
 
 }

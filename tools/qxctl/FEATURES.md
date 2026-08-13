@@ -197,6 +197,76 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
+          "reason": "SCLV records reviewed command-identity and registry-contract changes.",
+          "reference": "knowledge/sclv/CHANGELOG.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes the qxctl registry implementation, checked-in projection, documentation, and tests.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        }
+      ],
+      "distinctions": [
+        {
+          "distinction": "The command registry declares stable qxctl grammar and semantic bindings; the SSFV engine independently evaluates whether registered features and engine operations have complete administration coverage.",
+          "target_feature_id": "ssfv:symphony:ssfv-engine.administration-assurance"
+        }
+      ],
+      "evidence": [
+        "tools/qxctl/internal/commandregistry/registry_test.go verifies stable identity, complete Cobra parity, duplicate rejection, explicit structural and prohibited roles, canonical digests, and observed executable binding.",
+        "tools/qxctl/cmd/qxctl/command_manifest_test.go verifies expected/observed registry generation, checked-in projection parity, strict bounded verification, exact feature bindings, and known JSON-output debt.",
+        "tools/qxctl/cmd/qxctl/ssfv_test.go verifies the bounded headless administration-check route, exact payload transport, canonical result validation, and digest tamper rejection."
+      ],
+      "feature_id": "ssfv:symphony:qxctl.command-registry",
+      "how": "Every public or hidden executable Cobra leaf carries one attached CommandSpec with a stable qxcmd identity and explicit feature interaction, backend operation, mutability, authority, scope, protocol, validation, noninteractive, and JSON-output evidence. One parity walk rejects unclassified or duplicate grammar, derives the machine projection from the live tree, emits a client-independent expected registry or executable-bound observed registry, and verifies checked-in expected evidence with canonical self-digests. Hidden prohibited leaves remain visible registry evidence but cannot satisfy required administration coverage.",
+      "implementation_languages": [
+        {
+          "language": "Go",
+          "role": "Implements single-source command metadata attachment, full Cobra-tree parity, canonical expected and observed registry projection, strict bounded verification, and administration-check transport."
+        }
+      ],
+      "implementation_paths": [
+        "tools/qxctl/COMMANDS.json",
+        "tools/qxctl/COMMANDS.md",
+        "tools/qxctl/cmd/qxctl/command_manifest.go",
+        "tools/qxctl/cmd/qxctl/command_manifest_test.go",
+        "tools/qxctl/cmd/qxctl/command_specs.go",
+        "tools/qxctl/cmd/qxctl/commands.go",
+        "tools/qxctl/cmd/qxctl/ssfv.go",
+        "tools/qxctl/cmd/qxctl/ssfv_test.go",
+        "tools/qxctl/internal/commandregistry/registry.go",
+        "tools/qxctl/internal/commandregistry/registry_test.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "Does not dynamically inject commands, infer or allocate stable command identities, invent feature names, or use an external suggestion service at runtime.",
+        "Does not decide semantic worthiness, administration requirement, authorization, ratification, engine truth, runtime availability, or canonical mutation."
+      ],
+      "owner_contract": "tools/qxctl/MANIFEST.md",
+      "parent_feature_id": "ssfv:symphony:qxctl",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "The registry supplies exact expected and observed qxctl evidence while the engine owns deterministic coverage and module-admission evaluation.",
+          "target_feature_id": "ssfv:symphony:ssfv-engine.administration-assurance",
+          "type": "composes_with"
+        }
+      ],
+      "source_scope": "tools/qxctl",
+      "status": "experimental",
+      "title": "Stable qxctl command identity and coverage registry",
+      "what": "Defines one stable machine identity and explicit administration contract for every public or hidden executable qxctl leaf, with checked-in expected evidence and runtime observed evidence generated from the same Cobra tree.",
+      "when": "Parity is validated whenever qxctl constructs its command tree; expected evidence is generated or verified during development and repository validation, and observed evidence is emitted only on explicit invocation.",
+      "where": "Runs entirely inside the local qxctl process and leaves a repository-owned expected registry that the SSFV engine can evaluate when no qxctl executable is present.",
+      "who": "Any target-host-authorized caller or reviewed development workflow consuming the published protocol without receiving extra authority from caller class.",
+      "why": "Makes a newly added module or engine operation visibly uncovered until a reviewed qxctl command, explicit exception, or prohibition is ratified, preventing administrative surfaces from disappearing behind implementation details."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
           "reason": "SCLV records reviewed binding and compatibility changes.",
           "reference": "knowledge/sclv/CHANGELOG.md",
           "vector": "sclv"

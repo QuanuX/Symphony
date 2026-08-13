@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:administration-coverage-input:v1",
+  "title": "Symphony administration coverage input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "format_version", "semantic_snapshot", "profile", "expected_command_registry", "observed_qxctl_state", "observed_command_registry", "engine_descriptors", "requested_feature_id"],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.administration-coverage-input.v1"},
+    "format_version": {"const": 1},
+    "semantic_snapshot": {"$ref": "urn:symphony:ssfv:semantic-snapshot:v1"},
+    "profile": {"$ref": "urn:symphony:knowledge:feature-administration-profile:v1"},
+    "expected_command_registry": {"allOf": [{"$ref": "urn:symphony:qxctl:command-registry:v1"}, {"properties": {"registry_kind": {"const": "expected"}}}]},
+    "observed_qxctl_state": {"enum": ["not_evaluated", "absent", "present"]},
+    "observed_command_registry": {"oneOf": [{"type": "null"}, {"allOf": [{"$ref": "urn:symphony:qxctl:command-registry:v1"}, {"properties": {"registry_kind": {"const": "observed"}}}]}]},
+    "engine_descriptors": {"type": "array", "maxItems": 1024, "uniqueItems": true, "items": {"$ref": "urn:symphony:knowledge:engine-descriptor:v2"}},
+    "requested_feature_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/featureId"}]}
+  },
+  "allOf": [
+    {"if": {"properties": {"observed_qxctl_state": {"const": "present"}}}, "then": {"properties": {"observed_command_registry": {"allOf": [{"$ref": "urn:symphony:qxctl:command-registry:v1"}, {"properties": {"registry_kind": {"const": "observed"}}}]}}}, "else": {"properties": {"observed_command_registry": {"type": "null"}}}}
+  ],
+  "$defs": {
+    "featureId": {"type": "string", "maxLength": 256, "pattern": "^ssfv:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"}
+  }
+}

@@ -1,0 +1,427 @@
+{
+  "catalog_complete": false,
+  "catalog_scope": "registered_partial_catalog",
+  "features": [
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:knowledge-session-coordinator"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:knowledge-session-coordinator.authority-epochs"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:knowledge-session-coordinator.lifecycle-apply-coordination"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:knowledge-session-coordinator.lifecycle-planning"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:knowledge-session-coordinator.reconciliation"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:knowledge-session-coordinator.semantic-maintenance"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:knowledge-vector-engine-foundation"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:knowledge-vector-engine-foundation.bounded-process-protocol"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:knowledge-vector-engine-foundation.content-addressed-evidence-snapshots"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:knowledge-vector-engine-foundation.temporal-representation-conformance"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:maestro-presence-authority"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:maestro-presence-authority.complete-inventory"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:platform"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:qxctl"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:qxctl.authenticated-sessions"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:qxctl.command-registry"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:qxctl.engine-bindings"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:qxctl.governed-validation"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:qxctl.lifecycle-convergence"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:qxctl.linux-host-receptor"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:qxctl.maestro-administration"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:qxctl.ssiag-administration"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:qxctl.stav-administration"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sacv-engine"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sacv-engine.api-contract-conformance"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sacv-engine.contract-inventory-projection"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sacv-engine.contract-registration-proposal"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sacv-engine.openapi-compatibility-evidence"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sclv-engine"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sclv-engine.append-only-ledger-assurance"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sclv-engine.disposable-provider-neutral-history"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sclv-engine.evidence-bound-append-proposals"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sclv-engine.forward-only-closure-recovery"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sclv-engine.provider-neutral-evidence-normalization"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:skvi-engine"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:skvi-engine.content-addressed-index-change-proposals"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:skvi-engine.disposable-structural-projection"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:skvi-engine.structural-index-assurance"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sodv-engine"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sodv-engine.forward-release-record-proposal"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sodv-engine.interrupted-publication-reconciliation"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sodv-engine.observed-publication-verification"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sodv-engine.release-ledger-validation"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:sodv-engine.release-transaction-projection"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:ssfv-engine"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:ssfv-engine.administration-assurance"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:ssfv-engine.catalog-change-proposal"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:ssfv-engine.catalog-integrity-snapshot"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:ssfv-engine.semantic-freshness-comparison"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:ssfv-engine.semantic-graph-projection"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:ssiag-foundation"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:ssiag-foundation.authorization-capabilities"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:ssiag-foundation.kernel-peer-trust"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:ssiag-foundation.native-supervision"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:ssiag-foundation.policy-administration"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:ssiag-foundation.provider-metadata-registry"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:ssiag-foundation.safe-audit-production"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:ssiag-foundation.tops-enrollment"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:ssiag.macos-keychain-metadata"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:stav-append-authority"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:stav-append-authority.authorized-query"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:stav-append-authority.ledger-durability"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:stav-append-authority.native-supervision"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:stav-append-authority.serialized-append"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:stav-append-authority.tops-enrollment"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:stav-protocol-kernel"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:stav-protocol-kernel.canonical-wire-representation"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:stav-protocol-kernel.semantic-validation"
+    },
+    {
+      "expectations": [
+
+      ],
+      "feature_id": "ssfv:symphony:symphony-validator"
+    }
+  ],
+  "format_version": 1,
+  "forward_gate": "report_only",
+  "profile_digest": "sha256:ade4f3a9a3dada3b1189a52e2c640f87c987d8fa157d8a44224096ab71bfe371",
+  "profile_id": "symphony.registered-features.administration.v1",
+  "protocol": "symphony.knowledge.feature-administration-profile.v1",
+  "registered_feature_count": 69,
+  "ssfv_registry_digest": "sha256:93af8380103b30f323e379349ef25aba5d45e340878d0ed887fab803550e3277"
+}

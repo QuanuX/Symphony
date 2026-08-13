@@ -6,6 +6,9 @@ Usage:
 Commands:
   --help                            Print concise usage
   --version                         Print version
+  commands manifest --json          Emit digest-bound observed command registry
+  commands expected --json          Emit client-independent expected command registry
+  commands verify --input FILE --json Verify a packaged expected registry against this command tree
   doctor                            Perform local repository/admin-spine checks
   contracts                         Verify first runtime-set module contract surfaces
   modules                           List deterministic runtime modules

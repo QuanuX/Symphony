@@ -29,17 +29,19 @@ type maestroOptions struct {
 }
 
 func newMaestroCommand() *cobra.Command {
-	command := &cobra.Command{
-		Use: "maestro", Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("maestro subcommand is required: inspect, inventory, status, or recover")
-		},
-	}
+	command := structural("maestro", fmt.Errorf("maestro subcommand is required: inspect, inventory, status, or recover"))
 	for _, operation := range []string{"inspect", "inventory", "status", "recover"} {
 		options := maestroOptions{version: "0.1.0-dev", scope: "user", ttl: 15 * time.Minute}
 		child := &cobra.Command{
 			Use: operation, Args: usageOnlyArgs,
 			RunE: func(*cobra.Command, []string) error { return runMaestro(operation, options) },
+		}
+		if operation == "recover" {
+			registeredMutation(child, "maestro.recover", featureMaestro, "recover", "ssiag", "maestro.recover")
+		} else {
+			registered(child, "maestro."+operation, featureMaestro, map[string]string{
+				"inspect": "inspect", "inventory": "discover", "status": "query",
+			}[operation])
 		}
 		child.Flags().StringVar(&options.prefix, "prefix", "", "exact Maestro installation prefix")
 		child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact Maestro version")

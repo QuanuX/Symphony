@@ -61,7 +61,7 @@ Families including `REPO.*`, `MODULE.*`, `INSTALL.*`, `NAMESPACE.*`, `TROLL.*`, 
 Status reflects the deterministic outcome of a rule check.
 
 ## Exit-code Model
-`0` to `23`, mapping to passes, errors, blockers, malformed repositories, or internal failures. The exact mapping is:
+`0` to `24`, mapping to passes, errors, blockers, malformed repositories, or internal failures. The exact mapping is:
 
 - `0`: success;
 - `1`: invalid CLI usage or unknown command;
@@ -84,9 +84,10 @@ Status reflects the deterministic outcome of a rule check.
 - `18`: SCLV referenced surfaces;
 - `19`: SCLV/SKVI membership;
 - `20`: validator build-source integrity;
-- `21`: caller-authority regression.
+- `21`: caller-authority regression;
 - `22`: SACV registry grammar, ownership, classification, SKVI coverage, or no-follow document failure;
-- `23`: SODV release-record grammar, ordering, lineage, publication-unit, or no-follow ledger failure.
+- `23`: SODV release-record grammar, ordering, lineage, publication-unit, or no-follow ledger failure;
+- `24`: feature-administration profile, SSFV registry binding, expected command registry, or cross-reference failure.
 
 ## Historical/Migration Exception Behavior
 Stale names (e.g. `legacy node execution label`, `legacy native hot-path label`, `legacy bus residency label`) are rejected except in historical contexts or rename records.
@@ -94,7 +95,7 @@ Stale names (e.g. `legacy node execution label`, `legacy native hot-path label`,
 ## Allowlist Behavior
 Allowlists must never become silent bypasses. Every allowlist entry must produce evidence in JSON and Markdown.
 
-The Architect-ratified STAV v1 JSON Schema/conformance fixtures, fifty-six common SKV process/descriptor/receipt/binding/proposal/provider-evidence/reconciliation/session/SSFV-maintenance/lifecycle/ownership/temporal/Maestro/validation schemas (fifty-three v1 and three v2), twelve SSIAG authorization/grant-planning/policy-administration schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, and eighteen SSFV v1/v2 schemas are canonical protocol truth, not generated projections. The artifact checker may allow only their 137 exact paths and must emit `artifact.canonical_json_authorized` evidence for every encountered file with its exact vector or umbrella authority. Prefix or extension-wide JSON allowlisting is prohibited.
+The Architect-ratified STAV v1 JSON Schema/conformance fixtures, sixty-one common SKV process/descriptor/receipt/binding/proposal/provider-evidence/reconciliation/session/SSFV-maintenance/lifecycle/ownership/temporal/Maestro/validation/feature-administration schemas (fifty-seven v1 and four v2), twelve SSIAG authorization/grant-planning/policy-administration schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, eighteen SSFV v1/v2 schemas, and the exact `knowledge/FEATURE-ADMINISTRATION-PROFILE.json` object are canonical protocol truth, not generated projections. The artifact checker may allow only their 143 exact paths and must emit `artifact.canonical_json_authorized` evidence for every encountered file with its exact vector or umbrella authority. Prefix or extension-wide JSON allowlisting is prohibited.
 
 The required common knowledge surfaces include `knowledge/TIME.md`. Its contract-shape gate verifies status/authority, purpose, canonical UTC profiles, target-host durable timestamp authority, implementation/schema separation, and the no-vector promotion boundary. The validator does not synchronize clocks, interpret domain freshness, or become a temporal engine.
 
@@ -103,6 +104,16 @@ When `modules/maestro/` exists, the validator requires its Contract Quad, instal
 ### SSFV Contract Boundary
 
 The validator requires `knowledge/ssfv/INTENT.md`, `MANIFEST.md`, `SKILL.md`, `SPEC.md`, `COVERAGE.md`, `NAMESPACES.md`, `REGISTRY.md`, and `FEATURE-FILE-FORMAT.md`, checks their declared anchors, and requires SKVI coverage for those eight surfaces. When `modules/ssfv-engine/` exists, it also requires the module Contract Quad, `INSTALL.md`, `CMakeLists.txt`, and qxctl SSFV grammar/client anchors. It recognizes exactly the eighteen SSFV v1/v2 JSON paths declared above. It does not parse distributed `FEATURES.md` records, decide feature-worthiness or lifecycle, generate a graph, create proposals, or duplicate `symphony-ssfv`.
+
+### Feature Administration Assurance Boundary
+
+When `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`, `knowledge/ssfv/REGISTRY.md`, and `tools/qxctl/COMMANDS.json` are all absent, the validator emits explicit absence evidence for compatibility with repositories predating this contract. Presence of any one requires all three. Each present file is a no-follow regular file bounded to 4 MiB; the two JSON inputs use the shared strict bounded parser.
+
+The SSFV registry supplies the current canonical feature set and count; the checker embeds no historical count. The profile must bind the exact registry bytes, carry a valid omit-self digest, list sorted unique feature IDs equal to the registry set, declare the same count, and contain only bounded expectation structures. Command and inheritance references must resolve, inheritance must be acyclic, and interaction keys must be unique per feature. Empty expectations and `delivery: unreviewed` emit warnings only under `report_only` and are violations under either enforcement gate.
+
+The checked-in qxctl registry must be the exact expected, unreceipted registry identity with null observed-install fields and a valid omit-self digest. Command IDs must be sorted and unique. Every feature binding must resolve to the current SSFV registry with a valid interaction; a command without bindings requires a nonempty infrastructure purpose, while a bound command must not claim one. Profile command references must resolve to that command inventory. Failure returns exit status `24`.
+
+This is static cross-surface assurance. The checker does not execute or discover qxctl, inspect an installed binary, validate live coverage, invent feature IDs or English names, infer which administration interactions should exist, recommend Cobra/Viper grammar, or duplicate the independent SSFV engine's semantic coverage evaluation. It makes missing or unreviewed declarative ownership visible so an independently developed module cannot silently imply administrative coverage.
 
 ### SACV Registry Boundary
 

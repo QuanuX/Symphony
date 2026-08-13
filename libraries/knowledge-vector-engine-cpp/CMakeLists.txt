@@ -32,6 +32,7 @@ set(SYMPHONY_KVE_CMAKE_DIR
 add_library(symphony-knowledge-vector-engine STATIC
     src/digest.cpp
     src/error.cpp
+    src/operation.cpp
     src/path.cpp
     src/protocol.cpp
     src/temporal.cpp
@@ -130,6 +131,7 @@ symphony_install_receipt_v2(
         "${SYMPHONY_KVE_INCLUDE_DIR}/symphony/knowledge/engine/error.hpp|regular"
         "${SYMPHONY_KVE_INCLUDE_DIR}/symphony/knowledge/engine/json.hpp|regular"
         "${SYMPHONY_KVE_INCLUDE_DIR}/symphony/knowledge/engine/limits.hpp|regular"
+        "${SYMPHONY_KVE_INCLUDE_DIR}/symphony/knowledge/engine/operation.hpp|regular"
         "${SYMPHONY_KVE_INCLUDE_DIR}/symphony/knowledge/engine/path.hpp|regular"
         "${SYMPHONY_KVE_INCLUDE_DIR}/symphony/knowledge/engine/protocol.hpp|regular"
         "${SYMPHONY_KVE_INCLUDE_DIR}/symphony/knowledge/engine/temporal.hpp|regular"

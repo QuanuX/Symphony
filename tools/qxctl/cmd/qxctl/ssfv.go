@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,7 +16,12 @@ import (
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/repository"
 )
 
+var invokeSSFV = knowledgeengine.InvokeSSFV
+
 func runSSFV(operation string, options ssfvOptions) error {
+	if operation == "administration-check" && !options.jsonOutput {
+		return fmt.Errorf("--json is required for SSFV administration coverage evidence")
+	}
 	if options.prefix == "" {
 		return fmt.Errorf("--prefix is required")
 	}
@@ -35,9 +41,12 @@ func runSSFV(operation string, options ssfvOptions) error {
 	if err != nil || info.Mode()&os.ModeSymlink != 0 || !info.IsDir() {
 		return fmt.Errorf("--repo must identify a no-follow directory")
 	}
-	repoRoot, err := repository.FindRoot(start)
-	if err != nil {
-		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	invocationRoot := start
+	if operation != "administration-check" {
+		invocationRoot, err = repository.FindRoot(start)
+		if err != nil {
+			return fmt.Errorf("could not find Symphony repository root: %w", err)
+		}
 	}
 
 	var payload []byte
@@ -46,7 +55,7 @@ func runSSFV(operation string, options ssfvOptions) error {
 		payload = []byte(`{}`)
 	case "check":
 		payload, err = ssfvCheckPayload(options)
-	case "diff", "propose":
+	case "diff", "propose", "administration-check":
 		payload, err = knowledgeengine.ReadPayload(options.input)
 	case "graph":
 		payload = []byte(`{"format":"json"}`)
@@ -56,8 +65,8 @@ func runSSFV(operation string, options ssfvOptions) error {
 	if err != nil {
 		return err
 	}
-	response, err := knowledgeengine.InvokeSSFV(
-		context.Background(), options.prefix, options.version, repoRoot, operation, payload)
+	response, err := invokeSSFV(
+		context.Background(), options.prefix, options.version, invocationRoot, operation, payload)
 	if err != nil {
 		return err
 	}
@@ -295,9 +304,272 @@ func validateSSFVResult(operation string, result json.RawMessage) (bool, error) 
 			return false, err
 		}
 		return true, nil
+	case "administration-check":
+		return validateSSFVAdministrationResult(result)
 	default:
 		return false, fmt.Errorf("unsupported SSFV operation")
 	}
+}
+
+type administrationFinding struct {
+	FindingID            string   `json:"finding_id"`
+	Severity             string   `json:"severity"`
+	FeatureID            *string  `json:"feature_id"`
+	Interaction          *string  `json:"interaction"`
+	EngineOperationID    *string  `json:"engine_operation_id"`
+	CommandID            *string  `json:"command_id"`
+	Reason               string   `json:"reason"`
+	Missing              []string `json:"missing"`
+	ProposalOnly         *bool    `json:"proposal_only"`
+	RatificationRequired *bool    `json:"ratification_required"`
+}
+
+type administrationSurface struct {
+	FeatureID          string                  `json:"feature_id"`
+	Interaction        string                  `json:"interaction"`
+	DesignState        string                  `json:"design_state"`
+	LiveState          string                  `json:"live_state"`
+	AuthorizationState string                  `json:"authorization_state"`
+	CommandIDs         []string                `json:"command_ids"`
+	EngineOperationIDs []string                `json:"engine_operation_ids"`
+	Findings           []administrationFinding `json:"findings"`
+}
+
+type administrationModuleIntegration struct {
+	ModuleID         string                  `json:"module_id"`
+	EngineID         *string                 `json:"engine_id"`
+	DescriptorDigest *string                 `json:"descriptor_digest"`
+	IntegrationState string                  `json:"integration_state"`
+	DockingReady     *bool                   `json:"docking_ready"`
+	Findings         []administrationFinding `json:"findings"`
+}
+
+type administrationRemediation struct {
+	RemediationID         string   `json:"remediation_id"`
+	FindingIDs            []string `json:"finding_ids"`
+	FeatureID             string   `json:"feature_id"`
+	Interaction           string   `json:"interaction"`
+	BackendOperationIDs   []string `json:"backend_operation_ids"`
+	RequiredMutability    string   `json:"required_mutability"`
+	RequiredAuthorityMode string   `json:"required_authority_mode"`
+	RequiredTargetScope   string   `json:"required_target_scope"`
+	RequiredEvidence      []string `json:"required_evidence"`
+	ProposedCommandID     *string  `json:"proposed_command_id"`
+	ProposedGrammar       *string  `json:"proposed_grammar"`
+	ProposalOnly          *bool    `json:"proposal_only"`
+	RatificationRequired  *bool    `json:"ratification_required"`
+}
+
+type administrationSummary struct {
+	FeaturesChecked *uint64 `json:"features_checked"`
+	SurfacesChecked *uint64 `json:"surfaces_checked"`
+	Satisfied       *uint64 `json:"satisfied"`
+	Uncovered       *uint64 `json:"uncovered"`
+	Exempt          *uint64 `json:"exempt"`
+	Prohibited      *uint64 `json:"prohibited"`
+	Stale           *uint64 `json:"stale"`
+	Unresolved      *uint64 `json:"unresolved"`
+}
+
+type administrationResult struct {
+	Protocol                      string                            `json:"protocol"`
+	FormatVersion                 uint64                            `json:"format_version"`
+	SemanticSnapshotDigest        string                            `json:"semantic_snapshot_digest"`
+	ProfileDigest                 string                            `json:"profile_digest"`
+	ExpectedCommandRegistryDigest string                            `json:"expected_command_registry_digest"`
+	ObservedCommandRegistryDigest *string                           `json:"observed_command_registry_digest"`
+	EngineDescriptorDigests       []string                          `json:"engine_descriptor_digests"`
+	FeatureFindings               []administrationFinding           `json:"feature_findings"`
+	Surfaces                      []administrationSurface           `json:"surfaces"`
+	ModuleIntegrations            []administrationModuleIntegration `json:"module_integrations"`
+	RemediationConstraints        []administrationRemediation       `json:"remediation_constraints"`
+	Summary                       administrationSummary             `json:"summary"`
+	ReadOnly                      *bool                             `json:"read_only"`
+	Canonical                     *bool                             `json:"canonical"`
+	ResultDigest                  string                            `json:"result_digest"`
+}
+
+func validateSSFVAdministrationResult(result json.RawMessage) (bool, error) {
+	var value administrationResult
+	decoder := json.NewDecoder(bytes.NewReader(result))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&value); err != nil {
+		return false, fmt.Errorf("SSFV administration-check result violates the implemented safety contract: %w", err)
+	}
+	if err := decoder.Decode(&struct{}{}); err != io.EOF {
+		return false, fmt.Errorf("SSFV administration-check result contains trailing JSON")
+	}
+	if value.Protocol != "symphony.knowledge.administration-coverage-result.v1" ||
+		value.FormatVersion != 1 || !validTaggedDigest(value.SemanticSnapshotDigest) ||
+		!validTaggedDigest(value.ProfileDigest) ||
+		!validTaggedDigest(value.ExpectedCommandRegistryDigest) ||
+		(value.ObservedCommandRegistryDigest != nil && !validTaggedDigest(*value.ObservedCommandRegistryDigest)) ||
+		value.EngineDescriptorDigests == nil || len(value.EngineDescriptorDigests) > 1024 ||
+		value.FeatureFindings == nil || len(value.FeatureFindings) > 8192 ||
+		value.Surfaces == nil || len(value.Surfaces) > 8192 ||
+		value.ModuleIntegrations == nil || len(value.ModuleIntegrations) > 1024 ||
+		value.RemediationConstraints == nil || len(value.RemediationConstraints) > 8192 ||
+		!explicitTrue(value.ReadOnly) || !explicitFalse(value.Canonical) ||
+		!validTaggedDigest(value.ResultDigest) || !validAdministrationSummary(value.Summary) {
+		return false, fmt.Errorf("SSFV administration-check result violates the implemented safety contract")
+	}
+	if !uniqueValidValues(value.EngineDescriptorDigests, validTaggedDigest) {
+		return false, fmt.Errorf("SSFV administration-check descriptor digests are invalid or duplicated")
+	}
+	for _, finding := range value.FeatureFindings {
+		if !validAdministrationFinding(finding) {
+			return false, fmt.Errorf("SSFV administration-check feature finding is malformed")
+		}
+	}
+	for _, surface := range value.Surfaces {
+		if !validAdministrationSurface(surface) {
+			return false, fmt.Errorf("SSFV administration-check surface is malformed")
+		}
+	}
+	for _, integration := range value.ModuleIntegrations {
+		if !validAdministrationModule(integration) {
+			return false, fmt.Errorf("SSFV administration-check module integration is malformed")
+		}
+	}
+	for _, remediation := range value.RemediationConstraints {
+		if !validAdministrationRemediation(remediation) {
+			return false, fmt.Errorf("SSFV administration-check remediation constraint is malformed")
+		}
+	}
+	if err := validateSSFVEmbeddedDigest(result, "result_digest", value.ResultDigest); err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
+func validAdministrationFinding(value administrationFinding) bool {
+	if value.FindingID == "" || len(value.FindingID) > 256 || value.Reason == "" ||
+		len(value.Reason) > 4096 || value.Missing == nil || len(value.Missing) > 64 ||
+		!ssfvOneOf(value.Severity, "information", "warning", "violation") ||
+		!explicitTrue(value.ProposalOnly) || !explicitTrue(value.RatificationRequired) {
+		return false
+	}
+	if value.FeatureID != nil && !strings.HasPrefix(*value.FeatureID, "ssfv:") {
+		return false
+	}
+	if value.Interaction != nil && !validAdministrationInteraction(*value.Interaction) {
+		return false
+	}
+	if value.EngineOperationID != nil && !strings.HasPrefix(*value.EngineOperationID, "engop:") {
+		return false
+	}
+	if value.CommandID != nil && !strings.HasPrefix(*value.CommandID, "qxcmd:") {
+		return false
+	}
+	allowedMissing := func(item string) bool {
+		return ssfvOneOf(item, "feature_registration", "administration_expectation", "qxctl_command",
+			"engine_operation", "input_protocol", "output_protocol", "result_validator",
+			"authorization_binding", "expected_state", "recovery_route", "noninteractive_support",
+			"json_output", "implementation_evidence", "test_evidence", "skvi_route")
+	}
+	return uniqueValidValues(value.Missing, allowedMissing)
+}
+
+func validAdministrationSurface(value administrationSurface) bool {
+	if !strings.HasPrefix(value.FeatureID, "ssfv:") || !validAdministrationInteraction(value.Interaction) ||
+		!ssfvOneOf(value.DesignState, "satisfied", "uncovered", "exempt", "prohibited", "stale", "unresolved") ||
+		!ssfvOneOf(value.LiveState, "not_evaluated", "ready", "qxctl_absent", "not_installed", "not_bound", "incompatible", "unreachable", "disabled", "unknown") ||
+		!ssfvOneOf(value.AuthorizationState, "not_evaluated", "allowed", "denied", "expired", "indeterminate") ||
+		value.CommandIDs == nil || len(value.CommandIDs) > 256 ||
+		value.EngineOperationIDs == nil || len(value.EngineOperationIDs) > 256 ||
+		value.Findings == nil || len(value.Findings) > 256 ||
+		!uniqueValidValues(value.CommandIDs, func(item string) bool { return strings.HasPrefix(item, "qxcmd:") }) ||
+		!uniqueValidValues(value.EngineOperationIDs, func(item string) bool { return strings.HasPrefix(item, "engop:") }) {
+		return false
+	}
+	for _, finding := range value.Findings {
+		if !validAdministrationFinding(finding) {
+			return false
+		}
+	}
+	return true
+}
+
+func validAdministrationModule(value administrationModuleIntegration) bool {
+	if value.ModuleID == "" || len(value.ModuleID) > 256 || value.DockingReady == nil ||
+		value.Findings == nil || len(value.Findings) > 256 ||
+		!ssfvOneOf(value.IntegrationState, "unassessed", "descriptor_invalid", "semantic_registration_required",
+			"administration_unintegrated", "integration_ready", "blocked_incompatible", "retired") {
+		return false
+	}
+	if value.IntegrationState == "integration_ready" {
+		if !*value.DockingReady || value.DescriptorDigest == nil || !validTaggedDigest(*value.DescriptorDigest) {
+			return false
+		}
+	} else if *value.DockingReady {
+		return false
+	}
+	if value.DescriptorDigest != nil && !validTaggedDigest(*value.DescriptorDigest) {
+		return false
+	}
+	for _, finding := range value.Findings {
+		if !validAdministrationFinding(finding) {
+			return false
+		}
+	}
+	return true
+}
+
+func validAdministrationRemediation(value administrationRemediation) bool {
+	if value.RemediationID == "" || len(value.RemediationID) > 256 ||
+		len(value.FindingIDs) == 0 || len(value.FindingIDs) > 256 ||
+		!uniqueValidValues(value.FindingIDs, func(item string) bool { return item != "" && len(item) <= 256 }) ||
+		!strings.HasPrefix(value.FeatureID, "ssfv:") || !validAdministrationInteraction(value.Interaction) ||
+		value.BackendOperationIDs == nil || len(value.BackendOperationIDs) > 256 ||
+		!uniqueValidValues(value.BackendOperationIDs, func(item string) bool { return strings.HasPrefix(item, "engop:") }) ||
+		!ssfvOneOf(value.RequiredMutability, "read_only", "evidence_only", "proposal_only", "permission_backed_mutation", "prohibited") ||
+		!ssfvOneOf(value.RequiredAuthorityMode, "none", "target_host_permission", "ssiag") ||
+		!ssfvOneOf(value.RequiredTargetScope, "local", "target_host") ||
+		value.RequiredEvidence == nil || len(value.RequiredEvidence) > 64 ||
+		value.ProposedCommandID != nil || value.ProposedGrammar != nil ||
+		!explicitTrue(value.ProposalOnly) || !explicitTrue(value.RatificationRequired) {
+		return false
+	}
+	allowedEvidence := func(item string) bool {
+		return ssfvOneOf(item, "command_spec", "cobra_leaf", "feature_binding", "backend_binding",
+			"input_protocol", "output_protocol", "result_validator", "expected_state",
+			"authorization_binding", "recovery_route", "noninteractive_support", "json_output",
+			"implementation_test", "help_compatibility", "documentation", "skvi_route")
+	}
+	return uniqueValidValues(value.RequiredEvidence, allowedEvidence)
+}
+
+func validAdministrationSummary(value administrationSummary) bool {
+	return value.FeaturesChecked != nil && value.SurfacesChecked != nil && value.Satisfied != nil &&
+		value.Uncovered != nil && value.Exempt != nil && value.Prohibited != nil &&
+		value.Stale != nil && value.Unresolved != nil
+}
+
+func validAdministrationInteraction(value string) bool {
+	return ssfvOneOf(value, "discover", "inspect", "query", "validate", "configure", "propose", "invoke", "apply", "lifecycle", "recover")
+}
+
+func ssfvOneOf(value string, allowed ...string) bool {
+	for _, candidate := range allowed {
+		if value == candidate {
+			return true
+		}
+	}
+	return false
+}
+
+func uniqueValidValues(values []string, valid func(string) bool) bool {
+	seen := make(map[string]struct{}, len(values))
+	for _, value := range values {
+		if !valid(value) {
+			return false
+		}
+		if _, duplicate := seen[value]; duplicate {
+			return false
+		}
+		seen[value] = struct{}{}
+	}
+	return true
 }
 
 func validateSSFVEmbeddedDigest(result json.RawMessage, field, supplied string) error {

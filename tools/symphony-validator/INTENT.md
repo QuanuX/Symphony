@@ -28,7 +28,7 @@ The validator supports direct invocation and exact receipt-validated qxctl media
 The validator provides deterministic exit codes and line-oriented evidence suitable for local preflight. CI and PR-gate wiring remain separate integration work.
 
 ## Relationship to SKV / SKVI / SCLV / SACV / SODV / SSFV
-The validator does not replace SKV / SKVI / SCLV / SACV / SODV / SSFV records. It provides evidence to support them. For SSFV it verifies required vector/engine contract surfaces, qxctl integration anchors, SKVI coverage, and the exact schema allowlist; semantic feature validation remains in the independently installed engine.
+The validator does not replace SKV / SKVI / SCLV / SACV / SODV / SSFV records. It provides evidence to support them. For SSFV it verifies required vector/engine contract surfaces, qxctl integration anchors, SKVI coverage, the exact schema allowlist, and the static digest/set/reference closure among the current SSFV registry, feature-administration profile, and expected qxctl command registry. Semantic feature validation and decisions about which interactions or names should exist remain in reviewed contracts and the independently installed engine.
 
 ## Relationship to Module Sovereignty
 The validator sits outside module logic and respects module sovereignty by only observing declarative boundaries.
@@ -49,6 +49,8 @@ The validator performs deterministic caller-authority regression checks on activ
 The validator independently checks the canonical SACV registry and returns exit code 22 for malformed entry grammar, unsafe or duplicate identities, owner/path drift, invalid classifications, absent SKVI coverage, or unreadable owner documents. OpenAPI semantic validation remains in the independently installed SACV engine.
 
 The validator independently checks the canonical SODV release ledger and returns exit code 23 for malformed or duplicate records, type/status or time-order drift, invalid lineage, publication-unit mismatch, duplicate completion, or unreadable ledger state. External provider observation, proposals, recovery recommendations, and completion decisions remain outside the validator.
+
+The validator independently checks the declarative feature-administration closure and returns exit code 24 for unreadable or partial surfaces, stale/self-invalid digests, profile/registry set drift, malformed or unsorted expected command identity, unresolved bindings/references, inheritance defects, or unreviewed debt under an enforcement gate. Report-only unreviewed entries remain visible warnings. The checker uses bounded no-follow reads and the shared C++ JSON/digest foundation; it never executes qxctl, requires no installed client, and has no authority to infer semantic coverage, invent names, or choose a remedy.
 
 ## Relationship to SPEC.md
 `tools/symphony-validator/SPEC.md` is the normative source for the checker. It defines discovery and historical-record boundaries, deterministic matching limits, evidence, fail-visible behavior, exit precedence, and the read-only, non-remediating posture.

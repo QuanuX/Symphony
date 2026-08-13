@@ -9,6 +9,7 @@ VALIDATOR_BIN=${SYMPHONY_VALIDATOR_BIN:-"$VALIDATOR_ROOT/build/symphony-validato
 SCLV_TEST_BIN=${SCLV_TEMPORAL_TEST_BIN:-"$VALIDATOR_ROOT/build/sclv-temporal-tests"}
 CALLER_AUTHORITY_TEST_BIN=${CALLER_AUTHORITY_TEST_BIN:-"$VALIDATOR_ROOT/build/caller-authority-tests"}
 SODV_RELEASE_TEST_BIN=${SODV_RELEASE_TEST_BIN:-"$VALIDATOR_ROOT/build/sodv-release-tests"}
+FEATURE_ADMIN_TEST_BIN=${FEATURE_ADMINISTRATION_TEST_BIN:-"$VALIDATOR_ROOT/build/feature-administration-tests"}
 
 cd "$VALIDATOR_ROOT"
 
@@ -23,6 +24,9 @@ echo "Caller authority tests passed"
 
 "$SODV_RELEASE_TEST_BIN" "$REPO_ROOT"
 echo "SODV release validator tests passed"
+
+"$FEATURE_ADMIN_TEST_BIN" "$REPO_ROOT"
+echo "Feature administration validator tests passed"
 
 
 # Verify --help
@@ -74,6 +78,9 @@ TEMP_FIXTURE=$(mktemp -d)
 trap 'rm -rf "$TEMP_FIXTURE"' EXIT
 cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
 cp -a "$REPO_ROOT/knowledge/ssfv" "$TEMP_FIXTURE/knowledge/"
+cp "$REPO_ROOT/knowledge/FEATURE-ADMINISTRATION-PROFILE.json" "$TEMP_FIXTURE/knowledge/"
+mkdir -p "$TEMP_FIXTURE/tools/qxctl"
+cp "$REPO_ROOT/tools/qxctl/COMMANDS.json" "$TEMP_FIXTURE/tools/qxctl/"
 printf '{}\n' > "$TEMP_FIXTURE/knowledge/ssfv/schemas/v2/unratified.schema.json"
 set +e
 OUT_SSFV_SCHEMA=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" 2>&1)
@@ -162,6 +169,39 @@ rm -rf "$TEMP_FIXTURE"
 trap - EXIT
 echo "SODV release-ledger validation passed"
 
+# Verify feature-administration contract regression (exit 24). The checked-in
+# expected registry is read as data; the validator never executes qxctl.
+TEMP_FIXTURE=$(mktemp -d)
+trap 'rm -rf "$TEMP_FIXTURE"' EXIT
+cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
+cp -a "$REPO_ROOT/knowledge/ssfv" "$TEMP_FIXTURE/knowledge/"
+cp "$REPO_ROOT/knowledge/FEATURE-ADMINISTRATION-PROFILE.json" "$TEMP_FIXTURE/knowledge/"
+mkdir -p "$TEMP_FIXTURE/tools/qxctl"
+sed 's/"registry_digest": "sha256:/"registry_digest": "sha257:/' \
+    "$REPO_ROOT/tools/qxctl/COMMANDS.json" > "$TEMP_FIXTURE/tools/qxctl/COMMANDS.json"
+set +e
+OUT_FEATURE_ADMIN=$(
+    "$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" 2>&1
+)
+EXIT_CODE=$?
+set -e
+if [ $EXIT_CODE -ne 24 ]; then
+    echo "error: feature-administration violation should exit 24, got $EXIT_CODE"
+    exit 1
+fi
+if ! printf '%s\n' "$OUT_FEATURE_ADMIN" |
+    grep "evidence violation feature_administration.commands_digest" >/dev/null; then
+    echo "error: missing expected feature-administration digest evidence"
+    exit 1
+fi
+if [ "$(printf '%s\n' "$OUT_FEATURE_ADMIN" | grep -c "^summary ")" -ne 1 ]; then
+    echo "error: invalid feature-administration fixture should have exactly one summary footer"
+    exit 1
+fi
+rm -rf "$TEMP_FIXTURE"
+trap - EXIT
+echo "feature-administration validation passed"
+
 # Verify current repo
 OUT_REPO=$("$VALIDATOR_BIN" check --repo "$REPO_ROOT")
 if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "^summary ")" -ne 1 ]; then
@@ -176,12 +216,18 @@ if ! printf '%s\n' "$OUT_REPO" | grep "caller_authority.scan_complete " | grep "
     echo "error: current repo missing expected caller_authority.scan_complete status or findings=0"
     exit 1
 fi
-if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 137 ]; then
-    echo "error: current repo should authorize exactly 137 canonical JSON artifacts"
+if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 143 ]; then
+    echo "error: current repo should authorize exactly 143 canonical JSON artifacts"
     exit 1
 fi
 if ! printf '%s\n' "$OUT_REPO" | grep "sodv.releases.scan_complete records=3 transactions=1 violations=0" >/dev/null; then
     echo "error: current repo missing expected SODV release-ledger completion evidence"
+    exit 1
+fi
+if ! printf '%s\n' "$OUT_REPO" |
+    grep "feature_administration.scan_complete features=" |
+    grep "violations=0" >/dev/null; then
+    echo "error: current repo missing expected feature-administration completion evidence"
     exit 1
 fi
 echo "current repo passed strict validation"

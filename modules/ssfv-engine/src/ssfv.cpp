@@ -3,6 +3,7 @@
 #include "symphony/knowledge/engine/digest.hpp"
 #include "symphony/knowledge/engine/error.hpp"
 #include "symphony/knowledge/engine/limits.hpp"
+#include "symphony/knowledge/engine/operation.hpp"
 #include "symphony/knowledge/engine/path.hpp"
 #include "symphony/knowledge/engine/temporal.hpp"
 
@@ -46,6 +47,10 @@ constexpr const char* semantic_snapshot_protocol = "symphony.ssfv.semantic-snaps
 constexpr const char* check_protocol = "symphony.ssfv.check-result.v2";
 constexpr const char* diff_protocol = "symphony.ssfv.diff-result.v2";
 constexpr const char* graph_protocol = "symphony.ssfv.graph-projection.v1";
+constexpr const char* administration_coverage_protocol =
+    "symphony.knowledge.administration-coverage-result.v1";
+constexpr const char* administration_coverage_input_protocol =
+    "symphony.knowledge.administration-coverage-input.v1";
 constexpr const char* proposal_protocol = "symphony.knowledge.proposal.v1";
 constexpr std::string_view begin_marker = "<!-- symphony:ssfv:feature-file:v1:begin -->";
 constexpr std::string_view end_marker = "<!-- symphony:ssfv:feature-file:v1:end -->";
@@ -257,6 +262,20 @@ bool safe_token(std::string_view value, std::size_t max_bytes = engine::Limits::
     });
 }
 
+bool safe_language(std::string_view value) {
+    if (value.empty() || value.size() > 64U) {
+        return false;
+    }
+    return std::all_of(value.begin(), value.end(), [](const unsigned char character) {
+        const bool alphanumeric =
+            (character >= 'a' && character <= 'z') ||
+            (character >= 'A' && character <= 'Z') ||
+            (character >= '0' && character <= '9');
+        return alphanumeric || character == '+' || character == '.' ||
+               character == '#' || character == '_' || character == '-';
+    });
+}
+
 bool strict_utc(std::string_view value) {
     return engine::is_utc_seconds(value);
 }
@@ -291,6 +310,46 @@ bool safe_feature_id(std::string_view value) {
         const bool alphanumeric =
             (character >= 'a' && character <= 'z') ||
             (character >= '0' && character <= '9');
+        if (!alphanumeric && character != '.' && character != '-') {
+            return false;
+        }
+        if (character == '.' || character == '-') {
+            if (separator) {
+                return false;
+            }
+            separator = true;
+        } else {
+            separator = false;
+        }
+    }
+    return !separator;
+}
+
+bool safe_prefixed_id(std::string_view value, std::string_view prefix) {
+    if (!value.starts_with(prefix) || value.size() > 256U) {
+        return false;
+    }
+    const auto namespace_end = value.find(':', prefix.size());
+    if (namespace_end == std::string_view::npos || namespace_end == prefix.size() ||
+        namespace_end + 1U >= value.size()) {
+        return false;
+    }
+    const auto name_space = value.substr(prefix.size(), namespace_end - prefix.size());
+    if (name_space.size() > 63U || name_space.front() < 'a' || name_space.front() > 'z' ||
+        !std::all_of(name_space.begin() + 1, name_space.end(), [](const unsigned char character) {
+            return (character >= 'a' && character <= 'z') ||
+                   (character >= '0' && character <= '9') || character == '-';
+        })) {
+        return false;
+    }
+    const auto key = value.substr(namespace_end + 1U);
+    if (key.front() < 'a' || key.front() > 'z') {
+        return false;
+    }
+    bool separator = false;
+    for (const unsigned char character : key) {
+        const bool alphanumeric = (character >= 'a' && character <= 'z') ||
+                                  (character >= '0' && character <= '9');
         if (!alphanumeric && character != '.' && character != '-') {
             return false;
         }
@@ -2262,6 +2321,1233 @@ engine::Json graph(const engine::Json& payload, std::int64_t deadline_unix_ms) {
     return result;
 }
 
+void require_deadline(std::int64_t deadline_unix_ms) {
+    if (engine::unix_time_ms() >= deadline_unix_ms) {
+        throw engine::Error("request.deadline_expired", "request deadline has expired", 3);
+    }
+}
+
+void verify_self_digest(const engine::Json& document, const char* field,
+                        const std::string& code) {
+    if (!document.contains(field) || !document.at(field).is_string() ||
+        !tagged_digest(document.at(field).get_ref<const std::string&>())) {
+        throw engine::Error(code, std::string(field) + " must be a tagged SHA-256", 4);
+    }
+    auto canonical = document;
+    const auto supplied = canonical.at(field).get<std::string>();
+    canonical.erase(field);
+    if (engine::tagged_sha256(canonical.dump()) != supplied) {
+        throw engine::Error(code, std::string(field) + " does not bind the document", 4);
+    }
+}
+
+std::vector<std::string> strict_string_array(
+    const engine::Json& value, std::size_t maximum, const std::string& code,
+    const std::function<bool(std::string_view)>& validator, bool sorted = true) {
+    if (!value.is_array() || value.size() > maximum) {
+        throw engine::Error(code, "array cardinality is invalid", 4);
+    }
+    std::vector<std::string> result;
+    for (const auto& item : value) {
+        if (!item.is_string() || !validator(item.get_ref<const std::string&>())) {
+            throw engine::Error(code, "array contains an invalid value", 4);
+        }
+        result.push_back(item.get<std::string>());
+    }
+    if (sorted && (!std::is_sorted(result.begin(), result.end()) ||
+                   std::adjacent_find(result.begin(), result.end()) != result.end())) {
+        throw engine::Error(code, "array must be sorted and unique", 4);
+    }
+    return result;
+}
+
+struct ParsedCommandRegistry final {
+    std::string kind;
+    std::string digest;
+    std::map<std::string, engine::Json> commands;
+};
+
+ParsedCommandRegistry parse_command_registry(const engine::Json& value,
+                                              const std::string& required_kind) {
+    const auto version = [](std::string_view item) {
+        return !item.empty() && item.size() <= 64U &&
+            std::all_of(item.begin(), item.end(), [](const unsigned char character) {
+                return (character >= '0' && character <= '9') ||
+                       (character >= 'A' && character <= 'Z') ||
+                       (character >= 'a' && character <= 'z') ||
+                       character == '.' || character == '+' || character == '-';
+            });
+    };
+    require_exact_fields(value, std::set<std::string>{
+        "protocol", "format_version", "registry_kind", "client_id", "client_version",
+        "client_trust", "executable_digest", "receipt_digest", "commands", "registry_digest",
+    }, "administration.command_registry.field_set");
+    if (value.at("protocol") != "symphony.qxctl.command-registry.v1" ||
+        value.at("format_version") != 1 || value.at("registry_kind") != required_kind ||
+        value.at("client_id") != "qxctl" || !value.at("commands").is_array() ||
+        value.at("commands").size() > 1024U) {
+        throw engine::Error("administration.command_registry.identity",
+                            "command registry identity or cardinality is invalid", 4);
+    }
+    if (!value.at("client_trust").is_string() ||
+        !std::set<std::string>{"receipted", "unreceipted"}.contains(
+            value.at("client_trust").get<std::string>())) {
+        throw engine::Error("administration.command_registry.identity",
+                            "command registry client trust is invalid", 4);
+    }
+    if (required_kind == "expected") {
+        if (!value.at("client_version").is_null() ||
+            value.at("client_trust") != "unreceipted" ||
+            !value.at("executable_digest").is_null() ||
+            !value.at("receipt_digest").is_null()) {
+            throw engine::Error("administration.command_registry.identity",
+                                "expected command registry contains observed identity", 4);
+        }
+    } else if (!value.at("client_version").is_string() ||
+               !version(value.at("client_version").get_ref<const std::string&>()) ||
+               !value.at("executable_digest").is_string() ||
+               !tagged_digest(value.at("executable_digest").get_ref<const std::string&>())) {
+        throw engine::Error("administration.command_registry.identity",
+                            "observed qxctl identity is invalid", 4);
+    }
+    if (!value.at("receipt_digest").is_null() &&
+        (!value.at("receipt_digest").is_string() ||
+         !tagged_digest(value.at("receipt_digest").get_ref<const std::string&>()))) {
+        throw engine::Error("administration.command_registry.identity",
+                            "command registry receipt digest is invalid", 4);
+    }
+    if ((value.at("client_trust") == "receipted") !=
+        value.at("receipt_digest").is_string()) {
+        throw engine::Error("administration.command_registry.identity",
+                            "command registry trust and receipt evidence differ", 4);
+    }
+    verify_self_digest(value, "registry_digest", "administration.command_registry.digest");
+
+    ParsedCommandRegistry result{required_kind,
+        value.at("registry_digest").get<std::string>(), {}};
+    std::string previous;
+    const auto stable = [](std::string_view item) { return safe_token(item, 256U); };
+    const auto printable = [](std::string_view item) {
+        return printable_bounded(item, 1024U);
+    };
+    for (const auto& command : value.at("commands")) {
+        require_exact_fields(command, std::set<std::string>{
+            "command_id", "status", "introduced_in", "deprecated_in", "replacement_ids",
+            "grammar", "aliases", "visibility", "feature_bindings", "infrastructure_purpose",
+            "backend_operation_ids", "mutability", "authority_mode", "target_scope",
+            "input_protocols", "output_protocols", "result_validation_protocols",
+            "recovery_command_id", "noninteractive", "json_output",
+        }, "administration.command.field_set");
+        const auto command_id = require_string(command, "command_id", 256U);
+        if (!safe_prefixed_id(command_id, "qxcmd:") ||
+            (!previous.empty() && command_id <= previous)) {
+            throw engine::Error("administration.command.identity",
+                                "command IDs must be valid, sorted, and unique", 4);
+        }
+        previous = command_id;
+        for (const auto* field : {"status", "visibility",
+                                  "mutability", "authority_mode", "target_scope"}) {
+            static_cast<void>(require_string(command, field, 4096U));
+        }
+        if (!command.at("introduced_in").is_string() ||
+            !version(command.at("introduced_in").get_ref<const std::string&>())) {
+            throw engine::Error("administration.command.lifecycle",
+                                "introduced version is invalid", 4);
+        }
+        if (!command.at("grammar").is_null() &&
+            (!command.at("grammar").is_string() ||
+             !printable_bounded(command.at("grammar").get_ref<const std::string&>(), 1024U))) {
+            throw engine::Error("administration.command.grammar", "command grammar is invalid", 4);
+        }
+        const auto status = command.at("status").get<std::string>();
+        if (!std::set<std::string>{"experimental", "stable", "deprecated", "retired"}
+                 .contains(status) ||
+            !std::set<std::string>{"public", "hidden"}.contains(
+                command.at("visibility").get<std::string>()) ||
+            !std::set<std::string>{"read_only", "evidence_only", "proposal_only",
+                "permission_backed_mutation", "prohibited"}.contains(
+                command.at("mutability").get<std::string>()) ||
+            !std::set<std::string>{"none", "target_host_permission", "ssiag"}.contains(
+                command.at("authority_mode").get<std::string>()) ||
+            !std::set<std::string>{"local", "target_host"}.contains(
+                command.at("target_scope").get<std::string>()) ||
+            (status == "retired") != command.at("grammar").is_null()) {
+            throw engine::Error("administration.command.classification",
+                                "command classification or grammar lifecycle is invalid", 4);
+        }
+        if (!command.at("deprecated_in").is_null() &&
+            (!command.at("deprecated_in").is_string() ||
+             !version(command.at("deprecated_in").get_ref<const std::string&>()))) {
+            throw engine::Error("administration.command.lifecycle",
+                                "deprecated version is invalid", 4);
+        }
+        const bool deprecated = status == "deprecated" || status == "retired";
+        if (deprecated != command.at("deprecated_in").is_string()) {
+            throw engine::Error("administration.command.lifecycle",
+                                "command deprecation evidence differs from status", 4);
+        }
+        if (!command.at("infrastructure_purpose").is_null() &&
+            (!command.at("infrastructure_purpose").is_string() ||
+             !printable_bounded(command.at("infrastructure_purpose")
+                                   .get_ref<const std::string&>(), 4096U))) {
+            throw engine::Error("administration.command.purpose",
+                                "infrastructure purpose is invalid", 4);
+        }
+        if (!command.at("recovery_command_id").is_null() &&
+            (!command.at("recovery_command_id").is_string() ||
+             !safe_prefixed_id(command.at("recovery_command_id").get_ref<const std::string&>(),
+                               "qxcmd:"))) {
+            throw engine::Error("administration.command.recovery",
+                                "recovery command identity is invalid", 4);
+        }
+        for (const auto* field : {"replacement_ids", "backend_operation_ids"}) {
+            static_cast<void>(strict_string_array(command.at(field), 256U,
+                "administration.command.array", stable));
+        }
+        for (const auto* field : {"input_protocols", "output_protocols",
+                                  "result_validation_protocols"}) {
+            static_cast<void>(strict_string_array(command.at(field), 64U,
+                "administration.command.protocol", stable));
+        }
+        static_cast<void>(strict_string_array(command.at("aliases"), 32U,
+            "administration.command.alias", printable));
+        const auto replacements = strict_string_array(command.at("replacement_ids"), 32U,
+            "administration.command.replacements", [](std::string_view item) {
+                return safe_prefixed_id(item, "qxcmd:");
+            });
+        if (status == "deprecated" && replacements.empty()) {
+            throw engine::Error("administration.command.lifecycle",
+                                "deprecated command has no replacement", 4);
+        }
+        static_cast<void>(strict_string_array(command.at("backend_operation_ids"), 256U,
+            "administration.command.operations", [](std::string_view item) {
+                return safe_prefixed_id(item, "engop:");
+            }));
+        if (!command.at("feature_bindings").is_array() ||
+            command.at("feature_bindings").size() > 256U ||
+            !command.at("noninteractive").is_boolean() ||
+            !command.at("json_output").is_boolean()) {
+            throw engine::Error("administration.command.binding",
+                                "command binding or machine behavior is invalid", 4);
+        }
+        std::string previous_binding;
+        for (const auto& binding : command.at("feature_bindings")) {
+            require_exact_fields(binding, std::set<std::string>{"feature_id", "interaction"},
+                                 "administration.command.binding_fields");
+            const auto feature_id = require_string(binding, "feature_id", 256U);
+            const auto interaction = require_string(binding, "interaction", 32U, true);
+            const auto key = feature_id + "\n" + interaction;
+            if (!safe_feature_id(feature_id) ||
+                !std::set<std::string>{"discover", "inspect", "query", "validate", "configure",
+                    "propose", "invoke", "apply", "lifecycle", "recover"}.contains(interaction) ||
+                (!previous_binding.empty() && key <= previous_binding)) {
+                throw engine::Error("administration.command.binding",
+                                    "command feature binding is invalid or unsorted", 4);
+            }
+            previous_binding = key;
+        }
+        const bool has_bindings = !command.at("feature_bindings").empty();
+        const bool has_purpose = command.at("infrastructure_purpose").is_string();
+        if (has_bindings == has_purpose) {
+            throw engine::Error("administration.command.purpose",
+                                "command must bind features or one infrastructure purpose", 4);
+        }
+        result.commands.emplace(command_id, command);
+    }
+    for (const auto& [command_id, command] : result.commands) {
+        static_cast<void>(command_id);
+        for (const auto& replacement : command.at("replacement_ids")) {
+            if (!result.commands.contains(replacement.get<std::string>())) {
+                throw engine::Error("administration.command.lifecycle",
+                                    "command replacement identity is absent", 4);
+            }
+        }
+        if (command.at("recovery_command_id").is_string() &&
+            !result.commands.contains(command.at("recovery_command_id").get<std::string>())) {
+            throw engine::Error("administration.command.recovery",
+                                "recovery command identity is absent", 4);
+        }
+    }
+    return result;
+}
+
+struct AdministrationExpectation final {
+    std::string feature_id;
+    std::string interaction;
+    std::string requirement;
+    std::string delivery;
+    std::vector<std::string> command_ids;
+    std::vector<std::string> engine_operation_ids;
+    std::optional<std::string> inherited_from;
+};
+
+struct ParsedProfile final {
+    std::string digest;
+    std::string registry_digest;
+    std::string forward_gate;
+    std::map<std::string, std::vector<AdministrationExpectation>> features;
+};
+
+const AdministrationExpectation& resolve_expectation(
+    const ParsedProfile& profile, const AdministrationExpectation& expectation) {
+    const AdministrationExpectation* resolved = &expectation;
+    while (resolved->inherited_from) {
+        const auto parent = profile.features.find(*resolved->inherited_from);
+        if (parent == profile.features.end()) {
+            throw engine::Error("administration.profile.inheritance",
+                                "administration inheritance target is absent", 4);
+        }
+        const auto inherited = std::find_if(
+            parent->second.begin(), parent->second.end(),
+            [&](const AdministrationExpectation& candidate) {
+                return candidate.interaction == expectation.interaction &&
+                       candidate.requirement == expectation.requirement;
+            });
+        if (inherited == parent->second.end()) {
+            throw engine::Error("administration.profile.inheritance",
+                                "inherited expectation classification differs", 4);
+        }
+        resolved = &*inherited;
+    }
+    return *resolved;
+}
+
+ParsedProfile parse_administration_profile(const engine::Json& value,
+                                           const ParsedSnapshot& snapshot) {
+    require_exact_fields(value, std::set<std::string>{
+        "protocol", "format_version", "profile_id", "ssfv_registry_digest",
+        "catalog_scope", "catalog_complete", "registered_feature_count", "forward_gate",
+        "features", "profile_digest",
+    }, "administration.profile.field_set");
+    if (value.at("protocol") != "symphony.knowledge.feature-administration-profile.v1" ||
+        value.at("format_version") != 1 ||
+        value.at("catalog_scope") != "registered_partial_catalog" ||
+        value.at("catalog_complete") != false ||
+        !value.at("registered_feature_count").is_number_unsigned() ||
+        value.at("registered_feature_count").get<std::size_t>() != snapshot.records.size() ||
+        !value.at("features").is_array() || value.at("features").size() > max_feature_records) {
+        throw engine::Error("administration.profile.identity",
+                            "administration profile identity or catalog binding is invalid", 4);
+    }
+    static_cast<void>(require_string(value, "profile_id", 256U, true));
+    const auto registry_digest = require_string(value, "ssfv_registry_digest", 71U);
+    const auto forward_gate = require_string(value, "forward_gate", 32U, true);
+    if (!tagged_digest(registry_digest) ||
+        !std::set<std::string>{"report_only", "enforce_new_records", "enforce_all_records"}
+             .contains(forward_gate)) {
+        throw engine::Error("administration.profile.identity",
+                            "administration profile digest or forward gate is invalid", 4);
+    }
+    verify_self_digest(value, "profile_digest", "administration.profile.digest");
+    ParsedProfile result{value.at("profile_digest").get<std::string>(),
+                         registry_digest, forward_gate, {}};
+    std::string previous_feature;
+    static const std::set<std::string> interactions = {
+        "discover", "inspect", "query", "validate", "configure",
+        "propose", "invoke", "apply", "lifecycle", "recover",
+    };
+    static const std::set<std::string> requirements = {
+        "required", "optional", "prohibited", "not_applicable",
+    };
+    static const std::set<std::string> deliveries = {
+        "direct", "composed", "delegated", "lifecycle_only", "observation_only",
+        "runtime_only", "system_orchestrated", "none", "unreviewed",
+    };
+    for (const auto& feature : value.at("features")) {
+        require_exact_fields(feature, std::set<std::string>{"feature_id", "expectations"},
+                             "administration.profile.feature_fields");
+        const auto feature_id = require_string(feature, "feature_id", 256U);
+        if (!safe_feature_id(feature_id) || !snapshot.records.contains(feature_id) ||
+            (!previous_feature.empty() && feature_id <= previous_feature) ||
+            !feature.at("expectations").is_array() ||
+            feature.at("expectations").size() > 10U) {
+            throw engine::Error("administration.profile.feature",
+                                "profile feature is invalid, absent, or unsorted", 4);
+        }
+        previous_feature = feature_id;
+        std::string previous_interaction;
+        auto& expectations = result.features[feature_id];
+        for (const auto& expectation : feature.at("expectations")) {
+            require_exact_fields(expectation, std::set<std::string>{
+                "interaction", "requirement", "delivery", "command_ids",
+                "engine_operation_ids", "inherited_from_feature_id", "rationale", "evidence",
+            }, "administration.profile.expectation_fields");
+            AdministrationExpectation parsed;
+            parsed.feature_id = feature_id;
+            parsed.interaction = require_string(expectation, "interaction", 32U, true);
+            parsed.requirement = require_string(expectation, "requirement", 32U, true);
+            parsed.delivery = require_string(expectation, "delivery", 32U, true);
+            if (!interactions.contains(parsed.interaction) ||
+                !requirements.contains(parsed.requirement) ||
+                !deliveries.contains(parsed.delivery) ||
+                (!previous_interaction.empty() && parsed.interaction <= previous_interaction)) {
+                throw engine::Error("administration.profile.expectation",
+                                    "profile expectation classification is invalid or unsorted", 4);
+            }
+            previous_interaction = parsed.interaction;
+            parsed.command_ids = strict_string_array(expectation.at("command_ids"), 256U,
+                "administration.profile.command_ids", [](std::string_view item) {
+                    return safe_prefixed_id(item, "qxcmd:");
+                });
+            parsed.engine_operation_ids = strict_string_array(
+                expectation.at("engine_operation_ids"), 256U,
+                "administration.profile.engine_operation_ids", [](std::string_view item) {
+                    return safe_prefixed_id(item, "engop:");
+                });
+            if (!expectation.at("inherited_from_feature_id").is_null()) {
+                if (!expectation.at("inherited_from_feature_id").is_string() ||
+                    !safe_feature_id(expectation.at("inherited_from_feature_id")
+                                         .get_ref<const std::string&>())) {
+                    throw engine::Error("administration.profile.inheritance",
+                                        "inherited feature identity is invalid", 4);
+                }
+                parsed.inherited_from =
+                    expectation.at("inherited_from_feature_id").get<std::string>();
+            }
+            const auto rationale = require_string(expectation, "rationale", 4096U);
+            static_cast<void>(rationale);
+            static_cast<void>(strict_string_array(expectation.at("evidence"), 256U,
+                "administration.profile.evidence", [](std::string_view item) {
+                    return printable_bounded(item, 4096U);
+                }));
+            const bool terminal = parsed.requirement == "prohibited" ||
+                                  parsed.requirement == "not_applicable";
+            if (terminal && (parsed.delivery != "none" || !parsed.command_ids.empty() ||
+                             !parsed.engine_operation_ids.empty() || parsed.inherited_from)) {
+                throw engine::Error("administration.profile.disposition",
+                                    "prohibited or not-applicable expectation has delivery", 4);
+            }
+            if (parsed.requirement == "required" && parsed.delivery == "none") {
+                throw engine::Error("administration.profile.disposition",
+                                    "required expectation is unreviewed or has no delivery", 4);
+            }
+            if (parsed.delivery == "unreviewed" &&
+                (!parsed.command_ids.empty() || !parsed.engine_operation_ids.empty() ||
+                 parsed.inherited_from)) {
+                throw engine::Error("administration.profile.disposition",
+                                    "unreviewed expectation contains resolved delivery", 4);
+            }
+            expectations.push_back(std::move(parsed));
+        }
+    }
+    for (const auto& [feature_id, expectations] : result.features) {
+        if (expectations.empty() && forward_gate != "report_only") {
+            throw engine::Error("administration.profile.forward_gate",
+                                "enforced profile contains an unreviewed feature", 4);
+        }
+        for (const auto& expectation : expectations) {
+            if (expectation.delivery == "unreviewed" && forward_gate != "report_only") {
+                throw engine::Error("administration.profile.forward_gate",
+                                    "enforced profile contains an unreviewed delivery", 4);
+            }
+            if (!expectation.inherited_from) {
+                continue;
+            }
+            std::set<std::string> visited{feature_id};
+            auto parent_id = *expectation.inherited_from;
+            while (true) {
+                if (!visited.insert(parent_id).second) {
+                    throw engine::Error("administration.profile.inheritance",
+                                        "administration inheritance contains a cycle", 4);
+                }
+                const auto parent = result.features.find(parent_id);
+                if (parent == result.features.end()) {
+                    throw engine::Error("administration.profile.inheritance",
+                                        "administration inheritance target is absent", 4);
+                }
+                const auto inherited = std::find_if(
+                    parent->second.begin(), parent->second.end(),
+                    [&](const AdministrationExpectation& candidate) {
+                        return candidate.interaction == expectation.interaction &&
+                               candidate.requirement == expectation.requirement;
+                    });
+                if (inherited == parent->second.end()) {
+                    throw engine::Error("administration.profile.inheritance",
+                                        "inherited expectation classification differs", 4);
+                }
+                if (!inherited->inherited_from) {
+                    break;
+                }
+                parent_id = *inherited->inherited_from;
+            }
+        }
+    }
+    if (result.features.size() != snapshot.records.size()) {
+        throw engine::Error("administration.profile.catalog_set",
+                            "profile feature set differs from the semantic snapshot", 4);
+    }
+    return result;
+}
+
+struct ParsedEngineDescriptor final {
+    std::string module_id;
+    std::string engine_id;
+    std::string engine_version;
+    std::string digest;
+    std::vector<engine::Json> operations;
+};
+
+ParsedEngineDescriptor parse_engine_descriptor(const engine::Json& value) {
+    require_exact_fields(value, std::set<std::string>{
+        "protocol", "format_version", "module_id", "engine_id", "vector_id",
+        "engine_version", "process_protocols", "contract_versions", "operations", "limits",
+        "supported_scopes", "language", "thermal_path", "canonical_apply_enabled",
+        "session_mutation_enabled", "network_listener", "descriptor_digest",
+    }, "administration.engine_descriptor.field_set");
+    if (value.at("protocol") != engine::descriptor_protocol_v2 ||
+        value.at("format_version") != 2 || !value.at("operations").is_array() ||
+        value.at("operations").empty() || value.at("operations").size() > 1024U ||
+        !value.at("thermal_path").is_string() ||
+        !std::set<std::string>{"freezing", "warm", "hot"}.contains(
+            value.at("thermal_path").get<std::string>())) {
+        throw engine::Error("administration.engine_descriptor.identity",
+                            "engine descriptor identity is invalid", 4);
+    }
+    ParsedEngineDescriptor result{
+        require_string(value, "module_id", 256U, true),
+        require_string(value, "engine_id", 256U, true),
+        require_string(value, "engine_version", 64U, true), "", {},
+    };
+    if ((!value.at("vector_id").is_null() &&
+         (!value.at("vector_id").is_string() ||
+          !safe_token(value.at("vector_id").get_ref<const std::string&>(), 256U))) ||
+        !value.at("language").is_string() ||
+        !safe_language(value.at("language").get_ref<const std::string&>()) ||
+        !value.at("canonical_apply_enabled").is_boolean() ||
+        !value.at("session_mutation_enabled").is_boolean() ||
+        !value.at("network_listener").is_boolean()) {
+        throw engine::Error("administration.engine_descriptor.field",
+                            "engine descriptor field is invalid", 4);
+    }
+    const auto validate_array = [](const engine::Json& array, std::size_t minimum,
+                                   std::size_t maximum, std::size_t string_limit,
+                                   bool tokens, const std::string& code) {
+        if (!array.is_array() || array.size() < minimum || array.size() > maximum) {
+            throw engine::Error(code, "descriptor array cardinality is invalid", 4);
+        }
+        std::set<std::string> values;
+        for (const auto& item : array) {
+            if (!item.is_string() ||
+                (tokens && !safe_token(item.get_ref<const std::string&>(), string_limit)) ||
+                (!tokens && !printable_bounded(item.get_ref<const std::string&>(), string_limit)) ||
+                !values.insert(item.get<std::string>()).second) {
+                throw engine::Error(code, "descriptor array value is invalid or duplicated", 4);
+            }
+        }
+    };
+    validate_array(value.at("process_protocols"), 1U, 16U, 256U, true,
+                   "administration.engine_descriptor.process_protocols");
+    validate_array(value.at("contract_versions"), 1U, 64U, 256U, false,
+                   "administration.engine_descriptor.contract_versions");
+    validate_array(value.at("supported_scopes"), 1U, 3U, 16U, true,
+                   "administration.engine_descriptor.supported_scopes");
+    for (const auto& scope : value.at("supported_scopes")) {
+        if (!std::set<std::string>{"user", "system", "tops"}.contains(
+                scope.get<std::string>())) {
+            throw engine::Error("administration.engine_descriptor.supported_scopes",
+                                "descriptor scope is invalid", 4);
+        }
+    }
+    require_exact_fields(value.at("limits"), std::set<std::string>{
+        "request_bytes", "response_bytes", "json_depth", "json_values", "path_bytes",
+        "snapshot_files", "snapshot_file_bytes", "deadline_ahead_ms",
+    }, "administration.engine_descriptor.limit_fields");
+    for (const auto& [name, limit] : value.at("limits").items()) {
+        static_cast<void>(name);
+        const bool positive = limit.is_number_unsigned()
+            ? limit.get<std::uint64_t>() > 0U
+            : limit.is_number_integer() && limit.get<std::int64_t>() > 0;
+        if (!positive) {
+            throw engine::Error("administration.engine_descriptor.limit",
+                                "descriptor limit is not a positive integer", 4);
+        }
+    }
+    verify_self_digest(value, "descriptor_digest", "administration.engine_descriptor.digest");
+    result.digest = value.at("descriptor_digest").get<std::string>();
+    std::set<std::string> operation_ids;
+    std::set<std::string> operation_names;
+    for (const auto& operation : value.at("operations")) {
+        require_exact_fields(operation, std::set<std::string>{
+            "engine_operation_id", "operation_name", "availability", "feature_ids",
+            "administrative_interactions", "administration_disposition", "input_protocol",
+            "output_protocol", "mutability", "idempotency", "expected_state_required",
+            "authorization_requirement", "recovery_operation_id", "direct_invocation",
+            "thermal_path",
+        }, "administration.engine_operation.field_set");
+        const auto operation_id = require_string(operation, "engine_operation_id", 256U);
+        if (!safe_prefixed_id(operation_id, "engop:") ||
+            !operation_ids.insert(operation_id).second ||
+            !operation.at("feature_ids").is_array() ||
+            operation.at("feature_ids").size() > 256U ||
+            !operation.at("administrative_interactions").is_array() ||
+            operation.at("administrative_interactions").empty() ||
+            operation.at("administrative_interactions").size() > 10U) {
+            throw engine::Error("administration.engine_operation.identity",
+                                "engine operation identity or cardinality is invalid", 4);
+        }
+        std::set<std::string> feature_ids;
+        for (const auto& feature_id : operation.at("feature_ids")) {
+            if (!feature_id.is_string() ||
+                !safe_feature_id(feature_id.get_ref<const std::string&>()) ||
+                !feature_ids.insert(feature_id.get<std::string>()).second) {
+                throw engine::Error("administration.engine_operation.feature",
+                                    "engine operation feature identity is invalid or duplicated", 4);
+            }
+        }
+        for (const auto* field : {"operation_name", "availability", "administration_disposition",
+                                  "mutability", "idempotency",
+                                  "authorization_requirement", "direct_invocation", "thermal_path"}) {
+            static_cast<void>(require_string(operation, field, 256U, true));
+        }
+        if (!std::set<std::string>{"implemented", "reserved", "disabled"}.contains(
+                operation.at("availability").get<std::string>()) ||
+            !std::set<std::string>{"unreviewed", "qxctl_required", "lifecycle_only",
+                "runtime_only", "system_orchestrated", "prohibited", "not_applicable"}.contains(
+                operation.at("administration_disposition").get<std::string>()) ||
+            !std::set<std::string>{"read_only", "evidence_only", "proposal_only",
+                "permission_backed_mutation", "prohibited"}.contains(
+                operation.at("mutability").get<std::string>()) ||
+            !std::set<std::string>{"not_applicable", "idempotent",
+                "idempotent_with_invocation_id", "non_idempotent"}.contains(
+                operation.at("idempotency").get<std::string>()) ||
+            !std::set<std::string>{"none", "target_host_permission", "ssiag"}.contains(
+                operation.at("authorization_requirement").get<std::string>()) ||
+            !std::set<std::string>{"supported", "diagnostic_only", "prohibited"}.contains(
+                operation.at("direct_invocation").get<std::string>()) ||
+            !std::set<std::string>{"freezing", "warm", "hot"}.contains(
+                operation.at("thermal_path").get<std::string>())) {
+            throw engine::Error("administration.engine_operation.field",
+                                "engine operation classification is invalid", 4);
+        }
+        const auto operation_name = operation.at("operation_name").get<std::string>();
+        if (!operation_names.insert(operation_name).second ||
+            (operation.at("availability") == "implemented" &&
+             (operation.at("administration_disposition") == "prohibited" ||
+              operation.at("mutability") == "prohibited"))) {
+            throw engine::Error("administration.engine_operation.field",
+                                "engine operation identity or prohibition is invalid", 4);
+        }
+        for (const auto* field : {"input_protocol", "output_protocol"}) {
+            if (!operation.at(field).is_null() &&
+                (!operation.at(field).is_string() ||
+                 !safe_token(operation.at(field).get_ref<const std::string&>(), 256U))) {
+                throw engine::Error("administration.engine_operation.field",
+                                    "engine operation protocol identity is invalid", 4);
+            }
+        }
+        if (!operation.at("expected_state_required").is_boolean() ||
+            (!operation.at("recovery_operation_id").is_null() &&
+             (!operation.at("recovery_operation_id").is_string() ||
+              !safe_prefixed_id(operation.at("recovery_operation_id")
+                                    .get_ref<const std::string&>(), "engop:")))) {
+            throw engine::Error("administration.engine_operation.field",
+                                "engine operation field is invalid", 4);
+        }
+        std::set<std::string> interactions;
+        for (const auto& interaction : operation.at("administrative_interactions")) {
+            if (!interaction.is_string() ||
+                !std::set<std::string>{"discover", "inspect", "query", "validate", "configure",
+                    "propose", "invoke", "apply", "lifecycle", "recover"}
+                     .contains(interaction.get<std::string>()) ||
+                !interactions.insert(interaction.get<std::string>()).second) {
+                throw engine::Error("administration.engine_operation.field",
+                                    "administrative interaction is invalid", 4);
+            }
+        }
+        result.operations.push_back(operation);
+    }
+    for (const auto& operation : value.at("operations")) {
+        if (operation.at("recovery_operation_id").is_string() &&
+            !operation_ids.contains(operation.at("recovery_operation_id").get<std::string>())) {
+            throw engine::Error("administration.engine_operation.recovery",
+                                "engine recovery operation identity is absent", 4);
+        }
+    }
+    return result;
+}
+
+bool command_binds(const engine::Json& command, const std::string& feature_id,
+                   const std::string& interaction) {
+    return std::any_of(command.at("feature_bindings").begin(),
+                       command.at("feature_bindings").end(),
+                       [&](const engine::Json& binding) {
+        return binding.at("feature_id") == feature_id &&
+               binding.at("interaction") == interaction;
+    });
+}
+
+bool command_targets_operation(const engine::Json& command, const std::string& operation_id) {
+    return std::find(command.at("backend_operation_ids").begin(),
+                     command.at("backend_operation_ids").end(),
+                     engine::Json(operation_id)) != command.at("backend_operation_ids").end();
+}
+
+bool observed_command_compatible(const engine::Json& expected,
+                                 const engine::Json& observed,
+                                 const std::string& feature_id,
+                                 const std::string& interaction) {
+    if (observed.at("status") == "retired" ||
+        observed.at("mutability") != expected.at("mutability") ||
+        observed.at("authority_mode") != expected.at("authority_mode") ||
+        observed.at("target_scope") != expected.at("target_scope") ||
+        (expected.at("noninteractive") == true && observed.at("noninteractive") != true) ||
+        (expected.at("json_output") == true && observed.at("json_output") != true) ||
+        !command_binds(observed, feature_id, interaction)) {
+        return false;
+    }
+    for (const auto* field : {"backend_operation_ids", "input_protocols", "output_protocols",
+                              "result_validation_protocols"}) {
+        for (const auto& required : expected.at(field)) {
+            if (std::find(observed.at(field).begin(), observed.at(field).end(), required) ==
+                observed.at(field).end()) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+engine::Json administration_check(const engine::Json& payload,
+                                  std::int64_t deadline_unix_ms) {
+    require_exact_fields(payload, std::set<std::string>{
+        "protocol", "format_version", "semantic_snapshot", "profile",
+        "expected_command_registry", "observed_qxctl_state", "observed_command_registry",
+        "engine_descriptors", "requested_feature_id",
+    });
+    if (payload.at("protocol") != "symphony.knowledge.administration-coverage-input.v1" ||
+        payload.at("format_version") != 1 || !payload.at("engine_descriptors").is_array() ||
+        payload.at("engine_descriptors").size() > 1024U) {
+        throw engine::Error("administration.input.identity",
+                            "administration coverage input identity or cardinality is invalid", 4);
+    }
+    require_deadline(deadline_unix_ms);
+    const auto snapshot = parse_snapshot(payload.at("semantic_snapshot"));
+    const auto profile = parse_administration_profile(payload.at("profile"), snapshot);
+    if (payload.at("expected_command_registry").is_null()) {
+        throw engine::Error("administration.input.expected_registry",
+                            "expected command registry is required", 4);
+    }
+    const auto expected =
+        parse_command_registry(payload.at("expected_command_registry"), "expected");
+    const auto observed_state = require_string(payload, "observed_qxctl_state", 32U, true);
+    if (!std::set<std::string>{"not_evaluated", "absent", "present"}.contains(observed_state)) {
+        throw engine::Error("administration.input.observed_state",
+                            "observed qxctl state is invalid", 4);
+    }
+    std::optional<ParsedCommandRegistry> observed;
+    if (observed_state == "present") {
+        if (payload.at("observed_command_registry").is_null()) {
+            throw engine::Error("administration.input.observed_registry",
+                                "present qxctl requires an observed registry", 4);
+        }
+        observed = parse_command_registry(payload.at("observed_command_registry"), "observed");
+    } else if (!payload.at("observed_command_registry").is_null()) {
+        throw engine::Error("administration.input.observed_registry",
+                            "absent or unevaluated qxctl prohibits an observed registry", 4);
+    }
+    std::optional<std::string> requested_feature;
+    if (!payload.at("requested_feature_id").is_null()) {
+        if (!payload.at("requested_feature_id").is_string() ||
+            !safe_feature_id(payload.at("requested_feature_id").get_ref<const std::string&>()) ||
+            !snapshot.records.contains(payload.at("requested_feature_id").get<std::string>())) {
+            throw engine::Error("administration.input.requested_feature",
+                                "requested feature identity is invalid or absent", 4);
+        }
+        requested_feature = payload.at("requested_feature_id").get<std::string>();
+    }
+
+    engine::Json surfaces = engine::Json::array();
+    engine::Json feature_findings = engine::Json::array();
+    engine::Json remediation = engine::Json::array();
+    engine::Json module_integrations = engine::Json::array();
+    engine::Json descriptor_digests = engine::Json::array();
+    std::map<std::string, std::size_t> counts = {
+        {"satisfied", 0U}, {"uncovered", 0U}, {"exempt", 0U},
+        {"prohibited", 0U}, {"stale", 0U}, {"unresolved", 0U},
+    };
+    std::size_t features_checked = 0U;
+    const bool profile_stale = profile.registry_digest != snapshot.registry_digest;
+    const auto finding = [&](const std::string& severity, const engine::Json& feature_id,
+                             const engine::Json& interaction,
+                             const engine::Json& operation_id,
+                             const engine::Json& command_id, const std::string& reason,
+                             engine::Json missing) {
+        engine::Json finding{{"severity", severity}, {"feature_id", feature_id},
+            {"interaction", interaction}, {"engine_operation_id", operation_id},
+            {"command_id", command_id}, {"reason", reason}, {"missing", std::move(missing)},
+            {"proposal_only", true}, {"ratification_required", true}};
+        finding["finding_id"] = "administration-finding:" +
+            engine::sha256_hex(finding.dump()).substr(0U, 48U);
+        return finding;
+    };
+    const auto add_remediation = [&](const engine::Json& source_finding,
+                                     const std::string& feature_id,
+                                     const std::string& interaction,
+                                     const std::vector<std::string>& operation_ids,
+                                     const std::string& mutability,
+                                     const std::string& authority,
+                                     engine::Json required_evidence) {
+        engine::Json recipe{{"finding_ids", engine::Json::array({
+                source_finding.at("finding_id")})},
+            {"feature_id", feature_id}, {"interaction", interaction},
+            {"backend_operation_ids", operation_ids},
+            {"required_mutability", mutability}, {"required_authority_mode", authority},
+            {"required_target_scope", "local"},
+            {"required_evidence", std::move(required_evidence)},
+            {"proposed_command_id", nullptr}, {"proposed_grammar", nullptr},
+            {"proposal_only", true}, {"ratification_required", true}};
+        recipe["remediation_id"] = "administration-remediation:" +
+            engine::sha256_hex(recipe.dump()).substr(0U, 48U);
+        remediation.push_back(std::move(recipe));
+    };
+
+    for (const auto& [feature_id, record] : snapshot.records) {
+        require_deadline(deadline_unix_ms);
+        static_cast<void>(record);
+        if (requested_feature && *requested_feature != feature_id) {
+            continue;
+        }
+        ++features_checked;
+        const auto feature = profile.features.find(feature_id);
+        if (feature == profile.features.end() || feature->second.empty()) {
+            ++counts.at("unresolved");
+            feature_findings.push_back(finding("warning", feature_id, nullptr, nullptr,
+                nullptr, "registered feature has no explicit administration expectation",
+                engine::Json::array({"administration_expectation"})));
+            continue;
+        }
+        for (const auto& expectation : feature->second) {
+            const auto& delivery_expectation = resolve_expectation(profile, expectation);
+            engine::Json surface_findings = engine::Json::array();
+            std::string design_state = profile_stale ? "stale" : "satisfied";
+            const bool exceptional =
+                std::set<std::string>{"lifecycle_only", "observation_only", "runtime_only",
+                                      "system_orchestrated"}
+                    .contains(expectation.delivery);
+            if (!profile_stale && (expectation.delivery == "unreviewed" ||
+                                   delivery_expectation.delivery == "unreviewed")) {
+                design_state = "unresolved";
+                surface_findings.push_back(finding("warning", feature_id,
+                    expectation.interaction, nullptr, nullptr,
+                    "known interaction has no reviewed administration delivery",
+                    engine::Json::array({"administration_expectation"})));
+            } else if (!profile_stale && expectation.requirement == "prohibited") {
+                design_state = "prohibited";
+            } else if (!profile_stale &&
+                       (expectation.requirement == "not_applicable" || exceptional)) {
+                design_state = "exempt";
+            } else if (!profile_stale && expectation.requirement == "optional" &&
+                       delivery_expectation.command_ids.empty()) {
+                design_state = "exempt";
+            } else if (!profile_stale && expectation.requirement == "required" &&
+                       !exceptional && !expectation.inherited_from &&
+                       delivery_expectation.command_ids.empty()) {
+                design_state = "uncovered";
+                auto gap = finding("violation", feature_id, expectation.interaction,
+                    delivery_expectation.engine_operation_ids.empty()
+                        ? engine::Json(nullptr)
+                        : engine::Json(delivery_expectation.engine_operation_ids.front()),
+                    nullptr, "required interaction has no expected qxctl command",
+                    engine::Json::array({"qxctl_command"}));
+                surface_findings.push_back(gap);
+                add_remediation(gap, feature_id, expectation.interaction,
+                    delivery_expectation.engine_operation_ids, "read_only", "none",
+                    engine::Json::array({"backend_binding", "cobra_leaf", "command_spec",
+                        "feature_binding", "implementation_test", "json_output",
+                        "noninteractive_support", "result_validator"}));
+            }
+            for (const auto& command_id : delivery_expectation.command_ids) {
+                const auto command = expected.commands.find(command_id);
+                if (command == expected.commands.end() ||
+                    command->second.at("status") == "retired" ||
+                    command->second.at("mutability") == "prohibited" ||
+                    !command_binds(command->second, feature_id, expectation.interaction) ||
+                    std::any_of(delivery_expectation.engine_operation_ids.begin(),
+                                delivery_expectation.engine_operation_ids.end(),
+                                [&](const std::string& operation_id) {
+                        return !command_targets_operation(command->second, operation_id);
+                    })) {
+                    design_state = profile_stale ? "stale" : "uncovered";
+                    auto gap = finding("violation", feature_id, expectation.interaction,
+                        nullptr, command_id,
+                        "expected command is absent or lacks the exact feature binding",
+                        engine::Json::array({"feature_registration", "qxctl_command"}));
+                    surface_findings.push_back(gap);
+                    add_remediation(gap, feature_id, expectation.interaction,
+                        delivery_expectation.engine_operation_ids, "read_only", "none",
+                        engine::Json::array({"backend_binding", "cobra_leaf", "command_spec",
+                            "feature_binding", "implementation_test", "result_validator"}));
+                }
+            }
+            std::string live_state = "not_evaluated";
+            if (observed_state == "absent") {
+                live_state = "qxctl_absent";
+            } else if (observed_state == "present") {
+                live_state = "ready";
+                for (const auto& command_id : delivery_expectation.command_ids) {
+                    const auto expected_command = expected.commands.find(command_id);
+                    const auto observed_command = observed->commands.find(command_id);
+                    if (expected_command == expected.commands.end() ||
+                        observed_command == observed->commands.end() ||
+                        !observed_command_compatible(expected_command->second,
+                                                     observed_command->second,
+                                                     feature_id, expectation.interaction)) {
+                        live_state = "incompatible";
+                        surface_findings.push_back(finding("warning", feature_id,
+                            expectation.interaction, nullptr, command_id,
+                            "observed qxctl command is semantically incompatible with expected coverage",
+                            engine::Json::array({"implementation_evidence"})));
+                        break;
+                    }
+                }
+            }
+            ++counts.at(design_state);
+            surfaces.push_back(engine::Json{
+                {"feature_id", feature_id}, {"interaction", expectation.interaction},
+                {"design_state", design_state}, {"live_state", live_state},
+                {"authorization_state", "not_evaluated"},
+                {"command_ids", delivery_expectation.command_ids},
+                {"engine_operation_ids", delivery_expectation.engine_operation_ids},
+                {"findings", std::move(surface_findings)},
+            });
+        }
+    }
+
+    std::vector<engine::Json> ordered_descriptors;
+    std::set<std::string> supplied_descriptor_digests;
+    std::set<std::string> supplied_engine_identities;
+    for (const auto& raw_descriptor : payload.at("engine_descriptors")) {
+        if (raw_descriptor.is_object() && raw_descriptor.contains("descriptor_digest") &&
+            raw_descriptor.at("descriptor_digest").is_string() &&
+            !supplied_descriptor_digests.insert(
+                raw_descriptor.at("descriptor_digest").get<std::string>()).second) {
+            throw engine::Error("administration.engine_descriptor.duplicate_digest",
+                                "engine descriptor digest is duplicated", 4);
+        }
+        if (raw_descriptor.is_object() && raw_descriptor.contains("module_id") &&
+            raw_descriptor.at("module_id").is_string() && raw_descriptor.contains("engine_id") &&
+            raw_descriptor.at("engine_id").is_string()) {
+            const auto identity = raw_descriptor.at("module_id").get<std::string>() + "\n" +
+                                  raw_descriptor.at("engine_id").get<std::string>();
+            if (!supplied_engine_identities.insert(identity).second) {
+                throw engine::Error("administration.engine_descriptor.duplicate_identity",
+                                    "module and engine descriptor identity is duplicated", 4);
+            }
+        }
+        ordered_descriptors.push_back(raw_descriptor);
+    }
+    std::sort(ordered_descriptors.begin(), ordered_descriptors.end(),
+              [](const engine::Json& left, const engine::Json& right) {
+        return left.dump() < right.dump();
+    });
+    for (const auto& raw_descriptor : ordered_descriptors) {
+        require_deadline(deadline_unix_ms);
+        try {
+            const auto descriptor = parse_engine_descriptor(raw_descriptor);
+            descriptor_digests.push_back(descriptor.digest);
+            std::string state = "integration_ready";
+            engine::Json module_findings = engine::Json::array();
+            if (profile_stale) {
+                state = "blocked_incompatible";
+                module_findings.push_back(finding("violation", nullptr, nullptr, nullptr,
+                    nullptr, "engine descriptor is assessed against a stale administration profile",
+                    engine::Json::array({"administration_expectation"})));
+            }
+            for (const auto& operation : descriptor.operations) {
+                if (operation.at("availability") != "implemented") {
+                    continue;
+                }
+                const auto operation_id = operation.at("engine_operation_id").get<std::string>();
+                const bool semantic_identity_missing = operation.at("feature_ids").empty() ||
+                    std::any_of(operation.at("feature_ids").begin(),
+                                operation.at("feature_ids").end(),
+                                [&](const engine::Json& feature_id) {
+                        return !snapshot.records.contains(feature_id.get<std::string>());
+                    });
+                if (semantic_identity_missing) {
+                    state = "semantic_registration_required";
+                    const auto feature_id = operation.at("feature_ids").empty()
+                        ? engine::Json(nullptr) : operation.at("feature_ids").front();
+                    module_findings.push_back(finding("violation", feature_id, nullptr,
+                        operation_id, nullptr,
+                        "implemented engine operation has no registered SSFV feature identity",
+                        engine::Json::array({"feature_registration"})));
+                    continue;
+                }
+                const auto disposition =
+                    operation.at("administration_disposition").get<std::string>();
+                if (disposition == "unreviewed") {
+                    if (state == "integration_ready") {
+                        state = "administration_unintegrated";
+                    }
+                    module_findings.push_back(finding("violation",
+                        operation.at("feature_ids").front(),
+                        operation.at("administrative_interactions").empty()
+                            ? engine::Json(nullptr)
+                            : operation.at("administrative_interactions").front(),
+                        operation_id, nullptr,
+                        "implemented engine operation has no reviewed administration disposition",
+                        engine::Json::array({"administration_expectation"})));
+                    continue;
+                }
+                for (const auto& feature_id_value : operation.at("feature_ids")) {
+                    const auto feature_id = feature_id_value.get<std::string>();
+                    for (const auto& interaction_value :
+                         operation.at("administrative_interactions")) {
+                        const auto interaction = interaction_value.get<std::string>();
+                        const auto& feature_expectations = profile.features.at(feature_id);
+                        const auto expectation = std::find_if(
+                            feature_expectations.begin(), feature_expectations.end(),
+                            [&](const AdministrationExpectation& candidate) {
+                                return candidate.interaction == interaction;
+                            });
+                        if (expectation == feature_expectations.end() ||
+                            expectation->delivery == "unreviewed") {
+                            if (state == "integration_ready") {
+                                state = "administration_unintegrated";
+                            }
+                            module_findings.push_back(finding("violation", feature_id,
+                                interaction, operation_id, nullptr,
+                                "implemented engine operation has no reviewed feature administration expectation",
+                                engine::Json::array({"administration_expectation"})));
+                            continue;
+                        }
+                        const auto& resolved = resolve_expectation(profile, *expectation);
+                        if (resolved.delivery == "unreviewed") {
+                            if (state == "integration_ready") {
+                                state = "administration_unintegrated";
+                            }
+                            module_findings.push_back(finding("violation", feature_id,
+                                interaction, operation_id, nullptr,
+                                "inherited engine administration expectation is unreviewed",
+                                engine::Json::array({"administration_expectation"})));
+                            continue;
+                        }
+                        if (disposition != "qxctl_required") {
+                            const std::map<std::string, std::string> disposition_delivery = {
+                                {"lifecycle_only", "lifecycle_only"},
+                                {"runtime_only", "runtime_only"},
+                                {"system_orchestrated", "system_orchestrated"},
+                                {"prohibited", "none"},
+                                {"not_applicable", "none"},
+                            };
+                            const auto compatible = disposition_delivery.find(disposition);
+                            const bool terminal_compatible = disposition == "prohibited"
+                                ? expectation->requirement == "prohibited"
+                                : disposition != "not_applicable" ||
+                                  expectation->requirement == "not_applicable";
+                            if (compatible == disposition_delivery.end() ||
+                                expectation->delivery != compatible->second ||
+                                !terminal_compatible) {
+                                if (state != "semantic_registration_required") {
+                                    state = "blocked_incompatible";
+                                }
+                                module_findings.push_back(finding("violation", feature_id,
+                                    interaction, operation_id, nullptr,
+                                    "engine administration disposition conflicts with the feature profile",
+                                    engine::Json::array({"administration_expectation"})));
+                            }
+                            continue;
+                        }
+                        bool mapped = false;
+                        const bool operation_declared = std::find(
+                            resolved.engine_operation_ids.begin(),
+                            resolved.engine_operation_ids.end(), operation_id) !=
+                            resolved.engine_operation_ids.end();
+                        for (const auto& command_id : resolved.command_ids) {
+                            const auto command = expected.commands.find(command_id);
+                            if (command == expected.commands.end()) {
+                                continue;
+                            }
+                            if (operation_declared && command->second.at("status") != "retired" &&
+                                command->second.at("mutability") != "prohibited" &&
+                                command_targets_operation(command->second, operation_id) &&
+                                command_binds(command->second, feature_id, interaction)) {
+                                mapped = true;
+                                break;
+                            }
+                        }
+                        if (mapped) {
+                            continue;
+                        }
+                        if (state == "integration_ready") {
+                            state = "administration_unintegrated";
+                        }
+                        auto gap = finding("violation", feature_id, interaction,
+                            operation_id, nullptr,
+                            "qxctl-required engine operation pair has no expected command binding",
+                            engine::Json::array({"qxctl_command"}));
+                        module_findings.push_back(gap);
+                        add_remediation(gap,
+                            feature_id, interaction,
+                            {operation_id}, operation.at("mutability").get<std::string>(),
+                            operation.at("authorization_requirement").get<std::string>(),
+                            engine::Json::array({"backend_binding", "cobra_leaf", "command_spec",
+                                "feature_binding", "implementation_test", "result_validator"}));
+                    }
+                }
+            }
+            module_integrations.push_back(engine::Json{
+                {"module_id", descriptor.module_id}, {"engine_id", descriptor.engine_id},
+                {"descriptor_digest", descriptor.digest}, {"integration_state", state},
+                {"docking_ready", state == "integration_ready"},
+                {"findings", std::move(module_findings)},
+            });
+        } catch (const engine::Error& error) {
+            module_integrations.push_back(engine::Json{
+                {"module_id", "unavailable"}, {"engine_id", nullptr},
+                {"descriptor_digest", nullptr}, {"integration_state", "descriptor_invalid"},
+                {"docking_ready", false}, {"findings", engine::Json::array({
+                    finding("violation", nullptr, nullptr, nullptr, nullptr, error.what(),
+                            engine::Json::array({"implementation_evidence"}))})},
+            });
+        } catch (const std::exception&) {
+            module_integrations.push_back(engine::Json{
+                {"module_id", "unavailable"}, {"engine_id", nullptr},
+                {"descriptor_digest", nullptr}, {"integration_state", "descriptor_invalid"},
+                {"docking_ready", false}, {"findings", engine::Json::array({
+                    finding("violation", nullptr, nullptr, nullptr, nullptr,
+                            "engine descriptor failed bounded validation",
+                            engine::Json::array({"implementation_evidence"}))})},
+            });
+        }
+    }
+    std::sort(descriptor_digests.begin(), descriptor_digests.end());
+    std::sort(module_integrations.begin(), module_integrations.end(),
+              [](const engine::Json& left, const engine::Json& right) {
+        const auto left_key = left.at("module_id").get<std::string>() + "\n" +
+            (left.at("engine_id").is_string()
+                ? left.at("engine_id").get<std::string>() : std::string{});
+        const auto right_key = right.at("module_id").get<std::string>() + "\n" +
+            (right.at("engine_id").is_string()
+                ? right.at("engine_id").get<std::string>() : std::string{});
+        return left_key < right_key;
+    });
+    engine::Json result{
+        {"protocol", administration_coverage_protocol}, {"format_version", 1},
+        {"semantic_snapshot_digest", snapshot.digest}, {"profile_digest", profile.digest},
+        {"expected_command_registry_digest", expected.digest},
+        {"observed_command_registry_digest",
+            observed ? engine::Json(observed->digest) : engine::Json(nullptr)},
+        {"engine_descriptor_digests", std::move(descriptor_digests)},
+        {"feature_findings", std::move(feature_findings)},
+        {"surfaces", std::move(surfaces)},
+        {"module_integrations", std::move(module_integrations)},
+        {"remediation_constraints", std::move(remediation)},
+        {"summary", engine::Json{
+            {"features_checked", features_checked},
+            {"surfaces_checked", counts.at("satisfied") + counts.at("uncovered") +
+                counts.at("exempt") + counts.at("prohibited") + counts.at("stale")},
+            {"satisfied", counts.at("satisfied")}, {"uncovered", counts.at("uncovered")},
+            {"exempt", counts.at("exempt")}, {"prohibited", counts.at("prohibited")},
+            {"stale", counts.at("stale")}, {"unresolved", counts.at("unresolved")}}},
+        {"read_only", true}, {"canonical", false},
+    };
+    result["result_digest"] = engine::tagged_sha256(result.dump());
+    return result;
+}
+
+using OperationHandler = engine::Json (*)(const engine::Request&);
+
+struct RegisteredOperation final {
+    engine::OperationSpec spec;
+    OperationHandler handler;
+};
+
+const std::vector<RegisteredOperation>& registered_operations();
+
+const std::vector<engine::OperationSpec>& operation_specs() {
+    static const std::vector<engine::OperationSpec> specs = [] {
+        std::vector<engine::OperationSpec> result;
+        for (const auto& operation : registered_operations()) {
+            result.push_back(operation.spec);
+        }
+        engine::validate_operation_specs(result);
+        return result;
+    }();
+    return specs;
+}
+
+const std::vector<RegisteredOperation>& registered_operations() {
+    static const std::vector<RegisteredOperation> operations = {
+        RegisteredOperation{engine::OperationSpec{
+            "engop:symphony:ssfv.inspect", "inspect", "implemented", false, true,
+            {"ssfv:symphony:ssfv-engine"}, {"inspect"}, "qxctl_required",
+            "symphony.ssfv.inspect-input.v1", "symphony.ssfv.inspect-result.v1",
+            "read_only", "idempotent", false, "none", "", "supported", "freezing",
+        }, [](const engine::Request& request) { return inspect(request.payload); }},
+        RegisteredOperation{engine::OperationSpec{
+            "engop:symphony:ssfv.check", "check", "implemented", false, true,
+            {"ssfv:symphony:ssfv-engine.catalog-integrity-snapshot"},
+            {"validate"}, "qxctl_required",
+            "symphony.ssfv.check-input.v2", "symphony.ssfv.check-result.v2",
+            "evidence_only", "idempotent", false, "none", "", "supported", "freezing",
+        }, [](const engine::Request& request) {
+            return check(request.payload, request.deadline_unix_ms);
+        }},
+        RegisteredOperation{engine::OperationSpec{
+            "engop:symphony:ssfv.diff", "diff", "implemented", false, true,
+            {"ssfv:symphony:ssfv-engine.semantic-freshness-comparison"},
+            {"validate"}, "qxctl_required",
+            "symphony.ssfv.diff-input.v2", "symphony.ssfv.diff-result.v2",
+            "evidence_only", "idempotent", false, "none", "", "supported", "freezing",
+        }, [](const engine::Request& request) {
+            return diff(request.payload, request.deadline_unix_ms);
+        }},
+        RegisteredOperation{engine::OperationSpec{
+            "engop:symphony:ssfv.propose", "propose", "implemented", false, true,
+            {"ssfv:symphony:ssfv-engine.catalog-change-proposal"}, {"propose"},
+            "qxctl_required", "symphony.ssfv.proposal-input.v2",
+            "symphony.knowledge.proposal.v1", "proposal_only", "idempotent", true,
+            "target_host_permission", "", "supported", "freezing",
+        }, [](const engine::Request& request) {
+            return proposal(request.payload, request.deadline_unix_ms);
+        }},
+        RegisteredOperation{engine::OperationSpec{
+            "engop:symphony:ssfv.graph", "graph", "implemented", false, true,
+            {"ssfv:symphony:ssfv-engine.semantic-graph-projection"}, {"query"},
+            "qxctl_required", "symphony.ssfv.graph-input.v1",
+            "symphony.ssfv.graph-projection.v1", "read_only", "idempotent", false,
+            "none", "", "supported", "freezing",
+        }, [](const engine::Request& request) {
+            return graph(request.payload, request.deadline_unix_ms);
+        }},
+        RegisteredOperation{engine::OperationSpec{
+            "engop:symphony:ssfv.administration-check", "administration-check",
+            "implemented", false, false,
+            {"ssfv:symphony:ssfv-engine.administration-assurance"},
+            {"validate"}, "qxctl_required", administration_coverage_input_protocol,
+            administration_coverage_protocol, "evidence_only", "idempotent", false,
+            "none", "", "supported", "freezing",
+        }, [](const engine::Request& request) {
+            return administration_check(request.payload, request.deadline_unix_ms);
+        }},
+        RegisteredOperation{engine::OperationSpec{
+            "engop:symphony:ssfv.apply", "apply", "disabled", true, true,
+            {"ssfv:symphony:ssfv-engine.catalog-change-proposal"}, {"apply"}, "prohibited",
+            "symphony.ssfv.apply-input.v1", "symphony.ssfv.apply-result.v1",
+            "prohibited", "not_applicable", true, "ssiag", "", "prohibited", "freezing",
+        }, nullptr},
+    };
+    static const bool validated = [] {
+        std::vector<engine::OperationSpec> specs;
+        for (const auto& operation : operations) {
+            specs.push_back(operation.spec);
+        }
+        engine::validate_operation_specs(specs);
+        for (const auto& operation : operations) {
+            if ((operation.spec.availability == "implemented") !=
+                (operation.handler != nullptr)) {
+                throw engine::Error("operation.handler_parity",
+                                    "operation handler and availability differ", 5);
+            }
+        }
+        return true;
+    }();
+    static_cast<void>(validated);
+    return operations;
+}
+
 }
 
 engine::Json descriptor() {
@@ -2277,13 +3563,7 @@ engine::Json descriptor() {
             "symphony.ssfv.feature-file.v1", "symphony.ssfv.feature-record.v2",
             "symphony.ssfv.semantic-snapshot.v1", "symphony.ssfv.check-result.v2",
             "symphony.ssfv.diff-result.v2", "symphony.ssfv.graph-projection.v1"})},
-        {"operations", engine::Json::array({
-            engine::Json{{"name", "inspect"}, {"availability", "implemented"}, {"mutates_canonical", false}},
-            engine::Json{{"name", "check"}, {"availability", "implemented"}, {"mutates_canonical", false}},
-            engine::Json{{"name", "diff"}, {"availability", "implemented"}, {"mutates_canonical", false}},
-            engine::Json{{"name", "propose"}, {"availability", "implemented"}, {"mutates_canonical", false}},
-            engine::Json{{"name", "graph"}, {"availability", "implemented"}, {"mutates_canonical", false}},
-            engine::Json{{"name", "apply"}, {"availability", "disabled"}, {"mutates_canonical", true}}})},
+        {"operations", engine::legacy_operation_descriptors(operation_specs())},
         {"limits", engine::Json{
             {"request_bytes", engine::Limits::max_request_bytes},
             {"response_bytes", engine::Limits::max_response_bytes},
@@ -2311,23 +3591,52 @@ engine::Json descriptor() {
     };
 }
 
+engine::Json descriptor_v2() {
+    engine::Json result{
+        {"protocol", engine::descriptor_protocol_v2},
+        {"format_version", 2},
+        {"module_id", module_id},
+        {"engine_id", engine_id},
+        {"vector_id", vector_id},
+        {"engine_version", engine_version},
+        {"process_protocols", engine::Json::array({engine::process_protocol_v1})},
+        {"contract_versions", engine::Json::array({
+            "knowledge/SPEC.md@v1", "knowledge/ssfv/SPEC.md@engine-v1",
+            "symphony.ssfv.feature-file.v1", "symphony.ssfv.feature-record.v2",
+            "symphony.ssfv.semantic-snapshot.v1", "symphony.ssfv.check-result.v2",
+            "symphony.ssfv.diff-result.v2", "symphony.ssfv.graph-projection.v1",
+            administration_coverage_protocol})},
+        {"operations", engine::administration_operation_descriptors(operation_specs())},
+        {"limits", engine::Json{
+            {"request_bytes", engine::Limits::max_request_bytes},
+            {"response_bytes", engine::Limits::max_response_bytes},
+            {"json_depth", engine::Limits::max_json_depth},
+            {"json_values", engine::Limits::max_json_values},
+            {"path_bytes", engine::Limits::max_path_bytes},
+            {"snapshot_files", engine::Limits::max_snapshot_files},
+            {"snapshot_file_bytes", engine::Limits::max_snapshot_file_bytes},
+            {"deadline_ahead_ms", engine::Limits::max_deadline_ahead_ms}}},
+        {"supported_scopes", engine::Json::array({"user"})},
+        {"language", "C++26"},
+        {"thermal_path", "freezing"},
+        {"canonical_apply_enabled", false},
+        {"session_mutation_enabled", false},
+        {"network_listener", false},
+    };
+    result["descriptor_digest"] = engine::tagged_sha256(result.dump());
+    return result;
+}
+
 engine::Json handle_request(const engine::Request& request) {
-    if (request.operation == "inspect") {
-        return inspect(request.payload);
+    const auto& operations = registered_operations();
+    const auto found = std::find_if(operations.begin(), operations.end(),
+                                    [&](const RegisteredOperation& operation) {
+        return operation.spec.operation_name == request.operation;
+    });
+    if (found == operations.end() || found->handler == nullptr) {
+        throw engine::Error("operation.unsupported", "operation is reserved or unsupported", 4);
     }
-    if (request.operation == "check") {
-        return check(request.payload, request.deadline_unix_ms);
-    }
-    if (request.operation == "diff") {
-        return diff(request.payload, request.deadline_unix_ms);
-    }
-    if (request.operation == "propose") {
-        return proposal(request.payload, request.deadline_unix_ms);
-    }
-    if (request.operation == "graph") {
-        return graph(request.payload, request.deadline_unix_ms);
-    }
-    throw engine::Error("operation.unsupported", "operation is reserved or unsupported", 4);
+    return found->handler(request);
 }
 
 }

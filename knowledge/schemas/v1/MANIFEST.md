@@ -9,6 +9,10 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 - `engine-process-request.schema.json`: one bounded local process request envelope.
 - `engine-process-response.schema.json`: one bounded local process response envelope.
 - `engine-descriptor.schema.json`: installed engine/coordinator identity and capability truth.
+- `qxctl-command-registry.schema.json`: canonical expected or exact observed qxctl executable-leaf identity, grammar, feature, backend, machine-output, and trust evidence.
+- `feature-administration-profile.schema.json`: registered-feature interaction requirements, explicit dispositions, finite inheritance, and bootstrap forward-gate truth.
+- `administration-coverage-input.schema.json`: bounded repository-independent SSFV administration-check input with optional observed qxctl evidence.
+- `administration-coverage-result.schema.json`: digest-bound design, live, authorization, uncovered-surface, remediation, and module-integration evidence.
 - `install-receipt.schema.json`: versioned, prefix-relative package ownership and docking state.
 - `engine-binding-registry.schema.json`: protected, noncanonical user-default selection of exact inactive-undocked engine and coordinator installations. A binding is not installation, Maestro docking, authentication, permission, or canonical apply authority.
 - `reconciliation-journal.schema.json`: protected noncanonical worktree state, content snapshots, checkpoint chain, compatibility envelope, extensions, and recovery evidence.

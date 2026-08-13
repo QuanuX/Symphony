@@ -36,13 +36,7 @@ func (failure *validationOutcomeError) Error() string {
 }
 
 func newValidateCommand() *cobra.Command {
-	command := &cobra.Command{
-		Use:  "validate",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("validate subcommand is required: scan, debug, profile, or baseline")
-		},
-	}
+	command := structural("validate", fmt.Errorf("validate subcommand is required: scan, debug, profile, or baseline"))
 	for _, operation := range []string{"scan", "debug"} {
 		options := validationOptions{version: "0.1.0-dev"}
 		child := &cobra.Command{
@@ -50,6 +44,7 @@ func newValidateCommand() *cobra.Command {
 			Args: usageOnlyArgs,
 			RunE: func(*cobra.Command, []string) error { return runValidationScan(operation, options) },
 		}
+		registered(child, "validate."+operation, featureValidation, "validate")
 		addValidationExecutionFlags(child, &options)
 		if operation == "debug" {
 			child.Flags().StringVar(&options.filter.RuleID, "rule", "", "display only one exact rule ID after the full scan")
@@ -61,13 +56,7 @@ func newValidateCommand() *cobra.Command {
 		command.AddCommand(child)
 	}
 
-	profile := &cobra.Command{
-		Use:  "profile",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("validate profile subcommand is required: list, show, set, or remove")
-		},
-	}
+	profile := structural("profile", fmt.Errorf("validate profile subcommand is required: list, show, set, or remove"))
 	for _, operation := range []string{"list", "show", "set", "remove"} {
 		options := validationOptions{
 			profileID: "default", defaultDisposition: "record",
@@ -77,6 +66,11 @@ func newValidateCommand() *cobra.Command {
 			Use:  operation,
 			Args: usageOnlyArgs,
 			RunE: func(*cobra.Command, []string) error { return runValidationProfile(operation, options) },
+		}
+		if operation == "list" || operation == "show" {
+			registered(child, "validate.profile."+operation, featureValidation, map[string]string{"list": "discover", "show": "inspect"}[operation])
+		} else {
+			registeredMutation(child, "validate.profile."+operation, featureValidation, "configure", "target_host_permission", "")
 		}
 		addValidationStateFlags(child, &options)
 		if operation != "list" {
@@ -97,19 +91,18 @@ func newValidateCommand() *cobra.Command {
 	profile.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	command.AddCommand(profile)
 
-	baseline := &cobra.Command{
-		Use:  "baseline",
-		Args: usageOnlyArgs,
-		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("validate baseline subcommand is required: create, show, or remove")
-		},
-	}
+	baseline := structural("baseline", fmt.Errorf("validate baseline subcommand is required: create, show, or remove"))
 	for _, operation := range []string{"create", "show", "remove"} {
 		options := validationOptions{baselineID: "default", version: "0.1.0-dev"}
 		child := &cobra.Command{
 			Use:  operation,
 			Args: usageOnlyArgs,
 			RunE: func(*cobra.Command, []string) error { return runValidationBaseline(operation, options) },
+		}
+		if operation == "show" {
+			registered(child, "validate.baseline.show", featureValidation, "inspect")
+		} else {
+			registeredMutation(child, "validate.baseline."+operation, featureValidation, "configure", "target_host_permission", "")
 		}
 		addValidationStateFlags(child, &options)
 		child.Flags().StringVar(&options.baselineID, "baseline-id", "default", "exact validation baseline identity")

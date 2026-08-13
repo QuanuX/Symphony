@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 bool is_authorized_canonical_json(const std::string& relative_path) {
     // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, and SSFV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 137> authorized_paths = {
+    static const std::array<std::string, 143> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -43,6 +43,10 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/schemas/v1/engine-process-request.schema.json",
         "knowledge/schemas/v1/engine-process-response.schema.json",
         "knowledge/schemas/v1/engine-descriptor.schema.json",
+        "knowledge/schemas/v1/qxctl-command-registry.schema.json",
+        "knowledge/schemas/v1/feature-administration-profile.schema.json",
+        "knowledge/schemas/v1/administration-coverage-input.schema.json",
+        "knowledge/schemas/v1/administration-coverage-result.schema.json",
         "knowledge/schemas/v1/install-receipt.schema.json",
         "knowledge/schemas/v1/engine-binding-registry.schema.json",
         "knowledge/schemas/v1/proposal.schema.json",
@@ -94,6 +98,7 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/schemas/v1/validation-policy.schema.json",
         "knowledge/schemas/v1/validation-baseline.schema.json",
         "knowledge/schemas/v2/install-receipt.schema.json",
+        "knowledge/schemas/v2/engine-descriptor.schema.json",
         "knowledge/schemas/v2/lifecycle-boot-journal.schema.json",
         "knowledge/schemas/v2/lifecycle-boot-head.schema.json",
         "knowledge/ssiag/schemas/v1/authorization-request.schema.json",
@@ -148,7 +153,8 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/ssfv/schemas/v2/check-result.schema.json",
         "knowledge/ssfv/schemas/v2/diff-input.schema.json",
         "knowledge/ssfv/schemas/v2/diff-result.schema.json",
-        "knowledge/ssfv/schemas/v2/proposal-input.schema.json"
+        "knowledge/ssfv/schemas/v2/proposal-input.schema.json",
+        "knowledge/FEATURE-ADMINISTRATION-PROFILE.json"
     };
     return std::find(authorized_paths.begin(), authorized_paths.end(), relative_path) != authorized_paths.end();
 }
