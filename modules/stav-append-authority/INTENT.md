@@ -20,4 +20,4 @@ Provide the independently installable Go implementation boundary for the one ser
 - fail-closed startup for complete corruption;
 - no retention deletion or automatic rotation in v1.
 
-Enrollment grants no caller authority. The current qxctl surface is read-only for every caller. Append requires an exact producer grant and the serialized protocol; direct edit, repair, truncate, export, and arbitrary append are unsupported regardless of caller type.
+Enrollment grants no caller authority. The qxctl STAV ledger surface is read-only for every caller. A separate target-host-permission foundational lifecycle adapter may administer enrollment and liveness through protected plan/apply/recovery evidence; it gains no append, reader, or ledger-file authority. Append requires an exact producer grant and the serialized protocol; direct edit, repair, truncate, export, and arbitrary append are unsupported regardless of caller type.

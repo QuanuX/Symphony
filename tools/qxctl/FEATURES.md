@@ -687,21 +687,27 @@
         }
       ],
       "evidence": [
+        "tools/qxctl/cmd/qxctl/foundation_lifecycle_test.go verifies the complete enrollment and supervisor families, rejects unratified shortcuts, and closes malformed intent before adapter invocation.",
         "tools/qxctl/cmd/qxctl/ssiag_test.go verifies decision and policy-administration grammar, closed mutation paths, and bounded inputs.",
+        "tools/qxctl/internal/foundationlifecycle/client_test.go verifies exact receipt-v2 selection, adapter identity, canonical digests, operation-specific result shape, audit disposition, and recovery evidence.",
         "tools/qxctl/internal/ssiagclient/client_test.go verifies trust, peer authentication, safe evidence, and caller-neutral result handling."
       ],
       "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
-      "how": "The cgo-free client validates protected trust configuration and Unix-socket metadata, verifies kernel peer identity before HTTP exchange, uses bounded no-follow inputs, and validates proposal, apply, recovery, and safe decision evidence.",
+      "how": "The cgo-free clients validate protected trust configuration and Unix-socket metadata, verify kernel peer identity before HTTP exchange, select one exact receipt-owned lifecycle adapter without version recency inference, invoke it through bounded process IPC, and independently validate proposal, apply, recovery, audit, and safe decision evidence.",
       "implementation_languages": [
         {
           "language": "Go",
-          "role": "Implements local endpoint trust, kernel peer verification, bounded decision queries, protected policy proposal/apply/recovery clients, and CLI grammar."
+          "role": "Implements local endpoint trust, kernel peer verification, exact lifecycle-adapter selection, bounded decision and process clients, protected policy and foundational lifecycle administration, and CLI grammar."
         }
       ],
       "implementation_paths": [
         "tools/qxctl/cmd/qxctl/commands.go",
+        "tools/qxctl/cmd/qxctl/foundation_lifecycle.go",
+        "tools/qxctl/cmd/qxctl/foundation_lifecycle_test.go",
         "tools/qxctl/cmd/qxctl/main.go",
         "tools/qxctl/cmd/qxctl/ssiag_test.go",
+        "tools/qxctl/internal/foundationlifecycle/client.go",
+        "tools/qxctl/internal/foundationlifecycle/client_test.go",
         "tools/qxctl/internal/ssiagclient/client.go",
         "tools/qxctl/internal/ssiagclient/client_test.go",
         "tools/qxctl/internal/ssiagclient/peerauth_darwin.go",
@@ -711,7 +717,8 @@
       "kind": "subfeature",
       "non_claims": [
         "Does not own SSIAG schemas, persist credentials, implement keyring providers, or decide permission.",
-        "Does not infer authority from human or AI caller class and does not create remote SSIAG access."
+        "Does not infer authority from human or AI caller class and does not create remote SSIAG access.",
+        "Does not implement enrollment or supervision, render native descriptors, select a newest package version, expose purge, or bypass module recovery and audit state."
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",
@@ -725,8 +732,8 @@
       ],
       "source_scope": "tools/qxctl",
       "status": "experimental",
-      "title": "SSIAG policy and decision administration",
-      "what": "Queries SSIAG decisions and administers its explicit grants and protected policy mutation protocol without embedding provider logic in qxctl.",
+      "title": "SSIAG policy, decision, enrollment, and supervision administration",
+      "what": "Queries SSIAG decisions, administers its explicit grants and protected policy mutation protocol, and drives the exact installed enrollment and native-supervision lifecycle adapters without embedding module or provider logic in qxctl.",
       "when": "Runs only on explicit SSIAG commands or when another protected qxctl operation requests a fresh exact decision.",
       "where": "Operates against the configured local SSIAG foundation endpoint for one TOPS and scope.",
       "who": "Any caller holding the applicable target-host permission, including a host owner, delegated administrator, automation, or agentic owner.",
@@ -766,21 +773,27 @@
         }
       ],
       "evidence": [
+        "tools/qxctl/cmd/qxctl/foundation_lifecycle_test.go verifies the complete enrollment and supervisor families, rejects unratified shortcuts, and closes malformed intent before adapter invocation.",
         "tools/qxctl/cmd/qxctl/stav_test.go verifies STAV command grammar, prohibited raw append, and validated response behavior.",
+        "tools/qxctl/internal/foundationlifecycle/client_test.go verifies exact receipt-v2 selection, adapter identity, canonical digests, operation-specific result shape, audit disposition, and recovery evidence.",
         "tools/qxctl/internal/stavclient/paths_test.go verifies bounded per-TOPS state and socket path resolution."
       ],
       "feature_id": "ssfv:symphony:qxctl.stav-administration",
-      "how": "qxctl resolves protected per-TOPS paths, verifies the configured append-authority endpoint and peer, sends canonical local envelopes, and validates reader classifications, projections, digests, and bounded results.",
+      "how": "qxctl resolves protected per-TOPS paths, verifies the configured append-authority endpoint and peer, sends canonical local envelopes, selects one exact receipt-owned lifecycle adapter without version recency inference, invokes it through bounded process IPC, and validates reader classifications, projections, lifecycle transitions, audit disposition, recovery evidence, digests, and bounded results.",
       "implementation_languages": [
         {
           "language": "Go",
-          "role": "Implements mutually authenticated local STAV query, verification, path resolution, result validation, and command grammar."
+          "role": "Implements mutually authenticated local STAV query and verification, exact lifecycle-adapter selection, bounded result validation, path resolution, and command grammar."
         }
       ],
       "implementation_paths": [
         "tools/qxctl/cmd/qxctl/commands.go",
+        "tools/qxctl/cmd/qxctl/foundation_lifecycle.go",
+        "tools/qxctl/cmd/qxctl/foundation_lifecycle_test.go",
         "tools/qxctl/cmd/qxctl/main.go",
         "tools/qxctl/cmd/qxctl/stav_test.go",
+        "tools/qxctl/internal/foundationlifecycle/client.go",
+        "tools/qxctl/internal/foundationlifecycle/client_test.go",
         "tools/qxctl/internal/stavclient/client.go",
         "tools/qxctl/internal/stavclient/paths.go",
         "tools/qxctl/internal/stavclient/paths_test.go"
@@ -788,7 +801,8 @@
       "kind": "subfeature",
       "non_claims": [
         "Does not expose raw qxctl append, edit ledger files, own the STAV schema, or bypass producer authorization.",
-        "Does not convert query access or audit availability into SSIAG permission or canonical mutation authority."
+        "Does not convert query access or audit availability into SSIAG permission or canonical mutation authority.",
+        "Does not implement enrollment or supervision, render native descriptors, select a newest package version, expose purge, or bypass module recovery and audit state."
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",
@@ -802,8 +816,8 @@
       ],
       "source_scope": "tools/qxctl",
       "status": "experimental",
-      "title": "STAV audit query and verification administration",
-      "what": "Provides bounded STAV status, verification, and query administration over the canonical audit protocol without exposing raw append.",
+      "title": "STAV audit, enrollment, and supervision administration",
+      "what": "Provides bounded STAV status, verification, and query administration plus exact installed enrollment and native-supervision lifecycle-adapter administration without exposing raw append or module internals.",
       "when": "Runs only on explicit STAV administrative or query commands and when other security flows need validated audit availability evidence.",
       "where": "Executes locally on the administrative TOPS node against the separately installed STAV append authority and per-installation ledger state.",
       "who": "Authorized target-host administrators, maintainers, auditors, automation, and agentic tools using qxctl.",

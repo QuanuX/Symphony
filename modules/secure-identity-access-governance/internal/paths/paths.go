@@ -21,6 +21,7 @@ type InstallLayout struct {
 	Binary          string
 	StateDir        string
 	InstallManifest string
+	LifecycleDir    string
 }
 
 // InstanceLayout contains files isolated to one immutable TOPS identity.
@@ -83,6 +84,7 @@ func ResolveInstall(scope Scope) (InstallLayout, error) {
 			Binary:          filepath.Join(home, ".local", "bin", "symphony-ssiag"),
 			StateDir:        stateDir,
 			InstallManifest: filepath.Join(stateDir, "install.json"),
+			LifecycleDir:    filepath.Join(stateDir, "lifecycle"),
 		})
 	case ScopeSystem:
 		return cleanInstall(InstallLayout{
@@ -90,6 +92,7 @@ func ResolveInstall(scope Scope) (InstallLayout, error) {
 			Binary:          "/usr/local/bin/symphony-ssiag",
 			StateDir:        "/var/lib/symphony/ssiag",
 			InstallManifest: "/var/lib/symphony/ssiag/install.json",
+			LifecycleDir:    "/var/lib/symphony/ssiag/lifecycle",
 		})
 	default:
 		return InstallLayout{}, fmt.Errorf("unsupported scope %q", scope)
@@ -168,7 +171,7 @@ func userBases() (home, stateBase, configBase, runtimeBase string, err error) {
 }
 
 func cleanInstall(layout InstallLayout) (InstallLayout, error) {
-	values := []*string{&layout.Binary, &layout.StateDir, &layout.InstallManifest}
+	values := []*string{&layout.Binary, &layout.StateDir, &layout.InstallManifest, &layout.LifecycleDir}
 	for _, value := range values {
 		if err := cleanAbsolute(value); err != nil {
 			return InstallLayout{}, err

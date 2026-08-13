@@ -39,6 +39,8 @@ For a composed interaction, every declared command must bind the exact feature a
 
 Permission-backed mutation normally requires inspect/status, proposal or plan, apply, apply-status, and recovery coverage plus expected-state, stable invocation identity, SSIAG binding, result validation, and required STAV evidence. An evidence-backed contract may state why one family member is not applicable.
 
+The foundational SSIAG/STAV exception demonstrates complete lifecycle coverage without collapsing identities: each of its four administrator-facing feature expectations is satisfied by five `qxcmd:` leaves and five separately registered `engop:` operations. `status` binds backend `observe`; plan, apply, apply-status, and recover preserve their semantic names. The checked-in administration profile lists all ten identities per feature, while `knowledge/FOUNDATIONAL-LIFECYCLE.md` owns their exact machine, authority, installation, attempt, audit, and recovery contract.
+
 ## Engine-First Evaluation
 
 The engine is the only component whose presence may be assumed. An installed SSFV engine evaluates caller-supplied, bounded, digest-bound inputs: an SSFV semantic snapshot, the administration profile, the canonical expected command registry, zero or more engine descriptor v2 objects, and an optional observed qxctl registry. It MUST NOT require a repository checkout or qxctl executable to be locally present, scrape help, discover ambient configuration, prompt, or use caller class as authority.

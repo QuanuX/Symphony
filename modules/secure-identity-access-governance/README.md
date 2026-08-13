@@ -2,7 +2,7 @@
 
 SSIAG is Symphony's Go-only, independently installable identity, authentication, authorization, capability, credential-reference, lease, and provider-operation foundation.
 
-The current foundation installs one host binary, enrolls multiple isolated TOPS instances, authenticates every accepted Darwin/Linux Unix-socket connection from kernel peer credentials, verifies the configured service identity on both sides, installs bounded per-TOPS launchd/systemd liveness profiles, serves safe metadata, evaluates exact deny-by-default authorization grants, administers a protected local policy overlay through proposal/apply/recovery, and provides a closed typed producer for durable STAV security outcomes. Policy changes are caller-neutral, compare-and-swap, audit-before-commit, and crash-recoverable. Its short-lived capabilities remain non-transferable and cannot authorize canonical knowledge apply. It does not release, store, or exercise credentials.
+The current foundation installs immutable receipt-v2 packages while dual-reading its legacy fixed layout, enrolls multiple isolated TOPS instances through a bounded CAS/recovery lifecycle adapter, authenticates every accepted Darwin/Linux Unix-socket connection from kernel peer credentials, verifies the configured service identity on both sides, installs bounded per-TOPS launchd/systemd liveness profiles, serves safe metadata, evaluates exact deny-by-default authorization grants, administers a protected local policy overlay through proposal/apply/recovery, and provides a closed typed producer for durable STAV security outcomes. Policy changes are caller-neutral, compare-and-swap, audit-before-commit, and crash-recoverable. Ordinary foundational lifecycle mutation remains fail-closed until its STAV receipt endpoint exists; explicit `--audit-deferred` bootstrap journals reconciliation-required evidence. Its short-lived capabilities remain non-transferable and cannot authorize canonical knowledge apply. It does not release, store, or exercise credentials.
 
 ## Quick Start
 
@@ -12,10 +12,10 @@ Use a canonical lowercase UUID as the immutable TOPS ID. Keep the mutable displa
 go test ./...
 CGO_ENABLED=0 go build -trimpath -o symphony-ssiag ./cmd/symphony-ssiag
 ./symphony-ssiag install --scope user
-./symphony-ssiag enroll --scope user \
+./symphony-ssiag enroll --audit-deferred --scope user \
   --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 \
   --tops-name "Local TOPS"
-./symphony-ssiag supervisor install --scope user \
+./symphony-ssiag supervisor install --audit-deferred --scope user \
   --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002
 ```
 

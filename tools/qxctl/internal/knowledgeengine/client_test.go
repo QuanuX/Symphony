@@ -466,6 +466,40 @@ func TestInspectInstallationSupportsImmutableReceiptV2AndDetectsTampering(t *tes
 	}
 }
 
+func TestGenericReceiptV2EntryPointUsesSameCompletePackageVerifier(t *testing.T) {
+	prefix := t.TempDir()
+	version := "0.1.0-dev"
+	receiptPath, document := createInstalledV2Fixture(t, skviSpec, prefix, version)
+	vectorID, engineID := "skvi", skviSpec.engineID
+	relative := filepath.ToSlash(filepath.Join("libexec", "symphony", skviSpec.moduleID, version, skviSpec.engineID))
+	spec := ReceiptV2EntryPointSpec{
+		Label: "fixture-entry", ComponentID: skviSpec.moduleID, ComponentKind: skviSpec.componentKind,
+		ModuleID: skviSpec.moduleID, PackageID: skviSpec.moduleID, VectorID: &vectorID, EngineID: &engineID,
+		EntryPointID: skviSpec.engineID, EntryPointKind: "executable", EntryPointRelativePath: relative,
+		RequiredProtocols: []string{processProtocol}, RequiredReceptors: skviSpec.requiredReceptors,
+	}
+	entry, err := InspectReceiptV2EntryPoint(prefix, version, spec)
+	if err != nil {
+		t.Fatalf("valid generic receipt-v2 entry point rejected: %v", err)
+	}
+	if entry.ReceiptDigest != document.ReceiptDigest || entry.ExecutableDigest == "" {
+		t.Fatalf("generic entry evidence drifted: %+v", entry)
+	}
+
+	document.EntryPoints[0].Protocols = []string{"forged.protocol.v1"}
+	writeReceiptV2Fixture(t, receiptPath, &document)
+	if _, err := InspectReceiptV2EntryPoint(prefix, version, spec); err == nil {
+		t.Fatal("typed entry point with a forged protocol was accepted")
+	}
+
+	_, document = createInstalledV2Fixture(t, skviSpec, prefix, version)
+	document.Files[0].Digest = taggedDigestForTest("forged-owned-file")
+	writeReceiptV2Fixture(t, receiptPath, &document)
+	if _, err := InspectReceiptV2EntryPoint(prefix, version, spec); err == nil {
+		t.Fatal("generic entry verifier accepted forged package ownership evidence")
+	}
+}
+
 func TestResolveSCLVEvidenceAdapterRequiresExactTypedReceiptEntryPoint(t *testing.T) {
 	prefix := t.TempDir()
 	version := "0.1.0-dev"

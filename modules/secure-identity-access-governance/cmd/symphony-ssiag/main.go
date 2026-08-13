@@ -14,14 +14,15 @@ import (
 
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/client"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/foundationlifecycle"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/lifecycle"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/model"
+	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/packageinstall"
 	ssiagpaths "github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/paths"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/policyadmin"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/provider"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/server"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/stavproducer"
-	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/supervision"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/version"
 )
 
@@ -60,6 +61,10 @@ func run(args []string) error {
 		return runUnenroll(args[1:])
 	case "supervisor":
 		return runSupervisor(args[1:])
+	case "foundation-lifecycle":
+		return runFoundationLifecycle(args[1:])
+	case "package":
+		return runPackage(args[1:])
 	default:
 		return fmt.Errorf("unknown command %q", args[0])
 	}
@@ -252,6 +257,7 @@ func runEnroll(args []string) error {
 	topsName := set.String("tops-name", "", "mutable TOPS display name")
 	serviceUIDVal := set.String("service-uid", "", "exact service UID (required for new system enrollment)")
 	serviceGIDVal := set.String("service-gid", "", "exact service GID (required for new system enrollment)")
+	auditDeferred := set.Bool("audit-deferred", false, "explicitly record bootstrap/self-impacting audit reconciliation as deferred")
 	if err := set.Parse(args); err != nil {
 		return err
 	}
@@ -280,11 +286,20 @@ func runEnroll(args []string) error {
 		val := uint32(parsed)
 		serviceGID = &val
 	}
-	record, err := lifecycle.Enroll(scope, topsID, *topsName, serviceUID, serviceGID)
+	name := *topsName
+	auditMode := "ordinary"
+	if *auditDeferred {
+		auditMode = "audit_deferred"
+	}
+	result, err := foundationlifecycle.New().DirectApply("enrollment", scope, topsID, foundationlifecycle.Intent{
+		DesiredState: "enrolled", TOPSName: &name, ServiceUID: serviceUID, ServiceGID: serviceGID,
+		AuditMode: auditMode, TTLSeconds: 300,
+	})
 	if err != nil {
 		return err
 	}
-	fmt.Printf("enrolled SSIAG tops_id=%s tops_name=%q scope=%s config=%s\n", record.TOPSID, record.TOPSName, record.Scope, record.ConfigFile)
+	layout, _ := ssiagpaths.ResolveInstance(scope, topsID)
+	fmt.Printf("enrolled SSIAG tops_id=%s tops_name=%q scope=%s config=%s disposition=%s\n", topsID, *topsName, scope, layout.ConfigFile, result.Disposition)
 	return nil
 }
 
@@ -293,6 +308,7 @@ func runUnenroll(args []string) error {
 	scopeValue := set.String("scope", "user", "installation scope: user or system")
 	topsIDValue := set.String("tops-id", "", "immutable TOPS UUID")
 	purge := set.Bool("purge", false, "remove this TOPS SSIAG configuration and state")
+	auditDeferred := set.Bool("audit-deferred", false, "explicitly record self-impacting audit reconciliation as deferred")
 	if err := set.Parse(args); err != nil {
 		return err
 	}
@@ -304,11 +320,28 @@ func runUnenroll(args []string) error {
 	if err != nil {
 		return err
 	}
-	record, err := lifecycle.Unenroll(scope, topsID, *purge)
+	if *purge {
+		if err := foundationlifecycle.New().AssertNativePurgeSafe(scope, topsID); err != nil {
+			return err
+		}
+		record, err := lifecycle.Unenroll(scope, topsID, true)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("unenrolled SSIAG tops_id=%s scope=%s purge=true\n", record.TOPSID, record.Scope)
+		return nil
+	}
+	auditMode := "ordinary"
+	if *auditDeferred {
+		auditMode = "audit_deferred"
+	}
+	result, err := foundationlifecycle.New().DirectApply("enrollment", scope, topsID, foundationlifecycle.Intent{
+		DesiredState: "unenrolled_preserved", AuditMode: auditMode, TTLSeconds: 300,
+	})
 	if err != nil {
 		return err
 	}
-	fmt.Printf("unenrolled SSIAG tops_id=%s scope=%s purge=%t\n", record.TOPSID, record.Scope, *purge)
+	fmt.Printf("unenrolled SSIAG tops_id=%s scope=%s purge=false disposition=%s\n", topsID, scope, result.Disposition)
 	return nil
 }
 
@@ -323,6 +356,7 @@ func runSupervisor(args []string) error {
 	force := set.Bool("force", false, "replace or remove a differing supervisor descriptor")
 	noStart := set.Bool("no-start", false, "install the descriptor without registering or starting it")
 	noStop := set.Bool("no-stop", false, "remove the descriptor without asking the native manager to stop it")
+	auditDeferred := set.Bool("audit-deferred", false, "explicitly record bootstrap/self-impacting audit reconciliation as deferred")
 	if err := set.Parse(args[1:]); err != nil {
 		return err
 	}
@@ -335,46 +369,111 @@ func runSupervisor(args []string) error {
 	if operation == "install" && *noStop {
 		return fmt.Errorf("--no-stop is valid only for supervisor uninstall")
 	}
-	scope, topsID, layout, err := resolveInstance(*scopeValue, *topsIDValue)
-	if err != nil {
-		return err
+	if *force {
+		return fmt.Errorf("--force is recognized but refused by transactional SSIAG supervisor administration")
 	}
-	cfg, err := config.LoadTrusted(layout.ConfigFile, scope)
-	if err != nil {
-		return fmt.Errorf("load enrolled TOPS configuration: %w", err)
+	if *noStop {
+		return fmt.Errorf("--no-stop is recognized but refused because it bypasses verified SSIAG shutdown")
 	}
-	install, err := ssiagpaths.ResolveInstall(scope)
+	scope, topsID, _, err := resolveInstance(*scopeValue, *topsIDValue)
 	if err != nil {
 		return err
 	}
 	if operation == "install" {
-		info, statErr := os.Lstat(install.Binary)
-		if statErr != nil || !info.Mode().IsRegular() {
-			return fmt.Errorf("installed SSIAG binary is required before supervisor installation")
+		auditMode := "ordinary"
+		if *auditDeferred {
+			auditMode = "audit_deferred"
 		}
-	}
-	spec, err := supervision.SpecFromConfig(scope, topsID, install.Binary, cfg)
-	if err != nil {
-		return err
-	}
-	if operation == "install" {
-		record, err := supervision.Install(spec, *force)
+		desired := "native_running"
+		if *noStart {
+			desired = "native_installed_stopped"
+		}
+		result, err := foundationlifecycle.New().DirectApply("supervisor", scope, topsID, foundationlifecycle.Intent{DesiredState: desired, AuditMode: auditMode, TTLSeconds: 300})
 		if err != nil {
 			return err
 		}
-		if !*noStart {
-			if err := supervision.Start(record); err != nil {
-				return fmt.Errorf("descriptor installed at %s but activation failed: %w", record.Descriptor, err)
-			}
-		}
-		fmt.Printf("installed SSIAG supervisor manager=%s name=%s tops_id=%s descriptor=%s started=%t\n", record.Manager, record.Name, topsID, record.Descriptor, !*noStart)
+		fmt.Printf("installed SSIAG supervisor tops_id=%s scope=%s started=%t disposition=%s\n", topsID, scope, !*noStart, result.Disposition)
 		return nil
 	}
-	record, err := supervision.Uninstall(spec, *force, !*noStop)
+	auditMode := "ordinary"
+	if *auditDeferred {
+		auditMode = "audit_deferred"
+	}
+	result, err := foundationlifecycle.New().DirectApply("supervisor", scope, topsID, foundationlifecycle.Intent{DesiredState: "absent_stopped", AuditMode: auditMode, TTLSeconds: 300})
 	if err != nil {
 		return err
 	}
-	fmt.Printf("uninstalled SSIAG supervisor manager=%s name=%s tops_id=%s; configuration and state preserved\n", record.Manager, record.Name, topsID)
+	fmt.Printf("uninstalled SSIAG supervisor tops_id=%s scope=%s; configuration and state preserved disposition=%s\n", topsID, scope, result.Disposition)
+	return nil
+}
+
+func runFoundationLifecycle(args []string) error {
+	engine := foundationlifecycle.New()
+	if len(args) == 2 && args[0] == "describe" && args[1] == "--json" {
+		scope, err := engine.InstalledScope()
+		if err != nil {
+			return err
+		}
+		descriptor, err := engine.Descriptor(scope)
+		if err != nil {
+			return err
+		}
+		encoder := json.NewEncoder(os.Stdout)
+		encoder.SetEscapeHTML(false)
+		return encoder.Encode(descriptor)
+	}
+	if len(args) != 0 {
+		return fmt.Errorf("foundation-lifecycle accepts a command on stdin or describe --json")
+	}
+	command, err := foundationlifecycle.DecodeCommand(os.Stdin)
+	if err != nil {
+		return err
+	}
+	scope, err := ssiagpaths.ParseScope(command.Scope)
+	if err != nil {
+		return err
+	}
+	if err := engine.VerifyInvocation(scope); err != nil {
+		return err
+	}
+	result, err := engine.Execute(command)
+	if err != nil {
+		return err
+	}
+	return foundationlifecycle.EncodeResult(os.Stdout, result)
+}
+
+func runPackage(args []string) error {
+	if len(args) == 0 || (args[0] != "install" && args[0] != "uninstall") {
+		return fmt.Errorf("package requires install or uninstall")
+	}
+	operation := args[0]
+	set := flag.NewFlagSet("package "+operation, flag.ContinueOnError)
+	prefix := set.String("prefix", "", "exact absolute receipt-v2 installation prefix")
+	packageVersion := set.String("version", version.Version, "exact side-by-side package version")
+	if err := set.Parse(args[1:]); err != nil {
+		return err
+	}
+	if set.NArg() != 0 || *prefix == "" {
+		return fmt.Errorf("package %s requires --prefix and --version", operation)
+	}
+	if operation == "install" {
+		executable, err := os.Executable()
+		if err != nil {
+			return err
+		}
+		result, err := packageinstall.Install(executable, *prefix, *packageVersion)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("installed SSIAG receipt-v2 package version=%s prefix=%s binary=%s receipt=%s digest=%s changed=%t\n", result.Version, result.Prefix, result.Binary, result.Receipt, result.ReceiptDigest, result.Changed)
+		return nil
+	}
+	result, err := packageinstall.Uninstall(*prefix, *packageVersion)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("uninstalled SSIAG receipt-v2 package version=%s prefix=%s receipt=%s changed=%t\n", result.Version, result.Prefix, result.Receipt, result.Changed)
 	return nil
 }
 
@@ -448,6 +547,8 @@ func printUsage() {
 	fmt.Println("  enroll      Create or update one TOPS enrollment")
 	fmt.Println("  unenroll    Remove one TOPS enrollment; preserve data unless --purge")
 	fmt.Println("  supervisor  Install/uninstall one TOPS native liveness service")
+	fmt.Println("  foundation-lifecycle  Run the bounded module-owned machine lifecycle adapter")
+	fmt.Println("  package     Install/uninstall one immutable receipt-v2 adapter package")
 	fmt.Println("  serve       Run the local safe-metadata and authorization SSIAG API for one TOPS")
 	fmt.Println("  status      Read safe SSIAG status for one TOPS")
 	fmt.Println("  providers   List safe provider descriptors for one TOPS")

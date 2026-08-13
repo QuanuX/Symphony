@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:foundation-lifecycle-observation:v1",
+  "title": "Symphony foundational lifecycle observation v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "format_version", "component", "surface", "scope", "tops_id", "installation", "enrollment", "supervisor", "recovery_required", "active_attempt_digest", "observed_at", "stable_state_digest", "observation_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.foundation.lifecycle-observation.v1"},
+    "format_version": {"const": 1},
+    "component": {"enum": ["ssiag", "stav"]},
+    "surface": {"enum": ["enrollment", "supervisor"]},
+    "scope": {"enum": ["user", "system"]},
+    "tops_id": {"$ref": "#/$defs/uuid"},
+    "installation": {"$ref": "#/$defs/installation"},
+    "enrollment": {"$ref": "#/$defs/enrollment"},
+    "supervisor": {"$ref": "#/$defs/supervisor"},
+    "recovery_required": {"type": "boolean"},
+    "active_attempt_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "observed_at": {"$ref": "#/$defs/timestamp"},
+    "stable_state_digest": {"$ref": "#/$defs/digest"},
+    "observation_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "uuid": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "path": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "^/"},
+    "timestamp": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"},
+    "nullablePath": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/path"}]},
+    "nullableDigest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "nullableUint32": {"oneOf": [{"type": "null"}, {"type": "integer", "minimum": 0, "maximum": 4294967295}]},
+    "installation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["state", "binary_path", "binary_digest", "install_evidence_digest", "receipt_digest", "legacy"],
+      "properties": {
+        "state": {"enum": ["absent", "legacy", "installed", "drifted", "unsupported"]},
+        "binary_path": {"$ref": "#/$defs/nullablePath"}, "binary_digest": {"$ref": "#/$defs/nullableDigest"}, "install_evidence_digest": {"$ref": "#/$defs/nullableDigest"}, "receipt_digest": {"$ref": "#/$defs/nullableDigest"}, "legacy": {"type": "boolean"}
+      }
+    },
+    "enrollment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["state", "record_path", "record_digest", "config_path", "config_digest", "uid", "gid", "data_preserved"],
+      "properties": {
+        "state": {"enum": ["unenrolled", "enrolled", "drifted", "unsafe", "unknown"]},
+        "record_path": {"$ref": "#/$defs/nullablePath"}, "record_digest": {"$ref": "#/$defs/nullableDigest"}, "config_path": {"$ref": "#/$defs/nullablePath"}, "config_digest": {"$ref": "#/$defs/nullableDigest"}, "uid": {"$ref": "#/$defs/nullableUint32"}, "gid": {"$ref": "#/$defs/nullableUint32"}, "data_preserved": {"type": "boolean"}
+      }
+    },
+    "supervisor": {
+      "type": "object", "additionalProperties": false,
+      "required": ["manager", "manager_state", "descriptor_state", "descriptor_path", "descriptor_digest", "enablement", "process_state", "endpoint_state", "activation_generation", "package_receipt_digest"],
+      "properties": {
+        "manager": {"oneOf": [{"type": "null"}, {"enum": ["launchd", "systemd", "external"]}]},
+        "manager_state": {"enum": ["available", "manager_unavailable", "externally_managed", "unknown"]},
+        "descriptor_state": {"enum": ["absent", "installed", "drifted", "unsafe", "unknown"]},
+        "descriptor_path": {"$ref": "#/$defs/nullablePath"}, "descriptor_digest": {"$ref": "#/$defs/nullableDigest"},
+        "enablement": {"enum": ["enabled", "disabled", "not_applicable", "unknown"]},
+        "process_state": {"enum": ["running", "stopped", "starting", "stopping", "failed", "unknown"]},
+        "endpoint_state": {"enum": ["ready", "absent", "stale", "foreign", "indeterminate", "unknown"]},
+        "activation_generation": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"}]},
+        "package_receipt_digest": {"$ref": "#/$defs/nullableDigest"}
+      }
+    }
+  }
+}

@@ -279,6 +279,9 @@
       ],
       "implementation_paths": [
         "modules/stav-append-authority/cmd/symphony-stav-append-authority/main.go",
+        "modules/stav-append-authority/internal/foundation/engine.go",
+        "modules/stav-append-authority/internal/foundation/engine_test.go",
+        "modules/stav-append-authority/internal/foundation/transaction.go",
         "modules/stav-append-authority/internal/server/socketlock_test.go",
         "modules/stav-append-authority/internal/server/socketlock_unix.go",
         "modules/stav-append-authority/internal/supervision/supervision.go",
@@ -433,13 +436,16 @@
       "implementation_paths": [
         "modules/stav-append-authority/cmd/symphony-stav-append-authority/main.go",
         "modules/stav-append-authority/internal/config/config.go",
+        "modules/stav-append-authority/internal/foundation/engine.go",
+        "modules/stav-append-authority/internal/foundation/engine_test.go",
+        "modules/stav-append-authority/internal/foundation/transaction.go",
         "modules/stav-append-authority/internal/lifecycle/enrollment.go",
         "modules/stav-append-authority/internal/lifecycle/enrollment_test.go",
         "modules/stav-append-authority/internal/paths/paths.go"
       ],
       "kind": "subfeature",
       "non_claims": [
-        "Does not create a system principal, start the authority, grant append or read permission, create a ledger event, or purge data implicitly."
+        "Does not create a system principal, grant append or read permission, create a ledger event, expose purge through machine/qxctl v1, or claim ordinary audit/reconciliation success without a real STAV receipt."
       ],
       "owner_contract": "modules/stav-append-authority/SPEC.md",
       "parent_feature_id": "ssfv:symphony:stav-append-authority",

@@ -13,7 +13,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -634,129 +633,25 @@ func resolveSCLVEvidenceAdapter(prefix, version, adapterID string) (string, erro
 }
 
 func resolveInstalledV2(spec engineSpec, prefix, version string, receiptBytes []byte, binaryRelative string) (string, error) {
-	if err := requireExactFields(receiptBytes, []string{
-		"protocol", "format_version", "component_id", "component_kind", "module_id",
-		"vector_id", "engine_id", "package_id", "version", "install_scope", "prefix_mode",
-		"files", "entry_points", "provides_capabilities", "requires_capabilities",
-		"compatible_receptors", "platform_requirements", "receipt_digest",
-	}); err != nil {
-		return "", fmt.Errorf("invalid %s receipt-v2 fields: %w", spec.label, err)
-	}
-	var installed receiptV2
-	if err := decodeExact(receiptBytes, &installed); err != nil {
-		return "", fmt.Errorf("decode %s receipt-v2: %w", spec.label, err)
-	}
-	if installed.Protocol != receiptProtocolV2 || installed.FormatVersion != 2 ||
-		installed.ComponentID != spec.moduleID || installed.ModuleID != spec.moduleID ||
-		installed.PackageID != spec.moduleID || installed.Version != version ||
-		installed.ComponentKind != spec.componentKind || !receiptVectorMatches(installed.VectorID, spec.vectorID) ||
-		installed.EngineID == nil || *installed.EngineID != spec.engineID ||
-		installed.InstallScope != "prefix" || installed.PrefixMode != "installation_prefix" ||
-		len(installed.Files) == 0 || len(installed.Files) > 4096 || installed.EntryPoints == nil ||
-		installed.ProvidesCapabilities == nil || installed.RequiresCapabilities == nil ||
-		installed.CompatibleReceptors == nil || installed.PlatformRequirements == nil {
-		return "", fmt.Errorf("%s receipt-v2 identity or collection contract mismatch", spec.label)
-	}
-	if digest, protocol, err := validatedReceiptIdentity(receiptBytes); err != nil ||
-		protocol != receiptProtocolV2 || digest != installed.ReceiptDigest {
-		if err != nil {
-			return "", fmt.Errorf("validate %s receipt-v2 digest: %w", spec.label, err)
-		}
-		return "", fmt.Errorf("validate %s receipt-v2 digest", spec.label)
-	}
 	receiptRelative := filepath.ToSlash(filepath.Join(
 		"share", "symphony", "receipts", spec.moduleID, version, "install-receipt.json"))
-	seen := make(map[string]struct{}, len(installed.Files))
-	for _, file := range installed.Files {
-		if !safeRelativePath(file.Path) || (file.Kind != "regular" && file.Kind != "executable") ||
-			!taggedSHA256(file.Digest) || file.Path == receiptRelative {
-			return "", fmt.Errorf("%s receipt-v2 contains an invalid file entry", spec.label)
-		}
-		if _, duplicate := seen[file.Path]; duplicate {
-			return "", fmt.Errorf("%s receipt-v2 contains a duplicate path", spec.label)
-		}
-		seen[file.Path] = struct{}{}
-		data, err := readTrustedNoFollowRelative(prefix, file.Path, maxInstalledFileBytes(file.Path))
-		if err != nil {
-			return "", fmt.Errorf("validate receipt-v2-owned file %s: %w", file.Path, err)
-		}
-		digest := sha256.Sum256(data)
-		if uint64(len(data)) != file.Size || "sha256:"+hex.EncodeToString(digest[:]) != file.Digest {
-			return "", fmt.Errorf("receipt-v2-owned file content mismatch: %s", file.Path)
-		}
+	var vectorID *string
+	if spec.vectorID != "" {
+		value := spec.vectorID
+		vectorID = &value
 	}
-	if !validUniqueTokens(installed.ProvidesCapabilities, 128) ||
-		!validUniqueTokens(installed.RequiresCapabilities, 128) ||
-		!validUniqueTokens(installed.CompatibleReceptors, 128) {
-		return "", fmt.Errorf("%s receipt-v2 capability or receptor set is invalid", spec.label)
+	engineValue := spec.engineID
+	engineID := &engineValue
+	_, _, _, err := validateReceiptV2EntryPoint(prefix, version, receiptRelative, receiptBytes, ReceiptV2EntryPointSpec{
+		Label: spec.label, ComponentID: spec.moduleID, ComponentKind: spec.componentKind,
+		ModuleID: spec.moduleID, PackageID: spec.moduleID, VectorID: vectorID, EngineID: engineID,
+		EntryPointID: spec.engineID, EntryPointKind: "executable", EntryPointRelativePath: binaryRelative,
+		RequiredProtocols: []string{spec.processProtocol}, RequiredReceptors: spec.requiredReceptors,
+	})
+	if err != nil {
+		return "", err
 	}
-	for _, receptor := range spec.requiredReceptors {
-		if !containsExact(installed.CompatibleReceptors, receptor) {
-			return "", fmt.Errorf("%s receipt-v2 lacks required receptor compatibility", spec.label)
-		}
-	}
-	platformOS := runtime.GOOS
-	if platformOS == "darwin" {
-		platformOS = "macos"
-	}
-	if len(installed.PlatformRequirements) == 0 || len(installed.PlatformRequirements) > 128 {
-		return "", fmt.Errorf("%s receipt-v2 lacks bounded platform requirements", spec.label)
-	}
-	seenPlatforms := make(map[string]struct{}, len(installed.PlatformRequirements))
-	matchingCriticalPlatform := false
-	for _, requirement := range installed.PlatformRequirements {
-		if requirement.OS != "linux" && requirement.OS != "macos" || !safeToken(requirement.Architecture, 256) ||
-			requirement.KernelABI != nil && !safeToken(*requirement.KernelABI, 256) {
-			return "", fmt.Errorf("%s receipt-v2 platform requirement is invalid", spec.label)
-		}
-		kernelABI := ""
-		if requirement.KernelABI != nil {
-			kernelABI = *requirement.KernelABI
-		}
-		platformKey := requirement.OS + "\n" + requirement.Architecture + "\n" + kernelABI + "\n" + strconv.FormatBool(requirement.Critical)
-		if _, duplicate := seenPlatforms[platformKey]; duplicate {
-			return "", fmt.Errorf("%s receipt-v2 platform requirement is duplicated", spec.label)
-		}
-		seenPlatforms[platformKey] = struct{}{}
-		if requirement.Critical && (requirement.OS != platformOS || requirement.Architecture != runtime.GOARCH || requirement.KernelABI != nil) {
-			return "", fmt.Errorf("%s receipt-v2 is incompatible with this platform", spec.label)
-		}
-		if requirement.Critical {
-			matchingCriticalPlatform = true
-		}
-	}
-	if !matchingCriticalPlatform {
-		return "", fmt.Errorf("%s receipt-v2 lacks an exact critical host platform requirement", spec.label)
-	}
-	seenEntries := make(map[string]struct{}, len(installed.EntryPoints))
-	mainEntry := false
-	for _, entry := range installed.EntryPoints {
-		if !safeToken(entry.EntryPointID, 256) || !safeRelativePath(entry.Path) ||
-			(entry.Kind != "executable" && entry.Kind != "adapter" && entry.Kind != "descriptor") ||
-			!validUniqueTokens(entry.Protocols, 64) {
-			return "", fmt.Errorf("%s receipt-v2 entry point is invalid", spec.label)
-		}
-		if _, duplicate := seenEntries[entry.EntryPointID]; duplicate {
-			return "", fmt.Errorf("%s receipt-v2 entry point is duplicated", spec.label)
-		}
-		seenEntries[entry.EntryPointID] = struct{}{}
-		if _, owned := seen[entry.Path]; !owned {
-			return "", fmt.Errorf("%s receipt-v2 entry point is not receipt-owned", spec.label)
-		}
-		if entry.Path == binaryRelative && entry.Kind == "executable" &&
-			containsExact(entry.Protocols, spec.processProtocol) {
-			mainEntry = true
-		}
-	}
-	if !mainEntry {
-		return "", fmt.Errorf("%s receipt-v2 lacks the exact engine process entry point", spec.label)
-	}
-	binary := filepath.Join(prefix, filepath.FromSlash(binaryRelative))
-	info, err := os.Lstat(binary)
-	if err != nil || info.Mode()&os.ModeSymlink != 0 || !info.Mode().IsRegular() || info.Mode().Perm()&0o111 == 0 {
-		return "", fmt.Errorf("%s installed engine is not a no-follow executable regular file", spec.label)
-	}
-	return binary, nil
+	return filepath.Join(prefix, filepath.FromSlash(binaryRelative)), nil
 }
 
 func receiptVectorMatches(actual *string, expected string) bool {

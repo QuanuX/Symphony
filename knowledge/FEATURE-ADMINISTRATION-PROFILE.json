@@ -2190,19 +2190,29 @@
       "expectations": [
         {
           "command_ids": [
-
+            "qxcmd:symphony:ssiag.supervisor.apply",
+            "qxcmd:symphony:ssiag.supervisor.apply-status",
+            "qxcmd:symphony:ssiag.supervisor.plan",
+            "qxcmd:symphony:ssiag.supervisor.recover",
+            "qxcmd:symphony:ssiag.supervisor.status"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
-
+            "engop:symphony:ssiag.supervisor.apply",
+            "engop:symphony:ssiag.supervisor.apply-status",
+            "engop:symphony:ssiag.supervisor.observe",
+            "engop:symphony:ssiag.supervisor.plan",
+            "engop:symphony:ssiag.supervisor.recover"
           ],
-          "evidence": [
-            "knowledge/FEATURE-ADMINISTRATION.md",
-            "modules/secure-identity-access-governance/FEATURES.md"
+      "evidence": [
+        "knowledge/FEATURE-ADMINISTRATION.md",
+        "knowledge/FOUNDATIONAL-LIFECYCLE.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "lifecycle",
-          "rationale": "Native SSIAG supervision is administrator-facing and therefore requires a qxctl lifecycle route; none is currently registered.",
+          "rationale": "The five exact qxctl leaves bind native SSIAG supervision to its module-owned observe, plan, apply, attempt-status, and recovery operations.",
           "requirement": "required"
         }
       ],
@@ -2335,19 +2345,29 @@
       "expectations": [
         {
           "command_ids": [
-
+            "qxcmd:symphony:ssiag.enrollment.apply",
+            "qxcmd:symphony:ssiag.enrollment.apply-status",
+            "qxcmd:symphony:ssiag.enrollment.plan",
+            "qxcmd:symphony:ssiag.enrollment.recover",
+            "qxcmd:symphony:ssiag.enrollment.status"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
-
+            "engop:symphony:ssiag.enrollment.apply",
+            "engop:symphony:ssiag.enrollment.apply-status",
+            "engop:symphony:ssiag.enrollment.observe",
+            "engop:symphony:ssiag.enrollment.plan",
+            "engop:symphony:ssiag.enrollment.recover"
           ],
-          "evidence": [
-            "knowledge/FEATURE-ADMINISTRATION.md",
-            "modules/secure-identity-access-governance/FEATURES.md"
+      "evidence": [
+        "knowledge/FEATURE-ADMINISTRATION.md",
+        "knowledge/FOUNDATIONAL-LIFECYCLE.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "lifecycle",
-          "rationale": "SSIAG TOPS enrollment and preserved-by-default unenrollment are administrator-facing lifecycles and require qxctl routes; none are currently registered.",
+          "rationale": "The five exact qxctl leaves bind SSIAG TOPS enrollment to its module-owned observe, plan, apply, attempt-status, and recovery operations.",
           "requirement": "required"
         }
       ],
@@ -2501,19 +2521,29 @@
       "expectations": [
         {
           "command_ids": [
-
+            "qxcmd:symphony:stav.supervisor.apply",
+            "qxcmd:symphony:stav.supervisor.apply-status",
+            "qxcmd:symphony:stav.supervisor.plan",
+            "qxcmd:symphony:stav.supervisor.recover",
+            "qxcmd:symphony:stav.supervisor.status"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
-
+            "engop:symphony:stav.supervisor.apply",
+            "engop:symphony:stav.supervisor.apply-status",
+            "engop:symphony:stav.supervisor.observe",
+            "engop:symphony:stav.supervisor.plan",
+            "engop:symphony:stav.supervisor.recover"
           ],
-          "evidence": [
-            "knowledge/FEATURE-ADMINISTRATION.md",
-            "modules/stav-append-authority/FEATURES.md"
+      "evidence": [
+        "knowledge/FEATURE-ADMINISTRATION.md",
+        "knowledge/FOUNDATIONAL-LIFECYCLE.md",
+            "modules/stav-append-authority/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "lifecycle",
-          "rationale": "Native STAV supervision is administrator-facing and therefore requires a qxctl lifecycle route; none is currently registered.",
+          "rationale": "The five exact qxctl leaves bind native STAV supervision to its module-owned observe, plan, apply, attempt-status, and recovery operations.",
           "requirement": "required"
         }
       ],
@@ -2564,19 +2594,29 @@
       "expectations": [
         {
           "command_ids": [
-
+            "qxcmd:symphony:stav.enrollment.apply",
+            "qxcmd:symphony:stav.enrollment.apply-status",
+            "qxcmd:symphony:stav.enrollment.plan",
+            "qxcmd:symphony:stav.enrollment.recover",
+            "qxcmd:symphony:stav.enrollment.status"
           ],
           "delivery": "direct",
           "engine_operation_ids": [
-
+            "engop:symphony:stav.enrollment.apply",
+            "engop:symphony:stav.enrollment.apply-status",
+            "engop:symphony:stav.enrollment.observe",
+            "engop:symphony:stav.enrollment.plan",
+            "engop:symphony:stav.enrollment.recover"
           ],
-          "evidence": [
-            "knowledge/FEATURE-ADMINISTRATION.md",
-            "modules/stav-append-authority/FEATURES.md"
+      "evidence": [
+        "knowledge/FEATURE-ADMINISTRATION.md",
+        "knowledge/FOUNDATIONAL-LIFECYCLE.md",
+            "modules/stav-append-authority/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "lifecycle",
-          "rationale": "STAV TOPS enrollment and preserved-by-default unenrollment are administrator-facing lifecycles and require qxctl routes; none are currently registered.",
+          "rationale": "The five exact qxctl leaves bind STAV TOPS enrollment to its module-owned observe, plan, apply, attempt-status, and recovery operations.",
           "requirement": "required"
         }
       ],
@@ -2691,9 +2731,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:84610f5696f8818035c667362d3d2a9c74fbe10ab53efc2e685b7469ec4cc0d3",
+  "profile_digest": "sha256:74bd75cf2da0c46ac05a0e2a1687cf3742643a7b19d55ef81c9ec0752cf75efd",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 69,
-  "ssfv_registry_digest": "sha256:93af8380103b30f323e379349ef25aba5d45e340878d0ed887fab803550e3277"
+  "ssfv_registry_digest": "sha256:9347a96f0b98ad00d42259ca61877e2b369bc051de0701ce47afed7a59d4543d"
 }

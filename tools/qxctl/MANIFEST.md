@@ -18,10 +18,12 @@
 - `cmd/qxctl/commands.go`
 - `cmd/qxctl/command_manifest.go`
 - `cmd/qxctl/command_specs.go`
+- `cmd/qxctl/foundation_lifecycle.go`
 - `cmd/qxctl/lifecycle.go`
 - `cmd/qxctl/lifecycle_apply.go`
 - `cmd/qxctl/ssfv.go`
 - `internal/commandregistry/registry.go`
+- `internal/foundationlifecycle/client.go`
 - `internal/knowledgeengine/client.go`
 - `internal/knowledgeengine/open_relative_unix.go`
 - `internal/knowledgeengine/open_relative_unsupported.go`
@@ -63,10 +65,14 @@
 - `qxctl ssiag grants lifecycle --tops-id UUID --subject-id ID [--profile-id ID] [--authority-basis host_owner|granted_permission] [--json]`
 - `qxctl ssiag providers --tops-id UUID [--json] [--scope user|system]`
 - `qxctl ssiag doctor --tops-id UUID [--scope user|system]`
+- `qxctl ssiag enrollment status|plan|apply|apply-status|recover --prefix PATH --tops-id UUID [--version VERSION] [operation flags] [--json]`
+- `qxctl ssiag supervisor status|plan|apply|apply-status|recover --prefix PATH --tops-id UUID [--version VERSION] [operation flags] [--json]`
 - `qxctl stav status --tops-id UUID [--scope user|system] [--json]`
 - `qxctl stav verify --tops-id UUID [--scope user|system] [--json]`
 - `qxctl stav query --tops-id UUID [--scope user|system] [bounded filters] [--json]`
 - `qxctl stav doctor --tops-id UUID [--scope user|system]`
+- `qxctl stav enrollment status|plan|apply|apply-status|recover --prefix PATH --tops-id UUID [--version VERSION] [operation flags] [--json]`
+- `qxctl stav supervisor status|plan|apply|apply-status|recover --prefix PATH --tops-id UUID [--version VERSION] [operation flags] [--json]`
 - `qxctl knowledge engines list [--state-root PATH] [--json]`
 - `qxctl knowledge engines inspect ROLE [--state-root PATH] [--json]`
 - `qxctl knowledge engines doctor [--state-root PATH] [--json]`
@@ -150,13 +156,15 @@ qxctl is installable via standard `go build` or executable directly via `go run`
 
 Cobra owns the command tree and flag grammar. Viper is restricted to a new private instance for each command configuration: keys and environment variables are bound explicitly, and automatic environment discovery, remote providers, file discovery, watch/reload, write-back, and secret values are prohibited. Viper does not load SSIAG or STAV trust configuration. Endpoint configuration, filesystem trust, and kernel peer verification remain in their dedicated clients.
 
-Every public or hidden executable Cobra leaf also owns one attached stable `CommandSpec`. Tree construction fails closed when executable grammar is unclassified, duplicated, or disguised as a structural namespace. `commands expected` and the checked-in `COMMANDS.json` provide client-independent design evidence for engine-first evaluation; `commands manifest` binds the same projection to the exact running executable; `commands verify` strictly validates a bounded no-follow expected registry against the current tree. The reviewed backend-binding table currently adds forty-six exact backend feature/interaction bindings to forty-four stable commands while preserving each qxctl wrapper binding. Hidden prohibited leaves remain explicit identity evidence but cannot satisfy required coverage. These commands do not inject grammar, infer command names, decide feature worthiness, invent backend operation identities, or grant authority.
+Every public or hidden executable Cobra leaf also owns one attached stable `CommandSpec`. Tree construction fails closed when executable grammar is unclassified, duplicated, or disguised as a structural namespace. `commands expected` and the checked-in `COMMANDS.json` provide client-independent design evidence for engine-first evaluation; `commands manifest` binds the same projection to the exact running executable; `commands verify` strictly validates a bounded no-follow expected registry against the current tree. The four foundational lifecycle features each register five stable qxctl commands and five distinct module operations. Hidden prohibited leaves remain explicit identity evidence but cannot satisfy required coverage. These commands do not inject grammar, infer command names, decide feature worthiness, invent backend operation identities, or grant authority.
 
 The SSIAG command group is a cgo-free client for a local Unix domain socket. It loads scope-exact per-TOPS endpoint trust, rejects unsafe configuration/socket metadata, and verifies the connected service through native kernel peer credentials before HTTP exchange. Provider implementations remain inside the independently installed SSIAG module.
 
 `knowledge/ssiag/` owns SSIAG protocol truth and `knowledge/stav/` owns STAV protocol truth. qxctl implements administrative and query interfaces; it does not own either schema, edit ledgers, or hold runtime security state.
 
 The STAV commands use canonical local envelopes and a mutually authenticated Unix-socket client. The append authority enforces reader identity and classifications before projection. Raw `qxctl stav append` is prohibited.
+
+The foundational `ssiag|stav enrollment|supervisor status|plan|apply|apply-status|recover` families invoke only an exact receipt-v2 adapter selected beneath the required installation prefix. Omitting `--version` succeeds only when one compatible version exists. qxctl independently verifies package ownership, executable and receipt digests, adapter capabilities, canonical observation/plan/result digests, operation shape, deadlines, compare-and-swap evidence, and audit/recovery disposition. It never imports module internals, renders native descriptors, invokes `serve`, selects a newest version, exposes purge, or treats itself as mutation authority.
 
 Future canonical mutation support must expose distinct proposal and apply paths. Proposal is deterministic and non-mutating. Canonical apply is local-only, peer-authenticated, permission-backed through SSIAG, replay/idempotency/expected-state bound, and governed by the applicable STAV availability or explicit audit-deferred recovery contract. Authorization evaluates target-host ownership or granted permission and owner-configured safeguards, never caller type. The current SSIAG client also requests safe decisions for protected noncanonical session and lifecycle apply operations; no canonical mutation command or audit-deferred recovery path is implemented.
 

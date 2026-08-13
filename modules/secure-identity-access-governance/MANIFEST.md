@@ -22,8 +22,10 @@
 
 ## Implemented Surfaces
 
-- `install` / `uninstall`: one host binary and digest-bearing install manifest;
+- `package install|uninstall --prefix --version`: immutable compiled-version entry point and receipt-last `symphony.knowledge.install-receipt.v2`, with reference-safe removal;
+- legacy `install` / `uninstall`: verified fixed-path dual-read migration layout;
 - `enroll` / `unenroll`: isolated per-TOPS configuration and state;
+- `foundation-lifecycle`: bounded stdin/stdout `describe`, `observe`, `plan`, `apply`, `apply_status`, and `recover` for enrollment and supervisor surfaces;
 - `serve`: one protected Unix-socket API for one TOPS;
 - `supervisor install` / `supervisor uninstall`: per-TOPS launchd or systemd liveness profile with conservative state preservation;
 - Darwin/Linux kernel peer authentication on every accepted API connection;
@@ -37,7 +39,9 @@
 
 ## Install and Enrollment Separation
 
-Host uninstall never deletes per-TOPS state. `unenroll` preserves state by default; `unenroll --purge` targets exactly one validated TOPS UUID. Display names are configuration metadata and never path components.
+Host uninstall never deletes per-TOPS state and refuses retained supervisor, live endpoint, or unresolved lifecycle-attempt references. `unenroll` preserves state by default; native-only `unenroll --purge` targets exactly one validated TOPS UUID after descriptor, live-socket, and lifecycle-lock proof. Protected digest-linked attempts reside outside the purge subtree. Display names are configuration metadata and never path components.
+
+Ordinary foundational lifecycle apply is implemented fail-closed pending a real STAV receipt path. Explicit `audit_deferred` apply is durable and reports reconciliation required. The typed committed-receipt binding hook is not a completed reconciliation endpoint, and qxctl lifecycle v1 exposes no purge intent.
 
 ## Provider Boundary
 

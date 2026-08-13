@@ -16,13 +16,13 @@ func TestUserDescriptorIsBoundedAndIndependent(t *testing.T) {
 	home := t.TempDir()
 	t.Setenv("HOME", home)
 	t.Setenv("XDG_CONFIG_HOME", filepath.Join(home, "config"))
-	spec := Spec{Scope: ssiagpaths.ScopeUser, TOPSID: testTOPSID, Binary: filepath.Join(home, ".local", "bin", "symphony-ssiag"), UID: uint32(os.Geteuid()), GID: uint32(os.Getegid())}
+	spec := Spec{Scope: ssiagpaths.ScopeUser, TOPSID: testTOPSID, Binary: filepath.Join(home, "prefix", "libexec", "symphony", "secure-identity-access-governance", "dev", "symphony-ssiag"), UID: uint32(os.Geteuid()), GID: uint32(os.Getegid())}
 	record, content, err := render(spec)
 	if err != nil {
 		t.Fatal(err)
 	}
 	text := string(content)
-	for _, required := range []string{"--supervised", testTOPSID, "on-failure"} {
+	for _, required := range []string{spec.Binary, "--supervised", testTOPSID, "on-failure"} {
 		if !strings.Contains(text, required) && !(runtime.GOOS == "darwin" && required == "on-failure") {
 			t.Fatalf("descriptor omits %q:\n%s", required, text)
 		}

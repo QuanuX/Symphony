@@ -64,3 +64,45 @@ func TestSystemdDescriptorUsesConfiguredIdentityAndNoSSIAGCoupling(t *testing.T)
 		t.Fatalf("systemd STAV descriptor gained bootstrap coupling:\n%s", text)
 	}
 }
+
+func TestDescriptorDriftRequiresExactCAS(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	t.Setenv("XDG_CONFIG_HOME", filepath.Join(home, "config"))
+	spec := Spec{Scope: stavpaths.ScopeUser, TOPSID: testTOPSID, Binary: filepath.Join(home, "immutable", "stav"), UID: uint32(os.Geteuid()), GID: uint32(os.Getegid())}
+	record, err := InstallCAS(spec, "absent")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(record.Descriptor, []byte("drift"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := InstallCAS(spec, record.DescriptorHash); err == nil {
+		t.Fatal("wrong expected descriptor digest replaced drift")
+	}
+	observed, err := Observe(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if observed.DescriptorState != "drifted" {
+		t.Fatalf("drift state=%s", observed.DescriptorState)
+	}
+	if _, err := InstallCAS(spec, observed.DescriptorDigest); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestObserveReportsManagerUnavailableOffline(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	t.Setenv("XDG_CONFIG_HOME", filepath.Join(home, "config"))
+	t.Setenv("PATH", t.TempDir())
+	spec := Spec{Scope: stavpaths.ScopeUser, TOPSID: testTOPSID, Binary: filepath.Join(home, "immutable", "stav"), UID: uint32(os.Geteuid()), GID: uint32(os.Getegid())}
+	observed, err := Observe(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if observed.ManagerState != "manager_unavailable" || observed.DescriptorState != "absent" {
+		t.Fatalf("unexpected offline manager observation: %+v", observed)
+	}
+}

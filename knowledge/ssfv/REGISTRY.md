@@ -226,8 +226,8 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:8f9cd6b408df355e96ea1352621686a65003ddcc4ffd6f057c8b7122aa394136`
-- notes: Architect-ratified F1 nested record for SSIAG policy and decision administration; coverage remains partial and no broader runtime or canonical authority is implied.
+- record_digest: `sha256:c8d29dec41692eb76c46a61d3a1fe7cafa4f4e1a6a925c8d0c4a3bda5892b4f5`
+- notes: Architect-ratified F1 nested record for SSIAG policy, decision, enrollment, and native-supervision administration; coverage remains partial and no broader runtime or canonical authority is implied.
 
 - feature_id: `ssfv:symphony:qxctl.stav-administration`
 - feature_file: `tools/qxctl/FEATURES.md`
@@ -235,8 +235,8 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:10e1c13f3f115963813051c6acd0c5c4725feab9035889c86adbda8108f65538`
-- notes: Architect-ratified F1 nested record for STAV audit query and verification administration; coverage remains partial and no broader runtime or canonical authority is implied.
+- record_digest: `sha256:8a5d5fa59eb2c3994722ec58699f1619e73e323534d24ab653defebfd1b882b2`
+- notes: Architect-ratified F1 nested record for STAV audit, enrollment, and native-supervision administration; coverage remains partial and no broader runtime or canonical authority is implied.
 
 - feature_id: `ssfv:symphony:sacv-engine`
 - feature_file: `modules/sacv-engine/FEATURES.md`
@@ -514,7 +514,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/secure-identity-access-governance`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:ssiag-foundation`
-- record_digest: `sha256:ed81b13d2a31aeccc983b2e8b4e707b9b463e23e7518c86135172f161ab369ac`
+- record_digest: `sha256:46eb1a6c93b13cbc43321dc73d8e9af0bb9500855c58ce6e12ea21ea668873ad`
 - notes: Architect-ratified F2 subfeature for per-TOPS native SSIAG supervision; coverage remains partial.
 
 - feature_id: `ssfv:symphony:ssiag-foundation.policy-administration`
@@ -550,7 +550,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/secure-identity-access-governance`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:ssiag-foundation`
-- record_digest: `sha256:298951250d97626de73bf7dcba19e0e2009bb2063ae9f33a5dca1a2936a8946a`
+- record_digest: `sha256:dbbede83433c4356f388b94ef10e86a9997a8cab3ff96947328cfa4f7659bc9b`
 - notes: Architect-ratified F2 subfeature for per-TOPS SSIAG enrollment and isolation; coverage remains partial.
 
 - feature_id: `ssfv:symphony:ssiag.macos-keychain-metadata`
@@ -595,7 +595,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/stav-append-authority`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:stav-append-authority`
-- record_digest: `sha256:316603a09ae6c5ca158c1915c6554490c31db11c3a8c40a7484247aad6e2e3c8`
+- record_digest: `sha256:d6bed2d6d81651c26ae4e359d2e1f4b1ad95ae1e001533e9a6ef74bd946a592f`
 - notes: Architect-ratified F2 subfeature for per-TOPS native append-authority supervision; coverage remains partial.
 
 - feature_id: `ssfv:symphony:stav-append-authority.serialized-append`
@@ -613,7 +613,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/stav-append-authority`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:stav-append-authority`
-- record_digest: `sha256:3d3dac76cf53a0c631fbfbde3f4c0ef69f7e051c51f1422bc88da8295e7f5d5d`
+- record_digest: `sha256:39dd01d227c6ce26f370f8966baff21a737e5ff509f49c20c0768e8e03a62a80`
 - notes: Architect-ratified F2 subfeature for per-TOPS STAV serialization-domain enrollment; coverage remains partial.
 
 - feature_id: `ssfv:symphony:stav-protocol-kernel`

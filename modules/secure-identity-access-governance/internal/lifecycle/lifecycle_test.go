@@ -1,8 +1,11 @@
 package lifecycle
 
 import (
+	"errors"
+	"net"
 	"os"
 	"path/filepath"
+	"syscall"
 	"testing"
 
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
@@ -34,7 +37,7 @@ func installTestBinary(t *testing.T, home string) InstallRecord {
 	return record
 }
 
-func TestInstallIsIdempotentAndUninstallPreservesTOPS(t *testing.T) {
+func TestInstallIsIdempotentAndUninstallRefusesReferencedTOPS(t *testing.T) {
 	home := setupUser(t)
 	first := installTestBinary(t, home)
 	installedDigest, err := fileDigest(first.Binary)
@@ -50,6 +53,12 @@ func TestInstallIsIdempotentAndUninstallPreservesTOPS(t *testing.T) {
 	}
 	enrollment, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Trading desk", nil, nil)
 	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Uninstall(ssiagpaths.ScopeUser, false); err == nil {
+		t.Fatal("host uninstall accepted a referenced TOPS enrollment")
+	}
+	if _, err := Unenroll(ssiagpaths.ScopeUser, testTOPSID, false); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := Uninstall(ssiagpaths.ScopeUser, false); err != nil {
@@ -230,5 +239,50 @@ func TestEnrollRejectsChangedInstalledBinary(t *testing.T) {
 	}
 	if _, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Desk", nil, nil); err == nil {
 		t.Fatal("expected enrollment to reject changed installed binary")
+	}
+}
+
+func TestPurgeRefusesLiveSocketAndHeldLifecycleLock(t *testing.T) {
+	home, err := os.MkdirTemp("/tmp", "ssiag-purge-")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = os.RemoveAll(home) })
+	t.Setenv("HOME", home)
+	t.Setenv("XDG_CONFIG_HOME", filepath.Join(home, "c"))
+	t.Setenv("XDG_STATE_HOME", filepath.Join(home, "s"))
+	t.Setenv("XDG_RUNTIME_DIR", "/tmp")
+	t.Cleanup(func() { _ = os.RemoveAll(filepath.Join("/tmp", "symphony", testTOPSID)) })
+	installTestBinary(t, home)
+	record, err := Enroll(ssiagpaths.ScopeUser, testTOPSID, "Desk", nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	layout, err := ssiagpaths.ResolveInstance(ssiagpaths.ScopeUser, testTOPSID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	listener, err := net.Listen("unix", record.Socket)
+	if err != nil {
+		if !errors.Is(err, syscall.EPERM) {
+			t.Fatal(err)
+		}
+		t.Logf("sandbox does not permit Unix listeners; continuing lifecycle-lock assertion: %v", err)
+	} else {
+		if _, err := Unenroll(ssiagpaths.ScopeUser, testTOPSID, true); err == nil {
+			t.Fatal("purge accepted a live SSIAG endpoint")
+		}
+		if err := listener.Close(); err != nil {
+			t.Fatal(err)
+		}
+	}
+	_ = os.Remove(record.Socket)
+	lease, err := acquirePurgeSocketLease(layout.Socket)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer lease.Close()
+	if _, err := Unenroll(ssiagpaths.ScopeUser, testTOPSID, true); err == nil {
+		t.Fatal("purge raced an owned SSIAG socket lifecycle lock")
 	}
 }

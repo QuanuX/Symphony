@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:foundation-lifecycle-result:v1",
+  "title": "Symphony foundational lifecycle result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "format_version", "operation", "component", "surface", "scope", "tops_id", "operation_id", "disposition", "desired_state", "observation", "plan", "changed", "replayed", "recovered", "recovery_required", "reconciliation_required", "attempt_digest", "audit_state", "audit_receipt_digest", "started_at", "completed_at", "error", "read_only", "canonical", "result_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.foundation.lifecycle-result.v1"}, "format_version": {"const": 1},
+    "operation": {"enum": ["observe", "plan", "apply", "apply_status", "recover"]}, "component": {"enum": ["ssiag", "stav"]}, "surface": {"enum": ["enrollment", "supervisor"]}, "scope": {"enum": ["user", "system"]}, "tops_id": {"$ref": "#/$defs/uuid"},
+    "operation_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]}, "disposition": {"enum": ["observed", "planned", "applied", "already_applied", "blocked", "failed", "recovered"]},
+    "desired_state": {"oneOf": [{"type": "null"}, {"enum": ["enrolled", "unenrolled_preserved", "native_running", "native_installed_stopped", "absent_stopped"]}]},
+    "observation": {"$ref": "urn:symphony:knowledge:foundation-lifecycle-observation:v1"}, "plan": {"oneOf": [{"type": "null"}, {"$ref": "urn:symphony:knowledge:foundation-lifecycle-plan:v1"}]},
+    "changed": {"type": "boolean"}, "replayed": {"type": "boolean"}, "recovered": {"type": "boolean"}, "recovery_required": {"type": "boolean"}, "reconciliation_required": {"type": "boolean"},
+    "attempt_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]}, "audit_state": {"enum": ["not_applicable", "committed", "audit_deferred", "reconciled"]}, "audit_receipt_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "started_at": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/timestamp"}]}, "completed_at": {"$ref": "#/$defs/timestamp"}, "error": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/error"}]},
+    "read_only": {"type": "boolean"}, "canonical": {"const": false}, "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}, "uuid": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"}, "timestamp": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"},
+    "error": {"type": "object", "additionalProperties": false, "required": ["code", "message"], "properties": {"code": {"$ref": "#/$defs/token"}, "message": {"type": "string", "minLength": 1, "maxLength": 4096}}}
+  }
+}

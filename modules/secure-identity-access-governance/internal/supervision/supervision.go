@@ -11,6 +11,7 @@ import (
 	"os/user"
 	"path/filepath"
 	"runtime"
+	"sort"
 	"strconv"
 	"strings"
 	texttemplate "text/template"
@@ -42,6 +43,22 @@ type Record struct {
 	Changed        bool
 	Domain         string
 }
+
+// OfflineStatus is a filesystem-only supervisor observation. It deliberately
+// does not query launchd or systemd: a status read must not register, start,
+// stop, reload, or otherwise perturb the native manager.
+type OfflineStatus struct {
+	Manager                string `json:"manager"`
+	Name                   string `json:"name"`
+	Descriptor             string `json:"descriptor"`
+	DescriptorState        string `json:"descriptor_state"`
+	DescriptorHash         string `json:"descriptor_hash,omitempty"`
+	ExpectedDescriptorHash string `json:"expected_descriptor_hash,omitempty"`
+	ManagerAvailable       bool   `json:"manager_available"`
+	RuntimeState           string `json:"runtime_state"`
+}
+
+var ErrManagerUnavailable = fmt.Errorf("native supervisor manager is unavailable")
 
 type renderData struct {
 	Label     string
@@ -167,6 +184,146 @@ func Stop(record Record) error {
 	}
 }
 
+// ObserveOffline reports descriptor integrity and manager availability without
+// invoking the manager. When spec is nil, the canonical descriptor location is
+// still observed but no expected descriptor content is inferred.
+func ObserveOffline(scope ssiagpaths.Scope, topsID string, spec *Spec) (OfflineStatus, error) {
+	record, err := recordFor(scope, topsID)
+	if err != nil {
+		return OfflineStatus{}, err
+	}
+	status := OfflineStatus{
+		Manager: record.Manager, Name: record.Name, Descriptor: record.Descriptor,
+		DescriptorState: "absent", ManagerAvailable: managerAvailable(record.Manager),
+		RuntimeState: "unknown_offline",
+	}
+	if spec != nil {
+		expectedRecord, _, renderErr := render(*spec)
+		if renderErr != nil {
+			return OfflineStatus{}, renderErr
+		}
+		status.ExpectedDescriptorHash = expectedRecord.DescriptorHash
+	}
+	info, statErr := os.Lstat(record.Descriptor)
+	if os.IsNotExist(statErr) {
+		return status, nil
+	}
+	if statErr != nil {
+		return OfflineStatus{}, fmt.Errorf("inspect supervisor descriptor: %w", statErr)
+	}
+	if !info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0 {
+		status.DescriptorState = "unsafe"
+		return status, nil
+	}
+	content, readErr := os.ReadFile(record.Descriptor)
+	if readErr != nil {
+		return OfflineStatus{}, fmt.Errorf("read supervisor descriptor: %w", readErr)
+	}
+	digest := sha256.Sum256(content)
+	status.DescriptorHash = hex.EncodeToString(digest[:])
+	status.DescriptorState = "present"
+	if status.ExpectedDescriptorHash != "" {
+		if status.DescriptorHash == status.ExpectedDescriptorHash {
+			status.DescriptorState = "matching"
+		} else {
+			status.DescriptorState = "drifted"
+		}
+	}
+	return status, nil
+}
+
+func RequireManager(record Record) error {
+	if !managerAvailable(record.Manager) {
+		return fmt.Errorf("%w: %s", ErrManagerUnavailable, record.Manager)
+	}
+	return nil
+}
+
+// ReferencedTOPS returns every canonical TOPS identity with a supervisor
+// descriptor in the selected host scope. It does not trust descriptor content
+// and never asks the native manager to load it.
+func ReferencedTOPS(scope ssiagpaths.Scope) ([]string, error) {
+	probe := "018f0c3a-7b2d-4e11-8c12-0242ac120002"
+	record, err := recordFor(scope, probe)
+	if err != nil {
+		return nil, err
+	}
+	directory := filepath.Dir(record.Descriptor)
+	entries, err := os.ReadDir(directory)
+	if os.IsNotExist(err) {
+		return []string{}, nil
+	}
+	if err != nil {
+		return nil, fmt.Errorf("inspect supervisor directory: %w", err)
+	}
+	result := make([]string, 0)
+	for _, entry := range entries {
+		name := entry.Name()
+		var topsID string
+		switch record.Manager {
+		case "launchd":
+			if !strings.HasPrefix(name, launchdPrefix) || !strings.HasSuffix(name, ".plist") {
+				continue
+			}
+			topsID = strings.TrimSuffix(strings.TrimPrefix(name, launchdPrefix), ".plist")
+		case "systemd":
+			if !strings.HasPrefix(name, systemdPrefix) || !strings.HasSuffix(name, ".service") {
+				continue
+			}
+			topsID = strings.TrimSuffix(strings.TrimPrefix(name, systemdPrefix), ".service")
+		}
+		if ssiagpaths.ValidateTOPSID(topsID) == nil {
+			result = append(result, topsID)
+		}
+	}
+	sort.Strings(result)
+	return result, nil
+}
+
+func managerAvailable(manager string) bool {
+	name := "systemctl"
+	if manager == "launchd" {
+		name = "launchctl"
+	}
+	_, err := exec.LookPath(name)
+	return err == nil
+}
+
+func recordFor(scope ssiagpaths.Scope, topsID string) (Record, error) {
+	if err := ssiagpaths.ValidateTOPSID(topsID); err != nil {
+		return Record{}, err
+	}
+	switch runtime.GOOS {
+	case "darwin":
+		label := launchdPrefix + topsID
+		home, err := os.UserHomeDir()
+		if err != nil {
+			return Record{}, err
+		}
+		directory, domain := filepath.Join(home, "Library", "LaunchAgents"), "gui/"+strconv.Itoa(os.Geteuid())
+		if scope == ssiagpaths.ScopeSystem {
+			directory, domain = "/Library/LaunchDaemons", "system"
+		}
+		return Record{Manager: "launchd", Scope: scope, TOPSID: topsID, Name: label, Descriptor: filepath.Join(directory, label+".plist"), Domain: domain}, nil
+	case "linux":
+		unit := systemdPrefix + topsID + ".service"
+		directory := "/etc/systemd/system"
+		if scope == ssiagpaths.ScopeUser {
+			home, err := os.UserHomeDir()
+			if err != nil {
+				return Record{}, err
+			}
+			directory = filepath.Join(home, ".config", "systemd", "user")
+			if base := os.Getenv("XDG_CONFIG_HOME"); base != "" {
+				directory = filepath.Join(base, "systemd", "user")
+			}
+		}
+		return Record{Manager: "systemd", Scope: scope, TOPSID: topsID, Name: unit, Descriptor: filepath.Join(directory, unit)}, nil
+	default:
+		return Record{}, fmt.Errorf("native SSIAG supervision is unsupported on %s", runtime.GOOS)
+	}
+}
+
 func render(spec Spec) (Record, []byte, error) {
 	if err := ssiagpaths.ValidateTOPSID(spec.TOPSID); err != nil {
 		return Record{}, nil, err
@@ -210,7 +367,6 @@ func render(spec Spec) (Record, []byte, error) {
 		data.Unit = systemdPrefix + spec.TOPSID + ".service"
 		directory := "/etc/systemd/system"
 		if spec.Scope == ssiagpaths.ScopeUser {
-			data.Binary = "%h/.local/bin/symphony-ssiag"
 			home, homeErr := os.UserHomeDir()
 			if homeErr != nil {
 				return Record{}, nil, homeErr

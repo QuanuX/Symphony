@@ -44,3 +44,12 @@ func TestSystemEnrollmentRejectsInvalidAuthorityIdentity(t *testing.T) {
 		t.Fatalf("expected invalid authority UID error, got %v", err)
 	}
 }
+
+func TestSupervisorForceAndNoStopCannotBypassTransaction(t *testing.T) {
+	if err := runSupervisor([]string{"install", "--scope", "user", "--tops-id", commandTestTOPSID, "--force"}); err == nil || !strings.Contains(err.Error(), "unavailable through the expected-state transaction engine") {
+		t.Fatalf("force bypass result: %v", err)
+	}
+	if err := runSupervisor([]string{"uninstall", "--scope", "user", "--tops-id", commandTestTOPSID, "--no-stop"}); err == nil || !strings.Contains(err.Error(), "requires stop") {
+		t.Fatalf("no-stop bypass result: %v", err)
+	}
+}

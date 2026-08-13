@@ -287,10 +287,11 @@
         }
       ],
       "evidence": [
-        "Supervision and socket-lock tests cover exact launchd and systemd descriptors, identity binding, atomic replacement, stale-socket proof, and graceful shutdown."
+        "Supervision and socket-lock tests cover exact launchd and systemd descriptors, identity binding, atomic replacement, stale-socket proof, and graceful shutdown.",
+        "Foundation-lifecycle tests cover offline manager observation, manager-unavailable refusal before attempt creation, exact compare-and-swap, replay, interruption, and recovery."
       ],
       "feature_id": "ssfv:symphony:ssiag-foundation.native-supervision",
-      "how": "Renders identity-bound launchd or systemd descriptors, verifies configured UID and GID and exact descriptor content, commits descriptor updates atomically, applies bounded restart and shutdown settings, serializes socket ownership through a persistent lock, and removes only provably stale sockets.",
+      "how": "Observes manager availability and descriptor integrity offline, binds plans and protected digest-linked attempts to exact installation and state evidence, renders identity-bound launchd or systemd descriptors that pin the verified binary, commits descriptor updates atomically, applies bounded restart and shutdown settings, recovers interrupted work by exact compare-and-swap, serializes socket ownership through a persistent lock, and removes only provably stale sockets.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -299,6 +300,10 @@
       ],
       "implementation_paths": [
         "modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go",
+        "modules/secure-identity-access-governance/internal/foundationlifecycle/engine.go",
+        "modules/secure-identity-access-governance/internal/foundationlifecycle/engine_test.go",
+        "modules/secure-identity-access-governance/internal/foundationlifecycle/store_unix.go",
+        "modules/secure-identity-access-governance/internal/foundationlifecycle/types.go",
         "modules/secure-identity-access-governance/internal/server/socketlock_test.go",
         "modules/secure-identity-access-governance/internal/server/socketlock_unix.go",
         "modules/secure-identity-access-governance/internal/supervision/supervision.go",
@@ -306,7 +311,8 @@
       ],
       "kind": "subfeature",
       "non_claims": [
-        "Does not create system principals, grant policy or provider authority, imply a STAV dependency, use supervisor socket activation, or make supervised mode an authorization credential."
+        "Does not create system principals, grant policy or provider authority, imply a STAV dependency, use supervisor socket activation, or make supervised mode an authorization credential.",
+        "Ordinary foundational lifecycle mutation remains fail-closed until the separately owned STAV receipt endpoint is implemented; audit-deferred use is explicit and remains marked for forward reconciliation."
       ],
       "owner_contract": "modules/secure-identity-access-governance/SPEC.md",
       "parent_feature_id": "ssfv:symphony:ssiag-foundation",
@@ -608,11 +614,12 @@
         }
       ],
       "evidence": [
-        "Lifecycle tests cover installation prerequisites, exact user/system identity, reenrollment, preservation, purge boundaries, and unsafe-path refusal.",
+        "Lifecycle tests cover receipt-v2 and legacy installation prerequisites, exact user/system identity, reenrollment, preservation, live-socket and held-lock purge refusal, and unsafe-path refusal.",
+        "Foundation-lifecycle and package tests cover bounded machine JSON, receipt-last package evidence, compiled version binding, exact CAS, replay, crash recovery, drift refusal, deferred-audit marking, and referenced-package uninstall refusal.",
         "Configuration and path tests cover strict bounded schemas, immutable TOPS IDs, mutable names, and isolated user/system namespaces."
       ],
       "feature_id": "ssfv:symphony:ssiag-foundation.tops-enrollment",
-      "how": "Validates the installed binary, binds user scope to the enrolling effective identity or requires explicit system service identity, safely creates protected configuration, state, and runtime roots, preserves existing service identity across reenrollment, and purges only through an explicit bounded operation.",
+      "how": "Verifies either immutable receipt-v2 evidence for the running libexec entry point or the legacy fixed-path manifest, binds user scope to the enrolling effective identity or requires explicit system service identity, safely creates protected configuration and state, journals digest-linked lifecycle attempts outside purge roots, preserves service identity across reenrollment, and purges only through an explicit native operation after socket and lifecycle-lock proof.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -622,13 +629,21 @@
       "implementation_paths": [
         "modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go",
         "modules/secure-identity-access-governance/internal/config/config.go",
+        "modules/secure-identity-access-governance/internal/foundationlifecycle/codec.go",
+        "modules/secure-identity-access-governance/internal/foundationlifecycle/engine.go",
+        "modules/secure-identity-access-governance/internal/foundationlifecycle/engine_test.go",
+        "modules/secure-identity-access-governance/internal/foundationlifecycle/store_unix.go",
+        "modules/secure-identity-access-governance/internal/foundationlifecycle/types.go",
         "modules/secure-identity-access-governance/internal/lifecycle/lifecycle.go",
         "modules/secure-identity-access-governance/internal/lifecycle/lifecycle_test.go",
+        "modules/secure-identity-access-governance/internal/packageinstall/package.go",
+        "modules/secure-identity-access-governance/internal/packageinstall/package_test.go",
         "modules/secure-identity-access-governance/internal/paths/paths.go"
       ],
       "kind": "subfeature",
       "non_claims": [
-        "Does not create a system principal, grant policy permission, start a service, enable a provider, or purge data by default."
+        "Does not create a system principal, grant policy permission, start a service, enable a provider, or purge data by default.",
+        "The qxctl v1 lifecycle intent does not expose purge, and the implemented typed deferred-audit binding hook is not a completed STAV reconciliation endpoint."
       ],
       "owner_contract": "modules/secure-identity-access-governance/SPEC.md",
       "parent_feature_id": "ssfv:symphony:ssiag-foundation",

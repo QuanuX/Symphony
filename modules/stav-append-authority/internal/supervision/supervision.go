@@ -43,6 +43,15 @@ type Record struct {
 	Domain         string
 }
 
+type Observation struct {
+	Record           Record
+	ManagerState     string
+	DescriptorState  string
+	DescriptorDigest string
+	Enablement       string
+	ProcessState     string
+}
+
 type renderData struct {
 	Label, Unit, TOPSID, Binary, Scope, UserName, GroupName string
 	UID, GID                                                uint32
@@ -60,6 +69,23 @@ func SpecFromConfig(scope stavpaths.Scope, topsID, binary string, cfg stavprotoc
 }
 
 func Install(spec Spec, force bool) (Record, error) {
+	expected := ""
+	if force {
+		observation, err := Observe(spec)
+		if err != nil {
+			return Record{}, err
+		}
+		expected = observation.DescriptorDigest
+		if observation.DescriptorState == "absent" {
+			expected = "absent"
+		}
+	}
+	return InstallCAS(spec, expected)
+}
+
+// InstallCAS replaces a descriptor only when its exact current digest matches.
+// An empty expected value preserves the legacy no-drift replacement behavior.
+func InstallCAS(spec Spec, expected string) (Record, error) {
 	record, content, err := render(spec)
 	if err != nil {
 		return Record{}, err
@@ -78,9 +104,12 @@ func Install(spec Spec, force bool) (Record, error) {
 		if bytes.Equal(existing, content) {
 			return record, nil
 		}
-		if !force {
+		actual := digestContent(existing)
+		if expected == "" || expected != actual {
 			return Record{}, fmt.Errorf("STAV supervisor descriptor differs; use --force to replace it")
 		}
+	} else if os.IsNotExist(err) && expected != "" && expected != "absent" {
+		return Record{}, fmt.Errorf("STAV supervisor descriptor changed from expected state")
 	} else if !os.IsNotExist(err) {
 		return Record{}, err
 	}
@@ -92,12 +121,27 @@ func Install(spec Spec, force bool) (Record, error) {
 }
 
 func Uninstall(spec Spec, force, stop bool) (Record, error) {
+	expected := ""
+	if force {
+		observation, err := Observe(spec)
+		if err != nil {
+			return Record{}, err
+		}
+		expected = observation.DescriptorDigest
+	}
+	return UninstallCAS(spec, expected, stop)
+}
+
+func UninstallCAS(spec Spec, expected string, stop bool) (Record, error) {
 	record, content, err := render(spec)
 	if err != nil {
 		return Record{}, err
 	}
 	info, err := os.Lstat(record.Descriptor)
 	if os.IsNotExist(err) {
+		if expected != "" && expected != "absent" {
+			return Record{}, fmt.Errorf("STAV supervisor descriptor changed from expected state")
+		}
 		return record, nil
 	}
 	if err != nil || !info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0 {
@@ -107,8 +151,12 @@ func Uninstall(spec Spec, force, stop bool) (Record, error) {
 	if err != nil {
 		return Record{}, err
 	}
-	if !bytes.Equal(existing, content) && !force {
+	actual := digestContent(existing)
+	if !bytes.Equal(existing, content) && (expected == "" || expected != actual) {
 		return Record{}, fmt.Errorf("STAV supervisor descriptor differs; use --force to remove it")
+	}
+	if expected != "" && expected != actual {
+		return Record{}, fmt.Errorf("STAV supervisor descriptor changed from expected digest")
 	}
 	if stop {
 		if err := Stop(record); err != nil {
@@ -128,6 +176,76 @@ func Uninstall(spec Spec, force, stop bool) (Record, error) {
 		}
 	}
 	return record, nil
+}
+
+// Observe reports descriptor and manager state without requiring a live STAV endpoint.
+func Observe(spec Spec) (Observation, error) {
+	record, content, err := render(spec)
+	if err != nil {
+		return Observation{}, err
+	}
+	result := Observation{Record: record, ManagerState: "manager_unavailable", DescriptorState: "absent", Enablement: "unknown", ProcessState: "unknown"}
+	if info, statErr := os.Lstat(record.Descriptor); statErr == nil {
+		if !info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0 {
+			result.DescriptorState = "unsafe"
+		} else {
+			actual, readErr := os.ReadFile(record.Descriptor)
+			if readErr != nil {
+				return Observation{}, readErr
+			}
+			result.DescriptorDigest = digestContent(actual)
+			if bytes.Equal(actual, content) {
+				result.DescriptorState = "installed"
+			} else {
+				result.DescriptorState = "drifted"
+			}
+		}
+	} else if !os.IsNotExist(statErr) {
+		return Observation{}, statErr
+	}
+	if _, lookupErr := exec.LookPath(managerExecutable(record.Manager)); lookupErr != nil {
+		return result, nil
+	}
+	result.ManagerState = "available"
+	if record.Manager == "launchd" {
+		if !commandOK("launchctl", "print", record.Domain) {
+			result.ManagerState = "manager_unavailable"
+			return result, nil
+		}
+		if commandOK("launchctl", "print", record.Domain+"/"+record.Name) {
+			result.Enablement, result.ProcessState = "enabled", "running"
+		} else {
+			result.Enablement, result.ProcessState = "disabled", "stopped"
+		}
+		return result, nil
+	}
+	if !commandOK("systemctl", systemctlArgs(record.Scope, "show-environment")...) {
+		result.ManagerState = "manager_unavailable"
+		return result, nil
+	}
+	if commandOK("systemctl", systemctlArgs(record.Scope, "is-enabled", record.Name)...) {
+		result.Enablement = "enabled"
+	} else {
+		result.Enablement = "disabled"
+	}
+	if commandOK("systemctl", systemctlArgs(record.Scope, "is-active", record.Name)...) {
+		result.ProcessState = "running"
+	} else {
+		result.ProcessState = "stopped"
+	}
+	return result, nil
+}
+
+func managerExecutable(manager string) string {
+	if manager == "launchd" {
+		return "launchctl"
+	}
+	return "systemctl"
+}
+
+func digestContent(content []byte) string {
+	digest := sha256.Sum256(content)
+	return "sha256:" + hex.EncodeToString(digest[:])
 }
 
 func Start(record Record) error {
@@ -195,7 +313,6 @@ func render(spec Spec) (Record, []byte, error) {
 		data.Unit = systemdPrefix + spec.TOPSID + ".service"
 		directory := "/etc/systemd/system"
 		if spec.Scope == stavpaths.ScopeUser {
-			data.Binary = "%h/.local/bin/" + stavpaths.BinaryName
 			home, err := os.UserHomeDir()
 			if err != nil {
 				return Record{}, nil, err
@@ -217,6 +334,30 @@ func render(spec Spec) (Record, []byte, error) {
 	digest := sha256.Sum256(content)
 	record.DescriptorHash = hex.EncodeToString(digest[:])
 	return record, content, nil
+}
+
+// ReferencesExecutable conservatively reports whether the installed descriptor
+// or active manager still retains the exact immutable package executable.
+func ReferencesExecutable(spec Spec, executable string) (bool, string, error) {
+	observation, err := Observe(spec)
+	if err != nil {
+		return false, "", err
+	}
+	if observation.ProcessState == "running" {
+		return true, observation.Record.Descriptor, nil
+	}
+	if observation.DescriptorState == "unsafe" || observation.DescriptorState == "unknown" {
+		return true, observation.Record.Descriptor, nil
+	}
+	if observation.DescriptorState == "absent" {
+		return false, "", nil
+	}
+	content, err := os.ReadFile(observation.Record.Descriptor)
+	if err != nil {
+		return true, observation.Record.Descriptor, nil
+	}
+	text := string(content)
+	return strings.Contains(text, executable) || strings.Contains(text, escapeXML(executable)), observation.Record.Descriptor, nil
 }
 
 func renderLaunchd(data renderData) ([]byte, error) {
@@ -310,6 +451,10 @@ func run(name string, args ...string) error {
 		return fmt.Errorf("%s: %s", name, message)
 	}
 	return nil
+}
+
+func commandOK(name string, args ...string) bool {
+	return exec.Command(name, args...).Run() == nil
 }
 
 func ensureDirectory(path string) error {
