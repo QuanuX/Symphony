@@ -332,7 +332,7 @@ Scaffolding every engine in advance is prohibited. Each slice must pass its cont
 
 The Architect has ratified `knowledge/ssfv/` with stable identifiers, feature-worthiness criteria, hierarchy, sparse distributed-file ownership, typed relationships, lifecycle, 5W1H semantics, content-addressed freshness, and portable JSON graph contracts. This completes the semantic contract gate.
 
-The implementation gate, F1 through F3 review gates, and feature-administration assurance slice are complete. Exactly sixty-nine ratified records cover the repository-root platform capability, fourteen implemented owner scopes, and fifty-four nested subfeatures. That bounded result does not authorize another distributed `FEATURES.md`, another canonical feature entry, a complete-catalog claim, a persistent graph store, or any capability outside the registered records.
+The implementation gate, F1 through F3 review gates, and feature-administration assurance slice are complete. Exactly sixty-nine ratified records cover the repository-root platform capability, fourteen implemented owner scopes, and fifty-four nested subfeatures. All sixty-nine records now carry 128 reviewed administration expectations or explicit evidence-backed dispositions, and the profile gate is `enforce_new_records`. Expected qxctl routes that still lack an exact backend feature binding or engine-operation identity remain uncovered implementation evidence; the gate does not deem those routes implemented. That bounded result does not authorize another distributed `FEATURES.md`, another canonical feature entry, a complete-catalog claim, a persistent graph store, or any capability outside the registered records.
 
 ## Historical and Validator Boundary
 

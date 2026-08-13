@@ -4,422 +4,2694 @@
   "features": [
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:module.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The installed coordinator is independently inspectable through the generic module inspection route; exact coordinator operation identities remain a separate adoption gate.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:module.check"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The independently installed coordinator requires a deterministic qxctl package and contract validation route.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:knowledge-session-coordinator"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.session.begin",
+            "qxcmd:symphony:knowledge.session.checkpoint",
+            "qxcmd:symphony:knowledge.session.close",
+            "qxcmd:symphony:knowledge.session.transition"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "lifecycle",
+          "rationale": "Authenticated authority epochs require explicit begin, checkpoint or transition, and close administration.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.session.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Current authority-epoch state must remain independently queryable.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.session.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Interrupted authority-epoch mutation requires explicit bounded recovery.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:knowledge-session-coordinator.authority-epochs"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.lifecycle.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Lifecycle convergence requires one explicit permission-backed qxctl apply route.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.lifecycle.apply-status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Prepared and finalized lifecycle apply state must be observable without mutation.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.lifecycle.apply-recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Interrupted apply coordination requires an explicit evidence-preserving recovery route.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:knowledge-session-coordinator.lifecycle-apply-coordination"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.lifecycle.observe"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Planning begins from an explicit bounded observation of installed and configured state.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.lifecycle.boot"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "lifecycle",
+          "rationale": "Boot planning preserves one explicit durable report-only lifecycle entry point.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.lifecycle.report",
+            "qxcmd:symphony:knowledge.lifecycle.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The plan and its durable boot state require separate read-only report and status routes.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:knowledge-session-coordinator.lifecycle-planning"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.reconcile.begin",
+            "qxcmd:symphony:knowledge.reconcile.checkpoint",
+            "qxcmd:symphony:knowledge.reconcile.close"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "lifecycle",
+          "rationale": "Repository reconciliation requires explicit begin, checkpoint, and close transitions.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.reconcile.compatibility",
+            "qxcmd:symphony:knowledge.reconcile.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Compatibility and current reconciliation state must remain independently queryable.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.reconcile.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Interrupted reconciliation requires explicit forward recovery.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:knowledge-session-coordinator.reconciliation"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.session.features.begin",
+            "qxcmd:symphony:knowledge.session.features.checkpoint",
+            "qxcmd:symphony:knowledge.session.features.close"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "lifecycle",
+          "rationale": "Semantic baseline maintenance requires explicit begin, checkpoint, and close transitions.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.session.features.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Semantic-maintenance lineage must remain independently queryable.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.session.features.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Interrupted semantic maintenance requires explicit digest-linked recovery.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:knowledge-session-coordinator.semantic-maintenance"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "libraries/knowledge-vector-engine-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The authority-free C++ foundation is statically linked and has no independently executable administration surface.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:knowledge-vector-engine-foundation"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "libraries/knowledge-vector-engine-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Bounded request, response, deadline, and error mechanics execute only inside a consuming process.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:knowledge-vector-engine-foundation.bounded-process-protocol"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "libraries/knowledge-vector-engine-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Snapshot and digest primitives are library behavior exercised through the consuming engine operation.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:knowledge-vector-engine-foundation.content-addressed-evidence-snapshots"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/stsc/SPEC.md",
+            "libraries/knowledge-vector-engine-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Temporal conformance is enforced at library and consuming-operation boundaries rather than administered as a standalone process.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:knowledge-vector-engine-foundation.temporal-representation-conformance"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:maestro.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/maestro/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Exact receptor presence is directly inspectable through qxctl.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.lifecycle.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/maestro/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "lifecycle",
+          "rationale": "Docking and undocking are delegated to the separately authorized lifecycle apply circuit.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:maestro.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/maestro/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Current receptor status is directly queryable through qxctl.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:maestro.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/maestro/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Interrupted presence mutation requires explicit forward recovery.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:maestro-presence-authority"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:maestro.inventory"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/maestro/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Complete sorted receptor inventory is a direct read-only qxctl query.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:maestro-presence-authority.complete-inventory"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:modules"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "FEATURES.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The platform umbrella is discoverable through complete component inventory and module enumeration.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:platform"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:modules"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The reviewed qxctl command specification provides the exact headless discover surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:module.inspect",
+            "qxcmd:symphony:module.metadata",
+            "qxcmd:symphony:modules.metadata"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless inspect surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.reconcile.begin",
+            "qxcmd:symphony:knowledge.reconcile.checkpoint",
+            "qxcmd:symphony:knowledge.reconcile.close"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "lifecycle",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless lifecycle surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:inventory",
+            "qxcmd:symphony:inventory.digest",
+            "qxcmd:symphony:knowledge.reconcile.compatibility",
+            "qxcmd:symphony:knowledge.reconcile.status",
+            "qxcmd:symphony:status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless query surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.reconcile.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed qxctl command specification provides the exact headless recover surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:contracts",
+            "qxcmd:symphony:doctor",
+            "qxcmd:symphony:module.check",
+            "qxcmd:symphony:modules.check"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless validate surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:qxctl"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.session.begin",
+            "qxcmd:symphony:knowledge.session.checkpoint",
+            "qxcmd:symphony:knowledge.session.close",
+            "qxcmd:symphony:knowledge.session.features.begin",
+            "qxcmd:symphony:knowledge.session.features.checkpoint",
+            "qxcmd:symphony:knowledge.session.features.close",
+            "qxcmd:symphony:knowledge.session.transition"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "lifecycle",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless lifecycle surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.session.features.status",
+            "qxcmd:symphony:knowledge.session.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless query surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.session.features.recover",
+            "qxcmd:symphony:knowledge.session.recover"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless recover surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:qxctl.authenticated-sessions"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:commands.expected",
+            "qxcmd:symphony:commands.manifest"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless discover surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:commands.verify"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed qxctl command specification provides the exact headless validate surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:qxctl.command-registry"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.engines.bind",
+            "qxcmd:symphony:knowledge.engines.unbind"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "configure",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless configure surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.engines.list"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The reviewed qxctl command specification provides the exact headless discover surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.engines.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed qxctl command specification provides the exact headless inspect surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.engines.doctor"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed qxctl command specification provides the exact headless validate surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:qxctl.engine-bindings"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:validate.baseline.create",
+            "qxcmd:symphony:validate.baseline.remove",
+            "qxcmd:symphony:validate.profile.remove",
+            "qxcmd:symphony:validate.profile.set"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "configure",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless configure surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:validate.profile.list"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The reviewed qxctl command specification provides the exact headless discover surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:validate.baseline.show",
+            "qxcmd:symphony:validate.profile.show"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless inspect surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:validate.debug",
+            "qxcmd:symphony:validate.scan"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless validate surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:qxctl.governed-validation"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.lifecycle.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "The reviewed qxctl command specification provides the exact headless apply surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.lifecycle.profile.remove",
+            "qxcmd:symphony:knowledge.lifecycle.profile.set"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "configure",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless configure surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.lifecycle.profile.list"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The reviewed qxctl command specification provides the exact headless discover surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.lifecycle.observe",
+            "qxcmd:symphony:knowledge.lifecycle.profile.show"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless inspect surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.lifecycle.boot",
+            "qxcmd:symphony:knowledge.lifecycle.ownership.adopt",
+            "qxcmd:symphony:knowledge.lifecycle.ownership.reconcile",
+            "qxcmd:symphony:knowledge.lifecycle.ownership.release"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "lifecycle",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless lifecycle surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.lifecycle.apply-status",
+            "qxcmd:symphony:knowledge.lifecycle.ownership.status",
+            "qxcmd:symphony:knowledge.lifecycle.report",
+            "qxcmd:symphony:knowledge.lifecycle.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless query surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.lifecycle.apply-recover",
+            "qxcmd:symphony:knowledge.lifecycle.recover"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless recover surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:qxctl.lifecycle-convergence"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.lifecycle.host.disable",
+            "qxcmd:symphony:knowledge.lifecycle.host.enable",
+            "qxcmd:symphony:knowledge.lifecycle.host.install",
+            "qxcmd:symphony:knowledge.lifecycle.host.reconcile",
+            "qxcmd:symphony:knowledge.lifecycle.host.run",
+            "qxcmd:symphony:knowledge.lifecycle.host.uninstall",
+            "qxcmd:symphony:knowledge.lifecycle.host.update"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "lifecycle",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless lifecycle surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:knowledge.lifecycle.host.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed qxctl command specification provides the exact headless query surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:qxctl.linux-host-receptor"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:maestro.inventory"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The reviewed qxctl command specification provides the exact headless discover surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:maestro.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed qxctl command specification provides the exact headless inspect surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:maestro.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed qxctl command specification provides the exact headless query surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:maestro.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed qxctl command specification provides the exact headless recover surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:qxctl.maestro-administration"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.policy.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "The reviewed qxctl command specification provides the exact headless apply surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.providers"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The reviewed qxctl command specification provides the exact headless discover surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.grants.lifecycle",
+            "qxcmd:symphony:ssiag.policy.propose"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless propose surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.policy.status",
+            "qxcmd:symphony:ssiag.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless query surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.policy.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed qxctl command specification provides the exact headless recover surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.doctor"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed qxctl command specification provides the exact headless validate surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:qxctl.ssiag-administration"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "none",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/stav/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Raw qxctl STAV append is a hidden fail-closed reservation and cannot satisfy administration coverage.",
+          "requirement": "prohibited"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:stav.query",
+            "qxcmd:symphony:stav.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless query surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:stav.doctor",
+            "qxcmd:symphony:stav.verify"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless validate surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:qxctl.stav-administration"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sacv.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed qxctl command specification provides the exact headless inspect surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sacv-engine"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sacv.check"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed qxctl command specification provides the exact headless validate surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sacv-engine.api-contract-conformance"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sacv.project"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed qxctl command specification provides the exact headless query surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sacv-engine.contract-inventory-projection"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "none",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/ssfv/REGISTRY.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "This feature produces reviewable noncanonical proposals and has no canonical apply authority.",
+          "requirement": "prohibited"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sacv.propose"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "The reviewed qxctl command specification provides the exact headless propose surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sacv-engine.contract-registration-proposal"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sacv.diff"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed qxctl command specification provides the exact headless validate surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sacv-engine.openapi-compatibility-evidence"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sclv.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed qxctl command specification provides the exact headless inspect surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sclv-engine"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sclv.check"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed qxctl command specification provides the exact headless validate surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sclv-engine.append-only-ledger-assurance"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sclv.project"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed qxctl command specification provides the exact headless query surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sclv-engine.disposable-provider-neutral-history"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "none",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/ssfv/REGISTRY.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "This feature produces reviewable noncanonical proposals and has no canonical apply authority.",
+          "requirement": "prohibited"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sclv.propose"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "The reviewed qxctl command specification provides the exact headless propose surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sclv-engine.evidence-bound-append-proposals"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sclv.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed qxctl command specification provides the exact headless recover surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sclv-engine.forward-only-closure-recovery"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sclv.evidence.airgap",
+            "qxcmd:symphony:sclv.evidence.local-git"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The reviewed qxctl command specifications provide the exact headless invoke surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sclv-engine.provider-neutral-evidence-normalization"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:skvi.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed qxctl command specification provides the exact headless inspect surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:skvi-engine"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "none",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/ssfv/REGISTRY.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "This feature produces reviewable noncanonical proposals and has no canonical apply authority.",
+          "requirement": "prohibited"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:skvi.propose"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "The reviewed qxctl command specification provides the exact headless propose surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:skvi-engine.content-addressed-index-change-proposals"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:skvi.project"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed qxctl command specification provides the exact headless query surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:skvi-engine.disposable-structural-projection"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:skvi.check"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed qxctl command specification provides the exact headless validate surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:skvi-engine.structural-index-assurance"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sodv.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed qxctl command specification provides the exact headless inspect surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sodv-engine"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "none",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/ssfv/REGISTRY.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "This feature produces reviewable noncanonical proposals and has no canonical apply authority.",
+          "requirement": "prohibited"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sodv.propose"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "The reviewed qxctl command specification provides the exact headless propose surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sodv-engine.forward-release-record-proposal"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sodv.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed qxctl command specification provides the exact headless recover surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sodv-engine.interrupted-publication-reconciliation"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sodv.verify"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed qxctl command specification provides the exact headless validate surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sodv-engine.observed-publication-verification"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sodv.check"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed qxctl command specification provides the exact headless validate surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sodv-engine.release-ledger-validation"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:sodv.project"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed qxctl command specification provides the exact headless query surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:sodv-engine.release-transaction-projection"
     },
     {
       "expectations": [
-
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssfv.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:ssfv.inspect"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed qxctl command specification provides the exact headless inspect surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:ssfv-engine"
     },
     {
       "expectations": [
-
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssfv.administration-check"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:ssfv.administration-check"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed qxctl command specification provides the exact headless validate surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:ssfv-engine.administration-assurance"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "none",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/ssfv/REGISTRY.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "This feature produces reviewable noncanonical proposals and has no canonical apply authority.",
+          "requirement": "prohibited"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssfv.propose"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:ssfv.propose"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "The reviewed qxctl command specification provides the exact headless propose surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:ssfv-engine.catalog-change-proposal"
     },
     {
       "expectations": [
-
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssfv.check"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:ssfv.check"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed qxctl command specification provides the exact headless validate surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:ssfv-engine.catalog-integrity-snapshot"
     },
     {
       "expectations": [
-
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssfv.diff"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:ssfv.diff"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed qxctl command specification provides the exact headless validate surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:ssfv-engine.semantic-freshness-comparison"
     },
     {
       "expectations": [
-
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssfv.graph"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:ssfv.graph"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed qxctl command specification provides the exact headless query surface for this registered feature.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:ssfv-engine.semantic-graph-projection"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "SSIAG foundation health and enrollment state require a headless qxctl status route.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.doctor"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "SSIAG foundation diagnostics require deterministic qxctl validation.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:ssiag-foundation"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "system_orchestrated",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/ssiag/SPEC.md",
+            "modules/secure-identity-access-governance/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Fresh authorization decisions and capabilities are obtained inside each protected qxctl workflow and are not exposed as a reusable direct grant command.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:ssiag-foundation.authorization-capabilities"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/secure-identity-access-governance/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Kernel peer and endpoint identity are authenticated at every local service connection boundary, not selected by an administrator command.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:ssiag-foundation.kernel-peer-trust"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/secure-identity-access-governance/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "lifecycle",
+          "rationale": "Native SSIAG supervision is administrator-facing and therefore requires a qxctl lifecycle route; none is currently registered.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:ssiag-foundation.native-supervision"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.policy.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Policy mutation requires the explicit permission-backed apply route.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.policy.propose"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Policy changes begin from an explicit noncanonical proposal.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.policy.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Protected policy state is independently queryable.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.policy.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Interrupted policy mutation requires explicit bounded recovery.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:ssiag-foundation.policy-administration"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.providers"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Safe provider metadata is discoverable through the dedicated qxctl route.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:ssiag-foundation.provider-metadata-registry"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "system_orchestrated",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/stav/SPEC.md",
+            "modules/secure-identity-access-governance/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "SSIAG must obtain a committed STAV receipt inside each audited decision or mutation before releasing success; direct audit emission remains prohibited.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:ssiag-foundation.safe-audit-production"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/secure-identity-access-governance/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "lifecycle",
+          "rationale": "SSIAG TOPS enrollment and preserved-by-default unenrollment are administrator-facing lifecycles and require qxctl routes; none are currently registered.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:ssiag-foundation.tops-enrollment"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "none",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/ssiag-provider-macos-keychain/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "The metadata-only adapter cannot apply, access, deliver, rotate, or mutate Keychain material.",
+          "requirement": "not_applicable"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.providers"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/ssiag-provider-macos-keychain/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "An installed metadata adapter must become visible through SSIAG provider discovery without enabling operational Keychain access.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:ssiag.macos-keychain-metadata"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:stav.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/stav-append-authority/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Append-authority status is directly queryable through qxctl.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:stav.doctor"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/stav-append-authority/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Append-authority diagnostics require deterministic qxctl validation.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:stav-append-authority"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:stav.query"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
 
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/stav-append-authority/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Bounded audit evidence retrieval is a direct authorized qxctl query.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:stav-append-authority.authorized-query"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "system_orchestrated",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/stav-append-authority/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Only an incomplete final frame is recovered during authority startup; complete corruption remains a hard failure rather than a user-selectable repair.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:stav.verify"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/stav-append-authority/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The complete durable hash chain is explicitly verifiable through qxctl.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:stav-append-authority.ledger-durability"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/stav-append-authority/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "lifecycle",
+          "rationale": "Native STAV supervision is administrator-facing and therefore requires a qxctl lifecycle route; none is currently registered.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:stav-append-authority.native-supervision"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "none",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/stav/SPEC.md",
+            "modules/stav-append-authority/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Raw administrative qxctl append is intentionally prohibited; only granted producers may submit bounded candidates.",
+          "requirement": "prohibited"
+        },
+        {
+          "command_ids": [
+
+          ],
+          "delivery": "system_orchestrated",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/stav/SPEC.md",
+            "modules/stav-append-authority/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Authorized producers invoke serialized append as part of their owning operation and qxctl cannot act as a raw producer.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:stav-append-authority.serialized-append"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/stav-append-authority/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "lifecycle",
+          "rationale": "STAV TOPS enrollment and preserved-by-default unenrollment are administrator-facing lifecycles and require qxctl routes; none are currently registered.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:stav-append-authority.tops-enrollment"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "libraries/stav-protocol-go/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The authority-free Go protocol kernel is linked into producers and consumers and has no standalone administration process.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:stav-protocol-kernel"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "libraries/stav-protocol-go/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Canonical encoding, hashing, and framing execute inside a consuming Go process.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:stav-protocol-kernel.canonical-wire-representation"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "libraries/stav-protocol-go/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "STAV semantic validation is enforced before and after transport inside each consuming process.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:stav-protocol-kernel.semantic-validation"
     },
     {
       "expectations": [
+        {
+          "command_ids": [
 
+          ],
+          "delivery": "none",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/symphony-validator/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "The validator is deterministically read-only and cannot remediate, rewrite, or apply scanned content.",
+          "requirement": "prohibited"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:validate.scan"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/symphony-validator/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Repository validation is exposed through the complete headless qxctl scan route; debug is a presentation filter rather than an independent detector execution.",
+          "requirement": "required"
+        }
       ],
       "feature_id": "ssfv:symphony:symphony-validator"
     }
   ],
   "format_version": 1,
-  "forward_gate": "report_only",
-  "profile_digest": "sha256:ade4f3a9a3dada3b1189a52e2c640f87c987d8fa157d8a44224096ab71bfe371",
+  "forward_gate": "enforce_new_records",
+  "profile_digest": "sha256:84610f5696f8818035c667362d3d2a9c74fbe10ab53efc2e685b7469ec4cc0d3",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 69,
