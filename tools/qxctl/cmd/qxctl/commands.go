@@ -826,7 +826,7 @@ func newSCLVCommand() *cobra.Command {
 		Use:  "sclv",
 		Args: usageOnlyArgs,
 		RunE: func(*cobra.Command, []string) error {
-			return fmt.Errorf("SCLV subcommand is required: inspect, check, propose, recover, or project")
+			return fmt.Errorf("SCLV subcommand is required: inspect, check, propose, recover, project, or evidence")
 		},
 	}
 	for _, operation := range []string{"inspect", "check", "propose", "recover", "project"} {
@@ -849,6 +849,30 @@ func newSCLVCommand() *cobra.Command {
 		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 		command.AddCommand(child)
 	}
+	evidence := &cobra.Command{
+		Use:  "evidence",
+		Args: usageOnlyArgs,
+		RunE: func(*cobra.Command, []string) error {
+			return fmt.Errorf("SCLV evidence adapter is required: local-git or airgap")
+		},
+	}
+	for _, adapter := range []string{"local-git", "airgap"} {
+		options := sclvOptions{version: "0.1.0-dev"}
+		child := &cobra.Command{
+			Use:  adapter,
+			Args: usageOnlyArgs,
+			RunE: func(*cobra.Command, []string) error { return runSCLVEvidence(adapter, options) },
+		}
+		child.Flags().StringVar(&options.prefix, "prefix", "", "exact SCLV installation prefix")
+		child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed SCLV package version")
+		child.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
+		child.Flags().StringVar(&options.input, "input", "", "no-follow JSON provider-evidence input file")
+		child.Flags().BoolVar(&options.jsonOutput, "json", false, "emit normalized evidence JSON")
+		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+		evidence.AddCommand(child)
+	}
+	evidence.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	command.AddCommand(evidence)
 	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	return command
 }
@@ -1246,6 +1270,10 @@ func failurePrefix(args []string) string {
 			switch args[1] {
 			case "inspect", "check", "propose", "recover", "project":
 				return "sclv " + args[1]
+			case "evidence":
+				if len(args) > 2 && (args[2] == "local-git" || args[2] == "airgap") {
+					return "sclv evidence " + args[2]
+				}
 			}
 		}
 	case "sacv":

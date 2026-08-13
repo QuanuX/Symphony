@@ -113,6 +113,8 @@ func printUsage() {
 	fmt.Println("  sclv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a provider-neutral record proposal")
 	fmt.Println("  sclv recover --prefix PATH --input FILE [--version VERSION] [--json] Reconcile ephemeral SCLV closure evidence")
 	fmt.Println("  sclv project --prefix PATH [--version VERSION] [--json] Build a disposable SCLV projection")
+	fmt.Println("  sclv evidence local-git --prefix PATH --input FILE [--version VERSION] [--json] Normalize receipt-owned local Git evidence")
+	fmt.Println("  sclv evidence airgap --prefix PATH --input FILE [--version VERSION] [--json] Normalize receipt-owned air-gap evidence")
 	fmt.Println("  sacv inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SACV engine")
 	fmt.Println("  sacv check --prefix PATH [--version VERSION] [--json] Check canonical SACV registry and API contracts")
 	fmt.Println("  sacv diff --prefix PATH --input FILE [--version VERSION] [--json] Compare bounded OpenAPI revisions")
@@ -2190,6 +2192,298 @@ func runSCLV(operation string, options sclvOptions) error {
 		return nil
 	}
 	return printSCLVResult(operation, response.Result)
+}
+
+type sclvEvidenceResult struct {
+	Protocol          string          `json:"protocol"`
+	AdapterID         string          `json:"adapter_id"`
+	AdapterVersion    string          `json:"adapter_version"`
+	ProviderNamespace string          `json:"provider_namespace"`
+	EvidenceKind      string          `json:"evidence_kind"`
+	ObservedAt        string          `json:"observed_at"`
+	SourceReference   string          `json:"source_reference"`
+	Repository        json.RawMessage `json:"repository"`
+	ChangeRequest     json.RawMessage `json:"change_request"`
+	Ratification      json.RawMessage `json:"ratification"`
+	EvidenceDigest    string          `json:"evidence_digest"`
+}
+
+func runSCLVEvidence(adapter string, options sclvOptions) error {
+	if options.prefix == "" {
+		return fmt.Errorf("--prefix is required")
+	}
+	start := options.repository
+	if start == "" {
+		var err error
+		start, err = os.Getwd()
+		if err != nil {
+			return fmt.Errorf("could not get current working directory: %w", err)
+		}
+	}
+	start, err := filepath.Abs(start)
+	if err != nil {
+		return fmt.Errorf("resolve repository path: %w", err)
+	}
+	info, err := os.Lstat(start)
+	if err != nil || info.Mode()&os.ModeSymlink != 0 || !info.IsDir() {
+		return fmt.Errorf("--repo must identify a no-follow directory")
+	}
+	repoRoot, err := repository.FindRoot(start)
+	if err != nil {
+		return fmt.Errorf("could not find Symphony repository root: %w", err)
+	}
+	payload, err := knowledgeengine.ReadPayload(options.input)
+	if err != nil {
+		return err
+	}
+	response, err := knowledgeengine.InvokeSCLVEvidence(
+		context.Background(), options.prefix, options.version, repoRoot, adapter, payload)
+	if err != nil {
+		return err
+	}
+	result, err := validateSCLVEvidenceResult(adapter, options.version, response.Result)
+	if err != nil {
+		return err
+	}
+	if options.jsonOutput {
+		var output bytes.Buffer
+		if err := json.Indent(&output, response.Result, "", "  "); err != nil {
+			return fmt.Errorf("format SCLV provider evidence: %w", err)
+		}
+		fmt.Println(output.String())
+		return nil
+	}
+	var repositoryEvidence struct {
+		RevisionScheme string `json:"revision_scheme"`
+		RevisionValue  string `json:"revision_value"`
+		TreeDigest     string `json:"tree_digest"`
+	}
+	var ratification struct {
+		State string `json:"state"`
+	}
+	if err := json.Unmarshal(result.Repository, &repositoryEvidence); err != nil {
+		return fmt.Errorf("decode validated SCLV repository evidence: %w", err)
+	}
+	if err := json.Unmarshal(result.Ratification, &ratification); err != nil {
+		return fmt.Errorf("decode validated SCLV ratification evidence: %w", err)
+	}
+	fmt.Printf(
+		"SCLV evidence: adapter=%s provider=%s kind=%s revision=%s:%s tree_digest=%s evidence_digest=%s ratification=%s truth_decided=false permission_decided=false\n",
+		adapter, result.ProviderNamespace, result.EvidenceKind, repositoryEvidence.RevisionScheme,
+		repositoryEvidence.RevisionValue, repositoryEvidence.TreeDigest, result.EvidenceDigest,
+		ratification.State,
+	)
+	return nil
+}
+
+func validateSCLVEvidenceResult(adapter, version string, raw json.RawMessage) (sclvEvidenceResult, error) {
+	required := []string{
+		"protocol", "adapter_id", "adapter_version", "provider_namespace", "evidence_kind",
+		"observed_at", "source_reference", "repository", "change_request", "ratification",
+		"evidence_digest",
+	}
+	if _, err := exactJSONObject(raw, required); err != nil {
+		return sclvEvidenceResult{}, fmt.Errorf("SCLV provider evidence field set is invalid: %w", err)
+	}
+	var result sclvEvidenceResult
+	if err := json.Unmarshal(raw, &result); err != nil {
+		return sclvEvidenceResult{}, fmt.Errorf("decode SCLV provider evidence: %w", err)
+	}
+	expectedID, expectedProvider, expectedKind := "", "", ""
+	switch adapter {
+	case "local-git":
+		expectedID, expectedProvider, expectedKind = "symphony-sclv-evidence-local-git", "local-git", "revision"
+	case "airgap":
+		expectedID, expectedProvider, expectedKind = "symphony-sclv-evidence-airgap", "airgap", "combined"
+	default:
+		return sclvEvidenceResult{}, fmt.Errorf("unsupported SCLV evidence adapter")
+	}
+	if result.Protocol != "symphony.knowledge.provider-evidence.v1" || result.AdapterID != expectedID ||
+		result.AdapterVersion != version || result.ProviderNamespace != expectedProvider ||
+		result.EvidenceKind != expectedKind || !validEvidenceUTC(result.ObservedAt) ||
+		!validEvidenceText(result.SourceReference, 4096) || !validTaggedDigest(result.EvidenceDigest) {
+		return sclvEvidenceResult{}, fmt.Errorf("SCLV provider evidence identity is invalid")
+	}
+
+	if _, err := exactJSONObject(result.Repository, []string{"revision_scheme", "revision_value", "tree_digest"}); err != nil {
+		return sclvEvidenceResult{}, fmt.Errorf("SCLV repository evidence is invalid: %w", err)
+	}
+	var repositoryEvidence struct {
+		RevisionScheme string `json:"revision_scheme"`
+		RevisionValue  string `json:"revision_value"`
+		TreeDigest     string `json:"tree_digest"`
+	}
+	if err := json.Unmarshal(result.Repository, &repositoryEvidence); err != nil ||
+		!validGitRevision(repositoryEvidence.RevisionScheme, repositoryEvidence.RevisionValue) ||
+		!validTaggedDigest(repositoryEvidence.TreeDigest) {
+		return sclvEvidenceResult{}, fmt.Errorf("SCLV repository evidence values are invalid")
+	}
+	if err := validateSCLVChangeRequest(result.ChangeRequest, adapter == "local-git"); err != nil {
+		return sclvEvidenceResult{}, err
+	}
+	if err := validateSCLVRatification(result.Ratification, adapter == "airgap"); err != nil {
+		return sclvEvidenceResult{}, err
+	}
+
+	var canonical map[string]any
+	decoder := json.NewDecoder(bytes.NewReader(raw))
+	decoder.UseNumber()
+	if err := decoder.Decode(&canonical); err != nil {
+		return sclvEvidenceResult{}, fmt.Errorf("decode SCLV evidence for digest verification: %w", err)
+	}
+	delete(canonical, "evidence_digest")
+	encoded, err := marshalDigestCanonical(canonical)
+	if err != nil {
+		return sclvEvidenceResult{}, fmt.Errorf("encode SCLV evidence for digest verification: %w", err)
+	}
+	digest := sha256.Sum256(encoded)
+	if "sha256:"+hex.EncodeToString(digest[:]) != result.EvidenceDigest {
+		return sclvEvidenceResult{}, fmt.Errorf("SCLV provider evidence digest mismatch")
+	}
+	return result, nil
+}
+
+func validateSCLVChangeRequest(raw json.RawMessage, requireAbsent bool) error {
+	if _, err := exactJSONObject(raw, []string{"state", "provider", "id", "reference", "absence_reason"}); err != nil {
+		return fmt.Errorf("SCLV change-request evidence field set is invalid: %w", err)
+	}
+	var value struct {
+		State         string `json:"state"`
+		Provider      string `json:"provider"`
+		ID            string `json:"id"`
+		Reference     string `json:"reference"`
+		AbsenceReason string `json:"absence_reason"`
+	}
+	if err := json.Unmarshal(raw, &value); err != nil {
+		return fmt.Errorf("decode SCLV change-request evidence: %w", err)
+	}
+	if value.State == "present" && !requireAbsent {
+		if !validEvidenceToken(value.Provider, 128) || value.ID == "not_applicable" ||
+			value.Reference == "not_applicable" || !validEvidenceText(value.ID, 4096) ||
+			!validEvidenceText(value.Reference, 4096) || value.AbsenceReason != "not_applicable" {
+			return fmt.Errorf("SCLV present change-request evidence is inconsistent")
+		}
+		return nil
+	}
+	if value.State != "not_applicable" || value.Provider != "not_applicable" ||
+		value.ID != "not_applicable" || value.Reference != "not_applicable" ||
+		value.AbsenceReason == "not_applicable" || !validEvidenceText(value.AbsenceReason, 4096) {
+		return fmt.Errorf("SCLV absent change-request evidence is inconsistent")
+	}
+	return nil
+}
+
+func validateSCLVRatification(raw json.RawMessage, requireAsserted bool) error {
+	if _, err := exactJSONObject(raw, []string{
+		"state", "subject", "effective_permission", "method", "evidence_reference",
+		"evidence_digest", "absence_reason",
+	}); err != nil {
+		return fmt.Errorf("SCLV ratification evidence field set is invalid: %w", err)
+	}
+	var value struct {
+		State               string `json:"state"`
+		Subject             string `json:"subject"`
+		EffectivePermission string `json:"effective_permission"`
+		Method              string `json:"method"`
+		EvidenceReference   string `json:"evidence_reference"`
+		EvidenceDigest      string `json:"evidence_digest"`
+		AbsenceReason       string `json:"absence_reason"`
+	}
+	if err := json.Unmarshal(raw, &value); err != nil {
+		return fmt.Errorf("decode SCLV ratification evidence: %w", err)
+	}
+	if value.State == "asserted" && requireAsserted {
+		if value.Subject == "not_applicable" || value.EffectivePermission == "not_applicable" ||
+			value.Method == "not_applicable" || value.EvidenceReference == "not_applicable" ||
+			!validEvidenceText(value.Subject, 4096) || !validEvidenceText(value.EffectivePermission, 4096) ||
+			!validEvidenceText(value.Method, 4096) || !validEvidenceText(value.EvidenceReference, 4096) ||
+			!validTaggedDigest(value.EvidenceDigest) || value.AbsenceReason != "not_applicable" {
+			return fmt.Errorf("SCLV asserted ratification evidence is inconsistent")
+		}
+		return nil
+	}
+	if value.State != "not_asserted" || requireAsserted || value.Subject != "not_applicable" ||
+		value.EffectivePermission != "not_applicable" || value.Method != "not_applicable" ||
+		value.EvidenceReference != "not_applicable" || value.EvidenceDigest != "not_applicable" ||
+		value.AbsenceReason == "not_applicable" || !validEvidenceText(value.AbsenceReason, 4096) {
+		return fmt.Errorf("SCLV absent ratification evidence is inconsistent")
+	}
+	return nil
+}
+
+func exactJSONObject(raw json.RawMessage, required []string) (map[string]json.RawMessage, error) {
+	var fields map[string]json.RawMessage
+	if err := json.Unmarshal(raw, &fields); err != nil || fields == nil || len(fields) != len(required) {
+		return nil, fmt.Errorf("object is incomplete or contains unknown fields")
+	}
+	for _, field := range required {
+		if _, ok := fields[field]; !ok {
+			return nil, fmt.Errorf("required field %q is absent", field)
+		}
+	}
+	return fields, nil
+}
+
+func marshalDigestCanonical(value any) ([]byte, error) {
+	var buffer bytes.Buffer
+	encoder := json.NewEncoder(&buffer)
+	encoder.SetEscapeHTML(false)
+	if err := encoder.Encode(value); err != nil {
+		return nil, err
+	}
+	return bytes.TrimSuffix(buffer.Bytes(), []byte("\n")), nil
+}
+
+func validEvidenceUTC(value string) bool {
+	if len(value) != len("2006-01-02T15:04:05Z") {
+		return false
+	}
+	parsed, err := time.Parse("2006-01-02T15:04:05Z", value)
+	return err == nil && parsed.UTC().Format("2006-01-02T15:04:05Z") == value
+}
+
+func validGitRevision(scheme, revision string) bool {
+	length := 0
+	switch scheme {
+	case "git-sha1":
+		length = 40
+	case "git-sha256":
+		length = 64
+	default:
+		return false
+	}
+	if len(revision) != length {
+		return false
+	}
+	for _, character := range revision {
+		if (character < '0' || character > '9') && (character < 'a' || character > 'f') {
+			return false
+		}
+	}
+	return true
+}
+
+func validEvidenceToken(value string, maximum int) bool {
+	if value == "" || len(value) > maximum {
+		return false
+	}
+	for _, character := range value {
+		if (character < 'a' || character > 'z') && (character < 'A' || character > 'Z') &&
+			(character < '0' || character > '9') && character != '.' && character != '_' &&
+			character != ':' && character != '-' {
+			return false
+		}
+	}
+	return true
+}
+
+func validEvidenceText(value string, maximum int) bool {
+	if value == "" || len(value) > maximum {
+		return false
+	}
+	return strings.IndexFunc(value, func(character rune) bool {
+		return character < 0x20 || character == 0x7f
+	}) < 0
 }
 
 func validateSCLVResult(operation string, result json.RawMessage) (bool, error) {

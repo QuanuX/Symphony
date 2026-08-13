@@ -78,6 +78,8 @@ Commands:
   sclv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a provider-neutral record proposal
   sclv recover --prefix PATH --input FILE [--version VERSION] [--json] Reconcile ephemeral SCLV closure evidence
   sclv project --prefix PATH [--version VERSION] [--json] Build a disposable SCLV projection
+  sclv evidence local-git --prefix PATH --input FILE [--version VERSION] [--json] Normalize receipt-owned local Git evidence
+  sclv evidence airgap --prefix PATH --input FILE [--version VERSION] [--json] Normalize receipt-owned air-gap evidence
   sacv inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SACV engine
   sacv check --prefix PATH [--version VERSION] [--json] Check canonical SACV registry and API contracts
   sacv diff --prefix PATH --input FILE [--version VERSION] [--json] Compare bounded OpenAPI revisions

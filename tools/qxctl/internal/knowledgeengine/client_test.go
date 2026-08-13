@@ -466,6 +466,89 @@ func TestInspectInstallationSupportsImmutableReceiptV2AndDetectsTampering(t *tes
 	}
 }
 
+func TestResolveSCLVEvidenceAdapterRequiresExactTypedReceiptEntryPoint(t *testing.T) {
+	prefix := t.TempDir()
+	version := "0.1.0-dev"
+	receiptPath, document := createInstalledV2Fixture(t, sclvSpec, prefix, version)
+	localGitRelative := filepath.ToSlash(filepath.Join(
+		"libexec", "symphony", sclvModuleID, version, sclvLocalGitID))
+	airgapRelative := filepath.ToSlash(filepath.Join(
+		"libexec", "symphony", sclvModuleID, version, sclvAirgapID))
+	document.EntryPoints = append(document.EntryPoints,
+		receiptV2EntryPoint{
+			EntryPointID: sclvLocalGitID, Kind: "adapter", Path: localGitRelative,
+			Protocols: []string{providerEvidenceProtocol},
+		},
+		receiptV2EntryPoint{
+			EntryPointID: sclvAirgapID, Kind: "adapter", Path: airgapRelative,
+			Protocols: []string{providerEvidenceProtocol},
+		},
+	)
+	writeReceiptV2Fixture(t, receiptPath, &document)
+	resolved, err := resolveSCLVEvidenceAdapter(prefix, version, sclvLocalGitID)
+	if err != nil {
+		t.Fatalf("valid receipt-owned SCLV evidence adapter rejected: %v", err)
+	}
+	canonicalPrefix, err := filepath.EvalSymlinks(prefix)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want := filepath.Join(canonicalPrefix, filepath.FromSlash(localGitRelative)); resolved != want {
+		t.Fatalf("adapter = %q, want %q", resolved, want)
+	}
+	if err := os.WriteFile(resolved, []byte("tampered adapter\n"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := resolveSCLVEvidenceAdapter(prefix, version, sclvLocalGitID); err == nil {
+		t.Fatal("content-tampered SCLV evidence adapter was accepted")
+	}
+	if err := os.WriteFile(resolved, []byte(localGitRelative+"\n"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+
+	document.EntryPoints[1].Protocols = []string{processProtocol}
+	writeReceiptV2Fixture(t, receiptPath, &document)
+	if _, err := resolveSCLVEvidenceAdapter(prefix, version, sclvLocalGitID); err == nil {
+		t.Fatal("SCLV evidence adapter with the wrong typed protocol was accepted")
+	}
+
+	legacyPrefix := t.TempDir()
+	legacyFiles := expectedSCLVFiles(version)
+	listed := make([]string, 0, len(legacyFiles))
+	for relative := range legacyFiles {
+		listed = append(listed, relative)
+		path := filepath.Join(legacyPrefix, filepath.FromSlash(relative))
+		if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		mode := os.FileMode(0o644)
+		if strings.HasPrefix(relative, "libexec/") {
+			mode = 0o755
+		}
+		if err := os.WriteFile(path, []byte("fixture\n"), mode); err != nil {
+			t.Fatal(err)
+		}
+	}
+	legacyReceipt := map[string]any{
+		"protocol": receiptProtocol, "module_id": sclvModuleID, "version": version,
+		"install_scope": "prefix", "prefix_mode": "installation_prefix",
+		"state": "installed_undocked", "active": false, "default_receptor": nil,
+		"files": listed,
+	}
+	encoded, err := json.Marshal(legacyReceipt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	legacyReceiptPath := filepath.Join(
+		legacyPrefix, "share/symphony/receipts/sclv-engine", version, "install-receipt.json")
+	if err := os.WriteFile(legacyReceiptPath, encoded, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := resolveSCLVEvidenceAdapter(legacyPrefix, version, sclvLocalGitID); err == nil {
+		t.Fatal("legacy receipt without a typed adapter entry point was accepted")
+	}
+}
+
 func TestReceiptV2SupportsForwardFileGrowthAndRejectsSemanticDrift(t *testing.T) {
 	prefix := t.TempDir()
 	version := "0.1.0-dev"

@@ -105,6 +105,8 @@
 - `qxctl sclv propose --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
 - `qxctl sclv recover --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
 - `qxctl sclv project --prefix PATH [--version VERSION] [--repo PATH] [--json]`
+- `qxctl sclv evidence local-git --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
+- `qxctl sclv evidence airgap --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
 - `qxctl sacv inspect --prefix PATH [--version VERSION] [--repo PATH] [--json]`
 - `qxctl sacv check --prefix PATH [--version VERSION] [--repo PATH] [--expected-registry-digest DIGEST] [--json]`
 - `qxctl sacv diff --prefix PATH --input FILE [--version VERSION] [--repo PATH] [--json]`
@@ -152,7 +154,7 @@ Validator warning administration provides the same supported inspection and cont
 
 `knowledge/SPEC.md` governs the cross-vector process, engine-binding, authenticated-session, worktree-reconciliation, proposal, projection, install-receipt, and docking boundaries. Vector engines are independent C++ processes; qxctl remains Go and does not dynamically link them or absorb their domain logic.
 
-The shared knowledge-engine process client has six implemented vector/coordinator invocation consumers and validates six binding roles including the reconciliation coordinator. A separate exact-receipt path validates the independently installed nine-file Symphony Validator without adding it to the engine-binding registry. qxctl invokes its deterministic JSON mode with an empty environment and hard deadline, then validates repository/version identity, finding identities, summaries, and nested digests before policy evaluation. Filters never narrow detector execution.
+The shared knowledge-engine process client has six implemented vector/coordinator invocation consumers and validates six binding roles including the reconciliation coordinator. SCLV's two evidence-normalization adapters are not new roles: their explicit commands revalidate the complete SCLV receipt-v2 package, require the exact typed adapter entry point and provider-evidence protocol, invoke it through the same bounded empty-environment process boundary, and validate the complete normalized result and digest. Normalized evidence does not give qxctl truth, permission, ratification, or canonical apply authority. A separate exact-receipt path validates the independently installed nine-file Symphony Validator without adding it to the engine-binding registry. qxctl invokes its deterministic JSON mode with an empty environment and hard deadline, then validates repository/version identity, finding identities, summaries, and nested digests before policy evaluation. Filters never narrow detector execution.
 
 Validation profiles and baselines live below `<state-root>/symphony/<tops-id>/qxctl/validation/`. Their owner-only no-follow locks/files, exact compare-and-swap, semantic retry, STSC whole-second UTC timestamps, synchronized temporary files, atomic replacement, and directory synchronization match the common validation contract. A baseline is noncanonical acknowledgement evidence, not warning deletion, resolution, or ratification. Repository or validator-version mismatch fails closed.
 
