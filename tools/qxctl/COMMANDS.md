@@ -4,6 +4,8 @@
 
 The source is not a second hand-maintained command list. Each public or hidden executable Cobra leaf carries one attached `CommandSpec`; one full-tree parity walk derives grammar and JSON support from Cobra, combines them with the stable semantic fields, sorts the records, and computes the registry self-digest. Structural namespaces and internal non-executable plumbing are explicit roles. Hidden prohibited leaves remain registered but cannot satisfy required coverage. A retired ID moves through the dedicated tombstone factory: its old path returns only a deterministic fail-closed diagnostic, its manifest grammar becomes `null`, and its stable ID remains unavailable for reuse.
 
+Each executable command retains its qxctl-owned wrapper binding and may add reviewed backend feature/interaction bindings from the single table in `cmd/qxctl/command_specs.go`. The current registry binds forty-four existing command identities to forty-six backend interactions, satisfying all thirty-six administration surfaces that already had command mappings. This changes no command grammar, dispatch, operation identity, availability, or authority. The four uncovered SSIAG/STAV supervision and TOPS-enrollment surfaces have no command yet and therefore do not appear as fabricated bindings.
+
 Generate and verify from `tools/qxctl`:
 
 ```text
