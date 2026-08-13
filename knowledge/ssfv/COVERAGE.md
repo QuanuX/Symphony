@@ -37,6 +37,18 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 | `tools/qxctl` | registered | `ssfv:symphony:qxctl` | `tools/qxctl/FEATURES.md` |
 | `tools/symphony-validator` | registered | `ssfv:symphony:symphony-validator` | `tools/symphony-validator/FEATURES.md` |
 
+## Ratified Nested Review Progress
+
+The F1 nested review records fourteen implemented `subfeature` boundaries inside three already registered owner scopes:
+
+| Owner scope | Ratified nested records | Review disposition |
+|---|---:|---|
+| `tools/qxctl` | 8 | Exact engine bindings, authenticated sessions, lifecycle convergence, Linux report-only host receptor, SSIAG administration, STAV administration, Maestro administration, and governed validation are registered. |
+| `modules/knowledge-session-coordinator` | 5 | Reconciliation, authority epochs, semantic maintenance, lifecycle planning, and lifecycle apply coordination are registered. |
+| `modules/maestro` | 1 | Complete derived receptor inventory is registered separately from durable receptor presence. |
+
+This review advances completion condition 2 for those exact boundaries only. It does not imply that every other nested application boundary has been adjudicated or that an unlisted boundary has an explicit non-feature disposition.
+
 ## Exclusion Rules
 
 The following do not independently enter the owner-scope universe:
@@ -63,7 +75,7 @@ Each registered inventory row must route through `REGISTRY.md`, have an SKVI ent
 4. no unregistered `FEATURES.md`, stale route, missing owner contract, missing SKVI entry, broken relationship, or unresolved semantic-freshness finding remains;
 5. one reviewed change records the exact inventory revision and evidence establishing completeness.
 
-The current inventory satisfies top-level owner-scope routing only. Therefore the canonical and engine-reported state remains `partial`.
+The current inventory satisfies top-level owner-scope routing and the exact F1 nested-review progress recorded above. Other nested feature, subfeature, microfeature, and non-feature adjudication remains incomplete. Therefore the canonical and engine-reported state remains `partial`.
 
 ## Non-Authorization Statement
 

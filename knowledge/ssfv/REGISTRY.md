@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes fifteen experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes twenty-nine experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -40,6 +40,51 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:1daaf8ad5bbdd6f736422dceaa90b58b1eeeea40b1ff844a6ea94db549eb7d29`
 - notes: Partial-catalog record for durable reconciliation, SSIAG-authorized authenticated sessions, persistent SSFV baseline maintenance, explicit idempotent qxctl host-event convergence, protected desired-profile and observation administration, dependency planning, report/apply journal recovery, and serialized externally executed lifecycle actions including authenticated Maestro presence.
 
+- feature_id: `ssfv:symphony:knowledge-session-coordinator.authority-epochs`
+- feature_file: `modules/knowledge-session-coordinator/FEATURES.md`
+- owner_contract: `modules/knowledge-session-coordinator/SPEC.md`
+- source_scope: `modules/knowledge-session-coordinator`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:knowledge-session-coordinator`
+- record_digest: `sha256:ee5c2ccf2726c0ddd8244bc2649583b6cb1c33b5e4874bc9fcd294dc37a95c93`
+- notes: Architect-ratified F1 nested record for Durable authenticated authority epochs; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:knowledge-session-coordinator.lifecycle-apply-coordination`
+- feature_file: `modules/knowledge-session-coordinator/FEATURES.md`
+- owner_contract: `modules/knowledge-session-coordinator/SPEC.md`
+- source_scope: `modules/knowledge-session-coordinator`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:knowledge-session-coordinator`
+- record_digest: `sha256:d3e7e843ce548ff616e6e3949d32b2f5c9e708013450cb4db27f38765466e10e`
+- notes: Architect-ratified F1 nested record for Durable lifecycle apply coordination; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:knowledge-session-coordinator.lifecycle-planning`
+- feature_file: `modules/knowledge-session-coordinator/FEATURES.md`
+- owner_contract: `modules/knowledge-session-coordinator/SPEC.md`
+- source_scope: `modules/knowledge-session-coordinator`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:knowledge-session-coordinator`
+- record_digest: `sha256:8cdbd404474d2347a6707dd7646a99da7e036d5b498158e61883cb3092376192`
+- notes: Architect-ratified F1 nested record for Deterministic two-way lifecycle planning; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:knowledge-session-coordinator.reconciliation`
+- feature_file: `modules/knowledge-session-coordinator/FEATURES.md`
+- owner_contract: `modules/knowledge-session-coordinator/SPEC.md`
+- source_scope: `modules/knowledge-session-coordinator`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:knowledge-session-coordinator`
+- record_digest: `sha256:e9fdbabf69f87094cf927d43de8a3e4842597ea4735280d254b69640ac29a2df`
+- notes: Architect-ratified F1 nested record for Durable worktree reconciliation contexts; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:knowledge-session-coordinator.semantic-maintenance`
+- feature_file: `modules/knowledge-session-coordinator/FEATURES.md`
+- owner_contract: `modules/knowledge-session-coordinator/SPEC.md`
+- source_scope: `modules/knowledge-session-coordinator`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:knowledge-session-coordinator`
+- record_digest: `sha256:023e39ed455bb77d8584094004fff11b1eb9f1b4aeddc101224bcb4502d42a45`
+- notes: Architect-ratified F1 nested record for Persistent SSFV semantic-maintenance lineage; coverage remains partial and no broader runtime or canonical authority is implied.
+
 - feature_id: `ssfv:symphony:knowledge-vector-engine-foundation`
 - feature_file: `libraries/knowledge-vector-engine-cpp/FEATURES.md`
 - owner_contract: `libraries/knowledge-vector-engine-cpp/SPEC.md`
@@ -58,6 +103,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:89076bde7da3ddc19c185e1c05025e5d822c5e31ab6e299d6c4c6df5e86c5084`
 - notes: Partial-catalog record for exact authenticated per-TOPS/per-receptor docking presence, complete read-only derived inventory, lifecycle integration, semantic retry, and evidence-preserving recovery without engine execution.
 
+- feature_id: `ssfv:symphony:maestro-presence-authority.complete-inventory`
+- feature_file: `modules/maestro/FEATURES.md`
+- owner_contract: `modules/maestro/SPEC.md`
+- source_scope: `modules/maestro`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:maestro-presence-authority`
+- record_digest: `sha256:3b2d52f891adfd29b8908cae7304d3ed20114c03b52432ece8dc4a26445311f2`
+- notes: Architect-ratified F1 nested record for Complete derived Maestro receptor inventory; coverage remains partial and no broader runtime or canonical authority is implied.
+
 - feature_id: `ssfv:symphony:platform`
 - feature_file: `FEATURES.md`
 - owner_contract: `INTENT.md`
@@ -75,6 +129,78 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:platform`
 - record_digest: `sha256:a92f2ae12c125be4ba43506586ace43906fbdc5b45075f3ef222976dba31f403`
 - notes: Partial-catalog record for the Go Cobra/Viper administrative and query surface, including the explicit Linux report-only lifecycle receptor, across independently installed Symphony modules.
+
+- feature_id: `ssfv:symphony:qxctl.authenticated-sessions`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:1849a565bec4f523feef072dd22afdeec3a46934cec827adc852e250427200ae`
+- notes: Architect-ratified F1 nested record for Authenticated knowledge-session administration; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:qxctl.engine-bindings`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:38f4af7c29bf5c853cf94f1148b310acd17b52937a677ad7eb8f8d78cbaba26b`
+- notes: Architect-ratified F1 nested record for Exact installed knowledge-engine bindings; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:qxctl.governed-validation`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:d2bba969301b203f04186fa2f4996e25270bbf0f13c17b71af4d1853d8a0ba1b`
+- notes: Architect-ratified F1 nested record for Governed repository validation evidence; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:qxctl.lifecycle-convergence`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:d61cfc990fd6c67ac9536b611897faabe8bc7bdcaacbc33bfc3b299e09cdb32c`
+- notes: Architect-ratified F1 nested record for Two-way module lifecycle convergence; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:qxctl.linux-host-receptor`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:53b41299a29bf0260f87c93ab183f3e5b36dca3576ca5474a7ebb264ba57ec2f`
+- notes: Architect-ratified F1 nested record for Explicit Linux report-only boot receptor; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:qxctl.maestro-administration`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:68202bfea27e4bdf2dd578624ef4bfa1e7fec8549a055ef8e9b3facb1109794a`
+- notes: Architect-ratified F1 nested record for Authenticated Maestro receptor administration; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:qxctl.ssiag-administration`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:8f9cd6b408df355e96ea1352621686a65003ddcc4ffd6f057c8b7122aa394136`
+- notes: Architect-ratified F1 nested record for SSIAG policy and decision administration; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:qxctl.stav-administration`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:10e1c13f3f115963813051c6acd0c5c4725feab9035889c86adbda8108f65538`
+- notes: Architect-ratified F1 nested record for STAV audit query and verification administration; coverage remains partial and no broader runtime or canonical authority is implied.
 
 - feature_id: `ssfv:symphony:sacv-engine`
 - feature_file: `modules/sacv-engine/FEATURES.md`
@@ -180,4 +306,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This fifteen-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide completeness, engine-decided feature-worthiness, or canonical mutation.
+This twenty-nine-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide completeness, engine-decided feature-worthiness, or canonical mutation.

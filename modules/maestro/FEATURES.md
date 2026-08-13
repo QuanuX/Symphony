@@ -118,6 +118,99 @@
       "where": "Executes locally on the Maestro-hosting TOPS node and stores protected noncanonical state under the selected per-TOPS Maestro state boundary. Its work remains outside hot and warm trading paths.",
       "who": "Any target-host-authorized caller using qxctl, lifecycle administrators, the knowledge-session coordination circuit, maintainers, and tests that need exact engine-to-receptor presence evidence.",
       "why": "Gives independently versioned and independently installed vector engines a durable receptor docking record without turning installation, selection, activation, semantic truth, or process execution into the same state transition."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
+          "reason": "Maestro owns receptor discovery, validation, stable inventory, and observation semantics.",
+          "reference": "modules/maestro/SPEC.md",
+          "vector": "maestro"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SCLV records reviewed complete inventory and client integration changes.",
+          "reference": "knowledge/sclv/CHANGELOG.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes Maestro inventory schemas, implementation, qxctl client, and tests.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Inventory requires a fresh exact caller-neutral SSIAG decision.",
+          "reference": "knowledge/ssiag/SPEC.md",
+          "vector": "ssiag"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SSIAG releases inventory authorization only after its safe audit event is committed through STAV.",
+          "reference": "knowledge/stav/SPEC.md",
+          "vector": "stav"
+        }
+      ],
+      "distinctions": [
+        {
+          "distinction": "The parent feature owns durable status/dock/undock/recovery presence; this subfeature is a complete derived read-only TOPS-wide projection and never a second registry.",
+          "target_feature_id": "ssfv:symphony:maestro-presence-authority"
+        }
+      ],
+      "evidence": [
+        "modules/maestro/tests/maestro_test.cpp verifies complete sorted inventory, shared-lock behavior, stable/timestamped digest separation, unsafe-state refusal, and no partial result.",
+        "tools/qxctl/internal/maestroclient/client_test.go verifies exact authorization binding, identity, completeness, inventory digest, and observation validation."
+      ],
+      "feature_id": "ssfv:symphony:maestro-presence-authority.complete-inventory",
+      "how": "Maestro validates directory names, ownership, modes, links, shared locks, heads, slots, digest chains, TOPS and receptor identities, then derives a stable inventory digest separately from the STSC whole-second UTC observation envelope.",
+      "implementation_languages": [
+        {
+          "language": "C++26",
+          "role": "Discovers and validates every protected receptor stream and derives one sorted stable inventory plus timestamped observation evidence."
+        },
+        {
+          "language": "Go",
+          "role": "Obtains fresh authorization, invokes the exact installed Maestro process, and validates complete inventory results through qxctl."
+        }
+      ],
+      "implementation_paths": [
+        "modules/maestro/src/maestro.cpp",
+        "modules/maestro/src/maestro.hpp",
+        "modules/maestro/src/main.cpp",
+        "modules/maestro/tests/maestro_test.cpp",
+        "tools/qxctl/cmd/qxctl/maestro.go",
+        "tools/qxctl/internal/maestroclient/client.go",
+        "tools/qxctl/internal/maestroclient/client_test.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "Does not create or repair receptor state, persist a second inventory, or return a partial view as complete or empty.",
+        "Does not execute, schedule, supervise, load, or health-check docked engines and does not make the projection canonical."
+      ],
+      "owner_contract": "modules/maestro/SPEC.md",
+      "parent_feature_id": "ssfv:symphony:maestro-presence-authority",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "Semantic maintenance consumes complete inventory or an explicit not-configured reason as noncanonical lineage evidence.",
+          "target_feature_id": "ssfv:symphony:knowledge-session-coordinator.semantic-maintenance",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "qxctl supplies exact authorization and validates the inventory result without owning Maestro state.",
+          "target_feature_id": "ssfv:symphony:qxctl.maestro-administration",
+          "type": "composes_with"
+        }
+      ],
+      "source_scope": "modules/maestro",
+      "status": "experimental",
+      "title": "Complete derived Maestro receptor inventory",
+      "what": "Returns one complete sorted read-only inventory of every valid Maestro receptor and its exact docked component identity for a TOPS.",
+      "when": "Runs only on explicit authenticated inventory requests or when qxctl collects complete evidence for lifecycle or SSFV maintenance.",
+      "where": "Reads protected per-TOPS Maestro receptor registries on the local Maestro-hosting node without creating, repairing, or persisting a second inventory.",
+      "who": "Any target-host-authorized caller, lifecycle administrator, or semantic-maintenance circuit requiring exact TOPS-wide receptor evidence.",
+      "why": "Prevents partial, busy, damaged, or ambiguous receptor state from being mistaken for absence while giving other freezing-path circuits stable evidence across observation times."
     }
   ],
   "source_scope": "modules/maestro"

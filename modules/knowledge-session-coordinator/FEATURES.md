@@ -147,6 +147,416 @@
       "where": "Executes as the inactive, installed-undocked symphony-knowledge-session C++ process in the administrative freezing path and roots checks at its current repository working directory.",
       "who": "Any host-authorized caller using qxctl, plus maintainers and tests that need caller-neutral, domain-neutral authority-epoch and reconciliation boundaries across independently versioned SKV engines.",
       "why": "Preserves coherent authority-epoch, worktree, and engine-version evidence when upgrades, retries, logouts, or crashes occur out of sequence, and allows compatible lifecycle work to reorder around localized blockers while separating SSIAG authorization, session state, reconciliation state, lifecycle reports, vector semantics, and apply authority."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
+          "reason": "SCLV records reviewed authenticated-session contracts and implementation.",
+          "reference": "knowledge/sclv/CHANGELOG.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes authority-session schemas, implementation, tests, and qxctl grammar.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SSIAG owns exact host identity and granted-permission decisions.",
+          "reference": "knowledge/ssiag/SPEC.md",
+          "vector": "ssiag"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "The authorization decision is released only after its safe event is durably appended through STAV.",
+          "reference": "knowledge/stav/SPEC.md",
+          "vector": "stav"
+        }
+      ],
+      "distinctions": [
+        {
+          "distinction": "An authority epoch records SSIAG-bound permission and expiry; reconciliation records review context without authentication semantics.",
+          "target_feature_id": "ssfv:symphony:knowledge-session-coordinator.reconciliation"
+        }
+      ],
+      "evidence": [
+        "modules/knowledge-session-coordinator/tests/coordinator_test.cpp verifies linked epochs, decision/capability binding, expiry, downgrade refusal, idempotency, and bounded recovery.",
+        "tools/qxctl/cmd/qxctl/session_test.go verifies explicit login, refresh, logout, reauthentication, and interrupted-close recovery composition."
+      ],
+      "feature_id": "ssfv:symphony:knowledge-session-coordinator.authority-epochs",
+      "how": "The coordinator validates exact decision and capability evidence, TOPS/subject/resource binding, expiry, policy and configuration digests, expected journal state, operation fingerprints, linked generations, and unique forward recovery.",
+      "implementation_languages": [
+        {
+          "language": "C++26",
+          "role": "Implements exact SSIAG evidence validation, linked authority epochs, expiry, checkpointing, closure, compatibility, and forward recovery."
+        },
+        {
+          "language": "Go",
+          "role": "Supplies fresh authenticated decisions and explicit session transition composition through qxctl."
+        }
+      ],
+      "implementation_paths": [
+        "modules/knowledge-session-coordinator/src/authority_session.cpp",
+        "modules/knowledge-session-coordinator/src/authority_session.hpp",
+        "modules/knowledge-session-coordinator/src/coordinator.cpp",
+        "modules/knowledge-session-coordinator/tests/coordinator_test.cpp",
+        "tools/qxctl/cmd/qxctl/session_test.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "Does not authenticate the operating-system caller, call SSIAG or STAV directly, or convert evidence into a bearer token.",
+        "Does not grant canonical apply, mutate policy, or make caller class an authorization input."
+      ],
+      "owner_contract": "modules/knowledge-session-coordinator/SPEC.md",
+      "parent_feature_id": "ssfv:symphony:knowledge-session-coordinator",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "qxctl authenticates the endpoint and obtains decisions while the coordinator owns epoch durability and recovery.",
+          "target_feature_id": "ssfv:symphony:qxctl.authenticated-sessions",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "SSIAG owns caller authentication and permission decisions; the coordinator validates only supplied exact safe evidence.",
+          "target_feature_id": "ssfv:symphony:ssiag-foundation",
+          "type": "composes_with"
+        }
+      ],
+      "source_scope": "modules/knowledge-session-coordinator",
+      "status": "experimental",
+      "title": "Durable authenticated authority epochs",
+      "what": "Persists one caller-neutral authenticated knowledge authority epoch from explicit login/begin through refresh/checkpoint and logout/close or expiry.",
+      "when": "Begins on explicit authenticated session creation, advances on explicit checkpoint or refresh, and closes on logout, expiry, policy change, configuration change, or explicit recovery outcome.",
+      "where": "Stores protected noncanonical session journals keyed by exact scope, TOPS, subject, and repository identity beneath the coordinator state root.",
+      "who": "Any caller whose target-host identity and granted permission were authenticated by SSIAG and transported through qxctl.",
+      "why": "Makes authority continuity explicit, expiring, non-transferable, replay-safe, and recoverable without privileging a human or AI caller class."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
+          "reason": "Dock and undock adapters commit exact authenticated Maestro receptor presence outside the coordinator.",
+          "reference": "modules/maestro/SPEC.md",
+          "vector": "maestro"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SCLV records reviewed apply journal, adapter, and recovery changes.",
+          "reference": "knowledge/sclv/CHANGELOG.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes apply schemas, coordinator source, qxctl adapters, and tests.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Every status, prepare, finalize, close, and recovery invocation carries a fresh exact decision.",
+          "reference": "knowledge/ssiag/SPEC.md",
+          "vector": "ssiag"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SSIAG releases lifecycle authorization evidence only after safe audit commitment through STAV.",
+          "reference": "knowledge/stav/SPEC.md",
+          "vector": "stav"
+        }
+      ],
+      "distinctions": [
+        {
+          "distinction": "Apply coordination durably records authorized attempts and verified outcomes; planning alone is stateless, report-only, and never mutation authority.",
+          "target_feature_id": "ssfv:symphony:knowledge-session-coordinator.lifecycle-planning"
+        }
+      ],
+      "evidence": [
+        "modules/knowledge-session-coordinator/tests/lifecycle_test.cpp verifies prepare-before-mutation, exact finalize proof, dynamic replanning, interruption recovery, applied-state closure, upgrade-order compatibility, and failed-attempt preservation.",
+        "tools/qxctl/internal/knowledgelifecycle/executor_test.go verifies reviewed adapters, prepared observation-drift refusal, staged install/uninstall, rollback proof, and exact Maestro evidence."
+      ],
+      "feature_id": "ssfv:symphony:knowledge-session-coordinator.lifecycle-apply-coordination",
+      "how": "Prepare records an active attempt before mutation; qxctl executes a closed adapter vocabulary; finalize binds the same operation, journal, profile, artifacts, and observations; the coordinator replans dynamically, preserves failures, and commits content-addressed applied state only at verified convergence.",
+      "implementation_languages": [
+        {
+          "language": "C++26",
+          "role": "Serializes prepared attempts, validates exact authorization and evidence, replans from verified outcomes, and commits immutable applied-state selection."
+        },
+        {
+          "language": "Go",
+          "role": "Obtains fresh authorization, executes the bounded reviewed external adapters, re-observes host state, and submits exact finalize evidence."
+        }
+      ],
+      "implementation_paths": [
+        "modules/knowledge-session-coordinator/src/coordinator.cpp",
+        "modules/knowledge-session-coordinator/src/lifecycle.cpp",
+        "modules/knowledge-session-coordinator/src/lifecycle.hpp",
+        "modules/knowledge-session-coordinator/src/lifecycle_journal.cpp",
+        "modules/knowledge-session-coordinator/src/lifecycle_journal.hpp",
+        "modules/knowledge-session-coordinator/tests/lifecycle_test.cpp",
+        "tools/qxctl/cmd/qxctl/lifecycle_apply.go",
+        "tools/qxctl/internal/knowledgelifecycle/executor.go",
+        "tools/qxctl/internal/knowledgelifecycle/executor_test.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "Does not perform host or Maestro mutation inside the coordinator, replace itself in place, or write qxctl binding/runtime state.",
+        "Does not download, mutate receipt v1, execute arbitrary entry points, activate live services, run docked engines, or mutate canonical knowledge."
+      ],
+      "owner_contract": "modules/knowledge-session-coordinator/SPEC.md",
+      "parent_feature_id": "ssfv:symphony:knowledge-session-coordinator",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "Each prepare and finalize recomputes the deterministic plan from complete current evidence.",
+          "target_feature_id": "ssfv:symphony:knowledge-session-coordinator.lifecycle-planning",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "qxctl owns authorization exchange and external adapters while the coordinator owns serialization, verification, and recovery.",
+          "target_feature_id": "ssfv:symphony:qxctl.lifecycle-convergence",
+          "type": "composes_with"
+        }
+      ],
+      "source_scope": "modules/knowledge-session-coordinator",
+      "status": "experimental",
+      "title": "Durable lifecycle apply coordination",
+      "what": "Coordinates one durable, separately authorized lifecycle action at a time and advances applied evidence only after complete re-observation proves the target.",
+      "when": "Runs only on explicit apply, apply-status, or apply-recover commands after a compatible report journal exists and fresh authorization is available for every phase.",
+      "where": "Stores a separate protected v2 apply stream and immutable applied evidence beside, never over, the report-only v1 lifecycle journal.",
+      "who": "A target-host-authorized lifecycle administrator, automation, or agentic owner invoking qxctl with exact expected state and trusted staged evidence.",
+      "why": "Makes host mutation interruption-safe, retryable, reversible where contracted, and tolerant of unplanned component upgrade order without fabricating completion or discarding failed evidence."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
+          "reason": "Desired and observed docking state uses explicit Maestro receptor identities while the planner never contacts Maestro.",
+          "reference": "modules/maestro/SPEC.md",
+          "vector": "maestro"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SCLV records reviewed lifecycle planning and compatibility changes.",
+          "reference": "knowledge/sclv/CHANGELOG.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes lifecycle schemas, planner source, qxctl integration, and tests.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        }
+      ],
+      "distinctions": [
+        {
+          "distinction": "Planning emits disposable report-only evidence with apply_authorized false; apply coordination separately records and verifies one authorized external action at a time.",
+          "target_feature_id": "ssfv:symphony:knowledge-session-coordinator.lifecycle-apply-coordination"
+        }
+      ],
+      "evidence": [
+        "modules/knowledge-session-coordinator/tests/lifecycle_test.cpp verifies deterministic plans, forward/inverse selection, dependency-ready healing, blocker and cycle isolation, receptor replacement, and timestamp-neutral identity.",
+        "tools/qxctl/cmd/qxctl/lifecycle_test.go verifies complete observation transport, result validation, compatibility blocking, and report-only command behavior."
+      ],
+      "feature_id": "ssfv:symphony:knowledge-session-coordinator.lifecycle-planning",
+      "how": "The coordinator validates digest-bound complete evidence, negotiates explicit versions and capabilities, builds a stable dependency-ready graph, isolates cycles and localized blockers, and recomputes order from each changed verified observation.",
+      "implementation_languages": [
+        {
+          "language": "C++26",
+          "role": "Validates complete desired and observed evidence and derives deterministic forward/inverse dependency-ready plans and localized blockers."
+        },
+        {
+          "language": "Go",
+          "role": "Collects fixed-layout observations, invokes the exact planner, and validates bounded noncanonical results through qxctl."
+        }
+      ],
+      "implementation_paths": [
+        "modules/knowledge-session-coordinator/src/coordinator.cpp",
+        "modules/knowledge-session-coordinator/src/lifecycle.cpp",
+        "modules/knowledge-session-coordinator/src/lifecycle.hpp",
+        "modules/knowledge-session-coordinator/tests/lifecycle_test.cpp",
+        "tools/qxctl/cmd/qxctl/lifecycle_test.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "Does not acquire mutation locks, request authorization, install or remove packages, activate processes, contact receptors, or write state.",
+        "Does not infer newest versions, ignore blockers, participate in hot or warm paths, or grant apply authority."
+      ],
+      "owner_contract": "modules/knowledge-session-coordinator/SPEC.md",
+      "parent_feature_id": "ssfv:symphony:knowledge-session-coordinator",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "qxctl supplies complete evidence and owns external administration while the coordinator derives deterministic non-mutating plans.",
+          "target_feature_id": "ssfv:symphony:qxctl.lifecycle-convergence",
+          "type": "composes_with"
+        }
+      ],
+      "source_scope": "modules/knowledge-session-coordinator",
+      "status": "experimental",
+      "title": "Deterministic two-way lifecycle planning",
+      "what": "Produces a deterministic report-only plan for installing, uninstalling, selecting, activating, docking, undocking, preserving, or verifying independently versioned components.",
+      "when": "Runs on explicit lifecycle report or boot planning and before each separately authorized apply prepare/finalize step.",
+      "where": "Executes as a freezing-path local process and reads no host files, receipts, profiles, registries, or Maestro state directly.",
+      "who": "Target-host-authorized administrators, automation, or agentic owners using qxctl to compare explicit desired and observed module state.",
+      "why": "Makes upgrade and rollback equally ordinary convergence and lets an unplanned sequence self-heal by changing safe ready order without bypassing fixed thermal or dependency restrictions."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
+          "reason": "SCLV records reviewed reconciliation durability and recovery changes.",
+          "reference": "knowledge/sclv/CHANGELOG.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes the coordinator reconciliation contracts, source, tests, and install surface.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        }
+      ],
+      "distinctions": [
+        {
+          "distinction": "Reconciliation contexts preserve bounded review continuity but contain no authentication or permission evidence; authority epochs require exact SSIAG-bound state.",
+          "target_feature_id": "ssfv:symphony:knowledge-session-coordinator.authority-epochs"
+        }
+      ],
+      "evidence": [
+        "modules/knowledge-session-coordinator/tests/coordinator_test.cpp verifies exact-state rejection, idempotent replay, damaged-head recovery, extension preservation, lock contention, symlink rejection, and isolation.",
+        "modules/knowledge-session-coordinator/tests/process_smoke.sh verifies bounded deterministic process responses and duplicate-key rejection."
+      ],
+      "feature_id": "ssfv:symphony:knowledge-session-coordinator.reconciliation",
+      "how": "The coordinator uses a private no-follow lock, synchronized alternating slots, an atomic head, linked digests, exact operation fingerprints, extension preservation, and compare-and-swap mutation.",
+      "implementation_languages": [
+        {
+          "language": "C++26",
+          "role": "Implements bounded reconciliation operations, protected linked journals, exact-state mutation, idempotency, and forward recovery."
+        }
+      ],
+      "implementation_paths": [
+        "modules/knowledge-session-coordinator/src/coordinator.cpp",
+        "modules/knowledge-session-coordinator/src/reconciliation.cpp",
+        "modules/knowledge-session-coordinator/src/reconciliation.hpp",
+        "modules/knowledge-session-coordinator/tests/coordinator_test.cpp",
+        "modules/knowledge-session-coordinator/tests/process_smoke.sh"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "Does not authenticate callers, decide permission, inspect Git providers, or mark a review complete autonomously.",
+        "Does not mutate repository files, canonical knowledge, SSIAG policy, STAV ledgers, or Maestro state."
+      ],
+      "owner_contract": "modules/knowledge-session-coordinator/SPEC.md",
+      "parent_feature_id": "ssfv:symphony:knowledge-session-coordinator",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "qxctl resolves and revalidates the exact coordinator installation before invoking its reconciliation operations.",
+          "target_feature_id": "ssfv:symphony:qxctl.engine-bindings",
+          "type": "composes_with"
+        }
+      ],
+      "source_scope": "modules/knowledge-session-coordinator",
+      "status": "experimental",
+      "title": "Durable worktree reconciliation contexts",
+      "what": "Persists begin, status, checkpoint, close, and recovery evidence for one repository reconciliation context.",
+      "when": "Runs only when qxctl explicitly invokes a reconciliation operation; status remains read-only and recovery is explicit.",
+      "where": "Stores protected noncanonical user-scope context state beneath the selected coordinator state root.",
+      "who": "qxctl and target-host-authorized maintainers or agentic tools coordinating an explicitly bounded repository review context.",
+      "why": "Preserves review continuity and makes interrupted or overlapping reconciliation visible without treating repository history, timestamps, or process order as proof of completion."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
+          "reason": "Maestro owns the complete read-only derived receptor inventory supplied as lineage evidence.",
+          "reference": "modules/maestro/SPEC.md",
+          "vector": "maestro"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SCLV records reviewed SSFV maintenance and inventory composition changes.",
+          "reference": "knowledge/sclv/CHANGELOG.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes SSFV maintenance contracts, implementation, qxctl grammar, and tests.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Each mutation consumes an active session and fresh exact authorization decision.",
+          "reference": "knowledge/ssiag/SPEC.md",
+          "vector": "ssiag"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "The SSIAG authorization evidence is audit-before-release through STAV.",
+          "reference": "knowledge/stav/SPEC.md",
+          "vector": "stav"
+        }
+      ],
+      "distinctions": [
+        {
+          "distinction": "Semantic maintenance persists exact SSFV baseline/diff and engine lineage; reconciliation records bounded worktree review contexts without feature semantics.",
+          "target_feature_id": "ssfv:symphony:knowledge-session-coordinator.reconciliation"
+        }
+      ],
+      "evidence": [
+        "modules/knowledge-session-coordinator/tests/ssfv_maintenance_test.cpp verifies baseline persistence, replay, compare-and-swap rejection, separate engine lineage, corrupted-head detection, and digest-linked recovery.",
+        "tools/qxctl/cmd/qxctl/ssfv_maintenance_test.go verifies bound authorization, canonical evidence digests, disabled canonical apply, and journal-digest enforcement."
+      ],
+      "feature_id": "ssfv:symphony:knowledge-session-coordinator.semantic-maintenance",
+      "how": "Each operation binds an active authority epoch, exact engine receipt and snapshot digests, immutable baseline, current engine, Maestro evidence, expected journal state, operation identity, dual-slot durability, and explicit forward recovery.",
+      "implementation_languages": [
+        {
+          "language": "C++26",
+          "role": "Implements durable baseline/current semantic lineage, exact journal mutation, compatibility, drift state, and recovery."
+        },
+        {
+          "language": "Go",
+          "role": "Collects validated SSFV snapshot/diff and complete Maestro inventory evidence under fresh authorization and invokes the coordinator."
+        }
+      ],
+      "implementation_paths": [
+        "modules/knowledge-session-coordinator/src/coordinator.cpp",
+        "modules/knowledge-session-coordinator/src/ssfv_maintenance.cpp",
+        "modules/knowledge-session-coordinator/src/ssfv_maintenance.hpp",
+        "modules/knowledge-session-coordinator/tests/ssfv_maintenance_test.cpp",
+        "tools/qxctl/cmd/qxctl/ssfv_maintenance.go",
+        "tools/qxctl/cmd/qxctl/ssfv_maintenance_test.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "Does not decide feature-worthiness, ratify semantics, create or edit FEATURES.md, or apply an SSFV proposal.",
+        "Does not make Maestro inventory canonical, mutate Maestro state, or reinterpret an immutable baseline with a later engine."
+      ],
+      "owner_contract": "modules/knowledge-session-coordinator/SPEC.md",
+      "parent_feature_id": "ssfv:symphony:knowledge-session-coordinator",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "Maintenance captures complete derived receptor inventory or an explicit not-configured reason as lineage evidence.",
+          "target_feature_id": "ssfv:symphony:maestro-presence-authority.complete-inventory",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "qxctl supplies validated read-only SSFV snapshots and diffs while the coordinator preserves their session lineage.",
+          "target_feature_id": "ssfv:symphony:ssfv-engine",
+          "type": "composes_with"
+        }
+      ],
+      "source_scope": "modules/knowledge-session-coordinator",
+      "status": "experimental",
+      "title": "Persistent SSFV semantic-maintenance lineage",
+      "what": "Persists the initial SSFV semantic snapshot, baseline engine identity, later current-engine evidence, exact diffs, and complete or explicitly not-configured Maestro inventory lineage.",
+      "when": "Begins on explicit semantic-maintenance administration, checkpoints or closes after a validated live diff, and recovers only on explicit unambiguous evidence.",
+      "where": "Stores protected noncanonical context state keyed by TOPS, SSIAG subject, and repository below the coordinator state root.",
+      "who": "An authenticated target-host-authorized caller maintaining semantic review evidence through qxctl.",
+      "why": "Keeps semantic review stable across compatible engine upgrade and rollback order without reinterpreting the baseline or turning transient observations into canonical feature truth."
     }
   ],
   "source_scope": "modules/knowledge-session-coordinator"
