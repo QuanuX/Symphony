@@ -11,8 +11,9 @@ import (
 const testTOPSID = "123e4567-e89b-42d3-a456-426614174000"
 
 type fakeTransport struct {
-	request stavprotocol.LocalRequest
-	reject  bool
+	request       stavprotocol.LocalRequest
+	reject        bool
+	corruptDigest bool
 }
 
 func (f *fakeTransport) Do(_ context.Context, request stavprotocol.LocalRequest) (stavprotocol.LocalResponse, error) {
@@ -28,6 +29,9 @@ func (f *fakeTransport) Do(_ context.Context, request stavprotocol.LocalRequest)
 		}, nil
 	}
 	digest, _ := stavprotocol.CandidateDigest(*request.Candidate)
+	if f.corruptDigest {
+		digest = "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+	}
 	receipt := stavprotocol.Receipt{
 		CandidateDigest: digest,
 		Commit: stavprotocol.CommitResult{
@@ -104,6 +108,11 @@ func TestSubmitFailsClosedOnUnknownOutcomeOrRejection(t *testing.T) {
 	if _, err := producer.Submit(context.Background(), validRecord(PolicyDecision, "denied")); err == nil || !strings.Contains(err.Error(), "append rejected") {
 		t.Fatalf("unexpected rejection error: %v", err)
 	}
+	transport.reject = false
+	transport.corruptDigest = true
+	if _, err := producer.Submit(context.Background(), validRecord(PolicyDecision, "denied")); err == nil || !strings.Contains(err.Error(), "candidate binding mismatch") {
+		t.Fatalf("mismatched receipt candidate digest was accepted: %v", err)
+	}
 }
 
 func TestProviderFailureVocabularyIsClosedAndSafe(t *testing.T) {
@@ -133,6 +142,31 @@ func TestProviderFailureVocabularyIsClosedAndSafe(t *testing.T) {
 				t.Fatalf("provider failure vocabulary drifted: %#v", candidate)
 			}
 		})
+	}
+}
+
+func TestProviderBindingLifecycleUsesDistinctSafeVocabulary(t *testing.T) {
+	transport := &fakeTransport{}
+	producer, err := New(testTOPSID, transport)
+	if err != nil {
+		t.Fatal(err)
+	}
+	record := validRecord(ProviderBindingLifecycle, "succeeded")
+	record.Target = stavprotocol.SafeReference{ID: "provider-binding:test", Kind: "symphony.ssiag.provider-binding"}
+	record.Configuration = stavprotocol.Configuration{
+		PreviousDigest: "sha256:4236aee922a67725aa5b90e22e88bfcf0aa510875f03777b82e326a1ffa5eef2",
+		NewDigest:      "sha256:5236aee922a67725aa5b90e22e88bfcf0aa510875f03777b82e326a1ffa5eef2",
+		State:          "digests",
+	}
+	if _, err := producer.Submit(context.Background(), record); err != nil {
+		t.Fatal(err)
+	}
+	candidate := transport.request.Candidate
+	if candidate.Operation.EventClass != "symphony.ssiag.provider.binding.lifecycle" ||
+		candidate.Operation.OperationID != "symphony.ssiag.provider.binding.change" ||
+		candidate.Result.IntentID != "symphony.ssiag.provider.binding.change" ||
+		candidate.Result.ReasonCode != "symphony.ssiag.provider.binding.succeeded" {
+		t.Fatalf("provider binding vocabulary drifted: %#v", candidate)
 	}
 }
 

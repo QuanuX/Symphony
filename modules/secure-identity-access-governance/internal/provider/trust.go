@@ -217,6 +217,7 @@ type TrustManager struct {
 	verificationSlots chan struct{}
 	verificationMu    sync.Mutex
 	providerSlots     map[string]chan struct{}
+	bindings          *BindingManager
 }
 
 type foundationEvidence struct {
@@ -314,6 +315,33 @@ func (m *TrustManager) Verify(ctx context.Context, providerName, requestID, corr
 		result.Checks = staticChecks(state, reason)
 		return finishResult(result), true
 	}
+	return m.verifyPrepared(ctx, item, declaration, requestID, correlationID, result), true
+}
+
+func (m *TrustManager) verifyDeclaration(ctx context.Context, item config.ProviderConfig, declaration ExecutableTrust, requestID, correlationID string) TrustResult {
+	result := m.baseResult(ProviderTrustVerifyOperationID, "fresh", item)
+	applyDeclaration(&result, declaration)
+	if err := validateExecutableTrust(declaration, item, m.layout, m.foundation); err != nil {
+		result.TrustState = "mismatch"
+		result.Checks = staticChecks("mismatch", "symphony.ssiag.provider.declaration_mismatch")
+		return finishResult(result)
+	}
+	if err := validateAdapterReceipt(declaration, m.scope); err != nil {
+		result.TrustState = "mismatch"
+		result.Checks = staticChecks("mismatch", "symphony.ssiag.provider.installation_mismatch")
+		return finishResult(result)
+	}
+	release, admitted := m.acquireVerification(item.Name)
+	if !admitted {
+		result.TrustState = "unavailable"
+		result.Checks = []TrustCheck{{"handshake.admission", "failed", "symphony.ssiag.provider.busy"}}
+		return finishResult(result)
+	}
+	defer release()
+	return m.verifyPrepared(ctx, item, declaration, requestID, correlationID, result)
+}
+
+func (m *TrustManager) verifyPrepared(ctx context.Context, item config.ProviderConfig, declaration ExecutableTrust, requestID, correlationID string, result TrustResult) TrustResult {
 	now := m.now().UTC().Truncate(time.Second)
 	deadline := now.Add(defaultProviderTimeout)
 	request := ControlRequest{
@@ -332,18 +360,17 @@ func (m *TrustManager) Verify(ctx context.Context, providerName, requestID, corr
 	response, err := m.launcher.Exchange(exchangeContext, declaration, request)
 	if err != nil {
 		result.TrustState = "unavailable"
+		reason := "symphony.ssiag.provider.handshake_failed"
 		if errors.Is(err, context.DeadlineExceeded) || errors.Is(exchangeContext.Err(), context.DeadlineExceeded) {
 			reason = "symphony.ssiag.provider.timeout"
-		} else {
-			reason = "symphony.ssiag.provider.handshake_failed"
 		}
 		result.Checks = append(staticChecks("unverified", "symphony.ssiag.provider.static_trust_verified"), TrustCheck{"handshake.response", "failed", reason})
-		return finishResult(result), true
+		return finishResult(result)
 	}
 	if err := validateResponse(response, request, item, declaration, m.foundation); err != nil {
 		result.TrustState = "mismatch"
 		result.Checks = append(staticChecks("unverified", "symphony.ssiag.provider.static_trust_verified"), TrustCheck{"handshake.response", "failed", "symphony.ssiag.provider.handshake_mismatch"})
-		return finishResult(result), true
+		return finishResult(result)
 	}
 	result.TrustState = "verified"
 	result.MutualTrust = MutualTrust{true, true}
@@ -355,7 +382,7 @@ func (m *TrustManager) Verify(ctx context.Context, providerName, requestID, corr
 		{"handshake.response", "passed", "symphony.ssiag.provider.handshake_verified"},
 	}
 	sort.Slice(result.Checks, func(i, j int) bool { return result.Checks[i].CheckID < result.Checks[j].CheckID })
-	return finishResult(result), true
+	return finishResult(result)
 }
 
 func (m *TrustManager) baseResult(operationID, mode string, item config.ProviderConfig) TrustResult {
@@ -385,6 +412,24 @@ func (m *TrustManager) baseResult(operationID, mode string, item config.Provider
 }
 
 func (m *TrustManager) inspect(item config.ProviderConfig) (ExecutableTrust, string, string) {
+	if m.bindings != nil {
+		declaration, managed, err := m.bindings.ActiveDeclaration(item.Name)
+		if err != nil {
+			return declaration, "mismatch", "symphony.ssiag.provider.binding_mismatch"
+		}
+		if managed {
+			if declaration.AdapterIdentifier == "" {
+				return ExecutableTrust{}, "unbound", "symphony.ssiag.provider.binding_unbound"
+			}
+			if err := validateExecutableTrust(declaration, item, m.layout, m.foundation); err != nil {
+				return declaration, "mismatch", "symphony.ssiag.provider.declaration_mismatch"
+			}
+			if err := validateAdapterReceipt(declaration, m.scope); err != nil {
+				return declaration, "mismatch", "symphony.ssiag.provider.installation_mismatch"
+			}
+			return declaration, "unverified", "symphony.ssiag.provider.static_trust_verified"
+		}
+	}
 	path := filepath.Join(m.layout.ProviderTrustDir, item.Name+".json")
 	declaration, exists, err := loadExecutableTrust(path, m.scope)
 	if err != nil {

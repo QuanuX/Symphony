@@ -39,7 +39,7 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 
 ## Ratified Nested Review Progress
 
-The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, and provider-trust assurance slice record fifty-eight implemented `subfeature` boundaries inside thirteen already registered owner scopes:
+The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, provider-trust assurance slice, and provider-binding lifecycle slice record fifty-nine implemented `subfeature` boundaries inside thirteen already registered owner scopes:
 
 | Owner scope | Ratified nested records | Review disposition |
 |---|---:|---|
@@ -47,7 +47,7 @@ The F1 through F3 review, feature-administration assurance slice, root-summary a
 | `modules/knowledge-session-coordinator` | 5 | Reconciliation, authority epochs, semantic maintenance, lifecycle planning, and lifecycle apply coordination are registered. |
 | `modules/maestro` | 1 | Complete derived receptor inventory is registered separately from durable receptor presence. |
 | `libraries/stav-protocol-go` | 2 | Canonical bytes, digests, and bounded local frames are separated from exact content and identifier validation; durable checksummed ledger framing is explicitly owned by the append authority. |
-| `modules/secure-identity-access-governance` | 8 | TOPS enrollment, kernel peer trust, authorization capabilities, policy administration, provider metadata, provider trust assurance, safe audit production, and native supervision are registered. |
+| `modules/secure-identity-access-governance` | 9 | TOPS enrollment, kernel peer trust, authorization capabilities, policy administration, provider metadata, provider trust assurance, exact provider-installation and protected binding lifecycle, safe audit production, and native supervision are registered. |
 | `modules/stav-append-authority` | 5 | TOPS enrollment, serialized append, ledger durability, authorized query, and native supervision are registered. |
 | `libraries/knowledge-vector-engine-cpp` | 3 | Bounded process protocol, content-addressed evidence snapshots, and temporal representation conformance are registered without turning the static foundation into a runtime engine. |
 | `modules/skvi-engine` | 3 | Structural index assurance, content-addressed change proposals, and disposable structural projection are registered. |

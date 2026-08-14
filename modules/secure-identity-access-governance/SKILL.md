@@ -12,6 +12,7 @@
 8. verify a display-name change leaves paths unchanged;
 9. verify uninstall preserves both TOPS configurations;
 10. run the repository validator.
+11. exercise `qxctl ssiag provider installations` and all five `provider binding` commands against an installed metadata adapter, including interrupted recovery and completed apply-status replay.
 
 ## Safe-Use Rules
 
@@ -22,8 +23,9 @@
 - Keep all foundation source Go-only and cgo-free.
 - Keep native platform code in independent adapters.
 - Fail closed when a provider or capability is absent.
+- Select provider bindings only by SSIAG-issued opaque installation ID and exact state digest; never by path, raw version, filesystem order, or newest semantics.
 - Do not create an SCLV merge record before real review and merge evidence exists.
 
 ## Do Not Use For
 
-Kernel peer authentication is enabled automatically for the local API; never substitute a caller-supplied identity or socket permissions for it. Exact-grant authorization decisions require a mapped kernel subject and committed STAV receipt. Local policy administration is the narrow exception: use only `qxctl ssiag policy ...`, keep enrolled config immutable, require target-host ownership or exact current grants, preserve CAS/audit/recovery evidence, and keep `canonical=false`. Capabilities are short-lived and non-transferable. No caller may submit arbitrary STAV events. Supervision owns liveness only. Do not use this foundation for credential access, general safeguard administration, plaintext providers, canonical knowledge apply, or hot-path authorization.
+Kernel peer authentication is enabled automatically for the local API; never substitute caller-supplied identity or socket permissions. Use qxctl for ordinary policy and provider-binding administration. Binding mutation requires target-host ownership or an exact current grant, independent candidate verification, a durably bound safe audit identity, and a committed STAV receipt. The native offline recovery command is not a general bypass: it requires the immutable receipt-v2 foundation, target-host ownership, entry into the enrolled service UID/GID, exclusive ownership of the persistent socket-lifecycle lease, an absent socket, existing exact attempt evidence, and normal idempotent STAV commitment. Do not use binding success as credential or Keychain authority.

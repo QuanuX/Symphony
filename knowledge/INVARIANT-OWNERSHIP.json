@@ -448,6 +448,81 @@
       "title": "qxctl command registry parity"
     },
     {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestProviderBindingAuditProjectionExcludesAdministrativeReason",
+            "TestProviderBindingRoutesAreHeadlessStrictAndIdempotent"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/server/server_test.go"
+        },
+        {
+          "cases": [
+            "TestProviderBindingLifecycleUsesDistinctSafeVocabulary"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/stavproducer/producer_test.go"
+        },
+        {
+          "cases": [
+            "TestSSIAGProviderBindingGrammarCannotSelectOrOperateAdapters"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/ssiag_test.go"
+        },
+        {
+          "cases": [
+            "TestProviderBindingClientRejectsCyclicActionGraph",
+            "TestProviderBindingClientRejectsSelectorsOutsideOpaqueContract",
+            "TestProviderBindingClientRejectsUnsafeEvidence",
+            "TestProviderBindingClientUsesExactRoutesAndBodies",
+            "TestProviderBindingReasonMatchesCanonicalUnicodeBound"
+          ],
+          "path": "tools/qxctl/internal/ssiagclient/provider_binding_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:ssiag.provider-binding-lifecycle",
+      "ipc_boundary": false,
+      "owner_component": "ssiag-provider-binding",
+      "owner_contract": "knowledge/ssiag/PROVIDER-LIFECYCLE.md",
+      "producer_implementations": [
+        "modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go",
+        "modules/secure-identity-access-governance/internal/provider/binding.go",
+        "modules/secure-identity-access-governance/internal/provider/binding_storage_unix.go",
+        "modules/secure-identity-access-governance/internal/server/server.go",
+        "modules/secure-identity-access-governance/internal/stavproducer/producer.go"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestInstalledStoppedServiceProviderBindingRecoveryReachesProtectedState",
+            "TestOfflineProviderBindingRecoveryAuthorityIsScopeExact",
+            "TestOfflineProviderBindingRecoveryRequiresReceiptBoundFoundation"
+          ],
+          "path": "modules/secure-identity-access-governance/cmd/symphony-ssiag/provider_binding_recover_test.go"
+        },
+        {
+          "cases": [
+            "TestProviderBindingExpiredIssuedPlanFailsBeforeAttempt",
+            "TestProviderBindingInstallationOrderConvergesFromObservedEvidence",
+            "TestProviderBindingInventoryAndStateFailClosedOnBrokenEvidence",
+            "TestProviderBindingLifecycleConvergesForwardReverseAndRecovery",
+            "TestProviderBindingMultipleExactCandidatesRequireExplicitIdentity",
+            "TestProviderBindingReasonMatchesCanonicalUnicodeBound",
+            "TestProviderBindingRecoveryAcrossEveryDurableStage",
+            "TestProviderBindingRejectsCompetingAttempt",
+            "TestProviderBindingRejectsStaleChangedAndUnsafeEvidence",
+            "TestProviderBindingRetryAndPostStateRecoveryRemainConservative",
+            "TestProviderBindingRevalidatesEveryResumedStage"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/provider/binding_test.go"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "SSIAG provider binding inventory and mutation use only exact receipt-bound installation identities; no timestamp, filesystem order, or newest version selects a binding. Apply re-verifies candidate evidence, commits distinct safe STAV evidence before state mutation, advances durable attempts only through prepared, candidate_verified, audited, and committed, and uses exact compare-and-swap so recovery can move forward or backward only along one uniquely evidenced plan. The attempt preserves the initiating safe audit identity so a newly authorized recovery caller can reconstruct the original idempotent STAV candidate without inheriting the initiating caller's authority. The narrow offline recovery lane uses the same manager and requires an exact receipt-v2 foundation, enrolled service identity and target-host ownership, absent live service, and normal STAV closure without enabling provider operations or secret delivery.",
+      "status": "active",
+      "title": "Provider binding is exact, audited, and recoverable"
+    },
+    {
       "allowed_adapter_ids": [
         "adapter:symphony:ssiag.macos-keychain-provider.v1"
       ],
@@ -584,7 +659,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v1",
-  "registry_digest": "sha256:261a69f9b2da71de88359e75ca61042811f78c4573551b155adbf32b4fb125d8",
+  "registry_digest": "sha256:4878ed602625d1f521d6cb04e142294012c815f6f21f8774144cd9f268865ed4",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

@@ -133,8 +133,14 @@ func TestSSIAGProviderGrammarRejectsUnsafeOrIncompleteInput(t *testing.T) {
 	}{
 		{[]string{"ssiag", "provider", "show", "--tops-id", ssiagTestTOPSID}, "requires exactly one provider name"},
 		{[]string{"ssiag", "provider", "show", "native", "extra", "--tops-id", ssiagTestTOPSID}, "requires exactly one provider name"},
-		{[]string{"ssiag", "provider", "show", "../native", "--tops-id", ssiagTestTOPSID}, "provider name must be a token"},
+		{[]string{"ssiag", "provider", "show", "../native", "--tops-id", ssiagTestTOPSID}, "provider name must be"},
 		{[]string{"ssiag", "provider", "verify", "native", "--tops-id", ssiagTestTOPSID, "--authority-basis", "caller_type"}, "host_owner or granted_permission"},
+		{[]string{"ssiag", "provider", "installations", "native", "extra", "--tops-id", ssiagTestTOPSID}, "requires exactly one provider name"},
+		{[]string{"ssiag", "provider", "binding", "plan", "native", "--tops-id", ssiagTestTOPSID}, "--installation-id, --expected-state-digest, and --reason are required"},
+		{[]string{"ssiag", "provider", "binding", "apply", "native", "--tops-id", ssiagTestTOPSID}, "--plan-digest and --expected-state-digest are required"},
+		{[]string{"ssiag", "provider", "binding", "apply-status", "native", "--tops-id", ssiagTestTOPSID}, "--operation-id is required"},
+		{[]string{"ssiag", "provider", "binding", "recover", "native", "--tops-id", ssiagTestTOPSID}, "--expected-state-digest and --reason are required"},
+		{[]string{"ssiag", "provider", "binding", "status", "native:keychain", "--tops-id", ssiagTestTOPSID}, "provider name must be"},
 	} {
 		if err := executeCommand(test.args); err == nil || !strings.Contains(err.Error(), test.want) {
 			t.Errorf("%v: got %v, want %q", test.args, err, test.want)
@@ -156,6 +162,34 @@ func TestSSIAGProviderCommandUsesExactBoundedBudgets(t *testing.T) {
 	}
 	if ssiagProviderStatusBudget+ssiagProviderOperationBudget >= ssiagProviderEndToEndBudget {
 		t.Fatal("provider command lacks bounded orchestration margin")
+	}
+}
+
+func TestSSIAGProviderBindingGrammarCannotSelectOrOperateAdapters(t *testing.T) {
+	root, err := newRootCommand()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, path := range [][]string{
+		{"ssiag", "provider", "installations"},
+		{"ssiag", "provider", "binding", "status"},
+		{"ssiag", "provider", "binding", "plan"},
+		{"ssiag", "provider", "binding", "apply"},
+		{"ssiag", "provider", "binding", "apply-status"},
+		{"ssiag", "provider", "binding", "recover"},
+	} {
+		command, _, err := root.Find(path)
+		if err != nil {
+			t.Fatalf("find %v: %v", path, err)
+		}
+		for _, forbidden := range []string{
+			"adapter-path", "adapter-version", "version", "receipt-digest", "executable-digest",
+			"secret", "credential", "token", "operational-access-enabled", "provider-operations-enabled",
+		} {
+			if command.Flags().Lookup(forbidden) != nil || command.InheritedFlags().Lookup(forbidden) != nil {
+				t.Errorf("%v exposes prohibited --%s", path, forbidden)
+			}
+		}
 	}
 }
 

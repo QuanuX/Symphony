@@ -6,68 +6,69 @@ import (
 )
 
 const (
-	featureQXCTL                     = "ssfv:symphony:qxctl"
-	featureBindings                  = "ssfv:symphony:qxctl.engine-bindings"
-	featureCommandRegistry           = "ssfv:symphony:qxctl.command-registry"
-	featureLifecycle                 = "ssfv:symphony:qxctl.lifecycle-convergence"
-	featureHost                      = "ssfv:symphony:qxctl.linux-host-receptor"
-	featureInvariantAssurance        = "ssfv:symphony:qxctl.invariant-assurance"
-	featureMaestro                   = "ssfv:symphony:qxctl.maestro-administration"
-	featureSessions                  = "ssfv:symphony:qxctl.authenticated-sessions"
-	featureSSIAG                     = "ssfv:symphony:qxctl.ssiag-administration"
-	featureSTAV                      = "ssfv:symphony:qxctl.stav-administration"
-	featureValidation                = "ssfv:symphony:qxctl.governed-validation"
-	featureSKVI                      = "ssfv:symphony:skvi-engine"
-	featureSKVIAssurance             = "ssfv:symphony:skvi-engine.structural-index-assurance"
-	featureSKVIProposal              = "ssfv:symphony:skvi-engine.content-addressed-index-change-proposals"
-	featureSKVIProjection            = "ssfv:symphony:skvi-engine.disposable-structural-projection"
-	featureSCLV                      = "ssfv:symphony:sclv-engine"
-	featureSCLVAssurance             = "ssfv:symphony:sclv-engine.append-only-ledger-assurance"
-	featureSCLVProposal              = "ssfv:symphony:sclv-engine.evidence-bound-append-proposals"
-	featureSCLVRecovery              = "ssfv:symphony:sclv-engine.forward-only-closure-recovery"
-	featureSCLVProjection            = "ssfv:symphony:sclv-engine.disposable-provider-neutral-history"
-	featureSCLVEvidence              = "ssfv:symphony:sclv-engine.provider-neutral-evidence-normalization"
-	featureSACV                      = "ssfv:symphony:sacv-engine"
-	featureSACVConformance           = "ssfv:symphony:sacv-engine.api-contract-conformance"
-	featureSACVCompatibility         = "ssfv:symphony:sacv-engine.openapi-compatibility-evidence"
-	featureSACVProposal              = "ssfv:symphony:sacv-engine.contract-registration-proposal"
-	featureSACVProjection            = "ssfv:symphony:sacv-engine.contract-inventory-projection"
-	featureSODV                      = "ssfv:symphony:sodv-engine"
-	featureSODVLedger                = "ssfv:symphony:sodv-engine.release-ledger-validation"
-	featureSODVVerification          = "ssfv:symphony:sodv-engine.observed-publication-verification"
-	featureSODVProposal              = "ssfv:symphony:sodv-engine.forward-release-record-proposal"
-	featureSODVRecovery              = "ssfv:symphony:sodv-engine.interrupted-publication-reconciliation"
-	featureSODVProjection            = "ssfv:symphony:sodv-engine.release-transaction-projection"
-	featureSSFV                      = "ssfv:symphony:ssfv-engine"
-	featureSSFVSnapshot              = "ssfv:symphony:ssfv-engine.catalog-integrity-snapshot"
-	featureSSFVComparison            = "ssfv:symphony:ssfv-engine.semantic-freshness-comparison"
-	featureSSFVProposal              = "ssfv:symphony:ssfv-engine.catalog-change-proposal"
-	featureSSFVProjection            = "ssfv:symphony:ssfv-engine.semantic-graph-projection"
-	featureAdministrationAssurance   = "ssfv:symphony:ssfv-engine.administration-assurance"
-	backendFeatureCoordinator        = "ssfv:symphony:knowledge-session-coordinator"
-	backendFeatureAuthorityEpochs    = "ssfv:symphony:knowledge-session-coordinator.authority-epochs"
-	backendFeatureLifecycleApply     = "ssfv:symphony:knowledge-session-coordinator.lifecycle-apply-coordination"
-	backendFeatureLifecyclePlan      = "ssfv:symphony:knowledge-session-coordinator.lifecycle-planning"
-	backendFeatureReconciliation     = "ssfv:symphony:knowledge-session-coordinator.reconciliation"
-	backendFeatureSemanticMaintain   = "ssfv:symphony:knowledge-session-coordinator.semantic-maintenance"
-	backendFeatureMaestroPresence    = "ssfv:symphony:maestro-presence-authority"
-	backendFeatureMaestroInventory   = "ssfv:symphony:maestro-presence-authority.complete-inventory"
-	backendFeaturePlatform           = "ssfv:symphony:platform"
-	backendFeatureSSIAG              = "ssfv:symphony:ssiag-foundation"
-	backendFeatureSSIAGEnrollment    = "ssfv:symphony:ssiag-foundation.tops-enrollment"
-	backendFeatureSSIAGSupervisor    = "ssfv:symphony:ssiag-foundation.native-supervision"
-	backendFeatureSSIAGPolicy        = "ssfv:symphony:ssiag-foundation.policy-administration"
-	backendFeatureSSIAGProviders     = "ssfv:symphony:ssiag-foundation.provider-metadata-registry"
-	backendFeatureSSIAGProviderTrust = "ssfv:symphony:ssiag-foundation.provider-trust-assurance"
-	backendFeatureSSIAGMacOSMetadata = "ssfv:symphony:ssiag.macos-keychain-metadata"
-	backendFeatureSTAV               = "ssfv:symphony:stav-append-authority"
-	backendFeatureSTAVEnrollment     = "ssfv:symphony:stav-append-authority.tops-enrollment"
-	backendFeatureSTAVSupervisor     = "ssfv:symphony:stav-append-authority.native-supervision"
-	backendFeatureSTAVQuery          = "ssfv:symphony:stav-append-authority.authorized-query"
-	backendFeatureSTAVDurability     = "ssfv:symphony:stav-append-authority.ledger-durability"
-	backendFeatureValidator          = "ssfv:symphony:symphony-validator"
-	backendFeatureRootSummary        = "ssfv:symphony:symphony-validator.root-summary-assurance"
-	backendFeatureInvariantAssurance = "ssfv:symphony:symphony-validator.invariant-ownership-assurance"
+	featureQXCTL                       = "ssfv:symphony:qxctl"
+	featureBindings                    = "ssfv:symphony:qxctl.engine-bindings"
+	featureCommandRegistry             = "ssfv:symphony:qxctl.command-registry"
+	featureLifecycle                   = "ssfv:symphony:qxctl.lifecycle-convergence"
+	featureHost                        = "ssfv:symphony:qxctl.linux-host-receptor"
+	featureInvariantAssurance          = "ssfv:symphony:qxctl.invariant-assurance"
+	featureMaestro                     = "ssfv:symphony:qxctl.maestro-administration"
+	featureSessions                    = "ssfv:symphony:qxctl.authenticated-sessions"
+	featureSSIAG                       = "ssfv:symphony:qxctl.ssiag-administration"
+	featureSTAV                        = "ssfv:symphony:qxctl.stav-administration"
+	featureValidation                  = "ssfv:symphony:qxctl.governed-validation"
+	featureSKVI                        = "ssfv:symphony:skvi-engine"
+	featureSKVIAssurance               = "ssfv:symphony:skvi-engine.structural-index-assurance"
+	featureSKVIProposal                = "ssfv:symphony:skvi-engine.content-addressed-index-change-proposals"
+	featureSKVIProjection              = "ssfv:symphony:skvi-engine.disposable-structural-projection"
+	featureSCLV                        = "ssfv:symphony:sclv-engine"
+	featureSCLVAssurance               = "ssfv:symphony:sclv-engine.append-only-ledger-assurance"
+	featureSCLVProposal                = "ssfv:symphony:sclv-engine.evidence-bound-append-proposals"
+	featureSCLVRecovery                = "ssfv:symphony:sclv-engine.forward-only-closure-recovery"
+	featureSCLVProjection              = "ssfv:symphony:sclv-engine.disposable-provider-neutral-history"
+	featureSCLVEvidence                = "ssfv:symphony:sclv-engine.provider-neutral-evidence-normalization"
+	featureSACV                        = "ssfv:symphony:sacv-engine"
+	featureSACVConformance             = "ssfv:symphony:sacv-engine.api-contract-conformance"
+	featureSACVCompatibility           = "ssfv:symphony:sacv-engine.openapi-compatibility-evidence"
+	featureSACVProposal                = "ssfv:symphony:sacv-engine.contract-registration-proposal"
+	featureSACVProjection              = "ssfv:symphony:sacv-engine.contract-inventory-projection"
+	featureSODV                        = "ssfv:symphony:sodv-engine"
+	featureSODVLedger                  = "ssfv:symphony:sodv-engine.release-ledger-validation"
+	featureSODVVerification            = "ssfv:symphony:sodv-engine.observed-publication-verification"
+	featureSODVProposal                = "ssfv:symphony:sodv-engine.forward-release-record-proposal"
+	featureSODVRecovery                = "ssfv:symphony:sodv-engine.interrupted-publication-reconciliation"
+	featureSODVProjection              = "ssfv:symphony:sodv-engine.release-transaction-projection"
+	featureSSFV                        = "ssfv:symphony:ssfv-engine"
+	featureSSFVSnapshot                = "ssfv:symphony:ssfv-engine.catalog-integrity-snapshot"
+	featureSSFVComparison              = "ssfv:symphony:ssfv-engine.semantic-freshness-comparison"
+	featureSSFVProposal                = "ssfv:symphony:ssfv-engine.catalog-change-proposal"
+	featureSSFVProjection              = "ssfv:symphony:ssfv-engine.semantic-graph-projection"
+	featureAdministrationAssurance     = "ssfv:symphony:ssfv-engine.administration-assurance"
+	backendFeatureCoordinator          = "ssfv:symphony:knowledge-session-coordinator"
+	backendFeatureAuthorityEpochs      = "ssfv:symphony:knowledge-session-coordinator.authority-epochs"
+	backendFeatureLifecycleApply       = "ssfv:symphony:knowledge-session-coordinator.lifecycle-apply-coordination"
+	backendFeatureLifecyclePlan        = "ssfv:symphony:knowledge-session-coordinator.lifecycle-planning"
+	backendFeatureReconciliation       = "ssfv:symphony:knowledge-session-coordinator.reconciliation"
+	backendFeatureSemanticMaintain     = "ssfv:symphony:knowledge-session-coordinator.semantic-maintenance"
+	backendFeatureMaestroPresence      = "ssfv:symphony:maestro-presence-authority"
+	backendFeatureMaestroInventory     = "ssfv:symphony:maestro-presence-authority.complete-inventory"
+	backendFeaturePlatform             = "ssfv:symphony:platform"
+	backendFeatureSSIAG                = "ssfv:symphony:ssiag-foundation"
+	backendFeatureSSIAGEnrollment      = "ssfv:symphony:ssiag-foundation.tops-enrollment"
+	backendFeatureSSIAGSupervisor      = "ssfv:symphony:ssiag-foundation.native-supervision"
+	backendFeatureSSIAGPolicy          = "ssfv:symphony:ssiag-foundation.policy-administration"
+	backendFeatureSSIAGProviders       = "ssfv:symphony:ssiag-foundation.provider-metadata-registry"
+	backendFeatureSSIAGProviderTrust   = "ssfv:symphony:ssiag-foundation.provider-trust-assurance"
+	backendFeatureSSIAGProviderBinding = "ssfv:symphony:ssiag-foundation.provider-binding-lifecycle"
+	backendFeatureSSIAGMacOSMetadata   = "ssfv:symphony:ssiag.macos-keychain-metadata"
+	backendFeatureSTAV                 = "ssfv:symphony:stav-append-authority"
+	backendFeatureSTAVEnrollment       = "ssfv:symphony:stav-append-authority.tops-enrollment"
+	backendFeatureSTAVSupervisor       = "ssfv:symphony:stav-append-authority.native-supervision"
+	backendFeatureSTAVQuery            = "ssfv:symphony:stav-append-authority.authorized-query"
+	backendFeatureSTAVDurability       = "ssfv:symphony:stav-append-authority.ledger-durability"
+	backendFeatureValidator            = "ssfv:symphony:symphony-validator"
+	backendFeatureRootSummary          = "ssfv:symphony:symphony-validator.root-summary-assurance"
+	backendFeatureInvariantAssurance   = "ssfv:symphony:symphony-validator.invariant-ownership-assurance"
 )
 
 // reviewedBackendFeatureBindings is the ratified semantic bridge from stable
@@ -134,29 +135,35 @@ var reviewedBackendFeatureBindings = map[string][]commandregistry.FeatureBinding
 		{FeatureID: backendFeatureSSIAGProviderTrust, Interaction: "validate"},
 		{FeatureID: backendFeatureSSIAGMacOSMetadata, Interaction: "validate"},
 	},
-	"ssiag.providers":               {{FeatureID: backendFeatureSSIAGProviders, Interaction: "discover"}},
-	"ssiag.status":                  {{FeatureID: backendFeatureSSIAG, Interaction: "query"}},
-	"ssiag.supervisor.status":       {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
-	"ssiag.supervisor.plan":         {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
-	"ssiag.supervisor.apply":        {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
-	"ssiag.supervisor.apply-status": {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
-	"ssiag.supervisor.recover":      {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
-	"stav.doctor":                   {{FeatureID: backendFeatureSTAV, Interaction: "validate"}},
-	"stav.enrollment.status":        {{FeatureID: backendFeatureSTAVEnrollment, Interaction: "lifecycle"}},
-	"stav.enrollment.plan":          {{FeatureID: backendFeatureSTAVEnrollment, Interaction: "lifecycle"}},
-	"stav.enrollment.apply":         {{FeatureID: backendFeatureSTAVEnrollment, Interaction: "lifecycle"}},
-	"stav.enrollment.apply-status":  {{FeatureID: backendFeatureSTAVEnrollment, Interaction: "lifecycle"}},
-	"stav.enrollment.recover":       {{FeatureID: backendFeatureSTAVEnrollment, Interaction: "lifecycle"}},
-	"stav.query":                    {{FeatureID: backendFeatureSTAVQuery, Interaction: "query"}},
-	"stav.status":                   {{FeatureID: backendFeatureSTAV, Interaction: "query"}},
-	"stav.supervisor.status":        {{FeatureID: backendFeatureSTAVSupervisor, Interaction: "lifecycle"}},
-	"stav.supervisor.plan":          {{FeatureID: backendFeatureSTAVSupervisor, Interaction: "lifecycle"}},
-	"stav.supervisor.apply":         {{FeatureID: backendFeatureSTAVSupervisor, Interaction: "lifecycle"}},
-	"stav.supervisor.apply-status":  {{FeatureID: backendFeatureSTAVSupervisor, Interaction: "lifecycle"}},
-	"stav.supervisor.recover":       {{FeatureID: backendFeatureSTAVSupervisor, Interaction: "lifecycle"}},
-	"stav.verify":                   {{FeatureID: backendFeatureSTAVDurability, Interaction: "validate"}},
-	"validate.scan":                 {{FeatureID: backendFeatureValidator, Interaction: "validate"}},
-	"validate.root-summary":         {{FeatureID: backendFeatureRootSummary, Interaction: "inspect"}},
+	"ssiag.provider.installations":        {{FeatureID: backendFeatureSSIAGProviderBinding, Interaction: "discover"}},
+	"ssiag.provider.binding.status":       {{FeatureID: backendFeatureSSIAGProviderBinding, Interaction: "inspect"}},
+	"ssiag.provider.binding.plan":         {{FeatureID: backendFeatureSSIAGProviderBinding, Interaction: "propose"}},
+	"ssiag.provider.binding.apply":        {{FeatureID: backendFeatureSSIAGProviderBinding, Interaction: "apply"}},
+	"ssiag.provider.binding.apply-status": {{FeatureID: backendFeatureSSIAGProviderBinding, Interaction: "query"}},
+	"ssiag.provider.binding.recover":      {{FeatureID: backendFeatureSSIAGProviderBinding, Interaction: "recover"}},
+	"ssiag.providers":                     {{FeatureID: backendFeatureSSIAGProviders, Interaction: "discover"}},
+	"ssiag.status":                        {{FeatureID: backendFeatureSSIAG, Interaction: "query"}},
+	"ssiag.supervisor.status":             {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
+	"ssiag.supervisor.plan":               {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
+	"ssiag.supervisor.apply":              {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
+	"ssiag.supervisor.apply-status":       {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
+	"ssiag.supervisor.recover":            {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
+	"stav.doctor":                         {{FeatureID: backendFeatureSTAV, Interaction: "validate"}},
+	"stav.enrollment.status":              {{FeatureID: backendFeatureSTAVEnrollment, Interaction: "lifecycle"}},
+	"stav.enrollment.plan":                {{FeatureID: backendFeatureSTAVEnrollment, Interaction: "lifecycle"}},
+	"stav.enrollment.apply":               {{FeatureID: backendFeatureSTAVEnrollment, Interaction: "lifecycle"}},
+	"stav.enrollment.apply-status":        {{FeatureID: backendFeatureSTAVEnrollment, Interaction: "lifecycle"}},
+	"stav.enrollment.recover":             {{FeatureID: backendFeatureSTAVEnrollment, Interaction: "lifecycle"}},
+	"stav.query":                          {{FeatureID: backendFeatureSTAVQuery, Interaction: "query"}},
+	"stav.status":                         {{FeatureID: backendFeatureSTAV, Interaction: "query"}},
+	"stav.supervisor.status":              {{FeatureID: backendFeatureSTAVSupervisor, Interaction: "lifecycle"}},
+	"stav.supervisor.plan":                {{FeatureID: backendFeatureSTAVSupervisor, Interaction: "lifecycle"}},
+	"stav.supervisor.apply":               {{FeatureID: backendFeatureSTAVSupervisor, Interaction: "lifecycle"}},
+	"stav.supervisor.apply-status":        {{FeatureID: backendFeatureSTAVSupervisor, Interaction: "lifecycle"}},
+	"stav.supervisor.recover":             {{FeatureID: backendFeatureSTAVSupervisor, Interaction: "lifecycle"}},
+	"stav.verify":                         {{FeatureID: backendFeatureSTAVDurability, Interaction: "validate"}},
+	"validate.scan":                       {{FeatureID: backendFeatureValidator, Interaction: "validate"}},
+	"validate.root-summary":               {{FeatureID: backendFeatureRootSummary, Interaction: "inspect"}},
 }
 
 func registered(command *cobra.Command, key, featureID, interaction string) *cobra.Command {

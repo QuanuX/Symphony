@@ -2173,6 +2173,125 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:ssiag.provider.binding.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:ssiag.provider.binding.apply"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/ssiag/PROVIDER-LIFECYCLE.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Binding mutation requires one exact permission-backed plan digest, expected state, candidate verification, and committed safe STAV evidence.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.provider.installations"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:ssiag.provider.installations.list"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/ssiag/PROVIDER-LIFECYCLE.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The exact bounded installation inventory is discoverable without selecting a newest version or exposing paths.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.provider.binding.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:ssiag.provider.binding.observe"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/ssiag/PROVIDER-LIFECYCLE.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Current, previous, and pending recovery binding evidence is independently inspectable before mutation.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.provider.binding.plan"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:ssiag.provider.binding.plan"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/ssiag/PROVIDER-LIFECYCLE.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "A non-mutating exact plan makes the desired installation, CAS state, evidence graph, and direction reviewable.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.provider.binding.apply-status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:ssiag.provider.binding.apply-status"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/ssiag/PROVIDER-LIFECYCLE.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "One exact operation ID queries its durable prepared, candidate-verified, audited, or committed evidence.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.provider.binding.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:ssiag.provider.binding.recover"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/ssiag/PROVIDER-LIFECYCLE.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Interrupted mutation advances only the unique evidence-linked successor under exact expected state and normal STAV closure.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:ssiag-foundation.provider-binding-lifecycle"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:ssiag.providers"
           ],
           "delivery": "direct",
@@ -2670,9 +2789,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:586510a7a5fe0323ee6bb53749178580a446ae75a40e106ee754ecbb21d667fa",
+  "profile_digest": "sha256:e5877e5dbbc3ade34fac6a21f7538c9c358942273a04bf25ace1da84e62e3932",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 73,
-  "ssfv_registry_digest": "sha256:fdda20a7d802df55b0a5eb7774ab08e405568a473c675dbc6ef0e39f16933eec"
+  "registered_feature_count": 74,
+  "ssfv_registry_digest": "sha256:0b4394e32859c7ad4c5fe8c322aa825a344c34bccaf0049ff51d8b1485cd94d9"
 }

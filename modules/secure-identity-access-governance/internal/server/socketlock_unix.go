@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"syscall"
 
 	"golang.org/x/sys/unix"
@@ -13,6 +14,16 @@ import (
 
 type socketLease struct {
 	file *os.File
+}
+
+// AcquireSocketLifecycleLease gives receipt-bound offline recovery the same
+// exclusive stopped-service proof used by the live server. The caller must
+// hold the returned lease until all protected state work has completed.
+func AcquireSocketLifecycleLease(socketPath string) (*socketLease, error) {
+	if err := ensureRuntimeDir(filepath.Dir(socketPath)); err != nil {
+		return nil, err
+	}
+	return acquireSocketLease(socketPath)
 }
 
 // acquireSocketLease serializes every process that is allowed to inspect,

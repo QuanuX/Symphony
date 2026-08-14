@@ -427,6 +427,105 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
+          "reason": "SCLV records the reviewed provider-binding implementation after merge.",
+          "reference": "knowledge/sclv/CHANGELOG.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes the canonical SSIAG lifecycle contract, schemas, implementation, and tests.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SODV governs a future released version of the provider-binding capability.",
+          "reference": "knowledge/sodv/SPEC.md",
+          "vector": "sodv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SSIAG owns exact provider-installation and protected per-TOPS binding lifecycle semantics.",
+          "reference": "knowledge/ssiag/PROVIDER-LIFECYCLE.md",
+          "vector": "ssiag"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "STAV owns the committed safe audit receipt required before a changed binding commits.",
+          "reference": "knowledge/stav/SPEC.md",
+          "vector": "stav"
+        }
+      ],
+      "distinctions": [
+        {
+          "distinction": "Provider trust verifies the one active metadata adapter; provider-binding lifecycle inventories exact installations and changes which exact pair is active.",
+          "target_feature_id": "ssfv:symphony:ssiag-foundation.provider-trust-assurance"
+        }
+      ],
+      "evidence": [
+        "Provider-binding tests cover adapter-first, foundation-first, and both-staged observation; multiple exact candidates without automatic selection; exact content-addressed inventory with a cumulative cross-root bound; forward activation; no-op replay; explicit unbind; predecessor rollback; every durable crash stage; stale, expired, and retry CAS; missing packages; incompatible or changed receipts and bytes; competing attempts; unknown-state preservation; and symlinked state refusal.",
+        "Server tests cover authenticated headless inventory, status, plan and apply routes, exact request members, duplicate-member refusal, audit-free no-op convergence, and exclusion of administrative reason markers from the STAV projection.",
+        "Installed-foundation command tests exercise a receipt-v2-installed test binary with enrolled user configuration, an absent live socket, the shared lifecycle lease, and the protected state store; they also prove offline recovery preserves the ordinary SSIAG recovery operation instead of creating a qxctl bypass.",
+        "The Darwin integration fixture exercises an actual receipt-v2-installed Go foundation against the actual installed Swift metadata adapter through the same bounded handshake used for binding candidate verification.",
+        "STAV producer tests prove provider-binding lifecycle uses its distinct closed safe event, operation, intent, and reason vocabulary."
+      ],
+      "feature_id": "ssfv:symphony:ssiag-foundation.provider-binding-lifecycle",
+      "how": "Observes only admitted receipt-v2 installation roots, derives an opaque content-addressed identity for each exact foundation and adapter pair, plans against a state digest, durably binds the initiating safe audit identity, advances prepared, candidate-verified, audited, state, committed, result, and cleanup boundaries in crash-safe order, and recovers only the uniquely linked successor under protected owner-only storage.",
+      "implementation_languages": [
+        {
+          "language": "Go",
+          "role": "Implements cgo-free provider inventory, exact-pair planning, CAS, independent metadata handshake verification, STAV-before-commit, recovery, and local HTTP administration."
+        }
+      ],
+      "implementation_paths": [
+        "modules/secure-identity-access-governance/cmd/symphony-ssiag/main.go",
+        "modules/secure-identity-access-governance/cmd/symphony-ssiag/provider_binding_recover_test.go",
+        "modules/secure-identity-access-governance/internal/paths/paths.go",
+        "modules/secure-identity-access-governance/internal/provider/binding.go",
+        "modules/secure-identity-access-governance/internal/provider/binding_storage_unix.go",
+        "modules/secure-identity-access-governance/internal/provider/binding_test.go",
+        "modules/secure-identity-access-governance/internal/provider/trust.go",
+        "modules/secure-identity-access-governance/internal/server/server.go",
+        "modules/secure-identity-access-governance/internal/server/server_test.go",
+        "modules/secure-identity-access-governance/internal/server/socketlock_test.go",
+        "modules/secure-identity-access-governance/internal/server/socketlock_unix.go",
+        "modules/secure-identity-access-governance/internal/stavproducer/producer.go",
+        "modules/secure-identity-access-governance/internal/stavproducer/producer_test.go",
+        "modules/secure-identity-access-governance/tests/provider_trust_integration_darwin.sh"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "Does not select newest versions, follow an automatic fallback, expose filesystem paths through qxctl, or grant an adapter authority from receipt presence alone.",
+        "Does not enable Keychain access, credential operations, signing, decryption, assertions, export, provider payload delivery, or a secret channel."
+      ],
+      "owner_contract": "modules/secure-identity-access-governance/SPEC.md",
+      "parent_feature_id": "ssfv:symphony:ssiag-foundation",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "qxctl provides the stable headless administrative grammar while SSIAG owns discovery, planning, state, verification, audit, and commit.",
+          "target_feature_id": "ssfv:symphony:qxctl",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "A changed binding commits only after the authenticated append authority returns a committed receipt for the safe state-digest transition.",
+          "target_feature_id": "ssfv:symphony:ssiag-foundation.safe-audit-production",
+          "type": "depends_on"
+        }
+      ],
+      "source_scope": "modules/secure-identity-access-governance",
+      "status": "experimental",
+      "title": "Exact provider installation and binding lifecycle",
+      "what": "Catalogs exact compatible metadata-provider installations and administers one explicit active per-TOPS binding with one retained predecessor, deterministic plans, protected mutation, status, and recovery.",
+      "when": "During freezing-path provider installation, upgrade, downgrade, removal, rollback, first boot after package changes, or recovery from an interrupted administrative session.",
+      "where": "Inside the per-TOPS Go SSIAG foundation over its kernel-authenticated Unix socket, with binding state under the service-owned per-TOPS state directory.",
+      "who": "Any kernel-authenticated target-host owner or subject with the exact current SSIAG permission, usually acting headlessly through qxctl.",
+      "why": "Lets independently installed immutable foundation and adapter versions dock or undock in unplanned order without recency guesses, path leakage, silent fallback, unaudited mutation, or caller-class discrimination."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
           "reason": "SCLV records reviewed SSIAG changes after merge.",
           "reference": "knowledge/sclv/CHANGELOG.md",
           "vector": "sclv"

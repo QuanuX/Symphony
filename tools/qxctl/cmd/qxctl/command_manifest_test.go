@@ -23,8 +23,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 150 {
-		t.Fatalf("registered command count = %d, want 150", len(manifest.Commands))
+	if len(manifest.Commands) != 156 {
+		t.Fatalf("registered command count = %d, want 156", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -53,6 +53,12 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 		"qxcmd:symphony:ssiag.enrollment.apply",
 		"qxcmd:symphony:ssiag.provider.show",
 		"qxcmd:symphony:ssiag.provider.verify",
+		"qxcmd:symphony:ssiag.provider.installations",
+		"qxcmd:symphony:ssiag.provider.binding.status",
+		"qxcmd:symphony:ssiag.provider.binding.plan",
+		"qxcmd:symphony:ssiag.provider.binding.apply",
+		"qxcmd:symphony:ssiag.provider.binding.apply-status",
+		"qxcmd:symphony:ssiag.provider.binding.recover",
 		"qxcmd:symphony:ssiag.supervisor.recover",
 		"qxcmd:symphony:stav.enrollment.plan",
 		"qxcmd:symphony:stav.supervisor.status",
@@ -123,8 +129,8 @@ func TestCommandRegistryBindsVectorCapabilitiesNotBindingSelection(t *testing.T)
 }
 
 func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
-	if len(reviewedBackendFeatureBindings) != 68 {
-		t.Fatalf("reviewed backend command count = %d, want 68", len(reviewedBackendFeatureBindings))
+	if len(reviewedBackendFeatureBindings) != 74 {
+		t.Fatalf("reviewed backend command count = %d, want 74", len(reviewedBackendFeatureBindings))
 	}
 	secondaryBindingCount := 0
 	for key, bindings := range reviewedBackendFeatureBindings {
@@ -133,8 +139,8 @@ func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
 		}
 		secondaryBindingCount += len(bindings)
 	}
-	if secondaryBindingCount != 70 {
-		t.Fatalf("reviewed backend binding count = %d, want 70", secondaryBindingCount)
+	if secondaryBindingCount != 76 {
+		t.Fatalf("reviewed backend binding count = %d, want 76", secondaryBindingCount)
 	}
 
 	root, err := newRootCommand()
@@ -315,6 +321,54 @@ func TestSSIAGProviderTrustRegistryContracts(t *testing.T) {
 		FeatureID: "ssfv:symphony:ssiag.macos-keychain-metadata", Interaction: "discover",
 	}) {
 		t.Fatalf("provider list still overclaims an adapter handshake: %#v", providers)
+	}
+}
+
+func TestSSIAGProviderBindingRegistryContracts(t *testing.T) {
+	root, err := newRootCommand()
+	if err != nil {
+		t.Fatal(err)
+	}
+	manifest, err := commandregistry.BuildExpected(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	records := make(map[string]commandregistry.CommandRecord)
+	for _, record := range manifest.Commands {
+		records[record.CommandID] = record
+	}
+	tests := []struct {
+		key, backend, interaction, mutability, authority, input, output, recovery string
+		feature                                                                   string
+	}{
+		{"ssiag.provider.installations", "engop:symphony:ssiag.provider.installations.list", "discover", "read_only", "none", "", "symphony.ssiag.provider-installation-inventory.v1", "", backendFeatureSSIAGProviderBinding},
+		{"ssiag.provider.binding.status", "engop:symphony:ssiag.provider.binding.observe", "inspect", "read_only", "none", "", "symphony.ssiag.provider-binding-status.v1", "", backendFeatureSSIAGProviderBinding},
+		{"ssiag.provider.binding.plan", "engop:symphony:ssiag.provider.binding.plan", "propose", "proposal_only", "ssiag", "symphony.ssiag.provider-binding-plan-request.v1", "symphony.ssiag.provider-binding-plan.v1", "", backendFeatureSSIAGProviderBinding},
+		{"ssiag.provider.binding.apply", "engop:symphony:ssiag.provider.binding.apply", "apply", "permission_backed_mutation", "ssiag", "symphony.ssiag.provider-binding-apply-request.v1", "symphony.ssiag.provider-binding-result.v1", "qxcmd:symphony:ssiag.provider.binding.recover", backendFeatureSSIAGProviderBinding},
+		{"ssiag.provider.binding.apply-status", "engop:symphony:ssiag.provider.binding.apply-status", "query", "read_only", "ssiag", "", "symphony.ssiag.provider-binding-result.v1", "", backendFeatureSSIAGProviderBinding},
+		{"ssiag.provider.binding.recover", "engop:symphony:ssiag.provider.binding.recover", "recover", "permission_backed_mutation", "ssiag", "symphony.ssiag.provider-binding-recovery-request.v1", "symphony.ssiag.provider-binding-result.v1", "qxcmd:symphony:ssiag.provider.binding.recover", backendFeatureSSIAGProviderBinding},
+	}
+	for _, test := range tests {
+		record, present := records["qxcmd:symphony:"+test.key]
+		if !present {
+			t.Errorf("provider binding command %s is absent", test.key)
+			continue
+		}
+		if len(record.BackendOperationIDs) != 1 || record.BackendOperationIDs[0] != test.backend ||
+			record.Mutability != test.mutability || record.AuthorityMode != test.authority ||
+			len(record.OutputProtocols) != 1 || record.OutputProtocols[0] != test.output ||
+			len(record.ResultValidationProtocols) != 1 || record.ResultValidationProtocols[0] != test.output ||
+			!containsFeatureBinding(record.FeatureBindings, commandregistry.FeatureBinding{FeatureID: test.feature, Interaction: test.interaction}) {
+			t.Errorf("provider binding command contract drifted: %#v", record)
+		}
+		if test.input == "" && len(record.InputProtocols) != 0 ||
+			test.input != "" && (len(record.InputProtocols) != 1 || record.InputProtocols[0] != test.input) {
+			t.Errorf("provider binding input protocol drifted: %#v", record)
+		}
+		if test.recovery == "" && record.RecoveryCommandID != nil ||
+			test.recovery != "" && (record.RecoveryCommandID == nil || *record.RecoveryCommandID != test.recovery) {
+			t.Errorf("provider binding recovery identity drifted: %#v", record)
+		}
 	}
 }
 

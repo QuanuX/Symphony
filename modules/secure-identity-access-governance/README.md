@@ -2,7 +2,7 @@
 
 SSIAG is Symphony's Go-only, independently installable identity, authentication, authorization, capability, credential-reference, lease, and provider-operation foundation.
 
-The current foundation installs immutable receipt-v2 packages while dual-reading its legacy fixed layout, enrolls multiple isolated TOPS instances through a bounded CAS/recovery lifecycle adapter, authenticates every accepted Darwin/Linux Unix-socket connection from kernel peer credentials, verifies the configured service identity on both sides, installs bounded per-TOPS launchd/systemd liveness profiles, serves safe metadata, evaluates exact deny-by-default authorization grants, administers a protected local policy overlay through proposal/apply/recovery, verifies one exact receipt-bound macOS adapter through a mutually authenticated metadata-only handshake, and provides a closed typed producer for durable STAV security outcomes. Policy changes are caller-neutral, compare-and-swap, audit-before-commit, and crash-recoverable. Ordinary foundational lifecycle mutation remains fail-closed until its STAV receipt endpoint exists; explicit `--audit-deferred` bootstrap journals reconciliation-required evidence. Its short-lived capabilities remain non-transferable and cannot authorize canonical knowledge apply. It does not release, store, or exercise credentials, and operational Keychain access and secret delivery remain disabled.
+The current foundation installs immutable receipt-v2 packages, enrolls isolated TOPS instances, authenticates Darwin/Linux Unix-socket peers from kernel credentials, supervises per-TOPS services, evaluates exact deny-by-default grants, administers a protected policy overlay, verifies the metadata-only macOS adapter, and manages exact provider bindings. Binding inventory exposes opaque exact-pair IDs; plan/apply uses state CAS, independent candidate verification, a durably bound safe audit identity, a distinct committed STAV event, a retained predecessor, completed-operation status, and crash recovery across every durable stage. All of this is headlessly administered through qxctl. It does not release, store, or exercise credentials, and operational Keychain access and secret delivery remain disabled.
 
 ## Quick Start
 
@@ -31,6 +31,10 @@ qxctl ssiag policy status --json --scope user \
 qxctl ssiag provider show native --json --scope user \
   --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002
 qxctl ssiag provider verify native --json --scope user \
+  --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002
+qxctl ssiag provider installations native --json --scope user \
+  --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002
+qxctl ssiag provider binding status native --json --scope user \
   --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002
 ```
 

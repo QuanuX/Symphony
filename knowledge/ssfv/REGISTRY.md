@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes seventy-three experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes seventy-four experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -235,7 +235,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:b1399a9595ab9787a1fad08bf8df2a5365de50f83476a0fb507e2b9ef3d98fb2`
+- record_digest: `sha256:18cf05505e688f4725b045fb2aae1aec85d85e8ec627d3798cbc9a800c875053`
 - notes: Architect-ratified F1 nested record for SSIAG policy, decision, enrollment, and native-supervision administration; coverage remains partial and no broader runtime or canonical authority is implied.
 
 - feature_id: `ssfv:symphony:qxctl.stav-administration`
@@ -535,6 +535,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:5aaa607e1b8959183eaf78b825eaa810c6ce5e06b1e17357a82cd6217f6042a4`
 - notes: Architect-ratified F2 subfeature for durable local SSIAG policy administration; coverage remains partial.
 
+- feature_id: `ssfv:symphony:ssiag-foundation.provider-binding-lifecycle`
+- feature_file: `modules/secure-identity-access-governance/FEATURES.md`
+- owner_contract: `modules/secure-identity-access-governance/SPEC.md`
+- source_scope: `modules/secure-identity-access-governance`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssiag-foundation`
+- record_digest: `sha256:684716f63e3d05b35bb00c4b33dbbcc724a0bc0a927a51212caf62e495039fbc`
+- notes: Architect-ratified exact provider-installation inventory and protected two-way binding lifecycle with safe STAV-before-commit recovery; operational provider access and secret delivery remain disabled.
+
 - feature_id: `ssfv:symphony:ssiag-foundation.provider-metadata-registry`
 - feature_file: `modules/secure-identity-access-governance/FEATURES.md`
 - owner_contract: `modules/secure-identity-access-governance/SPEC.md`
@@ -702,4 +711,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This seventy-three-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This seventy-four-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

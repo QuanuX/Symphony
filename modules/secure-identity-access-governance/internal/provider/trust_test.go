@@ -256,14 +256,22 @@ func testManager(t *testing.T, enabled bool, launcher Launcher) *TrustManager {
 }
 
 func writeTrustPackage(t *testing.T, manager *TrustManager) ExecutableTrust {
+	return writeTrustPackageVersion(t, manager, "0.1.0", []byte("provider fixture"))
+}
+
+func writeTrustPackageVersion(t *testing.T, manager *TrustManager, version string, payload []byte) ExecutableTrust {
 	t.Helper()
 	prefix := filepath.Join(filepath.Dir(manager.layout.ProviderTrustDir), "prefix")
-	version, packageID := "0.1.0", "ssiag-macos-keychain-provider"
+	return writeTrustPackageVersionAtPrefix(t, manager, prefix, version, payload)
+}
+
+func writeTrustPackageVersionAtPrefix(t *testing.T, manager *TrustManager, prefix, version string, payload []byte) ExecutableTrust {
+	t.Helper()
+	packageID := "ssiag-macos-keychain-provider"
 	executable := filepath.Join(prefix, "libexec", "symphony", packageID, version, macOSKeychainExecutableName)
 	if err := os.MkdirAll(filepath.Dir(executable), 0o700); err != nil {
 		t.Fatal(err)
 	}
-	payload := []byte("provider fixture")
 	if err := os.WriteFile(executable, payload, 0o700); err != nil {
 		t.Fatal(err)
 	}

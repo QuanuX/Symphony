@@ -1,6 +1,6 @@
 # SSIAG Protocol Schemas v1
 
-These exact Draft 2020-12 schemas are canonical SSIAG authorization, grant-planning, protected local policy-administration, and provider-protocol truth.
+These twenty-eight exact Draft 2020-12 schemas are canonical SSIAG authorization, grant-planning, protected local policy-administration, and provider-protocol truth.
 
 - `authorization-request.schema.json` closes caller-declared operation, resource, audience, scope, correlation, freshness, and requested expiry.
 - `authorization-decision.schema.json` closes the caller-neutral allow/deny result and safe policy/configuration evidence.
@@ -11,9 +11,13 @@ These exact Draft 2020-12 schemas are canonical SSIAG authorization, grant-plann
 - `policy-apply-request.schema.json`, `policy-recovery-request.schema.json`, and `policy-result.schema.json` close compare-and-swap apply, explicit recovery, and metadata-only results.
 - `policy-state.schema.json` and `policy-attempt.schema.json` close the protected generation state and crash-recovery journal.
 - `provider-handshake.schema.json`, `provider-control-request.schema.json`, and `provider-control-response.schema.json` close the metadata-only, one-request/one-response provider subprocess protocol and its embedded safe error.
-- `provider-executable-trust.schema.json` is the externally administered per-TOPS exact-version binding. One `provider-trust/<provider_name>.json` file, where `provider_name` is a safe token, lives under the protected SSIAG configuration tree; absence means `unbound`. It binds both adapter and foundation path, installation/executable digest, ownership, signing evidence, and exact provider protocol. Future qxctl binding mutation is a separate gate.
+- `provider-executable-trust.schema.json` is the retained per-TOPS exact-version trust-inspection compatibility declaration. One `provider-trust/<provider_name>.json` file, where `provider_name` is a safe token, lives under the protected SSIAG configuration tree; absence means `unbound`. It binds adapter and foundation path, installation/executable digest, ownership, signing evidence, and exact provider protocol, but is not the protected provider-binding lifecycle state.
 - `provider-trust-verification-request.schema.json` and `provider-trust-result.schema.json` close the safe qxctl-to-foundation request and exact read-only result shape. Capabilities and checks are explicit, sorted, unique arrays bounded to 128 entries.
 - `provider-one-shot-channel.schema.json` closes only a synthetic inherited-file-descriptor descriptor for Phase 9 conformance. Its invalid descriptor `-1`, zero-byte limit, `synthetic: true`, and `operational: false` assertions prohibit opening it or treating it as secret delivery.
+- `provider-installation-inventory.schema.json` and `provider-binding-status.schema.json` close bounded exact-installation observation and the protected current/previous binding plus attempt state.
+- `provider-binding-plan-request.schema.json`, `provider-binding-plan.schema.json`, and `provider-binding-apply-request.schema.json` close subject-free desired-binding input, dependency-ordered exact plans, and digest-only compare-and-swap apply input.
+- `provider-binding-recovery-request.schema.json` and `provider-binding-result.schema.json` close exact recovery input and safe metadata-only mutation/status results.
+- `provider-binding-state.schema.json` and `provider-binding-attempt.schema.json` close protected current/previous state and the explicit `prepared`, `candidate_verified`, `audited`, and `committed` durability sequence. The attempt persists the initiating safe actor identity needed to reconstruct an idempotent STAV candidate during recovery; current recovery authority is evaluated separately.
 
 Provider control v1 is an exact protocol, not a version range. Each adapter process consumes exactly one JSON value no larger than 65,536 bytes and emits exactly one JSON value no larger than 65,536 bytes, then exits. The default deadline is five seconds and a caller may not request more than thirty seconds. Future incompatible majors install and bind side by side; neither the foundation nor qxctl selects the newest version automatically.
 
@@ -23,4 +27,4 @@ There is no persistent cancellation message or cancellation schema in v1. The on
 
 Every `*_digest` in these provider schemas uses the same rule as the qxctl trust-result implementation: parse the closed object, omit its own digest member, serialize compact UTF-8 JSON with Go `encoding/json` semantics and recursive lexical object-key order, hash those bytes with SHA-256, and encode `sha256:` followed by 64 lowercase hexadecimal characters. Array order is significant. Capability and check arrays must therefore already be sorted and unique before hashing.
 
-The schemas never accept caller class as a decision input. Subject identity comes from the authenticated local channel; target-host ownership or an exact granted permission is the gate. Policy apply mutates only an operational per-TOPS overlay and reports `canonical: false`; it cannot apply canonical repository truth. A grant plan remains non-mutating input.
+The schemas never accept caller class as a decision input. Subject identity comes from the authenticated local channel; target-host ownership or an exact granted permission is the gate. Policy and provider-binding apply mutate only separate operational per-TOPS state and report `canonical: false`; neither can apply canonical repository truth. A grant or binding plan remains non-mutating input. Every provider-binding operational-access, provider-operation, and secret-channel flag is fixed false.

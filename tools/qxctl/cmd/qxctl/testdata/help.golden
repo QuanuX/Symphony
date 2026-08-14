@@ -30,6 +30,12 @@ Commands:
   ssiag providers --tops-id UUID [--scope user|system] [--json] List safe provider metadata
   ssiag provider show <name> --tops-id UUID [--scope user|system] [--json] Read safe provider trust evidence
   ssiag provider verify <name> --tops-id UUID [--scope user|system] [--authority-basis BASIS] [--json] Request fresh provider trust verification
+  ssiag provider installations <name> --tops-id UUID [--scope user|system] [--json] List exact SSIAG-owned provider installations
+  ssiag provider binding status <name> --tops-id UUID [--scope user|system] [--json] Read protected provider binding state
+  ssiag provider binding plan <name> --tops-id UUID --installation-id ID --expected-state-digest STATE --reason TEXT [--json] Prepare an exact provider binding plan
+  ssiag provider binding apply <name> --tops-id UUID --plan-digest DIGEST --expected-state-digest STATE [--json] Audit and apply an exact provider binding plan
+  ssiag provider binding apply-status <name> --tops-id UUID --operation-id UUID [--json] Read one provider binding attempt
+  ssiag provider binding recover <name> --tops-id UUID --expected-state-digest STATE --reason TEXT [--json] Recover the unique provider binding attempt
   ssiag doctor --tops-id UUID [--scope user|system] Verify local SSIAG availability
   ssiag grants lifecycle --tops-id UUID --subject-id ID [--profile-id ID] [--json] Generate exact caller-neutral lifecycle grant input
   ssiag policy status --tops-id UUID [--scope user|system] [--json] Read protected local policy metadata

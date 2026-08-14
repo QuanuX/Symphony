@@ -53,8 +53,9 @@ Enhanced identity assurance and governance interlocks are optional, caller-neutr
 - Administrative change uses separate proposal and permission-backed apply authority. Caller type is not an authorization input. The current foundation implements protected local policy status, proposal, audited apply, and recovery in addition to deny-by-default authorization decisions; none grants canonical knowledge apply authority.
 - Provider control and secret delivery are distinct channels. The v1 control process exchanges exactly one bounded request and one bounded response, and non-exportable operations remain inside the provider.
 - Each per-TOPS provider binding names one exact installed adapter and foundation identity. Absence is `unbound`; compatibility never means selecting the newest installed version.
+- Provider installation inventory is bounded observation rather than selection authority. Protected binding changes use exact digests, plan/apply separation, compare-and-swap, a durably preserved safe audit identity, idempotent STAV evidence, state-before-committed ordering, and deterministic crash recovery through `prepared`, `candidate_verified`, `audited`, and `committed` attempt stages.
 - The first operational macOS Keychain topology is per-user and session-aware; system/headless use never falls back implicitly.
 - The default administrative authority session begins at successful login/authentication and ends at logout, expiry, revocation, or required re-authentication. qxctl may configure another supported lifecycle policy but cannot extend authority past those boundaries.
 - Remote SSIAG access is not part of local v1.
 
-These choices are architecturally ratified but not operationally enabled merely by this document. Exact schemas, platform policy, implementation, and negative-test gates remain mandatory.
+The current implementation status is stated by the SSIAG manifest and module evidence; this intent document alone enables no remaining operational capability. Exact schemas, platform policy, implementation, and negative-test gates remain mandatory.

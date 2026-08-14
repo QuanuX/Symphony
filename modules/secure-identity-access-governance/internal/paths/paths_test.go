@@ -35,6 +35,9 @@ func TestUserLayoutsSeparateInstallAndTOPSState(t *testing.T) {
 	if instance.Socket != filepath.Join(runtime, "symphony", testTOPSID, "ssiag", "ssiag.sock") {
 		t.Fatalf("unexpected socket path %q", instance.Socket)
 	}
+	if instance.ProviderBindingDir != filepath.Join(state, "symphony", testTOPSID, "ssiag", "provider-bindings") {
+		t.Fatalf("unexpected provider binding path %q", instance.ProviderBindingDir)
+	}
 }
 
 func TestFallbackRuntimeRemainsTOPSIsolated(t *testing.T) {

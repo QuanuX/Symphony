@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:provider-binding-attempt:v1",
+  "title": "SSIAG durable provider binding attempt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "operation_id", "tops_id", "scope", "provider_name", "provider_kind", "plan", "audit_identity", "stage", "prepared_at", "candidate_verified_at", "audited_at", "committed_at", "receipt_digest", "target_state", "operational_access_enabled", "provider_operations_enabled", "secret_channel_enabled", "attempt_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.provider-binding-attempt.v1"},
+    "operation_id": {"$ref": "#/$defs/uuid"},
+    "tops_id": {"$ref": "#/$defs/uuid"},
+    "scope": {"enum": ["user", "system"]},
+    "provider_name": {"$ref": "#/$defs/provider_name"},
+    "provider_kind": {"$ref": "#/$defs/token"},
+    "plan": {"$ref": "urn:symphony:ssiag:provider-binding-plan:v1"},
+    "audit_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor_id", "actor_kind", "authentication_method"],
+      "properties": {
+        "actor_id": {"$ref": "#/$defs/audit_token"},
+        "actor_kind": {"$ref": "#/$defs/audit_token"},
+        "authentication_method": {"$ref": "#/$defs/audit_token"}
+      }
+    },
+    "stage": {"enum": ["prepared", "candidate_verified", "audited", "committed"]},
+    "prepared_at": {"$ref": "#/$defs/timestamp"},
+    "candidate_verified_at": {"$ref": "#/$defs/nullable_timestamp"},
+    "audited_at": {"$ref": "#/$defs/nullable_timestamp"},
+    "committed_at": {"$ref": "#/$defs/nullable_timestamp"},
+    "receipt_digest": {"$ref": "#/$defs/digest_or_not_applicable"},
+    "target_state": {"$ref": "urn:symphony:ssiag:provider-binding-state:v1"},
+    "operational_access_enabled": {"const": false},
+    "provider_operations_enabled": {"const": false},
+    "secret_channel_enabled": {"const": false},
+    "attempt_digest": {"$ref": "#/$defs/digest"}
+  },
+  "allOf": [
+    {"if": {"properties": {"stage": {"const": "prepared"}}, "required": ["stage"]}, "then": {"properties": {"candidate_verified_at": {"type": "null"}, "audited_at": {"type": "null"}, "committed_at": {"type": "null"}, "receipt_digest": {"const": "not_applicable"}}}},
+    {"if": {"properties": {"stage": {"const": "candidate_verified"}}, "required": ["stage"]}, "then": {"properties": {"candidate_verified_at": {"$ref": "#/$defs/timestamp"}, "audited_at": {"type": "null"}, "committed_at": {"type": "null"}, "receipt_digest": {"const": "not_applicable"}}}},
+    {"if": {"properties": {"stage": {"const": "audited"}}, "required": ["stage"]}, "then": {"properties": {"candidate_verified_at": {"$ref": "#/$defs/timestamp"}, "audited_at": {"$ref": "#/$defs/timestamp"}, "committed_at": {"type": "null"}, "receipt_digest": {"$ref": "#/$defs/digest"}}}},
+    {"if": {"properties": {"stage": {"const": "committed"}}, "required": ["stage"]}, "then": {"properties": {"candidate_verified_at": {"$ref": "#/$defs/timestamp"}, "audited_at": {"$ref": "#/$defs/timestamp"}, "committed_at": {"$ref": "#/$defs/timestamp"}}}},
+    {"if": {"properties": {"stage": {"const": "committed"}, "plan": {"properties": {"changed": {"const": true}}, "required": ["changed"]}}, "required": ["stage", "plan"]}, "then": {"properties": {"receipt_digest": {"$ref": "#/$defs/digest"}}}},
+    {"if": {"properties": {"stage": {"const": "committed"}, "plan": {"properties": {"changed": {"const": false}}, "required": ["changed"]}}, "required": ["stage", "plan"]}, "then": {"properties": {"receipt_digest": {"const": "not_applicable"}}}}
+  ],
+  "$defs": {
+    "uuid": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "audit_token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^(?!not_applicable$)[A-Za-z0-9._:-]+$"},
+    "provider_name": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9._-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "digest_or_not_applicable": {"oneOf": [{"const": "not_applicable"}, {"$ref": "#/$defs/digest"}]},
+    "timestamp": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"},
+    "nullable_timestamp": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/timestamp"}]}
+  }
+}

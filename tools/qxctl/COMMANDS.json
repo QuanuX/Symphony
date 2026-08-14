@@ -3135,6 +3135,234 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:ssiag.provider.binding.apply",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag provider binding apply \u003cprovider-name\u003e [--expected-state-digest VALUE] [--json] [--plan-digest VALUE] [--scope VALUE] [--tops-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.provider-binding-lifecycle",
+          "interaction": "apply"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.provider.binding.apply"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "ssiag",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.ssiag.provider-binding-apply-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.ssiag.provider-binding-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.ssiag.provider-binding-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:ssiag.provider.binding.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:ssiag.provider.binding.apply-status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag provider binding apply-status \u003cprovider-name\u003e [--json] [--operation-id VALUE] [--scope VALUE] [--tops-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.provider-binding-lifecycle",
+          "interaction": "query"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.provider.binding.apply-status"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "ssiag",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.ssiag.provider-binding-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.ssiag.provider-binding-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:ssiag.provider.binding.plan",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag provider binding plan \u003cprovider-name\u003e [--expected-state-digest VALUE] [--installation-id VALUE] [--json] [--reason VALUE] [--scope VALUE] [--tops-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.provider-binding-lifecycle",
+          "interaction": "propose"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.provider.binding.plan"
+      ],
+      "mutability": "proposal_only",
+      "authority_mode": "ssiag",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.ssiag.provider-binding-plan-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.ssiag.provider-binding-plan.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.ssiag.provider-binding-plan.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:ssiag.provider.binding.recover",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag provider binding recover \u003cprovider-name\u003e [--expected-state-digest VALUE] [--json] [--reason VALUE] [--scope VALUE] [--tops-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.provider-binding-lifecycle",
+          "interaction": "recover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.provider.binding.recover"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "ssiag",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.ssiag.provider-binding-recovery-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.ssiag.provider-binding-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.ssiag.provider-binding-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:ssiag.provider.binding.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:ssiag.provider.binding.status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag provider binding status \u003cprovider-name\u003e [--json] [--scope VALUE] [--tops-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.provider-binding-lifecycle",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.provider.binding.observe"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.ssiag.provider-binding-status.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.ssiag.provider-binding-status.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:ssiag.provider.installations",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag provider installations \u003cprovider-name\u003e [--json] [--scope VALUE] [--tops-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.provider-binding-lifecycle",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.provider.installations.list"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.ssiag.provider-installation-inventory.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.ssiag.provider-installation-inventory.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:ssiag.provider.show",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -4602,5 +4830,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:c5ce07ee01b27209b131557000670c2af641b1e6fd47bb9946228aa52d5ec37a"
+  "registry_digest": "sha256:b59989aca18b21a90fee4a015e099defb367c8079b8ee59b59346c69a666b31d"
 }

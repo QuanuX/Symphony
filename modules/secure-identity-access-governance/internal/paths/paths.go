@@ -32,6 +32,7 @@ type InstanceLayout struct {
 	ConfigFile         string
 	ProviderTrustDir   string
 	StateDir           string
+	ProviderBindingDir string
 	RuntimeDir         string
 	Socket             string
 	EnrollmentManifest string
@@ -125,6 +126,7 @@ func ResolveInstance(scope Scope, topsID string) (InstanceLayout, error) {
 			ConfigFile:         filepath.Join(configDir, "config.json"),
 			ProviderTrustDir:   filepath.Join(configDir, "provider-trust"),
 			StateDir:           stateDir,
+			ProviderBindingDir: filepath.Join(stateDir, "provider-bindings"),
 			RuntimeDir:         runtimeDir,
 			Socket:             filepath.Join(runtimeDir, "ssiag.sock"),
 			EnrollmentManifest: filepath.Join(stateDir, "enrollment.json"),
@@ -140,6 +142,7 @@ func ResolveInstance(scope Scope, topsID string) (InstanceLayout, error) {
 			ConfigFile:         filepath.Join(configDir, "config.json"),
 			ProviderTrustDir:   filepath.Join(configDir, "provider-trust"),
 			StateDir:           stateDir,
+			ProviderBindingDir: filepath.Join(stateDir, "provider-bindings"),
 			RuntimeDir:         runtimeDir,
 			Socket:             filepath.Join(runtimeDir, "ssiag.sock"),
 			EnrollmentManifest: filepath.Join(stateDir, "enrollment.json"),
@@ -184,7 +187,7 @@ func cleanInstall(layout InstallLayout) (InstallLayout, error) {
 }
 
 func cleanInstance(layout InstanceLayout) (InstanceLayout, error) {
-	values := []*string{&layout.ConfigDir, &layout.ConfigFile, &layout.ProviderTrustDir, &layout.StateDir, &layout.RuntimeDir, &layout.Socket, &layout.EnrollmentManifest}
+	values := []*string{&layout.ConfigDir, &layout.ConfigFile, &layout.ProviderTrustDir, &layout.StateDir, &layout.ProviderBindingDir, &layout.RuntimeDir, &layout.Socket, &layout.EnrollmentManifest}
 	for _, value := range values {
 		if err := cleanAbsolute(value); err != nil {
 			return InstanceLayout{}, err
