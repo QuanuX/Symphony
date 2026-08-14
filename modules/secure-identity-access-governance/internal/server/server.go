@@ -1,6 +1,7 @@
 package server
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -10,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"syscall"
 	"time"
 
@@ -30,6 +32,7 @@ const (
 	shutdownTimeout              = 5 * time.Second
 	activeSocketProbeTimeout     = 250 * time.Millisecond
 	maxAuthorizationRequestBytes = 64 << 10
+	maxProviderTrustRequestBytes = 64 << 10
 	maxPolicyRequestBytes        = 1 << 20
 )
 
@@ -38,13 +41,14 @@ type auditSink interface {
 }
 
 type Server struct {
-	config   config.Config
-	registry *provider.Registry
-	resolver peerauth.Resolver
-	policy   *policy.Engine
-	admin    *policyadmin.Manager
-	audit    auditSink
-	now      func() time.Time
+	config    config.Config
+	registry  *provider.Registry
+	resolver  peerauth.Resolver
+	policy    *policy.Engine
+	admin     *policyadmin.Manager
+	providers *provider.TrustManager
+	audit     auditSink
+	now       func() time.Time
 }
 
 func New(cfg config.Config, registry *provider.Registry) (*Server, error) {
@@ -60,6 +64,18 @@ func NewWithPolicyAdministration(cfg config.Config, registry *provider.Registry,
 		return nil, fmt.Errorf("policy administration manager is required")
 	}
 	return newServer(cfg, registry, audit, admin)
+}
+
+func NewWithPolicyAdministrationAndProviderTrust(cfg config.Config, registry *provider.Registry, audit auditSink, admin *policyadmin.Manager, providers *provider.TrustManager) (*Server, error) {
+	if admin == nil || providers == nil {
+		return nil, fmt.Errorf("policy administration and provider trust managers are required")
+	}
+	result, err := newServer(cfg, registry, audit, admin)
+	if err != nil {
+		return nil, err
+	}
+	result.providers = providers
+	return result, nil
 }
 
 func newServer(cfg config.Config, registry *provider.Registry, audit auditSink, admin *policyadmin.Manager) (*Server, error) {
@@ -115,7 +131,102 @@ func (s *Server) Handler() http.Handler {
 		mux.HandleFunc("/v1/policy/apply", s.handlePolicyApply)
 		mux.HandleFunc("/v1/policy/recover", s.handlePolicyRecover)
 	}
+	if s.providers != nil {
+		mux.HandleFunc("/v1/provider-trust/", s.handleProviderTrust)
+	}
 	return s.requireAuthenticatedPeer(mux)
+}
+
+type providerTrustVerificationRequest struct {
+	Protocol       string `json:"protocol"`
+	RequestID      string `json:"request_id"`
+	CorrelationID  string `json:"correlation_id"`
+	AuthorityBasis string `json:"authority_basis"`
+}
+
+func (s *Server) handleProviderTrust(writer http.ResponseWriter, request *http.Request) {
+	remainder := strings.TrimPrefix(request.URL.Path, "/v1/provider-trust/")
+	verify := strings.HasSuffix(remainder, "/verifications")
+	if verify {
+		remainder = strings.TrimSuffix(remainder, "/verifications")
+	}
+	if remainder == "" || strings.Contains(remainder, "/") {
+		writeError(writer, http.StatusBadRequest, "provider.request_invalid", "provider name is invalid")
+		return
+	}
+	if !verify {
+		if request.Method != http.MethodGet {
+			writeError(writer, http.StatusMethodNotAllowed, "request.method_not_allowed", "method not allowed")
+			return
+		}
+		result, found := s.providers.Show(remainder)
+		if !found {
+			writeError(writer, http.StatusNotFound, "provider.not_found", "provider is not declared")
+			return
+		}
+		writeJSON(writer, http.StatusOK, result)
+		return
+	}
+	if request.Method != http.MethodPost {
+		writeError(writer, http.StatusMethodNotAllowed, "request.method_not_allowed", "method not allowed")
+		return
+	}
+	var candidate providerTrustVerificationRequest
+	request.Body = http.MaxBytesReader(writer, request.Body, maxProviderTrustRequestBytes)
+	if !decodeBoundedJSONExact(writer, request, &candidate, []string{"protocol", "request_id", "correlation_id", "authority_basis"}) {
+		return
+	}
+	if candidate.Protocol != "symphony.ssiag.provider-trust-verification-request.v1" ||
+		!validCanonicalUUID(candidate.RequestID) || !validCanonicalUUID(candidate.CorrelationID) ||
+		(candidate.AuthorityBasis != "host_owner" && candidate.AuthorityBasis != "granted_permission") {
+		writeError(writer, http.StatusBadRequest, "provider.request_invalid", "provider trust verification request is invalid")
+		return
+	}
+	resource := "symphony.ssiag.provider:" + s.config.TOPS.ID + ":" + remainder
+	if _, err := s.permissionedAdministrator(request.Context(), candidate.AuthorityBasis, "symphony.ssiag.provider.trust.verify", resource); err != nil {
+		writeError(writer, http.StatusForbidden, "provider.permission_denied", "target-host authority or an exact SSIAG permission is required")
+		return
+	}
+	result, found := s.providers.Verify(request.Context(), remainder, candidate.RequestID, candidate.CorrelationID)
+	if !found {
+		writeError(writer, http.StatusNotFound, "provider.not_found", "provider is not declared")
+		return
+	}
+	writeJSON(writer, http.StatusOK, result)
+}
+
+func decodeBoundedJSONExact(writer http.ResponseWriter, request *http.Request, target any, required []string) bool {
+	payload, err := io.ReadAll(io.LimitReader(request.Body, maxProviderTrustRequestBytes+1))
+	if err != nil || len(payload) == 0 || len(payload) > maxProviderTrustRequestBytes || provider.ValidateStrictJSONObject(payload, required) != nil {
+		writeError(writer, http.StatusBadRequest, "request.invalid_json", "request is not valid bounded strict JSON")
+		return false
+	}
+	decoder := json.NewDecoder(bytes.NewReader(payload))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(target); err != nil {
+		writeError(writer, http.StatusBadRequest, "request.invalid_json", "request is not valid bounded strict JSON")
+		return false
+	}
+	return true
+}
+
+func validCanonicalUUID(value string) bool {
+	if len(value) != 36 || strings.ToLower(value) != value || value == "00000000-0000-0000-0000-000000000000" {
+		return false
+	}
+	for index, character := range value {
+		switch index {
+		case 8, 13, 18, 23:
+			if character != '-' {
+				return false
+			}
+		default:
+			if !((character >= '0' && character <= '9') || (character >= 'a' && character <= 'f')) {
+				return false
+			}
+		}
+	}
+	return value[14] >= '1' && value[14] <= '8' && strings.Contains("89ab", value[19:20])
 }
 
 func (s *Server) handlePolicyStatus(writer http.ResponseWriter, request *http.Request) {
@@ -256,6 +367,10 @@ func (s *Server) handlePolicyRecover(writer http.ResponseWriter, request *http.R
 }
 
 func (s *Server) policyAdministrator(ctx context.Context, basis, operation string) (identity.Subject, error) {
+	return s.permissionedAdministrator(ctx, basis, operation, "symphony.ssiag.policy:"+s.config.TOPS.ID)
+}
+
+func (s *Server) permissionedAdministrator(ctx context.Context, basis, operation, resource string) (identity.Subject, error) {
 	peer, err := peerauth.PeerFromContext(ctx)
 	if err != nil {
 		return identity.Subject{}, err
@@ -276,7 +391,7 @@ func (s *Server) policyAdministrator(ctx context.Context, basis, operation strin
 	decision := s.policy.Evaluate(ctx, peer.Subject, model.AuthorizationRequest{
 		Schema:    "symphony.ssiag.authorization-request.v1",
 		RequestID: "ssiag-policy-admin-check", CorrelationID: "ssiag-policy-admin-check",
-		Operation: operation, Resource: "symphony.ssiag.policy:" + s.config.TOPS.ID,
+		Operation: operation, Resource: resource,
 		Audience: "ssiag", Scope: "tops:" + s.config.TOPS.ID,
 		RequestedAt: now, RequestedExpiresAt: now.Add(time.Minute),
 	})
@@ -447,9 +562,11 @@ func (s *Server) Run(ctx context.Context) error {
 		},
 		ReadHeaderTimeout: 3 * time.Second,
 		ReadTimeout:       5 * time.Second,
-		WriteTimeout:      5 * time.Second,
-		IdleTimeout:       30 * time.Second,
-		MaxHeaderBytes:    maxHeaderBytes,
+		// A valid provider may consume the full five-second subprocess budget.
+		// Retain a bounded two-second margin to encode and return its result.
+		WriteTimeout:   7 * time.Second,
+		IdleTimeout:    30 * time.Second,
+		MaxHeaderBytes: maxHeaderBytes,
 	}
 
 	done := make(chan error, 1)

@@ -23,6 +23,21 @@
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     },
     {
+      "adapter_id": "adapter:symphony:ssiag.macos-keychain-provider.v1",
+      "command_protocol": "symphony.ssiag.provider.control.v1",
+      "component": "ssiag",
+      "entry_point_id": "ssiag.macos-keychain-provider",
+      "format_version": 1,
+      "implementation_path": "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport",
+      "operation_ids": [
+        "engop:symphony:ssiag.provider.metadata-capabilities",
+        "engop:symphony:ssiag.provider.metadata-handshake",
+        "engop:symphony:ssiag.provider.metadata-status"
+      ],
+      "owner_contract": "modules/ssiag-provider-macos-keychain/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
       "adapter_id": "adapter:symphony:stav.foundation-lifecycle.v1",
       "command_protocol": "symphony.foundation.lifecycle-command.v1",
       "component": "stav",
@@ -431,10 +446,145 @@
       "statement": "Every executable qxctl Cobra leaf has one stable qxcmd identity and exact reviewed grammar, feature and interaction binding, backend-operation binding, mutability, authority, target-scope, noninteractive, structured-result, and recovery metadata; the checked-in expected registry is byte-semantically equal to the executable command tree.",
       "status": "active",
       "title": "qxctl command registry parity"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:ssiag.macos-keychain-provider.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestProviderControlChannelRejectsSecretAndExtraOutput"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/provider/launcher_test.go"
+        },
+        {
+          "cases": [
+            "TestProviderAuditRejectsSecretShapedSafeReference"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/stavproducer/producer_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:ssiag.provider-control-secret-noninterference",
+      "ipc_boundary": true,
+      "owner_component": "ssiag-provider-boundary",
+      "owner_contract": "knowledge/ssiag/SPEC.md",
+      "producer_implementations": [
+        "modules/secure-identity-access-governance/internal/provider/launcher.go",
+        "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/Protocol.swift",
+        "modules/ssiag-provider-macos-keychain/Sources/SymphonySSIAGMacOSKeychain/main.swift"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestProviderControlRequestContainsOnlySafeMetadata"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/provider/launcher_test.go"
+        },
+        {
+          "cases": [
+            "credentialOperationsRemainDisabled",
+            "unknownAndSecretShapedFieldsFailClosed"
+          ],
+          "path": "modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/ProtocolTests.swift"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "TestProviderMetadataRealProcessBoundary"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/provider/launcher_test.go"
+        },
+        {
+          "cases": [
+            "provider_trust_receipt_backed_go_swift_integration"
+          ],
+          "path": "modules/secure-identity-access-governance/tests/provider_trust_integration_darwin.sh"
+        },
+        {
+          "cases": [
+            "realProcessOneShotHandshakeHonorsBoundary"
+          ],
+          "path": "modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/ProtocolTests.swift"
+        }
+      ],
+      "statement": "Provider metadata and control framing carries only bounded safe references, operation metadata, descriptor truth, and safe reason codes. Secret bytes, proofs, provider payloads, and secret-shaped diagnostics never enter JSON control, standard output, standard error, arguments, environment variables, qxctl, STAV, or general diagnostics; the trust-only metadata slice creates no secret-bearing channel and keeps operational access disabled.",
+      "status": "active",
+      "title": "Provider control and secret channels do not interfere"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:ssiag.macos-keychain-provider.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestProviderLauncherRejectsDescriptorIdentityAndProtocolDrift"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/provider/launcher_test.go"
+        },
+        {
+          "cases": [
+            "untrustedInvokerFailsClosed"
+          ],
+          "path": "modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/ProtocolTests.swift"
+        }
+      ],
+      "invariant_id": "invariant:symphony:ssiag.provider-executable-provenance",
+      "ipc_boundary": true,
+      "owner_component": "ssiag-provider-boundary",
+      "owner_contract": "knowledge/ssiag/SPEC.md",
+      "producer_implementations": [
+        "modules/secure-identity-access-governance/internal/provider/launcher.go",
+        "modules/secure-identity-access-governance/internal/provider/receipt.go",
+        "modules/secure-identity-access-governance/internal/provider/trust.go",
+        "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/FoundationTrust.swift",
+        "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/Protocol.swift",
+        "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/ReceiptV2.swift",
+        "modules/ssiag-provider-macos-keychain/Sources/SymphonySSIAGMacOSKeychain/main.swift"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestProviderTrustVerificationBindsReceiptProcessAndMutualHandshake"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/provider/trust_test.go"
+        },
+        {
+          "cases": [
+            "metadataHandshakeIsBoundAndNonOperational"
+          ],
+          "path": "modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/ProtocolTests.swift"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "TestProviderMetadataRealProcessBoundary"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/provider/launcher_test.go"
+        },
+        {
+          "cases": [
+            "provider_trust_receipt_backed_go_swift_integration"
+          ],
+          "path": "modules/secure-identity-access-governance/tests/provider_trust_integration_darwin.sh"
+        },
+        {
+          "cases": [
+            "realProcessOneShotHandshakeHonorsBoundary"
+          ],
+          "path": "modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/ProtocolTests.swift"
+        }
+      ],
+      "statement": "Before any provider response is accepted, SSIAG selects one exact receipt-v2 entry point and verifies its allowlisted path, regular-file identity, ownership, mode, bytes, platform, protocol, version, and metadata capability; the adapter independently verifies the invoking SSIAG executable under the ratified path, ownership, receipt, and signing policy. Drift, ambiguity, replacement, incompatibility, or failed mutual trust reports unavailable without fallback or operational access.",
+      "status": "active",
+      "title": "Provider executables have mutual exact provenance"
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v1",
-  "registry_digest": "sha256:69c53a576f8fc62a7e09b0b258e2efcb484d7aa19168b66ee16d56e3dcd00d80",
+  "registry_digest": "sha256:261a69f9b2da71de88359e75ca61042811f78c4573551b155adbf32b4fb125d8",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

@@ -69,7 +69,7 @@ Draft threat model for the scaffold and planned provider phases. It uses assets,
 - persistent no-follow socket lifecycle lock acquired after service-identity verification;
 - conservative stale-socket proof and lock-last shutdown cleanup;
 
-Socket permissions and ownership alone are not endpoint authentication; the post-dial kernel credential check is authoritative. Exact policy decisions, protected local policy administration, and noncanonical knowledge-session coordination are implemented. Canonical mutation and provider operations remain disabled pending their separate replay/binding, adapter-trust, safeguard, and apply gates rather than endpoint-authentication review.
+Socket permissions and ownership alone are not endpoint authentication; the post-dial kernel credential check is authoritative. Exact policy decisions, protected local policy administration, noncanonical knowledge-session coordination, and metadata-only provider mutual trust are implemented. Canonical mutation and operational provider operations remain disabled pending their separate replay/binding, signing-policy, safeguard, Keychain, secret-channel, and apply gates rather than endpoint-authentication review.
 
 ### Policy State Replacement or Interrupted Apply
 **Threat:** A caller races expected state, tampers with an overlay, exploits a symlink, replays another subject's proposal, or crashes the service between audit and commit.
@@ -195,11 +195,10 @@ STAV v1 detects tampering but does not provide non-repudiation. No caller, qxctl
 **Controls:**
 - server timeouts;
 - request and response size limits;
-- concurrency quotas per subject/provider;
-- provider circuit breakers;
-- interactive prompt rate limits;
-- bounded queues;
+- the metadata-only trust verifier admits at most four provider processes globally and one per provider, shedding excess work immediately with a safe `busy` result rather than creating an unbounded queue;
 - health separates SSIAG liveness from provider readiness.
+
+Per-subject operational quotas, circuit breakers, interactive prompt rate limits, and any bounded waiting queue remain requirements for the later operational-provider gate. They are not claimed by the present metadata-only runtime.
 
 ### Unsafe Uninstall or Purge
 **Threat:** Uninstall deletes unrelated files or silently destroys configuration needed for recovery.
@@ -218,10 +217,14 @@ STAV v1 detects tampering but does not provide non-repudiation. No caller, qxctl
 **Controls:**
 - independent executable and manifest digest;
 - exact allowlisted operations and strict schemas;
-- bounded messages, timeouts, cancellation, and sanitized environment;
+- one request and response per process, 65,536-byte per-direction bounds, five-second default and thirty-second maximum timeout, invocation-context cancellation, child termination/reaping, and sanitized environment;
+- one externally administered exact-version trust declaration per provider in the protected per-TOPS configuration tree; absence is `unbound`, and no installed-version scan or newest selection grants authority;
+- adapter-side independent observation of the parent executable and installed receipt/signature; caller claims alone cannot satisfy mutual trust;
 - reject extra output and protocol-major mismatch;
 - no secret-valued arguments or environment variables;
-- operational access remains disabled until the ratified mutual executable trust and channel-separation architecture is fully specified, implemented, and verified.
+- require `handshake.foundation_trust.verified` and exact evidence equality before treating a successful response as mutual trust;
+- treat the Phase 9 inherited descriptor as synthetic and non-operational;
+- the exact metadata-only mutual executable-trust and control-channel runtime is implemented and verified; operational access remains disabled until the later Keychain, signing-policy, safeguard, and secret-delivery gates pass.
 
 ## Provider-Specific Concerns
 
@@ -256,9 +259,9 @@ STAV v1 detects tampering but does not provide non-repudiation. No caller, qxctl
 - Excessive provider SDK permissions.
 
 ## Implemented and Unimplemented Controls
-The module does not expose credential mutation/use endpoints. Kernel peer authentication is implemented on accepted Darwin/Linux connections, including exact UID/GID subject resolution and fail-closed ambiguous mapping. SSIAG verifies its configured process identity before runtime mutation; qxctl and the self-client load scope-exact trust and verify the exact connected endpoint before sending HTTP bytes. Exact-grant deny-by-default policy evaluation issues only short-lived non-transferable capability evidence, binds it to the complete request and configuration, records that caller class was not used, and refuses to release any decision unless the safe STAV append commits. qxctl and the coordinator independently reject target drift, expiry, a false neutrality assertion, a canonical-apply claim, or a capability-binding mismatch. Per-TOPS launchd/systemd definitions, lifecycle provisioning, exact owner validation, socket lifecycle locking, and direct-run-versus-supervised enforcement are implemented. Provider mutual executable trust, per-user Keychain access, control/secret channel separation, safeguard administration, and proposal/canonical-apply mutation remain ratified but unimplemented controls.
+The module does not expose credential mutation/use endpoints. Kernel peer authentication is implemented on accepted Darwin/Linux connections, including exact UID/GID subject resolution and fail-closed ambiguous mapping. SSIAG verifies its configured process identity before runtime mutation; qxctl and the self-client load scope-exact trust and verify the exact connected endpoint before sending HTTP bytes. Exact-grant deny-by-default policy evaluation issues only short-lived non-transferable capability evidence, binds it to the complete request and configuration, records that caller class was not used, and refuses to release any decision unless the safe STAV append commits. qxctl and the coordinator independently reject target drift, expiry, a false neutrality assertion, a canonical-apply claim, or a capability-binding mismatch. Per-TOPS launchd/systemd definitions, lifecycle provisioning, exact owner validation, socket lifecycle locking, and direct-run-versus-supervised enforcement are implemented. The provider metadata mutual-trust runtime verifies exact protected declarations, package ancestry, receipt identity, executable ownership/digest, private staged bytes, bounded process behavior, response binding, and adapter-side foundation evidence. Per-user Keychain access, operational secret channels, safeguard administration, and canonical-apply mutation remain ratified but unimplemented controls.
 
-Configured production caller subjects, distinct-account integration evidence, signing requirements, Keychain item policy, secret buffers, lease replay, and provider channel framing remain release blockers for those later capabilities, not accepted residual risks.
+Configured production caller subjects, distinct-account integration evidence, production signing identities, Keychain item policy, secret buffers, lease replay, and operational secret-channel framing remain release blockers for those later capabilities, not accepted residual risks.
 
 ## Security Test Gates
 - Verify no secret-shaped fixture value appears in stdout, stderr, JSON, logs, or audit output.

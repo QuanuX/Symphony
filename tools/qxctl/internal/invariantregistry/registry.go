@@ -173,7 +173,7 @@ func Load(repositoryRoot string) (Registry, error) {
 	digest := sha256.Sum256(canonical)
 	expected := "sha256:" + hex.EncodeToString(digest[:])
 	if registry.RegistryDigest != expected {
-		return Registry{}, fmt.Errorf("invariant ownership registry digest mismatch")
+		return Registry{}, fmt.Errorf("invariant ownership registry digest mismatch: expected %s, observed %s", expected, registry.RegistryDigest)
 	}
 	return registry, nil
 }
@@ -298,17 +298,38 @@ func validate(registry Registry) error {
 }
 
 func validateAdapter(adapter Adapter) error {
-	if adapter.FormatVersion != 1 || adapter.CommandProtocol != "symphony.foundation.lifecycle-command.v1" ||
+	if adapter.FormatVersion != 1 ||
+		(adapter.CommandProtocol != "symphony.foundation.lifecycle-command.v1" && adapter.CommandProtocol != "symphony.ssiag.provider.control.v1") ||
 		adapter.VersionPolicy != "exact_receipt_v2_entry_point_and_capability_compatible" ||
 		len(adapter.OperationIDs) < 1 || len(adapter.OperationIDs) > maxOperations ||
 		!safePath(adapter.OwnerContract) || !safePath(adapter.ImplementationPath) {
 		return fmt.Errorf("shape is invalid")
 	}
-	if adapter.Component != "ssiag" && adapter.Component != "stav" ||
-		adapter.EntryPointID != adapter.Component+".foundation-lifecycle" {
+	knownPair := adapter.Component == "ssiag" && adapter.EntryPointID == "ssiag.foundation-lifecycle" && adapter.CommandProtocol == "symphony.foundation.lifecycle-command.v1" ||
+		adapter.Component == "ssiag" && adapter.EntryPointID == "ssiag.macos-keychain-provider" && adapter.CommandProtocol == "symphony.ssiag.provider.control.v1" ||
+		adapter.Component == "stav" && adapter.EntryPointID == "stav.foundation-lifecycle" && adapter.CommandProtocol == "symphony.foundation.lifecycle-command.v1"
+	if !knownPair || adapter.AdapterID != "adapter:symphony:"+adapter.EntryPointID+".v1" {
 		return fmt.Errorf("component or entry point is invalid")
 	}
-	return validateSortedUnique(adapter.OperationIDs, operationPattern, "operation IDs")
+	if err := validateSortedUnique(adapter.OperationIDs, operationPattern, "operation IDs"); err != nil {
+		return err
+	}
+	if adapter.AdapterID == "adapter:symphony:ssiag.macos-keychain-provider.v1" {
+		expected := []string{
+			"engop:symphony:ssiag.provider.metadata-capabilities",
+			"engop:symphony:ssiag.provider.metadata-handshake",
+			"engop:symphony:ssiag.provider.metadata-status",
+		}
+		if len(adapter.OperationIDs) != len(expected) {
+			return fmt.Errorf("operation IDs do not match the adapter-owned operation set")
+		}
+		for index := range expected {
+			if adapter.OperationIDs[index] != expected[index] {
+				return fmt.Errorf("operation IDs do not match the adapter-owned operation set")
+			}
+		}
+	}
+	return nil
 }
 
 func validateInvariant(invariant Invariant, adapterIDs map[string]struct{}) error {

@@ -105,3 +105,52 @@ func TestSubmitFailsClosedOnUnknownOutcomeOrRejection(t *testing.T) {
 		t.Fatalf("unexpected rejection error: %v", err)
 	}
 }
+
+func TestProviderFailureVocabularyIsClosedAndSafe(t *testing.T) {
+	for _, test := range []struct {
+		outcome string
+		reason  string
+	}{
+		{outcome: "failed", reason: "symphony.ssiag.provider.failed"},
+		{outcome: "unavailable", reason: "symphony.ssiag.provider.unavailable"},
+	} {
+		t.Run(test.outcome, func(t *testing.T) {
+			transport := &fakeTransport{}
+			producer, err := New(testTOPSID, transport)
+			if err != nil {
+				t.Fatal(err)
+			}
+			record := validRecord(ProviderOperation, test.outcome)
+			record.Target = stavprotocol.SafeReference{ID: "macos-keychain", Kind: "symphony.ssiag.provider"}
+			if _, err := producer.Submit(context.Background(), record); err != nil {
+				t.Fatal(err)
+			}
+			candidate := transport.request.Candidate
+			if candidate.Operation.EventClass != "symphony.ssiag.provider.operation" ||
+				candidate.Operation.OperationID != "symphony.ssiag.provider.execute" ||
+				candidate.Result.IntentID != "symphony.ssiag.provider.execute" ||
+				candidate.Result.ReasonCode != test.reason {
+				t.Fatalf("provider failure vocabulary drifted: %#v", candidate)
+			}
+		})
+	}
+}
+
+func TestProviderAuditRejectsSecretShapedSafeReference(t *testing.T) {
+	transport := &fakeTransport{}
+	producer, err := New(testTOPSID, transport)
+	if err != nil {
+		t.Fatal(err)
+	}
+	record := validRecord(ProviderOperation, "failed")
+	record.Target = stavprotocol.SafeReference{
+		ID:   "token=forbidden-secret-value",
+		Kind: "symphony.ssiag.provider",
+	}
+	if _, err := producer.Submit(context.Background(), record); err == nil || !strings.Contains(err.Error(), "invalid safe record") {
+		t.Fatalf("secret-shaped provider reference was accepted: %v", err)
+	}
+	if transport.request.Candidate != nil {
+		t.Fatal("invalid provider reference reached the STAV transport")
+	}
+}

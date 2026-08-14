@@ -28,6 +28,8 @@ Commands:
   validate warning status|list|show|sync|accept|reopen|supersede|mute|unmute --tops-id UUID [...] Administer actionable warning lifecycle state
   ssiag status --tops-id UUID [--scope user|system] [--json] Read safe SSIAG status
   ssiag providers --tops-id UUID [--scope user|system] [--json] List safe provider metadata
+  ssiag provider show <name> --tops-id UUID [--scope user|system] [--json] Read safe provider trust evidence
+  ssiag provider verify <name> --tops-id UUID [--scope user|system] [--authority-basis BASIS] [--json] Request fresh provider trust verification
   ssiag doctor --tops-id UUID [--scope user|system] Verify local SSIAG availability
   ssiag grants lifecycle --tops-id UUID --subject-id ID [--profile-id ID] [--json] Generate exact caller-neutral lifecycle grant input
   ssiag policy status --tops-id UUID [--scope user|system] [--json] Read protected local policy metadata

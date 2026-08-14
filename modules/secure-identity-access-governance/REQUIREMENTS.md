@@ -69,6 +69,9 @@ Architect-ratified architecture with phased implementation requirements. “Must
 - **SSIAG-F-047**: Local policy apply must leave enrolled configuration immutable and store an isolated per-TOPS overlay with generation, prior/current/config/state digests, and exact UTC time.
 - **SSIAG-F-048**: Policy apply must durably prepare before audit, require committed idempotent STAV evidence before state commit, atomically replace state, and activate one consistent policy view.
 - **SSIAG-F-049**: Policy recovery must require an exact operation plus attempt digest or explicit unique discovery, reject divergence, and roll prepared/audited evidence forward without bypassing STAV.
+- **SSIAG-F-050**: Each TOPS/provider pair may bind at most one exact adapter and foundation version through `provider-trust/<provider_name>.json`; absent binding state is `unbound`.
+- **SSIAG-F-051**: qxctl provider trust `show` and `verify` must consume only the closed request/result contracts and must not mutate a binding, invoke a provider operation, or enable operational access.
+- **SSIAG-F-052**: Side-by-side provider majors and versions may coexist, but selection must use an exact protected binding; filesystem order, semantic newest, and fallback selection are prohibited.
 
 ### Credential Use
 - **SSIAG-F-040**: Credential references must be opaque outside the SSIAG/provider boundary.
@@ -99,6 +102,14 @@ Architect-ratified architecture with phased implementation requirements. “Must
 - **SSIAG-S-018**: The macOS adapter must authenticate the invoking SSIAG executable under the ratified path, ownership, and code-signing policy before operational access.
 - **SSIAG-S-019**: Policy state, attempts, and locks must be owner-controlled, no-follow, bounded, fsynced, digest-validated, and symlink/tamper resistant.
 - **SSIAG-S-020**: Policy bodies may traverse qxctl only as explicit bounded local administration input or proposal; policy status, logs, and STAV must contain digests and safe references only.
+- **SSIAG-S-021**: Provider v1 must accept exactly one strict control request and emit exactly one strict control response per process; each direction is limited to 65,536 bytes.
+- **SSIAG-S-022**: Every provider control exchange must bind the exact request, correlation, TOPS, provider, adapter, operation, deadline, and invoking-foundation evidence in both directions.
+- **SSIAG-S-023**: The adapter must independently observe its parent executable and installed receipt/signature. Caller-supplied path, digest, or signing claims are comparison inputs and never sufficient proof.
+- **SSIAG-S-024**: A successful control outcome must not be treated as mutual trust unless `handshake.foundation_trust.verified` is true and all path, installation/executable digest, and signing evidence matches the protected binding and request.
+- **SSIAG-S-025**: Provider capabilities and trust checks must be explicit, sorted, unique arrays with at most 128 members.
+- **SSIAG-S-026**: The default provider invocation timeout is five seconds and no v1 request may exceed thirty seconds. Context cancellation must close pipes, terminate the child, and wait for cleanup.
+- **SSIAG-S-027**: Provider v1 has no persistent cancellation message or schema. Cancellation is process-lifecycle control because one invocation is one process and a hung child may not read another frame.
+- **SSIAG-S-028**: The Phase 9 one-shot inherited-descriptor contract is synthetic and non-operational; it must not be opened or used for secret delivery.
 
 ## Operational Requirements
 - **SSIAG-O-001**: Every provider must report declared, ready, degraded, locked, unavailable, or disabled status without revealing sensitive detail.
@@ -158,5 +169,5 @@ Architect-ratified architecture with phased implementation requirements. “Must
 1. Preserve implemented exact endpoint trust, launchd/systemd supervision, runtime ownership, restart bounds, direct-run policy, and distinct-identity gates.
 2. Preserve the implemented dedicated Go STAV append-authority boundary, canonical schemas, durability/recovery contract, exact peer grants, and closed SSIAG producer vocabulary.
 3. Freeze mutation proposal/apply schemas, replay/idempotency bounds, expiry/skew, and expected-state conflict behavior.
-4. Freeze provider mutual executable trust, signing requirements, secret-channel framing, memory handling, and crash-dump policy.
+4. Preserve the implemented provider mutual executable-trust, one-process metadata control, safe-error, trust-report, and synthetic non-operational channel contracts; separately freeze operational secret framing, memory handling, and crash-dump policy before enabling delivery.
 5. Define the macOS Keychain item namespace, item/operation catalog, access-control matrix, entitlements, notarization, and provider-owned provisioning experience.

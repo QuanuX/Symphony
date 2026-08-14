@@ -3,14 +3,18 @@ package ssiagclient
 import (
 	"bytes"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"runtime"
+	"sort"
 	"strings"
 	"time"
 )
@@ -46,6 +50,99 @@ type ProviderDescriptor struct {
 type ProvidersResponse struct {
 	Schema    string               `json:"schema"`
 	Providers []ProviderDescriptor `json:"providers"`
+}
+
+type ProviderTrustVerificationRequest struct {
+	Protocol       string `json:"protocol"`
+	RequestID      string `json:"request_id"`
+	CorrelationID  string `json:"correlation_id"`
+	AuthorityBasis string `json:"authority_basis"`
+}
+
+type ProviderTrustCheck struct {
+	CheckID    string `json:"check_id"`
+	Outcome    string `json:"outcome"`
+	ReasonCode string `json:"reason_code"`
+}
+
+func (value *ProviderTrustCheck) UnmarshalJSON(data []byte) error {
+	type plain ProviderTrustCheck
+	if err := requireExactFields(data, []string{"check_id", "outcome", "reason_code"}); err != nil {
+		return err
+	}
+	return json.Unmarshal(data, (*plain)(value))
+}
+
+type ProviderMutualTrust struct {
+	FoundationVerifiedAdapter bool `json:"foundation_verified_adapter"`
+	AdapterVerifiedFoundation bool `json:"adapter_verified_foundation"`
+}
+
+func (value *ProviderMutualTrust) UnmarshalJSON(data []byte) error {
+	type plain ProviderMutualTrust
+	if err := requireExactFields(data, []string{"foundation_verified_adapter", "adapter_verified_foundation"}); err != nil {
+		return err
+	}
+	return json.Unmarshal(data, (*plain)(value))
+}
+
+type ProviderTrustResult struct {
+	Protocol                  string               `json:"protocol"`
+	Operation                 string               `json:"operation"`
+	TOPSID                    string               `json:"tops_id"`
+	ProviderName              string               `json:"provider_name"`
+	ProviderKind              string               `json:"provider_kind"`
+	DeclarationState          string               `json:"declaration_state"`
+	TrustState                string               `json:"trust_state"`
+	VerificationMode          string               `json:"verification_mode"`
+	AdapterIdentifier         string               `json:"adapter_identifier"`
+	AdapterVersion            string               `json:"adapter_version"`
+	ProviderProtocol          string               `json:"provider_protocol"`
+	Capabilities              []string             `json:"capabilities"`
+	Exportable                bool                 `json:"exportable"`
+	Interactive               bool                 `json:"interactive"`
+	InstallationDigest        string               `json:"installation_digest"`
+	ExecutableDigest          string               `json:"executable_digest"`
+	Checks                    []ProviderTrustCheck `json:"checks"`
+	MutualTrust               ProviderMutualTrust  `json:"mutual_trust"`
+	OperationalAccessEnabled  bool                 `json:"operational_access_enabled"`
+	ProviderOperationsEnabled bool                 `json:"provider_operations_enabled"`
+	SecretChannelEnabled      bool                 `json:"secret_channel_enabled"`
+	ObservedAt                string               `json:"observed_at"`
+	ReadOnly                  bool                 `json:"read_only"`
+	CallerClassUsed           bool                 `json:"caller_class_used"`
+	Canonical                 bool                 `json:"canonical"`
+	ResultDigest              string               `json:"result_digest"`
+}
+
+func (value *ProviderTrustResult) UnmarshalJSON(data []byte) error {
+	type plain ProviderTrustResult
+	if err := requireExactFields(data, []string{
+		"protocol", "operation", "tops_id", "provider_name", "provider_kind", "declaration_state",
+		"trust_state", "verification_mode", "adapter_identifier", "adapter_version", "provider_protocol",
+		"capabilities", "exportable", "interactive", "installation_digest", "executable_digest", "checks",
+		"mutual_trust", "operational_access_enabled", "provider_operations_enabled", "secret_channel_enabled",
+		"observed_at", "read_only", "caller_class_used", "canonical", "result_digest",
+	}); err != nil {
+		return err
+	}
+	return json.Unmarshal(data, (*plain)(value))
+}
+
+func requireExactFields(data []byte, required []string) error {
+	var fields map[string]json.RawMessage
+	if err := json.Unmarshal(data, &fields); err != nil {
+		return err
+	}
+	if fields == nil || len(fields) != len(required) {
+		return fmt.Errorf("object has an incomplete or unknown field set")
+	}
+	for _, field := range required {
+		if _, present := fields[field]; !present {
+			return fmt.Errorf("required field %q is absent", field)
+		}
+	}
+	return nil
 }
 
 type AuthorizationRequest struct {
@@ -504,6 +601,50 @@ func (c *Client) Providers(ctx context.Context) (ProvidersResponse, error) {
 	return result, nil
 }
 
+func ValidateProviderName(value string) error {
+	if !validProviderToken(value) || value == "not_applicable" {
+		return fmt.Errorf("provider name must be a token of at most 256 characters")
+	}
+	return nil
+}
+
+func (c *Client) ProviderTrust(ctx context.Context, providerName string) (ProviderTrustResult, error) {
+	var result ProviderTrustResult
+	if err := ValidateProviderName(providerName); err != nil {
+		return result, err
+	}
+	path := "/v1/provider-trust/" + url.PathEscape(providerName)
+	if err := c.get(ctx, path, &result); err != nil {
+		return result, err
+	}
+	if err := validateProviderTrustResult(result, "show", providerName); err != nil {
+		return ProviderTrustResult{}, err
+	}
+	return result, nil
+}
+
+func (c *Client) VerifyProviderTrust(
+	ctx context.Context, providerName string, request ProviderTrustVerificationRequest,
+) (ProviderTrustResult, error) {
+	var result ProviderTrustResult
+	if err := ValidateProviderName(providerName); err != nil {
+		return result, err
+	}
+	if request.Protocol != "symphony.ssiag.provider-trust-verification-request.v1" ||
+		!validUUID(request.RequestID) || !validUUID(request.CorrelationID) ||
+		(request.AuthorityBasis != "host_owner" && request.AuthorityBasis != "granted_permission") {
+		return result, fmt.Errorf("SSIAG provider trust verification request is invalid")
+	}
+	path := "/v1/provider-trust/" + url.PathEscape(providerName) + "/verifications"
+	if err := c.post(ctx, path, request, &result); err != nil {
+		return result, err
+	}
+	if err := validateProviderTrustResult(result, "verify", providerName); err != nil {
+		return ProviderTrustResult{}, err
+	}
+	return result, nil
+}
+
 func (c *Client) Authorize(ctx context.Context, request AuthorizationRequest) (AuthorizationDecision, error) {
 	var result AuthorizationDecision
 	if err := c.post(ctx, "/v1/authorization/decisions", request, &result); err != nil {
@@ -559,6 +700,147 @@ func (c *Client) RecoverPolicy(ctx context.Context, request PolicyRecoveryReques
 	return result, nil
 }
 
+func validateProviderTrustResult(result ProviderTrustResult, operation, providerName string) error {
+	if result.Protocol != "symphony.ssiag.provider-trust-result.v1" ||
+		result.Operation != operation || result.ProviderName != providerName ||
+		validateTOPSID(result.TOPSID) != nil || !validProviderToken(result.ProviderKind) ||
+		!oneOf(result.DeclarationState, "declared", "disabled") ||
+		!oneOf(result.TrustState, "disabled", "unbound", "unavailable", "unverified", "verified", "mismatch", "unsupported", "blocked") ||
+		!oneOf(result.VerificationMode, "snapshot", "fresh") ||
+		(operation == "show" && result.VerificationMode != "snapshot") ||
+		(operation == "verify" && result.VerificationMode != "fresh") ||
+		!validProviderValue(result.AdapterIdentifier) || !validProviderValue(result.AdapterVersion) ||
+		!validProviderValue(result.ProviderProtocol) || result.Capabilities == nil ||
+		len(result.Capabilities) > 128 || !sortedUniqueProviderTokens(result.Capabilities) ||
+		result.Checks == nil || len(result.Checks) > 128 || !validProviderTrustChecks(result.Checks) ||
+		!validDigestOrNotApplicable(result.InstallationDigest) ||
+		!validDigestOrNotApplicable(result.ExecutableDigest) ||
+		result.OperationalAccessEnabled || result.ProviderOperationsEnabled || result.SecretChannelEnabled ||
+		!strictUTCTimestamp(result.ObservedAt) || !result.ReadOnly || result.CallerClassUsed || result.Canonical ||
+		!validTaggedDigest(result.ResultDigest) {
+		return fmt.Errorf("SSIAG provider trust result identity or safety boundary is invalid")
+	}
+	if result.DeclarationState == "disabled" && result.TrustState != "disabled" {
+		return fmt.Errorf("SSIAG provider trust result declaration is contradictory")
+	}
+	if result.TrustState == "verified" {
+		if !result.MutualTrust.FoundationVerifiedAdapter || !result.MutualTrust.AdapterVerifiedFoundation ||
+			result.AdapterIdentifier == "not_applicable" || result.AdapterVersion == "not_applicable" ||
+			result.ProviderProtocol == "not_applicable" || result.InstallationDigest == "not_applicable" ||
+			result.ExecutableDigest == "not_applicable" {
+			return fmt.Errorf("SSIAG verified provider trust result lacks exact mutual evidence")
+		}
+	} else if result.MutualTrust.FoundationVerifiedAdapter || result.MutualTrust.AdapterVerifiedFoundation {
+		return fmt.Errorf("SSIAG unverified provider trust result claims mutual executable trust")
+	}
+	if err := verifyProviderTrustDigest(result); err != nil {
+		return err
+	}
+	return nil
+}
+
+func verifyProviderTrustDigest(result ProviderTrustResult) error {
+	encoded, err := json.Marshal(result)
+	if err != nil {
+		return fmt.Errorf("encode SSIAG provider trust result: %w", err)
+	}
+	decoder := json.NewDecoder(bytes.NewReader(encoded))
+	decoder.UseNumber()
+	var object map[string]any
+	if err := decoder.Decode(&object); err != nil {
+		return fmt.Errorf("decode SSIAG provider trust result for digest: %w", err)
+	}
+	delete(object, "result_digest")
+	canonical, err := json.Marshal(object)
+	if err != nil {
+		return fmt.Errorf("canonicalize SSIAG provider trust result: %w", err)
+	}
+	digest := sha256.Sum256(canonical)
+	expected := "sha256:" + hex.EncodeToString(digest[:])
+	if result.ResultDigest != expected {
+		return fmt.Errorf("SSIAG provider trust result digest mismatch")
+	}
+	return nil
+}
+
+func validProviderTrustChecks(checks []ProviderTrustCheck) bool {
+	prior := ""
+	for _, check := range checks {
+		if !validProviderToken(check.CheckID) || check.CheckID <= prior ||
+			!oneOf(check.Outcome, "passed", "failed", "not_applicable") ||
+			len(check.ReasonCode) > 256 || !strings.HasPrefix(check.ReasonCode, "symphony.ssiag.provider.") ||
+			!validProviderToken(check.ReasonCode) {
+			return false
+		}
+		prior = check.CheckID
+	}
+	return true
+}
+
+func sortedUniqueProviderTokens(values []string) bool {
+	if !sort.StringsAreSorted(values) {
+		return false
+	}
+	prior := ""
+	for _, value := range values {
+		if !validProviderToken(value) || value == prior {
+			return false
+		}
+		prior = value
+	}
+	return true
+}
+
+func validProviderValue(value string) bool {
+	return value == "not_applicable" || validProviderToken(value)
+}
+
+func validProviderToken(value string) bool {
+	if value == "" || len(value) > 256 || strings.TrimSpace(value) != value {
+		return false
+	}
+	for _, character := range value {
+		if (character >= 'a' && character <= 'z') || (character >= 'A' && character <= 'Z') ||
+			(character >= '0' && character <= '9') || strings.ContainsRune("._:-", character) {
+			continue
+		}
+		return false
+	}
+	return true
+}
+
+func validUUID(value string) bool { return validateTOPSID(value) == nil }
+
+func validTaggedDigest(value string) bool {
+	if len(value) != 71 || !strings.HasPrefix(value, "sha256:") {
+		return false
+	}
+	for _, character := range value[len("sha256:"):] {
+		if (character < '0' || character > '9') && (character < 'a' || character > 'f') {
+			return false
+		}
+	}
+	return true
+}
+
+func validDigestOrNotApplicable(value string) bool {
+	return value == "not_applicable" || validTaggedDigest(value)
+}
+
+func strictUTCTimestamp(value string) bool {
+	parsed, err := time.Parse("2006-01-02T15:04:05Z", value)
+	return err == nil && parsed.UTC().Format("2006-01-02T15:04:05Z") == value
+}
+
+func oneOf(value string, allowed ...string) bool {
+	for _, candidate := range allowed {
+		if value == candidate {
+			return true
+		}
+	}
+	return false
+}
+
 func ReadBoundedJSON(path string, target any) error {
 	file, err := openNoFollow(path)
 	if err != nil {
@@ -601,6 +883,9 @@ func (c *Client) get(ctx context.Context, path string, target any) error {
 	if len(payload) > maxResponseBytes {
 		return fmt.Errorf("SSIAG response exceeds %d bytes", maxResponseBytes)
 	}
+	if err := validateJSONMembers(payload); err != nil {
+		return fmt.Errorf("decode SSIAG response: %w", err)
+	}
 	decoder := json.NewDecoder(bytes.NewReader(payload))
 	decoder.DisallowUnknownFields()
 	if err := decoder.Decode(target); err != nil {
@@ -642,10 +927,13 @@ func (c *Client) post(ctx context.Context, path string, value, target any) error
 		var failure struct {
 			Code string `json:"code"`
 		}
-		if json.Unmarshal(responsePayload, &failure) == nil && failure.Code != "" {
+		if validateJSONMembers(responsePayload) == nil && json.Unmarshal(responsePayload, &failure) == nil && validProviderToken(failure.Code) {
 			return fmt.Errorf("SSIAG request rejected: %s", failure.Code)
 		}
 		return fmt.Errorf("SSIAG returned HTTP %d", response.StatusCode)
+	}
+	if err := validateJSONMembers(responsePayload); err != nil {
+		return fmt.Errorf("decode SSIAG response: %w", err)
 	}
 	decoder := json.NewDecoder(bytes.NewReader(responsePayload))
 	decoder.DisallowUnknownFields()
@@ -655,6 +943,76 @@ func (c *Client) post(ctx context.Context, path string, value, target any) error
 	var extra any
 	if err := decoder.Decode(&extra); err != io.EOF {
 		return fmt.Errorf("decode SSIAG response: multiple JSON values")
+	}
+	return nil
+}
+
+func validateJSONMembers(payload []byte) error {
+	decoder := json.NewDecoder(bytes.NewReader(payload))
+	decoder.UseNumber()
+	var walk func(int) error
+	walk = func(depth int) error {
+		if depth > 64 {
+			return fmt.Errorf("JSON nesting exceeds 64 levels")
+		}
+		token, err := decoder.Token()
+		if err != nil {
+			return err
+		}
+		delimiter, compound := token.(json.Delim)
+		if !compound {
+			return nil
+		}
+		switch delimiter {
+		case '{':
+			seen := make(map[string]struct{})
+			for decoder.More() {
+				keyToken, err := decoder.Token()
+				if err != nil {
+					return err
+				}
+				key, ok := keyToken.(string)
+				if !ok {
+					return fmt.Errorf("JSON object key is not a string")
+				}
+				if _, duplicate := seen[key]; duplicate {
+					return fmt.Errorf("duplicate JSON member %q", key)
+				}
+				seen[key] = struct{}{}
+				if err := walk(depth + 1); err != nil {
+					return err
+				}
+			}
+		case '[':
+			for decoder.More() {
+				if err := walk(depth + 1); err != nil {
+					return err
+				}
+			}
+		default:
+			return fmt.Errorf("unexpected JSON delimiter")
+		}
+		closing, err := decoder.Token()
+		if err != nil {
+			return err
+		}
+		expected := json.Delim('}')
+		if delimiter == '[' {
+			expected = ']'
+		}
+		if closing != expected {
+			return fmt.Errorf("mismatched JSON delimiter")
+		}
+		return nil
+	}
+	if err := walk(0); err != nil {
+		return err
+	}
+	if _, err := decoder.Token(); err != io.EOF {
+		if err == nil {
+			return fmt.Errorf("multiple JSON values")
+		}
+		return err
 	}
 	return nil
 }

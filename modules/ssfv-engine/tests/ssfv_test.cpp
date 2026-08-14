@@ -481,11 +481,11 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
     require(check.at("summary").at("state") == "valid", "canonical partial registry invalid");
     require(check.at("coverage_state") == "partial",
             "canonical bootstrap must not imply repository-wide completeness");
-    require(check.at("feature_count") == 72U && check.at("feature_file_count") == 15U,
+    require(check.at("feature_count") == 73U && check.at("feature_file_count") == 15U,
             "canonical partial-catalog record counts mismatch");
     const auto graph = ssfv::handle_request(
         request("graph", engine::Json{{"format", "json"}}));
-    require(graph.at("node_count") == 72U && graph.at("edge_count") == 290U,
+    require(graph.at("node_count") == 73U && graph.at("edge_count") == 295U,
             "canonical partial-catalog graph count mismatch");
     require(graph.at("noncanonical") == true && graph.at("rebuildable") == true,
             "graph authority escalated");
@@ -520,16 +520,17 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
             read_json("knowledge/FEATURE-ADMINISTRATION-PROFILE.json"),
             read_json("tools/qxctl/COMMANDS.json"), "not_evaluated", nullptr,
             engine::Json::array({descriptor_v2}), nullptr)));
-    require(full_administration.at("summary").at("features_checked") == 72U &&
-                full_administration.at("summary").at("surfaces_checked") == 137U &&
-                full_administration.at("summary").at("satisfied") == 114U &&
+    require(full_administration.at("summary").at("features_checked") == 73U &&
+                full_administration.at("summary").at("surfaces_checked") == 139U &&
+                full_administration.at("summary").at("satisfied") == 116U &&
                 full_administration.at("summary").at("uncovered") == 0U &&
                 full_administration.at("summary").at("exempt") == 13U &&
                 full_administration.at("summary").at("prohibited") == 10U &&
                 full_administration.at("summary").at("stale") == 0U &&
                 full_administration.at("summary").at("unresolved") == 0U,
             "canonical administration baseline counts mismatch: " +
-                full_administration.at("summary").dump());
+                full_administration.at("summary").dump() + " remediation=" +
+                full_administration.at("remediation_constraints").dump());
     require(std::none_of(full_administration.at("surfaces").begin(),
                          full_administration.at("surfaces").end(),
                          [](const engine::Json& surface) {

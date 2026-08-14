@@ -10,9 +10,9 @@ This adapter is never linked into the Go SSIAG foundation. The foundation invoke
 
 ## Current Scaffold
 
-The current executable implements metadata discovery and a fail-closed JSON-lines handshake only. It does not import the Security framework, read or write Keychain items, accept credential material, or advertise operational access.
+The Phase 9 executable implements metadata discovery over one fail-closed request/response process only. It does not import the Security framework, read or write Keychain items, accept credential material, open the synthetic one-shot descriptor, or advertise operational access.
 
-The operational architecture is ratified as per-user and session-aware, with mutual executable trust, non-exportable operations preferred, and a separate one-shot protected channel for any explicitly exportable bytes. Exact item, signing, entitlement, interaction, provisioning, and integration details remain implementation gates.
+The operational architecture is ratified as per-user and session-aware, with mutual executable trust, non-exportable operations preferred, and a separate one-shot protected channel for any explicitly exportable bytes. The current canonical channel descriptor is synthetic and cannot deliver bytes. Exact item, signing, entitlement, interaction, provisioning, memory, and operational channel details remain later implementation gates.
 
 ## Non-Scope
 

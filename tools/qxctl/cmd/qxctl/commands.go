@@ -18,6 +18,7 @@ var errUsageOnly = errors.New("print qxctl usage")
 type ssiagOptions struct {
 	topsID          string
 	scope           string
+	providerName    string
 	profileID       string
 	subjectID       string
 	authorityBasis  string
@@ -1052,7 +1053,7 @@ func namedModuleMetadataCommand() *cobra.Command {
 }
 
 func newSSIAGCommand() (*cobra.Command, error) {
-	command := structural("ssiag", fmt.Errorf("SSIAG subcommand is required: status, providers, doctor, grants, policy, enrollment, or supervisor"))
+	command := structural("ssiag", fmt.Errorf("SSIAG subcommand is required: status, providers, provider, doctor, grants, policy, enrollment, or supervisor"))
 	for _, subcommand := range []string{"status", "providers", "doctor"} {
 		child, err := newSSIAGLeaf(subcommand)
 		if err != nil {
@@ -1060,6 +1061,11 @@ func newSSIAGCommand() (*cobra.Command, error) {
 		}
 		command.AddCommand(child)
 	}
+	providerCommand, err := newSSIAGProviderCommand()
+	if err != nil {
+		return nil, err
+	}
+	command.AddCommand(providerCommand)
 	grants := structural("grants", fmt.Errorf("SSIAG grants subcommand is required: lifecycle"))
 	grantOptions := ssiagOptions{scope: "user", profileID: "default", authorityBasis: "host_owner"}
 	lifecycle := &cobra.Command{
@@ -1083,6 +1089,68 @@ func newSSIAGCommand() (*cobra.Command, error) {
 		newFoundationLifecycleFamily("ssiag", "enrollment", featureSSIAG),
 		newFoundationLifecycleFamily("ssiag", "supervisor", featureSSIAG),
 	)
+	return command, nil
+}
+
+func newSSIAGProviderCommand() (*cobra.Command, error) {
+	command := structural("provider", fmt.Errorf("SSIAG provider subcommand is required: show or verify"))
+	for _, operation := range []string{"show", "verify"} {
+		mapper := viper.New()
+		operation := operation
+		child := &cobra.Command{
+			Use: operation + " <provider-name>",
+			Args: func(_ *cobra.Command, args []string) error {
+				if len(args) != 1 {
+					return fmt.Errorf("SSIAG provider %s requires exactly one provider name", operation)
+				}
+				return nil
+			},
+			RunE: func(_ *cobra.Command, args []string) error {
+				return runSSIAGProvider(operation, ssiagOptions{
+					providerName: args[0], topsID: mapper.GetString("tops-id"),
+					scope: mapper.GetString("scope"), jsonOutput: mapper.GetBool("json"),
+					authorityBasis: mapper.GetString("authority-basis"),
+				})
+			},
+		}
+		spec := commandSpec("ssiag.provider."+operation, featureSSIAG, map[string]string{"show": "inspect", "verify": "validate"}[operation])
+		if operation == "verify" {
+			spec.BackendOperationIDs = []string{
+				"engop:symphony:ssiag.provider.metadata-handshake",
+				"engop:symphony:ssiag.provider.trust.verify",
+			}
+		} else {
+			spec.BackendOperationIDs = []string{"engop:symphony:ssiag.provider.trust.show"}
+		}
+		spec.OutputProtocols = []string{"symphony.ssiag.provider-trust-result.v1"}
+		spec.ResultValidationProtocols = []string{"symphony.ssiag.provider-trust-result.v1"}
+		if operation == "verify" {
+			spec.Mutability = "evidence_only"
+			spec.AuthorityMode = "ssiag"
+			spec.InputProtocols = []string{"symphony.ssiag.provider-trust-verification-request.v1"}
+		}
+		commandregistry.Attach(child, spec)
+		child.Flags().String("tops-id", "", "immutable TOPS UUID")
+		child.Flags().String("scope", "user", "SSIAG scope: user or system")
+		child.Flags().Bool("json", false, "emit JSON")
+		if operation == "verify" {
+			child.Flags().String("authority-basis", "host_owner", "host_owner or granted_permission")
+		}
+		for _, key := range []string{"tops-id", "scope", "json"} {
+			if err := mapper.BindPFlag(key, child.Flags().Lookup(key)); err != nil {
+				return nil, fmt.Errorf("bind SSIAG provider %s %s flag: %w", operation, key, err)
+			}
+		}
+		if operation == "verify" {
+			if err := mapper.BindPFlag("authority-basis", child.Flags().Lookup("authority-basis")); err != nil {
+				return nil, fmt.Errorf("bind SSIAG provider verify authority flag: %w", err)
+			}
+		}
+		if err := mapper.BindEnv("tops-id", "SYMPHONY_SSIAG_TOPS_ID"); err != nil {
+			return nil, fmt.Errorf("bind SSIAG provider TOPS environment: %w", err)
+		}
+		command.AddCommand(child)
+	}
 	return command, nil
 }
 
@@ -1157,6 +1225,13 @@ func newSSIAGLeaf(subcommand string) (*cobra.Command, error) {
 		},
 	}
 	registered(command, "ssiag."+subcommand, featureSSIAG, map[string]string{"status": "query", "providers": "discover", "doctor": "validate"}[subcommand])
+	if subcommand == "status" || subcommand == "providers" {
+		spec, _ := commandregistry.Spec(command)
+		protocol := map[string]string{"status": "symphony.ssiag.status.v1", "providers": "symphony.ssiag.providers.v1"}[subcommand]
+		spec.OutputProtocols = []string{protocol}
+		spec.ResultValidationProtocols = []string{protocol}
+		commandregistry.Attach(command, spec)
+	}
 	if subcommand == "doctor" {
 		spec, _ := commandregistry.Spec(command)
 		unsupported := false

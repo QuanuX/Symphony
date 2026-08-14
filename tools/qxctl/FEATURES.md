@@ -753,12 +753,12 @@
       ],
       "evidence": [
         "tools/qxctl/cmd/qxctl/foundation_lifecycle_test.go verifies the complete enrollment and supervisor families, rejects unratified shortcuts, and closes malformed intent before adapter invocation.",
-        "tools/qxctl/cmd/qxctl/ssiag_test.go verifies decision and policy-administration grammar, closed mutation paths, and bounded inputs.",
+        "tools/qxctl/cmd/qxctl/ssiag_test.go verifies provider-trust, decision, and policy-administration grammar, closed mutation paths, and bounded inputs.",
         "tools/qxctl/internal/foundationlifecycle/client_test.go verifies exact receipt-v2 selection, adapter identity, canonical digests, operation-specific result shape, audit disposition, and recovery evidence.",
         "tools/qxctl/internal/ssiagclient/client_test.go verifies trust, peer authentication, safe evidence, and caller-neutral result handling."
       ],
       "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
-      "how": "The cgo-free clients validate protected trust configuration and Unix-socket metadata, verify kernel peer identity before HTTP exchange, select one exact receipt-owned lifecycle adapter without version recency inference, invoke it through bounded process IPC, and independently validate proposal, apply, recovery, audit, and safe decision evidence.",
+      "how": "The cgo-free clients validate protected trust configuration and Unix-socket metadata, verify kernel peer identity before HTTP exchange, read closed digest-bound provider trust evidence, ask SSIAG for fresh permission-backed provider verification without inspecting or launching adapters, select one exact receipt-owned lifecycle adapter without version recency inference, invoke it through bounded process IPC, and independently validate proposal, apply, recovery, audit, and safe decision evidence.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -781,7 +781,7 @@
       ],
       "kind": "subfeature",
       "non_claims": [
-        "Does not own SSIAG schemas, persist credentials, implement keyring providers, or decide permission.",
+        "Does not own SSIAG schemas, persist credentials, implement keyring providers, inspect provider receipts, launch adapters, or decide permission.",
         "Does not infer authority from human or AI caller class and does not create remote SSIAG access.",
         "Does not implement enrollment or supervision, render native descriptors, select a newest package version, expose purge, or bypass module recovery and audit state."
       ],
@@ -797,8 +797,8 @@
       ],
       "source_scope": "tools/qxctl",
       "status": "experimental",
-      "title": "SSIAG policy, decision, enrollment, and supervision administration",
-      "what": "Queries SSIAG decisions, administers its explicit grants and protected policy mutation protocol, and drives the exact installed enrollment and native-supervision lifecycle adapters without embedding module or provider logic in qxctl.",
+      "title": "SSIAG provider trust, policy, decision, enrollment, and supervision administration",
+      "what": "Queries SSIAG provider metadata and trust evidence, requests fresh SSIAG-owned trust verification, queries decisions, administers explicit grants and protected policy mutation, and drives exact installed enrollment and native-supervision lifecycle adapters without embedding module or provider logic in qxctl.",
       "when": "Runs only on explicit SSIAG commands or when another protected qxctl operation requests a fresh exact decision.",
       "where": "Operates against the configured local SSIAG foundation endpoint for one TOPS and scope.",
       "who": "Any caller holding the applicable target-host permission, including a host owner, delegated administrator, automation, or agentic owner.",

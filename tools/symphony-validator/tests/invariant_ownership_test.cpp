@@ -106,7 +106,11 @@ void copy_fixture(const fs::path& repository, const fs::path& destination) {
     copy_regular(repository, destination, "knowledge/INVARIANT-OWNERSHIP.json");
     for (const auto& adapter : registry.at("adapters")) {
         copy_regular(repository, destination, adapter.at("owner_contract").get<std::string>());
-        fs::create_directories(destination / adapter.at("implementation_path").get<std::string>());
+        const auto implementation_path = adapter.at("implementation_path").get<std::string>();
+        fs::create_directories(destination / implementation_path);
+        if (adapter.at("adapter_id") == "adapter:symphony:ssiag.macos-keychain-provider.v1") {
+            copy_regular(repository, destination, implementation_path + "/Protocol.swift");
+        }
     }
     for (const auto& invariant : registry.at("invariants")) {
         copy_regular(repository, destination, invariant.at("owner_contract").get<std::string>());
@@ -221,6 +225,18 @@ void test_adapter_closure(const fs::path& repository) {
         const auto result = check_invariant_ownership(temporary.path().string());
         require(!result.success && contains(result, "invariant_ownership.adapter_operation_owner"),
             "operation assigned to multiple adapters passed");
+    }
+    {
+        TemporaryDirectory temporary;
+        copy_fixture(repository, temporary.path());
+        auto registry = read_json(temporary.path() / "knowledge/INVARIANT-OWNERSHIP.json");
+        registry["adapters"][1]["operation_ids"] = engine::Json::array({
+            "engop:symphony:ssiag.provider.metadata-invented",
+        });
+        write_registry(temporary.path(), registry);
+        const auto result = check_invariant_ownership(temporary.path().string());
+        require(!result.success && contains(result, "reason=not_adapter_owned_operation_set"),
+            "invented macOS provider operation passed");
     }
 }
 

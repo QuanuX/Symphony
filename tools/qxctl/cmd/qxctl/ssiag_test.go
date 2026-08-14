@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 )
 
 func captureStdout(t *testing.T, operation func() error) string {
@@ -122,6 +123,39 @@ func TestSSIAGProvidersBindsServerIdentityBeforeQuery(t *testing.T) {
 func TestSSIAGRejectsTrailingArguments(t *testing.T) {
 	if err := executeCommand([]string{"ssiag", "status", "--tops-id", ssiagTestTOPSID, "extra"}); err == nil || !strings.Contains(err.Error(), "unexpected SSIAG arguments") {
 		t.Fatalf("expected trailing-argument error, got %v", err)
+	}
+}
+
+func TestSSIAGProviderGrammarRejectsUnsafeOrIncompleteInput(t *testing.T) {
+	for _, test := range []struct {
+		args []string
+		want string
+	}{
+		{[]string{"ssiag", "provider", "show", "--tops-id", ssiagTestTOPSID}, "requires exactly one provider name"},
+		{[]string{"ssiag", "provider", "show", "native", "extra", "--tops-id", ssiagTestTOPSID}, "requires exactly one provider name"},
+		{[]string{"ssiag", "provider", "show", "../native", "--tops-id", ssiagTestTOPSID}, "provider name must be a token"},
+		{[]string{"ssiag", "provider", "verify", "native", "--tops-id", ssiagTestTOPSID, "--authority-basis", "caller_type"}, "host_owner or granted_permission"},
+	} {
+		if err := executeCommand(test.args); err == nil || !strings.Contains(err.Error(), test.want) {
+			t.Errorf("%v: got %v, want %q", test.args, err, test.want)
+		}
+	}
+}
+
+func TestSSIAGProviderCommandUsesExactBoundedBudgets(t *testing.T) {
+	if ssiagProviderStatusBudget != 2*time.Second ||
+		ssiagProviderOperationBudget != 7*time.Second ||
+		ssiagProviderEndToEndBudget != 10*time.Second {
+		t.Fatalf(
+			"provider command budgets drifted: status=%s operation=%s end_to_end=%s",
+			ssiagProviderStatusBudget, ssiagProviderOperationBudget, ssiagProviderEndToEndBudget,
+		)
+	}
+	if ssiagProviderOperationBudget <= 5*time.Second {
+		t.Fatal("provider operation budget lacks transport margin beyond the foundation exchange")
+	}
+	if ssiagProviderStatusBudget+ssiagProviderOperationBudget >= ssiagProviderEndToEndBudget {
+		t.Fatal("provider command lacks bounded orchestration margin")
 	}
 }
 

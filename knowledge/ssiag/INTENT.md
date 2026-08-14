@@ -51,7 +51,8 @@ Enhanced identity assurance and governance interlocks are optional, caller-neutr
 - Local v1 caller identity comes from kernel-attested Unix-socket peer credentials mapped to canonical SSIAG subjects.
 - Foundational SSIAG and STAV services use an explicit bootstrap supervision stratum; supervision owns liveness and does not confer authorization.
 - Administrative change uses separate proposal and permission-backed apply authority. Caller type is not an authorization input. The current foundation implements protected local policy status, proposal, audited apply, and recovery in addition to deny-by-default authorization decisions; none grants canonical knowledge apply authority.
-- Provider control and secret delivery are distinct channels. Non-exportable operations remain inside the provider.
+- Provider control and secret delivery are distinct channels. The v1 control process exchanges exactly one bounded request and one bounded response, and non-exportable operations remain inside the provider.
+- Each per-TOPS provider binding names one exact installed adapter and foundation identity. Absence is `unbound`; compatibility never means selecting the newest installed version.
 - The first operational macOS Keychain topology is per-user and session-aware; system/headless use never falls back implicitly.
 - The default administrative authority session begins at successful login/authentication and ends at logout, expiry, revocation, or required re-authentication. qxctl may configure another supported lifecycle policy but cannot extend authority past those boundaries.
 - Remote SSIAG access is not part of local v1.

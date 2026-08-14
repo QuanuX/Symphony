@@ -36,9 +36,9 @@ Caller type is not an authorization input. A caller may inspect canonical contra
 4. Maintain the implemented exact-grant deny-by-default authorization decision and non-transferable capability surface.
 5. Maintain qxctl/coordinator authenticated-session use without converting decision evidence into bearer or canonical apply authority.
 6. Preserve the implemented local policy proposal/apply/recovery circuit: kernel-derived authority, CAS, idempotent STAV-before-commit, protected attempt/state files, and noncanonical result binding.
-7. Implement provider mutual executable trust and separate control/secret channels.
-8. Enable per-user macOS Keychain operations beginning with non-exportable capability where suitable.
+7. Maintain the implemented exact provider mutual-executable-trust and metadata-control runtime without widening its v1 surface or enabling the synthetic secret channel.
+8. Enable per-user macOS Keychain operations only after the separate operational gate, beginning with non-exportable capability where suitable.
 
 ## Stop Conditions
 
-Stop and obtain permission-backed owner approval before choosing an unrecorded namespace, enabling remote access, enabling the unimplemented apply surface, weakening peer authentication, exporting a non-exportable credential, adding a provider fallback, changing the provider IPC major version, publishing an API, or weakening safe metadata exclusions. Do not mark a ratified capability operational until its exact contract and tests pass.
+Stop and obtain permission-backed owner approval before choosing an unrecorded namespace, enabling remote access, enabling the unimplemented apply surface, weakening peer authentication, exporting a non-exportable credential, adding a provider fallback, changing the provider IPC major version, auto-selecting an installed provider version, publishing an API, or weakening safe metadata exclusions. Do not mark a ratified capability operational until its exact contract and tests pass.

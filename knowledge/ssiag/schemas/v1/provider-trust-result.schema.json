@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:provider-trust-result:v1",
+  "title": "Symphony SSIAG provider trust result v1",
+  "description": "result_digest is sha256 plus lowercase hexadecimal over the compact Go encoding/json serialization of this strict object after omitting result_digest; object member names are recursively serialized in lexical order.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "operation", "tops_id", "provider_name", "provider_kind",
+    "declaration_state", "trust_state", "verification_mode", "adapter_identifier",
+    "adapter_version", "provider_protocol", "capabilities", "exportable",
+    "interactive", "installation_digest", "executable_digest", "checks",
+    "mutual_trust", "operational_access_enabled", "provider_operations_enabled",
+    "secret_channel_enabled", "observed_at", "read_only", "caller_class_used",
+    "canonical", "result_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.provider-trust-result.v1"},
+    "operation": {"enum": ["show", "verify"]},
+    "tops_id": {"$ref": "#/$defs/uuid"},
+    "provider_name": {"$ref": "#/$defs/token"},
+    "provider_kind": {"$ref": "#/$defs/token"},
+    "declaration_state": {"enum": ["declared", "disabled"]},
+    "trust_state": {"enum": ["disabled", "unbound", "unavailable", "unverified", "verified", "mismatch", "unsupported", "blocked"]},
+    "verification_mode": {"enum": ["snapshot", "fresh"]},
+    "adapter_identifier": {"$ref": "#/$defs/value_or_not_applicable"},
+    "adapter_version": {"$ref": "#/$defs/value_or_not_applicable"},
+    "provider_protocol": {"$ref": "#/$defs/value_or_not_applicable"},
+    "capabilities": {
+      "type": "array", "maxItems": 128, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/token"}
+    },
+    "exportable": {"type": "boolean"},
+    "interactive": {"type": "boolean"},
+    "installation_digest": {"$ref": "#/$defs/digest_or_not_applicable"},
+    "executable_digest": {"$ref": "#/$defs/digest_or_not_applicable"},
+    "checks": {
+      "type": "array", "maxItems": 128, "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["check_id", "outcome", "reason_code"],
+        "properties": {
+          "check_id": {"$ref": "#/$defs/token"},
+          "outcome": {"enum": ["passed", "failed", "not_applicable"]},
+          "reason_code": {"$ref": "#/$defs/reason"}
+        }
+      }
+    },
+    "mutual_trust": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["foundation_verified_adapter", "adapter_verified_foundation"],
+      "properties": {
+        "foundation_verified_adapter": {"type": "boolean"},
+        "adapter_verified_foundation": {"type": "boolean"}
+      }
+    },
+    "operational_access_enabled": {"const": false},
+    "provider_operations_enabled": {"const": false},
+    "secret_channel_enabled": {"const": false},
+    "observed_at": {"$ref": "#/$defs/timestamp"},
+    "read_only": {"const": true},
+    "caller_class_used": {"const": false},
+    "canonical": {"const": false},
+    "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"operation": {"const": "show"}}},
+      "then": {"properties": {"verification_mode": {"const": "snapshot"}}},
+      "else": {"properties": {"verification_mode": {"const": "fresh"}}}
+    },
+    {
+      "if": {"properties": {"declaration_state": {"const": "disabled"}}},
+      "then": {"properties": {"trust_state": {"const": "disabled"}}}
+    },
+    {
+      "if": {"properties": {"trust_state": {"const": "verified"}}},
+      "then": {
+        "properties": {
+          "adapter_identifier": {"$ref": "#/$defs/applicable_token"},
+          "adapter_version": {"$ref": "#/$defs/applicable_token"},
+          "provider_protocol": {"$ref": "#/$defs/applicable_token"},
+          "installation_digest": {"$ref": "#/$defs/digest"},
+          "executable_digest": {"$ref": "#/$defs/digest"},
+          "mutual_trust": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["foundation_verified_adapter", "adapter_verified_foundation"],
+            "properties": {
+              "foundation_verified_adapter": {"const": true},
+              "adapter_verified_foundation": {"const": true}
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "mutual_trust": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["foundation_verified_adapter", "adapter_verified_foundation"],
+            "properties": {
+              "foundation_verified_adapter": {"const": false},
+              "adapter_verified_foundation": {"const": false}
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "uuid": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "applicable_token": {"allOf": [{"$ref": "#/$defs/token"}, {"not": {"const": "not_applicable"}}]},
+    "reason": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^symphony\\.ssiag\\.provider\\.[A-Za-z0-9._:-]+$"},
+    "value_or_not_applicable": {"anyOf": [{"const": "not_applicable"}, {"$ref": "#/$defs/token"}]},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "digest_or_not_applicable": {"oneOf": [{"const": "not_applicable"}, {"$ref": "#/$defs/digest"}]},
+    "timestamp": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"}
+  }
+}

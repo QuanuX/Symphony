@@ -91,6 +91,21 @@ func TestLoadRejectsControlTextAndDigestTampering(t *testing.T) {
 	}
 }
 
+func TestLoadRejectsInventedMacOSProviderOperationIdentity(t *testing.T) {
+	object := canonicalRegistryObject(t)
+	adapters := object["adapters"].([]any)
+	for _, candidate := range adapters {
+		adapter := candidate.(map[string]any)
+		if adapter["adapter_id"] == "adapter:symphony:ssiag.macos-keychain-provider.v1" {
+			adapter["operation_ids"] = []any{"engop:symphony:ssiag.provider.metadata-invented"}
+		}
+	}
+	repository := writeRepository(t, encodeRegistry(t, object))
+	if _, err := Load(repository); err == nil || !strings.Contains(err.Error(), "adapter-owned operation set") {
+		t.Fatalf("invented adapter operation error = %v", err)
+	}
+}
+
 func TestLoadRejectsSymlinkedRegistry(t *testing.T) {
 	repository := t.TempDir()
 	if err := os.MkdirAll(filepath.Join(repository, "knowledge"), 0o700); err != nil {

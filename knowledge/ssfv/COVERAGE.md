@@ -39,7 +39,7 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 
 ## Ratified Nested Review Progress
 
-The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, and invariant-assurance slice record fifty-seven implemented `subfeature` boundaries inside thirteen already registered owner scopes:
+The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, and provider-trust assurance slice record fifty-eight implemented `subfeature` boundaries inside thirteen already registered owner scopes:
 
 | Owner scope | Ratified nested records | Review disposition |
 |---|---:|---|
@@ -47,7 +47,7 @@ The F1 through F3 review, feature-administration assurance slice, root-summary a
 | `modules/knowledge-session-coordinator` | 5 | Reconciliation, authority epochs, semantic maintenance, lifecycle planning, and lifecycle apply coordination are registered. |
 | `modules/maestro` | 1 | Complete derived receptor inventory is registered separately from durable receptor presence. |
 | `libraries/stav-protocol-go` | 2 | Canonical bytes, digests, and bounded local frames are separated from exact content and identifier validation; durable checksummed ledger framing is explicitly owned by the append authority. |
-| `modules/secure-identity-access-governance` | 7 | TOPS enrollment, kernel peer trust, authorization capabilities, policy administration, provider metadata, safe audit production, and native supervision are registered. |
+| `modules/secure-identity-access-governance` | 8 | TOPS enrollment, kernel peer trust, authorization capabilities, policy administration, provider metadata, provider trust assurance, safe audit production, and native supervision are registered. |
 | `modules/stav-append-authority` | 5 | TOPS enrollment, serialized append, ledger durability, authorized query, and native supervision are registered. |
 | `libraries/knowledge-vector-engine-cpp` | 3 | Bounded process protocol, content-addressed evidence snapshots, and temporal representation conformance are registered without turning the static foundation into a runtime engine. |
 | `modules/skvi-engine` | 3 | Structural index assurance, content-addressed change proposals, and disposable structural projection are registered. |
@@ -57,7 +57,7 @@ The F1 through F3 review, feature-administration assurance slice, root-summary a
 | `modules/ssfv-engine` | 5 | Catalog-integrity snapshots, semantic-freshness comparison, catalog-change proposals, portable semantic-graph projection, and engine-first administration assurance are registered. |
 | `tools/symphony-validator` | 2 | Deterministic root-summary projection plus invariant-ownership and implemented-module-admission assurance are registered separately from the complete repository checker. |
 
-The existing macOS Keychain metadata adapter remains one narrow registered subfeature with no child record. Its corrected record states that the Go SSIAG foundation and qxctl do not invoke the Swift executable and that operational trust, provider execution, Keychain access, and secret delivery remain unimplemented.
+The macOS Keychain metadata adapter remains one narrow registered subfeature with no child record. Its corrected record states that the Go SSIAG foundation invokes only the mutually verified metadata handshake, qxctl never invokes the Swift executable directly, and operational Keychain access, credential operations, and secret delivery remain disabled.
 
 These reviews advance completion condition 2 for those exact boundaries only. They do not imply that every other nested application boundary has been adjudicated, that an unlisted boundary has an explicit non-feature disposition, that all legacy invariants are registered, or that every package installed on a host has been inventoried.
 
@@ -73,7 +73,7 @@ The F2 security and audit review keeps these boundaries as implementation eviden
 - the STAV client package as shared transport evidence rather than a second authority;
 - protocol constants and model structs as evidence for canonical-wire and semantic-validation behavior;
 - tests, fixtures, and Swift lifecycle or protocol helpers as evidence or internals rather than separate application capabilities;
-- operational Keychain access, provider mutual executable trust, secret delivery, credential or lease operations, safeguards, audit-deferred recovery, STAV signed checkpoints or non-repudiation, remote export, automatic rotation or retention, and general repair because those behaviors remain disabled, deferred, or unimplemented.
+- operational Keychain access, secret delivery, credential or lease operations, safeguards, audit-deferred recovery, STAV signed checkpoints or non-repudiation, remote export, automatic rotation or retention, and general repair because those behaviors remain disabled, deferred, or unimplemented.
 
 ## F3 Explicit Non-Feature Dispositions
 

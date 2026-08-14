@@ -258,6 +258,36 @@ bool has_definition(const std::string& contents, const std::string& path, const 
                         return true;
                     }
                 }
+            } else if (path.ends_with(".swift")) {
+                const auto marker = "func " + name;
+                const auto position = line.find(marker);
+                if (position != std::string_view::npos) {
+                    auto after = position + marker.size();
+                    while (after < line.size() && std::isspace(static_cast<unsigned char>(line[after]))) {
+                        ++after;
+                    }
+                    if (after < line.size() && line[after] == '(' &&
+                        (line.starts_with("@Test") || line.starts_with("func") ||
+                         line.starts_with("public func") || line.starts_with("private func"))) {
+                        return true;
+                    }
+                }
+            } else if (path.ends_with(".sh")) {
+                if (line.starts_with(name)) {
+                    auto after = name.size();
+                    while (after < line.size() && std::isspace(static_cast<unsigned char>(line[after]))) {
+                        ++after;
+                    }
+                    if (after + 1U < line.size() && line[after] == '(' && line[after + 1U] == ')') {
+                        after += 2U;
+                        while (after < line.size() && std::isspace(static_cast<unsigned char>(line[after]))) {
+                            ++after;
+                        }
+                        if (after < line.size() && line[after] == '{') {
+                            return true;
+                        }
+                    }
+                }
             }
         }
         if (end == std::string::npos) {
@@ -386,11 +416,25 @@ std::vector<TestReference> check_test_references(
                 }
             }
             if (kind == "real_process") {
-                const bool process_evidence = path.ends_with(".go") &&
+                const bool go_process_evidence = path.ends_with(".go") &&
                     contents.find("exec.Command(") != std::string::npos &&
                     contents.find(".Stdin") != std::string::npos &&
                     (contents.find(".Output()") != std::string::npos ||
                      contents.find(".CombinedOutput()") != std::string::npos);
+                const bool swift_process_evidence = path.ends_with(".swift") &&
+                    contents.find("Process()") != std::string::npos &&
+                    contents.find("standardInput") != std::string::npos &&
+                    contents.find("standardOutput") != std::string::npos &&
+                    contents.find(".run()") != std::string::npos &&
+                    contents.find("waitUntilExit()") != std::string::npos;
+                const bool shell_process_evidence = path.ends_with(".sh") &&
+                    contents.find("symphony-ssiag-source") != std::string::npos &&
+                    contents.find("symphony-ssiag-provider-macos-keychain") != std::string::npos &&
+                    contents.find("ssiag provider verify") != std::string::npos &&
+                    contents.find("SERVER_PID=$!") != std::string::npos &&
+                    contents.find("wait \"$SERVER_PID\"") != std::string::npos;
+                const bool process_evidence = go_process_evidence || swift_process_evidence ||
+                    shell_process_evidence;
                 if (!process_evidence) {
                     finding(result, EvidenceCategory::Violation,
                         "invariant_ownership.real_process_mechanics",
@@ -433,7 +477,8 @@ std::map<std::string, AdapterEvidence> check_adapters(
             !path_token(adapter.value("owner_contract", Json{})) ||
             !path_token(adapter.value("implementation_path", Json{})) ||
             !adapter.at("command_protocol").is_string() ||
-            adapter.at("command_protocol").get<std::string>() != "symphony.foundation.lifecycle-command.v1" ||
+            (adapter.at("command_protocol").get<std::string>() != "symphony.foundation.lifecycle-command.v1" &&
+             adapter.at("command_protocol").get<std::string>() != "symphony.ssiag.provider.control.v1") ||
             !adapter.at("version_policy").is_string() ||
             adapter.at("version_policy").get<std::string>() !=
                 "exact_receipt_v2_entry_point_and_capability_compatible") {
@@ -444,9 +489,14 @@ std::map<std::string, AdapterEvidence> check_adapters(
         const auto id = adapter.at("adapter_id").get<std::string>();
         const auto component = adapter.at("component").get<std::string>();
         const auto entry_point = adapter.at("entry_point_id").get<std::string>();
+        const auto command_protocol = adapter.at("command_protocol").get<std::string>();
         const bool known_pair =
-            (component == "ssiag" && entry_point == "ssiag.foundation-lifecycle") ||
-            (component == "stav" && entry_point == "stav.foundation-lifecycle");
+            (component == "ssiag" && entry_point == "ssiag.foundation-lifecycle" &&
+             command_protocol == "symphony.foundation.lifecycle-command.v1") ||
+            (component == "ssiag" && entry_point == "ssiag.macos-keychain-provider" &&
+             command_protocol == "symphony.ssiag.provider.control.v1") ||
+            (component == "stav" && entry_point == "stav.foundation-lifecycle" &&
+             command_protocol == "symphony.foundation.lifecycle-command.v1");
         const auto expected_id = "adapter:symphony:" + entry_point + ".v1";
         if (!known_pair || id != expected_id) {
             finding(result, EvidenceCategory::Violation, "invariant_ownership.adapter_identity",
@@ -467,11 +517,38 @@ std::map<std::string, AdapterEvidence> check_adapters(
         static_cast<void>(check_regular_path(root, owner_contract, result, cache, false));
         static_cast<void>(check_directory_path(root, implementation_path, result));
         const auto internal = implementation_path.find("/internal/");
-        inventory.at(id).module_root = internal == std::string::npos
-            ? implementation_path : implementation_path.substr(0U, internal);
+        const auto sources = implementation_path.find("/Sources/");
+        const auto boundary = internal != std::string::npos ? internal : sources;
+        inventory.at(id).module_root = boundary == std::string::npos
+            ? implementation_path : implementation_path.substr(0U, boundary);
         if (sorted_unique_string_array(adapter.at("operation_ids"), 1U, maximum_operations,
                 [](const Json& item) { return operation_identifier(item); }, result,
                 "invariant_ownership.adapter_operations", id)) {
+            if (id == "adapter:symphony:ssiag.macos-keychain-provider.v1") {
+                const Json expected_operations = Json::array({
+                    "engop:symphony:ssiag.provider.metadata-capabilities",
+                    "engop:symphony:ssiag.provider.metadata-handshake",
+                    "engop:symphony:ssiag.provider.metadata-status",
+                });
+                if (adapter.at("operation_ids") != expected_operations) {
+                    finding(result, EvidenceCategory::Violation,
+                        "invariant_ownership.adapter_operations",
+                        "adapter_id=" + id + " reason=not_adapter_owned_operation_set");
+                }
+                const auto protocol_source = implementation_path + "/Protocol.swift";
+                if (check_regular_path(root, protocol_source, result, cache, false)) {
+                    const auto& contents = *cache.files.at(protocol_source);
+                    for (const auto& operation : expected_operations) {
+                        const auto operation_id = operation.get<std::string>();
+                        if (contents.find(operation_id) == std::string::npos) {
+                            finding(result, EvidenceCategory::Violation,
+                                "invariant_ownership.adapter_operation_owner",
+                                "adapter_id=" + id + " operation_id=" + operation_id +
+                                    " reason=missing_from_implementation");
+                        }
+                    }
+                }
+            }
             for (const auto& operation : adapter.at("operation_ids")) {
                 const auto operation_id = operation.get<std::string>();
                 if (!global_operations.insert(operation_id).second) {

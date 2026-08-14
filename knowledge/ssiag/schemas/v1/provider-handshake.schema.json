@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:provider-handshake:v1",
+  "title": "Symphony SSIAG provider handshake v1",
+  "description": "handshake_digest is sha256 plus lowercase hexadecimal over the compact Go encoding/json serialization of this strict object after omitting handshake_digest; object member names are recursively serialized in lexical order.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "provider_protocol", "provider_name", "provider_kind",
+    "adapter_identifier", "adapter_version", "platform", "architecture",
+    "transport", "control_request_protocol", "control_response_protocol",
+    "one_shot_channel_protocol", "status", "reason_code", "foundation_trust", "capabilities",
+    "exportable", "interactive",
+    "safe_operations", "limits", "operational_access_enabled",
+    "provider_operations_enabled", "secret_channel_enabled", "handshake_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.provider-handshake.v1"},
+    "provider_protocol": {"const": "symphony.ssiag.provider.v1"},
+    "provider_name": {"$ref": "#/$defs/token"},
+    "provider_kind": {"$ref": "#/$defs/token"},
+    "adapter_identifier": {"$ref": "#/$defs/token"},
+    "adapter_version": {"$ref": "#/$defs/token"},
+    "platform": {"enum": ["macos", "linux", "wsl"]},
+    "architecture": {"$ref": "#/$defs/token"},
+    "transport": {"const": "stdio-one-shot-json"},
+    "control_request_protocol": {"const": "symphony.ssiag.provider-control-request.v1"},
+    "control_response_protocol": {"const": "symphony.ssiag.provider-control-response.v1"},
+    "one_shot_channel_protocol": {"const": "symphony.ssiag.provider-one-shot-channel.v1"},
+    "status": {"enum": ["declared", "ready", "degraded", "locked", "unavailable", "disabled"]},
+    "reason_code": {"$ref": "#/$defs/reason"},
+    "foundation_trust": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verified", "executable_path", "installation_digest",
+        "executable_digest", "signing_identity", "reason_code"
+      ],
+      "properties": {
+        "verified": {"type": "boolean"},
+        "executable_path": {"$ref": "#/$defs/absolute_path"},
+        "installation_digest": {"$ref": "#/$defs/digest_or_not_applicable"},
+        "executable_digest": {"$ref": "#/$defs/digest"},
+        "signing_identity": {"$ref": "#/$defs/value_or_not_applicable"},
+        "reason_code": {"$ref": "#/$defs/reason"}
+      }
+    },
+    "capabilities": {
+      "type": "array", "maxItems": 128, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/token"}
+    },
+    "exportable": {"type": "boolean"},
+    "interactive": {"type": "boolean"},
+    "safe_operations": {
+      "type": "array", "maxItems": 128, "uniqueItems": true,
+      "items": {"enum": ["handshake", "status", "capabilities"]}
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maximum_control_request_bytes", "maximum_control_response_bytes",
+        "default_timeout_milliseconds", "maximum_timeout_milliseconds",
+        "maximum_capabilities", "maximum_checks", "requests_per_process",
+        "responses_per_process"
+      ],
+      "properties": {
+        "maximum_control_request_bytes": {"const": 65536},
+        "maximum_control_response_bytes": {"const": 65536},
+        "default_timeout_milliseconds": {"const": 5000},
+        "maximum_timeout_milliseconds": {"const": 30000},
+        "maximum_capabilities": {"const": 128},
+        "maximum_checks": {"const": 128},
+        "requests_per_process": {"const": 1},
+        "responses_per_process": {"const": 1}
+      }
+    },
+    "operational_access_enabled": {"const": false},
+    "provider_operations_enabled": {"const": false},
+    "secret_channel_enabled": {"const": false},
+    "handshake_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "value_or_not_applicable": {"anyOf": [{"const": "not_applicable"}, {"$ref": "#/$defs/token"}]},
+    "absolute_path": {"type": "string", "minLength": 2, "maxLength": 4096, "pattern": "^/[^\\u0000]*$"},
+    "reason": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^symphony\\.ssiag\\.provider\\.[a-z0-9._-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "digest_or_not_applicable": {"oneOf": [{"const": "not_applicable"}, {"$ref": "#/$defs/digest"}]}
+  }
+}
