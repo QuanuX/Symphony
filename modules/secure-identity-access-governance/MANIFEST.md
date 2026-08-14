@@ -9,7 +9,7 @@
 - **environment prefix**: `SYMPHONY_SSIAG_*`
 - **language/runtime**: Go 1.26.5 with pinned `golang.org/x/sys` for cgo-free kernel peer credentials
 - **cgo**: prohibited
-- **status**: DRAFT foundation; supervised metadata, audited authorization, and protected local policy administration
+- **status**: DRAFT foundation; supervised metadata, audited authorization, protected policy administration, and exact provider-binding lifecycle
 
 ## Canonical Authority
 
@@ -35,7 +35,9 @@
 - `status` / `providers`: safe local inspection;
 - `POST /v1/authorization/decisions`: kernel-subject-derived, exact-grant, deny-by-default authorization with fail-closed STAV audit and non-transferable capability evidence;
 - `GET /v1/policy/status` plus `POST /v1/policy/proposals|apply|recover`: protected per-TOPS operational policy administration with exact host authority, CAS, atomic state, STAV-before-commit, and explicit recovery;
-- `qxctl ssiag status|providers|doctor|policy ...`: provider-neutral query and local policy administration interface.
+- `GET /v1/provider-installations/<provider>` plus provider-binding `status|plans|apply|attempts|recover`: bounded exact-pair inventory and protected per-TOPS binding lifecycle with independent candidate verification and STAV-before-commit;
+- `provider-binding-recover`: receipt-v2-bound native recovery that requires target-host ownership, entry into the enrolled service identity, exclusive service socket-lifecycle ownership, and an absent socket;
+- `qxctl ssiag status|providers|doctor|policy ...|provider installations|binding ...`: provider-neutral headless administration.
 
 ## Install and Enrollment Separation
 
@@ -45,7 +47,7 @@ Ordinary foundational lifecycle apply is implemented fail-closed pending a real 
 
 ## Provider Boundary
 
-No operational credential provider or canonical knowledge apply route is enabled. Local policy apply affects only SSIAG's protected operational overlay. Native dependencies remain in independently installed adapters. The first adapter scaffold is `modules/ssiag-provider-macos-keychain/`, a separate Swift executable whose current capability is metadata only.
+No operational credential provider or canonical knowledge apply route is enabled. Provider-binding apply changes only the exact metadata adapter/foundation pair selected for one TOPS; it does not enable adapter operations. The Phase 9 configuration declaration remains immutable legacy/bootstrap evidence. Lifecycle-capable state is service-owned under the per-TOPS state root. Native dependencies remain independently installed adapters.
 
 ## Contamination Boundary
 

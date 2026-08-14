@@ -14,13 +14,14 @@ import (
 type Kind string
 
 const (
-	AuthenticationDecision Kind = "authentication_decision"
-	PolicyDecision         Kind = "policy_decision"
-	ProviderOperation      Kind = "provider_operation"
-	CredentialRotation     Kind = "credential_rotation"
-	EnrollmentLifecycle    Kind = "enrollment_lifecycle"
-	LeaseIssuance          Kind = "lease_issuance"
-	LeaseRevocation        Kind = "lease_revocation"
+	AuthenticationDecision   Kind = "authentication_decision"
+	PolicyDecision           Kind = "policy_decision"
+	ProviderOperation        Kind = "provider_operation"
+	ProviderBindingLifecycle Kind = "provider_binding_lifecycle"
+	CredentialRotation       Kind = "credential_rotation"
+	EnrollmentLifecycle      Kind = "enrollment_lifecycle"
+	LeaseIssuance            Kind = "lease_issuance"
+	LeaseRevocation          Kind = "lease_revocation"
 )
 
 type eventContract struct {
@@ -61,6 +62,16 @@ var contracts = map[Kind]eventContract{
 			"succeeded":   "symphony.ssiag.provider.succeeded",
 			"failed":      "symphony.ssiag.provider.failed",
 			"unavailable": "symphony.ssiag.provider.unavailable",
+		},
+	},
+	ProviderBindingLifecycle: {
+		eventClass:  "symphony.ssiag.provider.binding.lifecycle",
+		operationID: "symphony.ssiag.provider.binding.change",
+		intentID:    "symphony.ssiag.provider.binding.change",
+		reasons: map[string]string{
+			"succeeded":   "symphony.ssiag.provider.binding.succeeded",
+			"failed":      "symphony.ssiag.provider.binding.failed",
+			"unavailable": "symphony.ssiag.provider.binding.unavailable",
 		},
 	},
 	CredentialRotation: {
@@ -154,30 +165,9 @@ func Open(scope ssiagpaths.Scope, topsID string) (*Producer, error) {
 }
 
 func (p *Producer) Submit(ctx context.Context, record Record) (stavprotocol.Receipt, error) {
-	contract, ok := contracts[record.Kind]
-	if !ok {
-		return stavprotocol.Receipt{}, fmt.Errorf("ssiag STAV producer: unsupported event kind")
-	}
-	reason, ok := contract.reasons[record.Outcome]
-	if !ok {
-		return stavprotocol.Receipt{}, fmt.Errorf("ssiag STAV producer: unsupported outcome for event kind")
-	}
-	candidate := stavprotocol.Candidate{
-		Actor:         stavprotocol.CandidateActor{Authentication: record.Authentication, Principal: record.Actor},
-		Configuration: record.Configuration,
-		Correlation:   stavprotocol.Correlation{CorrelationID: record.CorrelationID, RequestID: record.RequestID},
-		Operation: stavprotocol.Operation{
-			EventClass:  contract.eventClass,
-			OperationID: contract.operationID,
-			Target:      record.Target,
-		},
-		Redaction: stavprotocol.Redaction{Classification: record.Classification},
-		Result:    stavprotocol.Result{IntentID: contract.intentID, Outcome: record.Outcome, ReasonCode: reason},
-		Schema:    stavprotocol.SchemaCandidate,
-		Topology:  stavprotocol.Topology{TOPSID: p.topsID, TROG: record.TROG},
-	}
-	if err := candidate.Validate(); err != nil {
-		return stavprotocol.Receipt{}, fmt.Errorf("ssiag STAV producer: invalid safe record: %w", err)
+	candidate, err := candidateForRecord(p.topsID, record)
+	if err != nil {
+		return stavprotocol.Receipt{}, err
 	}
 	response, err := p.transport.Do(ctx, stavprotocol.LocalRequest{
 		Candidate: &candidate,
@@ -198,7 +188,51 @@ func (p *Producer) Submit(ctx context.Context, record Record) (stavprotocol.Rece
 		}
 		return stavprotocol.Receipt{}, fmt.Errorf("ssiag STAV producer: append rejected: %s", response.ReasonCode)
 	}
+	candidateDigest, err := stavprotocol.CandidateDigest(candidate)
+	if err != nil || response.Receipt.CandidateDigest != candidateDigest {
+		return stavprotocol.Receipt{}, fmt.Errorf("ssiag STAV producer: receipt candidate binding mismatch")
+	}
 	return *response.Receipt, nil
+}
+
+// CandidateDigest deterministically derives the exact safe candidate identity
+// before submission so the binding transaction can independently bind a
+// committed receipt to the candidate it asked the append authority to store.
+func CandidateDigest(topsID string, record Record) (string, error) {
+	candidate, err := candidateForRecord(topsID, record)
+	if err != nil {
+		return "", err
+	}
+	return stavprotocol.CandidateDigest(candidate)
+}
+
+func candidateForRecord(topsID string, record Record) (stavprotocol.Candidate, error) {
+	contract, ok := contracts[record.Kind]
+	if !ok {
+		return stavprotocol.Candidate{}, fmt.Errorf("ssiag STAV producer: unsupported event kind")
+	}
+	reason, ok := contract.reasons[record.Outcome]
+	if !ok {
+		return stavprotocol.Candidate{}, fmt.Errorf("ssiag STAV producer: unsupported outcome for event kind")
+	}
+	candidate := stavprotocol.Candidate{
+		Actor:         stavprotocol.CandidateActor{Authentication: record.Authentication, Principal: record.Actor},
+		Configuration: record.Configuration,
+		Correlation:   stavprotocol.Correlation{CorrelationID: record.CorrelationID, RequestID: record.RequestID},
+		Operation: stavprotocol.Operation{
+			EventClass:  contract.eventClass,
+			OperationID: contract.operationID,
+			Target:      record.Target,
+		},
+		Redaction: stavprotocol.Redaction{Classification: record.Classification},
+		Result:    stavprotocol.Result{IntentID: contract.intentID, Outcome: record.Outcome, ReasonCode: reason},
+		Schema:    stavprotocol.SchemaCandidate,
+		Topology:  stavprotocol.Topology{TOPSID: topsID, TROG: record.TROG},
+	}
+	if err := candidate.Validate(); err != nil {
+		return stavprotocol.Candidate{}, fmt.Errorf("ssiag STAV producer: invalid safe record: %w", err)
+	}
+	return candidate, nil
 }
 
 func configPath(scope ssiagpaths.Scope, topsID string) (string, error) {

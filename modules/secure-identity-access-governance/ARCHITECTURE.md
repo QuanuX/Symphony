@@ -85,7 +85,7 @@ The lifecycle engine observes offline, plans against a full stable state digest,
 
 ### Decision Packages
 
-`internal/identity`, `internal/policy`, and `internal/credential` keep proof summaries, subjects, deny-by-default decisions, references, leases, and operations separate. The policy package implements exact-grant audited authorization and supports atomic replacement of one complete effective snapshot. `internal/policyadmin` owns the protected config-or-overlay state, proposal/apply/recovery state machine, CAS, durable attempt journal, and no-follow atomic storage. Credential, lease, provider, general safeguard, and canonical-apply types remain scaffolding or disabled.
+`internal/identity`, `internal/policy`, and `internal/credential` keep proof summaries, subjects, deny-by-default decisions, references, leases, and operations separate. `internal/policyadmin` owns protected policy mutation. `internal/provider` owns exact metadata trust plus protected provider inventory and binding lifecycle. Credential, lease, operational-provider, general-safeguard, and canonical-apply types remain scaffolding or disabled.
 
 ### Provider Registry
 
@@ -106,11 +106,11 @@ The planned sequence is macOS Keychain, Linux Secret Service, an explicit headle
 
 ### qxctl to SSIAG
 
-The socket is local and permission-restricted, and every accepted connection is authenticated using kernel-attested Unix-socket peer credentials. Explicit per-TOPS UID/GID mappings resolve canonical subjects; absent or ambiguous mappings cannot yield mutation authority. The service verifies its configured process identity before runtime mutation, while qxctl and the self-client verify the configured kernel-attested server identity before application exchange. Permissions remain defense in depth. Status and provider metadata are the only enabled operations for every caller. Future administrative change separates proposal from apply. Apply still waits for a mapped subject, effective target-host permission, replay protection, idempotency, proposal and expected-state binding, caller-neutral safeguards, and the applicable STAV or audit-deferred recovery contract. Caller type is not evaluated.
+The socket is local and permission-restricted, and every accepted connection is authenticated using kernel-attested Unix-socket peer credentials. Status and inventory are safe inspection. Provider-binding plan, apply, apply-status, and recovery require either kernel-proven target-host ownership or an exact current grant. Apply uses exact CAS, independently re-verifies the target adapter, requires a committed STAV receipt, and never evaluates caller type.
 
 ### SSIAG to Adapter
 
-The protected per-TOPS configuration tree contains at most one `provider-trust/<provider_name>.json` `provider-executable-trust.v1` file per safe provider token; filename and object identity must agree. It is the externally administered, exact-version binding for both processes: TOPS/scope, adapter path/version/protocol/install and executable digests/ownership/mode/signing identity, and foundation path/install and executable digests/ownership/signing identity. Absence is `unbound`. Installed-directory discovery, newest-version selection, and fallback are never authority. A future qxctl binding mutation route must pass its own permission, expected-state, audit, and recovery gate.
+The protected Phase 9 `provider-trust/<provider_name>.json` file remains immutable bootstrap/legacy evidence. Managed lifecycle state is separate under `StateDir/provider-bindings/<provider_name>/`. Inventory inspects only admitted installation roots, pairs each adapter with the executing foundation, and exposes a content-addressed opaque ID. It never selects newest or follows fallback. State retains one active ID and one predecessor; rollback is explicit. Changed apply binds its initiating safe audit identity and advances a fsynced `prepared -> candidate_verified -> audited -> state -> committed -> result -> cleanup` durability sequence. Every still-present attempt remains recovery-required, while the latest fully completed result stays queryable after journal cleanup. Offline recovery holds the same persistent socket lease as the service, so pathname removal cannot counterfeit stopped-service proof.
 
 Provider v1 is one process per exchange: one strict JSON request and one strict JSON response, each at most 65,536 bytes, with a five-second default and thirty-second maximum timeout. Request, correlation, TOPS, provider, adapter, operation, deadline, and foundation evidence are exact response bindings. The foundation verifies the configured adapter before launch. The adapter independently observes its parent executable and installed receipt/signature and compares those facts to the request; a successful response is not mutual trust unless `handshake.foundation_trust.verified` is true and all evidence matches. The invocation context closes pipes, terminates, and reaps on cancellation; no persistent cancellation frame exists because there is no persistent session.
 
@@ -134,9 +134,11 @@ qxctl ssiag providers --tops-id UUID [--scope user|system] [--json]
 qxctl ssiag doctor --tops-id UUID [--scope user|system]
 qxctl ssiag provider show PROVIDER --tops-id UUID [--scope user|system] [--json]
 qxctl ssiag provider verify PROVIDER --tops-id UUID [--scope user|system] --authority-basis host_owner|granted_permission [--json]
+qxctl ssiag provider installations PROVIDER --tops-id UUID [--scope user|system] [--json]
+qxctl ssiag provider binding status|plan|apply|apply-status|recover PROVIDER ...
 ```
 
-qxctl is provider-neutral. Cobra owns its command grammar and tightly bounded private Viper instances bind only explicitly declared command configuration; SSIAG/STAV trust loading remains in dedicated cgo-free clients. It uses the authority-free first-party STAV protocol kernel only for STAV contract mechanics. It verifies status and trust responses are for the requested TOPS. Provider `show` returns the current safe snapshot and `verify` requests a fresh foundation-owned check; neither invokes a provider operation nor enables operational access. qxctl must not bypass SSIAG, accept secret flags, call Keychain APIs, mutate provider bindings, edit STAV files, or own schemas.
+qxctl is provider-neutral. Cobra/Viper owns stable grammar; SSIAG owns schemas, installation observation, dependency order, exact selection, provider execution, state, audit, and recovery. qxctl accepts only SSIAG-issued opaque installation IDs and exact plan/state evidence. It never accepts adapter paths, raw versions, receipt/executable overrides, secrets, or operational enablement, and never edits STAV.
 
 For foundational convergence, qxctl executes the installed adapter's exact receipt-bound `foundation-lifecycle` entry point and the engine operation IDs `engop:symphony:ssiag.{enrollment|supervisor}.{observe|plan|apply|apply-status|recover}`. The adapter is the protocol authority for its native mutations; qxctl supplies intent and CAS evidence. Purge remains an explicit native-only operation in v1.
 

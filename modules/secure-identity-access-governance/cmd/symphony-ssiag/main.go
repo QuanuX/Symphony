@@ -12,6 +12,8 @@ import (
 	"syscall"
 	"time"
 
+	"golang.org/x/sys/unix"
+
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/client"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/foundationlifecycle"
@@ -63,10 +65,151 @@ func run(args []string) error {
 		return runSupervisor(args[1:])
 	case "foundation-lifecycle":
 		return runFoundationLifecycle(args[1:])
+	case "provider-binding-recover":
+		return runProviderBindingRecover(args[1:])
 	case "package":
 		return runPackage(args[1:])
 	default:
 		return fmt.Errorf("unknown command %q", args[0])
+	}
+}
+
+func runProviderBindingRecover(args []string) error {
+	set := flag.NewFlagSet("provider-binding-recover", flag.ContinueOnError)
+	scopeValue := set.String("scope", "user", "installation scope: user or system")
+	topsIDValue := set.String("tops-id", "", "immutable TOPS UUID")
+	providerName := set.String("provider", "", "configured provider name")
+	expectedStateDigest := set.String("expected-state-digest", "", "exact binding state digest, or absent")
+	reason := set.String("reason", "", "bounded administrative recovery reason")
+	jsonOutput := set.Bool("json", false, "emit JSON")
+	if err := set.Parse(args); err != nil {
+		return err
+	}
+	if set.NArg() != 0 || *providerName == "" || *expectedStateDigest == "" || *reason == "" {
+		return fmt.Errorf("provider-binding-recover requires --provider, --expected-state-digest, and --reason")
+	}
+	scope, topsID, layout, err := resolveInstance(*scopeValue, *topsIDValue)
+	if err != nil {
+		return err
+	}
+	executable, err := os.Executable()
+	if err != nil {
+		return fmt.Errorf("resolve running SSIAG foundation: %w", err)
+	}
+	if _, installed, err := packageinstall.InspectExecutable(executable); err != nil || !installed {
+		if err == nil {
+			err = fmt.Errorf("running foundation is not an immutable receipt-v2 installation")
+		}
+		return fmt.Errorf("offline provider binding recovery requires receipt-bound SSIAG: %w", err)
+	}
+	cfg, err := config.LoadTrusted(layout.ConfigFile, scope)
+	if err != nil {
+		return fmt.Errorf("load enrolled TOPS configuration: %w", err)
+	}
+	if cfg.TOPS.ID != topsID || cfg.Mode != string(scope) || cfg.Authentication == nil || cfg.Authentication.Service == nil ||
+		cfg.Authentication.Service.UID == nil || cfg.Authentication.Service.GID == nil {
+		return fmt.Errorf("offline provider binding recovery requires the enrolled target-host service identity")
+	}
+	_, dropRequired, allowed := offlineRecoveryAuthority(scope, *cfg.Authentication.Service.UID, *cfg.Authentication.Service.GID, uint32(os.Geteuid()), uint32(os.Getegid()))
+	if !allowed {
+		return fmt.Errorf("offline provider binding recovery requires target-host ownership and the enrolled service identity")
+	}
+	if dropRequired {
+		if err := unix.Setgroups([]int{}); err != nil {
+			return fmt.Errorf("clear supplementary groups for offline provider binding recovery: %w", err)
+		}
+		if err := unix.Setgid(int(*cfg.Authentication.Service.GID)); err != nil {
+			return fmt.Errorf("enter enrolled SSIAG service group: %w", err)
+		}
+		if err := unix.Setuid(int(*cfg.Authentication.Service.UID)); err != nil {
+			return fmt.Errorf("enter enrolled SSIAG service identity: %w", err)
+		}
+		if uint32(os.Geteuid()) != *cfg.Authentication.Service.UID || uint32(os.Getegid()) != *cfg.Authentication.Service.GID {
+			return fmt.Errorf("offline provider binding recovery privilege transition did not converge")
+		}
+	}
+	serviceLease, err := server.AcquireSocketLifecycleLease(layout.Socket)
+	if err != nil {
+		return fmt.Errorf("offline provider binding recovery requires exclusive stopped-service ownership: %w", err)
+	}
+	defer serviceLease.Close()
+	if _, err := os.Lstat(layout.Socket); err == nil {
+		return fmt.Errorf("offline provider binding recovery requires the SSIAG service socket to be absent")
+	} else if !os.IsNotExist(err) {
+		return fmt.Errorf("inspect SSIAG service socket: %w", err)
+	}
+	registry, err := provider.New(cfg.Providers)
+	if err != nil {
+		return err
+	}
+	trust, err := provider.NewTrustManager(scope, layout, registry)
+	if err != nil {
+		return fmt.Errorf("initialize provider trust: %w", err)
+	}
+	bindings, err := provider.NewBindingManager(scope, layout, registry, trust)
+	if err != nil {
+		return fmt.Errorf("initialize provider binding recovery: %w", err)
+	}
+	attempt, found, err := bindings.Pending(*providerName, provider.ProviderBindingRecoveryRequest{
+		ExpectedStateDigest: *expectedStateDigest, Reason: *reason,
+	})
+	if !found {
+		return fmt.Errorf("provider %q is not declared", *providerName)
+	}
+	if err != nil {
+		return err
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer cancel()
+	attempt, err = bindings.VerifyCandidate(ctx, attempt)
+	if err != nil {
+		return err
+	}
+	if attempt.Stage == "candidate_verified" {
+		audit, err := stavproducer.Open(scope, topsID)
+		if err != nil {
+			return fmt.Errorf("open required STAV append authority: %w", err)
+		}
+		previousDigest, newDigest, err := bindings.AuditDigests(attempt)
+		if err != nil {
+			return err
+		}
+		record := server.ProviderBindingAuditRecord(attempt, previousDigest, newDigest)
+		expectedCandidateDigest, err := stavproducer.CandidateDigest(attempt.TOPSID, record)
+		if err != nil {
+			return err
+		}
+		receipt, err := audit.Submit(ctx, record)
+		if err != nil {
+			return err
+		}
+		attempt, err = bindings.MarkAudited(attempt.ProviderName, attempt.OperationID, expectedCandidateDigest, receipt)
+		if err != nil {
+			return err
+		}
+	}
+	result, err := bindings.Commit(attempt.ProviderName, attempt.OperationID, true)
+	if err != nil {
+		return err
+	}
+	if *jsonOutput {
+		return printJSON(result)
+	}
+	fmt.Printf("recovered SSIAG provider binding provider=%s operation_id=%s state=%s generation=%d digest=%s\n", result.ProviderName, result.OperationID, result.BindingState, result.Generation, result.StateDigest)
+	return nil
+}
+
+func offlineRecoveryAuthority(scope ssiagpaths.Scope, serviceUID, serviceGID, effectiveUID, effectiveGID uint32) (uint32, bool, bool) {
+	switch scope {
+	case ssiagpaths.ScopeUser:
+		return effectiveUID, false, effectiveUID == serviceUID && effectiveGID == serviceGID
+	case ssiagpaths.ScopeSystem:
+		if effectiveUID != 0 {
+			return 0, false, false
+		}
+		return 0, effectiveUID != serviceUID || effectiveGID != serviceGID, true
+	default:
+		return 0, false, false
 	}
 }
 
@@ -122,6 +265,10 @@ func runServe(args []string) error {
 	if err != nil {
 		return fmt.Errorf("initialize SSIAG provider trust: %w", err)
 	}
+	providerBindings, err := provider.NewBindingManager(scope, layout, registry, providerTrust)
+	if err != nil {
+		return fmt.Errorf("initialize SSIAG provider binding lifecycle: %w", err)
+	}
 	var audit *stavproducer.Producer
 	audit, err = stavproducer.Open(scope, topsID)
 	if err != nil {
@@ -132,7 +279,7 @@ func runServe(args []string) error {
 	if err != nil {
 		return fmt.Errorf("open protected SSIAG policy state: %w", err)
 	}
-	ssiagServer, err := server.NewWithPolicyAdministrationAndProviderTrust(cfg, registry, audit, policyManager, providerTrust)
+	ssiagServer, err := server.NewWithPolicyAdministrationProviderTrustAndBindings(cfg, registry, audit, policyManager, providerTrust, providerBindings)
 	if err != nil {
 		return err
 	}
@@ -552,6 +699,7 @@ func printUsage() {
 	fmt.Println("  unenroll    Remove one TOPS enrollment; preserve data unless --purge")
 	fmt.Println("  supervisor  Install/uninstall one TOPS native liveness service")
 	fmt.Println("  foundation-lifecycle  Run the bounded module-owned machine lifecycle adapter")
+	fmt.Println("  provider-binding-recover  Resume one receipt-bound offline provider-binding attempt")
 	fmt.Println("  package     Install/uninstall one immutable receipt-v2 adapter package")
 	fmt.Println("  serve       Run the local safe-metadata and authorization SSIAG API for one TOPS")
 	fmt.Println("  status      Read safe SSIAG status for one TOPS")

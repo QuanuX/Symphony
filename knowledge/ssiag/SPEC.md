@@ -56,6 +56,8 @@ The transport carries only safe metadata. Arguments, environment variables, logs
 
 qxctl MAY query status and safe provider descriptors and MAY request an exact authorization decision through `POST /v1/authorization/decisions`. The provider-trust surface is read-only with respect to provider operation: `GET /v1/provider-trust/<provider_name>` returns a validated snapshot, while `POST /v1/provider-trust/<provider_name>/verifications` accepts the closed trust-verification request and performs a fresh safe verification. Both return the exact `provider-trust-result.v1` shape, report all operational flags false, and expose no paths, raw native errors, signing payloads, or secrets. Administrative change MUST separate `propose` from `apply`. The implemented local policy surface uses `GET /v1/policy/status`, `POST /v1/policy/proposals`, `POST /v1/policy/apply`, and `POST /v1/policy/recover`. Apply is local-only in v1 and requires a kernel-authenticated subject, effective target-host permission, request and correlation identifiers, TOPS binding, expiry, idempotent proposal identity, proposal digest, exact expected policy digest, and committed safe STAV evidence before mutation.
 
+The provider-binding surface is governed in full by `knowledge/ssiag/PROVIDER-LIFECYCLE.md`. It exposes exact protected inventory, status, plan, apply, apply-status, and recovery routes without enabling any provider operation. It never chooses a newest installation. Binding apply uses the exact plan and expected state digests, durably binds the initiating safe audit identity, re-verifies immutable candidate evidence, requires the distinct committed STAV binding-lifecycle receipt, changes state only while an audited attempt remains recoverable, and advances durable attempts only through `prepared -> candidate_verified -> audited -> committed`. All binding protocols report operational access, provider operations, and secret delivery disabled.
+
 The canonical authorization and lifecycle-grant planning schemas are:
 
 - `knowledge/ssiag/schemas/v1/authorization-request.schema.json`;
@@ -68,7 +70,11 @@ The canonical authorization and lifecycle-grant planning schemas are:
 - `knowledge/ssiag/schemas/v1/policy-state.schema.json` and `policy-attempt.schema.json`;
 - `knowledge/ssiag/schemas/v1/provider-handshake.schema.json`, `provider-control-request.schema.json`, and `provider-control-response.schema.json`;
 - `knowledge/ssiag/schemas/v1/provider-executable-trust.schema.json`, `provider-trust-verification-request.schema.json`, and `provider-trust-result.schema.json`;
-- `knowledge/ssiag/schemas/v1/provider-one-shot-channel.schema.json`.
+- `knowledge/ssiag/schemas/v1/provider-one-shot-channel.schema.json`;
+- `knowledge/ssiag/schemas/v1/provider-installation-inventory.schema.json` and `provider-binding-status.schema.json`;
+- `knowledge/ssiag/schemas/v1/provider-binding-plan-request.schema.json`, `provider-binding-plan.schema.json`, and `provider-binding-apply-request.schema.json`;
+- `knowledge/ssiag/schemas/v1/provider-binding-recovery-request.schema.json` and `provider-binding-result.schema.json`;
+- `knowledge/ssiag/schemas/v1/provider-binding-state.schema.json` and `provider-binding-attempt.schema.json`.
 
 The enrolled `symphony.ssiag.config.v1` file remains immutable during local policy administration. The effective policy is either that config policy or a protected per-TOPS state overlay. Overlay state is owner-controlled, no-follow, bounded, generation-counted, digest-bound to the enrolled config, and replaced atomically under an exclusive persistent lock. A reset writes a generation-preserving `source: config` state rather than deleting history. Older SSIAG binaries ignore the separate overlay and therefore fall back to the enrolled deny-by-default policy; they cannot silently interpret new state as broader authority.
 
@@ -132,7 +138,9 @@ The first operational macOS Keychain topology is per-user and session-aware. Sys
 
 ## Provider Trust and Secret Delivery
 
-Before operational behavior, the Go foundation MUST load exactly one `provider-executable-trust.v1` declaration from `provider-trust/<provider_name>.json` beneath the protected per-TOPS SSIAG configuration tree, where `provider_name` is a safe token and must equal the object's provider name. That externally administered declaration binds the TOPS and scope to one exact adapter path/version/protocol, installation and executable digests, ownership/mode/signing identity, and one exact foundation path, installation/executable digests, ownership, and signing identity. Absence yields `unbound`. Automatic newest-version selection, directory scanning as authority, and fallback are prohibited. Future qxctl mutation of this binding is a separate permission, compare-and-swap, audit, and recovery gate.
+The legacy trust-inspection surface loads exactly one `provider-executable-trust.v1` declaration from `provider-trust/<provider_name>.json` beneath the protected per-TOPS SSIAG configuration tree, where `provider_name` is a safe token and must equal the object's provider name. That compatibility declaration binds the TOPS and scope to one exact adapter path/version/protocol, installation and executable digests, ownership/mode/signing identity, and one exact foundation path, installation/executable digests, ownership, and signing identity. Absence yields `unbound`. It is retained for exact provider-trust inspection and is not the mutable provider-binding state.
+
+Protected binding administration is governed separately by `knowledge/ssiag/PROVIDER-LIFECYCLE.md`. The foundation inventories only admitted receipt-v2 foundation/adapter pairs, identifies an exact pair by opaque content digest, and stores one current plus one predecessor binding under protected per-TOPS state. qxctl provides discovery, status, plan, apply, attempt-status, and recovery grammar, while SSIAG owns candidate verification, expected-state compare-and-swap, the distinct safe STAV event, durable attempt stages, and commit. The host-owner-only installed-foundation recovery command uses the same SSIAG recovery operation, requires the live socket to be absent, and does not create an alternate state or audit owner. Automatic newest-version selection, directory scanning as authority, path disclosure, implicit fallback, and time-based recovery are prohibited.
 
 The Go foundation MUST verify the adapter's allowlisted absolute path without symlink traversal, ownership, permissions, installed digest or ratified signature identity, protocol identity, and version before process creation. The macOS Swift adapter MUST independently observe the invoking SSIAG parent process and installed receipt or signature, compare the path and exact version evidence with the control request, and report its result in `handshake.foundation_trust`. Caller-provided evidence is input to comparison, never proof. Unsigned or development identities remain metadata-only unless an explicit development policy says otherwise.
 
@@ -150,7 +158,7 @@ Where it meets the use case, non-exportable key creation and sign/assert/decrypt
 
 ## STAV Projection
 
-SSIAG MAY submit safe metadata for authentication and policy results, provider-operation lifecycle, credential rotation, enrollment, provider unavailability, and lease lifecycle. It MUST NOT submit proofs, assertions, tokens, credential values, provider payloads, secret-bearing errors, or routine heartbeat events.
+SSIAG MAY submit safe metadata for authentication and policy results, provider-operation lifecycle, provider-binding lifecycle, credential rotation, enrollment, provider unavailability, and lease lifecycle. Binding mutation uses event class `symphony.ssiag.provider.binding.lifecycle` with operation and intent `symphony.ssiag.provider.binding.change`; this pair is distinct from provider execution and MUST appear in the SSIAG producer grant. It MUST NOT submit proofs, assertions, tokens, credential values, provider payloads, secret-bearing errors, or routine heartbeat events.
 
 The SSIAG v1 producer vocabulary is closed to the following event and operation pairs:
 

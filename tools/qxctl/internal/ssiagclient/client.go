@@ -602,10 +602,24 @@ func (c *Client) Providers(ctx context.Context) (ProvidersResponse, error) {
 }
 
 func ValidateProviderName(value string) error {
-	if !validProviderToken(value) || value == "not_applicable" {
-		return fmt.Errorf("provider name must be a token of at most 256 characters")
+	if !validProviderName(value) || value == "not_applicable" {
+		return fmt.Errorf("provider name must be an alphanumeric, dot, underscore, or hyphen token of at most 128 characters")
 	}
 	return nil
+}
+
+func validProviderName(value string) bool {
+	if value == "" || len(value) > 128 {
+		return false
+	}
+	for _, character := range value {
+		if (character >= 'a' && character <= 'z') || (character >= 'A' && character <= 'Z') ||
+			(character >= '0' && character <= '9') || strings.ContainsRune("._-", character) {
+			continue
+		}
+		return false
+	}
+	return true
 }
 
 func (c *Client) ProviderTrust(ctx context.Context, providerName string) (ProviderTrustResult, error) {

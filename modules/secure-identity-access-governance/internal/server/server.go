@@ -47,6 +47,7 @@ type Server struct {
 	policy    *policy.Engine
 	admin     *policyadmin.Manager
 	providers *provider.TrustManager
+	bindings  *provider.BindingManager
 	audit     auditSink
 	now       func() time.Time
 }
@@ -75,6 +76,18 @@ func NewWithPolicyAdministrationAndProviderTrust(cfg config.Config, registry *pr
 		return nil, err
 	}
 	result.providers = providers
+	return result, nil
+}
+
+func NewWithPolicyAdministrationProviderTrustAndBindings(cfg config.Config, registry *provider.Registry, audit auditSink, admin *policyadmin.Manager, providers *provider.TrustManager, bindings *provider.BindingManager) (*Server, error) {
+	if bindings == nil {
+		return nil, fmt.Errorf("provider binding manager is required")
+	}
+	result, err := NewWithPolicyAdministrationAndProviderTrust(cfg, registry, audit, admin, providers)
+	if err != nil {
+		return nil, err
+	}
+	result.bindings = bindings
 	return result, nil
 }
 
@@ -134,7 +147,249 @@ func (s *Server) Handler() http.Handler {
 	if s.providers != nil {
 		mux.HandleFunc("/v1/provider-trust/", s.handleProviderTrust)
 	}
+	if s.bindings != nil {
+		mux.HandleFunc("/v1/provider-installations/", s.handleProviderInstallations)
+		mux.HandleFunc("/v1/provider-bindings/", s.handleProviderBindings)
+	}
 	return s.requireAuthenticatedPeer(mux)
+}
+
+func (s *Server) handleProviderInstallations(writer http.ResponseWriter, request *http.Request) {
+	providerName := strings.TrimPrefix(request.URL.Path, "/v1/provider-installations/")
+	if providerName == "" || strings.Contains(providerName, "/") {
+		writeError(writer, http.StatusBadRequest, "provider_binding.request_invalid", "provider name is invalid")
+		return
+	}
+	if request.Method != http.MethodGet {
+		writeError(writer, http.StatusMethodNotAllowed, "request.method_not_allowed", "method not allowed")
+		return
+	}
+	result, found, err := s.bindings.Inventory(providerName)
+	if !found {
+		writeError(writer, http.StatusNotFound, "provider.not_found", "provider is not declared")
+		return
+	}
+	if err != nil {
+		writeProviderBindingError(writer, err)
+		return
+	}
+	writeJSON(writer, http.StatusOK, result)
+}
+
+func (s *Server) handleProviderBindings(writer http.ResponseWriter, request *http.Request) {
+	remainder := strings.TrimPrefix(request.URL.Path, "/v1/provider-bindings/")
+	parts := strings.Split(remainder, "/")
+	if len(parts) == 0 || parts[0] == "" {
+		writeError(writer, http.StatusBadRequest, "provider_binding.request_invalid", "provider binding route is invalid")
+		return
+	}
+	providerName := parts[0]
+	resource := "symphony.ssiag.provider-binding:" + s.config.TOPS.ID + ":" + providerName
+	if len(parts) == 1 {
+		if request.Method != http.MethodGet {
+			writeError(writer, http.StatusMethodNotAllowed, "request.method_not_allowed", "method not allowed")
+			return
+		}
+		result, found, err := s.bindings.Status(providerName)
+		if !found {
+			writeError(writer, http.StatusNotFound, "provider.not_found", "provider is not declared")
+			return
+		}
+		if err != nil {
+			writeProviderBindingError(writer, err)
+			return
+		}
+		writeJSON(writer, http.StatusOK, result)
+		return
+	}
+	if len(parts) == 2 && parts[1] == "plans" {
+		s.handleProviderBindingPlan(writer, request, providerName, resource)
+		return
+	}
+	if len(parts) == 2 && parts[1] == "apply" {
+		s.handleProviderBindingApply(writer, request, providerName, resource)
+		return
+	}
+	if len(parts) == 2 && parts[1] == "recover" {
+		s.handleProviderBindingRecover(writer, request, providerName, resource)
+		return
+	}
+	if len(parts) == 3 && parts[1] == "attempts" {
+		s.handleProviderBindingAttemptStatus(writer, request, providerName, parts[2], resource)
+		return
+	}
+	writeError(writer, http.StatusNotFound, "request.route_not_found", "provider binding route is not found")
+}
+
+func (s *Server) handleProviderBindingPlan(writer http.ResponseWriter, request *http.Request, providerName, resource string) {
+	if request.Method != http.MethodPost {
+		writeError(writer, http.StatusMethodNotAllowed, "request.method_not_allowed", "method not allowed")
+		return
+	}
+	if _, err := s.administrator(request.Context(), "symphony.ssiag.provider.binding.plan", resource); err != nil {
+		writeError(writer, http.StatusForbidden, "provider_binding.permission_denied", "target-host authority or an exact SSIAG permission is required")
+		return
+	}
+	var candidate provider.ProviderBindingPlanRequest
+	request.Body = http.MaxBytesReader(writer, request.Body, maxProviderTrustRequestBytes)
+	if !decodeBoundedJSONExact(writer, request, &candidate, []string{"installation_id", "expected_state_digest", "reason"}) {
+		return
+	}
+	result, found, err := s.bindings.Plan(providerName, candidate)
+	if !found {
+		writeError(writer, http.StatusNotFound, "provider.not_found", "provider is not declared")
+		return
+	}
+	if err != nil {
+		writeProviderBindingError(writer, err)
+		return
+	}
+	writeJSON(writer, http.StatusOK, result)
+}
+
+func (s *Server) handleProviderBindingApply(writer http.ResponseWriter, request *http.Request, providerName, resource string) {
+	if request.Method != http.MethodPost {
+		writeError(writer, http.StatusMethodNotAllowed, "request.method_not_allowed", "method not allowed")
+		return
+	}
+	subject, err := s.administrator(request.Context(), "symphony.ssiag.provider.binding.apply", resource)
+	if err != nil {
+		writeError(writer, http.StatusForbidden, "provider_binding.permission_denied", "target-host authority or an exact SSIAG permission is required")
+		return
+	}
+	var candidate provider.ProviderBindingApplyRequest
+	request.Body = http.MaxBytesReader(writer, request.Body, maxProviderTrustRequestBytes)
+	if !decodeBoundedJSONExact(writer, request, &candidate, []string{"plan_digest", "expected_state_digest"}) {
+		return
+	}
+	attempt, found, alreadyApplied, err := s.bindings.Prepare(providerName, candidate, provider.ProviderBindingAuditIdentity{
+		ActorID: subject.ID, ActorKind: subject.Kind, AuthenticationMethod: "symphony.ssiag.local-peer",
+	})
+	if !found {
+		writeError(writer, http.StatusNotFound, "provider.not_found", "provider is not declared")
+		return
+	}
+	if err != nil {
+		writeProviderBindingError(writer, err)
+		return
+	}
+	if alreadyApplied {
+		result, err := s.bindings.NoChangeResult(providerName, attempt)
+		if err != nil {
+			writeProviderBindingError(writer, err)
+			return
+		}
+		writeJSON(writer, http.StatusOK, result)
+		return
+	}
+	result, err := s.finishProviderBinding(request.Context(), attempt, false)
+	if err != nil {
+		writeProviderBindingError(writer, err)
+		return
+	}
+	writeJSON(writer, http.StatusOK, result)
+}
+
+func (s *Server) handleProviderBindingAttemptStatus(writer http.ResponseWriter, request *http.Request, providerName, operationID, resource string) {
+	if request.Method != http.MethodGet {
+		writeError(writer, http.StatusMethodNotAllowed, "request.method_not_allowed", "method not allowed")
+		return
+	}
+	if !validCanonicalUUID(operationID) {
+		writeError(writer, http.StatusBadRequest, "provider_binding.request_invalid", "operation ID is invalid")
+		return
+	}
+	if _, err := s.administrator(request.Context(), "symphony.ssiag.provider.binding.apply-status", resource); err != nil {
+		writeError(writer, http.StatusForbidden, "provider_binding.permission_denied", "target-host authority or an exact SSIAG permission is required")
+		return
+	}
+	result, found, err := s.bindings.AttemptStatus(providerName, operationID)
+	if !found {
+		writeError(writer, http.StatusNotFound, "provider.not_found", "provider is not declared")
+		return
+	}
+	if err != nil {
+		writeProviderBindingError(writer, err)
+		return
+	}
+	writeJSON(writer, http.StatusOK, result)
+}
+
+func (s *Server) handleProviderBindingRecover(writer http.ResponseWriter, request *http.Request, providerName, resource string) {
+	if request.Method != http.MethodPost {
+		writeError(writer, http.StatusMethodNotAllowed, "request.method_not_allowed", "method not allowed")
+		return
+	}
+	_, err := s.administrator(request.Context(), "symphony.ssiag.provider.binding.recover", resource)
+	if err != nil {
+		writeError(writer, http.StatusForbidden, "provider_binding.permission_denied", "target-host authority or an exact SSIAG permission is required")
+		return
+	}
+	var candidate provider.ProviderBindingRecoveryRequest
+	request.Body = http.MaxBytesReader(writer, request.Body, maxProviderTrustRequestBytes)
+	if !decodeBoundedJSONExact(writer, request, &candidate, []string{"expected_state_digest", "reason"}) {
+		return
+	}
+	attempt, found, err := s.bindings.Pending(providerName, candidate)
+	if !found {
+		writeError(writer, http.StatusNotFound, "provider.not_found", "provider is not declared")
+		return
+	}
+	if err != nil {
+		writeProviderBindingError(writer, err)
+		return
+	}
+	result, err := s.finishProviderBinding(request.Context(), attempt, true)
+	if err != nil {
+		writeProviderBindingError(writer, err)
+		return
+	}
+	writeJSON(writer, http.StatusOK, result)
+}
+
+func (s *Server) finishProviderBinding(ctx context.Context, attempt provider.ProviderBindingAttempt, recovered bool) (provider.ProviderBindingResult, error) {
+	attempt, err := s.bindings.VerifyCandidate(ctx, attempt)
+	if err != nil {
+		return provider.ProviderBindingResult{}, err
+	}
+	if attempt.Stage == "candidate_verified" {
+		if s.audit == nil {
+			return provider.ProviderBindingResult{}, fmt.Errorf("STAV append authority is unavailable")
+		}
+		previousDigest, newDigest, err := s.bindings.AuditDigests(attempt)
+		if err != nil {
+			return provider.ProviderBindingResult{}, err
+		}
+		record := ProviderBindingAuditRecord(attempt, previousDigest, newDigest)
+		expectedCandidateDigest, err := stavproducer.CandidateDigest(attempt.TOPSID, record)
+		if err != nil {
+			return provider.ProviderBindingResult{}, err
+		}
+		receipt, err := s.audit.Submit(ctx, record)
+		if err != nil {
+			return provider.ProviderBindingResult{}, err
+		}
+		attempt, err = s.bindings.MarkAudited(attempt.ProviderName, attempt.OperationID, expectedCandidateDigest, receipt)
+		if err != nil {
+			return provider.ProviderBindingResult{}, err
+		}
+	}
+	return s.bindings.Commit(attempt.ProviderName, attempt.OperationID, recovered)
+}
+
+// ProviderBindingAuditRecord projects only the closed safe metadata envelope.
+// In particular, the administrative plan reason and all receipt/path/provider
+// payload evidence remain outside STAV and cannot propagate through recovery.
+func ProviderBindingAuditRecord(attempt provider.ProviderBindingAttempt, previousDigest, newDigest string) stavproducer.Record {
+	return stavproducer.Record{
+		Kind: stavproducer.ProviderBindingLifecycle, RequestID: attempt.OperationID, CorrelationID: attempt.OperationID,
+		Actor:          stavprotocol.SafeReference{ID: attempt.AuditIdentity.ActorID, Kind: attempt.AuditIdentity.ActorKind},
+		Authentication: stavprotocol.Authentication{MethodID: attempt.AuditIdentity.AuthenticationMethod, State: "identified"},
+		Target:         stavprotocol.SafeReference{ID: "symphony.ssiag.provider-binding:" + attempt.TOPSID + ":" + attempt.ProviderName, Kind: "symphony.ssiag.provider-binding"},
+		Outcome:        "succeeded",
+		Configuration:  stavprotocol.Configuration{PreviousDigest: previousDigest, NewDigest: newDigest, State: "digests"},
+		TROG:           stavprotocol.TROG{ReasonCode: "symphony.stav.trog.not-applicable", State: "not_applicable"}, Classification: "administrative_metadata",
+	}
 }
 
 type providerTrustVerificationRequest struct {
@@ -370,6 +625,32 @@ func (s *Server) policyAdministrator(ctx context.Context, basis, operation strin
 	return s.permissionedAdministrator(ctx, basis, operation, "symphony.ssiag.policy:"+s.config.TOPS.ID)
 }
 
+func (s *Server) administrator(ctx context.Context, operation, resource string) (identity.Subject, error) {
+	peer, err := peerauth.PeerFromContext(ctx)
+	if err != nil {
+		return identity.Subject{}, err
+	}
+	if s.isHostOwner(peer) {
+		return identity.Subject{
+			ID:   fmt.Sprintf("symphony.host.owner.uid.%d", peer.Credentials.UID),
+			Kind: "symphony.identity.host-owner", Authority: peerauth.Mechanism,
+		}, nil
+	}
+	if !peer.Mapped {
+		return identity.Subject{}, fmt.Errorf("peer lacks an exact SSIAG subject mapping")
+	}
+	now := s.now().UTC().Truncate(time.Second)
+	decision := s.policy.Evaluate(ctx, peer.Subject, model.AuthorizationRequest{
+		Schema: "symphony.ssiag.authorization-request.v1", RequestID: "ssiag-provider-binding-admin-check",
+		CorrelationID: "ssiag-provider-binding-admin-check", Operation: operation, Resource: resource,
+		Audience: "ssiag", Scope: "tops:" + s.config.TOPS.ID, RequestedAt: now, RequestedExpiresAt: now.Add(time.Minute),
+	})
+	if decision.Effect != "allow" {
+		return identity.Subject{}, fmt.Errorf("peer lacks exact provider binding administration permission")
+	}
+	return peer.Subject, nil
+}
+
 func (s *Server) permissionedAdministrator(ctx context.Context, basis, operation, resource string) (identity.Subject, error) {
 	peer, err := peerauth.PeerFromContext(ctx)
 	if err != nil {
@@ -454,6 +735,23 @@ func writePolicyAdminError(writer http.ResponseWriter, err error) {
 		writeError(writer, http.StatusNotFound, "policy.recovery_absent", err.Error())
 	default:
 		writeError(writer, http.StatusBadRequest, "policy.request_invalid", err.Error())
+	}
+}
+
+func writeProviderBindingError(writer http.ResponseWriter, err error) {
+	switch {
+	case errors.Is(err, provider.ErrBindingConflict):
+		writeError(writer, http.StatusConflict, "provider_binding.compare_and_swap_conflict", err.Error())
+	case errors.Is(err, provider.ErrBindingRecoveryRequired):
+		writeError(writer, http.StatusConflict, "provider_binding.recovery_required", err.Error())
+	case errors.Is(err, provider.ErrBindingRecoveryAbsent):
+		writeError(writer, http.StatusNotFound, "provider_binding.recovery_absent", err.Error())
+	case errors.Is(err, provider.ErrBindingInstallation):
+		writeError(writer, http.StatusConflict, "provider_binding.installation_unavailable", err.Error())
+	case strings.Contains(err.Error(), "STAV append authority") || strings.Contains(err.Error(), "submit") || strings.Contains(err.Error(), "append"):
+		writeError(writer, http.StatusServiceUnavailable, "audit.append_failed", "provider binding is durably prepared but cannot proceed until STAV audit succeeds")
+	default:
+		writeError(writer, http.StatusBadRequest, "provider_binding.request_invalid", err.Error())
 	}
 }
 
@@ -562,9 +860,10 @@ func (s *Server) Run(ctx context.Context) error {
 		},
 		ReadHeaderTimeout: 3 * time.Second,
 		ReadTimeout:       5 * time.Second,
-		// A valid provider may consume the full five-second subprocess budget.
-		// Retain a bounded two-second margin to encode and return its result.
-		WriteTimeout:   7 * time.Second,
+		// A binding mutation may consume one five-second provider handshake and
+		// one five-second STAV append. Retain a bounded two-second margin while
+		// staying inside qxctl's separate fifteen-second end-to-end budget.
+		WriteTimeout:   12 * time.Second,
 		IdleTimeout:    30 * time.Second,
 		MaxHeaderBytes: maxHeaderBytes,
 	}

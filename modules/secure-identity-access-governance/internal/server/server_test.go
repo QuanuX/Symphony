@@ -31,7 +31,43 @@ type recordingAudit struct {
 
 func (audit *recordingAudit) Submit(_ context.Context, record stavproducer.Record) (stavprotocol.Receipt, error) {
 	audit.record = record
-	return stavprotocol.Receipt{Disposition: "committed", RequestID: record.RequestID, TOPSID: testTOPSID}, nil
+	candidateDigest, err := stavproducer.CandidateDigest(testTOPSID, record)
+	if err != nil {
+		return stavprotocol.Receipt{}, err
+	}
+	return stavprotocol.Receipt{
+		CandidateDigest: candidateDigest,
+		Commit: stavprotocol.CommitResult{
+			EventDigest: "sha256:4236aee922a67725aa5b90e22e88bfcf0aa510875f03777b82e326a1ffa5eef2",
+			EventID:     "b90e1205-1b3b-4e47-9b91-1cd624cd87cd", Sequence: 1, State: "committed", Timestamp: "2026-08-14T12:00:00.000000000Z",
+		},
+		Disposition: "committed", ReasonCode: stavprotocol.ReasonReceiptCommitted, RequestID: record.RequestID,
+		Schema: stavprotocol.SchemaReceipt, TOPSID: testTOPSID,
+	}, nil
+}
+
+func TestProviderBindingAuditProjectionExcludesAdministrativeReason(t *testing.T) {
+	const marker = "token=forbidden-provider-binding-secret-marker"
+	attempt := provider.ProviderBindingAttempt{
+		OperationID: "684921d8-a8b5-49da-872b-568eb6a6dc03", TOPSID: testTOPSID, ProviderName: "native",
+		Plan: provider.ProviderBindingPlan{Reason: marker},
+		AuditIdentity: provider.ProviderBindingAuditIdentity{
+			ActorID: "symphony.host.owner.uid.501", ActorKind: "symphony.identity.host-owner", AuthenticationMethod: "symphony.ssiag.local-peer",
+		},
+	}
+	record := ProviderBindingAuditRecord(attempt,
+		"sha256:4236aee922a67725aa5b90e22e88bfcf0aa510875f03777b82e326a1ffa5eef2",
+		"sha256:5236aee922a67725aa5b90e22e88bfcf0aa510875f03777b82e326a1ffa5eef2")
+	encoded, err := json.Marshal(record)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(encoded), marker) {
+		t.Fatalf("administrative reason propagated into STAV record: %s", encoded)
+	}
+	if _, err := stavproducer.CandidateDigest(testTOPSID, record); err != nil {
+		t.Fatalf("safe provider-binding audit projection is invalid: %v", err)
+	}
 }
 
 func TestAuthorizationOverKernelAuthenticatedSocketIsAudited(t *testing.T) {
@@ -358,6 +394,150 @@ func TestProviderTrustEndpointsRemainSSIAGOwnedAndFailClosedWhenUnbound(t *testi
 	if response.StatusCode != http.StatusBadRequest {
 		cancel()
 		t.Fatalf("duplicate provider verification member was accepted: status=%d", response.StatusCode)
+	}
+	cancel()
+	if err := <-done; err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestProviderBindingRoutesAreHeadlessStrictAndIdempotent(t *testing.T) {
+	socket := shortSocketPath(t)
+	probe, err := net.Listen("unix", socket)
+	if err != nil {
+		t.Skipf("unix sockets are unavailable in this test environment: %v", err)
+	}
+	if err := probe.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Remove(socket); err != nil && !os.IsNotExist(err) {
+		t.Fatal(err)
+	}
+	uid, gid := uint32(os.Geteuid()), uint32(os.Getegid())
+	cfg := config.Config{
+		Schema: "symphony.ssiag.config.v1", Mode: "development",
+		TOPS:           config.TOPSConfig{ID: testTOPSID, Name: "Provider Binding TOPS"},
+		Listen:         config.ListenConfig{Network: "unix", Address: socket},
+		Authentication: serviceAuthentication(uid, gid),
+		Authorization:  &config.AuthorizationConfig{DefaultEffect: "deny", MaxCapabilitySeconds: 900, Grants: []config.AuthorizationGrant{}},
+		Providers:      []config.ProviderConfig{{Name: "native", Kind: "macos-keychain", Enabled: true, Capabilities: []string{"capability-discovery", "metadata"}}},
+	}
+	registry, err := provider.New(cfg.Providers)
+	if err != nil {
+		t.Fatal(err)
+	}
+	root := t.TempDir()
+	layout := ssiagpaths.InstanceLayout{
+		Scope: ssiagpaths.ScopeUser, TOPSID: testTOPSID, ProviderTrustDir: filepath.Join(root, "provider-trust"),
+		StateDir: filepath.Join(root, "state"), ProviderBindingDir: filepath.Join(root, "state", "provider-bindings"),
+	}
+	if err := os.MkdirAll(layout.ProviderTrustDir, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	providerTrust, err := provider.NewTrustManager(ssiagpaths.ScopeUser, layout, registry)
+	if err != nil {
+		t.Fatal(err)
+	}
+	bindings, err := provider.NewBindingManager(ssiagpaths.ScopeUser, layout, registry, providerTrust)
+	if err != nil {
+		t.Fatal(err)
+	}
+	policyManager, err := policyadmin.New(filepath.Join(root, "policy"), cfg, time.Now)
+	if err != nil {
+		t.Fatal(err)
+	}
+	audit := &recordingAudit{}
+	instance, err := NewWithPolicyAdministrationProviderTrustAndBindings(cfg, registry, audit, policyManager, providerTrust, bindings)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	done := make(chan error, 1)
+	go func() { done <- instance.Run(ctx) }()
+	time.Sleep(20 * time.Millisecond)
+	select {
+	case runErr := <-done:
+		t.Fatalf("provider binding server stopped before creating its socket: %v", runErr)
+	default:
+	}
+	waitForSocket(t, socket)
+	transport := &http.Transport{DialContext: func(ctx context.Context, _, _ string) (net.Conn, error) {
+		return (&net.Dialer{}).DialContext(ctx, "unix", socket)
+	}}
+	client := &http.Client{Transport: transport, Timeout: 2 * time.Second}
+
+	response, err := client.Get("http://unix/v1/provider-installations/native")
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	var inventory provider.ProviderInstallationInventory
+	if err := json.NewDecoder(response.Body).Decode(&inventory); err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	_ = response.Body.Close()
+	if response.StatusCode != http.StatusOK || len(inventory.Installations) != 0 || !inventory.ReadOnly || inventory.InventoryDigest == "" {
+		cancel()
+		t.Fatalf("unexpected empty installation inventory: status=%d result=%+v", response.StatusCode, inventory)
+	}
+	response, err = client.Get("http://unix/v1/provider-bindings/native")
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	var status provider.ProviderBindingStatus
+	if err := json.NewDecoder(response.Body).Decode(&status); err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	_ = response.Body.Close()
+	if response.StatusCode != http.StatusOK || status.StateDigest != "absent" || status.BindingState != "unbound" {
+		cancel()
+		t.Fatalf("unexpected initial binding status: status=%d result=%+v", response.StatusCode, status)
+	}
+	planPayload := []byte(`{"installation_id":"not_applicable","expected_state_digest":"absent","reason":"retain explicit unbound state"}`)
+	response, err = client.Post("http://unix/v1/provider-bindings/native/plans", "application/json", bytes.NewReader(planPayload))
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	var plan provider.ProviderBindingPlan
+	if err := json.NewDecoder(response.Body).Decode(&plan); err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	_ = response.Body.Close()
+	if response.StatusCode != http.StatusOK || plan.Changed || plan.PlanDigest == "" {
+		cancel()
+		t.Fatalf("unexpected no-op plan: status=%d result=%+v", response.StatusCode, plan)
+	}
+	applyPayload, _ := json.Marshal(provider.ProviderBindingApplyRequest{PlanDigest: plan.PlanDigest, ExpectedStateDigest: "absent"})
+	response, err = client.Post("http://unix/v1/provider-bindings/native/apply", "application/json", bytes.NewReader(applyPayload))
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	var result provider.ProviderBindingResult
+	if err := json.NewDecoder(response.Body).Decode(&result); err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	_ = response.Body.Close()
+	if response.StatusCode != http.StatusOK || result.Changed || result.StateDigest != "absent" || result.RecoveryRequired || audit.record.Kind != "" {
+		cancel()
+		t.Fatalf("no-op binding apply was not idempotent and audit-free: status=%d result=%+v audit=%+v", response.StatusCode, result, audit.record)
+	}
+	duplicate := []byte(`{"installation_id":"not_applicable","installation_id":"not_applicable","expected_state_digest":"absent","reason":"duplicate"}`)
+	response, err = client.Post("http://unix/v1/provider-bindings/native/plans", "application/json", bytes.NewReader(duplicate))
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	_ = response.Body.Close()
+	if response.StatusCode != http.StatusBadRequest {
+		cancel()
+		t.Fatalf("duplicate provider binding member was accepted: %d", response.StatusCode)
 	}
 	cancel()
 	if err := <-done; err != nil {

@@ -118,7 +118,9 @@ A future Merkle transparency projection or signed checkpoint may be derived from
 
 ## Authorized SSIAG Outcome Classes
 
-Safe metadata MAY represent authentication allowed/denied, policy allowed/denied, provider operation requested/completed, credential rotation, enrollment/re-enrollment, provider locked/unavailable, and lease issued/revoked.
+Safe metadata MAY represent authentication allowed/denied, policy allowed/denied, provider operation requested/completed, credential rotation, enrollment/re-enrollment, provider locked/unavailable, lease issued/revoked, and the distinct provider-binding lifecycle outcome defined by SSIAG.
+
+Provider binding mutation uses the exact producer pair `(symphony.ssiag.provider.binding.lifecycle, symphony.ssiag.provider.binding.change)`. It records only safe binding references plus previous/new state digests and is not a provider operation. The SSIAG producer grant MUST name this pair explicitly; qxctl does not receive producer authority.
 
 Cryptographic proofs or assertions, raw tokens, credential values, provider payloads, secret-bearing native errors, policy contents, and routine heartbeat or performance telemetry MUST NOT be recorded.
 

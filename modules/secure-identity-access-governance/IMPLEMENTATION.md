@@ -204,7 +204,28 @@ Exit gate: local policy apply is caller-neutral, target-host-permission-backed, 
 
 Exit gate: achieved for the exact macOS metadata adapter. An incompatible or compromised-looking adapter fails closed without fallback or secret-bearing diagnostics; operational Keychain and secret-channel behavior remain later gates.
 
-## Phase 10 — Enable the Ratified Per-User macOS Keychain Profile
+## Phase 10A — Exact Provider Binding Lifecycle (implemented, metadata only)
+
+1. Inventory receipt-v2 adapters only from admitted scope roots and legacy bootstrap evidence; pair each with the executing receipt-bound foundation and emit only opaque exact-pair IDs.
+2. Keep managed state under the service-owned per-TOPS state root, separate from immutable Phase 9 configuration evidence.
+3. Expose status, plan, apply, completed apply-status, and recovery through SSIAG; qxctl remains the preferred headless caller and never receives paths or selection authority.
+4. Use exact state/plan CAS, one active ID, one predecessor, explicit forward/reverse graph actions, and no newest or fallback semantics.
+5. Persist `prepared` with the initiating safe audit identity, independently execute the metadata handshake before `candidate_verified`, require the distinct committed STAV lifecycle receipt before `audited`, statically recheck the exact candidate, replace state while the attempt remains recoverable, persist `committed`, save the completed result, then remove the attempt.
+6. Normalize initial `absent` into the deterministic provider-binding absence digest only for STAV's required previous-digest field; persisted state continues to report `absent` truthfully.
+7. Provide a narrow native offline recovery path requiring an immutable receipt-v2 foundation, target-host ownership, entry into the enrolled service UID/GID, exclusive ownership of the persistent socket-lifecycle lease, an absent service socket, exact pending evidence, and normal idempotent STAV commitment using the original audit identity.
+8. Keep `operational_access_enabled`, `provider_operations_enabled`, and `secret_channel_enabled` false throughout.
+
+Verification:
+
+```bash
+go test ./internal/provider ./internal/server ./internal/stavproducer ./cmd/symphony-ssiag
+go test ./... # SSIAG and qxctl modules
+CGO_ENABLED=0 go build -trimpath ./cmd/symphony-ssiag
+```
+
+Exit gate: exact metadata-provider versions can be installed in either order, explicitly docked, undocked, rolled backward, queried after completion, and recovered after interruption without path leakage, recency guesses, fallback, unaudited mutation, or Keychain access.
+
+## Phase 10B–10E — Enable the Ratified Per-User macOS Keychain Profile (future gates)
 
 Ratified architecture: per-user and session-aware operation; no system/headless login-Keychain access; TOPS-scoped non-synchronizing items by default; most restrictive usable accessibility/user presence; preference for non-exportable key operations before general export.
 

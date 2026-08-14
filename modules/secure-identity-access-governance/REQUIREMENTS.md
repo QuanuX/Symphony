@@ -72,6 +72,11 @@ Architect-ratified architecture with phased implementation requirements. “Must
 - **SSIAG-F-050**: Each TOPS/provider pair may bind at most one exact adapter and foundation version through `provider-trust/<provider_name>.json`; absent binding state is `unbound`.
 - **SSIAG-F-051**: qxctl provider trust `show` and `verify` must consume only the closed request/result contracts and must not mutate a binding, invoke a provider operation, or enable operational access.
 - **SSIAG-F-052**: Side-by-side provider majors and versions may coexist, but selection must use an exact protected binding; filesystem order, semantic newest, and fallback selection are prohibited.
+- **SSIAG-F-053**: Provider inventory must be bounded to admitted roots and expose opaque content-addressed exact foundation/adapter pair IDs without paths or selection side effects.
+- **SSIAG-F-054**: Binding plan/apply must use exact state and plan digests, durably preserve the initiating safe audit identity, independently re-verify the selected candidate, commit distinct safe STAV evidence idempotently, replace state only while the attempt remains recoverable, and advance only `prepared`, `candidate_verified`, `audited`, then `committed`.
+- **SSIAG-F-055**: Managed binding state must retain at most one active and one predecessor ID; reverse traversal is explicit and neither predecessor nor compatibility is automatic fallback.
+- **SSIAG-F-056**: Completed binding operations must remain durably queryable after attempt cleanup, and interrupted stages must recover only their uniquely linked successor.
+- **SSIAG-F-057**: Native offline recovery must require the receipt-v2 foundation, target-host ownership, entry into the enrolled service identity, exclusive ownership of the service's persistent socket-lifecycle lease, an absent socket, exact pending evidence, and normal STAV commitment; it is not a qxctl bypass.
 
 ### Credential Use
 - **SSIAG-F-040**: Credential references must be opaque outside the SSIAG/provider boundary.
@@ -154,10 +159,10 @@ Architect-ratified architecture with phased implementation requirements. “Must
 
 ## Acceptance Criteria for This Foundation
 - All Go packages compile and tests pass under the declared Go baseline.
-- The local server exposes only status, provider metadata, and the exact audited authorization-decision endpoint.
+- The local server exposes status, safe provider metadata, audited authorization/policy administration, and the exact metadata-only provider installation/binding lifecycle.
 - No operational credential provider exists.
 - User install is idempotent, uninstall is digest-safe, and multiple TOPS enrollments remain isolated.
-- qxctl can report SSIAG status/providers and request exact knowledge-session authorization through the authenticated local socket.
+- qxctl can report SSIAG status/providers and administer all six provider installation/binding routes through the authenticated local socket without receiving provider paths or secrets.
 - Every accepted Darwin/Linux connection must carry kernel peer credentials before request dispatch.
 - Exact UID/GID subject mappings must validate as one-to-one; an unmapped peer cannot resolve a normal authorization subject. The sole exception is the deterministic subject SSIAG derives after kernel UID independently proves `host_owner` policy-administration authority.
 - Authorization defaults to deny, accepts no caller-supplied subject/class, matches only an exact configured tuple, audits before release, and marks capability evidence non-transferable and canonical-apply disabled.

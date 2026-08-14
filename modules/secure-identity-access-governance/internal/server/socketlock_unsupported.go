@@ -6,6 +6,10 @@ import "fmt"
 
 type socketLease struct{}
 
+func AcquireSocketLifecycleLease(string) (*socketLease, error) {
+	return nil, fmt.Errorf("SSIAG socket lifecycle locking is unsupported on this platform")
+}
+
 func acquireSocketLease(string) (*socketLease, error) {
 	return nil, fmt.Errorf("SSIAG socket lifecycle locking is unsupported on this platform")
 }

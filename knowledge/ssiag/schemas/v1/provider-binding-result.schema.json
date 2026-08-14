@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:provider-binding-result:v1",
+  "title": "SSIAG provider binding operation result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "operation", "operation_id", "tops_id", "scope", "provider_name", "provider_kind", "binding_state", "generation", "installation_id", "previous_installation_id", "state_digest", "attempt_state", "attempt_digest", "receipt_digest", "changed", "recovered", "recovery_required", "reason_code", "observed_at", "operational_access_enabled", "provider_operations_enabled", "secret_channel_enabled", "caller_class_used", "canonical", "result_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.provider-binding-result.v1"},
+    "operation": {"enum": ["apply", "apply-status", "recover"]},
+    "operation_id": {"$ref": "#/$defs/uuid"},
+    "tops_id": {"$ref": "#/$defs/uuid"},
+    "scope": {"enum": ["user", "system"]},
+    "provider_name": {"$ref": "#/$defs/provider_name"},
+    "provider_kind": {"$ref": "#/$defs/token"},
+    "binding_state": {"enum": ["unbound", "bound", "recovery_required"]},
+    "generation": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+    "installation_id": {"$ref": "#/$defs/digest_or_not_applicable"},
+    "previous_installation_id": {"$ref": "#/$defs/digest_or_not_applicable"},
+    "state_digest": {"$ref": "#/$defs/digest_or_absent"},
+    "attempt_state": {"enum": ["none", "prepared", "candidate_verified", "audited", "committed"]},
+    "attempt_digest": {"$ref": "#/$defs/digest_or_not_applicable"},
+    "receipt_digest": {"$ref": "#/$defs/digest_or_not_applicable"},
+    "changed": {"type": "boolean"},
+    "recovered": {"type": "boolean"},
+    "recovery_required": {"type": "boolean"},
+    "reason_code": {"$ref": "#/$defs/reason"},
+    "observed_at": {"$ref": "#/$defs/timestamp"},
+    "operational_access_enabled": {"const": false},
+    "provider_operations_enabled": {"const": false},
+    "secret_channel_enabled": {"const": false},
+    "caller_class_used": {"const": false},
+    "canonical": {"const": false},
+    "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "allOf": [
+    {"if": {"properties": {"binding_state": {"const": "bound"}}, "required": ["binding_state"]}, "then": {"properties": {"installation_id": {"$ref": "#/$defs/digest"}, "state_digest": {"$ref": "#/$defs/digest"}}}},
+    {"if": {"properties": {"binding_state": {"const": "unbound"}}, "required": ["binding_state"]}, "then": {"properties": {"installation_id": {"const": "not_applicable"}}}},
+    {"if": {"properties": {"attempt_state": {"const": "none"}}, "required": ["attempt_state"]}, "then": {"properties": {"attempt_digest": {"const": "not_applicable"}}}, "else": {"properties": {"attempt_digest": {"$ref": "#/$defs/digest"}}}}
+  ],
+  "$defs": {
+    "uuid": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "provider_name": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9._-]+$"},
+    "reason": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^symphony\\.ssiag\\.provider\\.binding\\.[A-Za-z0-9._:-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "digest_or_not_applicable": {"oneOf": [{"const": "not_applicable"}, {"$ref": "#/$defs/digest"}]},
+    "digest_or_absent": {"oneOf": [{"const": "absent"}, {"$ref": "#/$defs/digest"}]},
+    "timestamp": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"}
+  }
+}

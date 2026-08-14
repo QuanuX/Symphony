@@ -1093,7 +1093,7 @@ func newSSIAGCommand() (*cobra.Command, error) {
 }
 
 func newSSIAGProviderCommand() (*cobra.Command, error) {
-	command := structural("provider", fmt.Errorf("SSIAG provider subcommand is required: show or verify"))
+	command := structural("provider", fmt.Errorf("SSIAG provider subcommand is required: show, verify, installations, or binding"))
 	for _, operation := range []string{"show", "verify"} {
 		mapper := viper.New()
 		operation := operation
@@ -1151,6 +1151,15 @@ func newSSIAGProviderCommand() (*cobra.Command, error) {
 		}
 		command.AddCommand(child)
 	}
+	installations, err := newSSIAGProviderInstallationsCommand()
+	if err != nil {
+		return nil, err
+	}
+	binding, err := newSSIAGProviderBindingCommand()
+	if err != nil {
+		return nil, err
+	}
+	command.AddCommand(installations, binding)
 	return command, nil
 }
 

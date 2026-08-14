@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 bool is_authorized_canonical_json(const std::string& relative_path) {
     // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, and SSFV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 160> authorized_paths = {
+    static const std::array<std::string, 169> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -129,6 +129,15 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/ssiag/schemas/v1/provider-one-shot-channel.schema.json",
         "knowledge/ssiag/schemas/v1/provider-trust-result.schema.json",
         "knowledge/ssiag/schemas/v1/provider-trust-verification-request.schema.json",
+        "knowledge/ssiag/schemas/v1/provider-installation-inventory.schema.json",
+        "knowledge/ssiag/schemas/v1/provider-binding-status.schema.json",
+        "knowledge/ssiag/schemas/v1/provider-binding-plan-request.schema.json",
+        "knowledge/ssiag/schemas/v1/provider-binding-plan.schema.json",
+        "knowledge/ssiag/schemas/v1/provider-binding-apply-request.schema.json",
+        "knowledge/ssiag/schemas/v1/provider-binding-recovery-request.schema.json",
+        "knowledge/ssiag/schemas/v1/provider-binding-result.schema.json",
+        "knowledge/ssiag/schemas/v1/provider-binding-state.schema.json",
+        "knowledge/ssiag/schemas/v1/provider-binding-attempt.schema.json",
         "knowledge/skvi/schemas/v1/entry.schema.json",
         "knowledge/skvi/schemas/v1/operation-payload.schema.json",
         "knowledge/skvi/schemas/v1/check-result.schema.json",

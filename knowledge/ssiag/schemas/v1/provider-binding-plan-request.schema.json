@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:provider-binding-plan-request:v1",
+  "title": "SSIAG provider binding plan request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["installation_id", "expected_state_digest", "reason"],
+  "properties": {
+    "installation_id": {"$ref": "#/$defs/digest_or_not_applicable"},
+    "expected_state_digest": {"$ref": "#/$defs/digest_or_absent"},
+    "reason": {"type": "string", "minLength": 1, "maxLength": 1024, "pattern": "^[^\\u0000\\r\\n]+$"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "digest_or_not_applicable": {"oneOf": [{"const": "not_applicable"}, {"$ref": "#/$defs/digest"}]},
+    "digest_or_absent": {"oneOf": [{"const": "absent"}, {"$ref": "#/$defs/digest"}]}
+  }
+}
