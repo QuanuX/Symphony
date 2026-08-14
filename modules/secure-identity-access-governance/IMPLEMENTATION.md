@@ -90,10 +90,10 @@ Exit gate: qxctl never imports a provider dependency, accepts a secret flag, or 
 1. Place the independent Swift Package in `modules/ssiag-provider-macos-keychain/`.
 2. Build `symphony-ssiag-provider-macos-keychain` separately from SSIAG.
 3. implement independent digest-safe `install` and `uninstall` commands.
-4. Provide a bounded JSON-lines standard-I/O scaffold.
-5. Accept exactly `hello`, `status`, and `capabilities` request operations.
+4. Provide a bounded one-request/one-response standard-I/O scaffold.
+5. Accept exactly `handshake`, `status`, and `capabilities` request operations.
 6. Reject unknown fields, oversized/malformed input, and credential operations.
-7. Report `declared_not_operational` and `operational_access_enabled: false`.
+7. Report canonical status `disabled` plus `operational_access_enabled: false`, `provider_operations_enabled: false`, and `secret_channel_enabled: false`.
 8. Do not import Apple Security yet; metadata behavior does not need Keychain access.
 
 Verification:
@@ -101,7 +101,7 @@ Verification:
 ```bash
 swift test
 swift build -c release
-.build/release/symphony-ssiag-provider-macos-keychain status
+./tests/provider_trust_integration_darwin.sh
 ```
 
 Exit gate: the adapter is independently installable and removable, while the Go foundation remains Swift-free, Apple-framework-free, and cgo-free.
@@ -190,17 +190,19 @@ CGO_ENABLED=0 go build -trimpath ./cmd/symphony-ssiag
 
 Exit gate: local policy apply is caller-neutral, target-host-permission-backed, STAV-before-commit, CAS-safe, crash-recoverable, and explicitly noncanonical. It does not enable general safeguards, providers, credentials, or canonical knowledge apply.
 
-## Phase 9 — Implement Ratified Provider Trust and Channel Separation
+## Phase 9 — Implement Ratified Provider Trust and Channel Separation (implemented, metadata only)
 
-1. Freeze handshake, request, response, cancellation, and error schemas in `knowledge/ssiag/`.
-2. Define maximum message size, concurrency, timeout, interaction, and restart rules.
-3. Keep safe metadata/control on the bounded protocol and put explicitly exportable secret bytes on a request-bound one-shot protected descriptor/channel.
-4. implement a Go adapter launcher with sanitized environment, exact executable trust, bounded pipes, cancellation, and child cleanup.
-5. Verify descriptor identity, protocol major, platform, capabilities, exportability, and interaction requirements.
-6. Reject duplicate identities, downgrade, unadvertised operations, extra output, malformed responses, timeouts, and early exit.
-7. Keep metadata discovery available independently of credential operations.
+1. Maintain the frozen handshake, control request/response with embedded safe error, executable-trust, trust-query/result, and synthetic one-shot-channel schemas in `knowledge/ssiag/schemas/v1/`.
+2. Enforce one request and one response per child process, 65,536-byte control bounds in each direction, five-second default and thirty-second maximum timeout, and 128-entry capability/check bounds.
+3. Load one exact externally administered provider binding from the protected per-TOPS SSIAG configuration tree. Treat absence as `unbound`; never select the newest installed version or fall back.
+4. Implement a Go adapter launcher with sanitized environment, exact executable trust, bounded pipes, invocation-context cancellation, process termination, and child cleanup. Do not add a cancellation message: a hung one-shot child cannot be made to observe it.
+5. Have the adapter independently inspect its parent executable and installed receipt/signature and compare those observations to the request's exact foundation evidence. Caller assertions alone are not trust.
+6. Keep safe metadata/control on the bounded protocol. The Phase 9 inherited descriptor remains synthetic and non-operational; operational secret delivery is a later gate.
+7. Verify descriptor identity, exact protocol major, platform, capabilities, exportability, interaction requirements, and both halves of mutual executable trust.
+8. Reject duplicate identities, downgrade, unadvertised operations, extra output, malformed responses, timeouts, early exit, parent-observation mismatch, and false trust claims.
+9. Keep metadata discovery available independently of credential operations.
 
-Exit gate: an incompatible or compromised-looking adapter fails closed without fallback or secret-bearing diagnostics.
+Exit gate: achieved for the exact macOS metadata adapter. An incompatible or compromised-looking adapter fails closed without fallback or secret-bearing diagnostics; operational Keychain and secret-channel behavior remain later gates.
 
 ## Phase 10 — Enable the Ratified Per-User macOS Keychain Profile
 

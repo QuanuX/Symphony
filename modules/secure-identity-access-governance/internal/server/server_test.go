@@ -17,6 +17,7 @@ import (
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/config"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/model"
+	ssiagpaths "github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/paths"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/policyadmin"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/provider"
 	"github.com/QuanuX/Symphony/modules/secure-identity-access-governance/internal/stavproducer"
@@ -251,6 +252,112 @@ func TestHostOwnerCanProposeApplyAndActivateLocalPolicy(t *testing.T) {
 	if decision.Effect != "allow" || decision.PolicyDigest != result.PolicyDigest {
 		cancel()
 		t.Fatalf("committed policy was not activated: %+v", decision)
+	}
+	cancel()
+	if err := <-done; err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestProviderTrustEndpointsRemainSSIAGOwnedAndFailClosedWhenUnbound(t *testing.T) {
+	socket := shortSocketPath(t)
+	probe, err := net.Listen("unix", socket)
+	if err != nil {
+		t.Skipf("unix sockets are unavailable in this test environment: %v", err)
+	}
+	if err := probe.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Remove(socket); err != nil && !os.IsNotExist(err) {
+		t.Fatal(err)
+	}
+	uid, gid := uint32(os.Geteuid()), uint32(os.Getegid())
+	cfg := config.Config{
+		Schema: "symphony.ssiag.config.v1", Mode: "development",
+		TOPS:           config.TOPSConfig{ID: testTOPSID, Name: "Provider Trust TOPS"},
+		Listen:         config.ListenConfig{Network: "unix", Address: socket},
+		Authentication: serviceAuthentication(uid, gid),
+		Authorization:  &config.AuthorizationConfig{DefaultEffect: "deny", MaxCapabilitySeconds: 900, Grants: []config.AuthorizationGrant{}},
+		Providers:      []config.ProviderConfig{{Name: "native", Kind: "macos-keychain", Enabled: true, Capabilities: []string{"capability-discovery", "metadata"}}},
+	}
+	registry, err := provider.New(cfg.Providers)
+	if err != nil {
+		t.Fatal(err)
+	}
+	root := t.TempDir()
+	layout := ssiagpaths.InstanceLayout{Scope: ssiagpaths.ScopeUser, TOPSID: testTOPSID, ProviderTrustDir: filepath.Join(root, "provider-trust")}
+	if err := os.MkdirAll(layout.ProviderTrustDir, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	providerTrust, err := provider.NewTrustManager(ssiagpaths.ScopeUser, layout, registry)
+	if err != nil {
+		t.Fatal(err)
+	}
+	manager, err := policyadmin.New(filepath.Join(root, "policy"), cfg, time.Now)
+	if err != nil {
+		t.Fatal(err)
+	}
+	instance, err := NewWithPolicyAdministrationAndProviderTrust(cfg, registry, nil, manager, providerTrust)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	done := make(chan error, 1)
+	go func() { done <- instance.Run(ctx) }()
+	time.Sleep(20 * time.Millisecond)
+	select {
+	case runErr := <-done:
+		t.Fatalf("provider trust server stopped before creating its socket: %v", runErr)
+	default:
+	}
+	waitForSocket(t, socket)
+	transport := &http.Transport{DialContext: func(ctx context.Context, _, _ string) (net.Conn, error) {
+		return (&net.Dialer{}).DialContext(ctx, "unix", socket)
+	}}
+	client := &http.Client{Transport: transport, Timeout: 2 * time.Second}
+	response, err := client.Get("http://unix/v1/provider-trust/native")
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	var shown provider.TrustResult
+	if err := json.NewDecoder(response.Body).Decode(&shown); err != nil {
+		_ = response.Body.Close()
+		cancel()
+		t.Fatal(err)
+	}
+	_ = response.Body.Close()
+	if response.StatusCode != http.StatusOK || shown.Operation != "show" || shown.TrustState != "unbound" || !shown.ReadOnly || shown.Canonical {
+		cancel()
+		t.Fatalf("unexpected provider trust snapshot: status=%d result=%+v", response.StatusCode, shown)
+	}
+	payload := []byte(`{"protocol":"symphony.ssiag.provider-trust-verification-request.v1","request_id":"018f0c3a-7b2d-7e11-8c12-0242ac120003","correlation_id":"018f0c3a-7b2d-7e11-8c12-0242ac120004","authority_basis":"host_owner"}`)
+	response, err = client.Post("http://unix/v1/provider-trust/native/verifications", "application/json", bytes.NewReader(payload))
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	var verified provider.TrustResult
+	if err := json.NewDecoder(response.Body).Decode(&verified); err != nil {
+		_ = response.Body.Close()
+		cancel()
+		t.Fatal(err)
+	}
+	_ = response.Body.Close()
+	if response.StatusCode != http.StatusOK || verified.Operation != "verify" || verified.VerificationMode != "fresh" || verified.TrustState != "unbound" || verified.MutualTrust.FoundationVerifiedAdapter || verified.MutualTrust.AdapterVerifiedFoundation {
+		cancel()
+		t.Fatalf("unbound provider verification did not fail closed: status=%d result=%+v", response.StatusCode, verified)
+	}
+	duplicate := []byte(`{"protocol":"symphony.ssiag.provider-trust-verification-request.v1","request_id":"018f0c3a-7b2d-7e11-8c12-0242ac120003","correlation_id":"018f0c3a-7b2d-7e11-8c12-0242ac120004","authority_basis":"host_owner","authority_basis":"granted_permission"}`)
+	response, err = client.Post("http://unix/v1/provider-trust/native/verifications", "application/json", bytes.NewReader(duplicate))
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	_ = response.Body.Close()
+	if response.StatusCode != http.StatusBadRequest {
+		cancel()
+		t.Fatalf("duplicate provider verification member was accepted: status=%d", response.StatusCode)
 	}
 	cancel()
 	if err := <-done; err != nil {

@@ -23,8 +23,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 148 {
-		t.Fatalf("registered command count = %d, want 148", len(manifest.Commands))
+	if len(manifest.Commands) != 150 {
+		t.Fatalf("registered command count = %d, want 150", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -51,6 +51,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 		"qxcmd:symphony:knowledge.invariant.show",
 		"qxcmd:symphony:knowledge.invariant.check",
 		"qxcmd:symphony:ssiag.enrollment.apply",
+		"qxcmd:symphony:ssiag.provider.show",
+		"qxcmd:symphony:ssiag.provider.verify",
 		"qxcmd:symphony:ssiag.supervisor.recover",
 		"qxcmd:symphony:stav.enrollment.plan",
 		"qxcmd:symphony:stav.supervisor.status",
@@ -121,8 +123,8 @@ func TestCommandRegistryBindsVectorCapabilitiesNotBindingSelection(t *testing.T)
 }
 
 func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
-	if len(reviewedBackendFeatureBindings) != 66 {
-		t.Fatalf("reviewed backend command count = %d, want 66", len(reviewedBackendFeatureBindings))
+	if len(reviewedBackendFeatureBindings) != 68 {
+		t.Fatalf("reviewed backend command count = %d, want 68", len(reviewedBackendFeatureBindings))
 	}
 	secondaryBindingCount := 0
 	for key, bindings := range reviewedBackendFeatureBindings {
@@ -131,8 +133,8 @@ func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
 		}
 		secondaryBindingCount += len(bindings)
 	}
-	if secondaryBindingCount != 68 {
-		t.Fatalf("reviewed backend binding count = %d, want 68", secondaryBindingCount)
+	if secondaryBindingCount != 70 {
+		t.Fatalf("reviewed backend binding count = %d, want 70", secondaryBindingCount)
 	}
 
 	root, err := newRootCommand()
@@ -270,6 +272,49 @@ func TestFoundationLifecycleRegistryContracts(t *testing.T) {
 				}
 			}
 		}
+	}
+}
+
+func TestSSIAGProviderTrustRegistryContracts(t *testing.T) {
+	root, err := newRootCommand()
+	if err != nil {
+		t.Fatal(err)
+	}
+	manifest, err := commandregistry.BuildExpected(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	records := make(map[string]commandregistry.CommandRecord)
+	for _, record := range manifest.Commands {
+		records[record.CommandID] = record
+	}
+	show := records["qxcmd:symphony:ssiag.provider.show"]
+	verify := records["qxcmd:symphony:ssiag.provider.verify"]
+	if show.Mutability != "read_only" || show.AuthorityMode != "none" ||
+		len(show.BackendOperationIDs) != 1 || show.BackendOperationIDs[0] != "engop:symphony:ssiag.provider.trust.show" ||
+		len(show.OutputProtocols) != 1 || show.OutputProtocols[0] != "symphony.ssiag.provider-trust-result.v1" ||
+		!containsFeatureBinding(show.FeatureBindings, commandregistry.FeatureBinding{FeatureID: backendFeatureSSIAGProviderTrust, Interaction: "inspect"}) {
+		t.Fatalf("provider show contract drifted: %#v", show)
+	}
+	if verify.Mutability != "evidence_only" || verify.AuthorityMode != "ssiag" ||
+		len(verify.BackendOperationIDs) != 2 ||
+		verify.BackendOperationIDs[0] != "engop:symphony:ssiag.provider.metadata-handshake" ||
+		verify.BackendOperationIDs[1] != "engop:symphony:ssiag.provider.trust.verify" ||
+		len(verify.InputProtocols) != 1 || verify.InputProtocols[0] != "symphony.ssiag.provider-trust-verification-request.v1" ||
+		len(verify.ResultValidationProtocols) != 1 || verify.ResultValidationProtocols[0] != "symphony.ssiag.provider-trust-result.v1" ||
+		!containsFeatureBinding(verify.FeatureBindings, commandregistry.FeatureBinding{FeatureID: backendFeatureSSIAGProviderTrust, Interaction: "validate"}) {
+		t.Fatalf("provider verify contract drifted: %#v", verify)
+	}
+	if !containsFeatureBinding(verify.FeatureBindings, commandregistry.FeatureBinding{
+		FeatureID: backendFeatureSSIAGMacOSMetadata, Interaction: "validate",
+	}) {
+		t.Fatalf("provider verify does not administer the verified macOS metadata handshake: %#v", verify)
+	}
+	providers := records["qxcmd:symphony:ssiag.providers"]
+	if containsFeatureBinding(providers.FeatureBindings, commandregistry.FeatureBinding{
+		FeatureID: "ssfv:symphony:ssiag.macos-keychain-metadata", Interaction: "discover",
+	}) {
+		t.Fatalf("provider list still overclaims an adapter handshake: %#v", providers)
 	}
 }
 

@@ -56,11 +56,19 @@ The foundational SSIAG/STAV lane applies the registry to the following rule fami
 
 `knowledge/FOUNDATIONAL-LIFECYCLE.md` remains the normative owner of those semantics. The registry makes their ownership and regression evidence mechanically discoverable; it does not create another lifecycle authority.
 
+## SSIAG Provider Boundary Invariants
+
+`invariant:symphony:ssiag.provider-executable-provenance` assigns mutual executable trust to the SSIAG provider boundary. The Go foundation must select and verify one exact receipt-v2 adapter entry point before launch, and the native adapter must independently verify the invoking SSIAG executable before returning metadata. Path presence, a custom manifest, a child claim, or a code signature alone is insufficient. Any ambiguity, replacement, identity drift, protocol mismatch, or trust failure reports unavailable without fallback.
+
+`invariant:symphony:ssiag.provider-control-secret-noninterference` assigns channel separation to the same boundary. General metadata/control framing remains bounded and secret-free. The current trust-only slice creates no secret-bearing channel and keeps `operational_access_enabled` false. Any later export channel requires its own request binding, one-shot lifetime, replay refusal, byte and time bounds, closure proof, memory/crash policy, and real-process regressions before operational enablement; qxctl, JSON control, standard output/error, arguments, environment variables, STAV, OpenAPI, examples, and diagnostics remain prohibited secret paths.
+
+Both invariants are IPC invariants and require an actual receipt-backed Go-to-native process test. The only installed adapter identity at this boundary is `adapter:symphony:ssiag.macos-keychain-provider.v1`, whose receipt entry point speaks `symphony.ssiag.provider.control.v1`. The Go launcher is an in-process verifier and receptor, not an independently installed adapter or a synthetic receipt entry point. Operational Keychain access, credential operations, and secret delivery remain disabled.
+
 ## Versioned Adapters
 
 An allowed adapter record names an exact entry-point ID, protocol major, owner contract, implementation path, and version-selection policy. Version permission is never “latest.” The current foundational adapters are allowed only when an immutable receipt-v2 package proves the exact executable and entry point and capability compatibility accepts the command protocol. Adding a component, entry point, protocol major, or adapter authority requires a reviewed registry and owner-contract change.
 
-Registry v1 intentionally admits only the two SSIAG/STAV foundational-lifecycle adapters. Other process and socket boundaries—including vector engines, Maestro, the coordinator, validator results, SSIAG authorization, and STAV local requests—must not be mislabeled as non-IPC or forced through those adapters. They require a separately reviewed generic-adapter protocol version plus receipt-backed real-process evidence.
+Registry v1 distinguishes the two SSIAG/STAV foundational-lifecycle adapters from the separately reviewed macOS provider-control adapter. Other process and socket boundaries—including vector engines, Maestro, the coordinator, validator results, SSIAG authorization, and STAV local requests—must not be mislabeled as non-IPC or forced through those adapters. They require a separately reviewed generic-adapter protocol version plus receipt-backed real-process evidence.
 
 ## AI and Agent Use
 

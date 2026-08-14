@@ -118,6 +118,10 @@ func runServe(args []string) error {
 	if err != nil {
 		return err
 	}
+	providerTrust, err := provider.NewTrustManager(scope, layout, registry)
+	if err != nil {
+		return fmt.Errorf("initialize SSIAG provider trust: %w", err)
+	}
 	var audit *stavproducer.Producer
 	audit, err = stavproducer.Open(scope, topsID)
 	if err != nil {
@@ -128,7 +132,7 @@ func runServe(args []string) error {
 	if err != nil {
 		return fmt.Errorf("open protected SSIAG policy state: %w", err)
 	}
-	ssiagServer, err := server.NewWithPolicyAdministration(cfg, registry, audit, policyManager)
+	ssiagServer, err := server.NewWithPolicyAdministrationAndProviderTrust(cfg, registry, audit, policyManager, providerTrust)
 	if err != nil {
 		return err
 	}

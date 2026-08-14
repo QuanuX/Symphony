@@ -63,6 +63,8 @@ func printUsage() {
 	fmt.Println("  validate warning status|list|show|sync|accept|reopen|supersede|mute|unmute --tops-id UUID [...] Administer actionable warning lifecycle state")
 	fmt.Println("  ssiag status --tops-id UUID [--scope user|system] [--json] Read safe SSIAG status")
 	fmt.Println("  ssiag providers --tops-id UUID [--scope user|system] [--json] List safe provider metadata")
+	fmt.Println("  ssiag provider show <name> --tops-id UUID [--scope user|system] [--json] Read safe provider trust evidence")
+	fmt.Println("  ssiag provider verify <name> --tops-id UUID [--scope user|system] [--authority-basis BASIS] [--json] Request fresh provider trust verification")
 	fmt.Println("  ssiag doctor --tops-id UUID [--scope user|system] Verify local SSIAG availability")
 	fmt.Println("  ssiag grants lifecycle --tops-id UUID --subject-id ID [--profile-id ID] [--json] Generate exact caller-neutral lifecycle grant input")
 	fmt.Println("  ssiag policy status --tops-id UUID [--scope user|system] [--json] Read protected local policy metadata")
@@ -2950,6 +2952,80 @@ func runSSIAG(subcommand string, options ssiagOptions) error {
 		return fmt.Errorf("unknown SSIAG subcommand %q", subcommand)
 	}
 }
+
+func runSSIAGProvider(operation string, options ssiagOptions) error {
+	if options.topsID == "" {
+		return fmt.Errorf("--tops-id or SYMPHONY_SSIAG_TOPS_ID is required")
+	}
+	if err := ssiagclient.ValidateProviderName(options.providerName); err != nil {
+		return err
+	}
+	if options.scope != "user" && options.scope != "system" {
+		return fmt.Errorf("unsupported SSIAG scope %q", options.scope)
+	}
+	if operation == "verify" && options.authorityBasis != "host_owner" && options.authorityBasis != "granted_permission" {
+		return fmt.Errorf("--authority-basis must be host_owner or granted_permission")
+	}
+	// The bounded online command budget reserves two seconds for the status
+	// preflight, seven seconds for the provider request (the foundation's exact
+	// five-second exchange plus two seconds of response/transport margin), and
+	// one final second of orchestration margin.
+	commandContext, commandCancel := context.WithTimeout(context.Background(), ssiagProviderEndToEndBudget)
+	defer commandCancel()
+	client, err := ssiagclient.NewForTOPS(options.scope, options.topsID, ssiagProviderOperationBudget)
+	if err != nil {
+		return err
+	}
+	statusContext, statusCancel := context.WithTimeout(commandContext, ssiagProviderStatusBudget)
+	_, err = requireSSIAGStatus(statusContext, client, options.topsID, options.scope)
+	statusCancel()
+	if err != nil {
+		return err
+	}
+	operationContext, operationCancel := context.WithTimeout(commandContext, ssiagProviderOperationBudget)
+	defer operationCancel()
+	var result ssiagclient.ProviderTrustResult
+	switch operation {
+	case "show":
+		result, err = client.ProviderTrust(operationContext, options.providerName)
+	case "verify":
+		requestID, requestErr := randomUUID()
+		if requestErr != nil {
+			return requestErr
+		}
+		correlationID, requestErr := randomUUID()
+		if requestErr != nil {
+			return requestErr
+		}
+		result, err = client.VerifyProviderTrust(operationContext, options.providerName, ssiagclient.ProviderTrustVerificationRequest{
+			Protocol:  "symphony.ssiag.provider-trust-verification-request.v1",
+			RequestID: requestID, CorrelationID: correlationID, AuthorityBasis: options.authorityBasis,
+		})
+	default:
+		return fmt.Errorf("unknown SSIAG provider operation %q", operation)
+	}
+	if err != nil {
+		return err
+	}
+	if result.TOPSID != options.topsID {
+		return fmt.Errorf("SSIAG provider trust result TOPS ID does not match requested identity")
+	}
+	if options.jsonOutput {
+		return printSSIAGJSON(result)
+	}
+	fmt.Printf(
+		"SSIAG provider trust: name=%s kind=%s declaration=%s trust=%s verification=%s adapter=%s version=%s operational=false digest=%s\n",
+		result.ProviderName, result.ProviderKind, result.DeclarationState, result.TrustState,
+		result.VerificationMode, result.AdapterIdentifier, result.AdapterVersion, result.ResultDigest,
+	)
+	return nil
+}
+
+const (
+	ssiagProviderStatusBudget    = 2 * time.Second
+	ssiagProviderOperationBudget = 7 * time.Second
+	ssiagProviderEndToEndBudget  = 10 * time.Second
+)
 
 func runSSIAGPolicy(operation string, options ssiagOptions) error {
 	if options.topsID == "" {

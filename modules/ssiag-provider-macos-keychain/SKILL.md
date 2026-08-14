@@ -4,14 +4,17 @@
 
 1. Read `knowledge/ssiag/SPEC.md` and this module's `SPEC.md`.
 2. Run `swift test` before building.
-3. Confirm capability output remains metadata-only unless an operational gate has been ratified.
+3. Confirm capability output remains metadata-only, sorted, unique, and bounded to 128 entries unless an operational gate has been ratified.
 4. Install explicitly by scope.
-5. Configure the SSIAG foundation to invoke the exact installed binary only after provider compatibility support exists.
-6. Verify version, protocol, binary permissions, manifest digest, bounded IPC, and fail-closed behavior.
+5. Configure the provider as enabled with capabilities `capability-discovery` and `metadata`, `exportable: false`, and `interactive: true`.
+6. Bind the exact installed adapter and foundation versions with one protected per-TOPS `provider-executable-trust.v1` declaration; absence is `unbound`, and automatic newest-version selection is prohibited.
+7. Confirm one process consumes one request and emits one response, each at most 65,536 bytes, with five-second default and thirty-second maximum deadline.
+8. Require adapter-side independent parent/receipt observation; signing identity remains `not_applicable` until a separate verifier is ratified. Never treat request assertions or a successful outcome alone as mutual trust.
+9. Verify version, protocol, binary permissions, receipt digest, bounded IPC, and fail-closed behavior.
 
 ## Current Capability Boundary
 
-Any caller may inspect metadata, build, test, and propose configuration within its effective target-host permission. Caller type does not affect capability. Operational Keychain access is disabled for every caller, so no supported operation may request Keychain values, place secret values in IPC fixtures, use `security` CLI as a hidden fallback, weaken prompts or access controls, add silent provider fallback, or claim operational access from the scaffold.
+Any caller may inspect metadata, build, test, and propose configuration within its effective target-host permission. Caller type does not affect capability. Operational Keychain access is disabled for every caller, so no supported operation may request Keychain values, place secret values in IPC fixtures, open the synthetic one-shot descriptor, use `security` CLI as a hidden fallback, weaken prompts or access controls, add silent provider fallback, or claim operational access from the scaffold.
 
 ## Ratified Architecture
 

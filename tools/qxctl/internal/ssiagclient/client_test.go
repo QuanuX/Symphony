@@ -2,6 +2,8 @@ package ssiagclient
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -37,6 +39,117 @@ func TestClientReadsStatusAndProviders(t *testing.T) {
 	if err != nil || len(providers.Providers) != 0 {
 		t.Fatalf("unexpected providers: %+v error=%v", providers, err)
 	}
+}
+
+func TestClientUsesClosedProviderTrustEndpoints(t *testing.T) {
+	seen := make(map[string]string)
+	transport := roundTripFunc(func(request *http.Request) (*http.Response, error) {
+		seen[request.URL.Path] = request.Method
+		operation := "show"
+		if request.Method == http.MethodPost {
+			operation = "verify"
+			var candidate ProviderTrustVerificationRequest
+			if err := json.NewDecoder(request.Body).Decode(&candidate); err != nil ||
+				candidate.Protocol != "symphony.ssiag.provider-trust-verification-request.v1" ||
+				candidate.AuthorityBasis != "granted_permission" {
+				t.Fatalf("invalid provider verification request: %+v error=%v", candidate, err)
+			}
+		}
+		payload := providerTrustJSON(t, operation, nil)
+		return &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(strings.NewReader(payload)), Request: request}, nil
+	})
+	client := &Client{httpClient: &http.Client{Transport: transport}, baseURL: "http://unix"}
+	if _, err := client.ProviderTrust(context.Background(), "native.keychain"); err != nil {
+		t.Fatal(err)
+	}
+	request := ProviderTrustVerificationRequest{
+		Protocol:  "symphony.ssiag.provider-trust-verification-request.v1",
+		RequestID: testTOPSID, CorrelationID: "018f0c3a-7b2d-7e11-8c12-0242ac120003",
+		AuthorityBasis: "granted_permission",
+	}
+	if _, err := client.VerifyProviderTrust(context.Background(), "native.keychain", request); err != nil {
+		t.Fatal(err)
+	}
+	if seen["/v1/provider-trust/native.keychain"] != http.MethodGet ||
+		seen["/v1/provider-trust/native.keychain/verifications"] != http.MethodPost {
+		t.Fatalf("provider trust routes drifted: %#v", seen)
+	}
+}
+
+func TestClientRejectsUnsafeProviderTrustEvidence(t *testing.T) {
+	tests := map[string]func(map[string]any){
+		"result digest drift": func(value map[string]any) { value["result_digest"] = "sha256:" + strings.Repeat("0", 64) },
+		"operational access":  func(value map[string]any) { value["operational_access_enabled"] = true },
+		"uppercase installation digest": func(value map[string]any) {
+			value["installation_digest"] = "sha256:" + strings.Repeat("A", 64)
+		},
+		"uppercase executable digest": func(value map[string]any) {
+			value["executable_digest"] = "sha256:" + strings.Repeat("B", 64)
+		},
+		"raw reason": func(value map[string]any) {
+			value["checks"] = []any{map[string]any{"check_id": "receipt", "outcome": "failed", "reason_code": "raw stderr leaked"}}
+		},
+		"secret member": func(value map[string]any) { value["credential"] = "forbidden" },
+	}
+	for name, mutate := range tests {
+		t.Run(name, func(t *testing.T) {
+			payload := providerTrustJSON(t, "show", mutate)
+			transport := roundTripFunc(func(request *http.Request) (*http.Response, error) {
+				return &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(strings.NewReader(payload)), Request: request}, nil
+			})
+			client := &Client{httpClient: &http.Client{Transport: transport}, baseURL: "http://unix"}
+			if _, err := client.ProviderTrust(context.Background(), "native.keychain"); err == nil {
+				t.Fatal("unsafe provider trust evidence was accepted")
+			}
+		})
+	}
+}
+
+func TestClientRejectsDuplicateProviderTrustMembers(t *testing.T) {
+	payload := strings.Replace(providerTrustJSON(t, "show", nil), `"operation":"show"`, `"operation":"show","operation":"show"`, 1)
+	transport := roundTripFunc(func(request *http.Request) (*http.Response, error) {
+		return &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(strings.NewReader(payload)), Request: request}, nil
+	})
+	client := &Client{httpClient: &http.Client{Transport: transport}, baseURL: "http://unix"}
+	if _, err := client.ProviderTrust(context.Background(), "native.keychain"); err == nil || !strings.Contains(err.Error(), "duplicate JSON member") {
+		t.Fatalf("duplicate provider trust member was not rejected: %v", err)
+	}
+}
+
+func providerTrustJSON(t *testing.T, operation string, mutate func(map[string]any)) string {
+	t.Helper()
+	mode := "snapshot"
+	if operation == "verify" {
+		mode = "fresh"
+	}
+	value := map[string]any{
+		"protocol": "symphony.ssiag.provider-trust-result.v1", "operation": operation,
+		"tops_id": testTOPSID, "provider_name": "native.keychain", "provider_kind": "native-keyring",
+		"declaration_state": "declared", "trust_state": "verified", "verification_mode": mode,
+		"adapter_identifier": "macos-keychain", "adapter_version": "0.1.0", "provider_protocol": "symphony.ssiag.provider.v1",
+		"capabilities": []any{"capability-discovery", "metadata"}, "exportable": false, "interactive": true,
+		"installation_digest": "sha256:" + strings.Repeat("a", 64), "executable_digest": "sha256:" + strings.Repeat("b", 64),
+		"checks":                     []any{map[string]any{"check_id": "receipt", "outcome": "passed", "reason_code": "symphony.ssiag.provider.receipt_verified"}},
+		"mutual_trust":               map[string]any{"foundation_verified_adapter": true, "adapter_verified_foundation": true},
+		"operational_access_enabled": false, "provider_operations_enabled": false, "secret_channel_enabled": false,
+		"observed_at": "2026-08-13T12:00:00Z", "read_only": true, "caller_class_used": false, "canonical": false,
+	}
+	if mutate != nil {
+		mutate(value)
+	}
+	if _, supplied := value["result_digest"]; !supplied {
+		canonical, err := json.Marshal(value)
+		if err != nil {
+			t.Fatal(err)
+		}
+		digest := sha256.Sum256(canonical)
+		value["result_digest"] = "sha256:" + hex.EncodeToString(digest[:])
+	}
+	encoded, err := json.Marshal(value)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return string(encoded)
 }
 
 func TestClientUsesClosedPolicyAdministrationProtocols(t *testing.T) {

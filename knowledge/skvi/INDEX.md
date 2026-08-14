@@ -1071,17 +1071,17 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Caller authentication, endpoint trust, native supervision/runtime ownership, exact authorization decisions, non-transferable capability evidence, and STAV producer integration are implemented; canonical apply and credential delivery remain gated.
 - status: canonical
 
-#### SSIAG Authorization Schema Manifest
+#### SSIAG v1 Schema Manifest
 - path: `knowledge/ssiag/schemas/v1/MANIFEST.md`
-- title: SSIAG Authorization Schemas v1
+- title: SSIAG Canonical Schemas v1
 - surface_type: canonical protocol schema manifest
-- truth_role: inventory and boundary for exact authorization request, decision, and capability schemas
+- truth_role: inventory and boundary for exact authorization, policy, provider-control, and provider-trust schemas
 - owner: SSIAG knowledge maintainer
-- scope: Declares the bounded caller-neutral authorization evidence contracts implemented by SSIAG, qxctl, and the knowledge-session coordinator.
-- relationships: depends_on -> `knowledge/ssiag/SPEC.md`; governs -> `modules/secure-identity-access-governance/internal/policy/policy.go`; governs -> `modules/knowledge-session-coordinator/src/authority_session.cpp`
-- consumers: SSIAG, qxctl, coordinator, validator, conformance tests, reviewers
+- scope: Declares nineteen bounded caller-neutral SSIAG v1 contracts, including the one-request/one-response metadata-only provider trust boundary.
+- relationships: depends_on -> `knowledge/ssiag/SPEC.md`; governs -> `modules/secure-identity-access-governance/internal/policy/policy.go`; governs -> `modules/secure-identity-access-governance/internal/provider/trust.go`; governs -> `modules/knowledge-session-coordinator/src/authority_session.cpp`
+- consumers: SSIAG, provider adapters, qxctl, coordinator, validator, conformance tests, reviewers
 - deferred_projections: rendered protocol documentation
-- notes: These schemas define safe evidence, not credentials, bearer tokens, grants by possession, or canonical apply authority.
+- notes: These schemas define safe evidence and explicitly disabled secret-channel descriptors, not credentials, bearer tokens, grants by possession, or canonical apply authority.
 - status: canonical
 
 #### SSIAG Authorization Request Schema
@@ -1238,6 +1238,97 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: SSIAG, validators, recovery logic, reviewers
 - deferred_projections: safe recovery status
 - notes: A pending attempt blocks competing mutation; recovery is explicit and audit-required.
+- status: canonical
+
+#### SSIAG Provider Executable Trust Schema
+- path: `knowledge/ssiag/schemas/v1/provider-executable-trust.schema.json`
+- title: SSIAG Provider Executable Trust v1
+- surface_type: JSON Schema Draft 2020-12 protected-state contract
+- truth_role: canonical exact adapter and foundation executable provenance truth
+- owner: SSIAG knowledge maintainer
+- scope: Binds one TOPS provider declaration to exact package, executable, ownership, foundation, signing, disabled-operation, and self-digest evidence.
+- relationships: depends_on -> `knowledge/ssiag/SPEC.md`; implemented_by -> `modules/secure-identity-access-governance/internal/provider/trust.go`
+- consumers: SSIAG, qxctl, provider installers, validators, security reviewers
+- deferred_projections: safe provider-trust status
+- notes: A declaration cannot prove its own signing identity or authorize provider operations.
+- status: canonical
+
+#### SSIAG Provider Control Request Schema
+- path: `knowledge/ssiag/schemas/v1/provider-control-request.schema.json`
+- title: SSIAG Provider Control Request v1
+- surface_type: JSON Schema Draft 2020-12 process-message contract
+- truth_role: canonical secret-free provider metadata request truth
+- owner: SSIAG knowledge maintainer
+- scope: Binds exact request, correlation, TOPS, provider, adapter, deadline, foundation, disabled-operation, and request-digest evidence.
+- relationships: depends_on -> `knowledge/ssiag/schemas/v1/provider-executable-trust.schema.json`; emitted_by -> `modules/secure-identity-access-governance/internal/provider/trust.go`; consumed_by -> `modules/ssiag-provider-macos-keychain/Sources/SymphonySSIAGMacOSKeychain/main.swift`
+- consumers: SSIAG, provider adapters, validators, conformance tests, reviewers
+- deferred_projections: rendered protocol documentation
+- notes: It contains no credential, proof, assertion, token, provider payload, or secret value.
+- status: canonical
+
+#### SSIAG Provider Handshake Schema
+- path: `knowledge/ssiag/schemas/v1/provider-handshake.schema.json`
+- title: SSIAG Provider Handshake v1
+- surface_type: JSON Schema Draft 2020-12 process-message contract
+- truth_role: canonical mutually verified metadata capability truth
+- owner: SSIAG knowledge maintainer
+- scope: Closes exact protocol identity, platform, limits, safe operations, foundation trust, disabled operational flags, and handshake digest.
+- relationships: depends_on -> `knowledge/ssiag/schemas/v1/provider-control-request.schema.json`; emitted_by -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/Protocol.swift`; consumed_by -> `modules/secure-identity-access-governance/internal/provider/trust.go`
+- consumers: SSIAG, provider adapters, qxctl, validators, conformance tests, reviewers
+- deferred_projections: provider compatibility evidence
+- notes: Metadata capability is not operational readiness or permission.
+- status: canonical
+
+#### SSIAG Provider Control Response Schema
+- path: `knowledge/ssiag/schemas/v1/provider-control-response.schema.json`
+- title: SSIAG Provider Control Response v1
+- surface_type: JSON Schema Draft 2020-12 process-message contract
+- truth_role: canonical bounded provider metadata response truth
+- owner: SSIAG knowledge maintainer
+- scope: Binds one response to its request, exact handshake or safe error, disabled-operation flags, completion time, and response digest.
+- relationships: depends_on -> `knowledge/ssiag/schemas/v1/provider-handshake.schema.json`; emitted_by -> `modules/ssiag-provider-macos-keychain/Sources/SymphonySSIAGMacOSKeychain/main.swift`; consumed_by -> `modules/secure-identity-access-governance/internal/provider/launcher.go`
+- consumers: SSIAG, provider adapters, validators, conformance tests, reviewers
+- deferred_projections: rendered protocol documentation
+- notes: Native error details and secret material are explicitly excluded.
+- status: canonical
+
+#### SSIAG Provider One-Shot Channel Schema
+- path: `knowledge/ssiag/schemas/v1/provider-one-shot-channel.schema.json`
+- title: SSIAG Provider One-Shot Channel v1
+- surface_type: JSON Schema Draft 2020-12 channel contract
+- truth_role: canonical one-process one-request one-response and disabled-secret-channel truth
+- owner: SSIAG knowledge maintainer
+- scope: Defines bounded standard I/O metadata framing and the synthetic not-applicable secret descriptor retained for future compatibility.
+- relationships: depends_on -> `knowledge/ssiag/schemas/v1/provider-control-response.schema.json`; implemented_by -> `modules/secure-identity-access-governance/internal/provider/launcher.go`
+- consumers: SSIAG, provider adapters, validators, security reviewers
+- deferred_projections: future separately ratified secret-channel contract
+- notes: The Phase 9 secret descriptor has descriptor -1, zero capacity, and cannot carry bytes.
+- status: canonical
+
+#### SSIAG Provider Trust Verification Request Schema
+- path: `knowledge/ssiag/schemas/v1/provider-trust-verification-request.schema.json`
+- title: SSIAG Provider Trust Verification Request v1
+- surface_type: JSON Schema Draft 2020-12 administrative request contract
+- truth_role: canonical caller-neutral fresh provider verification intent truth
+- owner: SSIAG knowledge maintainer
+- scope: Closes request and correlation UUIDs plus host-owner or granted-permission authority basis without caller-supplied subject identity.
+- relationships: depends_on -> `knowledge/ssiag/SPEC.md`; emitted_by -> `tools/qxctl/internal/ssiagclient/client.go`; consumed_by -> `modules/secure-identity-access-governance/internal/server/server.go`
+- consumers: SSIAG, qxctl, validators, conformance tests, reviewers
+- deferred_projections: rendered administrative documentation
+- notes: Kernel peer evidence supplies the subject and SSIAG independently decides permission.
+- status: canonical
+
+#### SSIAG Provider Trust Result Schema
+- path: `knowledge/ssiag/schemas/v1/provider-trust-result.schema.json`
+- title: SSIAG Provider Trust Result v1
+- surface_type: JSON Schema Draft 2020-12 administrative result contract
+- truth_role: canonical safe provider declaration and fresh-verification evidence truth
+- owner: SSIAG knowledge maintainer
+- scope: Reports exact state, mode, adapter evidence, deterministic checks, mutual trust, disabled-operation flags, UTC observation, and result digest.
+- relationships: depends_on -> `knowledge/ssiag/schemas/v1/provider-control-response.schema.json`; emitted_by -> `modules/secure-identity-access-governance/internal/provider/trust.go`; consumed_by -> `tools/qxctl/internal/ssiagclient/client.go`
+- consumers: SSIAG, qxctl, validators, conformance tests, reviewers
+- deferred_projections: provider diagnostic and compatibility views
+- notes: Always read-only, noncanonical, caller-class neutral, and free of credential material.
 - status: canonical
 
 ### STAV Canonical Knowledge Vector
@@ -2570,7 +2661,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; declares -> `knowledge/INVARIANTS.md`; governs -> `libraries/knowledge-vector-engine-cpp/`; governs -> `modules/knowledge-session-coordinator/`; governs -> `modules/skvi-engine/`; governs -> `modules/sclv-engine/`; governs -> future cleared vector-engine module paths
 - consumers: vector maintainers, engine implementers, qxctl, Maestro planners, reviewers, agentic tools
 - deferred_projections: engine inventory, install receipts, Maestro presence graph
-- notes: Foundation/coordinator and all five vector-engine `0.1.0-dev` slices plus Maestro presence exist; SSFV has exactly seventy-two experimental records, explicit top-level owner-scope coverage, fifty-seven ratified nested subfeatures, reviewed F2 and F3 non-feature dispositions, and incomplete remaining nested review.
+- notes: Foundation/coordinator and all five vector-engine `0.1.0-dev` slices plus Maestro presence exist; SSFV has exactly seventy-three experimental records, explicit top-level owner-scope coverage, fifty-eight ratified nested subfeatures, reviewed F2 and F3 non-feature dispositions, and incomplete remaining nested review.
 - status: canonical
 
 ##### SPEC.md
@@ -2583,7 +2674,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `knowledge/schemas/v2/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
 - consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
 - deferred_projections: apply/provider/docking schemas, conformance evidence, engine inventory, docking graph
-- notes: Sixty-six common v1 schemas and four common v2 schemas are canonical; lifecycle profile/runtime persistence, observation, planning, report/apply journal recovery, feature-administration assurance, common invariant ownership, exact staged receipt-v2/runtime/Maestro-presence actions, shared-root ownership fencing, the explicit Linux report-only host receptor, and applied-state commitment are implemented, the seventy-two-record SSFV catalog is partial, and canonical programmatic apply is disabled.
+- notes: Sixty-six common v1 schemas and four common v2 schemas are canonical; lifecycle profile/runtime persistence, observation, planning, report/apply journal recovery, feature-administration assurance, common invariant ownership, exact staged receipt-v2/runtime/Maestro-presence actions, shared-root ownership fencing, the explicit Linux report-only host receptor, and applied-state commitment are implemented, the seventy-three-record SSFV catalog is partial, and canonical programmatic apply is disabled.
 - status: canonical
 
 ##### SKILL.md
@@ -2800,7 +2891,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: cross-vector common contract
 - truth_role: canonical engine-first administrative coverage, identity, exception, admission, and headless-machine semantics
 - owner: Symphony Knowledge Vector maintainers
-- scope: Defines stable feature, engine-operation, and qxctl-command identities; expected versus observed truth; three-axis coverage; explicit dispositions; third-party module admission; remediation evidence; and the seventy-two-record forward gate.
+- scope: Defines stable feature, engine-operation, and qxctl-command identities; expected versus observed truth; three-axis coverage; explicit dispositions; third-party module admission; remediation evidence; bounded-envelope capacity posture; and the seventy-three-record forward gate.
 - relationships: depends_on -> `knowledge/SPEC.md`; depends_on -> `knowledge/INVARIANTS.md`; depends_on -> `knowledge/ssfv/SPEC.md`; governs -> `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`; governs -> `knowledge/schemas/v1/feature-administration-profile.schema.json`; governs -> `knowledge/schemas/v1/qxctl-command-registry.schema.json`; governs -> `knowledge/schemas/v1/administration-coverage-input.schema.json`; governs -> `knowledge/schemas/v1/administration-coverage-result.schema.json`; governs -> `knowledge/schemas/v2/engine-descriptor.schema.json`
 - consumers: independent module developers, SSFV engine, qxctl, validators, reviewers, agentic tools
 - deferred_projections: AI-assisted names, command-design proposals, Cobra scaffolding, and enforce-all-records coverage
@@ -2813,7 +2904,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: cross-vector canonical bootstrap profile
 - truth_role: exact registered-partial-catalog administration review and forward-gate policy
 - owner: Symphony Knowledge Vector maintainers
-- scope: Requires explicit representation of all seventy-two current SSFV records, treats unreviewed interactions as debt, and defines the active forward-enforcement gate without claiming catalog completeness.
+- scope: Requires explicit representation of all seventy-three current SSFV records, treats unreviewed interactions as debt, and defines the active forward-enforcement gate without claiming catalog completeness.
 - relationships: governed_by -> `knowledge/FEATURE-ADMINISTRATION.md`; derives_from -> `knowledge/ssfv/REGISTRY.md`; declares -> `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`; conforms_to -> `knowledge/schemas/v1/feature-administration-profile.schema.json`
 - consumers: SSFV engine, qxctl, validators, maintainers, reviewers, agentic tools
 - deferred_projections: future complete-catalog adjudication and installed-host inventory closure
@@ -2826,7 +2917,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: checked-in canonical-derived JSON profile
 - truth_role: machine-evaluable report-only bootstrap coverage for the exact current registered SSFV set
 - owner: Symphony Knowledge Vector maintainers
-- scope: Represents all seventy-two current feature IDs exactly once with 137 reviewed expectations under `enforce_new_records`.
+- scope: Represents all seventy-three current feature IDs exactly once with 139 reviewed expectations under `enforce_new_records`.
 - relationships: governed_by -> `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`; derives_from -> `knowledge/ssfv/REGISTRY.md`; conforms_to -> `knowledge/schemas/v1/feature-administration-profile.schema.json`
 - consumers: SSFV engine, qxctl, validators, direct diagnostic callers, reviewers
 - deferred_projections: complete-catalog and installed-host inventory advancement
@@ -4102,7 +4193,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, agentic tools
 - deferred_projections: feature catalogs, encyclopedia views, publication inputs, graph views
-- notes: Defines the governing intent for the implemented engine and exact seventy-two-record partial catalog without granting unratified-record authority.
+- notes: Defines the governing intent for the implemented engine and exact seventy-three-record partial catalog without granting unratified-record authority.
 - status: canonical
 
 ##### MANIFEST.md
@@ -4111,11 +4202,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: vector contract truth
 - truth_role: canonical topology, identity, classification, and installability boundary
 - owner: SSFV maintainers
-- scope: Declares owned feature semantics, sparse distributed records, implemented engine identity, explicit coverage inventory, and exact seventy-two-record partial-catalog state.
+- scope: Declares owned feature semantics, sparse distributed records, implemented engine identity, explicit coverage inventory, and exact seventy-three-record partial-catalog state.
 - relationships: depends_on -> `knowledge/ssfv/INTENT.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, implementers, qxctl planners, packaging planners
 - deferred_projections: installation descriptors and Maestro docking descriptors after separate review
-- notes: The engine module and seventy-two experimental records are implemented; fifty-seven nested subfeatures are ratified while remaining nested review and repository-wide catalog completeness are not claimed.
+- notes: The engine module and seventy-three experimental records are implemented; fifty-eight nested subfeatures are ratified while remaining nested review and repository-wide catalog completeness are not claimed.
 - status: canonical
 
 ##### SKILL.md
@@ -4141,7 +4232,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, validator
 - deferred_projections: portable JSON graph, catalogs, search, documentation, and analytical views
-- notes: Engine implementation and the exact seventy-two-record partial catalog are current; every additional record remains separately reviewed and remaining nested coverage remains incomplete.
+- notes: Engine implementation and the exact seventy-three-record partial catalog are current; every additional record remains separately reviewed and remaining nested coverage remains incomplete.
 - status: canonical
 
 ##### NAMESPACES.md
@@ -4163,7 +4254,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: canonical distributed-feature routing registry
 - truth_role: canonical mapping from stable feature IDs to owner records
 - owner: SSFV maintainers
-- scope: Defines the exact eight-field registry grammar and routes the seventy-two records in the current partial feature set.
+- scope: Defines the exact eight-field registry grammar and routes the seventy-three records in the current partial feature set.
 - relationships: depends_on -> `knowledge/ssfv/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, validator
 - deferred_projections: feature inventories and graph routing
@@ -5318,7 +5409,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: verifies -> `modules/ssfv-engine/src/ssfv.cpp`; conforms_to -> `knowledge/ssfv/SPEC.md`
 - consumers: SSFV engine maintainers, validator, reviewers
 - deferred_projections: none
-- notes: Current canonical assertions cover seventy-two records, fifteen owner files, and the exact 290-edge derived graph without claiming completion of the remaining nested review or repository-wide completeness.
+- notes: Current canonical assertions cover seventy-three records and fifteen owner files without claiming completion of the remaining nested review, a frozen derived-edge count, or repository-wide completeness.
 - status: canonical
 
 ### qxctl SCLV Evidence Adapter Command Tests
@@ -5721,7 +5812,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: governed_by -> `knowledge/ssfv/SPEC.md`; routes_through -> `knowledge/ssfv/REGISTRY.md`
 - consumers: symphony-ssfv, Symphony Validator, qxctl, maintainers, reviewers, agentic tools
 - deferred_projections: remaining nested feature-adjudication inventory
-- notes: Top-level owner routing and fifty-seven exact nested subfeatures are covered with reviewed F2 and F3 non-feature dispositions; remaining nested feature, subfeature, microfeature, and non-feature review is incomplete, so coverage is partial.
+- notes: Top-level owner routing and fifty-eight exact nested subfeatures are covered with reviewed F2 and F3 non-feature dispositions; remaining nested feature, subfeature, microfeature, and non-feature review is incomplete, so coverage is partial.
 - status: canonical
 
 ### STAV Protocol Kernel Semantic Feature Record
@@ -5906,17 +5997,95 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Linux-first and macOS-supported; no Windows engine is provided.
 - status: canonical
 
+### SSIAG Provider Trust Implementation
+- path: `modules/secure-identity-access-governance/internal/provider/trust.go`
+- title: SSIAG Provider Trust Manager
+- surface_type: Go provider provenance and mutual-verification implementation
+- truth_role: exact protected declaration, receipt, foundation, handshake, and safe-result validation truth
+- owner: SSIAG foundation maintainers
+- scope: Implements snapshot inspection and permission-backed fresh verification for one exact receipt-bound metadata adapter without enabling provider operations.
+- relationships: implements -> `knowledge/ssiag/SPEC.md`; conforms_to -> `knowledge/ssiag/schemas/v1/provider-executable-trust.schema.json`; conforms_to -> `knowledge/ssiag/schemas/v1/provider-trust-result.schema.json`
+- consumers: SSIAG server, qxctl, provider launcher, tests, reviewers
+- deferred_projections: additional provider kinds after separate contract extension
+- notes: A named signing identity remains untrusted until an independent platform verifier is ratified and implemented.
+- status: canonical
+
+### SSIAG Provider Process Launcher
+- path: `modules/secure-identity-access-governance/internal/provider/launcher.go`
+- title: SSIAG Bounded Provider Process Launcher
+- surface_type: Go out-of-process adapter boundary implementation
+- truth_role: exact verified-byte staging, sanitized environment, deadline, framing, and cleanup truth
+- owner: SSIAG foundation maintainers
+- scope: Executes a private copy of the exact verified adapter bytes for one bounded request and response, rejecting extra output and process failure without exposing diagnostics.
+- relationships: implements -> `knowledge/ssiag/schemas/v1/provider-one-shot-channel.schema.json`; consumes -> `knowledge/ssiag/schemas/v1/provider-control-response.schema.json`
+- consumers: SSIAG provider trust manager, tests, security reviewers
+- deferred_projections: separately authorized provider-operation and secret-channel launchers
+- notes: The launcher carries only safe metadata; standard error is bounded and never returned to the caller.
+- status: canonical
+
+### SSIAG Provider Receipt Verification
+- path: `modules/secure-identity-access-governance/internal/provider/receipt.go`
+- title: SSIAG Exact Provider Receipt Verifier
+- surface_type: Go receipt-v2 and executable-provenance implementation
+- truth_role: exact installed adapter identity, platform, capability, ownership, size, and digest verification truth
+- owner: SSIAG foundation maintainers
+- scope: Validates one explicitly bound provider receipt and its single executable before bounded private-byte staging; it performs no discovery or newest-version selection.
+- relationships: implements -> `knowledge/schemas/v2/install-receipt.schema.json`; governed_by -> `knowledge/ssiag/SPEC.md`; composes_with -> `modules/secure-identity-access-governance/internal/provider/launcher.go`
+- consumers: SSIAG provider trust manager, invariant ownership assurance, tests, security reviewers
+- deferred_projections: independently verified code-signing identity after separate ratification
+- notes: All receipt members are explicit, nested shapes are exact, executable hashing is bounded, and operational provider access remains disabled.
+- status: canonical
+
+### SSIAG macOS Provider Foundation Trust
+- path: `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/FoundationTrust.swift`
+- title: SSIAG macOS Adapter Invoker Trust Verification
+- surface_type: Swift parent-process provenance implementation
+- truth_role: exact independent foundation executable and receipt verification truth
+- owner: SSIAG macOS provider maintainers
+- scope: Verifies the invoking Go foundation process, protected package ancestry, receipt-v2 identity, and exact executable digest before metadata response release.
+- relationships: implements -> `knowledge/ssiag/SPEC.md`; composes_with -> `modules/secure-identity-access-governance/internal/provider/trust.go`
+- consumers: macOS provider process, tests, security reviewers
+- deferred_projections: independently verified Apple signing identity after separate ratification
+- notes: Direct or unreceipted invocation fails closed; operational Keychain access remains disabled.
+- status: canonical
+
+### SSIAG macOS Provider Receipt Implementation
+- path: `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/ReceiptV2.swift`
+- title: SSIAG macOS Adapter Receipt-v2 Implementation
+- surface_type: Swift receipt-v2 installation and provenance implementation
+- truth_role: exact side-by-side adapter receipt identity and independent Go-foundation receipt verification truth
+- owner: SSIAG macOS provider maintainers
+- scope: Emits and validates the exact adapter receipt and independently validates the invoking foundation receipt, platform, ownership, and executable digest.
+- relationships: implements -> `knowledge/schemas/v2/install-receipt.schema.json`; governed_by -> `knowledge/ssiag/SPEC.md`; composes_with -> `modules/secure-identity-access-governance/internal/provider/receipt.go`
+- consumers: macOS provider lifecycle, foundation trust verifier, invariant ownership assurance, tests, security reviewers
+- deferred_projections: production Apple signing evidence after separate ratification
+- notes: macOS fixed root compatibility aliases are independently resolved and verified; aliases do not relax executable or receipt identity.
+- status: canonical
+
+### SSIAG Receipt-Backed Provider Integration Regression
+- path: `modules/secure-identity-access-governance/tests/provider_trust_integration_darwin.sh`
+- title: SSIAG Actual Go-to-Swift Mutual-Trust Integration
+- surface_type: Darwin receipt-backed real-process integration test
+- truth_role: end-to-end installed foundation, installed adapter, Unix service, qxctl, and mutual-trust regression evidence
+- owner: SSIAG foundation and macOS provider maintainers
+- scope: Builds and receipts both real executables in a disposable prefix, binds one protected provider declaration, invokes fresh verification through qxctl, and requires both trust directions with every operational flag false.
+- relationships: validates -> `knowledge/ssiag/SPEC.md`; exercises -> `modules/secure-identity-access-governance/internal/provider/launcher.go`; exercises -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/FoundationTrust.swift`
+- consumers: invariant ownership assurance, release gates, maintainers, security reviewers
+- deferred_projections: Linux native-provider integration after a separate provider contract exists
+- notes: Shell fixtures, mocks, direct adapter invocation, and unreceipted parent processes cannot satisfy this gate.
+- status: canonical
+
 ### qxctl SSIAG Client
 - path: `tools/qxctl/internal/ssiagclient/client.go`
 - title: qxctl SSIAG Client
 - surface_type: Go authenticated local-client implementation
 - truth_role: exact SSIAG endpoint authentication and decision-validation truth
 - owner: qxctl and SSIAG maintainers
-- scope: Authenticates the configured local SSIAG endpoint and validates operation-bound caller-neutral authorization evidence for protected qxctl operations.
-- relationships: conforms_to -> `knowledge/ssiag/schemas/v1/authorization-decision.schema.json`; implements -> `tools/qxctl/MANIFEST.md`
+- scope: Authenticates the configured local SSIAG endpoint and validates operation-bound caller-neutral authorization evidence plus exact provider-trust snapshot and fresh-verification results.
+- relationships: conforms_to -> `knowledge/ssiag/schemas/v1/authorization-decision.schema.json`; conforms_to -> `knowledge/ssiag/schemas/v1/provider-trust-result.schema.json`; implements -> `tools/qxctl/MANIFEST.md`
 - consumers: qxctl protected commands, tests, reviewers
 - deferred_projections: remote node transport under a future contract
-- notes: The client cannot grant permission or infer authority from caller type; policy mutation succeeds only after the authenticated server independently proves authority and evidence.
+- notes: The client never reads provider trust files or invokes adapters directly; the authenticated SSIAG server independently proves authority and provider evidence.
 - status: canonical
 
 ### Shared-Root Ownership Schema
@@ -6429,7 +6598,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - status: canonical
 
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, sixty-six common SKV v1 JSON Schemas, four common SKV v2 JSON Schemas, twelve SSIAG authorization, grant-planning, and policy-administration JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, sixty-six common SKV v1 JSON Schemas, four common SKV v2 JSON Schemas, nineteen SSIAG authorization, grant-planning, policy-administration, provider-control, and provider-trust JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

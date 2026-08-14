@@ -58,7 +58,8 @@ const (
 	backendFeatureSSIAGSupervisor    = "ssfv:symphony:ssiag-foundation.native-supervision"
 	backendFeatureSSIAGPolicy        = "ssfv:symphony:ssiag-foundation.policy-administration"
 	backendFeatureSSIAGProviders     = "ssfv:symphony:ssiag-foundation.provider-metadata-registry"
-	backendFeatureKeychainMetadata   = "ssfv:symphony:ssiag.macos-keychain-metadata"
+	backendFeatureSSIAGProviderTrust = "ssfv:symphony:ssiag-foundation.provider-trust-assurance"
+	backendFeatureSSIAGMacOSMetadata = "ssfv:symphony:ssiag.macos-keychain-metadata"
 	backendFeatureSTAV               = "ssfv:symphony:stav-append-authority"
 	backendFeatureSTAVEnrollment     = "ssfv:symphony:stav-append-authority.tops-enrollment"
 	backendFeatureSTAVSupervisor     = "ssfv:symphony:stav-append-authority.native-supervision"
@@ -128,10 +129,12 @@ var reviewedBackendFeatureBindings = map[string][]commandregistry.FeatureBinding
 	"ssiag.policy.propose":               {{FeatureID: backendFeatureSSIAGPolicy, Interaction: "propose"}},
 	"ssiag.policy.recover":               {{FeatureID: backendFeatureSSIAGPolicy, Interaction: "recover"}},
 	"ssiag.policy.status":                {{FeatureID: backendFeatureSSIAGPolicy, Interaction: "query"}},
-	"ssiag.providers": {
-		{FeatureID: backendFeatureSSIAGProviders, Interaction: "discover"},
-		{FeatureID: backendFeatureKeychainMetadata, Interaction: "discover"},
+	"ssiag.provider.show":                {{FeatureID: backendFeatureSSIAGProviderTrust, Interaction: "inspect"}},
+	"ssiag.provider.verify": {
+		{FeatureID: backendFeatureSSIAGProviderTrust, Interaction: "validate"},
+		{FeatureID: backendFeatureSSIAGMacOSMetadata, Interaction: "validate"},
 	},
+	"ssiag.providers":               {{FeatureID: backendFeatureSSIAGProviders, Interaction: "discover"}},
 	"ssiag.status":                  {{FeatureID: backendFeatureSSIAG, Interaction: "query"}},
 	"ssiag.supervisor.status":       {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
 	"ssiag.supervisor.plan":         {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},

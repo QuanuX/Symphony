@@ -47,6 +47,12 @@ The engine is the only component whose presence may be assumed. An installed SSF
 
 Direct engine invocation uses bounded stdin/stdout JSON, exact protocols, deterministic errors and digests, explicit deadlines, and no terminal-dependent behavior. The engine detects gaps and emits proposal-only remediation constraints. It does not invent canonical English names, command grammar, feature-worthiness, exemptions, or ratification. Name and grammar proposals are caller-supplied against the exact input digests, and deterministic tooling validates syntax, collisions, completeness, compatibility, and staleness. Future AI assistance remains ordinary caller assistance under the same authenticated-subject and permission rules.
 
+## Capacity and Growth Posture
+
+The administration envelope's JSON-value count is parser workload, not a count of stored feature records. The 17,000-value smoke fixture is deliberately synthetic boundary evidence; it does not describe the canonical catalog. The current source truth remains bounded Markdown and JSON under review, and no database is required for canonical feature administration.
+
+SSFV alone admits at most 65,536 parsed JSON values for one complete administration request while retaining the common one-MiB request ceiling. Ordinary administration envelopes reaching 32,768 values require an explicit capacity review; reaching 49,152 values requires a ratified paging or digest-addressed chunking migration before further growth. Those thresholds preserve at least 50% and 25% structural headroom respectively. A future Maestro, DuckDB, or graph projection may cache or index rebuildable evidence, but it must not replace canonical repository truth, relax complete-envelope validation, or silently raise the parser bound.
+
 ## Three Independent Axes
 
 - design: `satisfied`, `uncovered`, `exempt`, `prohibited`, `stale`, or `unresolved`;
@@ -75,7 +81,7 @@ Checks operate feature-to-command, command-to-feature, command-to-engine, engine
 
 ## Bootstrap and Forward Gate
 
-The current SSFV registry contains exactly seventy-two experimental records and is explicitly partial. Its report-only bootstrap covers 137 reviewed expectations: 126 required, ten prohibited, and one not applicable. The profile is `enforce_new_records`, so every newly ratified feature must include its administration disposition in the same reviewed change. Existing expected routes that lack exact feature bindings or backend-operation identity remain uncovered implementation work; gate advancement does not deem them satisfied. The stable qxctl registry contains 148 command leaves. Root-summary assurance has one exact read-only command identity, while invariant assurance exposes read-only status, list, show, and exact-validator-check identities over the current nine-record incremental invariant registry; apply is explicitly prohibited. `enforce_all_records` requires separate evidence that the registered catalog is fully profiled. None of these states claims repository-wide feature, legacy-invariant, or installed-package completeness.
+The current SSFV registry contains exactly seventy-three experimental records and is explicitly partial. Its report-only bootstrap covers 139 reviewed expectations: 128 required, ten prohibited, and one not applicable. The profile is `enforce_new_records`, so every newly ratified feature must include its administration disposition in the same reviewed change. Existing expected routes that lack exact feature bindings or backend-operation identity remain uncovered implementation work; gate advancement does not deem them satisfied. The stable qxctl registry contains 150 command leaves. Root-summary assurance has one exact read-only command identity, while invariant assurance exposes read-only status, list, show, and exact-validator-check identities over the current eleven-record incremental invariant registry; apply is explicitly prohibited. Provider-trust assurance adds exact inspect and permission-backed fresh-verification routes while keeping operational Keychain and secret delivery disabled. `enforce_all_records` requires separate evidence that the registered catalog is fully profiled. None of these states claims repository-wide feature, legacy-invariant, or installed-package completeness.
 
 ## Non-Authorization
 

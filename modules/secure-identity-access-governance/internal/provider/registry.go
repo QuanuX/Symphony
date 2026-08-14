@@ -10,6 +10,7 @@ import (
 
 type Registry struct {
 	descriptors []model.ProviderDescriptor
+	configs     map[string]config.ProviderConfig
 }
 
 func New(configs []config.ProviderConfig) (*Registry, error) {
@@ -36,7 +37,19 @@ func New(configs []config.ProviderConfig) (*Registry, error) {
 		})
 	}
 	sort.Slice(descriptors, func(i, j int) bool { return descriptors[i].Name < descriptors[j].Name })
-	return &Registry{descriptors: descriptors}, nil
+	configsByName := make(map[string]config.ProviderConfig, len(configs))
+	for _, item := range configs {
+		item.Capabilities = append([]string(nil), item.Capabilities...)
+		sort.Strings(item.Capabilities)
+		configsByName[item.Name] = item
+	}
+	return &Registry{descriptors: descriptors, configs: configsByName}, nil
+}
+
+func (r *Registry) Configuration(name string) (config.ProviderConfig, bool) {
+	item, ok := r.configs[name]
+	item.Capabilities = append([]string(nil), item.Capabilities...)
+	return item, ok
 }
 
 func (r *Registry) Descriptors() []model.ProviderDescriptor {

@@ -2193,6 +2193,47 @@
     {
       "expectations": [
         {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.provider.show"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:ssiag.provider.trust.show"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The exact declared provider trust state is independently inspectable without executing an adapter.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:ssiag.provider.verify"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:ssiag.provider.trust.verify"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/secure-identity-access-governance/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "A permission-backed fresh qxctl route verifies the exact adapter receipt, process, and mutual metadata handshake.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:ssiag-foundation.provider-trust-assurance"
+    },
+    {
+      "expectations": [
+        {
           "command_ids": [],
           "delivery": "system_orchestrated",
           "engine_operation_ids": [],
@@ -2258,18 +2299,20 @@
         },
         {
           "command_ids": [
-            "qxcmd:symphony:ssiag.providers"
+            "qxcmd:symphony:ssiag.provider.verify"
           ],
           "delivery": "direct",
-          "engine_operation_ids": [],
+          "engine_operation_ids": [
+            "engop:symphony:ssiag.provider.metadata-handshake"
+          ],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/ssiag-provider-macos-keychain/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
-          "interaction": "discover",
-          "rationale": "An installed metadata adapter must become visible through SSIAG provider discovery without enabling operational Keychain access.",
+          "interaction": "validate",
+          "rationale": "Fresh qxctl verification traverses the Go trust boundary and the exact installed Swift metadata handshake without enabling operational Keychain access.",
           "requirement": "required"
         }
       ],
@@ -2627,9 +2670,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:6f667226448888950b8f8dd79fcfd2762b79ff19fd9658a43c91eb6441c60e35",
+  "profile_digest": "sha256:586510a7a5fe0323ee6bb53749178580a446ae75a40e106ee754ecbb21d667fa",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 72,
-  "ssfv_registry_digest": "sha256:819b7cd6bb1ee14b04c51ced8783a0ac66c9226376694d7700ce6e61e5d67b1a"
+  "registered_feature_count": 73,
+  "ssfv_registry_digest": "sha256:fdda20a7d802df55b0a5eb7774ab08e405568a473c675dbc6ef0e39f16933eec"
 }

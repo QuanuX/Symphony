@@ -3135,6 +3135,87 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:ssiag.provider.show",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag provider show \u003cprovider-name\u003e [--json] [--scope VALUE] [--tops-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.provider-trust-assurance",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.provider.trust.show"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.ssiag.provider-trust-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.ssiag.provider-trust-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:ssiag.provider.verify",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag provider verify \u003cprovider-name\u003e [--authority-basis VALUE] [--json] [--scope VALUE] [--tops-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.provider-trust-assurance",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag.macos-keychain-metadata",
+          "interaction": "validate"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.provider.metadata-handshake",
+        "engop:symphony:ssiag.provider.trust.verify"
+      ],
+      "mutability": "evidence_only",
+      "authority_mode": "ssiag",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.ssiag.provider-trust-verification-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.ssiag.provider-trust-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.ssiag.provider-trust-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:ssiag.providers",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -3151,10 +3232,6 @@
         {
           "feature_id": "ssfv:symphony:ssiag-foundation.provider-metadata-registry",
           "interaction": "discover"
-        },
-        {
-          "feature_id": "ssfv:symphony:ssiag.macos-keychain-metadata",
-          "interaction": "discover"
         }
       ],
       "infrastructure_purpose": null,
@@ -3163,8 +3240,12 @@
       "authority_mode": "none",
       "target_scope": "local",
       "input_protocols": [],
-      "output_protocols": [],
-      "result_validation_protocols": [],
+      "output_protocols": [
+        "symphony.ssiag.providers.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.ssiag.providers.v1"
+      ],
       "recovery_command_id": null,
       "noninteractive": true,
       "json_output": true
@@ -3194,8 +3275,12 @@
       "authority_mode": "none",
       "target_scope": "local",
       "input_protocols": [],
-      "output_protocols": [],
-      "result_validation_protocols": [],
+      "output_protocols": [
+        "symphony.ssiag.status.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.ssiag.status.v1"
+      ],
       "recovery_command_id": null,
       "noninteractive": true,
       "json_output": true
@@ -4517,5 +4602,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:a57dc4eaf40b1684bc0256b3a3e3d488317f88dc865be4a92bf6f0bf9233d05d"
+  "registry_digest": "sha256:c5ce07ee01b27209b131557000670c2af641b1e6fd47bb9946228aa52d5ec37a"
 }

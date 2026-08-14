@@ -2,7 +2,7 @@
 
 ## Status and Requirements
 
-The receipt-v2 and legacy host installers, bounded foundational lifecycle adapter, per-TOPS enrollment lifecycle, native supervision, safe metadata API, audited deny-by-default authorization, and protected local policy overlay administration are implemented. Operational credential providers, general safeguard administration, canonical knowledge apply, and the lifecycle-to-STAV reconciliation endpoint remain intentionally disabled.
+The receipt-v2 and legacy host installers, bounded foundational lifecycle adapter, per-TOPS enrollment lifecycle, native supervision, safe metadata API, audited deny-by-default authorization, protected local policy overlay administration, and exact metadata-only provider trust path are implemented. Operational credential provider operations, secret delivery, general safeguard administration, canonical knowledge apply, and the lifecycle-to-STAV reconciliation endpoint remain intentionally disabled.
 
 Requirements: a supported TOPS operating system and Go 1.26.5 for source builds. Python, cgo, containers, Kubernetes, NATS, and cloud infrastructure are not required.
 

@@ -110,7 +110,11 @@ The socket is local and permission-restricted, and every accepted connection is 
 
 ### SSIAG to Adapter
 
-The future foundation must verify the configured executable path, ownership, digest/signature, adapter identity, protocol major version, supported operation, request size, deadline, response size, and response schema. The macOS Swift adapter must verify the invoking SSIAG process under the ratified path, ownership, and code-signing policy. Secret values cannot travel in the JSON control envelope, arguments, environment variables, logs, qxctl, OpenAPI, or STAV. Explicitly exportable bytes use a request-bound bounded one-shot descriptor/channel. Non-exportable operations remain inside the provider.
+The protected per-TOPS configuration tree contains at most one `provider-trust/<provider_name>.json` `provider-executable-trust.v1` file per safe provider token; filename and object identity must agree. It is the externally administered, exact-version binding for both processes: TOPS/scope, adapter path/version/protocol/install and executable digests/ownership/mode/signing identity, and foundation path/install and executable digests/ownership/signing identity. Absence is `unbound`. Installed-directory discovery, newest-version selection, and fallback are never authority. A future qxctl binding mutation route must pass its own permission, expected-state, audit, and recovery gate.
+
+Provider v1 is one process per exchange: one strict JSON request and one strict JSON response, each at most 65,536 bytes, with a five-second default and thirty-second maximum timeout. Request, correlation, TOPS, provider, adapter, operation, deadline, and foundation evidence are exact response bindings. The foundation verifies the configured adapter before launch. The adapter independently observes its parent executable and installed receipt/signature and compares those facts to the request; a successful response is not mutual trust unless `handshake.foundation_trust.verified` is true and all evidence matches. The invocation context closes pipes, terminates, and reaps on cancellation; no persistent cancellation frame exists because there is no persistent session.
+
+Secret values cannot travel in the JSON control envelope, arguments, environment variables, logs, qxctl, OpenAPI, or STAV. The Phase 9 inherited-descriptor object is synthetic and non-operational. Explicitly exportable bytes remain disabled until operational framing passes a later gate. Non-exportable operations remain inside the provider.
 
 ### SSIAG to Workload
 
@@ -128,9 +132,11 @@ The command group is lowercase and TOPS-scoped:
 qxctl ssiag status --tops-id UUID [--scope user|system] [--json]
 qxctl ssiag providers --tops-id UUID [--scope user|system] [--json]
 qxctl ssiag doctor --tops-id UUID [--scope user|system]
+qxctl ssiag provider show PROVIDER --tops-id UUID [--scope user|system] [--json]
+qxctl ssiag provider verify PROVIDER --tops-id UUID [--scope user|system] --authority-basis host_owner|granted_permission [--json]
 ```
 
-qxctl is provider-neutral. Cobra owns its command grammar and tightly bounded private Viper instances bind only explicitly declared command configuration; SSIAG/STAV trust loading remains in dedicated cgo-free clients. It uses the authority-free first-party STAV protocol kernel only for STAV contract mechanics. It verifies status responses are for the requested TOPS. It must not bypass SSIAG, accept secret flags, call Keychain APIs, edit STAV files, or own schemas.
+qxctl is provider-neutral. Cobra owns its command grammar and tightly bounded private Viper instances bind only explicitly declared command configuration; SSIAG/STAV trust loading remains in dedicated cgo-free clients. It uses the authority-free first-party STAV protocol kernel only for STAV contract mechanics. It verifies status and trust responses are for the requested TOPS. Provider `show` returns the current safe snapshot and `verify` requests a fresh foundation-owned check; neither invokes a provider operation nor enables operational access. qxctl must not bypass SSIAG, accept secret flags, call Keychain APIs, mutate provider bindings, edit STAV files, or own schemas.
 
 For foundational convergence, qxctl executes the installed adapter's exact receipt-bound `foundation-lifecycle` entry point and the engine operation IDs `engop:symphony:ssiag.{enrollment|supervisor}.{observe|plan|apply|apply-status|recover}`. The adapter is the protocol authority for its native mutations; qxctl supplies intent and CAS evidence. Purge remains an explicit native-only operation in v1.
 

@@ -14,9 +14,10 @@ func emit(_ value: some Encodable) throws {
     FileHandle.standardOutput.write(data)
 }
 
-func scopeAndForce(_ arguments: ArraySlice<String>) throws -> (InstallScope, Bool) {
+func lifecycleOptions(_ arguments: ArraySlice<String>) throws -> (InstallScope, Bool, URL?) {
     var scope = InstallScope.user
     var force = false
+    var prefix: URL?
     var index = arguments.startIndex
     while index < arguments.endIndex {
         switch arguments[index] {
@@ -27,34 +28,40 @@ func scopeAndForce(_ arguments: ArraySlice<String>) throws -> (InstallScope, Boo
             }
             scope = parsed
         case "--force":
+            // Retained for invocation compatibility only. Receipt-v2 package
+            // bytes are immutable and the lifecycle never uses this flag to
+            // replace or remove changed bytes.
             force = true
+        case "--prefix":
+            index = arguments.index(after: index)
+            guard index < arguments.endIndex, arguments[index].hasPrefix("/"), arguments[index] != "/" else {
+                throw LifecycleError.unsafePath
+            }
+            prefix = URL(fileURLWithPath: arguments[index], isDirectory: true)
+        case "--version":
+            index = arguments.index(after: index)
+            guard index < arguments.endIndex, arguments[index] == providerVersion else {
+                throw LifecycleError.immutableVersion
+            }
         default:
             throw LifecycleError.unsafePath
         }
         index = arguments.index(after: index)
     }
-    return (scope, force)
+    return (scope, force, prefix)
 }
 
 func serve() throws {
     let input = FileHandle.standardInput
     var buffer = Data()
-    while let chunk = try input.read(upToCount: 4096), !chunk.isEmpty {
-        for byte in chunk {
-            if byte == 0x0a {
-                if !buffer.isEmpty {
-                    FileHandle.standardOutput.write(try encodedLine(response(for: buffer)))
-                    buffer.removeAll(keepingCapacity: true)
-                }
-                continue
-            }
-            guard buffer.count < maximumRequestBytes else { throw ProtocolError.invalidShape }
-            buffer.append(byte)
-        }
+    while let chunk = try input.read(upToCount: min(4096, maximumRequestBytes + 1 - buffer.count)), !chunk.isEmpty {
+        buffer.append(chunk)
+        guard buffer.count <= maximumRequestBytes else { throw ProtocolError.oversized }
     }
-    if !buffer.isEmpty {
-        FileHandle.standardOutput.write(try encodedLine(response(for: buffer)))
-    }
+    guard !buffer.isEmpty else { throw ProtocolError.invalidShape }
+    // The strict decoder consumes the entire document. A second request,
+    // trailing value, or JSONL stream therefore fails before any output.
+    FileHandle.standardOutput.write(try encodedLine(response(for: buffer)))
 }
 
 func run() throws {
@@ -65,19 +72,19 @@ func run() throws {
     switch arguments[1] {
     case "--version", "version":
         print("symphony-ssiag-provider-macos-keychain version \(providerVersion)")
-    case "status", "capabilities":
-        try emit(ProviderDescriptor.scaffold)
     case "serve":
         try serve()
     case "install":
-        let (scope, force) = try scopeAndForce(arguments.dropFirst(2))
+        let (scope, force, prefix) = try lifecycleOptions(arguments.dropFirst(2))
         guard let source = Bundle.main.executableURL?.standardizedFileURL else {
             throw LifecycleError.sourceNotRegular
         }
-        try emit(ProviderLifecycle.install(source: source, scope: scope, force: force))
+        let layout = try InstallLayout.resolve(scope, prefix: prefix)
+        try emit(ProviderLifecycle.install(source: source, scope: scope, force: force, layout: layout))
     case "uninstall":
-        let (scope, force) = try scopeAndForce(arguments.dropFirst(2))
-        try emit(ProviderLifecycle.uninstall(scope: scope, force: force))
+        let (scope, force, prefix) = try lifecycleOptions(arguments.dropFirst(2))
+        let layout = try InstallLayout.resolve(scope, prefix: prefix)
+        try emit(ProviderLifecycle.uninstall(scope: scope, force: force, layout: layout))
     default:
         throw ProtocolError.unsupportedOperation
     }

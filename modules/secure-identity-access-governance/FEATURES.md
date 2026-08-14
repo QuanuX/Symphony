@@ -452,8 +452,8 @@
       ],
       "distinctions": [
         {
-          "distinction": "Reports provider descriptors already present in SSIAG configuration; the Swift adapter independently reports static metadata and is not invoked by this registry.",
-          "target_feature_id": "ssfv:symphony:ssiag.macos-keychain-metadata"
+          "distinction": "Reports provider descriptors already present in SSIAG configuration; provider trust assurance verifies an exact installed adapter and its live metadata handshake.",
+          "target_feature_id": "ssfv:symphony:ssiag-foundation.provider-trust-assurance"
         }
       ],
       "evidence": [
@@ -482,8 +482,8 @@
       "record_version": 2,
       "relationships": [
         {
-          "rationale": "The Go registry and Swift executable expose separate metadata sources and have no implemented invocation bridge.",
-          "target_feature_id": "ssfv:symphony:ssiag.macos-keychain-metadata",
+          "rationale": "Configured metadata remains distinct from live executable trust and handshake evidence.",
+          "target_feature_id": "ssfv:symphony:ssiag-foundation.provider-trust-assurance",
           "type": "distinguished_from"
         }
       ],
@@ -495,6 +495,115 @@
       "where": "Inside the Go foundation registry and the local providers endpoint.",
       "who": "SSIAG administrators, qxctl metadata queries, the SSIAG status API, maintainers, and future separately authorized provider bridges.",
       "why": "Administrators and consumers need truthful capability discovery that fails closed without turning provider presence into operational readiness."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
+          "reason": "SCLV records reviewed provider-trust and protocol changes after merge.",
+          "reference": "knowledge/sclv/CHANGELOG.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes the provider launcher, Swift adapter, contracts, and real-process regressions.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SODV governs any future release of the provider trust boundary.",
+          "reference": "knowledge/sodv/SPEC.md",
+          "vector": "sodv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SSIAG owns executable provenance, provider protocol, and control/secret channel separation.",
+          "reference": "knowledge/ssiag/SPEC.md",
+          "vector": "ssiag"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "STAV owns the closed safe provider-failure evidence accepted from SSIAG.",
+          "reference": "knowledge/stav/SPEC.md",
+          "vector": "stav"
+        }
+      ],
+      "distinctions": [
+        {
+          "distinction": "Authenticates and invokes one exact adapter for safe metadata only; the metadata registry reports configured declarations without executing an adapter.",
+          "target_feature_id": "ssfv:symphony:ssiag-foundation.provider-metadata-registry"
+        },
+        {
+          "distinction": "The Go foundation owns launcher-side receipt and child-process trust; the Swift module owns adapter-side invoker verification and metadata protocol behavior.",
+          "target_feature_id": "ssfv:symphony:ssiag.macos-keychain-metadata"
+        }
+      ],
+      "evidence": [
+        "Go provider regressions cover exact receipt, path, digest, ownership, protocol, capability, environment, output, deadline, admission, cancellation, and child-cleanup rejection boundaries.",
+        "The Darwin integration regression installs and receipts the actual Go foundation and Swift adapter, starts the real Unix service, invokes verification through qxctl, and requires both mutual-trust directions while every operational flag remains false.",
+        "Swift protocol regressions cover invoker trust, strict metadata framing, disabled operational access, secret-shaped control input rejection, and credential-operation refusal.",
+        "SSIAG STAV producer regressions cover only safe failed and unavailable provider mappings for this trust-only slice."
+      ],
+      "feature_id": "ssfv:symphony:ssiag-foundation.provider-trust-assurance",
+      "how": "The cgo-free Go foundation selects one receipt-bound allowlisted adapter, verifies immutable executable provenance, launches it with bounded framing, a sanitized environment and explicit lifetime, validates the exact metadata response, and fails closed on identity or protocol drift. The Swift adapter independently verifies the invoking SSIAG identity before replying. General control remains secret-free and no secret-bearing channel or Keychain operation is enabled.",
+      "implementation_languages": [
+        {
+          "language": "Go",
+          "role": "Implements exact installed-adapter selection, executable verification, bounded real-process metadata invocation, and fail-closed result validation."
+        },
+        {
+          "language": "Swift",
+          "role": "Implements adapter-side invoker verification, strict metadata response framing, and continued refusal of operational or secret-bearing requests."
+        }
+      ],
+      "implementation_paths": [
+        "modules/secure-identity-access-governance/internal/provider/launcher.go",
+        "modules/secure-identity-access-governance/internal/provider/launcher_test.go",
+        "modules/secure-identity-access-governance/internal/provider/receipt.go",
+        "modules/secure-identity-access-governance/internal/provider/registry.go",
+        "modules/secure-identity-access-governance/internal/provider/registry_test.go",
+        "modules/secure-identity-access-governance/internal/provider/trust.go",
+        "modules/secure-identity-access-governance/internal/provider/trust_test.go",
+        "modules/secure-identity-access-governance/tests/provider_trust_integration_darwin.sh",
+        "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/FoundationTrust.swift",
+        "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/Protocol.swift",
+        "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/ReceiptV2.swift",
+        "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/StrictJSON.swift",
+        "modules/ssiag-provider-macos-keychain/Sources/SymphonySSIAGMacOSKeychain/main.swift",
+        "modules/ssiag-provider-macos-keychain/Tests/Integration/prepare-real-adapter.sh",
+        "modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/ProtocolTests.swift"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "Does not enable Keychain read, write, sign, assert, decrypt, rotation, export, lease, or credential delivery.",
+        "Does not permit secret bytes in JSON, standard output, standard error, arguments, environment variables, STAV, qxctl, or general diagnostics.",
+        "Does not treat metadata success, executable presence, a receipt, or a code signature as provider-operation authority or operational readiness.",
+        "Does not create a system/headless fallback or authorize a secret-bearing channel."
+      ],
+      "owner_contract": "modules/secure-identity-access-governance/SPEC.md",
+      "parent_feature_id": "ssfv:symphony:ssiag-foundation",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "Verified foundation-side invocation composes with the Swift module's independently owned metadata handshake.",
+          "target_feature_id": "ssfv:symphony:ssiag.macos-keychain-metadata",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "Only closed safe failure or unavailability evidence may reach the append authority during this trust-only slice.",
+          "target_feature_id": "ssfv:symphony:ssiag-foundation.safe-audit-production",
+          "type": "depends_on"
+        }
+      ],
+      "source_scope": "modules/secure-identity-access-governance",
+      "status": "experimental",
+      "title": "Mutually verified provider metadata handshake",
+      "what": "Verifies both executables and performs one bounded real-process metadata handshake with the independently installed macOS adapter while preserving control/secret channel separation and disabled operational access.",
+      "when": "During explicit provider discovery or diagnostics after both exact installations are available; any provenance, compatibility, trust, framing, or deadline failure reports unavailable and does not fall back.",
+      "where": "Across the local Go-foundation-to-Swift child-process boundary on a supported per-user macOS host, outside qxctl and all hot or warm paths.",
+      "who": "SSIAG provider discovery, target-host administrators, maintainers, security reviewers, and future provider-neutral consumers of safe metadata evidence.",
+      "why": "Makes an independently developed native adapter detectable and safely interrogable without trusting a path, manifest claim, child output, or caller assertion and without prematurely enabling credentials."
     },
     {
       "cross_vector_references": [

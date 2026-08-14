@@ -49,8 +49,8 @@
       "properties": {
         "adapter_id": {"$ref": "#/$defs/adapterId"},
         "component": {"enum": ["ssiag", "stav"]},
-        "entry_point_id": {"enum": ["ssiag.foundation-lifecycle", "stav.foundation-lifecycle"]},
-        "command_protocol": {"const": "symphony.foundation.lifecycle-command.v1"},
+        "entry_point_id": {"enum": ["ssiag.foundation-lifecycle", "ssiag.macos-keychain-provider", "stav.foundation-lifecycle"]},
+        "command_protocol": {"enum": ["symphony.foundation.lifecycle-command.v1", "symphony.ssiag.provider.control.v1"]},
         "format_version": {"const": 1},
         "owner_contract": {"$ref": "#/$defs/path"},
         "implementation_path": {"$ref": "#/$defs/path"},
