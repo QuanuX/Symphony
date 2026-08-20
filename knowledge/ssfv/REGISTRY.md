@@ -298,7 +298,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sav-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:d0414a1d64babb47f861354fd6d77ae4976c4e5f86981a240bf1753a5381d78d`
+- record_digest: `sha256:91989b034cc058220d8a747b0889f318f6ac7e4261c75e7ef4f276bc1bef6f6c`
 - notes: Architect-ratified Accordare feature for independently installed CURRENT resolution and relationship evaluation; the catalog remains partial and the engine remains read-only.
 
 - feature_id: `ssfv:symphony:sclv-engine`
@@ -361,7 +361,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sev-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:cfa0612bbe2b218a2c344c957fadb384fd88abe4b929a1fbcb3ac36fcc4d28ca`
+- record_digest: `sha256:a00d9ffdb87ad805c8431c686340119dc871649ac76392255e4f60c839f2ed01`
 - notes: Architect-ratified Accordare feature for report/proposal-only evolution and SCSEV consequence assessment; the catalog remains partial and apply remains external.
 
 - feature_id: `ssfv:symphony:skvi-engine`

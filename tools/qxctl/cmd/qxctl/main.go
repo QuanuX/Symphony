@@ -146,7 +146,7 @@ func printUsage() {
 	fmt.Println("  sodv recover --prefix PATH --input FILE [--version VERSION] [--json] Reconcile an interrupted release journal")
 	fmt.Println("  sodv project --prefix PATH [--version VERSION] [--json] Build a disposable release inventory")
 	fmt.Println("  sav inspect|reference-check|current|evaluate|diff|explain|graph|version-validate|version-diff|capsule-check|blueprint-plan|compatibility --prefix PATH [--input FILE] [--json] Administer exact read-only SAV operations")
-	fmt.Println("  sev inspect|case-open|impact|plan|verify|recalculate|status|recover|close|command-surface|novelty-check|watch-check|trigger-coalesce|graph|compatibility --prefix PATH [--input FILE] [--json] Administer exact report/proposal-only SEV operations")
+	fmt.Println("  sev inspect|case-open|impact|plan|verify|recalculate|status|recover|close|command-surface|novelty-check|watch-check|trigger-coalesce|session-bind|graph|compatibility --prefix PATH [--input FILE] [--json] Administer exact report/proposal-only SEV operations")
 	fmt.Println("  ssfv inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SSFV engine")
 	fmt.Println("  ssfv check --prefix PATH [--version VERSION] [freshness flags] [--json] Check canonical semantic-feature truth")
 	fmt.Println("  ssfv diff --prefix PATH --input FILE [--version VERSION] [--json] Compare a semantic baseline with live truth")
@@ -1985,7 +1985,8 @@ func validateAccordareResult(vector, operation string, result json.RawMessage) (
 			"case_close": "symphony.sev.case-close-proposal.v1", "command_surface_assess": "symphony.sev.command-surface-assessment.v1",
 			"project_graph": "symphony.sev.graph-projection.v1", "compatibility": "symphony.sev.compatibility-result.v1",
 			"novelty_bundle_check": "symphony.sev.novelty-bundle-check-result.v1", "watch_policy_check": "symphony.sev.watch-policy-check-result.v1",
-			"trigger_coalesce": "symphony.sev.trigger-coalescing-result.v1",
+			"trigger_coalesce":       "symphony.sev.trigger-coalescing-result.v1",
+			"evolution_session_bind": "symphony.sev.evolution-session-binding.v1",
 		},
 	}
 	protocol, ok := expected[vector][operation]
@@ -2019,7 +2020,7 @@ func validateAccordareResult(vector, operation string, result json.RawMessage) (
 			}
 		}
 	}
-	digestKeys := []string{"result_digest", "observation_digest", "projection_digest", "case_digest", "impact_digest", "plan_digest", "assessment_digest", "proposal_digest"}
+	digestKeys := []string{"result_digest", "observation_digest", "projection_digest", "case_digest", "impact_digest", "plan_digest", "assessment_digest", "proposal_digest", "binding_digest"}
 	for _, key := range digestKeys {
 		if raw, present := value[key]; present {
 			var digest string

@@ -28,15 +28,15 @@
         }
       ],
       "evidence": [
-        "The C++ unit and direct-process tests exercise descriptor v2, complete and unknown CURRENT coverage, disabled apply, and caller-neutral inspection.",
+        "The C++ unit and direct-process tests exercise descriptor v2, complete and unknown CURRENT coverage, Named Version immutability, incomplete third-party Capsules, inverse Blueprint readiness and cycle rejection, disabled apply, and caller-neutral inspection.",
         "Receipt-v2 CMake surfaces prove independently installable inactive-undocked packaging."
       ],
       "feature_id": "ssfv:symphony:sav-engine",
-      "how": "The C++26 process validates exact bounded JSON, tagged digests, source payload bindings, STSC timestamps, a closed rule algebra, coverage qualification, independent result axes, deterministic ordering, and disposable graphs.",
+      "how": "The C++26 process validates exact bounded JSON, tagged digests, source payload bindings, STSC timestamps, a closed rule algebra, coverage qualification, independent result axes, immutable Named Versions, incomplete Extension Capsules, acyclic two-way Blueprints, deterministic ordering, and disposable graphs.",
       "implementation_languages": [
         {
           "language": "C++26",
-          "role": "Implements SAV validation, CURRENT resolution, accord evaluation, explanation, diff, graph, and compatibility operations."
+          "role": "Implements SAV validation, CURRENT resolution, accord evaluation, Named Version, Extension Capsule, Installation Blueprint, explanation, diff, graph, and compatibility operations."
         },
         {
           "language": "CMake",
@@ -73,7 +73,7 @@
       "source_scope": "modules/sav-engine",
       "status": "experimental",
       "title": "SAV composition and accord engine",
-      "what": "Provides an independently installable freezing-path engine that validates Accord References, derives immutable coverage-qualified CURRENT snapshots, evaluates relationship accord, and emits deterministic read-only projections.",
+      "what": "Provides an independently installable freezing-path engine that validates Accord References, derives immutable coverage-qualified CURRENT snapshots, evaluates relationship accord, validates Named Versions and Extension Capsules, plans two-way Installation Blueprints, and emits deterministic read-only projections.",
       "when": "Runs only on explicit bounded direct-process or qxctl invocation against caller-supplied evidence.",
       "where": "Runs from an exact inactive-undocked installation on Linux, macOS, or WSL/remote-node use without a repository requirement for evidence-only operations.",
       "who": "Any authenticated or otherwise host-authorized subject, reviewer, integration process, or agent using the same caller-neutral protocol.",

@@ -11,7 +11,7 @@
 
 ## Runtime
 
-The executable implements `inspect`, `reference_check`, `current_resolve`, `evaluate`, `diff`, `explain`, `project_graph`, and `compatibility`. All operations are deterministic, bounded, non-mutating, caller-neutral, and available through `symphony.knowledge.engine-process.v1`.
+The executable implements twelve operations: `inspect`, `reference_check`, `current_resolve`, `evaluate`, `diff`, `explain`, `project_graph`, `named_version_validate`, `named_version_diff`, `extension_capsule_check`, `installation_blueprint_plan`, and `compatibility`. All are deterministic, bounded, non-mutating, caller-neutral, and available through `symphony.knowledge.engine-process.v1`.
 
 ## Packaging
 

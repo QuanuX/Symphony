@@ -145,6 +145,10 @@ The exact engine ID is `symphony-sav`, module ID `sav-engine`, and vector ID `sa
 - `diff`: two exact current snapshots;
 - `explain`: one evaluation result plus exact relationship ID;
 - `project_graph`: one snapshot plus optional evaluation result, JSON only;
+- `named_version_validate`: one immutable composition envelope;
+- `named_version_diff`: two immutable composition envelopes with explicit successor evidence;
+- `extension_capsule_check`: one portable third-party admission capsule;
+- `installation_blueprint_plan`: one exact forward or reverse blueprint plus completed and blocked sets;
 - `compatibility`: caller-supported protocol/profile lists.
 
 Operation identities are:
@@ -156,6 +160,10 @@ Operation identities are:
 - `engop:symphony:sav.current.diff`;
 - `engop:symphony:sav.finding.explain`;
 - `engop:symphony:sav.graph.project`;
+- `engop:symphony:sav.named-version.validate`;
+- `engop:symphony:sav.named-version.diff`;
+- `engop:symphony:sav.extension-capsule.check`;
+- `engop:symphony:sav.installation-blueprint.plan`;
 - `engop:symphony:sav.compatibility`.
 
 The C++ dispatch table is the single source for observed descriptor operations.
@@ -183,6 +191,8 @@ Digests provide deterministic evidence binding, not authentication, permission, 
 ## Persistence
 
 The engine is stateless. A caller MAY persist immutable snapshots under a per-TOPS Accordare state directory. Any selected head uses the common no-follow, dual-slot, atomic-head, synchronization, linked-generation, and unique-recovery contract. Ambient directory order never selects truth. A graph or database projection is disposable and rebuildable.
+
+The engine validates Named Versions, Capsules, and Blueprints but never seals, selects, installs, docks, or applies them. Blueprint planning verifies exact forward/reverse edge inversion, rejects cycles, preserves hard-safety edges, propagates localized blockers, and emits a deterministic ready set. A missing third-party command or feature surface remains an explicit gap; the engine does not invent it.
 
 ## Time
 

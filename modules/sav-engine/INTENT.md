@@ -6,7 +6,7 @@ Implemented development foundation.
 
 ## Purpose
 
-`symphony-sav` is the independently installable C++26 freezing-path implementation of the SAV protocol. It validates Accord References, resolves coverage-qualified CURRENT snapshots from caller-supplied projections, evaluates the closed rule algebra, and emits deterministic read-only diffs, explanations, compatibility results, and disposable graphs.
+`symphony-sav` is the independently installable C++26 freezing-path implementation of the SAV protocol. It validates Accord References, resolves coverage-qualified CURRENT snapshots from caller-supplied projections, evaluates the closed rule algebra, validates and compares Named Versions, assesses Extension Capsules, plans exact forward/reverse Installation Blueprints, and emits deterministic read-only diffs, explanations, compatibility results, and disposable graphs.
 
 ## Boundaries
 

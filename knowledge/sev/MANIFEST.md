@@ -26,6 +26,7 @@ SEV owns:
 - reobservation, recalculation, verification, recovery, and closure rules;
 - SCSEV command-surface consequence coverage;
 - watch/session and novelty profiles; SAV separately owns Extension Capsule and Installation Blueprint composition truth.
+- evolution-session bindings that attach exact case and CURRENT digests to the existing coordinator lifecycle stream without creating a parallel journal.
 
 ## Canonical Surface
 

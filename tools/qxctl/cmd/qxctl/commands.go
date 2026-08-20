@@ -920,10 +920,11 @@ func newSEVCommand() *cobra.Command {
 		{"novelty-check", "novelty_bundle_check", "novelty-bundle.check", "validate", "symphony.sev.novelty-bundle.v1", "symphony.sev.novelty-bundle-check-result.v1"},
 		{"watch-check", "watch_policy_check", "watch-policy.check", "validate", "symphony.sev.watch-policy.v1", "symphony.sev.watch-policy-check-result.v1"},
 		{"trigger-coalesce", "trigger_coalesce", "trigger.coalesce", "propose", "", "symphony.sev.trigger-coalescing-result.v1"},
+		{"session-bind", "evolution_session_bind", "session.bind", "propose", "", "symphony.sev.evolution-session-binding.v1"},
 		{"graph", "project_graph", "graph.project", "query", "", "symphony.sev.graph-projection.v1"},
 		{"compatibility", "compatibility", "compatibility", "validate", "", "symphony.sev.compatibility-result.v1"},
 	}
-	command := structural("sev", fmt.Errorf("SEV subcommand is required: inspect, case-open, impact, plan, verify, recalculate, status, recover, close, command-surface, novelty-check, watch-check, trigger-coalesce, graph, or compatibility"))
+	command := structural("sev", fmt.Errorf("SEV subcommand is required: inspect, case-open, impact, plan, verify, recalculate, status, recover, close, command-surface, novelty-check, watch-check, trigger-coalesce, session-bind, graph, or compatibility"))
 	for _, operation := range operations {
 		options := accordareOptions{version: "0.1.0-dev"}
 		child := &cobra.Command{Use: operation.leaf, Args: usageOnlyArgs,

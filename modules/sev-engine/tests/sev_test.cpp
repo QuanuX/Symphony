@@ -4,6 +4,7 @@
 #include <cassert>
 #include <functional>
 #include <iostream>
+#include <vector>
 
 namespace sev = symphony::knowledge::sev;
 namespace engine = symphony::knowledge::engine;
@@ -64,6 +65,7 @@ int main() {
     const auto descriptor = sev::descriptor();
     assert(descriptor.at("protocol") == engine::descriptor_protocol_v2);
     assert(descriptor.at("separate_scsev_registry") == false);
+    assert(descriptor.at("default_receptor") == "receptor:symphony:knowledge.sev");
     engine::Json input{{"protocol", "symphony.sev.case-open-input.v1"},
         {"case_id", "sevcase:symphony:test"}, {"case_kind", "planned_change"},
         {"source_current", current()}, {"target", {{"version", "v2"}}},
@@ -73,6 +75,16 @@ int main() {
     assert(opened.at("canonical") == false);
     const auto status = sev::handle_request(request("case_status", {{"case", opened}}));
     assert(status.at("case_id") == "sevcase:symphony:test");
+    const auto session_binding = sev::handle_request(request("evolution_session_bind", {
+        {"case", opened}, {"lifecycle_profile_id", "accordare-test"},
+        {"lifecycle_profile_digest", digest_for("profile")},
+        {"source_report_journal_digest", digest_for("report-journal")},
+        {"desired_state_digest", digest_for("desired")}, {"direction", "forward"},
+        {"created_at", "2026-08-20T12:00:01Z"}}));
+    assert(session_binding.at("case_digest") == opened.at("case_digest") &&
+           session_binding.at("source_snapshot_digest") == opened.at("source_snapshot_digest") &&
+           session_binding.at("apply_authorized") == false &&
+           session_binding.at("binding_digest").get<std::string>().starts_with("sha256:"));
 
     auto first = action("action:01", "surface:qxctl");
     auto second = action("action:02", "surface:manifest");
@@ -140,6 +152,30 @@ int main() {
     const auto coalesced = sev::handle_request(request("trigger_coalesce", {
         {"policy", policy}, {"events", engine::Json::array({event})}}));
     assert(coalesced.at("event_count") == 1U && coalesced.at("case_open_authorized") == false);
+
+    const std::vector<std::string> consequence_families{
+        "command_identity", "grammar", "feature_binding", "engine_operation_binding", "authority",
+        "protocols", "headless_behavior", "mutation_recovery", "manifest_parity", "tests",
+        "invariant_evidence", "knowledge_documentation", "thermal_noninterference", "compatibility_lifecycle"};
+    auto consequences = engine::Json::array();
+    for (const auto& family : consequence_families) consequences.push_back({
+        {"family", family}, {"state", "satisfied"}, {"detail", "exact Accordare evidence is present"},
+        {"evidence_digests", engine::Json::array({digest_for(family)})}});
+    const auto self_hosted = sev::handle_request(request("command_surface_assess", {
+        {"source_snapshot_digest", opened.at("source_snapshot_digest")},
+        {"proposal_digest", digest_for("accordare-qxctl-proposal")}, {"change_kind", "add"},
+        {"consequences", consequences}}));
+    assert(self_hosted.at("state") == "complete" && self_hosted.at("missing").empty());
+    auto incomplete = consequences;
+    incomplete[0]["state"] = "missing";
+    incomplete[0]["detail"] = "third-party package supplied no stable command identity";
+    incomplete[0]["evidence_digests"] = engine::Json::array();
+    const auto third_party = sev::handle_request(request("command_surface_assess", {
+        {"source_snapshot_digest", opened.at("source_snapshot_digest")},
+        {"proposal_digest", digest_for("third-party-proposal")}, {"change_kind", "add"},
+        {"consequences", incomplete}}));
+    assert(third_party.at("state") == "semantic_registration_required" &&
+           third_party.at("invented_identity") == false && third_party.at("invented_grammar") == false);
 
     engine::Json item{{"item_id", "item:01"}, {"disclosure_class", "internal"},
         {"content_digest", nullptr}, {"payload", {{"finding", "new capability"}}}};

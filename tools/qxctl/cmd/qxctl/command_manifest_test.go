@@ -23,8 +23,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 184 {
-		t.Fatalf("registered command count = %d, want 184", len(manifest.Commands))
+	if len(manifest.Commands) != 185 {
+		t.Fatalf("registered command count = %d, want 185", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {

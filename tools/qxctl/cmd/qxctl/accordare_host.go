@@ -108,11 +108,15 @@ func buildSAVHostCurrent(ctx context.Context, workRoot string, options accordare
 		if inventoryErr != nil {
 			return nil, inventoryErr
 		}
+		inventoryObservedAt, parseErr := time.Parse(time.RFC3339, inventory.ObservedAt)
+		if parseErr != nil {
+			return nil, fmt.Errorf("parse validated Maestro observation time: %w", parseErr)
+		}
 		payload := canonicalJSONValue(inventory)
 		sources = append(sources, savProjection(
 			"host:maestro-inventory", "maestro", "modules/maestro/SPEC.md",
 			"symphony.maestro.receptor-inventory-result.v1", "maestro_presence", payload,
-			inventory.ObservationDigest, started))
+			inventory.ObservationDigest, inventoryObservedAt))
 		required = append(required, "host:maestro-inventory")
 		scope = append(scope, "host.maestro")
 	}

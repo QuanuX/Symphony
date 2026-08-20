@@ -32,15 +32,15 @@
         }
       ],
       "evidence": [
-        "The C++ unit and process tests exercise descriptor v2, evidence-bound case opening, status, disabled apply, and caller-neutral inspection.",
-        "The implementation validates dependency DAGs, localized blocker closure, closed success predicates, and all fourteen SCSEV consequence families."
+        "The C++ unit and process tests exercise descriptor v2, evidence-bound case opening, exact lifecycle-session binding, watch/novelty boundaries, trigger coalescing, disabled apply, and caller-neutral inspection.",
+        "The implementation validates dependency DAGs, dynamic successor ready sets, localized blocker closure, closed success predicates, Accordare self-assessment, incomplete third-party command surfaces, and all fourteen SCSEV consequence families."
       ],
       "feature_id": "ssfv:symphony:sev-engine",
-      "how": "The C++26 process creates content-addressed successor cases, validates exact caller-declared impacts and dispositions, computes dependency-safe ready sets, verifies complete reobservation, and emits proposal-only recovery, closure, SCSEV, compatibility, and graph results.",
+      "how": "The C++26 process creates content-addressed successor cases, validates exact caller-declared impacts and dispositions, recomputes dependency-safe ready sets after every outcome, binds cases to the shared lifecycle stream, checks watch and novelty artifacts, coalesces bounded events, verifies complete reobservation, and emits proposal-only recovery, closure, SCSEV, compatibility, and graph results.",
       "implementation_languages": [
         {
           "language": "C++26",
-          "role": "Implements SEV case, impact, disposition, verification, recalculation, recovery, closure, SCSEV, graph, and compatibility operations."
+          "role": "Implements SEV case, impact, disposition, verification, recalculation, lifecycle-session binding, watch, novelty, trigger, recovery, closure, SCSEV, graph, and compatibility operations."
         },
         {
           "language": "CMake",
@@ -82,7 +82,7 @@
       "source_scope": "modules/sev-engine",
       "status": "experimental",
       "title": "SEV evolution and SCSEV assessment engine",
-      "what": "Provides an independently installable freezing-path engine for governed evolution cases, deterministic impacts and ready-set plans, evidence-based verification/recovery, and qxctl command-surface consequence assessment.",
+      "what": "Provides an independently installable freezing-path engine for governed evolution cases, dynamic deterministic impacts and ready-set plans, exact shared-journal bindings, opt-in watch and private novelty assessment, evidence-based verification/recovery, and qxctl command-surface consequence assessment.",
       "when": "Runs only on explicit bounded invocation before or after separately controlled external actions and complete reobservation.",
       "where": "Runs from an exact inactive-undocked installation and consumes caller-supplied SAV, SSFV, qxctl, operation, invariant, and lifecycle evidence.",
       "who": "Any authenticated or otherwise host-authorized subject, reviewer, integration process, independent module developer, or agent using the same caller-neutral protocol.",

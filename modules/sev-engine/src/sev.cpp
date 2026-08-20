@@ -583,6 +583,30 @@ engine::Json trigger_coalesce(const engine::Json& payload) {
     result["result_digest"] = digest_without(result, "result_digest"); return result;
 }
 
+engine::Json evolution_session_bind(const engine::Json& payload) {
+    exact_fields(payload, {"case", "lifecycle_profile_id", "lifecycle_profile_digest",
+        "source_report_journal_digest", "desired_state_digest", "direction", "created_at"},
+        "evolution session binding payload");
+    valid_case(payload.at("case"));
+    require_id(payload, "lifecycle_profile_id");
+    for (const auto* field : {"lifecycle_profile_digest", "source_report_journal_digest", "desired_state_digest"}) require_digest(payload, field);
+    const auto direction = text(payload, "direction", 16U);
+    if (direction != "forward" && direction != "reverse") invalid("sev.session_direction", "evolution session direction must be forward or reverse");
+    const auto created = text(payload, "created_at", 20U);
+    if (!engine::is_utc_seconds(created) || created < payload.at("case").at("updated_at")) invalid("sev.timestamp", "evolution session binding time is invalid");
+    engine::Json binding{{"protocol", "symphony.sev.evolution-session-binding.v1"},
+        {"case_digest", payload.at("case").at("case_digest")},
+        {"source_snapshot_digest", payload.at("case").at("source_snapshot_digest")},
+        {"target_digest", payload.at("case").at("target_digest")},
+        {"lifecycle_profile_id", payload.at("lifecycle_profile_id")},
+        {"lifecycle_profile_digest", payload.at("lifecycle_profile_digest")},
+        {"source_report_journal_digest", payload.at("source_report_journal_digest")},
+        {"desired_state_digest", payload.at("desired_state_digest")}, {"direction", direction},
+        {"created_at", created}, {"canonical", false}, {"read_only", true}, {"apply_authorized", false}, {"binding_digest", nullptr}};
+    binding["binding_digest"] = digest_without(binding, "binding_digest");
+    return binding;
+}
+
 engine::Json project_graph(const engine::Json& payload) {
     exact_fields(payload, {"case", "plan"}, "graph payload"); valid_case(payload.at("case"));
     auto nodes = engine::Json::array();
@@ -637,6 +661,7 @@ const std::vector<engine::OperationSpec>& operations() {
         operation("engop:symphony:sev.novelty-bundle.check", "novelty_bundle_check", "validate", "ssfv:symphony:sev-engine", "symphony.sev.novelty-bundle.v1", "symphony.sev.novelty-bundle-check-result.v1"),
         operation("engop:symphony:sev.watch-policy.check", "watch_policy_check", "validate", "ssfv:symphony:sev-engine", "symphony.sev.watch-policy.v1", "symphony.sev.watch-policy-check-result.v1"),
         operation("engop:symphony:sev.trigger.coalesce", "trigger_coalesce", "propose", "ssfv:symphony:sev-engine", {}, "symphony.sev.trigger-coalescing-result.v1"),
+        operation("engop:symphony:sev.session.bind", "evolution_session_bind", "propose", "ssfv:symphony:sev-engine", {}, "symphony.sev.evolution-session-binding.v1"),
         operation("engop:symphony:sev.graph.project", "project_graph", "query", "ssfv:symphony:sev-engine.graph", {}, "symphony.sev.graph-projection.v1", "not_applicable"),
         operation("engop:symphony:sev.compatibility", "compatibility", "validate", "ssfv:symphony:sev-engine.compatibility", {}, "symphony.sev.compatibility-result.v1", "not_applicable"),
     };
@@ -674,6 +699,7 @@ engine::Json handle_request(const engine::Request& request) {
     if (request.operation == "novelty_bundle_check") return novelty_bundle_check(request.payload);
     if (request.operation == "watch_policy_check") return watch_policy_check(request.payload);
     if (request.operation == "trigger_coalesce") return trigger_coalesce(request.payload);
+    if (request.operation == "evolution_session_bind") return evolution_session_bind(request.payload);
     if (request.operation == "project_graph") return project_graph(request.payload);
     if (request.operation == "compatibility") return compatibility(request.payload);
     throw engine::Error("operation.unsupported", "operation is reserved or unsupported", 4);

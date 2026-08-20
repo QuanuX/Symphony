@@ -1726,12 +1726,14 @@
             "qxcmd:symphony:sev.case-open",
             "qxcmd:symphony:sev.close",
             "qxcmd:symphony:sev.plan",
+            "qxcmd:symphony:sev.session-bind",
             "qxcmd:symphony:sev.trigger-coalesce"
           ],
           "engine_operation_ids": [
             "engop:symphony:sev.case.close",
             "engop:symphony:sev.case.open",
             "engop:symphony:sev.disposition.plan",
+            "engop:symphony:sev.session.bind",
             "engop:symphony:sev.trigger.coalesce"
           ],
           "inherited_from_feature_id": null,
@@ -3045,9 +3047,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:0d074acaf2d058318c9830874713649357b013c99acbbdce6190df016ae3af1b",
+  "profile_digest": "sha256:8abaaeb20a165fbdd737bb7dd6726922c5ecd078183e69df72f463077107f847",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 78,
-  "ssfv_registry_digest": "sha256:48bf82a824acd42fc4871814d1cae00e082b73a216003f8846f05f9189b1678a"
+  "ssfv_registry_digest": "sha256:0a39b724f0c1eef29ad288cf4d1f66623a32a1345bee9330f9738d394a1c0122"
 }

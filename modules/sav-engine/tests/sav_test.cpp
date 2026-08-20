@@ -58,6 +58,7 @@ int main() {
     const auto descriptor = sav::descriptor();
     assert(descriptor.at("protocol") == engine::descriptor_protocol_v2);
     assert(descriptor.at("canonical_apply_enabled") == false);
+    assert(descriptor.at("default_receptor") == "receptor:symphony:knowledge.sav");
     const auto current = sav::handle_request(request("current_resolve", current_input()));
     assert(current.at("coverage_state") == "complete");
     assert(current.at("canonical") == false);

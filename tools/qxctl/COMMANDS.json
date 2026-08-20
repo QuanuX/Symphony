@@ -3081,6 +3081,39 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sev.session-bind",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sev session-bind [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:sev-engine",
+          "interaction": "propose"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sev.session.bind"
+      ],
+      "mutability": "proposal_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.sev.evolution-session-binding.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sev.evolution-session-binding.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sev.status",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -5783,5 +5816,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:028f80fac612fa9c161a9b852ffdcfcfe6a1beb1a15b886412d9499d0e9396ca"
+  "registry_digest": "sha256:29ce29c161baa89ef15b8df143fbc77bf0397c036ff0cf4057ce1a85bd53f959"
 }

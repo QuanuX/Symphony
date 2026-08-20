@@ -12,7 +12,7 @@
     "semantic_fingerprint": {"$ref": "#/$defs/digest"},
     "source_snapshot_digest": {"$ref": "#/$defs/digest"},
     "target_digest": {"$ref": "#/$defs/digest"},
-    "state": {"enum": ["open", "assessed", "planned", "awaiting_external_action", "reobservation_required", "recalculation_required", "converged", "blocked", "abandoned", "closed"]},
+    "state": {"enum": ["open", "assessed", "planned", "ready", "awaiting_external_action", "reobservation_required", "recalculation_required", "attunement_required", "converged", "blocked", "abandoned", "closed"]},
     "generation": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
     "predecessor_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
     "affected_surfaces": {"type": "array", "maxItems": 1024, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},

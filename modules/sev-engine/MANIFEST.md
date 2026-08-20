@@ -11,7 +11,7 @@
 
 ## Runtime
 
-The descriptor exposes twelve stable `engop:` operations for inspection, case lifecycle reasoning, impact, disposition, verification, SCSEV, graph projection, and compatibility. All are bounded, caller-neutral, report/proposal-only direct process operations.
+The descriptor exposes sixteen stable `engop:` operations for inspection, case lifecycle reasoning, impact, disposition, verification, dynamic recalculation, SCSEV, novelty/watch assessment, trigger coalescing, exact lifecycle-session binding, graph projection, and compatibility. All are bounded, caller-neutral, report/proposal-only direct process operations.
 
 ## Packaging
 

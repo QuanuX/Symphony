@@ -7390,6 +7390,19 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: A policy cannot open a case, mutate a host, or enable export on its own.
 - status: canonical
 
+### SEV Evolution Session Binding Schema
+- path: `knowledge/sev/schemas/v1/evolution-session-binding.schema.json`
+- title: SEV Evolution Session Binding v1
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: exact case/CURRENT binding into the shared durable lifecycle stream
+- owner: SEV maintainers under Architect ratification
+- scope: Binds case, source CURRENT, lifecycle profile, source report journal, desired state, direction, and STSC time without creating or authorizing apply.
+- relationships: depends_on -> `knowledge/sev/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sev-engine/src/sev.cpp`
+- consumers: SEV engine, qxctl, knowledge coordinator, lifecycle administrator, agents
+- deferred_projections: disposable evolution-session timelines
+- notes: Prepare, finalize, status, recover, and close remain the existing coordinator lifecycle operations under fresh SSIAG decisions.
+- status: canonical
+
 
 ## Deferred Projections
 Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, sixty-six common SKV v1 JSON Schemas, four common SKV v2 JSON Schemas, thirty-two SSIAG authorization, grant-planning, policy-administration, provider-control, provider-trust, provider-binding, and provider-readiness JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.

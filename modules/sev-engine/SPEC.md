@@ -6,4 +6,6 @@ Disposition planning validates all action self-digests, rejects absent or duplic
 
 SCSEV requires the fourteen canonical consequence families in contract order. It reports missing or prohibited consequences and never invents a final command identity, grammar, exemption, or patch.
 
+Successor recalculation derives readiness from the complete supplied plan after every completed or failed action and propagates blockers only through dependents. Watch and novelty checks enforce freezing-path, offline/private, disclosure, redaction, and prohibited-secret boundaries. Session binding ties an exact case and source CURRENT to the established lifecycle profile/report-journal stream without persistence or apply authority.
+
 All mutation, persistence, host discovery, authorization, audit submission, coordinator state changes, network export, and hot/warm execution are external and unimplemented by this process.

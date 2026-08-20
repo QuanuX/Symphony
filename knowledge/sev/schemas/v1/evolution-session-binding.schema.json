@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sev:evolution-session-binding:v1",
+  "title": "SEV Evolution Session Binding v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "case_digest", "source_snapshot_digest", "target_digest", "lifecycle_profile_id", "lifecycle_profile_digest", "source_report_journal_digest", "desired_state_digest", "direction", "created_at", "canonical", "read_only", "apply_authorized", "binding_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sev.evolution-session-binding.v1"},
+    "case_digest": {"$ref": "#/$defs/digest"},
+    "source_snapshot_digest": {"$ref": "#/$defs/digest"},
+    "target_digest": {"$ref": "#/$defs/digest"},
+    "lifecycle_profile_id": {"$ref": "#/$defs/id"},
+    "lifecycle_profile_digest": {"$ref": "#/$defs/digest"},
+    "source_report_journal_digest": {"$ref": "#/$defs/digest"},
+    "desired_state_digest": {"$ref": "#/$defs/digest"},
+    "direction": {"enum": ["forward", "reverse"]},
+    "created_at": {"$ref": "#/$defs/utc"},
+    "canonical": {"const": false},
+    "read_only": {"const": true},
+    "apply_authorized": {"const": false},
+    "binding_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "id": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "utc": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"}
+  }
+}

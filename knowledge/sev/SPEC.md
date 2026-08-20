@@ -49,9 +49,11 @@ Case states are:
 - `open`;
 - `assessed`;
 - `planned`;
+- `ready`;
 - `awaiting_external_action`;
 - `reobservation_required`;
 - `recalculation_required`;
+- `attunement_required`;
 - `converged`;
 - `blocked`;
 - `abandoned`;
@@ -129,6 +131,10 @@ The exact engine ID is `symphony-sev`, module ID `sev-engine`, and vector ID `se
 - `case_recover`;
 - `case_close`;
 - `command_surface_assess`;
+- `novelty_bundle_check`;
+- `watch_policy_check`;
+- `trigger_coalesce`;
+- `evolution_session_bind`;
 - `project_graph`;
 - `compatibility`.
 
@@ -144,6 +150,10 @@ Operation identities are:
 - `engop:symphony:sev.case.recover`;
 - `engop:symphony:sev.case.close`;
 - `engop:symphony:sev.command-surface.assess`;
+- `engop:symphony:sev.novelty-bundle.check`;
+- `engop:symphony:sev.watch-policy.check`;
+- `engop:symphony:sev.trigger.coalesce`;
+- `engop:symphony:sev.session.bind`;
 - `engop:symphony:sev.graph.project`;
 - `engop:symphony:sev.compatibility`.
 
@@ -153,7 +163,7 @@ V1 admits at most 1 MiB request, 4 MiB response, 1,024 affected surfaces, 1,024 
 
 ## Durable Coordination
 
-The knowledge-session coordinator, not SEV, owns durable mutation streams. Accordare evolution uses existing no-follow locks, dual journal slots, atomic heads, file/directory synchronization, exact compare-and-swap, immutable applied evidence, idempotent operation fingerprints, and unique adjacent-chain recovery.
+The knowledge-session coordinator, not SEV, owns durable mutation streams. `evolution_session_bind` content-addresses the exact case, source CURRENT, target, lifecycle profile, source report journal, desired state, direction, and STSC creation time that enter that existing stream. It creates no second journal and grants no apply authority. Accordare evolution uses existing no-follow locks, dual journal slots, atomic heads, file/directory synchronization, exact compare-and-swap, immutable applied evidence, idempotent operation fingerprints, and unique adjacent-chain recovery.
 
 qxctl performs a reviewed external action only after fresh SSIAG authorization. It fully reobserves configured roots and Maestro receptors, obtains a successor CURRENT snapshot, and invokes verification/finalization. A stopped or restarted session recovers from durable evidence, not from timestamps or file order.
 
@@ -163,7 +173,7 @@ The independently installed engine uses receipt v2, exact inactive-undocked vers
 
 ## Watch and Session Foundation
 
-Any watcher or session trigger is opt-in and qxctl-administered. The default conceptual session begins at successful authentication and ends at logout or mandatory reauthentication, while an administrator may select another bounded policy. Triggers debounce and coalesce evidence into one case. They never run on a hot/warm path, silently apply, or make AI mandatory.
+Any watcher or session trigger is opt-in and qxctl-administered. The default conceptual session begins at successful authentication and ends at logout or mandatory reauthentication, while an administrator may select another bounded policy. `watch_policy_check` validates the bounded policy and `trigger_coalesce` deterministically binds an ordered event set into one case candidate. Neither persists a policy, opens a case, installs a watcher, runs on a hot/warm path, silently applies, or makes AI mandatory.
 
 ## Novelty Export
 
