@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cassert>
 #include <iostream>
+#include <set>
 #include <string_view>
 
 namespace sav = symphony::knowledge::sav;
@@ -58,15 +59,33 @@ void require_error(Function&& function, std::string_view code) {
 int main() {
     const auto descriptor = sav::descriptor();
     assert(descriptor.at("protocol") == engine::descriptor_protocol_v2);
+    assert(descriptor.at("format_version") == 2);
+    assert(descriptor.size() == 17U);
+    const std::set<std::string> descriptor_fields{
+        "protocol", "format_version", "module_id", "engine_id", "vector_id", "engine_version",
+        "process_protocols", "contract_versions", "operations", "limits", "supported_scopes",
+        "language", "thermal_path", "canonical_apply_enabled", "session_mutation_enabled",
+        "network_listener", "descriptor_digest"};
+    for (const auto& [field, value] : descriptor.items()) {
+        static_cast<void>(value); assert(descriptor_fields.contains(field));
+    }
     assert(descriptor.at("canonical_apply_enabled") == false);
-    assert(descriptor.at("default_receptor") == "receptor:symphony:knowledge.sav");
-    const auto& operations = descriptor.at("administration_operations");
+    assert(descriptor.at("limits").at("json_values") == engine::Limits::max_json_values);
+    auto descriptor_without_digest = descriptor;
+    descriptor_without_digest.erase("descriptor_digest");
+    assert(descriptor.at("descriptor_digest") == engine::tagged_sha256(descriptor_without_digest.dump()));
+    const auto& operations = descriptor.at("operations");
     const auto named_descriptor = std::find_if(operations.begin(), operations.end(), [](const auto& value) {
         return value.at("engine_operation_id") == "engop:symphony:sav.named-version.validate";
     });
     assert(named_descriptor != operations.end());
     assert(named_descriptor->at("input_protocol") == "symphony.sav.named-version-validation-input.v1");
     assert(named_descriptor->at("feature_ids") == engine::Json::array({"ssfv:symphony:sav-engine.named-version"}));
+    const auto current_descriptor = std::find_if(operations.begin(), operations.end(), [](const auto& value) {
+        return value.at("operation_name") == "current_resolve";
+    });
+    assert(current_descriptor != operations.end());
+    assert(current_descriptor->at("engine_operation_id") == "engop:symphony:sav.current.resolve");
     const auto current = sav::handle_request(request("current_resolve", current_input()));
     assert(current.at("coverage_state") == "complete");
     assert(current.at("canonical") == false);

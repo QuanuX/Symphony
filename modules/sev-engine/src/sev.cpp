@@ -640,9 +640,10 @@ engine::Json compatibility(const engine::Json& payload) {
 engine::OperationSpec operation(std::string id, std::string name, std::string interaction,
                                 std::string feature, std::optional<std::string> input,
                                 std::optional<std::string> output, std::string disposition = "system_orchestrated") {
+    const auto recovery_id = id;
     return {std::move(id), std::move(name), "implemented", false, true, {std::move(feature)},
         {std::move(interaction)}, std::move(disposition), std::move(input), std::move(output),
-        "read_only", "idempotent", false, "none", "engop:symphony:sev.inspect", "supported", "freezing"};
+        "read_only", "idempotent", false, "none", recovery_id, "supported", "freezing"};
 }
 
 const std::vector<engine::OperationSpec>& operations() {
@@ -671,17 +672,22 @@ const std::vector<engine::OperationSpec>& operations() {
 
 engine::Json descriptor() {
     const auto& specs = operations(); engine::validate_operation_specs(specs);
-    return engine::Json{{"protocol", engine::descriptor_protocol_v2}, {"module_id", module_id},
+    engine::Json result{{"protocol", engine::descriptor_protocol_v2}, {"format_version", 2}, {"module_id", module_id},
         {"engine_id", engine_id}, {"vector_id", vector_id}, {"engine_version", engine_version},
         {"process_protocols", engine::Json::array({engine::process_protocol_v1})},
         {"contract_versions", engine::Json::array({"knowledge/SPEC.md@v1", "knowledge/sev/SPEC.md@v1"})},
-        {"operations", engine::legacy_operation_descriptors(specs)},
-        {"administration_operations", engine::administration_operation_descriptors(specs)},
-        {"operation_registry_digest", engine::operation_registry_digest(specs)},
-        {"supported_scopes", engine::Json::array({"user", "host"})}, {"language", "C++26"},
-        {"thermal_path", "freezing"}, {"scsev_profile", true}, {"separate_scsev_registry", false},
-        {"network_listener", false}, {"canonical_apply_enabled", false}, {"session_mutation_enabled", false},
-        {"install_state", "installed_undocked"}, {"default_receptor", "receptor:symphony:knowledge.sev"}};
+        {"operations", engine::administration_operation_descriptors(specs)},
+        {"limits", engine::Json{{"request_bytes", engine::Limits::max_request_bytes},
+            {"response_bytes", engine::Limits::max_response_bytes}, {"json_depth", engine::Limits::max_json_depth},
+            {"json_values", engine::Limits::max_json_values}, {"path_bytes", engine::Limits::max_path_bytes},
+            {"snapshot_files", engine::Limits::max_snapshot_files},
+            {"snapshot_file_bytes", engine::Limits::max_snapshot_file_bytes},
+            {"deadline_ahead_ms", engine::Limits::max_deadline_ahead_ms}}},
+        {"supported_scopes", engine::Json::array({"user", "tops"})}, {"language", "C++26"},
+        {"thermal_path", "freezing"}, {"canonical_apply_enabled", false},
+        {"session_mutation_enabled", false}, {"network_listener", false}};
+    result["descriptor_digest"] = engine::tagged_sha256(result.dump());
+    return result;
 }
 
 engine::Json handle_request(const engine::Request& request) {

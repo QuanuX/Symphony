@@ -625,12 +625,12 @@ engine::Json compatibility(const engine::Json& payload) {
 const std::vector<engine::OperationSpec>& operations() {
     static const std::vector<engine::OperationSpec> specs{
         {"engop:symphony:sav.inspect", "inspect", "implemented", false, true, {"ssfv:symphony:sav-engine"}, {"inspect"}, "not_applicable", {}, "symphony.sav.inspect-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.inspect", "supported", "freezing"},
-        {"engop:symphony:sav.reference-check", "reference_check", "implemented", false, true, {"ssfv:symphony:sav-engine.current-accord"}, {"validate"}, "not_applicable", {}, "symphony.sav.reference-check-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.reference-check", "supported", "freezing"},
-        {"engop:symphony:sav.current-resolve", "current_resolve", "implemented", false, true, {"ssfv:symphony:sav-engine.current-accord"}, {"query"}, "system_orchestrated", "symphony.sav.current-resolution-input.v1", "symphony.sav.current-snapshot.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.current-resolve", "supported", "freezing"},
-        {"engop:symphony:sav.evaluate", "evaluate", "implemented", false, true, {"ssfv:symphony:sav-engine.current-accord"}, {"validate"}, "system_orchestrated", "symphony.sav.evaluation-input.v1", "symphony.sav.evaluation-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.evaluate", "supported", "freezing"},
-        {"engop:symphony:sav.diff", "diff", "implemented", false, true, {"ssfv:symphony:sav-engine.current-accord"}, {"query"}, "not_applicable", {}, "symphony.sav.diff-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.diff", "supported", "freezing"},
-        {"engop:symphony:sav.explain", "explain", "implemented", false, true, {"ssfv:symphony:sav-engine.current-accord"}, {"query"}, "not_applicable", {}, "symphony.sav.explain-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.explain", "supported", "freezing"},
-        {"engop:symphony:sav.project-graph", "project_graph", "implemented", false, true, {"ssfv:symphony:sav-engine.current-accord"}, {"query"}, "not_applicable", {}, "symphony.sav.graph-projection.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.project-graph", "supported", "freezing"},
+        {"engop:symphony:sav.reference.check", "reference_check", "implemented", false, true, {"ssfv:symphony:sav-engine.current-accord"}, {"validate"}, "not_applicable", {}, "symphony.sav.reference-check-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.reference.check", "supported", "freezing"},
+        {"engop:symphony:sav.current.resolve", "current_resolve", "implemented", false, true, {"ssfv:symphony:sav-engine.current-accord"}, {"query"}, "system_orchestrated", "symphony.sav.current-resolution-input.v1", "symphony.sav.current-snapshot.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.current.resolve", "supported", "freezing"},
+        {"engop:symphony:sav.accord.evaluate", "evaluate", "implemented", false, true, {"ssfv:symphony:sav-engine.current-accord"}, {"validate"}, "system_orchestrated", "symphony.sav.evaluation-input.v1", "symphony.sav.evaluation-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.accord.evaluate", "supported", "freezing"},
+        {"engop:symphony:sav.current.diff", "diff", "implemented", false, true, {"ssfv:symphony:sav-engine.current-accord"}, {"query"}, "not_applicable", {}, "symphony.sav.diff-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.current.diff", "supported", "freezing"},
+        {"engop:symphony:sav.finding.explain", "explain", "implemented", false, true, {"ssfv:symphony:sav-engine.current-accord"}, {"query"}, "not_applicable", {}, "symphony.sav.explain-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.finding.explain", "supported", "freezing"},
+        {"engop:symphony:sav.graph.project", "project_graph", "implemented", false, true, {"ssfv:symphony:sav-engine.current-accord"}, {"query"}, "not_applicable", {}, "symphony.sav.graph-projection.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.graph.project", "supported", "freezing"},
         {"engop:symphony:sav.named-version.validate", "named_version_validate", "implemented", false, true, {"ssfv:symphony:sav-engine.named-version"}, {"validate"}, "system_orchestrated", "symphony.sav.named-version-validation-input.v1", "symphony.sav.named-version-validation-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.named-version.validate", "supported", "freezing"},
         {"engop:symphony:sav.named-version.diff", "named_version_diff", "implemented", false, true, {"ssfv:symphony:sav-engine.named-version"}, {"query"}, "system_orchestrated", "symphony.sav.named-version-diff-input.v1", "symphony.sav.named-version-diff-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.named-version.diff", "supported", "freezing"},
         {"engop:symphony:sav.extension-capsule.check", "extension_capsule_check", "implemented", false, true, {"ssfv:symphony:sav-engine.extension-capsule"}, {"validate"}, "system_orchestrated", "symphony.sav.extension-capsule-check-input.v1", "symphony.sav.extension-capsule-check-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.extension-capsule.check", "supported", "freezing"},
@@ -645,17 +645,22 @@ const std::vector<engine::OperationSpec>& operations() {
 engine::Json descriptor() {
     const auto& specs = operations();
     engine::validate_operation_specs(specs);
-    return engine::Json{{"protocol", engine::descriptor_protocol_v2}, {"module_id", module_id},
+    engine::Json result{{"protocol", engine::descriptor_protocol_v2}, {"format_version", 2}, {"module_id", module_id},
         {"engine_id", engine_id}, {"vector_id", vector_id}, {"engine_version", engine_version},
         {"process_protocols", engine::Json::array({engine::process_protocol_v1})},
         {"contract_versions", engine::Json::array({"knowledge/SPEC.md@v1", "knowledge/sav/SPEC.md@v1"})},
-        {"operations", engine::legacy_operation_descriptors(specs)},
-        {"administration_operations", engine::administration_operation_descriptors(specs)},
-        {"operation_registry_digest", engine::operation_registry_digest(specs)},
-        {"supported_scopes", engine::Json::array({"user", "host"})}, {"language", "C++26"},
-        {"thermal_path", "freezing"}, {"source_discovery", false}, {"network_listener", false},
-        {"canonical_apply_enabled", false}, {"session_mutation_enabled", false},
-        {"install_state", "installed_undocked"}, {"default_receptor", "receptor:symphony:knowledge.sav"}};
+        {"operations", engine::administration_operation_descriptors(specs)},
+        {"limits", engine::Json{{"request_bytes", engine::Limits::max_request_bytes},
+            {"response_bytes", engine::Limits::max_response_bytes}, {"json_depth", engine::Limits::max_json_depth},
+            {"json_values", engine::Limits::max_json_values}, {"path_bytes", engine::Limits::max_path_bytes},
+            {"snapshot_files", engine::Limits::max_snapshot_files},
+            {"snapshot_file_bytes", engine::Limits::max_snapshot_file_bytes},
+            {"deadline_ahead_ms", engine::Limits::max_deadline_ahead_ms}}},
+        {"supported_scopes", engine::Json::array({"user", "tops"})}, {"language", "C++26"},
+        {"thermal_path", "freezing"}, {"canonical_apply_enabled", false},
+        {"session_mutation_enabled", false}, {"network_listener", false}};
+    result["descriptor_digest"] = engine::tagged_sha256(result.dump());
+    return result;
 }
 
 engine::Json handle_request(const engine::Request& request) {

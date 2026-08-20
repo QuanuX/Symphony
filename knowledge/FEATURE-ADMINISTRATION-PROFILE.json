@@ -1520,10 +1520,10 @@
             "qxcmd:symphony:sav.graph"
           ],
           "engine_operation_ids": [
-            "engop:symphony:sav.current-resolve",
-            "engop:symphony:sav.diff",
-            "engop:symphony:sav.explain",
-            "engop:symphony:sav.project-graph"
+            "engop:symphony:sav.current.diff",
+            "engop:symphony:sav.current.resolve",
+            "engop:symphony:sav.finding.explain",
+            "engop:symphony:sav.graph.project"
           ],
           "inherited_from_feature_id": null,
           "evidence": [
@@ -1543,8 +1543,8 @@
             "qxcmd:symphony:sav.reference-check"
           ],
           "engine_operation_ids": [
-            "engop:symphony:sav.evaluate",
-            "engop:symphony:sav.reference-check"
+            "engop:symphony:sav.accord.evaluate",
+            "engop:symphony:sav.reference.check"
           ],
           "inherited_from_feature_id": null,
           "evidence": [
@@ -3249,7 +3249,7 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:29c3418f5ecd4d4b2e2d99021e6642f4f39013de46e63a9902b650710ea8bc09",
+  "profile_digest": "sha256:5fce919c46ec6fda376571bec6691908ae2876f214bb11e313f762fed80f5493",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 86,

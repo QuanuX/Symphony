@@ -861,12 +861,12 @@ func newSAVCommand() *cobra.Command {
 		leaf, engine, operationID, interaction, input, output string
 	}{
 		{"inspect", "inspect", "inspect", "inspect", "", "symphony.sav.inspect-result.v1"},
-		{"reference-check", "reference_check", "reference-check", "validate", "", "symphony.sav.reference-check-result.v1"},
-		{"current", "current_resolve", "current-resolve", "query", "symphony.sav.current-resolution-input.v1", "symphony.sav.current-snapshot.v1"},
-		{"evaluate", "evaluate", "evaluate", "validate", "symphony.sav.evaluation-input.v1", "symphony.sav.evaluation-result.v1"},
-		{"diff", "diff", "diff", "query", "", "symphony.sav.diff-result.v1"},
-		{"explain", "explain", "explain", "query", "", "symphony.sav.explain-result.v1"},
-		{"graph", "project_graph", "project-graph", "query", "", "symphony.sav.graph-projection.v1"},
+		{"reference-check", "reference_check", "reference.check", "validate", "", "symphony.sav.reference-check-result.v1"},
+		{"current", "current_resolve", "current.resolve", "query", "symphony.sav.current-resolution-input.v1", "symphony.sav.current-snapshot.v1"},
+		{"evaluate", "evaluate", "accord.evaluate", "validate", "symphony.sav.evaluation-input.v1", "symphony.sav.evaluation-result.v1"},
+		{"diff", "diff", "current.diff", "query", "", "symphony.sav.diff-result.v1"},
+		{"explain", "explain", "finding.explain", "query", "", "symphony.sav.explain-result.v1"},
+		{"graph", "project_graph", "graph.project", "query", "", "symphony.sav.graph-projection.v1"},
 		{"version-validate", "named_version_validate", "named-version.validate", "validate", "symphony.sav.named-version-validation-input.v1", "symphony.sav.named-version-validation-result.v1"},
 		{"version-diff", "named_version_diff", "named-version.diff", "query", "symphony.sav.named-version-diff-input.v1", "symphony.sav.named-version-diff-result.v1"},
 		{"capsule-check", "extension_capsule_check", "extension-capsule.check", "validate", "symphony.sav.extension-capsule-check-input.v1", "symphony.sav.extension-capsule-check-result.v1"},

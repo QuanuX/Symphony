@@ -2238,7 +2238,7 @@
       ],
       "infrastructure_purpose": null,
       "backend_operation_ids": [
-        "engop:symphony:sav.current-resolve"
+        "engop:symphony:sav.current.resolve"
       ],
       "mutability": "read_only",
       "authority_mode": "none",
@@ -2273,7 +2273,7 @@
       ],
       "infrastructure_purpose": null,
       "backend_operation_ids": [
-        "engop:symphony:sav.diff"
+        "engop:symphony:sav.current.diff"
       ],
       "mutability": "read_only",
       "authority_mode": "none",
@@ -2306,7 +2306,7 @@
       ],
       "infrastructure_purpose": null,
       "backend_operation_ids": [
-        "engop:symphony:sav.evaluate"
+        "engop:symphony:sav.accord.evaluate"
       ],
       "mutability": "read_only",
       "authority_mode": "none",
@@ -2341,7 +2341,7 @@
       ],
       "infrastructure_purpose": null,
       "backend_operation_ids": [
-        "engop:symphony:sav.explain"
+        "engop:symphony:sav.finding.explain"
       ],
       "mutability": "read_only",
       "authority_mode": "none",
@@ -2374,7 +2374,7 @@
       ],
       "infrastructure_purpose": null,
       "backend_operation_ids": [
-        "engop:symphony:sav.project-graph"
+        "engop:symphony:sav.graph.project"
       ],
       "mutability": "read_only",
       "authority_mode": "none",
@@ -2440,7 +2440,7 @@
       ],
       "infrastructure_purpose": null,
       "backend_operation_ids": [
-        "engop:symphony:sav.reference-check"
+        "engop:symphony:sav.reference.check"
       ],
       "mutability": "read_only",
       "authority_mode": "none",
@@ -5822,5 +5822,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:81eaa3fb26861100ed29d0bd0671b749a937fac8fe2f6b7a05ecc5fb07892894"
+  "registry_digest": "sha256:10c6e4f7b09a3501132b4b92e54efe5f0f1ea20e9350ebfe500f32d400196636"
 }

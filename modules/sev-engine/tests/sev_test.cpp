@@ -5,6 +5,7 @@
 #include <cassert>
 #include <functional>
 #include <iostream>
+#include <set>
 #include <vector>
 
 namespace sev = symphony::knowledge::sev;
@@ -65,15 +66,28 @@ void require_error(const std::string& code, const std::function<void()>& functio
 int main() {
     const auto descriptor = sev::descriptor();
     assert(descriptor.at("protocol") == engine::descriptor_protocol_v2);
-    assert(descriptor.at("separate_scsev_registry") == false);
-    assert(descriptor.at("default_receptor") == "receptor:symphony:knowledge.sev");
-    const auto& operations = descriptor.at("administration_operations");
+    assert(descriptor.at("format_version") == 2);
+    assert(descriptor.size() == 17U);
+    const std::set<std::string> descriptor_fields{
+        "protocol", "format_version", "module_id", "engine_id", "vector_id", "engine_version",
+        "process_protocols", "contract_versions", "operations", "limits", "supported_scopes",
+        "language", "thermal_path", "canonical_apply_enabled", "session_mutation_enabled",
+        "network_listener", "descriptor_digest"};
+    for (const auto& [field, value] : descriptor.items()) {
+        static_cast<void>(value); assert(descriptor_fields.contains(field));
+    }
+    assert(descriptor.at("limits").at("json_values") == engine::Limits::max_json_values);
+    auto descriptor_without_digest = descriptor;
+    descriptor_without_digest.erase("descriptor_digest");
+    assert(descriptor.at("descriptor_digest") == engine::tagged_sha256(descriptor_without_digest.dump()));
+    const auto& operations = descriptor.at("operations");
     const auto trigger_descriptor = std::find_if(operations.begin(), operations.end(), [](const auto& value) {
         return value.at("engine_operation_id") == "engop:symphony:sev.trigger.coalesce";
     });
     assert(trigger_descriptor != operations.end());
     assert(trigger_descriptor->at("input_protocol") == "symphony.sev.trigger-coalescing-input.v1");
     assert(trigger_descriptor->at("feature_ids") == engine::Json::array({"ssfv:symphony:sev-engine.novelty-watch"}));
+    assert(trigger_descriptor->at("recovery_operation_id") == "engop:symphony:sev.trigger.coalesce");
     engine::Json input{{"protocol", "symphony.sev.case-open-input.v1"},
         {"case_id", "sevcase:symphony:test"}, {"case_kind", "planned_change"},
         {"source_current", current()}, {"target", {{"version", "v2"}}},
