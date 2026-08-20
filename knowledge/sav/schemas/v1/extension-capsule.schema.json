@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sav:extension-capsule:v1",
+  "title": "SAV Extension Capsule v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "capsule_id", "namespace", "module_id", "version", "receipt_digest", "feature_ids", "command_ids", "engine_operation_ids", "compatible_receptors", "accord_reference_ids", "required_traits", "extension_point_id", "created_at", "canonical", "capsule_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sav.extension-capsule.v1"},
+    "capsule_id": {"type": "string", "pattern": "^savcapsule:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "namespace": {"$ref": "#/$defs/id"},
+    "module_id": {"$ref": "#/$defs/id"},
+    "version": {"$ref": "#/$defs/id"},
+    "receipt_digest": {"$ref": "#/$defs/digest"},
+    "feature_ids": {"$ref": "#/$defs/ids"},
+    "command_ids": {"$ref": "#/$defs/ids"},
+    "engine_operation_ids": {"$ref": "#/$defs/ids"},
+    "compatible_receptors": {"$ref": "#/$defs/ids"},
+    "accord_reference_ids": {"$ref": "#/$defs/ids"},
+    "required_traits": {"$ref": "#/$defs/ids"},
+    "extension_point_id": {"$ref": "#/$defs/id"},
+    "created_at": {"$ref": "#/$defs/utc"},
+    "canonical": {"type": "boolean"},
+    "capsule_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "id": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"},
+    "ids": {"type": "array", "maxItems": 1024, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "utc": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"}
+  }
+}

@@ -2119,6 +2119,76 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sav.blueprint-plan",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sav blueprint-plan [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:sav-engine",
+          "interaction": "propose"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sav.installation-blueprint.plan"
+      ],
+      "mutability": "proposal_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sav.installation-blueprint.v1"
+      ],
+      "output_protocols": [
+        "symphony.sav.installation-blueprint-plan-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sav.installation-blueprint-plan-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sav.capsule-check",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sav capsule-check [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:sav-engine",
+          "interaction": "validate"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sav.extension-capsule.check"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sav.extension-capsule.v1"
+      ],
+      "output_protocols": [
+        "symphony.sav.extension-capsule-check-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sav.extension-capsule-check-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sav.compatibility",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -2157,7 +2227,7 @@
       "introduced_in": "0.1.0-dev",
       "deprecated_in": null,
       "replacement_ids": [],
-      "grammar": "qxctl sav current [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "grammar": "qxctl sav current [--host] [--input VALUE] [--json] [--maestro-prefix VALUE] [--maestro-version VALUE] [--prefix VALUE] [--repo VALUE] [--scope VALUE] [--state-root VALUE] [--tops-id VALUE] [--ttl DURATION] [--version VALUE]",
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
@@ -2381,6 +2451,74 @@
       ],
       "result_validation_protocols": [
         "symphony.sav.reference-check-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sav.version-diff",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sav version-diff [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:sav-engine",
+          "interaction": "query"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sav.named-version.diff"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.sav.named-version-diff-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sav.named-version-diff-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sav.version-validate",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sav version-validate [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:sav-engine",
+          "interaction": "validate"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sav.named-version.validate"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sav.named-version.v1"
+      ],
+      "output_protocols": [
+        "symphony.sav.named-version-validation-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sav.named-version-validation-result.v1"
       ],
       "recovery_command_id": null,
       "noninteractive": true,
@@ -2809,6 +2947,41 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sev.novelty-check",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sev novelty-check [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:sev-engine",
+          "interaction": "validate"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sev.novelty-bundle.check"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sev.novelty-bundle.v1"
+      ],
+      "output_protocols": [
+        "symphony.sev.novelty-bundle-check-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sev.novelty-bundle-check-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sev.plan",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -2941,6 +3114,39 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sev.trigger-coalesce",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sev trigger-coalesce [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:sev-engine",
+          "interaction": "propose"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sev.trigger.coalesce"
+      ],
+      "mutability": "proposal_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.sev.trigger-coalescing-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sev.trigger-coalescing-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sev.verify",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -2970,6 +3176,41 @@
       ],
       "result_validation_protocols": [
         "symphony.sev.transition-verification-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sev.watch-check",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sev watch-check [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:sev-engine",
+          "interaction": "validate"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:sev.watch-policy.check"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.sev.watch-policy.v1"
+      ],
+      "output_protocols": [
+        "symphony.sev.watch-policy-check-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.sev.watch-policy-check-result.v1"
       ],
       "recovery_command_id": null,
       "noninteractive": true,
@@ -5542,5 +5783,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:cb4b3b7b1a362b1b798f5a5df356afa4e097a6af0f5837657c4d50434ad36cba"
+  "registry_digest": "sha256:028f80fac612fa9c161a9b852ffdcfcfe6a1beb1a15b886412d9499d0e9396ca"
 }

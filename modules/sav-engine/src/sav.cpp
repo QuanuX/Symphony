@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <array>
 #include <map>
+#include <queue>
 #include <set>
 #include <string>
 #include <string_view>
@@ -424,6 +425,192 @@ engine::Json project_graph(const engine::Json& payload) {
     result["projection_digest"] = digest_without(result, "projection_digest"); return result;
 }
 
+void validate_requirement(const engine::Json& requirement) {
+    exact_fields(requirement, {"id", "version", "digest", "required"}, "composition requirement");
+    require_identity(requirement, "id"); require_identity(requirement, "version");
+    require_digest(requirement, "digest");
+    if (!requirement.at("required").is_boolean()) invalid("sav.type", "requirement required flag must be boolean");
+}
+
+void validate_requirements(const engine::Json& values, std::string_view context) {
+    if (!values.is_array() || values.size() > max_sources) invalid("sav.bounds", std::string(context) + " exceeds bound");
+    std::string previous;
+    for (const auto& value : values) {
+        validate_requirement(value);
+        const auto id = value.at("id").get<std::string>();
+        if (!previous.empty() && id <= previous) invalid("sav.order", std::string(context) + " must be sorted and unique");
+        previous = id;
+    }
+}
+
+void validate_named_version(const engine::Json& value) {
+    exact_fields(value, {"protocol", "named_version_id", "alias", "predecessor_digest",
+        "component_requirements", "contract_requirements", "accord_reference_ids", "required_traits",
+        "extension_points", "platform_bounds", "thermal_restriction", "sealed_at",
+        "composition_authority_reference", "sodv_publication_reference", "named_version_digest"}, "Named Version");
+    if (string_field(value, "protocol") != "symphony.sav.named-version.v1") invalid("sav.protocol", "Named Version protocol is unsupported");
+    require_identity(value, "named_version_id");
+    if (!value.at("named_version_id").get<std::string>().starts_with("savver:")) invalid("sav.named_version_id", "Named Version identity must use savver namespace");
+    string_field(value, "alias", 128U);
+    if (!value.at("predecessor_digest").is_null()) require_digest(value, "predecessor_digest");
+    validate_requirements(value.at("component_requirements"), "component_requirements");
+    validate_requirements(value.at("contract_requirements"), "contract_requirements");
+    static_cast<void>(string_array(value, "accord_reference_ids", max_references));
+    static_cast<void>(string_array(value, "required_traits", max_sources));
+    static_cast<void>(string_array(value, "extension_points", max_sources));
+    static_cast<void>(string_array(value, "platform_bounds", 32U, true));
+    if (string_field(value, "thermal_restriction", 32U) != "freezing_only") invalid("sav.thermal", "Named Version is not freezing-only");
+    if (!engine::is_utc_seconds(string_field(value, "sealed_at", 20U))) invalid("sav.timestamp", "Named Version seal time is invalid");
+    require_identity(value, "composition_authority_reference");
+    if (!value.at("sodv_publication_reference").is_null()) require_identity(value, "sodv_publication_reference");
+    require_digest(value, "named_version_digest");
+    if (digest_without(value, "named_version_digest") != value.at("named_version_digest").get<std::string>()) invalid("sav.named_version_digest", "Named Version digest mismatch");
+}
+
+engine::Json named_version_validate(const engine::Json& payload) {
+    exact_fields(payload, {"named_version"}, "Named Version validation payload");
+    validate_named_version(payload.at("named_version"));
+    engine::Json result{{"protocol", "symphony.sav.named-version-validation-result.v1"},
+        {"named_version_id", payload.at("named_version").at("named_version_id")},
+        {"named_version_digest", payload.at("named_version").at("named_version_digest")},
+        {"state", "valid_immutable_envelope"}, {"read_only", true}, {"seal_authorized", false},
+        {"result_digest", nullptr}};
+    result["result_digest"] = digest_without(result, "result_digest"); return result;
+}
+
+engine::Json named_version_diff(const engine::Json& payload) {
+    exact_fields(payload, {"left", "right"}, "Named Version diff payload");
+    validate_named_version(payload.at("left")); validate_named_version(payload.at("right"));
+    auto changes = engine::Json::array();
+    for (const auto* field : {"alias", "component_requirements", "contract_requirements",
+                              "accord_reference_ids", "required_traits", "extension_points",
+                              "platform_bounds", "thermal_restriction", "sodv_publication_reference"}) {
+        if (payload.at("left").at(field) != payload.at("right").at(field)) {
+            changes.push_back({{"field", field}, {"before_digest", engine::tagged_sha256(payload.at("left").at(field).dump())},
+                               {"after_digest", engine::tagged_sha256(payload.at("right").at(field).dump())}});
+        }
+    }
+    const bool successor = payload.at("right").at("predecessor_digest") == payload.at("left").at("named_version_digest");
+    engine::Json result{{"protocol", "symphony.sav.named-version-diff-result.v1"},
+        {"left_digest", payload.at("left").at("named_version_digest")},
+        {"right_digest", payload.at("right").at("named_version_digest")}, {"successor", successor},
+        {"changes", std::move(changes)}, {"read_only", true}, {"result_digest", nullptr}};
+    result["result_digest"] = digest_without(result, "result_digest"); return result;
+}
+
+void validate_capsule(const engine::Json& value) {
+    exact_fields(value, {"protocol", "capsule_id", "namespace", "module_id", "version", "receipt_digest",
+        "feature_ids", "command_ids", "engine_operation_ids", "compatible_receptors", "accord_reference_ids",
+        "required_traits", "extension_point_id", "created_at", "canonical", "capsule_digest"}, "Extension Capsule");
+    if (string_field(value, "protocol") != "symphony.sav.extension-capsule.v1") invalid("sav.protocol", "Capsule protocol is unsupported");
+    for (const auto* field : {"capsule_id", "namespace", "module_id", "version", "extension_point_id"}) require_identity(value, field);
+    if (!value.at("capsule_id").get<std::string>().starts_with("savcapsule:")) invalid("sav.capsule_id", "Capsule identity must use savcapsule namespace");
+    require_digest(value, "receipt_digest");
+    for (const auto* field : {"feature_ids", "command_ids", "engine_operation_ids", "compatible_receptors",
+                              "accord_reference_ids", "required_traits"}) {
+        static_cast<void>(string_array(value, field, max_references));
+    }
+    if (!engine::is_utc_seconds(string_field(value, "created_at", 20U)) || !value.at("canonical").is_boolean()) invalid("sav.capsule", "Capsule time or authority flag is invalid");
+    require_digest(value, "capsule_digest");
+    if (digest_without(value, "capsule_digest") != value.at("capsule_digest").get<std::string>()) invalid("sav.capsule_digest", "Capsule digest mismatch");
+}
+
+engine::Json extension_capsule_check(const engine::Json& payload) {
+    exact_fields(payload, {"capsule"}, "Capsule check payload"); validate_capsule(payload.at("capsule"));
+    const auto& capsule = payload.at("capsule");
+    const bool semantic = !capsule.at("feature_ids").empty();
+    const bool commands = !capsule.at("command_ids").empty();
+    const bool operations = !capsule.at("engine_operation_ids").empty();
+    const bool receptor = !capsule.at("compatible_receptors").empty();
+    auto gaps = engine::Json::array();
+    if (!semantic) gaps.push_back("semantic_registration_missing");
+    if (!commands) gaps.push_back("qxctl_command_coverage_missing");
+    if (!operations) gaps.push_back("engine_operation_coverage_missing");
+    if (!receptor) gaps.push_back("maestro_receptor_compatibility_missing");
+    engine::Json result{{"protocol", "symphony.sav.extension-capsule-check-result.v1"},
+        {"capsule_id", capsule.at("capsule_id")}, {"capsule_digest", capsule.at("capsule_digest")},
+        {"package_inspectable", true}, {"semantic_registration_ready", semantic},
+        {"administration_ready", commands && operations}, {"docking_ready", receptor},
+        {"integration_ready", gaps.empty()}, {"gaps", std::move(gaps)}, {"invented_identity", false},
+        {"invented_grammar", false}, {"read_only", true}, {"result_digest", nullptr}};
+    result["result_digest"] = digest_without(result, "result_digest"); return result;
+}
+
+engine::Json installation_blueprint_plan(const engine::Json& payload) {
+    exact_fields(payload, {"blueprint", "direction", "completed_component_ids", "blocked_component_ids"}, "Blueprint plan payload");
+    const auto& blueprint = payload.at("blueprint");
+    exact_fields(blueprint, {"protocol", "blueprint_id", "tops_id", "named_version_digest", "component_requirements",
+        "capsule_digests", "forward_edges", "reverse_edges", "default_receptors", "created_at", "canonical",
+        "apply_authorized", "blueprint_digest"}, "Installation Blueprint");
+    if (string_field(blueprint, "protocol") != "symphony.sav.installation-blueprint.v1") invalid("sav.protocol", "Blueprint protocol is unsupported");
+    require_identity(blueprint, "blueprint_id"); require_identity(blueprint, "tops_id");
+    if (!blueprint.at("blueprint_id").get<std::string>().starts_with("savblueprint:")) invalid("sav.blueprint_id", "Blueprint identity must use savblueprint namespace");
+    if (!blueprint.at("named_version_digest").is_null()) require_digest(blueprint, "named_version_digest");
+    validate_requirements(blueprint.at("component_requirements"), "component_requirements");
+    const auto capsule_digests = string_array(blueprint, "capsule_digests", 1024U);
+    for (const auto& digest : capsule_digests) if (!tagged_digest(digest)) invalid("sav.blueprint", "Capsule digest is invalid");
+    const auto completed = string_array(payload, "completed_component_ids", 4096U);
+    const auto blocked_input = string_array(payload, "blocked_component_ids", 4096U);
+    std::set<std::string> components; for (const auto& requirement : blueprint.at("component_requirements")) components.insert(requirement.at("id"));
+    std::set<std::string> completed_set(completed.begin(), completed.end()), blocked(blocked_input.begin(), blocked_input.end());
+    for (const auto& id : completed_set) if (!components.contains(id)) invalid("sav.blueprint", "completed component is absent");
+    for (const auto& id : blocked) if (!components.contains(id) || completed_set.contains(id)) invalid("sav.blueprint", "blocked component is absent or complete");
+    const auto direction = string_field(payload, "direction", 16U);
+    if (direction != "forward" && direction != "reverse") invalid("sav.blueprint", "direction must be forward or reverse");
+    const auto& edges = blueprint.at(direction == "forward" ? "forward_edges" : "reverse_edges");
+    const auto& inverse = blueprint.at(direction == "forward" ? "reverse_edges" : "forward_edges");
+    if (!edges.is_array() || !inverse.is_array() || edges.size() > 8192U || inverse.size() != edges.size()) invalid("sav.blueprint", "Blueprint edge collections are invalid");
+    std::map<std::string, std::set<std::string>> predecessors, successors;
+    std::set<std::string> expected_inverse;
+    for (const auto& edge : inverse) expected_inverse.insert(edge.at("target").get<std::string>() + "\n" + edge.at("source").get<std::string>() + "\n" + edge.at("kind").get<std::string>());
+    std::set<std::string> seen;
+    for (const auto& edge : edges) {
+        exact_fields(edge, {"source", "target", "kind"}, "Blueprint edge");
+        const auto source = string_field(edge, "source", 256U), target = string_field(edge, "target", 256U), kind = string_field(edge, "kind", 32U);
+        if (!components.contains(source) || !components.contains(target) || source == target ||
+            (kind != "hard_safety" && kind != "semantic_dependency")) invalid("sav.blueprint", "Blueprint edge is invalid");
+        const auto key = source + "\n" + target + "\n" + kind;
+        if (!seen.insert(key).second || !expected_inverse.contains(key)) invalid("sav.blueprint", "forward and reverse edges are not exact inverses");
+        predecessors[target].insert(source); successors[source].insert(target);
+    }
+    if (seen.size() != expected_inverse.size()) invalid("sav.blueprint", "forward and reverse edges are not exact inverses");
+    std::set<std::string> receptor_components;
+    if (!blueprint.at("default_receptors").is_array() || blueprint.at("default_receptors").size() > 4096U) invalid("sav.blueprint", "default receptors exceed bound");
+    for (const auto& receptor : blueprint.at("default_receptors")) {
+        exact_fields(receptor, {"component_id", "receptor_id"}, "Blueprint default receptor");
+        const auto component = string_field(receptor, "component_id", 256U);
+        require_identity(receptor, "receptor_id");
+        if (!components.contains(component) || !receptor_components.insert(component).second) invalid("sav.blueprint", "default receptor component is absent or duplicated");
+    }
+    std::map<std::string, std::size_t> indegree;
+    for (const auto& id : components) indegree[id] = predecessors[id].size();
+    std::queue<std::string> acyclic;
+    for (const auto& [id, degree] : indegree) if (degree == 0U) acyclic.push(id);
+    std::size_t visited = 0U;
+    while (!acyclic.empty()) {
+        const auto id = acyclic.front(); acyclic.pop(); ++visited;
+        for (const auto& next : successors[id]) if (--indegree[next] == 0U) acyclic.push(next);
+    }
+    if (visited != components.size()) invalid("sav.blueprint_cycle", "Blueprint dependency graph contains a cycle");
+    std::queue<std::string> queue; for (const auto& id : blocked) queue.push(id);
+    while (!queue.empty()) { const auto id = queue.front(); queue.pop(); for (const auto& next : successors[id]) if (blocked.insert(next).second) queue.push(next); }
+    auto ready = engine::Json::array();
+    for (const auto& id : components) {
+        if (completed_set.contains(id) || blocked.contains(id)) continue;
+        if (std::all_of(predecessors[id].begin(), predecessors[id].end(), [&](const auto& dependency) { return completed_set.contains(dependency); })) ready.push_back(id);
+    }
+    require_digest(blueprint, "blueprint_digest");
+    if (blueprint.at("canonical") != false || blueprint.at("apply_authorized") != false ||
+        digest_without(blueprint, "blueprint_digest") != blueprint.at("blueprint_digest").get<std::string>()) invalid("sav.blueprint_digest", "Blueprint authority or digest is invalid");
+    engine::Json result{{"protocol", "symphony.sav.installation-blueprint-plan-result.v1"},
+        {"blueprint_digest", blueprint.at("blueprint_digest")}, {"direction", direction},
+        {"ready_component_ids", std::move(ready)}, {"blocked_component_ids", engine::Json(blocked)},
+        {"converged", completed_set.size() == components.size()}, {"dynamic_replanning", true},
+        {"hard_safety_edges_preserved", true}, {"apply_authorized", false}, {"read_only", true},
+        {"result_digest", nullptr}};
+    result["result_digest"] = digest_without(result, "result_digest"); return result;
+}
+
 engine::Json compatibility(const engine::Json& payload) {
     exact_fields(payload, {"reader_versions", "writer_version"}, "compatibility payload");
     const auto readers = string_array(payload, "reader_versions", 32U, true);
@@ -444,6 +631,10 @@ const std::vector<engine::OperationSpec>& operations() {
         {"engop:symphony:sav.diff", "diff", "implemented", false, true, {"ssfv:symphony:sav-engine"}, {"query"}, "not_applicable", {}, "symphony.sav.diff-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.diff", "supported", "freezing"},
         {"engop:symphony:sav.explain", "explain", "implemented", false, true, {"ssfv:symphony:sav-engine"}, {"query"}, "not_applicable", {}, "symphony.sav.explain-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.explain", "supported", "freezing"},
         {"engop:symphony:sav.project-graph", "project_graph", "implemented", false, true, {"ssfv:symphony:sav-engine"}, {"query"}, "not_applicable", {}, "symphony.sav.graph-projection.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.project-graph", "supported", "freezing"},
+        {"engop:symphony:sav.named-version.validate", "named_version_validate", "implemented", false, true, {"ssfv:symphony:sav-engine"}, {"validate"}, "system_orchestrated", "symphony.sav.named-version.v1", "symphony.sav.named-version-validation-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.named-version.validate", "supported", "freezing"},
+        {"engop:symphony:sav.named-version.diff", "named_version_diff", "implemented", false, true, {"ssfv:symphony:sav-engine"}, {"query"}, "not_applicable", {}, "symphony.sav.named-version-diff-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.named-version.diff", "supported", "freezing"},
+        {"engop:symphony:sav.extension-capsule.check", "extension_capsule_check", "implemented", false, true, {"ssfv:symphony:sav-engine"}, {"validate"}, "system_orchestrated", "symphony.sav.extension-capsule.v1", "symphony.sav.extension-capsule-check-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.extension-capsule.check", "supported", "freezing"},
+        {"engop:symphony:sav.installation-blueprint.plan", "installation_blueprint_plan", "implemented", false, true, {"ssfv:symphony:sav-engine"}, {"propose"}, "system_orchestrated", "symphony.sav.installation-blueprint.v1", "symphony.sav.installation-blueprint-plan-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.installation-blueprint.plan", "supported", "freezing"},
         {"engop:symphony:sav.compatibility", "compatibility", "implemented", false, true, {"ssfv:symphony:sav-engine"}, {"validate"}, "not_applicable", {}, "symphony.sav.compatibility-result.v1", "read_only", "idempotent", false, "none", "engop:symphony:sav.compatibility", "supported", "freezing"},
     };
     return specs;
@@ -475,6 +666,10 @@ engine::Json handle_request(const engine::Request& request) {
     if (request.operation == "diff") return diff(request.payload);
     if (request.operation == "explain") return explain(request.payload);
     if (request.operation == "project_graph") return project_graph(request.payload);
+    if (request.operation == "named_version_validate") return named_version_validate(request.payload);
+    if (request.operation == "named_version_diff") return named_version_diff(request.payload);
+    if (request.operation == "extension_capsule_check") return extension_capsule_check(request.payload);
+    if (request.operation == "installation_blueprint_plan") return installation_blueprint_plan(request.payload);
     if (request.operation == "compatibility") return compatibility(request.payload);
     throw engine::Error("operation.unsupported", "operation is reserved or unsupported", 4);
 }

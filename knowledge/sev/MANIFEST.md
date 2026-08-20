@@ -25,7 +25,7 @@ SEV owns:
 - deterministic dispositions and ready sets;
 - reobservation, recalculation, verification, recovery, and closure rules;
 - SCSEV command-surface consequence coverage;
-- extension-capsule, installation-blueprint, watch/session, and novelty profiles when ratified and implemented.
+- watch/session and novelty profiles; SAV separately owns Extension Capsule and Installation Blueprint composition truth.
 
 ## Canonical Surface
 
@@ -36,6 +36,8 @@ knowledge/sev/
   SKILL.md
   SPEC.md
   DISPOSITIONS.md
+  NOVELTY.md
+  WATCH.md
   profiles/
     qxctl-command-surface.md
   schemas/v1/

@@ -80,11 +80,18 @@ type sodvOptions struct {
 }
 
 type accordareOptions struct {
-	prefix     string
-	version    string
-	repository string
-	input      string
-	jsonOutput bool
+	prefix         string
+	version        string
+	repository     string
+	input          string
+	host           bool
+	topsID         string
+	stateRoot      string
+	maestroPrefix  string
+	maestroVersion string
+	scope          string
+	ttl            time.Duration
+	jsonOutput     bool
 }
 
 type ssfvOptions struct {
@@ -860,11 +867,15 @@ func newSAVCommand() *cobra.Command {
 		{"diff", "diff", "diff", "query", "", "symphony.sav.diff-result.v1"},
 		{"explain", "explain", "explain", "query", "", "symphony.sav.explain-result.v1"},
 		{"graph", "project_graph", "project-graph", "query", "", "symphony.sav.graph-projection.v1"},
+		{"version-validate", "named_version_validate", "named-version.validate", "validate", "symphony.sav.named-version.v1", "symphony.sav.named-version-validation-result.v1"},
+		{"version-diff", "named_version_diff", "named-version.diff", "query", "", "symphony.sav.named-version-diff-result.v1"},
+		{"capsule-check", "extension_capsule_check", "extension-capsule.check", "validate", "symphony.sav.extension-capsule.v1", "symphony.sav.extension-capsule-check-result.v1"},
+		{"blueprint-plan", "installation_blueprint_plan", "installation-blueprint.plan", "propose", "symphony.sav.installation-blueprint.v1", "symphony.sav.installation-blueprint-plan-result.v1"},
 		{"compatibility", "compatibility", "compatibility", "validate", "", "symphony.sav.compatibility-result.v1"},
 	}
-	command := structural("sav", fmt.Errorf("SAV subcommand is required: inspect, reference-check, current, evaluate, diff, explain, graph, or compatibility"))
+	command := structural("sav", fmt.Errorf("SAV subcommand is required: inspect, reference-check, current, evaluate, diff, explain, graph, version-validate, version-diff, capsule-check, blueprint-plan, or compatibility"))
 	for _, operation := range operations {
-		options := accordareOptions{version: "0.1.0-dev"}
+		options := accordareOptions{version: "0.1.0-dev", maestroVersion: "0.1.0-dev", scope: "user", ttl: 15 * time.Minute}
 		child := &cobra.Command{Use: operation.leaf, Args: usageOnlyArgs,
 			RunE: func(*cobra.Command, []string) error { return runAccordare("sav", operation.engine, options) }}
 		registeredAccordare(child, "sav."+operation.leaf, featureSAV, operation.interaction,
@@ -875,6 +886,15 @@ func newSAVCommand() *cobra.Command {
 		child.Flags().BoolVar(&options.jsonOutput, "json", false, "emit operation result JSON")
 		if operation.leaf != "inspect" {
 			child.Flags().StringVar(&options.input, "input", "", "no-follow JSON operation payload file")
+		}
+		if operation.leaf == "current" {
+			child.Flags().BoolVar(&options.host, "host", false, "assemble typed CURRENT evidence from exact local host state")
+			child.Flags().StringVar(&options.topsID, "tops-id", "", "immutable TOPS UUID for host evidence")
+			child.Flags().StringVar(&options.stateRoot, "state-root", "", "state root; defaults to XDG_STATE_HOME or ~/.local/state")
+			child.Flags().StringVar(&options.maestroPrefix, "maestro-prefix", "", "optional exact Maestro installation prefix for protected receptor inventory")
+			child.Flags().StringVar(&options.maestroVersion, "maestro-version", "0.1.0-dev", "exact Maestro version when receptor evidence is requested")
+			child.Flags().StringVar(&options.scope, "scope", "user", "SSIAG scope for protected Maestro evidence")
+			child.Flags().DurationVar(&options.ttl, "ttl", 15*time.Minute, "requested Maestro inventory capability lifetime")
 		}
 		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 		command.AddCommand(child)
@@ -897,10 +917,13 @@ func newSEVCommand() *cobra.Command {
 		{"recover", "case_recover", "case.recover", "recover", "", "symphony.sev.case-recovery-advice.v1"},
 		{"close", "case_close", "case.close", "propose", "", "symphony.sev.case-close-proposal.v1"},
 		{"command-surface", "command_surface_assess", "command-surface.assess", "validate", "", "symphony.sev.command-surface-assessment.v1"},
+		{"novelty-check", "novelty_bundle_check", "novelty-bundle.check", "validate", "symphony.sev.novelty-bundle.v1", "symphony.sev.novelty-bundle-check-result.v1"},
+		{"watch-check", "watch_policy_check", "watch-policy.check", "validate", "symphony.sev.watch-policy.v1", "symphony.sev.watch-policy-check-result.v1"},
+		{"trigger-coalesce", "trigger_coalesce", "trigger.coalesce", "propose", "", "symphony.sev.trigger-coalescing-result.v1"},
 		{"graph", "project_graph", "graph.project", "query", "", "symphony.sev.graph-projection.v1"},
 		{"compatibility", "compatibility", "compatibility", "validate", "", "symphony.sev.compatibility-result.v1"},
 	}
-	command := structural("sev", fmt.Errorf("SEV subcommand is required: inspect, case-open, impact, plan, verify, recalculate, status, recover, close, command-surface, graph, or compatibility"))
+	command := structural("sev", fmt.Errorf("SEV subcommand is required: inspect, case-open, impact, plan, verify, recalculate, status, recover, close, command-surface, novelty-check, watch-check, trigger-coalesce, graph, or compatibility"))
 	for _, operation := range operations {
 		options := accordareOptions{version: "0.1.0-dev"}
 		child := &cobra.Command{Use: operation.leaf, Args: usageOnlyArgs,
@@ -1551,14 +1574,14 @@ func failurePrefix(args []string) string {
 	case "sav":
 		if len(args) > 1 {
 			switch args[1] {
-			case "inspect", "reference-check", "current", "evaluate", "diff", "explain", "graph", "compatibility":
+			case "inspect", "reference-check", "current", "evaluate", "diff", "explain", "graph", "version-validate", "version-diff", "capsule-check", "blueprint-plan", "compatibility":
 				return "sav " + args[1]
 			}
 		}
 	case "sev":
 		if len(args) > 1 {
 			switch args[1] {
-			case "inspect", "case-open", "impact", "plan", "verify", "recalculate", "status", "recover", "close", "command-surface", "graph", "compatibility":
+			case "inspect", "case-open", "impact", "plan", "verify", "recalculate", "status", "recover", "close", "command-surface", "novelty-check", "watch-check", "trigger-coalesce", "graph", "compatibility":
 				return "sev " + args[1]
 			}
 		}

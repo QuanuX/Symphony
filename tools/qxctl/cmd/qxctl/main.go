@@ -145,8 +145,8 @@ func printUsage() {
 	fmt.Println("  sodv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a release-record proposal")
 	fmt.Println("  sodv recover --prefix PATH --input FILE [--version VERSION] [--json] Reconcile an interrupted release journal")
 	fmt.Println("  sodv project --prefix PATH [--version VERSION] [--json] Build a disposable release inventory")
-	fmt.Println("  sav inspect|reference-check|current|evaluate|diff|explain|graph|compatibility --prefix PATH [--input FILE] [--json] Administer exact read-only SAV operations")
-	fmt.Println("  sev inspect|case-open|impact|plan|verify|recalculate|status|recover|close|command-surface|graph|compatibility --prefix PATH [--input FILE] [--json] Administer exact report/proposal-only SEV operations")
+	fmt.Println("  sav inspect|reference-check|current|evaluate|diff|explain|graph|version-validate|version-diff|capsule-check|blueprint-plan|compatibility --prefix PATH [--input FILE] [--json] Administer exact read-only SAV operations")
+	fmt.Println("  sev inspect|case-open|impact|plan|verify|recalculate|status|recover|close|command-surface|novelty-check|watch-check|trigger-coalesce|graph|compatibility --prefix PATH [--input FILE] [--json] Administer exact report/proposal-only SEV operations")
 	fmt.Println("  ssfv inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SSFV engine")
 	fmt.Println("  ssfv check --prefix PATH [--version VERSION] [freshness flags] [--json] Check canonical semantic-feature truth")
 	fmt.Println("  ssfv diff --prefix PATH --input FILE [--version VERSION] [--json] Compare a semantic baseline with live truth")
@@ -1924,14 +1924,22 @@ func runAccordare(vector, operation string, options accordareOptions) error {
 	if err != nil || info.Mode()&os.ModeSymlink != 0 || !info.IsDir() {
 		return fmt.Errorf("--repo must identify a no-follow directory")
 	}
-	repoRoot, err := repository.FindRoot(start)
+	workRoot, err := filepath.EvalSymlinks(start)
 	if err != nil {
-		return fmt.Errorf("could not find Symphony repository root: %w", err)
+		return fmt.Errorf("canonicalize operation working directory: %w", err)
 	}
 	var payload []byte
 	if operation == "inspect" {
 		payload = []byte(`{}`)
+	} else if vector == "sav" && operation == "current_resolve" && options.host {
+		if options.input != "" {
+			return fmt.Errorf("--host and --input are mutually exclusive")
+		}
+		payload, err = buildSAVHostCurrent(context.Background(), workRoot, options)
 	} else {
+		if options.host {
+			return fmt.Errorf("--host is supported only by sav current")
+		}
 		payload, err = knowledgeengine.ReadPayload(options.input)
 		if err != nil {
 			return err
@@ -1939,9 +1947,9 @@ func runAccordare(vector, operation string, options accordareOptions) error {
 	}
 	var response knowledgeengine.Response
 	if vector == "sav" {
-		response, err = knowledgeengine.InvokeSAV(context.Background(), options.prefix, options.version, repoRoot, operation, payload)
+		response, err = knowledgeengine.InvokeSAV(context.Background(), options.prefix, options.version, workRoot, operation, payload)
 	} else if vector == "sev" {
-		response, err = knowledgeengine.InvokeSEV(context.Background(), options.prefix, options.version, repoRoot, operation, payload)
+		response, err = knowledgeengine.InvokeSEV(context.Background(), options.prefix, options.version, workRoot, operation, payload)
 	} else {
 		return fmt.Errorf("unsupported Accordare vector")
 	}
@@ -1966,6 +1974,8 @@ func validateAccordareResult(vector, operation string, result json.RawMessage) (
 			"current_resolve": "symphony.sav.current-snapshot.v1", "evaluate": "symphony.sav.evaluation-result.v1",
 			"diff": "symphony.sav.diff-result.v1", "explain": "symphony.sav.explain-result.v1",
 			"project_graph": "symphony.sav.graph-projection.v1", "compatibility": "symphony.sav.compatibility-result.v1",
+			"named_version_validate": "symphony.sav.named-version-validation-result.v1", "named_version_diff": "symphony.sav.named-version-diff-result.v1",
+			"extension_capsule_check": "symphony.sav.extension-capsule-check-result.v1", "installation_blueprint_plan": "symphony.sav.installation-blueprint-plan-result.v1",
 		},
 		"sev": {
 			"inspect": "symphony.sev.inspect-result.v1", "case_open": "symphony.sev.evolution-case.v1",
@@ -1974,6 +1984,8 @@ func validateAccordareResult(vector, operation string, result json.RawMessage) (
 			"case_status": "symphony.sev.case-status-result.v1", "case_recover": "symphony.sev.case-recovery-advice.v1",
 			"case_close": "symphony.sev.case-close-proposal.v1", "command_surface_assess": "symphony.sev.command-surface-assessment.v1",
 			"project_graph": "symphony.sev.graph-projection.v1", "compatibility": "symphony.sev.compatibility-result.v1",
+			"novelty_bundle_check": "symphony.sev.novelty-bundle-check-result.v1", "watch_policy_check": "symphony.sev.watch-policy-check-result.v1",
+			"trigger_coalesce": "symphony.sev.trigger-coalescing-result.v1",
 		},
 	}
 	protocol, ok := expected[vector][operation]

@@ -12,5 +12,7 @@ This directory owns the machine-readable v1 contracts for Accord References, typ
 | `evaluation-result.schema.json` | Three-axis accord evidence |
 | `graph-projection.schema.json` | Disposable deterministic composition graph |
 | `named-version.schema.json` | Immutable composition envelope |
+| `extension-capsule.schema.json` | Portable third-party module admission declaration |
+| `installation-blueprint.schema.json` | Forward/reverse desired-composition plan |
 
 These schemas do not transfer source ownership, authorize apply, create an installed snapshot, seal a Named Version, or make a projection canonical.

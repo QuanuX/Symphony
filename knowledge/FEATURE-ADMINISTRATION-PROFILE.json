@@ -1485,6 +1485,24 @@
           "rationale": "The exact headless leaf invokes descriptor-bound read-only SAV inspection."
         },
         {
+          "interaction": "propose",
+          "requirement": "required",
+          "delivery": "direct",
+          "command_ids": [
+            "qxcmd:symphony:sav.blueprint-plan"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sav.installation-blueprint.plan"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "Blueprint planning exposes explicit forward and reverse dependency-safe ready sets without authorizing apply."
+        },
+        {
           "interaction": "query",
           "requirement": "required",
           "delivery": "composed",
@@ -1492,12 +1510,14 @@
             "qxcmd:symphony:sav.current",
             "qxcmd:symphony:sav.diff",
             "qxcmd:symphony:sav.explain",
-            "qxcmd:symphony:sav.graph"
+            "qxcmd:symphony:sav.graph",
+            "qxcmd:symphony:sav.version-diff"
           ],
           "engine_operation_ids": [
             "engop:symphony:sav.current-resolve",
             "engop:symphony:sav.diff",
             "engop:symphony:sav.explain",
+            "engop:symphony:sav.named-version.diff",
             "engop:symphony:sav.project-graph"
           ],
           "inherited_from_feature_id": null,
@@ -1513,13 +1533,17 @@
           "requirement": "required",
           "delivery": "composed",
           "command_ids": [
+            "qxcmd:symphony:sav.capsule-check",
             "qxcmd:symphony:sav.compatibility",
             "qxcmd:symphony:sav.evaluate",
-            "qxcmd:symphony:sav.reference-check"
+            "qxcmd:symphony:sav.reference-check",
+            "qxcmd:symphony:sav.version-validate"
           ],
           "engine_operation_ids": [
             "engop:symphony:sav.compatibility",
             "engop:symphony:sav.evaluate",
+            "engop:symphony:sav.extension-capsule.check",
+            "engop:symphony:sav.named-version.validate",
             "engop:symphony:sav.reference-check"
           ],
           "inherited_from_feature_id": null,
@@ -1701,12 +1725,14 @@
           "command_ids": [
             "qxcmd:symphony:sev.case-open",
             "qxcmd:symphony:sev.close",
-            "qxcmd:symphony:sev.plan"
+            "qxcmd:symphony:sev.plan",
+            "qxcmd:symphony:sev.trigger-coalesce"
           ],
           "engine_operation_ids": [
             "engop:symphony:sev.case.close",
             "engop:symphony:sev.case.open",
-            "engop:symphony:sev.disposition.plan"
+            "engop:symphony:sev.disposition.plan",
+            "engop:symphony:sev.trigger.coalesce"
           ],
           "inherited_from_feature_id": null,
           "evidence": [
@@ -1765,12 +1791,16 @@
           "command_ids": [
             "qxcmd:symphony:sev.command-surface",
             "qxcmd:symphony:sev.compatibility",
-            "qxcmd:symphony:sev.verify"
+            "qxcmd:symphony:sev.novelty-check",
+            "qxcmd:symphony:sev.verify",
+            "qxcmd:symphony:sev.watch-check"
           ],
           "engine_operation_ids": [
             "engop:symphony:sev.command-surface.assess",
             "engop:symphony:sev.compatibility",
-            "engop:symphony:sev.transition.verify"
+            "engop:symphony:sev.novelty-bundle.check",
+            "engop:symphony:sev.transition.verify",
+            "engop:symphony:sev.watch-policy.check"
           ],
           "inherited_from_feature_id": null,
           "evidence": [
@@ -3015,7 +3045,7 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:e01ccafd999d2fc4783053302a88ab44c91a6eb3a8c8c4d2b49ff76b343505db",
+  "profile_digest": "sha256:0d074acaf2d058318c9830874713649357b013c99acbbdce6190df016ae3af1b",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 78,

@@ -5,6 +5,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <string_view>
 
 namespace sav = symphony::knowledge::sav;
 namespace engine = symphony::knowledge::engine;
@@ -33,6 +34,24 @@ engine::Json current_input() {
         {"required_source_ids", engine::Json::array({"source:test"})}, {"sources", engine::Json::array({source()})}};
 }
 
+void finalize(engine::Json& value, const char* field) {
+    value.erase(field);
+    value[field] = engine::tagged_sha256(value.dump());
+}
+
+engine::Json requirement(const std::string& id) {
+    return {{"id", id}, {"version", "1.0.0"},
+            {"digest", engine::tagged_sha256(id)}, {"required", true}};
+}
+
+template <typename Function>
+void require_error(Function&& function, std::string_view code) {
+    bool rejected = false;
+    try { function(); }
+    catch (const engine::Error& error) { rejected = error.code() == code; }
+    assert(rejected);
+}
+
 }
 
 int main() {
@@ -47,6 +66,62 @@ int main() {
     absent["sources"] = engine::Json::array();
     const auto unknown = sav::handle_request(request("current_resolve", absent));
     assert(unknown.at("coverage_state") == "unknown");
+
+    engine::Json named{{"protocol", "symphony.sav.named-version.v1"},
+        {"named_version_id", "savver:symphony:baseline"}, {"alias", "Baseline"},
+        {"predecessor_digest", nullptr}, {"component_requirements", engine::Json::array({requirement("component:a")})},
+        {"contract_requirements", engine::Json::array()}, {"accord_reference_ids", engine::Json::array()},
+        {"required_traits", engine::Json::array()}, {"extension_points", engine::Json::array()},
+        {"platform_bounds", engine::Json::array({"linux:amd64"})}, {"thermal_restriction", "freezing_only"},
+        {"sealed_at", "2026-08-20T12:00:00Z"}, {"composition_authority_reference", "ssiag:decision:test"},
+        {"sodv_publication_reference", nullptr}, {"named_version_digest", nullptr}};
+    finalize(named, "named_version_digest");
+    const auto named_result = sav::handle_request(request("named_version_validate", {{"named_version", named}}));
+    assert(named_result.at("state") == "valid_immutable_envelope" && named_result.at("seal_authorized") == false);
+
+    engine::Json capsule{{"protocol", "symphony.sav.extension-capsule.v1"},
+        {"capsule_id", "savcapsule:thirdparty:module"}, {"namespace", "thirdparty"},
+        {"module_id", "thirdparty-module"}, {"version", "1.0.0"}, {"receipt_digest", engine::tagged_sha256("receipt")},
+        {"feature_ids", engine::Json::array({"ssfv:thirdparty:module"})}, {"command_ids", engine::Json::array()},
+        {"engine_operation_ids", engine::Json::array()}, {"compatible_receptors", engine::Json::array({"symphony.maestro.knowledge-engine.v1"})},
+        {"accord_reference_ids", engine::Json::array()}, {"required_traits", engine::Json::array()},
+        {"extension_point_id", "savext:symphony:modules"}, {"created_at", "2026-08-20T12:00:00Z"},
+        {"canonical", false}, {"capsule_digest", nullptr}};
+    finalize(capsule, "capsule_digest");
+    const auto capsule_result = sav::handle_request(request("extension_capsule_check", {{"capsule", capsule}}));
+    assert(capsule_result.at("package_inspectable") == true && capsule_result.at("integration_ready") == false &&
+           capsule_result.at("gaps").size() == 2U && capsule_result.at("invented_grammar") == false);
+
+    engine::Json blueprint{{"protocol", "symphony.sav.installation-blueprint.v1"},
+        {"blueprint_id", "savblueprint:symphony:test"}, {"tops_id", "tops:test"},
+        {"named_version_digest", named.at("named_version_digest")},
+        {"component_requirements", engine::Json::array({requirement("component:a"), requirement("component:b")})},
+        {"capsule_digests", engine::Json::array({capsule.at("capsule_digest")})},
+        {"forward_edges", engine::Json::array({{{"source", "component:a"}, {"target", "component:b"}, {"kind", "hard_safety"}}})},
+        {"reverse_edges", engine::Json::array({{{"source", "component:b"}, {"target", "component:a"}, {"kind", "hard_safety"}}})},
+        {"default_receptors", engine::Json::array()}, {"created_at", "2026-08-20T12:00:00Z"},
+        {"canonical", false}, {"apply_authorized", false}, {"blueprint_digest", nullptr}};
+    finalize(blueprint, "blueprint_digest");
+    const auto forward = sav::handle_request(request("installation_blueprint_plan", {
+        {"blueprint", blueprint}, {"direction", "forward"},
+        {"completed_component_ids", engine::Json::array()}, {"blocked_component_ids", engine::Json::array()}}));
+    const auto reverse = sav::handle_request(request("installation_blueprint_plan", {
+        {"blueprint", blueprint}, {"direction", "reverse"},
+        {"completed_component_ids", engine::Json::array()}, {"blocked_component_ids", engine::Json::array()}}));
+    assert(forward.at("ready_component_ids") == engine::Json::array({"component:a"}));
+    assert(reverse.at("ready_component_ids") == engine::Json::array({"component:b"}));
+    assert(forward.at("dynamic_replanning") == true && forward.at("hard_safety_edges_preserved") == true);
+    auto cyclic = blueprint;
+    cyclic["forward_edges"].push_back({{"source", "component:b"}, {"target", "component:a"}, {"kind", "semantic_dependency"}});
+    cyclic["reverse_edges"].push_back({{"source", "component:a"}, {"target", "component:b"}, {"kind", "semantic_dependency"}});
+    finalize(cyclic, "blueprint_digest");
+    require_error([&] { static_cast<void>(sav::handle_request(request("installation_blueprint_plan", {
+        {"blueprint", cyclic}, {"direction", "forward"}, {"completed_component_ids", engine::Json::array()},
+        {"blocked_component_ids", engine::Json::array()}}))); }, "sav.blueprint_cycle");
+    auto wrong_named_namespace = named;
+    wrong_named_namespace["named_version_id"] = "other:symphony:baseline";
+    finalize(wrong_named_namespace, "named_version_digest");
+    require_error([&] { static_cast<void>(sav::handle_request(request("named_version_validate", {{"named_version", wrong_named_namespace}}))); }, "sav.named_version_id");
     bool rejected = false;
     try { static_cast<void>(sav::handle_request(request("apply", {}))); }
     catch (const engine::Error& error) { rejected = error.code() == "operation.unsupported"; }

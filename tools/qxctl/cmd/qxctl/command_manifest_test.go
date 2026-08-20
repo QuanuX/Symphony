@@ -23,8 +23,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 177 {
-		t.Fatalf("registered command count = %d, want 177", len(manifest.Commands))
+	if len(manifest.Commands) != 184 {
+		t.Fatalf("registered command count = %d, want 184", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -117,6 +117,10 @@ func TestCommandRegistryBindsVectorCapabilitiesNotBindingSelection(t *testing.T)
 		"qxcmd:symphony:sav.diff":                  featureSAV,
 		"qxcmd:symphony:sav.explain":               featureSAV,
 		"qxcmd:symphony:sav.graph":                 featureSAV,
+		"qxcmd:symphony:sav.version-validate":      featureSAV,
+		"qxcmd:symphony:sav.version-diff":          featureSAV,
+		"qxcmd:symphony:sav.capsule-check":         featureSAV,
+		"qxcmd:symphony:sav.blueprint-plan":        featureSAV,
 		"qxcmd:symphony:sav.compatibility":         featureSAV,
 		"qxcmd:symphony:sev.inspect":               featureSEV,
 		"qxcmd:symphony:sev.case-open":             featureSEV,
@@ -128,6 +132,9 @@ func TestCommandRegistryBindsVectorCapabilitiesNotBindingSelection(t *testing.T)
 		"qxcmd:symphony:sev.recover":               featureSEV,
 		"qxcmd:symphony:sev.close":                 featureSEV,
 		"qxcmd:symphony:sev.command-surface":       featureSEV,
+		"qxcmd:symphony:sev.novelty-check":         featureSEV,
+		"qxcmd:symphony:sev.watch-check":           featureSEV,
+		"qxcmd:symphony:sev.trigger-coalesce":      featureSEV,
 		"qxcmd:symphony:sev.graph":                 featureSEV,
 		"qxcmd:symphony:sev.compatibility":         featureSEV,
 		"qxcmd:symphony:ssfv.inspect":              featureSSFV,

@@ -20,12 +20,14 @@ SAV is the Symphony Accordare Vector.
 SAV owns:
 
 - `savref:`, `savrel:`, `savtrait:`, and `savver:` identity grammar;
+- `savcapsule:` and `savblueprint:` portable composition identity grammar;
 - immutable derived CURRENT snapshot rules;
 - coverage-qualified reference resolution;
 - relationship evaluation and three-axis results;
 - Named Version composition envelopes;
 - deterministic diff, explanation, and graph projections;
 - SAV engine payload and result schemas.
+- Extension Capsule admission and two-way Installation Blueprint rules.
 
 ## Canonical Surface
 
@@ -37,6 +39,8 @@ knowledge/sav/
   SPEC.md
   RELATIONSHIPS.md
   TRAITS.md
+  NAMED-VERSIONS.md
+  EXTENSIONS.md
   schemas/v1/
 ```
 

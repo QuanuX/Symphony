@@ -110,8 +110,8 @@ Commands:
   sodv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a release-record proposal
   sodv recover --prefix PATH --input FILE [--version VERSION] [--json] Reconcile an interrupted release journal
   sodv project --prefix PATH [--version VERSION] [--json] Build a disposable release inventory
-  sav inspect|reference-check|current|evaluate|diff|explain|graph|compatibility --prefix PATH [--input FILE] [--json] Administer exact read-only SAV operations
-  sev inspect|case-open|impact|plan|verify|recalculate|status|recover|close|command-surface|graph|compatibility --prefix PATH [--input FILE] [--json] Administer exact report/proposal-only SEV operations
+  sav inspect|reference-check|current|evaluate|diff|explain|graph|version-validate|version-diff|capsule-check|blueprint-plan|compatibility --prefix PATH [--input FILE] [--json] Administer exact read-only SAV operations
+  sev inspect|case-open|impact|plan|verify|recalculate|status|recover|close|command-surface|novelty-check|watch-check|trigger-coalesce|graph|compatibility --prefix PATH [--input FILE] [--json] Administer exact report/proposal-only SEV operations
   ssfv inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SSFV engine
   ssfv check --prefix PATH [--version VERSION] [freshness flags] [--json] Check canonical semantic-feature truth
   ssfv diff --prefix PATH --input FILE [--version VERSION] [--json] Compare a semantic baseline with live truth

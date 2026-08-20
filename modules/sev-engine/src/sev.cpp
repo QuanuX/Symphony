@@ -93,7 +93,13 @@ void valid_case(const engine::Json& value) {
     if (text(value, "protocol") != "symphony.sev.evolution-case.v1") invalid("sev.protocol", "case protocol is unsupported");
     require_id(value, "case_id"); require_digest(value, "semantic_fingerprint");
     require_digest(value, "source_snapshot_digest"); require_digest(value, "target_digest");
-    text(value, "case_kind", 32U); text(value, "state", 64U);
+    const auto kind = text(value, "case_kind", 32U); const auto state = text(value, "state", 64U);
+    if (kind != "planned_change" && kind != "encountered_novelty") invalid("sev.case_kind", "case kind is invalid");
+    static const std::set<std::string> states = {
+        "open", "ready", "blocked", "reobservation_required", "recalculation_required",
+        "attunement_required", "converged", "closed", "abandoned"
+    };
+    if (!states.contains(state)) invalid("sev.case_state", "case state is invalid");
     if (!value.at("generation").is_number_unsigned() || value.at("generation").get<std::uint64_t>() == 0U) invalid("sev.generation", "case generation is invalid");
     if (!value.at("predecessor_digest").is_null()) require_digest(value, "predecessor_digest");
     static_cast<void>(ids(value, "affected_surfaces")); static_cast<void>(ids(value, "disposition_ids"));
@@ -152,7 +158,15 @@ void valid_action(const engine::Json& action) {
         "authorization_operation", "audit_required", "success_predicate", "recovery_operation_id",
         "execution_class", "thermal_restriction", "action_digest"}, "action");
     for (const auto field : {"action_id", "operation_id", "target_id", "authorization_operation"}) require_id(action, field);
-    text(action, "disposition", 64U); require_digest(action, "expected_state_digest");
+    const auto disposition = text(action, "disposition", 64U);
+    static const std::set<std::string> dispositions = {
+        "accept_as_compatible", "attune_configuration", "extend_contract",
+        "extend_command_surface", "install_exact_component", "select_exact_component",
+        "dock_exact_component", "undock_exact_component", "replace_with_successor",
+        "preserve_observed_state", "defer_with_blocker", "reject_incompatible", "retire_identity"
+    };
+    if (!dispositions.contains(disposition)) invalid("sev.disposition", "action disposition is unsupported");
+    require_digest(action, "expected_state_digest");
     if (!action.at("audit_required").is_boolean()) invalid("sev.type", "audit_required must be boolean");
     valid_rule(action.at("success_predicate"));
     if (!action.at("recovery_operation_id").is_null()) require_id(action, "recovery_operation_id");
@@ -229,14 +243,26 @@ engine::Json disposition_plan(const engine::Json& payload) {
         !blockers.is_array() || blockers.size() > max_items) invalid("sev.bounds", "plan collection exceeds bound");
     std::map<std::string, engine::Json> action_map; std::map<std::string, std::set<std::string>> successors;
     std::map<std::string, std::size_t> indegree;
-    for (const auto& action : actions) { valid_action(action); const auto id = action.at("action_id").get<std::string>(); if (!action_map.emplace(id, action).second) invalid("sev.order", "action IDs must be unique"); indegree[id] = 0U; }
+    std::string previous_action;
+    for (const auto& action : actions) {
+        valid_action(action); const auto id = action.at("action_id").get<std::string>();
+        if ((!previous_action.empty() && id <= previous_action) || !action_map.emplace(id, action).second) {
+            invalid("sev.order", "actions must be sorted by unique action ID");
+        }
+        previous_action = id; indegree[id] = 0U;
+    }
     std::set<std::string> edge_keys;
+    std::string previous_edge;
     for (const auto& edge : edges) {
         exact_fields(edge, {"source", "target", "kind"}, "dependency edge"); require_id(edge, "source"); require_id(edge, "target");
         const auto source = edge.at("source").get<std::string>(); const auto target = edge.at("target").get<std::string>();
         if (!action_map.contains(source) || !action_map.contains(target) || source == target) invalid("sev.edge", "dependency edge references an invalid action");
         const auto kind = text(edge, "kind", 32U); if (kind != "hard_safety" && kind != "semantic_dependency") invalid("sev.edge", "dependency kind is invalid");
-        if (!edge_keys.insert(source + "\n" + target).second) invalid("sev.edge", "dependency edge is duplicated");
+        const auto edge_key = source + "\n" + target + "\n" + kind;
+        if ((!previous_edge.empty() && edge_key <= previous_edge) || !edge_keys.insert(source + "\n" + target).second) {
+            invalid("sev.order", "dependency edges must be sorted and unique");
+        }
+        previous_edge = edge_key;
         successors[source].insert(target); ++indegree[target];
     }
     auto queue = std::queue<std::string>(); auto degree = indegree;
@@ -244,8 +270,12 @@ engine::Json disposition_plan(const engine::Json& payload) {
     std::size_t visited = 0U; while (!queue.empty()) { const auto id = queue.front(); queue.pop(); ++visited; for (const auto& next : successors[id]) if (--degree[next] == 0U) queue.push(next); }
     if (visited != action_map.size()) invalid("sev.dependency_cycle", "plan dependency graph contains a cycle");
     std::set<std::string> blocked;
+    std::string previous_blocker;
     for (const auto& blocker : blockers) {
         exact_fields(blocker, {"blocker_id", "action_id", "reason", "detail"}, "blocker"); require_id(blocker, "blocker_id"); require_id(blocker, "action_id"); require_id(blocker, "reason"); text(blocker, "detail", 65536U);
+        const auto blocker_id = blocker.at("blocker_id").get<std::string>();
+        if (!previous_blocker.empty() && blocker_id <= previous_blocker) invalid("sev.order", "blockers must be sorted and unique");
+        previous_blocker = blocker_id;
         const auto action = blocker.at("action_id").get<std::string>(); if (!action_map.contains(action)) invalid("sev.blocker", "blocker references an absent action"); blocked.insert(action);
     }
     std::queue<std::string> blocked_queue; for (const auto& id : blocked) blocked_queue.push(id);
@@ -280,14 +310,79 @@ engine::Json transition_verify(const engine::Json& input) {
 }
 
 engine::Json case_recalculate(const engine::Json& payload) {
-    exact_fields(payload, {"case", "observed_current", "completed_action_ids", "failed_action_ids", "updated_at"}, "recalculation payload");
+    exact_fields(payload, {"case", "plan", "observed_current", "completed_action_ids", "failed_action_ids", "updated_at"}, "recalculation payload");
     valid_case(payload.at("case")); require_digest(payload.at("observed_current"), "snapshot_digest");
+    exact_fields(payload.at("plan"), {"protocol", "case_digest", "impact_digest", "actions", "edges",
+        "ready_action_ids", "blockers", "state", "canonical", "read_only", "apply_authorized", "plan_digest"}, "recalculation plan");
+    if (payload.at("plan").at("protocol") != "symphony.sev.disposition-plan.v1" ||
+        payload.at("plan").at("canonical") != false || payload.at("plan").at("read_only") != true ||
+        payload.at("plan").at("apply_authorized") != false || !payload.at("plan").at("actions").is_array() ||
+        !payload.at("plan").at("edges").is_array() || !payload.at("plan").at("blockers").is_array()) {
+        invalid("sev.plan", "recalculation plan authority or collection fields are invalid");
+    }
+    require_digest(payload.at("plan"), "plan_digest");
+    if (digest_without(payload.at("plan"), "plan_digest") != payload.at("plan").at("plan_digest").get<std::string>() ||
+        payload.at("plan").at("case_digest") != payload.at("case").at("case_digest")) {
+        invalid("sev.plan_digest", "recalculation plan does not bind the supplied case");
+    }
     const auto completed = ids(payload, "completed_action_ids"); const auto failed = ids(payload, "failed_action_ids");
+    std::set<std::string> completed_set(completed.begin(), completed.end());
+    std::set<std::string> failed_set(failed.begin(), failed.end());
+    for (const auto& id : completed_set) if (failed_set.contains(id)) invalid("sev.attempt_state", "one action cannot be completed and failed");
+    std::map<std::string, engine::Json> actions;
+    std::map<std::string, std::set<std::string>> predecessors;
+    std::map<std::string, std::set<std::string>> successors;
+    std::string previous_action;
+    for (const auto& action : payload.at("plan").at("actions")) {
+        valid_action(action);
+        const auto id = action.at("action_id").get<std::string>();
+        if (!previous_action.empty() && id <= previous_action) invalid("sev.order", "plan actions are not canonical");
+        previous_action = id; actions.emplace(id, action);
+    }
+    for (const auto& id : completed_set) if (!actions.contains(id)) invalid("sev.action_absent", "completed action is absent from plan");
+    for (const auto& id : failed_set) if (!actions.contains(id)) invalid("sev.action_absent", "failed action is absent from plan");
+    for (const auto& edge : payload.at("plan").at("edges")) {
+        const auto source = edge.at("source").get<std::string>();
+        const auto target = edge.at("target").get<std::string>();
+        if (!actions.contains(source) || !actions.contains(target)) invalid("sev.edge", "plan edge references an absent action");
+        predecessors[target].insert(source); successors[source].insert(target);
+    }
+    std::set<std::string> blocked = failed_set;
+    for (const auto& blocker : payload.at("plan").at("blockers")) blocked.insert(blocker.at("action_id").get<std::string>());
+    std::queue<std::string> blocked_queue;
+    for (const auto& id : blocked) blocked_queue.push(id);
+    while (!blocked_queue.empty()) {
+        const auto id = blocked_queue.front(); blocked_queue.pop();
+        for (const auto& successor : successors[id]) if (blocked.insert(successor).second) blocked_queue.push(successor);
+    }
+    auto ready = engine::Json::array();
+    auto blocker_ids = engine::Json::array();
+    auto disposition_ids = engine::Json::array();
+    auto surfaces = engine::Json::array();
+    std::set<std::string> surface_set;
+    for (const auto& [id, action] : actions) {
+        disposition_ids.push_back(id);
+        surface_set.insert(action.at("target_id").get<std::string>());
+        if (blocked.contains(id)) blocker_ids.push_back(id);
+        if (completed_set.contains(id) || blocked.contains(id)) continue;
+        const auto& required = predecessors[id];
+        if (std::all_of(required.begin(), required.end(), [&](const auto& predecessor) { return completed_set.contains(predecessor); })) {
+            ready.push_back(id);
+        }
+    }
+    for (const auto& surface : surface_set) surfaces.push_back(surface);
     const auto updated = text(payload, "updated_at", 20U); if (!engine::is_utc_seconds(updated) || updated < payload.at("case").at("updated_at")) invalid("sev.timestamp", "recalculation time is invalid");
     auto result = payload.at("case"); result["generation"] = result.at("generation").get<std::uint64_t>() + 1U;
     result["predecessor_digest"] = payload.at("case").at("case_digest"); result["source_snapshot_digest"] = payload.at("observed_current").at("snapshot_digest");
-    result["updated_at"] = updated; result["ready_action_ids"] = engine::Json::array();
-    result["state"] = failed.empty() ? (completed.empty() ? "recalculation_required" : "reobservation_required") : "blocked";
+    result["updated_at"] = updated; result["ready_action_ids"] = std::move(ready);
+    result["blocker_ids"] = std::move(blocker_ids); result["disposition_ids"] = std::move(disposition_ids);
+    result["affected_surfaces"] = std::move(surfaces);
+    const bool coverage_complete = payload.at("observed_current").contains("coverage_state") &&
+        payload.at("observed_current").at("coverage_state") == "complete";
+    const bool converged = completed_set.size() == actions.size() && blocked.empty();
+    result["state"] = !coverage_complete ? "reobservation_required" :
+        (converged ? "converged" : (!result.at("ready_action_ids").empty() ? "ready" :
+            (!blocked.empty() ? "blocked" : "recalculation_required")));
     result["case_digest"] = nullptr; result["case_digest"] = digest_without(result, "case_digest"); return result;
 }
 
@@ -368,6 +463,126 @@ engine::Json command_surface_assess(const engine::Json& payload) {
     result["assessment_digest"] = digest_without(result, "assessment_digest"); return result;
 }
 
+bool contains_prohibited_novelty_key(const engine::Json& value) {
+    static const std::set<std::string> prohibited = {
+        "credential", "credentials", "token", "tokens", "proof", "proofs", "assertion",
+        "assertions", "raw_token", "provider_payload", "secret", "secrets", "private_key"
+    };
+    if (value.is_object()) {
+        for (const auto& [key, child] : value.items()) {
+            if (prohibited.contains(key) || contains_prohibited_novelty_key(child)) return true;
+        }
+    } else if (value.is_array()) {
+        for (const auto& child : value) if (contains_prohibited_novelty_key(child)) return true;
+    }
+    return false;
+}
+
+engine::Json novelty_bundle_check(const engine::Json& payload) {
+    exact_fields(payload, {"bundle"}, "novelty bundle check payload");
+    const auto& bundle = payload.at("bundle");
+    exact_fields(bundle, {"protocol", "bundle_id", "case_digest", "source_snapshot_digest", "items",
+        "redactions", "approval_reference", "offline_capable", "network_transfer", "created_at",
+        "canonical", "bundle_digest"}, "novelty bundle");
+    if (text(bundle, "protocol") != "symphony.sev.novelty-bundle.v1") invalid("sev.protocol", "novelty bundle protocol is unsupported");
+    require_id(bundle, "bundle_id"); require_digest(bundle, "case_digest"); require_digest(bundle, "source_snapshot_digest");
+    if (!bundle.at("bundle_id").get<std::string>().starts_with("sevnovelty:")) invalid("sev.bundle_id", "novelty bundle identity must use sevnovelty namespace");
+    require_id(bundle, "approval_reference");
+    if (bundle.at("offline_capable") != true || bundle.at("network_transfer") != false || bundle.at("canonical") != false ||
+        !engine::is_utc_seconds(text(bundle, "created_at", 20U))) invalid("sev.novelty_authority", "novelty bundle authority or time is invalid");
+    if (!bundle.at("items").is_array() || bundle.at("items").size() > 4096U ||
+        !bundle.at("redactions").is_array() || bundle.at("redactions").size() > 4096U) invalid("sev.bounds", "novelty bundle exceeds bound");
+    std::set<std::string> item_ids; std::string previous_item;
+    for (const auto& item : bundle.at("items")) {
+        exact_fields(item, {"item_id", "disclosure_class", "content_digest", "payload"}, "novelty item");
+        require_id(item, "item_id"); const auto id = item.at("item_id").get<std::string>();
+        if (!previous_item.empty() && id <= previous_item) invalid("sev.order", "novelty items must be sorted and unique");
+        previous_item = id; item_ids.insert(id);
+        const auto disclosure = text(item, "disclosure_class", 32U);
+        if (disclosure != "public" && disclosure != "internal" && disclosure != "restricted") invalid("sev.novelty_disclosure", "novelty disclosure class is invalid");
+        require_digest(item, "content_digest");
+        if (engine::tagged_sha256(item.at("payload").dump()) != item.at("content_digest").get<std::string>() ||
+            contains_prohibited_novelty_key(item.at("payload"))) invalid("sev.novelty_payload", "novelty item is unbound or contains prohibited material");
+    }
+    std::string previous_redaction;
+    for (const auto& redaction : bundle.at("redactions")) {
+        exact_fields(redaction, {"item_id", "json_pointer", "reason"}, "novelty redaction");
+        require_id(redaction, "item_id");
+        const auto key = redaction.at("item_id").get<std::string>() + "\n" + text(redaction, "json_pointer", 4096U);
+        if (!item_ids.contains(redaction.at("item_id").get<std::string>()) ||
+            (!previous_redaction.empty() && key <= previous_redaction)) invalid("sev.novelty_redaction", "redactions must reference items and be sorted");
+        previous_redaction = key; text(redaction, "reason", 4096U);
+    }
+    require_digest(bundle, "bundle_digest");
+    if (digest_without(bundle, "bundle_digest") != bundle.at("bundle_digest").get<std::string>()) invalid("sev.novelty_digest", "novelty bundle digest mismatch");
+    engine::Json result{{"protocol", "symphony.sev.novelty-bundle-check-result.v1"},
+        {"bundle_id", bundle.at("bundle_id")}, {"bundle_digest", bundle.at("bundle_digest")},
+        {"state", "valid_offline_projection"}, {"item_count", bundle.at("items").size()},
+        {"redaction_count", bundle.at("redactions").size()}, {"network_transfer", false},
+        {"export_authorized", false}, {"read_only", true}, {"result_digest", nullptr}};
+    result["result_digest"] = digest_without(result, "result_digest"); return result;
+}
+
+void validate_watch_policy(const engine::Json& policy) {
+    exact_fields(policy, {"protocol", "policy_id", "tops_id", "enabled", "session_boundary", "source_scopes",
+        "event_classes", "debounce_ms", "coalescing_limit", "thermal_restriction", "export_enabled",
+        "generation", "previous_policy_digest", "updated_at", "canonical", "policy_digest"}, "watch policy");
+    if (text(policy, "protocol") != "symphony.sev.watch-policy.v1") invalid("sev.protocol", "watch policy protocol is unsupported");
+    require_id(policy, "policy_id"); require_id(policy, "tops_id");
+    if (!policy.at("policy_id").get<std::string>().starts_with("sevwatch:")) invalid("sev.policy_id", "watch policy identity must use sevwatch namespace");
+    if (!policy.at("enabled").is_boolean() || policy.at("export_enabled") != false || policy.at("canonical") != false) invalid("sev.watch_authority", "watch policy authority flags are invalid");
+    const auto boundary = text(policy, "session_boundary", 64U);
+    if (boundary != "authentication_to_logout_or_reauthentication" && boundary != "explicit_qxctl_policy") invalid("sev.watch_boundary", "watch session boundary is invalid");
+    static_cast<void>(ids(policy, "source_scopes", 256U)); static_cast<void>(ids(policy, "event_classes", 256U));
+    if (!policy.at("debounce_ms").is_number_unsigned() || policy.at("debounce_ms").get<std::uint64_t>() < 100U ||
+        policy.at("debounce_ms").get<std::uint64_t>() > 3600000U ||
+        !policy.at("coalescing_limit").is_number_unsigned() || policy.at("coalescing_limit").get<std::uint64_t>() == 0U ||
+        policy.at("coalescing_limit").get<std::uint64_t>() > 4096U ||
+        text(policy, "thermal_restriction", 32U) != "freezing_only" ||
+        !policy.at("generation").is_number_unsigned() || policy.at("generation").get<std::uint64_t>() == 0U ||
+        !engine::is_utc_seconds(text(policy, "updated_at", 20U))) invalid("sev.watch_policy", "watch policy bounds or time are invalid");
+    if (!policy.at("previous_policy_digest").is_null()) require_digest(policy, "previous_policy_digest");
+    if (policy.at("generation") == 1U && !policy.at("previous_policy_digest").is_null()) invalid("sev.watch_lineage", "first watch generation has a predecessor");
+    if (policy.at("generation").get<std::uint64_t>() > 1U && policy.at("previous_policy_digest").is_null()) invalid("sev.watch_lineage", "later watch generation lacks a predecessor");
+    require_digest(policy, "policy_digest");
+    if (digest_without(policy, "policy_digest") != policy.at("policy_digest").get<std::string>()) invalid("sev.watch_digest", "watch policy digest mismatch");
+}
+
+engine::Json watch_policy_check(const engine::Json& payload) {
+    exact_fields(payload, {"policy"}, "watch policy check payload"); validate_watch_policy(payload.at("policy"));
+    engine::Json result{{"protocol", "symphony.sev.watch-policy-check-result.v1"},
+        {"policy_id", payload.at("policy").at("policy_id")}, {"policy_digest", payload.at("policy").at("policy_digest")},
+        {"enabled", payload.at("policy").at("enabled")}, {"default_disabled", payload.at("policy").at("generation") == 1U && payload.at("policy").at("enabled") == false},
+        {"thermal_path", "freezing"}, {"ambient_mutation", false}, {"read_only", true}, {"result_digest", nullptr}};
+    result["result_digest"] = digest_without(result, "result_digest"); return result;
+}
+
+engine::Json trigger_coalesce(const engine::Json& payload) {
+    exact_fields(payload, {"policy", "events"}, "trigger coalescing payload"); validate_watch_policy(payload.at("policy"));
+    const auto& policy = payload.at("policy");
+    if (policy.at("enabled") != true) invalid("sev.watch_disabled", "disabled watch policy cannot coalesce events");
+    const auto& events = payload.at("events");
+    if (!events.is_array() || events.empty() || events.size() > policy.at("coalescing_limit").get<std::size_t>()) invalid("sev.watch_events", "watch events exceed policy bound");
+    std::string previous; auto digests = engine::Json::array(); std::string first_time, last_time;
+    for (const auto& event : events) {
+        exact_fields(event, {"event_id", "event_class", "source_scope", "occurred_at", "event_digest"}, "watch event");
+        require_id(event, "event_id"); require_id(event, "event_class"); require_id(event, "source_scope");
+        const auto occurred = text(event, "occurred_at", 20U);
+        if (!engine::is_utc_seconds(occurred)) invalid("sev.timestamp", "watch event time is invalid");
+        const auto key = occurred + "\n" + event.at("event_id").get<std::string>();
+        if (!previous.empty() && key <= previous) invalid("sev.order", "watch events must be sorted and unique"); previous = key;
+        require_digest(event, "event_digest");
+        if (digest_without(event, "event_digest") != event.at("event_digest").get<std::string>()) invalid("sev.watch_event_digest", "watch event digest mismatch");
+        if (first_time.empty()) first_time = occurred; last_time = occurred; digests.push_back(event.at("event_digest"));
+    }
+    engine::Json result{{"protocol", "symphony.sev.trigger-coalescing-result.v1"},
+        {"policy_digest", policy.at("policy_digest")}, {"first_event_at", first_time}, {"last_event_at", last_time},
+        {"event_count", events.size()}, {"event_set_digest", engine::tagged_sha256(digests.dump())},
+        {"proposed_case_kind", "encountered_novelty"}, {"case_open_authorized", false},
+        {"debounced", true}, {"read_only", true}, {"result_digest", nullptr}};
+    result["result_digest"] = digest_without(result, "result_digest"); return result;
+}
+
 engine::Json project_graph(const engine::Json& payload) {
     exact_fields(payload, {"case", "plan"}, "graph payload"); valid_case(payload.at("case"));
     auto nodes = engine::Json::array();
@@ -419,6 +634,9 @@ const std::vector<engine::OperationSpec>& operations() {
         operation("engop:symphony:sev.case.recover", "case_recover", "recover", "ssfv:symphony:sev-engine.recovery", {}, "symphony.sev.case-recovery-advice.v1"),
         operation("engop:symphony:sev.case.close", "case_close", "propose", "ssfv:symphony:sev-engine.closure", {}, "symphony.sev.case-close-proposal.v1"),
         operation("engop:symphony:sev.command-surface.assess", "command_surface_assess", "validate", "ssfv:symphony:sev-engine.scsev", {}, "symphony.sev.command-surface-assessment.v1"),
+        operation("engop:symphony:sev.novelty-bundle.check", "novelty_bundle_check", "validate", "ssfv:symphony:sev-engine", "symphony.sev.novelty-bundle.v1", "symphony.sev.novelty-bundle-check-result.v1"),
+        operation("engop:symphony:sev.watch-policy.check", "watch_policy_check", "validate", "ssfv:symphony:sev-engine", "symphony.sev.watch-policy.v1", "symphony.sev.watch-policy-check-result.v1"),
+        operation("engop:symphony:sev.trigger.coalesce", "trigger_coalesce", "propose", "ssfv:symphony:sev-engine", {}, "symphony.sev.trigger-coalescing-result.v1"),
         operation("engop:symphony:sev.graph.project", "project_graph", "query", "ssfv:symphony:sev-engine.graph", {}, "symphony.sev.graph-projection.v1", "not_applicable"),
         operation("engop:symphony:sev.compatibility", "compatibility", "validate", "ssfv:symphony:sev-engine.compatibility", {}, "symphony.sev.compatibility-result.v1", "not_applicable"),
     };
@@ -453,6 +671,9 @@ engine::Json handle_request(const engine::Request& request) {
     if (request.operation == "case_recover") return case_recover(request.payload);
     if (request.operation == "case_close") return case_close(request.payload);
     if (request.operation == "command_surface_assess") return command_surface_assess(request.payload);
+    if (request.operation == "novelty_bundle_check") return novelty_bundle_check(request.payload);
+    if (request.operation == "watch_policy_check") return watch_policy_check(request.payload);
+    if (request.operation == "trigger_coalesce") return trigger_coalesce(request.payload);
     if (request.operation == "project_graph") return project_graph(request.payload);
     if (request.operation == "compatibility") return compatibility(request.payload);
     throw engine::Error("operation.unsupported", "operation is reserved or unsupported", 4);

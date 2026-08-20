@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sav:installation-blueprint:v1",
+  "title": "SAV Installation Blueprint v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "blueprint_id", "tops_id", "named_version_digest", "component_requirements", "capsule_digests", "forward_edges", "reverse_edges", "default_receptors", "created_at", "canonical", "apply_authorized", "blueprint_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sav.installation-blueprint.v1"},
+    "blueprint_id": {"type": "string", "pattern": "^savblueprint:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "tops_id": {"$ref": "#/$defs/id"},
+    "named_version_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "component_requirements": {"type": "array", "maxItems": 4096, "items": {"$ref": "named-version.schema.json#/$defs/requirement"}},
+    "capsule_digests": {"$ref": "#/$defs/digests"},
+    "forward_edges": {"$ref": "#/$defs/edges"},
+    "reverse_edges": {"$ref": "#/$defs/edges"},
+    "default_receptors": {"type": "array", "maxItems": 4096, "items": {"type": "object", "additionalProperties": false, "required": ["component_id", "receptor_id"], "properties": {"component_id": {"$ref": "#/$defs/id"}, "receptor_id": {"$ref": "#/$defs/id"}}}},
+    "created_at": {"$ref": "#/$defs/utc"},
+    "canonical": {"const": false},
+    "apply_authorized": {"const": false},
+    "blueprint_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "id": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "digests": {"type": "array", "maxItems": 1024, "uniqueItems": true, "items": {"$ref": "#/$defs/digest"}},
+    "edges": {"type": "array", "maxItems": 8192, "items": {"type": "object", "additionalProperties": false, "required": ["source", "target", "kind"], "properties": {"source": {"$ref": "#/$defs/id"}, "target": {"$ref": "#/$defs/id"}, "kind": {"enum": ["hard_safety", "semantic_dependency"]}}}},
+    "utc": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"}
+  }
+}

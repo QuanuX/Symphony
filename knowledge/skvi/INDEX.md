@@ -7273,6 +7273,123 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
 - status: canonical
 
+### SAV Named Version Doctrine
+- path: `knowledge/sav/NAMED-VERSIONS.md`
+- title: SAV Named Versions
+- surface_type: canonical vector doctrine
+- truth_role: immutable composition-envelope lifecycle truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines validation, protected sealing, alias, predecessor, rollback, and publication boundaries.
+- relationships: depends_on -> `knowledge/sav/SPEC.md`; implemented_by -> `modules/sav-engine/SPEC.md`
+- consumers: SAV engine, qxctl, knowledge coordinator, SODV, reviewers, agents
+- deferred_projections: alias indexes and publication views
+- notes: Identity and equality remain digest-backed; aliases and projections are not authority.
+- status: canonical
+
+### SAV Extension Doctrine
+- path: `knowledge/sav/EXTENSIONS.md`
+- title: SAV Extension Capsules and Installation Blueprints
+- surface_type: canonical vector doctrine
+- truth_role: portable module-admission and two-way composition planning truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines third-party Capsule gaps, Blueprint forward/reverse edges, and authority separation.
+- relationships: depends_on -> `knowledge/sav/SPEC.md`; implemented_by -> `modules/sav-engine/SPEC.md`
+- consumers: SAV engine, SEV engine, qxctl, lifecycle coordinator, third-party module authors, reviewers, agents
+- deferred_projections: module ecosystem catalogs and installation-plan graphs
+- notes: Incomplete third-party declarations remain visible and cannot fabricate missing qxctl coverage.
+- status: canonical
+
+### SEV Novelty Doctrine
+- path: `knowledge/sev/NOVELTY.md`
+- title: SEV Novelty Bundles
+- surface_type: canonical vector doctrine
+- truth_role: voluntary private-by-default novelty export truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines offline export, redaction, authority, prohibited payload, and STAV metadata boundaries.
+- relationships: depends_on -> `knowledge/sev/SPEC.md`; implemented_by -> `modules/sev-engine/SPEC.md`
+- consumers: SEV engine, qxctl, SSIAG, STAV, reviewers, agents
+- deferred_projections: explicitly approved offline export files
+- notes: Network transfer, publication, and model ingestion remain separate unimplemented operations.
+- status: canonical
+
+### SEV Watch Doctrine
+- path: `knowledge/sev/WATCH.md`
+- title: SEV Session Trigger and Watch Policy
+- surface_type: canonical vector doctrine
+- truth_role: opt-in freezing-path trigger and coalescing truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines default-disabled watch, configurable session boundary, debounce, recovery, and non-mutation.
+- relationships: depends_on -> `knowledge/sev/SPEC.md`; implemented_by -> `modules/sev-engine/SPEC.md`
+- consumers: SEV engine, qxctl, knowledge coordinator, SSIAG, reviewers, agents
+- deferred_projections: coalesced event and case-candidate reports
+- notes: The default is disabled and direct engine IPC remains available without a watcher.
+- status: canonical
+
+### SAV Extension Capsule Schema
+- path: `knowledge/sav/schemas/v1/extension-capsule.schema.json`
+- title: SAV Extension Capsule v1
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: portable third-party module admission shape truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines exact package, SSFV, qxctl, operation, receptor, relationship, trait, and extension-point evidence.
+- relationships: depends_on -> `knowledge/sav/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sav-engine/SPEC.md`
+- consumers: SAV engine, qxctl, Symphony Validator, module authors, agents
+- deferred_projections: extension ecosystem catalogs
+- notes: Shape validity cannot grant namespace, command, installation, docking, or execution authority.
+- status: canonical
+
+### SAV Installation Blueprint Schema
+- path: `knowledge/sav/schemas/v1/installation-blueprint.schema.json`
+- title: SAV Installation Blueprint v1
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: noncanonical forward/reverse desired-composition shape truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines exact component requirements, Capsules, dependency edges, receptor defaults, and disabled apply.
+- relationships: depends_on -> `knowledge/sav/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sav-engine/SPEC.md`
+- consumers: SAV engine, SEV engine, qxctl, lifecycle coordinator, agents
+- deferred_projections: disposable forward/reverse dependency graphs
+- notes: Receptor entries are defaults that qxctl-administered lifecycle policy may explicitly override.
+- status: canonical
+
+### SEV Case Recalculation Input Schema
+- path: `knowledge/sev/schemas/v1/case-recalculation-input.schema.json`
+- title: SEV Case Recalculation Input v1
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: dynamic ready-set successor input truth
+- owner: SEV maintainers under Architect ratification
+- scope: Binds one case, exact plan, reobserved CURRENT, completed/failed action sets, and STSC time.
+- relationships: depends_on -> `knowledge/sev/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sev-engine/src/sev.cpp`
+- consumers: SEV engine, qxctl, lifecycle coordinator, agents
+- deferred_projections: case timelines and ready-set graphs
+- notes: Every successor remains content-addressed and binds an exact reobservation and predecessor.
+- status: canonical
+
+### SEV Novelty Bundle Schema
+- path: `knowledge/sev/schemas/v1/novelty-bundle.schema.json`
+- title: SEV Novelty Bundle v1
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: redactable offline novelty projection shape truth
+- owner: SEV maintainers under Architect ratification
+- scope: Binds case/CURRENT evidence, disclosure classes, redactions, approval, and disabled network transfer.
+- relationships: depends_on -> `knowledge/sev/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sev-engine/SPEC.md`
+- consumers: SEV engine, qxctl, SSIAG, STAV, agents
+- deferred_projections: explicitly approved offline novelty files
+- notes: Valid shape does not authorize export and prohibited security material remains excluded.
+- status: canonical
+
+### SEV Watch Policy Schema
+- path: `knowledge/sev/schemas/v1/watch-policy.schema.json`
+- title: SEV Watch Policy v1
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: opt-in session trigger policy shape truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines session boundary, bounded scopes/events, debounce, coalescing, lineage, and freezing-only operation.
+- relationships: depends_on -> `knowledge/sev/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sev-engine/SPEC.md`
+- consumers: SEV engine, qxctl, knowledge coordinator, SSIAG, agents
+- deferred_projections: coalesced trigger reports
+- notes: A policy cannot open a case, mutate a host, or enable export on its own.
+- status: canonical
+
 
 ## Deferred Projections
 Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, sixty-six common SKV v1 JSON Schemas, four common SKV v2 JSON Schemas, thirty-two SSIAG authorization, grant-planning, policy-administration, provider-control, provider-trust, provider-binding, and provider-readiness JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
