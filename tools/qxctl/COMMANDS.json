@@ -2129,7 +2129,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sav-engine",
+          "feature_id": "ssfv:symphony:sav-engine.installation-blueprint",
           "interaction": "propose"
         }
       ],
@@ -2141,7 +2141,7 @@
       "authority_mode": "none",
       "target_scope": "local",
       "input_protocols": [
-        "symphony.sav.installation-blueprint.v1"
+        "symphony.sav.installation-blueprint-plan-input.v1"
       ],
       "output_protocols": [
         "symphony.sav.installation-blueprint-plan-result.v1"
@@ -2164,7 +2164,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sav-engine",
+          "feature_id": "ssfv:symphony:sav-engine.extension-capsule",
           "interaction": "validate"
         }
       ],
@@ -2176,7 +2176,7 @@
       "authority_mode": "none",
       "target_scope": "local",
       "input_protocols": [
-        "symphony.sav.extension-capsule.v1"
+        "symphony.sav.extension-capsule-check-input.v1"
       ],
       "output_protocols": [
         "symphony.sav.extension-capsule-check-result.v1"
@@ -2232,7 +2232,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sav-engine",
+          "feature_id": "ssfv:symphony:sav-engine.current-accord",
           "interaction": "query"
         }
       ],
@@ -2267,7 +2267,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sav-engine",
+          "feature_id": "ssfv:symphony:sav-engine.current-accord",
           "interaction": "query"
         }
       ],
@@ -2300,7 +2300,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sav-engine",
+          "feature_id": "ssfv:symphony:sav-engine.current-accord",
           "interaction": "validate"
         }
       ],
@@ -2335,7 +2335,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sav-engine",
+          "feature_id": "ssfv:symphony:sav-engine.current-accord",
           "interaction": "query"
         }
       ],
@@ -2368,7 +2368,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sav-engine",
+          "feature_id": "ssfv:symphony:sav-engine.current-accord",
           "interaction": "query"
         }
       ],
@@ -2434,7 +2434,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sav-engine",
+          "feature_id": "ssfv:symphony:sav-engine.current-accord",
           "interaction": "validate"
         }
       ],
@@ -2467,7 +2467,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sav-engine",
+          "feature_id": "ssfv:symphony:sav-engine.named-version",
           "interaction": "query"
         }
       ],
@@ -2478,7 +2478,9 @@
       "mutability": "read_only",
       "authority_mode": "none",
       "target_scope": "local",
-      "input_protocols": [],
+      "input_protocols": [
+        "symphony.sav.named-version-diff-input.v1"
+      ],
       "output_protocols": [
         "symphony.sav.named-version-diff-result.v1"
       ],
@@ -2500,7 +2502,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sav-engine",
+          "feature_id": "ssfv:symphony:sav-engine.named-version",
           "interaction": "validate"
         }
       ],
@@ -2512,7 +2514,7 @@
       "authority_mode": "none",
       "target_scope": "local",
       "input_protocols": [
-        "symphony.sav.named-version.v1"
+        "symphony.sav.named-version-validation-input.v1"
       ],
       "output_protocols": [
         "symphony.sav.named-version-validation-result.v1"
@@ -2724,7 +2726,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sev-engine",
+          "feature_id": "ssfv:symphony:sev-engine.dynamic-evolution",
           "interaction": "propose"
         }
       ],
@@ -2759,7 +2761,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sev-engine",
+          "feature_id": "ssfv:symphony:sev-engine.dynamic-evolution",
           "interaction": "propose"
         }
       ],
@@ -2792,7 +2794,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sev-engine",
+          "feature_id": "ssfv:symphony:sev-engine.scsev",
           "interaction": "validate"
         }
       ],
@@ -2858,7 +2860,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sev-engine",
+          "feature_id": "ssfv:symphony:sev-engine.dynamic-evolution",
           "interaction": "query"
         }
       ],
@@ -2891,7 +2893,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sev-engine",
+          "feature_id": "ssfv:symphony:sev-engine.dynamic-evolution",
           "interaction": "query"
         }
       ],
@@ -2957,7 +2959,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sev-engine",
+          "feature_id": "ssfv:symphony:sev-engine.novelty-watch",
           "interaction": "validate"
         }
       ],
@@ -2969,7 +2971,7 @@
       "authority_mode": "none",
       "target_scope": "local",
       "input_protocols": [
-        "symphony.sev.novelty-bundle.v1"
+        "symphony.sev.novelty-bundle-check-input.v1"
       ],
       "output_protocols": [
         "symphony.sev.novelty-bundle-check-result.v1"
@@ -2992,7 +2994,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sev-engine",
+          "feature_id": "ssfv:symphony:sev-engine.dynamic-evolution",
           "interaction": "propose"
         }
       ],
@@ -3025,7 +3027,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sev-engine",
+          "feature_id": "ssfv:symphony:sev-engine.dynamic-evolution",
           "interaction": "recover"
         }
       ],
@@ -3058,7 +3060,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sev-engine",
+          "feature_id": "ssfv:symphony:sev-engine.dynamic-evolution",
           "interaction": "recover"
         }
       ],
@@ -3091,7 +3093,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sev-engine",
+          "feature_id": "ssfv:symphony:sev-engine.lifecycle-binding",
           "interaction": "propose"
         }
       ],
@@ -3102,7 +3104,9 @@
       "mutability": "proposal_only",
       "authority_mode": "none",
       "target_scope": "local",
-      "input_protocols": [],
+      "input_protocols": [
+        "symphony.sev.evolution-session-binding-input.v1"
+      ],
       "output_protocols": [
         "symphony.sev.evolution-session-binding.v1"
       ],
@@ -3124,7 +3128,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sev-engine",
+          "feature_id": "ssfv:symphony:sev-engine.dynamic-evolution",
           "interaction": "query"
         }
       ],
@@ -3157,7 +3161,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sev-engine",
+          "feature_id": "ssfv:symphony:sev-engine.novelty-watch",
           "interaction": "propose"
         }
       ],
@@ -3168,7 +3172,9 @@
       "mutability": "proposal_only",
       "authority_mode": "none",
       "target_scope": "local",
-      "input_protocols": [],
+      "input_protocols": [
+        "symphony.sev.trigger-coalescing-input.v1"
+      ],
       "output_protocols": [
         "symphony.sev.trigger-coalescing-result.v1"
       ],
@@ -3190,7 +3196,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sev-engine",
+          "feature_id": "ssfv:symphony:sev-engine.dynamic-evolution",
           "interaction": "validate"
         }
       ],
@@ -3225,7 +3231,7 @@
       "visibility": "public",
       "feature_bindings": [
         {
-          "feature_id": "ssfv:symphony:sev-engine",
+          "feature_id": "ssfv:symphony:sev-engine.novelty-watch",
           "interaction": "validate"
         }
       ],
@@ -3237,7 +3243,7 @@
       "authority_mode": "none",
       "target_scope": "local",
       "input_protocols": [
-        "symphony.sev.watch-policy.v1"
+        "symphony.sev.watch-policy-check-input.v1"
       ],
       "output_protocols": [
         "symphony.sev.watch-policy-check-result.v1"
@@ -5816,5 +5822,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:29ce29c161baa89ef15b8df143fbc77bf0397c036ff0cf4057ce1a85bd53f959"
+  "registry_digest": "sha256:81eaa3fb26861100ed29d0bd0671b749a937fac8fe2f6b7a05ecc5fb07892894"
 }

@@ -29,7 +29,7 @@ Root governance establishes shared invariants without turning the repository int
 - [SCLV Engine](modules/sclv-engine/) is an independently installable C++26 change-truth engine implementing deterministic ledger checks, provider-neutral v3 proposals, non-mutating closure recovery, disposable projections, and bounded local-Git and air-gapped evidence adapters. It cannot ratify, append, commit, or delete recovery journals.
 - [SACV Engine](modules/sacv-engine/) is an independently installable C++26 API-contract governance engine implementing bounded OpenAPI 3.2.0 JSON checks, deterministic compatibility diffs, caller-declared registry proposals, and disposable registry inventories. YAML entry documents fail closed until the separate parser gate; no endpoint, SDK, publication, generated binding, or canonical apply is implemented.
 - [SODV Engine](modules/sodv-engine/) is an independently installable C++26 release-publication governance engine implementing local append-only ledger checks, caller-supplied observation verification, provider-neutral release-record proposals, non-mutating interrupted-session recovery, and disposable release inventories. It performs no network access, creates no tags, declares no release complete, and exposes no canonical apply.
-- [SSFV Engine](modules/ssfv-engine/) is an independently installable C++26 semantic-feature engine implementing structural and freshness-aware checks, content-addressed diffs, caller-declared proposals, disposable deterministic graphs, and repository-independent feature-administration assurance. Its explicitly partial catalog records seventy-eight ratified experimental records across the root and fourteen implemented owner scopes, including fifty-nine exact nested features. All 156 registered administration expectations have reviewed routes or evidence-backed dispositions; the engine does not decide feature-worthiness, invent command identities, claim repository-wide or installed-host completeness, or write canonical truth.
+- [SSFV Engine](modules/ssfv-engine/) is an independently installable C++26 semantic-feature engine implementing structural and freshness-aware checks, content-addressed diffs, caller-declared proposals, disposable deterministic graphs, and repository-independent feature-administration assurance. Its explicitly partial catalog records eighty-six ratified experimental records across the root and sixteen implemented owner scopes, including sixty-seven exact nested features. All 165 registered administration expectations have reviewed routes or evidence-backed dispositions; the engine does not decide feature-worthiness, invent command identities, claim repository-wide or installed-host completeness, or write canonical truth.
 - [Symphony Accord Vector](modules/sav-engine/) is an independently installable freezing-path C++26 engine for deterministic, read-only Accord reference resolution, immutable derived CURRENT snapshots, three-axis evaluation, comparison, explanation, disposable graphs, Named Version validation and diff, Extension Capsule checks, Installation Blueprint planning, and explicit compatibility negotiation. Its outputs are evidence and proposals only; it does not write canonical knowledge, seal versions, install components, or dock engines.
 - [Symphony Evolution Vector](modules/sev-engine/) is an independently installable freezing-path C++26 engine for deterministic, read-only evolution cases, impact and disposition planning, dependency-ready-set recalculation, transition verification, recovery advice, SCSEV command-surface assessment, novelty and watch-policy checks, trigger coalescing, and lifecycle-session binding. It reuses the shared lifecycle journal rather than creating a second mutation authority, and it neither watches a host nor applies a transition itself.
 - [`knowledge/`](knowledge/) contains the canonical SKV surfaces currently established for source routing (SKVI), change truth (SCLV), API governance (SACV), publication governance (SODV), semantic feature truth (SSFV), composition and evaluation (SAV), evolution and command-surface assessment (SEV/SCSEV), SSIAG, STAV, and common temporal, validation, feature-administration, foundational-lifecycle, and cross-vector desired/observed/plan/applied/boot contracts. The coordinator implements report-only dependency-driven two-way planning over supplied evidence, so compatible component actions can be replanned around localized blockers without changing ordered safety phases. Canonical knowledge governs implementations; tools do not own canonical schemas.
@@ -50,8 +50,8 @@ SSIAG submits only typed, security-relevant safe metadata to the STAV append aut
 
 This bounded summary is derived from canonical SSFV coverage and routing, the feature-administration profile, the qxctl command registry, and completed SODV publication records. Edit its source contracts, then regenerate; do not hand-edit the values below.
 
-- SSFV catalog state: `partial`; registered features: **78**; registered owner scopes: **14**; ratified nested features: **59**.
-- Feature-administration expectations: **156** reviewed surfaces; **145** required, **13** evidence-backed exemptions, **10** prohibitions, **0** unreviewed.
+- SSFV catalog state: `partial`; registered features: **86**; registered owner scopes: **16**; ratified nested features: **67**.
+- Feature-administration expectations: **165** reviewed surfaces; **154** required, **13** evidence-backed exemptions, **10** prohibitions, **0** unreviewed.
 - qxctl stable command identities: **185**.
 - Registered owner capabilities:
   - `ssfv:symphony:knowledge-session-coordinator`
@@ -59,7 +59,9 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `ssfv:symphony:maestro-presence-authority`
   - `ssfv:symphony:qxctl`
   - `ssfv:symphony:sacv-engine`
+  - `ssfv:symphony:sav-engine`
   - `ssfv:symphony:sclv-engine`
+  - `ssfv:symphony:sev-engine`
   - `ssfv:symphony:skvi-engine`
   - `ssfv:symphony:sodv-engine`
   - `ssfv:symphony:ssfv-engine`
@@ -72,7 +74,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `github.com/QuanuX/Symphony/libraries/stav-protocol-go` `v0.2.0` (tag `libraries/stav-protocol-go/v0.2.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.1.0` (tag `modules/stav-append-authority/v0.1.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
-- Snapshot digest: `sha256:f3763c64734edab2c202df5468e6f4c751c7719e354947d404ed9686c1ab1dd7`
+- Snapshot digest: `sha256:1c71200abac55acd3040d16565465ac5512a2c8ef3f48d67a1541f5762bacd41`
 <!-- symphony:root-summary:v1:end -->
 
 ## Releases and Documentation

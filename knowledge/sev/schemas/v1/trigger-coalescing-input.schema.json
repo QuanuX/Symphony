@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sev:trigger-coalescing-input:v1",
+  "title": "SEV Trigger Coalescing Input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["policy", "events"],
+  "properties": {
+    "policy": {"$ref": "watch-policy.schema.json"},
+    "events": {"type": "array", "minItems": 1, "maxItems": 4096, "items": {"type": "object", "additionalProperties": false, "required": ["event_id", "event_class", "source_scope", "occurred_at", "event_digest"], "properties": {
+      "event_id": {"$ref": "#/$defs/id"},
+      "event_class": {"$ref": "#/$defs/id"},
+      "source_scope": {"$ref": "#/$defs/id"},
+      "occurred_at": {"$ref": "#/$defs/utc"},
+      "event_digest": {"$ref": "#/$defs/digest"}
+    }}}
+  },
+  "$defs": {
+    "id": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "utc": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"}
+  }
+}

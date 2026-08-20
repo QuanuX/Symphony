@@ -1,6 +1,7 @@
 #include "sev.hpp"
 #include "symphony/knowledge/engine/digest.hpp"
 #include "symphony/knowledge/engine/error.hpp"
+#include <algorithm>
 #include <cassert>
 #include <functional>
 #include <iostream>
@@ -66,6 +67,13 @@ int main() {
     assert(descriptor.at("protocol") == engine::descriptor_protocol_v2);
     assert(descriptor.at("separate_scsev_registry") == false);
     assert(descriptor.at("default_receptor") == "receptor:symphony:knowledge.sev");
+    const auto& operations = descriptor.at("administration_operations");
+    const auto trigger_descriptor = std::find_if(operations.begin(), operations.end(), [](const auto& value) {
+        return value.at("engine_operation_id") == "engop:symphony:sev.trigger.coalesce";
+    });
+    assert(trigger_descriptor != operations.end());
+    assert(trigger_descriptor->at("input_protocol") == "symphony.sev.trigger-coalescing-input.v1");
+    assert(trigger_descriptor->at("feature_ids") == engine::Json::array({"ssfv:symphony:sev-engine.novelty-watch"}));
     engine::Json input{{"protocol", "symphony.sev.case-open-input.v1"},
         {"case_id", "sevcase:symphony:test"}, {"case_kind", "planned_change"},
         {"source_current", current()}, {"target", {{"version", "v2"}}},
@@ -199,6 +207,21 @@ int main() {
 
     require_error("operation.unsupported", [&] {
         static_cast<void>(sev::handle_request(request("apply", {})));
+    });
+    const auto exact_compatibility = sev::handle_request(request("compatibility", {
+        {"reader_versions", engine::Json::array({"v1"})}, {"writer_version", "v1"}}));
+    const auto old_reader = sev::handle_request(request("compatibility", {
+        {"reader_versions", engine::Json::array({"v0"})}, {"writer_version", "v1"}}));
+    const auto new_writer = sev::handle_request(request("compatibility", {
+        {"reader_versions", engine::Json::array({"v1"})}, {"writer_version", "v2"}}));
+    assert(exact_compatibility.at("compatible") == true && exact_compatibility.at("unknown_critical_preserved") == false);
+    assert(old_reader.at("compatible") == false && old_reader.at("unknown_critical_preserved") == true);
+    assert(new_writer.at("compatible") == false && new_writer.at("reason") == "no_supported_overlap");
+    assert(exact_compatibility == sev::handle_request(request("compatibility", {
+        {"reader_versions", engine::Json::array({"v1"})}, {"writer_version", "v1"}})));
+    require_error("sev.order", [&] {
+        static_cast<void>(sev::handle_request(request("compatibility", {
+            {"reader_versions", engine::Json::array({"v1", "v0"})}, {"writer_version", "v1"}})));
     });
     std::cout << "SEV engine tests passed\n";
 }

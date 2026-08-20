@@ -179,6 +179,8 @@ Any watcher or session trigger is opt-in and qxctl-administered. The default con
 
 Novelty remains local by default. Voluntary export requires an inspectable bounded bundle, explicit SSIAG permission, schema-aware redaction, safe STAV outcome evidence, and indeterminate partial-delivery handling. Payloads, local overlays, secrets, and raw host inventories do not enter STAV. No network export is implemented by the v1 engine.
 
+The v1 operation contract separates nested artifacts from operation envelopes. Novelty Bundle check, Watch Policy check, trigger coalescing, and evolution-session binding each have a strict input schema, and the three check/coalescing operations have strict result schemas under `knowledge/sev/schemas/v1/`; the binding result remains the existing immutable binding schema. Engine descriptors and qxctl advertise those exact protocols so unsupported old/new combinations fail closed without losing caller evidence.
+
 ## Time
 
 STSC applies. Durable timestamps use target-host whole-second UTC. Monotonic clocks govern deadlines. Generations, fingerprints, expected-state digests, and predecessor links govern causal order.

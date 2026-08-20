@@ -27,8 +27,10 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 | `modules/maestro` | registered | `ssfv:symphony:maestro-presence-authority` | `modules/maestro/FEATURES.md` |
 | `modules/node-troll` | excluded | none | Proposal-only Contract Quad seed; no executable implementation exists. |
 | `modules/sacv-engine` | registered | `ssfv:symphony:sacv-engine` | `modules/sacv-engine/FEATURES.md` |
+| `modules/sav-engine` | registered | `ssfv:symphony:sav-engine` | `modules/sav-engine/FEATURES.md` |
 | `modules/sclv-engine` | registered | `ssfv:symphony:sclv-engine` | `modules/sclv-engine/FEATURES.md` |
 | `modules/secure-identity-access-governance` | registered | `ssfv:symphony:ssiag-foundation` | `modules/secure-identity-access-governance/FEATURES.md` |
+| `modules/sev-engine` | registered | `ssfv:symphony:sev-engine` | `modules/sev-engine/FEATURES.md` |
 | `modules/skvi-engine` | registered | `ssfv:symphony:skvi-engine` | `modules/skvi-engine/FEATURES.md` |
 | `modules/sodv-engine` | registered | `ssfv:symphony:sodv-engine` | `modules/sodv-engine/FEATURES.md` |
 | `modules/ssfv-engine` | registered | `ssfv:symphony:ssfv-engine` | `modules/ssfv-engine/FEATURES.md` |
@@ -39,7 +41,7 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 
 ## Ratified Nested Review Progress
 
-The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, provider-trust assurance slice, and provider-binding lifecycle slice record fifty-nine implemented `subfeature` boundaries inside thirteen already registered owner scopes:
+The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, provider-trust assurance slice, provider-binding lifecycle slice, and Accordare hardening review record sixty-seven implemented `subfeature` boundaries inside fifteen already registered owner scopes:
 
 | Owner scope | Ratified nested records | Review disposition |
 |---|---:|---|
@@ -53,8 +55,10 @@ The F1 through F3 review, feature-administration assurance slice, root-summary a
 | `modules/skvi-engine` | 3 | Structural index assurance, content-addressed change proposals, and disposable structural projection are registered. |
 | `modules/sclv-engine` | 5 | Append-only ledger assurance, provider-neutral evidence normalization, evidence-bound append proposals, forward-only closure recovery, and disposable provider-neutral history are registered. |
 | `modules/sacv-engine` | 4 | API-contract conformance, OpenAPI compatibility evidence, contract-registration proposals, and rebuildable contract inventory are registered. |
+| `modules/sav-engine` | 4 | CURRENT/accord evaluation, immutable Named Versions, Extension Capsule admission, and two-way Installation Blueprint planning are registered. |
 | `modules/sodv-engine` | 5 | Release-ledger validation, observed-publication verification, forward release-record proposals, interrupted-publication reconciliation, and rebuildable release-transaction projection are registered. |
 | `modules/ssfv-engine` | 5 | Catalog-integrity snapshots, semantic-freshness comparison, catalog-change proposals, portable semantic-graph projection, and engine-first administration assurance are registered. |
+| `modules/sev-engine` | 4 | Dynamic evolution, SCSEV command-surface assessment, private novelty/watch policy, and shared lifecycle-session binding are registered. |
 | `tools/symphony-validator` | 2 | Deterministic root-summary projection plus invariant-ownership and implemented-module-admission assurance are registered separately from the complete repository checker. |
 
 The macOS Keychain metadata adapter remains one narrow registered subfeature with no child record. Its corrected record states that the Go SSIAG foundation invokes only the mutually verified metadata handshake, qxctl never invokes the Swift executable directly, and operational Keychain access, credential operations, and secret delivery remain disabled.

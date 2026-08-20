@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sav:named-version-validation-result:v1",
+  "title": "SAV Named Version Validation Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "named_version_id", "named_version_digest", "state", "read_only", "seal_authorized", "result_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sav.named-version-validation-result.v1"},
+    "named_version_id": {"type": "string", "pattern": "^savver:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "named_version_digest": {"$ref": "#/$defs/digest"},
+    "state": {"const": "valid_immutable_envelope"},
+    "read_only": {"const": true},
+    "seal_authorized": {"const": false},
+    "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {"digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}
+}

@@ -3,6 +3,7 @@
 #include "symphony/knowledge/engine/digest.hpp"
 #include "symphony/knowledge/engine/error.hpp"
 
+#include <algorithm>
 #include <cassert>
 #include <iostream>
 #include <string_view>
@@ -59,6 +60,13 @@ int main() {
     assert(descriptor.at("protocol") == engine::descriptor_protocol_v2);
     assert(descriptor.at("canonical_apply_enabled") == false);
     assert(descriptor.at("default_receptor") == "receptor:symphony:knowledge.sav");
+    const auto& operations = descriptor.at("administration_operations");
+    const auto named_descriptor = std::find_if(operations.begin(), operations.end(), [](const auto& value) {
+        return value.at("engine_operation_id") == "engop:symphony:sav.named-version.validate";
+    });
+    assert(named_descriptor != operations.end());
+    assert(named_descriptor->at("input_protocol") == "symphony.sav.named-version-validation-input.v1");
+    assert(named_descriptor->at("feature_ids") == engine::Json::array({"ssfv:symphony:sav-engine.named-version"}));
     const auto current = sav::handle_request(request("current_resolve", current_input()));
     assert(current.at("coverage_state") == "complete");
     assert(current.at("canonical") == false);
@@ -123,6 +131,19 @@ int main() {
     wrong_named_namespace["named_version_id"] = "other:symphony:baseline";
     finalize(wrong_named_namespace, "named_version_digest");
     require_error([&] { static_cast<void>(sav::handle_request(request("named_version_validate", {{"named_version", wrong_named_namespace}}))); }, "sav.named_version_id");
+    const auto exact_compatibility = sav::handle_request(request("compatibility", {
+        {"reader_versions", engine::Json::array({"v1"})}, {"writer_version", "v1"}}));
+    const auto old_reader = sav::handle_request(request("compatibility", {
+        {"reader_versions", engine::Json::array({"v0"})}, {"writer_version", "v1"}}));
+    const auto new_writer = sav::handle_request(request("compatibility", {
+        {"reader_versions", engine::Json::array({"v1"})}, {"writer_version", "v2"}}));
+    assert(exact_compatibility.at("compatible") == true && exact_compatibility.at("reason") == "exact_v1_overlap");
+    assert(old_reader.at("compatible") == false && old_reader.at("reason") == "no_supported_overlap");
+    assert(new_writer.at("compatible") == false && new_writer.at("reason") == "no_supported_overlap");
+    assert(exact_compatibility == sav::handle_request(request("compatibility", {
+        {"reader_versions", engine::Json::array({"v1"})}, {"writer_version", "v1"}})));
+    require_error([&] { static_cast<void>(sav::handle_request(request("compatibility", {
+        {"reader_versions", engine::Json::array({"v1", "v0"})}, {"writer_version", "v1"}}))); }, "sav.order");
     bool rejected = false;
     try { static_cast<void>(sav::handle_request(request("apply", {}))); }
     catch (const engine::Error& error) { rejected = error.code() == "operation.unsupported"; }

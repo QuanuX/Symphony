@@ -194,6 +194,8 @@ The engine is stateless. A caller MAY persist immutable snapshots under a per-TO
 
 The engine validates Named Versions, Capsules, and Blueprints but never seals, selects, installs, docks, or applies them. Blueprint planning verifies exact forward/reverse edge inversion, rejects cycles, preserves hard-safety edges, propagates localized blockers, and emits a deterministic ready set. A missing third-party command or feature surface remains an explicit gap; the engine does not invent it.
 
+The v1 operation contract separates nested artifacts from operation envelopes. Named Version validation and diff, Extension Capsule check, and Installation Blueprint plan each have one strict input schema and one strict result schema under `knowledge/sav/schemas/v1/`; engine descriptors and qxctl advertise those operation protocols exactly. A reader that does not support the writer's declared version rejects it without partial interpretation.
+
 ## Time
 
 STSC governs every instant, duration, freshness check, and causal distinction. The target TOPS host owns durable commit time. Wall-clock time is never identity or sole causal order.

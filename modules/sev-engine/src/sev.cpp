@@ -640,8 +640,7 @@ engine::Json compatibility(const engine::Json& payload) {
 engine::OperationSpec operation(std::string id, std::string name, std::string interaction,
                                 std::string feature, std::optional<std::string> input,
                                 std::optional<std::string> output, std::string disposition = "system_orchestrated") {
-    static_cast<void>(feature);
-    return {std::move(id), std::move(name), "implemented", false, true, {"ssfv:symphony:sev-engine"},
+    return {std::move(id), std::move(name), "implemented", false, true, {std::move(feature)},
         {std::move(interaction)}, std::move(disposition), std::move(input), std::move(output),
         "read_only", "idempotent", false, "none", "engop:symphony:sev.inspect", "supported", "freezing"};
 }
@@ -649,21 +648,21 @@ engine::OperationSpec operation(std::string id, std::string name, std::string in
 const std::vector<engine::OperationSpec>& operations() {
     static const std::vector<engine::OperationSpec> specs{
         operation("engop:symphony:sev.inspect", "inspect", "inspect", "ssfv:symphony:sev-engine", {}, "symphony.sev.inspect-result.v1", "not_applicable"),
-        operation("engop:symphony:sev.case.open", "case_open", "propose", "ssfv:symphony:sev-engine.case", "symphony.sev.case-open-input.v1", "symphony.sev.evolution-case.v1"),
-        operation("engop:symphony:sev.impact.assess", "impact_assess", "query", "ssfv:symphony:sev-engine.impact", {}, "symphony.sev.impact-result.v1"),
-        operation("engop:symphony:sev.disposition.plan", "disposition_plan", "propose", "ssfv:symphony:sev-engine.disposition", {}, "symphony.sev.disposition-plan.v1"),
-        operation("engop:symphony:sev.transition.verify", "transition_verify", "validate", "ssfv:symphony:sev-engine.verification", "symphony.sev.transition-verification-input.v1", "symphony.sev.transition-verification-result.v1"),
-        operation("engop:symphony:sev.case.recalculate", "case_recalculate", "recover", "ssfv:symphony:sev-engine.recalculation", {}, "symphony.sev.evolution-case.v1"),
-        operation("engop:symphony:sev.case.status", "case_status", "query", "ssfv:symphony:sev-engine.case", {}, "symphony.sev.case-status-result.v1"),
-        operation("engop:symphony:sev.case.recover", "case_recover", "recover", "ssfv:symphony:sev-engine.recovery", {}, "symphony.sev.case-recovery-advice.v1"),
-        operation("engop:symphony:sev.case.close", "case_close", "propose", "ssfv:symphony:sev-engine.closure", {}, "symphony.sev.case-close-proposal.v1"),
+        operation("engop:symphony:sev.case.open", "case_open", "propose", "ssfv:symphony:sev-engine.dynamic-evolution", "symphony.sev.case-open-input.v1", "symphony.sev.evolution-case.v1"),
+        operation("engop:symphony:sev.impact.assess", "impact_assess", "query", "ssfv:symphony:sev-engine.dynamic-evolution", {}, "symphony.sev.impact-result.v1"),
+        operation("engop:symphony:sev.disposition.plan", "disposition_plan", "propose", "ssfv:symphony:sev-engine.dynamic-evolution", {}, "symphony.sev.disposition-plan.v1"),
+        operation("engop:symphony:sev.transition.verify", "transition_verify", "validate", "ssfv:symphony:sev-engine.dynamic-evolution", "symphony.sev.transition-verification-input.v1", "symphony.sev.transition-verification-result.v1"),
+        operation("engop:symphony:sev.case.recalculate", "case_recalculate", "recover", "ssfv:symphony:sev-engine.dynamic-evolution", {}, "symphony.sev.evolution-case.v1"),
+        operation("engop:symphony:sev.case.status", "case_status", "query", "ssfv:symphony:sev-engine.dynamic-evolution", {}, "symphony.sev.case-status-result.v1"),
+        operation("engop:symphony:sev.case.recover", "case_recover", "recover", "ssfv:symphony:sev-engine.dynamic-evolution", {}, "symphony.sev.case-recovery-advice.v1"),
+        operation("engop:symphony:sev.case.close", "case_close", "propose", "ssfv:symphony:sev-engine.dynamic-evolution", {}, "symphony.sev.case-close-proposal.v1"),
         operation("engop:symphony:sev.command-surface.assess", "command_surface_assess", "validate", "ssfv:symphony:sev-engine.scsev", {}, "symphony.sev.command-surface-assessment.v1"),
-        operation("engop:symphony:sev.novelty-bundle.check", "novelty_bundle_check", "validate", "ssfv:symphony:sev-engine", "symphony.sev.novelty-bundle.v1", "symphony.sev.novelty-bundle-check-result.v1"),
-        operation("engop:symphony:sev.watch-policy.check", "watch_policy_check", "validate", "ssfv:symphony:sev-engine", "symphony.sev.watch-policy.v1", "symphony.sev.watch-policy-check-result.v1"),
-        operation("engop:symphony:sev.trigger.coalesce", "trigger_coalesce", "propose", "ssfv:symphony:sev-engine", {}, "symphony.sev.trigger-coalescing-result.v1"),
-        operation("engop:symphony:sev.session.bind", "evolution_session_bind", "propose", "ssfv:symphony:sev-engine", {}, "symphony.sev.evolution-session-binding.v1"),
-        operation("engop:symphony:sev.graph.project", "project_graph", "query", "ssfv:symphony:sev-engine.graph", {}, "symphony.sev.graph-projection.v1", "not_applicable"),
-        operation("engop:symphony:sev.compatibility", "compatibility", "validate", "ssfv:symphony:sev-engine.compatibility", {}, "symphony.sev.compatibility-result.v1", "not_applicable"),
+        operation("engop:symphony:sev.novelty-bundle.check", "novelty_bundle_check", "validate", "ssfv:symphony:sev-engine.novelty-watch", "symphony.sev.novelty-bundle-check-input.v1", "symphony.sev.novelty-bundle-check-result.v1"),
+        operation("engop:symphony:sev.watch-policy.check", "watch_policy_check", "validate", "ssfv:symphony:sev-engine.novelty-watch", "symphony.sev.watch-policy-check-input.v1", "symphony.sev.watch-policy-check-result.v1"),
+        operation("engop:symphony:sev.trigger.coalesce", "trigger_coalesce", "propose", "ssfv:symphony:sev-engine.novelty-watch", "symphony.sev.trigger-coalescing-input.v1", "symphony.sev.trigger-coalescing-result.v1"),
+        operation("engop:symphony:sev.session.bind", "evolution_session_bind", "propose", "ssfv:symphony:sev-engine.lifecycle-binding", "symphony.sev.evolution-session-binding-input.v1", "symphony.sev.evolution-session-binding.v1"),
+        operation("engop:symphony:sev.graph.project", "project_graph", "query", "ssfv:symphony:sev-engine.dynamic-evolution", {}, "symphony.sev.graph-projection.v1", "not_applicable"),
+        operation("engop:symphony:sev.compatibility", "compatibility", "validate", "ssfv:symphony:sev-engine", {}, "symphony.sev.compatibility-result.v1", "not_applicable"),
     };
     return specs;
 }

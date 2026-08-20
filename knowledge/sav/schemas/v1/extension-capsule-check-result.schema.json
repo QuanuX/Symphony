@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sav:extension-capsule-check-result:v1",
+  "title": "SAV Extension Capsule Check Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "capsule_id", "capsule_digest", "package_inspectable", "semantic_registration_ready", "administration_ready", "docking_ready", "integration_ready", "gaps", "invented_identity", "invented_grammar", "read_only", "result_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sav.extension-capsule-check-result.v1"},
+    "capsule_id": {"type": "string", "pattern": "^savcapsule:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "capsule_digest": {"$ref": "#/$defs/digest"},
+    "package_inspectable": {"type": "boolean"},
+    "semantic_registration_ready": {"type": "boolean"},
+    "administration_ready": {"type": "boolean"},
+    "docking_ready": {"type": "boolean"},
+    "integration_ready": {"type": "boolean"},
+    "gaps": {"type": "array", "maxItems": 16, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 128}},
+    "invented_identity": {"const": false},
+    "invented_grammar": {"const": false},
+    "read_only": {"const": true},
+    "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {"digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}
+}

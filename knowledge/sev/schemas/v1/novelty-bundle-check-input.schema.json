@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sev:novelty-bundle-check-input:v1",
+  "title": "SEV Novelty Bundle Check Input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["bundle"],
+  "properties": {"bundle": {"$ref": "novelty-bundle.schema.json"}}
+}

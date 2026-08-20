@@ -1480,10 +1480,110 @@
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
+            "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "rationale": "The exact headless leaf invokes descriptor-bound read-only SAV inspection."
         },
+        {
+          "interaction": "validate",
+          "requirement": "required",
+          "delivery": "direct",
+          "command_ids": [
+            "qxcmd:symphony:sav.compatibility"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sav.compatibility"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
+            "modules/sev-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "The parent engine exposes exact reader/writer protocol compatibility evidence."
+        }
+      ]
+    },
+    {
+      "feature_id": "ssfv:symphony:sav-engine.current-accord",
+      "expectations": [
+        {
+          "interaction": "query",
+          "requirement": "required",
+          "delivery": "composed",
+          "command_ids": [
+            "qxcmd:symphony:sav.current",
+            "qxcmd:symphony:sav.diff",
+            "qxcmd:symphony:sav.explain",
+            "qxcmd:symphony:sav.graph"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sav.current-resolve",
+            "engop:symphony:sav.diff",
+            "engop:symphony:sav.explain",
+            "engop:symphony:sav.project-graph"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
+            "modules/sev-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "CURRENT, diff, explanation, and disposable graph queries are exact operations of the registered nested feature."
+        },
+        {
+          "interaction": "validate",
+          "requirement": "required",
+          "delivery": "composed",
+          "command_ids": [
+            "qxcmd:symphony:sav.evaluate",
+            "qxcmd:symphony:sav.reference-check"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sav.evaluate",
+            "engop:symphony:sav.reference-check"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
+            "modules/sev-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "Reference and accord validation remain distinct stable command and engine identities."
+        }
+      ]
+    },
+    {
+      "feature_id": "ssfv:symphony:sav-engine.extension-capsule",
+      "expectations": [
+        {
+          "interaction": "validate",
+          "requirement": "required",
+          "delivery": "direct",
+          "command_ids": [
+            "qxcmd:symphony:sav.capsule-check"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sav.extension-capsule.check"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
+            "modules/sev-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "The exact headless capsule check reports package, semantic, administrative, and docking readiness without applying changes."
+        }
+      ]
+    },
+    {
+      "feature_id": "ssfv:symphony:sav-engine.installation-blueprint",
+      "expectations": [
         {
           "interaction": "propose",
           "requirement": "required",
@@ -1498,61 +1598,53 @@
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
+            "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "rationale": "Blueprint planning exposes explicit forward and reverse dependency-safe ready sets without authorizing apply."
-        },
+        }
+      ]
+    },
+    {
+      "feature_id": "ssfv:symphony:sav-engine.named-version",
+      "expectations": [
         {
           "interaction": "query",
           "requirement": "required",
-          "delivery": "composed",
+          "delivery": "direct",
           "command_ids": [
-            "qxcmd:symphony:sav.current",
-            "qxcmd:symphony:sav.diff",
-            "qxcmd:symphony:sav.explain",
-            "qxcmd:symphony:sav.graph",
             "qxcmd:symphony:sav.version-diff"
           ],
           "engine_operation_ids": [
-            "engop:symphony:sav.current-resolve",
-            "engop:symphony:sav.diff",
-            "engop:symphony:sav.explain",
-            "engop:symphony:sav.named-version.diff",
-            "engop:symphony:sav.project-graph"
+            "engop:symphony:sav.named-version.diff"
           ],
           "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
+            "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "CURRENT, diff, explanation, and disposable graph queries are distinct exact operations composed under SAV."
+          "rationale": "Named Version lineage and field changes are queryable through an exact deterministic diff."
         },
         {
           "interaction": "validate",
           "requirement": "required",
-          "delivery": "composed",
+          "delivery": "direct",
           "command_ids": [
-            "qxcmd:symphony:sav.capsule-check",
-            "qxcmd:symphony:sav.compatibility",
-            "qxcmd:symphony:sav.evaluate",
-            "qxcmd:symphony:sav.reference-check",
             "qxcmd:symphony:sav.version-validate"
           ],
           "engine_operation_ids": [
-            "engop:symphony:sav.compatibility",
-            "engop:symphony:sav.evaluate",
-            "engop:symphony:sav.extension-capsule.check",
-            "engop:symphony:sav.named-version.validate",
-            "engop:symphony:sav.reference-check"
+            "engop:symphony:sav.named-version.validate"
           ],
           "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
+            "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "Reference, accord, and protocol compatibility validations retain separate stable command and engine identities."
+          "rationale": "Immutable Named Version envelopes have an exact validation route without sealing authority."
         }
       ]
     },
@@ -1713,11 +1805,36 @@
           "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "rationale": "The exact headless leaf invokes descriptor-bound read-only SEV inspection."
         },
+        {
+          "interaction": "validate",
+          "requirement": "required",
+          "delivery": "direct",
+          "command_ids": [
+            "qxcmd:symphony:sev.compatibility"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sev.compatibility"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
+            "modules/sev-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "The parent engine exposes exact reader/writer protocol compatibility evidence."
+        }
+      ]
+    },
+    {
+      "feature_id": "ssfv:symphony:sev-engine.dynamic-evolution",
+      "expectations": [
         {
           "interaction": "propose",
           "requirement": "required",
@@ -1725,20 +1842,17 @@
           "command_ids": [
             "qxcmd:symphony:sev.case-open",
             "qxcmd:symphony:sev.close",
-            "qxcmd:symphony:sev.plan",
-            "qxcmd:symphony:sev.session-bind",
-            "qxcmd:symphony:sev.trigger-coalesce"
+            "qxcmd:symphony:sev.plan"
           ],
           "engine_operation_ids": [
             "engop:symphony:sev.case.close",
             "engop:symphony:sev.case.open",
-            "engop:symphony:sev.disposition.plan",
-            "engop:symphony:sev.session.bind",
-            "engop:symphony:sev.trigger.coalesce"
+            "engop:symphony:sev.disposition.plan"
           ],
           "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
@@ -1761,10 +1875,11 @@
           "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "Impact, case status, and disposable graph queries are explicit read-only SEV operations."
+          "rationale": "Impact, state, and disposable graph evidence remain independently queryable."
         },
         {
           "interaction": "recover",
@@ -1781,36 +1896,123 @@
           "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "Recalculation derives an immutable successor and recovery returns advice; neither mutates durable coordinator state."
+          "rationale": "Dynamic recalculation and forward-only recovery advice remain explicit operations."
+        },
+        {
+          "interaction": "validate",
+          "requirement": "required",
+          "delivery": "direct",
+          "command_ids": [
+            "qxcmd:symphony:sev.verify"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sev.transition.verify"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
+            "modules/sev-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "Complete reobservation is validated through an exact transition-verification route."
+        }
+      ]
+    },
+    {
+      "feature_id": "ssfv:symphony:sev-engine.lifecycle-binding",
+      "expectations": [
+        {
+          "interaction": "propose",
+          "requirement": "required",
+          "delivery": "direct",
+          "command_ids": [
+            "qxcmd:symphony:sev.session-bind"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sev.session.bind"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
+            "modules/sev-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "Evolution cases bind to the shared lifecycle stream through an immutable noncanonical proposal."
+        }
+      ]
+    },
+    {
+      "feature_id": "ssfv:symphony:sev-engine.novelty-watch",
+      "expectations": [
+        {
+          "interaction": "propose",
+          "requirement": "required",
+          "delivery": "direct",
+          "command_ids": [
+            "qxcmd:symphony:sev.trigger-coalesce"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sev.trigger.coalesce"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
+            "modules/sev-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "Explicit policy-bound events coalesce into a case-kind proposal without opening a case."
         },
         {
           "interaction": "validate",
           "requirement": "required",
           "delivery": "composed",
           "command_ids": [
-            "qxcmd:symphony:sev.command-surface",
-            "qxcmd:symphony:sev.compatibility",
             "qxcmd:symphony:sev.novelty-check",
-            "qxcmd:symphony:sev.verify",
             "qxcmd:symphony:sev.watch-check"
           ],
           "engine_operation_ids": [
-            "engop:symphony:sev.command-surface.assess",
-            "engop:symphony:sev.compatibility",
             "engop:symphony:sev.novelty-bundle.check",
-            "engop:symphony:sev.transition.verify",
             "engop:symphony:sev.watch-policy.check"
           ],
           "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "SCSEV, compatibility, and reobservation verification remain separate closed read-only checks."
+          "rationale": "Private novelty bundles and default-disabled watch policies have exact validation routes."
+        }
+      ]
+    },
+    {
+      "feature_id": "ssfv:symphony:sev-engine.scsev",
+      "expectations": [
+        {
+          "interaction": "validate",
+          "requirement": "required",
+          "delivery": "direct",
+          "command_ids": [
+            "qxcmd:symphony:sev.command-surface"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sev.command-surface.assess"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
+            "modules/sev-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "SCSEV validates feature-to-qxctl and engine-operation consequences without creating a second registry."
         }
       ]
     },
@@ -3047,9 +3249,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:a04c652697b0ed7e61f2252115a37b99a778fa0e8966b754154dd412c281b9e8",
+  "profile_digest": "sha256:29c3418f5ecd4d4b2e2d99021e6642f4f39013de46e63a9902b650710ea8bc09",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 78,
-  "ssfv_registry_digest": "sha256:c6639270e39890f60873df030f2b54a969489ffe917662cd4a68725d07d0e318"
+  "registered_feature_count": 86,
+  "ssfv_registry_digest": "sha256:2b1503af5350914a0da1de7b794a77c204c6826c0509ff54fe052471dab28fbe"
 }

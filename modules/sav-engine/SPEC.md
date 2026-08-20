@@ -10,6 +10,17 @@ CURRENT is derived only from supplied source projections. Its stable digest excl
 
 Named Version validation enforces the `savver:` namespace, immutable self-digest, lineage, exact requirements, and freezing-only posture. Extension Capsule validation enforces `savcapsule:` identity and reports semantic, qxctl, operation, and receptor gaps without inventing missing identities. Installation Blueprint planning enforces `savblueprint:` identity, exact inverse graphs, acyclicity, component/receptor/capsule references, localized blocker propagation, and deterministic forward or reverse readiness.
 
+Every extended operation has a dedicated Draft 2020-12 input wrapper and result schema. Engine descriptor v2 and qxctl must advertise those operation envelopes—not the nested artifact alone—so old readers, new writers, direct-process clients, and interrupted upgrade sequences fail closed at the same explicit protocol boundary.
+
+The compatibility matrix is exact and symmetric about supported overlap:
+
+| Reader evidence | Writer | Result |
+|---|---|---|
+| `v1` | `v1` | compatible: `exact_v1_overlap` |
+| `v0` only | `v1` | incompatible: `no_supported_overlap` |
+| `v1` | `v2` | incompatible: `no_supported_overlap` until v2 is ratified |
+| side-by-side exact versions during interruption | explicitly selected version | the matching v1 process remains usable; selection and recovery never auto-fallback and remain qxctl/coordinator responsibilities |
+
 ## Failure and non-authorizations
 
 Malformed or inconsistent inputs fail with a structured process error. Unsupported operations return `operation.unsupported`. Apply, ambient discovery, arbitrary expression execution, filesystem mutation, network listening, authority decisions, and persistence are not implemented.
