@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:provider-readiness-observation-request:v1",
+  "title": "Symphony SSIAG provider readiness observation request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "request_id", "correlation_id", "authority_basis"],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.provider-readiness-observation-request.v1"},
+    "request_id": {"$ref": "#/$defs/uuid"},
+    "correlation_id": {"$ref": "#/$defs/uuid"},
+    "authority_basis": {"enum": ["host_owner", "granted_permission"]}
+  },
+  "$defs": {
+    "uuid": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"}
+  }
+}

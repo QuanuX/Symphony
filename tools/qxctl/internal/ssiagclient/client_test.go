@@ -116,6 +116,102 @@ func TestClientRejectsDuplicateProviderTrustMembers(t *testing.T) {
 	}
 }
 
+func TestClientUsesClosedProviderReadinessEndpoint(t *testing.T) {
+	seen := ""
+	transport := roundTripFunc(func(request *http.Request) (*http.Response, error) {
+		seen = request.Method + " " + request.URL.Path
+		var candidate ProviderReadinessObservationRequest
+		if err := json.NewDecoder(request.Body).Decode(&candidate); err != nil ||
+			candidate.Protocol != ProviderReadinessObservationRequestProtocol || candidate.AuthorityBasis != "host_owner" {
+			t.Fatalf("invalid readiness request: %+v error=%v", candidate, err)
+		}
+		return &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(strings.NewReader(providerReadinessJSON(t, nil))), Request: request}, nil
+	})
+	client := &Client{httpClient: &http.Client{Transport: transport}, baseURL: "http://unix"}
+	request := ProviderReadinessObservationRequest{
+		Protocol: ProviderReadinessObservationRequestProtocol, RequestID: testTOPSID,
+		CorrelationID: "018f0c3a-7b2d-7e11-8c12-0242ac120003", AuthorityBasis: "host_owner",
+	}
+	if _, err := client.ObserveProviderReadiness(context.Background(), "native.keychain", request); err != nil {
+		t.Fatal(err)
+	}
+	if seen != "POST /v1/provider-readiness/native.keychain/observations" {
+		t.Fatalf("provider readiness route drifted: %s", seen)
+	}
+}
+
+func TestClientRejectsUnsafeProviderReadinessEvidence(t *testing.T) {
+	tests := map[string]func(map[string]any){
+		"operational access": func(value map[string]any) { value["operational_access_enabled"] = true },
+		"secret member":      func(value map[string]any) { value["credential"] = "forbidden" },
+		"unsorted reasons": func(value map[string]any) {
+			observation := value["observation"].(map[string]any)
+			observation["reason_codes"] = []any{"symphony.ssiag.provider.readiness.z", "symphony.ssiag.provider.readiness.a"}
+		},
+		"eligibility enabled": func(value map[string]any) {
+			observation := value["observation"].(map[string]any)
+			observation["operational_eligibility"].(map[string]any)["state"] = "enabled"
+		},
+		"invented structural state": func(value map[string]any) {
+			value["observation"].(map[string]any)["structural_validation"].(map[string]any)["state"] = "invented"
+		},
+		"result layer contradiction": func(value map[string]any) {
+			value["readiness_state"] = "not_ready"
+		},
+	}
+	for name, mutate := range tests {
+		t.Run(name, func(t *testing.T) {
+			transport := roundTripFunc(func(request *http.Request) (*http.Response, error) {
+				return &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(strings.NewReader(providerReadinessJSON(t, mutate))), Request: request}, nil
+			})
+			client := &Client{httpClient: &http.Client{Transport: transport}, baseURL: "http://unix"}
+			request := ProviderReadinessObservationRequest{Protocol: ProviderReadinessObservationRequestProtocol, RequestID: testTOPSID, CorrelationID: "018f0c3a-7b2d-7e11-8c12-0242ac120003", AuthorityBasis: "host_owner"}
+			if _, err := client.ObserveProviderReadiness(context.Background(), "native.keychain", request); err == nil {
+				t.Fatal("unsafe provider readiness evidence was accepted")
+			}
+		})
+	}
+}
+
+func providerReadinessJSON(t *testing.T, mutate func(map[string]any)) string {
+	t.Helper()
+	reason := "symphony.ssiag.provider.readiness.phase_10b_operational_gate"
+	value := map[string]any{
+		"protocol": ProviderReadinessResultProtocol, "operation": "engop:symphony:ssiag.provider.readiness.observe",
+		"tops_id": testTOPSID, "scope": "user", "provider_name": "native.keychain", "provider_kind": "macos-keychain",
+		"adapter_identifier": "adapter:symphony:ssiag.macos-keychain-provider.v1", "adapter_version": "0.1.0-draft",
+		"installation_digest": "sha256:" + strings.Repeat("a", 64), "executable_digest": "sha256:" + strings.Repeat("b", 64),
+		"readiness_state": "readiness_proven_operations_disabled",
+		"observation": map[string]any{
+			"protocol": "symphony.ssiag.provider-readiness-observation.v1", "metadata_only": true,
+			"structural_validation":    map[string]any{"state": "valid", "evaluated": true, "reason_code": "symphony.ssiag.provider.readiness.static_signature_valid"},
+			"policy_match":             map[string]any{"state": "matched", "evaluated": true, "reason_code": "symphony.ssiag.provider.readiness.policy_matched"},
+			"operational_eligibility":  map[string]any{"state": "disabled", "evaluated": false, "reason_code": reason},
+			"app_like_bundle_observed": true, "provisioning_profile_file_state": "absent", "static_signature_state": "valid", "dynamic_signature_state": "not_evaluated",
+			"signing_identifier": "not_observed", "designated_requirement_digest": "sha256:" + strings.Repeat("c", 64), "policy_requirement_digest": "sha256:" + strings.Repeat("d", 64),
+			"security_session_observed": true, "security_session_root": false, "security_session_graphical": true, "security_session_tty": true, "security_session_remote": false,
+			"authorization_decision_made": false, "operational_access_enabled": false, "provider_operations_enabled": false, "secret_channel_enabled": false,
+			"reason_codes": []any{"symphony.ssiag.provider.readiness.app_bundle_observed", reason},
+		},
+		"operational_access_enabled": false, "provider_operations_enabled": false, "secret_channel_enabled": false,
+		"observed_at": "2026-08-16T12:00:00Z", "read_only": true, "caller_class_used": false, "canonical": false,
+	}
+	if mutate != nil {
+		mutate(value)
+	}
+	canonical, err := json.Marshal(value)
+	if err != nil {
+		t.Fatal(err)
+	}
+	digest := sha256.Sum256(canonical)
+	value["result_digest"] = "sha256:" + hex.EncodeToString(digest[:])
+	encoded, err := json.Marshal(value)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return string(encoded)
+}
+
 func providerTrustJSON(t *testing.T, operation string, mutate func(map[string]any)) string {
 	t.Helper()
 	mode := "snapshot"

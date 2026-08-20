@@ -58,6 +58,8 @@ qxctl MAY query status and safe provider descriptors and MAY request an exact au
 
 The provider-binding surface is governed in full by `knowledge/ssiag/PROVIDER-LIFECYCLE.md`. It exposes exact protected inventory, status, plan, apply, apply-status, and recovery routes without enabling any provider operation. It never chooses a newest installation. Binding apply uses the exact plan and expected state digests, durably binds the initiating safe audit identity, re-verifies immutable candidate evidence, requires the distinct committed STAV binding-lifecycle receipt, changes state only while an audited attempt remains recoverable, and advances durable attempts only through `prepared -> candidate_verified -> audited -> committed`. All binding protocols report operational access, provider operations, and secret delivery disabled.
 
+Provider readiness is governed by `knowledge/ssiag/PROVIDER-READINESS.md`. `POST /v1/provider-readiness/<provider_name>/observations` performs a fresh, permission-backed but non-mutating observation through the exact bound installation. Structural signature validity, native protected-policy match, and operational eligibility are separate layers. Phase 10B leaves eligibility unevaluated and fixes all operational flags false. The stable qxctl command is `qxcmd:symphony:ssiag.provider.readiness`; qxctl accepts no path or signing-policy values and validates the entire safe result.
+
 The canonical authorization and lifecycle-grant planning schemas are:
 
 - `knowledge/ssiag/schemas/v1/authorization-request.schema.json`;
@@ -75,6 +77,8 @@ The canonical authorization and lifecycle-grant planning schemas are:
 - `knowledge/ssiag/schemas/v1/provider-binding-plan-request.schema.json`, `provider-binding-plan.schema.json`, and `provider-binding-apply-request.schema.json`;
 - `knowledge/ssiag/schemas/v1/provider-binding-recovery-request.schema.json` and `provider-binding-result.schema.json`;
 - `knowledge/ssiag/schemas/v1/provider-binding-state.schema.json` and `provider-binding-attempt.schema.json`.
+- `knowledge/ssiag/schemas/v1/provider-readiness-observation-request.schema.json`, `provider-readiness-observation.schema.json`, and `provider-readiness-result.schema.json`;
+- `knowledge/ssiag/schemas/v1/macos-signing-policy.schema.json`.
 
 The enrolled `symphony.ssiag.config.v1` file remains immutable during local policy administration. The effective policy is either that config policy or a protected per-TOPS state overlay. Overlay state is owner-controlled, no-follow, bounded, generation-counted, digest-bound to the enrolled config, and replaced atomically under an exclusive persistent lock. A reset writes a generation-preserving `source: config` state rather than deleting history. Older SSIAG binaries ignore the separate overlay and therefore fall back to the enrolled deny-by-default policy; they cannot silently interpret new state as broader authority.
 
@@ -152,9 +156,11 @@ Non-exportable sign, assert, decrypt, or key-use operations MUST remain inside t
 
 ## macOS Keychain Operational Profile
 
-The first operational Keychain provider MUST be per-user and session-aware. Items MUST be scoped to the immutable TOPS ID, non-synchronizing by default, and protected by the most restrictive accessibility and user-presence policy compatible with the declared operation. System/headless processes MUST NOT implicitly use a user's login Keychain.
+The first operational Keychain provider targets Apple's data-protection Keychain and MUST be per-user and session-aware. Items MUST be scoped to the immutable TOPS ID, non-synchronizing by default, and protected by the most restrictive accessibility and user-presence policy compatible with the declared operation. System/headless processes MUST NOT implicitly use a user's login Keychain. A later file-based system Keychain is a separately identified provider and never a fallback.
 
-Where it meets the use case, non-exportable key creation and sign/assert/decrypt behavior SHOULD precede general secret export. The exact reverse-domain namespace, item classes, operation catalog, access-control matrix, signing identities, entitlements, notarization, and provisioning experience remain implementation-detail gates and MUST be recorded before operational enablement.
+Production packaging uses a complete Developer ID-signed, hardened, securely timestamped, and notarized app-like bundle. Receipt v2 owns every admitted bundle file and the Go foundation privately reconstructs and verifies the complete bundle before execution. Exact signer, Team ID, private application-identifier access group, entitlements, provisioning profile, and designated requirement are protected build/installation evidence rather than caller assertions or universal hardcodes. Native `SecRequirement` evaluation is authoritative for policy match; digests are safe evidence only. Development and ad-hoc artifacts remain metadata-only absent a separately ratified nonproduction profile.
+
+Where it meets the use case, non-exportable key creation and sign/assert/decrypt behavior SHOULD precede general secret export. The exact item classes, operation catalog, accessibility, access-control matrix, and future Keychain lifecycle semantics remain Phase 10C gates and MUST be recorded before operational enablement.
 
 ## STAV Projection
 

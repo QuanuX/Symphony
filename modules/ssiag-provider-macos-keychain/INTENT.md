@@ -8,11 +8,11 @@ Provide the optional macOS Apple Keychain boundary for Symphony Secure Identity 
 
 This adapter is never linked into the Go SSIAG foundation. The foundation invokes it through a protected, versioned local IPC contract. Apple frameworks and native provider behavior remain entirely inside this process.
 
-## Current Scaffold
+## Current Readiness Foundation
 
-The Phase 9 executable implements metadata discovery over one fail-closed request/response process only. It does not import the Security framework, read or write Keychain items, accept credential material, open the synthetic one-shot descriptor, or advertise operational access.
+The executable preserves the exact Phase 9 metadata protocol and adds a separate Phase 10B readiness operation. The Apple Security framework is used only to validate the complete code-signature structure, compile and evaluate a receipt-owned native code requirement, and observe bounded security-session capability flags. It does not read or write Keychain items, accept credential material, request broad certificate/profile/entitlement payloads, open the synthetic one-shot descriptor, or advertise operational access.
 
-The operational architecture is ratified as per-user and session-aware, with mutual executable trust, non-exportable operations preferred, and a separate one-shot protected channel for any explicitly exportable bytes. The current canonical channel descriptor is synthetic and cannot deliver bytes. Exact item, signing, entitlement, interaction, provisioning, memory, and operational channel details remain later implementation gates.
+Production packaging is a complete Developer ID-signed, hardened, securely timestamped, notarized app-like bundle with exact receipt-v2 ownership. The Go foundation reconstructs every owned file in private staging before invocation. Structural validity, native protected-policy match, and operational eligibility are distinct. Eligibility and every operation flag remain disabled. The future operational architecture targets the per-user data-protection Keychain, prefers non-exportable operations, and reserves a separate one-shot protected channel for any explicitly exportable bytes. Exact item, interaction, memory, and operational-channel details remain later gates.
 
 ## Non-Scope
 

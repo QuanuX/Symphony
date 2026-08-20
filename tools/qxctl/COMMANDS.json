@@ -3363,6 +3363,50 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:ssiag.provider.readiness",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl ssiag provider readiness \u003cprovider-name\u003e [--authority-basis VALUE] [--json] [--scope VALUE] [--tops-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.ssiag-administration",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation.provider-readiness-assurance",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag.macos-signed-bundle-readiness",
+          "interaction": "validate"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:ssiag.macos-keychain-provider.readiness.observe",
+        "engop:symphony:ssiag.provider.readiness.observe"
+      ],
+      "mutability": "evidence_only",
+      "authority_mode": "ssiag",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.ssiag.provider-readiness-observation-request.v1"
+      ],
+      "output_protocols": [
+        "symphony.ssiag.provider-readiness-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.ssiag.provider-readiness-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:ssiag.provider.show",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -4830,5 +4874,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:b59989aca18b21a90fee4a015e099defb367c8079b8ee59b59346c69a666b31d"
+  "registry_digest": "sha256:5d85a6fa94256887d014c37f28a59077a2fbba50b530edeeba4707a8afa4bd95"
 }

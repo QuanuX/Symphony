@@ -97,6 +97,65 @@ import Testing
     }
 }
 
+@Test func signedBundleShapeInstallsAsExactReceiptOwnedPackage() throws {
+    let fixture = try BundleLifecycleFixture()
+    defer { fixture.cleanup() }
+
+    let installed = try ProviderLifecycle.install(source: fixture.executable, scope: .user, layout: fixture.layout)
+    #expect(installed.binary == fixture.layout.bundleBinary.path)
+    #expect(FileManager.default.fileExists(atPath: fixture.layout.bundleBinary.path))
+    #expect(FileManager.default.fileExists(atPath: fixture.layout.bundle.appending(path: "Contents/Info.plist").path))
+
+    let receipt = try validateProviderReceipt(
+        data: Data(contentsOf: fixture.layout.receipt), scope: .user, version: providerVersion,
+        architecture: runtimeArchitectureForTests(), expectedExecutable: fixture.layout.bundleBinary,
+        checkInstalledBytes: true
+    )
+    #expect(receipt.files.count == 3)
+    #expect(receipt.files.map(\.path) == receipt.files.map(\.path).sorted())
+
+    let repeated = try ProviderLifecycle.install(source: fixture.executable, scope: .user, layout: fixture.layout)
+    #expect(!repeated.changed)
+    _ = try ProviderLifecycle.uninstall(scope: .user, layout: fixture.layout)
+    #expect(!FileManager.default.fileExists(atPath: fixture.layout.bundle.path))
+    #expect(!FileManager.default.fileExists(atPath: fixture.layout.receipt.path))
+}
+
+@Test func bundleLifecycleRejectsUnknownAndChangedFilesWithoutRemovingReceipt() throws {
+    let fixture = try BundleLifecycleFixture()
+    defer { fixture.cleanup() }
+    _ = try ProviderLifecycle.install(source: fixture.executable, scope: .user, layout: fixture.layout)
+
+    let unknown = fixture.layout.bundle.appending(path: "Contents/Resources/unknown")
+    try FileManager.default.createDirectory(at: unknown.deletingLastPathComponent(), withIntermediateDirectories: true)
+    try Data("unknown".utf8).write(to: unknown)
+    #expect(throws: LifecycleError.self) {
+        try ProviderLifecycle.uninstall(scope: .user, layout: fixture.layout)
+    }
+    #expect(FileManager.default.fileExists(atPath: fixture.layout.receipt.path))
+
+    try FileManager.default.removeItem(at: unknown)
+    try FileManager.default.setAttributes([.posixPermissions: 0o700], ofItemAtPath: fixture.layout.bundleBinary.path)
+    try Data("changed".utf8).write(to: fixture.layout.bundleBinary)
+    try FileManager.default.setAttributes([.posixPermissions: 0o500], ofItemAtPath: fixture.layout.bundleBinary.path)
+    #expect(throws: LifecycleError.self) {
+        try ProviderLifecycle.uninstall(scope: .user, layout: fixture.layout)
+    }
+    #expect(FileManager.default.fileExists(atPath: fixture.layout.receipt.path))
+}
+
+@Test func interruptedBundleUninstallSelfHealsFromReceiptLastEvidence() throws {
+    let fixture = try BundleLifecycleFixture()
+    defer { fixture.cleanup() }
+    let installed = try ProviderLifecycle.install(source: fixture.executable, scope: .user, layout: fixture.layout)
+    try FileManager.default.removeItem(at: fixture.layout.bundleBinary)
+
+    let recovered = try ProviderLifecycle.uninstall(scope: .user, layout: fixture.layout)
+    #expect(recovered.receiptDigest == installed.receiptDigest)
+    #expect(!FileManager.default.fileExists(atPath: fixture.layout.bundle.path))
+    #expect(!FileManager.default.fileExists(atPath: fixture.layout.receipt.path))
+}
+
 private final class LifecycleFixture {
     let root: URL
     let source: URL
@@ -114,4 +173,40 @@ private final class LifecycleFixture {
     func cleanup() {
         try? FileManager.default.removeItem(at: root)
     }
+}
+
+private final class BundleLifecycleFixture {
+    let root: URL
+    let bundle: URL
+    let executable: URL
+    let layout: InstallLayout
+
+    init() throws {
+        root = FileManager.default.temporaryDirectory.appending(path: "ssiag-provider-bundle-test-\(UUID().uuidString)", directoryHint: .isDirectory)
+        bundle = root.appending(path: "Source.app", directoryHint: .isDirectory)
+        executable = bundle.appending(path: "Contents/MacOS/\(providerExecutableName)")
+        let info = bundle.appending(path: "Contents/Info.plist")
+        let policy = bundle.appending(path: "Contents/Resources/ssiag-signing-policy.json")
+        try FileManager.default.createDirectory(at: executable.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: policy.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try Data("adapter".utf8).write(to: executable)
+        try Data("plist".utf8).write(to: info)
+        try Data(#"{"protocol":"symphony.ssiag.macos-signing-policy.v1"}"#.utf8).write(to: policy)
+        try FileManager.default.setAttributes([.posixPermissions: 0o500], ofItemAtPath: executable.path)
+        try FileManager.default.setAttributes([.posixPermissions: 0o400], ofItemAtPath: info.path)
+        try FileManager.default.setAttributes([.posixPermissions: 0o400], ofItemAtPath: policy.path)
+        layout = try InstallLayout.resolve(.user, prefix: root.appending(path: "prefix", directoryHint: .isDirectory))
+    }
+
+    func cleanup() { try? FileManager.default.removeItem(at: root) }
+}
+
+private func runtimeArchitectureForTests() -> String {
+#if arch(arm64)
+    "arm64"
+#elseif arch(x86_64)
+    "amd64"
+#else
+    "unsupported"
+#endif
 }

@@ -5,12 +5,13 @@
 1. Read `knowledge/ssiag/SPEC.md` and this module's `SPEC.md`.
 2. Run `swift test` before building.
 3. Confirm capability output remains metadata-only, sorted, unique, and bounded to 128 entries unless an operational gate has been ratified.
-4. Install explicitly by scope.
-5. Configure the provider as enabled with capabilities `capability-discovery` and `metadata`, `exportable: false`, and `interactive: true`.
-6. Bind the exact installed adapter and foundation versions with one protected per-TOPS `provider-executable-trust.v1` declaration; absence is `unbound`, and automatic newest-version selection is prohibited.
-7. Confirm one process consumes one request and emits one response, each at most 65,536 bytes, with five-second default and thirty-second maximum deadline.
-8. Require adapter-side independent parent/receipt observation; signing identity remains `not_applicable` until a separate verifier is ratified. Never treat request assertions or a successful outcome alone as mutual trust.
-9. Verify version, protocol, binary permissions, receipt digest, bounded IPC, and fail-closed behavior.
+4. For Phase 10B readiness, require the exact receipt-owned app bundle and policy, inspect structural, policy, and session layers independently through `qxctl ssiag provider readiness`, and confirm every operational flag remains false. Never treat local signature validity, a requirement digest, or session presence as authorization.
+5. Install explicitly by scope.
+6. Configure the provider as enabled with capabilities `capability-discovery` and `metadata`, `exportable: false`, and `interactive: true`.
+7. Bind the exact installed adapter and foundation versions with one protected per-TOPS `provider-executable-trust.v1` declaration; absence is `unbound`, and automatic newest-version selection is prohibited.
+8. Confirm one process consumes one request and emits one response, each at most 65,536 bytes, with five-second default and thirty-second maximum deadline.
+9. Require adapter-side independent parent/receipt observation and configured native code-requirement evaluation. Never treat request assertions or a successful outcome alone as mutual trust or authorization.
+10. Verify version, protocol, binary permissions, complete receipt ownership, bounded IPC, and fail-closed behavior.
 
 ## Current Capability Boundary
 

@@ -116,6 +116,55 @@ func TestProviderLauncherRejectsUntrustedExecutable(t *testing.T) {
 	}
 }
 
+func TestProviderLauncherStagesCompleteReceiptOwnedBundle(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("bundle staging is Unix-only")
+	}
+	manager := testManager(t, true, &fakeLauncher{})
+	declaration := writeTrustBundlePackage(t, manager, []byte("#!/bin/sh\nexit 0\n"))
+	staged, cleanup, err := stageVerifiedExecutable(declaration)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cleanup()
+	if !strings.Contains(filepath.ToSlash(staged), "/"+macOSKeychainBundleName+"/Contents/MacOS/") {
+		t.Fatalf("bundle structure was not preserved: %s", staged)
+	}
+	bundle := filepath.Dir(filepath.Dir(filepath.Dir(staged)))
+	for _, relative := range []string{"Contents/Info.plist", "Contents/Resources/ssiag-signing-policy.json"} {
+		if info, err := os.Lstat(filepath.Join(bundle, filepath.FromSlash(relative))); err != nil || !info.Mode().IsRegular() {
+			t.Fatalf("receipt-owned bundle file %s was not staged: %v", relative, err)
+		}
+	}
+}
+
+func TestProviderBundleStagingRejectsChangedOrUnreceiptedBytes(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("bundle staging is Unix-only")
+	}
+	for name, mutate := range map[string]func(ExecutableTrust){
+		"changed owned file": func(declaration ExecutableTrust) {
+			bundle := filepath.Dir(filepath.Dir(filepath.Dir(declaration.ExecutablePath)))
+			_ = os.Chmod(filepath.Join(bundle, "Contents", "Info.plist"), 0o600)
+			_ = os.WriteFile(filepath.Join(bundle, "Contents", "Info.plist"), []byte("changed"), 0o400)
+		},
+		"unreceipted file": func(declaration ExecutableTrust) {
+			bundle := filepath.Dir(filepath.Dir(filepath.Dir(declaration.ExecutablePath)))
+			_ = os.WriteFile(filepath.Join(bundle, "Contents", "unknown"), []byte("unknown"), 0o400)
+		},
+	} {
+		t.Run(name, func(t *testing.T) {
+			manager := testManager(t, true, &fakeLauncher{})
+			declaration := writeTrustBundlePackage(t, manager, []byte("#!/bin/sh\nexit 0\n"))
+			mutate(declaration)
+			if _, cleanup, err := stageVerifiedExecutable(declaration); err == nil {
+				cleanup()
+				t.Fatal("unsafe bundle reached private staging")
+			}
+		})
+	}
+}
+
 func TestProviderLauncherRejectsDescriptorIdentityAndProtocolDrift(t *testing.T) {
 	launcher := &fakeLauncher{}
 	manager := testManager(t, true, launcher)

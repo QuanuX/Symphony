@@ -10,9 +10,10 @@ Guide every authorized caller in safely reading, reviewing, configuring, and imp
 2. `knowledge/ssiag/MANIFEST.md`
 3. `knowledge/ssiag/SPEC.md`
 4. `knowledge/ssiag/PROVIDER-LIFECYCLE.md` before changing provider inventory or binding behavior
-5. `modules/secure-identity-access-governance/REQUIREMENTS.md`
-6. the selected provider module contracts
-7. `knowledge/stav/SPEC.md` before changing audit output
+5. `knowledge/ssiag/PROVIDER-READINESS.md` before changing signing, bundle, session, or operational-eligibility behavior
+6. `modules/secure-identity-access-governance/REQUIREMENTS.md`
+7. the selected provider module contracts
+8. `knowledge/stav/SPEC.md` before changing audit output
 
 ## Caller Authority
 
@@ -39,7 +40,8 @@ Caller type is not an authorization input. A caller may inspect canonical contra
 6. Preserve the implemented local policy proposal/apply/recovery circuit: kernel-derived authority, CAS, idempotent STAV-before-commit, protected attempt/state files, and noncanonical result binding.
 7. Maintain the implemented exact provider mutual-executable-trust and metadata-control runtime without widening its v1 surface or enabling the synthetic secret channel.
 8. Preserve the exact provider installation/binding lifecycle: bounded inventory, no newest-version selection, distinct command/backend identities, exact plan and state digests, durable initiating audit identity, state-before-committed ordering, `prepared -> candidate_verified -> audited -> committed` recovery, and committed distinct STAV evidence.
-9. Enable per-user macOS Keychain operations only after the separate operational gate, beginning with non-exportable capability where suitable.
+9. Preserve the implemented Phase 10B complete-bundle receipt/staging and three-layer readiness circuit. Native structural success and policy match remain non-operational evidence; qxctl must validate the closed result without accepting signing or path authority.
+10. Enable per-user macOS Keychain operations only after the separate Phase 10C gate, beginning with non-exportable capability where suitable.
 
 ## Stop Conditions
 

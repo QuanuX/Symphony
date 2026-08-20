@@ -30,6 +30,7 @@ Commands:
   ssiag providers --tops-id UUID [--scope user|system] [--json] List safe provider metadata
   ssiag provider show <name> --tops-id UUID [--scope user|system] [--json] Read safe provider trust evidence
   ssiag provider verify <name> --tops-id UUID [--scope user|system] [--authority-basis BASIS] [--json] Request fresh provider trust verification
+  ssiag provider readiness <name> --tops-id UUID [--scope user|system] [--authority-basis BASIS] [--json] Observe signed-bundle, policy, and session readiness without enabling operations
   ssiag provider installations <name> --tops-id UUID [--scope user|system] [--json] List exact SSIAG-owned provider installations
   ssiag provider binding status <name> --tops-id UUID [--scope user|system] [--json] Read protected provider binding state
   ssiag provider binding plan <name> --tops-id UUID --installation-id ID --expected-state-digest STATE --reason TEXT [--json] Prepare an exact provider binding plan

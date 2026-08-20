@@ -9,11 +9,15 @@ public enum InstallScope: String, Codable, Sendable {
 public struct InstallLayout: Sendable {
     public let prefix: URL
     public let binary: URL
+    public let bundle: URL
+    public let bundleBinary: URL
     public let receipt: URL
 
-    public init(prefix: URL, binary: URL, receipt: URL) {
+    public init(prefix: URL, binary: URL, receipt: URL, bundle: URL? = nil, bundleBinary: URL? = nil) {
         self.prefix = prefix
         self.binary = binary
+        self.bundle = bundle ?? prefix.appending(path: providerBundleRelativePath(version: providerVersion), directoryHint: .isDirectory)
+        self.bundleBinary = bundleBinary ?? prefix.appending(path: providerBundleExecutableRelativePath(version: providerVersion))
         self.receipt = receipt
     }
 
@@ -62,6 +66,7 @@ public enum LifecycleError: Error, CustomStringConvertible {
     case changedBinary
     case invalidReceipt
     case unreceiptedBinary
+    case unreceiptedBundleEntry(String)
     case immutableVersion
     case writeFailed
 
@@ -73,6 +78,7 @@ public enum LifecycleError: Error, CustomStringConvertible {
         case .changedBinary: "receipt-owned executable digest changed"
         case .invalidReceipt: "install receipt v2 is invalid"
         case .unreceiptedBinary: "immutable package path contains unreceipted bytes"
+        case let .unreceiptedBundleEntry(path): "immutable package contains unreceipted bundle entry \(path)"
         case .immutableVersion: "immutable package version already contains different bytes"
         case .writeFailed: "atomic package write failed"
         }
@@ -89,6 +95,9 @@ public enum ProviderLifecycle {
         let manager = FileManager.default
         let layout = try explicitLayout ?? InstallLayout.resolve(scope)
         try validateLayout(layout, scope: scope)
+        if let sourceBundle = sourceBundleRoot(for: source) {
+            return try installBundle(sourceExecutable: source, sourceBundle: sourceBundle, scope: scope, layout: layout)
+        }
         let sourceEvidence: (size: UInt64, digest: String, metadata: SafeFileMetadata)
         do {
             sourceEvidence = try safeRegularFileEvidence(source)
@@ -110,7 +119,7 @@ public enum ProviderLifecycle {
                   installed.executableSize == sourceEvidence.size else {
                 throw LifecycleError.immutableVersion
             }
-            return record(layout, scope: scope, evidence: installed, changed: false)
+            return record(layout, executable: layout.binary, scope: scope, evidence: installed, changed: false)
         }
 
         try ensureDirectory(layout.binary.deletingLastPathComponent())
@@ -150,7 +159,7 @@ public enum ProviderLifecycle {
             checkInstalledBytes: true
         )
         guard evidence.receiptDigest == receiptDigest else { throw LifecycleError.invalidReceipt }
-        return record(layout, scope: scope, evidence: evidence, changed: true)
+        return record(layout, executable: layout.binary, scope: scope, evidence: evidence, changed: true)
     }
 
     public static func uninstall(
@@ -162,7 +171,9 @@ public enum ProviderLifecycle {
         let layout = try explicitLayout ?? InstallLayout.resolve(scope)
         try validateLayout(layout, scope: scope)
         guard manager.fileExists(atPath: layout.receipt.path) else {
-            if manager.fileExists(atPath: layout.binary.path) { throw LifecycleError.unreceiptedBinary }
+            if manager.fileExists(atPath: layout.binary.path) || manager.fileExists(atPath: layout.bundle.path) {
+                throw LifecycleError.unreceiptedBinary
+            }
             return InstallRecord(
                 protocolVersion: "symphony.ssiag.provider-package-result.v1",
                 scope: scope,
@@ -176,26 +187,23 @@ public enum ProviderLifecycle {
             )
         }
         let receiptData = try protectedReceiptData(layout.receipt)
-        let evidence = try validateProviderReceipt(
-            data: receiptData,
-            scope: scope,
-            version: providerVersion,
-            architecture: runtimeArchitectureForReceipt(),
-            expectedExecutable: layout.binary,
-            checkInstalledBytes: false
-        )
-        let result = record(layout, scope: scope, evidence: evidence, changed: true)
-        if manager.fileExists(atPath: layout.binary.path) {
-            _ = try validateProviderReceipt(
-                data: receiptData,
-                scope: scope,
-                version: providerVersion,
-                architecture: runtimeArchitectureForReceipt(),
-                expectedExecutable: layout.binary,
-                checkInstalledBytes: true
-            )
-            try manager.removeItem(at: layout.binary)
-            try synchronizeDirectory(layout.binary.deletingLastPathComponent())
+        let (evidence, executable) = try validateInstalledReceipt(receiptData, scope: scope, layout: layout)
+        let result = record(layout, executable: executable, scope: scope, evidence: evidence, changed: true)
+        if executable == layout.bundleBinary {
+            try rejectUnreceiptedBundleEntries(layout.bundle, evidence: evidence, prefix: layout.prefix)
+        }
+        // Remove exact receipt-owned files deepest-first. Missing owned files
+        // are the only partial state a receipt-last interrupted uninstall may
+        // leave, so retry completes deterministically.
+        for file in evidence.files.sorted(by: { $0.path > $1.path }) {
+            let target = layout.prefix.appending(path: file.path)
+            guard manager.fileExists(atPath: target.path) else { continue }
+            let current = try safeRegularFileEvidence(target)
+            guard current.size == file.size, current.digest == file.digest else {
+                throw LifecycleError.changedBinary
+            }
+            try manager.removeItem(at: target)
+            try synchronizeDirectory(target.deletingLastPathComponent())
         }
         // The receipt is removed last. If the process stopped after removing
         // the binary, retrying reaches this same receipt-validated path and
@@ -203,23 +211,76 @@ public enum ProviderLifecycle {
         // receipt-owned binary as tampering.
         try manager.removeItem(at: layout.receipt)
         try synchronizeDirectory(layout.receipt.deletingLastPathComponent())
+        if manager.fileExists(atPath: layout.bundle.path) {
+            // Unknown files and links were rejected above; only now remove the
+            // empty receipt-owned directory skeleton.
+            try manager.removeItem(at: layout.bundle)
+            try synchronizeDirectory(layout.bundle.deletingLastPathComponent())
+        }
         removeEmptyDirectory(layout.binary.deletingLastPathComponent())
         removeEmptyDirectory(layout.receipt.deletingLastPathComponent())
         return result
     }
 
-    private static func record(_ layout: InstallLayout, scope: InstallScope, evidence: ReceiptEvidence, changed: Bool) -> InstallRecord {
+    private static func record(_ layout: InstallLayout, executable: URL, scope: InstallScope, evidence: ReceiptEvidence, changed: Bool) -> InstallRecord {
         InstallRecord(
             protocolVersion: "symphony.ssiag.provider-package-result.v1",
             scope: scope,
             prefix: layout.prefix.path,
             version: providerVersion,
-            binary: layout.binary.path,
+            binary: executable.path,
             receipt: layout.receipt.path,
             binarySHA256: evidence.executableDigest,
             receiptDigest: evidence.receiptDigest,
             changed: changed
         )
+    }
+
+    private static func installBundle(
+        sourceExecutable: URL,
+        sourceBundle: URL,
+        scope: InstallScope,
+        layout: InstallLayout
+    ) throws -> InstallRecord {
+        let sourceFiles = try bundleSourceEvidence(sourceBundle, executable: sourceExecutable)
+        let manager = FileManager.default
+        if manager.fileExists(atPath: layout.receipt.path) {
+            let data = try protectedReceiptData(layout.receipt)
+            let evidence = try validateProviderReceipt(
+                data: data, scope: scope, version: providerVersion,
+                architecture: runtimeArchitectureForReceipt(), expectedExecutable: layout.bundleBinary,
+                checkInstalledBytes: true
+            )
+            guard evidence.files == sourceFiles.map(\.evidence) else { throw LifecycleError.immutableVersion }
+            try rejectUnreceiptedBundleEntries(layout.bundle, evidence: evidence, prefix: layout.prefix)
+            return record(layout, executable: layout.bundleBinary, scope: scope, evidence: evidence, changed: false)
+        }
+        if manager.fileExists(atPath: layout.binary.path) || manager.fileExists(atPath: layout.bundle.path) {
+            throw LifecycleError.unreceiptedBinary
+        }
+        try ensureDirectory(layout.bundle)
+        for sourceFile in sourceFiles {
+            let destination = layout.prefix.appending(path: sourceFile.evidence.path)
+            try ensureDirectory(destination.deletingLastPathComponent())
+            try installExactBytes(try Data(contentsOf: sourceFile.url), to: destination, mode: sourceFile.mode)
+            let installed = try safeRegularFileEvidence(destination)
+            guard installed.size == sourceFile.evidence.size, installed.digest == sourceFile.evidence.digest else {
+                throw LifecycleError.writeFailed
+            }
+        }
+        try ensureDirectory(layout.receipt.deletingLastPathComponent())
+        let (_, receiptData, receiptDigest) = try makeProviderBundleReceipt(
+            scope: scope, version: providerVersion, architecture: runtimeArchitectureForReceipt(),
+            files: sourceFiles.map(\.evidence)
+        )
+        try installExactBytes(receiptData, to: layout.receipt, mode: 0o600)
+        let evidence = try validateProviderReceipt(
+            data: protectedReceiptData(layout.receipt), scope: scope, version: providerVersion,
+            architecture: runtimeArchitectureForReceipt(), expectedExecutable: layout.bundleBinary,
+            checkInstalledBytes: true
+        )
+        guard evidence.receiptDigest == receiptDigest else { throw LifecycleError.invalidReceipt }
+        return record(layout, executable: layout.bundleBinary, scope: scope, evidence: evidence, changed: true)
     }
 }
 
@@ -227,10 +288,104 @@ private func validateLayout(_ layout: InstallLayout, scope: InstallScope) throws
     let canonicalPrefix = layout.prefix.standardizedFileURL
     guard canonicalPrefix.path.hasPrefix("/"), canonicalPrefix.path != "/",
           layout.binary.standardizedFileURL.path == canonicalPrefix.appending(path: providerBinaryRelativePath(version: providerVersion)).path,
+          layout.bundle.standardizedFileURL.path == canonicalPrefix.appending(path: providerBundleRelativePath(version: providerVersion)).path,
+          layout.bundleBinary.standardizedFileURL.path == canonicalPrefix.appending(path: providerBundleExecutableRelativePath(version: providerVersion)).path,
           layout.receipt.standardizedFileURL.path == canonicalPrefix.appending(path: providerReceiptRelativePath(version: providerVersion)).path else {
         throw LifecycleError.unsafePath
     }
     _ = scope
+}
+
+private struct BundleSourceFile {
+    let url: URL
+    let mode: mode_t
+    let evidence: ReceiptFileEvidence
+}
+
+private func sourceBundleRoot(for executable: URL) -> URL? {
+    let macOS = executable.standardizedFileURL.deletingLastPathComponent()
+    let contents = macOS.deletingLastPathComponent()
+    let bundle = contents.deletingLastPathComponent()
+    guard macOS.lastPathComponent == "MacOS", contents.lastPathComponent == "Contents",
+          bundle.lastPathComponent.hasSuffix(".app") else { return nil }
+    return bundle
+}
+
+private func bundleSourceEvidence(_ bundle: URL, executable: URL) throws -> [BundleSourceFile] {
+    guard executable.lastPathComponent == providerExecutableName else { throw LifecycleError.unsafePath }
+    let allowedSuffixes: [String: String] = [
+        "Contents/Info.plist": "regular",
+        "Contents/MacOS/\(providerExecutableName)": "executable",
+        "Contents/Resources/ssiag-signing-policy.json": "regular",
+        "Contents/_CodeSignature/CodeResources": "regular",
+        "Contents/embedded.provisionprofile": "regular",
+    ]
+    guard let enumerator = FileManager.default.enumerator(
+        at: bundle, includingPropertiesForKeys: nil, options: [], errorHandler: { _, _ in false }
+    ) else { throw LifecycleError.writeFailed }
+    var result = [BundleSourceFile]()
+    while let value = enumerator.nextObject() as? URL {
+        let components = value.pathComponents
+        guard let bundleIndex = components.lastIndex(where: { $0.hasSuffix(".app") }), bundleIndex + 1 < components.count else {
+            throw LifecycleError.unsafePath
+        }
+        let relative = components[(bundleIndex + 1)...].joined(separator: "/")
+        var metadata = stat()
+        guard lstat(value.path, &metadata) == 0 else { throw LifecycleError.sourceNotRegular }
+        let shape = metadata.st_mode & S_IFMT
+        guard shape != S_IFLNK else { throw LifecycleError.destinationNotRegular }
+        if shape == S_IFDIR { continue }
+        guard shape == S_IFREG, let kind = allowedSuffixes[relative] else {
+            throw LifecycleError.unreceiptedBundleEntry(relative)
+        }
+        let safe = try safeRegularFileEvidence(value)
+        let mode: mode_t = kind == "executable" ? 0o500 : 0o400
+        let path = "\(providerBundleRelativePath(version: providerVersion))/\(relative)"
+        result.append(BundleSourceFile(
+            url: value, mode: mode,
+            evidence: ReceiptFileEvidence(path: path, kind: kind, size: safe.size, digest: safe.digest)
+        ))
+    }
+    result.sort { $0.evidence.path < $1.evidence.path }
+    let paths = Set(result.map(\.evidence.path))
+    guard paths.contains("\(providerBundleRelativePath(version: providerVersion))/Contents/Info.plist"),
+          paths.contains(providerBundleExecutableRelativePath(version: providerVersion)) else {
+        throw LifecycleError.invalidReceipt
+    }
+    return result
+}
+
+private func validateInstalledReceipt(_ data: Data, scope: InstallScope, layout: InstallLayout) throws -> (ReceiptEvidence, URL) {
+    if let bundle = try? validateProviderReceipt(
+        data: data, scope: scope, version: providerVersion, architecture: runtimeArchitectureForReceipt(),
+        expectedExecutable: layout.bundleBinary, checkInstalledBytes: false
+    ) {
+        return (bundle, layout.bundleBinary)
+    }
+    return (try validateProviderReceipt(
+        data: data, scope: scope, version: providerVersion, architecture: runtimeArchitectureForReceipt(),
+        expectedExecutable: layout.binary, checkInstalledBytes: false
+    ), layout.binary)
+}
+
+private func rejectUnreceiptedBundleEntries(_ bundle: URL, evidence: ReceiptEvidence, prefix: URL) throws {
+    guard FileManager.default.fileExists(atPath: bundle.path) else { return }
+    let owned = Set(evidence.files.map(\.path))
+    guard let enumerator = FileManager.default.enumerator(
+        at: bundle, includingPropertiesForKeys: [.isRegularFileKey, .isDirectoryKey, .isSymbolicLinkKey],
+        options: [], errorHandler: { _, _ in false }
+    ) else { throw LifecycleError.destinationNotRegular }
+    while let value = enumerator.nextObject() as? URL {
+        let values = try value.resourceValues(forKeys: [.isRegularFileKey, .isDirectoryKey, .isSymbolicLinkKey])
+        guard values.isSymbolicLink != true else { throw LifecycleError.unreceiptedBinary }
+        if values.isDirectory == true { continue }
+        let components = value.pathComponents
+        guard let marker = components.lastIndex(of: "libexec"), marker < components.count else {
+            throw LifecycleError.unsafePath
+        }
+        let relative = components[marker...].joined(separator: "/")
+        guard values.isRegularFile == true, owned.contains(relative) else { throw LifecycleError.unreceiptedBinary }
+    }
 }
 
 private func protectedReceiptData(_ url: URL) throws -> Data {

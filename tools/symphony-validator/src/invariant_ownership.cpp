@@ -427,6 +427,12 @@ std::vector<TestReference> check_test_references(
                     contents.find("standardOutput") != std::string::npos &&
                     contents.find(".run()") != std::string::npos &&
                     contents.find("waitUntilExit()") != std::string::npos;
+                const bool swift_fixed_no_input_process_evidence = path.ends_with(".swift") &&
+                    contents.find("Process()") != std::string::npos &&
+                    contents.find("process.arguments = [\"readiness\"]") != std::string::npos &&
+                    contents.find("standardOutput") != std::string::npos &&
+                    contents.find(".run()") != std::string::npos &&
+                    contents.find("waitUntilExit()") != std::string::npos;
                 const bool shell_process_evidence = path.ends_with(".sh") &&
                     contents.find("symphony-ssiag-source") != std::string::npos &&
                     contents.find("symphony-ssiag-provider-macos-keychain") != std::string::npos &&
@@ -434,7 +440,7 @@ std::vector<TestReference> check_test_references(
                     contents.find("SERVER_PID=$!") != std::string::npos &&
                     contents.find("wait \"$SERVER_PID\"") != std::string::npos;
                 const bool process_evidence = go_process_evidence || swift_process_evidence ||
-                    shell_process_evidence;
+                    swift_fixed_no_input_process_evidence || shell_process_evidence;
                 if (!process_evidence) {
                     finding(result, EvidenceCategory::Violation,
                         "invariant_ownership.real_process_mechanics",
@@ -526,6 +532,7 @@ std::map<std::string, AdapterEvidence> check_adapters(
                 "invariant_ownership.adapter_operations", id)) {
             if (id == "adapter:symphony:ssiag.macos-keychain-provider.v1") {
                 const Json expected_operations = Json::array({
+                    "engop:symphony:ssiag.macos-keychain-provider.readiness.observe",
                     "engop:symphony:ssiag.provider.metadata-capabilities",
                     "engop:symphony:ssiag.provider.metadata-handshake",
                     "engop:symphony:ssiag.provider.metadata-status",
@@ -536,16 +543,19 @@ std::map<std::string, AdapterEvidence> check_adapters(
                         "adapter_id=" + id + " reason=not_adapter_owned_operation_set");
                 }
                 const auto protocol_source = implementation_path + "/Protocol.swift";
-                if (check_regular_path(root, protocol_source, result, cache, false)) {
-                    const auto& contents = *cache.files.at(protocol_source);
-                    for (const auto& operation : expected_operations) {
-                        const auto operation_id = operation.get<std::string>();
-                        if (contents.find(operation_id) == std::string::npos) {
-                            finding(result, EvidenceCategory::Violation,
-                                "invariant_ownership.adapter_operation_owner",
-                                "adapter_id=" + id + " operation_id=" + operation_id +
-                                    " reason=missing_from_implementation");
-                        }
+                const auto readiness_source = implementation_path + "/SignedBundleReadiness.swift";
+                const bool protocol_present = check_regular_path(root, protocol_source, result, cache, false);
+                const bool readiness_present = check_regular_path(root, readiness_source, result, cache, false);
+                for (const auto& operation : expected_operations) {
+                    const auto operation_id = operation.get<std::string>();
+                    const bool readiness_operation = operation_id.find(".readiness.") != std::string::npos;
+                    const auto& source = readiness_operation ? readiness_source : protocol_source;
+                    const bool source_present = readiness_operation ? readiness_present : protocol_present;
+                    if (source_present && cache.files.at(source)->find(operation_id) == std::string::npos) {
+                        finding(result, EvidenceCategory::Violation,
+                            "invariant_ownership.adapter_operation_owner",
+                            "adapter_id=" + id + " operation_id=" + operation_id +
+                                " reason=missing_from_implementation");
                     }
                 }
             }

@@ -54,7 +54,8 @@ Enhanced identity assurance and governance interlocks are optional, caller-neutr
 - Provider control and secret delivery are distinct channels. The v1 control process exchanges exactly one bounded request and one bounded response, and non-exportable operations remain inside the provider.
 - Each per-TOPS provider binding names one exact installed adapter and foundation identity. Absence is `unbound`; compatibility never means selecting the newest installed version.
 - Provider installation inventory is bounded observation rather than selection authority. Protected binding changes use exact digests, plan/apply separation, compare-and-swap, a durably preserved safe audit identity, idempotent STAV evidence, state-before-committed ordering, and deterministic crash recovery through `prepared`, `candidate_verified`, `audited`, and `committed` attempt stages.
-- The first operational macOS Keychain topology is per-user and session-aware; system/headless use never falls back implicitly.
+- Provider readiness keeps structural artifact validity, protected native-policy match, and operational eligibility separate. The implemented Phase 10B circuit reconstructs complete receipt-owned bundles in private staging and exposes only safe, non-operational signing/session evidence through qxctl.
+- The first operational macOS Keychain topology targets the data-protection Keychain and is per-user and session-aware; system/headless use never falls back implicitly. A future file-based system Keychain is a different provider.
 - The default administrative authority session begins at successful login/authentication and ends at logout, expiry, revocation, or required re-authentication. qxctl may configure another supported lifecycle policy but cannot extend authority past those boundaries.
 - Remote SSIAG access is not part of local v1.
 

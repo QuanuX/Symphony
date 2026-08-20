@@ -146,6 +146,7 @@ func (s *Server) Handler() http.Handler {
 	}
 	if s.providers != nil {
 		mux.HandleFunc("/v1/provider-trust/", s.handleProviderTrust)
+		mux.HandleFunc("/v1/provider-readiness/", s.handleProviderReadiness)
 	}
 	if s.bindings != nil {
 		mux.HandleFunc("/v1/provider-installations/", s.handleProviderInstallations)
@@ -397,6 +398,52 @@ type providerTrustVerificationRequest struct {
 	RequestID      string `json:"request_id"`
 	CorrelationID  string `json:"correlation_id"`
 	AuthorityBasis string `json:"authority_basis"`
+}
+
+type providerReadinessObservationRequest struct {
+	Protocol       string `json:"protocol"`
+	RequestID      string `json:"request_id"`
+	CorrelationID  string `json:"correlation_id"`
+	AuthorityBasis string `json:"authority_basis"`
+}
+
+func (s *Server) handleProviderReadiness(writer http.ResponseWriter, request *http.Request) {
+	remainder := strings.TrimPrefix(request.URL.Path, "/v1/provider-readiness/")
+	if !strings.HasSuffix(remainder, "/observations") {
+		writeError(writer, http.StatusNotFound, "request.route_not_found", "provider readiness route is not found")
+		return
+	}
+	providerName := strings.TrimSuffix(remainder, "/observations")
+	if providerName == "" || strings.Contains(providerName, "/") {
+		writeError(writer, http.StatusBadRequest, "provider.request_invalid", "provider name is invalid")
+		return
+	}
+	if request.Method != http.MethodPost {
+		writeError(writer, http.StatusMethodNotAllowed, "request.method_not_allowed", "method not allowed")
+		return
+	}
+	var candidate providerReadinessObservationRequest
+	request.Body = http.MaxBytesReader(writer, request.Body, maxProviderTrustRequestBytes)
+	if !decodeBoundedJSONExact(writer, request, &candidate, []string{"protocol", "request_id", "correlation_id", "authority_basis"}) {
+		return
+	}
+	if candidate.Protocol != "symphony.ssiag.provider-readiness-observation-request.v1" ||
+		!validCanonicalUUID(candidate.RequestID) || !validCanonicalUUID(candidate.CorrelationID) ||
+		(candidate.AuthorityBasis != "host_owner" && candidate.AuthorityBasis != "granted_permission") {
+		writeError(writer, http.StatusBadRequest, "provider.request_invalid", "provider readiness request is invalid")
+		return
+	}
+	resource := "symphony.ssiag.provider:" + s.config.TOPS.ID + ":" + providerName
+	if _, err := s.permissionedAdministrator(request.Context(), candidate.AuthorityBasis, "symphony.ssiag.provider.readiness.observe", resource); err != nil {
+		writeError(writer, http.StatusForbidden, "provider.permission_denied", "target-host authority or an exact SSIAG permission is required")
+		return
+	}
+	result, found := s.providers.ObserveReadiness(request.Context(), providerName)
+	if !found {
+		writeError(writer, http.StatusNotFound, "provider.not_found", "provider is not declared")
+		return
+	}
+	writeJSON(writer, http.StatusOK, result)
 }
 
 func (s *Server) handleProviderTrust(writer http.ResponseWriter, request *http.Request) {
