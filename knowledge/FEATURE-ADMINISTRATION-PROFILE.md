@@ -10,7 +10,7 @@ Canonical bootstrap policy for `symphony.knowledge.feature-administration-profil
 - SSFV source: `knowledge/ssfv/REGISTRY.md`
 - catalog scope: `registered_partial_catalog`
 - catalog complete: `false`
-- registered feature count: `76`
+- registered feature count: `78`
 - reviewed interaction expectations: `156`
 - forward gate: `enforce_new_records`
 
@@ -22,7 +22,7 @@ The checked-in machine-evaluable profile is `knowledge/FEATURE-ADMINISTRATION-PR
 
 ## Bootstrap Close Evidence
 
-The current profile declares 156 reviewed surfaces. Runtime satisfaction counts and the result digest remain evaluation-specific because they also bind supplied engine descriptors and any observed qxctl registry. The canonical profile digest is `sha256:8abaaeb20a165fbdd737bb7dd6726922c5ecd078183e69df72f463077107f847`, the bound SSFV registry digest is `sha256:0a39b724f0c1eef29ad288cf4d1f66623a32a1345bee9330f9738d394a1c0122`, and the expected 185-leaf qxctl registry digest is `sha256:29ce29c161baa89ef15b8df143fbc77bf0397c036ff0cf4057ce1a85bd53f959`.
+The current profile declares 156 reviewed surfaces. Runtime satisfaction counts and the result digest remain evaluation-specific because they also bind supplied engine descriptors and any observed qxctl registry. The canonical profile digest is `sha256:a04c652697b0ed7e61f2252115a37b99a778fa0e8966b754154dd412c281b9e8`, the bound SSFV registry digest is `sha256:c6639270e39890f60873df030f2b54a969489ffe917662cd4a68725d07d0e318`, and the expected 185-leaf qxctl registry digest is `sha256:29ce29c161baa89ef15b8df143fbc77bf0397c036ff0cf4057ce1a85bd53f959`.
 
 The four closed surfaces are exact administrator-facing lifecycle routes: SSIAG supervision, SSIAG TOPS enrollment, STAV supervision, and STAV TOPS enrollment. Each exposes status, plan, apply, apply-status, and recover through qxctl while the Go module owns transaction behavior. The expected registry retains the qxctl-owned wrapper binding beside every backend binding so command-layer behavior and administered capability remain distinct and independently auditable.
 
