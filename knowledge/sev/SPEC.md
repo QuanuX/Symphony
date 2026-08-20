@@ -159,7 +159,7 @@ Operation identities are:
 
 ## Bounds and Digests
 
-V1 admits at most 1 MiB request, 4 MiB response, 1,024 affected surfaces, 1,024 actions, 4,096 graph nodes, 8,192 edges, 1,024 blockers/findings, and common JSON/path/time limits. Self-digests use recursively key-sorted compact JSON with the self field omitted. Semantic-set arrays sort by stable identity. Bound changes require review.
+V1 admits at most 1 MiB request, 4 MiB response, 1,024 affected surfaces, 1,024 actions, 4,096 graph nodes, 8,192 edges, 1,024 blockers/findings, and common JSON/path/time limits. The production capacity-review thresholds are 512 KiB request, 2 MiB response, 8,192 parsed JSON events, 512 affected surfaces/actions/blockers/findings, 2,048 graph nodes, 512 forward/reverse edge pairs, 512 coalesced watch events, and 512 novelty items. These are observability and planning thresholds, not acceptance limits. The common process envelope intersects every operation-local ceiling, so independently maximizing several collections is not guaranteed to fit. Self-digests use recursively key-sorted compact JSON with the self field omitted. Semantic-set arrays sort by stable identity. Bound or review-threshold changes require review.
 
 ## Durable Coordination
 
@@ -178,6 +178,10 @@ Any watcher or session trigger is opt-in and qxctl-administered. The default con
 ## Novelty Export
 
 Novelty remains local by default. Voluntary export requires an inspectable bounded bundle, explicit SSIAG permission, schema-aware redaction, safe STAV outcome evidence, and indeterminate partial-delivery handling. Payloads, local overlays, secrets, and raw host inventories do not enter STAV. No network export is implemented by the v1 engine.
+
+The v1 operation contract separates nested artifacts from operation envelopes. Novelty Bundle check, Watch Policy check, trigger coalescing, and evolution-session binding each have a strict input schema, and the three check/coalescing operations have strict result schemas under `knowledge/sev/schemas/v1/`; the binding result remains the existing immutable binding schema. Engine descriptors and qxctl advertise those exact protocols so unsupported old/new combinations fail closed without losing caller evidence.
+
+The live descriptor is an exact `symphony.knowledge.engine-descriptor.v2` document: it contains only the v2 field set, advertises the common process limits and `user`/`tops` scopes, exposes the canonical administration operation array, and binds itself with `descriptor_digest`. SCSEV profile identity, installation state, and Maestro receptor selection remain feature/receipt/binding concerns rather than descriptor-v2 extension fields.
 
 ## Time
 

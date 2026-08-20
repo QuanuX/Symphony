@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sev:watch-policy-check-result:v1",
+  "title": "SEV Watch Policy Check Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "policy_id", "policy_digest", "enabled", "default_disabled", "thermal_path", "ambient_mutation", "read_only", "result_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sev.watch-policy-check-result.v1"},
+    "policy_id": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"},
+    "policy_digest": {"$ref": "#/$defs/digest"},
+    "enabled": {"type": "boolean"},
+    "default_disabled": {"type": "boolean"},
+    "thermal_path": {"const": "freezing"},
+    "ambient_mutation": {"const": false},
+    "read_only": {"const": true},
+    "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {"digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}
+}

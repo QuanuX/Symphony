@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes seventy-eight experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes eighty-six experimental records across the repository root and sixteen implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -301,6 +301,42 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:91989b034cc058220d8a747b0889f318f6ac7e4261c75e7ef4f276bc1bef6f6c`
 - notes: Architect-ratified Accordare feature for independently installed CURRENT resolution and relationship evaluation; the catalog remains partial and the engine remains read-only.
 
+- feature_id: `ssfv:symphony:sav-engine.current-accord`
+- feature_file: `modules/sav-engine/FEATURES.md`
+- owner_contract: `modules/sav-engine/SPEC.md`
+- source_scope: `modules/sav-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sav-engine`
+- record_digest: `sha256:02574216293a6ab3f104c19b9b30ba8a5682622380cf5e257d8205f9cc2237c9`
+- notes: Nested SAV record for coverage-qualified CURRENT and deterministic accord evaluation, explanation, diff, and graph operations.
+
+- feature_id: `ssfv:symphony:sav-engine.extension-capsule`
+- feature_file: `modules/sav-engine/FEATURES.md`
+- owner_contract: `modules/sav-engine/SPEC.md`
+- source_scope: `modules/sav-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sav-engine`
+- record_digest: `sha256:080b8b547d269c13336b9c779f54a7ae14b0af18800dba9fc2230db2baa30ada`
+- notes: Nested SAV record for independently developed module admission evidence without installation or invented identities.
+
+- feature_id: `ssfv:symphony:sav-engine.installation-blueprint`
+- feature_file: `modules/sav-engine/FEATURES.md`
+- owner_contract: `modules/sav-engine/SPEC.md`
+- source_scope: `modules/sav-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sav-engine`
+- record_digest: `sha256:a65126586438f58b832a24350028887064e627cf26204dce6f4a3bbf99cd6207`
+- notes: Nested SAV record for acyclic, direction-aware, dynamically replanned Installation Blueprint readiness.
+
+- feature_id: `ssfv:symphony:sav-engine.named-version`
+- feature_file: `modules/sav-engine/FEATURES.md`
+- owner_contract: `modules/sav-engine/SPEC.md`
+- source_scope: `modules/sav-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sav-engine`
+- record_digest: `sha256:60423331d8b23df470f6883a7cba8faf461a82083d7a59ee7075a7b54bf930bf`
+- notes: Nested SAV record for immutable Named Version validation and deterministic lineage diffing without storage or sealing authority.
+
 - feature_id: `ssfv:symphony:sclv-engine`
 - feature_file: `modules/sclv-engine/FEATURES.md`
 - owner_contract: `modules/sclv-engine/SPEC.md`
@@ -363,6 +399,42 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:platform`
 - record_digest: `sha256:a00d9ffdb87ad805c8431c686340119dc871649ac76392255e4f60c839f2ed01`
 - notes: Architect-ratified Accordare feature for report/proposal-only evolution and SCSEV consequence assessment; the catalog remains partial and apply remains external.
+
+- feature_id: `ssfv:symphony:sev-engine.dynamic-evolution`
+- feature_file: `modules/sev-engine/FEATURES.md`
+- owner_contract: `modules/sev-engine/SPEC.md`
+- source_scope: `modules/sev-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sev-engine`
+- record_digest: `sha256:36d3e41c4c7b7ac5c4b5c0244b00f7583e4882f395925c06c3d01e00c1a79aeb`
+- notes: Nested SEV record for evidence-bound cases, dependency-safe planning, reobservation, and forward-only recovery advice.
+
+- feature_id: `ssfv:symphony:sev-engine.lifecycle-binding`
+- feature_file: `modules/sev-engine/FEATURES.md`
+- owner_contract: `modules/sev-engine/SPEC.md`
+- source_scope: `modules/sev-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sev-engine`
+- record_digest: `sha256:ff0ead9d595954898c7e8234e0941e2ad32155892c7d24e4c10c1b40dddf07a2`
+- notes: Nested SEV record for immutable binding to the shared lifecycle stream without parallel persistence.
+
+- feature_id: `ssfv:symphony:sev-engine.novelty-watch`
+- feature_file: `modules/sev-engine/FEATURES.md`
+- owner_contract: `modules/sev-engine/SPEC.md`
+- source_scope: `modules/sev-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sev-engine`
+- record_digest: `sha256:b3fcd81327d3dc8684f974ff8b0007e08086fb94387cbbfc4c6c9dfaee39d79f`
+- notes: Nested SEV record for private offline novelty validation and explicit default-disabled watch-event coalescing.
+
+- feature_id: `ssfv:symphony:sev-engine.scsev`
+- feature_file: `modules/sev-engine/FEATURES.md`
+- owner_contract: `modules/sev-engine/SPEC.md`
+- source_scope: `modules/sev-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:sev-engine`
+- record_digest: `sha256:9cf6f9070ecac0adce561f18f6de0b49b3aafa3fbe4dc769785cfe3699bcdf3d`
+- notes: Nested SEV record for deterministic qxctl and engine-operation consequence assessment without a second registry.
 
 - feature_id: `ssfv:symphony:skvi-engine`
 - feature_file: `modules/skvi-engine/FEATURES.md`
@@ -747,4 +819,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This seventy-eight-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This eighty-six-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

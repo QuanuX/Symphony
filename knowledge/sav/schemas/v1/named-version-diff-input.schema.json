@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sav:named-version-diff-input:v1",
+  "title": "SAV Named Version Diff Input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["left", "right"],
+  "properties": {
+    "left": {"$ref": "named-version.schema.json"},
+    "right": {"$ref": "named-version.schema.json"}
+  }
+}

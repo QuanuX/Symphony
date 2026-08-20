@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sev:novelty-bundle-check-result:v1",
+  "title": "SEV Novelty Bundle Check Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "bundle_id", "bundle_digest", "state", "item_count", "redaction_count", "network_transfer", "export_authorized", "read_only", "result_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sev.novelty-bundle-check-result.v1"},
+    "bundle_id": {"type": "string", "pattern": "^sevnovelty:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "bundle_digest": {"$ref": "#/$defs/digest"},
+    "state": {"const": "valid_offline_projection"},
+    "item_count": {"type": "integer", "minimum": 0, "maximum": 4096},
+    "redaction_count": {"type": "integer", "minimum": 0, "maximum": 4096},
+    "network_transfer": {"const": false},
+    "export_authorized": {"const": false},
+    "read_only": {"const": true},
+    "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {"digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}
+}

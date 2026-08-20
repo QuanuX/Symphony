@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sav:extension-capsule-check-input:v1",
+  "title": "SAV Extension Capsule Check Input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["capsule"],
+  "properties": {"capsule": {"$ref": "extension-capsule.schema.json"}}
+}

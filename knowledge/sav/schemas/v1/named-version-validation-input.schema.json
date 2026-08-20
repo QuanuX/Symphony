@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sav:named-version-validation-input:v1",
+  "title": "SAV Named Version Validation Input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["named_version"],
+  "properties": {"named_version": {"$ref": "named-version.schema.json"}}
+}

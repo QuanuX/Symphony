@@ -861,16 +861,16 @@ func newSAVCommand() *cobra.Command {
 		leaf, engine, operationID, interaction, input, output string
 	}{
 		{"inspect", "inspect", "inspect", "inspect", "", "symphony.sav.inspect-result.v1"},
-		{"reference-check", "reference_check", "reference-check", "validate", "", "symphony.sav.reference-check-result.v1"},
-		{"current", "current_resolve", "current-resolve", "query", "symphony.sav.current-resolution-input.v1", "symphony.sav.current-snapshot.v1"},
-		{"evaluate", "evaluate", "evaluate", "validate", "symphony.sav.evaluation-input.v1", "symphony.sav.evaluation-result.v1"},
-		{"diff", "diff", "diff", "query", "", "symphony.sav.diff-result.v1"},
-		{"explain", "explain", "explain", "query", "", "symphony.sav.explain-result.v1"},
-		{"graph", "project_graph", "project-graph", "query", "", "symphony.sav.graph-projection.v1"},
-		{"version-validate", "named_version_validate", "named-version.validate", "validate", "symphony.sav.named-version.v1", "symphony.sav.named-version-validation-result.v1"},
-		{"version-diff", "named_version_diff", "named-version.diff", "query", "", "symphony.sav.named-version-diff-result.v1"},
-		{"capsule-check", "extension_capsule_check", "extension-capsule.check", "validate", "symphony.sav.extension-capsule.v1", "symphony.sav.extension-capsule-check-result.v1"},
-		{"blueprint-plan", "installation_blueprint_plan", "installation-blueprint.plan", "propose", "symphony.sav.installation-blueprint.v1", "symphony.sav.installation-blueprint-plan-result.v1"},
+		{"reference-check", "reference_check", "reference.check", "validate", "", "symphony.sav.reference-check-result.v1"},
+		{"current", "current_resolve", "current.resolve", "query", "symphony.sav.current-resolution-input.v1", "symphony.sav.current-snapshot.v1"},
+		{"evaluate", "evaluate", "accord.evaluate", "validate", "symphony.sav.evaluation-input.v1", "symphony.sav.evaluation-result.v1"},
+		{"diff", "diff", "current.diff", "query", "", "symphony.sav.diff-result.v1"},
+		{"explain", "explain", "finding.explain", "query", "", "symphony.sav.explain-result.v1"},
+		{"graph", "project_graph", "graph.project", "query", "", "symphony.sav.graph-projection.v1"},
+		{"version-validate", "named_version_validate", "named-version.validate", "validate", "symphony.sav.named-version-validation-input.v1", "symphony.sav.named-version-validation-result.v1"},
+		{"version-diff", "named_version_diff", "named-version.diff", "query", "symphony.sav.named-version-diff-input.v1", "symphony.sav.named-version-diff-result.v1"},
+		{"capsule-check", "extension_capsule_check", "extension-capsule.check", "validate", "symphony.sav.extension-capsule-check-input.v1", "symphony.sav.extension-capsule-check-result.v1"},
+		{"blueprint-plan", "installation_blueprint_plan", "installation-blueprint.plan", "propose", "symphony.sav.installation-blueprint-plan-input.v1", "symphony.sav.installation-blueprint-plan-result.v1"},
 		{"compatibility", "compatibility", "compatibility", "validate", "", "symphony.sav.compatibility-result.v1"},
 	}
 	command := structural("sav", fmt.Errorf("SAV subcommand is required: inspect, reference-check, current, evaluate, diff, explain, graph, version-validate, version-diff, capsule-check, blueprint-plan, or compatibility"))
@@ -878,7 +878,16 @@ func newSAVCommand() *cobra.Command {
 		options := accordareOptions{version: "0.1.0-dev", maestroVersion: "0.1.0-dev", scope: "user", ttl: 15 * time.Minute}
 		child := &cobra.Command{Use: operation.leaf, Args: usageOnlyArgs,
 			RunE: func(*cobra.Command, []string) error { return runAccordare("sav", operation.engine, options) }}
-		registeredAccordare(child, "sav."+operation.leaf, featureSAV, operation.interaction,
+		featureID := map[string]string{
+			"reference-check": featureSAVCurrent, "current": featureSAVCurrent, "evaluate": featureSAVCurrent,
+			"diff": featureSAVCurrent, "explain": featureSAVCurrent, "graph": featureSAVCurrent,
+			"version-validate": featureSAVNamedVersion, "version-diff": featureSAVNamedVersion,
+			"capsule-check": featureSAVCapsule, "blueprint-plan": featureSAVBlueprint,
+		}[operation.leaf]
+		if featureID == "" {
+			featureID = featureSAV
+		}
+		registeredAccordare(child, "sav."+operation.leaf, featureID, operation.interaction,
 			"engop:symphony:sav."+operation.operationID, operation.input, operation.output)
 		child.Flags().StringVar(&options.prefix, "prefix", "", "exact SAV installation prefix")
 		child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed SAV engine version")
@@ -917,10 +926,10 @@ func newSEVCommand() *cobra.Command {
 		{"recover", "case_recover", "case.recover", "recover", "", "symphony.sev.case-recovery-advice.v1"},
 		{"close", "case_close", "case.close", "propose", "", "symphony.sev.case-close-proposal.v1"},
 		{"command-surface", "command_surface_assess", "command-surface.assess", "validate", "", "symphony.sev.command-surface-assessment.v1"},
-		{"novelty-check", "novelty_bundle_check", "novelty-bundle.check", "validate", "symphony.sev.novelty-bundle.v1", "symphony.sev.novelty-bundle-check-result.v1"},
-		{"watch-check", "watch_policy_check", "watch-policy.check", "validate", "symphony.sev.watch-policy.v1", "symphony.sev.watch-policy-check-result.v1"},
-		{"trigger-coalesce", "trigger_coalesce", "trigger.coalesce", "propose", "", "symphony.sev.trigger-coalescing-result.v1"},
-		{"session-bind", "evolution_session_bind", "session.bind", "propose", "", "symphony.sev.evolution-session-binding.v1"},
+		{"novelty-check", "novelty_bundle_check", "novelty-bundle.check", "validate", "symphony.sev.novelty-bundle-check-input.v1", "symphony.sev.novelty-bundle-check-result.v1"},
+		{"watch-check", "watch_policy_check", "watch-policy.check", "validate", "symphony.sev.watch-policy-check-input.v1", "symphony.sev.watch-policy-check-result.v1"},
+		{"trigger-coalesce", "trigger_coalesce", "trigger.coalesce", "propose", "symphony.sev.trigger-coalescing-input.v1", "symphony.sev.trigger-coalescing-result.v1"},
+		{"session-bind", "evolution_session_bind", "session.bind", "propose", "symphony.sev.evolution-session-binding-input.v1", "symphony.sev.evolution-session-binding.v1"},
 		{"graph", "project_graph", "graph.project", "query", "", "symphony.sev.graph-projection.v1"},
 		{"compatibility", "compatibility", "compatibility", "validate", "", "symphony.sev.compatibility-result.v1"},
 	}
@@ -929,7 +938,18 @@ func newSEVCommand() *cobra.Command {
 		options := accordareOptions{version: "0.1.0-dev"}
 		child := &cobra.Command{Use: operation.leaf, Args: usageOnlyArgs,
 			RunE: func(*cobra.Command, []string) error { return runAccordare("sev", operation.engine, options) }}
-		registeredAccordare(child, "sev."+operation.leaf, featureSEV, operation.interaction,
+		featureID := map[string]string{
+			"case-open": featureSEVEvolution, "impact": featureSEVEvolution, "plan": featureSEVEvolution,
+			"verify": featureSEVEvolution, "recalculate": featureSEVEvolution, "status": featureSEVEvolution,
+			"recover": featureSEVEvolution, "close": featureSEVEvolution, "graph": featureSEVEvolution,
+			"command-surface": featureSEVSCSEV,
+			"novelty-check":   featureSEVNoveltyWatch, "watch-check": featureSEVNoveltyWatch, "trigger-coalesce": featureSEVNoveltyWatch,
+			"session-bind": featureSEVLifecycleBinding,
+		}[operation.leaf]
+		if featureID == "" {
+			featureID = featureSEV
+		}
+		registeredAccordare(child, "sev."+operation.leaf, featureID, operation.interaction,
 			"engop:symphony:sev."+operation.operationID, operation.input, operation.output)
 		child.Flags().StringVar(&options.prefix, "prefix", "", "exact SEV installation prefix")
 		child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed SEV engine version")

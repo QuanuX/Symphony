@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sav:named-version-diff-result:v1",
+  "title": "SAV Named Version Diff Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "left_digest", "right_digest", "successor", "changes", "read_only", "result_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sav.named-version-diff-result.v1"},
+    "left_digest": {"$ref": "#/$defs/digest"},
+    "right_digest": {"$ref": "#/$defs/digest"},
+    "successor": {"type": "boolean"},
+    "changes": {"type": "array", "maxItems": 16, "items": {"type": "object", "additionalProperties": false, "required": ["field", "before_digest", "after_digest"], "properties": {"field": {"type": "string", "minLength": 1, "maxLength": 128}, "before_digest": {"$ref": "#/$defs/digest"}, "after_digest": {"$ref": "#/$defs/digest"}}}},
+    "read_only": {"const": true},
+    "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {"digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}
+}

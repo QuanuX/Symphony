@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sav:installation-blueprint-plan-input:v1",
+  "title": "SAV Installation Blueprint Plan Input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["blueprint", "direction", "completed_component_ids", "blocked_component_ids"],
+  "properties": {
+    "blueprint": {"$ref": "installation-blueprint.schema.json"},
+    "direction": {"enum": ["forward", "reverse"]},
+    "completed_component_ids": {"$ref": "#/$defs/ids"},
+    "blocked_component_ids": {"$ref": "#/$defs/ids"}
+  },
+  "$defs": {"ids": {"type": "array", "maxItems": 4096, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"}}}
+}

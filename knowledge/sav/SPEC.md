@@ -180,7 +180,7 @@ V1 admits at most:
 - 256 unresolved sources;
 - common JSON depth, value, string, path, and deadline limits.
 
-Measured ordinary payloads reaching half a hard bound require capacity review. Bounds MUST NOT be raised silently.
+The production capacity-review thresholds are 512 KiB request, 2 MiB response, 8,192 parsed JSON events, 128 source projections, 512 Accord References or findings, 2,048 graph nodes, and 512 forward/reverse edge pairs. Named Version or Blueprint component collections reaching 128 entries and any other repeated identity collection reaching 512 entries also require review. These are observability and planning thresholds, not alternate acceptance limits. The common process envelope intersects every operation-local ceiling; a caller MUST NOT assume that independently maximizing several collections can fit within the byte and JSON-event bounds. Bounds and review thresholds MUST NOT be raised silently.
 
 ## Digests
 
@@ -193,6 +193,10 @@ Digests provide deterministic evidence binding, not authentication, permission, 
 The engine is stateless. A caller MAY persist immutable snapshots under a per-TOPS Accordare state directory. Any selected head uses the common no-follow, dual-slot, atomic-head, synchronization, linked-generation, and unique-recovery contract. Ambient directory order never selects truth. A graph or database projection is disposable and rebuildable.
 
 The engine validates Named Versions, Capsules, and Blueprints but never seals, selects, installs, docks, or applies them. Blueprint planning verifies exact forward/reverse edge inversion, rejects cycles, preserves hard-safety edges, propagates localized blockers, and emits a deterministic ready set. A missing third-party command or feature surface remains an explicit gap; the engine does not invent it.
+
+The v1 operation contract separates nested artifacts from operation envelopes. Named Version validation and diff, Extension Capsule check, and Installation Blueprint plan each have one strict input schema and one strict result schema under `knowledge/sav/schemas/v1/`; engine descriptors and qxctl advertise those operation protocols exactly. A reader that does not support the writer's declared version rejects it without partial interpretation.
+
+The live descriptor is an exact `symphony.knowledge.engine-descriptor.v2` document: it contains only the v2 field set, advertises the common process limits and `user`/`tops` scopes, exposes the canonical administration operation array, and binds itself with `descriptor_digest`. Installation state and Maestro receptor selection remain receipt/binding concerns and are not descriptor-v2 extension fields.
 
 ## Time
 

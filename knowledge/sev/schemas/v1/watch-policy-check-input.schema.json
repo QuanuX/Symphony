@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sev:watch-policy-check-input:v1",
+  "title": "SEV Watch Policy Check Input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["policy"],
+  "properties": {"policy": {"$ref": "watch-policy.schema.json"}}
+}

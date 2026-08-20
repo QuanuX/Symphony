@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sav:installation-blueprint-plan-result:v1",
+  "title": "SAV Installation Blueprint Plan Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "blueprint_digest", "direction", "ready_component_ids", "blocked_component_ids", "converged", "dynamic_replanning", "hard_safety_edges_preserved", "apply_authorized", "read_only", "result_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sav.installation-blueprint-plan-result.v1"},
+    "blueprint_digest": {"$ref": "#/$defs/digest"},
+    "direction": {"enum": ["forward", "reverse"]},
+    "ready_component_ids": {"$ref": "#/$defs/ids"},
+    "blocked_component_ids": {"$ref": "#/$defs/ids"},
+    "converged": {"type": "boolean"},
+    "dynamic_replanning": {"const": true},
+    "hard_safety_edges_preserved": {"const": true},
+    "apply_authorized": {"const": false},
+    "read_only": {"const": true},
+    "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {"digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}, "ids": {"type": "array", "maxItems": 4096, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"}}}
+}
