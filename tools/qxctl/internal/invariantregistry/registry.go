@@ -316,6 +316,7 @@ func validateAdapter(adapter Adapter) error {
 	}
 	if adapter.AdapterID == "adapter:symphony:ssiag.macos-keychain-provider.v1" {
 		expected := []string{
+			"engop:symphony:ssiag.macos-keychain-provider.readiness.observe",
 			"engop:symphony:ssiag.provider.metadata-capabilities",
 			"engop:symphony:ssiag.provider.metadata-handshake",
 			"engop:symphony:ssiag.provider.metadata-status",

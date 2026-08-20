@@ -599,6 +599,102 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
+          "reason": "SCLV records the reviewed readiness implementation only after merge.",
+          "reference": "knowledge/sclv/CHANGELOG.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes the canonical readiness contract, schemas, implementation, and regressions.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SODV governs any later signed provider publication.",
+          "reference": "knowledge/sodv/SPEC.md",
+          "vector": "sodv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SSIAG owns structural, policy, eligibility, and safe-output semantics.",
+          "reference": "knowledge/ssiag/PROVIDER-READINESS.md",
+          "vector": "ssiag"
+        }
+      ],
+      "distinctions": [
+        {
+          "distinction": "Metadata trust authenticates the two executables and provider-v1 handshake; readiness separately assesses the exact bundle, native policy, and current security-session capability without enabling an operation.",
+          "target_feature_id": "ssfv:symphony:ssiag-foundation.provider-trust-assurance"
+        },
+        {
+          "distinction": "The Go foundation owns receipt validation, complete private staging, SSIAG routing, and result binding; the Swift adapter owns native signing and session observation.",
+          "target_feature_id": "ssfv:symphony:ssiag.macos-signed-bundle-readiness"
+        }
+      ],
+      "evidence": [
+        "Go regressions verify exact multi-file ownership, rejection of changed and unreceipted bytes, complete private bundle staging, three-layer validation, and hard-false operational flags.",
+        "The stable qxctl readiness command binds the permission-backed request to one TOPS/provider and validates the complete safe result without accepting path, signer, requirement, entitlement, profile, or secret input.",
+        "Swift regressions prove that structural signature state, native policy match, and security-session observations cannot authorize or enable Keychain behavior."
+      ],
+      "feature_id": "ssfv:symphony:ssiag-foundation.provider-readiness-assurance",
+      "how": "Validates one exact legacy or multi-file receipt-v2 package, rejects unknown or changed bundle entries, reconstructs all owned files into private no-follow staging, invokes the fixed adapter readiness operation, validates the closed three-layer envelope, binds it to the selected TOPS/provider/installation, and exposes only hard-disabled operational evidence.",
+      "implementation_languages": [
+        {
+          "language": "Go",
+          "role": "Implements cgo-free receipt validation, complete private staging, bounded process execution, SSIAG route ownership, safe result validation, and qxctl-facing binding."
+        },
+        {
+          "language": "Swift",
+          "role": "Implements the separately installed macOS-native structural signature, native code-requirement, and security-session observation."
+        }
+      ],
+      "implementation_paths": [
+        "modules/secure-identity-access-governance/internal/provider/launcher.go",
+        "modules/secure-identity-access-governance/internal/provider/launcher_test.go",
+        "modules/secure-identity-access-governance/internal/provider/readiness.go",
+        "modules/secure-identity-access-governance/internal/provider/readiness_test.go",
+        "modules/secure-identity-access-governance/internal/provider/receipt.go",
+        "modules/secure-identity-access-governance/internal/server/server.go",
+        "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/SignedBundleReadiness.swift",
+        "tools/qxctl/cmd/qxctl/commands.go",
+        "tools/qxctl/cmd/qxctl/main.go",
+        "tools/qxctl/internal/ssiagclient/provider_readiness.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "Does not claim that structural signature validity is signer policy, that policy match is operational eligibility, or that readiness is authorization.",
+        "Does not enable Keychain item/key operations, provider operations, secret delivery, fallback, newest-version selection, or canonical apply.",
+        "Does not expose paths, raw requirements, certificates, profile payloads, entitlements, native errors, session IDs, provider payloads, or secrets through qxctl."
+      ],
+      "owner_contract": "modules/secure-identity-access-governance/SPEC.md",
+      "parent_feature_id": "ssfv:symphony:ssiag-foundation",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "The foundation binds and validates the adapter's independently owned native observation.",
+          "target_feature_id": "ssfv:symphony:ssiag.macos-signed-bundle-readiness",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "Readiness executes only after the exact provider package and entry point satisfy provider provenance.",
+          "target_feature_id": "ssfv:symphony:ssiag-foundation.provider-trust-assurance",
+          "type": "depends_on"
+        }
+      ],
+      "source_scope": "modules/secure-identity-access-governance",
+      "status": "experimental",
+      "title": "Three-layer provider readiness assurance",
+      "what": "Reports exact package structural validity, protected native signing-policy match, and current session capability as separate safe evidence while operational eligibility remains disabled.",
+      "when": "During an explicit permission-backed headless readiness observation after one exact provider installation has been bound; failures remain localized and never trigger fallback.",
+      "where": "Across the cgo-free Go foundation, its private staged app bundle, the separately installed Swift adapter, the authenticated SSIAG Unix endpoint, and qxctl's validated presentation layer.",
+      "who": "Target-host owners, exactly granted administrators, headless agents, qxctl, SSIAG maintainers, release engineers, and security reviewers.",
+      "why": "Makes the prerequisites for future Keychain operation mechanically visible without allowing any prerequisite or successful check to silently become operational authority."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
           "reason": "SCLV records reviewed provider-trust and protocol changes after merge.",
           "reference": "knowledge/sclv/CHANGELOG.md",
           "vector": "sclv"

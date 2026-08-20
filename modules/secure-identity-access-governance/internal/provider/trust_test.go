@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"sort"
 	"sync"
 	"testing"
 	"time"
@@ -314,6 +315,74 @@ func writeTrustPackageVersionAtPrefix(t *testing.T, manager *TrustManager, prefi
 	}
 	declaration.DeclarationDigest = objectDigest(declaration, "declaration_digest")
 	writeJSONFile(t, filepath.Join(manager.layout.ProviderTrustDir, "native.json"), declaration)
+	return declaration
+}
+
+func writeTrustBundlePackage(t *testing.T, manager *TrustManager, executablePayload []byte) ExecutableTrust {
+	t.Helper()
+	version := "0.2.0"
+	prefix := filepath.Join(filepath.Dir(manager.layout.ProviderTrustDir), "bundle-prefix")
+	bundleRoot := filepath.Join(prefix, "libexec", "symphony", macOSKeychainPackageID, version, macOSKeychainBundleName)
+	executable := filepath.Join(bundleRoot, "Contents", "MacOS", macOSKeychainExecutableName)
+	files := map[string]struct {
+		kind    string
+		payload []byte
+		mode    os.FileMode
+	}{
+		"Contents/Info.plist":                           {"regular", []byte("plist"), 0o400},
+		"Contents/MacOS/" + macOSKeychainExecutableName: {"executable", executablePayload, 0o700},
+		"Contents/Resources/ssiag-signing-policy.json":  {"regular", []byte(`{"protocol":"symphony.ssiag.macos-signing-policy.v1","adapter_requirement":"anchor apple"}`), 0o400},
+	}
+	receiptFiles := make([]receiptFile, 0, len(files))
+	for suffix, file := range files {
+		path := filepath.Join(bundleRoot, filepath.FromSlash(suffix))
+		if err := os.MkdirAll(filepath.Dir(path), 0o700); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(path, file.payload, file.mode); err != nil {
+			t.Fatal(err)
+		}
+		relative, _ := filepath.Rel(prefix, path)
+		receiptFiles = append(receiptFiles, receiptFile{Path: filepath.ToSlash(relative), Kind: file.kind, Size: uint64(len(file.payload)), Digest: taggedBytes(file.payload)})
+	}
+	sort.Slice(receiptFiles, func(i, j int) bool { return receiptFiles[i].Path < receiptFiles[j].Path })
+	executableRelative, _ := filepath.Rel(prefix, executable)
+	executableRelative = filepath.ToSlash(executableRelative)
+	osName := runtime.GOOS
+	if osName == "darwin" {
+		osName = "macos"
+	}
+	receipt := installReceiptV2{
+		Protocol: "symphony.knowledge.install-receipt.v2", FormatVersion: 2, ComponentID: macOSKeychainPackageID,
+		ComponentKind: "adapter", ModuleID: macOSKeychainPackageID, PackageID: macOSKeychainPackageID,
+		Version: version, InstallScope: "prefix", PrefixMode: "installation_prefix", Files: receiptFiles,
+		EntryPoints:          []receiptEntryPoint{{EntryPointID: macOSKeychainEntryPointID, Kind: "adapter", Path: executableRelative, Protocols: []string{ProviderControlProtocol}}},
+		ProvidesCapabilities: []string{providerMetadataCapability}, RequiresCapabilities: []string{}, CompatibleReceptors: []string{providerLauncherReceptor},
+		PlatformRequirements: []receiptPlatform{{OS: osName, Architecture: runtime.GOARCH, Critical: true}},
+	}
+	receipt.ReceiptDigest = receiptDigest(receipt)
+	receiptPath := filepath.Join(prefix, "share", "symphony", "receipts", macOSKeychainPackageID, version, "install-receipt.json")
+	if err := os.MkdirAll(filepath.Dir(receiptPath), 0o700); err != nil {
+		t.Fatal(err)
+	}
+	writeJSONFile(t, receiptPath, receipt)
+	info, err := os.Stat(executable)
+	if err != nil {
+		t.Fatal(err)
+	}
+	uid, gid, err := fileOwner(info)
+	if err != nil {
+		t.Fatal(err)
+	}
+	declaration := ExecutableTrust{
+		Protocol: "symphony.ssiag.provider-executable-trust.v1", TOPSID: trustTestTOPSID, Scope: "user", ProviderName: "native", ProviderKind: "macos-keychain",
+		AdapterIdentifier: MacOSKeychainAdapterID, AdapterVersion: version, ProviderProtocol: ProviderProtocol, ExecutablePath: executable,
+		InstallationDigest: receipt.ReceiptDigest, ExecutableDigest: taggedBytes(executablePayload), OwnerUID: uid, OwnerGID: gid, FileMode: "0700",
+		AdapterSigningIdentity: "not_applicable", FoundationExecutablePath: manager.foundation.ExecutablePath,
+		FoundationInstallationDigest: manager.foundation.InstallationDigest, FoundationExecutableDigest: manager.foundation.ExecutableDigest,
+		FoundationOwnerUID: manager.foundation.OwnerUID, FoundationOwnerGID: manager.foundation.OwnerGID, FoundationSigningIdentity: manager.foundation.SigningIdentity,
+	}
+	declaration.DeclarationDigest = objectDigest(declaration, "declaration_digest")
 	return declaration
 }
 

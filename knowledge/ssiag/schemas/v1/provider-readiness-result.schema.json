@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:provider-readiness-result:v1",
+  "title": "Symphony SSIAG provider readiness result v1",
+  "description": "result_digest is SHA-256 over compact recursively key-sorted JSON after omitting result_digest.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "operation", "tops_id", "scope", "provider_name", "provider_kind",
+    "adapter_identifier", "adapter_version", "installation_digest", "executable_digest",
+    "readiness_state", "observation", "operational_access_enabled", "provider_operations_enabled",
+    "secret_channel_enabled", "observed_at", "read_only", "caller_class_used", "canonical", "result_digest"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.provider-readiness-result.v1"},
+    "operation": {"const": "engop:symphony:ssiag.provider.readiness.observe"},
+    "tops_id": {"$ref": "#/$defs/uuid"},
+    "scope": {"enum": ["user", "system"]},
+    "provider_name": {"$ref": "#/$defs/token"},
+    "provider_kind": {"$ref": "#/$defs/token"},
+    "adapter_identifier": {"$ref": "#/$defs/value_or_not_applicable"},
+    "adapter_version": {"$ref": "#/$defs/value_or_not_applicable"},
+    "installation_digest": {"$ref": "#/$defs/digest_or_not_applicable"},
+    "executable_digest": {"$ref": "#/$defs/digest_or_not_applicable"},
+    "readiness_state": {"enum": ["disabled", "unavailable", "not_ready", "readiness_proven_operations_disabled"]},
+    "observation": {"$ref": "provider-readiness-observation.schema.json"},
+    "operational_access_enabled": {"const": false},
+    "provider_operations_enabled": {"const": false},
+    "secret_channel_enabled": {"const": false},
+    "observed_at": {"$ref": "#/$defs/timestamp"},
+    "read_only": {"const": true},
+    "caller_class_used": {"const": false},
+    "canonical": {"const": false},
+    "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "uuid": {"type": "string", "format": "uuid", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "value_or_not_applicable": {"anyOf": [{"const": "not_applicable"}, {"$ref": "#/$defs/token"}]},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "digest_or_not_applicable": {"oneOf": [{"const": "not_applicable"}, {"$ref": "#/$defs/digest"}]},
+    "timestamp": {"type": "string", "format": "date-time", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"}
+  }
+}

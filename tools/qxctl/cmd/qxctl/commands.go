@@ -7,6 +7,7 @@ import (
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/commandregistry"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/ssiagclient"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/validation"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/version"
 	"github.com/spf13/cobra"
@@ -1093,8 +1094,8 @@ func newSSIAGCommand() (*cobra.Command, error) {
 }
 
 func newSSIAGProviderCommand() (*cobra.Command, error) {
-	command := structural("provider", fmt.Errorf("SSIAG provider subcommand is required: show, verify, installations, or binding"))
-	for _, operation := range []string{"show", "verify"} {
+	command := structural("provider", fmt.Errorf("SSIAG provider subcommand is required: show, verify, readiness, installations, or binding"))
+	for _, operation := range []string{"show", "verify", "readiness"} {
 		mapper := viper.New()
 		operation := operation
 		child := &cobra.Command{
@@ -1113,27 +1114,39 @@ func newSSIAGProviderCommand() (*cobra.Command, error) {
 				})
 			},
 		}
-		spec := commandSpec("ssiag.provider."+operation, featureSSIAG, map[string]string{"show": "inspect", "verify": "validate"}[operation])
+		spec := commandSpec("ssiag.provider."+operation, featureSSIAG, map[string]string{"show": "inspect", "verify": "validate", "readiness": "validate"}[operation])
 		if operation == "verify" {
 			spec.BackendOperationIDs = []string{
 				"engop:symphony:ssiag.provider.metadata-handshake",
 				"engop:symphony:ssiag.provider.trust.verify",
 			}
+		} else if operation == "readiness" {
+			spec.BackendOperationIDs = []string{
+				"engop:symphony:ssiag.provider.readiness.observe",
+				"engop:symphony:ssiag.macos-keychain-provider.readiness.observe",
+			}
 		} else {
 			spec.BackendOperationIDs = []string{"engop:symphony:ssiag.provider.trust.show"}
 		}
-		spec.OutputProtocols = []string{"symphony.ssiag.provider-trust-result.v1"}
-		spec.ResultValidationProtocols = []string{"symphony.ssiag.provider-trust-result.v1"}
-		if operation == "verify" {
+		outputProtocol := "symphony.ssiag.provider-trust-result.v1"
+		if operation == "readiness" {
+			outputProtocol = ssiagclient.ProviderReadinessResultProtocol
+		}
+		spec.OutputProtocols = []string{outputProtocol}
+		spec.ResultValidationProtocols = []string{outputProtocol}
+		if operation == "verify" || operation == "readiness" {
 			spec.Mutability = "evidence_only"
 			spec.AuthorityMode = "ssiag"
-			spec.InputProtocols = []string{"symphony.ssiag.provider-trust-verification-request.v1"}
+			spec.InputProtocols = []string{map[string]string{
+				"verify":    "symphony.ssiag.provider-trust-verification-request.v1",
+				"readiness": ssiagclient.ProviderReadinessObservationRequestProtocol,
+			}[operation]}
 		}
 		commandregistry.Attach(child, spec)
 		child.Flags().String("tops-id", "", "immutable TOPS UUID")
 		child.Flags().String("scope", "user", "SSIAG scope: user or system")
 		child.Flags().Bool("json", false, "emit JSON")
-		if operation == "verify" {
+		if operation == "verify" || operation == "readiness" {
 			child.Flags().String("authority-basis", "host_owner", "host_owner or granted_permission")
 		}
 		for _, key := range []string{"tops-id", "scope", "json"} {
@@ -1141,9 +1154,9 @@ func newSSIAGProviderCommand() (*cobra.Command, error) {
 				return nil, fmt.Errorf("bind SSIAG provider %s %s flag: %w", operation, key, err)
 			}
 		}
-		if operation == "verify" {
+		if operation == "verify" || operation == "readiness" {
 			if err := mapper.BindPFlag("authority-basis", child.Flags().Lookup("authority-basis")); err != nil {
-				return nil, fmt.Errorf("bind SSIAG provider verify authority flag: %w", err)
+				return nil, fmt.Errorf("bind SSIAG provider %s authority flag: %w", operation, err)
 			}
 		}
 		if err := mapper.BindEnv("tops-id", "SYMPHONY_SSIAG_TOPS_ID"); err != nil {

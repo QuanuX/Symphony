@@ -6,16 +6,33 @@ let providerEntryPointID = "ssiag.macos-keychain-provider"
 let providerEntryPointProtocol = "symphony.ssiag.provider.control.v1"
 let providerAdapterIdentifier = "adapter:symphony:ssiag.macos-keychain-provider.v1"
 let providerExecutableName = "symphony-ssiag-provider-macos-keychain"
+let providerBundleName = "SymphonySSIAGMacOSKeychainProvider.app"
 let receiptProtocolV2 = "symphony.knowledge.install-receipt.v2"
 
 struct ReceiptEvidence: Sendable {
     let receiptDigest: String
     let executableDigest: String
     let executableSize: UInt64
+    let files: [ReceiptFileEvidence]
+}
+
+struct ReceiptFileEvidence: Equatable, Sendable {
+    let path: String
+    let kind: String
+    let size: UInt64
+    let digest: String
 }
 
 func providerBinaryRelativePath(version: String) -> String {
     "libexec/symphony/\(providerComponentID)/\(version)/\(providerExecutableName)"
+}
+
+func providerBundleRelativePath(version: String) -> String {
+    "libexec/symphony/\(providerComponentID)/\(version)/\(providerBundleName)"
+}
+
+func providerBundleExecutableRelativePath(version: String) -> String {
+    "\(providerBundleRelativePath(version: version))/Contents/MacOS/\(providerExecutableName)"
 }
 
 func providerReceiptRelativePath(version: String) -> String {
@@ -29,6 +46,45 @@ func makeProviderReceipt(
     executableSize: UInt64,
     executableDigest: String
 ) throws -> ([String: Any], Data, String) {
+    try makeProviderReceipt(
+        version: version,
+        architecture: architecture,
+        files: [ReceiptFileEvidence(
+            path: providerBinaryRelativePath(version: version),
+            kind: "executable",
+            size: executableSize,
+            digest: executableDigest
+        )],
+        entryPointPath: providerBinaryRelativePath(version: version)
+    )
+}
+
+func makeProviderBundleReceipt(
+    scope _: InstallScope,
+    version: String,
+    architecture: String,
+    files: [ReceiptFileEvidence]
+) throws -> ([String: Any], Data, String) {
+    try makeProviderReceipt(
+        version: version,
+        architecture: architecture,
+        files: files,
+        entryPointPath: providerBundleExecutableRelativePath(version: version)
+    )
+}
+
+private func makeProviderReceipt(
+    version: String,
+    architecture: String,
+    files: [ReceiptFileEvidence],
+    entryPointPath: String
+) throws -> ([String: Any], Data, String) {
+    guard !files.isEmpty, files.count <= 4096,
+          files.map(\.path) == files.map(\.path).sorted(),
+          Set(files.map(\.path)).count == files.count,
+          files.contains(where: { $0.path == entryPointPath && $0.kind == "executable" }) else {
+        throw LifecycleError.invalidReceipt
+    }
     var object: [String: Any] = [
         "protocol": receiptProtocolV2,
         "format_version": 2,
@@ -41,16 +97,18 @@ func makeProviderReceipt(
         "version": version,
         "install_scope": "prefix",
         "prefix_mode": "installation_prefix",
-        "files": [[
-            "path": providerBinaryRelativePath(version: version),
-            "kind": "executable",
-            "size": NSNumber(value: executableSize),
-            "digest": executableDigest,
-        ]],
+        "files": files.map { file in
+            [
+                "path": file.path,
+                "kind": file.kind,
+                "size": NSNumber(value: file.size),
+                "digest": file.digest,
+            ] as [String: Any]
+        },
         "entry_points": [[
             "entry_point_id": providerEntryPointID,
             "kind": "adapter",
-            "path": providerBinaryRelativePath(version: version),
+            "path": entryPointPath,
             "protocols": [providerEntryPointProtocol],
         ]],
         "provides_capabilities": ["symphony.ssiag.provider.metadata.v1"],
@@ -104,21 +162,51 @@ func validateProviderReceipt(
           try canonicalDigest(object, omitting: "receipt_digest") == recordedDigest else {
         throw LifecycleError.invalidReceipt
     }
-    guard let files = object["files"] as? [Any], files.count == 1,
-          let file = files.first as? [String: Any] else { throw LifecycleError.invalidReceipt }
-    try requireExactKeys(file, ["path", "kind", "size", "digest"])
-    guard file["path"] as? String == providerBinaryRelativePath(version: version),
-          file["kind"] as? String == "executable",
-          let size = unsignedInteger(file["size"]),
-          let executableDigest = file["digest"] as? String,
-          validDigest(executableDigest) else { throw LifecycleError.invalidReceipt }
+    guard let fileValues = object["files"] as? [Any], !fileValues.isEmpty, fileValues.count <= 4096 else {
+        throw LifecycleError.invalidReceipt
+    }
+    var files = [ReceiptFileEvidence]()
+    var ownedPaths = Set<String>()
+    for value in fileValues {
+        guard let file = value as? [String: Any] else { throw LifecycleError.invalidReceipt }
+        try requireExactKeys(file, ["path", "kind", "size", "digest"])
+        guard let path = file["path"] as? String,
+              validRelativeReceiptPath(path), ownedPaths.insert(path).inserted,
+              let kind = file["kind"] as? String, ["regular", "executable"].contains(kind),
+              let size = unsignedInteger(file["size"]), size > 0, size <= 64 * 1_048_576,
+              let digest = file["digest"] as? String, validDigest(digest) else {
+            throw LifecycleError.invalidReceipt
+        }
+        files.append(ReceiptFileEvidence(path: path, kind: kind, size: size, digest: digest))
+    }
+    guard files.map(\.path) == files.map(\.path).sorted() else { throw LifecycleError.invalidReceipt }
+
+    let legacyPath = providerBinaryRelativePath(version: version)
+    let bundlePath = providerBundleExecutableRelativePath(version: version)
+    let expectedPath: String
+    if expectedExecutable.path.hasSuffix("/\(legacyPath)") {
+        expectedPath = legacyPath
+        guard files.count == 1 else { throw LifecycleError.invalidReceipt }
+    } else if expectedExecutable.path.hasSuffix("/\(bundlePath)") {
+        expectedPath = bundlePath
+        let allowed = providerAllowedBundleReceiptPaths(version: version)
+        guard files.allSatisfy({ allowed.contains($0.path) }),
+              files.contains(where: { $0.path.hasSuffix("/Contents/Info.plist") && $0.kind == "regular" }) else {
+            throw LifecycleError.invalidReceipt
+        }
+    } else {
+        throw LifecycleError.invalidReceipt
+    }
+    guard let executable = files.first(where: { $0.path == expectedPath }), executable.kind == "executable" else {
+        throw LifecycleError.invalidReceipt
+    }
 
     guard let entries = object["entry_points"] as? [Any], entries.count == 1,
           let entry = entries.first as? [String: Any] else { throw LifecycleError.invalidReceipt }
     try requireExactKeys(entry, ["entry_point_id", "kind", "path", "protocols"])
     guard entry["entry_point_id"] as? String == providerEntryPointID,
           entry["kind"] as? String == "adapter",
-          entry["path"] as? String == providerBinaryRelativePath(version: version),
+          entry["path"] as? String == expectedPath,
           strings(entry["protocols"]) == [providerEntryPointProtocol] else {
         throw LifecycleError.invalidReceipt
     }
@@ -132,12 +220,41 @@ func validateProviderReceipt(
           strictBoolean(platform["critical"]) == true else { throw LifecycleError.invalidReceipt }
 
     if checkInstalledBytes {
-        let evidence = try safeRegularFileEvidence(expectedExecutable)
-        guard evidence.size == size, evidence.digest == executableDigest else {
-            throw LifecycleError.changedBinary
+        let prefix = try installationPrefix(for: expectedExecutable, relativePath: expectedPath)
+        for file in files {
+            let installedURL = prefix.appending(path: file.path)
+            let evidence = try safeRegularFileEvidence(installedURL)
+            guard evidence.size == file.size, evidence.digest == file.digest,
+                  file.kind != "executable" || evidence.metadata.mode & 0o111 != 0 else {
+                throw LifecycleError.changedBinary
+            }
         }
     }
-    return ReceiptEvidence(receiptDigest: recordedDigest, executableDigest: executableDigest, executableSize: size)
+    return ReceiptEvidence(
+        receiptDigest: recordedDigest,
+        executableDigest: executable.digest,
+        executableSize: executable.size,
+        files: files
+    )
+}
+
+func providerAllowedBundleReceiptPaths(version: String) -> Set<String> {
+    let root = providerBundleRelativePath(version: version)
+    return [
+        "\(root)/Contents/Info.plist",
+        "\(root)/Contents/MacOS/\(providerExecutableName)",
+        "\(root)/Contents/Resources/ssiag-signing-policy.json",
+        "\(root)/Contents/_CodeSignature/CodeResources",
+        "\(root)/Contents/embedded.provisionprofile",
+    ]
+}
+
+private func installationPrefix(for executable: URL, relativePath: String) throws -> URL {
+    let components = relativePath.split(separator: "/")
+    var prefix = executable.standardizedFileURL
+    for _ in components { prefix.deleteLastPathComponent() }
+    guard prefix.path.hasPrefix("/"), prefix.path != "/" else { throw LifecycleError.unsafePath }
+    return prefix
 }
 
 func validateFoundationReceipt(parentExecutable: URL, requestedInstallationDigest: String) throws -> ReceiptEvidence {
@@ -242,7 +359,12 @@ func validateFoundationReceipt(parentExecutable: URL, requestedInstallationDiges
           executableEvidence.size == expectedSize, executableEvidence.digest == expectedDigest else {
         throw FoundationTrustFailure.executable
     }
-    return ReceiptEvidence(receiptDigest: receiptDigest, executableDigest: expectedDigest, executableSize: expectedSize)
+    return ReceiptEvidence(
+        receiptDigest: receiptDigest,
+        executableDigest: expectedDigest,
+        executableSize: expectedSize,
+        files: [ReceiptFileEvidence(path: relative, kind: "executable", size: expectedSize, digest: expectedDigest)]
+    )
 }
 
 private func validateProtectedAncestors(_ url: URL) throws {

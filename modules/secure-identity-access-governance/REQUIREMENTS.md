@@ -77,6 +77,12 @@ Architect-ratified architecture with phased implementation requirements. “Must
 - **SSIAG-F-055**: Managed binding state must retain at most one active and one predecessor ID; reverse traversal is explicit and neither predecessor nor compatibility is automatic fallback.
 - **SSIAG-F-056**: Completed binding operations must remain durably queryable after attempt cleanup, and interrupted stages must recover only their uniquely linked successor.
 - **SSIAG-F-057**: Native offline recovery must require the receipt-v2 foundation, target-host ownership, entry into the enrolled service identity, exclusive ownership of the service's persistent socket-lifecycle lease, an absent socket, exact pending evidence, and normal STAV commitment; it is not a qxctl bypass.
+- **SSIAG-F-058**: Provider readiness must preserve separate structural-validation, protected-policy-match, and operational-eligibility layers; no successful lower layer may imply authorization or enable an operation.
+- **SSIAG-F-059**: Receipt v2 must own the complete bounded app-like adapter bundle, reject unknown or changed entries, and preserve legacy one-file provider-v1 compatibility without treating a bare executable as production-ready.
+- **SSIAG-F-060**: The cgo-free Go foundation must reconstruct and re-verify every receipt-owned bundle file in private staging before executing the fixed readiness entry point.
+- **SSIAG-F-061**: Native code requirements must be compiled and evaluated by the Swift adapter; a digest, caller assertion, signing label, path, or structural signature result is evidence and never a substitute for native policy evaluation.
+- **SSIAG-F-062**: qxctl readiness administration must be headless and permission-backed, accept no provider path, signer, requirement, profile, entitlement, payload, or operational-enable input, and validate a closed digest-bound safe result.
+- **SSIAG-F-063**: Phase 10B must keep authorization-decision, operational-access, provider-operation, and secret-channel flags false and must contain no Keychain item or key operation.
 
 ### Credential Use
 - **SSIAG-F-040**: Credential references must be opaque outside the SSIAG/provider boundary.

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:macos-signing-policy:v1",
+  "title": "Symphony SSIAG macOS provider signing policy v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "adapter_requirement"],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.macos-signing-policy.v1"},
+    "adapter_requirement": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "^[^\\u0000]+$"}
+  }
+}

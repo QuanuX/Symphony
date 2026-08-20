@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes seventy-four experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes seventy-six experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -562,6 +562,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:ddfccba65c6327f6f6bdafbd3b59ccbbfcebf29d208e3aa254113486f0e89048`
 - notes: Architect-ratified mutually verified provider metadata handshake with control/secret noninterference; operational Keychain access remains disabled.
 
+- feature_id: `ssfv:symphony:ssiag-foundation.provider-readiness-assurance`
+- feature_file: `modules/secure-identity-access-governance/FEATURES.md`
+- owner_contract: `modules/secure-identity-access-governance/SPEC.md`
+- source_scope: `modules/secure-identity-access-governance`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssiag-foundation`
+- record_digest: `sha256:7619926745c9fe2d545898f6c9fa4f1f91b205f1e3c62983034988db9187527f`
+- notes: Architect-ratified Phase 10B complete-bundle staging and three-layer provider-readiness assurance; operational eligibility and all provider operations remain disabled.
+
 - feature_id: `ssfv:symphony:ssiag-foundation.safe-audit-production`
 - feature_file: `modules/secure-identity-access-governance/FEATURES.md`
 - owner_contract: `modules/secure-identity-access-governance/SPEC.md`
@@ -588,6 +597,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:ssiag-foundation`
 - record_digest: `sha256:2da7bcf4f6ae53f25211633528f720846c73dd7d6b76103568d6a9f7e761c9d9`
 - notes: Partial-catalog subfeature for the independently installed Swift adapter and its verified metadata-only SSIAG handshake; qxctl does not invoke it and operational secret access remains disabled.
+
+- feature_id: `ssfv:symphony:ssiag.macos-signed-bundle-readiness`
+- feature_file: `modules/ssiag-provider-macos-keychain/FEATURES.md`
+- owner_contract: `modules/ssiag-provider-macos-keychain/SPEC.md`
+- source_scope: `modules/ssiag-provider-macos-keychain`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssiag-foundation`
+- record_digest: `sha256:f655f6402381ebbd41c72dacc01c4abef5b7b18d6c5a3e66f6900882c5342e04`
+- notes: Architect-ratified native macOS bundle, code-requirement, and security-session readiness evidence with Keychain item and key operations absent.
 
 - feature_id: `ssfv:symphony:stav-append-authority`
 - feature_file: `modules/stav-append-authority/FEATURES.md`
@@ -711,4 +729,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This seventy-four-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This seventy-six-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

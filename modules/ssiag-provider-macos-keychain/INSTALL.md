@@ -14,18 +14,28 @@ swift test
 swift build -c release
 ```
 
+The bare SwiftPM executable is a development/compatibility artifact and remains metadata-only. A production build must use `scripts/build-production-bundle.sh` with Architect-approved bundle identity, native requirement, entitlements, signing identity, and optional provisioning/notarization configuration. The script creates the complete app-like bundle before signing; no file may be added after signing or notarization.
+
 ## User Installation
 
 ```bash
 .build/release/symphony-ssiag-provider-macos-keychain install --scope user
 ```
 
-This installs:
+When invoked from the bare development executable, this installs the legacy-compatible metadata-only path:
 
 - binary: `~/.local/libexec/symphony/ssiag-macos-keychain-provider/<version>/symphony-ssiag-provider-macos-keychain`
 - receipt: `~/.local/share/symphony/receipts/ssiag-macos-keychain-provider/<version>/install-receipt.json`
 
 Both paths are immutable and receipt-v2 owned. There is no active alias and no newest-version discovery. An administrator may choose another absolute, non-root installation prefix with `--prefix`; the default is only a convenience.
+
+When invoked from `SymphonySSIAGMacOSKeychainProvider.app/Contents/MacOS/symphony-ssiag-provider-macos-keychain`, the same command installs the complete bundle at:
+
+- bundle: `~/.local/libexec/symphony/ssiag-macos-keychain-provider/<version>/SymphonySSIAGMacOSKeychainProvider.app`
+- entry point: `.../Contents/MacOS/symphony-ssiag-provider-macos-keychain`
+- receipt: `~/.local/share/symphony/receipts/ssiag-macos-keychain-provider/<version>/install-receipt.json`
+
+The receipt owns every admitted bundle file. Unknown or changed bytes prevent reinstall and uninstall. An incomplete uninstall heals only by removing remaining unchanged receipt-owned files and finally the retained receipt.
 
 ## System Installation
 
@@ -71,11 +81,13 @@ After those prerequisites, restart the selected SSIAG instance and verify only t
 qxctl ssiag provider show macos-keychain --scope user --tops-id "$TOPS_ID" --json
 qxctl ssiag provider verify macos-keychain --scope user --tops-id "$TOPS_ID" \
   --authority-basis host_owner --json
+qxctl ssiag provider readiness macos-keychain --scope user --tops-id "$TOPS_ID" \
+  --authority-basis host_owner --json
 ```
 
 Direct `status` and `capabilities` adapter CLI bypasses are intentionally absent. `serve` accepts only one fully bound, digest-bearing control request from its invoking SSIAG parent and emits at most one response before exit.
 
-Verification MUST report `operational_access_enabled: false`. The metadata protocol, fail-closed lifecycle, and disabled-operation behavior are implemented and tested. Operational Keychain access remains gated until its exact namespace, operation, code-signing, protected-delivery, lifecycle, and security contracts are implemented and verified.
+Verification and readiness MUST report all operational flags false. Readiness separately reports structural validity, native receipt-owned policy match, and security-session capability; operational eligibility remains disabled. Operational Keychain access remains gated until Phase 10C's item, access-control, audit, recovery, and negative-security contracts are implemented and verified.
 
 ## Upgrade
 
@@ -88,6 +100,8 @@ ADAPTER_VERSION='0.1.0-draft' # use the exact version returned by install
 "$HOME/.local/libexec/symphony/ssiag-macos-keychain-provider/$ADAPTER_VERSION/symphony-ssiag-provider-macos-keychain" \
   uninstall --scope user
 ```
+
+For a production bundle, invoke the exact versioned entry point under `SymphonySSIAGMacOSKeychainProvider.app/Contents/MacOS/` with the same arguments.
 
 For system scope, invoke the exact versioned executable below `/usr/local/libexec`, pass `--scope system`, and repeat any explicit `--prefix`. There is no unversioned alias. Uninstall validates the receipt and every present owned byte and refuses changed or unreceipted paths even when `--force` is present. It removes only that exact version's receipt-owned adapter binary and then its receipt. If interruption occurs after binary removal, the retained receipt is recovery evidence and the same command finishes cleanup on retry; replay after completed removal is a no-op. It does not delete legacy v1 evidence, other installed versions, Keychain items, TOPS bindings, or any TOPS state.
 

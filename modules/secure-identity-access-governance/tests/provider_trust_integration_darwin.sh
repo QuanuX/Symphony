@@ -178,7 +178,31 @@ if ! jq -e '
   exit 1
 fi
 
+"$WORK/qxctl" ssiag provider readiness native --scope user --tops-id "$TOPS_ID" \
+  --authority-basis host_owner --json > "$WORK/readiness.json"
+
+if ! jq -e '
+  .protocol == "symphony.ssiag.provider-readiness-result.v1" and
+  .operation == "engop:symphony:ssiag.provider.readiness.observe" and
+  (.readiness_state == "not_ready" or .readiness_state == "readiness_proven_operations_disabled") and
+  .observation.protocol == "symphony.ssiag.provider-readiness-observation.v1" and
+  .observation.metadata_only == true and
+  .observation.operational_eligibility.state == "disabled" and
+  .observation.authorization_decision_made == false and
+  .operational_access_enabled == false and
+  .provider_operations_enabled == false and
+  .secret_channel_enabled == false and
+  .read_only == true and
+  .canonical == false
+' "$WORK/readiness.json" >/dev/null; then
+  cat "$WORK/readiness.json" >&2
+  cat "$WORK/server.stderr" >&2
+  echo "provider readiness integration: observation boundary failed" >&2
+  exit 1
+fi
+
 echo "provider trust integration: passed (actual installed Go foundation <-> actual installed Swift adapter)"
+echo "provider readiness integration: passed (metadata-only signed-bundle/session observation; operations disabled)"
 }
 
 provider_trust_receipt_backed_go_swift_integration

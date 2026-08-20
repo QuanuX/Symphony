@@ -23,8 +23,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 156 {
-		t.Fatalf("registered command count = %d, want 156", len(manifest.Commands))
+	if len(manifest.Commands) != 157 {
+		t.Fatalf("registered command count = %d, want 157", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -129,8 +129,8 @@ func TestCommandRegistryBindsVectorCapabilitiesNotBindingSelection(t *testing.T)
 }
 
 func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
-	if len(reviewedBackendFeatureBindings) != 74 {
-		t.Fatalf("reviewed backend command count = %d, want 74", len(reviewedBackendFeatureBindings))
+	if len(reviewedBackendFeatureBindings) != 75 {
+		t.Fatalf("reviewed backend command count = %d, want 75", len(reviewedBackendFeatureBindings))
 	}
 	secondaryBindingCount := 0
 	for key, bindings := range reviewedBackendFeatureBindings {
@@ -139,8 +139,8 @@ func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
 		}
 		secondaryBindingCount += len(bindings)
 	}
-	if secondaryBindingCount != 76 {
-		t.Fatalf("reviewed backend binding count = %d, want 76", secondaryBindingCount)
+	if secondaryBindingCount != 78 {
+		t.Fatalf("reviewed backend binding count = %d, want 78", secondaryBindingCount)
 	}
 
 	root, err := newRootCommand()

@@ -74,6 +74,12 @@ func run() throws {
         print("symphony-ssiag-provider-macos-keychain version \(providerVersion)")
     case "serve":
         try serve()
+    case "readiness":
+        guard arguments.count == 2,
+              let executable = Bundle.main.executableURL?.standardizedFileURL else {
+            throw ProtocolError.invalidShape
+        }
+        try emit(SignedBundleReadiness.observe(executableURL: executable, inspectRunningSelf: true))
     case "install":
         let (scope, force, prefix) = try lifecycleOptions(arguments.dropFirst(2))
         guard let source = Bundle.main.executableURL?.standardizedFileURL else {

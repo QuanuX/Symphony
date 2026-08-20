@@ -65,6 +65,7 @@ func printUsage() {
 	fmt.Println("  ssiag providers --tops-id UUID [--scope user|system] [--json] List safe provider metadata")
 	fmt.Println("  ssiag provider show <name> --tops-id UUID [--scope user|system] [--json] Read safe provider trust evidence")
 	fmt.Println("  ssiag provider verify <name> --tops-id UUID [--scope user|system] [--authority-basis BASIS] [--json] Request fresh provider trust verification")
+	fmt.Println("  ssiag provider readiness <name> --tops-id UUID [--scope user|system] [--authority-basis BASIS] [--json] Observe signed-bundle, policy, and session readiness without enabling operations")
 	fmt.Println("  ssiag provider installations <name> --tops-id UUID [--scope user|system] [--json] List exact SSIAG-owned provider installations")
 	fmt.Println("  ssiag provider binding status <name> --tops-id UUID [--scope user|system] [--json] Read protected provider binding state")
 	fmt.Println("  ssiag provider binding plan <name> --tops-id UUID --installation-id ID --expected-state-digest STATE --reason TEXT [--json] Prepare an exact provider binding plan")
@@ -2969,7 +2970,7 @@ func runSSIAGProvider(operation string, options ssiagOptions) error {
 	if options.scope != "user" && options.scope != "system" {
 		return fmt.Errorf("unsupported SSIAG scope %q", options.scope)
 	}
-	if operation == "verify" && options.authorityBasis != "host_owner" && options.authorityBasis != "granted_permission" {
+	if (operation == "verify" || operation == "readiness") && options.authorityBasis != "host_owner" && options.authorityBasis != "granted_permission" {
 		return fmt.Errorf("--authority-basis must be host_owner or granted_permission")
 	}
 	// The bounded online command budget reserves two seconds for the status
@@ -2990,6 +2991,33 @@ func runSSIAGProvider(operation string, options ssiagOptions) error {
 	}
 	operationContext, operationCancel := context.WithTimeout(commandContext, ssiagProviderOperationBudget)
 	defer operationCancel()
+	if operation == "readiness" {
+		requestID, requestErr := randomUUID()
+		if requestErr != nil {
+			return requestErr
+		}
+		correlationID, requestErr := randomUUID()
+		if requestErr != nil {
+			return requestErr
+		}
+		result, requestErr := client.ObserveProviderReadiness(operationContext, options.providerName, ssiagclient.ProviderReadinessObservationRequest{
+			Protocol:  ssiagclient.ProviderReadinessObservationRequestProtocol,
+			RequestID: requestID, CorrelationID: correlationID, AuthorityBasis: options.authorityBasis,
+		})
+		if requestErr != nil {
+			return requestErr
+		}
+		if result.TOPSID != options.topsID || result.Scope != options.scope {
+			return fmt.Errorf("SSIAG provider readiness result identity does not match requested TOPS and scope")
+		}
+		if options.jsonOutput {
+			return printSSIAGJSON(result)
+		}
+		fmt.Printf("SSIAG provider readiness: name=%s state=%s structural=%s policy=%s session=%t operational=false digest=%s\n",
+			result.ProviderName, result.ReadinessState, result.Observation.StructuralValidation.State,
+			result.Observation.PolicyMatch.State, result.Observation.SecuritySessionObserved, result.ResultDigest)
+		return nil
+	}
 	var result ssiagclient.ProviderTrustResult
 	switch operation {
 	case "show":

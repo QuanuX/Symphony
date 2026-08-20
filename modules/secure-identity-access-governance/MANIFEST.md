@@ -9,7 +9,7 @@
 - **environment prefix**: `SYMPHONY_SSIAG_*`
 - **language/runtime**: Go 1.26.5 with pinned `golang.org/x/sys` for cgo-free kernel peer credentials
 - **cgo**: prohibited
-- **status**: DRAFT foundation; supervised metadata, audited authorization, protected policy administration, and exact provider-binding lifecycle
+- **status**: DRAFT foundation; supervised metadata, audited authorization, protected policy administration, exact provider binding, and Phase 10B provider readiness with operations disabled
 
 ## Canonical Authority
 
@@ -36,6 +36,7 @@
 - `POST /v1/authorization/decisions`: kernel-subject-derived, exact-grant, deny-by-default authorization with fail-closed STAV audit and non-transferable capability evidence;
 - `GET /v1/policy/status` plus `POST /v1/policy/proposals|apply|recover`: protected per-TOPS operational policy administration with exact host authority, CAS, atomic state, STAV-before-commit, and explicit recovery;
 - `GET /v1/provider-installations/<provider>` plus provider-binding `status|plans|apply|attempts|recover`: bounded exact-pair inventory and protected per-TOPS binding lifecycle with independent candidate verification and STAV-before-commit;
+- `POST /v1/provider-readiness/<provider>/observations`: permission-backed, read-only structural-signature, protected-policy, and security-session evidence with all operational flags false;
 - `provider-binding-recover`: receipt-v2-bound native recovery that requires target-host ownership, entry into the enrolled service identity, exclusive service socket-lifecycle ownership, and an absent socket;
 - `qxctl ssiag status|providers|doctor|policy ...|provider installations|binding ...`: provider-neutral headless administration.
 

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:ssiag:provider-readiness-observation:v1",
+  "title": "Symphony SSIAG safe provider readiness observation v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol", "metadata_only", "structural_validation", "policy_match", "operational_eligibility",
+    "app_like_bundle_observed", "provisioning_profile_file_state", "static_signature_state",
+    "dynamic_signature_state", "signing_identifier", "designated_requirement_digest",
+    "policy_requirement_digest", "security_session_observed", "security_session_root",
+    "security_session_graphical", "security_session_tty", "security_session_remote",
+    "authorization_decision_made", "operational_access_enabled", "provider_operations_enabled",
+    "secret_channel_enabled", "reason_codes"
+  ],
+  "properties": {
+    "protocol": {"const": "symphony.ssiag.provider-readiness-observation.v1"},
+    "metadata_only": {"const": true},
+    "structural_validation": {"$ref": "#/$defs/structural_layer"},
+    "policy_match": {"$ref": "#/$defs/policy_layer"},
+    "operational_eligibility": {"$ref": "#/$defs/eligibility_layer"},
+    "app_like_bundle_observed": {"type": "boolean"},
+    "provisioning_profile_file_state": {"enum": ["absent", "regular_safe", "unsafe", "unavailable"]},
+    "static_signature_state": {"enum": ["valid", "invalid", "unavailable"]},
+    "dynamic_signature_state": {"enum": ["valid", "invalid", "unavailable", "not_evaluated"]},
+    "signing_identifier": {"$ref": "#/$defs/safe_value"},
+    "designated_requirement_digest": {"$ref": "#/$defs/digest_or_not_applicable"},
+    "policy_requirement_digest": {"$ref": "#/$defs/digest_or_not_applicable"},
+    "security_session_observed": {"type": "boolean"},
+    "security_session_root": {"type": "boolean"},
+    "security_session_graphical": {"type": "boolean"},
+    "security_session_tty": {"type": "boolean"},
+    "security_session_remote": {"type": "boolean"},
+    "authorization_decision_made": {"const": false},
+    "operational_access_enabled": {"const": false},
+    "provider_operations_enabled": {"const": false},
+    "secret_channel_enabled": {"const": false},
+    "reason_codes": {"type": "array", "minItems": 2, "maxItems": 32, "uniqueItems": true, "items": {"$ref": "#/$defs/reason"}}
+  },
+  "$defs": {
+    "layer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["state", "evaluated", "reason_code"],
+      "properties": {"state": {"$ref": "#/$defs/token"}, "evaluated": {"type": "boolean"}, "reason_code": {"$ref": "#/$defs/reason"}}
+    },
+    "structural_layer": {"allOf": [{"$ref": "#/$defs/layer"}, {"properties": {"state": {"enum": ["valid", "invalid", "unavailable"]}}}]},
+    "policy_layer": {"allOf": [{"$ref": "#/$defs/layer"}, {"properties": {"state": {"enum": ["matched", "mismatch", "not_configured", "invalid", "unavailable"]}}}]},
+    "eligibility_layer": {"allOf": [{"$ref": "#/$defs/layer"}, {"properties": {"state": {"const": "disabled"}, "evaluated": {"const": false}}}]},
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "safe_value": {"anyOf": [{"enum": ["not_applicable", "not_observed"]}, {"$ref": "#/$defs/token"}]},
+    "reason": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^symphony\\.ssiag\\.provider\\.readiness\\.[A-Za-z0-9._:-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "digest_or_not_applicable": {"oneOf": [{"const": "not_applicable"}, {"$ref": "#/$defs/digest"}]}
+  }
+}

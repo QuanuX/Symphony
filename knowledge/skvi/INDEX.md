@@ -1084,17 +1084,82 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Binding administration changes safe metadata state only; it never invokes a provider or transports secret material.
 - status: canonical
 
+#### SSIAG Provider Readiness Contract
+- path: `knowledge/ssiag/PROVIDER-READINESS.md`
+- title: SSIAG Provider Readiness Contract
+- surface_type: canonical provider bundle, signing-policy, session, and readiness contract
+- truth_role: structural validation, native policy match, operational eligibility, packaging, and safe administration truth
+- owner: SSIAG knowledge maintainer
+- scope: Defines the exact multi-file bundle, protected native requirement, three-layer readiness model, permission-backed qxctl route, compatibility, recovery, and Phase 10B operational prohibition.
+- relationships: depends_on -> `knowledge/ssiag/SPEC.md`; governs -> `modules/secure-identity-access-governance/internal/provider/readiness.go`; governs -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/SignedBundleReadiness.swift`; consumed_by -> `tools/qxctl/internal/ssiagclient/provider_readiness.go`
+- consumers: SSIAG foundation, macOS provider, qxctl, validators, release tooling, conformance tests, reviewers
+- deferred_projections: production signing and notarization release evidence
+- notes: Structural or native-policy success never implies operational eligibility; all provider operations and Keychain access remain disabled.
+- status: canonical
+
 #### SSIAG v1 Schema Manifest
 - path: `knowledge/ssiag/schemas/v1/MANIFEST.md`
 - title: SSIAG Canonical Schemas v1
 - surface_type: canonical protocol schema manifest
 - truth_role: inventory and boundary for exact authorization, policy, provider-control, and provider-trust schemas
 - owner: SSIAG knowledge maintainer
-- scope: Declares twenty-eight bounded caller-neutral SSIAG v1 contracts, including metadata-only provider trust and protected exact-installation binding boundaries.
+- scope: Declares thirty-two bounded caller-neutral SSIAG v1 contracts, including metadata-only provider trust, protected exact-installation binding, and three-layer readiness boundaries.
 - relationships: depends_on -> `knowledge/ssiag/SPEC.md`; governs -> `modules/secure-identity-access-governance/internal/policy/policy.go`; governs -> `modules/secure-identity-access-governance/internal/provider/trust.go`; governs -> `modules/knowledge-session-coordinator/src/authority_session.cpp`
 - consumers: SSIAG, provider adapters, qxctl, coordinator, validator, conformance tests, reviewers
 - deferred_projections: rendered protocol documentation
 - notes: These schemas define safe evidence and explicitly disabled secret-channel descriptors, not credentials, bearer tokens, grants by possession, or canonical apply authority.
+- status: canonical
+
+#### SSIAG macOS Signing Policy Schema
+- path: `knowledge/ssiag/schemas/v1/macos-signing-policy.schema.json`
+- title: SSIAG macOS Signing Policy v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical receipt-owned native code-requirement policy shape
+- owner: SSIAG knowledge maintainer
+- scope: Closes the protocol and bounded adapter requirement text evaluated natively inside the staged Swift bundle.
+- relationships: depends_on -> `knowledge/ssiag/PROVIDER-READINESS.md`; implemented_by -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/SignedBundleReadiness.swift`
+- consumers: macOS provider builder, adapter, validators, conformance tests, reviewers
+- deferred_projections: safe compiled-requirement digest evidence
+- notes: Requirement text is protected package input and never qxctl or readiness output.
+- status: canonical
+
+#### SSIAG Provider Readiness Observation Request Schema
+- path: `knowledge/ssiag/schemas/v1/provider-readiness-observation-request.schema.json`
+- title: SSIAG Provider Readiness Observation Request v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical permission-backed readiness request shape
+- owner: SSIAG knowledge maintainer
+- scope: Closes request/correlation identity and caller-neutral host-owner or granted-permission basis without path or signing-policy inputs.
+- relationships: depends_on -> `knowledge/ssiag/PROVIDER-READINESS.md`; consumed_by -> `tools/qxctl/internal/ssiagclient/provider_readiness.go`
+- consumers: SSIAG, qxctl, validators, conformance tests, reviewers
+- deferred_projections: none
+- notes: The request is non-mutating and carries no provider payload or secret.
+- status: canonical
+
+#### SSIAG Provider Readiness Observation Schema
+- path: `knowledge/ssiag/schemas/v1/provider-readiness-observation.schema.json`
+- title: SSIAG Safe Provider Readiness Observation v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical native safe-observation shape
+- owner: SSIAG knowledge maintainer
+- scope: Separates structural validation, native policy match, disabled operational eligibility, safe signing digests, and bounded security-session capability flags.
+- relationships: depends_on -> `knowledge/ssiag/PROVIDER-READINESS.md`; implemented_by -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/SignedBundleReadiness.swift`
+- consumers: SSIAG provider launcher, qxctl, validators, conformance tests, reviewers
+- deferred_projections: platform-readiness diagnostics
+- notes: Certificates, profile/entitlement payloads, requirements, native errors, session IDs, operations, and secrets are excluded.
+- status: canonical
+
+#### SSIAG Provider Readiness Result Schema
+- path: `knowledge/ssiag/schemas/v1/provider-readiness-result.schema.json`
+- title: SSIAG Provider Readiness Result v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical TOPS/provider/installation-bound safe readiness result
+- owner: SSIAG knowledge maintainer
+- scope: Closes the exact provider identity, safe observation, whole-second UTC time, disabled operation flags, and omit-self result digest.
+- relationships: depends_on -> `knowledge/ssiag/schemas/v1/provider-readiness-observation.schema.json`; implemented_by -> `modules/secure-identity-access-governance/internal/provider/readiness.go`; consumed_by -> `tools/qxctl/internal/ssiagclient/provider_readiness.go`
+- consumers: SSIAG, qxctl, validators, conformance tests, reviewers
+- deferred_projections: provider readiness history views
+- notes: `readiness_proven_operations_disabled` is evidence, never permission or provider selection authority.
 - status: canonical
 
 #### SSIAG Authorization Request Schema
@@ -6172,11 +6237,24 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: Go receipt-v2 and executable-provenance implementation
 - truth_role: exact installed adapter identity, platform, capability, ownership, size, and digest verification truth
 - owner: SSIAG foundation maintainers
-- scope: Validates one explicitly bound provider receipt and its single executable before bounded private-byte staging; it performs no discovery or newest-version selection.
+- scope: Validates one explicitly bound legacy executable or exact multi-file provider bundle before complete bounded private staging; it performs no discovery or newest-version selection.
 - relationships: implements -> `knowledge/schemas/v2/install-receipt.schema.json`; governed_by -> `knowledge/ssiag/SPEC.md`; composes_with -> `modules/secure-identity-access-governance/internal/provider/launcher.go`
 - consumers: SSIAG provider trust manager, invariant ownership assurance, tests, security reviewers
-- deferred_projections: independently verified code-signing identity after separate ratification
-- notes: All receipt members are explicit, nested shapes are exact, executable hashing is bounded, and operational provider access remains disabled.
+- deferred_projections: production signing/notarization release evidence
+- notes: All receipt members are explicit, paths are sorted and unique, unknown bundle files fail closed, hashing is bounded, and operational provider access remains disabled.
+- status: canonical
+
+### SSIAG Provider Readiness Implementation
+- path: `modules/secure-identity-access-governance/internal/provider/readiness.go`
+- title: SSIAG Three-Layer Provider Readiness Manager
+- surface_type: Go safe readiness process and result implementation
+- truth_role: exact installation-bound observation, validation, and disabled operational-eligibility truth
+- owner: SSIAG foundation maintainers
+- scope: Invokes only the fixed readiness operation through complete private staging, validates the closed native observation, and binds it to one TOPS, provider, installation, UTC time, and result digest.
+- relationships: implements -> `knowledge/ssiag/PROVIDER-READINESS.md`; conforms_to -> `knowledge/ssiag/schemas/v1/provider-readiness-result.schema.json`; consumes -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/SignedBundleReadiness.swift`
+- consumers: SSIAG server, qxctl, tests, security reviewers
+- deferred_projections: readiness history and future operational-eligibility evaluation
+- notes: Structural and policy success can produce only `readiness_proven_operations_disabled`; all provider operations remain false.
 - status: canonical
 
 ### SSIAG macOS Provider Foundation Trust
@@ -6198,11 +6276,50 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: Swift receipt-v2 installation and provenance implementation
 - truth_role: exact side-by-side adapter receipt identity and independent Go-foundation receipt verification truth
 - owner: SSIAG macOS provider maintainers
-- scope: Emits and validates the exact adapter receipt and independently validates the invoking foundation receipt, platform, ownership, and executable digest.
+- scope: Emits and validates legacy single-file or exact sorted multi-file bundle receipts and independently validates the invoking foundation receipt, platform, ownership, and executable digest.
 - relationships: implements -> `knowledge/schemas/v2/install-receipt.schema.json`; governed_by -> `knowledge/ssiag/SPEC.md`; composes_with -> `modules/secure-identity-access-governance/internal/provider/receipt.go`
 - consumers: macOS provider lifecycle, foundation trust verifier, invariant ownership assurance, tests, security reviewers
-- deferred_projections: production Apple signing evidence after separate ratification
+- deferred_projections: production Apple signing and notarization release evidence
 - notes: macOS fixed root compatibility aliases are independently resolved and verified; aliases do not relax executable or receipt identity.
+- status: canonical
+
+### SSIAG macOS Signed-Bundle Readiness Implementation
+- path: `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/SignedBundleReadiness.swift`
+- title: SSIAG macOS Native Signed-Bundle Readiness
+- surface_type: Swift Apple Security structural, requirement, and session implementation
+- truth_role: decision-neutral native readiness observation truth
+- owner: SSIAG macOS provider maintainers
+- scope: Validates complete code-signature structure, compiles and evaluates one receipt-owned native requirement, observes bounded Security Session flags, and fixes operational eligibility false.
+- relationships: implements -> `knowledge/ssiag/PROVIDER-READINESS.md`; conforms_to -> `knowledge/ssiag/schemas/v1/provider-readiness-observation.schema.json`; consumed_by -> `modules/secure-identity-access-governance/internal/provider/readiness.go`
+- consumers: SSIAG readiness manager, qxctl through SSIAG, tests, release engineers, security reviewers
+- deferred_projections: Phase 10C data-protection Keychain operational eligibility
+- notes: It requests or emits no certificate/profile/entitlement payload, native error, requirement text, session ID, provider payload, Keychain item, key operation, or secret.
+- status: canonical
+
+### SSIAG macOS Production Bundle Builder
+- path: `modules/ssiag-provider-macos-keychain/scripts/build-production-bundle.sh`
+- title: SSIAG macOS Production Bundle Builder
+- surface_type: macOS release packaging and signing tool
+- truth_role: complete-before-signing Developer ID, hardened runtime, timestamp, notarization, and stapling procedure
+- owner: SSIAG macOS provider maintainers
+- scope: Builds a minimal app-like bundle from reviewed external identity/policy evidence, signs after all inputs are present, verifies, notarizes, staples, and emits one immutable bundle for receipt-v2 installation.
+- relationships: implements -> `knowledge/ssiag/PROVIDER-READINESS.md`; produces_for -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/Lifecycle.swift`
+- consumers: release engineers, security reviewers, installation tooling
+- deferred_projections: signed release attestations governed by SODV
+- notes: No Team ID, bundle ID, entitlement, access group, requirement, profile, or notary credential is hardcoded into Symphony source.
+- status: canonical
+
+### qxctl SSIAG Provider Readiness Client
+- path: `tools/qxctl/internal/ssiagclient/provider_readiness.go`
+- title: qxctl SSIAG Provider Readiness Client
+- surface_type: Go authenticated safe-result consumer
+- truth_role: exact request and closed response validation truth
+- owner: qxctl maintainers
+- scope: Sends one permission-backed readiness observation request to the authenticated SSIAG Unix endpoint and rejects identity, schema, digest, time, reason, layer, or operational-flag drift.
+- relationships: conforms_to -> `knowledge/ssiag/schemas/v1/provider-readiness-observation-request.schema.json`; conforms_to -> `knowledge/ssiag/schemas/v1/provider-readiness-result.schema.json`; implements -> `knowledge/ssiag/PROVIDER-READINESS.md`
+- consumers: qxctl readiness command, tests, administrators, headless agents
+- deferred_projections: rendered readiness diagnostics
+- notes: It accepts no adapter path, signing evidence, provider payload, or secret and never launches the adapter directly.
 - status: canonical
 
 ### SSIAG Receipt-Backed Provider Integration Regression
@@ -6741,7 +6858,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - status: canonical
 
 ## Deferred Projections
-Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, sixty-six common SKV v1 JSON Schemas, four common SKV v2 JSON Schemas, twenty-eight SSIAG authorization, grant-planning, policy-administration, provider-control, provider-trust, and provider-binding JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
+Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, sixty-six common SKV v1 JSON Schemas, four common SKV v2 JSON Schemas, thirty-two SSIAG authorization, grant-planning, policy-administration, provider-control, provider-trust, provider-binding, and provider-readiness JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.
 
 ## Non-Authorized Artifacts
 This index authorizes none of the following unless an indexed vector Contract Quad and `knowledge/SPEC.md` explicitly permit the bounded derived form:

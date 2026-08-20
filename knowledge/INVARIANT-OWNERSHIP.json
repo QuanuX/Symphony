@@ -30,6 +30,7 @@
       "format_version": 1,
       "implementation_path": "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport",
       "operation_ids": [
+        "engop:symphony:ssiag.macos-keychain-provider.readiness.observe",
         "engop:symphony:ssiag.provider.metadata-capabilities",
         "engop:symphony:ssiag.provider.metadata-handshake",
         "engop:symphony:ssiag.provider.metadata-status"
@@ -656,10 +657,71 @@
       "statement": "Before any provider response is accepted, SSIAG selects one exact receipt-v2 entry point and verifies its allowlisted path, regular-file identity, ownership, mode, bytes, platform, protocol, version, and metadata capability; the adapter independently verifies the invoking SSIAG executable under the ratified path, ownership, receipt, and signing policy. Drift, ambiguity, replacement, incompatibility, or failed mutual trust reports unavailable without fallback or operational access.",
       "status": "active",
       "title": "Provider executables have mutual exact provenance"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:ssiag.macos-keychain-provider.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestClientRejectsUnsafeProviderReadinessEvidence"
+          ],
+          "path": "tools/qxctl/internal/ssiagclient/client_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:ssiag.provider-readiness-separation",
+      "ipc_boundary": true,
+      "owner_component": "ssiag-provider-boundary",
+      "owner_contract": "knowledge/ssiag/PROVIDER-READINESS.md",
+      "producer_implementations": [
+        "modules/secure-identity-access-governance/internal/provider/launcher.go",
+        "modules/secure-identity-access-governance/internal/provider/readiness.go",
+        "modules/secure-identity-access-governance/internal/provider/receipt.go",
+        "modules/secure-identity-access-governance/internal/server/server.go",
+        "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/Lifecycle.swift",
+        "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/ReceiptV2.swift",
+        "modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/SignedBundleReadiness.swift",
+        "modules/ssiag-provider-macos-keychain/Sources/SymphonySSIAGMacOSKeychain/main.swift"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestProviderLauncherStagesCompleteReceiptOwnedBundle"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/provider/launcher_test.go"
+        },
+        {
+          "cases": [
+            "TestProviderReadinessKeepsThreeLayersAndOperationsDisabled",
+            "TestProviderReadinessRejectsOperationalOrMalformedObservation"
+          ],
+          "path": "modules/secure-identity-access-governance/internal/provider/readiness_test.go"
+        },
+        {
+          "cases": [
+            "fabricatedBundleCannotBecomeStructuralOrPolicyAuthority",
+            "readinessLayersCannotEnableProviderBehavior",
+            "readinessSourcesContainNoKeychainItemOrKeyOperationCalls"
+          ],
+          "path": "modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/SignedBundleReadinessTests.swift"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "realProcessReadinessOperationHonorsDisabledBoundary"
+          ],
+          "path": "modules/ssiag-provider-macos-keychain/Tests/SSIAGMacOSKeychainSupportTests/SignedBundleReadinessTests.swift"
+        }
+      ],
+      "statement": "SSIAG readiness preserves three independent layers: native structural signature observation, protected installation-policy requirement evaluation, and an explicitly disabled Phase 10B operational-eligibility gate. Receipt v2 owns every bounded app-bundle file, the cgo-free foundation reconstructs and re-verifies the complete bundle in private staging, and qxctl receives only safe metadata with every operational flag false.",
+      "status": "active",
+      "title": "Provider readiness evidence cannot become operational authority"
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v1",
-  "registry_digest": "sha256:4878ed602625d1f521d6cb04e142294012c815f6f21f8774144cd9f268865ed4",
+  "registry_digest": "sha256:3b4cc3cdca152245101b5d20118170fd60b92ef5893bc50b2479d6b48f7ab55f",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

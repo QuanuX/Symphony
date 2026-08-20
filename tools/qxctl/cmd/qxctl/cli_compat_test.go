@@ -28,7 +28,7 @@ func TestCLICompatibility(t *testing.T) {
 		{name: "invalid modules flag", args: []string{"modules", "check", "--json"}, status: 1, output: help},
 		{name: "invalid module shape", args: []string{"module", "inspect"}, status: 1, output: help},
 		{name: "missing SSIAG subcommand", args: []string{"ssiag"}, status: 1, output: "ssiag failed: SSIAG subcommand is required: status, providers, provider, doctor, grants, policy, enrollment, or supervisor\n"},
-		{name: "missing SSIAG provider subcommand", args: []string{"ssiag", "provider"}, status: 1, output: "ssiag failed: SSIAG provider subcommand is required: show, verify, installations, or binding\n"},
+		{name: "missing SSIAG provider subcommand", args: []string{"ssiag", "provider"}, status: 1, output: "ssiag failed: SSIAG provider subcommand is required: show, verify, readiness, installations, or binding\n"},
 		{name: "missing SSIAG provider binding subcommand", args: []string{"ssiag", "provider", "binding"}, status: 1, output: "ssiag failed: SSIAG provider binding subcommand is required: status, plan, apply, apply-status, or recover\n"},
 		{name: "missing SSIAG policy subcommand", args: []string{"ssiag", "policy"}, status: 1, output: "ssiag failed: SSIAG policy subcommand is required: status, propose, apply, or recover\n"},
 		{name: "SSIAG policy proposal identity required", args: []string{"ssiag", "policy", "propose"}, status: 1, output: "ssiag failed: --tops-id is required\n"},

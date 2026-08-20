@@ -59,8 +59,10 @@ const (
 	backendFeatureSSIAGPolicy          = "ssfv:symphony:ssiag-foundation.policy-administration"
 	backendFeatureSSIAGProviders       = "ssfv:symphony:ssiag-foundation.provider-metadata-registry"
 	backendFeatureSSIAGProviderTrust   = "ssfv:symphony:ssiag-foundation.provider-trust-assurance"
+	backendFeatureSSIAGReadiness       = "ssfv:symphony:ssiag-foundation.provider-readiness-assurance"
 	backendFeatureSSIAGProviderBinding = "ssfv:symphony:ssiag-foundation.provider-binding-lifecycle"
 	backendFeatureSSIAGMacOSMetadata   = "ssfv:symphony:ssiag.macos-keychain-metadata"
+	backendFeatureSSIAGMacOSReadiness  = "ssfv:symphony:ssiag.macos-signed-bundle-readiness"
 	backendFeatureSTAV                 = "ssfv:symphony:stav-append-authority"
 	backendFeatureSTAVEnrollment       = "ssfv:symphony:stav-append-authority.tops-enrollment"
 	backendFeatureSTAVSupervisor       = "ssfv:symphony:stav-append-authority.native-supervision"
@@ -134,6 +136,10 @@ var reviewedBackendFeatureBindings = map[string][]commandregistry.FeatureBinding
 	"ssiag.provider.verify": {
 		{FeatureID: backendFeatureSSIAGProviderTrust, Interaction: "validate"},
 		{FeatureID: backendFeatureSSIAGMacOSMetadata, Interaction: "validate"},
+	},
+	"ssiag.provider.readiness": {
+		{FeatureID: backendFeatureSSIAGReadiness, Interaction: "validate"},
+		{FeatureID: backendFeatureSSIAGMacOSReadiness, Interaction: "validate"},
 	},
 	"ssiag.provider.installations":        {{FeatureID: backendFeatureSSIAGProviderBinding, Interaction: "discover"}},
 	"ssiag.provider.binding.status":       {{FeatureID: backendFeatureSSIAGProviderBinding, Interaction: "inspect"}},

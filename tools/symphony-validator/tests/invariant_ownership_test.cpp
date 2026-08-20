@@ -110,6 +110,7 @@ void copy_fixture(const fs::path& repository, const fs::path& destination) {
         fs::create_directories(destination / implementation_path);
         if (adapter.at("adapter_id") == "adapter:symphony:ssiag.macos-keychain-provider.v1") {
             copy_regular(repository, destination, implementation_path + "/Protocol.swift");
+            copy_regular(repository, destination, implementation_path + "/SignedBundleReadiness.swift");
         }
     }
     for (const auto& invariant : registry.at("invariants")) {

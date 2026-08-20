@@ -1,6 +1,6 @@
 # SSIAG Protocol Schemas v1
 
-These twenty-eight exact Draft 2020-12 schemas are canonical SSIAG authorization, grant-planning, protected local policy-administration, and provider-protocol truth.
+These thirty-two exact Draft 2020-12 schemas are canonical SSIAG authorization, grant-planning, protected local policy-administration, and provider-protocol truth.
 
 - `authorization-request.schema.json` closes caller-declared operation, resource, audience, scope, correlation, freshness, and requested expiry.
 - `authorization-decision.schema.json` closes the caller-neutral allow/deny result and safe policy/configuration evidence.
@@ -13,6 +13,8 @@ These twenty-eight exact Draft 2020-12 schemas are canonical SSIAG authorization
 - `provider-handshake.schema.json`, `provider-control-request.schema.json`, and `provider-control-response.schema.json` close the metadata-only, one-request/one-response provider subprocess protocol and its embedded safe error.
 - `provider-executable-trust.schema.json` is the retained per-TOPS exact-version trust-inspection compatibility declaration. One `provider-trust/<provider_name>.json` file, where `provider_name` is a safe token, lives under the protected SSIAG configuration tree; absence means `unbound`. It binds adapter and foundation path, installation/executable digest, ownership, signing evidence, and exact provider protocol, but is not the protected provider-binding lifecycle state.
 - `provider-trust-verification-request.schema.json` and `provider-trust-result.schema.json` close the safe qxctl-to-foundation request and exact read-only result shape. Capabilities and checks are explicit, sorted, unique arrays bounded to 128 entries.
+- `provider-readiness-observation-request.schema.json`, `provider-readiness-observation.schema.json`, and `provider-readiness-result.schema.json` close the separate three-layer structural, native-policy, and operational-eligibility readiness circuit. Phase 10B fixes eligibility and every operational flag false.
+- `macos-signing-policy.schema.json` closes the receipt-owned native `SecRequirement` policy. Requirement text remains inside the staged bundle and only its compiled digest may enter safe readiness output.
 - `provider-one-shot-channel.schema.json` closes only a synthetic inherited-file-descriptor descriptor for Phase 9 conformance. Its invalid descriptor `-1`, zero-byte limit, `synthetic: true`, and `operational: false` assertions prohibit opening it or treating it as secret delivery.
 - `provider-installation-inventory.schema.json` and `provider-binding-status.schema.json` close bounded exact-installation observation and the protected current/previous binding plus attempt state.
 - `provider-binding-plan-request.schema.json`, `provider-binding-plan.schema.json`, and `provider-binding-apply-request.schema.json` close subject-free desired-binding input, dependency-ordered exact plans, and digest-only compare-and-swap apply input.
@@ -26,5 +28,7 @@ The control request binds request, correlation, TOPS, provider, adapter, operati
 There is no persistent cancellation message or cancellation schema in v1. The one-request-per-process transport makes the Go invocation context authoritative: cancellation or deadline closes the child pipes, terminates the child, and waits for cleanup. A wire cancellation promise would be unobservable after a hung child stops reading and would incorrectly imply a persistent session.
 
 Every `*_digest` in these provider schemas uses the same rule as the qxctl trust-result implementation: parse the closed object, omit its own digest member, serialize compact UTF-8 JSON with Go `encoding/json` semantics and recursive lexical object-key order, hash those bytes with SHA-256, and encode `sha256:` followed by 64 lowercase hexadecimal characters. Array order is significant. Capability and check arrays must therefore already be sorted and unique before hashing.
+
+Provider control v1 is unchanged by readiness. The adapter's fixed `readiness` process operation emits the separate readiness-observation protocol; it does not add an operation or member to either provider-control schema.
 
 The schemas never accept caller class as a decision input. Subject identity comes from the authenticated local channel; target-host ownership or an exact granted permission is the gate. Policy and provider-binding apply mutate only separate operational per-TOPS state and report `canonical: false`; neither can apply canonical repository truth. A grant or binding plan remains non-mutating input. Every provider-binding operational-access, provider-operation, and secret-channel flag is fixed false.

@@ -395,6 +395,36 @@ func TestProviderTrustEndpointsRemainSSIAGOwnedAndFailClosedWhenUnbound(t *testi
 		cancel()
 		t.Fatalf("duplicate provider verification member was accepted: status=%d", response.StatusCode)
 	}
+	readinessPayload := []byte(`{"protocol":"symphony.ssiag.provider-readiness-observation-request.v1","request_id":"018f0c3a-7b2d-7e11-8c12-0242ac120003","correlation_id":"018f0c3a-7b2d-7e11-8c12-0242ac120004","authority_basis":"host_owner"}`)
+	response, err = client.Post("http://unix/v1/provider-readiness/native/observations", "application/json", bytes.NewReader(readinessPayload))
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	var readiness provider.ReadinessResult
+	if err := json.NewDecoder(response.Body).Decode(&readiness); err != nil {
+		_ = response.Body.Close()
+		cancel()
+		t.Fatal(err)
+	}
+	_ = response.Body.Close()
+	if response.StatusCode != http.StatusOK || readiness.Protocol != provider.ProviderReadinessResultProtocol ||
+		readiness.ReadinessState != "unavailable" || !readiness.ReadOnly || readiness.Canonical ||
+		readiness.OperationalAccessEnabled || readiness.ProviderOperationsEnabled || readiness.SecretChannelEnabled {
+		cancel()
+		t.Fatalf("unbound provider readiness did not fail closed: status=%d result=%+v", response.StatusCode, readiness)
+	}
+	duplicateReadiness := []byte(`{"protocol":"symphony.ssiag.provider-readiness-observation-request.v1","request_id":"018f0c3a-7b2d-7e11-8c12-0242ac120003","correlation_id":"018f0c3a-7b2d-7e11-8c12-0242ac120004","authority_basis":"host_owner","authority_basis":"granted_permission"}`)
+	response, err = client.Post("http://unix/v1/provider-readiness/native/observations", "application/json", bytes.NewReader(duplicateReadiness))
+	if err != nil {
+		cancel()
+		t.Fatal(err)
+	}
+	_ = response.Body.Close()
+	if response.StatusCode != http.StatusBadRequest {
+		cancel()
+		t.Fatalf("duplicate provider readiness member was accepted: status=%d", response.StatusCode)
+	}
 	cancel()
 	if err := <-done; err != nil {
 		t.Fatal(err)

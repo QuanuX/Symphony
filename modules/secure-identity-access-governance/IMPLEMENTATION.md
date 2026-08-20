@@ -225,11 +225,23 @@ CGO_ENABLED=0 go build -trimpath ./cmd/symphony-ssiag
 
 Exit gate: exact metadata-provider versions can be installed in either order, explicitly docked, undocked, rolled backward, queried after completion, and recovered after interruption without path leakage, recency guesses, fallback, unaudited mutation, or Keychain access.
 
-## Phase 10B–10E — Enable the Ratified Per-User macOS Keychain Profile (future gates)
+## Phase 10B — Signed-Bundle and Security-Session Readiness (implemented, operations disabled)
+
+1. Install a complete app-like Swift bundle under sorted exact receipt-v2 ownership while retaining the one-file provider-v1 compatibility reader.
+2. Reject symlinks, unknown entries, unsafe modes, changed bytes, partial ownership, ambiguous versions, and unreceipted content; uninstall owned files before the receipt and recover only from unchanged retained evidence.
+3. Reconstruct and re-verify every receipt-owned file in a private directory from the cgo-free Go foundation before invoking the fixed `readiness` operation.
+4. Observe native structural signature state, evaluate the receipt-owned configured code requirement, and observe bounded Security Session flags as three non-authorizing evidence inputs.
+5. Expose one permission-backed `qxctl ssiag provider readiness` route with a strict closed request/result schema and no path, signer, requirement, profile, entitlement, payload, or enablement input.
+6. Keep authorization decision, operational eligibility, operational access, provider operations, and secret channel false. Do not call Keychain item or key APIs.
+7. Provide an explicit production-bundle build workflow requiring release-owned identity, policy, signing, and notarization inputs; do not claim a signed publication merely because the builder exists.
+
+Exit gate: achieved for source-level packaging and metadata-only readiness. Complete bundle ownership, private staging, native structural/policy/session evidence, headless qxctl administration, and fail-closed compatibility are implemented while all operations remain disabled. A real release signing identity and signed/notarized publication remain release-time evidence, not repository hardcodes.
+
+## Phase 10C–10E — Enable the Ratified Per-User macOS Keychain Profile (future gates)
 
 Ratified architecture: per-user and session-aware operation; no system/headless login-Keychain access; TOPS-scoped non-synchronizing items by default; most restrictive usable accessibility/user presence; preference for non-exportable key operations before general export.
 
-Remaining entry details: exact Keychain item namespace, classes and operations; access groups; access-control matrix; locked-session behavior; signing requirements; entitlements; notarization; distribution; update trust; provisioning; deletion/rotation semantics.
+Remaining entry details: exact Keychain item namespace, classes and operations; access groups; access-control matrix; locked-session behavior; deletion/rotation semantics; non-exportable operation policy; and any separately justified import/export channel. Phase 10B signing and session readiness evidence does not authorize these choices.
 
 1. Import Apple Security only in the Swift adapter.
 2. Map each Keychain operation to a canonical provider capability.
