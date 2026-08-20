@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sav:accord-reference:v1",
+  "title": "SAV Accord Reference v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "reference_id", "relationship_id", "owner_vector", "owner_contract", "subject_id", "object_id", "relationship_type", "applicability", "applicability_rule", "evidence_protocols", "evaluation_rule", "evaluation_version", "violation_severity", "exception_eligible", "exception_bounds", "thermal_restriction", "source_digest", "record_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sav.accord-reference.v1"},
+    "reference_id": {"type": "string", "pattern": "^savref:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "relationship_id": {"type": "string", "pattern": "^savrel:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "owner_vector": {"$ref": "#/$defs/token"},
+    "owner_contract": {"$ref": "#/$defs/path"},
+    "subject_id": {"$ref": "#/$defs/identity"},
+    "object_id": {"$ref": "#/$defs/identity"},
+    "relationship_type": {"enum": ["depends_on", "implements", "administers", "invokes", "validates", "compatible_with", "selected_as", "docked_at", "requires_trait", "provides_trait", "supersedes", "evidenced_by", "prohibited_from"]},
+    "applicability": {"enum": ["always", "conditional", "not_applicable"]},
+    "applicability_rule": {"$ref": "#/$defs/rule"},
+    "evidence_protocols": {"type": "array", "minItems": 1, "maxItems": 32, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}},
+    "evaluation_rule": {"$ref": "#/$defs/rule"},
+    "evaluation_version": {"$ref": "#/$defs/token"},
+    "violation_severity": {"enum": ["advisory", "blocking"]},
+    "exception_eligible": {"type": "boolean"},
+    "exception_bounds": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/text"}]},
+    "thermal_restriction": {"enum": ["freezing_only", "cold_or_freezing", "not_applicable"]},
+    "source_digest": {"$ref": "#/$defs/digest"},
+    "record_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "token": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "identity": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"},
+    "path": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "^(knowledge|modules|libraries|tools)/(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F]).+$"},
+    "text": {"type": "string", "minLength": 1, "maxLength": 65536, "pattern": "^(?![\\s\\S]*[\\u0000-\\u0009\\u000B-\\u001F\\u007F])[\\s\\S]+$"},
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "source_ids", "pointer", "expected_json", "expected_digest"],
+      "properties": {
+        "kind": {"enum": ["always", "never", "source_available", "source_content_digest_equals", "source_payload_pointer_equals"]},
+        "source_ids": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+        "pointer": {"oneOf": [{"type": "null"}, {"type": "string", "maxLength": 4096, "pattern": "^(?:/(?:[^~/]|~[01])*)*$"}]},
+        "expected_json": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1, "maxLength": 65536}]},
+        "expected_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]}
+      },
+      "allOf": [
+        {"if": {"properties": {"kind": {"enum": ["always", "never"]}}}, "then": {"properties": {"source_ids": {"maxItems": 0}, "pointer": {"type": "null"}, "expected_json": {"type": "null"}, "expected_digest": {"type": "null"}}}},
+        {"if": {"properties": {"kind": {"const": "source_available"}}}, "then": {"properties": {"source_ids": {"minItems": 1}, "pointer": {"type": "null"}, "expected_json": {"type": "null"}, "expected_digest": {"type": "null"}}}},
+        {"if": {"properties": {"kind": {"const": "source_content_digest_equals"}}}, "then": {"properties": {"source_ids": {"minItems": 1, "maxItems": 1}, "pointer": {"type": "null"}, "expected_json": {"type": "null"}, "expected_digest": {"$ref": "#/$defs/digest"}}}},
+        {"if": {"properties": {"kind": {"const": "source_payload_pointer_equals"}}}, "then": {"properties": {"source_ids": {"minItems": 1, "maxItems": 1}, "pointer": {"type": "string"}, "expected_json": {"type": "string"}, "expected_digest": {"type": "null"}}}}
+      ]
+    }
+  }
+}

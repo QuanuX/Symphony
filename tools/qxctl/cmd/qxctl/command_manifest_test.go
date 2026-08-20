@@ -23,8 +23,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 157 {
-		t.Fatalf("registered command count = %d, want 157", len(manifest.Commands))
+	if len(manifest.Commands) != 177 {
+		t.Fatalf("registered command count = %d, want 177", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -66,6 +66,10 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 		"qxcmd:symphony:validate.warning.accept",
 		"qxcmd:symphony:validate.warning.show",
 		"qxcmd:symphony:validate.root-summary",
+		"qxcmd:symphony:sav.current",
+		"qxcmd:symphony:sav.evaluate",
+		"qxcmd:symphony:sev.command-surface",
+		"qxcmd:symphony:sev.verify",
 	} {
 		if _, ok := seen[required]; !ok {
 			t.Errorf("required stable command ID %q is absent", required)
@@ -106,6 +110,26 @@ func TestCommandRegistryBindsVectorCapabilitiesNotBindingSelection(t *testing.T)
 		"qxcmd:symphony:sodv.propose":              featureSODVProposal,
 		"qxcmd:symphony:sodv.recover":              featureSODVRecovery,
 		"qxcmd:symphony:sodv.project":              featureSODVProjection,
+		"qxcmd:symphony:sav.inspect":               featureSAV,
+		"qxcmd:symphony:sav.reference-check":       featureSAV,
+		"qxcmd:symphony:sav.current":               featureSAV,
+		"qxcmd:symphony:sav.evaluate":              featureSAV,
+		"qxcmd:symphony:sav.diff":                  featureSAV,
+		"qxcmd:symphony:sav.explain":               featureSAV,
+		"qxcmd:symphony:sav.graph":                 featureSAV,
+		"qxcmd:symphony:sav.compatibility":         featureSAV,
+		"qxcmd:symphony:sev.inspect":               featureSEV,
+		"qxcmd:symphony:sev.case-open":             featureSEV,
+		"qxcmd:symphony:sev.impact":                featureSEV,
+		"qxcmd:symphony:sev.plan":                  featureSEV,
+		"qxcmd:symphony:sev.verify":                featureSEV,
+		"qxcmd:symphony:sev.recalculate":           featureSEV,
+		"qxcmd:symphony:sev.status":                featureSEV,
+		"qxcmd:symphony:sev.recover":               featureSEV,
+		"qxcmd:symphony:sev.close":                 featureSEV,
+		"qxcmd:symphony:sev.command-surface":       featureSEV,
+		"qxcmd:symphony:sev.graph":                 featureSEV,
+		"qxcmd:symphony:sev.compatibility":         featureSEV,
 		"qxcmd:symphony:ssfv.inspect":              featureSSFV,
 		"qxcmd:symphony:ssfv.check":                featureSSFVSnapshot,
 		"qxcmd:symphony:ssfv.diff":                 featureSSFVComparison,

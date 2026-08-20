@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact seventy-four-record SSFV partial catalog and coverage inventory, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, persistent SSFV maintenance journals, explicit qxctl session transitions, implemented report-only lifecycle planning/journaling, separately authorized apply-compatible coordination, and Maestro receptor presence plus derived inventory defined by `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No unratified feature record, complete-catalog or installed-host-completeness claim, complete legacy-invariant claim, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, login/session hook, native Windows host integration, live process activation, receipt-v1 mutation, arbitrary entry-point execution, or Maestro engine-execution behavior may be inferred from these contract slices.
+Architect-ratified cross-vector architecture with the explicitly bounded `0.1.0-dev` foundation/coordinator, SKVI/SCLV/SACV/SODV/SSFV proposal/projection slices, exact seventy-six-record SSFV partial catalog and coverage inventory, the SAV composition-evaluation contract, the SEV evolution contract and SCSEV profile, protected user-default engine binding registry, user-scope reconciliation journals, SSIAG-authorized noncanonical session journals, persistent SSFV maintenance journals, explicit qxctl session transitions, implemented report-only lifecycle planning/journaling, separately authorized apply-compatible coordination, and Maestro receptor presence plus derived inventory defined by `knowledge/LIFECYCLE.md`. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative when the related implementation exists. No unratified feature record, complete-catalog or installed-host-completeness claim, complete legacy-invariant claim, canonical apply, endpoint document, publication, repository-specific binding, system/TOPS binding, observer, login/session hook, native Windows host integration, live process activation, receipt-v1 mutation, arbitrary entry-point execution, or Maestro engine-execution behavior may be inferred from these contract slices.
 
 ## Purpose
 
@@ -14,7 +14,7 @@ Canonical Markdown and typed artifacts owned by a vector remain source truth. A 
 
 Shared C++ mechanics MUST remain domain-neutral and authority-free. They MAY implement bounded parsing, snapshots, digests, path safety, protocol framing, journals, proposal assembly, transaction staging, and install-receipt mechanics. They MUST NOT decide feature-worthiness, architectural purpose, compatibility acceptance, publication approval, legal capacity, or ratification.
 
-`knowledge/INVARIANTS.md` owns the common lowest-authoritative-layer assignment rule. Every new or materially modified cross-component invariant MUST have one stable `invariant:` ID and one owner contract/component in `knowledge/INVARIANT-OWNERSHIP.json`, with owner producer regression, consumer boundary rejection, and allowed-adapter evidence. An IPC invariant additionally requires a real-process test of the receipt-backed executable boundary. The current twelve-record v1 inventory is explicitly incremental and makes no legacy- or installed-host-completeness claim. A client or validator may reject owner evidence but cannot become the owner by reimplementing it.
+`knowledge/INVARIANTS.md` owns the common lowest-authoritative-layer assignment rule. Every new or materially modified cross-component invariant MUST have one stable `invariant:` ID and one owner contract/component in `knowledge/INVARIANT-OWNERSHIP.json`, with owner producer regression, consumer boundary rejection, and allowed-adapter evidence. An IPC invariant additionally requires a real-process test of the receipt-backed executable boundary. The current thirteen-record v1 inventory is explicitly incremental and makes no legacy- or installed-host-completeness claim. A client or validator may reject owner evidence but cannot become the owner by reimplementing it.
 
 New installable modules and administrator-facing interactions are incomplete until the same reviewed change supplies their stable SSFV owner-scope/feature identity and feature-administration mapping or explicit evidence-backed disposition. The SSFV engine detects uncovered declarations from supplied canonical registries and descriptors without qxctl or AI. C++ evaluates identities; it does not generate names, decide feature semantics, or infer exemption from absence.
 
@@ -95,6 +95,18 @@ The v1 identifier family is:
 | `symphony.validation.baseline.v1` | repository/version-bound warning delta baseline |
 | `symphony.validation.warning-state.v1` | subject-aware warning classification, occurrence history, and digest-linked transitions |
 | `symphony.repository.root-summary.v1` | deterministic machine-checked root documentation evidence |
+| `symphony.sav.accord-reference.v1` | immutable owner-routed expected relationship |
+| `symphony.sav.current-resolution-input.v1` | bounded typed source-projection input |
+| `symphony.sav.current-snapshot.v1` | immutable coverage-qualified derived CURRENT evidence |
+| `symphony.sav.evaluation-result.v1` | three-axis accord findings and summary |
+| `symphony.sav.graph-projection.v1` | disposable deterministic composition graph |
+| `symphony.sav.named-version.v1` | immutable composition envelope |
+| `symphony.sev.case-open-input.v1` | planned-change or encountered-novelty admission |
+| `symphony.sev.evolution-case.v1` | append-forward noncanonical evolution case |
+| `symphony.sev.impact-result.v1` | bounded affected and unresolved surface evidence |
+| `symphony.sev.disposition-plan.v1` | dependency graph, ready set, blockers, and actions |
+| `symphony.sev.transition-verification-result.v1` | evidence-based external-action verification |
+| `symphony.sev.command-surface-assessment.v1` | SCSEV qxctl consequence coverage |
 
 The initial exact schemas are:
 
@@ -156,6 +168,8 @@ The initial exact schemas are:
 - `knowledge/schemas/v2/engine-descriptor.schema.json`;
 - `knowledge/schemas/v2/lifecycle-boot-journal.schema.json`;
 - `knowledge/schemas/v2/lifecycle-boot-head.schema.json`.
+
+Vector-owned SAV and SEV schemas are listed by `knowledge/sav/schemas/v1/MANIFEST.md` and `knowledge/sev/schemas/v1/MANIFEST.md`. They remain owned by their Contract Quads rather than the common umbrella schema directory.
 
 The process request limit is 1 MiB and the response limit is 4 MiB. JSON depth is at most 64, parsed values/events at most 16,384, one string or key at most 65,536 bytes, integers remain within `[-9007199254740991, 9007199254740991]`, and a request deadline is at most 300 seconds ahead. Unknown fields, duplicate names, invalid UTF-8, trailing data, floating-point values, out-of-range integers, unsupported versions, excessive input, unsafe paths, expired deadlines, and target mismatch fail closed. Standard output is reserved for the single protocol response; bounded diagnostics use standard error. Arguments and environment variables MUST NOT carry secrets or arbitrary executable instructions.
 
@@ -350,8 +364,16 @@ Implementation proceeds as tested vertical slices:
 6. SSFV Contract Quad, namespace, initially empty registry, and payload contracts;
 7. SSFV engine and qxctl client;
 8. first distributed SSFV feature bootstrap after source review and feature-worthiness ratification.
+9. SAV and SEV vocabulary, ownership, schemas, and SCSEV profile;
+10. SAV read-only engine and exact qxctl administration;
+11. SEV/SCSEV read-only engine and exact qxctl administration;
+12. Maestro/coordinator Accordare integration, Named Versions, Capsules, Blueprints, and opt-in session/novelty profiles as separate verified slices.
 
 Scaffolding every engine in advance is prohibited. Each slice must pass its contract, conformance, receipt, and uninstall gates before the next vector claims implementation.
+
+## Accordare Contract Gate
+
+The Architect ratified SAV as an independent C++26 composition-evaluation vector and SEV as an independent C++26 evolution vector. SCSEV is the first SEV profile and reuses SSFV/qxctl/engine-operation truth instead of creating a third engine or registry. CURRENT is immutable, derived, content-addressed, coverage-qualified, and noncanonical. Named Versions are immutable composition envelopes. Source vectors retain canonical ownership. Reference resolution, composition accord, and transition readiness are separate axes. qxctl remains the preferred headless administrator, SSIAG authority remains caller-neutral, Maestro docking remains presence only, and the existing coordinator supplies durable dynamic two-way replanning. V1 adds no canonical database or native Windows engine and no hot/warm-path dependency.
 
 ## SSFV Gate
 

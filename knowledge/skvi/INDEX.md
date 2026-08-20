@@ -6101,6 +6101,32 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: Records API-contract governance behavior without claiming an endpoint, SDK, publication, or canonical apply.
 - status: canonical
 
+### SAV Engine Semantic Feature Record
+- path: `modules/sav-engine/FEATURES.md`
+- title: SAV Engine Semantic Features
+- surface_type: distributed SSFV feature record
+- truth_role: canonical semantic feature truth for the independently installed SAV engine
+- owner: SAV engine maintainers
+- scope: Owns `ssfv:symphony:sav-engine` for exact source scope `modules/sav-engine`.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `modules/sav-engine/SPEC.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`
+- consumers: symphony-ssfv, qxctl, SAV maintainers, reviewers, agentic tools
+- deferred_projections: composition accord catalog and disposable graph
+- notes: Records immutable CURRENT resolution and relationship-evaluation behavior without host discovery, canonical mutation, or apply authority.
+- status: canonical
+
+### SEV Engine Semantic Feature Record
+- path: `modules/sev-engine/FEATURES.md`
+- title: SEV Engine Semantic Features
+- surface_type: distributed SSFV feature record
+- truth_role: canonical semantic feature truth for the independently installed SEV engine and SCSEV profile
+- owner: SEV engine maintainers
+- scope: Owns `ssfv:symphony:sev-engine` for exact source scope `modules/sev-engine`.
+- relationships: governed_by -> `knowledge/ssfv/SPEC.md`; owned_by -> `modules/sev-engine/SPEC.md`; registered_in -> `knowledge/ssfv/REGISTRY.md`
+- consumers: symphony-ssfv, qxctl, SEV and SCSEV maintainers, reviewers, agentic tools
+- deferred_projections: evolution-case catalog, command-surface consequence evidence, and disposable graph
+- notes: Records proposal-only evolution and SCSEV consequence assessment without durable session, execution, authorization, or canonical mutation authority.
+- status: canonical
+
 ### SODV Engine Semantic Feature Record
 - path: `modules/sodv-engine/FEATURES.md`
 - title: SODV Engine Semantic Features
@@ -6856,6 +6882,397 @@ Future validator increments may add separately ratified deterministic checks wit
 - deferred_projections: repository-writing fixtures
 - notes: Tests compare expected state and do not authorize the validator to repair README.
 - status: canonical
+
+### SAV Intent
+- path: `knowledge/sav/INTENT.md`
+- title: SAV Intent
+- surface_type: canonical Markdown contract surface
+- truth_role: SAV vocabulary, ownership, procedure, and boundary truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines the ratified SAV domain while preserving adjacent vector ownership and caller-neutral authority.
+- relationships: declares -> `knowledge/sav/MANIFEST.md`
+- consumers: SAV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Current implementation claims remain subordinate to exact source and regression evidence.
+- status: canonical
+
+### SAV Manifest
+- path: `knowledge/sav/MANIFEST.md`
+- title: SAV Manifest
+- surface_type: canonical Markdown contract surface
+- truth_role: SAV vocabulary, ownership, procedure, and boundary truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines the ratified SAV domain while preserving adjacent vector ownership and caller-neutral authority.
+- relationships: depends_on -> `knowledge/sav/INTENT.md`; declares -> `knowledge/sav/SPEC.md`
+- consumers: SAV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Current implementation claims remain subordinate to exact source and regression evidence.
+- status: canonical
+
+### SAV Skill
+- path: `knowledge/sav/SKILL.md`
+- title: SAV Skill
+- surface_type: canonical Markdown contract surface
+- truth_role: SAV vocabulary, ownership, procedure, and boundary truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines the ratified SAV domain while preserving adjacent vector ownership and caller-neutral authority.
+- relationships: depends_on -> `knowledge/sav/SPEC.md`; depends_on -> `knowledge/SKILL.md`
+- consumers: SAV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Current implementation claims remain subordinate to exact source and regression evidence.
+- status: canonical
+
+### SAV Spec
+- path: `knowledge/sav/SPEC.md`
+- title: SAV Spec
+- surface_type: canonical Markdown contract surface
+- truth_role: SAV vocabulary, ownership, procedure, and boundary truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines the ratified SAV domain while preserving adjacent vector ownership and caller-neutral authority.
+- relationships: depends_on -> `knowledge/sav/INTENT.md`; depends_on -> `knowledge/sav/MANIFEST.md`; depends_on -> `knowledge/SPEC.md`
+- consumers: SAV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Current implementation claims remain subordinate to exact source and regression evidence.
+- status: canonical
+
+### SAV Relationships
+- path: `knowledge/sav/RELATIONSHIPS.md`
+- title: SAV Relationships
+- surface_type: canonical Markdown contract surface
+- truth_role: SAV vocabulary, ownership, procedure, and boundary truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines the ratified SAV domain while preserving adjacent vector ownership and caller-neutral authority.
+- relationships: depends_on -> `knowledge/sav/SPEC.md`
+- consumers: SAV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Current implementation claims remain subordinate to exact source and regression evidence.
+- status: canonical
+
+### SAV Traits
+- path: `knowledge/sav/TRAITS.md`
+- title: SAV Traits
+- surface_type: canonical Markdown contract surface
+- truth_role: SAV vocabulary, ownership, procedure, and boundary truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines the ratified SAV domain while preserving adjacent vector ownership and caller-neutral authority.
+- relationships: depends_on -> `knowledge/sav/SPEC.md`
+- consumers: SAV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Current implementation claims remain subordinate to exact source and regression evidence.
+- status: canonical
+
+### SAV Manifest
+- path: `knowledge/sav/schemas/v1/MANIFEST.md`
+- title: SAV Manifest
+- surface_type: canonical Markdown contract surface
+- truth_role: SAV vocabulary, ownership, procedure, and boundary truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines the ratified SAV domain while preserving adjacent vector ownership and caller-neutral authority.
+- relationships: depends_on -> `knowledge/sav/SPEC.md`
+- consumers: SAV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Current implementation claims remain subordinate to exact source and regression evidence.
+- status: canonical
+
+### SAV Accord Reference
+- path: `knowledge/sav/schemas/v1/accord-reference.schema.json`
+- title: SAV Accord Reference
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: SAV machine payload and result shape truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines one bounded strict v1 object without granting source ownership, authority, apply, or persistence.
+- relationships: depends_on -> `knowledge/sav/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sav-engine/SPEC.md`
+- consumers: SAV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
+- status: canonical
+
+### SAV Source Projection
+- path: `knowledge/sav/schemas/v1/source-projection.schema.json`
+- title: SAV Source Projection
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: SAV machine payload and result shape truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines one bounded strict v1 object without granting source ownership, authority, apply, or persistence.
+- relationships: depends_on -> `knowledge/sav/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sav-engine/SPEC.md`
+- consumers: SAV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
+- status: canonical
+
+### SAV Current Resolution Input
+- path: `knowledge/sav/schemas/v1/current-resolution-input.schema.json`
+- title: SAV Current Resolution Input
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: SAV machine payload and result shape truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines one bounded strict v1 object without granting source ownership, authority, apply, or persistence.
+- relationships: depends_on -> `knowledge/sav/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sav-engine/SPEC.md`
+- consumers: SAV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
+- status: canonical
+
+### SAV Current Snapshot
+- path: `knowledge/sav/schemas/v1/current-snapshot.schema.json`
+- title: SAV Current Snapshot
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: SAV machine payload and result shape truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines one bounded strict v1 object without granting source ownership, authority, apply, or persistence.
+- relationships: depends_on -> `knowledge/sav/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sav-engine/SPEC.md`
+- consumers: SAV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
+- status: canonical
+
+### SAV Evaluation Input
+- path: `knowledge/sav/schemas/v1/evaluation-input.schema.json`
+- title: SAV Evaluation Input
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: SAV machine payload and result shape truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines one bounded strict v1 object without granting source ownership, authority, apply, or persistence.
+- relationships: depends_on -> `knowledge/sav/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sav-engine/SPEC.md`
+- consumers: SAV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
+- status: canonical
+
+### SAV Evaluation Result
+- path: `knowledge/sav/schemas/v1/evaluation-result.schema.json`
+- title: SAV Evaluation Result
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: SAV machine payload and result shape truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines one bounded strict v1 object without granting source ownership, authority, apply, or persistence.
+- relationships: depends_on -> `knowledge/sav/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sav-engine/SPEC.md`
+- consumers: SAV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
+- status: canonical
+
+### SAV Graph Projection
+- path: `knowledge/sav/schemas/v1/graph-projection.schema.json`
+- title: SAV Graph Projection
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: SAV machine payload and result shape truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines one bounded strict v1 object without granting source ownership, authority, apply, or persistence.
+- relationships: depends_on -> `knowledge/sav/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sav-engine/SPEC.md`
+- consumers: SAV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
+- status: canonical
+
+### SAV Named Version
+- path: `knowledge/sav/schemas/v1/named-version.schema.json`
+- title: SAV Named Version
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: SAV machine payload and result shape truth
+- owner: SAV maintainers under Architect ratification
+- scope: Defines one bounded strict v1 object without granting source ownership, authority, apply, or persistence.
+- relationships: depends_on -> `knowledge/sav/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sav-engine/SPEC.md`
+- consumers: SAV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
+- status: canonical
+
+### SEV Intent
+- path: `knowledge/sev/INTENT.md`
+- title: SEV Intent
+- surface_type: canonical Markdown contract surface
+- truth_role: SEV vocabulary, ownership, procedure, and boundary truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines the ratified SEV domain while preserving adjacent vector ownership and caller-neutral authority.
+- relationships: declares -> `knowledge/sev/MANIFEST.md`
+- consumers: SEV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Current implementation claims remain subordinate to exact source and regression evidence.
+- status: canonical
+
+### SEV Manifest
+- path: `knowledge/sev/MANIFEST.md`
+- title: SEV Manifest
+- surface_type: canonical Markdown contract surface
+- truth_role: SEV vocabulary, ownership, procedure, and boundary truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines the ratified SEV domain while preserving adjacent vector ownership and caller-neutral authority.
+- relationships: depends_on -> `knowledge/sev/INTENT.md`; declares -> `knowledge/sev/SPEC.md`
+- consumers: SEV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Current implementation claims remain subordinate to exact source and regression evidence.
+- status: canonical
+
+### SEV Skill
+- path: `knowledge/sev/SKILL.md`
+- title: SEV Skill
+- surface_type: canonical Markdown contract surface
+- truth_role: SEV vocabulary, ownership, procedure, and boundary truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines the ratified SEV domain while preserving adjacent vector ownership and caller-neutral authority.
+- relationships: depends_on -> `knowledge/sev/SPEC.md`; depends_on -> `knowledge/SKILL.md`
+- consumers: SEV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Current implementation claims remain subordinate to exact source and regression evidence.
+- status: canonical
+
+### SEV Spec
+- path: `knowledge/sev/SPEC.md`
+- title: SEV Spec
+- surface_type: canonical Markdown contract surface
+- truth_role: SEV vocabulary, ownership, procedure, and boundary truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines the ratified SEV domain while preserving adjacent vector ownership and caller-neutral authority.
+- relationships: depends_on -> `knowledge/sev/INTENT.md`; depends_on -> `knowledge/sev/MANIFEST.md`; depends_on -> `knowledge/SPEC.md`
+- consumers: SEV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Current implementation claims remain subordinate to exact source and regression evidence.
+- status: canonical
+
+### SEV Dispositions
+- path: `knowledge/sev/DISPOSITIONS.md`
+- title: SEV Dispositions
+- surface_type: canonical Markdown contract surface
+- truth_role: SEV vocabulary, ownership, procedure, and boundary truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines the ratified SEV domain while preserving adjacent vector ownership and caller-neutral authority.
+- relationships: depends_on -> `knowledge/sev/SPEC.md`
+- consumers: SEV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Current implementation claims remain subordinate to exact source and regression evidence.
+- status: canonical
+
+### SEV Qxctl Command Surface
+- path: `knowledge/sev/profiles/qxctl-command-surface.md`
+- title: SEV Qxctl Command Surface
+- surface_type: canonical Markdown contract surface
+- truth_role: SEV vocabulary, ownership, procedure, and boundary truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines the ratified SEV domain while preserving adjacent vector ownership and caller-neutral authority.
+- relationships: depends_on -> `knowledge/sev/SPEC.md`; governed_by -> `knowledge/FEATURE-ADMINISTRATION.md`
+- consumers: SEV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Current implementation claims remain subordinate to exact source and regression evidence.
+- status: canonical
+
+### SEV Manifest
+- path: `knowledge/sev/schemas/v1/MANIFEST.md`
+- title: SEV Manifest
+- surface_type: canonical Markdown contract surface
+- truth_role: SEV vocabulary, ownership, procedure, and boundary truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines the ratified SEV domain while preserving adjacent vector ownership and caller-neutral authority.
+- relationships: depends_on -> `knowledge/sev/SPEC.md`
+- consumers: SEV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Current implementation claims remain subordinate to exact source and regression evidence.
+- status: canonical
+
+### SEV Case Open Input
+- path: `knowledge/sev/schemas/v1/case-open-input.schema.json`
+- title: SEV Case Open Input
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: SEV machine payload and result shape truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines one bounded strict v1 object without granting source ownership, authority, apply, or persistence.
+- relationships: depends_on -> `knowledge/sev/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sev-engine/SPEC.md`
+- consumers: SEV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
+- status: canonical
+
+### SEV Evolution Case
+- path: `knowledge/sev/schemas/v1/evolution-case.schema.json`
+- title: SEV Evolution Case
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: SEV machine payload and result shape truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines one bounded strict v1 object without granting source ownership, authority, apply, or persistence.
+- relationships: depends_on -> `knowledge/sev/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sev-engine/SPEC.md`
+- consumers: SEV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
+- status: canonical
+
+### SEV Impact Result
+- path: `knowledge/sev/schemas/v1/impact-result.schema.json`
+- title: SEV Impact Result
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: SEV machine payload and result shape truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines one bounded strict v1 object without granting source ownership, authority, apply, or persistence.
+- relationships: depends_on -> `knowledge/sev/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sev-engine/SPEC.md`
+- consumers: SEV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
+- status: canonical
+
+### SEV Disposition Plan
+- path: `knowledge/sev/schemas/v1/disposition-plan.schema.json`
+- title: SEV Disposition Plan
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: SEV machine payload and result shape truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines one bounded strict v1 object without granting source ownership, authority, apply, or persistence.
+- relationships: depends_on -> `knowledge/sev/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sev-engine/SPEC.md`
+- consumers: SEV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
+- status: canonical
+
+### SEV Transition Verification Input
+- path: `knowledge/sev/schemas/v1/transition-verification-input.schema.json`
+- title: SEV Transition Verification Input
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: SEV machine payload and result shape truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines one bounded strict v1 object without granting source ownership, authority, apply, or persistence.
+- relationships: depends_on -> `knowledge/sev/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sev-engine/SPEC.md`
+- consumers: SEV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
+- status: canonical
+
+### SEV Transition Verification Result
+- path: `knowledge/sev/schemas/v1/transition-verification-result.schema.json`
+- title: SEV Transition Verification Result
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: SEV machine payload and result shape truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines one bounded strict v1 object without granting source ownership, authority, apply, or persistence.
+- relationships: depends_on -> `knowledge/sev/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sev-engine/SPEC.md`
+- consumers: SEV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
+- status: canonical
+
+### SEV Command Surface Assessment
+- path: `knowledge/sev/schemas/v1/command-surface-assessment.schema.json`
+- title: SEV Command Surface Assessment
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: SEV machine payload and result shape truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines one bounded strict v1 object without granting source ownership, authority, apply, or persistence.
+- relationships: depends_on -> `knowledge/sev/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sev-engine/SPEC.md`
+- consumers: SEV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
+- status: canonical
+
+### SEV Graph Projection
+- path: `knowledge/sev/schemas/v1/graph-projection.schema.json`
+- title: SEV Graph Projection
+- surface_type: Draft 2020-12 JSON Schema protocol contract
+- truth_role: SEV machine payload and result shape truth
+- owner: SEV maintainers under Architect ratification
+- scope: Defines one bounded strict v1 object without granting source ownership, authority, apply, or persistence.
+- relationships: depends_on -> `knowledge/sev/schemas/v1/MANIFEST.md`; implemented_by -> `modules/sev-engine/SPEC.md`
+- consumers: SEV engine, qxctl, Symphony Validator, knowledge coordinator, Maestro integration, reviewers, agents
+- deferred_projections: canonical apply, persistent graph/database authority, public publication
+- notes: Unknown critical versions and fields fail closed; a valid shape is evidence, not permission.
+- status: canonical
+
 
 ## Deferred Projections
 Unless a surface is explicitly authorized by its Contract Quad, generated indexes, graphs, DuckDB, JSONL, HDF5 outputs, qxctl integrations, validator implementations outside the bounded `tools/symphony-validator/` contract, and publication pipelines remain deferred and are not canonical authority. Projections authorized by `knowledge/SPEC.md` and a vector Contract Quad remain disposable and digest-bound. The indexed STAV JSON Schemas/fixtures, sixty-six common SKV v1 JSON Schemas, four common SKV v2 JSON Schemas, thirty-two SSIAG authorization, grant-planning, policy-administration, provider-control, provider-trust, provider-binding, and provider-readiness JSON Schemas, four SKVI JSON Schemas, five SCLV JSON Schemas, six SACV JSON Schemas, eight SODV operational JSON Schemas, and eighteen SSFV v1/v2 JSON Schemas are Architect-ratified protocol truth, not generated projections.

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sev:command-surface-assessment:v1",
+  "title": "SCSEV Command-Surface Assessment v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "source_snapshot_digest", "proposal_digest", "state", "consequences", "missing", "invented_identity", "invented_grammar", "apply_authorized", "read_only", "assessment_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sev.command-surface-assessment.v1"},
+    "source_snapshot_digest": {"$ref": "#/$defs/digest"},
+    "proposal_digest": {"$ref": "#/$defs/digest"},
+    "state": {"enum": ["complete", "semantic_registration_required", "administration_unintegrated", "blocked_incompatible", "retirement_incomplete", "unresolved"]},
+    "consequences": {"type": "array", "minItems": 14, "maxItems": 64, "items": {"$ref": "#/$defs/consequence"}},
+    "missing": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/consequence"}},
+    "invented_identity": {"const": false},
+    "invented_grammar": {"const": false},
+    "apply_authorized": {"const": false},
+    "read_only": {"const": true},
+    "assessment_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "identity": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"},
+    "consequence": {"type": "object", "additionalProperties": false, "required": ["family", "state", "detail", "evidence_digests"], "properties": {"family": {"$ref": "#/$defs/identity"}, "state": {"enum": ["satisfied", "missing", "prohibited", "not_applicable", "unresolved"]}, "detail": {"type": "string", "minLength": 1, "maxLength": 65536}, "evidence_digests": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/digest"}}}}
+  }
+}

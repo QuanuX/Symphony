@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sav:evaluation-input:v1",
+  "title": "SAV Evaluation Input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "current", "references"],
+  "properties": {
+    "protocol": {"const": "symphony.sav.evaluation-input.v1"},
+    "current": {"$ref": "current-snapshot.schema.json"},
+    "references": {"type": "array", "maxItems": 1024, "items": {"$ref": "accord-reference.schema.json"}}
+  }
+}

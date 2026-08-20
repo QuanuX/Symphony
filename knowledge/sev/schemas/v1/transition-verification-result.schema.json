@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sev:transition-verification-result:v1",
+  "title": "SEV Transition Verification Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "case_digest", "plan_digest", "action_id", "execution_evidence_digest", "observed_snapshot_digest", "outcome", "recalculation_required", "detail", "read_only", "result_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sev.transition-verification-result.v1"},
+    "case_digest": {"$ref": "#/$defs/digest"},
+    "plan_digest": {"$ref": "#/$defs/digest"},
+    "action_id": {"$ref": "#/$defs/identity"},
+    "execution_evidence_digest": {"$ref": "#/$defs/digest"},
+    "observed_snapshot_digest": {"$ref": "#/$defs/digest"},
+    "outcome": {"enum": ["proven_complete", "proven_failed", "indeterminate", "stale", "incompatible"]},
+    "recalculation_required": {"type": "boolean"},
+    "detail": {"type": "string", "minLength": 1, "maxLength": 65536},
+    "read_only": {"const": true},
+    "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "identity": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"}
+  }
+}

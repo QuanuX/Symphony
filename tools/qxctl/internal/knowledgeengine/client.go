@@ -31,6 +31,10 @@ const (
 	sacvEngineID             = "symphony-sacv"
 	sodvModuleID             = "sodv-engine"
 	sodvEngineID             = "symphony-sodv"
+	savModuleID              = "sav-engine"
+	savEngineID              = "symphony-sav"
+	sevModuleID              = "sev-engine"
+	sevEngineID              = "symphony-sev"
 	ssfvModuleID             = "ssfv-engine"
 	ssfvEngineID             = "symphony-ssfv"
 	sclvLocalGitID           = "symphony-sclv-evidence-local-git"
@@ -86,6 +90,18 @@ var sodvSpec = engineSpec{
 	requiredReceptors: []string{"symphony.maestro.knowledge-engine.v1"}, expectedFiles: expectedSODVFiles,
 }
 
+var savSpec = engineSpec{
+	label: "SAV", moduleID: savModuleID, engineID: savEngineID, componentKind: "vector_engine",
+	vectorID: "sav", processProtocol: processProtocol,
+	requiredReceptors: []string{"symphony.maestro.knowledge-engine.v1"}, expectedFiles: expectedSAVFiles,
+}
+
+var sevSpec = engineSpec{
+	label: "SEV", moduleID: sevModuleID, engineID: sevEngineID, componentKind: "vector_engine",
+	vectorID: "sev", processProtocol: processProtocol,
+	requiredReceptors: []string{"symphony.maestro.knowledge-engine.v1"}, expectedFiles: expectedSEVFiles,
+}
+
 var ssfvSpec = engineSpec{
 	label: "SSFV", moduleID: ssfvModuleID, engineID: ssfvEngineID, componentKind: "vector_engine",
 	vectorID: "ssfv", processProtocol: processProtocol,
@@ -112,6 +128,8 @@ var engineSpecsByRole = map[string]engineSpec{
 	"sclv":        sclvSpec,
 	"sacv":        sacvSpec,
 	"sodv":        sodvSpec,
+	"sav":         savSpec,
+	"sev":         sevSpec,
 	"ssfv":        ssfvSpec,
 	"coordinator": sessionSpec,
 }
@@ -261,6 +279,14 @@ func InvokeSACV(ctx context.Context, prefix, version, repositoryRoot, operation 
 
 func InvokeSODV(ctx context.Context, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
 	return invoke(ctx, sodvSpec, prefix, version, repositoryRoot, operation, payload)
+}
+
+func InvokeSAV(ctx context.Context, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
+	return invoke(ctx, savSpec, prefix, version, repositoryRoot, operation, payload)
+}
+
+func InvokeSEV(ctx context.Context, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
+	return invoke(ctx, sevSpec, prefix, version, repositoryRoot, operation, payload)
 }
 
 func InvokeSSFV(ctx context.Context, prefix, version, repositoryRoot, operation string, payload []byte) (Response, error) {
@@ -848,6 +874,30 @@ func expectedSODVFiles(version string) map[string]struct{} {
 		base + "SPEC.md",
 		license + "LICENSE-AGPL-3.0",
 		license + "nlohmann-json-LICENSE.MIT",
+	}
+	result := make(map[string]struct{}, len(paths))
+	for _, path := range paths {
+		result[path] = struct{}{}
+	}
+	return result
+}
+
+func expectedSAVFiles(version string) map[string]struct{} {
+	return expectedAccordareFiles("sav-engine", "symphony-sav", version)
+}
+
+func expectedSEVFiles(version string) map[string]struct{} {
+	return expectedAccordareFiles("sev-engine", "symphony-sev", version)
+}
+
+func expectedAccordareFiles(module, engine, version string) map[string]struct{} {
+	base := "share/doc/symphony/" + module + "/" + version + "/"
+	license := "share/licenses/symphony-" + module + "/" + version + "/"
+	paths := []string{
+		"libexec/symphony/" + module + "/" + version + "/" + engine,
+		"share/symphony/receipts/" + module + "/" + version + "/install-receipt.json",
+		base + "INTENT.md", base + "MANIFEST.md", base + "INSTALL.md", base + "SKILL.md", base + "SPEC.md",
+		license + "LICENSE-AGPL-3.0", license + "nlohmann-json-LICENSE.MIT",
 	}
 	result := make(map[string]struct{}, len(paths))
 	for _, path := range paths {

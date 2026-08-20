@@ -292,6 +292,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:7e50a78ac6d732c6b2fbfae9402c97eea487e1a59c7c377aa2aa736aebe65b6c`
 - notes: Architect-ratified F3 nested record for bounded OpenAPI compatibility evidence; coverage remains partial and no broader runtime or canonical authority is implied.
 
+- feature_id: `ssfv:symphony:sav-engine`
+- feature_file: `modules/sav-engine/FEATURES.md`
+- owner_contract: `modules/sav-engine/SPEC.md`
+- source_scope: `modules/sav-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:d0414a1d64babb47f861354fd6d77ae4976c4e5f86981a240bf1753a5381d78d`
+- notes: Architect-ratified Accordare feature for independently installed CURRENT resolution and relationship evaluation; the catalog remains partial and the engine remains read-only.
+
 - feature_id: `ssfv:symphony:sclv-engine`
 - feature_file: `modules/sclv-engine/FEATURES.md`
 - owner_contract: `modules/sclv-engine/SPEC.md`
@@ -345,6 +354,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:sclv-engine`
 - record_digest: `sha256:fa19e3b49c6c34cd552da01b1b163dce6e46d24cb3c4bf90cf0f78dc71dffe5d`
 - notes: Architect-ratified F3 nested record for provider-neutral local-Git and air-gap evidence normalization; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:sev-engine`
+- feature_file: `modules/sev-engine/FEATURES.md`
+- owner_contract: `modules/sev-engine/SPEC.md`
+- source_scope: `modules/sev-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:cfa0612bbe2b218a2c344c957fadb384fd88abe4b929a1fbcb3ac36fcc4d28ca`
+- notes: Architect-ratified Accordare feature for report/proposal-only evolution and SCSEV consequence assessment; the catalog remains partial and apply remains external.
 
 - feature_id: `ssfv:symphony:skvi-engine`
 - feature_file: `modules/skvi-engine/FEATURES.md`

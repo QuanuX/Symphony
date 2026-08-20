@@ -33,6 +33,8 @@ var supportedRoles = map[string]roleIdentity{
 	"sclv":        {moduleID: "sclv-engine", engineID: "symphony-sclv"},
 	"skvi":        {moduleID: "skvi-engine", engineID: "symphony-skvi"},
 	"sodv":        {moduleID: "sodv-engine", engineID: "symphony-sodv"},
+	"sav":         {moduleID: "sav-engine", engineID: "symphony-sav"},
+	"sev":         {moduleID: "sev-engine", engineID: "symphony-sev"},
 	"ssfv":        {moduleID: "ssfv-engine", engineID: "symphony-ssfv"},
 }
 

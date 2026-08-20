@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sav:named-version:v1",
+  "title": "SAV Named Version v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "named_version_id", "alias", "predecessor_digest", "component_requirements", "contract_requirements", "accord_reference_ids", "required_traits", "extension_points", "platform_bounds", "thermal_restriction", "sealed_at", "composition_authority_reference", "sodv_publication_reference", "named_version_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sav.named-version.v1"},
+    "named_version_id": {"type": "string", "pattern": "^savver:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "alias": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[^\\u0000-\\u001F\\u007F]+$"},
+    "predecessor_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "component_requirements": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/requirement"}},
+    "contract_requirements": {"type": "array", "maxItems": 256, "items": {"$ref": "#/$defs/requirement"}},
+    "accord_reference_ids": {"type": "array", "maxItems": 1024, "uniqueItems": true, "items": {"type": "string", "pattern": "^savref:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"}},
+    "required_traits": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"type": "string", "pattern": "^savtrait:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"}},
+    "extension_points": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+    "platform_bounds": {"type": "array", "minItems": 1, "maxItems": 32, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+    "thermal_restriction": {"const": "freezing_only"},
+    "sealed_at": {"$ref": "#/$defs/utc"},
+    "composition_authority_reference": {"$ref": "#/$defs/identity"},
+    "sodv_publication_reference": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/identity"}]},
+    "named_version_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "identity": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"},
+    "utc": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"},
+    "requirement": {"type": "object", "additionalProperties": false, "required": ["id", "version", "digest", "required"], "properties": {"id": {"$ref": "#/$defs/identity"}, "version": {"$ref": "#/$defs/identity"}, "digest": {"$ref": "#/$defs/digest"}, "required": {"type": "boolean"}}}
+  }
+}

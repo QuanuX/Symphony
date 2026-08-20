@@ -79,6 +79,14 @@ type sodvOptions struct {
 	jsonOutput           bool
 }
 
+type accordareOptions struct {
+	prefix     string
+	version    string
+	repository string
+	input      string
+	jsonOutput bool
+}
+
 type ssfvOptions struct {
 	prefix                  string
 	version                 string
@@ -267,7 +275,7 @@ func newRootCommand() (*cobra.Command, error) {
 	stav := newSTAVCommand()
 	root.AddCommand(
 		ssiag, stav, newKnowledgeCommand(), newSKVICommand(), newSCLVCommand(),
-		newSACVCommand(), newSODVCommand(), newSSFVCommand(), newMaestroCommand(),
+		newSACVCommand(), newSODVCommand(), newSAVCommand(), newSEVCommand(), newSSFVCommand(), newMaestroCommand(),
 		newValidateCommand(),
 	)
 	if err := commandregistry.Validate(root); err != nil {
@@ -841,6 +849,78 @@ func newSODVCommand() *cobra.Command {
 	return command
 }
 
+func newSAVCommand() *cobra.Command {
+	operations := []struct {
+		leaf, engine, operationID, interaction, input, output string
+	}{
+		{"inspect", "inspect", "inspect", "inspect", "", "symphony.sav.inspect-result.v1"},
+		{"reference-check", "reference_check", "reference-check", "validate", "", "symphony.sav.reference-check-result.v1"},
+		{"current", "current_resolve", "current-resolve", "query", "symphony.sav.current-resolution-input.v1", "symphony.sav.current-snapshot.v1"},
+		{"evaluate", "evaluate", "evaluate", "validate", "symphony.sav.evaluation-input.v1", "symphony.sav.evaluation-result.v1"},
+		{"diff", "diff", "diff", "query", "", "symphony.sav.diff-result.v1"},
+		{"explain", "explain", "explain", "query", "", "symphony.sav.explain-result.v1"},
+		{"graph", "project_graph", "project-graph", "query", "", "symphony.sav.graph-projection.v1"},
+		{"compatibility", "compatibility", "compatibility", "validate", "", "symphony.sav.compatibility-result.v1"},
+	}
+	command := structural("sav", fmt.Errorf("SAV subcommand is required: inspect, reference-check, current, evaluate, diff, explain, graph, or compatibility"))
+	for _, operation := range operations {
+		options := accordareOptions{version: "0.1.0-dev"}
+		child := &cobra.Command{Use: operation.leaf, Args: usageOnlyArgs,
+			RunE: func(*cobra.Command, []string) error { return runAccordare("sav", operation.engine, options) }}
+		registeredAccordare(child, "sav."+operation.leaf, featureSAV, operation.interaction,
+			"engop:symphony:sav."+operation.operationID, operation.input, operation.output)
+		child.Flags().StringVar(&options.prefix, "prefix", "", "exact SAV installation prefix")
+		child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed SAV engine version")
+		child.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
+		child.Flags().BoolVar(&options.jsonOutput, "json", false, "emit operation result JSON")
+		if operation.leaf != "inspect" {
+			child.Flags().StringVar(&options.input, "input", "", "no-follow JSON operation payload file")
+		}
+		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+		command.AddCommand(child)
+	}
+	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	return command
+}
+
+func newSEVCommand() *cobra.Command {
+	operations := []struct {
+		leaf, engine, operationID, interaction, input, output string
+	}{
+		{"inspect", "inspect", "inspect", "inspect", "", "symphony.sev.inspect-result.v1"},
+		{"case-open", "case_open", "case.open", "propose", "symphony.sev.case-open-input.v1", "symphony.sev.evolution-case.v1"},
+		{"impact", "impact_assess", "impact.assess", "query", "", "symphony.sev.impact-result.v1"},
+		{"plan", "disposition_plan", "disposition.plan", "propose", "", "symphony.sev.disposition-plan.v1"},
+		{"verify", "transition_verify", "transition.verify", "validate", "symphony.sev.transition-verification-input.v1", "symphony.sev.transition-verification-result.v1"},
+		{"recalculate", "case_recalculate", "case.recalculate", "recover", "", "symphony.sev.evolution-case.v1"},
+		{"status", "case_status", "case.status", "query", "", "symphony.sev.case-status-result.v1"},
+		{"recover", "case_recover", "case.recover", "recover", "", "symphony.sev.case-recovery-advice.v1"},
+		{"close", "case_close", "case.close", "propose", "", "symphony.sev.case-close-proposal.v1"},
+		{"command-surface", "command_surface_assess", "command-surface.assess", "validate", "", "symphony.sev.command-surface-assessment.v1"},
+		{"graph", "project_graph", "graph.project", "query", "", "symphony.sev.graph-projection.v1"},
+		{"compatibility", "compatibility", "compatibility", "validate", "", "symphony.sev.compatibility-result.v1"},
+	}
+	command := structural("sev", fmt.Errorf("SEV subcommand is required: inspect, case-open, impact, plan, verify, recalculate, status, recover, close, command-surface, graph, or compatibility"))
+	for _, operation := range operations {
+		options := accordareOptions{version: "0.1.0-dev"}
+		child := &cobra.Command{Use: operation.leaf, Args: usageOnlyArgs,
+			RunE: func(*cobra.Command, []string) error { return runAccordare("sev", operation.engine, options) }}
+		registeredAccordare(child, "sev."+operation.leaf, featureSEV, operation.interaction,
+			"engop:symphony:sev."+operation.operationID, operation.input, operation.output)
+		child.Flags().StringVar(&options.prefix, "prefix", "", "exact SEV installation prefix")
+		child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed SEV engine version")
+		child.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
+		child.Flags().BoolVar(&options.jsonOutput, "json", false, "emit operation result JSON")
+		if operation.leaf != "inspect" {
+			child.Flags().StringVar(&options.input, "input", "", "no-follow JSON operation payload file")
+		}
+		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+		command.AddCommand(child)
+	}
+	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	return command
+}
+
 func newSACVCommand() *cobra.Command {
 	command := structural("sacv", fmt.Errorf("SACV subcommand is required: inspect, check, diff, propose, or project"))
 	for _, operation := range []string{"inspect", "check", "diff", "propose", "project"} {
@@ -1355,7 +1435,7 @@ func exactOneUsageArg(_ *cobra.Command, args []string) error {
 
 func knownTopLevel(value string) bool {
 	switch value {
-	case "--help", "--version", "doctor", "contracts", "commands", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "ssfv", "maestro", "validate":
+	case "--help", "--version", "doctor", "contracts", "commands", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "sav", "sev", "ssfv", "maestro", "validate":
 		return true
 	default:
 		return false
@@ -1466,6 +1546,20 @@ func failurePrefix(args []string) string {
 			switch args[1] {
 			case "inspect", "check", "verify", "propose", "recover", "project":
 				return "sodv " + args[1]
+			}
+		}
+	case "sav":
+		if len(args) > 1 {
+			switch args[1] {
+			case "inspect", "reference-check", "current", "evaluate", "diff", "explain", "graph", "compatibility":
+				return "sav " + args[1]
+			}
+		}
+	case "sev":
+		if len(args) > 1 {
+			switch args[1] {
+			case "inspect", "case-open", "impact", "plan", "verify", "recalculate", "status", "recover", "close", "command-surface", "graph", "compatibility":
+				return "sev " + args[1]
 			}
 		}
 	case "ssfv":

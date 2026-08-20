@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sav:evaluation-result:v1",
+  "title": "SAV Evaluation Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "snapshot_digest", "reference_set_digest", "reference_resolution", "composition_accord", "transition_readiness", "findings", "summary", "read_only", "noncanonical", "result_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sav.evaluation-result.v1"},
+    "snapshot_digest": {"$ref": "#/$defs/digest"},
+    "reference_set_digest": {"$ref": "#/$defs/digest"},
+    "reference_resolution": {"enum": ["resolved", "reference_unresolved", "stale", "invalid"]},
+    "composition_accord": {"enum": ["in_accord", "cacophonous", "indeterminate"]},
+    "transition_readiness": {"enum": ["ready", "attunement_required", "blocked", "not_evaluated"]},
+    "findings": {"type": "array", "maxItems": 1024, "items": {"$ref": "#/$defs/finding"}},
+    "summary": {"$ref": "#/$defs/summary"},
+    "read_only": {"const": true},
+    "noncanonical": {"const": true},
+    "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "identity": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"},
+    "finding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["reference_id", "relationship_id", "subject_id", "object_id", "owner_contract", "applicability", "state", "reason_code", "detail", "evidence_source_ids", "evidence_digests", "sev_eligible", "finding_digest"],
+      "properties": {
+        "reference_id": {"type": "string", "pattern": "^savref:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+        "relationship_id": {"type": "string", "pattern": "^savrel:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+        "subject_id": {"$ref": "#/$defs/identity"},
+        "object_id": {"$ref": "#/$defs/identity"},
+        "owner_contract": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "applicability": {"enum": ["applicable", "not_applicable", "unknown"]},
+        "state": {"enum": ["in_accord", "out_of_accord", "unknown", "not_applicable"]},
+        "reason_code": {"$ref": "#/$defs/identity"},
+        "detail": {"type": "string", "minLength": 1, "maxLength": 65536},
+        "evidence_source_ids": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+        "evidence_digests": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/digest"}},
+        "sev_eligible": {"type": "boolean"},
+        "finding_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "summary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["in_accord", "out_of_accord", "unknown", "not_applicable"],
+      "properties": {
+        "in_accord": {"type": "integer", "minimum": 0, "maximum": 1024},
+        "out_of_accord": {"type": "integer", "minimum": 0, "maximum": 1024},
+        "unknown": {"type": "integer", "minimum": 0, "maximum": 1024},
+        "not_applicable": {"type": "integer", "minimum": 0, "maximum": 1024}
+      }
+    }
+  }
+}

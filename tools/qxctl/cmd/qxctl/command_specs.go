@@ -38,6 +38,8 @@ const (
 	featureSODVProposal                = "ssfv:symphony:sodv-engine.forward-release-record-proposal"
 	featureSODVRecovery                = "ssfv:symphony:sodv-engine.interrupted-publication-reconciliation"
 	featureSODVProjection              = "ssfv:symphony:sodv-engine.release-transaction-projection"
+	featureSAV                         = "ssfv:symphony:sav-engine"
+	featureSEV                         = "ssfv:symphony:sev-engine"
 	featureSSFV                        = "ssfv:symphony:ssfv-engine"
 	featureSSFVSnapshot                = "ssfv:symphony:ssfv-engine.catalog-integrity-snapshot"
 	featureSSFVComparison              = "ssfv:symphony:ssfv-engine.semantic-freshness-comparison"
@@ -222,6 +224,26 @@ func registeredInvariantCheck(command *cobra.Command) *cobra.Command {
 	spec := commandSpec("knowledge.invariant.check", featureInvariantAssurance, "validate")
 	spec.OutputProtocols = []string{"symphony.validation.result.v1"}
 	spec.ResultValidationProtocols = []string{"symphony.validation.result.v1"}
+	return commandregistry.Attach(command, spec)
+}
+
+func registeredAccordare(
+	command *cobra.Command,
+	key, featureID, interaction, engineOperationID string,
+	inputProtocol, outputProtocol string,
+) *cobra.Command {
+	spec := commandSpec(key, featureID, interaction)
+	spec.BackendOperationIDs = []string{engineOperationID}
+	if inputProtocol != "" {
+		spec.InputProtocols = []string{inputProtocol}
+	}
+	if outputProtocol != "" {
+		spec.OutputProtocols = []string{outputProtocol}
+		spec.ResultValidationProtocols = []string{outputProtocol}
+	}
+	if interaction == "propose" {
+		spec.Mutability = "proposal_only"
+	}
 	return commandregistry.Attach(command, spec)
 }
 
