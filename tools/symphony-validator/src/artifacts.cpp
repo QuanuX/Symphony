@@ -9,9 +9,9 @@ namespace fs = std::filesystem;
 #include "evidence.hpp"
 
 bool is_authorized_canonical_json(const std::string& relative_path) {
-    // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, and SSFV protocol artifacts. Directory-prefix
+    // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, SSFV, SAV, and SEV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 173> authorized_paths = {
+    static const std::array<std::string, 195> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -183,6 +183,28 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/ssfv/schemas/v2/diff-input.schema.json",
         "knowledge/ssfv/schemas/v2/diff-result.schema.json",
         "knowledge/ssfv/schemas/v2/proposal-input.schema.json",
+        "knowledge/sav/schemas/v1/accord-reference.schema.json",
+        "knowledge/sav/schemas/v1/source-projection.schema.json",
+        "knowledge/sav/schemas/v1/current-resolution-input.schema.json",
+        "knowledge/sav/schemas/v1/current-snapshot.schema.json",
+        "knowledge/sav/schemas/v1/evaluation-input.schema.json",
+        "knowledge/sav/schemas/v1/evaluation-result.schema.json",
+        "knowledge/sav/schemas/v1/graph-projection.schema.json",
+        "knowledge/sav/schemas/v1/named-version.schema.json",
+        "knowledge/sav/schemas/v1/extension-capsule.schema.json",
+        "knowledge/sav/schemas/v1/installation-blueprint.schema.json",
+        "knowledge/sev/schemas/v1/case-open-input.schema.json",
+        "knowledge/sev/schemas/v1/evolution-case.schema.json",
+        "knowledge/sev/schemas/v1/impact-result.schema.json",
+        "knowledge/sev/schemas/v1/disposition-plan.schema.json",
+        "knowledge/sev/schemas/v1/transition-verification-input.schema.json",
+        "knowledge/sev/schemas/v1/transition-verification-result.schema.json",
+        "knowledge/sev/schemas/v1/case-recalculation-input.schema.json",
+        "knowledge/sev/schemas/v1/evolution-session-binding.schema.json",
+        "knowledge/sev/schemas/v1/command-surface-assessment.schema.json",
+        "knowledge/sev/schemas/v1/graph-projection.schema.json",
+        "knowledge/sev/schemas/v1/novelty-bundle.schema.json",
+        "knowledge/sev/schemas/v1/watch-policy.schema.json",
         "knowledge/FEATURE-ADMINISTRATION-PROFILE.json",
         "knowledge/INVARIANT-OWNERSHIP.json"
     };
@@ -264,6 +286,10 @@ ArtifactCheckResult check_unauthorized_artifacts(const std::string& repo_root) {
                                         ? "knowledge/sodv/SPEC.md"
                                     : rel_path.starts_with("knowledge/ssfv/")
                                         ? "knowledge/ssfv/SPEC.md"
+                                    : rel_path.starts_with("knowledge/sav/")
+                                        ? "knowledge/sav/SPEC.md"
+                                    : rel_path.starts_with("knowledge/sev/")
+                                        ? "knowledge/sev/SPEC.md"
                                     : "knowledge/SPEC.md";
                             result.messages.push_back(format_evidence(EvidenceCategory::Pass, "artifact.canonical_json_authorized", "path=" + rel_path + " authority=" + authority));
                             break;

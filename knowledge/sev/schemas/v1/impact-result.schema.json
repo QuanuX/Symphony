@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sev:impact-result:v1",
+  "title": "SEV Impact Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "case_digest", "source_snapshot_digest", "coverage_state", "affected", "unresolved", "conflicts", "complete", "read_only", "noncanonical", "impact_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sev.impact-result.v1"},
+    "case_digest": {"$ref": "#/$defs/digest"},
+    "source_snapshot_digest": {"$ref": "#/$defs/digest"},
+    "coverage_state": {"enum": ["complete", "partial", "unknown"]},
+    "affected": {"type": "array", "maxItems": 1024, "items": {"$ref": "#/$defs/item"}},
+    "unresolved": {"type": "array", "maxItems": 1024, "items": {"$ref": "#/$defs/item"}},
+    "conflicts": {"type": "array", "maxItems": 1024, "items": {"$ref": "#/$defs/item"}},
+    "complete": {"type": "boolean"},
+    "read_only": {"const": true},
+    "noncanonical": {"const": true},
+    "impact_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "identity": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"},
+    "item": {"type": "object", "additionalProperties": false, "required": ["id", "kind", "reason", "evidence_digests"], "properties": {"id": {"$ref": "#/$defs/identity"}, "kind": {"$ref": "#/$defs/identity"}, "reason": {"type": "string", "minLength": 1, "maxLength": 65536}, "evidence_digests": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/digest"}}}}
+  }
+}

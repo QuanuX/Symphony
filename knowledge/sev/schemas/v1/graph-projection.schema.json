@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sev:graph-projection:v1",
+  "title": "SEV Graph Projection v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "case_digest", "plan_digest", "nodes", "edges", "noncanonical", "rebuildable", "projection_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sev.graph-projection.v1"},
+    "case_digest": {"$ref": "#/$defs/digest"},
+    "plan_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "nodes": {"type": "array", "maxItems": 4096, "items": {"$ref": "#/$defs/node"}},
+    "edges": {"type": "array", "maxItems": 8192, "items": {"$ref": "#/$defs/edge"}},
+    "noncanonical": {"const": true},
+    "rebuildable": {"const": true},
+    "projection_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "identity": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"},
+    "node": {"type": "object", "additionalProperties": false, "required": ["id", "kind", "state", "digest"], "properties": {"id": {"$ref": "#/$defs/identity"}, "kind": {"$ref": "#/$defs/identity"}, "state": {"$ref": "#/$defs/identity"}, "digest": {"$ref": "#/$defs/digest"}}},
+    "edge": {"type": "object", "additionalProperties": false, "required": ["source", "target", "kind"], "properties": {"source": {"$ref": "#/$defs/identity"}, "target": {"$ref": "#/$defs/identity"}, "kind": {"enum": ["hard_safety", "semantic_dependency"]}}}
+  }
+}

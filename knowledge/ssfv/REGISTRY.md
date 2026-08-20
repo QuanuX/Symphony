@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes seventy-six experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes seventy-eight experimental records across the repository root and fourteen implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -292,6 +292,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:7e50a78ac6d732c6b2fbfae9402c97eea487e1a59c7c377aa2aa736aebe65b6c`
 - notes: Architect-ratified F3 nested record for bounded OpenAPI compatibility evidence; coverage remains partial and no broader runtime or canonical authority is implied.
 
+- feature_id: `ssfv:symphony:sav-engine`
+- feature_file: `modules/sav-engine/FEATURES.md`
+- owner_contract: `modules/sav-engine/SPEC.md`
+- source_scope: `modules/sav-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:91989b034cc058220d8a747b0889f318f6ac7e4261c75e7ef4f276bc1bef6f6c`
+- notes: Architect-ratified Accordare feature for independently installed CURRENT resolution and relationship evaluation; the catalog remains partial and the engine remains read-only.
+
 - feature_id: `ssfv:symphony:sclv-engine`
 - feature_file: `modules/sclv-engine/FEATURES.md`
 - owner_contract: `modules/sclv-engine/SPEC.md`
@@ -345,6 +354,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:sclv-engine`
 - record_digest: `sha256:fa19e3b49c6c34cd552da01b1b163dce6e46d24cb3c4bf90cf0f78dc71dffe5d`
 - notes: Architect-ratified F3 nested record for provider-neutral local-Git and air-gap evidence normalization; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:sev-engine`
+- feature_file: `modules/sev-engine/FEATURES.md`
+- owner_contract: `modules/sev-engine/SPEC.md`
+- source_scope: `modules/sev-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:a00d9ffdb87ad805c8431c686340119dc871649ac76392255e4f60c839f2ed01`
+- notes: Architect-ratified Accordare feature for report/proposal-only evolution and SCSEV consequence assessment; the catalog remains partial and apply remains external.
 
 - feature_id: `ssfv:symphony:skvi-engine`
 - feature_file: `modules/skvi-engine/FEATURES.md`
@@ -729,4 +747,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This seventy-six-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This seventy-eight-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

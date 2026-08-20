@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sev:evolution-case:v1",
+  "title": "SEV Evolution Case v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "case_id", "case_kind", "semantic_fingerprint", "source_snapshot_digest", "target_digest", "state", "generation", "predecessor_digest", "affected_surfaces", "disposition_ids", "ready_action_ids", "blocker_ids", "opened_at", "updated_at", "canonical", "read_only", "case_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sev.evolution-case.v1"},
+    "case_id": {"$ref": "#/$defs/case_id"},
+    "case_kind": {"enum": ["planned_change", "encountered_novelty"]},
+    "semantic_fingerprint": {"$ref": "#/$defs/digest"},
+    "source_snapshot_digest": {"$ref": "#/$defs/digest"},
+    "target_digest": {"$ref": "#/$defs/digest"},
+    "state": {"enum": ["open", "assessed", "planned", "ready", "awaiting_external_action", "reobservation_required", "recalculation_required", "attunement_required", "converged", "blocked", "abandoned", "closed"]},
+    "generation": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "predecessor_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "affected_surfaces": {"type": "array", "maxItems": 1024, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+    "disposition_ids": {"type": "array", "maxItems": 1024, "uniqueItems": true, "items": {"$ref": "#/$defs/disposition_id"}},
+    "ready_action_ids": {"type": "array", "maxItems": 1024, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+    "blocker_ids": {"type": "array", "maxItems": 1024, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+    "opened_at": {"$ref": "#/$defs/utc"},
+    "updated_at": {"$ref": "#/$defs/utc"},
+    "canonical": {"const": false},
+    "read_only": {"const": true},
+    "case_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "case_id": {"type": "string", "pattern": "^sevcase:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "disposition_id": {"type": "string", "pattern": "^sevdisp:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "identity": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"},
+    "utc": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"}
+  }
+}

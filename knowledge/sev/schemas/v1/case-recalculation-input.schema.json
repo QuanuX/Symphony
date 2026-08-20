@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sev:case-recalculation-input:v1",
+  "title": "SEV Case Recalculation Input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["case", "plan", "observed_current", "completed_action_ids", "failed_action_ids", "updated_at"],
+  "properties": {
+    "case": {"$ref": "evolution-case.schema.json"},
+    "plan": {"$ref": "disposition-plan.schema.json"},
+    "observed_current": {"$ref": "../../../sav/schemas/v1/current-snapshot.schema.json"},
+    "completed_action_ids": {"$ref": "#/$defs/ids"},
+    "failed_action_ids": {"$ref": "#/$defs/ids"},
+    "updated_at": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"}
+  },
+  "$defs": {"ids": {"type": "array", "maxItems": 1024, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"}}}
+}

@@ -17,7 +17,9 @@ Guide every caller in safely inspecting, proposing, implementing, installing, an
 9. `tools/qxctl/` contracts for administrative grammar
 10. `knowledge/ssiag/SPEC.md` before any apply or safeguard work
 11. `knowledge/stav/SPEC.md` before any audited outcome or recovery work
-12. `knowledge/sodv/SPEC.md` before release or publication
+12. `knowledge/sav/SPEC.md` before composition resolution or accord evaluation
+13. `knowledge/sev/SPEC.md` before evolution, novelty, or SCSEV work
+14. `knowledge/sodv/SPEC.md` before release or publication
 
 ## Safe Initial Operations
 

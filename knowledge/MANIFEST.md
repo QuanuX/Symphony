@@ -35,11 +35,13 @@ Each vector Contract Quad owns its domain semantics, canonical paths, operations
 | SACV engine | `modules/sacv-engine/` | `symphony-sacv` |
 | SODV engine | `modules/sodv-engine/` | `symphony-sodv` |
 | SSFV engine | `modules/ssfv-engine/` | `symphony-ssfv` |
+| SAV engine | `modules/sav-engine/` | `symphony-sav` |
+| SEV engine | `modules/sev-engine/` | `symphony-sev` |
 | Maestro receptor presence authority | `modules/maestro/` | `symphony-maestro` |
 
 These independently installable modules remain in the Symphony monorepo. Source co-location grants no runtime authority or deployment coupling.
 
-Repository-scoped immutable release tags use the owning path followed by the semantic version, for example `modules/skvi-engine/v0.1.0`. The eight cleared tag prefixes are the paths listed above. No Homebrew, Debian/RPM, OCI, Conan, or other external package coordinate is authorized; each registry identity requires a fresh SODV namespace and publication check.
+Repository-scoped immutable release tags use the owning path followed by the semantic version, for example `modules/skvi-engine/v0.1.0`. The ten cleared tag prefixes are the paths listed above. No Homebrew, Debian/RPM, OCI, Conan, or other external package coordinate is authorized; each registry identity requires a fresh SODV namespace and publication check.
 
 ## Language and Process Boundary
 

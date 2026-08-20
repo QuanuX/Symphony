@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sev:disposition-plan:v1",
+  "title": "SEV Disposition Plan v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "case_digest", "impact_digest", "actions", "edges", "ready_action_ids", "blockers", "state", "canonical", "read_only", "apply_authorized", "plan_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sev.disposition-plan.v1"},
+    "case_digest": {"$ref": "#/$defs/digest"},
+    "impact_digest": {"$ref": "#/$defs/digest"},
+    "actions": {"type": "array", "maxItems": 1024, "items": {"$ref": "#/$defs/action"}},
+    "edges": {"type": "array", "maxItems": 8192, "items": {"$ref": "#/$defs/edge"}},
+    "ready_action_ids": {"type": "array", "maxItems": 1024, "uniqueItems": true, "items": {"$ref": "#/$defs/identity"}},
+    "blockers": {"type": "array", "maxItems": 1024, "items": {"$ref": "#/$defs/blocker"}},
+    "state": {"enum": ["ready", "attunement_required", "blocked", "converged"]},
+    "canonical": {"const": false},
+    "read_only": {"const": true},
+    "apply_authorized": {"const": false},
+    "plan_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "identity": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"},
+    "disposition": {"enum": ["accept_as_compatible", "attune_configuration", "extend_contract", "extend_command_surface", "install_exact_component", "select_exact_component", "dock_exact_component", "undock_exact_component", "replace_with_successor", "preserve_observed_state", "defer_with_blocker", "reject_incompatible", "retire_identity"]},
+    "action": {
+      "type": "object", "additionalProperties": false,
+      "required": ["action_id", "operation_id", "disposition", "target_id", "expected_state_digest", "authorization_operation", "audit_required", "success_predicate", "recovery_operation_id", "execution_class", "thermal_restriction", "action_digest"],
+      "properties": {
+        "action_id": {"$ref": "#/$defs/identity"}, "operation_id": {"$ref": "#/$defs/identity"}, "disposition": {"$ref": "#/$defs/disposition"}, "target_id": {"$ref": "#/$defs/identity"}, "expected_state_digest": {"$ref": "#/$defs/digest"}, "authorization_operation": {"$ref": "#/$defs/identity"}, "audit_required": {"type": "boolean"}, "success_predicate": {"$ref": "../../../sav/schemas/v1/accord-reference.schema.json#/$defs/rule"}, "recovery_operation_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/identity"}]}, "execution_class": {"enum": ["report_only", "proposal_only", "external_apply"]}, "thermal_restriction": {"const": "freezing_only"}, "action_digest": {"$ref": "#/$defs/digest"}
+      }
+    },
+    "edge": {"type": "object", "additionalProperties": false, "required": ["source", "target", "kind"], "properties": {"source": {"$ref": "#/$defs/identity"}, "target": {"$ref": "#/$defs/identity"}, "kind": {"enum": ["hard_safety", "semantic_dependency"]}}},
+    "blocker": {"type": "object", "additionalProperties": false, "required": ["blocker_id", "action_id", "reason", "detail"], "properties": {"blocker_id": {"$ref": "#/$defs/identity"}, "action_id": {"$ref": "#/$defs/identity"}, "reason": {"$ref": "#/$defs/identity"}, "detail": {"type": "string", "minLength": 1, "maxLength": 65536}}}
+  }
+}

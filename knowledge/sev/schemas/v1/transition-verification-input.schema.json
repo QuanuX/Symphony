@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sev:transition-verification-input:v1",
+  "title": "SEV Transition Verification Input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "case", "plan", "action_id", "execution_evidence_digest", "observed_current"],
+  "properties": {
+    "protocol": {"const": "symphony.sev.transition-verification-input.v1"},
+    "case": {"$ref": "evolution-case.schema.json"},
+    "plan": {"$ref": "disposition-plan.schema.json"},
+    "action_id": {"$ref": "#/$defs/identity"},
+    "execution_evidence_digest": {"$ref": "#/$defs/digest"},
+    "observed_current": {"$ref": "../../../sav/schemas/v1/current-snapshot.schema.json"}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "identity": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"}
+  }
+}

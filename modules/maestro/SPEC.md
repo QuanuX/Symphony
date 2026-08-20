@@ -27,6 +27,8 @@ Each TOPS/receptor stream uses a private no-follow lock, alternating registry sl
 
 Receptors and components are sorted by stable identity. `inventory_digest` covers only the stable receptor/component state, including exact registry, receipt, executable, and presence digests. `observed_at` is canonical whole-second UTC and appears only in the outer result; `observation_digest` covers the timestamped envelope. A later identical observation therefore preserves the stable inventory digest while producing new observation evidence. Inventory is `derived: true`, `read_only: true`, and `canonical: false`; it is not persisted as a second registry.
 
+SAV and SEV use the exact default identities `receptor:symphony:knowledge.sav` and `receptor:symphony:knowledge.sev`. They are ordinary knowledge-engine presence receptors: Maestro records their exact installed component evidence but does not schedule, execute, select, or authorize either engine. An inventory containing either receptor is suitable as a typed SAV CURRENT source only when the complete inventory succeeds. Busy, damaged, incompatible, missing, or ambiguous streams remain distinct evidence and cannot be collapsed into absence.
+
 ## Authorization
 
 Inventory, status, dock, undock, and recovery validate fresh exact SSIAG decision and capability evidence. `inspect` is safe metadata. No caller class is an authorization input.

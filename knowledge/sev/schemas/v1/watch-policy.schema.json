@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:sev:watch-policy:v1",
+  "title": "SEV Watch Policy v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "policy_id", "tops_id", "enabled", "session_boundary", "source_scopes", "event_classes", "debounce_ms", "coalescing_limit", "thermal_restriction", "export_enabled", "generation", "previous_policy_digest", "updated_at", "canonical", "policy_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.sev.watch-policy.v1"},
+    "policy_id": {"$ref": "#/$defs/id"},
+    "tops_id": {"$ref": "#/$defs/id"},
+    "enabled": {"type": "boolean"},
+    "session_boundary": {"enum": ["authentication_to_logout_or_reauthentication", "explicit_qxctl_policy"]},
+    "source_scopes": {"$ref": "#/$defs/ids"},
+    "event_classes": {"$ref": "#/$defs/ids"},
+    "debounce_ms": {"type": "integer", "minimum": 100, "maximum": 3600000},
+    "coalescing_limit": {"type": "integer", "minimum": 1, "maximum": 4096},
+    "thermal_restriction": {"const": "freezing_only"},
+    "export_enabled": {"const": false},
+    "generation": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "previous_policy_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "updated_at": {"$ref": "#/$defs/utc"},
+    "canonical": {"const": false},
+    "policy_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "id": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"},
+    "ids": {"type": "array", "maxItems": 256, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "utc": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"}
+  }
+}

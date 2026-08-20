@@ -1464,6 +1464,99 @@
       "feature_id": "ssfv:symphony:sacv-engine.openapi-compatibility-evidence"
     },
     {
+      "feature_id": "ssfv:symphony:sav-engine",
+      "expectations": [
+        {
+          "interaction": "inspect",
+          "requirement": "required",
+          "delivery": "direct",
+          "command_ids": [
+            "qxcmd:symphony:sav.inspect"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sav.inspect"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "The exact headless leaf invokes descriptor-bound read-only SAV inspection."
+        },
+        {
+          "interaction": "propose",
+          "requirement": "required",
+          "delivery": "direct",
+          "command_ids": [
+            "qxcmd:symphony:sav.blueprint-plan"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sav.installation-blueprint.plan"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "Blueprint planning exposes explicit forward and reverse dependency-safe ready sets without authorizing apply."
+        },
+        {
+          "interaction": "query",
+          "requirement": "required",
+          "delivery": "composed",
+          "command_ids": [
+            "qxcmd:symphony:sav.current",
+            "qxcmd:symphony:sav.diff",
+            "qxcmd:symphony:sav.explain",
+            "qxcmd:symphony:sav.graph",
+            "qxcmd:symphony:sav.version-diff"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sav.current-resolve",
+            "engop:symphony:sav.diff",
+            "engop:symphony:sav.explain",
+            "engop:symphony:sav.named-version.diff",
+            "engop:symphony:sav.project-graph"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "CURRENT, diff, explanation, and disposable graph queries are distinct exact operations composed under SAV."
+        },
+        {
+          "interaction": "validate",
+          "requirement": "required",
+          "delivery": "composed",
+          "command_ids": [
+            "qxcmd:symphony:sav.capsule-check",
+            "qxcmd:symphony:sav.compatibility",
+            "qxcmd:symphony:sav.evaluate",
+            "qxcmd:symphony:sav.reference-check",
+            "qxcmd:symphony:sav.version-validate"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sav.compatibility",
+            "engop:symphony:sav.evaluate",
+            "engop:symphony:sav.extension-capsule.check",
+            "engop:symphony:sav.named-version.validate",
+            "engop:symphony:sav.reference-check"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sav-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "Reference, accord, and protocol compatibility validations retain separate stable command and engine identities."
+        }
+      ]
+    },
+    {
       "expectations": [
         {
           "command_ids": [
@@ -1603,6 +1696,123 @@
         }
       ],
       "feature_id": "ssfv:symphony:sclv-engine.provider-neutral-evidence-normalization"
+    },
+    {
+      "feature_id": "ssfv:symphony:sev-engine",
+      "expectations": [
+        {
+          "interaction": "inspect",
+          "requirement": "required",
+          "delivery": "direct",
+          "command_ids": [
+            "qxcmd:symphony:sev.inspect"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sev.inspect"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sev-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "The exact headless leaf invokes descriptor-bound read-only SEV inspection."
+        },
+        {
+          "interaction": "propose",
+          "requirement": "required",
+          "delivery": "composed",
+          "command_ids": [
+            "qxcmd:symphony:sev.case-open",
+            "qxcmd:symphony:sev.close",
+            "qxcmd:symphony:sev.plan",
+            "qxcmd:symphony:sev.session-bind",
+            "qxcmd:symphony:sev.trigger-coalesce"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sev.case.close",
+            "engop:symphony:sev.case.open",
+            "engop:symphony:sev.disposition.plan",
+            "engop:symphony:sev.session.bind",
+            "engop:symphony:sev.trigger.coalesce"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sev-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "Case opening, disposition planning, and closure remain non-authoritative proposals with distinct identities."
+        },
+        {
+          "interaction": "query",
+          "requirement": "required",
+          "delivery": "composed",
+          "command_ids": [
+            "qxcmd:symphony:sev.graph",
+            "qxcmd:symphony:sev.impact",
+            "qxcmd:symphony:sev.status"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sev.case.status",
+            "engop:symphony:sev.graph.project",
+            "engop:symphony:sev.impact.assess"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sev-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "Impact, case status, and disposable graph queries are explicit read-only SEV operations."
+        },
+        {
+          "interaction": "recover",
+          "requirement": "required",
+          "delivery": "composed",
+          "command_ids": [
+            "qxcmd:symphony:sev.recalculate",
+            "qxcmd:symphony:sev.recover"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sev.case.recalculate",
+            "engop:symphony:sev.case.recover"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sev-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "Recalculation derives an immutable successor and recovery returns advice; neither mutates durable coordinator state."
+        },
+        {
+          "interaction": "validate",
+          "requirement": "required",
+          "delivery": "composed",
+          "command_ids": [
+            "qxcmd:symphony:sev.command-surface",
+            "qxcmd:symphony:sev.compatibility",
+            "qxcmd:symphony:sev.novelty-check",
+            "qxcmd:symphony:sev.verify",
+            "qxcmd:symphony:sev.watch-check"
+          ],
+          "engine_operation_ids": [
+            "engop:symphony:sev.command-surface.assess",
+            "engop:symphony:sev.compatibility",
+            "engop:symphony:sev.novelty-bundle.check",
+            "engop:symphony:sev.transition.verify",
+            "engop:symphony:sev.watch-policy.check"
+          ],
+          "inherited_from_feature_id": null,
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sev-engine/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "rationale": "SCSEV, compatibility, and reobservation verification remain separate closed read-only checks."
+        }
+      ]
     },
     {
       "expectations": [
@@ -2837,9 +3047,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:df9e4bda7888cf6e1beec440ed5b9c740076ac27c25fac0afaa59df5e85732a2",
+  "profile_digest": "sha256:a04c652697b0ed7e61f2252115a37b99a778fa0e8966b754154dd412c281b9e8",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 76,
-  "ssfv_registry_digest": "sha256:0715e6f471b8b18f3ea66410cc87f9f078dff22a8f5ae66fcddfbc44e08714e2"
+  "registered_feature_count": 78,
+  "ssfv_registry_digest": "sha256:c6639270e39890f60873df030f2b54a969489ffe917662cd4a68725d07d0e318"
 }

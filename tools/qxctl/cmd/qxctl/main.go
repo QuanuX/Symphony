@@ -145,6 +145,8 @@ func printUsage() {
 	fmt.Println("  sodv propose --prefix PATH --input FILE [--version VERSION] [--json] Prepare a release-record proposal")
 	fmt.Println("  sodv recover --prefix PATH --input FILE [--version VERSION] [--json] Reconcile an interrupted release journal")
 	fmt.Println("  sodv project --prefix PATH [--version VERSION] [--json] Build a disposable release inventory")
+	fmt.Println("  sav inspect|reference-check|current|evaluate|diff|explain|graph|version-validate|version-diff|capsule-check|blueprint-plan|compatibility --prefix PATH [--input FILE] [--json] Administer exact read-only SAV operations")
+	fmt.Println("  sev inspect|case-open|impact|plan|verify|recalculate|status|recover|close|command-surface|novelty-check|watch-check|trigger-coalesce|session-bind|graph|compatibility --prefix PATH [--input FILE] [--json] Administer exact report/proposal-only SEV operations")
 	fmt.Println("  ssfv inspect --prefix PATH [--version VERSION] [--json] Inspect an exact installed SSFV engine")
 	fmt.Println("  ssfv check --prefix PATH [--version VERSION] [freshness flags] [--json] Check canonical semantic-feature truth")
 	fmt.Println("  ssfv diff --prefix PATH --input FILE [--version VERSION] [--json] Compare a semantic baseline with live truth")
@@ -1900,6 +1902,134 @@ func runSODV(operation string, options sodvOptions) error {
 		return nil
 	}
 	return printSODVResult(operation, response.Result)
+}
+
+func runAccordare(vector, operation string, options accordareOptions) error {
+	if options.prefix == "" {
+		return fmt.Errorf("--prefix is required")
+	}
+	start := options.repository
+	if start == "" {
+		var err error
+		start, err = os.Getwd()
+		if err != nil {
+			return fmt.Errorf("could not get current working directory: %w", err)
+		}
+	}
+	start, err := filepath.Abs(start)
+	if err != nil {
+		return fmt.Errorf("resolve repository path: %w", err)
+	}
+	info, err := os.Lstat(start)
+	if err != nil || info.Mode()&os.ModeSymlink != 0 || !info.IsDir() {
+		return fmt.Errorf("--repo must identify a no-follow directory")
+	}
+	workRoot, err := filepath.EvalSymlinks(start)
+	if err != nil {
+		return fmt.Errorf("canonicalize operation working directory: %w", err)
+	}
+	var payload []byte
+	if operation == "inspect" {
+		payload = []byte(`{}`)
+	} else if vector == "sav" && operation == "current_resolve" && options.host {
+		if options.input != "" {
+			return fmt.Errorf("--host and --input are mutually exclusive")
+		}
+		payload, err = buildSAVHostCurrent(context.Background(), workRoot, options)
+	} else {
+		if options.host {
+			return fmt.Errorf("--host is supported only by sav current")
+		}
+		payload, err = knowledgeengine.ReadPayload(options.input)
+		if err != nil {
+			return err
+		}
+	}
+	var response knowledgeengine.Response
+	if vector == "sav" {
+		response, err = knowledgeengine.InvokeSAV(context.Background(), options.prefix, options.version, workRoot, operation, payload)
+	} else if vector == "sev" {
+		response, err = knowledgeengine.InvokeSEV(context.Background(), options.prefix, options.version, workRoot, operation, payload)
+	} else {
+		return fmt.Errorf("unsupported Accordare vector")
+	}
+	if err != nil {
+		return err
+	}
+	protocol, resultDigest, err := validateAccordareResult(vector, operation, response.Result)
+	if err != nil {
+		return err
+	}
+	if options.jsonOutput {
+		return printIndentedJSON(response.Result)
+	}
+	fmt.Printf("%s %s: protocol=%s digest=%s read-only=true\n", strings.ToUpper(vector), strings.ReplaceAll(operation, "_", "-"), protocol, resultDigest)
+	return nil
+}
+
+func validateAccordareResult(vector, operation string, result json.RawMessage) (string, string, error) {
+	expected := map[string]map[string]string{
+		"sav": {
+			"inspect": "symphony.sav.inspect-result.v1", "reference_check": "symphony.sav.reference-check-result.v1",
+			"current_resolve": "symphony.sav.current-snapshot.v1", "evaluate": "symphony.sav.evaluation-result.v1",
+			"diff": "symphony.sav.diff-result.v1", "explain": "symphony.sav.explain-result.v1",
+			"project_graph": "symphony.sav.graph-projection.v1", "compatibility": "symphony.sav.compatibility-result.v1",
+			"named_version_validate": "symphony.sav.named-version-validation-result.v1", "named_version_diff": "symphony.sav.named-version-diff-result.v1",
+			"extension_capsule_check": "symphony.sav.extension-capsule-check-result.v1", "installation_blueprint_plan": "symphony.sav.installation-blueprint-plan-result.v1",
+		},
+		"sev": {
+			"inspect": "symphony.sev.inspect-result.v1", "case_open": "symphony.sev.evolution-case.v1",
+			"impact_assess": "symphony.sev.impact-result.v1", "disposition_plan": "symphony.sev.disposition-plan.v1",
+			"transition_verify": "symphony.sev.transition-verification-result.v1", "case_recalculate": "symphony.sev.evolution-case.v1",
+			"case_status": "symphony.sev.case-status-result.v1", "case_recover": "symphony.sev.case-recovery-advice.v1",
+			"case_close": "symphony.sev.case-close-proposal.v1", "command_surface_assess": "symphony.sev.command-surface-assessment.v1",
+			"project_graph": "symphony.sev.graph-projection.v1", "compatibility": "symphony.sev.compatibility-result.v1",
+			"novelty_bundle_check": "symphony.sev.novelty-bundle-check-result.v1", "watch_policy_check": "symphony.sev.watch-policy-check-result.v1",
+			"trigger_coalesce":       "symphony.sev.trigger-coalescing-result.v1",
+			"evolution_session_bind": "symphony.sev.evolution-session-binding.v1",
+		},
+	}
+	protocol, ok := expected[vector][operation]
+	if !ok {
+		return "", "", fmt.Errorf("unsupported %s operation", strings.ToUpper(vector))
+	}
+	var value map[string]json.RawMessage
+	if err := json.Unmarshal(result, &value); err != nil {
+		return "", "", fmt.Errorf("%s result is not an object", strings.ToUpper(vector))
+	}
+	var observed string
+	if err := json.Unmarshal(value["protocol"], &observed); err != nil || observed != protocol {
+		return "", "", fmt.Errorf("%s result protocol violates the operation contract", strings.ToUpper(vector))
+	}
+	if raw, present := value["read_only"]; present {
+		var readOnly bool
+		if err := json.Unmarshal(raw, &readOnly); err != nil || !readOnly {
+			return "", "", fmt.Errorf("%s result is not explicitly read-only", strings.ToUpper(vector))
+		}
+	} else {
+		var noncanonical, rebuildable bool
+		if json.Unmarshal(value["noncanonical"], &noncanonical) != nil || json.Unmarshal(value["rebuildable"], &rebuildable) != nil || !noncanonical || !rebuildable {
+			return "", "", fmt.Errorf("%s projection lacks read-only projection flags", strings.ToUpper(vector))
+		}
+	}
+	for _, forbidden := range []string{"apply_authorized", "canonical_apply_enabled"} {
+		if raw, present := value[forbidden]; present {
+			var enabled bool
+			if json.Unmarshal(raw, &enabled) != nil || enabled {
+				return "", "", fmt.Errorf("%s result improperly authorizes apply", strings.ToUpper(vector))
+			}
+		}
+	}
+	digestKeys := []string{"result_digest", "observation_digest", "projection_digest", "case_digest", "impact_digest", "plan_digest", "assessment_digest", "proposal_digest", "binding_digest"}
+	for _, key := range digestKeys {
+		if raw, present := value[key]; present {
+			var digest string
+			if json.Unmarshal(raw, &digest) == nil && validTaggedDigest(digest) {
+				return protocol, digest, nil
+			}
+		}
+	}
+	return "", "", fmt.Errorf("%s result lacks a valid content digest", strings.ToUpper(vector))
 }
 
 func validateSODVResult(operation string, result json.RawMessage) (bool, error) {

@@ -90,6 +90,10 @@ func TestCLICompatibility(t *testing.T) {
 		{name: "SACV prefix required", args: []string{"sacv", "inspect"}, status: 1, output: "sacv inspect failed: --prefix is required\n"},
 		{name: "missing SODV subcommand", args: []string{"sodv"}, status: 1, output: "sodv failed: SODV subcommand is required: inspect, check, verify, propose, recover, or project\n"},
 		{name: "SODV prefix required", args: []string{"sodv", "inspect"}, status: 1, output: "sodv inspect failed: --prefix is required\n"},
+		{name: "missing SAV subcommand", args: []string{"sav"}, status: 1, output: "sav failed: SAV subcommand is required: inspect, reference-check, current, evaluate, diff, explain, graph, version-validate, version-diff, capsule-check, blueprint-plan, or compatibility\n"},
+		{name: "SAV prefix required", args: []string{"sav", "inspect"}, status: 1, output: "sav inspect failed: --prefix is required\n"},
+		{name: "missing SEV subcommand", args: []string{"sev"}, status: 1, output: "sev failed: SEV subcommand is required: inspect, case-open, impact, plan, verify, recalculate, status, recover, close, command-surface, novelty-check, watch-check, trigger-coalesce, session-bind, graph, or compatibility\n"},
+		{name: "SEV prefix required", args: []string{"sev", "inspect"}, status: 1, output: "sev inspect failed: --prefix is required\n"},
 		{name: "missing SSFV subcommand", args: []string{"ssfv"}, status: 1, output: "ssfv failed: SSFV subcommand is required: inspect, check, diff, propose, graph, or administration-check\n"},
 		{name: "SSFV prefix required", args: []string{"ssfv", "inspect"}, status: 1, output: "ssfv inspect failed: --prefix is required\n"},
 	}
