@@ -32,8 +32,11 @@ The following identifiers and JSON Schema Draft 2020-12 documents are ratified:
 | `symphony.stav.append-authority.status.v1` | `schemas/v1/append-authority-status.schema.json` |
 | `symphony.stav.local.request.v1` | `schemas/v1/local-request.schema.json` |
 | `symphony.stav.local.response.v1` | `schemas/v1/local-response.schema.json` |
+| `symphony.stav.producer-vocabulary.v1` | `schemas/v1/producer-vocabulary.schema.json` |
 
 `schemas/v1/common.schema.json`, `registries/v1/base.md`, and `fixtures/v1/` are also canonical. Canonical artifacts under `knowledge/stav/` outrank Go types, generated output, qxctl, or module code.
+
+Producer vocabularies are authority-free canonical registries. They close identifier and outcome mappings but do not implement a producer or authorize an installation grant. `registries/v1/accordare.json` reserves the first SAV Named Version lifecycle vocabulary with both operational gates false. The cross-vector boundary is documented in `knowledge/ACCORD-AUDIT.md`, with owning semantics in `knowledge/sav/STAV.md` and the explicit SEV no-vocabulary posture in `knowledge/sev/STAV.md`.
 
 ## Canonical Serialization Profile
 

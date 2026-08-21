@@ -1931,7 +1931,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: bounded Go process-client implementation
 - truth_role: trusted receipt resolution, child-process bounds, and response verification implementation truth
 - owner: qxctl maintainers
-- scope: Resolves exact installed coordinator, SKVI, SCLV, SACV, SODV, and SSFV versions for binding and lifecycle evidence; requires exact receipt-v2 typed SCLV adapter entry points before invoking local-Git or air-gap evidence normalization; invokes the bound coordinator and five vector engines with an empty environment and hard deadline; and verifies response identity and digest.
+- scope: Resolves exact installed coordinator, SKVI, SCLV, SACV, SODV, SSFV, SAV, and SEV versions for binding and lifecycle evidence; requires exact receipt-v2 typed SCLV adapter entry points before invoking local-Git or air-gap evidence normalization; invokes the bound coordinator and seven vector engines with an empty environment and hard deadline; and verifies response identity and digest.
 - relationships: implements -> `knowledge/SPEC.md`; implements -> `knowledge/schemas/v1/reconciliation-command.schema.json`; implements -> `knowledge/schemas/v1/session-command.schema.json`; implements -> `knowledge/schemas/v1/provider-evidence.schema.json`; implements -> `knowledge/skvi/SPEC.md`; implements -> `knowledge/sclv/SPEC.md`; implements -> `knowledge/sacv/SPEC.md`; implements -> `knowledge/sodv/SPEC.md`; implements -> `knowledge/ssfv/SPEC.md`; called_by -> `tools/qxctl/cmd/qxctl/commands.go`
 - consumers: qxctl knowledge-reconciliation/session/lifecycle/SKVI/SCLV/SACV/SODV/SSFV commands, tests, reviewers, future compatible vector clients
 - deferred_projections: additional compatible vector clients
@@ -7699,7 +7699,7 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - scope: Declares Named Version capabilities and bounded request dispatch.
 - relationships: implements -> `modules/knowledge-session-coordinator/SPEC.md`; implemented_by -> `modules/knowledge-session-coordinator/src/named_versions.cpp`
 - consumers: coordinator dispatcher, tests, reviewers
-- deferred_projections: STAV integration
+- deferred_projections: runtime STAV producer and producer grant
 - notes: The interface grants no canonical mutation authority.
 - status: canonical
 
@@ -7751,6 +7751,99 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - scope: Verifies all six routes, exact authority resource normalization, tamper refusal, and disabled canonical/STAV claims.
 - relationships: verifies -> `tools/qxctl/cmd/qxctl/named_version.go`; verifies -> `knowledge/schemas/v1/named-version-result.schema.json`
 - consumers: Go test, implementers, reviewers
-- deferred_projections: installed-process integration fixture
-- notes: Tests do not manufacture live SSIAG authority.
+- deferred_projections: additional failure-injection coverage
+- notes: Unit tests do not manufacture live SSIAG authority; installed-process acceptance is routed separately.
+- status: canonical
+
+### Accordare STAV Vocabulary and Installed Acceptance
+
+#### Accordare Audit Boundary
+- path: `knowledge/ACCORD-AUDIT.md`
+- title: Accordare Audit Boundary
+- surface_type: cross-vector governance contract
+- truth_role: producer-authority, safe-metadata, and exclusion boundary
+- owner: STAV, SAV, SEV, SSIAG, qxctl, and coordinator maintainers
+- scope: Separates the closed Accordare event vocabulary from runtime production and installation-specific producer grants.
+- relationships: governs -> `knowledge/stav/registries/v1/accordare.json`; refines -> `knowledge/stav/SPEC.md`; constrains -> `tools/qxctl/cmd/qxctl/named_version.go`
+- consumers: implementers, reviewers, qxctl, future Accordare producer
+- deferred_projections: runtime producer and exact SSIAG producer grant
+- notes: Vocabulary registration is not append authority.
+- status: canonical
+
+#### SAV STAV Mapping
+- path: `knowledge/sav/STAV.md`
+- title: SAV Named Version Audit Mapping
+- surface_type: vector-specific audit contract
+- truth_role: exact operation, outcome, and safe-metadata meaning
+- owner: SAV and STAV maintainers
+- scope: Maps prepare, seal, alias, and recover Named Version lifecycle outcomes into the closed Accordare vocabulary without transferring SAV semantic authority.
+- relationships: implements -> `knowledge/ACCORD-AUDIT.md`; governed_by -> `knowledge/stav/registries/v1/accordare.json`
+- consumers: future Accordare producer, qxctl, reviewers
+- deferred_projections: runtime production
+- notes: SAV remains read-only and never appends.
+- status: canonical
+
+#### SEV STAV Posture
+- path: `knowledge/sev/STAV.md`
+- title: SEV Audit Posture
+- surface_type: vector-specific exclusion contract
+- truth_role: explicit absence of an SEV event vocabulary
+- owner: SEV and STAV maintainers
+- scope: Records that report-only SEV operations do not produce STAV lifecycle events in the current protocol.
+- relationships: refines -> `knowledge/ACCORD-AUDIT.md`; constrains -> `knowledge/stav/registries/v1/accordare.json`
+- consumers: SEV implementers, future producer designers, reviewers
+- deferred_projections: separately ratified state-changing SEV operations
+- notes: Absence is explicit and must not be inferred from implementation silence.
+- status: canonical
+
+#### STAV Producer Vocabulary Schema
+- path: `knowledge/stav/schemas/v1/producer-vocabulary.schema.json`
+- title: STAV Producer Vocabulary v1 Schema
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: closed producer vocabulary document shape
+- owner: STAV maintainers
+- scope: Requires exact producer identity, classification, operation tuples, outcomes, reason identifiers, and explicit runtime/grant readiness gates.
+- relationships: implemented_by -> `libraries/stav-protocol-go/validate.go`; instantiated_by -> `knowledge/stav/registries/v1/accordare.json`
+- consumers: STAV protocol kernel, validator, implementers, reviewers
+- deferred_projections: none
+- notes: Semantic ordering and tuple uniqueness are enforced by the protocol kernel.
+- status: canonical
+
+#### Accordare Producer Vocabulary Registry
+- path: `knowledge/stav/registries/v1/accordare.json`
+- title: Accordare STAV Producer Vocabulary v1
+- surface_type: canonical machine registry
+- truth_role: exact SAV Named Version event tuple and outcome vocabulary
+- owner: STAV and SAV maintainers
+- scope: Reserves four lifecycle operations and their exact safe outcomes while declaring both runtime production and its producer grant disabled.
+- relationships: conforms_to -> `knowledge/stav/schemas/v1/producer-vocabulary.schema.json`; governed_by -> `knowledge/ACCORD-AUDIT.md`
+- consumers: STAV protocol kernel, future Accordare producer, qxctl, reviewers
+- deferred_projections: runtime producer and exact grant
+- notes: This registry grants no authority and enables no append.
+- status: canonical
+
+#### qxctl Named Version Installed Acceptance
+- path: `tools/qxctl/cmd/qxctl/named_version_installed_acceptance_test.go`
+- title: qxctl Named Version Installed-Process Acceptance
+- surface_type: Go installed-host acceptance test
+- truth_role: exact binding, SSIAG, qxctl, SAV, and coordinator circuit evidence
+- owner: qxctl maintainers
+- scope: Exercises prepare, seal, replay, alias, lookup, and status through installed receipt-v2 C++ processes and isolated caller-neutral SSIAG evidence.
+- relationships: verifies -> `tools/qxctl/cmd/qxctl/named_version.go`; invokes -> `modules/sav-engine/`; invokes -> `modules/knowledge-session-coordinator/`
+- consumers: acceptance harness, maintainers, reviewers
+- deferred_projections: runtime Accordare STAV production
+- notes: The test verifies that STAV append remains disabled rather than manufacturing a producer.
+- status: canonical
+
+#### qxctl Named Version Installed Acceptance Harness
+- path: `tools/qxctl/tests/named_version_installed_acceptance.sh`
+- title: qxctl Named Version Installed Acceptance Harness
+- surface_type: POSIX shell build-and-install test driver
+- truth_role: disposable exact receipt-v2 installation proof
+- owner: qxctl maintainers
+- scope: Builds and installs SAV and the coordinator into a temporary prefix, exports only explicit acceptance inputs, runs the installed-process test, and removes all temporary state.
+- relationships: drives -> `tools/qxctl/cmd/qxctl/named_version_installed_acceptance_test.go`; packages -> `modules/sav-engine/`; packages -> `modules/knowledge-session-coordinator/`
+- consumers: maintainers, release verification, reviewers
+- deferred_projections: CI wiring
+- notes: The harness does not modify a live installation.
 - status: canonical

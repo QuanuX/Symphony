@@ -323,6 +323,8 @@ var lifecycleBindingRoles = map[string]string{
 	"skvi-engine":                   "skvi",
 	"sodv-engine":                   "sodv",
 	"ssfv-engine":                   "ssfv",
+	"sav-engine":                    "sav",
+	"sev-engine":                    "sev",
 }
 
 type lifecycleBindingAdapter struct {

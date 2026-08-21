@@ -74,6 +74,14 @@ func DecodeAppendAuthorityStatus(data []byte) (AppendAuthorityStatus, error) {
 	return decodeTyped[AppendAuthorityStatus](data, MaxResponseBytes, func(v AppendAuthorityStatus) error { return v.Validate() })
 }
 
+func EncodeProducerVocabulary(v ProducerVocabulary) ([]byte, error) {
+	return encodeTyped(v, MaxRequestBytes, v.Validate)
+}
+
+func DecodeProducerVocabulary(data []byte) (ProducerVocabulary, error) {
+	return decodeTyped[ProducerVocabulary](data, MaxRequestBytes, func(v ProducerVocabulary) error { return v.Validate() })
+}
+
 func EncodeLocalRequest(v LocalRequest) ([]byte, error) {
 	return encodeTyped(v, MaxRequestBytes, v.Validate)
 }

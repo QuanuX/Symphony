@@ -23,6 +23,47 @@ func readFixture(t *testing.T, parts ...string) []byte {
 	return bytes.TrimSpace(b)
 }
 
+func TestAccordareProducerVocabularyRoundTripAndAuthorityGates(t *testing.T) {
+	_, file, _, _ := runtime.Caller(0)
+	path := filepath.Clean(filepath.Join(filepath.Dir(file), "..", "..", "knowledge", "stav", "registries", "v1", "accordare.json"))
+	input, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	input = bytes.TrimSpace(input)
+	vocabulary, err := DecodeProducerVocabulary(input)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if vocabulary.RuntimeProducerImplemented || vocabulary.ProducerGrantAuthorized {
+		t.Fatal("contract-only Accordare vocabulary escalated runtime or grant authority")
+	}
+	if len(vocabulary.Contracts) != 4 {
+		t.Fatalf("Accordare contract count = %d, want 4", len(vocabulary.Contracts))
+	}
+	encoded, err := EncodeProducerVocabulary(vocabulary)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(encoded, input) {
+		t.Fatalf("producer vocabulary round-trip mismatch\n got: %s\nwant: %s", encoded, input)
+	}
+
+	drifted := vocabulary
+	drifted.Contracts = append([]ProducerEventContract(nil), vocabulary.Contracts...)
+	drifted.Contracts[0].OperationID = "symphony.sav.named-version.unregistered"
+	if _, err := EncodeProducerVocabulary(drifted); err == nil {
+		t.Fatal("unordered unregistered operation drift was accepted")
+	}
+
+	duplicated := vocabulary
+	duplicated.Contracts = append([]ProducerEventContract(nil), vocabulary.Contracts...)
+	duplicated.Contracts[1] = duplicated.Contracts[0]
+	if _, err := EncodeProducerVocabulary(duplicated); err == nil {
+		t.Fatal("duplicate producer permission tuple was accepted")
+	}
+}
+
 func TestValidFixturesRoundTrip(t *testing.T) {
 	tests := []struct {
 		name   string

@@ -60,3 +60,9 @@ The following values exist only in canonical fixtures and tests. They grant no p
 All registered identifiers are lowercase dotted ASCII identifiers. An identifier has two or more non-empty segments; each segment begins with a lowercase letter and continues with lowercase letters, digits, or hyphens. An unknown value fails closed.
 
 Event classes, operation identifiers, authentication methods, reference kinds, producer kinds, and producer-specific reason codes are not assigned here. Each producer integration MUST document its meanings, and each installation MUST explicitly grant the exact authenticated producer `(event_class, operation_id)` tuples it may emit. Configuration can select registered integration identifiers but cannot alter their canonical meanings.
+
+Machine-readable integration vocabularies use `symphony.stav.producer-vocabulary.v1`. A vocabulary with `runtime_producer_implemented: false` or `producer_grant_authorized: false` is reserved contract truth only. Its tuples MUST NOT appear in an installation grant, and successful decoding MUST NOT be treated as runtime capability or permission.
+
+Current integration registries:
+
+- `accordare.json`: reserved SAV Named Version lifecycle vocabulary; runtime producer and grants are not authorized.

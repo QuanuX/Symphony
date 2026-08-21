@@ -585,6 +585,79 @@ func (s AppendAuthorityStatus) Validate() error {
 	return nil
 }
 
+// Validate checks a closed producer-integration vocabulary without granting
+// runtime or installation authority.
+func (v ProducerVocabulary) Validate() error {
+	if v.Protocol != SchemaProducerVocabulary {
+		return fmt.Errorf("stav: invalid producer-vocabulary schema")
+	}
+	if err := validateRegisteredIdentifier(v.IntegrationID); err != nil {
+		return err
+	}
+	if err := validateRegisteredIdentifier(v.ProducerKind); err != nil {
+		return err
+	}
+	if err := validateRegisteredIdentifier(v.AuthenticationMethod); err != nil {
+		return err
+	}
+	if err := (Redaction{Classification: v.Classification}).validate(); err != nil {
+		return err
+	}
+	if v.Contracts == nil || len(v.Contracts) == 0 || len(v.Contracts) > 128 {
+		return fmt.Errorf("stav: invalid producer-vocabulary contract count")
+	}
+	seen := make(map[[2]string]struct{}, len(v.Contracts))
+	previousOperation := ""
+	for _, contract := range v.Contracts {
+		if err := validateRegisteredIdentifier(contract.EventClass); err != nil {
+			return err
+		}
+		if err := validateRegisteredIdentifier(contract.OperationID); err != nil {
+			return err
+		}
+		if err := validateRegisteredIdentifier(contract.IntentID); err != nil {
+			return err
+		}
+		if err := validateRegisteredIdentifier(contract.TargetKind); err != nil {
+			return err
+		}
+		if contract.ConfigurationState != "digests" && contract.ConfigurationState != "not_applicable" {
+			return fmt.Errorf("stav: invalid producer-vocabulary configuration state")
+		}
+		if previousOperation != "" && contract.OperationID <= previousOperation {
+			return fmt.Errorf("stav: producer-vocabulary contracts are not strictly ordered")
+		}
+		previousOperation = contract.OperationID
+		pair := [2]string{contract.EventClass, contract.OperationID}
+		if _, exists := seen[pair]; exists {
+			return fmt.Errorf("stav: duplicate producer-vocabulary permission tuple")
+		}
+		seen[pair] = struct{}{}
+		if contract.Outcomes == nil || len(contract.Outcomes) == 0 || len(contract.Outcomes) > len(allowedOutcomes) {
+			return fmt.Errorf("stav: invalid producer-vocabulary outcomes")
+		}
+		seenOutcomes := make(map[string]struct{}, len(contract.Outcomes))
+		previousOutcome := ""
+		for _, outcome := range contract.Outcomes {
+			if _, allowed := allowedOutcomes[outcome.Outcome]; !allowed {
+				return fmt.Errorf("stav: invalid producer-vocabulary outcome")
+			}
+			if previousOutcome != "" && outcome.Outcome <= previousOutcome {
+				return fmt.Errorf("stav: producer-vocabulary outcomes are not strictly ordered")
+			}
+			previousOutcome = outcome.Outcome
+			if _, exists := seenOutcomes[outcome.Outcome]; exists {
+				return fmt.Errorf("stav: duplicate producer-vocabulary outcome")
+			}
+			seenOutcomes[outcome.Outcome] = struct{}{}
+			if err := validateRegisteredIdentifier(outcome.ReasonCode); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
 func (v VerifyRequest) validate() error {
 	if err := validateSafeInteger(v.AfterSequence); err != nil {
 		return err
