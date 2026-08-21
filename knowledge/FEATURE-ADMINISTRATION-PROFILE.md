@@ -10,11 +10,11 @@ Canonical bootstrap policy for `symphony.knowledge.feature-administration-profil
 - SSFV source: `knowledge/ssfv/REGISTRY.md`
 - catalog scope: `registered_partial_catalog`
 - catalog complete: `false`
-- registered feature count: `86`
-- reviewed interaction expectations: `165`
+- registered feature count: `87`
+- reviewed interaction expectations: `170`
 - forward gate: `enforce_new_records`
 
-All eighty-six currently registered feature IDs appear exactly once in the normalized machine profile. Their 165 explicit expectations comprise 154 required interactions, ten prohibited interactions, and one not-applicable interaction. Evidence-backed runtime-only and system-orchestrated requirements remain explicit where a direct qxctl leaf would be meaningless or unsafe. SAV and SEV add exact headless read-only/proposal bindings, including Named Version/Capsule/Blueprint assessment, dynamic recalculation, watch/novelty checks, trigger coalescing, and a content-addressed lifecycle-session binding. Existing lifecycle, invariant, provider-trust/readiness/binding, root-summary, governed-validation, and policy-reset boundaries remain unchanged.
+All eighty-seven currently registered feature IDs appear exactly once in the normalized machine profile. Their 170 explicit expectations comprise 159 required interactions, ten prohibited interactions, and one not-applicable interaction. Evidence-backed runtime-only and system-orchestrated requirements remain explicit where a direct qxctl leaf would be meaningless or unsafe. SAV and SEV add exact headless read-only/proposal bindings, including Named Version/Capsule/Blueprint assessment, dynamic recalculation, watch/novelty checks, trigger coalescing, and a content-addressed lifecycle-session binding. Existing lifecycle, invariant, provider-trust/readiness/binding, root-summary, governed-validation, and policy-reset boundaries remain unchanged.
 
 All reviewed qxctl-mapped administration surfaces now carry their exact backend feature and interaction bindings. The foundational exception publishes twenty stable commands and twenty separately registered module operations in addition to the established mappings. No operation identity is invented before its dispatch or service contract publishes it. The independently installed SSFV engine evaluates these cross-layer facts from the expected qxctl registry and supplied engine descriptors.
 
@@ -22,7 +22,7 @@ The checked-in machine-evaluable profile is `knowledge/FEATURE-ADMINISTRATION-PR
 
 ## Bootstrap Close Evidence
 
-The current profile declares 165 reviewed surfaces. Runtime satisfaction counts and the result digest remain evaluation-specific because they also bind supplied engine descriptors and any observed qxctl registry. The canonical profile digest is `sha256:5fce919c46ec6fda376571bec6691908ae2876f214bb11e313f762fed80f5493`, the bound SSFV registry digest is `sha256:2b1503af5350914a0da1de7b794a77c204c6826c0509ff54fe052471dab28fbe`, and the expected 185-leaf qxctl registry digest is `sha256:10c6e4f7b09a3501132b4b92e54efe5f0f1ea20e9350ebfe500f32d400196636`.
+The current profile declares 170 reviewed surfaces. Runtime satisfaction counts and the result digest remain evaluation-specific because they also bind supplied engine descriptors and any observed qxctl registry. The canonical profile digest is `sha256:8639c8a0e41440b9deb476bbf22c02c5fc8bd46b8c620e85d1e1a4355fad9eeb`, the bound SSFV registry digest is `sha256:9bd69045d167b8a540233a8cb30055082105c174556838af2c00e20b5c9ff7e5`, and the expected 191-leaf qxctl registry digest is `sha256:80e94a6ccf7a37b044762ce588c9bf55daf0f0713dc35e855462949017a25490`.
 
 The four closed surfaces are exact administrator-facing lifecycle routes: SSIAG supervision, SSIAG TOPS enrollment, STAV supervision, and STAV TOPS enrollment. Each exposes status, plan, apply, apply-status, and recover through qxctl while the Go module owns transaction behavior. The expected registry retains the qxctl-owned wrapper binding beside every backend binding so command-layer behavior and administered capability remain distinct and independently auditable.
 

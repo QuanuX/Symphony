@@ -60,6 +60,7 @@ const (
 	backendFeatureLifecyclePlan        = "ssfv:symphony:knowledge-session-coordinator.lifecycle-planning"
 	backendFeatureReconciliation       = "ssfv:symphony:knowledge-session-coordinator.reconciliation"
 	backendFeatureSemanticMaintain     = "ssfv:symphony:knowledge-session-coordinator.semantic-maintenance"
+	backendFeatureNamedVersions        = "ssfv:symphony:knowledge-session-coordinator.named-version-durability"
 	backendFeatureMaestroPresence      = "ssfv:symphony:maestro-presence-authority"
 	backendFeatureMaestroInventory     = "ssfv:symphony:maestro-presence-authority.complete-inventory"
 	backendFeaturePlatform             = "ssfv:symphony:platform"
@@ -125,6 +126,12 @@ var reviewedBackendFeatureBindings = map[string][]commandregistry.FeatureBinding
 	"knowledge.session.recover":          {{FeatureID: backendFeatureAuthorityEpochs, Interaction: "recover"}},
 	"knowledge.session.status":           {{FeatureID: backendFeatureAuthorityEpochs, Interaction: "query"}},
 	"knowledge.session.transition":       {{FeatureID: backendFeatureAuthorityEpochs, Interaction: "lifecycle"}},
+	"sav.named-version.propose":          {{FeatureID: backendFeatureNamedVersions, Interaction: "propose"}},
+	"sav.named-version.seal":             {{FeatureID: backendFeatureNamedVersions, Interaction: "lifecycle"}},
+	"sav.named-version.alias":            {{FeatureID: backendFeatureNamedVersions, Interaction: "configure"}},
+	"sav.named-version.lookup":           {{FeatureID: backendFeatureNamedVersions, Interaction: "query"}},
+	"sav.named-version.status":           {{FeatureID: backendFeatureNamedVersions, Interaction: "query"}},
+	"sav.named-version.recover":          {{FeatureID: backendFeatureNamedVersions, Interaction: "recover"}},
 	"maestro.inspect":                    {{FeatureID: backendFeatureMaestroPresence, Interaction: "inspect"}},
 	"maestro.inventory":                  {{FeatureID: backendFeatureMaestroInventory, Interaction: "query"}},
 	"maestro.recover":                    {{FeatureID: backendFeatureMaestroPresence, Interaction: "recover"}},
@@ -251,6 +258,37 @@ func registeredAccordare(
 	}
 	if interaction == "propose" {
 		spec.Mutability = "proposal_only"
+	}
+	return commandregistry.Attach(command, spec)
+}
+
+func registeredNamedVersion(command *cobra.Command, leaf, interaction string) *cobra.Command {
+	key := "sav.named-version." + leaf
+	spec := commandSpec(key, featureSAVNamedVersion, interaction)
+	spec.InputProtocols = []string{"symphony.knowledge.named-version-command.v1"}
+	if leaf == "propose" {
+		spec.InputProtocols = append([]string{"symphony.sav.named-version-validation-input.v1"}, spec.InputProtocols...)
+	}
+	spec.OutputProtocols = []string{"symphony.knowledge.named-version-result.v1"}
+	spec.ResultValidationProtocols = []string{"symphony.knowledge.named-version-result.v1"}
+	coordinatorLeaf := leaf
+	if leaf == "propose" {
+		coordinatorLeaf = "prepare"
+	}
+	coordinatorOperation := "engop:symphony:knowledge-session-coordinator.named-version." + coordinatorLeaf
+	spec.BackendOperationIDs = []string{coordinatorOperation}
+	if leaf == "propose" {
+		spec.BackendOperationIDs = append(spec.BackendOperationIDs,
+			"engop:symphony:sav.named-version.validate")
+	}
+	if leaf == "seal" || leaf == "alias" || leaf == "lookup" {
+		spec.BackendOperationIDs = append(spec.BackendOperationIDs,
+			"engop:symphony:sav.named-version.validate")
+	}
+	spec.AuthorityMode = "target_host_permission"
+	if leaf == "propose" || leaf == "seal" || leaf == "alias" || leaf == "recover" {
+		spec.Mutability = "permission_backed_mutation"
+		spec.RecoveryCommandID = stringPointer("qxcmd:symphony:sav.named-version.recover")
 	}
 	return commandregistry.Attach(command, spec)
 }

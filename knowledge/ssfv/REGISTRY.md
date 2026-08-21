@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes eighty-six experimental records across the repository root and sixteen implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes eighty-seven experimental records across the repository root and sixteen implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -66,6 +66,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:knowledge-session-coordinator`
 - record_digest: `sha256:8cdbd404474d2347a6707dd7646a99da7e036d5b498158e61883cb3092376192`
 - notes: Architect-ratified F1 nested record for Deterministic two-way lifecycle planning; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:knowledge-session-coordinator.named-version-durability`
+- feature_file: `modules/knowledge-session-coordinator/FEATURES.md`
+- owner_contract: `modules/knowledge-session-coordinator/SPEC.md`
+- source_scope: `modules/knowledge-session-coordinator`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:knowledge-session-coordinator`
+- record_digest: `sha256:b7663827f3c5da9d5d6ff529cd847416b039585c05c8cc265ec1009ac872eeaa`
+- notes: Architect-ratified F1 nested record for protected immutable SAV Named Version durability; coverage remains partial and canonical apply and STAV append remain disabled.
 
 - feature_id: `ssfv:symphony:knowledge-session-coordinator.reconciliation`
 - feature_file: `modules/knowledge-session-coordinator/FEATURES.md`
@@ -154,7 +163,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:a92f2ae12c125be4ba43506586ace43906fbdc5b45075f3ef222976dba31f403`
+- record_digest: `sha256:8a37773651503e32d302fab6f3b09c46a0bf435eac5af24a388975d01e9e5f77`
 - notes: Partial-catalog record for the Go Cobra/Viper administrative and query surface, including the explicit Linux report-only lifecycle receptor, across independently installed Symphony modules.
 
 - feature_id: `ssfv:symphony:qxctl.authenticated-sessions`
@@ -819,4 +828,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This eighty-six-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This eighty-seven-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

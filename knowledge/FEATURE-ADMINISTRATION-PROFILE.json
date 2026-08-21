@@ -206,6 +206,107 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:sav.named-version.alias"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:knowledge-session-coordinator.named-version.alias",
+            "engop:symphony:sav.named-version.validate"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "configure",
+          "rationale": "One exact alias selector can be changed without rewriting immutable Named Version identity.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sav.named-version.seal"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:knowledge-session-coordinator.named-version.seal",
+            "engop:symphony:sav.named-version.validate"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "lifecycle",
+          "rationale": "Sealing selects only exact prepared SAV-validated bytes under protected compare-and-swap.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sav.named-version.propose"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:knowledge-session-coordinator.named-version.prepare",
+            "engop:symphony:sav.named-version.validate"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Preparation binds exact SAV validation, installation evidence, authority, and observed state before sealing.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sav.named-version.lookup",
+            "qxcmd:symphony:sav.named-version.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:knowledge-session-coordinator.named-version.lookup",
+            "engop:symphony:knowledge-session-coordinator.named-version.status",
+            "engop:symphony:sav.named-version.validate"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Status and exact selector lookup remain read-only, and every returned artifact is revalidated through SAV.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:sav.named-version.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:knowledge-session-coordinator.named-version.recover"
+          ],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/knowledge-session-coordinator/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Interrupted registry selection requires explicit evidence-bounded forward recovery.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:knowledge-session-coordinator.named-version-durability"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:knowledge.reconcile.begin",
             "qxcmd:symphony:knowledge.reconcile.checkpoint",
             "qxcmd:symphony:knowledge.reconcile.close"
@@ -3249,9 +3350,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:5fce919c46ec6fda376571bec6691908ae2876f214bb11e313f762fed80f5493",
+  "profile_digest": "sha256:8639c8a0e41440b9deb476bbf22c02c5fc8bd46b8c620e85d1e1a4355fad9eeb",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 86,
-  "ssfv_registry_digest": "sha256:2b1503af5350914a0da1de7b794a77c204c6826c0509ff54fe052471dab28fbe"
+  "registered_feature_count": 87,
+  "ssfv_registry_digest": "sha256:9bd69045d167b8a540233a8cb30055082105c174556838af2c00e20b5c9ff7e5"
 }

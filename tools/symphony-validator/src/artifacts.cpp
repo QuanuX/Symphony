@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 bool is_authorized_canonical_json(const std::string& relative_path) {
     // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, SSFV, SAV, and SEV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 210> authorized_paths = {
+    static const std::array<std::string, 215> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -60,6 +60,11 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/schemas/v1/session-journal.schema.json",
         "knowledge/schemas/v1/session-result.schema.json",
         "knowledge/schemas/v1/session-transition-result.schema.json",
+        "knowledge/schemas/v1/named-version-command.schema.json",
+        "knowledge/schemas/v1/named-version-head.schema.json",
+        "knowledge/schemas/v1/named-version-proposal.schema.json",
+        "knowledge/schemas/v1/named-version-registry.schema.json",
+        "knowledge/schemas/v1/named-version-result.schema.json",
         "knowledge/schemas/v1/ssfv-maintenance-command.schema.json",
         "knowledge/schemas/v1/ssfv-maintenance-head.schema.json",
         "knowledge/schemas/v1/ssfv-maintenance-journal.schema.json",

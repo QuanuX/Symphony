@@ -873,7 +873,7 @@ func newSAVCommand() *cobra.Command {
 		{"blueprint-plan", "installation_blueprint_plan", "installation-blueprint.plan", "propose", "symphony.sav.installation-blueprint-plan-input.v1", "symphony.sav.installation-blueprint-plan-result.v1"},
 		{"compatibility", "compatibility", "compatibility", "validate", "", "symphony.sav.compatibility-result.v1"},
 	}
-	command := structural("sav", fmt.Errorf("SAV subcommand is required: inspect, reference-check, current, evaluate, diff, explain, graph, version-validate, version-diff, capsule-check, blueprint-plan, or compatibility"))
+	command := structural("sav", fmt.Errorf("SAV subcommand is required: inspect, reference-check, current, evaluate, diff, explain, graph, version-validate, version-diff, capsule-check, blueprint-plan, compatibility, or named-version"))
 	for _, operation := range operations {
 		options := accordareOptions{version: "0.1.0-dev", maestroVersion: "0.1.0-dev", scope: "user", ttl: 15 * time.Minute}
 		child := &cobra.Command{Use: operation.leaf, Args: usageOnlyArgs,
@@ -904,6 +904,61 @@ func newSAVCommand() *cobra.Command {
 			child.Flags().StringVar(&options.maestroVersion, "maestro-version", "0.1.0-dev", "exact Maestro version when receptor evidence is requested")
 			child.Flags().StringVar(&options.scope, "scope", "user", "SSIAG scope for protected Maestro evidence")
 			child.Flags().DurationVar(&options.ttl, "ttl", 15*time.Minute, "requested Maestro inventory capability lifetime")
+		}
+		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+		command.AddCommand(child)
+	}
+	command.AddCommand(newNamedVersionCommand())
+	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
+	return command
+}
+
+func newNamedVersionCommand() *cobra.Command {
+	command := structural("named-version", fmt.Errorf("SAV named-version subcommand is required: propose, seal, alias, lookup, status, or recover"))
+	operations := []struct {
+		leaf, engine, interaction string
+	}{
+		{"propose", "named_version_prepare", "propose"},
+		{"seal", "named_version_seal", "lifecycle"},
+		{"alias", "named_version_alias", "configure"},
+		{"lookup", "named_version_lookup", "query"},
+		{"status", "named_version_status", "query"},
+		{"recover", "named_version_recover", "recover"},
+	}
+	for _, operation := range operations {
+		options := namedVersionOptions{scope: "user", ttl: 15 * time.Minute}
+		child := &cobra.Command{Use: operation.leaf, Args: usageOnlyArgs,
+			RunE: func(*cobra.Command, []string) error { return runNamedVersion(operation.engine, options) }}
+		registeredNamedVersion(child, operation.leaf, operation.interaction)
+		child.Flags().StringVar(&options.topsID, "tops-id", "", "immutable TOPS UUID")
+		child.Flags().StringVar(&options.scope, "scope", "user", "SSIAG and state scope: user or system")
+		child.Flags().StringVar(&options.stateRoot, "state-root", "", "state root; defaults to XDG_STATE_HOME or ~/.local/state")
+		child.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
+		child.Flags().DurationVar(&options.ttl, "ttl", 15*time.Minute, "requested exact SSIAG capability lifetime")
+		child.Flags().BoolVar(&options.jsonOutput, "json", false, "emit strict Named Version result JSON")
+		switch operation.leaf {
+		case "propose":
+			child.Flags().StringVar(&options.input, "input", "", "bounded no-follow SAV named-version validation input")
+			child.Flags().StringVar(&options.operationID, "operation-id", "", "stable proposal operation identity")
+			child.Flags().StringVar(&options.expectedRegistryDigest, "expected-registry-digest", "", "absent or exact current registry digest")
+		case "seal":
+			child.Flags().StringVar(&options.operationID, "operation-id", "", "stable seal operation identity")
+			child.Flags().StringVar(&options.expectedRegistryDigest, "expected-registry-digest", "", "absent or exact current registry digest")
+			child.Flags().StringVar(&options.preparedOperationID, "prepared-operation-id", "", "exact completed proposal operation identity")
+			child.Flags().StringVar(&options.proposalDigest, "proposal-digest", "", "exact prepared proposal digest")
+		case "alias":
+			child.Flags().StringVar(&options.operationID, "operation-id", "", "stable alias-selection operation identity")
+			child.Flags().StringVar(&options.expectedRegistryDigest, "expected-registry-digest", "", "exact current registry digest")
+			child.Flags().StringVar(&options.alias, "alias", "", "bounded convenience alias")
+			child.Flags().StringVar(&options.digest, "digest", "", "exact sealed Named Version digest")
+		case "lookup":
+			child.Flags().StringVar(&options.digest, "digest", "", "resolve one exact Named Version digest")
+			child.Flags().StringVar(&options.id, "id", "", "resolve one stable savver identity")
+			child.Flags().StringVar(&options.alias, "alias", "", "resolve one convenience alias")
+		case "recover":
+			child.Flags().StringVar(&options.operationID, "operation-id", "", "stable recovery operation identity")
+			child.Flags().StringVar(&options.expectedRegistryDigest, "expected-registry-digest", "", "exact recoverable registry digest")
+			child.Flags().BoolVar(&options.discover, "discover", false, "discover one unique forward-recoverable registry")
 		}
 		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 		command.AddCommand(child)

@@ -30,6 +30,11 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 - `ssfv-maintenance-journal.schema.json`: protected per-TOPS, per-subject, per-repository SSFV baseline and checkpoint lineage with separate baseline/current engine identities for upgrade-order tolerance.
 - `ssfv-maintenance-head.schema.json`: atomic selector for the active member of a dual-slot SSFV maintenance journal.
 - `ssfv-maintenance-result.schema.json`: bounded compatibility, review state, mutation, and repair evidence for the persistent SSFV maintenance stream.
+- `named-version-command.schema.json`: exact SSIAG-authorized prepare, seal, alias, lookup, status, and forward-recovery request for the protected Accordare Named Version store.
+- `named-version-proposal.schema.json`: immutable SAV-validation-bound preparation evidence that cannot itself seal, select, publish, or activate a composition.
+- `named-version-registry.schema.json`: protected noncanonical digest-linked inventory and alias selector over immutable Named Version objects.
+- `named-version-head.schema.json`: atomic selector for the active member of the dual-slot Named Version registry.
+- `named-version-result.schema.json`: bounded proposal, lookup, selection, compatibility, mutation, and recovery evidence with STAV append explicitly gated off.
 - `proposal.schema.json`: provider-neutral immutable proposal envelope and vector-neutral authority boundary. Its explicit `engine_decided_domain_truth: false` assertion prevents any engine from converting validation into ownership, membership, ratification, publication, or other semantic authority.
 - `provider-evidence.schema.json`: bounded provider-neutral revision, change-request, and ratification evidence normalized by separately discoverable adapters.
 - `lifecycle-profile-input.schema.json`: bounded declarative profile intent accepted by qxctl without caller-authored generations, predecessor links, or generated digests.

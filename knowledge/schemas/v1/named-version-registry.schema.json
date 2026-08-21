@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:named-version-registry:v1",
+  "title": "Symphony protected Named Version registry v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["protocol", "format_version", "tops_id", "generation", "previous_registry_digest", "versions", "aliases", "operations", "updated_at", "recovery", "canonical", "registry_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.named-version-registry.v1"}, "format_version": {"const": 1},
+    "tops_id": {"$ref": "#/$defs/uuid"}, "generation": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+    "previous_registry_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "versions": {"type": "array", "maxItems": 4096, "items": {"$ref": "#/$defs/versionEntry"}},
+    "aliases": {"type": "array", "maxItems": 4096, "items": {"$ref": "#/$defs/aliasEntry"}},
+    "operations": {"type": "array", "maxItems": 4096, "items": {"$ref": "#/$defs/operation"}},
+    "updated_at": {"$ref": "#/$defs/utc"}, "recovery": {"$ref": "#/$defs/recovery"},
+    "canonical": {"const": false}, "registry_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"}, "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}, "uuid": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"}, "utc": {"type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"}, "alias": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[^\\u0000-\\u001F\\u007F]+$"},
+    "versionEntry": {"type": "object", "additionalProperties": false, "required": ["named_version_id", "named_version_digest", "display_alias", "predecessor_digest", "sealed_at", "object_name"], "properties": {"named_version_id": {"type": "string", "pattern": "^savver:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"}, "named_version_digest": {"$ref": "#/$defs/digest"}, "display_alias": {"$ref": "#/$defs/alias"}, "predecessor_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]}, "sealed_at": {"$ref": "#/$defs/utc"}, "object_name": {"type": "string", "pattern": "^object\\.[0-9a-f]{64}\\.json$"}}},
+    "aliasEntry": {"type": "object", "additionalProperties": false, "required": ["alias", "named_version_id", "named_version_digest", "updated_at"], "properties": {"alias": {"$ref": "#/$defs/alias"}, "named_version_id": {"type": "string", "pattern": "^savver:"}, "named_version_digest": {"$ref": "#/$defs/digest"}, "updated_at": {"$ref": "#/$defs/utc"}}},
+    "operation": {"type": "object", "additionalProperties": false, "required": ["operation", "operation_id", "operation_fingerprint", "completed_at", "selected_digest"], "properties": {"operation": {"$ref": "#/$defs/token"}, "operation_id": {"$ref": "#/$defs/token"}, "operation_fingerprint": {"$ref": "#/$defs/digest"}, "completed_at": {"$ref": "#/$defs/utc"}, "selected_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]}}},
+    "recovery": {"type": "object", "additionalProperties": false, "required": ["state", "recovered_from_digest", "detail"], "properties": {"state": {"enum": ["clean", "recovered"]}, "recovered_from_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]}, "detail": {"type": "string", "minLength": 1, "maxLength": 512}}}
+  }
+}
