@@ -7180,3 +7180,164 @@ This PR authorizes none of the following:
   - `module release, SDK publication, API publication, Mintlify publication, product-launch claim, public-documentation completion, or platform release`
 - notes: |
     This post-merge closure records the Architect-ratified Accordare foundation merged by PR #151. It preserves every source path as historical provenance, assigns current SKVI obligations only to the 68 exactly indexed surfaces, and changes no runtime behavior. The closure carrier is non-recursive because it appends only immutable SCLV history. PR #152 preserved explicitly noncanonical research only and is intentionally absent under SCLV's sparse record-selection rule.
+
+- record_id: `SCLV-CHG-20260820-ACCORDARE-CONTRACT-HARDENING`
+- record_version: `3`
+- title: `Accordare contracts, feature coverage, and capacity posture hardened`
+- status: `canonical`
+- date: `2026-08-20`
+- change_started_at: `2026-08-20T20:04:27Z`
+- change_completed_at: `2026-08-20T22:05:44Z`
+- recorded_at: `2026-08-20T22:07:18Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#154`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/154`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `269f1a4c371df81dcfdd178d003c2fea9f4c09c7`
+- tree_digest: `sha256:84508313ff99b0a37f5ce5789fd4fb9dae8312bfb63046bc2b11ed946c464ce1`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/154`
+- ratification_evidence_digest: `sha256:0a677148d2d854eea962fa50b73115bf88210f4e3d40376b3bc1d4f52bcb9938`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/FEATURE-ADMINISTRATION.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/sav/SPEC.md`
+  - `knowledge/sav/schemas/v1/MANIFEST.md`
+  - `knowledge/sav/schemas/v1/extension-capsule-check-input.schema.json`
+  - `knowledge/sav/schemas/v1/extension-capsule-check-result.schema.json`
+  - `knowledge/sav/schemas/v1/installation-blueprint-plan-input.schema.json`
+  - `knowledge/sav/schemas/v1/installation-blueprint-plan-result.schema.json`
+  - `knowledge/sav/schemas/v1/named-version-diff-input.schema.json`
+  - `knowledge/sav/schemas/v1/named-version-diff-result.schema.json`
+  - `knowledge/sav/schemas/v1/named-version-validation-input.schema.json`
+  - `knowledge/sav/schemas/v1/named-version-validation-result.schema.json`
+  - `knowledge/sev/SPEC.md`
+  - `knowledge/sev/schemas/v1/MANIFEST.md`
+  - `knowledge/sev/schemas/v1/evolution-session-binding-input.schema.json`
+  - `knowledge/sev/schemas/v1/novelty-bundle-check-input.schema.json`
+  - `knowledge/sev/schemas/v1/novelty-bundle-check-result.schema.json`
+  - `knowledge/sev/schemas/v1/trigger-coalescing-input.schema.json`
+  - `knowledge/sev/schemas/v1/trigger-coalescing-result.schema.json`
+  - `knowledge/sev/schemas/v1/watch-policy-check-input.schema.json`
+  - `knowledge/sev/schemas/v1/watch-policy-check-result.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/MANIFEST.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SKILL.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `modules/sav-engine/FEATURES.md`
+  - `modules/sav-engine/SPEC.md`
+  - `modules/sav-engine/src/sav.cpp`
+  - `modules/sav-engine/tests/process_smoke.sh`
+  - `modules/sav-engine/tests/sav_test.cpp`
+  - `modules/sev-engine/FEATURES.md`
+  - `modules/sev-engine/SPEC.md`
+  - `modules/sev-engine/src/sev.cpp`
+  - `modules/sev-engine/tests/process_smoke.sh`
+  - `modules/sev-engine/tests/sev_test.cpp`
+  - `modules/ssfv-engine/tests/ssfv_test.cpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/command_specs.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/FEATURE-ADMINISTRATION.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/sav/SPEC.md`
+  - `knowledge/sav/schemas/v1/MANIFEST.md`
+  - `knowledge/sav/schemas/v1/extension-capsule-check-input.schema.json`
+  - `knowledge/sav/schemas/v1/extension-capsule-check-result.schema.json`
+  - `knowledge/sav/schemas/v1/installation-blueprint-plan-input.schema.json`
+  - `knowledge/sav/schemas/v1/installation-blueprint-plan-result.schema.json`
+  - `knowledge/sav/schemas/v1/named-version-diff-input.schema.json`
+  - `knowledge/sav/schemas/v1/named-version-diff-result.schema.json`
+  - `knowledge/sav/schemas/v1/named-version-validation-input.schema.json`
+  - `knowledge/sav/schemas/v1/named-version-validation-result.schema.json`
+  - `knowledge/sev/SPEC.md`
+  - `knowledge/sev/schemas/v1/MANIFEST.md`
+  - `knowledge/sev/schemas/v1/evolution-session-binding-input.schema.json`
+  - `knowledge/sev/schemas/v1/novelty-bundle-check-input.schema.json`
+  - `knowledge/sev/schemas/v1/novelty-bundle-check-result.schema.json`
+  - `knowledge/sev/schemas/v1/trigger-coalescing-input.schema.json`
+  - `knowledge/sev/schemas/v1/trigger-coalescing-result.schema.json`
+  - `knowledge/sev/schemas/v1/watch-policy-check-input.schema.json`
+  - `knowledge/sev/schemas/v1/watch-policy-check-result.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/MANIFEST.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SKILL.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `modules/sav-engine/FEATURES.md`
+  - `modules/sev-engine/FEATURES.md`
+  - `modules/ssfv-engine/tests/ssfv_test.cpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/command_specs.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- change_summary: |
+    Under the Architect's direction, PR #154 hardened the merged Accordare foundation without expanding its authority. Fifteen strict SAV/SEV operation-envelope schemas, eight nested SSFV feature records, exact qxctl bindings, and corrected feature-administration coverage now describe the implemented Named Version, Capsule, Blueprint, dynamic-evolution, SCSEV, novelty/watch, and lifecycle-binding surfaces. SAV and SEV emit exact self-digested descriptor-v2 documents, and all pre-release SAV operation identities now follow canonical dotted knowledge truth.
+- relationship_changes: |
+    `knowledge/sav/` and `knowledge/sev/` retain canonical protocol and stable-operation identity ownership. The C++ engines implement those contracts, qxctl remains their headless caller-neutral administrator, SSFV owns semantic feature and administration-assurance truth, and receipt/binding surfaces retain installation, selection, receptor, and SCSEV-profile metadata instead of leaking those concerns into descriptor v2. Maestro remains presence authority only.
+- doctrine_changes: |
+    A descriptor claiming v2 must conform to the exact v2 field set, limits, scopes, operation metadata, and omit-self digest. Implementation-local shorthand cannot override canonical knowledge identities. Capacity-review thresholds are diagnostic planning triggers rather than rejection limits or permission to raise hard bounds. Every operation's effective capacity is the intersection of its local limits and the shared byte, JSON-event, depth, string, and deadline envelope.
+- compatibility_consequences: |
+    The stable qxctl leaf count remains 185 while six unreleased SAV backend identities move from implementation-local hyphenated shorthand to the already canonical dotted identities. Exact descriptor v2 now fails closed for consumers instead of emitting hybrid v1/private fields. Unsupported readers and writers continue to reject without fallback; exact side-by-side engine versions and dynamic forward/reverse lifecycle recovery remain unchanged.
+- publication_consequences: |
+    No SAV or SEV module version, tag, release package, API, SDK, Mintlify documentation, Named Version, Capsule, Blueprint application, product-launch claim, or platform release was published or authorized. PR #154 changes active-development source only.
+- projection_consequences: |
+    The explicitly partial semantic catalog now records 86 features across sixteen owner scopes with 67 nested features. The feature-administration profile records 165 reviewed surfaces with 154 required expectations, thirteen exemptions, ten prohibitions, and zero unreviewed surfaces. qxctl retains 185 stable commands. The root summary remains sha256:1c71200abac55acd3040d16565465ac5512a2c8ef3f48d67a1541f5762bacd41. These are source projections and do not claim installed-host or release completeness.
+- evidence:
+  - `PR #154 merged into main at 2026-08-20T22:05:44Z by quantDIY as 269f1a4c371df81dcfdd178d003c2fea9f4c09c7`
+  - `implementation heads 0bfcd41f8c71f071a3d4680062936314af85c595 and 9362d91984059ac1518fe072bb50b6c8d1cc8bbd; 53 files changed, 1566 insertions, 222 deletions`
+  - `local-Git revision evidence digest sha256:b61a948fee964f7271f405cd1cc0eecab779d3889ae5ef029783bd2df2ff0db8 binds merge revision 269f1a4c371df81dcfdd178d003c2fea9f4c09c7 to tree digest sha256:84508313ff99b0a37f5ce5789fd4fb9dae8312bfb63046bc2b11ed946c464ce1`
+  - `ratification evidence digest sha256:0a677148d2d854eea962fa50b73115bf88210f4e3d40376b3bc1d4f52bcb9938 binds compact lexicographically key-sorted provider, repository, change-request, revisions, timestamps, authenticated merger, Architect permission, title, URL, and diff counts`
+  - `all 53 source-PR paths remain affected-surface provenance; 45 exact current SKVI routes cover canonical, semantic, integration, and regression surfaces while eight implementation-local source or test paths remain free of artificial index obligations`
+  - `SAV, SEV, and SSFV each passed both CTests; all qxctl Go packages passed; the Symphony Validator passed all seven CTests`
+  - `direct-process capacity evidence measured full Named Version and Capsule collections plus 512-edge, 512-event, and 512-item review tiers; structured one-above boundary requests failed closed at the shared JSON-event ceiling`
+  - `pre-closure live Symphony Validator result pass=7303 warning=0 violation=0 exit=0`
+  - `the qxctl registry verifies at sha256:10c6e4f7b09a3501132b4b92e54efe5f0f1ea20e9350ebfe500f32d400196636 with 185 stable commands`
+  - `the feature-administration profile verifies at sha256:5fce919c46ec6fda376571bec6691908ae2876f214bb11e313f762fed80f5493 with 165 reviewed surfaces and zero unreviewed expectations`
+  - `the SSFV registry byte digest verifies at sha256:2b1503af5350914a0da1de7b794a77c204c6826c0509ff54fe052471dab28fbe with 86 records`
+  - `the root summary verifies at sha256:1c71200abac55acd3040d16565465ac5512a2c8ef3f48d67a1541f5762bacd41 with 86 features, 165 expectations, 185 commands, and three publications`
+  - `closure SCLV engine check reported 53 records, 212 passes, zero warnings, zero violations, and valid state`
+  - `closure Symphony Validator result pass=7407 warning=0 violation=0 exit=0; root summary remained sha256:1c71200abac55acd3040d16565465ac5512a2c8ef3f48d67a1541f5762bacd41`
+- non_authorizations:
+  - `canonical knowledge mutation, Named Version proposal/sealing/storage, Capsule installation, Blueprint application, automatic docking, Maestro scheduling or execution, or a parallel Accordare lifecycle journal`
+  - `persisted host watching, ambient login hooks, novelty transfer, Accordare STAV production, provider secret delivery, raw STAV append by qxctl, fabricated audit evidence, or SSIAG permission inferred from an engine result`
+  - `raising byte, JSON-event, collection, depth, string, path, deadline, or latency limits from development-host measurements; treating a capacity-review threshold as rejection or authority`
+  - `automatic newest-version selection, timestamp or filesystem-order selection, implicit fallback, native Windows engine support, hot/warm-path participation, or trading-node doctrine`
+  - `permission inferred from caller class, feature identity, command identity, operation identity, module ownership, installation, descriptor validity, or administration coverage`
+  - `repository-wide SSFV completeness, installed-host completeness, persistent canonical database, AI dependency, Go 1.27 production pin, or module/API/SDK/documentation release`
+- notes: |
+    This post-merge closure records the Architect-ratified Accordare contract and semantic-feature hardening merged by PR #154. It preserves every source path as historical provenance, assigns current SKVI obligations only to the 45 exactly indexed surfaces, and changes no runtime behavior. The closure carrier is non-recursive because it appends only immutable SCLV history.
