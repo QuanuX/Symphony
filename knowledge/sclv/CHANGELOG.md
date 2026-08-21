@@ -7496,3 +7496,114 @@ This PR authorizes none of the following:
   - `repository-wide SSFV completeness, installed-host completeness, persistent canonical database, AI dependency, Go 1.27 production pin, or module/API/SDK/documentation release`
 - notes: |
     This post-merge closure records the Architect-ratified durable SAV Named Version administration implementation merged by PR #156. Every changed source path is preserved as historical provenance and has an exact current SKVI route. The closure changes no runtime behavior and is non-recursive because it appends only immutable SCLV history.
+
+- record_id: `SCLV-CHG-20260821-ACCORDARE-STAV-VOCABULARY-ACCEPTANCE`
+- record_version: `3`
+- title: `Accordare STAV vocabulary and installed acceptance completed`
+- status: `canonical`
+- date: `2026-08-21`
+- change_started_at: `2026-08-21T19:24:51Z`
+- change_completed_at: `2026-08-21T19:25:14Z`
+- recorded_at: `2026-08-21T19:26:51Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#158`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/158`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `7561455adcb1fc2e70b8dfc27014e33fc9ad1e43`
+- tree_digest: `sha256:a46b1b54470314a7ec1a4847d14e87524d8c755867e6a874f46b261bdb4bb84c`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/158`
+- ratification_evidence_digest: `sha256:d590918da7eb76781544337d8e6e6d74047e79ce1f35beb0a1a3b7307b894460`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/ACCORD-AUDIT.md`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/sav/STAV.md`
+  - `knowledge/sev/STAV.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/stav/INTENT.md`
+  - `knowledge/stav/MANIFEST.md`
+  - `knowledge/stav/SPEC.md`
+  - `knowledge/stav/registries/v1/accordare.json`
+  - `knowledge/stav/registries/v1/base.md`
+  - `knowledge/stav/schemas/v1/MANIFEST.md`
+  - `knowledge/stav/schemas/v1/producer-vocabulary.schema.json`
+  - `libraries/stav-protocol-go/MANIFEST.md`
+  - `libraries/stav-protocol-go/README.md`
+  - `libraries/stav-protocol-go/codec.go`
+  - `libraries/stav-protocol-go/fixtures_test.go`
+  - `libraries/stav-protocol-go/model.go`
+  - `libraries/stav-protocol-go/validate.go`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/cmd/qxctl/lifecycle_apply.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_binding_test.go`
+  - `tools/qxctl/cmd/qxctl/named_version_installed_acceptance_test.go`
+  - `tools/qxctl/tests/named_version_installed_acceptance.sh`
+  - `tools/symphony-validator/src/artifacts.cpp`
+- skvi_references:
+  - `README.md`
+  - `knowledge/ACCORD-AUDIT.md`
+  - `knowledge/LIFECYCLE.md`
+  - `knowledge/sav/STAV.md`
+  - `knowledge/sev/STAV.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/stav/INTENT.md`
+  - `knowledge/stav/MANIFEST.md`
+  - `knowledge/stav/SPEC.md`
+  - `knowledge/stav/registries/v1/accordare.json`
+  - `knowledge/stav/registries/v1/base.md`
+  - `knowledge/stav/schemas/v1/MANIFEST.md`
+  - `knowledge/stav/schemas/v1/producer-vocabulary.schema.json`
+  - `libraries/stav-protocol-go/MANIFEST.md`
+  - `modules/knowledge-session-coordinator/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/cmd/qxctl/lifecycle_apply.go`
+  - `tools/qxctl/cmd/qxctl/lifecycle_binding_test.go`
+  - `tools/qxctl/cmd/qxctl/named_version_installed_acceptance_test.go`
+  - `tools/qxctl/tests/named_version_installed_acceptance.sh`
+  - `tools/symphony-validator/src/artifacts.cpp`
+- change_summary: |
+    Under the Architect's direction, PR #158 registered the first closed Accordare STAV producer vocabulary and proved the existing SAV Named Version administration circuit against exact installed receipt-v2 SAV and coordinator processes. The pure-Go STAV kernel now performs strict codec, ordering, tuple-uniqueness, outcome, reason, and explicit authority-gate validation. qxctl's lifecycle binding adapter now covers all eight established coordinator/vector roles, including SAV and SEV.
+- relationship_changes: |
+    STAV retains canonical envelope and producer-vocabulary ownership; SAV retains Named Version operation meaning; SSIAG retains authorization and installation-specific grant ownership; the coordinator retains protected noncanonical persistence; qxctl remains the headless administrator; and the future Accordare producer remains a separately authenticated runtime boundary. Vocabulary validity does not transfer authority between those owners.
+- doctrine_changes: |
+    A canonical producer vocabulary reserves exact safe-metadata tuples but neither implements a producer nor authorizes a producer grant. Runtime implementation and installation-specific grant readiness are independent explicit gates. Read-only SEV operations remain outside STAV, and qxctl cannot accept caller-supplied event identity, class, operation, intent, reason, sequence, timestamp, or chain state.
+- compatibility_consequences: |
+    The lifecycle binding adapter now handles SAV and SEV in addition to the six earlier roles, aligning apply behavior with the existing receipt and binding registries. The new STAV registry is additive and authority-free; readers that do not recognize its protocol do not gain or lose append authority. Feature and qxctl command identities remain unchanged at 87 and 191 respectively.
+- publication_consequences: |
+    No module version, tag, release package, producer grant, runtime Accordare producer, STAV append closure, Named Version publication, API, SDK, Mintlify documentation, product-launch claim, or platform release was published or authorized. PR #158 changes active-development source only.
+- projection_consequences: |
+    SKVI now routes the cross-vector audit boundary, SAV/SEV audit posture, producer schema and registry, and installed acceptance evidence. The explicitly partial SSFV catalog remains at 87 features, the feature-administration profile remains at 170 reviewed expectations with zero unreviewed surfaces, qxctl remains at 191 stable commands, and the root summary remains sha256:97eb486e4ba5bfe74b85ea2577721687a3d13af29b23f7526b16cb825bde2a1d.
+- evidence:
+  - `PR #158 merged into main at 2026-08-21T19:25:14Z by quantDIY as 7561455adcb1fc2e70b8dfc27014e33fc9ad1e43`
+  - `source head 092ab4ea437b587da14f7e99d0dad6d1bdbd89fb; 27 files changed, 628 insertions, 13 deletions`
+  - `local-Git revision evidence observed at 2026-08-21T19:26:16Z binds merge revision 7561455adcb1fc2e70b8dfc27014e33fc9ad1e43 to tree digest sha256:a46b1b54470314a7ec1a4847d14e87524d8c755867e6a874f46b261bdb4bb84c`
+  - `ratification evidence digest sha256:d590918da7eb76781544337d8e6e6d74047e79ce1f35beb0a1a3b7307b894460 binds compact lexicographically key-sorted repository, change-request, base/head/merge revisions, timestamps, authenticated merger, Architect permission, title, URL, commit count, and diff counts`
+  - `all 27 source-PR paths remain affected-surface provenance; 22 exact current SKVI routes cover canonical, integration, lifecycle, and regression surfaces while five implementation-local Go source or test paths remain free of artificial index obligations`
+  - `the STAV protocol kernel, STAV append authority, SSIAG, and all qxctl Go packages passed; sandbox-restricted Unix-socket tests passed under normal host permissions`
+  - `the installed-host harness built and installed exact receipt-v2 SAV and coordinator Release processes and passed prepare, seal, exact replay, alias, lookup, and status through qxctl with caller-neutral SSIAG evidence`
+  - `the Symphony Validator passed all seven CTests; pre-merge live repository validation reported pass=7593 warning=0 violation=0 exit=0`
+  - `the qxctl registry remains sha256:80e94a6ccf7a37b044762ce588c9bf55daf0f0713dc35e855462949017a25490 with 191 stable commands`
+  - `the feature-administration profile remains sha256:8639c8a0e41440b9deb476bbf22c02c5fc8bd46b8c620e85d1e1a4355fad9eeb with 170 reviewed surfaces and zero unreviewed expectations`
+  - `the SSFV registry byte digest remains sha256:9bd69045d167b8a540233a8cb30055082105c174556838af2c00e20b5c9ff7e5 with 87 records`
+  - `the root summary remains sha256:97eb486e4ba5bfe74b85ea2577721687a3d13af29b23f7526b16cb825bde2a1d with 87 features, 170 expectations, 191 commands, and three publications`
+  - `closure SCLV engine check reported 55 records, 220 passes, zero warnings, zero violations, and valid state`
+  - `closure Symphony Validator result pass=7651 warning=0 violation=0 exit=0; root summary remained sha256:97eb486e4ba5bfe74b85ea2577721687a3d13af29b23f7526b16cb825bde2a1d`
+- non_authorizations:
+  - `runtime Accordare production, an Accordare producer grant, arbitrary append by qxctl, direct ledger editing, producer-selected event identity or chain state, or audit completion inferred from vocabulary validity`
+  - `SAV or SEV mutation authority, coordinator STAV transport, SSIAG authority inferred from a successful operation, canonical knowledge apply, Named Version publication, Capsule installation, Blueprint application, automatic docking, Maestro scheduling, or engine execution`
+  - `permission inferred from caller class, feature identity, command identity, operation identity, module ownership, installation, compatibility, vocabulary membership, or administration coverage`
+  - `automatic newest-version selection, timestamp or filesystem-order selection, implicit fallback, destructive rollback, ambiguous recovery, native Windows engine support, hot/warm-path participation, or trading-node doctrine`
+  - `repository-wide SSFV completeness, installed-host completeness beyond the exact acceptance circuit, persistent canonical database, AI dependency, Go 1.27 production pin, or module/API/SDK/documentation release`
+- notes: |
+    This post-merge closure records the Architect-ratified Accordare vocabulary, installed-host acceptance, and eight-role lifecycle correction merged by PR #158. It preserves all source paths as provenance, routes only exact canonical and integration obligations through SKVI, and changes no runtime behavior. The closure carrier is non-recursive because it appends only immutable SCLV history.
