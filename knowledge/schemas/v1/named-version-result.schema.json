@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema", "$id": "urn:symphony:knowledge:named-version-result:v1",
+  "title": "Symphony protected Named Version result v1", "type": "object", "additionalProperties": false,
+  "required": ["protocol", "format_version", "operation", "compatibility", "registry_present", "registry_digest", "version_count", "alias_count", "proposal_digest", "artifact", "selected_alias", "changed", "recovered", "repair_actions", "read_only", "canonical_apply_enabled", "canonical", "stav_append_enabled", "result_digest"],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.named-version-result.v1"}, "format_version": {"const": 1},
+    "operation": {"enum": ["named_version_prepare", "named_version_seal", "named_version_alias", "named_version_lookup", "named_version_status", "named_version_recover"]},
+    "compatibility": {"$ref": "#/$defs/compatibility"}, "registry_present": {"type": "boolean"},
+    "registry_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]}, "version_count": {"type": "integer", "minimum": 0, "maximum": 4096}, "alias_count": {"type": "integer", "minimum": 0, "maximum": 4096},
+    "proposal_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]}, "artifact": {"oneOf": [{"type": "null"}, {"$ref": "urn:symphony:sav:named-version:v1"}]}, "selected_alias": {"oneOf": [{"type": "null"}, {"type": "string", "minLength": 1, "maxLength": 128}]},
+    "changed": {"type": "boolean"}, "recovered": {"type": "boolean"}, "repair_actions": {"type": "array", "maxItems": 32, "items": {"type": "string", "minLength": 1, "maxLength": 4096}}, "read_only": {"type": "boolean"}, "canonical_apply_enabled": {"const": false}, "canonical": {"const": false}, "stav_append_enabled": {"const": false}, "result_digest": {"$ref": "#/$defs/digest"}
+  },
+  "$defs": {"token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"}, "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}, "compatibility": {"type": "object", "additionalProperties": false, "required": ["mode", "process_protocol", "registry_read_version", "registry_write_version", "missing_capabilities"], "properties": {"mode": {"enum": ["full", "read_only", "unsupported"]}, "process_protocol": {"oneOf": [{"type": "null"}, {"const": "symphony.knowledge.engine-process.v1"}]}, "registry_read_version": {"oneOf": [{"type": "null"}, {"const": 1}]}, "registry_write_version": {"oneOf": [{"type": "null"}, {"const": 1}]}, "missing_capabilities": {"type": "array", "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}}}}}
+}

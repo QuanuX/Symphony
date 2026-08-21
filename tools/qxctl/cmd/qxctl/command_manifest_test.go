@@ -23,8 +23,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 185 {
-		t.Fatalf("registered command count = %d, want 185", len(manifest.Commands))
+	if len(manifest.Commands) != 191 {
+		t.Fatalf("registered command count = %d, want 191", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -68,6 +68,12 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 		"qxcmd:symphony:validate.root-summary",
 		"qxcmd:symphony:sav.current",
 		"qxcmd:symphony:sav.evaluate",
+		"qxcmd:symphony:sav.named-version.propose",
+		"qxcmd:symphony:sav.named-version.seal",
+		"qxcmd:symphony:sav.named-version.alias",
+		"qxcmd:symphony:sav.named-version.lookup",
+		"qxcmd:symphony:sav.named-version.status",
+		"qxcmd:symphony:sav.named-version.recover",
 		"qxcmd:symphony:sev.command-surface",
 		"qxcmd:symphony:sev.verify",
 	} {
@@ -161,8 +167,8 @@ func TestCommandRegistryBindsVectorCapabilitiesNotBindingSelection(t *testing.T)
 }
 
 func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
-	if len(reviewedBackendFeatureBindings) != 75 {
-		t.Fatalf("reviewed backend command count = %d, want 75", len(reviewedBackendFeatureBindings))
+	if len(reviewedBackendFeatureBindings) != 81 {
+		t.Fatalf("reviewed backend command count = %d, want 81", len(reviewedBackendFeatureBindings))
 	}
 	secondaryBindingCount := 0
 	for key, bindings := range reviewedBackendFeatureBindings {
@@ -171,8 +177,8 @@ func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
 		}
 		secondaryBindingCount += len(bindings)
 	}
-	if secondaryBindingCount != 78 {
-		t.Fatalf("reviewed backend binding count = %d, want 78", secondaryBindingCount)
+	if secondaryBindingCount != 84 {
+		t.Fatalf("reviewed backend binding count = %d, want 84", secondaryBindingCount)
 	}
 
 	root, err := newRootCommand()

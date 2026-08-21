@@ -69,6 +69,8 @@
         "tools/qxctl/cmd/qxctl/commands.go",
         "tools/qxctl/cmd/qxctl/lifecycle_host.go",
         "tools/qxctl/cmd/qxctl/main.go",
+        "tools/qxctl/cmd/qxctl/named_version.go",
+        "tools/qxctl/cmd/qxctl/named_version_test.go",
         "tools/qxctl/internal/knowledgeengine/client.go",
         "tools/qxctl/internal/knowledgelifecycle/executor.go",
         "tools/qxctl/internal/knowledgelifecycle/host.go",

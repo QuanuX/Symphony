@@ -406,6 +406,105 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
+          "reason": "SCLV records reviewed Named Version durability and qxctl administration changes.",
+          "reference": "knowledge/sclv/CHANGELOG.md",
+          "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes the common persistence schemas, coordinator implementation, qxctl grammar, and tests.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SODV owns any later publication linkage while Named Version persistence leaves that reference null until publication exists.",
+          "reference": "knowledge/sodv/SPEC.md",
+          "vector": "sodv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Every proposal, seal, alias, lookup, status, and recovery request carries a fresh exact caller-neutral decision.",
+          "reference": "knowledge/ssiag/SPEC.md",
+          "vector": "ssiag"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Safe Accordare audit vocabulary remains separately gated; results explicitly keep direct STAV append disabled until that vocabulary is ratified.",
+          "reference": "knowledge/stav/SPEC.md",
+          "vector": "stav"
+        }
+      ],
+      "distinctions": [
+        {
+          "distinction": "SAV validates composition semantics but remains stateless; this coordinator feature preserves only protected immutable bytes, proposals, and noncanonical selector state.",
+          "target_feature_id": "ssfv:symphony:sav-engine.named-version"
+        }
+      ],
+      "evidence": [
+        "knowledge/schemas/v1/named-version-command.schema.json, named-version-proposal.schema.json, named-version-registry.schema.json, named-version-head.schema.json, and named-version-result.schema.json close the complete shared persistence boundary.",
+        "modules/knowledge-session-coordinator/tests/named_versions_test.cpp verifies protected preparation, immutable seal, post-write exact-byte lookup, alias selection, idempotent replay, stale compare-and-swap refusal, damaged-head recovery, and symlink rejection.",
+        "tools/qxctl/cmd/qxctl/named_version_test.go verifies strict result identity, resource binding, digest validation, and the six headless command routes."
+      ],
+      "feature_id": "ssfv:symphony:knowledge-session-coordinator.named-version-durability",
+      "how": "qxctl invokes the exact protected SAV binding before preparation, obtains a fresh SSIAG decision for each digest-bound operation, and invokes the exact coordinator binding. The C++ coordinator stores idempotent prepared proposals and immutable digest-named objects, serializes registry and alias changes through a no-follow lock, fsync-backed alternating slots, and an atomic head, rejects stale state and operation reuse, and recovers only one unique linked registry. qxctl re-reads and revalidates every returned artifact through the exact SAV binding.",
+      "implementation_languages": [
+        {
+          "language": "C++26",
+          "role": "Implements protected proposal and object persistence, exact-state registry mutation, alias selection, lookup, compatibility, and forward recovery."
+        },
+        {
+          "language": "Go",
+          "role": "Implements headless qxctl orchestration, exact SAV validation and revalidation, SSIAG authorization, coordinator invocation, and strict result validation."
+        }
+      ],
+      "implementation_paths": [
+        "knowledge/schemas/v1/named-version-command.schema.json",
+        "knowledge/schemas/v1/named-version-head.schema.json",
+        "knowledge/schemas/v1/named-version-proposal.schema.json",
+        "knowledge/schemas/v1/named-version-registry.schema.json",
+        "knowledge/schemas/v1/named-version-result.schema.json",
+        "modules/knowledge-session-coordinator/src/coordinator.cpp",
+        "modules/knowledge-session-coordinator/src/named_versions.cpp",
+        "modules/knowledge-session-coordinator/src/named_versions.hpp",
+        "modules/knowledge-session-coordinator/tests/named_versions_test.cpp",
+        "tools/qxctl/cmd/qxctl/commands.go",
+        "tools/qxctl/cmd/qxctl/named_version.go",
+        "tools/qxctl/cmd/qxctl/named_version_test.go"
+      ],
+      "kind": "subfeature",
+      "non_claims": [
+        "Does not decide composition truth, grant permission, publish or install a package, activate or dock a composition, or mutate canonical repository knowledge.",
+        "Does not infer newest versions, use aliases as identity, rewrite sealed objects, persist a canonical database, or append STAV events before vocabulary ratification."
+      ],
+      "owner_contract": "modules/knowledge-session-coordinator/SPEC.md",
+      "parent_feature_id": "ssfv:symphony:knowledge-session-coordinator",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "qxctl owns exact binding resolution, authorization exchange, orchestration, and post-read revalidation.",
+          "target_feature_id": "ssfv:symphony:qxctl",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "SAV supplies stateless semantic validation while the coordinator owns protected noncanonical durability.",
+          "target_feature_id": "ssfv:symphony:sav-engine.named-version",
+          "type": "composes_with"
+        }
+      ],
+      "source_scope": "modules/knowledge-session-coordinator",
+      "status": "experimental",
+      "title": "Protected immutable Named Version durability",
+      "what": "Persists SAV-validated immutable Named Version objects, durable preparation evidence, and a recoverable noncanonical identity and alias registry per TOPS.",
+      "when": "Runs only on explicit qxctl proposal, seal, alias, lookup, status, or recovery commands with fresh exact SSIAG authorization; status and lookup remain read-only and recovery remains explicit.",
+      "where": "Stores protected freezing-path state beneath the selected coordinator state root, separated by opaque TOPS key, with immutable objects distinct from the dual-slot selector registry.",
+      "who": "Any target-host-authorized owner, administrator, automation, or agentic caller operating through qxctl with effective permission.",
+      "why": "Makes reusable Symphony compositions interruption-safe, content-addressed, rollback-selectable, upgrade-order tolerant, and independently verifiable without turning a mutable alias or database projection into identity."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
           "reason": "SCLV records reviewed reconciliation durability and recovery changes.",
           "reference": "knowledge/sclv/CHANGELOG.md",
           "vector": "sclv"

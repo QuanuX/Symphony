@@ -26,6 +26,7 @@ add_executable(symphony-knowledge-session
     src/lifecycle.cpp
     src/lifecycle_journal.cpp
     src/ssfv_maintenance.cpp
+    src/named_versions.cpp
 )
 target_include_directories(symphony-knowledge-session PRIVATE src)
 target_link_libraries(symphony-knowledge-session PRIVATE Symphony::KnowledgeVectorEngine)
@@ -47,6 +48,7 @@ if(BUILD_TESTING)
         src/lifecycle.cpp
         src/lifecycle_journal.cpp
         src/ssfv_maintenance.cpp
+        src/named_versions.cpp
     )
     target_include_directories(knowledge-session-coordinator-tests PRIVATE src)
     target_link_libraries(knowledge-session-coordinator-tests PRIVATE Symphony::KnowledgeVectorEngine)
@@ -67,6 +69,7 @@ if(BUILD_TESTING)
         src/lifecycle.cpp
         src/lifecycle_journal.cpp
         src/ssfv_maintenance.cpp
+        src/named_versions.cpp
     )
     target_include_directories(knowledge-lifecycle-planner-tests PRIVATE src)
     target_link_libraries(knowledge-lifecycle-planner-tests PRIVATE Symphony::KnowledgeVectorEngine)
@@ -87,6 +90,7 @@ if(BUILD_TESTING)
         src/lifecycle.cpp
         src/lifecycle_journal.cpp
         src/ssfv_maintenance.cpp
+        src/named_versions.cpp
     )
     target_include_directories(knowledge-ssfv-maintenance-tests PRIVATE src)
     target_link_libraries(knowledge-ssfv-maintenance-tests PRIVATE Symphony::KnowledgeVectorEngine)
@@ -99,6 +103,27 @@ if(BUILD_TESTING)
         $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>
     )
     add_test(NAME knowledge-ssfv-maintenance-tests COMMAND knowledge-ssfv-maintenance-tests)
+    add_executable(knowledge-named-version-tests
+        tests/named_versions_test.cpp
+        src/coordinator.cpp
+        src/reconciliation.cpp
+        src/authority_session.cpp
+        src/lifecycle.cpp
+        src/lifecycle_journal.cpp
+        src/ssfv_maintenance.cpp
+        src/named_versions.cpp
+    )
+    target_include_directories(knowledge-named-version-tests PRIVATE src)
+    target_link_libraries(knowledge-named-version-tests PRIVATE Symphony::KnowledgeVectorEngine)
+    set_target_properties(knowledge-named-version-tests PROPERTIES
+        CXX_STANDARD 26
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+    )
+    target_compile_options(knowledge-named-version-tests PRIVATE
+        $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>
+    )
+    add_test(NAME knowledge-named-version-tests COMMAND knowledge-named-version-tests)
     add_test(
         NAME knowledge-session-process-smoke
         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/tests/process_smoke.sh

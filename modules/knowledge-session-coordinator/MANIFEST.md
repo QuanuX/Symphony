@@ -32,6 +32,7 @@
 - applied evidence: `symphony.knowledge.lifecycle-applied-state.v1`
 - desired/observation/plan evidence: `symphony.knowledge.lifecycle-desired-state.v1`, `symphony.knowledge.lifecycle-observation.v1`, and `symphony.knowledge.lifecycle-plan.v1`
 - SSIAG authorization evidence: `symphony.ssiag.authorization-decision.v1` and `symphony.ssiag.capability.v1`
+- Named Version command/proposal/registry/head/result: `symphony.knowledge.named-version-command.v1`, `symphony.knowledge.named-version-proposal.v1`, `symphony.knowledge.named-version-registry.v1`, `symphony.knowledge.named-version-head.v1`, and `symphony.knowledge.named-version-result.v1`
 
 ## Implemented Operations
 
@@ -43,6 +44,7 @@
 | `begin`, `status`, `checkpoint`, `close`, `recover` | implemented; noncanonical local state only | no |
 | `session_begin`, `session_status`, `session_checkpoint`, `session_close`, `session_recover` | implemented; SSIAG-authorized noncanonical authority-epoch state only | no |
 | `ssfv_maintenance_begin`, `ssfv_maintenance_status`, `ssfv_maintenance_checkpoint`, `ssfv_maintenance_close`, `ssfv_maintenance_recover` | implemented; SSIAG-authorized noncanonical semantic-baseline and review state only | no |
+| `named_version_prepare`, `named_version_seal`, `named_version_alias`, `named_version_lookup`, `named_version_status`, `named_version_recover` | implemented; SSIAG-authorized immutable SAV object and noncanonical selector state only | no |
 | `lifecycle_plan` | implemented; deterministic report-only result only | no |
 | `lifecycle_boot`, `lifecycle_boot_status`, `lifecycle_boot_recover` | implemented; SSIAG-authorized protected report-only journal state | no |
 | `lifecycle_apply_prepare`, `lifecycle_apply_finalize`, `lifecycle_apply_close` | implemented; SSIAG-authorized protected attempt/applied-state coordination only | no |

@@ -2,6 +2,7 @@
 #include "authority_session.hpp"
 #include "lifecycle.hpp"
 #include "lifecycle_journal.hpp"
+#include "named_versions.hpp"
 #include "reconciliation.hpp"
 #include "ssfv_maintenance.hpp"
 
@@ -43,6 +44,7 @@ engine::Json inspect(const engine::Json& payload) {
         {"lifecycle", lifecycle_capabilities()},
         {"lifecycle_journal", lifecycle_journal_capabilities()},
         {"ssfv_maintenance", ssfv_maintenance_capabilities()},
+        {"named_versions", named_version_capabilities()},
         {"canonical_apply_enabled", false},
         {"session_mutation_enabled", true},
         {"maestro_docking_enabled", true},
@@ -138,6 +140,12 @@ engine::Json descriptor() {
             engine::Json{{"name", "ssfv_maintenance_checkpoint"}, {"availability", "implemented"}, {"mutates_canonical", false}},
             engine::Json{{"name", "ssfv_maintenance_close"}, {"availability", "implemented"}, {"mutates_canonical", false}},
             engine::Json{{"name", "ssfv_maintenance_recover"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "named_version_prepare"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "named_version_seal"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "named_version_alias"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "named_version_lookup"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "named_version_status"}, {"availability", "implemented"}, {"mutates_canonical", false}},
+            engine::Json{{"name", "named_version_recover"}, {"availability", "implemented"}, {"mutates_canonical", false}},
             engine::Json{{"name", "lifecycle_plan"}, {"availability", "implemented_report_only"}, {"mutates_canonical", false}},
             engine::Json{{"name", "lifecycle_boot"}, {"availability", "implemented_report_only_persistence"}, {"mutates_canonical", false}},
             engine::Json{{"name", "lifecycle_boot_status"}, {"availability", "implemented"}, {"mutates_canonical", false}},
@@ -193,6 +201,11 @@ engine::Json handle_request(const engine::Request& request) {
         request.operation == "ssfv_maintenance_close" ||
         request.operation == "ssfv_maintenance_recover") {
         return handle_ssfv_maintenance(request);
+    }
+    if (request.operation == "named_version_prepare" || request.operation == "named_version_seal" ||
+        request.operation == "named_version_alias" || request.operation == "named_version_lookup" ||
+        request.operation == "named_version_status" || request.operation == "named_version_recover") {
+        return handle_named_version(request);
     }
     if (request.operation == "lifecycle_plan") {
         return handle_lifecycle_plan(request);

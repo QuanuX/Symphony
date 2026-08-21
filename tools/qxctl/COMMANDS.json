@@ -2424,6 +2424,245 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:sav.named-version.alias",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sav named-version alias [--alias VALUE] [--digest VALUE] [--expected-registry-digest VALUE] [--json] [--operation-id VALUE] [--repo VALUE] [--scope VALUE] [--state-root VALUE] [--tops-id VALUE] [--ttl DURATION]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.named-version-durability",
+          "interaction": "configure"
+        },
+        {
+          "feature_id": "ssfv:symphony:sav-engine.named-version",
+          "interaction": "configure"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:knowledge-session-coordinator.named-version.alias",
+        "engop:symphony:sav.named-version.validate"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.knowledge.named-version-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.knowledge.named-version-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.knowledge.named-version-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sav.named-version.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sav.named-version.lookup",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sav named-version lookup [--alias VALUE] [--digest VALUE] [--id VALUE] [--json] [--repo VALUE] [--scope VALUE] [--state-root VALUE] [--tops-id VALUE] [--ttl DURATION]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.named-version-durability",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:sav-engine.named-version",
+          "interaction": "query"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:knowledge-session-coordinator.named-version.lookup",
+        "engop:symphony:sav.named-version.validate"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.knowledge.named-version-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.knowledge.named-version-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.knowledge.named-version-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sav.named-version.propose",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sav named-version propose [--expected-registry-digest VALUE] [--input VALUE] [--json] [--operation-id VALUE] [--repo VALUE] [--scope VALUE] [--state-root VALUE] [--tops-id VALUE] [--ttl DURATION]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.named-version-durability",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:sav-engine.named-version",
+          "interaction": "propose"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:knowledge-session-coordinator.named-version.prepare",
+        "engop:symphony:sav.named-version.validate"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.knowledge.named-version-command.v1",
+        "symphony.sav.named-version-validation-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.knowledge.named-version-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.knowledge.named-version-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sav.named-version.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sav.named-version.recover",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sav named-version recover [--discover] [--expected-registry-digest VALUE] [--json] [--operation-id VALUE] [--repo VALUE] [--scope VALUE] [--state-root VALUE] [--tops-id VALUE] [--ttl DURATION]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.named-version-durability",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:sav-engine.named-version",
+          "interaction": "recover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:knowledge-session-coordinator.named-version.recover"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.knowledge.named-version-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.knowledge.named-version-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.knowledge.named-version-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sav.named-version.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sav.named-version.seal",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sav named-version seal [--expected-registry-digest VALUE] [--json] [--operation-id VALUE] [--prepared-operation-id VALUE] [--proposal-digest VALUE] [--repo VALUE] [--scope VALUE] [--state-root VALUE] [--tops-id VALUE] [--ttl DURATION]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.named-version-durability",
+          "interaction": "lifecycle"
+        },
+        {
+          "feature_id": "ssfv:symphony:sav-engine.named-version",
+          "interaction": "lifecycle"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:knowledge-session-coordinator.named-version.seal",
+        "engop:symphony:sav.named-version.validate"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.knowledge.named-version-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.knowledge.named-version-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.knowledge.named-version-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sav.named-version.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:sav.named-version.status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl sav named-version status [--json] [--repo VALUE] [--scope VALUE] [--state-root VALUE] [--tops-id VALUE] [--ttl DURATION]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:knowledge-session-coordinator.named-version-durability",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:sav-engine.named-version",
+          "interaction": "query"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:knowledge-session-coordinator.named-version.status"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.knowledge.named-version-command.v1"
+      ],
+      "output_protocols": [
+        "symphony.knowledge.named-version-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.knowledge.named-version-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sav.reference-check",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -5822,5 +6061,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:10c6e4f7b09a3501132b4b92e54efe5f0f1ea20e9350ebfe500f32d400196636"
+  "registry_digest": "sha256:80e94a6ccf7a37b044762ce588c9bf55daf0f0713dc35e855462949017a25490"
 }

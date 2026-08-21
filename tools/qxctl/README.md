@@ -172,6 +172,12 @@ go run ./cmd/qxctl sav current --prefix /chosen/prefix --host --tops-id UUID [--
 go run ./cmd/qxctl sav version-validate --prefix /chosen/prefix --input named-version-input.json --json
 go run ./cmd/qxctl sav capsule-check --prefix /chosen/prefix --input capsule-input.json --json
 go run ./cmd/qxctl sav blueprint-plan --prefix /chosen/prefix --input blueprint-input.json --json
+go run ./cmd/qxctl sav named-version propose --tops-id UUID --input named-version-input.json --operation-id ID --expected-registry-digest absent --json
+go run ./cmd/qxctl sav named-version seal --tops-id UUID --prepared-operation-id ID --proposal-digest sha256:... --operation-id ID --expected-registry-digest absent --json
+go run ./cmd/qxctl sav named-version alias --tops-id UUID --alias stable --digest sha256:... --operation-id ID --expected-registry-digest sha256:... --json
+go run ./cmd/qxctl sav named-version lookup --tops-id UUID --alias stable --json
+go run ./cmd/qxctl sav named-version status --tops-id UUID --json
+go run ./cmd/qxctl sav named-version recover --tops-id UUID --operation-id ID --discover --json
 go run ./cmd/qxctl sev command-surface --prefix /chosen/prefix --input scsev-input.json --json
 go run ./cmd/qxctl sev recalculate --prefix /chosen/prefix --input recalculation-input.json --json
 go run ./cmd/qxctl sev session-bind --prefix /chosen/prefix --input session-binding-input.json --json
@@ -184,8 +190,10 @@ go run ./cmd/qxctl ssfv propose --prefix /chosen/prefix --input proposal-input.j
 go run ./cmd/qxctl ssfv graph --prefix /chosen/prefix [--json]
 go run ./cmd/qxctl ssfv administration-check --prefix /chosen/prefix --input administration-input.json --json
 
-# SAV/SEV operations remain non-mutating. session-bind feeds the established
-# knowledge lifecycle circuit; it does not create a parallel journal or grant apply.
+# SAV/SEV semantic operations remain non-mutating. Named Version commands persist
+# protected noncanonical immutable-object and selector evidence; they cannot write
+# canonical knowledge or STAV. session-bind feeds the established knowledge lifecycle
+# circuit; it does not create a parallel journal or grant apply.
 
 # Validate through one exact independently installed validator
 go run ./cmd/qxctl validate profile set --tops-id 018f0c3a-7b2d-7e11-8c12-0242ac120002 --profile-id default --warning record --historical summary --new full --expected-policy-digest absent
@@ -201,7 +209,7 @@ SSIAG commands require an immutable TOPS UUID through `--tops-id` or `SYMPHONY_S
 
 The ratified administrative model separates non-mutating proposal from permission-backed local apply. Implemented knowledge-session and lifecycle authorization uses exact target-host ownership or granted-permission grants and never requests or evaluates caller type. Protected validator warning-profile and baseline administration is implemented; broader safeguards and canonical knowledge apply remain future gates. Canonical knowledge and STAV remain read-only through qxctl, and qxctl never writes STAV ledger files directly.
 
-`COMMANDS.json` is the checked-in client-independent registry for engine-first administration coverage when qxctl is absent. It is generated from the same attached `CommandSpec` and Cobra tree as runtime help and the executable-bound observed manifest; `commands verify` rejects drift, malformed or trailing JSON, and unsafe input paths. Each command preserves its qxctl wrapper binding and may carry reviewed backend feature/interaction bindings from one explicit table. The registry now contains 185 commands, including exact SAV and SEV report/proposal leaves, provider lifecycle/trust/readiness routes, foundational lifecycle routes, protected warning administration, root-summary, and invariant assurance. The SSFV `administration-check` route accepts only bounded no-follow JSON, works from an installed host without a repository checkout, invokes the exact installed engine operation, and validates its read-only noncanonical digest-bound result. qxctl records stable identities and exact evidence; it does not suggest names, inject commands, or decide coverage policy.
+`COMMANDS.json` is the checked-in client-independent registry for engine-first administration coverage when qxctl is absent. It is generated from the same attached `CommandSpec` and Cobra tree as runtime help and the executable-bound observed manifest; `commands verify` rejects drift, malformed or trailing JSON, and unsafe input paths. Each command preserves its qxctl wrapper binding and may carry reviewed backend feature/interaction bindings from one explicit table. The registry now contains 191 commands, including exact SAV and SEV report/proposal leaves, provider lifecycle/trust/readiness routes, foundational lifecycle routes, protected warning administration, root-summary, and invariant assurance. The SSFV `administration-check` route accepts only bounded no-follow JSON, works from an installed host without a repository checkout, invokes the exact installed engine operation, and validates its read-only noncanonical digest-bound result. qxctl records stable identities and exact evidence; it does not suggest names, inject commands, or decide coverage policy.
 
 `knowledge invariant status|list|show` reads the fixed canonical registry path through a bounded, no-follow consumer, verifies the registry identity, closed shape, ordering, references, and self-digest, and emits `symphony.knowledge.invariant-query-result.v1` with an omit-self result digest. Those direct projections explicitly report `semantic_validity=not_asserted`: they make registered ownership inspectable for a headless caller without claiming that the referenced implementation or tests pass. `knowledge invariant check` instead invokes the exact receipt-validated Symphony Validator, returns its complete `symphony.validation.result.v1` without narrowing the repository scan, and preserves invariant-assurance exit `26`. All four commands are local, noninteractive, read-only freezing-path administration under `ssfv:symphony:qxctl.invariant-assurance`; only `check` also binds the validator's `ssfv:symphony:symphony-validator.invariant-ownership-assurance` feature. None writes the registry, canonical knowledge, test files, or validation state.
 

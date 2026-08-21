@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:knowledge:named-version-command:v1",
+  "title": "Symphony protected Named Version command v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "operation", "state_root", "tops_id", "operation_id", "expected_registry_digest", "named_version", "validation_result", "sav_engine", "prepared_operation_id", "proposal_digest", "alias", "selector", "authorization_decision", "client"],
+  "properties": {
+    "protocol": {"const": "symphony.knowledge.named-version-command.v1"},
+    "operation": {"enum": ["named_version_prepare", "named_version_seal", "named_version_alias", "named_version_lookup", "named_version_status", "named_version_recover"]},
+    "state_root": {"$ref": "#/$defs/absolutePath"},
+    "tops_id": {"$ref": "#/$defs/uuid"},
+    "operation_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+    "expected_registry_digest": {"oneOf": [{"type": "null"}, {"const": "absent"}, {"const": "discover"}, {"$ref": "#/$defs/digest"}]},
+    "named_version": {"oneOf": [{"type": "null"}, {"$ref": "urn:symphony:sav:named-version:v1"}]},
+    "validation_result": {"oneOf": [{"type": "null"}, {"$ref": "urn:symphony:sav:named-version-validation-result:v1"}]},
+    "sav_engine": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/engine"}]},
+    "prepared_operation_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/token"}]},
+    "proposal_digest": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/digest"}]},
+    "alias": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/alias"}]},
+    "selector": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/selector"}]},
+    "authorization_decision": {"$ref": "urn:symphony:ssiag:authorization-decision:v1"},
+    "client": {"$ref": "#/$defs/client"}
+  },
+  "$defs": {
+    "token": {"type": "string", "minLength": 1, "maxLength": 256, "pattern": "^[A-Za-z0-9._:/+-]+$"},
+    "version": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[0-9A-Za-z.+-]+$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "uuid": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "absolutePath": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "^/(?!\\.{1,2}(?:/|$))(?!.*\\/\\.{1,2}(?:/|$))(?!.*//)(?!.*\\\\)(?!.*[\\u0000-\\u001F\\u007F])(?:$|[^/](?:.*[^/])?)$"},
+    "alias": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[^\\u0000-\\u001F\\u007F]+$"},
+    "selector": {"type": "object", "additionalProperties": false, "required": ["kind", "value"], "properties": {"kind": {"enum": ["digest", "id", "alias"]}, "value": {"type": "string", "minLength": 1, "maxLength": 256}}},
+    "engine": {"type": "object", "additionalProperties": false, "required": ["module_id", "engine_id", "vector_id", "version", "receipt_digest", "executable_digest", "evidence_digest"], "properties": {"module_id": {"const": "sav-engine"}, "engine_id": {"const": "symphony-sav"}, "vector_id": {"const": "sav"}, "version": {"$ref": "#/$defs/version"}, "receipt_digest": {"$ref": "#/$defs/digest"}, "executable_digest": {"$ref": "#/$defs/digest"}, "evidence_digest": {"$ref": "#/$defs/digest"}}},
+    "client": {"type": "object", "additionalProperties": false, "required": ["client_id", "client_version", "process_protocols", "registry_read_versions", "registry_write_versions", "capabilities"], "properties": {"client_id": {"const": "qxctl"}, "client_version": {"$ref": "#/$defs/version"}, "process_protocols": {"type": "array", "minItems": 1, "maxItems": 8, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}}, "registry_read_versions": {"type": "array", "minItems": 1, "maxItems": 16, "uniqueItems": true, "items": {"type": "integer", "minimum": 1, "maximum": 16}}, "registry_write_versions": {"type": "array", "minItems": 1, "maxItems": 16, "uniqueItems": true, "items": {"type": "integer", "minimum": 1, "maximum": 16}}, "capabilities": {"type": "array", "minItems": 1, "maxItems": 64, "uniqueItems": true, "items": {"$ref": "#/$defs/token"}}}}
+  }
+}
