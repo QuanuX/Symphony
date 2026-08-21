@@ -23,7 +23,7 @@ func readFixture(t *testing.T, parts ...string) []byte {
 	return bytes.TrimSpace(b)
 }
 
-func TestAccordareProducerVocabularyRoundTripAndAuthorityGates(t *testing.T) {
+func TestAccordareProducerVocabularyRoundTripAndExplicitGrantPosture(t *testing.T) {
 	_, file, _, _ := runtime.Caller(0)
 	path := filepath.Clean(filepath.Join(filepath.Dir(file), "..", "..", "knowledge", "stav", "registries", "v1", "accordare.json"))
 	input, err := os.ReadFile(path)
@@ -35,8 +35,8 @@ func TestAccordareProducerVocabularyRoundTripAndAuthorityGates(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if vocabulary.RuntimeProducerImplemented || vocabulary.ProducerGrantAuthorized {
-		t.Fatal("contract-only Accordare vocabulary escalated runtime or grant authority")
+	if !vocabulary.RuntimeProducerImplemented || !vocabulary.ProducerGrantAuthorized {
+		t.Fatal("implemented Accordare vocabulary did not publish its explicit-grant posture")
 	}
 	if len(vocabulary.Contracts) != 4 {
 		t.Fatalf("Accordare contract count = %d, want 4", len(vocabulary.Contracts))

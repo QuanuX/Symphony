@@ -18,5 +18,9 @@ This collection is canonical protocol truth owned by `knowledge/stav/`. JSON Sch
 - `local-request.schema.json`: authenticated local operation envelope.
 - `local-response.schema.json`: authenticated local result envelope.
 - `producer-vocabulary.schema.json`: authority-free closed producer-integration vocabulary; validity does not implement a producer or grant an installation.
+- `accordare-producer-config.schema.json`: exact per-TOPS producer identity, submitter, socket, vocabulary, and STAV routing contract.
+- `accordare-producer-submission.schema.json`: bounded qxctl/coordinator Named Version evidence accepted by the producer.
+- `accordare-producer-local-request.schema.json`: authenticated local submit, status, and reconciliation envelope.
+- `accordare-producer-local-response.schema.json`: committed, durable-pending, status, and rejection result envelope.
 
-All v1 operational schemas listed above are Architect-ratified. The producer-vocabulary schema also governs contract-only reserved integrations. Signed checkpoints and remote transport remain outside v1.
+All fifteen v1 operational schemas listed above are Architect-ratified. The producer-vocabulary schema also governs contract-only reserved integrations. Signed checkpoints and remote transport remain outside v1.

@@ -8,9 +8,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"os"
 	"strings"
 	"time"
 
+	accordareclient "github.com/QuanuX/Symphony/modules/accordare-stav-producer/client"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgebinding"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgeengine"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/ssiagclient"
@@ -63,6 +65,8 @@ type namedVersionResult struct {
 	Canonical             *bool           `json:"canonical"`
 	STAVAppendEnabled     *bool           `json:"stav_append_enabled"`
 	ResultDigest          string          `json:"result_digest"`
+	AuditDisposition      string          `json:"-"`
+	AuditCandidateDigest  string          `json:"-"`
 }
 
 func runNamedVersion(operation string, options namedVersionOptions) error {
@@ -74,6 +78,9 @@ func runNamedVersion(operation string, options namedVersionOptions) error {
 		var display any
 		if err := json.Unmarshal(raw, &display); err != nil {
 			return fmt.Errorf("decode Named Version result: %w", err)
+		}
+		if result.AuditDisposition != "" {
+			display = map[string]any{"audit": map[string]any{"candidate_digest": result.AuditCandidateDigest, "disposition": result.AuditDisposition}, "result": display}
 		}
 		return printIndentedJSON(display)
 	}
@@ -89,9 +96,13 @@ func runNamedVersion(operation string, options namedVersionOptions) error {
 	if result.SelectedAlias != nil {
 		alias = *result.SelectedAlias
 	}
-	fmt.Printf("SAV Named Version: operation=%s versions=%d aliases=%d registry=%s proposal=%s alias=%s changed=%t recovered=%t canonical=false stav=false\n",
+	audit := result.AuditDisposition
+	if audit == "" {
+		audit = "not_configured"
+	}
+	fmt.Printf("SAV Named Version: operation=%s versions=%d aliases=%d registry=%s proposal=%s alias=%s changed=%t recovered=%t canonical=false stav=%s\n",
 		operation, result.VersionCount, result.AliasCount, registry, proposal, alias,
-		*result.Changed, *result.Recovered)
+		*result.Changed, *result.Recovered, audit)
 	return nil
 }
 
@@ -155,7 +166,8 @@ func executeNamedVersion(operation string, options namedVersionOptions) (namedVe
 	if err != nil {
 		return namedVersionResult{}, nil, err
 	}
-	if _, err := verifyKnowledgeBinding(*coordinator); err != nil {
+	coordinatorInstallation, err := verifyKnowledgeBinding(*coordinator)
+	if err != nil {
 		return namedVersionResult{}, nil, err
 	}
 
@@ -287,7 +299,54 @@ func executeNamedVersion(operation string, options namedVersionOptions) (namedVe
 			return namedVersionResult{}, nil, err
 		}
 	}
+	if mutating {
+		audit, configured, auditErr := submitNamedVersionAudit(options, operation, encoded, response.Result, coordinatorInstallation)
+		if auditErr != nil {
+			return namedVersionResult{}, nil, fmt.Errorf("Named Version mutation completed but durable audit submission failed: %w", auditErr)
+		}
+		if configured {
+			result.AuditDisposition = audit.Disposition
+			result.AuditCandidateDigest = audit.CandidateDigest
+		}
+	}
 	return result, append(json.RawMessage(nil), response.Result...), nil
+}
+
+func submitNamedVersionAudit(options namedVersionOptions, operation string, command, result []byte, coordinator knowledgeengine.Installation) (accordareclient.AuditResult, bool, error) {
+	path, err := accordareclient.ConfigPath(options.scope, options.topsID)
+	if err != nil {
+		return accordareclient.AuditResult{}, false, err
+	}
+	if _, err := os.Lstat(path); os.IsNotExist(err) {
+		return accordareclient.AuditResult{}, false, nil
+	} else if err != nil {
+		return accordareclient.AuditResult{}, true, err
+	}
+	client, err := accordareclient.NewFromConfig(path)
+	if err != nil {
+		return accordareclient.AuditResult{}, true, err
+	}
+	requestID, err := randomUUID()
+	if err != nil {
+		return accordareclient.AuditResult{}, true, err
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
+	defer cancel()
+	audit, err := client.Submit(ctx, requestID, accordareclient.Submission{
+		Command: command,
+		Coordinator: accordareclient.InstallationEvidence{
+			ComponentID: "knowledge-session-coordinator", ExecutableDigest: coordinator.ExecutableDigest,
+			ReceiptDigest: coordinator.ReceiptDigest, Version: coordinator.Version,
+		},
+		Operation: operation, Result: result, TOPSID: options.topsID,
+	})
+	if err != nil {
+		return accordareclient.AuditResult{}, true, err
+	}
+	if audit.Disposition != "committed" && audit.Disposition != "pending" {
+		return accordareclient.AuditResult{}, true, fmt.Errorf("producer rejected exact audit evidence: %s", audit.ReasonCode)
+	}
+	return audit, true, nil
 }
 
 func authorizeNamedVersion(topsID, scope string, ttl time.Duration, operation string,

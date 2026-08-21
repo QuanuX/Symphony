@@ -2434,6 +2434,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:accordare-stav-producer",
+          "interaction": "invoke"
+        },
+        {
           "feature_id": "ssfv:symphony:knowledge-session-coordinator.named-version-durability",
           "interaction": "configure"
         },
@@ -2514,6 +2518,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:accordare-stav-producer",
+          "interaction": "invoke"
+        },
+        {
           "feature_id": "ssfv:symphony:knowledge-session-coordinator.named-version-durability",
           "interaction": "propose"
         },
@@ -2555,6 +2563,10 @@
       "visibility": "public",
       "feature_bindings": [
         {
+          "feature_id": "ssfv:symphony:accordare-stav-producer",
+          "interaction": "invoke"
+        },
+        {
           "feature_id": "ssfv:symphony:knowledge-session-coordinator.named-version-durability",
           "interaction": "recover"
         },
@@ -2593,6 +2605,10 @@
       "aliases": [],
       "visibility": "public",
       "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:accordare-stav-producer",
+          "interaction": "invoke"
+        },
         {
           "feature_id": "ssfv:symphony:knowledge-session-coordinator.named-version-durability",
           "interaction": "lifecycle"
@@ -4967,6 +4983,146 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:stav.accordare-grant.install",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl stav accordare-grant install [--expected-config-digest VALUE] [--json] [--operation-id VALUE] [--scope VALUE] [--tops-id VALUE] [--ttl DURATION]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:accordare-stav-producer.grant-administration",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:qxctl.stav-administration",
+          "interaction": "apply"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "ssiag",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.stav.grant-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.stav.grant-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:stav.accordare-grant.install",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:stav.accordare-grant.remove",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl stav accordare-grant remove [--expected-config-digest VALUE] [--json] [--operation-id VALUE] [--scope VALUE] [--tops-id VALUE] [--ttl DURATION]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:accordare-stav-producer.grant-administration",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:qxctl.stav-administration",
+          "interaction": "apply"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "ssiag",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.stav.grant-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.stav.grant-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:stav.accordare-grant.remove",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:stav.accordare.reconcile",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl stav accordare reconcile [--json] [--scope VALUE] [--tops-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:accordare-stav-producer",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:qxctl.stav-administration",
+          "interaction": "recover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.accordare.stav-producer.administration-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.accordare.stav-producer.administration-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:stav.accordare.reconcile",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:stav.accordare.status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl stav accordare status [--json] [--scope VALUE] [--tops-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:accordare-stav-producer",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:qxctl.stav-administration",
+          "interaction": "query"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.accordare.stav-producer.administration-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.accordare.stav-producer.administration-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:stav.append",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -6061,5 +6217,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:80e94a6ccf7a37b044762ce588c9bf55daf0f0713dc35e855462949017a25490"
+  "registry_digest": "sha256:f4eaabaf9207901e28e24d04b3fa5bdca75d3c4dcf3be7e8195d438f529d4e4f"
 }

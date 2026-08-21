@@ -481,11 +481,11 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
     require(check.at("summary").at("state") == "valid", "canonical partial registry invalid");
     require(check.at("coverage_state") == "partial",
             "canonical bootstrap must not imply repository-wide completeness");
-    require(check.at("feature_count") == 87U && check.at("feature_file_count") == 17U,
+    require(check.at("feature_count") == 89U && check.at("feature_file_count") == 18U,
             "canonical partial-catalog record counts mismatch");
     const auto graph = ssfv::handle_request(
         request("graph", engine::Json{{"format", "json"}}));
-    require(graph.at("node_count") == 87U && graph.at("edge_count") == 347U,
+    require(graph.at("node_count") == 89U && graph.at("edge_count") == 353U,
             "canonical partial-catalog graph count mismatch");
     require(graph.at("noncanonical") == true && graph.at("rebuildable") == true,
             "graph authority escalated");
@@ -520,12 +520,12 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
             read_json("knowledge/FEATURE-ADMINISTRATION-PROFILE.json"),
             read_json("tools/qxctl/COMMANDS.json"), "not_evaluated", nullptr,
             engine::Json::array({descriptor_v2}), nullptr)));
-    require(full_administration.at("summary").at("features_checked") == 87U &&
-                full_administration.at("summary").at("surfaces_checked") == 170U &&
-                full_administration.at("summary").at("satisfied") == 147U &&
+    require(full_administration.at("summary").at("features_checked") == 89U &&
+                full_administration.at("summary").at("surfaces_checked") == 175U &&
+                full_administration.at("summary").at("satisfied") == 153U &&
                 full_administration.at("summary").at("uncovered") == 0U &&
                 full_administration.at("summary").at("exempt") == 13U &&
-                full_administration.at("summary").at("prohibited") == 10U &&
+                full_administration.at("summary").at("prohibited") == 9U &&
                 full_administration.at("summary").at("stale") == 0U &&
                 full_administration.at("summary").at("unresolved") == 0U,
             "canonical administration baseline counts mismatch: " +

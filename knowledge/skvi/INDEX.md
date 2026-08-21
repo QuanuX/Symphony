@@ -1586,7 +1586,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: JSON Schema Draft 2020-12 contract directory
 - truth_role: canonical STAV semantic and read-message structure truth
 - owner: STAV knowledge maintainer
-- scope: Defines all eleven ratified v1 structures: common values, candidate, event, receipt, query, query-page, verification, append-authority configuration and status, and bounded local request and response messages.
+- scope: Defines fifteen ratified v1 structures: the foundational STAV model plus the closed producer vocabulary and Accordare configuration, submission, request, and response contracts.
 - relationships: depends_on -> `knowledge/stav/SPEC.md`; governs -> `libraries/stav-protocol-go/`
 - consumers: protocol-kernel, append-authority, qxctl, producer implementers, reviewers, symphony-validator and future validator extensions
 - deferred_projections: generated documentation and conformance reports
@@ -2856,7 +2856,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; declares -> `knowledge/INVARIANTS.md`; governs -> `libraries/knowledge-vector-engine-cpp/`; governs -> `modules/knowledge-session-coordinator/`; governs -> `modules/skvi-engine/`; governs -> `modules/sclv-engine/`; governs -> future cleared vector-engine module paths
 - consumers: vector maintainers, engine implementers, qxctl, Maestro planners, reviewers, agentic tools
 - deferred_projections: engine inventory, install receipts, Maestro presence graph
-- notes: Foundation/coordinator and all five vector-engine `0.1.0-dev` slices plus Maestro presence exist; SSFV has exactly eighty-seven experimental records, explicit top-level owner-scope coverage, sixty-eight ratified nested subfeatures, reviewed F2 and F3 non-feature dispositions, and incomplete remaining nested review.
+- notes: Foundation/coordinator and all five vector-engine `0.1.0-dev` slices plus Maestro presence exist; SSFV has exactly eighty-nine experimental records, explicit top-level owner-scope coverage, sixty-nine ratified nested features, reviewed F2 and F3 non-feature dispositions, and incomplete remaining nested review.
 - status: canonical
 
 ##### SPEC.md
@@ -2869,7 +2869,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `knowledge/schemas/v2/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
 - consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
 - deferred_projections: apply/provider/docking schemas, conformance evidence, engine inventory, docking graph
-- notes: Sixty-six common v1 schemas and four common v2 schemas are canonical; lifecycle profile/runtime persistence, observation, planning, report/apply journal recovery, feature-administration assurance, common invariant ownership, exact staged receipt-v2/runtime/Maestro-presence actions, shared-root ownership fencing, the explicit Linux report-only host receptor, and applied-state commitment are implemented, the eighty-seven-record SSFV catalog is partial, and canonical programmatic apply is disabled.
+- notes: Sixty-six common v1 schemas and four common v2 schemas are canonical; lifecycle profile/runtime persistence, observation, planning, report/apply journal recovery, feature-administration assurance, common invariant ownership, exact staged receipt-v2/runtime/Maestro-presence actions, shared-root ownership fencing, the explicit Linux report-only host receptor, and applied-state commitment are implemented, the eighty-nine-record SSFV catalog is partial, and canonical programmatic apply is disabled.
 - status: canonical
 
 ##### SKILL.md
@@ -3086,7 +3086,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: cross-vector common contract
 - truth_role: canonical engine-first administrative coverage, identity, exception, admission, and headless-machine semantics
 - owner: Symphony Knowledge Vector maintainers
-- scope: Defines stable feature, engine-operation, and qxctl-command identities; expected versus observed truth; three-axis coverage; explicit dispositions; third-party module admission; remediation evidence; bounded-envelope capacity posture; and the eighty-seven-record forward gate.
+- scope: Defines stable feature, engine-operation, and qxctl-command identities; expected versus observed truth; three-axis coverage; explicit dispositions; third-party module admission; remediation evidence; bounded-envelope capacity posture; and the eighty-nine-record forward gate.
 - relationships: depends_on -> `knowledge/SPEC.md`; depends_on -> `knowledge/INVARIANTS.md`; depends_on -> `knowledge/ssfv/SPEC.md`; governs -> `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`; governs -> `knowledge/schemas/v1/feature-administration-profile.schema.json`; governs -> `knowledge/schemas/v1/qxctl-command-registry.schema.json`; governs -> `knowledge/schemas/v1/administration-coverage-input.schema.json`; governs -> `knowledge/schemas/v1/administration-coverage-result.schema.json`; governs -> `knowledge/schemas/v2/engine-descriptor.schema.json`
 - consumers: independent module developers, SSFV engine, qxctl, validators, reviewers, agentic tools
 - deferred_projections: AI-assisted names, command-design proposals, Cobra scaffolding, and enforce-all-records coverage
@@ -3099,7 +3099,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: cross-vector canonical bootstrap profile
 - truth_role: exact registered-partial-catalog administration review and forward-gate policy
 - owner: Symphony Knowledge Vector maintainers
-- scope: Requires explicit representation of all eighty-seven current SSFV records, treats unreviewed interactions as debt, and defines the active forward-enforcement gate without claiming catalog completeness.
+- scope: Requires explicit representation of all eighty-nine current SSFV records, treats unreviewed interactions as debt, and defines the active forward-enforcement gate without claiming catalog completeness.
 - relationships: governed_by -> `knowledge/FEATURE-ADMINISTRATION.md`; derives_from -> `knowledge/ssfv/REGISTRY.md`; declares -> `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`; conforms_to -> `knowledge/schemas/v1/feature-administration-profile.schema.json`
 - consumers: SSFV engine, qxctl, validators, maintainers, reviewers, agentic tools
 - deferred_projections: future complete-catalog adjudication and installed-host inventory closure
@@ -3112,7 +3112,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: checked-in canonical-derived JSON profile
 - truth_role: machine-evaluable report-only bootstrap coverage for the exact current registered SSFV set
 - owner: Symphony Knowledge Vector maintainers
-- scope: Represents all eighty-seven current feature IDs exactly once with 170 reviewed expectations under `enforce_new_records`.
+- scope: Represents all eighty-nine current feature IDs exactly once with 175 reviewed expectations under `enforce_new_records`.
 - relationships: governed_by -> `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`; derives_from -> `knowledge/ssfv/REGISTRY.md`; conforms_to -> `knowledge/schemas/v1/feature-administration-profile.schema.json`
 - consumers: SSFV engine, qxctl, validators, direct diagnostic callers, reviewers
 - deferred_projections: complete-catalog and installed-host inventory advancement
@@ -4388,7 +4388,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, agentic tools
 - deferred_projections: feature catalogs, encyclopedia views, publication inputs, graph views
-- notes: Defines the governing intent for the implemented engine and exact eighty-seven-record partial catalog without granting unratified-record authority.
+- notes: Defines the governing intent for the implemented engine and exact eighty-nine-record partial catalog without granting unratified-record authority.
 - status: canonical
 
 ##### MANIFEST.md
@@ -4397,11 +4397,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: vector contract truth
 - truth_role: canonical topology, identity, classification, and installability boundary
 - owner: SSFV maintainers
-- scope: Declares owned feature semantics, sparse distributed records, implemented engine identity, explicit coverage inventory, and exact eighty-seven-record partial-catalog state.
+- scope: Declares owned feature semantics, sparse distributed records, implemented engine identity, explicit coverage inventory, and exact eighty-nine-record partial-catalog state.
 - relationships: depends_on -> `knowledge/ssfv/INTENT.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, implementers, qxctl planners, packaging planners
 - deferred_projections: installation descriptors and Maestro docking descriptors after separate review
-- notes: The engine module and eighty-seven experimental records are implemented; sixty-eight nested subfeatures are ratified while remaining nested review and repository-wide catalog completeness are not claimed.
+- notes: The engine module and eighty-nine experimental records are implemented; sixty-nine nested features are ratified while remaining nested review and repository-wide catalog completeness are not claimed.
 - status: canonical
 
 ##### SKILL.md
@@ -4427,7 +4427,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, validator
 - deferred_projections: portable JSON graph, catalogs, search, documentation, and analytical views
-- notes: Engine implementation and the exact eighty-seven-record partial catalog are current; every additional record remains separately reviewed and remaining nested coverage remains incomplete.
+- notes: Engine implementation and the exact eighty-nine-record partial catalog are current; every additional record remains separately reviewed and remaining nested coverage remains incomplete.
 - status: canonical
 
 ##### NAMESPACES.md
@@ -4449,7 +4449,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: canonical distributed-feature routing registry
 - truth_role: canonical mapping from stable feature IDs to owner records
 - owner: SSFV maintainers
-- scope: Defines the exact eight-field registry grammar and routes the eighty-seven records in the current partial feature set.
+- scope: Defines the exact eight-field registry grammar and routes the eighty-nine records in the current partial feature set.
 - relationships: depends_on -> `knowledge/ssfv/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, validator
 - deferred_projections: feature inventories and graph routing
@@ -5604,7 +5604,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: verifies -> `modules/ssfv-engine/src/ssfv.cpp`; conforms_to -> `knowledge/ssfv/SPEC.md`
 - consumers: SSFV engine maintainers, validator, reviewers
 - deferred_projections: none
-- notes: Current canonical assertions cover eighty-seven records and fifteen owner files without claiming completion of the remaining nested review, a frozen derived-edge count, or repository-wide completeness.
+- notes: Current canonical assertions cover eighty-nine records and eighteen owner files without claiming completion of the remaining nested review, a frozen derived-edge count, or repository-wide completeness.
 - status: canonical
 
 ### qxctl SCLV Evidence Adapter Command Tests
@@ -6007,7 +6007,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: governed_by -> `knowledge/ssfv/SPEC.md`; routes_through -> `knowledge/ssfv/REGISTRY.md`
 - consumers: symphony-ssfv, Symphony Validator, qxctl, maintainers, reviewers, agentic tools
 - deferred_projections: remaining nested feature-adjudication inventory
-- notes: Top-level owner routing and sixty-eight exact nested subfeatures are covered with reviewed F2 and F3 non-feature dispositions; remaining nested feature, subfeature, microfeature, and non-feature review is incomplete, so coverage is partial.
+- notes: Top-level owner routing and sixty-nine exact nested features are covered with reviewed F2 and F3 non-feature dispositions; remaining nested feature, subfeature, microfeature, and non-feature review is incomplete, so coverage is partial.
 - status: canonical
 
 ### STAV Protocol Kernel Semantic Feature Record
@@ -7765,8 +7765,8 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - owner: STAV, SAV, SEV, SSIAG, qxctl, and coordinator maintainers
 - scope: Separates the closed Accordare event vocabulary from runtime production and installation-specific producer grants.
 - relationships: governs -> `knowledge/stav/registries/v1/accordare.json`; refines -> `knowledge/stav/SPEC.md`; constrains -> `tools/qxctl/cmd/qxctl/named_version.go`
-- consumers: implementers, reviewers, qxctl, future Accordare producer
-- deferred_projections: runtime producer and exact SSIAG producer grant
+- consumers: implementers, reviewers, qxctl, Accordare producer
+- deferred_projections: pre-mutation intent durability and typed failed/unavailable production
 - notes: Vocabulary registration is not append authority.
 - status: canonical
 
@@ -7809,17 +7809,69 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - notes: Semantic ordering and tuple uniqueness are enforced by the protocol kernel.
 - status: canonical
 
+#### Accordare Producer Configuration Schema
+- path: `knowledge/stav/schemas/v1/accordare-producer-config.schema.json`
+- title: Accordare STAV Producer Configuration v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: exact per-TOPS producer identity and routing truth
+- owner: STAV maintainers
+- scope: Binds service and submitter identities, Unix socket, STAV configuration, mode, TOPS identity, and closed vocabulary digest.
+- relationships: governs -> `modules/accordare-stav-producer/internal/config/config.go`; governed_by -> `knowledge/ACCORD-AUDIT.md`
+- consumers: Accordare producer, qxctl, supervisors, reviewers
+- deferred_projections: native supervisor descriptors
+- notes: Installation and enrollment do not create a STAV producer grant.
+- status: canonical
+
+#### Accordare Producer Submission Schema
+- path: `knowledge/stav/schemas/v1/accordare-producer-submission.schema.json`
+- title: Accordare STAV Producer Submission v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: bounded qxctl and coordinator evidence truth
+- owner: STAV and SAV maintainers
+- scope: Binds one exact Named Version command and result to its coordinator receipt/executable evidence and TOPS operation.
+- relationships: governs -> `modules/accordare-stav-producer/internal/protocol/validate.go`; refines -> `knowledge/sav/STAV.md`
+- consumers: qxctl, Accordare producer, reviewers
+- deferred_projections: typed failed and unavailable submissions
+- notes: The caller cannot supply the derived STAV event tuple or outcome.
+- status: canonical
+
+#### Accordare Producer Local Request Schema
+- path: `knowledge/stav/schemas/v1/accordare-producer-local-request.schema.json`
+- title: Accordare STAV Producer Local Request v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: authenticated local IPC request truth
+- owner: STAV maintainers
+- scope: Defines exact submit, status, and reconcile request presence rules.
+- relationships: governs -> `modules/accordare-stav-producer/internal/protocol/codec.go`; transported_by -> `modules/accordare-stav-producer/internal/server/server.go`
+- consumers: qxctl, Accordare producer, reviewers
+- deferred_projections: remote transport
+- notes: Kernel peer credentials remain mandatory outside the JSON body.
+- status: canonical
+
+#### Accordare Producer Local Response Schema
+- path: `knowledge/stav/schemas/v1/accordare-producer-local-response.schema.json`
+- title: Accordare STAV Producer Local Response v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: committed, durable-pending, status, and rejection truth
+- owner: STAV maintainers
+- scope: Defines exact receipt, candidate-digest, pending-count, and reconciliation presence rules.
+- relationships: governs -> `modules/accordare-stav-producer/internal/protocol/codec.go`; consumes -> `knowledge/stav/schemas/v1/receipt.schema.json`
+- consumers: qxctl, Accordare producer, reviewers
+- deferred_projections: remote transport
+- notes: Pending means the stable candidate is already durable in the producer outbox.
+- status: canonical
+
 #### Accordare Producer Vocabulary Registry
 - path: `knowledge/stav/registries/v1/accordare.json`
 - title: Accordare STAV Producer Vocabulary v1
 - surface_type: canonical machine registry
 - truth_role: exact SAV Named Version event tuple and outcome vocabulary
 - owner: STAV and SAV maintainers
-- scope: Reserves four lifecycle operations and their exact safe outcomes while declaring both runtime production and its producer grant disabled.
+- scope: Registers four lifecycle operations and their exact safe outcomes while declaring runtime and installation-grant protocol eligibility implemented.
 - relationships: conforms_to -> `knowledge/stav/schemas/v1/producer-vocabulary.schema.json`; governed_by -> `knowledge/ACCORD-AUDIT.md`
-- consumers: STAV protocol kernel, future Accordare producer, qxctl, reviewers
-- deferred_projections: runtime producer and exact grant
-- notes: This registry grants no authority and enables no append.
+- consumers: STAV protocol kernel, Accordare producer, qxctl, reviewers
+- deferred_projections: typed failed/unavailable production
+- notes: This registry grants no installation authority; qxctl and the stopped STAV configuration own the exact grant transition.
 - status: canonical
 
 #### qxctl Named Version Installed Acceptance
@@ -7831,8 +7883,8 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - scope: Exercises prepare, seal, replay, alias, lookup, and status through installed receipt-v2 C++ processes and isolated caller-neutral SSIAG evidence.
 - relationships: verifies -> `tools/qxctl/cmd/qxctl/named_version.go`; invokes -> `modules/sav-engine/`; invokes -> `modules/knowledge-session-coordinator/`
 - consumers: acceptance harness, maintainers, reviewers
-- deferred_projections: runtime Accordare STAV production
-- notes: The test verifies that STAV append remains disabled rather than manufacturing a producer.
+- deferred_projections: full installed producer/STAV acceptance extension
+- notes: The coordinator result truthfully keeps its own append flag false; producer audit disposition is a separate qxctl envelope when configured.
 - status: canonical
 
 #### qxctl Named Version Installed Acceptance Harness
@@ -7846,4 +7898,43 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - consumers: maintainers, release verification, reviewers
 - deferred_projections: CI wiring
 - notes: The harness does not modify a live installation.
+- status: canonical
+
+#### Accordare STAV Producer Contract and Features
+- path: `modules/accordare-stav-producer/FEATURES.md`
+- title: Accordare STAV Producer Semantic Features
+- surface_type: distributed SSFV owner file
+- truth_role: authenticated durable producer and exact-grant capability truth
+- owner: Accordare producer maintainers
+- scope: Records the separately authenticated freezing-path producer and qxctl installation-grant administration subfeature.
+- relationships: implements -> `knowledge/ACCORD-AUDIT.md`; governed_by -> `knowledge/stav/registries/v1/accordare.json`; composes_with -> `tools/qxctl/cmd/qxctl/named_version.go`
+- consumers: SSFV engine, SKVI, qxctl, maintainers, reviewers
+- deferred_projections: native managed supervision and pre-mutation intent durability
+- notes: Package installation, enrollment, SSIAG permission, STAV grant, and live process state remain distinct.
+- status: canonical
+
+#### Accordare STAV Producer Runtime
+- path: `modules/accordare-stav-producer/SPEC.md`
+- title: Accordare STAV Producer Go Module
+- surface_type: independently installable Go service module
+- truth_role: strict evidence verification, safe-candidate derivation, durable outbox, authenticated IPC, and receipt-v2 implementation truth
+- owner: Accordare producer maintainers
+- scope: Implements successful prepare, seal, alias, and recover audit production with committed-or-pending semantics and idempotent recovery.
+- relationships: conforms_to -> `knowledge/stav/registries/v1/accordare.json`; invokes -> `modules/stav-append-authority/client/client.go`; administered_by -> `tools/qxctl/cmd/qxctl/stav_grant.go`
+- consumers: qxctl, STAV append authority, TOPS administrators, tests
+- deferred_projections: failed/unavailable outcomes, native descriptor lifecycle, pre-mutation intent
+- notes: The outbox contains only safe candidates and never becomes a second ledger.
+- status: canonical
+
+#### qxctl Accordare STAV Grant Administration
+- path: `tools/qxctl/cmd/qxctl/stav_grant.go`
+- title: qxctl Accordare STAV Grant Administration
+- surface_type: Go Cobra command implementation
+- truth_role: exact SSIAG-authorized stopped-authority grant CAS and recovery truth
+- owner: qxctl and STAV maintainers
+- scope: Installs or removes only the four ratified Accordare permissions using enrolled service identity, expected configuration digest, atomic replacement, and two-sided attempt recovery.
+- relationships: administers -> `knowledge/stav/schemas/v1/append-authority-config.schema.json`; governed_by -> `knowledge/ACCORD-AUDIT.md`; authenticates_via -> `tools/qxctl/internal/ssiagclient/client.go`
+- consumers: headless administrators, agents, TOPS operators, tests
+- deferred_projections: generalized producer-grant administration
+- notes: qxctl still exposes no arbitrary STAV append operation.
 - status: canonical

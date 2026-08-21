@@ -6,22 +6,24 @@ This common knowledge contract connects SAV and SEV operational meaning to STAV 
 
 ## Current State
 
-The first closed vocabulary is `knowledge/stav/registries/v1/accordare.json`. It reserves four SAV Named Version lifecycle tuples. It explicitly reports `runtime_producer_implemented: false` and `producer_grant_authorized: false`. Those fields are architectural gates, not configuration switches. No installation may infer a grant, append authority, or audit completion from the presence or validity of this file.
+The first closed vocabulary is `knowledge/stav/registries/v1/accordare.json`. It registers four SAV Named Version lifecycle tuples and now reports both architectural gates true because the reviewed runtime producer and installation-grant administration circuit are implemented. Those fields remain protocol-eligibility gates, not configuration switches. No installation may infer a grant, live process, append authority, or audit completion from the presence or validity of this file.
 
 SEV currently has no registered producer tuple. Its report-only assessments, novelty checks, graphs, and plans do not justify routine STAV traffic. A later mutation or export operation must pass a separate safe-metadata and producer-boundary review before receiving vocabulary.
 
 ## Producer Requirements
 
-An operational Accordare producer must be a separately authenticated runtime boundary that:
+The operational `modules/accordare-stav-producer/` boundary:
 
 - accepts only typed operation results and immutable evidence identities;
 - verifies the exact installed component, result protocol, operation, TOPS, request, correlation, actor, expected state, and resulting state;
 - maps only the closed vocabulary and never accepts caller-supplied event classes, operation identifiers, intents, reasons, producer identity, event identity, sequence, timestamp, or chain state;
 - submits only safe references and previous/new digests through mutually authenticated local STAV IPC;
-- requires a committed receipt when an operation is governed by STAV-before-commit;
+- persists the safe candidate before append, returns a verified committed receipt or an explicit durable pending state, and reconciles pending evidence idempotently;
 - cannot reinterpret SSIAG permission, mutate canonical knowledge, or edit a STAV ledger.
 
-qxctl may orchestrate the operation and validate the receipt, but it must never receive arbitrary append authority. SAV and SEV remain read-only C++ engines. The Knowledge Session Coordinator remains the Named Version persistence owner but does not gain STAV transport merely because it produced a result.
+qxctl orchestrates the operation, submits only the typed evidence envelope, validates the producer response, and administers the exact installation grant while STAV is stopped. It never receives arbitrary append authority. SAV and SEV remain read-only C++ engines. The Knowledge Session Coordinator remains the Named Version persistence owner and does not gain STAV transport merely because it produced a result.
+
+Successful producer acceptance is the durability boundary. A crash after coordinator persistence but before qxctl reaches the producer remains an explicitly documented gap for a future pre-mutation intent protocol; the implementation does not overclaim STAV-before-commit semantics.
 
 ## Safe Metadata and Exclusions
 

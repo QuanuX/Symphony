@@ -1,4 +1,4 @@
-github.com/QuanuX/Symphony/libraries/stav-protocol-go v0.2.0 h1:nC5yAA3CnaLzQoryEJTyU3SFDLYA2svVh3U57vNNjac=
+github.com/QuanuX/Symphony/libraries/stav-protocol-go v0.2.0 h1:DGVd771sqzeRpEkTUuuF+9TOK1JVQtyMh2GYR840g70=
 github.com/QuanuX/Symphony/libraries/stav-protocol-go v0.2.0/go.mod h1:kYeJSvzp7ezK+0CJzHD4v2euyRqXuAfXocYxRACrxoM=
 github.com/QuanuX/Symphony/modules/stav-append-authority v0.2.0 h1:DvWWrt7MbJFfEA/ROnTCDJYwoVWRgXSzy6IkTEpkMPI=
 github.com/QuanuX/Symphony/modules/stav-append-authority v0.2.0/go.mod h1:pRWSy0nSQu5dYtiKpvTEmYTFrgf1O0bAqtmU3MDowlc=

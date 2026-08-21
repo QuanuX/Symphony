@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/QuanuX/Symphony/knowledge/stav/schemas/v1/accordare-producer-local-request.schema.json",
+  "title": "symphony.accordare.stav-producer.local-request.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["operation", "request_id", "schema", "submission", "tops_id"],
+  "properties": {
+    "operation": {"enum": ["reconcile", "status", "submit"]},
+    "request_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "schema": {"const": "symphony.accordare.stav-producer.local-request.v1"},
+    "submission": {"oneOf": [{"type": "null"}, {"$ref": "accordare-producer-submission.schema.json"}]},
+    "tops_id": {"$ref": "common.schema.json#/$defs/topsId"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"operation": {"const": "submit"}}},
+      "then": {"properties": {"submission": {"$ref": "accordare-producer-submission.schema.json"}}},
+      "else": {"properties": {"submission": {"type": "null"}}}
+    }
+  ]
+}

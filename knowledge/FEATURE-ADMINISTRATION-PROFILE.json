@@ -6,6 +6,86 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:sav.named-version.alias",
+            "qxcmd:symphony:sav.named-version.propose",
+            "qxcmd:symphony:sav.named-version.recover",
+            "qxcmd:symphony:sav.named-version.seal"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/ACCORD-AUDIT.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/accordare-stav-producer/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Configured mutating Named Version commands submit exact coordinator evidence to the authenticated producer and surface committed or durable-pending audit disposition.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:stav.accordare.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/ACCORD-AUDIT.md",
+            "modules/accordare-stav-producer/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Headless callers can inspect readiness and the durable pending count through the authenticated producer without reading its private outbox.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:stav.accordare.reconcile"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/ACCORD-AUDIT.md",
+            "modules/accordare-stav-producer/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Headless callers can explicitly replay stable outbox candidates through the authenticated producer without obtaining arbitrary append authority.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:accordare-stav-producer"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:stav.accordare-grant.install",
+            "qxcmd:symphony:stav.accordare-grant.remove"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/ACCORD-AUDIT.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/accordare-stav-producer/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Two exact qxctl routes install or remove only the ratified Accordare producer grant through SSIAG-authorized expected-state recovery.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:accordare-stav-producer.grant-administration"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:module.inspect"
           ],
           "delivery": "direct",
@@ -1395,8 +1475,11 @@
     {
       "expectations": [
         {
-          "command_ids": [],
-          "delivery": "none",
+          "command_ids": [
+            "qxcmd:symphony:stav.accordare-grant.install",
+            "qxcmd:symphony:stav.accordare-grant.remove"
+          ],
+          "delivery": "direct",
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
@@ -1405,11 +1488,12 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "Raw qxctl STAV append is a hidden fail-closed reservation and cannot satisfy administration coverage.",
-          "requirement": "prohibited"
+          "rationale": "The reviewed qxctl command specifications provide exact stopped-authority, SSIAG-authorized Accordare producer grant administration; raw STAV append remains separately prohibited.",
+          "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:stav.accordare.status",
             "qxcmd:symphony:stav.query",
             "qxcmd:symphony:stav.status"
           ],
@@ -1423,6 +1507,22 @@
           "inherited_from_feature_id": null,
           "interaction": "query",
           "rationale": "The reviewed qxctl command specifications provide the exact headless query surface for this registered feature.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:stav.accordare.reconcile"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION-PROFILE.md",
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed qxctl command specification provides exact durable Accordare producer reconciliation for this registered feature.",
           "requirement": "required"
         },
         {
@@ -3350,9 +3450,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:8639c8a0e41440b9deb476bbf22c02c5fc8bd46b8c620e85d1e1a4355fad9eeb",
+  "profile_digest": "sha256:e8276e558011d003e992518a0ce4e1b8465ad7c3997a1878d6482d21815ee471",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 87,
-  "ssfv_registry_digest": "sha256:9bd69045d167b8a540233a8cb30055082105c174556838af2c00e20b5c9ff7e5"
+  "registered_feature_count": 89,
+  "ssfv_registry_digest": "sha256:0c445c3c4078c73cb4de2528f1dddf6e417b99a2ff45cd29c15fdfac1d36789b"
 }

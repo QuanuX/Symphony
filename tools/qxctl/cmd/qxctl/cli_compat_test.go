@@ -37,7 +37,7 @@ func TestCLICompatibility(t *testing.T) {
 		{name: "SSIAG enrollment status target required", args: []string{"ssiag", "enrollment", "status"}, status: 1, output: "ssiag enrollment status failed: --prefix and --tops-id are required\n"},
 		{name: "missing SSIAG supervisor subcommand", args: []string{"ssiag", "supervisor"}, status: 1, output: "ssiag failed: ssiag supervisor subcommand is required: status, plan, apply, apply-status, or recover\n"},
 		{name: "SSIAG supervisor plan target required", args: []string{"ssiag", "supervisor", "plan"}, status: 1, output: "ssiag supervisor plan failed: --prefix and --tops-id are required\n"},
-		{name: "missing STAV subcommand", args: []string{"stav"}, status: 1, output: "stav failed: STAV subcommand is required: status, verify, query, doctor, enrollment, or supervisor\n"},
+		{name: "missing STAV subcommand", args: []string{"stav"}, status: 1, output: "stav failed: STAV subcommand is required: status, verify, query, doctor, enrollment, supervisor, accordare, or accordare-grant\n"},
 		{name: "unknown STAV subcommand", args: []string{"stav", "unknown"}, status: 1, output: "stav failed: unknown STAV subcommand \"unknown\"\n"},
 		{name: "prohibited STAV append", args: []string{"stav", "append"}, status: 1, output: "stav failed: qxctl stav append is prohibited; qxctl never submits arbitrary events or edits ledgers\n"},
 		{name: "missing STAV enrollment subcommand", args: []string{"stav", "enrollment"}, status: 1, output: "stav failed: stav enrollment subcommand is required: status, plan, apply, apply-status, or recover\n"},

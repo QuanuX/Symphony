@@ -2,7 +2,7 @@
 
 ## Status and Normative Terms
 
-Architect-ratified engine implementation and partial-catalog contract. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative. The canonical registry contains exactly eighty-seven experimental records; the bounded SSFV engine and qxctl client remain without canonical apply, naming, or semantic-decision authority.
+Architect-ratified engine implementation and partial-catalog contract. MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative. The canonical registry contains exactly eighty-nine experimental records; the bounded SSFV engine and qxctl client remain without canonical apply, naming, or semantic-decision authority.
 
 ## Purpose
 
@@ -119,7 +119,7 @@ A `FEATURES.md` file is permitted only at a source scope owning one or more rati
 - link parent and child records through stable identities;
 - remain sparse when no feature-worthy behavior exists.
 
-The current partial catalog is ratified and contains exactly one root owner file and fourteen nested owner files. Any additional `FEATURES.md` or feature record remains separately gated by the complete feature-worthiness and reviewed-change procedure.
+The current partial catalog is ratified and contains exactly one root owner file and seventeen non-root owner files. Any additional `FEATURES.md` or feature record remains separately gated by the complete feature-worthiness and reviewed-change procedure.
 
 Every registered feature file uses the exact managed-region and embedded JSON-envelope grammar in `FEATURE-FILE-FORMAT.md`. The exact literal `.` represents repository-root source scope and owns root `FEATURES.md`; any other normalized directory scope owns `<source_scope>/FEATURES.md`.
 
@@ -200,4 +200,4 @@ The schemas bound individual strings, arrays, records, and snapshots. The engine
 
 ## Non-Authorization Statement
 
-This specification authorizes canonical SSFV governance, the bounded independently installed engine and qxctl client, the exact eighty-seven-record partial catalog, the explicit owner-scope coverage inventory, ratified nested-review progress, invariant-, provider-trust-, and provider-binding-assurance reporting, and the protected noncanonical maintenance composition above. It does not authorize an unratified distributed feature record, a repository- or installed-host-completeness claim, complete legacy-invariant coverage, canonical apply, Maestro state mutation through SSFV, persistent graph storage, a remote interface, public documentation, or an application capability claim outside those records.
+This specification authorizes canonical SSFV governance, the bounded independently installed engine and qxctl client, the exact eighty-nine-record partial catalog, the explicit owner-scope coverage inventory, ratified nested-review progress, invariant-, provider-trust-, and provider-binding-assurance reporting, and the protected noncanonical maintenance composition above. It does not authorize an unratified distributed feature record, a repository- or installed-host-completeness claim, complete legacy-invariant coverage, canonical apply, Maestro state mutation through SSFV, persistent graph storage, a remote interface, public documentation, or an application capability claim outside those records.

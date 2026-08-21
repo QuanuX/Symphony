@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/QuanuX/Symphony/knowledge/stav/schemas/v1/accordare-producer-local-response.schema.json",
+  "title": "symphony.accordare.stav-producer.local-response.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["disposition", "operation", "reason_code", "receipt", "request_id", "schema", "status", "tops_id"],
+  "properties": {
+    "candidate_digest": {"$ref": "common.schema.json#/$defs/digest"},
+    "disposition": {"enum": ["committed", "pending", "rejected", "succeeded"]},
+    "operation": {"enum": ["reconcile", "status", "submit"]},
+    "reason_code": {"$ref": "common.schema.json#/$defs/registeredIdentifier"},
+    "receipt": {"oneOf": [{"type": "null"}, {"$ref": "receipt.schema.json"}]},
+    "request_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "schema": {"const": "symphony.accordare.stav-producer.local-response.v1"},
+    "status": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["pending", "ready", "reconciliation_needed", "schema", "tops_id"],
+          "properties": {
+            "pending": {"$ref": "common.schema.json#/$defs/safeInteger"},
+            "ready": {"type": "boolean"},
+            "reconciliation_needed": {"type": "boolean"},
+            "schema": {"const": "symphony.accordare.stav-producer.status.v1"},
+            "tops_id": {"$ref": "common.schema.json#/$defs/topsId"}
+          }
+        }
+      ]
+    },
+    "tops_id": {"$ref": "common.schema.json#/$defs/topsId"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"disposition": {"const": "committed"}}},
+      "then": {"required": ["candidate_digest"], "properties": {"operation": {"const": "submit"}, "receipt": {"$ref": "receipt.schema.json"}, "status": {"type": "null"}}}
+    },
+    {
+      "if": {"properties": {"disposition": {"const": "pending"}}},
+      "then": {"required": ["candidate_digest"], "properties": {"operation": {"const": "submit"}, "receipt": {"type": "null"}, "status": {"type": "null"}}}
+    },
+    {
+      "if": {"properties": {"disposition": {"const": "succeeded"}}},
+      "then": {"properties": {"operation": {"enum": ["reconcile", "status"]}, "receipt": {"type": "null"}, "status": {"type": "object"}}}
+    },
+    {
+      "if": {"properties": {"disposition": {"const": "rejected"}}},
+      "then": {"properties": {"receipt": {"type": "null"}, "status": {"type": "null"}}}
+    }
+  ]
+}

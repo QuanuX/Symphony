@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes eighty-seven experimental records across the repository root and sixteen implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes eighty-nine experimental records across the repository root and seventeen implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -30,6 +30,24 @@ Each entry is one contiguous ordered block using Markdown list items in `- field
 The literal `None.` beneath `## Canonical Entries` is the only valid empty-registry representation. It is removed atomically with the first ratified entry and MUST NOT coexist with entry blocks.
 
 ## Canonical Entries
+
+- feature_id: `ssfv:symphony:accordare-stav-producer`
+- feature_file: `modules/accordare-stav-producer/FEATURES.md`
+- owner_contract: `modules/accordare-stav-producer/SPEC.md`
+- source_scope: `modules/accordare-stav-producer`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:cb0db0b35265ceae6a8b4acdbe790e1c52724c8f8f37d1e186a637eb97a0b18d`
+- notes: Architect-ratified runtime boundary for authenticated, closed-vocabulary, crash-durable SAV Named Version audit production without arbitrary qxctl append authority.
+
+- feature_id: `ssfv:symphony:accordare-stav-producer.grant-administration`
+- feature_file: `modules/accordare-stav-producer/FEATURES.md`
+- owner_contract: `modules/accordare-stav-producer/SPEC.md`
+- source_scope: `modules/accordare-stav-producer`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:accordare-stav-producer`
+- record_digest: `sha256:167bf70841baf6f361618e6c8a743d465ac48a4a7b8078116eda5c03fcd165ed`
+- notes: Architect-ratified qxctl circuit for exact SSIAG-authorized Accordare grant install/remove with stopped-authority CAS and two-sided recovery.
 
 - feature_id: `ssfv:symphony:knowledge-session-coordinator`
 - feature_file: `modules/knowledge-session-coordinator/FEATURES.md`
@@ -253,7 +271,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:8a5d5fa59eb2c3994722ec58699f1619e73e323534d24ab653defebfd1b882b2`
+- record_digest: `sha256:2d76950f2763e2f1d9cb08162f0986fa44d590a979113df100cd401347a1259f`
 - notes: Architect-ratified F1 nested record for STAV audit, enrollment, and native-supervision administration; coverage remains partial and no broader runtime or canonical authority is implied.
 
 - feature_id: `ssfv:symphony:sacv-engine`
@@ -828,4 +846,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This eighty-seven-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This eighty-nine-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
