@@ -36,7 +36,7 @@ The following identifiers and JSON Schema Draft 2020-12 documents are ratified:
 
 `schemas/v1/common.schema.json`, `registries/v1/base.md`, and `fixtures/v1/` are also canonical. Canonical artifacts under `knowledge/stav/` outrank Go types, generated output, qxctl, or module code.
 
-Producer vocabularies are authority-free canonical registries. They close identifier and outcome mappings but do not implement a producer or authorize an installation grant. `registries/v1/accordare.json` reserves the first SAV Named Version lifecycle vocabulary with both operational gates false. The cross-vector boundary is documented in `knowledge/ACCORD-AUDIT.md`, with owning semantics in `knowledge/sav/STAV.md` and the explicit SEV no-vocabulary posture in `knowledge/sev/STAV.md`.
+Producer vocabularies are authority-free canonical registries. They close identifier and outcome mappings but never authorize an installation grant. `registries/v1/accordare.json` registers the first SAV Named Version lifecycle vocabulary with both architectural eligibility gates true. The separately installed producer, qxctl expected-state grant circuit, and per-installation STAV configuration determine operational availability and permission. The cross-vector boundary is documented in `knowledge/ACCORD-AUDIT.md`, with owning semantics in `knowledge/sav/STAV.md` and the explicit SEV no-vocabulary posture in `knowledge/sev/STAV.md`.
 
 ## Canonical Serialization Profile
 

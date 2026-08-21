@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/QuanuX/Symphony/knowledge/stav/schemas/v1/accordare-producer-submission.schema.json",
+  "title": "symphony.accordare.stav-producer.submission.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["command", "coordinator", "operation", "result", "schema", "tops_id"],
+  "properties": {
+    "command": {"$ref": "../../../schemas/v1/named-version-command.schema.json"},
+    "coordinator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["component_id", "executable_digest", "receipt_digest", "version"],
+      "properties": {
+        "component_id": {"const": "knowledge-session-coordinator"},
+        "executable_digest": {"$ref": "common.schema.json#/$defs/digest"},
+        "receipt_digest": {"$ref": "common.schema.json#/$defs/digest"},
+        "version": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[0-9A-Za-z.+-]+$"}
+      }
+    },
+    "operation": {"enum": ["named_version_alias", "named_version_prepare", "named_version_recover", "named_version_seal"]},
+    "result": {"$ref": "../../../schemas/v1/named-version-result.schema.json"},
+    "schema": {"const": "symphony.accordare.stav-producer.submission.v1"},
+    "tops_id": {"$ref": "common.schema.json#/$defs/topsId"}
+  }
+}

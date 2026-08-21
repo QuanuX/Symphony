@@ -65,4 +65,4 @@ Machine-readable integration vocabularies use `symphony.stav.producer-vocabulary
 
 Current integration registries:
 
-- `accordare.json`: reserved SAV Named Version lifecycle vocabulary; runtime producer and grants are not authorized.
+- `accordare.json`: registered SAV Named Version lifecycle vocabulary; a reviewed runtime exists, while every installation grant remains explicit, SSIAG-authorized, and configuration-bound.

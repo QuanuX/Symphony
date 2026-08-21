@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/QuanuX/Symphony/knowledge/stav/schemas/v1/accordare-producer-config.schema.json",
+  "title": "symphony.accordare.stav-producer.config.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["identity", "listen", "mode", "schema", "stav_config", "submitters", "tops_id", "vocabulary_digest"],
+  "properties": {
+    "identity": {"$ref": "#/$defs/identity"},
+    "listen": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["address", "network"],
+      "properties": {
+        "address": {"$ref": "#/$defs/absolutePath"},
+        "network": {"const": "unix"}
+      }
+    },
+    "mode": {"enum": ["system", "user"]},
+    "schema": {"const": "symphony.accordare.stav-producer.config.v1"},
+    "stav_config": {"$ref": "#/$defs/absolutePath"},
+    "submitters": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {"$ref": "#/$defs/identity"}
+    },
+    "tops_id": {"$ref": "common.schema.json#/$defs/topsId"},
+    "vocabulary_digest": {"$ref": "common.schema.json#/$defs/digest"}
+  },
+  "$defs": {
+    "absolutePath": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 4096,
+      "pattern": "^/(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//)(?!.*[\\u0000-\\u001F\\u007F]).+$"
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gid", "subject", "uid"],
+      "properties": {
+        "gid": {"type": "integer", "minimum": 0, "maximum": 4294967295},
+        "subject": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "kind"],
+          "properties": {
+            "id": {"$ref": "common.schema.json#/$defs/opaqueReference"},
+            "kind": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-z][a-z0-9.-]*$"}
+          }
+        },
+        "uid": {"type": "integer", "minimum": 0, "maximum": 4294967295}
+      }
+    }
+  }
+}
