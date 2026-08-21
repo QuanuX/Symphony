@@ -17,5 +17,6 @@ This collection is canonical protocol truth owned by `knowledge/stav/`. JSON Sch
 - `append-authority-status.schema.json`: safe operational status projection.
 - `local-request.schema.json`: authenticated local operation envelope.
 - `local-response.schema.json`: authenticated local result envelope.
+- `producer-vocabulary.schema.json`: authority-free closed producer-integration vocabulary; validity does not implement a producer or grant an installation.
 
-All v1 operational schemas listed above are Architect-ratified. Signed checkpoints and remote transport remain outside v1.
+All v1 operational schemas listed above are Architect-ratified. The producer-vocabulary schema also governs contract-only reserved integrations. Signed checkpoints and remote transport remain outside v1.

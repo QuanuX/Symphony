@@ -22,4 +22,4 @@ The version is published as an immutable public Go source module. It is not a bi
 
 ## Constraints
 
-The kernel uses only the Go standard library, is authored entirely in Go, uses no cgo, and does not open a transport or write state. Canonical schemas and fixtures outrank its Go types and implementation.
+The kernel uses only the Go standard library, is authored entirely in Go, uses no cgo, and does not open a transport or write state. It validates closed producer-vocabulary contracts, including explicit runtime-producer and producer-grant readiness, but cannot enable either authority. Canonical schemas, registries, and fixtures outrank its Go types and implementation.

@@ -79,6 +79,21 @@ func TestLifecycleBindingAdapterSwitchesAndRollsBackExactReceiptV2(t *testing.T)
 	}
 }
 
+func TestLifecycleBindingAdapterCoversEveryEstablishedEngineRole(t *testing.T) {
+	adapter, err := newLifecycleBindingAdapter(t.TempDir())
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, componentID := range []string{
+		"knowledge-session-coordinator", "skvi-engine", "sclv-engine", "sacv-engine",
+		"sodv-engine", "ssfv-engine", "sav-engine", "sev-engine",
+	} {
+		if !adapter.Handles(componentID) {
+			t.Errorf("lifecycle binding adapter does not cover %s", componentID)
+		}
+	}
+}
+
 func lifecycleBindingFixture(t *testing.T, version string) (string, string) {
 	t.Helper()
 	root := t.TempDir()

@@ -20,6 +20,8 @@ The independently installable implementation lives at `modules/stav-append-autho
 
 Shared pure-Go protocol mechanics live at `libraries/stav-protocol-go/`. The library is a build-time implementation without a resident, installer, state, transport, authorization, or ledger authority.
 
+Closed producer vocabularies may reserve exact safe-metadata event tuples before runtime integration exists. Registration is not authority: each vocabulary declares producer-grant and runtime-producer readiness independently, and both must remain false until their separately reviewed implementations exist.
+
 The authority is part of the foundational bootstrap stratum. Supervision owns liveness only and never transfers ledger or producer authority.
 
 ## Privacy Intent

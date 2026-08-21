@@ -4,4 +4,6 @@ This library is Symphony's first-party, pure-Go implementation of the STAV v1 pr
 
 The kernel has no executable install surface and no operational authority. It contains no listener, writer, credential access, policy engine, supervisor, or ledger implementation. The current source release is the independently consumable Go module `github.com/QuanuX/Symphony/libraries/stav-protocol-go@v0.2.0`.
 
+It also performs strict, deterministic validation of canonical closed producer vocabularies. A valid vocabulary reserves identifiers and safe outcome/reason mappings; it does not create a runtime producer, issue a producer grant, or authorize an append.
+
 Production remains pinned to Go 1.26.5. `GO_1_27_MIGRATION.md` defines the confirmed-release migration gate for the intended Go 1.27 target.

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:stav:producer-vocabulary:v1",
+  "title": "STAV Producer Vocabulary v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["authentication_method", "classification", "contracts", "integration_id", "producer_grant_authorized", "producer_kind", "protocol", "runtime_producer_implemented"],
+  "properties": {
+    "authentication_method": {"$ref": "common.schema.json#/$defs/registeredIdentifier"},
+    "classification": {"enum": ["administrative_metadata", "restricted_metadata"]},
+    "contracts": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 128,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["configuration_state", "event_class", "intent_id", "operation_id", "outcomes", "target_kind"],
+        "properties": {
+          "configuration_state": {"enum": ["digests", "not_applicable"]},
+          "event_class": {"$ref": "common.schema.json#/$defs/registeredIdentifier"},
+          "intent_id": {"$ref": "common.schema.json#/$defs/registeredIdentifier"},
+          "operation_id": {"$ref": "common.schema.json#/$defs/registeredIdentifier"},
+          "outcomes": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["outcome", "reason_code"],
+              "properties": {
+                "outcome": {"enum": ["allowed", "denied", "failed", "succeeded", "unavailable"]},
+                "reason_code": {"$ref": "common.schema.json#/$defs/registeredIdentifier"}
+              }
+            }
+          },
+          "target_kind": {"$ref": "common.schema.json#/$defs/registeredIdentifier"}
+        }
+      }
+    },
+    "integration_id": {"$ref": "common.schema.json#/$defs/registeredIdentifier"},
+    "producer_grant_authorized": {"type": "boolean"},
+    "producer_kind": {"$ref": "common.schema.json#/$defs/registeredIdentifier"},
+    "protocol": {"const": "symphony.stav.producer-vocabulary.v1"},
+    "runtime_producer_implemented": {"type": "boolean"}
+  }
+}

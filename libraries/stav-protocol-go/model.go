@@ -9,10 +9,39 @@ const (
 	SchemaVerification          = "symphony.stav.verification.v1"
 	SchemaAppendAuthorityConfig = "symphony.stav.append-authority.config.v1"
 	SchemaAppendAuthorityStatus = "symphony.stav.append-authority.status.v1"
+	SchemaProducerVocabulary    = "symphony.stav.producer-vocabulary.v1"
 
 	SchemaLocalRequest  = "symphony.stav.local.request.v1"
 	SchemaLocalResponse = "symphony.stav.local.response.v1"
 )
+
+// ProducerVocabulary is canonical, authority-free integration metadata. A
+// valid document neither implements a producer nor grants an installation
+// permission to append any registered tuple.
+type ProducerVocabulary struct {
+	AuthenticationMethod       string                  `json:"authentication_method"`
+	Classification             string                  `json:"classification"`
+	Contracts                  []ProducerEventContract `json:"contracts"`
+	IntegrationID              string                  `json:"integration_id"`
+	ProducerGrantAuthorized    bool                    `json:"producer_grant_authorized"`
+	ProducerKind               string                  `json:"producer_kind"`
+	Protocol                   string                  `json:"protocol"`
+	RuntimeProducerImplemented bool                    `json:"runtime_producer_implemented"`
+}
+
+type ProducerEventContract struct {
+	ConfigurationState string            `json:"configuration_state"`
+	EventClass         string            `json:"event_class"`
+	IntentID           string            `json:"intent_id"`
+	OperationID        string            `json:"operation_id"`
+	Outcomes           []ProducerOutcome `json:"outcomes"`
+	TargetKind         string            `json:"target_kind"`
+}
+
+type ProducerOutcome struct {
+	Outcome    string `json:"outcome"`
+	ReasonCode string `json:"reason_code"`
+}
 
 const (
 	LocalOperationAppend = "append"
