@@ -7607,3 +7607,188 @@ This PR authorizes none of the following:
   - `repository-wide SSFV completeness, installed-host completeness beyond the exact acceptance circuit, persistent canonical database, AI dependency, Go 1.27 production pin, or module/API/SDK/documentation release`
 - notes: |
     This post-merge closure records the Architect-ratified Accordare vocabulary, installed-host acceptance, and eight-role lifecycle correction merged by PR #158. It preserves all source paths as provenance, routes only exact canonical and integration obligations through SKVI, and changes no runtime behavior. The closure carrier is non-recursive because it appends only immutable SCLV history.
+
+- record_id: `SCLV-CHG-20260821-ACCORDARE-STAV-RUNTIME-PRODUCER`
+- record_version: `3`
+- title: `Accordare STAV runtime producer implemented`
+- status: `canonical`
+- date: `2026-08-21`
+- change_started_at: `2026-08-21T22:05:39Z`
+- change_completed_at: `2026-08-21T22:21:19Z`
+- recorded_at: `2026-08-21T22:24:43Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `present`
+- change_request_provider: `github`
+- change_request_id: `QuanuX/Symphony#160`
+- change_request_reference: `https://github.com/QuanuX/Symphony/pull/160`
+- change_request_absence_reason: `not_applicable`
+- revision_scheme: `git-sha1`
+- revision_value: `84e4d355ea62efcb0980c42d3f2d9ade26c9765b`
+- tree_digest: `sha256:d4a27d05c7644973f7c70c4fe2c3dd634f0adde888d44941cd19a021a3193195`
+- ratification_subject: `Architect`
+- ratification_permission: `repository-transition-owner`
+- ratification_method: `authenticated-github-merge`
+- ratification_evidence_reference: `https://github.com/QuanuX/Symphony/pull/160`
+- ratification_evidence_digest: `sha256:ab3ab6d000ae74f0ad1d79335615ef2684e5fd9429005ddef286e4d1b9e458b3`
+- affected_surfaces:
+  - `README.md`
+  - `go.work`
+  - `knowledge/ACCORD-AUDIT.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/FEATURE-ADMINISTRATION.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/MANIFEST.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SKILL.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `knowledge/stav/MANIFEST.md`
+  - `knowledge/stav/SPEC.md`
+  - `knowledge/stav/registries/v1/accordare.json`
+  - `knowledge/stav/registries/v1/base.md`
+  - `knowledge/stav/schemas/v1/MANIFEST.md`
+  - `knowledge/stav/schemas/v1/accordare-producer-config.schema.json`
+  - `knowledge/stav/schemas/v1/accordare-producer-local-request.schema.json`
+  - `knowledge/stav/schemas/v1/accordare-producer-local-response.schema.json`
+  - `knowledge/stav/schemas/v1/accordare-producer-submission.schema.json`
+  - `libraries/stav-protocol-go/fixtures_test.go`
+  - `modules/accordare-stav-producer/ARCHITECTURE.md`
+  - `modules/accordare-stav-producer/FEATURES.md`
+  - `modules/accordare-stav-producer/IMPLEMENTATION.md`
+  - `modules/accordare-stav-producer/INSTALL.md`
+  - `modules/accordare-stav-producer/INTENT.md`
+  - `modules/accordare-stav-producer/MANIFEST.md`
+  - `modules/accordare-stav-producer/README.md`
+  - `modules/accordare-stav-producer/REQUIREMENTS.md`
+  - `modules/accordare-stav-producer/SKILL.md`
+  - `modules/accordare-stav-producer/SPEC.md`
+  - `modules/accordare-stav-producer/THREAT-MODEL.md`
+  - `modules/accordare-stav-producer/client/client.go`
+  - `modules/accordare-stav-producer/cmd/symphony-accordare-stav-producer/main.go`
+  - `modules/accordare-stav-producer/go.mod`
+  - `modules/accordare-stav-producer/go.sum`
+  - `modules/accordare-stav-producer/internal/config/config.go`
+  - `modules/accordare-stav-producer/internal/enrollment/enrollment.go`
+  - `modules/accordare-stav-producer/internal/outbox/outbox.go`
+  - `modules/accordare-stav-producer/internal/outbox/outbox_test.go`
+  - `modules/accordare-stav-producer/internal/packageinstall/package.go`
+  - `modules/accordare-stav-producer/internal/packageinstall/package_test.go`
+  - `modules/accordare-stav-producer/internal/paths/paths.go`
+  - `modules/accordare-stav-producer/internal/peer/peer.go`
+  - `modules/accordare-stav-producer/internal/peer/peer_darwin.go`
+  - `modules/accordare-stav-producer/internal/peer/peer_linux.go`
+  - `modules/accordare-stav-producer/internal/peer/peer_unsupported.go`
+  - `modules/accordare-stav-producer/internal/producer/producer.go`
+  - `modules/accordare-stav-producer/internal/producer/producer_test.go`
+  - `modules/accordare-stav-producer/internal/protocol/canonical.go`
+  - `modules/accordare-stav-producer/internal/protocol/codec.go`
+  - `modules/accordare-stav-producer/internal/protocol/model.go`
+  - `modules/accordare-stav-producer/internal/protocol/validate.go`
+  - `modules/accordare-stav-producer/internal/protocol/validate_test.go`
+  - `modules/accordare-stav-producer/internal/server/server.go`
+  - `modules/accordare-stav-producer/internal/server/server_test.go`
+  - `modules/accordare-stav-producer/internal/server/socketlock_unix.go`
+  - `modules/accordare-stav-producer/internal/server/socketlock_unsupported.go`
+  - `modules/accordare-stav-producer/internal/version/version.go`
+  - `modules/secure-identity-access-governance/go.sum`
+  - `modules/ssfv-engine/tests/ssfv_test.cpp`
+  - `modules/stav-append-authority/go.sum`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/command_specs.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/named_version.go`
+  - `tools/qxctl/cmd/qxctl/stav_accordare.go`
+  - `tools/qxctl/cmd/qxctl/stav_grant.go`
+  - `tools/qxctl/cmd/qxctl/stav_grant_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/go.mod`
+  - `tools/qxctl/go.sum`
+  - `tools/symphony-validator/src/artifacts.cpp`
+- skvi_references:
+  - `README.md`
+  - `go.work`
+  - `knowledge/ACCORD-AUDIT.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/FEATURE-ADMINISTRATION.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/MANIFEST.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SKILL.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `knowledge/stav/MANIFEST.md`
+  - `knowledge/stav/SPEC.md`
+  - `knowledge/stav/registries/v1/accordare.json`
+  - `knowledge/stav/registries/v1/base.md`
+  - `knowledge/stav/schemas/v1/MANIFEST.md`
+  - `knowledge/stav/schemas/v1/accordare-producer-config.schema.json`
+  - `knowledge/stav/schemas/v1/accordare-producer-local-request.schema.json`
+  - `knowledge/stav/schemas/v1/accordare-producer-local-response.schema.json`
+  - `knowledge/stav/schemas/v1/accordare-producer-submission.schema.json`
+  - `modules/accordare-stav-producer/FEATURES.md`
+  - `modules/accordare-stav-producer/SPEC.md`
+  - `modules/ssfv-engine/tests/ssfv_test.cpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/command_specs.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/named_version.go`
+  - `tools/qxctl/cmd/qxctl/stav_grant.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/symphony-validator/src/artifacts.cpp`
+- change_summary: |
+    Under the Architect's direction, PR #160 implemented the independently packaged, cgo-free Accordare STAV producer. It authenticates qxctl over per-TOPS Unix sockets, verifies exact SSIAG and installed-coordinator evidence, derives only the closed Named Version candidate vocabulary, persists candidates before append, and reconciles durable pending work. qxctl adds exact producer status, reconciliation, and SSIAG-authorized grant administration while retaining the prohibition on arbitrary append.
+- relationship_changes: |
+    STAV retains envelope, schema, grant, append, ledger, and query authority. SSIAG retains caller-neutral authorization. The Knowledge Session Coordinator retains Named Version persistence. qxctl orchestrates exact evidence and administration without constructing candidates. The Accordare producer is the separately authenticated derivation and durable handoff boundary.
+- doctrine_changes: |
+    Producer vocabulary eligibility, runtime presence, installation enrollment, and exact STAV grant are separate facts. Successful coordinator results cannot imply audit completion. A producer returns either a verified committed receipt or explicit durable pending disposition, and retry remains content-addressed and idempotent. Stale Go checksum projections are corrected from SODV truth rather than treated as immutable-release failure.
+- compatibility_consequences: |
+    Four new stable qxctl command identities raise the registry to 195 leaves. The partial SSFV catalog rises to 89 records across seventeen owner scopes and the administration profile rises to 175 reviewed surfaces with zero uncovered or unreviewed routes. The new module uses receipt-v2 exact-version installation and remains compatible with side-by-side package versions.
+- publication_consequences: |
+    No module tag, package release, API, SDK, Mintlify documentation, product-launch claim, or final coherent module-set publication was made. Empty-cache standalone producer resolution passed; qxctl source-mode standalone resolution awaits publication of the producer module during a later packaging campaign.
+- projection_consequences: |
+    The root summary now reports 89 features, 69 nested features, seventeen owner scopes, 175 administration expectations, 195 qxctl commands, and snapshot digest sha256:dcab98c7d65c21df8935dcf768b24c1c779c376c93c275b893d538fbe55977aa. Derived Go sums were aligned to the canonical SODV checksum while the development workspace continues composing rolling source through `go.work`.
+- evidence:
+  - `PR #160 merged into main at 2026-08-21T22:21:19Z by quantDIY as 84e4d355ea62efcb0980c42d3f2d9ade26c9765b`
+  - `source head 99c90393be41925cf3c173803d05e81926fd8624; 86 files changed, 4548 insertions, 108 deletions`
+  - `local-Git adapter evidence observed at 2026-08-21T22:24:05Z has digest sha256:b8239c78ac0213025cf5ea815e0ed3afd671ef23c3cecc31d8e162fed5d97f83 and binds tree digest sha256:d4a27d05c7644973f7c70c4fe2c3dd634f0adde888d44941cd19a021a3193195`
+  - `ratification evidence digest sha256:ab3ab6d000ae74f0ad1d79335615ef2684e5fd9429005ddef286e4d1b9e458b3 binds compact sorted provider, repository, change-request, base/head/merge revisions, timestamps, authenticated merger, Architect permission, title, URL, commit count, and diff counts`
+  - `all Go workspace modules passed; race-enabled producer and qxctl tests passed; Unix-socket tests passed with ordinary host permissions`
+  - `the producer resolved and passed from a new empty public module cache with GOWORK=off after stale checksum projections were repaired`
+  - `fresh SSFV and Symphony Validator CTests passed; pre-merge live repository validation reported pass=7694 warning=0 violation=0 exit=0`
+  - `the qxctl registry verifies with 195 stable commands and exact Accordare wrapper/backend bindings`
+  - `the feature-administration profile verifies with 175 reviewed surfaces, 165 required routes, thirteen evidence-backed exemptions, nine prohibitions, and zero unreviewed surfaces`
+- non_authorizations:
+  - `caller-supplied event identity, arbitrary append by qxctl, direct ledger editing, inferred grants, fabricated audit completion, or permission inferred from caller class`
+  - `canonical knowledge apply, SAV mutation, coordinator STAV transport, automatic newest-version selection, destructive rollback, native Windows support, or hot/warm-path participation`
+  - `failed or unavailable Accordare event production, pre-mutation intent durability, native producer lifecycle descriptors, complete installed producer-to-STAV acceptance, or final coherent module-set publication`
+  - `repository-wide SSFV completeness, persistent canonical database, AI dependency, Go 1.27 production pin, or product-launch readiness`
+- notes: |
+    This post-merge closure records the Architect-ratified Accordare runtime producer implementation merged by PR #160. Unindexed implementation-local paths remain preserved as affected provenance without artificial SKVI expansion. The closure changes no runtime behavior and is non-recursive because it appends only immutable SCLV history.
