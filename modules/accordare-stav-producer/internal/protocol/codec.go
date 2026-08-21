@@ -56,7 +56,7 @@ func DecodeResponse(data []byte) (LocalResponse, error) {
 }
 
 func (request LocalRequest) Validate() error {
-	if request.Schema != SchemaRequest || (request.Operation != OperationSubmit && request.Operation != OperationStatus && request.Operation != OperationReconcile) {
+	if request.Schema != SchemaRequest || (request.Operation != OperationPrepare && request.Operation != OperationComplete && request.Operation != OperationSubmit && request.Operation != OperationStatus && request.Operation != OperationReconcile) {
 		return fmt.Errorf("invalid Accordare producer request identity")
 	}
 	if err := stavprotocol.ValidateTOPSID(request.TOPSID); err != nil {
@@ -65,17 +65,28 @@ func (request LocalRequest) Validate() error {
 	if err := stavprotocol.ValidateRequestUUID(request.RequestID); err != nil {
 		return err
 	}
-	if (request.Operation == OperationSubmit) != (request.Submission != nil) {
+	needsSubmission := request.Operation == OperationPrepare || request.Operation == OperationComplete || request.Operation == OperationSubmit
+	if needsSubmission != (request.Submission != nil) {
 		return fmt.Errorf("submission presence does not match operation")
 	}
 	if request.Submission != nil && (request.Submission.Schema != SchemaSubmission || request.Submission.TOPSID != request.TOPSID) {
 		return fmt.Errorf("submission binding mismatch")
 	}
+	if request.Operation == OperationPrepare && (request.Submission.Outcome != nil || request.Submission.ReasonCode != nil || !nullRaw(request.Submission.Result)) {
+		return fmt.Errorf("prepare request contains terminal evidence")
+	}
+	if (request.Operation == OperationComplete || request.Operation == OperationSubmit) && (request.Submission.Outcome == nil || request.Submission.ReasonCode == nil) {
+		return fmt.Errorf("completion request lacks terminal evidence")
+	}
 	return nil
 }
 
+func nullRaw(raw json.RawMessage) bool {
+	return len(raw) == 0 || bytes.Equal(bytes.TrimSpace(raw), []byte("null"))
+}
+
 func (response LocalResponse) Validate() error {
-	if response.Schema != SchemaResponse || (response.Operation != OperationSubmit && response.Operation != OperationStatus && response.Operation != OperationReconcile) {
+	if response.Schema != SchemaResponse || (response.Operation != OperationPrepare && response.Operation != OperationComplete && response.Operation != OperationSubmit && response.Operation != OperationStatus && response.Operation != OperationReconcile) {
 		return fmt.Errorf("invalid Accordare producer response identity")
 	}
 	if err := stavprotocol.ValidateTOPSID(response.TOPSID); err != nil {
@@ -85,24 +96,33 @@ func (response LocalResponse) Validate() error {
 		return err
 	}
 	switch response.Disposition {
+	case "prepared":
+		if response.Operation != OperationPrepare || response.IntentID == "" || response.Receipt != nil || response.Status != nil || response.CandidateDigest != "" || response.ReasonCode != "symphony.accordare.audit.intent-prepared" {
+			return fmt.Errorf("invalid prepared producer response")
+		}
+		return stavprotocol.ValidateRequestUUID(response.IntentID)
 	case "committed":
-		if response.Operation != OperationSubmit || response.Receipt == nil || response.Status != nil || response.ReasonCode != "symphony.accordare.audit.committed" || response.CandidateDigest == "" {
+		if (response.Operation != OperationComplete && response.Operation != OperationSubmit) || response.Receipt == nil || response.Status != nil || response.ReasonCode != "symphony.accordare.audit.committed" || response.CandidateDigest == "" || response.IntentID == "" {
 			return fmt.Errorf("invalid committed producer response")
+		}
+		if err := stavprotocol.ValidateRequestUUID(response.IntentID); err != nil {
+			return err
 		}
 		return response.Receipt.Validate()
 	case "pending":
-		if response.Operation != OperationSubmit || response.Receipt != nil || response.Status != nil || response.ReasonCode != "symphony.accordare.audit.pending" || response.CandidateDigest == "" {
+		if (response.Operation != OperationComplete && response.Operation != OperationSubmit) || response.Receipt != nil || response.Status != nil || response.ReasonCode != "symphony.accordare.audit.pending" || response.CandidateDigest == "" || response.IntentID == "" {
 			return fmt.Errorf("invalid pending producer response")
 		}
+		return stavprotocol.ValidateRequestUUID(response.IntentID)
 	case "succeeded":
-		if response.Operation == OperationSubmit || response.Receipt != nil || response.Status == nil || response.CandidateDigest != "" || response.ReasonCode != "symphony.accordare.audit.succeeded" {
+		if response.Operation == OperationSubmit || response.Operation == OperationPrepare || response.Operation == OperationComplete || response.Receipt != nil || response.Status == nil || response.CandidateDigest != "" || response.IntentID != "" || response.ReasonCode != "symphony.accordare.audit.succeeded" {
 			return fmt.Errorf("invalid status producer response")
 		}
-		if response.Status.Schema != SchemaStatus || response.Status.TOPSID != response.TOPSID || response.Status.ReconciliationNeeded != (response.Status.Pending > 0) {
+		if response.Status.Schema != SchemaStatus || response.Status.TOPSID != response.TOPSID || response.Status.Pending != response.Status.IntentPending+response.Status.AppendPending || response.Status.ReconciliationNeeded != (response.Status.Pending > 0) {
 			return fmt.Errorf("invalid producer status")
 		}
 	case "rejected":
-		if response.Receipt != nil || response.Status != nil || response.CandidateDigest != "" || response.ReasonCode == "" {
+		if response.Receipt != nil || response.Status != nil || response.CandidateDigest != "" || response.IntentID != "" || response.ReasonCode == "" {
 			return fmt.Errorf("invalid rejected producer response")
 		}
 	default:

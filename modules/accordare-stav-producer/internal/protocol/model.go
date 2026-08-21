@@ -13,6 +13,8 @@ const (
 	SchemaStatus     = "symphony.accordare.stav-producer.status.v1"
 
 	OperationSubmit    = "submit"
+	OperationPrepare   = "prepare"
+	OperationComplete  = "complete"
 	OperationStatus    = "status"
 	OperationReconcile = "reconcile"
 )
@@ -28,6 +30,8 @@ type Submission struct {
 	Command     json.RawMessage      `json:"command"`
 	Coordinator InstallationEvidence `json:"coordinator"`
 	Operation   string               `json:"operation"`
+	Outcome     *string              `json:"outcome"`
+	ReasonCode  *string              `json:"reason_code"`
 	Result      json.RawMessage      `json:"result"`
 	Schema      string               `json:"schema"`
 	TOPSID      string               `json:"tops_id"`
@@ -43,6 +47,8 @@ type LocalRequest struct {
 
 type Status struct {
 	Pending              uint64 `json:"pending"`
+	IntentPending        uint64 `json:"intent_pending"`
+	AppendPending        uint64 `json:"append_pending"`
 	Ready                bool   `json:"ready"`
 	ReconciliationNeeded bool   `json:"reconciliation_needed"`
 	Schema               string `json:"schema"`
@@ -51,6 +57,7 @@ type Status struct {
 
 type LocalResponse struct {
 	CandidateDigest string                `json:"candidate_digest,omitempty"`
+	IntentID        string                `json:"intent_id,omitempty"`
 	Disposition     string                `json:"disposition"`
 	Operation       string                `json:"operation"`
 	ReasonCode      string                `json:"reason_code"`

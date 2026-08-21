@@ -67,6 +67,64 @@ func TestStableCandidateIdentityMakesRetryIdempotent(t *testing.T) {
 	}
 }
 
+func TestIntentPrecedesAndBindsCompletion(t *testing.T) {
+	completed, subject := validSubmission(t)
+	prepared := completed
+	prepared.Result = nil
+	prepared.Outcome = nil
+	prepared.ReasonCode = nil
+	when := time.Now().UTC().Truncate(time.Second)
+	intent, err := VerifyIntent(prepared, subject, when)
+	if err != nil {
+		t.Fatal(err)
+	}
+	verified, completedID, err := VerifyCompletion(intent.Submission, completed, subject, when, when)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if completedID != intent.IntentID || verified.CandidateDigest == "" {
+		t.Fatal("completion was not bound to its durable intent")
+	}
+	completed.Coordinator.Version = "0.2.0"
+	if _, _, err := VerifyCompletion(intent.Submission, completed, subject, when, when); err == nil {
+		t.Fatal("coordinator drift was accepted")
+	}
+}
+
+func TestTypedUnavailableCompletionContainsNoRawError(t *testing.T) {
+	completed, subject := validSubmission(t)
+	completed.Result = nil
+	outcome, reason := "unavailable", "symphony.sav.named-version.prepare.unavailable"
+	completed.Outcome, completed.ReasonCode = &outcome, &reason
+	verified, err := VerifySubmission(completed, subject, time.Now().UTC())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if verified.Candidate.Result.Outcome != outcome || verified.Candidate.Result.ReasonCode != reason || verified.Candidate.Configuration.PreviousDigest != verified.Candidate.Configuration.NewDigest {
+		t.Fatalf("typed unavailable candidate is unsafe: %+v", verified.Candidate)
+	}
+	if strings.Contains(string(mustJSON(t, verified.Candidate)), "error") {
+		t.Fatal("terminal candidate leaked raw error material")
+	}
+}
+
+func TestIntentSemanticIdentityAllowsFreshAuthorizationOnly(t *testing.T) {
+	left, _ := validSubmission(t)
+	var command map[string]any
+	if err := json.Unmarshal(left.Command, &command); err != nil {
+		t.Fatal(err)
+	}
+	original := append([]byte(nil), left.Command...)
+	command["authorization_decision"] = map[string]any{"fresh": "replacement-proof"}
+	if !CommandsMatchIntent(original, mustJSON(t, command)) {
+		t.Fatal("fresh authorization changed stable intent semantics")
+	}
+	command["expected_registry_digest"] = "sha256:" + strings.Repeat("9", 64)
+	if CommandsMatchIntent(original, mustJSON(t, command)) {
+		t.Fatal("mutation semantic drift was accepted")
+	}
+}
+
 func validSubmission(t *testing.T) (Submission, stavprotocol.SafeReference) {
 	t.Helper()
 	subject := stavprotocol.SafeReference{ID: "owner.test", Kind: "owner"}
@@ -117,7 +175,8 @@ func validSubmission(t *testing.T) (Submission, stavprotocol.SafeReference) {
 		t.Fatal(err)
 	}
 	result["result_digest"] = digest
-	return Submission{Command: mustJSON(t, command), Coordinator: InstallationEvidence{ComponentID: "knowledge-session-coordinator", ExecutableDigest: "sha256:" + strings.Repeat("c", 64), ReceiptDigest: "sha256:" + strings.Repeat("d", 64), Version: "0.1.0"}, Operation: "named_version_prepare", Result: mustJSON(t, result), Schema: SchemaSubmission, TOPSID: testTOPS}, subject
+	outcome, reason := "succeeded", "symphony.sav.named-version.prepare.succeeded"
+	return Submission{Command: mustJSON(t, command), Coordinator: InstallationEvidence{ComponentID: "knowledge-session-coordinator", ExecutableDigest: "sha256:" + strings.Repeat("c", 64), ReceiptDigest: "sha256:" + strings.Repeat("d", 64), Version: "0.1.0"}, Operation: "named_version_prepare", Outcome: &outcome, ReasonCode: &reason, Result: mustJSON(t, result), Schema: SchemaSubmission, TOPSID: testTOPS}, subject
 }
 
 func mustJSON(t *testing.T, value any) []byte {

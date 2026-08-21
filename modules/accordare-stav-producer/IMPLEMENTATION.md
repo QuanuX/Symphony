@@ -1,8 +1,8 @@
 # Accordare STAV Producer Implementation
 
-The implementation is split into public client orchestration and private configuration, enrollment, peer authentication, evidence protocol, outbox, producer, server, package-install, path, and version packages. This prevents qxctl from importing the append implementation or constructing a candidate.
+The implementation is split into public client orchestration and private configuration, enrollment, peer authentication, evidence protocol, intent, outbox, producer, server, native supervision, package-install, path, and version packages. This prevents qxctl from importing the append implementation or constructing a candidate.
 
-The highest-value regressions cover evidence/result/authority drift, deterministic retry identity, outbox restart and collision behavior, unavailable-STAV reconciliation, real authenticated Unix-socket status/reconcile exchange, receipt-v2 replay and enrollment-safe uninstall, qxctl command parity, exact grant idempotency/removal, and two-sided grant-attempt recovery.
+The highest-value regressions cover evidence/result/authority drift, deterministic retry identity with fresh authorization only, intent and outbox restart/collision behavior, unavailable-STAV reconciliation, real installed producer-to-STAV receipt acceptance, authenticated Unix-socket exchange, safe native-supervisor rendering and path handling, receipt-v2 replay and enrollment-safe uninstall, qxctl command parity, exact grant idempotency/removal, and two-sided grant-attempt recovery.
 
 ## Development Dependency Observation
 

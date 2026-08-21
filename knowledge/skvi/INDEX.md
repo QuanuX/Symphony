@@ -7766,7 +7766,7 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - scope: Separates the closed Accordare event vocabulary from runtime production and installation-specific producer grants.
 - relationships: governs -> `knowledge/stav/registries/v1/accordare.json`; refines -> `knowledge/stav/SPEC.md`; constrains -> `tools/qxctl/cmd/qxctl/named_version.go`
 - consumers: implementers, reviewers, qxctl, Accordare producer
-- deferred_projections: pre-mutation intent durability and typed failed/unavailable production
+- deferred_projections: additional separately ratified producer classes
 - notes: Vocabulary registration is not append authority.
 - status: canonical
 
@@ -7778,8 +7778,8 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - owner: SAV and STAV maintainers
 - scope: Maps prepare, seal, alias, and recover Named Version lifecycle outcomes into the closed Accordare vocabulary without transferring SAV semantic authority.
 - relationships: implements -> `knowledge/ACCORD-AUDIT.md`; governed_by -> `knowledge/stav/registries/v1/accordare.json`
-- consumers: future Accordare producer, qxctl, reviewers
-- deferred_projections: runtime production
+- consumers: Accordare producer, qxctl, reviewers
+- deferred_projections: additional separately ratified Named Version lifecycle vocabulary
 - notes: SAV remains read-only and never appends.
 - status: canonical
 
@@ -7828,11 +7828,11 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - surface_type: JSON Schema Draft 2020-12 contract
 - truth_role: bounded qxctl and coordinator evidence truth
 - owner: STAV and SAV maintainers
-- scope: Binds one exact Named Version command and result to its coordinator receipt/executable evidence and TOPS operation.
+- scope: Binds one exact Named Version command and explicit terminal presence state to coordinator receipt/executable evidence and TOPS operation.
 - relationships: governs -> `modules/accordare-stav-producer/internal/protocol/validate.go`; refines -> `knowledge/sav/STAV.md`
 - consumers: qxctl, Accordare producer, reviewers
-- deferred_projections: typed failed and unavailable submissions
-- notes: The caller cannot supply the derived STAV event tuple or outcome.
+- deferred_projections: remote transport
+- notes: Prepare carries explicit null terminal fields; completion carries a closed outcome and never accepts caller-supplied STAV tuple identity or raw errors.
 - status: canonical
 
 #### Accordare Producer Local Request Schema
@@ -7841,7 +7841,7 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - surface_type: JSON Schema Draft 2020-12 contract
 - truth_role: authenticated local IPC request truth
 - owner: STAV maintainers
-- scope: Defines exact submit, status, and reconcile request presence rules.
+- scope: Defines exact prepare, complete, legacy-rejected submit, status, and reconcile request presence rules.
 - relationships: governs -> `modules/accordare-stav-producer/internal/protocol/codec.go`; transported_by -> `modules/accordare-stav-producer/internal/server/server.go`
 - consumers: qxctl, Accordare producer, reviewers
 - deferred_projections: remote transport
@@ -7854,11 +7854,11 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - surface_type: JSON Schema Draft 2020-12 contract
 - truth_role: committed, durable-pending, status, and rejection truth
 - owner: STAV maintainers
-- scope: Defines exact receipt, candidate-digest, pending-count, and reconciliation presence rules.
+- scope: Defines exact intent identity, receipt, candidate-digest, separate intent/append pending counts, and reconciliation presence rules.
 - relationships: governs -> `modules/accordare-stav-producer/internal/protocol/codec.go`; consumes -> `knowledge/stav/schemas/v1/receipt.schema.json`
 - consumers: qxctl, Accordare producer, reviewers
 - deferred_projections: remote transport
-- notes: Pending means the stable candidate is already durable in the producer outbox.
+- notes: Intent pending requires exact command retry; append pending means the stable candidate is already durable in the producer outbox.
 - status: canonical
 
 #### Accordare Producer Vocabulary Registry
@@ -7870,8 +7870,8 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - scope: Registers four lifecycle operations and their exact safe outcomes while declaring runtime and installation-grant protocol eligibility implemented.
 - relationships: conforms_to -> `knowledge/stav/schemas/v1/producer-vocabulary.schema.json`; governed_by -> `knowledge/ACCORD-AUDIT.md`
 - consumers: STAV protocol kernel, Accordare producer, qxctl, reviewers
-- deferred_projections: typed failed/unavailable production
-- notes: This registry grants no installation authority; qxctl and the stopped STAV configuration own the exact grant transition.
+- deferred_projections: additional reviewed Accordare mutation vocabularies
+- notes: Succeeded, failed, and unavailable production is implemented; this registry grants no installation authority.
 - status: canonical
 
 #### qxctl Named Version Installed Acceptance
@@ -7906,11 +7906,11 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - surface_type: distributed SSFV owner file
 - truth_role: authenticated durable producer and exact-grant capability truth
 - owner: Accordare producer maintainers
-- scope: Records the separately authenticated freezing-path producer and qxctl installation-grant administration subfeature.
+- scope: Records the separately authenticated freezing-path producer, pre-mutation intent durability, native supervision, and qxctl grant administration subfeatures.
 - relationships: implements -> `knowledge/ACCORD-AUDIT.md`; governed_by -> `knowledge/stav/registries/v1/accordare.json`; composes_with -> `tools/qxctl/cmd/qxctl/named_version.go`
 - consumers: SSFV engine, SKVI, qxctl, maintainers, reviewers
-- deferred_projections: native managed supervision and pre-mutation intent durability
-- notes: Package installation, enrollment, SSIAG permission, STAV grant, and live process state remain distinct.
+- deferred_projections: foundation-lifecycle adapter parity and remote administration transport
+- notes: Package installation, enrollment, SSIAG permission, STAV grant, native descriptor, and live process state remain distinct.
 - status: canonical
 
 #### Accordare STAV Producer Runtime
@@ -7919,11 +7919,11 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - surface_type: independently installable Go service module
 - truth_role: strict evidence verification, safe-candidate derivation, durable outbox, authenticated IPC, and receipt-v2 implementation truth
 - owner: Accordare producer maintainers
-- scope: Implements successful prepare, seal, alias, and recover audit production with committed-or-pending semantics and idempotent recovery.
+- scope: Implements two-phase intent, terminal prepare/seal/alias/recover production, committed-or-pending semantics, exact retry, and native supervision.
 - relationships: conforms_to -> `knowledge/stav/registries/v1/accordare.json`; invokes -> `modules/stav-append-authority/client/client.go`; administered_by -> `tools/qxctl/cmd/qxctl/stav_grant.go`
 - consumers: qxctl, STAV append authority, TOPS administrators, tests
-- deferred_projections: failed/unavailable outcomes, native descriptor lifecycle, pre-mutation intent
-- notes: The outbox contains only safe candidates and never becomes a second ledger.
+- deferred_projections: foundation-lifecycle adapter parity and coherent release packaging
+- notes: The intent store contains command evidence, the outbox contains only safe candidates, and neither becomes a second ledger.
 - status: canonical
 
 #### qxctl Accordare STAV Grant Administration

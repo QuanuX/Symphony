@@ -7,8 +7,9 @@
   "required": ["disposition", "operation", "reason_code", "receipt", "request_id", "schema", "status", "tops_id"],
   "properties": {
     "candidate_digest": {"$ref": "common.schema.json#/$defs/digest"},
-    "disposition": {"enum": ["committed", "pending", "rejected", "succeeded"]},
-    "operation": {"enum": ["reconcile", "status", "submit"]},
+    "disposition": {"enum": ["committed", "pending", "prepared", "rejected", "succeeded"]},
+    "intent_id": {"$ref": "common.schema.json#/$defs/uuid"},
+    "operation": {"enum": ["complete", "prepare", "reconcile", "status", "submit"]},
     "reason_code": {"$ref": "common.schema.json#/$defs/registeredIdentifier"},
     "receipt": {"oneOf": [{"type": "null"}, {"$ref": "receipt.schema.json"}]},
     "request_id": {"$ref": "common.schema.json#/$defs/uuid"},
@@ -19,8 +20,10 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["pending", "ready", "reconciliation_needed", "schema", "tops_id"],
+          "required": ["append_pending", "intent_pending", "pending", "ready", "reconciliation_needed", "schema", "tops_id"],
           "properties": {
+            "append_pending": {"$ref": "common.schema.json#/$defs/safeInteger"},
+            "intent_pending": {"$ref": "common.schema.json#/$defs/safeInteger"},
             "pending": {"$ref": "common.schema.json#/$defs/safeInteger"},
             "ready": {"type": "boolean"},
             "reconciliation_needed": {"type": "boolean"},
@@ -35,11 +38,15 @@
   "allOf": [
     {
       "if": {"properties": {"disposition": {"const": "committed"}}},
-      "then": {"required": ["candidate_digest"], "properties": {"operation": {"const": "submit"}, "receipt": {"$ref": "receipt.schema.json"}, "status": {"type": "null"}}}
+      "then": {"required": ["candidate_digest", "intent_id"], "properties": {"operation": {"enum": ["complete", "submit"]}, "receipt": {"$ref": "receipt.schema.json"}, "status": {"type": "null"}}}
     },
     {
       "if": {"properties": {"disposition": {"const": "pending"}}},
-      "then": {"required": ["candidate_digest"], "properties": {"operation": {"const": "submit"}, "receipt": {"type": "null"}, "status": {"type": "null"}}}
+      "then": {"required": ["candidate_digest", "intent_id"], "properties": {"operation": {"enum": ["complete", "submit"]}, "receipt": {"type": "null"}, "status": {"type": "null"}}}
+    },
+    {
+      "if": {"properties": {"disposition": {"const": "prepared"}}},
+      "then": {"required": ["intent_id"], "properties": {"operation": {"const": "prepare"}, "receipt": {"type": "null"}, "status": {"type": "null"}}}
     },
     {
       "if": {"properties": {"disposition": {"const": "succeeded"}}},

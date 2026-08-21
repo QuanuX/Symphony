@@ -119,8 +119,124 @@ type VerifiedSubmission struct {
 	CandidateDigest string
 }
 
+type VerifiedIntent struct {
+	IntentID   string
+	Peer       stavprotocol.SafeReference
+	Submission Submission
+}
+
+func SubmissionIntentID(raw Submission) (string, error) {
+	commandBytes, err := canonicalObject(raw.Command)
+	if err != nil {
+		return "", fmt.Errorf("command evidence is invalid")
+	}
+	var identity struct {
+		Operation   string  `json:"operation"`
+		OperationID *string `json:"operation_id"`
+		TOPSID      string  `json:"tops_id"`
+	}
+	if err := json.Unmarshal(commandBytes, &identity); err != nil || identity.OperationID == nil || !token(*identity.OperationID) || identity.Operation != raw.Operation || identity.TOPSID != raw.TOPSID {
+		return "", fmt.Errorf("command identity is invalid")
+	}
+	return stableUUID(raw.TOPSID + "\n" + raw.Operation + "\n" + *identity.OperationID + "\nintent"), nil
+}
+
+// CommandsMatchIntent compares the complete coordinator command except for the
+// SSIAG decision. Retry must carry fresh authorization, while every mutation
+// semantic and client capability remains exact.
+func CommandsMatchIntent(left, right json.RawMessage) bool {
+	leftCanonical, leftErr := canonicalIntentCommand(left)
+	rightCanonical, rightErr := canonicalIntentCommand(right)
+	return leftErr == nil && rightErr == nil && bytes.Equal(leftCanonical, rightCanonical)
+}
+
+func canonicalIntentCommand(raw json.RawMessage) ([]byte, error) {
+	canonical, err := canonicalObject(raw)
+	if err != nil {
+		return nil, err
+	}
+	var value map[string]json.RawMessage
+	if err := json.Unmarshal(canonical, &value); err != nil {
+		return nil, err
+	}
+	if _, present := value["authorization_decision"]; !present {
+		return nil, fmt.Errorf("command lacks authorization evidence")
+	}
+	value["authorization_decision"] = json.RawMessage("null")
+	encoded, err := json.Marshal(value)
+	if err != nil {
+		return nil, err
+	}
+	return canonicalJSON(encoded)
+}
+
+// VerifyIntent authenticates and canonicalizes the exact command before the
+// coordinator is allowed to mutate. The returned identity is deterministic so
+// an exact command retry observes the same durable intent.
+func VerifyIntent(raw Submission, peerSubject stavprotocol.SafeReference, now time.Time) (VerifiedIntent, error) {
+	if raw.Schema != SchemaSubmission || raw.Operation == "" || raw.TOPSID == "" || len(raw.Command) == 0 || !nullRaw(raw.Result) || raw.Outcome != nil || raw.ReasonCode != nil {
+		return VerifiedIntent{}, fmt.Errorf("intent identity is incomplete")
+	}
+	if err := stavprotocol.ValidateTOPSID(raw.TOPSID); err != nil {
+		return VerifiedIntent{}, err
+	}
+	if raw.Coordinator.ComponentID != "knowledge-session-coordinator" || !taggedDigest(raw.Coordinator.ReceiptDigest) || !taggedDigest(raw.Coordinator.ExecutableDigest) || !token(raw.Coordinator.Version) {
+		return VerifiedIntent{}, fmt.Errorf("coordinator evidence is invalid")
+	}
+	commandBytes, err := canonicalObject(raw.Command)
+	if err != nil || len(commandBytes) > maxSubmissionBytes {
+		return VerifiedIntent{}, fmt.Errorf("command evidence is invalid")
+	}
+	var cmd command
+	if err := exactDecode(commandBytes, &cmd, []string{
+		"alias", "authorization_decision", "client", "expected_registry_digest", "named_version",
+		"operation", "operation_id", "prepared_operation_id", "proposal_digest", "protocol", "sav_engine",
+		"selector", "state_root", "tops_id", "validation_result",
+	}); err != nil {
+		return VerifiedIntent{}, fmt.Errorf("command field set is invalid: %w", err)
+	}
+	if cmd.Protocol != "symphony.knowledge.named-version-command.v1" || cmd.Operation != raw.Operation || cmd.TOPSID != raw.TOPSID || cmd.OperationID == nil || !token(*cmd.OperationID) || !supportedOperation(raw.Operation) {
+		return VerifiedIntent{}, fmt.Errorf("command identity is invalid")
+	}
+	if err := validateDecision(cmd.AuthorizationDecision, raw.TOPSID, raw.Operation, namedVersionResource(commandBytes), peerSubject, now); err != nil {
+		return VerifiedIntent{}, err
+	}
+	raw.Command = append(json.RawMessage(nil), commandBytes...)
+	intentID, _ := SubmissionIntentID(raw)
+	return VerifiedIntent{
+		IntentID: intentID,
+		Peer:     peerSubject, Submission: raw,
+	}, nil
+}
+
+// VerifyCompletion binds a terminal coordinator result to the exact durable
+// pre-mutation intent. Completion carries a freshly validated authorization
+// proof; all mutation semantics, client capabilities, coordinator installation,
+// peer, operation, and TOPS identity remain exact.
+func VerifyCompletion(prepared Submission, result Submission, peerSubject stavprotocol.SafeReference, preparedAt, now time.Time) (VerifiedSubmission, string, error) {
+	if prepared.Schema != result.Schema || prepared.Operation != result.Operation || prepared.TOPSID != result.TOPSID || prepared.Coordinator != result.Coordinator {
+		return VerifiedSubmission{}, "", fmt.Errorf("completion does not bind the prepared intent")
+	}
+	left, err := canonicalObject(prepared.Command)
+	if err != nil {
+		return VerifiedSubmission{}, "", err
+	}
+	if !CommandsMatchIntent(left, result.Command) {
+		return VerifiedSubmission{}, "", fmt.Errorf("completion command differs from prepared intent")
+	}
+	verified, err := VerifySubmission(result, peerSubject, now)
+	if err != nil {
+		return VerifiedSubmission{}, "", err
+	}
+	intent, err := VerifyIntent(prepared, peerSubject, preparedAt)
+	if err != nil {
+		return VerifiedSubmission{}, "", err
+	}
+	return verified, intent.IntentID, nil
+}
+
 func VerifySubmission(raw Submission, peerSubject stavprotocol.SafeReference, now time.Time) (VerifiedSubmission, error) {
-	if raw.Schema != SchemaSubmission || raw.Operation == "" || raw.TOPSID == "" || len(raw.Command) == 0 || len(raw.Result) == 0 {
+	if raw.Schema != SchemaSubmission || raw.Operation == "" || raw.TOPSID == "" || len(raw.Command) == 0 || raw.Outcome == nil || raw.ReasonCode == nil {
 		return VerifiedSubmission{}, fmt.Errorf("submission identity is incomplete")
 	}
 	if err := stavprotocol.ValidateTOPSID(raw.TOPSID); err != nil {
@@ -133,10 +249,6 @@ func VerifySubmission(raw Submission, peerSubject stavprotocol.SafeReference, no
 	commandBytes, err := canonicalObject(raw.Command)
 	if err != nil || len(commandBytes) > maxSubmissionBytes {
 		return VerifiedSubmission{}, fmt.Errorf("command evidence is invalid")
-	}
-	resultBytes, err := canonicalObject(raw.Result)
-	if err != nil || len(resultBytes) > maxSubmissionBytes {
-		return VerifiedSubmission{}, fmt.Errorf("result evidence is invalid")
 	}
 	var cmd command
 	if err := exactDecode(commandBytes, &cmd, []string{
@@ -155,6 +267,35 @@ func VerifySubmission(raw Submission, peerSubject stavprotocol.SafeReference, no
 	if err := validateDecision(cmd.AuthorizationDecision, raw.TOPSID, raw.Operation, namedVersionResource(commandBytes), peerSubject, now); err != nil {
 		return VerifiedSubmission{}, err
 	}
+	operationID := strings.Replace(raw.Operation, "named_version_", "symphony.sav.named-version.", 1)
+	if (*raw.Outcome != "succeeded" && *raw.Outcome != "failed" && *raw.Outcome != "unavailable") || *raw.ReasonCode != operationID+"."+*raw.Outcome {
+		return VerifiedSubmission{}, fmt.Errorf("terminal outcome is outside the Accordare vocabulary")
+	}
+	stavActor, err := NormalizeSSIAGSubject(peerSubject)
+	if err != nil {
+		return VerifiedSubmission{}, err
+	}
+	if *raw.Outcome != "succeeded" {
+		if !nullRaw(raw.Result) {
+			return VerifiedSubmission{}, fmt.Errorf("non-success terminal evidence cannot contain a result payload")
+		}
+		candidate, err := buildTerminalCandidate(raw, cmd, stavActor, *raw.Outcome)
+		if err != nil {
+			return VerifiedSubmission{}, err
+		}
+		digest, err := stavprotocol.CandidateDigest(candidate)
+		if err != nil {
+			return VerifiedSubmission{}, err
+		}
+		return VerifiedSubmission{Actor: peerSubject, Candidate: candidate, CandidateDigest: digest}, nil
+	}
+	if nullRaw(raw.Result) {
+		return VerifiedSubmission{}, fmt.Errorf("successful completion lacks result evidence")
+	}
+	resultBytes, err := canonicalObject(raw.Result)
+	if err != nil || len(resultBytes) > maxSubmissionBytes {
+		return VerifiedSubmission{}, fmt.Errorf("result evidence is invalid")
+	}
 	var result namedVersionResult
 	if err := exactDecode(resultBytes, &result, []string{
 		"alias_count", "artifact", "canonical", "canonical_apply_enabled", "changed", "compatibility",
@@ -169,10 +310,6 @@ func VerifySubmission(raw Submission, peerSubject stavprotocol.SafeReference, no
 	}
 	if digest, err := digestWithout(resultBytes, "result_digest"); err != nil || digest != result.ResultDigest {
 		return VerifiedSubmission{}, fmt.Errorf("result digest is invalid")
-	}
-	stavActor, err := NormalizeSSIAGSubject(peerSubject)
-	if err != nil {
-		return VerifiedSubmission{}, err
 	}
 	candidate, err := buildCandidate(raw, cmd, result, stavActor)
 	if err != nil {
@@ -210,6 +347,54 @@ func NormalizeSSIAGSubject(subject stavprotocol.SafeReference) (stavprotocol.Saf
 		return stavprotocol.SafeReference{}, err
 	}
 	return normalized, nil
+}
+
+func buildTerminalCandidate(submission Submission, cmd command, actor stavprotocol.SafeReference, outcome string) (stavprotocol.Candidate, error) {
+	absent := taggedSHA256([]byte("symphony.sav.named-version-registry.absent.v1"))
+	unobserved := taggedSHA256([]byte("symphony.sav.named-version-registry.previous-unobserved.v1"))
+	previous := expectedOrSentinel(cmd.ExpectedRegistryDigest, absent, unobserved)
+	targetID, targetKind := previous, "symphony.sav.named-version-registry"
+	switch submission.Operation {
+	case "named_version_prepare":
+		var value struct {
+			NamedVersionDigest string `json:"named_version_digest"`
+		}
+		if err := exactNamedVersionDigest(cmd.NamedVersion, &value); err != nil || !taggedDigest(value.NamedVersionDigest) {
+			return stavprotocol.Candidate{}, fmt.Errorf("prepare intent lacks a Named Version digest")
+		}
+		targetID, targetKind = value.NamedVersionDigest, "symphony.sav.named-version-proposal"
+	case "named_version_seal":
+		if cmd.ProposalDigest == nil || !taggedDigest(*cmd.ProposalDigest) {
+			return stavprotocol.Candidate{}, fmt.Errorf("seal intent lacks a proposal digest")
+		}
+		targetID, targetKind = *cmd.ProposalDigest, "symphony.sav.named-version"
+	case "named_version_alias":
+		var selector struct {
+			Kind  string `json:"kind"`
+			Value string `json:"value"`
+		}
+		if err := json.Unmarshal(cmd.Selector, &selector); err != nil || selector.Kind != "digest" || !taggedDigest(selector.Value) {
+			return stavprotocol.Candidate{}, fmt.Errorf("alias intent lacks an exact target")
+		}
+		targetID = selector.Value
+	}
+	requestID := stableUUID(submission.TOPSID + "\n" + submission.Operation + "\n" + *cmd.OperationID + "\nrequest")
+	correlationID := stableUUID(submission.TOPSID + "\n" + submission.Operation + "\n" + *cmd.OperationID + "\ncorrelation")
+	operationID := strings.Replace(submission.Operation, "named_version_", "symphony.sav.named-version.", 1)
+	candidate := stavprotocol.Candidate{
+		Actor:         stavprotocol.CandidateActor{Authentication: stavprotocol.Authentication{MethodID: "symphony.ssiag.local-peer", State: "identified"}, Principal: actor},
+		Configuration: stavprotocol.Configuration{PreviousDigest: previous, NewDigest: previous, State: "digests"},
+		Correlation:   stavprotocol.Correlation{RequestID: requestID, CorrelationID: correlationID},
+		Operation:     stavprotocol.Operation{EventClass: "symphony.sav.named-version.lifecycle", OperationID: operationID, Target: stavprotocol.SafeReference{ID: targetID, Kind: targetKind}},
+		Redaction:     stavprotocol.Redaction{Classification: "administrative_metadata"},
+		Result:        stavprotocol.Result{IntentID: operationID, Outcome: outcome, ReasonCode: operationID + "." + outcome},
+		Schema:        stavprotocol.SchemaCandidate,
+		Topology:      stavprotocol.Topology{TOPSID: submission.TOPSID, TROG: stavprotocol.TROG{ReasonCode: "symphony.stav.trog.not-applicable", State: "not_applicable"}},
+	}
+	if err := candidate.Validate(); err != nil {
+		return stavprotocol.Candidate{}, fmt.Errorf("derived terminal candidate is invalid: %w", err)
+	}
+	return candidate, nil
 }
 
 func buildCandidate(submission Submission, cmd command, result namedVersionResult, actor stavprotocol.SafeReference) (stavprotocol.Candidate, error) {

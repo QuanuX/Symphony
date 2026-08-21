@@ -8,9 +8,9 @@
 4. Enroll the per-TOPS producer with the exact STAV configuration path, producer UID/GID, and qxctl SSIAG subject ID/kind. User scope defaults UID/GID to the invoking process; system scope requires explicit values.
 5. Stop the STAV append authority.
 6. Observe the exact STAV configuration SHA-256 and invoke `qxctl stav accordare-grant install` with that expected digest and a stable operation ID.
-7. Restart STAV, then start the producer with `serve --supervised` for system scope or the equivalent owner-managed user supervisor.
-8. Run producer `status`; use `reconcile` until pending is zero.
+7. Restart STAV, then run `qxctl stav accordare supervisor-install --prefix ABSOLUTE --version 0.1.0-dev --tops-id UUID --scope user|system`. `--no-start` writes the deterministic descriptor for an owner-provided equivalent supervisor.
+8. Run `qxctl stav accordare status`; use `reconcile` until `append_pending` is zero. Any `intent_pending` item requires retry of its exact original Named Version command.
 
-Uninstall in reverse: stop the producer, reconcile to zero, stop STAV, remove the qxctl grant, restart STAV if desired, unenroll the producer, then remove the receipt-owned package. `unenroll --purge` refuses a non-empty outbox.
+Uninstall in reverse: remove producer supervision, reconcile append work and resolve every intent, stop STAV, remove the qxctl grant, restart STAV if desired, unenroll the producer, then remove the receipt-owned package. `unenroll --purge` refuses non-empty intent or outbox state.
 
-Native descriptor generation is not claimed by this initial producer package. An owner-controlled supervisor may invoke the immutable receipt-v2 executable; qxctl lifecycle integration must bind that exact installed identity before Symphony claims managed liveness.
+The module generates independent per-TOPS launchd/systemd liveness descriptors for macOS and Linux. qxctl verifies the exact receipt-v2 package before invoking the installed executable's supervisor operation. Units pin the exact versioned binary, use bounded restart/shutdown, and contain no SSIAG/STAV startup dependency. Native Windows service engines are intentionally unsupported; Windows clients use WSL or a remote Linux TOPS node.

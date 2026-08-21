@@ -70,6 +70,24 @@ type Result struct {
 
 type layout struct{ prefix, binary, receipt string }
 
+func Inspect(prefix, requestedVersion string) (Result, error) {
+	paths, err := resolve(prefix, requestedVersion)
+	if err != nil {
+		return Result{}, err
+	}
+	record, present, err := readReceipt(paths)
+	if err != nil {
+		return Result{}, err
+	}
+	if !present {
+		return Result{}, fmt.Errorf("Accordare producer installation receipt is absent")
+	}
+	if err := validateReceipt(record, paths); err != nil {
+		return Result{}, err
+	}
+	return result(paths, record.ReceiptDigest, false), nil
+}
+
 func Install(source, prefix, requestedVersion string) (Result, error) {
 	paths, err := resolve(prefix, requestedVersion)
 	if err != nil {
@@ -122,8 +140,8 @@ func Install(source, prefix, requestedVersion string) (Result, error) {
 		Protocol: receiptProtocol, FormatVersion: 2, ComponentID: componentID, ComponentKind: "service", ModuleID: componentID,
 		PackageID: componentID, Version: version.Version, InstallScope: "prefix", PrefixMode: "installation_prefix",
 		Files:                []receiptFile{{Path: filepath.ToSlash(relative), Kind: "executable", Size: size, Digest: digest}},
-		EntryPoints:          []entryPoint{{EntryPointID: "accordare.stav-producer", Kind: "executable", Path: filepath.ToSlash(relative), Protocols: []string{"symphony.accordare.stav-producer.local.v1"}}},
-		ProvidesCapabilities: []string{"symphony.accordare.stav-producer.v1"}, RequiresCapabilities: []string{"symphony.stav.append-authority.v1", "symphony.ssiag.authorization.v1"},
+		EntryPoints:          []entryPoint{{EntryPointID: "accordare.stav-producer", Kind: "executable", Path: filepath.ToSlash(relative), Protocols: []string{"symphony.accordare.stav-producer.local.v1", "symphony.accordare.stav-producer.supervisor.v1"}}},
+		ProvidesCapabilities: []string{"symphony.accordare.stav-producer.v1", "symphony.accordare.stav-producer.native-supervision.v1"}, RequiresCapabilities: []string{"symphony.stav.append-authority.v1", "symphony.ssiag.authorization.v1"},
 		CompatibleReceptors: []string{}, PlatformRequirements: []platformRequirement{{OS: osName, Architecture: runtime.GOARCH, Critical: true}},
 	}
 	record.ReceiptDigest, err = receiptDigest(record)
@@ -261,9 +279,9 @@ func validateReceipt(record receipt, paths layout) error {
 	if wantOS == "darwin" {
 		wantOS = "macos"
 	}
-	wantProvides := []string{"symphony.accordare.stav-producer.v1"}
+	wantProvides := []string{"symphony.accordare.stav-producer.v1", "symphony.accordare.stav-producer.native-supervision.v1"}
 	wantRequires := []string{"symphony.stav.append-authority.v1", "symphony.ssiag.authorization.v1"}
-	wantProtocols := []string{"symphony.accordare.stav-producer.local.v1"}
+	wantProtocols := []string{"symphony.accordare.stav-producer.local.v1", "symphony.accordare.stav-producer.supervisor.v1"}
 	if record.Protocol != receiptProtocol || record.FormatVersion != 2 || record.ComponentID != componentID || record.ComponentKind != "service" || record.ModuleID != componentID || record.VectorID != nil || record.EngineID != nil || record.PackageID != componentID || record.Version != version.Version || record.InstallScope != "prefix" || record.PrefixMode != "installation_prefix" || record.ReceiptDigest != wantDigest || len(record.Files) != 1 || record.Files[0].Path != filepath.ToSlash(relative) || record.Files[0].Kind != "executable" || len(record.EntryPoints) != 1 || record.EntryPoints[0].EntryPointID != "accordare.stav-producer" || record.EntryPoints[0].Kind != "executable" || record.EntryPoints[0].Path != record.Files[0].Path || !slices.Equal(record.EntryPoints[0].Protocols, wantProtocols) || !slices.Equal(record.ProvidesCapabilities, wantProvides) || !slices.Equal(record.RequiresCapabilities, wantRequires) || record.CompatibleReceptors == nil || len(record.CompatibleReceptors) != 0 || len(record.PlatformRequirements) != 1 || record.PlatformRequirements[0].OS != wantOS || record.PlatformRequirements[0].Architecture != runtime.GOARCH || record.PlatformRequirements[0].KernelABI != nil || !record.PlatformRequirements[0].Critical {
 		return fmt.Errorf("Accordare producer receipt identity is invalid")
 	}

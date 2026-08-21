@@ -10,12 +10,14 @@ Close the durable audit circuit for the four ratified SAV Named Version mutation
 
 ## Operational Intent
 
-- one separately authenticated producer process and private outbox per TOPS;
+- one separately authenticated producer process with private intent and candidate stores per TOPS;
 - Darwin/Linux kernel peer credentials in both IPC directions;
 - exact SSIAG subject, target, capability, expiry, and caller-neutrality verification;
 - no caller-selected event class, operation, target kind, outcome, reason, request ID, or correlation ID;
-- durable outbox before append and deterministic retry identity;
-- explicit committed or pending audit disposition;
+- durable intent before coordinator mutation, followed by a durable candidate before append;
+- deterministic exact-command retry with a fresh authorization proof and no guessed outcome;
+- explicit intent-pending, append-pending, or committed audit disposition;
 - independent receipt-v2 installation and conservative per-TOPS enrollment;
 - qxctl-owned installation grant administration with expected-state CAS and forward recovery;
+- independent native supervision administered through exact receipt-v2 qxctl routes;
 - freezing-path operation only.

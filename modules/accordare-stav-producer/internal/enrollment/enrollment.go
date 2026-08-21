@@ -47,11 +47,13 @@ func Unenroll(layout paths.Layout, purge bool) (bool, error) {
 		return false, err
 	}
 	if purge {
-		entries, err := os.ReadDir(layout.OutboxDir)
-		if err == nil && len(entries) != 0 {
-			return false, fmt.Errorf("refusing to purge a non-empty Accordare audit outbox; reconcile it first")
+		for _, pendingDir := range []string{layout.IntentDir, layout.OutboxDir} {
+			entries, err := os.ReadDir(pendingDir)
+			if err == nil && len(entries) != 0 {
+				return false, fmt.Errorf("refusing to purge non-empty Accordare audit state; resolve it first")
+			}
 		}
-		for _, path := range []string{layout.OutboxDir, layout.StateDir, layout.ConfigDir, layout.RuntimeDir} {
+		for _, path := range []string{layout.IntentDir, layout.OutboxDir, layout.StateDir, layout.ConfigDir, layout.RuntimeDir} {
 			if err := os.Remove(path); err != nil && !os.IsNotExist(err) {
 				return false, err
 			}
