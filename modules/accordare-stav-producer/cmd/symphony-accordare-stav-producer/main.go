@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strconv"
 	"syscall"
 	"time"
@@ -15,11 +16,13 @@ import (
 	accordareclient "github.com/QuanuX/Symphony/modules/accordare-stav-producer/client"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/config"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/enrollment"
+	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/intent"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/outbox"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/packageinstall"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/paths"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/producer"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/server"
+	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/supervision"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/version"
 	stavclient "github.com/QuanuX/Symphony/modules/stav-append-authority/client"
 )
@@ -51,11 +54,72 @@ func run(args []string) error {
 		return runUnenroll(args[1:])
 	case "serve":
 		return runServe(args[1:])
+	case "supervisor":
+		return runSupervisor(args[1:])
 	case "status", "reconcile":
 		return runControl(args[0], args[1:])
 	default:
 		return fmt.Errorf("unknown command %q", args[0])
 	}
+}
+
+func runSupervisor(args []string) error {
+	if len(args) == 0 || (args[0] != "install" && args[0] != "uninstall") {
+		return fmt.Errorf("supervisor requires install or uninstall")
+	}
+	operation := args[0]
+	set := flag.NewFlagSet("supervisor "+operation, flag.ContinueOnError)
+	scopeValue := set.String("scope", "user", "installation scope: user or system")
+	topsID := set.String("tops-id", "", "immutable TOPS UUID")
+	configPath := set.String("config", "", "explicit enrollment configuration")
+	binaryPath := set.String("binary", "", "exact installed producer executable")
+	force := set.Bool("force", false, "replace or remove a drifted descriptor")
+	noStart := set.Bool("no-start", false, "write or remove the descriptor without manager mutation")
+	if err := set.Parse(args[1:]); err != nil || set.NArg() != 0 || *topsID == "" {
+		return fmt.Errorf("supervisor %s requires --tops-id and no positional arguments", operation)
+	}
+	scope, err := paths.ParseScope(*scopeValue)
+	if err != nil {
+		return err
+	}
+	layout, err := paths.Resolve(scope, *topsID)
+	if err != nil {
+		return err
+	}
+	path := *configPath
+	if path == "" {
+		path = layout.ConfigFile
+	}
+	cfg, err := config.Load(path)
+	if err != nil {
+		return err
+	}
+	binary := *binaryPath
+	if binary == "" {
+		binary, err = os.Executable()
+		if err != nil {
+			return err
+		}
+	}
+	binary, err = filepath.Abs(binary)
+	if err != nil {
+		return err
+	}
+	spec, err := supervision.SpecFromConfig(scope, *topsID, binary, cfg)
+	if err != nil {
+		return err
+	}
+	var record supervision.Record
+	if operation == "install" {
+		record, err = supervision.Install(spec, *force, !*noStart)
+	} else {
+		record, err = supervision.Uninstall(spec, *force, !*noStart)
+	}
+	if err != nil {
+		return err
+	}
+	fmt.Printf("supervisor %s Accordare STAV producer tops_id=%s scope=%s manager=%s descriptor=%s digest=%s changed=%t\n", operation, *topsID, scope, record.Manager, record.Descriptor, record.Digest, record.Changed)
+	return nil
 }
 
 func runPackage(operation string, args []string) error {
@@ -206,7 +270,11 @@ func runServe(args []string) error {
 	if err != nil {
 		return err
 	}
-	runtimeProducer, err := producer.New(cfg.TOPSID, store, stavTransport)
+	intentStore, err := intent.Open(layout.IntentDir)
+	if err != nil {
+		return err
+	}
+	runtimeProducer, err := producer.New(cfg.TOPSID, intentStore, store, stavTransport)
 	if err != nil {
 		return err
 	}
@@ -253,7 +321,7 @@ func runControl(operation string, args []string) error {
 	if result.Disposition != "succeeded" {
 		return fmt.Errorf("producer rejected %s: %s", operation, result.ReasonCode)
 	}
-	fmt.Printf("Accordare STAV producer: operation=%s tops_id=%s pending=%d\n", operation, *topsID, result.Pending)
+	fmt.Printf("Accordare STAV producer: operation=%s tops_id=%s pending=%d intent_pending=%d append_pending=%d\n", operation, *topsID, result.Pending, result.IntentPending, result.AppendPending)
 	return nil
 }
 
@@ -289,5 +357,5 @@ func randomUUID() (string, error) {
 }
 
 func usage() {
-	fmt.Println("usage: symphony-accordare-stav-producer <install|uninstall|enroll|unenroll|serve|status|reconcile|--version>")
+	fmt.Println("usage: symphony-accordare-stav-producer <install|uninstall|enroll|unenroll|supervisor|serve|status|reconcile|--version>")
 }

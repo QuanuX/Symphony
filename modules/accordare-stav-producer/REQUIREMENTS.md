@@ -6,6 +6,8 @@
 - Exact UID/GID endpoint authentication and exact SSIAG subject binding.
 - Closed four-operation vocabulary with no caller-selected audit fields.
 - Safe metadata only; no secret, proof, capability, payload, body, alias, or path persistence.
-- Outbox durability precedes append; committed receipts are verified; pending state is explicit and recoverable.
+- Intent durability precedes coordinator mutation; candidate durability precedes append; committed receipts are verified; both pending states are explicit and recoverable.
+- Exact retry preserves mutation semantics while allowing only a freshly validated SSIAG authorization proof.
+- Native launchd/systemd supervision is per TOPS, liveness-only, independently installable, and receipt-bound through qxctl.
 - qxctl administers installation grants using SSIAG authorization, stopped-authority mutation, CAS, and durable recovery.
 - All behavior remains outside hot and warm paths.

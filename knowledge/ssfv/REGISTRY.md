@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes eighty-nine experimental records across the repository root and seventeen implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes ninety-one experimental records across the repository root and seventeen implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -37,7 +37,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/accordare-stav-producer`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:cb0db0b35265ceae6a8b4acdbe790e1c52724c8f8f37d1e186a637eb97a0b18d`
+- record_digest: `sha256:c34d30d9c743a6faaf853a2b26850f103ea5f179c391ad4e14f3f8afc12b1e42`
 - notes: Architect-ratified runtime boundary for authenticated, closed-vocabulary, crash-durable SAV Named Version audit production without arbitrary qxctl append authority.
 
 - feature_id: `ssfv:symphony:accordare-stav-producer.grant-administration`
@@ -48,6 +48,24 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:accordare-stav-producer`
 - record_digest: `sha256:167bf70841baf6f361618e6c8a743d465ac48a4a7b8078116eda5c03fcd165ed`
 - notes: Architect-ratified qxctl circuit for exact SSIAG-authorized Accordare grant install/remove with stopped-authority CAS and two-sided recovery.
+
+- feature_id: `ssfv:symphony:accordare-stav-producer.intent-durability`
+- feature_file: `modules/accordare-stav-producer/FEATURES.md`
+- owner_contract: `modules/accordare-stav-producer/SPEC.md`
+- source_scope: `modules/accordare-stav-producer`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:accordare-stav-producer`
+- record_digest: `sha256:5c3b23317c3718afdfcd773f418bb3442b946d4d4063a4f7f626029426422145`
+- notes: Architect-ratified two-phase audit intent durability with exact command retry, typed terminal outcomes, and separate intent/append recovery state.
+
+- feature_id: `ssfv:symphony:accordare-stav-producer.native-supervision`
+- feature_file: `modules/accordare-stav-producer/FEATURES.md`
+- owner_contract: `modules/accordare-stav-producer/SPEC.md`
+- source_scope: `modules/accordare-stav-producer`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:accordare-stav-producer`
+- record_digest: `sha256:3c0f644c2ca3be8a1a511ecc8d9268be254f6b40e217a728a7bf44cda082b5b1`
+- notes: Architect-ratified independent macOS/Linux producer liveness descriptors and exact receipt-bound qxctl administration.
 
 - feature_id: `ssfv:symphony:knowledge-session-coordinator`
 - feature_file: `modules/knowledge-session-coordinator/FEATURES.md`
@@ -846,4 +864,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This eighty-nine-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This ninety-one-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

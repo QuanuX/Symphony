@@ -285,9 +285,19 @@ func executeNamedVersion(operation string, options namedVersionOptions) (namedVe
 	if err != nil {
 		return namedVersionResult{}, nil, fmt.Errorf("encode Named Version command: %w", err)
 	}
+	var auditSession namedVersionAuditSession
+	if mutating {
+		auditSession, err = prepareNamedVersionAudit(options, operation, encoded, coordinatorInstallation)
+		if err != nil {
+			return namedVersionResult{}, nil, err
+		}
+	}
 	response, err := knowledgeengine.InvokeCoordinator(context.Background(), coordinator.Prefix,
 		coordinator.Version, repositoryRoot, operation, encoded)
 	if err != nil {
+		if auditSession.configured {
+			return namedVersionResult{}, nil, fmt.Errorf("Named Version coordinator did not return terminal evidence; durable audit intent %s requires exact command retry: %w", auditSession.intentID, err)
+		}
 		return namedVersionResult{}, nil, err
 	}
 	result, err := validateNamedVersionResult(response.Result, operation)
@@ -300,7 +310,7 @@ func executeNamedVersion(operation string, options namedVersionOptions) (namedVe
 		}
 	}
 	if mutating {
-		audit, configured, auditErr := submitNamedVersionAudit(options, operation, encoded, response.Result, coordinatorInstallation)
+		audit, configured, auditErr := completeNamedVersionAudit(auditSession, response.Result)
 		if auditErr != nil {
 			return namedVersionResult{}, nil, fmt.Errorf("Named Version mutation completed but durable audit submission failed: %w", auditErr)
 		}
@@ -312,39 +322,64 @@ func executeNamedVersion(operation string, options namedVersionOptions) (namedVe
 	return result, append(json.RawMessage(nil), response.Result...), nil
 }
 
-func submitNamedVersionAudit(options namedVersionOptions, operation string, command, result []byte, coordinator knowledgeengine.Installation) (accordareclient.AuditResult, bool, error) {
+type namedVersionAuditSession struct {
+	client     *accordareclient.Client
+	configured bool
+	intentID   string
+	request    accordareclient.Submission
+}
+
+func prepareNamedVersionAudit(options namedVersionOptions, operation string, command []byte, coordinator knowledgeengine.Installation) (namedVersionAuditSession, error) {
 	path, err := accordareclient.ConfigPath(options.scope, options.topsID)
 	if err != nil {
-		return accordareclient.AuditResult{}, false, err
+		return namedVersionAuditSession{}, err
 	}
 	if _, err := os.Lstat(path); os.IsNotExist(err) {
-		return accordareclient.AuditResult{}, false, nil
+		return namedVersionAuditSession{}, nil
 	} else if err != nil {
-		return accordareclient.AuditResult{}, true, err
+		return namedVersionAuditSession{configured: true}, err
 	}
 	client, err := accordareclient.NewFromConfig(path)
 	if err != nil {
-		return accordareclient.AuditResult{}, true, err
+		return namedVersionAuditSession{configured: true}, err
+	}
+	request := accordareclient.Submission{Command: command, Coordinator: accordareclient.InstallationEvidence{
+		ComponentID: "knowledge-session-coordinator", ExecutableDigest: coordinator.ExecutableDigest,
+		ReceiptDigest: coordinator.ReceiptDigest, Version: coordinator.Version,
+	}, Operation: operation, TOPSID: options.topsID}
+	requestID, err := randomUUID()
+	if err != nil {
+		return namedVersionAuditSession{configured: true}, err
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
+	defer cancel()
+	audit, err := client.Prepare(ctx, requestID, request)
+	if err != nil {
+		return namedVersionAuditSession{configured: true}, err
+	}
+	if audit.Disposition != "prepared" || audit.IntentID == "" {
+		return namedVersionAuditSession{configured: true}, fmt.Errorf("producer rejected pre-mutation audit intent: %s", audit.ReasonCode)
+	}
+	return namedVersionAuditSession{client: client, configured: true, intentID: audit.IntentID, request: request}, nil
+}
+
+func completeNamedVersionAudit(session namedVersionAuditSession, result []byte) (accordareclient.AuditResult, bool, error) {
+	if !session.configured {
+		return accordareclient.AuditResult{}, false, nil
 	}
 	requestID, err := randomUUID()
 	if err != nil {
 		return accordareclient.AuditResult{}, true, err
 	}
+	session.request.Result = result
 	ctx, cancel := context.WithTimeout(context.Background(), 6*time.Second)
 	defer cancel()
-	audit, err := client.Submit(ctx, requestID, accordareclient.Submission{
-		Command: command,
-		Coordinator: accordareclient.InstallationEvidence{
-			ComponentID: "knowledge-session-coordinator", ExecutableDigest: coordinator.ExecutableDigest,
-			ReceiptDigest: coordinator.ReceiptDigest, Version: coordinator.Version,
-		},
-		Operation: operation, Result: result, TOPSID: options.topsID,
-	})
+	audit, err := session.client.Complete(ctx, requestID, session.request)
 	if err != nil {
 		return accordareclient.AuditResult{}, true, err
 	}
-	if audit.Disposition != "committed" && audit.Disposition != "pending" {
-		return accordareclient.AuditResult{}, true, fmt.Errorf("producer rejected exact audit evidence: %s", audit.ReasonCode)
+	if audit.IntentID != session.intentID || (audit.Disposition != "committed" && audit.Disposition != "pending") {
+		return accordareclient.AuditResult{}, true, fmt.Errorf("producer rejected exact audit completion: %s", audit.ReasonCode)
 	}
 	return audit, true, nil
 }

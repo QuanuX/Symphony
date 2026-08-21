@@ -42,7 +42,7 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 
 ## Ratified Nested Review Progress
 
-The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, provider-trust assurance slice, provider-binding lifecycle slice, and Accordare durability review record sixty-nine ratified nested feature-worthy boundaries inside seventeen registered non-root owner scopes:
+The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, provider-trust assurance slice, provider-binding lifecycle slice, and Accordare durability/supervision review record seventy-one ratified nested feature-worthy boundaries inside seventeen registered non-root owner scopes:
 
 | Owner scope | Ratified nested records | Review disposition |
 |---|---:|---|
@@ -52,7 +52,7 @@ The F1 through F3 review, feature-administration assurance slice, root-summary a
 | `libraries/stav-protocol-go` | 2 | Canonical bytes, digests, and bounded local frames are separated from exact content and identifier validation; durable checksummed ledger framing is explicitly owned by the append authority. |
 | `modules/secure-identity-access-governance` | 9 | TOPS enrollment, kernel peer trust, authorization capabilities, policy administration, provider metadata, provider trust assurance, exact provider-installation and protected binding lifecycle, safe audit production, and native supervision are registered. |
 | `modules/stav-append-authority` | 5 | TOPS enrollment, serialized append, ledger durability, authorized query, and native supervision are registered. |
-| `modules/accordare-stav-producer` | 1 | Exact installation-specific producer-grant administration is registered beneath the separately authenticated durable audit producer. |
+| `modules/accordare-stav-producer` | 3 | Exact installation-specific producer-grant administration, pre-mutation intent durability, and native supervision are registered beneath the separately authenticated durable audit producer. |
 | `libraries/knowledge-vector-engine-cpp` | 3 | Bounded process protocol, content-addressed evidence snapshots, and temporal representation conformance are registered without turning the static foundation into a runtime engine. |
 | `modules/skvi-engine` | 3 | Structural index assurance, content-addressed change proposals, and disposable structural projection are registered. |
 | `modules/sclv-engine` | 5 | Append-only ledger assurance, provider-neutral evidence normalization, evidence-bound append proposals, forward-only closure recovery, and disposable provider-neutral history are registered. |

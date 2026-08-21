@@ -12,6 +12,7 @@ import (
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/config"
+	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/intent"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/peer"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/producer"
 	accordareprotocol "github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/protocol"
@@ -145,35 +146,61 @@ func (server *Server) dispatch(ctx context.Context, request accordareprotocol.Lo
 		return rejected(request, server.config.TOPSID, "symphony.accordare.audit.unauthorized-peer")
 	}
 	switch request.Operation {
-	case accordareprotocol.OperationSubmit:
-		verified, err := accordareprotocol.VerifySubmission(*request.Submission, subject, time.Now().UTC())
+	case accordareprotocol.OperationPrepare:
+		preparedAt := time.Now().UTC().Truncate(time.Second)
+		verified, err := accordareprotocol.VerifyIntent(*request.Submission, subject, preparedAt)
 		if err != nil {
 			return rejected(request, server.config.TOPSID, "symphony.accordare.audit.invalid-evidence")
 		}
-		receipt, pending, appendErr := server.producer.Submit(ctx, verified.Candidate, verified.CandidateDigest)
+		if err := server.producer.Prepare(intent.Intent{IntentID: verified.IntentID, Peer: verified.Peer, PreparedAt: preparedAt, Schema: "symphony.accordare.stav-producer.intent.v1", Submission: verified.Submission}); err != nil {
+			return rejected(request, server.config.TOPSID, "symphony.accordare.audit.intent-persistence-failed")
+		}
+		return accordareprotocol.LocalResponse{Disposition: "prepared", IntentID: verified.IntentID, Operation: request.Operation, ReasonCode: "symphony.accordare.audit.intent-prepared", RequestID: request.RequestID, Schema: accordareprotocol.SchemaResponse, TOPSID: server.config.TOPSID}
+	case accordareprotocol.OperationComplete:
+		intentID, err := accordareprotocol.SubmissionIntentID(*request.Submission)
+		if err != nil {
+			return rejected(request, server.config.TOPSID, "symphony.accordare.audit.invalid-evidence")
+		}
+		stored, err := server.producer.Intent(intentID)
+		if err != nil || stored.Peer != subject {
+			return rejected(request, server.config.TOPSID, "symphony.accordare.audit.intent-not-found")
+		}
+		verified, intentID, err := accordareprotocol.VerifyCompletion(stored.Submission, *request.Submission, subject, stored.PreparedAt, time.Now().UTC())
+		if err != nil {
+			return rejected(request, server.config.TOPSID, "symphony.accordare.audit.intent-conflict")
+		}
+		receipt, pending, appendErr := server.producer.Complete(ctx, intentID, verified.Candidate, verified.CandidateDigest)
 		if pending {
-			return accordareprotocol.LocalResponse{CandidateDigest: verified.CandidateDigest, Disposition: "pending", Operation: request.Operation, ReasonCode: "symphony.accordare.audit.pending", RequestID: request.RequestID, Schema: accordareprotocol.SchemaResponse, TOPSID: server.config.TOPSID}
+			return accordareprotocol.LocalResponse{CandidateDigest: verified.CandidateDigest, IntentID: intentID, Disposition: "pending", Operation: request.Operation, ReasonCode: "symphony.accordare.audit.pending", RequestID: request.RequestID, Schema: accordareprotocol.SchemaResponse, TOPSID: server.config.TOPSID}
 		}
 		if appendErr != nil {
 			return rejected(request, server.config.TOPSID, "symphony.accordare.audit.persistence-failed")
 		}
-		return accordareprotocol.LocalResponse{CandidateDigest: verified.CandidateDigest, Disposition: "committed", Operation: request.Operation, ReasonCode: "symphony.accordare.audit.committed", Receipt: &receipt, RequestID: request.RequestID, Schema: accordareprotocol.SchemaResponse, TOPSID: server.config.TOPSID}
+		return accordareprotocol.LocalResponse{CandidateDigest: verified.CandidateDigest, IntentID: intentID, Disposition: "committed", Operation: request.Operation, ReasonCode: "symphony.accordare.audit.committed", Receipt: &receipt, RequestID: request.RequestID, Schema: accordareprotocol.SchemaResponse, TOPSID: server.config.TOPSID}
+	case accordareprotocol.OperationSubmit:
+		return rejected(request, server.config.TOPSID, "symphony.accordare.audit.prepare-required")
 	case accordareprotocol.OperationReconcile:
-		_, pending, _ := server.producer.Reconcile(ctx)
-		return statusResponse(request, server.config.TOPSID, pending)
+		_, appendPending, _ := server.producer.Reconcile(ctx)
+		intentPending, _ := server.producer.IntentPending()
+		return statusResponse(request, server.config.TOPSID, intentPending, appendPending)
 	case accordareprotocol.OperationStatus:
-		pending, err := server.producer.Pending()
+		appendPending, err := server.producer.Pending()
 		if err != nil {
 			return rejected(request, server.config.TOPSID, "symphony.accordare.audit.outbox-unavailable")
 		}
-		return statusResponse(request, server.config.TOPSID, pending)
+		intentPending, err := server.producer.IntentPending()
+		if err != nil {
+			return rejected(request, server.config.TOPSID, "symphony.accordare.audit.intent-store-unavailable")
+		}
+		return statusResponse(request, server.config.TOPSID, intentPending, appendPending)
 	default:
 		return rejected(request, server.config.TOPSID, "symphony.accordare.audit.operation-denied")
 	}
 }
 
-func statusResponse(request accordareprotocol.LocalRequest, topsID string, pending uint64) accordareprotocol.LocalResponse {
-	return accordareprotocol.LocalResponse{Disposition: "succeeded", Operation: request.Operation, ReasonCode: "symphony.accordare.audit.succeeded", RequestID: request.RequestID, Schema: accordareprotocol.SchemaResponse, Status: &accordareprotocol.Status{Pending: pending, Ready: true, ReconciliationNeeded: pending > 0, Schema: accordareprotocol.SchemaStatus, TOPSID: topsID}, TOPSID: topsID}
+func statusResponse(request accordareprotocol.LocalRequest, topsID string, intentPending, appendPending uint64) accordareprotocol.LocalResponse {
+	pending := intentPending + appendPending
+	return accordareprotocol.LocalResponse{Disposition: "succeeded", Operation: request.Operation, ReasonCode: "symphony.accordare.audit.succeeded", RequestID: request.RequestID, Schema: accordareprotocol.SchemaResponse, Status: &accordareprotocol.Status{Pending: pending, IntentPending: intentPending, AppendPending: appendPending, Ready: true, ReconciliationNeeded: pending > 0, Schema: accordareprotocol.SchemaStatus, TOPSID: topsID}, TOPSID: topsID}
 }
 
 func rejected(request accordareprotocol.LocalRequest, topsID, reason string) accordareprotocol.LocalResponse {

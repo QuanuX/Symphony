@@ -86,6 +86,84 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:sav.named-version.alias",
+            "qxcmd:symphony:sav.named-version.propose",
+            "qxcmd:symphony:sav.named-version.recover",
+            "qxcmd:symphony:sav.named-version.seal"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/ACCORD-AUDIT.md",
+            "modules/accordare-stav-producer/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Mutating qxctl commands prepare durable intent before coordinator invocation and complete the exact same intent after terminal evidence.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:stav.accordare.status"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/ACCORD-AUDIT.md",
+            "modules/accordare-stav-producer/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Status separates unresolved intent from append backlog without exposing private evidence.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:stav.accordare.reconcile"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/ACCORD-AUDIT.md",
+            "modules/accordare-stav-producer/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Reconciliation replays durable append candidates while unresolved intents remain bound to exact command retry.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:accordare-stav-producer.intent-durability"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:stav.accordare.supervisor-install",
+            "qxcmd:symphony:stav.accordare.supervisor-uninstall"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "modules/accordare-stav-producer/FEATURES.md",
+            "modules/accordare-stav-producer/SPEC.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Headless callers can install or remove the independent native producer receptor only through an exact verified receipt and host-permission boundary.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:accordare-stav-producer.native-supervision"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:module.inspect"
           ],
           "delivery": "direct",
@@ -3450,9 +3528,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:e8276e558011d003e992518a0ce4e1b8465ad7c3997a1878d6482d21815ee471",
+  "profile_digest": "sha256:6b666bd14c7ea7372ba74f5521edf3f30761faa237d59e5ff547b62ecba6bb18",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 89,
-  "ssfv_registry_digest": "sha256:0c445c3c4078c73cb4de2528f1dddf6e417b99a2ff45cd29c15fdfac1d36789b"
+  "registered_feature_count": 91,
+  "ssfv_registry_digest": "sha256:57d96cd04b6824f56eeecbbe35ad424e13d739fea714840c6d4b60dbbbc65c1a"
 }

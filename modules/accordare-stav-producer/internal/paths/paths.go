@@ -22,6 +22,7 @@ type Layout struct {
 	ConfigDir  string
 	ConfigFile string
 	StateDir   string
+	IntentDir  string
 	OutboxDir  string
 	RuntimeDir string
 	Socket     string
@@ -84,6 +85,7 @@ func Resolve(scope Scope, topsID string) (Layout, error) {
 	return Layout{
 		Scope: scope, TOPSID: topsID, ConfigDir: filepath.Clean(configDir),
 		ConfigFile: filepath.Join(configDir, "config.json"), StateDir: filepath.Clean(stateDir),
+		IntentDir: filepath.Join(stateDir, "intents-v1"),
 		OutboxDir: filepath.Join(stateDir, "outbox-v1"), RuntimeDir: filepath.Clean(runtimeDir),
 		Socket: filepath.Join(runtimeDir, "submit.sock"),
 	}, nil

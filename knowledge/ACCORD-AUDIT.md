@@ -15,6 +15,7 @@ SEV currently has no registered producer tuple. Its report-only assessments, nov
 The operational `modules/accordare-stav-producer/` boundary:
 
 - accepts only typed operation results and immutable evidence identities;
+- fsyncs an authenticated deterministic intent before qxctl invokes a configured coordinator mutation;
 - verifies the exact installed component, result protocol, operation, TOPS, request, correlation, actor, expected state, and resulting state;
 - maps only the closed vocabulary and never accepts caller-supplied event classes, operation identifiers, intents, reasons, producer identity, event identity, sequence, timestamp, or chain state;
 - submits only safe references and previous/new digests through mutually authenticated local STAV IPC;
@@ -23,7 +24,9 @@ The operational `modules/accordare-stav-producer/` boundary:
 
 qxctl orchestrates the operation, submits only the typed evidence envelope, validates the producer response, and administers the exact installation grant while STAV is stopped. It never receives arbitrary append authority. SAV and SEV remain read-only C++ engines. The Knowledge Session Coordinator remains the Named Version persistence owner and does not gain STAV transport merely because it produced a result.
 
-Successful producer acceptance is the durability boundary. A crash after coordinator persistence but before qxctl reaches the producer remains an explicitly documented gap for a future pre-mutation intent protocol; the implementation does not overclaim STAV-before-commit semantics.
+Durable intent acceptance is the pre-mutation boundary. qxctl prepares the exact command, coordinator installation, SSIAG decision, peer, operation, and TOPS identity before coordinator invocation. Completion must match that intent exactly. A crash before or after coordinator persistence leaves `intent_pending`; retrying the exact stable command reuses the coordinator's idempotent operation and closes the same intent. Candidate append failures remain separately visible as `append_pending`. Generic reconciliation may replay candidates but cannot guess whether an interrupted coordinator mutated.
+
+The producer implements the closed `succeeded`, `failed`, and `unavailable` vocabulary. Success requires the exact self-digested coordinator result. Failed or unavailable completion accepts no raw result or error payload and derives only unchanged digest metadata plus the registered reason. qxctl does not classify an ambiguous process interruption as failure or unavailability; it preserves the intent for exact retry until typed terminal evidence exists.
 
 ## Safe Metadata and Exclusions
 

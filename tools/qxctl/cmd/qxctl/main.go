@@ -84,7 +84,7 @@ func printUsage() {
 	fmt.Println("  stav query --tops-id UUID [--scope user|system] [bounded filters] [--json] Query authorized STAV projections")
 	fmt.Println("  stav doctor --tops-id UUID [--scope user|system] Run authenticated STAV diagnostics")
 	fmt.Println("  stav enrollment|supervisor status|plan|apply|apply-status|recover --prefix PATH --tops-id UUID [...] Administer exact receipt-v2 foundational lifecycle surfaces")
-	fmt.Println("  stav accordare status|reconcile --tops-id UUID [--scope user|system] [--json] Inspect or replay the durable Accordare audit outbox")
+	fmt.Println("  stav accordare status|reconcile|supervisor-install|supervisor-uninstall --tops-id UUID [--scope user|system] [--json] Administer durable Accordare audit state and native liveness")
 	fmt.Println("  stav accordare-grant install|remove --tops-id UUID --operation-id ID --expected-config-digest DIGEST [--json] Administer the exact Accordare producer grant")
 	fmt.Println("  knowledge engines list [--state-root PATH] [--json] List the user-default exact engine bindings")
 	fmt.Println("  knowledge engines inspect ROLE [--state-root PATH] [--json] Inspect one exact engine binding")

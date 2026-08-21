@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
+	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/intent"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/outbox"
 )
 
@@ -27,7 +28,11 @@ func TestSubmitPersistsBeforeUnavailableSTAVAndReconciles(t *testing.T) {
 		t.Fatal(err)
 	}
 	transport := &retryTransport{fail: true}
-	runtime, err := New("33333333-3333-4333-8333-333333333333", store, transport)
+	intentStore, err := intent.Open(t.TempDir() + "/intents")
+	if err != nil {
+		t.Fatal(err)
+	}
+	runtime, err := New("33333333-3333-4333-8333-333333333333", intentStore, store, transport)
 	if err != nil {
 		t.Fatal(err)
 	}

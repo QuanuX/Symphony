@@ -81,6 +81,8 @@ const (
 	backendFeatureSTAVDurability       = "ssfv:symphony:stav-append-authority.ledger-durability"
 	backendFeatureAccordareProducer    = "ssfv:symphony:accordare-stav-producer"
 	backendFeatureAccordareGrant       = "ssfv:symphony:accordare-stav-producer.grant-administration"
+	backendFeatureAccordareIntent      = "ssfv:symphony:accordare-stav-producer.intent-durability"
+	backendFeatureAccordareSupervisor  = "ssfv:symphony:accordare-stav-producer.native-supervision"
 	backendFeatureValidator            = "ssfv:symphony:symphony-validator"
 	backendFeatureRootSummary          = "ssfv:symphony:symphony-validator.root-summary-assurance"
 	backendFeatureInvariantAssurance   = "ssfv:symphony:symphony-validator.invariant-ownership-assurance"
@@ -128,12 +130,12 @@ var reviewedBackendFeatureBindings = map[string][]commandregistry.FeatureBinding
 	"knowledge.session.recover":          {{FeatureID: backendFeatureAuthorityEpochs, Interaction: "recover"}},
 	"knowledge.session.status":           {{FeatureID: backendFeatureAuthorityEpochs, Interaction: "query"}},
 	"knowledge.session.transition":       {{FeatureID: backendFeatureAuthorityEpochs, Interaction: "lifecycle"}},
-	"sav.named-version.propose":          {{FeatureID: backendFeatureNamedVersions, Interaction: "propose"}, {FeatureID: backendFeatureAccordareProducer, Interaction: "invoke"}},
-	"sav.named-version.seal":             {{FeatureID: backendFeatureNamedVersions, Interaction: "lifecycle"}, {FeatureID: backendFeatureAccordareProducer, Interaction: "invoke"}},
-	"sav.named-version.alias":            {{FeatureID: backendFeatureNamedVersions, Interaction: "configure"}, {FeatureID: backendFeatureAccordareProducer, Interaction: "invoke"}},
+	"sav.named-version.propose":          {{FeatureID: backendFeatureNamedVersions, Interaction: "propose"}, {FeatureID: backendFeatureAccordareProducer, Interaction: "invoke"}, {FeatureID: backendFeatureAccordareIntent, Interaction: "invoke"}},
+	"sav.named-version.seal":             {{FeatureID: backendFeatureNamedVersions, Interaction: "lifecycle"}, {FeatureID: backendFeatureAccordareProducer, Interaction: "invoke"}, {FeatureID: backendFeatureAccordareIntent, Interaction: "invoke"}},
+	"sav.named-version.alias":            {{FeatureID: backendFeatureNamedVersions, Interaction: "configure"}, {FeatureID: backendFeatureAccordareProducer, Interaction: "invoke"}, {FeatureID: backendFeatureAccordareIntent, Interaction: "invoke"}},
 	"sav.named-version.lookup":           {{FeatureID: backendFeatureNamedVersions, Interaction: "query"}},
 	"sav.named-version.status":           {{FeatureID: backendFeatureNamedVersions, Interaction: "query"}},
-	"sav.named-version.recover":          {{FeatureID: backendFeatureNamedVersions, Interaction: "recover"}, {FeatureID: backendFeatureAccordareProducer, Interaction: "invoke"}},
+	"sav.named-version.recover":          {{FeatureID: backendFeatureNamedVersions, Interaction: "recover"}, {FeatureID: backendFeatureAccordareProducer, Interaction: "invoke"}, {FeatureID: backendFeatureAccordareIntent, Interaction: "invoke"}},
 	"maestro.inspect":                    {{FeatureID: backendFeatureMaestroPresence, Interaction: "inspect"}},
 	"maestro.inventory":                  {{FeatureID: backendFeatureMaestroInventory, Interaction: "query"}},
 	"maestro.recover":                    {{FeatureID: backendFeatureMaestroPresence, Interaction: "recover"}},
@@ -174,8 +176,10 @@ var reviewedBackendFeatureBindings = map[string][]commandregistry.FeatureBinding
 	"ssiag.supervisor.apply-status":       {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
 	"ssiag.supervisor.recover":            {{FeatureID: backendFeatureSSIAGSupervisor, Interaction: "lifecycle"}},
 	"stav.doctor":                         {{FeatureID: backendFeatureSTAV, Interaction: "validate"}},
-	"stav.accordare.status":               {{FeatureID: backendFeatureAccordareProducer, Interaction: "query"}},
-	"stav.accordare.reconcile":            {{FeatureID: backendFeatureAccordareProducer, Interaction: "recover"}},
+	"stav.accordare.status":               {{FeatureID: backendFeatureAccordareProducer, Interaction: "query"}, {FeatureID: backendFeatureAccordareIntent, Interaction: "query"}},
+	"stav.accordare.reconcile":            {{FeatureID: backendFeatureAccordareProducer, Interaction: "recover"}, {FeatureID: backendFeatureAccordareIntent, Interaction: "recover"}},
+	"stav.accordare.supervisor-install":   {{FeatureID: backendFeatureAccordareProducer, Interaction: "apply"}, {FeatureID: backendFeatureAccordareSupervisor, Interaction: "apply"}},
+	"stav.accordare.supervisor-uninstall": {{FeatureID: backendFeatureAccordareProducer, Interaction: "apply"}, {FeatureID: backendFeatureAccordareSupervisor, Interaction: "apply"}},
 	"stav.accordare-grant.install":        {{FeatureID: backendFeatureAccordareGrant, Interaction: "apply"}},
 	"stav.accordare-grant.remove":         {{FeatureID: backendFeatureAccordareGrant, Interaction: "apply"}},
 	"stav.enrollment.status":              {{FeatureID: backendFeatureSTAVEnrollment, Interaction: "lifecycle"}},

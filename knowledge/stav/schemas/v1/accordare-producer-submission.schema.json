@@ -4,7 +4,7 @@
   "title": "symphony.accordare.stav-producer.submission.v1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["command", "coordinator", "operation", "result", "schema", "tops_id"],
+  "required": ["command", "coordinator", "operation", "outcome", "reason_code", "result", "schema", "tops_id"],
   "properties": {
     "command": {"$ref": "../../../schemas/v1/named-version-command.schema.json"},
     "coordinator": {
@@ -19,8 +19,17 @@
       }
     },
     "operation": {"enum": ["named_version_alias", "named_version_prepare", "named_version_recover", "named_version_seal"]},
-    "result": {"$ref": "../../../schemas/v1/named-version-result.schema.json"},
+    "outcome": {"oneOf": [{"type": "null"}, {"enum": ["failed", "succeeded", "unavailable"]}]},
+    "reason_code": {"oneOf": [{"type": "null"}, {"$ref": "common.schema.json#/$defs/registeredIdentifier"}]},
+    "result": {"oneOf": [{"type": "null"}, {"$ref": "../../../schemas/v1/named-version-result.schema.json"}]},
     "schema": {"const": "symphony.accordare.stav-producer.submission.v1"},
     "tops_id": {"$ref": "common.schema.json#/$defs/topsId"}
-  }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"outcome": {"const": "succeeded"}}},
+      "then": {"properties": {"reason_code": {"type": "string"}, "result": {"$ref": "../../../schemas/v1/named-version-result.schema.json"}}},
+      "else": {"properties": {"result": {"type": "null"}}}
+    }
+  ]
 }

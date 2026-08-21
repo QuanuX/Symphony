@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
+	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/intent"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/outbox"
 )
 
@@ -14,18 +15,41 @@ type Transport interface {
 
 type Producer struct {
 	topsID    string
+	intents   *intent.Store
 	outbox    *outbox.Store
 	transport Transport
 }
 
-func New(topsID string, store *outbox.Store, transport Transport) (*Producer, error) {
+func New(topsID string, intents *intent.Store, store *outbox.Store, transport Transport) (*Producer, error) {
 	if err := stavprotocol.ValidateTOPSID(topsID); err != nil {
 		return nil, err
 	}
-	if store == nil || transport == nil {
-		return nil, fmt.Errorf("producer requires an outbox and STAV transport")
+	if intents == nil || store == nil || transport == nil {
+		return nil, fmt.Errorf("producer requires an intent store, outbox, and STAV transport")
 	}
-	return &Producer{topsID: topsID, outbox: store, transport: transport}, nil
+	return &Producer{topsID: topsID, intents: intents, outbox: store, transport: transport}, nil
+}
+
+func (producer *Producer) Prepare(value intent.Intent) error {
+	if value.Submission.TOPSID != producer.topsID {
+		return fmt.Errorf("intent TOPS mismatch")
+	}
+	return producer.intents.Put(value)
+}
+
+func (producer *Producer) Intent(intentID string) (intent.Intent, error) {
+	return producer.intents.Get(intentID)
+}
+
+func (producer *Producer) Complete(ctx context.Context, intentID string, candidate stavprotocol.Candidate, digest string) (stavprotocol.Receipt, bool, error) {
+	receipt, pending, err := producer.Submit(ctx, candidate, digest)
+	if err != nil || pending {
+		return receipt, pending, err
+	}
+	if err := producer.intents.Remove(intentID); err != nil {
+		return receipt, true, fmt.Errorf("receipt committed but intent cleanup requires exact retry: %w", err)
+	}
+	return receipt, false, nil
 }
 
 func (producer *Producer) Submit(ctx context.Context, candidate stavprotocol.Candidate, digest string) (stavprotocol.Receipt, bool, error) {
@@ -67,6 +91,8 @@ func (producer *Producer) Reconcile(ctx context.Context) (uint64, uint64, error)
 }
 
 func (producer *Producer) Pending() (uint64, error) { return producer.outbox.Count() }
+
+func (producer *Producer) IntentPending() (uint64, error) { return producer.intents.Count() }
 
 func (producer *Producer) append(ctx context.Context, candidate stavprotocol.Candidate, digest string) (stavprotocol.Receipt, error) {
 	response, err := producer.transport.Do(ctx, stavprotocol.LocalRequest{

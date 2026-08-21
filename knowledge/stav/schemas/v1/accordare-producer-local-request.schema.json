@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": ["operation", "request_id", "schema", "submission", "tops_id"],
   "properties": {
-    "operation": {"enum": ["reconcile", "status", "submit"]},
+    "operation": {"enum": ["complete", "prepare", "reconcile", "status", "submit"]},
     "request_id": {"$ref": "common.schema.json#/$defs/uuid"},
     "schema": {"const": "symphony.accordare.stav-producer.local-request.v1"},
     "submission": {"oneOf": [{"type": "null"}, {"$ref": "accordare-producer-submission.schema.json"}]},
@@ -14,7 +14,7 @@
   },
   "allOf": [
     {
-      "if": {"properties": {"operation": {"const": "submit"}}},
+      "if": {"properties": {"operation": {"enum": ["complete", "prepare", "submit"]}}},
       "then": {"properties": {"submission": {"$ref": "accordare-producer-submission.schema.json"}}},
       "else": {"properties": {"submission": {"type": "null"}}}
     }

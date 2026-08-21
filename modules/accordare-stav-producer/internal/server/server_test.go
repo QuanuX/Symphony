@@ -11,6 +11,7 @@ import (
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	accordareclient "github.com/QuanuX/Symphony/modules/accordare-stav-producer/client"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/config"
+	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/intent"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/outbox"
 	"github.com/QuanuX/Symphony/modules/accordare-stav-producer/internal/producer"
 )
@@ -40,7 +41,11 @@ func TestAuthenticatedSocketStatusAndReconcile(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	runtimeProducer, err := producer.New(socketTestTOPS, store, unavailableSTAV{})
+	intentStore, err := intent.Open(filepath.Join(root, "intents"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	runtimeProducer, err := producer.New(socketTestTOPS, intentStore, store, unavailableSTAV{})
 	if err != nil {
 		t.Fatal(err)
 	}
