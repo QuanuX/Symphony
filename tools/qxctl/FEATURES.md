@@ -845,12 +845,14 @@
       ],
       "evidence": [
         "tools/qxctl/cmd/qxctl/foundation_lifecycle_test.go verifies the complete enrollment and supervisor families, rejects unratified shortcuts, and closes malformed intent before adapter invocation.",
+        "tools/qxctl/cmd/qxctl/stav_accordare.go implements exact producer status and durable reconciliation over the enrolled per-TOPS Unix socket.",
+        "tools/qxctl/cmd/qxctl/stav_grant_test.go verifies exact stopped-authority grant mutation, SSIAG authorization, configuration digest compare-and-swap, and recovery behavior.",
         "tools/qxctl/cmd/qxctl/stav_test.go verifies STAV command grammar, prohibited raw append, and validated response behavior.",
         "tools/qxctl/internal/foundationlifecycle/client_test.go verifies exact receipt-v2 selection, adapter identity, canonical digests, operation-specific result shape, audit disposition, and recovery evidence.",
         "tools/qxctl/internal/stavclient/paths_test.go verifies bounded per-TOPS state and socket path resolution."
       ],
       "feature_id": "ssfv:symphony:qxctl.stav-administration",
-      "how": "qxctl resolves protected per-TOPS paths, verifies the configured append-authority endpoint and peer, sends canonical local envelopes, selects one exact receipt-owned lifecycle adapter without version recency inference, invokes it through bounded process IPC, and validates reader classifications, projections, lifecycle transitions, audit disposition, recovery evidence, digests, and bounded results.",
+      "how": "qxctl resolves protected per-TOPS paths, verifies configured STAV and Accordare producer endpoints and peers, sends canonical local requests, performs SSIAG-authorized exact-grant compare-and-swap while STAV is stopped, selects one exact receipt-owned lifecycle adapter without version recency inference, invokes it through bounded process IPC, and validates reader classifications, projections, lifecycle transitions, audit disposition, reconciliation evidence, digests, and bounded results.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -862,6 +864,9 @@
         "tools/qxctl/cmd/qxctl/foundation_lifecycle.go",
         "tools/qxctl/cmd/qxctl/foundation_lifecycle_test.go",
         "tools/qxctl/cmd/qxctl/main.go",
+        "tools/qxctl/cmd/qxctl/stav_accordare.go",
+        "tools/qxctl/cmd/qxctl/stav_grant.go",
+        "tools/qxctl/cmd/qxctl/stav_grant_test.go",
         "tools/qxctl/cmd/qxctl/stav_test.go",
         "tools/qxctl/internal/foundationlifecycle/client.go",
         "tools/qxctl/internal/foundationlifecycle/client_test.go",
@@ -873,7 +878,7 @@
       "non_claims": [
         "Does not expose raw qxctl append, edit ledger files, own the STAV schema, or bypass producer authorization.",
         "Does not convert query access or audit availability into SSIAG permission or canonical mutation authority.",
-        "Does not implement enrollment or supervision, render native descriptors, select a newest package version, expose purge, or bypass module recovery and audit state."
+        "Does not render or own module internals, select a newest package version, expose purge, or bypass exact enrollment, module recovery, SSIAG authorization, and audit state."
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",
@@ -887,8 +892,8 @@
       ],
       "source_scope": "tools/qxctl",
       "status": "experimental",
-      "title": "STAV audit, enrollment, and supervision administration",
-      "what": "Provides bounded STAV status, verification, and query administration plus exact installed enrollment and native-supervision lifecycle-adapter administration without exposing raw append or module internals.",
+      "title": "STAV audit, Accordare producer, grant, enrollment, and supervision administration",
+      "what": "Provides bounded STAV status, verification, and query administration; Accordare producer status and durable reconciliation; SSIAG-authorized exact producer-grant administration; and exact installed enrollment and native-supervision lifecycle-adapter administration without exposing raw append or module internals.",
       "when": "Runs only on explicit STAV administrative or query commands and when other security flows need validated audit availability evidence.",
       "where": "Executes locally on the administrative TOPS node against the separately installed STAV append authority and per-installation ledger state.",
       "who": "Authorized target-host administrators, maintainers, auditors, automation, and agentic tools using qxctl.",

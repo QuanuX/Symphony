@@ -23,8 +23,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 191 {
-		t.Fatalf("registered command count = %d, want 191", len(manifest.Commands))
+	if len(manifest.Commands) != 195 {
+		t.Fatalf("registered command count = %d, want 195", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -61,6 +61,10 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 		"qxcmd:symphony:ssiag.provider.binding.recover",
 		"qxcmd:symphony:ssiag.supervisor.recover",
 		"qxcmd:symphony:stav.enrollment.plan",
+		"qxcmd:symphony:stav.accordare-grant.install",
+		"qxcmd:symphony:stav.accordare-grant.remove",
+		"qxcmd:symphony:stav.accordare.status",
+		"qxcmd:symphony:stav.accordare.reconcile",
 		"qxcmd:symphony:stav.supervisor.status",
 		"qxcmd:symphony:validate.warning.sync",
 		"qxcmd:symphony:validate.warning.accept",
@@ -167,8 +171,8 @@ func TestCommandRegistryBindsVectorCapabilitiesNotBindingSelection(t *testing.T)
 }
 
 func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
-	if len(reviewedBackendFeatureBindings) != 81 {
-		t.Fatalf("reviewed backend command count = %d, want 81", len(reviewedBackendFeatureBindings))
+	if len(reviewedBackendFeatureBindings) != 85 {
+		t.Fatalf("reviewed backend command count = %d, want 85", len(reviewedBackendFeatureBindings))
 	}
 	secondaryBindingCount := 0
 	for key, bindings := range reviewedBackendFeatureBindings {
@@ -177,8 +181,8 @@ func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
 		}
 		secondaryBindingCount += len(bindings)
 	}
-	if secondaryBindingCount != 84 {
-		t.Fatalf("reviewed backend binding count = %d, want 84", secondaryBindingCount)
+	if secondaryBindingCount != 92 {
+		t.Fatalf("reviewed backend binding count = %d, want 92", secondaryBindingCount)
 	}
 
 	root, err := newRootCommand()
@@ -209,6 +213,50 @@ func TestReviewedBackendFeatureBindingsReachExpectedRegistry(t *testing.T) {
 	}
 	if found != len(reviewedBackendFeatureBindings) {
 		t.Fatalf("registered reviewed backend command count = %d, want %d", found, len(reviewedBackendFeatureBindings))
+	}
+}
+
+func TestAccordareSTAVRegistryContracts(t *testing.T) {
+	root, err := newRootCommand()
+	if err != nil {
+		t.Fatal(err)
+	}
+	manifest, err := commandregistry.BuildExpected(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	records := make(map[string]commandregistry.CommandRecord)
+	for _, record := range manifest.Commands {
+		records[record.CommandID] = record
+	}
+
+	const protocol = "symphony.accordare.stav-producer.administration-result.v1"
+	status := records["qxcmd:symphony:stav.accordare.status"]
+	if status.Mutability != "read_only" || status.AuthorityMode != "none" ||
+		!containsFeatureBinding(status.FeatureBindings, commandregistry.FeatureBinding{FeatureID: backendFeatureAccordareProducer, Interaction: "query"}) ||
+		len(status.OutputProtocols) != 1 || status.OutputProtocols[0] != protocol ||
+		len(status.ResultValidationProtocols) != 1 || status.ResultValidationProtocols[0] != protocol {
+		t.Fatalf("Accordare status contract drifted: %#v", status)
+	}
+	reconcile := records["qxcmd:symphony:stav.accordare.reconcile"]
+	if reconcile.Mutability != "permission_backed_mutation" || reconcile.AuthorityMode != "target_host_permission" ||
+		reconcile.RecoveryCommandID == nil || *reconcile.RecoveryCommandID != reconcile.CommandID ||
+		!containsFeatureBinding(reconcile.FeatureBindings, commandregistry.FeatureBinding{FeatureID: backendFeatureAccordareProducer, Interaction: "recover"}) ||
+		len(reconcile.OutputProtocols) != 1 || reconcile.OutputProtocols[0] != protocol ||
+		len(reconcile.ResultValidationProtocols) != 1 || reconcile.ResultValidationProtocols[0] != protocol {
+		t.Fatalf("Accordare reconcile contract drifted: %#v", reconcile)
+	}
+
+	for _, operation := range []string{"install", "remove"} {
+		id := "qxcmd:symphony:stav.accordare-grant." + operation
+		record := records[id]
+		if record.Mutability != "permission_backed_mutation" || record.AuthorityMode != "ssiag" ||
+			record.RecoveryCommandID == nil || *record.RecoveryCommandID != id ||
+			!containsFeatureBinding(record.FeatureBindings, commandregistry.FeatureBinding{FeatureID: backendFeatureAccordareGrant, Interaction: "apply"}) ||
+			len(record.OutputProtocols) != 1 || record.OutputProtocols[0] != "symphony.stav.grant-result.v1" ||
+			len(record.ResultValidationProtocols) != 1 || record.ResultValidationProtocols[0] != "symphony.stav.grant-result.v1" {
+			t.Fatalf("Accordare grant %s contract drifted: %#v", operation, record)
+		}
 	}
 }
 

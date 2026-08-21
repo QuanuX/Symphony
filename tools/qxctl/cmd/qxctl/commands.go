@@ -1454,7 +1454,7 @@ func newSSIAGLeaf(subcommand string) (*cobra.Command, error) {
 }
 
 func newSTAVCommand() *cobra.Command {
-	command := structural("stav", fmt.Errorf("STAV subcommand is required: status, verify, query, doctor, enrollment, or supervisor"))
+	command := structural("stav", fmt.Errorf("STAV subcommand is required: status, verify, query, doctor, enrollment, supervisor, accordare, or accordare-grant"))
 	appendCommand := &cobra.Command{
 		Use:                "append",
 		Hidden:             true,
@@ -1472,6 +1472,8 @@ func newSTAVCommand() *cobra.Command {
 	command.AddCommand(
 		newFoundationLifecycleFamily("stav", "enrollment", featureSTAV),
 		newFoundationLifecycleFamily("stav", "supervisor", featureSTAV),
+		newSTAVAccordareCommand(),
+		newSTAVAccordareGrantCommand(),
 	)
 	return command
 }

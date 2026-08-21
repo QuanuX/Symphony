@@ -49,6 +49,8 @@ Commands:
   stav query --tops-id UUID [--scope user|system] [bounded filters] [--json] Query authorized STAV projections
   stav doctor --tops-id UUID [--scope user|system] Run authenticated STAV diagnostics
   stav enrollment|supervisor status|plan|apply|apply-status|recover --prefix PATH --tops-id UUID [...] Administer exact receipt-v2 foundational lifecycle surfaces
+  stav accordare status|reconcile --tops-id UUID [--scope user|system] [--json] Inspect or replay the durable Accordare audit outbox
+  stav accordare-grant install|remove --tops-id UUID --operation-id ID --expected-config-digest DIGEST [--json] Administer the exact Accordare producer grant
   knowledge engines list [--state-root PATH] [--json] List the user-default exact engine bindings
   knowledge engines inspect ROLE [--state-root PATH] [--json] Inspect one exact engine binding
   knowledge engines doctor [--state-root PATH] [--json] Verify every bound installation
