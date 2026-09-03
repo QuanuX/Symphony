@@ -1,5 +1,15 @@
 # Maestro Manifest
 
+## Canonical Surfaces
+
+- `modules/maestro/CMakeLists.txt`
+- `modules/maestro/FEATURES.md`
+- `modules/maestro/INSTALL.md`
+- `modules/maestro/INTENT.md`
+- `modules/maestro/MANIFEST.md`
+- `modules/maestro/SKILL.md`
+- `modules/maestro/SPEC.md`
+
 ## Identity
 
 - module: `maestro`

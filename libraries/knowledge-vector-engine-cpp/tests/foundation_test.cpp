@@ -1,6 +1,7 @@
 #include "symphony/knowledge/engine/digest.hpp"
 #include "symphony/knowledge/engine/error.hpp"
 #include "symphony/knowledge/engine/limits.hpp"
+#include "symphony/knowledge/engine/manifest_discovery.hpp"
 #include "symphony/knowledge/engine/operation.hpp"
 #include "symphony/knowledge/engine/path.hpp"
 #include "symphony/knowledge/engine/protocol.hpp"
@@ -14,6 +15,7 @@
 #include <stdexcept>
 #include <string>
 #include <unistd.h>
+#include <utility>
 
 namespace fs = std::filesystem;
 using namespace symphony::knowledge::engine;
@@ -127,6 +129,28 @@ void test_json_and_protocol() {
     }, "json.value_count_exceeded");
     require(parse_bounded_json("{\"a\":1}", Limits::max_request_bytes, 3U).at("a") == 1,
             "explicit bounded JSON value limit was not honored");
+    const auto counted_values_document = [](const std::size_t scalar_values) {
+        std::string document = "{\"values\":[";
+        document.reserve(16U + (scalar_values * 2U));
+        for (std::size_t index = 0; index < scalar_values; ++index) {
+            if (index != 0U) {
+                document.push_back(',');
+            }
+            document.push_back('0');
+        }
+        document += "]}";
+        return document;
+    };
+    const auto at_default_value_limit = counted_values_document(Limits::max_json_values - 3U);
+    require(
+        parse_bounded_json(at_default_value_limit, Limits::max_request_bytes)
+                .at("values").size() == Limits::max_json_values - 3U,
+        "default JSON value ceiling rejected its exact boundary");
+    require_error([&] {
+        static_cast<void>(parse_bounded_json(
+            counted_values_document(Limits::max_json_values - 2U),
+            Limits::max_request_bytes));
+    }, "json.value_count_exceeded");
     require_error([&] {
         static_cast<void>(parse_request(request_json(now + 1000), "symphony-test", now, 1U));
     }, "json.value_count_exceeded");
@@ -191,6 +215,22 @@ void test_json_and_protocol() {
     require_error([&] {
         static_cast<void>(serialize_response(success_response(
             request, "symphony-test", "0.1.0-dev", Json{{"float", 1.5}})));
+    }, "response.invalid");
+
+    auto byte_heavy_result = Json::object();
+    for (std::size_t index = 0; index < 65U; ++index) {
+        byte_heavy_result["field-" + std::to_string(index)] =
+            std::string(Limits::max_string_bytes, 'x');
+    }
+    const auto byte_heavy_document = Json{{"result", byte_heavy_result}}.dump();
+    require(byte_heavy_document.size() > Limits::max_response_bytes,
+            "byte-bound fixture does not exceed the response ceiling");
+    require_error([&] {
+        static_cast<void>(parse_bounded_json(byte_heavy_document, Limits::max_response_bytes));
+    }, "input.too_large");
+    require_error([&] {
+        static_cast<void>(serialize_response(success_response(
+            request, "symphony-test", "0.1.0-dev", std::move(byte_heavy_result))));
     }, "response.invalid");
 
     std::istringstream oversized(std::string(Limits::max_request_bytes + 1U, 'x'));
@@ -295,6 +335,171 @@ void test_paths_and_snapshots() {
     }, "request.deadline_expired");
 }
 
+void write_fixture_file(
+    const fs::path& root,
+    const std::string& relative_path,
+    const std::string& contents) {
+    const auto path = root / relative_path;
+    fs::create_directories(path.parent_path());
+    std::ofstream output(path, std::ios::binary);
+    require(output.good(), "could not create manifest-discovery fixture");
+    output << contents;
+}
+
+bool has_manifest_issue(const CanonicalSurfaceCatalog& catalog, const std::string& code) {
+    return std::any_of(catalog.issues.begin(), catalog.issues.end(), [&](const auto& issue) {
+        return issue.code == code;
+    });
+}
+
+void write_discovery_bootstrap(const fs::path& root, const std::string& root_manifest) {
+    write_fixture_file(root, "README.md", "fixture\n");
+    write_fixture_file(root, "INTENT.md", "fixture\n");
+    write_fixture_file(root, "go.work", "go 1.26.5\n");
+    write_fixture_file(root, "knowledge/MANIFEST.md", root_manifest);
+}
+
+void test_manifest_discovery() {
+    {
+        TemporaryDirectory temporary;
+        write_discovery_bootstrap(
+            temporary.path(),
+            "# Root\n\n## Canonical Surfaces\n\n"
+            "- `knowledge/INTENT.md`\n"
+            "- `knowledge/MANIFEST.md`\n\n"
+            "## Subordinate Manifests\n\n"
+            "- `knowledge/alpha/MANIFEST.md`\n\n"
+            "This prose is outside the contiguous declaration block.\n");
+        write_fixture_file(temporary.path(), "knowledge/INTENT.md", "fixture\n");
+        write_fixture_file(
+            temporary.path(),
+            "knowledge/alpha/MANIFEST.md",
+            "# Alpha\n\n## Canonical Surfaces\n\n"
+            "- `knowledge/alpha/MANIFEST.md`\n"
+            "- `knowledge/alpha/SPEC.md`\n\n"
+            "| Surface | Meaning |\n"
+            "|---|---|\n"
+            "| `SPEC.md` | Ordinary manifest prose |\n");
+        write_fixture_file(temporary.path(), "knowledge/alpha/SPEC.md", "fixture\n");
+
+        const auto first = discover_canonical_surfaces(temporary.path());
+        const auto second = discover_canonical_surfaces(temporary.path());
+        require(first.valid(), "valid canonical-surface manifests were rejected");
+        require(first.manifests.size() == 2U, "owner-manifest count mismatch");
+        require(first.surfaces.size() == 7U, "canonical-surface union count mismatch");
+        require(first.surfaces.front().path == "INTENT.md", "surface order is not lexical");
+        require(first.surfaces.back().path == "knowledge/alpha/SPEC.md", "surface order drift");
+        require(first.manifests.at(0).path == "knowledge/MANIFEST.md", "manifest order drift");
+        require(first.manifests.at(1).path == "knowledge/alpha/MANIFEST.md", "manifest order drift");
+        require(first.surfaces.size() == second.surfaces.size(), "discovery is not deterministic");
+        for (std::size_t index = 0; index < first.surfaces.size(); ++index) {
+            require(
+                first.surfaces.at(index).path == second.surfaces.at(index).path &&
+                    first.surfaces.at(index).owner_manifest == second.surfaces.at(index).owner_manifest,
+                "discovery order or ownership is not deterministic");
+        }
+    }
+    {
+        TemporaryDirectory temporary;
+        write_discovery_bootstrap(
+            temporary.path(),
+            "# Root\n\n## Canonical Surfaces\n\n"
+            "- `knowledge/MANIFEST.md`\n\n"
+            "## Subordinate Manifests\n\n"
+            "- `knowledge/alpha/MANIFEST.md`\n"
+            "- `knowledge/beta/MANIFEST.md`\n");
+        write_fixture_file(temporary.path(), "knowledge/shared.md", "fixture\n");
+        write_fixture_file(
+            temporary.path(),
+            "knowledge/alpha/MANIFEST.md",
+            "# Alpha\n\n## Canonical Surfaces\n\n"
+            "- `knowledge/alpha/MANIFEST.md`\n"
+            "- `knowledge/shared.md`\n");
+        write_fixture_file(
+            temporary.path(),
+            "knowledge/beta/MANIFEST.md",
+            "# Beta\n\n## Canonical Surfaces\n\n"
+            "- `knowledge/beta/MANIFEST.md`\n"
+            "- `knowledge/shared.md`\n");
+        const auto catalog = discover_canonical_surfaces(temporary.path());
+        require(
+            has_manifest_issue(catalog, "manifest.surface_owner_duplicate"),
+            "duplicate canonical-surface owners were accepted");
+    }
+    {
+        TemporaryDirectory temporary;
+        write_discovery_bootstrap(
+            temporary.path(),
+            "# Root\n\n## Canonical Surfaces\n\n"
+            "- `knowledge/MANIFEST.md`\n\n"
+            "## Subordinate Manifests\n\n"
+            "- `knowledge/alpha/MANIFEST.md`\n"
+            "- `knowledge/alpha/MANIFEST.md`\n");
+        write_fixture_file(
+            temporary.path(),
+            "knowledge/alpha/MANIFEST.md",
+            "# Alpha\n\n## Canonical Surfaces\n\n"
+            "- `knowledge/alpha/MANIFEST.md`\n\n"
+            "## Subordinate Manifests\n\n"
+            "- `knowledge/MANIFEST.md`\n");
+        const auto catalog = discover_canonical_surfaces(temporary.path());
+        require(
+            has_manifest_issue(catalog, "manifest.subordinate_duplicate"),
+            "duplicate subordinate declaration was accepted");
+        require(
+            has_manifest_issue(catalog, "manifest.traversal_duplicate"),
+            "duplicate manifest traversal was accepted");
+        require(
+            has_manifest_issue(catalog, "manifest.traversal_cycle"),
+            "manifest traversal cycle was accepted");
+    }
+    {
+        TemporaryDirectory temporary;
+        write_discovery_bootstrap(
+            temporary.path(),
+            "# Root\n\n## Canonical Surfaces\n\n"
+            "- `knowledge/MANIFEST.md`\n"
+            "- `../escape.md`\n"
+            "- `knowledge/link.md`\n\n"
+            "## Subordinate Manifests\n");
+        write_fixture_file(temporary.path(), "outside.md", "fixture\n");
+        fs::create_symlink(temporary.path() / "outside.md", temporary.path() / "knowledge/link.md");
+        const auto catalog = discover_canonical_surfaces(temporary.path());
+        require(
+            has_manifest_issue(catalog, "manifest.surface_path_unsafe"),
+            "unsafe canonical-surface declaration was accepted");
+        require(
+            has_manifest_issue(catalog, "manifest.surface_unreadable"),
+            "symlinked canonical surface was accepted");
+    }
+    {
+        TemporaryDirectory temporary;
+        write_discovery_bootstrap(
+            temporary.path(),
+            "# Root\n\n## Subordinate Manifests\n");
+        const auto catalog = discover_canonical_surfaces(temporary.path());
+        require(
+            has_manifest_issue(catalog, "manifest.canonical_section_missing"),
+            "missing canonical-surface section was accepted");
+        require(
+            has_manifest_issue(catalog, "manifest.self_undeclared"),
+            "owner manifest without a self declaration was accepted");
+    }
+    {
+        TemporaryDirectory temporary;
+        write_discovery_bootstrap(
+            temporary.path(),
+            "# Root\n\n## Canonical Surfaces\n\n"
+            "- `knowledge/MANIFEST.md`\n"
+            "- malformed-declaration\n\n"
+            "## Subordinate Manifests\n");
+        const auto catalog = discover_canonical_surfaces(temporary.path());
+        require(
+            has_manifest_issue(catalog, "manifest.declaration_syntax"),
+            "malformed declaration bullet was accepted");
+    }
+}
+
 void test_schema_documents(const fs::path& repository_root) {
     const std::map<std::string, std::string> expected = {
         {"knowledge/schemas/v1/engine-process-request.schema.json", "urn:symphony:knowledge:engine-process:request:v1"},
@@ -324,6 +529,7 @@ void test_schema_documents(const fs::path& repository_root) {
         {"knowledge/schemas/v1/lifecycle-boot-head.schema.json", "urn:symphony:knowledge:lifecycle-boot-head:v1"},
         {"knowledge/schemas/v1/temporal.schema.json", "urn:symphony:knowledge:temporal:v1"},
         {"knowledge/schemas/v2/install-receipt.schema.json", "urn:symphony:knowledge:install-receipt:v2"},
+        {"knowledge/schemas/v2/engine-binding-registry.schema.json", "urn:symphony:knowledge:engine-binding-registry:v2"},
     };
     for (const auto& [relative_path, identifier] : expected) {
         std::ifstream input(repository_root / relative_path, std::ios::binary);
@@ -381,6 +587,23 @@ void test_schema_documents(const fs::path& repository_root) {
     require(!receipt_properties.contains("default_receptor"), "receipt v2 must not own receptor selection");
     require(receipt_properties.at("files").at("items").at("$ref") == "#/$defs/file", "receipt v2 file evidence drift");
 
+    const auto binding_v1 = load_schema("knowledge/schemas/v1/engine-binding-registry.schema.json");
+    const auto& v1_roles = binding_v1.at("$defs").at("binding").at("properties").at("role").at("enum");
+    require(v1_roles.size() == 6U, "binding registry v1 role closure drift");
+    require(std::find(v1_roles.begin(), v1_roles.end(), "sav") == v1_roles.end(),
+            "binding registry v1 was silently widened for SAV");
+    require(std::find(v1_roles.begin(), v1_roles.end(), "sev") == v1_roles.end(),
+            "binding registry v1 was silently widened for SEV");
+
+    const auto binding_v2 = load_schema("knowledge/schemas/v2/engine-binding-registry.schema.json");
+    const auto& binding_v2_properties = binding_v2.at("properties");
+    require(binding_v2_properties.at("format_version").at("const") == 2,
+            "binding registry v2 format drift");
+    require(binding_v2_properties.at("bindings").at("maxItems") == 256,
+            "binding registry v2 cardinality bound drift");
+    require(binding_v2.at("$defs").at("binding").at("properties").at("role").at("$ref") == "#/$defs/token",
+            "binding registry v2 extensible role identity drift");
+
     const auto temporal = load_schema("knowledge/schemas/v1/temporal.schema.json");
     const auto& temporal_definitions = temporal.at("$defs");
     require(
@@ -405,6 +628,7 @@ int main(int argc, char** argv) {
         test_json_and_protocol();
         test_operation_registry();
         test_paths_and_snapshots();
+        test_manifest_discovery();
         test_schema_documents(fs::path(argv[1]));
         std::cout << "knowledge vector engine foundation tests passed\n";
         return 0;

@@ -1,5 +1,14 @@
 # Knowledge Session Coordinator Manifest
 
+## Canonical Surfaces
+
+- `modules/knowledge-session-coordinator/FEATURES.md`
+- `modules/knowledge-session-coordinator/INSTALL.md`
+- `modules/knowledge-session-coordinator/INTENT.md`
+- `modules/knowledge-session-coordinator/MANIFEST.md`
+- `modules/knowledge-session-coordinator/SKILL.md`
+- `modules/knowledge-session-coordinator/SPEC.md`
+
 ## Identity
 
 - module ID: `knowledge-session-coordinator`

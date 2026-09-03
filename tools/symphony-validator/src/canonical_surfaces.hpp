@@ -7,5 +7,5 @@ struct CanonicalSurfaceCheckResult {
     std::vector<std::string> messages;
 };
 
-std::vector<std::string> get_required_canonical_surfaces();
+std::vector<std::string> get_required_canonical_surfaces(const std::string& repo_root);
 CanonicalSurfaceCheckResult check_required_canonical_surfaces(const std::string& repo_root);

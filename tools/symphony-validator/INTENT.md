@@ -28,7 +28,9 @@ The validator supports direct invocation and exact receipt-validated qxctl media
 The validator provides deterministic exit codes and line-oriented evidence suitable for local preflight. CI and PR-gate wiring remain separate integration work.
 
 ## Relationship to SKV / SKVI / SCLV / SACV / SODV / SSFV
-The validator does not replace SKV / SKVI / SCLV / SACV / SODV / SSFV records. It provides evidence to support them. For SSFV it verifies required vector/engine contract surfaces, qxctl integration anchors, SKVI coverage, the exact schema allowlist, and the static digest/set/reference closure among the current SSFV registry, feature-administration profile, and expected qxctl command registry. It also performs a source-level admission census of direct `modules/` children with explicit implementation/build markers so an implemented module cannot omit its exact root `FEATURES.md`, SSFV route, or profile representation. Semantic feature validation and decisions about which interactions or names should exist remain in reviewed contracts and the independently installed engine.
+The validator does not replace SKV / SKVI / SCLV / SACV / SODV / SSFV records. It provides evidence to support them. Required canonical-surface closure comes from the same bounded, authority-free owner-manifest parser consumed by SKVI: four fixed bootstrap paths plus only the owners explicitly delegated by `knowledge/MANIFEST.md`. Every declared surface must exist and be indexed exactly once; indexed implementation truth may remain outside that required closure. The validator neither scans directories to infer owners nor promotes an existing file into canonical truth.
+
+For SSFV it verifies vector/engine contract shape, qxctl integration anchors, SKVI coverage, the exact schema allowlist, and the static digest/set/reference closure among the current SSFV registry, feature-administration profile, and expected qxctl command registry. It also performs a source-level admission census of direct `modules/` children with explicit implementation/build markers so an implemented module cannot omit its exact root `FEATURES.md`, SSFV route, or profile representation. Semantic feature validation and decisions about which interactions or names should exist remain in reviewed contracts and the independently installed engine.
 
 ## Relationship to Module Sovereignty
 The validator sits outside module logic and respects module sovereignty by only observing declarative boundaries.
@@ -62,19 +64,6 @@ The validator has no apply surface. Direct `symphony-validator apply` is a stabl
 ## Relationship to SPEC.md
 `tools/symphony-validator/SPEC.md` is the normative source for the checker. It defines discovery and historical-record boundaries, deterministic matching limits, evidence, fail-visible behavior, exit precedence, and the read-only, non-remediating posture.
 
-## Troll Doctrine
-trolls are the local residents.
-A troll is a bounded local resident of a Symphony runtime domain.
-A troll is a runtime-residency role, not a caller identity or authorization class.
+## Emerging Runtime Doctrine
 
-node-troll represents the node.
-bus-troll manages bus residency and bus compatibility.
-hotpath-runtime owns the native hot path.
-hotpath-runtime is not a troll; it is the native hot-path runtime substrate.
-
-
-## Bus-Troll Optionality
-bus-troll is first-class and individually installable.
-bus-troll is required only for deployments that use a managed bus boundary.
-Bus bypass remains valid when declared by deployment constraints.
-The existence of bus-troll does not make bus traversal mandatory.
+The retired `node-troll` and `bus-troll` proposal seeds are not required canonical runtime modules. A Troll is optional, resides at a user-selected connection point, and performs only user-programmed behavior. `hotpath-runtime` remains a separate proposal-only native substrate pending its own review. Bus bypass and multiple bus arrangements remain valid.

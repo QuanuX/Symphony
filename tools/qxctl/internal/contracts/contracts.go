@@ -8,8 +8,6 @@ import (
 )
 
 var ExpectedModules = []string{
-	"modules/node-troll",
-	"modules/bus-troll",
 	"modules/hotpath-runtime",
 }
 

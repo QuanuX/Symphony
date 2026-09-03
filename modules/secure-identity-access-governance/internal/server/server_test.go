@@ -27,12 +27,14 @@ const testTOPSID = "018f0c3a-7b2d-7e11-8c12-0242ac120002"
 
 type recordingAudit struct {
 	record stavproducer.Record
+	err    error
 }
 
 func (audit *recordingAudit) Submit(_ context.Context, record stavproducer.Record) (stavprotocol.Receipt, error) {
 	audit.record = record
 	candidateDigest, err := stavproducer.CandidateDigest(testTOPSID, record)
 	if err != nil {
+		audit.err = err
 		return stavprotocol.Receipt{}, err
 	}
 	return stavprotocol.Receipt{
@@ -84,7 +86,7 @@ func TestAuthorizationOverKernelAuthenticatedSocketIsAudited(t *testing.T) {
 	}
 	uid, gid := uint32(os.Geteuid()), uint32(os.Getegid())
 	authentication := serviceAuthentication(uid, gid)
-	authentication.Subjects = []config.SubjectConfig{{ID: "owner.primary", Kind: "owner", UID: &uid, GID: &gid}}
+	authentication.Subjects = []config.SubjectConfig{{ID: "owner.primary", Kind: "symphony.identity.owner", UID: &uid, GID: &gid}}
 	cfg := config.Config{
 		Schema: "symphony.ssiag.config.v1", Mode: "development",
 		TOPS:           config.TOPSConfig{ID: testTOPSID, Name: "Test TOPS"},
@@ -130,7 +132,7 @@ func TestAuthorizationOverKernelAuthenticatedSocketIsAudited(t *testing.T) {
 	client := &http.Client{Transport: transport, Timeout: 2 * time.Second}
 	now := time.Now().UTC().Truncate(time.Second)
 	payload, _ := json.Marshal(model.AuthorizationRequest{
-		Schema: "symphony.ssiag.authorization-request.v1", RequestID: "request-1", CorrelationID: "correlation-1",
+		Schema: "symphony.ssiag.authorization-request.v1", RequestID: "11111111-1111-4111-8111-111111111111", CorrelationID: "22222222-2222-4222-8222-222222222222",
 		Operation: "symphony.knowledge.session.begin", Resource: "symphony.knowledge.repository:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
 		Audience: "qxctl", Scope: "tops:" + testTOPSID, RequestedAt: now, RequestedExpiresAt: now.Add(10 * time.Minute),
 	})
@@ -147,7 +149,7 @@ func TestAuthorizationOverKernelAuthenticatedSocketIsAudited(t *testing.T) {
 	}
 	if response.StatusCode != http.StatusOK || decision.Effect != "allow" || decision.Capability == nil {
 		cancel()
-		t.Fatalf("authorization response was not allowed: status=%d decision=%+v", response.StatusCode, decision)
+		t.Fatalf("authorization response was not allowed: status=%d decision=%+v audit_error=%v", response.StatusCode, decision, audit.err)
 	}
 	if audit.record.Kind != stavproducer.PolicyDecision || audit.record.Outcome != "allowed" ||
 		audit.record.Actor.ID != "owner.primary" || audit.record.Configuration.State != "digests" {
@@ -174,7 +176,7 @@ func TestHostOwnerCanProposeApplyAndActivateLocalPolicy(t *testing.T) {
 	}
 	uid, gid := uint32(os.Geteuid()), uint32(os.Getegid())
 	authentication := serviceAuthentication(uid, gid)
-	authentication.Subjects = []config.SubjectConfig{{ID: "owner.primary", Kind: "owner", UID: &uid, GID: &gid}}
+	authentication.Subjects = []config.SubjectConfig{{ID: "owner.primary", Kind: "symphony.identity.owner", UID: &uid, GID: &gid}}
 	cfg := config.Config{
 		Schema: "symphony.ssiag.config.v1", Mode: "development",
 		TOPS:           config.TOPSConfig{ID: testTOPSID, Name: "Test TOPS"},
@@ -221,8 +223,8 @@ func TestHostOwnerCanProposeApplyAndActivateLocalPolicy(t *testing.T) {
 	_ = statusResponse.Body.Close()
 	now := time.Now().UTC().Truncate(time.Second)
 	proposalRequest := policyadmin.ProposalRequest{
-		Protocol: policyadmin.ProposalRequestProtocol, OperationID: "policy-operation-1",
-		RequestID: "policy-request-1", CorrelationID: "policy-correlation-1", AuthorityBasis: "host_owner",
+		Protocol: policyadmin.ProposalRequestProtocol, OperationID: "33333333-3333-4333-8333-333333333333",
+		RequestID: "44444444-4444-4444-8444-444444444444", CorrelationID: "55555555-5555-4555-8555-555555555555", AuthorityBasis: "host_owner",
 		ExpectedPolicyDigest: status.PolicyDigest, Change: "replace",
 		DesiredPolicy: &config.AuthorizationConfig{
 			DefaultEffect: "deny", MaxCapabilitySeconds: 300,
@@ -270,7 +272,7 @@ func TestHostOwnerCanProposeApplyAndActivateLocalPolicy(t *testing.T) {
 		t.Fatalf("policy mutation was not safely audited: %+v", audit.record)
 	}
 	authorizationPayload, _ := json.Marshal(model.AuthorizationRequest{
-		Schema: "symphony.ssiag.authorization-request.v1", RequestID: "authorization-request-1", CorrelationID: "authorization-correlation-1",
+		Schema: "symphony.ssiag.authorization-request.v1", RequestID: "66666666-6666-4666-8666-666666666666", CorrelationID: "77777777-7777-4777-8777-777777777777",
 		Operation: "symphony.test.read", Resource: "symphony.test:one", Audience: "qxctl", Scope: "tops:" + testTOPSID,
 		RequestedAt: now, RequestedExpiresAt: now.Add(time.Minute),
 	})
@@ -287,7 +289,7 @@ func TestHostOwnerCanProposeApplyAndActivateLocalPolicy(t *testing.T) {
 	_ = authorizationResponse.Body.Close()
 	if decision.Effect != "allow" || decision.PolicyDigest != result.PolicyDigest {
 		cancel()
-		t.Fatalf("committed policy was not activated: %+v", decision)
+		t.Fatalf("committed policy was not activated: %+v audit_error=%v", decision, audit.err)
 	}
 	cancel()
 	if err := <-done; err != nil {

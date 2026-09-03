@@ -1,5 +1,14 @@
 # SCLV Version 3 Schema Manifest
 
+## Canonical Surfaces
+
+- `knowledge/sclv/schemas/v3/MANIFEST.md`
+- `knowledge/sclv/schemas/v3/check-result.schema.json`
+- `knowledge/sclv/schemas/v3/projection.schema.json`
+- `knowledge/sclv/schemas/v3/proposal-input.schema.json`
+- `knowledge/sclv/schemas/v3/record.schema.json`
+- `knowledge/sclv/schemas/v3/recovery-input.schema.json`
+
 ## Authority
 
 These schemas are canonical protocol truth for prospective provider-neutral SCLV v3 records and the proposal-only SCLV engine. They are not generated projections.

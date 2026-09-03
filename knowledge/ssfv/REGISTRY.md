@@ -190,7 +190,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `.`
 - status: `experimental`
 - parent_feature_id: `none`
-- record_digest: `sha256:700f02746603ccebdb94711291414c5f840b5c28039dc525dc9b0837f041c0fd`
+- record_digest: `sha256:3e365891198f7fd40b28dd30dd3e9f71d69cf1200826e1265b8748f8fad26c44`
 - notes: Repository-root capability record; bootstrap coverage is explicitly partial and does not imply production readiness or complete catalog coverage.
 
 - feature_id: `ssfv:symphony:qxctl`
@@ -859,7 +859,7 @@ Do not register:
 - a directory merely because it exists;
 - a language, source file, or symbol without the full feature-worthiness gate;
 - an owner record using implicit globs or traversal;
-- proposal-only modules such as node-troll, bus-troll, or hotpath-runtime before implementation exists;
+- proposal-only modules such as hotpath-runtime before implementation exists, or retired module identities such as node-troll and bus-troll;
 - a record not covered by SKVI and an owner contract.
 
 ## Non-Authorization Statement

@@ -44,11 +44,15 @@ Discovery recovery is opt-in through `--recover`. It is attempted only for the b
 
 No login manager, shell hook, PAM module, systemd unit, launchd job, watcher, or background daemon is installed by this surface. A host administrator may explicitly call qxctl from an appropriate host lifecycle integration after separately reviewing that integration.
 
-## Why Binding Registry v1 Is Not Expanded
+## Binding Registry Version Compatibility
 
-`symphony.knowledge.engine-binding-registry.v1` intentionally closes six currently implemented roles. It remains an immutable compatibility surface for those exact coordinator and vector-engine identities. Adding arbitrary future modules to its enum or silently changing its maximum cardinality would cause older qxctl and coordinator versions to reinterpret the same protocol differently.
+`symphony.knowledge.engine-binding-registry.v1` intentionally closes its six originally defined roles. It remains an immutable compatibility surface for those exact coordinator and vector-engine identities. Adding arbitrary future modules to its enum or silently changing its maximum cardinality would cause older qxctl and coordinator versions to reinterpret the same protocol differently.
 
-The generic desired-state protocol therefore sits alongside binding registry v1 rather than replacing it in place. A future compatibility adapter will project valid v1 bindings into generic observed and desired component identities. Future components will not need a synthetic legacy role.
+`symphony.knowledge.engine-binding-registry.v2` is the separate current write protocol. It retains exact version, receipt, executable, and compare-and-swap identity; records the predecessor registry protocol as well as its digest; fixes the eight role mappings implemented by current qxctl; and permits at most 256 token-shaped role identities so a later implementation can extend the representation without changing known meanings. Representational validity is not operational compatibility: current qxctl preserves and exposes a structurally valid unknown v2 role through administrative reads, but refuses operational snapshots and every mutation until it understands all roles.
+
+qxctl dual-reads valid v1 and v2 generations. A valid six-role v1 registry remains usable without reinterpretation, but must be explicitly migrated before binding mutation. Earlier qxctl builds could emit SAV or SEV inside a v1 envelope despite the canonical schema. The reader recognizes only that bounded eight-role historical form as nonconforming migration input; it does not relabel the form as valid v1 and blocks operational use until `qxctl knowledge engines migrate --expected-registry-digest DIGEST` creates a new v2 generation. Migration preserves the exact bindings and records the predecessor protocol/digest. It does not inspect installations, choose another version, or infer newest.
+
+The generic desired-state protocol continues to sit alongside both binding-registry versions. A registry compatibility adapter may project an understood exact binding into generic observed and desired component identity, but registry role extensibility does not itself authorize a lifecycle action or invent missing component evidence.
 
 ## Generic Component Identity
 
@@ -243,7 +247,7 @@ The engine implementation remains Linux-first with macOS development support. Na
 3. Implement the C++ coordinator dependency scheduler, two-way compatibility negotiation, and deterministic report-only planner over caller-supplied evidence. **Completed.** Configured-root observation remains in step 4.
 4. Implement qxctl desired-profile administration and configured-root inventory with caller-neutral SSIAG authorization. **Completed.** qxctl also performs fresh observation and exact bound-coordinator invocation for report-only planning; no plan is persisted.
 5. Implement durable C++ boot journaling, report mode, bounded replanning recovery, and installation-change diagnosis. **Completed for report-only operation, including the explicit Linux systemd receptor.** Applied-state writes and action attempts were excluded from this v1 step and are implemented only through the separate v2 boundary in step 6.
-6. Implement separately gated `apply-compatible`, exact package lifecycle actions, and forward/inverse rollback proof. **Completed for explicit local receipt-v2 install/uninstall, protected selection/activation, six-role binding adaptation, coordinator upgrade/rollback handoff, and the report-only Linux host receptor.** Live service/process activation, receipt-v1 mutation adapters, downloads, automatic old-version reclamation, login/session hooks, and hidden host hooks remain excluded.
+6. Implement separately gated `apply-compatible`, exact package lifecycle actions, and forward/inverse rollback proof. **Completed for explicit local receipt-v2 install/uninstall, protected selection/activation, current established-role binding-registry v2 mutation after explicit v1 migration, coordinator upgrade/rollback handoff, and the report-only Linux host receptor.** Live service/process activation, receipt-v1 mutation adapters, downloads, automatic old-version reclamation, login/session hooks, and hidden host hooks remain excluded.
 7. Add Maestro docking only after its receptor and presence contracts are ratified. **Completed for authenticated durable presence only; engine invocation, supervision, and scheduling remain excluded.**
 
 Each step must preserve older supported operation surfaces and pass upgrade-order matrices in both directions.

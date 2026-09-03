@@ -15,8 +15,6 @@ import (
 )
 
 var CanonicalModules = []string{
-	"node-troll",
-	"bus-troll",
 	"hotpath-runtime",
 	"secure-identity-access-governance",
 	"ssiag-provider-macos-keychain",

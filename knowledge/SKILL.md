@@ -9,17 +9,19 @@ Guide every caller in safely inspecting, proposing, implementing, installing, an
 1. `knowledge/INTENT.md`
 2. `knowledge/MANIFEST.md`
 3. `knowledge/SPEC.md`
-4. `knowledge/INVARIANTS.md` and `knowledge/INVARIANT-OWNERSHIP.json` when a rule crosses an implementation or process boundary
-5. `knowledge/TIME.md` when a field, deadline, freshness rule, journal, or durable event involves time
-6. `knowledge/FOUNDATIONAL-LIFECYCLE.md` before SSIAG/STAV enrollment or supervision administration
-7. `knowledge/VALIDATION.md` when validator evidence, warning policy, baselines, or debug filtering is involved
-8. the affected vector's Contract Quad
-9. `tools/qxctl/` contracts for administrative grammar
-10. `knowledge/ssiag/SPEC.md` before any apply or safeguard work
-11. `knowledge/stav/SPEC.md` before any audited outcome or recovery work
-12. `knowledge/sav/SPEC.md` before composition resolution or accord evaluation
-13. `knowledge/sev/SPEC.md` before evolution, novelty, or SCSEV work
-14. `knowledge/sodv/SPEC.md` before release or publication
+4. `knowledge/SLANG.md` when platform terminology is introduced, interpreted, renamed, or retired
+5. `knowledge/NAMESPACES.md` and the delegated owner contract when an identity family, namespace, alias, or stable identity is involved
+6. `knowledge/INVARIANTS.md` and `knowledge/INVARIANT-OWNERSHIP.json` when a rule crosses an implementation or process boundary
+7. `knowledge/TIME.md` when a field, deadline, freshness rule, journal, or durable event involves time
+8. `knowledge/FOUNDATIONAL-LIFECYCLE.md` before SSIAG/STAV enrollment or supervision administration
+9. `knowledge/VALIDATION.md` when validator evidence, warning policy, baselines, or debug filtering is involved
+10. the affected vector's Contract Quad
+11. `tools/qxctl/` contracts for administrative grammar
+12. `knowledge/ssiag/SPEC.md` before any apply or safeguard work
+13. `knowledge/stav/SPEC.md` before any audited outcome or recovery work
+14. `knowledge/sav/SPEC.md` before composition resolution or accord evaluation
+15. `knowledge/sev/SPEC.md` and the applicable SEV profile before evolution, novelty, or command-surface work
+16. `knowledge/sodv/SPEC.md` before release or publication
 
 ## Safe Initial Operations
 
@@ -41,13 +43,13 @@ The implemented `0.1.0-dev` foundation supports direct coordinator `inspect`, ex
 
 Use `qxctl knowledge session transition --event login|refresh|logout --event-id ID` only when an explicit host lifecycle integration supplies a stable event identity. Safe retries reuse the same event ID. Add `--recover` only when discovery recovery from damaged local session evidence is intended; it does not recover denial, incompatible critical state, or ambiguity. Symphony does not install a login hook, watcher, or boot unit through this command.
 
-For modular installation planning, read `knowledge/LIFECYCLE.md` with this Contract Quad and the exact common lifecycle schemas. Preserve binding registry v1, receipt v1, and report-journal v1 evidence exactly. Treat profile input, desired, observed, runtime, planned, report-journal, apply-journal, and applied state as separate noncanonical evidence. A new or missing module is a plan input, not implicit permission to execute, remove, upgrade, downgrade, bind, or dock it. Use qxctl to generate protected state and observe configured receipt roots; do not hand-edit it. The coordinator consumes complete digest-bound desired/observed evidence and derives component action order only from the explicit dependency ready set. Preserve blockers, replan only after verified evidence changes, bind dock actions to exact receptor identities, and never reorder the enclosing safety phases.
+For modular installation planning, read `knowledge/LIFECYCLE.md` with this Contract Quad and the exact common lifecycle schemas. Preserve binding registry v1, receipt v1, and report-journal v1 evidence exactly; use only qxctl's explicit digest-bound migration to create a linked binding-registry v2 generation. Treat profile input, desired, observed, runtime, planned, report-journal, apply-journal, and applied state as separate noncanonical evidence. A new or missing module is a plan input, not implicit permission to execute, remove, upgrade, downgrade, bind, or dock it. Use qxctl to generate protected state and observe configured receipt roots; do not hand-edit it. The coordinator consumes complete digest-bound desired/observed evidence and derives component action order only from the explicit dependency ready set. Preserve blockers, replan only after verified evidence changes, bind dock actions to exact receptor identities, and never reorder the enclosing safety phases.
 
 For SSIAG or STAV enrollment and native supervision, use the separate `knowledge/FOUNDATIONAL-LIFECYCLE.md` envelope. Invoke only the exact installation-proven module adapter; never import module internals, parse its human output, render descriptors in qxctl, invoke `serve`, select an implicit newest version, or bypass a protected attempt. Use status before plan, apply only an exact unexpired plan, use apply-status for its attempt, and recover only a unique digest-linked transition. Audit-deferred bootstrap must be explicit and remains reconciliation-required until the closed SSIAG producer binds a STAV receipt.
 
 Use `qxctl knowledge lifecycle profile set --tops-id UUID --input FILE --expected-profile-digest absent|DIGEST` for exact profile compare-and-swap. Use `ownership status|reconcile` to inspect or refresh one configured shared root; use `ownership adopt` only after reviewing every conservative legacy claim, and `ownership release` only for one exact legacy receipt intentionally made reclaimable. Never delete or rewrite the root-local registry or its `symphony-root-ownership/1` receipt-layout compatibility fence by hand; older lifecycle clients must encounter that fence and stop on their existing unknown-package blocker. Use `observe` for disposable fixed-layout receipt evidence, `report` for a fresh disposable plan, and `boot` with a stable operation ID plus exact journal state for durable report-only progression. Use `status` for v1 inspection and `recover --discover` only for one unique v1 chain. For an `apply-compatible` profile, call `apply` only with the exact boot source digest, apply-journal compare-and-swap, applied-state compare-and-swap, stable operation ID, and explicit staged roots. Use `apply-status` or bounded `apply-recover`; never choose an action manually or edit protected state. A timestamp-only observation refresh must change document evidence without advancing stable semantic identities.
 
-The implemented `qxctl knowledge engines list|inspect|doctor|bind|unbind` surface manages only the protected user-scope `default` binding profile. Supply `absent` for the first expected registry state or the exact digest reported by `list` for later mutations. A bind selects exact content for later reconciliation; it does not install, invoke, activate, dock, authenticate, authorize, or apply.
+The implemented `qxctl knowledge engines list|inspect|doctor|bind|unbind|migrate` surface manages only the protected user-scope `default` binding profile. Supply `absent` for the first v2 registry or the exact digest reported by `list` for later mutations. Valid v1 remains readable, but migration is a separate exact compare-and-swap and never a version-selection operation. A bind selects exact content for later reconciliation; it does not install, invoke, activate, dock, authenticate, authorize, or apply.
 
 The implemented `qxctl knowledge reconcile compatibility|begin|status|checkpoint|close|recover` surface uses one exact bound coordinator. Supply a stable operation identifier for every mutation and the exact current journal digest; use discovery recovery only when ordinary status cannot validate local state. Treat two-slot recovery as evidence-based forward repair, never permission to discard an incompatible journal or unknown critical extension.
 
@@ -86,6 +88,9 @@ Use `qxctl knowledge session features begin|status|checkpoint|close|recover` for
 - Verify path ownership, symlink handling, special-file rejection, expected-state binding, and stable output.
 - Verify separate worktrees never share a writer lock or mutable journal.
 - Verify every projection identifies canonical input and engine digests.
+- Verify every active owner appears explicitly in `knowledge/MANIFEST.md`, every owner manifest declares its own bounded canonical surfaces, and every declared surface appears in SKVI exactly once. Do not infer closure from directories or implementation files.
+- Verify every new platform term routes to one exact semantic owner and does not copy that owner's runtime or domain rules into SLANG.
+- Verify every new identity family or namespace allocation has one delegated owner, collision and non-reuse treatment, compatibility evidence, and SKVI routing without flattening distinct family grammars.
 - Verify qxctl reports unimplemented reserved commands honestly.
 - Verify install and uninstall use receipts and preserve unrelated versions and user-owned files.
 - Verify lifecycle plans support both forward and inverse actions, continue unrelated ready work around localized blockers, isolate cycles, preserve stable semantic action IDs, and enforce the ratified action/replan/attempt bounds.

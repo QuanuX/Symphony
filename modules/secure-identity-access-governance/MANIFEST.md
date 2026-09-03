@@ -1,5 +1,19 @@
 # Symphony Secure Identity and Access Governance Manifest
 
+## Canonical Surfaces
+
+- `modules/secure-identity-access-governance/ARCHITECTURE.md`
+- `modules/secure-identity-access-governance/FEATURES.md`
+- `modules/secure-identity-access-governance/IMPLEMENTATION.md`
+- `modules/secure-identity-access-governance/INSTALL.md`
+- `modules/secure-identity-access-governance/INTENT.md`
+- `modules/secure-identity-access-governance/MANIFEST.md`
+- `modules/secure-identity-access-governance/README.md`
+- `modules/secure-identity-access-governance/REQUIREMENTS.md`
+- `modules/secure-identity-access-governance/SKILL.md`
+- `modules/secure-identity-access-governance/SPEC.md`
+- `modules/secure-identity-access-governance/THREAT-MODEL.md`
+
 ## Module Identity
 
 - **name**: `secure-identity-access-governance`

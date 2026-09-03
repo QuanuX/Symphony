@@ -30,7 +30,7 @@
       "distinctions": [],
       "evidence": [
         "INTENT.md defines the root purpose, modular-sovereignty boundary, installability expectations, and caller-neutral host authority.",
-        "README.md identifies the implemented foundations, proposal-only runtime seeds, active-development state, and module-based release posture.",
+        "README.md presents the implemented foundations, ratified emerging-vector architecture, explicit deferred runtime boundaries, active-development state, and module-based release posture.",
         "knowledge/SPEC.md defines the common independently installed vector-engine architecture and thermal isolation rules.",
         "go.work composes the current Go administration and service modules for monorepo development without creating a monolithic runtime dependency."
       ],
@@ -55,7 +55,7 @@
       "kind": "capability",
       "non_claims": [
         "Does not claim an overall production release, monolithic installation, or universal infrastructure dependency.",
-        "Does not claim proposal-only node-troll, bus-troll, or hotpath-runtime seeds are implemented.",
+        "Does not claim the retired node-troll or bus-troll seeds, or the proposal-only hotpath-runtime seed, are implemented.",
         "Does not establish market-data, order-flow, or broader trading-node doctrine.",
         "Does not classify caller type as a source of authority."
       ],

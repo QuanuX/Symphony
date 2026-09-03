@@ -16,7 +16,9 @@ All three executables use `symphony.knowledge.engine-process.v1`, strict bounded
 - `recover`: exact `knowledge/sclv/schemas/v3/recovery-input.schema.json` input; reconciliation only.
 - `project`: exact `format: json`.
 
-`propose` requires a clean current ledger, one unique v3 record, exact revision/tree evidence, asserted ratification evidence matching the record, existing no-follow affected paths, indexed-reference paths, nondecreasing recording time, and caller-declared proposal expiry. It returns one common immutable proposal containing deterministic Markdown but performs no append.
+`propose` requires a clean current ledger, one unique v3 record, exact revision/tree evidence, asserted ratification evidence matching the record, safe bounded affected paths, current no-follow regular SKVI-reference paths, nondecreasing recording time, and caller-declared proposal expiry. Affected paths are historical provenance and may be absent after the recorded change removes them. Only surviving `skvi_references` enter the proposal read set and must remain current-SKVI indexed. It returns one common immutable proposal containing deterministic Markdown but performs no append.
+
+`check` applies the temporal split without rewriting a legacy or v3 record. All recorded paths retain safe bounded syntax. A historical SKVI reference absent from the current-only index produces non-failing warning evidence; it does not retroactively invalidate the record bound to its historical revision and tree. A reference still claimed by current SKVI must resolve as a current no-follow regular file, or the current index contradiction is a violation. A stable-identity retirement record may cite the root namespace tombstone; ordinary removed prose requires no tombstone. These rules add no record field and preserve the existing v3 wire and Markdown shapes.
 
 `recover` returns `symphony.sclv.recovery-result.v1` with an explicit `resume`, `abandon`, `no_op`, or `propose_late_recovery` action. Every result states `journal_mutated: false` and `canonical_apply_enabled: false`; only late recovery contains a nested proposal.
 

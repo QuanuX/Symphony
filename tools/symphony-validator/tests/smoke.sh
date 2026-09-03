@@ -283,8 +283,8 @@ if ! printf '%s\n' "$OUT_REPO" | grep "caller_authority.scan_complete " | grep "
     echo "error: current repo missing expected caller_authority.scan_complete status or findings=0"
     exit 1
 fi
-if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 210 ]; then
-    echo "error: current repo should authorize exactly 210 canonical JSON artifacts"
+if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 211 ]; then
+    echo "error: current repo should authorize exactly 211 canonical JSON artifacts"
     exit 1
 fi
 if ! printf '%s\n' "$OUT_REPO" | grep "sodv.releases.scan_complete records=3 transactions=1 violations=0" >/dev/null; then
@@ -475,12 +475,13 @@ if "$VALIDATOR_BIN" check --repo ./tests/fixtures_skvi_ref_unindexed > /dev/null
 fi
 echo "skvi_ref_unindexed fixture failed as expected"
 
-# Verify SCLV skvi_reference is indexed in SKVI
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_skvi_reference_unindexed > /dev/null 2>&1; then
-    echo "error: fixtures_sclv_skvi_reference_unindexed fixture should fail"
+# Verify a later-unindexed historical SCLV reference is reported without invalidation.
+OUT_HISTORICAL_UNINDEXED=$("$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_skvi_reference_unindexed)
+if ! printf '%s\n' "$OUT_HISTORICAL_UNINDEXED" | grep "evidence warning sclv_skvi_reference.historical" >/dev/null; then
+    echo "error: fixtures_sclv_skvi_reference_unindexed missing historical warning"
     exit 1
 fi
-echo "fixtures_sclv_skvi_reference_unindexed fixture failed as expected"
+echo "fixtures_sclv_skvi_reference_unindexed preserved immutable history"
 
 # Verify a historical affected_surfaces path may later be absent without becoming a current obligation.
 TEMP_FIXTURE=$(mktemp -d)
@@ -708,12 +709,13 @@ if "$VALIDATOR_BIN" check --repo ./tests/fixtures_skvi_paths_directory > /dev/nu
 fi
 echo "fixtures_skvi_paths_directory failed as expected"
 
-# Verify SCLV reference missing skvi path
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_reference_missing_skvi > /dev/null 2>&1; then
-    echo "error: fixtures_sclv_reference_missing_skvi should fail"
+# Verify a later-missing historical SCLV reference is reported without invalidation.
+OUT_HISTORICAL_MISSING=$("$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_reference_missing_skvi)
+if ! printf '%s\n' "$OUT_HISTORICAL_MISSING" | grep "evidence warning sclv_reference.historical_path_absent" >/dev/null; then
+    echo "error: fixtures_sclv_reference_missing_skvi missing historical warning"
     exit 1
 fi
-echo "fixtures_sclv_reference_missing_skvi failed as expected"
+echo "fixtures_sclv_reference_missing_skvi preserved immutable history"
 
 # Verify SCLV reference absolute path
 if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_reference_absolute > /dev/null 2>&1; then
@@ -729,12 +731,13 @@ if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_reference_traversal > /de
 fi
 echo "fixtures_sclv_reference_traversal failed as expected"
 
-# Verify SCLV-SKVI unindexed reference
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_skvi_reference_unindexed > /dev/null 2>&1; then
-    echo "error: fixtures_sclv_skvi_reference_unindexed should fail"
+# Verify SCLV-SKVI historical non-membership remains non-failing.
+OUT_HISTORICAL_UNINDEXED=$("$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_skvi_reference_unindexed)
+if ! printf '%s\n' "$OUT_HISTORICAL_UNINDEXED" | grep "evidence warning sclv_skvi_reference.historical" >/dev/null; then
+    echo "error: fixtures_sclv_skvi_reference_unindexed missing historical warning"
     exit 1
 fi
-echo "fixtures_sclv_skvi_reference_unindexed failed as expected"
+echo "fixtures_sclv_skvi_reference_unindexed remained non-failing"
 
 # Verify validator_build duplicate source
 if "$VALIDATOR_BIN" check --repo ./tests/fixtures_validator_build_duplicate_source > /dev/null 2>&1; then

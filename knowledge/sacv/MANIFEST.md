@@ -1,5 +1,15 @@
 # Symphony API Contract Vector Manifest
 
+## Canonical Surfaces
+
+- `knowledge/sacv/INTENT.md`
+- `knowledge/sacv/MANIFEST.md`
+- `knowledge/sacv/REGISTRY.md`
+- `knowledge/sacv/SKILL.md`
+- `knowledge/sacv/SPEC.md`
+- `knowledge/sacv/profiles/mintlify-publication.md`
+- `knowledge/sacv/profiles/openapi-3.2.md`
+
 ## Canonical Target
 
 `knowledge/sacv/`

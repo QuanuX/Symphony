@@ -57,7 +57,7 @@ Receipt-v2 host installation owns only the exact immutable SSIAG executable and 
 - per-TOPS purge cannot erase unresolved lifecycle evidence;
 - display-name updates do not move files.
 
-SSIAG and the STAV append authority occupy a foundational bootstrap stratum. A native OS supervisor or explicit owner-provided equivalent anchors them in production; direct-run remains a separate development mode. Supervision owns liveness only. It does not confer policy, provider, apply, producer, or ledger authority, and node-troll does not inherit authority by supervising another component.
+SSIAG and the STAV append authority occupy a foundational bootstrap stratum. A native OS supervisor or explicit owner-provided equivalent anchors them in production; direct-run remains a separate development mode. Supervision owns liveness only. It does not confer policy, provider, apply, producer, or ledger authority, and an optional Troll does not inherit authority by supervising another component.
 
 macOS uses per-TOPS launchd jobs under the `io.github.quanux.symphony.*` namespace. Linux uses per-TOPS systemd units. The two jobs are loosely coupled: neither starts or requires the other. Each Go process owns its socket and an adjacent persistent lifecycle lock; supervisor socket activation is intentionally absent. System state/runtime children are owned by the exact pre-provisioned identity recorded in configuration, while shared parents and trust configuration remain administrator-owned.
 

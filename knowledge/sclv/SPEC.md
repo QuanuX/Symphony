@@ -121,6 +121,16 @@ The air-gapped adapter normalizes a bounded caller declaration plus its external
 
 Every normalized envelope's `evidence_digest` is the tagged SHA-256 of the compact, lexicographically key-sorted envelope before `evidence_digest` is inserted. The local-Git adapter computes `tree_digest` over the exact bytes emitted by fixed `/usr/bin/git ls-tree -r -z --full-tree <full-commit>` execution under its sanitized environment. These digest domains are deterministic evidence bindings, not signatures or permission grants.
 
+## Removal and Retirement Records
+
+`affected_surfaces` is immutable historical provenance. Each value remains a bounded safe repository-relative path, but it may name a surface that the recorded change added, changed, moved, or removed. Current file presence and current SKVI membership are not obligations of this field. A post-removal record therefore does not require a placeholder file, a synthetic tombstone, or a stale SKVI entry merely to keep the affected path resolvable.
+
+`skvi_references` has the complementary admission-time role. Each reference must resolve to a current regular file and remain indexed by the current-only SKVI when a record is proposed and admitted. A removal record therefore cites surviving routing, owner-contract, or applicable tombstone evidence rather than requiring the removed surface itself to remain indexed. When a stable first-party identity is retired, `knowledge/NAMESPACES.md` is the root-owned tombstone surface when that contract records the identity. Removing ordinary prose does not by itself create a tombstone requirement.
+
+After admission, `skvi_references` are immutable historical paths bound by the record's revision and tree evidence. A later legitimate retirement may remove a referenced surface and its current SKVI entry without invalidating the older record. Ledger checks may report that temporal condition as non-failing historical evidence. A path still claimed by the current SKVI but unavailable as a regular file remains a current-index contradiction and may fail current validation.
+
+This distinction changes no version-3 field, schema, identifier, or historical record. Existing version-3 records retain their exact bytes and meaning. Tools may observe whether an affected or SKVI-reference path happens to exist now, but they must not convert that observation into current truth about the historical change, infer whether an identity required retirement, or make immutable validity depend permanently on mutable current routing.
+
 ## Non-Authorization Statement
 
 SKVI indexes SCLV surfaces. SODV consumes SCLV change truth when governing release or documentation publication. SSCG interprets compatibility. STAV owns per-installation runtime audit truth. Git and GitHub provide evidence only.

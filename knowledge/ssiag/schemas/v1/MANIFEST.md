@@ -1,5 +1,41 @@
 # SSIAG Protocol Schemas v1
 
+## Canonical Surfaces
+
+- `knowledge/ssiag/schemas/v1/MANIFEST.md`
+- `knowledge/ssiag/schemas/v1/authorization-decision.schema.json`
+- `knowledge/ssiag/schemas/v1/authorization-policy.schema.json`
+- `knowledge/ssiag/schemas/v1/authorization-request.schema.json`
+- `knowledge/ssiag/schemas/v1/capability.schema.json`
+- `knowledge/ssiag/schemas/v1/lifecycle-grant-plan.schema.json`
+- `knowledge/ssiag/schemas/v1/macos-signing-policy.schema.json`
+- `knowledge/ssiag/schemas/v1/policy-apply-request.schema.json`
+- `knowledge/ssiag/schemas/v1/policy-attempt.schema.json`
+- `knowledge/ssiag/schemas/v1/policy-proposal-request.schema.json`
+- `knowledge/ssiag/schemas/v1/policy-proposal.schema.json`
+- `knowledge/ssiag/schemas/v1/policy-recovery-request.schema.json`
+- `knowledge/ssiag/schemas/v1/policy-result.schema.json`
+- `knowledge/ssiag/schemas/v1/policy-state.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-binding-apply-request.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-binding-attempt.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-binding-plan-request.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-binding-plan.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-binding-recovery-request.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-binding-result.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-binding-state.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-binding-status.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-control-request.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-control-response.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-executable-trust.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-handshake.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-installation-inventory.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-one-shot-channel.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-readiness-observation-request.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-readiness-observation.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-readiness-result.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-trust-result.schema.json`
+- `knowledge/ssiag/schemas/v1/provider-trust-verification-request.schema.json`
+
 These thirty-two exact Draft 2020-12 schemas are canonical SSIAG authorization, grant-planning, protected local policy-administration, and provider-protocol truth.
 
 - `authorization-request.schema.json` closes caller-declared operation, resource, audience, scope, correlation, freshness, and requested expiry.

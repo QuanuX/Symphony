@@ -1,5 +1,25 @@
 # STAV v1 Schema Collection
 
+## Canonical Surfaces
+
+- `knowledge/stav/schemas/v1/MANIFEST.md`
+- `knowledge/stav/schemas/v1/accordare-producer-config.schema.json`
+- `knowledge/stav/schemas/v1/accordare-producer-local-request.schema.json`
+- `knowledge/stav/schemas/v1/accordare-producer-local-response.schema.json`
+- `knowledge/stav/schemas/v1/accordare-producer-submission.schema.json`
+- `knowledge/stav/schemas/v1/append-authority-config.schema.json`
+- `knowledge/stav/schemas/v1/append-authority-status.schema.json`
+- `knowledge/stav/schemas/v1/candidate.schema.json`
+- `knowledge/stav/schemas/v1/common.schema.json`
+- `knowledge/stav/schemas/v1/event.schema.json`
+- `knowledge/stav/schemas/v1/local-request.schema.json`
+- `knowledge/stav/schemas/v1/local-response.schema.json`
+- `knowledge/stav/schemas/v1/producer-vocabulary.schema.json`
+- `knowledge/stav/schemas/v1/query-page.schema.json`
+- `knowledge/stav/schemas/v1/query.schema.json`
+- `knowledge/stav/schemas/v1/receipt.schema.json`
+- `knowledge/stav/schemas/v1/verification.schema.json`
+
 ## Authority
 
 This collection is canonical protocol truth owned by `knowledge/stav/`. JSON Schema Draft 2020-12 describes the ratified STAV v1 data model; Go types and generated documentation are subordinate implementations or projections.

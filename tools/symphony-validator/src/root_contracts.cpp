@@ -28,7 +28,7 @@ RootContractShapeResult check_root_contract_shapes(const std::string& repo_root)
             {
                 {"Identity", "## Identity"},
                 {"Architecture", "## Architecture"},
-                {"First_Runtime_Set", "## First Runtime Set"},
+                {"Emerging_Vector_Architecture", "## Emerging Vector Architecture"},
                 {"Root-Level_Governance_Role", "## Root-Level Governance Role"},
                 {"Doctrine", "## Doctrine"},
                 {"Python_Doctrine", "## Python Doctrine"}
@@ -43,7 +43,7 @@ RootContractShapeResult check_root_contract_shapes(const std::string& repo_root)
                 {"Non-Scope", "## Non-Scope"},
                 {"Relationship_to_Modules", "## Relationship to Modules"},
                 {"Relationships", "## Relationships"},
-                {"Relationship_to_First_Runtime_Set", "## Relationship to First Runtime Set"},
+                {"Relationship_to_Emerging_Runtime_Architecture", "## Relationship to Emerging Runtime Architecture"},
                 {"Installability_Expectations", "## Installability Expectations"},
                 {"Owner_Ratification_Boundaries", "## Owner Ratification Boundaries"}
             }

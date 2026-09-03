@@ -21,6 +21,8 @@ SODV authorizes module publication only through an immutable authorization recor
 ### Relationship to SKV
 SODV is an autonomous peer vector within the overarching SKV framework responsible for publication.
 
+The emerging SOV, SCV, SNV, SQV, SHV, and SIV contracts and their ratified subvectors remain source truth owned by those vectors. SODV records and governs only an authorized official projection of that truth. Their presence in SKVI does not imply that public documentation has been published.
+
 ### Relationship to SKVI
 SKVI indexes knowledge surfaces. SODV relies on SKVI to map what exists to be published.
 
@@ -46,4 +48,4 @@ The checked-in `tools/symphony-validator/` implementation produces deterministic
 qxctl may invoke implemented SODV inspect, check, verify, propose, recover, and project operations under `qxctl sodv ...`. It does not publish, create tags, append completion records, or own SODV semantics. No documentation publication pipeline is authorized by this contract.
 
 ### Non-authorization Statement
-This canonical surface authorizes the implemented proposal/read-only C++ SODV engine at `modules/sodv-engine/`, bounded derived release evidence, operational protocol schemas, and qxctl invocation. It authorizes no canonical apply, tag creation, external publication, public documentation, Mintlify configuration, NotebookLM automation, general publication pipeline, or release-completion claim.
+This canonical surface authorizes the implemented proposal/read-only C++ SODV engine at `modules/sodv-engine/`, bounded derived release evidence, operational protocol schemas, and qxctl invocation. It authorizes no canonical apply, tag creation, external publication, public documentation, Mintlify configuration, NotebookLM automation, general publication pipeline, release-completion claim, or automatic publication of an emerging vector merely because its canonical contract exists.

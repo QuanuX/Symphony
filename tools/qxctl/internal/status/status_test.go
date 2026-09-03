@@ -145,7 +145,7 @@ func TestReportJSON_ValidRepo(t *testing.T) {
 func TestReport_MissingModule(t *testing.T) {
 	repoPath := createValidTestRepo(t)
 	// Remove a module directory
-	os.RemoveAll(filepath.Join(repoPath, "modules", "node-troll"))
+	os.RemoveAll(filepath.Join(repoPath, "modules", qxmodules.CanonicalModules[0]))
 
 	_, err := Report(repoPath)
 	if err == nil {
@@ -159,7 +159,7 @@ func TestReport_MissingModule(t *testing.T) {
 func TestReport_MissingContract(t *testing.T) {
 	repoPath := createValidTestRepo(t)
 	// Remove a contract file
-	os.Remove(filepath.Join(repoPath, "modules", "node-troll", "INTENT.md"))
+	os.Remove(filepath.Join(repoPath, "modules", qxmodules.CanonicalModules[0], "INTENT.md"))
 
 	_, err := Report(repoPath)
 	if err == nil {
@@ -173,7 +173,7 @@ func TestReport_MissingContract(t *testing.T) {
 func TestReport_EmptyContract(t *testing.T) {
 	repoPath := createValidTestRepo(t)
 	// Empty a contract file
-	os.WriteFile(filepath.Join(repoPath, "modules", "node-troll", "INTENT.md"), []byte(""), 0644)
+	os.WriteFile(filepath.Join(repoPath, "modules", qxmodules.CanonicalModules[0], "INTENT.md"), []byte(""), 0644)
 
 	_, err := Report(repoPath)
 	if err == nil {
@@ -187,7 +187,7 @@ func TestReport_EmptyContract(t *testing.T) {
 func TestReport_ContractLacksH1(t *testing.T) {
 	repoPath := createValidTestRepo(t)
 	// Modify a contract file to lack an H1
-	os.WriteFile(filepath.Join(repoPath, "modules", "node-troll", "INTENT.md"), []byte("invalid content\nno h1 here"), 0644)
+	os.WriteFile(filepath.Join(repoPath, "modules", qxmodules.CanonicalModules[0], "INTENT.md"), []byte("invalid content\nno h1 here"), 0644)
 
 	_, err := Report(repoPath)
 	if err == nil {

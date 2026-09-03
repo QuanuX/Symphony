@@ -1,5 +1,14 @@
 # Symphony Change Log Vector Manifest
 
+## Canonical Surfaces
+
+- `knowledge/sclv/CHANGELOG.md`
+- `knowledge/sclv/INTENT.md`
+- `knowledge/sclv/MANIFEST.md`
+- `knowledge/sclv/RECOVERY.md`
+- `knowledge/sclv/SKILL.md`
+- `knowledge/sclv/SPEC.md`
+
 ## Identity
 
 SCLV is the Symphony Change Log Vector, a canonical peer vector within SKV.
@@ -25,6 +34,8 @@ SCLV has an independently installable C++ proposal engine at `modules/sclv-engin
 - Legacy version-1 records remain valid without temporal fields.
 - Existing version-2 records remain valid and immutable.
 - Provider-neutral version 3 is the prospective writable record format after the engine/validator activation increment merges. Version-1 and version-2 records remain immutable and valid.
+- `affected_surfaces` retain safe historical path provenance without imposing current file-presence or SKVI-membership obligations.
+- New `skvi_references` identify surviving current evidence and are regular-file and current-SKVI obligations at proposal/admission; later retirement is non-failing historical drift, not retroactive record invalidation.
 - A late recovery carries a permanent explanation but no permanently active error state.
 - Pending work exists only outside the canonical knowledge tree.
 

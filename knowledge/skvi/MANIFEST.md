@@ -1,5 +1,13 @@
 # Symphony Knowledge Vector Index Manifest
 
+## Canonical Surfaces
+
+- `knowledge/skvi/INDEX.md`
+- `knowledge/skvi/INTENT.md`
+- `knowledge/skvi/MANIFEST.md`
+- `knowledge/skvi/SKILL.md`
+- `knowledge/skvi/SPEC.md`
+
 ## Canonical Target
 `knowledge/skvi/MANIFEST.md`
 
@@ -46,6 +54,8 @@ SKVI does not execute application workloads or enforce runtime behavior.
 
 ## Inputs SKVI Maps
 Module contract boundaries, root governance, and other Knowledge Vector files, including SCLV, SODV, and SSFV.
+
+Required canonical-surface coverage is discovered from the fixed root bootstrap and the exact owner manifests delegated by `knowledge/MANIFEST.md`. SKVI does not scan directories to infer owners or required membership.
 
 ## Outputs SKVI Describes
 Repository-maintained paths, roles, ownership boundaries, relationships, consumers, status, and projection eligibility. Authorized machine projections are disposable, digest-bound, and rebuildable.

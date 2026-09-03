@@ -21,7 +21,7 @@ Draft threat model for the scaffold and planned provider phases. It uses assets,
 - qxctl process.
 - SSIAG service account.
 - Provider adapter.
-- node-troll or Maestro when explicitly integrated.
+- an optional Troll or Maestro when explicitly integrated.
 - Local unprivileged attacker.
 - Compromised authorized process.
 - Malicious or compromised provider.

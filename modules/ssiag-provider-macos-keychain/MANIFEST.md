@@ -1,5 +1,15 @@
 # SSIAG macOS Keychain Provider Manifest
 
+## Canonical Surfaces
+
+- `modules/ssiag-provider-macos-keychain/FEATURES.md`
+- `modules/ssiag-provider-macos-keychain/INSTALL.md`
+- `modules/ssiag-provider-macos-keychain/INTENT.md`
+- `modules/ssiag-provider-macos-keychain/MANIFEST.md`
+- `modules/ssiag-provider-macos-keychain/README.md`
+- `modules/ssiag-provider-macos-keychain/SKILL.md`
+- `modules/ssiag-provider-macos-keychain/SPEC.md`
+
 ## Module Identity
 
 - **name**: `ssiag-provider-macos-keychain`

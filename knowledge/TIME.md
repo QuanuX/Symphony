@@ -88,7 +88,7 @@ Existing schemas remain immutable at their current version. New schemas should r
 
 A versioned reader MAY accept a pre-STSC temporal encoding that its existing schema and implementation explicitly supported when that is necessary to preserve upgrade, rollback, or out-of-order installation compatibility. This is a bounded migration adapter, not a second canonical profile. The reader preserves the original evidence without silently rewriting it; every new write uses the current STSC profile. A later compare-and-swap mutation may normalize the field as part of the ordinary new generation while retaining predecessor and digest continuity.
 
-The qxctl engine-binding registry v1 follows this rule: new generations emit whole-second UTC, while its reader continues to accept previously valid UTC fractional-second values so an upgrade cannot strand protected local state.
+The qxctl engine-binding registry reader follows this rule for both supported protocol versions: new v2 generations emit whole-second UTC, while dual-read compatibility continues to accept previously valid UTC fractional-second v1 or v2 state so an upgrade cannot strand protected local evidence. Explicit v1-to-v2 migration emits a new whole-second generation and does not rewrite the predecessor.
 
 ## Cross-Vector Relationships
 

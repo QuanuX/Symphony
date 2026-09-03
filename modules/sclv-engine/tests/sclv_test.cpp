@@ -5,11 +5,15 @@
 #include "symphony/knowledge/engine/error.hpp"
 #include "symphony/knowledge/engine/protocol.hpp"
 
+#include <algorithm>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <unistd.h>
 #include <utility>
+#include <vector>
 
 namespace fs = std::filesystem;
 namespace sclv = symphony::knowledge::sclv;
@@ -31,6 +35,96 @@ void require_error(Function&& function, const std::string& code) {
         return;
     }
     throw std::runtime_error("expected Error with code " + code);
+}
+
+class TemporaryDirectory final {
+public:
+    TemporaryDirectory() {
+        std::string pattern =
+            (fs::canonical(fs::temp_directory_path()) / "symphony-sclv-retirement-XXXXXX").string();
+        pattern.push_back('\0');
+        char* result = ::mkdtemp(pattern.data());
+        if (result == nullptr) throw std::runtime_error("mkdtemp failed");
+        path_ = result;
+    }
+
+    ~TemporaryDirectory() {
+        std::error_code ignored;
+        fs::remove_all(path_, ignored);
+    }
+
+    TemporaryDirectory(const TemporaryDirectory&) = delete;
+    TemporaryDirectory& operator=(const TemporaryDirectory&) = delete;
+
+    [[nodiscard]] const fs::path& path() const { return path_; }
+
+private:
+    fs::path path_;
+};
+
+class CurrentDirectory final {
+public:
+    explicit CurrentDirectory(const fs::path& path) : previous_(fs::current_path()) {
+        fs::current_path(path);
+    }
+
+    ~CurrentDirectory() {
+        std::error_code ignored;
+        fs::current_path(previous_, ignored);
+    }
+
+    CurrentDirectory(const CurrentDirectory&) = delete;
+    CurrentDirectory& operator=(const CurrentDirectory&) = delete;
+
+private:
+    fs::path previous_;
+};
+
+void write_file(const fs::path& root, const std::string& relative, const std::string& contents) {
+    const auto path = root / relative;
+    fs::create_directories(path.parent_path());
+    std::ofstream output(path, std::ios::binary);
+    if (!output.good()) throw std::runtime_error("could not create SCLV test fixture: " + relative);
+    output << contents;
+}
+
+void create_retirement_fixture(
+    const fs::path& root,
+    const std::string& record_markdown) {
+    const std::vector<std::string> contract_paths = {
+        "knowledge/SPEC.md",
+        "knowledge/schemas/v1/provider-evidence.schema.json",
+        "knowledge/sclv/INTENT.md",
+        "knowledge/sclv/MANIFEST.md",
+        "knowledge/sclv/RECOVERY.md",
+        "knowledge/sclv/SKILL.md",
+        "knowledge/sclv/SPEC.md",
+        "knowledge/sclv/schemas/v3/record.schema.json",
+        "knowledge/sclv/schemas/v3/proposal-input.schema.json",
+        "knowledge/sclv/schemas/v3/recovery-input.schema.json",
+        "knowledge/sclv/schemas/v3/check-result.schema.json",
+        "knowledge/sclv/schemas/v3/projection.schema.json",
+        "knowledge/sclv/templates/v3/record.md",
+    };
+    for (const auto& path : contract_paths) write_file(root, path, "fixture\n");
+    write_file(root, "knowledge/sclv/CHANGELOG.md", "# SCLV retirement fixture\n\n" + record_markdown);
+    write_file(
+        root,
+        "knowledge/skvi/INDEX.md",
+        "# Current-only SKVI fixture\n\n- path: `knowledge/NAMESPACES.md`\n");
+    write_file(root, "knowledge/NAMESPACES.md", "# Stable identity tombstone fixture\n");
+}
+
+bool contains_path(const engine::Json& files, const std::string& path) {
+    return std::any_of(files.begin(), files.end(), [&](const engine::Json& file) {
+        return file.at("path") == path;
+    });
+}
+
+bool contains_evidence_code(const engine::Json& evidence, const std::string& code) {
+    return std::any_of(evidence.begin(), evidence.end(), [&](const engine::Json& item) {
+        return item.at("code") == code;
+    });
 }
 
 engine::Request request(std::string operation, engine::Json payload) {
@@ -201,6 +295,68 @@ void test_provider_and_proposal() {
     }, "proposal.evidence_mismatch");
 }
 
+void test_removal_and_retirement_semantics() {
+    const std::string removed_surface = "modules/node-troll/INTENT.md";
+    const std::string tombstone_surface = "knowledge/NAMESPACES.md";
+    require(!fs::exists(removed_surface), "retired module prose unexpectedly remains present");
+    require(fs::is_regular_file(tombstone_surface), "stable-identity tombstone surface is absent");
+
+    auto retirement_record = record();
+    retirement_record["record_id"] = "SCLV-CHG-FIXTURE-RETIREMENT";
+    retirement_record["affected_surfaces"] = engine::Json::array({removed_surface});
+    retirement_record["skvi_references"] = engine::Json::array({tombstone_surface});
+    const auto proposal = sclv::handle_request(request(
+        "propose", proposal_input(retirement_record)));
+    require(!contains_path(proposal.at("read_set"), removed_surface),
+        "historical affected surface became a current proposal read obligation");
+    require(contains_path(proposal.at("read_set"), tombstone_surface),
+        "surviving tombstone evidence is absent from the proposal read set");
+    require(contains_evidence_code(
+                proposal.at("validation"), "sclv.affected_surfaces.provenance") &&
+            contains_evidence_code(
+                proposal.at("validation"), "sclv.skvi_references.current"),
+        "proposal did not report the historical/current reference split");
+
+    auto stale_reference_record = retirement_record;
+    stale_reference_record["record_id"] = "SCLV-CHG-FIXTURE-STALE-REFERENCE";
+    stale_reference_record["skvi_references"] = engine::Json::array({removed_surface});
+    require_error([&] {
+        static_cast<void>(sclv::handle_request(request(
+            "propose", proposal_input(stale_reference_record))));
+    }, "proposal.skvi_reference");
+
+    const auto record_markdown = proposal.at("operations").at(0).at("data").at("markdown").get<std::string>();
+    TemporaryDirectory temporary;
+    create_retirement_fixture(temporary.path(), record_markdown);
+    CurrentDirectory current(temporary.path());
+    const auto valid = sclv::handle_request(request(
+        "check", engine::Json{{"expected_ledger_digest", nullptr}}));
+    require(valid.at("summary").at("state") == "valid",
+        "runtime rejected an absent historical affected surface with surviving current evidence");
+
+    fs::remove(temporary.path() / tombstone_surface);
+    const auto missing_current_evidence = sclv::handle_request(request(
+        "check", engine::Json{{"expected_ledger_digest", nullptr}}));
+    require(missing_current_evidence.at("summary").at("state") == "invalid",
+        "runtime accepted a missing current SKVI reference");
+    require(contains_evidence_code(
+                missing_current_evidence.at("evidence"), "sclv.record.skvi_unavailable"),
+        "missing current reference did not produce exact runtime evidence");
+
+    write_file(
+        temporary.path(),
+        "knowledge/skvi/INDEX.md",
+        "# Current-only SKVI fixture after retirement\n");
+    const auto retired_evidence = sclv::handle_request(request(
+        "check", engine::Json{{"expected_ledger_digest", nullptr}}));
+    require(retired_evidence.at("summary").at("state") == "valid" &&
+            retired_evidence.at("summary").at("warning") == 1,
+        "later retirement of historical SKVI evidence invalidated the immutable ledger");
+    require(contains_evidence_code(
+                retired_evidence.at("evidence"), "sclv.record.skvi_historical"),
+        "retired historical SKVI reference did not produce exact warning evidence");
+}
+
 engine::Json journal() {
     return engine::Json{
         {"format_version", 1}, {"session_id", "session-1"}, {"source_operation", "closure"},
@@ -255,6 +411,7 @@ int main(int argc, char** argv) {
         const auto previous = fs::current_path();
         test_actual_repository(fs::canonical(argv[1]));
         test_provider_and_proposal();
+        test_removal_and_retirement_semantics();
         test_recovery();
         fs::current_path(previous);
         std::cout << "SCLV engine tests passed\n";

@@ -128,6 +128,22 @@ add_executable(invariant-ownership-tests
     src/evidence.cpp
 )
 
+add_executable(canonical-surface-tests
+    tests/canonical_surfaces_test.cpp
+    src/canonical_surfaces.cpp
+    src/skvi_coverage.cpp
+    src/evidence.cpp
+)
+
+target_include_directories(canonical-surface-tests PRIVATE src)
+target_link_libraries(canonical-surface-tests PRIVATE Symphony::KnowledgeVectorEngine)
+
+set_target_properties(canonical-surface-tests PROPERTIES
+  CXX_STANDARD 26
+  CXX_STANDARD_REQUIRED ON
+  CXX_EXTENSIONS OFF
+)
+
 target_include_directories(invariant-ownership-tests PRIVATE src)
 target_link_libraries(invariant-ownership-tests PRIVATE Symphony::KnowledgeVectorEngine)
 
@@ -184,6 +200,7 @@ if(BUILD_TESTING)
   add_test(NAME feature-administration-tests COMMAND feature-administration-tests ${SYMPHONY_REPOSITORY_ROOT})
   add_test(NAME root-summary-tests COMMAND root-summary-tests ${SYMPHONY_REPOSITORY_ROOT})
   add_test(NAME invariant-ownership-tests COMMAND invariant-ownership-tests ${SYMPHONY_REPOSITORY_ROOT})
+  add_test(NAME canonical-surface-tests COMMAND canonical-surface-tests)
 endif()
 
 set(SYMPHONY_VALIDATOR_LIBEXEC_DIR "${CMAKE_INSTALL_LIBEXECDIR}/symphony/symphony-validator/0.1.0-dev")

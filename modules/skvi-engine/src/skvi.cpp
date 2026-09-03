@@ -3,6 +3,7 @@
 #include "symphony/knowledge/engine/digest.hpp"
 #include "symphony/knowledge/engine/error.hpp"
 #include "symphony/knowledge/engine/limits.hpp"
+#include "symphony/knowledge/engine/manifest_discovery.hpp"
 #include "symphony/knowledge/engine/path.hpp"
 #include "symphony/knowledge/engine/temporal.hpp"
 
@@ -23,7 +24,10 @@ namespace fs = std::filesystem;
 
 namespace {
 
-constexpr std::size_t max_entries = 512;
+constexpr std::size_t normalized_projected_entry_fields = 12;
+constexpr std::size_t projection_values_per_entry = 1U + (2U * normalized_projected_entry_fields);
+constexpr std::size_t projection_envelope_value_reserve = 1024;
+constexpr std::size_t max_entries = 1024;
 constexpr std::size_t max_evidence = 1024;
 constexpr std::size_t max_field_bytes = 64U * 1024U;
 constexpr const char* index_path = "knowledge/skvi/INDEX.md";
@@ -36,27 +40,11 @@ constexpr std::array<const char*, 10> entry_fields = {
     "relationships", "consumers", "deferred_projections", "notes",
 };
 
-const std::vector<std::string> contract_paths = {
-    "knowledge/skvi/INTENT.md",
-    "knowledge/skvi/MANIFEST.md",
-    "knowledge/skvi/SKILL.md",
-    "knowledge/skvi/SPEC.md",
-};
-
-const std::vector<std::string> required_indexed_paths = {
-    "README.md",
-    "INTENT.md",
-    "go.work",
-    "knowledge/INTENT.md",
-    "knowledge/MANIFEST.md",
-    "knowledge/SKILL.md",
-    "knowledge/SPEC.md",
-    "knowledge/skvi/INDEX.md",
-    "knowledge/skvi/INTENT.md",
-    "knowledge/skvi/MANIFEST.md",
-    "knowledge/skvi/SKILL.md",
-    "knowledge/skvi/SPEC.md",
-};
+static_assert(entry_fields.size() + 2U == normalized_projected_entry_fields);
+static_assert(
+    (max_entries * projection_values_per_entry) + projection_envelope_value_reserve <=
+    engine::Limits::max_json_values);
+static_assert(max_entries == engine::Limits::max_snapshot_files);
 
 struct Entry final {
     std::map<std::string, std::string> fields;
@@ -74,6 +62,7 @@ struct IndexState final {
     std::string contents;
     engine::FileDigest index_file;
     engine::Snapshot contract_snapshot;
+    engine::CanonicalSurfaceCatalog surface_catalog;
     std::vector<Entry> entries;
     std::map<std::string, engine::FileDigest> indexed_files;
     std::vector<Finding> findings;
@@ -336,10 +325,28 @@ IndexState analyze_index(const fs::path& root, std::int64_t deadline_unix_ms) {
         static_cast<std::uint64_t>(state.contents.size()),
         engine::tagged_sha256(state.contents),
     };
-    state.contract_snapshot = engine::snapshot_files(root, contract_paths, deadline_unix_ms);
+    state.surface_catalog = engine::discover_canonical_surfaces(root, deadline_unix_ms);
+    std::vector<std::string> manifest_paths;
+    manifest_paths.reserve(state.surface_catalog.manifests.size());
+    for (const auto& manifest : state.surface_catalog.manifests) {
+        manifest_paths.push_back(manifest.path);
+    }
+    if (manifest_paths.empty()) {
+        manifest_paths.push_back(index_path);
+    }
+    state.contract_snapshot = engine::snapshot_files(root, manifest_paths, deadline_unix_ms);
+    for (const auto& issue : state.surface_catalog.issues) {
+        add_finding(state, Finding{
+            "violation",
+            "skvi." + issue.code,
+            issue.path,
+            issue.detail,
+        });
+    }
     state.entries = parse_entries(state.contents, state);
 
     std::set<std::string> indexed_paths;
+    std::map<std::string, std::size_t> indexed_path_counts;
     for (const auto& entry : state.entries) {
         const auto path_it = entry.fields.find("path");
         const auto path = path_it == entry.fields.end() ? std::string{} : path_it->second;
@@ -374,6 +381,8 @@ IndexState analyze_index(const fs::path& root, std::int64_t deadline_unix_ms) {
         }
         add_finding(state, Finding{"pass", "skvi.path.safe", path, "safe relative path"});
 
+        ++indexed_path_counts[path];
+
         if (!indexed_paths.insert(path).second) {
             add_finding(state, Finding{"violation", "skvi.path.duplicate", path, "path appears more than once"});
             continue;
@@ -395,11 +404,24 @@ IndexState analyze_index(const fs::path& root, std::int64_t deadline_unix_ms) {
         }
     }
 
-    for (const auto& required : required_indexed_paths) {
-        if (indexed_paths.contains(required)) {
-            add_finding(state, Finding{"pass", "skvi.required.indexed", required, "required surface indexed"});
+    for (const auto& declared : state.surface_catalog.surfaces) {
+        const auto count = indexed_path_counts[declared.path];
+        if (count == 1U) {
+            add_finding(state, Finding{
+                "pass",
+                "skvi.declared_surface.indexed_once",
+                declared.path,
+                "owner=" + declared.owner_manifest,
+            });
         } else {
-            add_finding(state, Finding{"violation", "skvi.required.unindexed", required, "required surface missing from index"});
+            add_finding(state, Finding{
+                "violation",
+                count == 0U
+                    ? "skvi.declared_surface.unindexed"
+                    : "skvi.declared_surface.indexed_multiple",
+                declared.path,
+                "owner=" + declared.owner_manifest + " count=" + std::to_string(count),
+            });
         }
     }
 

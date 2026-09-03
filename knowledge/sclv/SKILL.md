@@ -31,6 +31,8 @@ An installed `symphony-sclv` engine may perform the evidence reconciliation in s
 - Reject `pending`, `unresolved`, or equivalent states in the canonical ledger.
 - Never synthesize a tag, hash, merge commit, or timestamp to satisfy a checker.
 - Never edit an existing record to make later history appear orderly.
+- Record every honestly affected path, including a path removed by the change; do not preserve or recreate the file merely to satisfy `affected_surfaces`.
+- Route a new record's `skvi_references` only to surviving current SKVI evidence. Use the applicable owner or routing contract, and use `knowledge/NAMESPACES.md` when it carries a required stable-identity tombstone. Do not invent tombstones for ordinary removed prose, rewrite an admitted record when its reference later retires, or preserve stale current routing merely for historical validation.
 - Emit a canonical version-3 record only after the exact schema/template and validator activation increment has merged.
 - Keep GitHub, GitLab, local, air-gapped, and proprietary provider evidence behind the same typed v3 semantics.
 

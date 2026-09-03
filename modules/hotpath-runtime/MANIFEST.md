@@ -1,5 +1,12 @@
 # hotpath-runtime Manifest
 
+## Canonical Surfaces
+
+- `modules/hotpath-runtime/INSTALL.md`
+- `modules/hotpath-runtime/INTENT.md`
+- `modules/hotpath-runtime/MANIFEST.md`
+- `modules/hotpath-runtime/SKILL.md`
+
 ## Module Identity
 - **Name**: hotpath-runtime
 - **Type**: Foundation module

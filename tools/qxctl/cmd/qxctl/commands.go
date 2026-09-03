@@ -294,8 +294,8 @@ func newRootCommand() (*cobra.Command, error) {
 func newKnowledgeCommand() *cobra.Command {
 	command := structural("knowledge", fmt.Errorf("knowledge subcommand is required: invariant, engines, reconcile, session, or lifecycle"))
 	command.AddCommand(newKnowledgeInvariantCommand())
-	engines := structural("engines", fmt.Errorf("knowledge engines subcommand is required: list, inspect, doctor, bind, or unbind"))
-	for _, operation := range []string{"list", "inspect", "doctor", "bind", "unbind"} {
+	engines := structural("engines", fmt.Errorf("knowledge engines subcommand is required: list, inspect, doctor, bind, unbind, or migrate"))
+	for _, operation := range []string{"list", "inspect", "doctor", "bind", "unbind", "migrate"} {
 		options := knowledgeEngineOptions{version: "0.1.0-dev"}
 		child := &cobra.Command{
 			Use: operation,
@@ -313,7 +313,7 @@ func newKnowledgeCommand() *cobra.Command {
 				return runKnowledgeEngines(operation, options)
 			},
 		}
-		if operation == "bind" || operation == "unbind" {
+		if operation == "bind" || operation == "unbind" || operation == "migrate" {
 			registeredMutation(child, "knowledge.engines."+operation, featureBindings, "configure", "target_host_permission", "")
 		} else {
 			registered(child, "knowledge.engines."+operation, featureBindings, map[string]string{
@@ -329,10 +329,14 @@ func newKnowledgeCommand() *cobra.Command {
 			child.Flags().StringVar(&options.prefix, "prefix", "", "exact knowledge engine installation prefix")
 			child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed engine version")
 		}
-		if operation == "bind" || operation == "unbind" {
+		if operation == "bind" || operation == "unbind" || operation == "migrate" {
+			description := "required prior registry state: absent or exact tagged SHA-256 digest"
+			if operation == "migrate" {
+				description = "required exact tagged SHA-256 digest of the registry generation to migrate"
+			}
 			child.Flags().StringVar(
 				&options.expectedRegistryDigest, "expected-registry-digest", "",
-				"required prior registry state: absent or exact tagged SHA-256 digest",
+				description,
 			)
 		}
 		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })

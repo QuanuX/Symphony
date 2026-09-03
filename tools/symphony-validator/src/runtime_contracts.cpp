@@ -23,8 +23,6 @@ RuntimeContractShapeResult check_runtime_contract_shapes(const std::string& repo
     fs::path root(repo_root);
 
     std::vector<std::string> modules = {
-        "node-troll",
-        "bus-troll",
         "hotpath-runtime"
     };
 

@@ -14,7 +14,7 @@
     "index": {"$ref": "#/$defs/file"},
     "contract_snapshot": {"$ref": "#/$defs/snapshot"},
     "expected_index_matches": {"oneOf": [{"type": "null"}, {"type": "boolean"}]},
-    "entries_checked": {"type": "integer", "minimum": 0, "maximum": 512},
+    "entries_checked": {"type": "integer", "minimum": 0, "maximum": 1024},
     "relationships_checked": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
     "evidence": {
       "type": "array",
@@ -54,7 +54,7 @@
       "required": ["digest", "files"],
       "properties": {
         "digest": {"$ref": "#/$defs/digest"},
-        "files": {"type": "array", "minItems": 1, "maxItems": 4096, "items": {"$ref": "#/$defs/file"}}
+        "files": {"type": "array", "minItems": 1, "maxItems": 1024, "items": {"$ref": "#/$defs/file"}}
       }
     },
     "evidence": {

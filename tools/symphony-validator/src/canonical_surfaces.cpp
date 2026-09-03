@@ -1,128 +1,67 @@
 #include "canonical_surfaces.hpp"
-#include "evidence.hpp"
-#include <filesystem>
-#include <array>
 
+#include "evidence.hpp"
+
+#include <symphony/knowledge/engine/manifest_discovery.hpp>
+
+#include <filesystem>
+#include <set>
+
+namespace engine = symphony::knowledge::engine;
 namespace fs = std::filesystem;
 
-const std::array<std::string, 37> REQUIRED_SURFACES_ARRAY = {
-    "README.md",
-    "INTENT.md",
-    "modules/node-troll/INTENT.md",
-    "modules/node-troll/MANIFEST.md",
-    "modules/node-troll/INSTALL.md",
-    "modules/node-troll/SKILL.md",
-    "modules/bus-troll/INTENT.md",
-    "modules/bus-troll/MANIFEST.md",
-    "modules/bus-troll/INSTALL.md",
-    "modules/bus-troll/SKILL.md",
-    "modules/hotpath-runtime/INTENT.md",
-    "modules/hotpath-runtime/MANIFEST.md",
-    "modules/hotpath-runtime/INSTALL.md",
-    "modules/hotpath-runtime/SKILL.md",
-    "knowledge/INTENT.md",
-    "knowledge/FOUNDATIONAL-LIFECYCLE.md",
-    "knowledge/TIME.md",
-    "knowledge/skvi/INTENT.md",
-    "knowledge/skvi/MANIFEST.md",
-    "knowledge/skvi/SKILL.md",
-    "knowledge/skvi/SPEC.md",
-    "knowledge/skvi/INDEX.md",
-    "knowledge/sclv/INTENT.md",
-    "knowledge/sclv/MANIFEST.md",
-    "knowledge/sclv/SKILL.md",
-    "knowledge/sclv/SPEC.md",
-    "knowledge/sclv/CHANGELOG.md",
-    "knowledge/sodv/INTENT.md",
-    "knowledge/sodv/MANIFEST.md",
-    "knowledge/sodv/SKILL.md",
-    "knowledge/sodv/SPEC.md",
-    "tools/symphony-validator/INTENT.md",
-    "tools/symphony-validator/MANIFEST.md",
-    "tools/symphony-validator/INSTALL.md",
-    "tools/symphony-validator/SKILL.md",
-    "tools/symphony-validator/SPEC.md",
-    "tools/symphony-validator/CMakeLists.txt"
-};
+namespace {
 
-std::vector<std::string> get_required_canonical_surfaces() {
-    return std::vector<std::string>(REQUIRED_SURFACES_ARRAY.begin(), REQUIRED_SURFACES_ARRAY.end());
+fs::path internal_repository_root(const std::string& repo_root) {
+    return fs::absolute(fs::path(repo_root)).lexically_normal();
+}
+
+}
+
+std::vector<std::string> get_required_canonical_surfaces(const std::string& repo_root) {
+    const auto catalog = engine::discover_canonical_surfaces(internal_repository_root(repo_root));
+    std::vector<std::string> surfaces;
+    surfaces.reserve(catalog.surfaces.size());
+    for (const auto& surface : catalog.surfaces) {
+        surfaces.push_back(surface.path);
+    }
+    return surfaces;
 }
 
 CanonicalSurfaceCheckResult check_required_canonical_surfaces(const std::string& repo_root) {
     CanonicalSurfaceCheckResult result;
     result.success = true;
-    fs::path root(repo_root);
+    const auto catalog = engine::discover_canonical_surfaces(internal_repository_root(repo_root));
 
-    for (const auto& surface : REQUIRED_SURFACES_ARRAY) {
-        fs::path p = root / surface;
-        if (fs::exists(p)) {
-            result.messages.push_back(format_evidence(EvidenceCategory::Pass, "canonical_surface.exists", "path=" + surface));
-        } else {
-            result.success = false;
-            result.messages.push_back(format_evidence(EvidenceCategory::Violation, "canonical_surface.missing", "path=" + surface));
+    std::set<std::string> unreadable_paths;
+    for (const auto& issue : catalog.issues) {
+        result.success = false;
+        if (issue.code == "manifest.bootstrap_unreadable" ||
+            issue.code == "manifest.surface_unreadable" ||
+            issue.code == "manifest.unreadable") {
+            unreadable_paths.insert(issue.path);
         }
+        result.messages.push_back(format_evidence(
+            EvidenceCategory::Violation,
+            "canonical_surface." + issue.code,
+            "path=" + issue.path + " " + issue.detail));
     }
 
-    const bool validation_surface_selected =
-        fs::exists(root / "knowledge/VALIDATION.md") ||
-        fs::exists(root / "knowledge/schemas/v1/validation-result.schema.json") ||
-        fs::exists(root / "tools/qxctl/internal/validation");
-    if (validation_surface_selected) {
-        const std::string surface = "knowledge/VALIDATION.md";
-        if (fs::exists(root / surface)) {
-            result.messages.push_back(format_evidence(EvidenceCategory::Pass,
-                "canonical_surface.exists", "path=" + surface));
-        } else {
-            result.success = false;
-            result.messages.push_back(format_evidence(EvidenceCategory::Violation,
-                "canonical_surface.missing", "path=" + surface));
+    for (const auto& manifest : catalog.manifests) {
+        if (!unreadable_paths.contains(manifest.path)) {
+            result.messages.push_back(format_evidence(
+                EvidenceCategory::Pass,
+                "canonical_surface.owner_manifest",
+                "path=" + manifest.path));
         }
     }
-
-    if (fs::exists(root / "go.work")) {
-        const std::array<std::string, 6> sacv_surfaces = {
-            "knowledge/sacv/INTENT.md",
-            "knowledge/sacv/MANIFEST.md",
-            "knowledge/sacv/SKILL.md",
-            "knowledge/sacv/SPEC.md",
-            "knowledge/sacv/REGISTRY.md",
-            "knowledge/sacv/profiles/openapi-3.2.md"
-        };
-        for (const auto& surface : sacv_surfaces) {
-            if (fs::exists(root / surface)) {
-                result.messages.push_back(format_evidence(EvidenceCategory::Pass,
-                    "canonical_surface.exists", "path=" + surface));
-            } else {
-                result.success = false;
-                result.messages.push_back(format_evidence(EvidenceCategory::Violation,
-                    "canonical_surface.missing", "path=" + surface));
-            }
+    for (const auto& surface : catalog.surfaces) {
+        if (!unreadable_paths.contains(surface.path)) {
+            result.messages.push_back(format_evidence(
+                EvidenceCategory::Pass,
+                "canonical_surface.exists",
+                "path=" + surface.path + " owner=" + surface.owner_manifest));
         }
     }
-
-    if (fs::exists(root / "knowledge/ssfv")) {
-        const std::array<std::string, 8> ssfv_surfaces = {
-            "knowledge/ssfv/INTENT.md",
-            "knowledge/ssfv/MANIFEST.md",
-            "knowledge/ssfv/SKILL.md",
-            "knowledge/ssfv/SPEC.md",
-            "knowledge/ssfv/COVERAGE.md",
-            "knowledge/ssfv/NAMESPACES.md",
-            "knowledge/ssfv/REGISTRY.md",
-            "knowledge/ssfv/FEATURE-FILE-FORMAT.md"
-        };
-        for (const auto& surface : ssfv_surfaces) {
-            if (fs::exists(root / surface)) {
-                result.messages.push_back(format_evidence(EvidenceCategory::Pass,
-                    "canonical_surface.exists", "path=" + surface));
-            } else {
-                result.success = false;
-                result.messages.push_back(format_evidence(EvidenceCategory::Violation,
-                    "canonical_surface.missing", "path=" + surface));
-            }
-        }
-    }
-
     return result;
 }

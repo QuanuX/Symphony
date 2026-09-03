@@ -14,7 +14,7 @@ Payload: exact empty object. The result reports the descriptor, canonical index 
 
 ## `check`
 
-Payload: exact `expected_index_digest`, which is `null` or a tagged SHA-256 digest. The operation parses `knowledge/skvi/INDEX.md`, checks required field presence, canonical status, unique safe paths, no-follow regular-file existence, required SKVI/umbrella coverage, and indexed relationship targets. Findings are evidence; an invalid index produces a completed check result with `state: invalid` rather than a canonical mutation or repair.
+Payload: exact `expected_index_digest`, which is `null` or a tagged SHA-256 digest. The operation parses `knowledge/skvi/INDEX.md`, checks required field presence, canonical status, unique safe paths, no-follow regular-file existence, manifest-declared exact-once coverage, and indexed relationship targets. The shared parser starts from the four fixed bootstrap paths and traverses only owner manifests explicitly listed by `knowledge/MANIFEST.md`; it rejects missing declarations/files, duplicate owners, and duplicate/cyclic traversal. Findings are evidence; an invalid index produces a completed check result with `state: invalid` rather than a canonical mutation or repair.
 
 The exact result is governed by `knowledge/skvi/schemas/v1/check-result.schema.json`.
 
@@ -32,7 +32,7 @@ Payload: exact `format: "json"`. A clean check is required. The result conforms 
 
 ## Bounds
 
-The common request, response, JSON, path, file, count, and deadline limits apply. SKVI additionally permits at most 512 entries, 64 KiB per normalized field, 1,024 exception-evidence items, and one proposal operation. Successful subchecks are retained as deterministic aggregate counts rather than repeated evidence objects so a healthy maximum-size projection stays within the common JSON value envelope. Projection format `json` is the only implemented format in this version.
+The common request, response, JSON, path, file, count, and deadline limits apply. SKVI additionally permits at most 1,024 entries, matching the common snapshot-path ceiling, 64 KiB per normalized field, 1,024 exception-evidence items, and one proposal operation. A normalized projected entry contributes twenty-five JSON parser values. At the ceiling, the entries therefore contribute 25,600 values; reserving 1,024 values for the process and projection envelopes leaves 6,144 values unused beneath the common 32,768-value bound. Successful subchecks are retained as deterministic aggregate counts rather than repeated evidence objects. The common 4 MiB response bound remains independent and rejects a projection whose aggregate field content is too large. Projection format `json` is the only implemented format in this version.
 
 ## Non-Authorization
 

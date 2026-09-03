@@ -1,5 +1,14 @@
 # SACV Engine Manifest
 
+## Canonical Surfaces
+
+- `modules/sacv-engine/FEATURES.md`
+- `modules/sacv-engine/INSTALL.md`
+- `modules/sacv-engine/INTENT.md`
+- `modules/sacv-engine/MANIFEST.md`
+- `modules/sacv-engine/SKILL.md`
+- `modules/sacv-engine/SPEC.md`
+
 ## Identity
 
 - module ID: `sacv-engine`

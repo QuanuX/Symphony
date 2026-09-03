@@ -18,7 +18,7 @@ To outline how humans and automated systems should safely read, interpret, and o
 Readers use SKVI to discover the location of SCLV records, SODV publication rules, SSFV feature contracts and future owner records, and module boundaries.
 
 ## How the Validator Checks SKVI
-The checked-in `tools/symphony-validator/` implementation may read SKVI to check entry shape, required-surface coverage, relative-path safety, path existence, uniqueness, and SCLV cross-references. Treat its output as deterministic evidence, not permission to rewrite SKVI or infer architectural intent.
+The checked-in `tools/symphony-validator/` implementation may read SKVI to check entry shape, manifest-declared exact-once surface coverage, relative-path safety, path existence, uniqueness, and SCLV cross-references. Required coverage comes only from the fixed bootstrap and the owner manifests explicitly delegated by `knowledge/MANIFEST.md`; directory presence and implementation files do not create membership. Treat validator output as deterministic evidence, not permission to rewrite SKVI or infer architectural intent.
 
 ## How Agentic Tools May Consume SKVI
 Agentic tools may consume SKVI to orient themselves, but SKVI does not make architectural decisions.
@@ -38,6 +38,7 @@ Mintlify is not canonical authority.
 ## Safe-Use Rules
 - SKVI indexes source truth; it does not create source truth.
 - Use only the installed SKVI engine operations authorized by `knowledge/skvi/SPEC.md`.
+- Require each active owner manifest to declare itself and its exact surfaces under `## Canonical Surfaces`; require `knowledge/MANIFEST.md` to list active owners under `## Subordinate Manifests`.
 - Never treat engine output as ratification or write it directly into canonical files through an unratified path.
 - Do not treat an isolated historical SCLV or SODV statement as current when a later canonical record corrects, supersedes, or completes it.
 

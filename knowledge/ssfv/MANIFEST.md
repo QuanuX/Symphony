@@ -1,5 +1,16 @@
 # Symphony Semantic Feature Vector Manifest
 
+## Canonical Surfaces
+
+- `knowledge/ssfv/COVERAGE.md`
+- `knowledge/ssfv/FEATURE-FILE-FORMAT.md`
+- `knowledge/ssfv/INTENT.md`
+- `knowledge/ssfv/MANIFEST.md`
+- `knowledge/ssfv/NAMESPACES.md`
+- `knowledge/ssfv/REGISTRY.md`
+- `knowledge/ssfv/SKILL.md`
+- `knowledge/ssfv/SPEC.md`
+
 ## Canonical Target
 
 `knowledge/ssfv/`
@@ -82,7 +93,7 @@ The Go qxctl client validates the exact inactive-undocked receipt and invokes th
 
 ## Non-Authorization Statement
 
-This manifest authorizes the canonical SSFV contract, bounded engine/client implementation, exact ninety-one-record partial catalog, explicit owner-scope inventory, 179 reviewed feature-administration expectations under `enforce_new_records` (169 required, nine prohibited, and one not applicable), ratified nested-review progress, the 197-leaf stable qxctl command registry, the thirteen-record incremental invariant registry, and protected noncanonical session-maintenance evidence. Expected routes remain subject to exact qxctl binding and engine-descriptor evidence. It does not authorize an unreviewed application `FEATURES.md`, an unratified feature record, repository-wide or installed-host completeness, complete legacy-invariant coverage, canonical apply, repository mutation by SSFV tooling, graph-database persistence, Maestro state mutation by SSFV, public documentation, or marketing claims.
+This manifest authorizes the canonical SSFV contract, bounded engine/client implementation, exact ninety-one-record partial catalog, explicit owner-scope inventory, 179 reviewed feature-administration expectations under `enforce_new_records` (169 required, nine prohibited, and one not applicable), ratified nested-review progress, the 198-leaf stable qxctl command registry, the thirteen-record incremental invariant registry, and protected noncanonical session-maintenance evidence. Expected routes remain subject to exact qxctl binding and engine-descriptor evidence. It does not authorize an unreviewed application `FEATURES.md`, an unratified feature record, repository-wide or installed-host completeness, complete legacy-invariant coverage, canonical apply, repository mutation by SSFV tooling, graph-database persistence, Maestro state mutation by SSFV, public documentation, or marketing claims.
 
 ## Status
 

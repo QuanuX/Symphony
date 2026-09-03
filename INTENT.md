@@ -28,8 +28,11 @@ Modules retain sovereignty over their own physical bounds, capability declaratio
 - **SSIAG**: implements secure identity and access governance from `knowledge/ssiag/`.
 - **STAV**: defines per-TOPS audit protocol truth in `knowledge/stav/`.
 
-## Relationship to First Runtime Set
-The first runtime set (`node-troll`, `bus-troll`, `hotpath-runtime`) represents the most fundamental physical constraints of the system. Root governance ensures these modules remain strictly bounded and individually installable.
+## Relationship to Emerging Runtime Architecture
+
+`knowledge/ARCHITECTURE.md` records the Architect-ratified Node, Habitat, Nest, cluster, thermal, provider, operations, quantitative, hardware, and intelligence boundaries for the next delivery phases.
+
+The earlier proposal-only `node-troll` and `bus-troll` module seeds are retired. A Troll remains valid nomenclature for an optional user-programmed resident at a connection point, but Symphony assigns no mandatory Node, bus, supervision, compatibility, or messaging responsibility to it. `hotpath-runtime` remains a separate proposal-only surface pending its own architectural review.
 
 ## Installability Expectations
 Every module is expected to be individually installable without assuming a monolithic platform deployment.

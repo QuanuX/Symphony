@@ -143,6 +143,19 @@ engine::Json file_json(const engine::FileDigest& file) {
     return engine::Json{{"path", file.path}, {"size", file.size}, {"digest", file.digest}};
 }
 
+engine::FileDigest read_current_reference(
+    const fs::path& root,
+    const std::string& path,
+    const std::int64_t deadline_unix_ms) {
+    const auto contents = engine::read_regular_file_no_follow(
+        root, path, engine::Limits::max_snapshot_file_bytes, deadline_unix_ms);
+    return engine::FileDigest{
+        path,
+        static_cast<std::uint64_t>(contents.size()),
+        engine::tagged_sha256(contents),
+    };
+}
+
 engine::Json snapshot_json(const engine::Snapshot& snapshot) {
     auto files = engine::Json::array();
     for (const auto& file : snapshot.files) files.push_back(file_json(file));
@@ -398,6 +411,9 @@ LedgerState analyze_ledger(const fs::path& root, std::int64_t deadline_unix_ms) 
     std::set<std::string> ids;
     std::set<std::string> revisions;
     std::set<std::string> change_requests;
+    std::map<std::string, std::string> current_reference_failures;
+    std::size_t historical_reference_occurrences = 0U;
+    std::set<std::string> historical_reference_paths;
     std::string latest_recorded;
     for (auto& record : state.records) {
         const auto id = record_id(record);
@@ -501,11 +517,42 @@ LedgerState analyze_ledger(const fs::path& root, std::int64_t deadline_unix_ms) 
             if (std::string_view(field) == "skvi_references" && safe) {
                 for (const auto& path : found->second) {
                     if (!index.contains(path)) {
-                        add_finding(state, {"violation", "sclv.record.skvi_unindexed", id, "SKVI reference is not indexed: " + path});
+                        ++historical_reference_occurrences;
+                        historical_reference_paths.insert(path);
+                        continue;
+                    }
+                    auto [observation, inserted] = current_reference_failures.try_emplace(path);
+                    if (inserted) {
+                        try {
+                            static_cast<void>(read_current_reference(root, path, deadline_unix_ms));
+                        } catch (const engine::Error& error) {
+                            if (error.exit_status() == 3) throw;
+                            observation->second = error.code();
+                        }
+                    }
+                    if (observation->second.empty()) {
+                        add_finding(state, {
+                            "pass", "sclv.record.skvi_current", id,
+                            "SKVI reference is indexed and resolves to a current regular file: " + path,
+                        });
+                    } else {
+                        add_finding(state, {
+                            "violation", "sclv.record.skvi_unavailable", id,
+                            "indexed SKVI reference is not a current readable regular file: " + path +
+                                " (" + observation->second + ")",
+                        });
                     }
                 }
             }
         }
+    }
+    if (historical_reference_occurrences != 0U) {
+        add_finding(state, {
+            "warning", "sclv.record.skvi_historical", "ledger",
+            "historical SKVI references no longer present in the current-only index: occurrences=" +
+                std::to_string(historical_reference_occurrences) +
+                " unique_paths=" + std::to_string(historical_reference_paths.size()),
+        });
     }
     return state;
 }
@@ -741,17 +788,22 @@ engine::Json propose(const engine::Json& payload, std::int64_t deadline_unix_ms)
     std::map<std::string, engine::FileDigest> reads;
     reads.emplace(state.ledger.path, state.ledger);
     for (const auto& file : state.contracts.files) reads.emplace(file.path, file);
-    for (const auto* list : {"affected_surfaces", "skvi_references"}) {
-        for (const auto& item : record.at(list)) {
-            const auto path = item.get<std::string>();
-            const auto contents = engine::read_regular_file_no_follow(
-                root, path, engine::Limits::max_snapshot_file_bytes, deadline_unix_ms);
-            reads.emplace(path, engine::FileDigest{
-                path, static_cast<std::uint64_t>(contents.size()), engine::tagged_sha256(contents),
-            });
-            if (std::string_view(list) == "skvi_references" && !index.contains(path)) {
-                throw engine::Error("proposal.skvi_reference", "skvi_references contains an unindexed path", 4);
-            }
+    for (const auto& item : record.at("skvi_references")) {
+        const auto path = item.get<std::string>();
+        if (!index.contains(path)) {
+            throw engine::Error(
+                "proposal.skvi_reference",
+                "skvi_references must name current SKVI-indexed evidence: " + path,
+                4);
+        }
+        try {
+            reads.emplace(path, read_current_reference(root, path, deadline_unix_ms));
+        } catch (const engine::Error& error) {
+            if (error.exit_status() == 3) throw;
+            throw engine::Error(
+                "proposal.skvi_reference",
+                "skvi_references must resolve to current readable regular files: " + path,
+                4);
         }
     }
     auto read_set = engine::Json::array();
@@ -784,6 +836,8 @@ engine::Json propose(const engine::Json& payload, std::int64_t deadline_unix_ms)
         {"validation", engine::Json::array({
             engine::Json{{"code", "sclv.ledger.valid"}, {"outcome", "pass"}, {"detail", "current ledger passed bounded validation"}},
             engine::Json{{"code", "sclv.record.v3_valid"}, {"outcome", "pass"}, {"detail", "caller-declared v3 record passed exact validation"}},
+            engine::Json{{"code", "sclv.affected_surfaces.provenance"}, {"outcome", "pass"}, {"detail", "affected surfaces were retained as bounded historical paths without current-presence requirements"}},
+            engine::Json{{"code", "sclv.skvi_references.current"}, {"outcome", "pass"}, {"detail", "SKVI references resolve to current indexed evidence"}},
             engine::Json{{"code", "sclv.provider_evidence.bound"}, {"outcome", "pass"}, {"detail", "revision, change-request, and ratification claims match normalized evidence"}},
         })},
         {"authority", engine::Json{

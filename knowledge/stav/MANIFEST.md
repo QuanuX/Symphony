@@ -1,5 +1,12 @@
 # Symphony TOPS Audit Vector Manifest
 
+## Canonical Surfaces
+
+- `knowledge/stav/INTENT.md`
+- `knowledge/stav/MANIFEST.md`
+- `knowledge/stav/SKILL.md`
+- `knowledge/stav/SPEC.md`
+
 ## Canonical Target
 
 `knowledge/stav/`
@@ -15,7 +22,7 @@ STAV owns its event envelope, presence rules, integrity rules, append-authority 
 - `modules/stav-append-authority/`: independently installable Go implementation of the dedicated per-TOPS append-authority role;
 - SSIAG: first implemented producer class through an explicit per-installation grant;
 - Accordare: owns a closed SAV Named Version event vocabulary implemented by a separately installed, authenticated, crash-durable producer; qxctl administers an explicit per-installation exact grant;
-- node-troll: future producer class requiring separate review and grant;
+- optional Trolls: no producer class is authorized; any future producer requires separate review and an exact grant;
 - qxctl: canonical administrative and query interface implementing the protocol;
 - callers: reader or producer authority only through exact configured grants; caller type is not evaluated.
 
@@ -30,4 +37,4 @@ Operational state is never stored under `knowledge/stav/`. DuckDB, HDF5, JSONL e
 
 ## Status
 
-Architect-ratified operational v1. Canonical schemas, protocol kernel, per-TOPS append authority, mutual Unix peer authentication, exact producer/reader grants, fsync-before-receipt ledger, restart recovery/idempotency, native per-TOPS supervision/runtime ownership, qxctl read interface, SSIAG producer, and the four-tuple Accordare Named Version producer/grant circuit are implemented. Accordare includes pre-mutation intent durability, typed succeeded/failed/unavailable production, separate intent/candidate recovery, and independent native supervision. Signed checkpoints, remote export, non-repudiation, automatic rotation, general repair, and node-troll producer authority remain deferred.
+Architect-ratified operational v1. Canonical schemas, protocol kernel, per-TOPS append authority, mutual Unix peer authentication, exact producer/reader grants, fsync-before-receipt ledger, restart recovery/idempotency, native per-TOPS supervision/runtime ownership, qxctl read interface, SSIAG producer, and the four-tuple Accordare Named Version producer/grant circuit are implemented. Accordare includes pre-mutation intent durability, typed succeeded/failed/unavailable production, separate intent/candidate recovery, and independent native supervision. Signed checkpoints, remote export, non-repudiation, automatic rotation, general repair, and any Troll producer authority remain deferred.

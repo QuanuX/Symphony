@@ -1,5 +1,19 @@
 # STAV Append Authority Manifest
 
+## Canonical Surfaces
+
+- `modules/stav-append-authority/ARCHITECTURE.md`
+- `modules/stav-append-authority/FEATURES.md`
+- `modules/stav-append-authority/IMPLEMENTATION.md`
+- `modules/stav-append-authority/INSTALL.md`
+- `modules/stav-append-authority/INTENT.md`
+- `modules/stav-append-authority/MANIFEST.md`
+- `modules/stav-append-authority/README.md`
+- `modules/stav-append-authority/REQUIREMENTS.md`
+- `modules/stav-append-authority/SKILL.md`
+- `modules/stav-append-authority/SPEC.md`
+- `modules/stav-append-authority/THREAT-MODEL.md`
+
 ## Identity
 
 - module: `modules/stav-append-authority/`

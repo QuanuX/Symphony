@@ -151,7 +151,7 @@ Implementation procedure:
 9. Expose qxctl queries/proposals without file access.
 10. Test concurrent producers, crashes at each write boundary, deletion/insertion/reordering/modification, cross-TOPS injection, redaction, and projection rebuild.
 
-Exit gate: qxctl, SSIAG, node-troll, producers, and all other callers cannot write the ledger file directly through a supported interface; v1 claims tamper evidence but not non-repudiation.
+Exit gate: qxctl, SSIAG, optional Trolls, producers, and all other callers cannot write the ledger file directly through a supported interface; v1 claims tamper evidence but not non-repudiation.
 
 ## Phase 8 — Implement Deny-by-Default Policy (implemented for bounded authorization evidence)
 

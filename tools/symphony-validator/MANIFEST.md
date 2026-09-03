@@ -1,5 +1,15 @@
 # Symphony Validator Manifest
 
+## Canonical Surfaces
+
+- `tools/symphony-validator/CMakeLists.txt`
+- `tools/symphony-validator/FEATURES.md`
+- `tools/symphony-validator/INSTALL.md`
+- `tools/symphony-validator/INTENT.md`
+- `tools/symphony-validator/MANIFEST.md`
+- `tools/symphony-validator/SKILL.md`
+- `tools/symphony-validator/SPEC.md`
+
 ****
 
 ## Tool Identity
@@ -44,9 +54,9 @@ General documentation projection, runtime source/AST caller-authority analysis, 
 
 ## Canonical JSON Boundary
 
-The artifact checker recognizes exactly 210 canonical JSON paths: 28 STAV v1 schemas/fixtures, seventy common SKV process/descriptor/receipt/binding/proposal/provider-evidence/reconciliation/session/SSFV-maintenance/generic-lifecycle/foundational-lifecycle/ownership/temporal/Maestro/validation/feature-administration/invariant schemas (sixty-six v1 and four v2), thirty-two SSIAG authorization/grant-planning/policy-administration/provider-control/provider-trust/provider-binding/readiness schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, eighteen SSFV v1/v2 schemas, eighteen SAV v1 schemas, nineteen SEV v1 schemas, the exact feature-administration profile JSON, and the exact common invariant-ownership registry. It does not authorize a directory prefix, generated projection, or new JSON artifact by extension.
+The artifact checker recognizes exactly 211 canonical JSON paths: 28 STAV v1 schemas/fixtures, seventy-one common SKV process/descriptor/receipt/binding/proposal/provider-evidence/reconciliation/session/SSFV-maintenance/generic-lifecycle/foundational-lifecycle/ownership/temporal/Maestro/validation/feature-administration/invariant schemas (sixty-six v1 and five v2), thirty-two SSIAG authorization/grant-planning/policy-administration/provider-control/provider-trust/provider-binding/readiness schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, eighteen SSFV v1/v2 schemas, eighteen SAV v1 schemas, nineteen SEV v1 schemas, the exact feature-administration profile JSON, and the exact common invariant-ownership registry. It does not authorize a directory prefix, generated projection, or new JSON artifact by extension.
 
-The contract-shape and canonical-surface checks require the common STSC surface and its authority/profile/implementation boundaries, the SSFV governance/engine surfaces, and the independently installed Maestro Contract Quad/build/qxctl client anchors. The validator confirms anchors, presence, SKVI coverage, and exact JSON allowlisting; it does not decide feature-worthiness, duplicate vector semantics, or inspect operational presence state.
+Required canonical-surface closure is discovered from the four fixed bootstrap paths and the exact owner manifests delegated by `knowledge/MANIFEST.md`. The shared parser rejects unsafe or unreadable declarations, missing declarations or files, duplicate owners, and repeated or cyclic manifest traversal. Every declared surface must appear in SKVI exactly once. Contract-specific shape checks separately confirm applicable STSC, SSFV, and Maestro anchors and exact JSON allowlisting; neither check decides feature-worthiness, infers a new owner, promotes ambient implementation into canonical truth, or inspects operational presence state.
 
 The SACV registry checker independently validates the empty marker or exact thirteen-field entry grammar, identity/path uniqueness, owner-path containment, OpenAPI/profile enums, SKVI coverage, and no-follow document presence. OpenAPI semantic validation remains in the independently installed SACV engine rather than being duplicated through an unsafe partial parser.
 

@@ -1,5 +1,13 @@
 # SKVI Schemas v1
 
+## Canonical Surfaces
+
+- `knowledge/skvi/schemas/v1/MANIFEST.md`
+- `knowledge/skvi/schemas/v1/check-result.schema.json`
+- `knowledge/skvi/schemas/v1/entry.schema.json`
+- `knowledge/skvi/schemas/v1/operation-payload.schema.json`
+- `knowledge/skvi/schemas/v1/projection.schema.json`
+
 ## Authority
 
 These JSON Schema Draft 2020-12 artifacts are canonical SKVI operation and result truth. The common immutable proposal envelope remains owned by `knowledge/schemas/v1/proposal.schema.json`.

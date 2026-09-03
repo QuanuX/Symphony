@@ -60,6 +60,8 @@ SCLV records change truth; SODV dictates how changes are reflected in public rel
 ## How SODV Relates to Canonical Repository Knowledge Files
 SODV governs publication truth; it does not create source truth. Canonical repository knowledge files are source truth.
 
+For SOV, SCV, SNV, SQV, SHV, SIV, or a subordinate-vector surface, read the exact current owner Quad, SKV companions, SKVI route, and applicable SCLV history before proposing public text. Preserve every deferred capability and non-authorization; a canonical architecture contract is not evidence that its engine or operation exists.
+
 ## How SODV Relates to Public Documentation
 Public documentation is a derived projection. Public documentation is not source truth.
 

@@ -1,5 +1,27 @@
 # SAV v1 Schema Manifest
 
+## Canonical Surfaces
+
+- `knowledge/sav/schemas/v1/MANIFEST.md`
+- `knowledge/sav/schemas/v1/accord-reference.schema.json`
+- `knowledge/sav/schemas/v1/current-resolution-input.schema.json`
+- `knowledge/sav/schemas/v1/current-snapshot.schema.json`
+- `knowledge/sav/schemas/v1/evaluation-input.schema.json`
+- `knowledge/sav/schemas/v1/evaluation-result.schema.json`
+- `knowledge/sav/schemas/v1/extension-capsule-check-input.schema.json`
+- `knowledge/sav/schemas/v1/extension-capsule-check-result.schema.json`
+- `knowledge/sav/schemas/v1/extension-capsule.schema.json`
+- `knowledge/sav/schemas/v1/graph-projection.schema.json`
+- `knowledge/sav/schemas/v1/installation-blueprint-plan-input.schema.json`
+- `knowledge/sav/schemas/v1/installation-blueprint-plan-result.schema.json`
+- `knowledge/sav/schemas/v1/installation-blueprint.schema.json`
+- `knowledge/sav/schemas/v1/named-version-diff-input.schema.json`
+- `knowledge/sav/schemas/v1/named-version-diff-result.schema.json`
+- `knowledge/sav/schemas/v1/named-version-validation-input.schema.json`
+- `knowledge/sav/schemas/v1/named-version-validation-result.schema.json`
+- `knowledge/sav/schemas/v1/named-version.schema.json`
+- `knowledge/sav/schemas/v1/source-projection.schema.json`
+
 This directory owns the machine-readable v1 contracts for Accord References, typed source projections, CURRENT resolution and snapshots, evaluation, graph projection, and Named Versions.
 
 | Schema | Purpose |

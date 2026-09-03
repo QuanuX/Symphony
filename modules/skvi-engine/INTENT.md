@@ -6,7 +6,7 @@ Implement the canonical SKVI contract as an independently installable, authority
 
 ## Implemented Scope
 
-Development version `0.1.0-dev` implements bounded `inspect`, `check`, `propose`, and `project` operations through `symphony.knowledge.engine-process.v1`. It reads `knowledge/skvi/INDEX.md`, the SKVI Contract Quad, and indexed repository files through no-follow regular-file access.
+Development version `0.1.0-dev` implements bounded `inspect`, `check`, `propose`, and `project` operations through `symphony.knowledge.engine-process.v1`. It reads `knowledge/skvi/INDEX.md`, the fixed repository bootstrap, explicitly delegated owner manifests, and indexed repository files through no-follow regular-file access. Required surface coverage is manifest-driven rather than hard-coded in the engine.
 
 ## Authority Boundary
 

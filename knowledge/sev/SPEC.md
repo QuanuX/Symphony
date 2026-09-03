@@ -115,6 +115,12 @@ Engine plans are noncanonical and non-authoritative.
 
 It returns proposal constraints with null final identity/grammar when caller input is absent. It does not create a duplicate registry or an executable command.
 
+## Knowledge-Surface Evolution Profile
+
+`profiles/knowledge-surface-evolution.md` governs documentation-level consequence analysis for an addition, change, rename, supersession, deprecation, retirement, or removal of canonical knowledge. It composes the existing `case_open`, `impact_assess`, `disposition_plan`, `transition_verify`, `case_recalculate`, `case_status`, `case_recover`, and `case_close` operations. It adds no v1 operation, operation identity, protocol, payload field, schema, qxctl route, or descriptor claim.
+
+The profile requires owner-routed assessment of the affected Contract Quad and companions, namespaces, terminology, SKVI relationships, compatibility, implementation evidence, conditional feature administration and lifecycle, publication, verification, and current-versus-history interpretation. `knowledge/NAMESPACES.md`, `knowledge/SLANG.md`, and every affected vector remain the owners of their respective truth. SEV detects unresolved consequences and plans only from caller-supplied evidence; it does not name, allocate, edit, ratify, or apply them.
+
 ## Engine Process
 
 The exact engine ID is `symphony-sev`, module ID `sev-engine`, and vector ID `sev`. It uses `symphony.knowledge.engine-process.v1`.
@@ -181,7 +187,7 @@ Novelty remains local by default. Voluntary export requires an inspectable bound
 
 The v1 operation contract separates nested artifacts from operation envelopes. Novelty Bundle check, Watch Policy check, trigger coalescing, and evolution-session binding each have a strict input schema, and the three check/coalescing operations have strict result schemas under `knowledge/sev/schemas/v1/`; the binding result remains the existing immutable binding schema. Engine descriptors and qxctl advertise those exact protocols so unsupported old/new combinations fail closed without losing caller evidence.
 
-The live descriptor is an exact `symphony.knowledge.engine-descriptor.v2` document: it contains only the v2 field set, advertises the common process limits and `user`/`tops` scopes, exposes the canonical administration operation array, and binds itself with `descriptor_digest`. SCSEV profile identity, installation state, and Maestro receptor selection remain feature/receipt/binding concerns rather than descriptor-v2 extension fields.
+The live descriptor is an exact `symphony.knowledge.engine-descriptor.v2` document: it contains only the v2 field set, advertises the common process limits and `user`/`tops` scopes, exposes the canonical administration operation array, and binds itself with `descriptor_digest`. SCSEV profile identity, the documentation-only knowledge-surface profile, installation state, and Maestro receptor selection remain contract/feature/receipt/binding concerns rather than descriptor-v2 extension fields.
 
 ## Time
 

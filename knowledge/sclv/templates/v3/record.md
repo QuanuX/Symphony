@@ -23,9 +23,9 @@
 - ratification_evidence_reference: `<safe bounded reference>`
 - ratification_evidence_digest: `sha256:<64 lowercase hexadecimal characters>`
 - affected_surfaces:
-  - `<repository-relative path>`
+  - `<repository-relative path added, changed, moved, or removed by the recorded change>`
 - skvi_references:
-  - `<SKVI-indexed repository-relative path>`
+  - `<current surviving SKVI-indexed routing, owner, or applicable tombstone path>`
 - change_summary: |
     <completed-change summary>
 - relationship_changes: |

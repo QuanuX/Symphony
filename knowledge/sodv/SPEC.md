@@ -52,6 +52,8 @@ The initial SODV scope covers sources, relationships, evidence, and a disposable
 - SKVI files
 - SCLV files
 - SODV files
+- SKV-owned architecture, nomenclature, and namespace companions
+- SOV, SCV, SNV, SQV, SHV, and SIV Contract Quads and their ratified subordinate contracts
 - current validator evidence for contract shape and indexed-path presence
 - future generated projections
 - future release documentation inputs
@@ -129,6 +131,8 @@ MANIFEST.md is declared contract truth. Code is implementation truth. Generated 
 
 ## Relationship to Canonical Repository Knowledge Files
 Canonical repository knowledge files are source truth.
+
+Emerging vector contracts remain owned by their respective vectors. An authorized public projection must preserve their current status, explicit deferrals, user-sovereignty boundaries, and non-authorizations. SODV must not publish an architecture seed as implemented runtime capability.
 
 ## Relationship to Public Documentation
 Published documentation is a derived public projection.

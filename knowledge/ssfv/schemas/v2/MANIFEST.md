@@ -1,5 +1,16 @@
 # SSFV Executable Protocol Schema Manifest v2
 
+## Canonical Surfaces
+
+- `knowledge/ssfv/schemas/v2/MANIFEST.md`
+- `knowledge/ssfv/schemas/v2/check-input.schema.json`
+- `knowledge/ssfv/schemas/v2/check-result.schema.json`
+- `knowledge/ssfv/schemas/v2/diff-input.schema.json`
+- `knowledge/ssfv/schemas/v2/diff-result.schema.json`
+- `knowledge/ssfv/schemas/v2/feature-record.schema.json`
+- `knowledge/ssfv/schemas/v2/proposal-input.schema.json`
+- `knowledge/ssfv/schemas/v2/registry-entry.schema.json`
+
 ## Purpose
 
 Define the executable SSFV check, diff, proposal, feature-record, and registry-entry shapes completed after the contract-only v1 transition.

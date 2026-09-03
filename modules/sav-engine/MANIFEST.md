@@ -1,5 +1,14 @@
 # SAV Engine Manifest
 
+## Canonical Surfaces
+
+- `modules/sav-engine/FEATURES.md`
+- `modules/sav-engine/INSTALL.md`
+- `modules/sav-engine/INTENT.md`
+- `modules/sav-engine/MANIFEST.md`
+- `modules/sav-engine/SKILL.md`
+- `modules/sav-engine/SPEC.md`
+
 ## Identity
 
 - module: `sav-engine`

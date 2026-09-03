@@ -1,5 +1,28 @@
 # SEV v1 Schema Manifest
 
+## Canonical Surfaces
+
+- `knowledge/sev/schemas/v1/MANIFEST.md`
+- `knowledge/sev/schemas/v1/case-open-input.schema.json`
+- `knowledge/sev/schemas/v1/case-recalculation-input.schema.json`
+- `knowledge/sev/schemas/v1/command-surface-assessment.schema.json`
+- `knowledge/sev/schemas/v1/disposition-plan.schema.json`
+- `knowledge/sev/schemas/v1/evolution-case.schema.json`
+- `knowledge/sev/schemas/v1/evolution-session-binding-input.schema.json`
+- `knowledge/sev/schemas/v1/evolution-session-binding.schema.json`
+- `knowledge/sev/schemas/v1/graph-projection.schema.json`
+- `knowledge/sev/schemas/v1/impact-result.schema.json`
+- `knowledge/sev/schemas/v1/novelty-bundle-check-input.schema.json`
+- `knowledge/sev/schemas/v1/novelty-bundle-check-result.schema.json`
+- `knowledge/sev/schemas/v1/novelty-bundle.schema.json`
+- `knowledge/sev/schemas/v1/transition-verification-input.schema.json`
+- `knowledge/sev/schemas/v1/transition-verification-result.schema.json`
+- `knowledge/sev/schemas/v1/trigger-coalescing-input.schema.json`
+- `knowledge/sev/schemas/v1/trigger-coalescing-result.schema.json`
+- `knowledge/sev/schemas/v1/watch-policy-check-input.schema.json`
+- `knowledge/sev/schemas/v1/watch-policy-check-result.schema.json`
+- `knowledge/sev/schemas/v1/watch-policy.schema.json`
+
 This directory owns the machine-readable v1 contracts for evolution cases, impact evidence, disposition plans, transition verification, SCSEV assessment, and disposable evolution graphs.
 
 | Schema | Purpose |

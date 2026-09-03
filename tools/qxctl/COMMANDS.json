@@ -324,6 +324,33 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:knowledge.engines.migrate",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl knowledge engines migrate [--expected-registry-digest VALUE] [--json] [--state-root VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.engine-bindings",
+          "interaction": "configure"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [],
+      "result_validation_protocols": [],
+      "recovery_command_id": "qxcmd:symphony:knowledge.engines.migrate",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:knowledge.engines.unbind",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -6319,5 +6346,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:a66b55ad1222ac9a89a2d4dc389753d68d3b6495c19831d9f9157f9e13a91a73"
+  "registry_digest": "sha256:05080715181c783d893fc221c0db93e80cfb25dfb7ffea952f0479f3b683f732"
 }

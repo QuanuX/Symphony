@@ -128,7 +128,7 @@ Remote caller authentication, bearer tokens, OAuth/OIDC, mTLS, and network liste
 
 SSIAG and the STAV append authority occupy the foundational bootstrap stratum. A native OS supervisor or explicit owner-provided equivalent MAY anchor them. Direct-run development remains distinct from production supervision.
 
-Supervision owns process liveness only. Starting, stopping, monitoring, or restarting a process MUST NOT grant the supervisor SSIAG policy authority, provider authority, administrative apply authority, or ledger file access. node-troll does not inherit authority merely because it supervises another component.
+Supervision owns process liveness only. Starting, stopping, monitoring, or restarting a process MUST NOT grant the supervisor SSIAG policy authority, provider authority, administrative apply authority, or ledger file access. An optional Troll does not inherit authority merely because it supervises another component.
 
 The implemented native profiles are per-TOPS launchd jobs on macOS and per-TOPS systemd units on Linux. The stable launchd label prefixes are `io.github.quanux.symphony.ssiag.` and `io.github.quanux.symphony.stav.` followed by the immutable TOPS UUID. Linux unit names are `symphony-ssiag@<tops-id>.service` and `symphony-stav@<tops-id>.service`. No SSIAG unit requires, wants, or starts STAV: each service starts independently. Future ordinary audited mutation fails closed at the operation boundary if STAV is unavailable; the separately permissioned audit-deferred administrator recovery contract above remains the only planned exception.
 

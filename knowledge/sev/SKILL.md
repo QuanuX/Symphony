@@ -10,7 +10,7 @@ Guide authorized callers through deterministic change admission, impact assessme
 2. `knowledge/sev/MANIFEST.md`
 3. `knowledge/sev/SPEC.md`
 4. `knowledge/sev/DISPOSITIONS.md`
-5. the selected profile, including `profiles/qxctl-command-surface.md`
+5. the selected profile, including `profiles/qxctl-command-surface.md` or `profiles/knowledge-surface-evolution.md`
 6. `knowledge/sav/SPEC.md`
 7. `knowledge/FEATURE-ADMINISTRATION.md`
 8. `knowledge/LIFECYCLE.md`
@@ -33,6 +33,10 @@ Guide authorized callers through deterministic change admission, impact assessme
 ## SCSEV Procedure
 
 Supply the SSFV semantic snapshot, feature-administration profile, expected and optional observed qxctl registries, engine descriptors, and caller-declared command proposal. The profile reports exact missing consequences and proposal constraints. It does not invent final names, grammar, permissions, exemptions, or tests.
+
+## Knowledge-Surface Evolution Procedure
+
+Use the existing `case_open`, `impact_assess`, `disposition_plan`, `transition_verify`, `case_recalculate`, `case_status`, `case_recover`, and `case_close` operations. Supply the exact current and proposed owner surfaces, complete CURRENT coverage, and applicable SKVI, namespace, nomenclature, compatibility, history, implementation, administration, lifecycle, validation, and publication evidence. Distinguish add, change, rename, supersede, deprecate, retire, and remove. Do not rewrite historical evidence or infer a new owner, identity, term, operation, or canonical action from the profile.
 
 ## Stop Conditions
 

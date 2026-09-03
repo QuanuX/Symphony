@@ -95,7 +95,7 @@ void test_affected_surfaces_are_summarized_historical_provenance() {
         "summary leaked per-occurrence historical path noise");
 }
 
-void test_explicit_skvi_references_remain_hard_obligations() {
+void test_explicit_skvi_references_have_temporal_obligations() {
     TemporaryDirectory repository;
     fs::create_directories(repository.path() / "knowledge/prior-file.md");
     SclvRecord record;
@@ -114,17 +114,18 @@ void test_explicit_skvi_references_remain_hard_obligations() {
 
     const auto absent_provenance = check_sclv_references(
         repository.path().string(), sclv);
-    require(!absent_provenance.success,
-        "missing explicit SKVI file reference was accepted");
+    require(absent_provenance.success,
+        "later absence of historical SKVI file reference invalidated the record");
     require(absent_provenance.messages.size() == 1U &&
-            absent_provenance.messages.front().contains("field=skvi_references"),
-        "historical affected surface leaked into current reference evidence");
+            absent_provenance.messages.front() ==
+                "evidence warning sclv_reference.historical_path_absent record_id=SCLV-CHG-EXPLICIT-REFERENCE field=skvi_references path=knowledge/required-contract.md",
+        "historical affected surface leaked into temporal reference evidence");
 
     const auto missing = check_sclv_skvi_references(skvi, sclv);
-    require(!missing.success, "unindexed explicit SKVI reference was accepted");
+    require(missing.success, "retired explicit SKVI reference invalidated the historical record");
     require(missing.messages.size() == 1U && missing.messages.front() ==
-        "evidence violation sclv_skvi_reference.unindexed record_id=SCLV-CHG-EXPLICIT-REFERENCE path=knowledge/required-contract.md",
-        "unindexed explicit SKVI reference did not retain exact violation evidence");
+        "evidence warning sclv_skvi_reference.historical record_id=SCLV-CHG-EXPLICIT-REFERENCE path=knowledge/required-contract.md",
+        "unindexed explicit SKVI reference did not retain exact historical evidence");
 
     write_file(repository.path(), "knowledge/required-contract.md");
     const auto present_reference = check_sclv_references(
@@ -161,7 +162,7 @@ void test_affected_surface_path_safety_remains_enforced() {
 int main() {
     try {
         test_affected_surfaces_are_summarized_historical_provenance();
-        test_explicit_skvi_references_remain_hard_obligations();
+        test_explicit_skvi_references_have_temporal_obligations();
         test_affected_surface_path_safety_remains_enforced();
         std::cout << "sclv cross-reference tests passed\n";
         return 0;

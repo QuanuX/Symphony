@@ -1,5 +1,17 @@
 # SODV Engine Schema Manifest
 
+## Canonical Surfaces
+
+- `knowledge/sodv/schemas/v1/MANIFEST.md`
+- `knowledge/sodv/schemas/v1/check-result.schema.json`
+- `knowledge/sodv/schemas/v1/observed-state.schema.json`
+- `knowledge/sodv/schemas/v1/projection.schema.json`
+- `knowledge/sodv/schemas/v1/proposal-input.schema.json`
+- `knowledge/sodv/schemas/v1/recovery-input.schema.json`
+- `knowledge/sodv/schemas/v1/recovery-result.schema.json`
+- `knowledge/sodv/schemas/v1/release-record-v2.schema.json`
+- `knowledge/sodv/schemas/v1/verify-result.schema.json`
+
 This directory owns the machine-readable contracts for the initial Symphony Official Documentation Vector engine.
 
 | Schema | Purpose |

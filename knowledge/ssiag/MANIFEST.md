@@ -1,5 +1,14 @@
 # Symphony Secure Identity and Access Governance Manifest
 
+## Canonical Surfaces
+
+- `knowledge/ssiag/INTENT.md`
+- `knowledge/ssiag/MANIFEST.md`
+- `knowledge/ssiag/PROVIDER-LIFECYCLE.md`
+- `knowledge/ssiag/PROVIDER-READINESS.md`
+- `knowledge/ssiag/SKILL.md`
+- `knowledge/ssiag/SPEC.md`
+
 ## Canonical Target
 
 `knowledge/ssiag/`

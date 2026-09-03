@@ -1,5 +1,9 @@
 # Symphony Semantic Feature Vector Namespace Registry
 
+## Delegated Authority
+
+This is the SSFV-owned subordinate namespace registry for the `ssfv:` identity family under the universal delegation doctrine in `knowledge/NAMESPACES.md`. It remains canonical allocation truth for SSFV prefixes only. The universal companion references this registry but does not copy its entries, change their scope, or acquire SSFV feature semantics.
+
 ## Purpose
 
 Allocate stable SSFV identity prefixes without coupling feature identity to repository paths, package registries, Git providers, hostnames, or graph databases.

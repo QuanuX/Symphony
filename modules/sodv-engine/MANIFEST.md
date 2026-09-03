@@ -1,5 +1,14 @@
 # SODV Engine Manifest
 
+## Canonical Surfaces
+
+- `modules/sodv-engine/FEATURES.md`
+- `modules/sodv-engine/INSTALL.md`
+- `modules/sodv-engine/INTENT.md`
+- `modules/sodv-engine/MANIFEST.md`
+- `modules/sodv-engine/SKILL.md`
+- `modules/sodv-engine/SPEC.md`
+
 ## Identity
 
 - Module: `sodv-engine`

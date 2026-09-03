@@ -446,6 +446,9 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
                 descriptor.at("operations").size() == 6U &&
                 !descriptor.at("operations").at(0).contains("engine_operation_id"),
             "legacy descriptor negotiation surface changed");
+    require(descriptor.at("limits").at("json_values") ==
+                ssfv::legacy_descriptor_v1_max_json_values,
+            "legacy descriptor JSON value ceiling changed");
     require(descriptor.at("language") == "C++26", "language contract mismatch");
     require(descriptor.at("thermal_path") == "freezing", "thermal-path contract mismatch");
     require(descriptor.at("install_state") == "installed_undocked", "install state mismatch");

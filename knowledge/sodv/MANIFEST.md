@@ -1,5 +1,13 @@
 # Symphony Official Documentation Vector Manifest
 
+## Canonical Surfaces
+
+- `knowledge/sodv/INTENT.md`
+- `knowledge/sodv/MANIFEST.md`
+- `knowledge/sodv/RELEASES.md`
+- `knowledge/sodv/SKILL.md`
+- `knowledge/sodv/SPEC.md`
+
 ## Canonical Target
 `knowledge/sodv/MANIFEST.md`
 
@@ -63,6 +71,8 @@ SSCG interprets compatibility. SODV governs the publication of those compatibili
 
 ## Relationship to Canonical Repository Knowledge Files
 Canonical repository knowledge files are source truth. SODV dictates how they become public.
+
+This includes the ratified SKV companions and SOV, SCV, SNV, SQV, SHV, SIV, and subordinate-vector contracts. SODV references their owners; it does not copy their semantics into a publication registry or treat their contract admission as publication completion.
 
 ## Relationship to Published Documentation
 Published documentation is a derived public projection.

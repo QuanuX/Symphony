@@ -1,5 +1,17 @@
 # Symphony Accordare Vector Manifest
 
+## Canonical Surfaces
+
+- `knowledge/sav/EXTENSIONS.md`
+- `knowledge/sav/INTENT.md`
+- `knowledge/sav/MANIFEST.md`
+- `knowledge/sav/NAMED-VERSIONS.md`
+- `knowledge/sav/RELATIONSHIPS.md`
+- `knowledge/sav/SKILL.md`
+- `knowledge/sav/SPEC.md`
+- `knowledge/sav/STAV.md`
+- `knowledge/sav/TRAITS.md`
+
 ## Canonical Target
 
 `knowledge/sav/`

@@ -50,7 +50,7 @@ const (
 	maxRequestBytes          = 1024 * 1024
 	maxResponseBytes         = 4 * 1024 * 1024
 	maxJSONDepth             = 64
-	maxJSONValues            = 16384
+	maxJSONValues            = 32768
 	maxStringBytes           = 65536
 	operationTimeout         = 5 * time.Second
 )

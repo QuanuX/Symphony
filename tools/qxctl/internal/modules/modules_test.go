@@ -27,14 +27,8 @@ func TestList_Success(t *testing.T) {
 		t.Errorf("expected last line to be success, got %q", lastLine)
 	}
 
-	if !strings.Contains(output[1], "node-troll") {
-		t.Errorf("expected node-troll to be listed in index 1")
-	}
-	if !strings.Contains(output[2], "bus-troll") {
-		t.Errorf("expected bus-troll to be listed in index 2")
-	}
-	if !strings.Contains(output[3], "hotpath-runtime") {
-		t.Errorf("expected hotpath-runtime to be listed in index 3")
+	if !strings.Contains(output[1], "hotpath-runtime") {
+		t.Errorf("expected hotpath-runtime to be listed in index 1")
 	}
 }
 
@@ -256,14 +250,8 @@ func TestCheckAll_Success(t *testing.T) {
 		t.Errorf("expected last line to be success, got %q", lastLine)
 	}
 
-	if !strings.Contains(output[0], "node-troll") {
-		t.Errorf("expected node-troll to be listed in index 0")
-	}
-	if !strings.Contains(output[1], "bus-troll") {
-		t.Errorf("expected bus-troll to be listed in index 1")
-	}
-	if !strings.Contains(output[2], "hotpath-runtime") {
-		t.Errorf("expected hotpath-runtime to be listed in index 2")
+	if !strings.Contains(output[0], "hotpath-runtime") {
+		t.Errorf("expected hotpath-runtime to be listed in index 0")
 	}
 }
 
@@ -370,10 +358,10 @@ func TestMetadataJSON_Success(t *testing.T) {
 	if !strings.Contains(output, `"schema": "qxctl.contract_metadata.v1"`) {
 		t.Errorf("expected JSON to contain correct schema, got %s", output)
 	}
-	if !strings.Contains(output, `"module": "node-troll"`) {
-		t.Errorf("expected JSON to contain module node-troll")
+	if !strings.Contains(output, `"module": "hotpath-runtime"`) {
+		t.Errorf("expected JSON to contain module hotpath-runtime")
 	}
-	if !strings.Contains(output, `"path": "modules/node-troll/INTENT.md"`) {
+	if !strings.Contains(output, `"path": "modules/hotpath-runtime/INTENT.md"`) {
 		t.Errorf("expected JSON to contain relative paths without absolute prefix")
 	}
 }
@@ -404,16 +392,10 @@ func TestMetadataAllJSON_Success(t *testing.T) {
 	if !strings.Contains(output, `"schema": "qxctl.modules_contract_metadata.v1"`) {
 		t.Errorf("expected JSON to contain correct schema")
 	}
-	if !strings.Contains(output, `"module": "node-troll"`) {
-		t.Errorf("expected JSON to contain module node-troll")
-	}
-	if !strings.Contains(output, `"module": "bus-troll"`) {
-		t.Errorf("expected JSON to contain module bus-troll")
-	}
 	if !strings.Contains(output, `"module": "hotpath-runtime"`) {
 		t.Errorf("expected JSON to contain module hotpath-runtime")
 	}
-	if !strings.Contains(output, `"path": "modules/node-troll/INTENT.md"`) {
+	if !strings.Contains(output, `"path": "modules/hotpath-runtime/INTENT.md"`) {
 		t.Errorf("expected JSON to contain relative paths without absolute prefix")
 	}
 }

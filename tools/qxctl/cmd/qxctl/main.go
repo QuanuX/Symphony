@@ -91,6 +91,7 @@ func printUsage() {
 	fmt.Println("  knowledge engines doctor [--state-root PATH] [--json] Verify every bound installation")
 	fmt.Println("  knowledge engines bind ROLE --prefix PATH [--version VERSION] --expected-registry-digest STATE [--json] Bind an exact installation")
 	fmt.Println("  knowledge engines unbind ROLE --expected-registry-digest DIGEST [--json] Remove one exact binding")
+	fmt.Println("  knowledge engines migrate --expected-registry-digest DIGEST [--json] Explicitly migrate one exact v1 registry generation to v2")
 	fmt.Println("  knowledge invariant status|list [--repo PATH] [--json] Project the canonical invariant registry through bounded consumer checks")
 	fmt.Println("  knowledge invariant show --invariant-id ID [--repo PATH] [--json] Project one exact registered invariant")
 	fmt.Println("  knowledge invariant check --prefix PATH [--version VERSION] [--repo PATH] [--json] Run the complete exact installed validator check")
@@ -163,7 +164,7 @@ func runKnowledgeEngines(operation string, options knowledgeEngineOptions) error
 	}
 	switch operation {
 	case "list":
-		snapshot, err := store.Snapshot()
+		snapshot, err := store.AdministrativeSnapshot()
 		if err != nil {
 			return err
 		}
@@ -175,8 +176,9 @@ func runKnowledgeEngines(operation string, options knowledgeEngineOptions) error
 			return nil
 		}
 		fmt.Printf(
-			"Knowledge engine bindings: profile=%s generation=%d digest=%s canonical=false\n",
-			snapshot.Registry.ProfileID, snapshot.Registry.Generation, snapshot.Registry.RegistryDigest,
+			"Knowledge engine bindings: protocol=%s compatibility=%s profile=%s generation=%d digest=%s canonical=false\n",
+			snapshot.Registry.Protocol, snapshot.Compatibility, snapshot.Registry.ProfileID,
+			snapshot.Registry.Generation, snapshot.Registry.RegistryDigest,
 		)
 		for _, binding := range snapshot.Registry.Bindings {
 			fmt.Printf(
@@ -186,7 +188,7 @@ func runKnowledgeEngines(operation string, options knowledgeEngineOptions) error
 		}
 		return nil
 	case "inspect":
-		snapshot, err := store.Snapshot()
+		snapshot, err := store.AdministrativeSnapshot()
 		if err != nil {
 			return err
 		}
@@ -199,13 +201,16 @@ func runKnowledgeEngines(operation string, options knowledgeEngineOptions) error
 			}
 			if options.jsonOutput {
 				return printIndentedJSON(map[string]any{
-					"registry_digest": snapshot.Registry.RegistryDigest,
-					"binding":         binding,
-					"canonical":       false,
+					"registry_digest":   snapshot.Registry.RegistryDigest,
+					"registry_protocol": snapshot.Registry.Protocol,
+					"compatibility":     snapshot.Compatibility,
+					"binding":           binding,
+					"canonical":         false,
 				})
 			}
 			fmt.Printf(
-				"Knowledge engine binding: role=%s module=%s engine=%s version=%s state=%s receipt_digest=%s executable_digest=%s canonical=false\n",
+				"Knowledge engine binding: registry_protocol=%s compatibility=%s role=%s module=%s engine=%s version=%s state=%s receipt_digest=%s executable_digest=%s canonical=false\n",
+				snapshot.Registry.Protocol, snapshot.Compatibility,
 				binding.Role, binding.ModuleID, binding.EngineID, binding.Version, binding.State,
 				binding.ReceiptDigest, binding.ExecutableDigest,
 			)
@@ -271,6 +276,22 @@ func runKnowledgeEngines(operation string, options knowledgeEngineOptions) error
 		fmt.Printf(
 			"Knowledge engine binding: operation=unbind role=%s changed=%t generation=%d digest=%s canonical=false\n",
 			options.role, changed, registry.Generation, registry.RegistryDigest,
+		)
+		return nil
+	case "migrate":
+		if options.expectedRegistryDigest == "" {
+			return fmt.Errorf("--expected-registry-digest is required")
+		}
+		registry, changed, err := store.Migrate(options.expectedRegistryDigest)
+		if err != nil {
+			return err
+		}
+		if options.jsonOutput {
+			return printIndentedJSON(map[string]any{"changed": changed, "registry": registry})
+		}
+		fmt.Printf(
+			"Knowledge engine binding registry: operation=migrate changed=%t protocol=%s generation=%d digest=%s canonical=false\n",
+			changed, registry.Protocol, registry.Generation, registry.RegistryDigest,
 		)
 		return nil
 	default:
@@ -3448,8 +3469,6 @@ func runDoctor() error {
 	fmt.Printf("found repository root: %s\n", repoRoot)
 
 	expectedModules := []string{
-		"node-troll",
-		"bus-troll",
 		"hotpath-runtime",
 	}
 

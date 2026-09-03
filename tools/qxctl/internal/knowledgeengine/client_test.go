@@ -33,6 +33,29 @@ func TestValidateJSONObjectRejectsAmbiguousAndUnboundedSyntax(t *testing.T) {
 	}
 }
 
+func TestValidateJSONObjectHonorsSharedValueBoundary(t *testing.T) {
+	document := func(scalarValues int) []byte {
+		var builder strings.Builder
+		builder.Grow(16 + scalarValues*2)
+		builder.WriteString(`{"values":[`)
+		for index := 0; index < scalarValues; index++ {
+			if index != 0 {
+				builder.WriteByte(',')
+			}
+			builder.WriteByte('0')
+		}
+		builder.WriteString(`]}`)
+		return []byte(builder.String())
+	}
+
+	if err := validateJSONObject(document(maxJSONValues-3), maxRequestBytes); err != nil {
+		t.Fatalf("exact shared JSON value boundary was rejected: %v", err)
+	}
+	if err := validateJSONObject(document(maxJSONValues-2), maxRequestBytes); err == nil {
+		t.Fatal("JSON document one value beyond the shared boundary was accepted")
+	}
+}
+
 func TestResolveInstalledRequiresExactReceiptAndNoFollowFiles(t *testing.T) {
 	prefix := t.TempDir()
 	version := "0.1.0-dev"

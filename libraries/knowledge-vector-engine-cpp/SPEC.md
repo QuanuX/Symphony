@@ -11,16 +11,20 @@ Implemented development foundation, version `0.1.0-dev`. It is not a published m
 | request | 1 MiB |
 | response | 4 MiB |
 | JSON depth | 64 |
-| JSON values/events | 16,384 by default |
+| JSON values/events | 32,768 by default |
 | JSON string or key | 65,536 bytes |
 | request/correlation/engine token | 128 bytes |
 | operation token | 64 bytes |
 | relative path | 4,096 bytes |
 | snapshot paths | 1,024 |
 | one snapshot file | 4 MiB |
+| owner manifests | 256 |
+| declarations per manifest | 1,024 |
+| manifest issues | 1,024 |
+| physical manifest line | 8,192 bytes |
 | deadline window | 300,000 ms |
 
-JSON objects reject duplicate names. Process JSON rejects floating-point values, integers outside the interoperable range `[-9007199254740991, 9007199254740991]`, invalid UTF-8, unknown envelope fields, trailing bytes, excess nesting/count/size, unsupported protocol versions, expired or excessively distant deadlines, and target-engine mismatches. The parsing API accepts an explicit finite value-count bound so an engine whose closed protocol legitimately carries a larger aggregate document can advertise and enforce its own limit without widening the shared default or another engine. The 1 MiB request, depth, string, integer, duplicate-key, and deadline bounds remain unchanged.
+JSON objects reject duplicate names. Process JSON rejects floating-point values, integers outside the interoperable range `[-9007199254740991, 9007199254740991]`, invalid UTF-8, unknown envelope fields, trailing bytes, excess nesting/count/size, unsupported protocol versions, expired or excessively distant deadlines, and target-engine mismatches. The value ceiling counts aggregate parser events; it does not widen narrower collection-shape limits in the common envelope or operation-specific schemas. The parsing API accepts an explicit finite value-count bound so an engine whose closed protocol legitimately carries a larger aggregate document can advertise and enforce its own limit without widening the shared default or another engine. The 1 MiB request, 4 MiB response, depth, string, integer, duplicate-key, and deadline bounds remain unchanged.
 
 Snapshot reads check the request deadline before and between file-read chunks. The future qxctl process client must also enforce that deadline on the child lifetime; the shared library does not claim that a cooperative check can cancel a blocked kernel/filesystem call.
 
@@ -35,6 +39,12 @@ The exact canonical envelope schemas are `knowledge/schemas/v1/engine-process-re
 Portable paths are non-empty forward-slash relative paths with no absolute root, empty component, `.`, `..`, backslash, NUL, control byte, or component traversal. Reads open the root, every intermediate directory, and the final regular file through no-follow file-descriptor operations. Symlink and special-file reads fail closed.
 
 Snapshot paths are unique and sorted. Each file records a tagged content digest and byte size. The snapshot digest covers a length-delimited canonical sequence of path, size, and content digest.
+
+## Owner-Manifest Discovery Contract
+
+`manifest_discovery.hpp` starts from exactly `README.md`, `INTENT.md`, `go.work`, and `knowledge/MANIFEST.md`. After an exact `## Canonical Surfaces` heading, it parses the first contiguous declaration block: blank lines and exact `- ` bullets containing one backtick-delimited safe repository-relative path. The first later nonblank prose, table, divider, or heading ends that machine block; later content is ordinary manifest prose. `knowledge/MANIFEST.md` additionally requires the same declaration grammar after `## Subordinate Manifests`; subordinate paths must name `MANIFEST.md` files. The implementation traverses only those declarations, sorts returned manifests and surfaces, and uses bounded no-follow regular-file reads throughout.
+
+Every visited owner manifest must declare itself. Missing or duplicate sections, malformed declarations, unsafe paths, missing files, duplicate surface owners, duplicate manifest traversal, and traversal cycles produce explicit bounded issues. Directory presence, filename conventions outside the exact declarations, SKVI membership, and implementation markers do not add owners or surfaces. The parser reports declaration truth and repository shape only; it does not decide that a surface should be canonical.
 
 ## Temporal Validation Contract
 

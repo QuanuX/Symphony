@@ -116,9 +116,13 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: root governance overview
 - truth_role: project orientation and governance summary
 - owner: Symphony root governance
-- scope: Introduces repository purpose, boundaries, and top-level navigation expectations.
+- scope: Presents platform purpose, Node/Habitat/Nest boundaries, the ratified vector landscape and roadmap, implemented foundations, explicit nonclaims, and the machine-checked repository snapshot.
 - relationships:
   - declares -> `INTENT.md`
+  - depends_on -> `knowledge/ARCHITECTURE.md`
+  - depends_on -> `knowledge/SLANG.md`
+  - depends_on -> `knowledge/NAMESPACES.md`
+  - checked_by -> `tools/symphony-validator/SPEC.md`
   - may_consume -> future SODV public documentation projection
 - consumers:
   - humans
@@ -131,7 +135,7 @@ Future validator increments may add separately ratified deterministic checks wit
   - DuckDB analytical projection
   - graph relationship projection
 - status: canonical
-- notes: Public-facing only after SODV-authorized publication.
+- notes: This is repository-source orientation; any separate official documentation projection remains SODV-governed.
 
 #### INTENT.md
 - path: `INTENT.md`
@@ -181,115 +185,6 @@ Future validator increments may add separately ratified deterministic checks wit
 - status: canonical
 
 ### Runtime Module Contract Seeds
-
-#### node-troll
-##### INTENT.md
-- path: `modules/node-troll/INTENT.md`
-- title: node-troll Intent
-- surface_type: module intent seed
-- truth_role: intent and purpose for node-troll
-- owner: node-troll maintainer
-- scope: node-troll represents the node.
-- relationships:
-  - declares -> `modules/node-troll/MANIFEST.md`
-- consumers: humans, symphony-validator and future validator extensions
-- deferred_projections: strictly deferred
-- notes: none
-- status: canonical
-
-##### MANIFEST.md
-- path: `modules/node-troll/MANIFEST.md`
-- title: node-troll Manifest
-- surface_type: module contract truth
-- truth_role: declared contract truth for node-troll installability
-- owner: node-troll maintainer
-- scope: Contractual dependencies, assumptions, capabilities. Python must not be required for remote native hot-path execution or the administrative spine. Optional isolated Python habitats may exist only when explicitly declared by a module or tool.
-- relationships:
-  - depends_on -> `modules/node-troll/INTENT.md`
-- consumers: humans, symphony-validator and future validator extensions, future qxctl
-- deferred_projections: strictly deferred
-- notes: none
-- status: canonical
-
-##### INSTALL.md
-- path: `modules/node-troll/INSTALL.md`
-- title: node-troll Install
-- surface_type: module install guidance
-- truth_role: installability / deployment boundary guidance
-- owner: node-troll maintainer
-- scope: Instructions and constraints for deployment.
-- consumers: humans, future tools
-- relationships: none defined
-- deferred_projections: strictly deferred
-- notes: none
-- status: canonical
-
-##### SKILL.md
-- path: `modules/node-troll/SKILL.md`
-- title: node-troll Skill
-- surface_type: module skill guidance
-- truth_role: operational skill guidance
-- owner: node-troll maintainer
-- scope: Tools and skills for operating the node.
-- consumers: humans, agentic tools
-- relationships: none defined
-- deferred_projections: strictly deferred
-- notes: none
-- status: canonical
-
-#### bus-troll
-##### INTENT.md
-- path: `modules/bus-troll/INTENT.md`
-- title: bus-troll Intent
-- surface_type: module intent seed
-- truth_role: intent and purpose for bus-troll
-- owner: bus-troll maintainer
-- scope: bus-troll manages bus residency and bus compatibility. bus-troll is required only for deployments that use a managed bus boundary. Bus bypass remains valid when declared by deployment constraints. The existence of bus-troll does not make bus traversal mandatory.
-- relationships:
-  - declares -> `modules/bus-troll/MANIFEST.md`
-- consumers: humans, symphony-validator and future validator extensions
-- deferred_projections: strictly deferred
-- notes: none
-- status: canonical
-
-##### MANIFEST.md
-- path: `modules/bus-troll/MANIFEST.md`
-- title: bus-troll Manifest
-- surface_type: module contract truth
-- truth_role: declared contract truth for bus-troll
-- owner: bus-troll maintainer
-- scope: Contractual dependencies and capability boundaries.
-- consumers: humans, symphony-validator and future validator extensions, future qxctl
-- relationships: none defined
-- deferred_projections: strictly deferred
-- notes: none
-- status: canonical
-
-##### INSTALL.md
-- path: `modules/bus-troll/INSTALL.md`
-- title: bus-troll Install
-- surface_type: module install guidance
-- truth_role: installability / deployment boundary guidance
-- owner: bus-troll maintainer
-- scope: Instructions and constraints for deployment.
-- consumers: humans, future tools
-- relationships: none defined
-- deferred_projections: strictly deferred
-- notes: none
-- status: canonical
-
-##### SKILL.md
-- path: `modules/bus-troll/SKILL.md`
-- title: bus-troll Skill
-- surface_type: module skill guidance
-- truth_role: operational skill guidance
-- owner: bus-troll maintainer
-- scope: Tools and skills for operating the bus-troll.
-- consumers: humans, agentic tools
-- relationships: none defined
-- deferred_projections: strictly deferred
-- notes: none
-- status: canonical
 
 #### hotpath-runtime
 ##### INTENT.md
@@ -624,7 +519,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: module implementation guide
 - truth_role: phased procedure from namespace scaffold through operational SSIAG producer integration
 - owner: STAV append-authority maintainer
-- scope: Records completed canonical content, durability, IPC, native supervision, qxctl, and SSIAG producer phases plus deferred node-troll and Go 1.27 work.
+- scope: Records completed canonical content, durability, IPC, native supervision, qxctl, and SSIAG producer phases plus deferred future-producer and Go 1.27 work.
 - relationships:
   - depends_on -> `modules/stav-append-authority/REQUIREMENTS.md`
   - depends_on -> `modules/stav-append-authority/THREAT-MODEL.md`
@@ -1536,7 +1431,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: STAV knowledge maintainer
 - scope: Separates protocol truth from per-TOPS operational ledgers and establishes tamper-evident intent.
 - relationships: declares -> `knowledge/stav/MANIFEST.md`; depends_on -> `knowledge/ssiag/INTENT.md`
-- consumers: humans, reviewers, SSIAG, node-troll, qxctl, agentic tools
+- consumers: humans, reviewers, SSIAG, optional future producers, qxctl, agentic tools
 - deferred_projections: redacted query projection
 - notes: V1 is tamper-evident, not non-repudiable.
 - status: canonical
@@ -1575,7 +1470,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: STAV knowledge maintainer
 - scope: Defines per-TOPS sequence isolation, field presence, serialized append authority, SSIAG outcome classes, and exclusions.
 - relationships: depends_on -> `knowledge/stav/MANIFEST.md`; governs -> `modules/stav-append-authority/SPEC.md`; interprets -> `knowledge/ssiag/SPEC.md`
-- consumers: SSIAG, node-troll, qxctl, append-authority implementers, reviewers, agents
+- consumers: SSIAG, optional future producers, qxctl, append-authority implementers, reviewers, agents
 - deferred_projections: signed checkpoints, verifier evidence, query stores
 - notes: Canonical semantic/operational schemas, strict JCS, durability, authenticated listener, read projection, and native supervision are implemented.
 - status: canonical
@@ -2856,7 +2751,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/INTENT.md`; declares -> `knowledge/SPEC.md`; declares -> `knowledge/INVARIANTS.md`; governs -> `libraries/knowledge-vector-engine-cpp/`; governs -> `modules/knowledge-session-coordinator/`; governs -> `modules/skvi-engine/`; governs -> `modules/sclv-engine/`; governs -> future cleared vector-engine module paths
 - consumers: vector maintainers, engine implementers, qxctl, Maestro planners, reviewers, agentic tools
 - deferred_projections: engine inventory, install receipts, Maestro presence graph
-- notes: Foundation/coordinator and all five vector-engine `0.1.0-dev` slices plus Maestro presence exist; SSFV has exactly eighty-nine experimental records, explicit top-level owner-scope coverage, sixty-nine ratified nested features, reviewed F2 and F3 non-feature dispositions, and incomplete remaining nested review.
+- notes: Foundation/coordinator and all five vector-engine `0.1.0-dev` slices plus Maestro presence exist; SSFV has exactly ninety-one experimental records, explicit top-level owner-scope coverage, seventy-one ratified nested features, reviewed F2 and F3 non-feature dispositions, and incomplete remaining nested review.
 - status: canonical
 
 ##### SPEC.md
@@ -2869,7 +2764,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/MANIFEST.md`; governs -> `knowledge/schemas/v1/MANIFEST.md`; governs -> `knowledge/schemas/v2/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/SPEC.md`; governs -> `modules/knowledge-session-coordinator/SPEC.md`; depends_on -> `knowledge/ssiag/SPEC.md`; depends_on -> `knowledge/stav/SPEC.md`
 - consumers: C++ engine and coordinator implementers, qxctl, SSIAG/STAV integrators, reviewers, agentic tools
 - deferred_projections: apply/provider/docking schemas, conformance evidence, engine inventory, docking graph
-- notes: Sixty-six common v1 schemas and four common v2 schemas are canonical; lifecycle profile/runtime persistence, observation, planning, report/apply journal recovery, feature-administration assurance, common invariant ownership, exact staged receipt-v2/runtime/Maestro-presence actions, shared-root ownership fencing, the explicit Linux report-only host receptor, and applied-state commitment are implemented, the eighty-nine-record SSFV catalog is partial, and canonical programmatic apply is disabled.
+- notes: Sixty-six common v1 schemas and five common v2 schemas are canonical; lifecycle profile/runtime persistence, observation, planning, report/apply journal recovery, feature-administration assurance, common invariant ownership, exact staged receipt-v2/runtime/Maestro-presence actions, shared-root ownership fencing, the explicit Linux report-only host receptor, and applied-state commitment are implemented, the ninety-one-record SSFV catalog is partial, and canonical programmatic apply is disabled.
 - status: canonical
 
 ##### SKILL.md
@@ -3086,7 +2981,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: cross-vector common contract
 - truth_role: canonical engine-first administrative coverage, identity, exception, admission, and headless-machine semantics
 - owner: Symphony Knowledge Vector maintainers
-- scope: Defines stable feature, engine-operation, and qxctl-command identities; expected versus observed truth; three-axis coverage; explicit dispositions; third-party module admission; remediation evidence; bounded-envelope capacity posture; and the eighty-nine-record forward gate.
+- scope: Defines stable feature, engine-operation, and qxctl-command identities; expected versus observed truth; three-axis coverage; explicit dispositions; third-party module admission; remediation evidence; bounded-envelope capacity posture; and the ninety-one-record forward gate.
 - relationships: depends_on -> `knowledge/SPEC.md`; depends_on -> `knowledge/INVARIANTS.md`; depends_on -> `knowledge/ssfv/SPEC.md`; governs -> `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`; governs -> `knowledge/schemas/v1/feature-administration-profile.schema.json`; governs -> `knowledge/schemas/v1/qxctl-command-registry.schema.json`; governs -> `knowledge/schemas/v1/administration-coverage-input.schema.json`; governs -> `knowledge/schemas/v1/administration-coverage-result.schema.json`; governs -> `knowledge/schemas/v2/engine-descriptor.schema.json`
 - consumers: independent module developers, SSFV engine, qxctl, validators, reviewers, agentic tools
 - deferred_projections: AI-assisted names, command-design proposals, Cobra scaffolding, and enforce-all-records coverage
@@ -3099,7 +2994,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: cross-vector canonical bootstrap profile
 - truth_role: exact registered-partial-catalog administration review and forward-gate policy
 - owner: Symphony Knowledge Vector maintainers
-- scope: Requires explicit representation of all eighty-nine current SSFV records, treats unreviewed interactions as debt, and defines the active forward-enforcement gate without claiming catalog completeness.
+- scope: Requires explicit representation of all ninety-one current SSFV records, treats unreviewed interactions as debt, and defines the active forward-enforcement gate without claiming catalog completeness.
 - relationships: governed_by -> `knowledge/FEATURE-ADMINISTRATION.md`; derives_from -> `knowledge/ssfv/REGISTRY.md`; declares -> `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`; conforms_to -> `knowledge/schemas/v1/feature-administration-profile.schema.json`
 - consumers: SSFV engine, qxctl, validators, maintainers, reviewers, agentic tools
 - deferred_projections: future complete-catalog adjudication and installed-host inventory closure
@@ -3112,7 +3007,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: checked-in canonical-derived JSON profile
 - truth_role: machine-evaluable report-only bootstrap coverage for the exact current registered SSFV set
 - owner: Symphony Knowledge Vector maintainers
-- scope: Represents all eighty-nine current feature IDs exactly once with 175 reviewed expectations under `enforce_new_records`.
+- scope: Represents all ninety-one current feature IDs exactly once with 179 reviewed expectations under `enforce_new_records`.
 - relationships: governed_by -> `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`; derives_from -> `knowledge/ssfv/REGISTRY.md`; conforms_to -> `knowledge/schemas/v1/feature-administration-profile.schema.json`
 - consumers: SSFV engine, qxctl, validators, direct diagnostic callers, reviewers
 - deferred_projections: complete-catalog and installed-host inventory advancement
@@ -3195,6 +3090,19 @@ Future validator increments may add separately ratified deterministic checks wit
 - consumers: C++ engines, SSFV coverage checking, qxctl, packagers, validators
 - deferred_projections: exact installed-engine operation inventories
 - notes: Descriptor v1 remains exact compatible evidence and is never silently upgraded or rewritten.
+- status: canonical
+
+##### Engine Binding Registry v2 Schema
+- path: `knowledge/schemas/v2/engine-binding-registry.schema.json`
+- title: Symphony Knowledge Engine Binding Registry v2
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical bounded extensible user-scope exact-version selection shape
+- owner: Symphony Knowledge Vector maintainers
+- scope: Preserves exact binding identity, content digests, compare-and-swap continuity, and predecessor protocol while fixing the eight established role mappings and permitting bounded future role representation.
+- relationships: depends_on -> `knowledge/schemas/v2/MANIFEST.md`; governed_by -> `knowledge/LIFECYCLE.md`; coexists_with -> `knowledge/schemas/v1/engine-binding-registry.schema.json`; implemented_by -> `tools/qxctl/internal/knowledgebinding/registry.go`
+- consumers: qxctl, lifecycle administration, compatibility readers, validators, reviewers
+- deferred_projections: repository-, system-, and TOPS-scope binding profiles
+- notes: Registry v1 remains an exact six-role protocol; explicit migration creates a linked v2 generation without selecting a newest installation, while unknown valid v2 roles remain preserved but operationally unusable by an older qxctl.
 - status: canonical
 
 ##### Lifecycle Desired-State Schema
@@ -4388,7 +4296,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, agentic tools
 - deferred_projections: feature catalogs, encyclopedia views, publication inputs, graph views
-- notes: Defines the governing intent for the implemented engine and exact eighty-nine-record partial catalog without granting unratified-record authority.
+- notes: Defines the governing intent for the implemented engine and exact ninety-one-record partial catalog without granting unratified-record authority.
 - status: canonical
 
 ##### MANIFEST.md
@@ -4397,11 +4305,11 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: vector contract truth
 - truth_role: canonical topology, identity, classification, and installability boundary
 - owner: SSFV maintainers
-- scope: Declares owned feature semantics, sparse distributed records, implemented engine identity, explicit coverage inventory, and exact eighty-nine-record partial-catalog state.
+- scope: Declares owned feature semantics, sparse distributed records, implemented engine identity, explicit coverage inventory, and exact ninety-one-record partial-catalog state.
 - relationships: depends_on -> `knowledge/ssfv/INTENT.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, implementers, qxctl planners, packaging planners
 - deferred_projections: installation descriptors and Maestro docking descriptors after separate review
-- notes: The engine module and eighty-nine experimental records are implemented; sixty-nine nested features are ratified while remaining nested review and repository-wide catalog completeness are not claimed.
+- notes: The engine module and ninety-one experimental records are implemented; seventy-one nested features are ratified while remaining nested review and repository-wide catalog completeness are not claimed.
 - status: canonical
 
 ##### SKILL.md
@@ -4427,7 +4335,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: depends_on -> `knowledge/SPEC.md`; checked_by -> `tools/symphony-validator/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, validator
 - deferred_projections: portable JSON graph, catalogs, search, documentation, and analytical views
-- notes: Engine implementation and the exact eighty-nine-record partial catalog are current; every additional record remains separately reviewed and remaining nested coverage remains incomplete.
+- notes: Engine implementation and the exact ninety-one-record partial catalog are current; every additional record remains separately reviewed and remaining nested coverage remains incomplete.
 - status: canonical
 
 ##### NAMESPACES.md
@@ -4449,7 +4357,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - surface_type: canonical distributed-feature routing registry
 - truth_role: canonical mapping from stable feature IDs to owner records
 - owner: SSFV maintainers
-- scope: Defines the exact eight-field registry grammar and routes the eighty-nine records in the current partial feature set.
+- scope: Defines the exact eight-field registry grammar and routes the ninety-one records in the current partial feature set.
 - relationships: depends_on -> `knowledge/ssfv/SPEC.md`
 - consumers: reviewers, SSFV engine, qxctl planners, validator
 - deferred_projections: feature inventories and graph routing
@@ -5604,7 +5512,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: verifies -> `modules/ssfv-engine/src/ssfv.cpp`; conforms_to -> `knowledge/ssfv/SPEC.md`
 - consumers: SSFV engine maintainers, validator, reviewers
 - deferred_projections: none
-- notes: Current canonical assertions cover eighty-nine records and eighteen owner files without claiming completion of the remaining nested review, a frozen derived-edge count, or repository-wide completeness.
+- notes: Current canonical assertions cover ninety-one records and eighteen owner files without claiming completion of the remaining nested review, a frozen derived-edge count, or repository-wide completeness.
 - status: canonical
 
 ### qxctl SCLV Evidence Adapter Command Tests
@@ -6007,7 +5915,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - relationships: governed_by -> `knowledge/ssfv/SPEC.md`; routes_through -> `knowledge/ssfv/REGISTRY.md`
 - consumers: symphony-ssfv, Symphony Validator, qxctl, maintainers, reviewers, agentic tools
 - deferred_projections: remaining nested feature-adjudication inventory
-- notes: Top-level owner routing and sixty-nine exact nested features are covered with reviewed F2 and F3 non-feature dispositions; remaining nested feature, subfeature, microfeature, and non-feature review is incomplete, so coverage is partial.
+- notes: Top-level owner routing and seventy-one exact nested features are covered with reviewed F2 and F3 non-feature dispositions; remaining nested feature, subfeature, microfeature, and non-feature review is incomplete, so coverage is partial.
 - status: canonical
 
 ### STAV Protocol Kernel Semantic Feature Record
@@ -7937,4 +7845,1474 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - consumers: headless administrators, agents, TOPS operators, tests
 - deferred_projections: generalized producer-grant administration
 - notes: qxctl still exposes no arbitrary STAV append operation.
+- status: canonical
+
+### Emerging Vector Architecture and SKV Companions
+
+#### Emerging Vector Architecture
+- path: `knowledge/ARCHITECTURE.md`
+- title: Symphony Emerging Vector Architecture
+- surface_type: SKV architecture companion
+- truth_role: Architect-ratified Phase 2 through Phase 8 vector landscape and shared boundaries
+- owner: Symphony Knowledge Vector maintainers
+- scope: Records delivery phases, enduring vector ownership, Node/Habitat/Nest vocabulary, topology, performance, integration, and explicit deferrals.
+- relationships: depends_on -> `knowledge/INTENT.md`; governs -> `knowledge/sov/INTENT.md`; governs -> `knowledge/scv/INTENT.md`; governs -> `knowledge/snv/INTENT.md`; governs -> `knowledge/sqv/INTENT.md`; governs -> `knowledge/shv/INTENT.md`; governs -> `knowledge/siv/INTENT.md`
+- consumers: humans, agents, reviewers, vector owners, future SODV-governed documentation
+- deferred_projections: task-scoped agent context, architecture graph, official documentation
+- notes: Records settled architecture without making deferred engines or operations implemented.
+- status: canonical
+
+#### Platform Nomenclature
+- path: `knowledge/SLANG.md`
+- title: Symphony Platform Nomenclature
+- surface_type: SKV nomenclature companion
+- truth_role: owner-routed canonical term orientation
+- owner: Symphony Knowledge Vector maintainers
+- scope: Maps preferred platform terms to concise meanings, examples, counterexamples, and exact semantic owners.
+- relationships: depends_on -> `knowledge/MANIFEST.md`; depends_on -> `knowledge/NAMESPACES.md`
+- consumers: humans, agents, reviewers, task-scoped context projections
+- deferred_projections: owner-routed glossary projection
+- notes: Does not duplicate or override owner semantics.
+- status: canonical
+
+#### Identity-Family and Namespace Delegation
+- path: `knowledge/NAMESPACES.md`
+- title: Symphony Identity-Family and Namespace Delegation
+- surface_type: SKV namespace companion
+- truth_role: universal identity-family ownership, delegation, collision, and retirement doctrine
+- owner: Symphony Knowledge Vector maintainers
+- scope: Delegates namespace families to exact owners and preserves stable tombstones without becoming a universal identity issuer.
+- relationships: depends_on -> `knowledge/MANIFEST.md`; delegates -> `knowledge/ssfv/NAMESPACES.md`
+- consumers: vector owners, validators, qxctl maintainers, humans, agents
+- deferred_projections: namespace ownership graph
+- notes: SCNV remains SNV-bounded and SSFV retains its subordinate registry.
+- status: canonical
+
+#### SEV Knowledge-Surface Evolution Profile
+- path: `knowledge/sev/profiles/knowledge-surface-evolution.md`
+- title: SEV Knowledge-Surface Evolution Profile
+- surface_type: documentation-only SEV profile
+- truth_role: consequence profile for canonical surface addition, change, rename, supersession, deprecation, retirement, and removal
+- owner: Symphony Evolution Vector maintainers
+- scope: Composes existing SEV operations and preserves current truth versus historical evidence.
+- relationships: depends_on -> `knowledge/sev/SPEC.md`; depends_on -> `knowledge/SLANG.md`; depends_on -> `knowledge/NAMESPACES.md`
+- consumers: architects, agents, maintainers, reviewers
+- deferred_projections: evolution assessment checklist
+- notes: Creates no new engine or qxctl operation.
+- status: canonical
+
+### Symphony Ops Vector
+
+#### SOV Intent
+- path: `knowledge/sov/INTENT.md`
+- title: Symphony Ops Vector Intent
+- surface_type: vector intent
+- truth_role: SOV purpose, scope, user authority, and non-scope
+- owner: Symphony Ops Vector maintainers
+- scope: Owns supported provisioning, conditioning, delivery, remote-administration, and bus-adapter operation semantics exercised through qxctl.
+- relationships: declares -> `knowledge/sov/MANIFEST.md`; depends_on -> `knowledge/ARCHITECTURE.md`
+- consumers: architects, agents, SOV implementers, qxctl maintainers
+- deferred_projections: SOV architecture graph and official documentation
+- notes: qxctl implements command grammar but does not own SOV semantics.
+- status: canonical
+
+#### SOV Manifest
+- path: `knowledge/sov/MANIFEST.md`
+- title: Symphony Ops Vector Manifest
+- surface_type: vector manifest
+- truth_role: declared SOV contract truth and implementation posture
+- owner: Symphony Ops Vector maintainers
+- scope: Declares SOV canonical surfaces, language boundary, independent installability, and non-authorizations.
+- relationships: depends_on -> `knowledge/sov/INTENT.md`; declares -> `knowledge/sov/SPEC.md`; declares -> `knowledge/sov/SKILL.md`; declares -> `knowledge/sov/PRIMA-PARTE.md`; declares -> `knowledge/sov/REMOTE-QXCTL.md`
+- consumers: SKVI, agents, reviewers, future SOV implementations
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: Claims no implemented SOV engine or operation.
+- status: canonical
+
+#### SOV Specification
+- path: `knowledge/sov/SPEC.md`
+- title: Symphony Ops Vector Specification
+- surface_type: vector specification
+- truth_role: normative SOV domain, compatibility, remote-operation, bus, and thermal boundaries
+- owner: Symphony Ops Vector maintainers
+- scope: Defines obligations for exact user-selected SOV transactions without creating operation schemas.
+- relationships: depends_on -> `knowledge/sov/MANIFEST.md`; depends_on -> `knowledge/scv/SPEC.md`; depends_on -> `knowledge/snv/SPEC.md`
+- consumers: architects, implementers, qxctl, agents, reviewers
+- deferred_projections: operation contracts and compatibility evidence
+- notes: Authorizes no provider, remote, package, bus, or live-Nest mutation.
+- status: canonical
+
+#### SOV Skill
+- path: `knowledge/sov/SKILL.md`
+- title: Symphony Ops Vector Skill
+- surface_type: vector skill guidance
+- truth_role: safe agent and implementation procedure for SOV work
+- owner: Symphony Ops Vector maintainers
+- scope: Routes exact targets, evidence, authority, compatibility, recovery, and cross-vector consequences.
+- relationships: depends_on -> `knowledge/sov/SPEC.md`; depends_on -> `knowledge/SLANG.md`; depends_on -> `knowledge/NAMESPACES.md`
+- consumers: agents, implementers, reviewers
+- deferred_projections: task-scoped SOV context
+- notes: Requires Architect review before a remote technology or mutation is selected.
+- status: canonical
+
+#### Prima Parte
+- path: `knowledge/sov/PRIMA-PARTE.md`
+- title: Prima Parte Node-Local State Witness
+- surface_type: SOV component companion
+- truth_role: Phase 3 zero-resident Node-local state-witness contract
+- owner: Symphony Ops Vector maintainers
+- scope: Defines optional bounded C++ observation, durable current/previous/lastTransmitted and pending state, explicit retry semantics, transmission meaning, and a qxctl-addressable surface distinct from the Phase 1 Maestro receptor.
+- relationships: depends_on -> `knowledge/sov/SPEC.md`; depends_on -> `modules/maestro/SPEC.md`; may_publish -> `knowledge/sodv/SPEC.md`
+- consumers: Phase 3 designers, qxctl designers, Maestro maintainers, agents
+- deferred_projections: component Contract Quad and C++ implementation
+- notes: Records a ratified concept; no executable or command exists.
+- status: canonical
+
+#### Remote qxctl Research
+- path: `knowledge/sov/REMOTE-QXCTL.md`
+- title: Remote qxctl Architecture Research Contract
+- surface_type: SOV research companion
+- truth_role: bounded Phase 2 research questions and supported deployment arrangements
+- owner: Symphony Ops Vector maintainers
+- scope: Preserves controller-side, target-installed, and operation-staged qxctl possibilities without selecting an exact transport or work split while retaining the ratified IPC-family preference and scoped remote-CLI fallback.
+- relationships: depends_on -> `knowledge/sov/SPEC.md`; depends_on -> `tools/qxctl/INTENT.md`
+- consumers: Phase 2 designers, qxctl maintainers, security reviewers, agents
+- deferred_projections: ratified remote-operation protocols
+- notes: IPC is preferred where suitable; no listener, general shell, or remote execution is authorized.
+- status: canonical
+
+### Symphony Cloud Vector
+
+#### SCV Intent
+- path: `knowledge/scv/INTENT.md`
+- title: Symphony Cloud Vector Intent
+- surface_type: vector intent
+- truth_role: SCV purpose, provider neutrality, private scope, and relationships
+- owner: Symphony Cloud Vector maintainers
+- scope: Owns private provider/offsite resource knowledge and hybrid possibility without ranking providers.
+- relationships: declares -> `knowledge/scv/MANIFEST.md`; depends_on -> `knowledge/ARCHITECTURE.md`
+- consumers: architects, agents, SCV and SOV designers
+- deferred_projections: provider-reality graph and private query surfaces
+- notes: Private installation facts do not rewrite official source truth.
+- status: canonical
+
+#### SCV Manifest
+- path: `knowledge/scv/MANIFEST.md`
+- title: Symphony Cloud Vector Manifest
+- surface_type: vector manifest
+- truth_role: declared SCV truth, planned C++ graph-engine character, and non-authorizations
+- owner: Symphony Cloud Vector maintainers
+- scope: Declares reproducible installation-local provider knowledge without selecting graph technology.
+- relationships: depends_on -> `knowledge/scv/INTENT.md`; declares -> `knowledge/scv/SPEC.md`; declares -> `knowledge/scv/SKILL.md`
+- consumers: SKVI, agents, reviewers, future SCV implementers
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: Claims no provider access, graph, engine, or API implementation.
+- status: canonical
+
+#### SCV Specification
+- path: `knowledge/scv/SPEC.md`
+- title: Symphony Cloud Vector Specification
+- surface_type: vector specification
+- truth_role: provider evidence, user-choice, privacy, graph, and SOV relationship boundary
+- owner: Symphony Cloud Vector maintainers
+- scope: States future knowledge-model obligations without ratifying an ontology or operation.
+- relationships: depends_on -> `knowledge/scv/MANIFEST.md`; composes_with -> `knowledge/sov/SPEC.md`; composes_with -> `knowledge/snv/SPEC.md`; composes_with -> `knowledge/shv/SPEC.md`
+- consumers: architects, implementers, agents, private installations
+- deferred_projections: C++ graph contracts and private APIs
+- notes: Account information is observed only through future explicit private surfaces.
+- status: canonical
+
+#### SCV Skill
+- path: `knowledge/scv/SKILL.md`
+- title: Symphony Cloud Vector Skill
+- surface_type: vector skill guidance
+- truth_role: evidence-aware provider-neutral research procedure
+- owner: Symphony Cloud Vector maintainers
+- scope: Separates provider fact, private observation, user declaration, derived comparison, and SOV authority.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`; depends_on -> `knowledge/SLANG.md`
+- consumers: agents, researchers, implementers, reviewers
+- deferred_projections: task-scoped SCV context
+- notes: Stops before ontology, scoring, persistence, or operation choices.
+- status: canonical
+
+### Symphony Node Vector
+
+#### SNV Intent
+- path: `knowledge/snv/INTENT.md`
+- title: Symphony Node Vector Intent
+- surface_type: vector intent
+- truth_role: SNV composition, recording boundary, and cross-vector relationships
+- owner: Symphony Node Vector maintainers
+- scope: Owns the relationship among Node identity, resources, clusters, and SNV-bounded names.
+- relationships: declares -> `knowledge/snv/MANIFEST.md`; depends_on -> `knowledge/ARCHITECTURE.md`
+- consumers: architects, agents, SOV/SCV/SHV designers, future SNV implementers
+- deferred_projections: Node relationship graph
+- notes: SNV records facts and does not issue names or provision Nodes.
+- status: canonical
+
+#### SNV Manifest
+- path: `knowledge/snv/MANIFEST.md`
+- title: Symphony Node Vector Manifest
+- surface_type: vector manifest
+- truth_role: SNV composition and canonical-surface declaration
+- owner: Symphony Node Vector maintainers
+- scope: Declares SNIV, SNRV, SCIV, and SCNV as separately owned SNV subvectors.
+- relationships: depends_on -> `knowledge/snv/INTENT.md`; declares -> `knowledge/snv/SPEC.md`; declares -> `knowledge/snv/SKILL.md`; declares -> `knowledge/snv/sniv/MANIFEST.md`; declares -> `knowledge/snv/snrv/MANIFEST.md`; declares -> `knowledge/snv/sciv/MANIFEST.md`; declares -> `knowledge/snv/scnv/MANIFEST.md`
+- consumers: SKVI, agents, reviewers, future SNV implementations
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: Claims no engine, registry, discovery, or naming service.
+- status: canonical
+
+#### SNV Specification
+- path: `knowledge/snv/SPEC.md`
+- title: Symphony Node Vector Specification
+- surface_type: vector specification
+- truth_role: physical continuity, incarnation, cluster, naming, and subvector separation
+- owner: Symphony Node Vector maintainers
+- scope: Defines shared SNV rules without collapsing identity, resources, cluster membership, or names.
+- relationships: depends_on -> `knowledge/snv/MANIFEST.md`; governs -> `knowledge/snv/sniv/SPEC.md`; governs -> `knowledge/snv/snrv/SPEC.md`; governs -> `knowledge/snv/sciv/SPEC.md`; governs -> `knowledge/snv/scnv/SPEC.md`
+- consumers: architects, agents, implementers, reviewers
+- deferred_projections: versioned SNV records and graph
+- notes: Exact record schemas and identifiers remain deferred.
+- status: canonical
+
+#### SNV Skill
+- path: `knowledge/snv/SKILL.md`
+- title: Symphony Node Vector Skill
+- surface_type: vector skill guidance
+- truth_role: agent routing across SNIV, SNRV, SCIV, and SCNV
+- owner: Symphony Node Vector maintainers
+- scope: Separates physical identity, resources, incarnation, connectivity, and names before analysis.
+- relationships: depends_on -> `knowledge/snv/SPEC.md`; depends_on -> `knowledge/SLANG.md`; depends_on -> `knowledge/NAMESPACES.md`
+- consumers: agents, implementers, reviewers
+- deferred_projections: task-scoped SNV context
+- notes: Stops before identifier, grammar, discovery, or cardinality invention.
+- status: canonical
+
+### Symphony Node Identity Vector
+
+#### SNIV Intent
+- path: `knowledge/snv/sniv/INTENT.md`
+- title: Symphony Node Identity Vector Intent
+- surface_type: subvector intent
+- truth_role: physical Node identity and continuity purpose
+- owner: Symphony Node Identity Vector maintainers
+- scope: Distinguishes physical, provider-resource, selected-offering, infrastructure-domain, Symphony, and incarnation identity evidence.
+- relationships: declares -> `knowledge/snv/sniv/MANIFEST.md`; depends_on -> `knowledge/snv/INTENT.md`
+- consumers: SNV, SOV, SCV, SHV, agents
+- deferred_projections: Node identity lineage
+- notes: Does not own resources, clusters, or name resolution.
+- status: canonical
+
+#### SNIV Manifest
+- path: `knowledge/snv/sniv/MANIFEST.md`
+- title: Symphony Node Identity Vector Manifest
+- surface_type: subvector manifest
+- truth_role: declared SNIV truth and implementation posture
+- owner: Symphony Node Identity Vector maintainers
+- scope: Declares the SNIV Contract Quad and non-authorizations.
+- relationships: depends_on -> `knowledge/snv/sniv/INTENT.md`; declares -> `knowledge/snv/sniv/SPEC.md`; declares -> `knowledge/snv/sniv/SKILL.md`
+- consumers: SKVI, agents, reviewers, future SNIV implementation
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: Claims no registry, encoder, probe, engine, or command.
+- status: canonical
+
+#### SNIV Specification
+- path: `knowledge/snv/sniv/SPEC.md`
+- title: Symphony Node Identity Vector Specification
+- surface_type: subvector specification
+- truth_role: Node replacement, provider-resource boundary, material local change, software continuity, remote attachment, and incarnation rules
+- owner: Symphony Node Identity Vector maintainers
+- scope: Defines ratified physical continuity without selecting evidence precedence or identifier encoding.
+- relationships: depends_on -> `knowledge/snv/sniv/MANIFEST.md`; refines -> `knowledge/snv/SPEC.md`
+- consumers: SNV, SOV, Prima Parte designers, agents
+- deferred_projections: identity record schemas
+- notes: Absent identity remains unresolved or theoretical.
+- status: canonical
+
+#### SNIV Skill
+- path: `knowledge/snv/sniv/SKILL.md`
+- title: Symphony Node Identity Vector Skill
+- surface_type: subvector skill guidance
+- truth_role: evidence-safe Node identity procedure
+- owner: Symphony Node Identity Vector maintainers
+- scope: Separates identity domains and classifies physical, software-only, and remote-attachment changes.
+- relationships: depends_on -> `knowledge/snv/sniv/SPEC.md`
+- consumers: agents, implementers, reviewers
+- deferred_projections: task-scoped identity context
+- notes: Prohibits inferred identifier syntax and authority.
+- status: canonical
+
+### Symphony Node Resource Vector
+
+#### SNRV Intent
+- path: `knowledge/snv/snrv/INTENT.md`
+- title: Symphony Node Resource Vector Intent
+- surface_type: subvector intent
+- truth_role: local and qualified remote Node resource purpose
+- owner: Symphony Node Resource Vector maintainers
+- scope: Records evidenced installation-local resource composition associated with an SNIV-identified Node.
+- relationships: declares -> `knowledge/snv/snrv/MANIFEST.md`; depends_on -> `knowledge/snv/INTENT.md`
+- consumers: SNV, SOV, SCV, SHV, agents
+- deferred_projections: Node resource inventory
+- notes: Does not identify or allocate the Node.
+- status: canonical
+
+#### SNRV Manifest
+- path: `knowledge/snv/snrv/MANIFEST.md`
+- title: Symphony Node Resource Vector Manifest
+- surface_type: subvector manifest
+- truth_role: declared SNRV truth and implementation posture
+- owner: Symphony Node Resource Vector maintainers
+- scope: Declares local-resource and qualified remote-attachment ownership.
+- relationships: depends_on -> `knowledge/snv/snrv/INTENT.md`; declares -> `knowledge/snv/snrv/SPEC.md`; declares -> `knowledge/snv/snrv/SKILL.md`
+- consumers: SKVI, agents, reviewers, future SNRV implementation
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: `::` grammar, inventory, engine, and commands remain unimplemented.
+- status: canonical
+
+#### SNRV Specification
+- path: `knowledge/snv/snrv/SPEC.md`
+- title: Symphony Node Resource Vector Specification
+- surface_type: subvector specification
+- truth_role: local physical, software, and remote resource distinction
+- owner: Symphony Node Resource Vector maintainers
+- scope: Records material local hardware separately from software and explicitly qualified remote attachments.
+- relationships: depends_on -> `knowledge/snv/snrv/MANIFEST.md`; composes_with -> `knowledge/shv/SPEC.md`; refines -> `knowledge/snv/SPEC.md`
+- consumers: SNV, SOV, SHV, agents
+- deferred_projections: resource schemas and exact remote notation
+- notes: Reserves the `::` concept without inventing its grammar.
+- status: canonical
+
+#### SNRV Skill
+- path: `knowledge/snv/snrv/SKILL.md`
+- title: Symphony Node Resource Vector Skill
+- surface_type: subvector skill guidance
+- truth_role: resource classification and owner-routing procedure
+- owner: Symphony Node Resource Vector maintainers
+- scope: Separates local hardware, Habitat/software state, and remote attachments.
+- relationships: depends_on -> `knowledge/snv/snrv/SPEC.md`
+- consumers: agents, implementers, reviewers
+- deferred_projections: task-scoped resource context
+- notes: Stops before grammar, probe, materiality algorithm, or scoring.
+- status: canonical
+
+### Symphony Cluster Identity Vector
+
+#### SCIV Intent
+- path: `knowledge/snv/sciv/INTENT.md`
+- title: Symphony Cluster Identity Vector Intent
+- surface_type: subvector intent
+- truth_role: cluster identity and bus-connectivity purpose
+- owner: Symphony Cluster Identity Vector maintainers
+- scope: Records cluster identity and the bus-connected relationships through which Nodes form it.
+- relationships: declares -> `knowledge/snv/sciv/MANIFEST.md`; depends_on -> `knowledge/snv/INTENT.md`
+- consumers: SNV, SOV, SCV, agents
+- deferred_projections: cluster connectivity graph
+- notes: Does not create a cluster or infer observed connectivity from intent.
+- status: canonical
+
+#### SCIV Manifest
+- path: `knowledge/snv/sciv/MANIFEST.md`
+- title: Symphony Cluster Identity Vector Manifest
+- surface_type: subvector manifest
+- truth_role: declared SCIV truth and implementation posture
+- owner: Symphony Cluster Identity Vector maintainers
+- scope: Declares cluster identity and evidenced bus-connectivity ownership.
+- relationships: depends_on -> `knowledge/snv/sciv/INTENT.md`; declares -> `knowledge/snv/sciv/SPEC.md`; declares -> `knowledge/snv/sciv/SKILL.md`
+- consumers: SKVI, agents, reviewers, future SCIV implementation
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: Claims no registry, observer, graph engine, or command.
+- status: canonical
+
+#### SCIV Specification
+- path: `knowledge/snv/sciv/SPEC.md`
+- title: Symphony Cluster Identity Vector Specification
+- surface_type: subvector specification
+- truth_role: bus-connected cluster condition and relationship boundary
+- owner: Symphony Cluster Identity Vector maintainers
+- scope: Defines a cluster as multiple Nodes connected by one or more buses and preserves alternate-bus relationships.
+- relationships: depends_on -> `knowledge/snv/sciv/MANIFEST.md`; refines -> `knowledge/snv/SPEC.md`
+- consumers: SNV, SOV, bus-adapter designers, agents
+- deferred_projections: cluster membership and connectivity schemas
+- notes: Disconnection retention rules remain deferred.
+- status: canonical
+
+#### SCIV Skill
+- path: `knowledge/snv/sciv/SKILL.md`
+- title: Symphony Cluster Identity Vector Skill
+- surface_type: subvector skill guidance
+- truth_role: evidence-safe cluster identity procedure
+- owner: Symphony Cluster Identity Vector maintainers
+- scope: Resolves Nodes, cluster identity, and observed bus relationships without multiplying clusters by bus count.
+- relationships: depends_on -> `knowledge/snv/sciv/SPEC.md`
+- consumers: agents, implementers, reviewers
+- deferred_projections: task-scoped cluster context
+- notes: Stops before membership lifecycle, polling, routing, or creation behavior.
+- status: canonical
+
+### Symphony Consolidated Naming Vector
+
+#### SCNV Intent
+- path: `knowledge/snv/scnv/INTENT.md`
+- title: Symphony Consolidated Naming Vector Intent
+- surface_type: subvector intent
+- truth_role: SNV-bounded name association and resolution purpose
+- owner: Symphony Consolidated Naming Vector maintainers
+- scope: Maps different names already associated with one SNV subject within valid scope.
+- relationships: declares -> `knowledge/snv/scnv/MANIFEST.md`; depends_on -> `knowledge/snv/INTENT.md`
+- consumers: SNV, SOV, qxctl designers, agents
+- deferred_projections: scoped name-resolution view
+- notes: Is not Symphony's universal namespace authority.
+- status: canonical
+
+#### SCNV Manifest
+- path: `knowledge/snv/scnv/MANIFEST.md`
+- title: Symphony Consolidated Naming Vector Manifest
+- surface_type: subvector manifest
+- truth_role: declared SCNV truth and universal-namespace boundary
+- owner: Symphony Consolidated Naming Vector maintainers
+- scope: Owns only SNV-bounded name association and resolution.
+- relationships: depends_on -> `knowledge/snv/scnv/INTENT.md`; declares -> `knowledge/snv/scnv/SPEC.md`; declares -> `knowledge/snv/scnv/SKILL.md`; depends_on -> `knowledge/NAMESPACES.md`
+- consumers: SKVI, agents, reviewers, future SCNV implementation
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: Claims no registry, resolver, service, engine, or command.
+- status: canonical
+
+#### SCNV Specification
+- path: `knowledge/snv/scnv/SPEC.md`
+- title: Symphony Consolidated Naming Vector Specification
+- surface_type: subvector specification
+- truth_role: scoped name fields, ambiguity, qualification, reuse, and universal-namespace separation
+- owner: Symphony Consolidated Naming Vector maintainers
+- scope: Makes provider, infrastructure, Symphony, cluster, nickname, and short-name facts resolvable without collapsing them.
+- relationships: depends_on -> `knowledge/snv/scnv/MANIFEST.md`; refines -> `knowledge/snv/SPEC.md`; depends_on -> `knowledge/NAMESPACES.md`
+- consumers: SNV, SOV, qxctl designers, agents
+- deferred_projections: scoped resolver schema
+- notes: Resolution is not physical-identity or operational proof.
+- status: canonical
+
+#### SCNV Skill
+- path: `knowledge/snv/scnv/SKILL.md`
+- title: Symphony Consolidated Naming Vector Skill
+- surface_type: subvector skill guidance
+- truth_role: scope-safe name consolidation procedure
+- owner: Symphony Consolidated Naming Vector maintainers
+- scope: Preserves source, scope, lifecycle, qualification, ambiguity, and retired-name reuse.
+- relationships: depends_on -> `knowledge/snv/scnv/SPEC.md`
+- consumers: agents, implementers, reviewers
+- deferred_projections: task-scoped naming context
+- notes: Stops before issuing names or defining universal namespaces.
+- status: canonical
+
+### Symphony Quantitative Vector
+
+#### SQV Intent
+- path: `knowledge/sqv/INTENT.md`
+- title: Symphony Quantitative Vector Intent
+- surface_type: vector intent
+- truth_role: quantitative framework purpose and user-strategy boundary
+- owner: Symphony Quantitative Vector maintainers
+- scope: Owns reusable Symphony quantitative framework contracts while leaving strategy logic entirely to the user.
+- relationships: declares -> `knowledge/sqv/MANIFEST.md`; depends_on -> `knowledge/ARCHITECTURE.md`
+- consumers: quantitative developers, researchers, traders, agents, future SQV implementers
+- deferred_projections: quantitative component map
+- notes: SOOV is the first named SQV subvector.
+- status: canonical
+
+#### SQV Manifest
+- path: `knowledge/sqv/MANIFEST.md`
+- title: Symphony Quantitative Vector Manifest
+- surface_type: vector manifest
+- truth_role: declared SQV truth and implementation posture
+- owner: Symphony Quantitative Vector maintainers
+- scope: Declares the SQV and SOOV Contract Quads without claiming runtime implementation.
+- relationships: depends_on -> `knowledge/sqv/INTENT.md`; declares -> `knowledge/sqv/SPEC.md`; declares -> `knowledge/sqv/SKILL.md`; declares -> `knowledge/sqv/soov/MANIFEST.md`
+- consumers: SKVI, agents, reviewers, future SQV implementations
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: Claims no strategy, FIX, broker, data, backtesting, indicator, or stream engine.
+- status: canonical
+
+#### SQV Specification
+- path: `knowledge/sqv/SPEC.md`
+- title: Symphony Quantitative Vector Specification
+- surface_type: vector specification
+- truth_role: framework, thermal, API-version, FIX separation, and reusable-engine boundaries
+- owner: Symphony Quantitative Vector maintainers
+- scope: Preserves user strategy sovereignty and exact compatibility across optional quantitative framework components.
+- relationships: depends_on -> `knowledge/sqv/MANIFEST.md`; governs -> `knowledge/sqv/soov/SPEC.md`; composes_with -> `knowledge/sov/SPEC.md`
+- consumers: architects, quantitative developers, agents, implementers
+- deferred_projections: future SQV component contracts
+- notes: Defines no universal feed, strategy, broker, persistence, or exhaust behavior.
+- status: canonical
+
+#### SQV Skill
+- path: `knowledge/sqv/SKILL.md`
+- title: Symphony Quantitative Vector Skill
+- surface_type: vector skill guidance
+- truth_role: user-sovereign quantitative design procedure
+- owner: Symphony Quantitative Vector maintainers
+- scope: Separates reusable Symphony framework concerns from third-party strategy decisions.
+- relationships: depends_on -> `knowledge/sqv/SPEC.md`; depends_on -> `knowledge/SLANG.md`
+- consumers: agents, quantitative developers, implementers, reviewers
+- deferred_projections: task-scoped SQV context
+- notes: Stops before strategy, FIX, broker, feed, backtest, or engine-name invention.
+- status: canonical
+
+### Symphony Orchestra Omega Vector
+
+#### SOOV Intent
+- path: `knowledge/sqv/soov/INTENT.md`
+- title: Symphony Orchestra Omega Vector Intent
+- surface_type: subvector intent
+- truth_role: C++-only FIX architecture purpose and historic-source boundary
+- owner: Symphony Orchestra Omega Vector maintainers
+- scope: Owns future Symphony-authored FIX framework surfaces beneath SQV.
+- relationships: declares -> `knowledge/sqv/soov/MANIFEST.md`; depends_on -> `knowledge/sqv/INTENT.md`
+- consumers: FIX architects, quantitative developers, agents, reviewers
+- deferred_projections: detailed SOOV architecture
+- notes: Historic QuanuX FIX work is research input, not automatic canon.
+- status: canonical
+
+#### SOOV Manifest
+- path: `knowledge/sqv/soov/MANIFEST.md`
+- title: Symphony Orchestra Omega Vector Manifest
+- surface_type: subvector manifest
+- truth_role: SOOV ownership, C++ language, implementation, and non-authorization boundary
+- owner: Symphony Orchestra Omega Vector maintainers
+- scope: Declares the SOOV Contract Quad and high-performance C++-only runtime direction.
+- relationships: depends_on -> `knowledge/sqv/soov/INTENT.md`; declares -> `knowledge/sqv/soov/SPEC.md`; declares -> `knowledge/sqv/soov/SKILL.md`
+- consumers: SKVI, agents, reviewers, future SOOV implementation
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: Claims no executable, schema, FIX dictionary, session, transport, or broker adapter.
+- status: canonical
+
+#### SOOV Specification
+- path: `knowledge/sqv/soov/SPEC.md`
+- title: Symphony Orchestra Omega Vector Specification
+- surface_type: subvector specification
+- truth_role: FIX standards, performance, language, and deferred-design boundary
+- owner: Symphony Orchestra Omega Vector maintainers
+- scope: Preserves FIX-specific semantics and exact native compatibility without inventing message or session behavior.
+- relationships: depends_on -> `knowledge/sqv/soov/MANIFEST.md`; refines -> `knowledge/sqv/SPEC.md`
+- consumers: FIX architects, C++ implementers, agents, reviewers
+- deferred_projections: FIX component and protocol contracts
+- notes: Authorizes no connection, subscription, order, conformance, or certification claim.
+- status: canonical
+
+#### SOOV Skill
+- path: `knowledge/sqv/soov/SKILL.md`
+- title: Symphony Orchestra Omega Vector Skill
+- surface_type: subvector skill guidance
+- truth_role: evidence-safe historic FIX architecture research procedure
+- owner: Symphony Orchestra Omega Vector maintainers
+- scope: Routes applicable FIX standards, counterparty profiles, user boundaries, and exact native compatibility.
+- relationships: depends_on -> `knowledge/sqv/soov/SPEC.md`
+- consumers: agents, FIX architects, C++ implementers, reviewers
+- deferred_projections: task-scoped SOOV context
+- notes: Requires Architect ratification before component behavior or names.
+- status: canonical
+
+### Symphony Hardware Vector
+
+#### SHV Intent
+- path: `knowledge/shv/INTENT.md`
+- title: Symphony Hardware Vector Intent
+- surface_type: vector intent
+- truth_role: hardware capability knowledge purpose and scope
+- owner: Symphony Hardware Vector maintainers
+- scope: Owns evidenced processor, CPU, GPU, NIC, motherboard, cache, memory, NVMe, fibre, and complete-system capability knowledge.
+- relationships: declares -> `knowledge/shv/MANIFEST.md`; depends_on -> `knowledge/ARCHITECTURE.md`
+- consumers: quantitative developers, researchers, SNV, SCV, SOV, agents
+- deferred_projections: Hardware Capability Atlas graph
+- notes: Initial research concentrates on roughly ten years of relevant hardware.
+- status: canonical
+
+#### SHV Manifest
+- path: `knowledge/shv/MANIFEST.md`
+- title: Symphony Hardware Vector Manifest
+- surface_type: vector manifest
+- truth_role: Hardware Capability Atlas ownership, planned C++ engine, reproducibility, and non-authorizations
+- owner: Symphony Hardware Vector maintainers
+- scope: Declares one SHV semantic vector that may contain multiple cooperating implementation components.
+- relationships: depends_on -> `knowledge/shv/INTENT.md`; declares -> `knowledge/shv/SPEC.md`; declares -> `knowledge/shv/SKILL.md`
+- consumers: SKVI, agents, reviewers, future SHV implementation
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: Claims no graph technology, ontology, ingestion, API, or engine implementation.
+- status: canonical
+
+#### SHV Specification
+- path: `knowledge/shv/SPEC.md`
+- title: Symphony Hardware Vector Specification
+- surface_type: vector specification
+- truth_role: hardware evidence, design-use, SNV/SCV relationship, graph, and query boundaries
+- owner: Symphony Hardware Vector maintainers
+- scope: Identifies future capability-knowledge dimensions without fixing an ontology or benchmark authority.
+- relationships: depends_on -> `knowledge/shv/MANIFEST.md`; composes_with -> `knowledge/snv/snrv/SPEC.md`; composes_with -> `knowledge/scv/SPEC.md`
+- consumers: quantitative developers, researchers, agents, future C++ engine
+- deferred_projections: reproducible graph, AI connection, and private API
+- notes: Does not select hardware or author algorithms.
+- status: canonical
+
+#### SHV Skill
+- path: `knowledge/shv/SKILL.md`
+- title: Symphony Hardware Vector Skill
+- surface_type: vector skill guidance
+- truth_role: provenance-aware hardware research procedure
+- owner: Symphony Hardware Vector maintainers
+- scope: Separates vendor specification, measurement, derived comparison, Node identity, and provider offering truth.
+- relationships: depends_on -> `knowledge/shv/SPEC.md`; depends_on -> `knowledge/SLANG.md`
+- consumers: agents, researchers, implementers, reviewers
+- deferred_projections: task-scoped SHV context
+- notes: Stops before ontology, scoring, API, probe, or purchasing recommendation.
+- status: canonical
+
+### Symphony Intelligence Vector
+
+#### SIV Intent
+- path: `knowledge/siv/INTENT.md`
+- title: Symphony Intelligence Vector Intent
+- surface_type: vector intent
+- truth_role: agentic collaboration, context, communication, and naming boundary
+- owner: Symphony Intelligence Vector maintainers
+- scope: Owns future local/remote agentic collaboration while SAV remains Accordare and SAIV remains reserved.
+- relationships: declares -> `knowledge/siv/MANIFEST.md`; depends_on -> `knowledge/ARCHITECTURE.md`
+- consumers: agent architects, agents, qxctl designers, reviewers
+- deferred_projections: SIV collaboration architecture
+- notes: The older AI working paper is nonconclusive research input.
+- status: canonical
+
+#### SIV Manifest
+- path: `knowledge/siv/MANIFEST.md`
+- title: Symphony Intelligence Vector Manifest
+- surface_type: vector manifest
+- truth_role: SIV ownership, reserved SAIV, language, implementation, and authority boundary
+- owner: Symphony Intelligence Vector maintainers
+- scope: Declares the SIV and SMCV Contract Quads without imposing Rust or claiming runtime capability.
+- relationships: depends_on -> `knowledge/siv/INTENT.md`; declares -> `knowledge/siv/SPEC.md`; declares -> `knowledge/siv/SKILL.md`; declares -> `knowledge/siv/smcv/MANIFEST.md`
+- consumers: SKVI, agents, reviewers, future SIV implementations
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: Claims no harness, model, mail, memory, SAIV, translator, or qxctl implementation.
+- status: canonical
+
+#### SIV Specification
+- path: `knowledge/siv/SPEC.md`
+- title: Symphony Intelligence Vector Specification
+- surface_type: vector specification
+- truth_role: agentic-first, owner-truth, future-capability, context, IPC, and authority boundary
+- owner: Symphony Intelligence Vector maintainers
+- scope: Defines how future agentic capabilities consume owner contracts without duplicating them or entering the hot path.
+- relationships: depends_on -> `knowledge/siv/MANIFEST.md`; governs -> `knowledge/siv/smcv/SPEC.md`; depends_on -> `knowledge/SLANG.md`; depends_on -> `knowledge/NAMESPACES.md`
+- consumers: agent architects, qxctl designers, agents, reviewers
+- deferred_projections: task-scoped agent context and collaboration protocols
+- notes: Chooses no agent framework, memory, IPC, language, or model provider.
+- status: canonical
+
+#### SIV Skill
+- path: `knowledge/siv/SKILL.md`
+- title: Symphony Intelligence Vector Skill
+- surface_type: vector skill guidance
+- truth_role: owner-routed context and caller-neutral agent procedure
+- owner: Symphony Intelligence Vector maintainers
+- scope: Separates canonical truth, runtime evidence, private state, derived context, and model output.
+- relationships: depends_on -> `knowledge/siv/SPEC.md`; depends_on -> `knowledge/SLANG.md`; depends_on -> `knowledge/NAMESPACES.md`
+- consumers: agents, implementers, reviewers
+- deferred_projections: task-scoped SIV context
+- notes: Stops before framework, memory, IPC, language, model, authority, or SAIV behavior choices.
+- status: canonical
+
+#### SMCV Intent
+- path: `knowledge/siv/smcv/INTENT.md`
+- title: Symphony Markdown Conversion Vector Intent
+- surface_type: subvector intent
+- truth_role: optional model-facing Markdown translation purpose
+- owner: Symphony Markdown Conversion Vector maintainers
+- scope: Allows an enabled agent IPC exchange to remain precise Markdown while mapping to an exact owner format.
+- relationships: declares -> `knowledge/siv/smcv/MANIFEST.md`; depends_on -> `knowledge/siv/INTENT.md`
+- consumers: agents, SIV, qxctl designers, IPC owners
+- deferred_projections: exact Markdown mapping profiles
+- notes: Does not replace JSON, repair invalid data, or become required.
+- status: canonical
+
+#### SMCV Manifest
+- path: `knowledge/siv/smcv/MANIFEST.md`
+- title: Symphony Markdown Conversion Vector Manifest
+- surface_type: subvector manifest
+- truth_role: optional representation-translation ownership and non-authorizations
+- owner: Symphony Markdown Conversion Vector maintainers
+- scope: Owns only translation between precise Markdown and a separately owned IPC format.
+- relationships: depends_on -> `knowledge/siv/smcv/INTENT.md`; declares -> `knowledge/siv/smcv/SPEC.md`; declares -> `knowledge/siv/smcv/SKILL.md`
+- consumers: SKVI, agents, reviewers, future SMCV implementation
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: Claims no grammar, schema, translator, qxctl flag, adapter, or model integration.
+- status: canonical
+
+#### SMCV Specification
+- path: `knowledge/siv/smcv/SPEC.md`
+- title: Symphony Markdown Conversion Vector Specification
+- surface_type: subvector specification
+- truth_role: lossless mapping, qxctl, protocol, and thermal boundary
+- owner: Symphony Markdown Conversion Vector maintainers
+- scope: Preserves exact owner-format identity, types, bounds, versions, errors, and unknown-critical rejection across conversion.
+- relationships: depends_on -> `knowledge/siv/smcv/MANIFEST.md`; refines -> `knowledge/siv/SPEC.md`; composes_with -> `tools/qxctl/INTENT.md`
+- consumers: SIV, IPC owners, agents, qxctl designers
+- deferred_projections: mapping schemas and qxctl controls
+- notes: Conversion is not semantic validity, authority, or execution.
+- status: canonical
+
+#### SMCV Skill
+- path: `knowledge/siv/smcv/SKILL.md`
+- title: Symphony Markdown Conversion Vector Skill
+- surface_type: subvector skill guidance
+- truth_role: exact versioned lossless-conversion procedure
+- owner: Symphony Markdown Conversion Vector maintainers
+- scope: Requires source/destination contracts and separates conversion from validation, authorization, transmission, and execution.
+- relationships: depends_on -> `knowledge/siv/smcv/SPEC.md`
+- consumers: agents, implementers, reviewers
+- deferred_projections: task-scoped mapping context
+- notes: Stops before grammar, defaults, repair, command names, transport, persistence, or hot-path use.
+- status: canonical
+
+
+### Phase 1 Canonical-Surface Closure Repair
+
+#### STAV Invalid Candidate Duplicate-Key Fixture
+- path: `knowledge/stav/fixtures/v1/invalid/candidate-duplicate-key.json`
+- title: STAV Invalid Candidate Duplicate-Key Fixture
+- surface_type: canonical negative conformance fixture
+- truth_role: STAV v1 duplicate-key rejection evidence
+- owner: STAV maintainers
+- scope: Provides one bounded invalid payload that must fail the governed STAV v1 protocol profile.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; rejects_against -> `knowledge/stav/schemas/v1/candidate.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Negative evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Invalid Candidate Null Fixture
+- path: `knowledge/stav/fixtures/v1/invalid/candidate-null.json`
+- title: STAV Invalid Candidate Null Fixture
+- surface_type: canonical negative conformance fixture
+- truth_role: STAV v1 typed null rejection evidence
+- owner: STAV maintainers
+- scope: Provides one bounded invalid payload that must fail the governed STAV v1 protocol profile.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; rejects_against -> `knowledge/stav/schemas/v1/candidate.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Negative evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Invalid Local Request Multiple-Payload Fixture
+- path: `knowledge/stav/fixtures/v1/invalid/local-request-multiple-payloads.json`
+- title: STAV Invalid Local Request Multiple-Payload Fixture
+- surface_type: canonical negative conformance fixture
+- truth_role: STAV v1 exclusive-payload rejection evidence
+- owner: STAV maintainers
+- scope: Provides one bounded invalid payload that must fail the governed STAV v1 protocol profile.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; rejects_against -> `knowledge/stav/schemas/v1/local-request.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Negative evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Invalid Local Response Wrong-Payload Fixture
+- path: `knowledge/stav/fixtures/v1/invalid/local-response-wrong-payload.json`
+- title: STAV Invalid Local Response Wrong-Payload Fixture
+- surface_type: canonical negative conformance fixture
+- truth_role: STAV v1 operation-result pairing rejection evidence
+- owner: STAV maintainers
+- scope: Provides one bounded invalid payload that must fail the governed STAV v1 protocol profile.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; rejects_against -> `knowledge/stav/schemas/v1/local-response.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Negative evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Invalid Query Float Fixture
+- path: `knowledge/stav/fixtures/v1/invalid/query-float.json`
+- title: STAV Invalid Query Float Fixture
+- surface_type: canonical negative conformance fixture
+- truth_role: STAV v1 unsafe numeric-shape rejection evidence
+- owner: STAV maintainers
+- scope: Provides one bounded invalid payload that must fail the governed STAV v1 protocol profile.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; rejects_against -> `knowledge/stav/schemas/v1/query.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Negative evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Invalid Query Unknown-Field Fixture
+- path: `knowledge/stav/fixtures/v1/invalid/query-unknown-field.json`
+- title: STAV Invalid Query Unknown-Field Fixture
+- surface_type: canonical negative conformance fixture
+- truth_role: STAV v1 closed-shape rejection evidence
+- owner: STAV maintainers
+- scope: Provides one bounded invalid payload that must fail the governed STAV v1 protocol profile.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; rejects_against -> `knowledge/stav/schemas/v1/query.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Negative evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Invalid Query Unsafe-Integer Fixture
+- path: `knowledge/stav/fixtures/v1/invalid/query-unsafe-integer.json`
+- title: STAV Invalid Query Unsafe-Integer Fixture
+- surface_type: canonical negative conformance fixture
+- truth_role: STAV v1 safe-integer rejection evidence
+- owner: STAV maintainers
+- scope: Provides one bounded invalid payload that must fail the governed STAV v1 protocol profile.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; rejects_against -> `knowledge/stav/schemas/v1/query.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Negative evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Valid Append Authority Configuration Fixture
+- path: `knowledge/stav/fixtures/v1/valid/append-authority-config.json`
+- title: STAV Valid Append Authority Configuration Fixture
+- surface_type: canonical positive conformance fixture
+- truth_role: STAV v1 canonical round-trip interoperability evidence
+- owner: STAV maintainers
+- scope: Provides one bounded valid payload that must validate and round-trip to identical canonical bytes.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; conforms_to -> `knowledge/stav/schemas/v1/append-authority-config.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Positive evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Valid Append Authority Status Fixture
+- path: `knowledge/stav/fixtures/v1/valid/append-authority-status.json`
+- title: STAV Valid Append Authority Status Fixture
+- surface_type: canonical positive conformance fixture
+- truth_role: STAV v1 canonical round-trip interoperability evidence
+- owner: STAV maintainers
+- scope: Provides one bounded valid payload that must validate and round-trip to identical canonical bytes.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; conforms_to -> `knowledge/stav/schemas/v1/append-authority-status.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Positive evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Valid Candidate Fixture
+- path: `knowledge/stav/fixtures/v1/valid/candidate.json`
+- title: STAV Valid Candidate Fixture
+- surface_type: canonical positive conformance fixture
+- truth_role: STAV v1 canonical round-trip interoperability evidence
+- owner: STAV maintainers
+- scope: Provides one bounded valid payload that must validate and round-trip to identical canonical bytes.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; conforms_to -> `knowledge/stav/schemas/v1/candidate.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Positive evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Valid Event Fixture
+- path: `knowledge/stav/fixtures/v1/valid/event.json`
+- title: STAV Valid Event Fixture
+- surface_type: canonical positive conformance fixture
+- truth_role: STAV v1 canonical round-trip interoperability evidence
+- owner: STAV maintainers
+- scope: Provides one bounded valid payload that must validate and round-trip to identical canonical bytes.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; conforms_to -> `knowledge/stav/schemas/v1/event.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Positive evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Valid Local Status Request Fixture
+- path: `knowledge/stav/fixtures/v1/valid/local-request-status.json`
+- title: STAV Valid Local Status Request Fixture
+- surface_type: canonical positive conformance fixture
+- truth_role: STAV v1 canonical round-trip interoperability evidence
+- owner: STAV maintainers
+- scope: Provides one bounded valid payload that must validate and round-trip to identical canonical bytes.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; conforms_to -> `knowledge/stav/schemas/v1/local-request.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Positive evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Valid Local Status Response Fixture
+- path: `knowledge/stav/fixtures/v1/valid/local-response-status.json`
+- title: STAV Valid Local Status Response Fixture
+- surface_type: canonical positive conformance fixture
+- truth_role: STAV v1 canonical round-trip interoperability evidence
+- owner: STAV maintainers
+- scope: Provides one bounded valid payload that must validate and round-trip to identical canonical bytes.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; conforms_to -> `knowledge/stav/schemas/v1/local-response.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Positive evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Valid Query Page Fixture
+- path: `knowledge/stav/fixtures/v1/valid/query-page.json`
+- title: STAV Valid Query Page Fixture
+- surface_type: canonical positive conformance fixture
+- truth_role: STAV v1 canonical round-trip interoperability evidence
+- owner: STAV maintainers
+- scope: Provides one bounded valid payload that must validate and round-trip to identical canonical bytes.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; conforms_to -> `knowledge/stav/schemas/v1/query-page.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Positive evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Valid Query Fixture
+- path: `knowledge/stav/fixtures/v1/valid/query.json`
+- title: STAV Valid Query Fixture
+- surface_type: canonical positive conformance fixture
+- truth_role: STAV v1 canonical round-trip interoperability evidence
+- owner: STAV maintainers
+- scope: Provides one bounded valid payload that must validate and round-trip to identical canonical bytes.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; conforms_to -> `knowledge/stav/schemas/v1/query.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Positive evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Valid Rejected Receipt Fixture
+- path: `knowledge/stav/fixtures/v1/valid/receipt-rejected.json`
+- title: STAV Valid Rejected Receipt Fixture
+- surface_type: canonical positive conformance fixture
+- truth_role: STAV v1 canonical round-trip interoperability evidence
+- owner: STAV maintainers
+- scope: Provides one bounded valid payload that must validate and round-trip to identical canonical bytes.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; conforms_to -> `knowledge/stav/schemas/v1/receipt.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Positive evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Valid Verification Fixture
+- path: `knowledge/stav/fixtures/v1/valid/verification.json`
+- title: STAV Valid Verification Fixture
+- surface_type: canonical positive conformance fixture
+- truth_role: STAV v1 canonical round-trip interoperability evidence
+- owner: STAV maintainers
+- scope: Provides one bounded valid payload that must validate and round-trip to identical canonical bytes.
+- relationships: declared_by -> `knowledge/stav/fixtures/v1/MANIFEST.md`; conforms_to -> `knowledge/stav/schemas/v1/verification.schema.json`
+- consumers: STAV protocol implementations, conformance tests, reviewers
+- deferred_projections: none
+- notes: Positive evidence is canonical test input, not a runtime event or authority grant.
+- status: canonical
+
+#### STAV Append Authority Configuration Schema
+- path: `knowledge/stav/schemas/v1/append-authority-config.schema.json`
+- title: STAV Append Authority Configuration Schema
+- surface_type: canonical JSON Schema
+- truth_role: STAV v1 per-TOPS storage, IPC, and peer-grant configuration contract
+- owner: STAV maintainers
+- scope: Defines the strict machine shape for per-TOPS storage, IPC, and peer-grant configuration.
+- relationships: declared_by -> `knowledge/stav/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: STAV protocol implementations, append authority, qxctl, validators, reviewers
+- deferred_projections: generated schema documentation
+- notes: Schema validity does not create a transport, grant authority, or append an event.
+- status: canonical
+
+#### STAV Append Authority Status Schema
+- path: `knowledge/stav/schemas/v1/append-authority-status.schema.json`
+- title: STAV Append Authority Status Schema
+- surface_type: canonical JSON Schema
+- truth_role: STAV v1 safe append-authority operational status contract
+- owner: STAV maintainers
+- scope: Defines the strict machine shape for safe append-authority operational status.
+- relationships: declared_by -> `knowledge/stav/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: STAV protocol implementations, append authority, qxctl, validators, reviewers
+- deferred_projections: generated schema documentation
+- notes: Schema validity does not create a transport, grant authority, or append an event.
+- status: canonical
+
+#### STAV Candidate Schema
+- path: `knowledge/stav/schemas/v1/candidate.schema.json`
+- title: STAV Candidate Schema
+- surface_type: canonical JSON Schema
+- truth_role: STAV v1 untrusted producer candidate content contract
+- owner: STAV maintainers
+- scope: Defines the strict machine shape for untrusted producer candidate content.
+- relationships: declared_by -> `knowledge/stav/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: STAV protocol implementations, append authority, qxctl, validators, reviewers
+- deferred_projections: generated schema documentation
+- notes: Schema validity does not create a transport, grant authority, or append an event.
+- status: canonical
+
+#### STAV Common Schema
+- path: `knowledge/stav/schemas/v1/common.schema.json`
+- title: STAV Common Schema
+- surface_type: canonical JSON Schema
+- truth_role: STAV v1 shared scalar and tagged-value definitions contract
+- owner: STAV maintainers
+- scope: Defines the strict machine shape for shared scalar and tagged-value definitions.
+- relationships: declared_by -> `knowledge/stav/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: STAV protocol implementations, append authority, qxctl, validators, reviewers
+- deferred_projections: generated schema documentation
+- notes: Schema validity does not create a transport, grant authority, or append an event.
+- status: canonical
+
+#### STAV Event Schema
+- path: `knowledge/stav/schemas/v1/event.schema.json`
+- title: STAV Event Schema
+- surface_type: canonical JSON Schema
+- truth_role: STAV v1 canonical ten-group audit event content contract
+- owner: STAV maintainers
+- scope: Defines the strict machine shape for canonical ten-group audit event content.
+- relationships: declared_by -> `knowledge/stav/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: STAV protocol implementations, append authority, qxctl, validators, reviewers
+- deferred_projections: generated schema documentation
+- notes: Schema validity does not create a transport, grant authority, or append an event.
+- status: canonical
+
+#### STAV Local Request Schema
+- path: `knowledge/stav/schemas/v1/local-request.schema.json`
+- title: STAV Local Request Schema
+- surface_type: canonical JSON Schema
+- truth_role: STAV v1 authenticated local operation envelopes contract
+- owner: STAV maintainers
+- scope: Defines the strict machine shape for authenticated local operation envelopes.
+- relationships: declared_by -> `knowledge/stav/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: STAV protocol implementations, append authority, qxctl, validators, reviewers
+- deferred_projections: generated schema documentation
+- notes: Schema validity does not create a transport, grant authority, or append an event.
+- status: canonical
+
+#### STAV Local Response Schema
+- path: `knowledge/stav/schemas/v1/local-response.schema.json`
+- title: STAV Local Response Schema
+- surface_type: canonical JSON Schema
+- truth_role: STAV v1 authenticated local result envelopes contract
+- owner: STAV maintainers
+- scope: Defines the strict machine shape for authenticated local result envelopes.
+- relationships: declared_by -> `knowledge/stav/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: STAV protocol implementations, append authority, qxctl, validators, reviewers
+- deferred_projections: generated schema documentation
+- notes: Schema validity does not create a transport, grant authority, or append an event.
+- status: canonical
+
+#### STAV Query Page Schema
+- path: `knowledge/stav/schemas/v1/query-page.schema.json`
+- title: STAV Query Page Schema
+- surface_type: canonical JSON Schema
+- truth_role: STAV v1 bounded redacted verification-aware result pages contract
+- owner: STAV maintainers
+- scope: Defines the strict machine shape for bounded redacted verification-aware result pages.
+- relationships: declared_by -> `knowledge/stav/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: STAV protocol implementations, append authority, qxctl, validators, reviewers
+- deferred_projections: generated schema documentation
+- notes: Schema validity does not create a transport, grant authority, or append an event.
+- status: canonical
+
+#### STAV Query Schema
+- path: `knowledge/stav/schemas/v1/query.schema.json`
+- title: STAV Query Schema
+- surface_type: canonical JSON Schema
+- truth_role: STAV v1 bounded forward-only query parameters contract
+- owner: STAV maintainers
+- scope: Defines the strict machine shape for bounded forward-only query parameters.
+- relationships: declared_by -> `knowledge/stav/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: STAV protocol implementations, append authority, qxctl, validators, reviewers
+- deferred_projections: generated schema documentation
+- notes: Schema validity does not create a transport, grant authority, or append an event.
+- status: canonical
+
+#### STAV Receipt Schema
+- path: `knowledge/stav/schemas/v1/receipt.schema.json`
+- title: STAV Receipt Schema
+- surface_type: canonical JSON Schema
+- truth_role: STAV v1 rejected and durably committed receipts contract
+- owner: STAV maintainers
+- scope: Defines the strict machine shape for rejected and durably committed receipts.
+- relationships: declared_by -> `knowledge/stav/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: STAV protocol implementations, append authority, qxctl, validators, reviewers
+- deferred_projections: generated schema documentation
+- notes: Schema validity does not create a transport, grant authority, or append an event.
+- status: canonical
+
+#### STAV Verification Schema
+- path: `knowledge/stav/schemas/v1/verification.schema.json`
+- title: STAV Verification Schema
+- surface_type: canonical JSON Schema
+- truth_role: STAV v1 bounded chain-verification results contract
+- owner: STAV maintainers
+- scope: Defines the strict machine shape for bounded chain-verification results.
+- relationships: declared_by -> `knowledge/stav/schemas/v1/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: STAV protocol implementations, append authority, qxctl, validators, reviewers
+- deferred_projections: generated schema documentation
+- notes: Schema validity does not create a transport, grant authority, or append an event.
+- status: canonical
+
+#### STAV Protocol Kernel Implementation
+- path: `libraries/stav-protocol-go/IMPLEMENTATION.md`
+- title: STAV Protocol Kernel Implementation
+- surface_type: library contract surface
+- truth_role: implementation conformance and source-layout truth
+- owner: STAV protocol kernel maintainers
+- scope: Describes how the Go kernel realizes the bounded STAV protocol without transport or persistence.
+- relationships: declared_by -> `libraries/stav-protocol-go/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: Go implementers, STAV consumers, agents, reviewers
+- deferred_projections: package documentation and task-scoped context
+- notes: The kernel validates protocol truth but owns no ledger, transport, or runtime authority.
+- status: canonical
+
+#### STAV Protocol Kernel Intent
+- path: `libraries/stav-protocol-go/INTENT.md`
+- title: STAV Protocol Kernel Intent
+- surface_type: library contract surface
+- truth_role: protocol-kernel purpose and non-authority boundary
+- owner: STAV protocol kernel maintainers
+- scope: Defines why the pure-Go STAV kernel exists and which responsibilities remain outside it.
+- relationships: declared_by -> `libraries/stav-protocol-go/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: Go implementers, STAV consumers, agents, reviewers
+- deferred_projections: package documentation and task-scoped context
+- notes: The kernel validates protocol truth but owns no ledger, transport, or runtime authority.
+- status: canonical
+
+#### STAV Protocol Kernel README
+- path: `libraries/stav-protocol-go/README.md`
+- title: STAV Protocol Kernel README
+- surface_type: library contract surface
+- truth_role: public package orientation and use boundary
+- owner: STAV protocol kernel maintainers
+- scope: Presents the protocol kernel, its supported use, and its non-runtime posture.
+- relationships: declared_by -> `libraries/stav-protocol-go/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: Go implementers, STAV consumers, agents, reviewers
+- deferred_projections: package documentation and task-scoped context
+- notes: The kernel validates protocol truth but owns no ledger, transport, or runtime authority.
+- status: canonical
+
+#### STAV Protocol Kernel Requirements
+- path: `libraries/stav-protocol-go/REQUIREMENTS.md`
+- title: STAV Protocol Kernel Requirements
+- surface_type: library contract surface
+- truth_role: normative kernel implementation requirements
+- owner: STAV protocol kernel maintainers
+- scope: Defines exact language, dependency, parsing, canonicalization, and compatibility obligations.
+- relationships: declared_by -> `libraries/stav-protocol-go/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: Go implementers, STAV consumers, agents, reviewers
+- deferred_projections: package documentation and task-scoped context
+- notes: The kernel validates protocol truth but owns no ledger, transport, or runtime authority.
+- status: canonical
+
+#### STAV Protocol Kernel Skill
+- path: `libraries/stav-protocol-go/SKILL.md`
+- title: STAV Protocol Kernel Skill
+- surface_type: library contract surface
+- truth_role: agent procedure for safe protocol-kernel work
+- owner: STAV protocol kernel maintainers
+- scope: Routes protocol changes through canonical STAV owners, fixtures, and bounded tests.
+- relationships: declared_by -> `libraries/stav-protocol-go/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: Go implementers, STAV consumers, agents, reviewers
+- deferred_projections: package documentation and task-scoped context
+- notes: The kernel validates protocol truth but owns no ledger, transport, or runtime authority.
+- status: canonical
+
+#### STAV Protocol Kernel Threat Model
+- path: `libraries/stav-protocol-go/THREAT-MODEL.md`
+- title: STAV Protocol Kernel Threat Model
+- surface_type: library contract surface
+- truth_role: protocol-kernel threats, controls, and residual-risk truth
+- owner: STAV protocol kernel maintainers
+- scope: Defines adversarial inputs and the controls expected at the authority-free kernel boundary.
+- relationships: declared_by -> `libraries/stav-protocol-go/MANIFEST.md`; governed_by -> `knowledge/stav/SPEC.md`
+- consumers: Go implementers, STAV consumers, agents, reviewers
+- deferred_projections: package documentation and task-scoped context
+- notes: The kernel validates protocol truth but owns no ledger, transport, or runtime authority.
+- status: canonical
+
+#### Accordare STAV Producer Architecture
+- path: `modules/accordare-stav-producer/ARCHITECTURE.md`
+- title: Accordare STAV Producer Architecture
+- surface_type: module contract surface
+- truth_role: runtime topology and boundary design
+- owner: Accordare STAV producer maintainers
+- scope: Defines the local producer, qxctl, coordinator, SSIAG, and STAV append-authority relationships.
+- relationships: declared_by -> `modules/accordare-stav-producer/MANIFEST.md`; governed_by -> `modules/accordare-stav-producer/SPEC.md`
+- consumers: producer implementers, qxctl, SSIAG/STAV integrators, agents, reviewers
+- deferred_projections: installation and operational documentation
+- notes: The producer prepares and relays bounded evidence; it does not become STAV append authority.
+- status: canonical
+
+#### Accordare STAV Producer Implementation
+- path: `modules/accordare-stav-producer/IMPLEMENTATION.md`
+- title: Accordare STAV Producer Implementation
+- surface_type: module contract surface
+- truth_role: implemented behavior and source-layout truth
+- owner: Accordare STAV producer maintainers
+- scope: Describes the implemented producer protocol, durability, reconciliation, and supervision surfaces.
+- relationships: declared_by -> `modules/accordare-stav-producer/MANIFEST.md`; governed_by -> `modules/accordare-stav-producer/SPEC.md`
+- consumers: producer implementers, qxctl, SSIAG/STAV integrators, agents, reviewers
+- deferred_projections: installation and operational documentation
+- notes: The producer prepares and relays bounded evidence; it does not become STAV append authority.
+- status: canonical
+
+#### Accordare STAV Producer Installation Contract
+- path: `modules/accordare-stav-producer/INSTALL.md`
+- title: Accordare STAV Producer Installation Contract
+- surface_type: module contract surface
+- truth_role: exact package install and uninstall truth
+- owner: Accordare STAV producer maintainers
+- scope: Defines versioned receipt-v2 installation, enrollment references, and safe uninstall boundaries.
+- relationships: declared_by -> `modules/accordare-stav-producer/MANIFEST.md`; governed_by -> `modules/accordare-stav-producer/SPEC.md`
+- consumers: producer implementers, qxctl, SSIAG/STAV integrators, agents, reviewers
+- deferred_projections: installation and operational documentation
+- notes: The producer prepares and relays bounded evidence; it does not become STAV append authority.
+- status: canonical
+
+#### Accordare STAV Producer Intent
+- path: `modules/accordare-stav-producer/INTENT.md`
+- title: Accordare STAV Producer Intent
+- surface_type: module contract surface
+- truth_role: producer purpose, audit role, and non-authority boundary
+- owner: Accordare STAV producer maintainers
+- scope: Defines why the freezing-path producer exists and what it cannot authorize or append independently.
+- relationships: declared_by -> `modules/accordare-stav-producer/MANIFEST.md`; governed_by -> `modules/accordare-stav-producer/SPEC.md`
+- consumers: producer implementers, qxctl, SSIAG/STAV integrators, agents, reviewers
+- deferred_projections: installation and operational documentation
+- notes: The producer prepares and relays bounded evidence; it does not become STAV append authority.
+- status: canonical
+
+#### Accordare STAV Producer Manifest
+- path: `modules/accordare-stav-producer/MANIFEST.md`
+- title: Accordare STAV Producer Manifest
+- surface_type: module contract surface
+- truth_role: declared module identity, surfaces, capabilities, and omissions
+- owner: Accordare STAV producer maintainers
+- scope: Declares the producer's canonical files, executable identity, implemented capabilities, and deliberate absences.
+- relationships: declared_by -> `modules/accordare-stav-producer/MANIFEST.md`; governed_by -> `modules/accordare-stav-producer/SPEC.md`
+- consumers: producer implementers, qxctl, SSIAG/STAV integrators, agents, reviewers
+- deferred_projections: installation and operational documentation
+- notes: The producer prepares and relays bounded evidence; it does not become STAV append authority.
+- status: canonical
+
+#### Accordare STAV Producer README
+- path: `modules/accordare-stav-producer/README.md`
+- title: Accordare STAV Producer README
+- surface_type: module contract surface
+- truth_role: public module orientation and operating boundary
+- owner: Accordare STAV producer maintainers
+- scope: Presents exact supported workflows and the limits of the producer installation.
+- relationships: declared_by -> `modules/accordare-stav-producer/MANIFEST.md`; governed_by -> `modules/accordare-stav-producer/SPEC.md`
+- consumers: producer implementers, qxctl, SSIAG/STAV integrators, agents, reviewers
+- deferred_projections: installation and operational documentation
+- notes: The producer prepares and relays bounded evidence; it does not become STAV append authority.
+- status: canonical
+
+#### Accordare STAV Producer Requirements
+- path: `modules/accordare-stav-producer/REQUIREMENTS.md`
+- title: Accordare STAV Producer Requirements
+- surface_type: module contract surface
+- truth_role: normative runtime and conformance requirements
+- owner: Accordare STAV producer maintainers
+- scope: Defines exact authentication, framing, evidence, durability, recovery, and lifecycle requirements.
+- relationships: declared_by -> `modules/accordare-stav-producer/MANIFEST.md`; governed_by -> `modules/accordare-stav-producer/SPEC.md`
+- consumers: producer implementers, qxctl, SSIAG/STAV integrators, agents, reviewers
+- deferred_projections: installation and operational documentation
+- notes: The producer prepares and relays bounded evidence; it does not become STAV append authority.
+- status: canonical
+
+#### Accordare STAV Producer Skill
+- path: `modules/accordare-stav-producer/SKILL.md`
+- title: Accordare STAV Producer Skill
+- surface_type: module contract surface
+- truth_role: agent procedure for safe producer work
+- owner: Accordare STAV producer maintainers
+- scope: Routes producer changes through SAV, STAV, SSIAG, coordinator, qxctl, and lifecycle owners.
+- relationships: declared_by -> `modules/accordare-stav-producer/MANIFEST.md`; governed_by -> `modules/accordare-stav-producer/SPEC.md`
+- consumers: producer implementers, qxctl, SSIAG/STAV integrators, agents, reviewers
+- deferred_projections: installation and operational documentation
+- notes: The producer prepares and relays bounded evidence; it does not become STAV append authority.
+- status: canonical
+
+#### Accordare STAV Producer Threat Model
+- path: `modules/accordare-stav-producer/THREAT-MODEL.md`
+- title: Accordare STAV Producer Threat Model
+- surface_type: module contract surface
+- truth_role: producer threats, controls, and residual-risk truth
+- owner: Accordare STAV producer maintainers
+- scope: Defines hostile local inputs, authority-confusion risks, durable-state threats, and required controls.
+- relationships: declared_by -> `modules/accordare-stav-producer/MANIFEST.md`; governed_by -> `modules/accordare-stav-producer/SPEC.md`
+- consumers: producer implementers, qxctl, SSIAG/STAV integrators, agents, reviewers
+- deferred_projections: installation and operational documentation
+- notes: The producer prepares and relays bounded evidence; it does not become STAV append authority.
+- status: canonical
+
+#### SAV Engine Install
+- path: `modules/sav-engine/INSTALL.md`
+- title: SAV Engine Install
+- surface_type: module contract surface
+- truth_role: SAV installation and receipt truth
+- owner: SAV engine maintainers
+- scope: Defines exact versioned installation, inactive-undocked posture, and receipt-owned uninstall.
+- relationships: declared_by -> `modules/sav-engine/MANIFEST.md`; governed_by -> `knowledge/sav/SPEC.md`
+- consumers: SAV implementers, qxctl, Maestro planners, agents, reviewers
+- deferred_projections: installation and task-scoped engine documentation
+- notes: Direct engine operations remain bounded, caller-neutral, and noncanonical.
+- status: canonical
+
+#### SAV Engine Intent
+- path: `modules/sav-engine/INTENT.md`
+- title: SAV Engine Intent
+- surface_type: module contract surface
+- truth_role: SAV engine purpose and authority boundary
+- owner: SAV engine maintainers
+- scope: Defines the engine's vector-specific reason for existence and caller-neutral non-mutating posture.
+- relationships: declared_by -> `modules/sav-engine/MANIFEST.md`; governed_by -> `knowledge/sav/SPEC.md`
+- consumers: SAV implementers, qxctl, Maestro planners, agents, reviewers
+- deferred_projections: installation and task-scoped engine documentation
+- notes: Direct engine operations remain bounded, caller-neutral, and noncanonical.
+- status: canonical
+
+#### SAV Engine Manifest
+- path: `modules/sav-engine/MANIFEST.md`
+- title: SAV Engine Manifest
+- surface_type: module contract surface
+- truth_role: SAV declared module identity, surfaces, runtime, and packaging
+- owner: SAV engine maintainers
+- scope: Declares the exact executable identity, operations, language, thermal path, and package boundary.
+- relationships: declared_by -> `modules/sav-engine/MANIFEST.md`; governed_by -> `knowledge/sav/SPEC.md`
+- consumers: SAV implementers, qxctl, Maestro planners, agents, reviewers
+- deferred_projections: installation and task-scoped engine documentation
+- notes: Direct engine operations remain bounded, caller-neutral, and noncanonical.
+- status: canonical
+
+#### SAV Engine Skill
+- path: `modules/sav-engine/SKILL.md`
+- title: SAV Engine Skill
+- surface_type: module contract surface
+- truth_role: SAV agent procedure for safe engine work
+- owner: SAV engine maintainers
+- scope: Routes implementation changes through the owning vector contract, protocol, receipt, and tests.
+- relationships: declared_by -> `modules/sav-engine/MANIFEST.md`; governed_by -> `knowledge/sav/SPEC.md`
+- consumers: SAV implementers, qxctl, Maestro planners, agents, reviewers
+- deferred_projections: installation and task-scoped engine documentation
+- notes: Direct engine operations remain bounded, caller-neutral, and noncanonical.
+- status: canonical
+
+#### SAV Engine Spec
+- path: `modules/sav-engine/SPEC.md`
+- title: SAV Engine Spec
+- surface_type: module contract surface
+- truth_role: SAV normative engine process and operation contract
+- owner: SAV engine maintainers
+- scope: Defines exact operations, bounded inputs and outputs, deterministic behavior, and non-authorizations.
+- relationships: declared_by -> `modules/sav-engine/MANIFEST.md`; governed_by -> `knowledge/sav/SPEC.md`
+- consumers: SAV implementers, qxctl, Maestro planners, agents, reviewers
+- deferred_projections: installation and task-scoped engine documentation
+- notes: Direct engine operations remain bounded, caller-neutral, and noncanonical.
+- status: canonical
+
+#### SEV Engine Install
+- path: `modules/sev-engine/INSTALL.md`
+- title: SEV Engine Install
+- surface_type: module contract surface
+- truth_role: SEV installation and receipt truth
+- owner: SEV engine maintainers
+- scope: Defines exact versioned installation, inactive-undocked posture, and receipt-owned uninstall.
+- relationships: declared_by -> `modules/sev-engine/MANIFEST.md`; governed_by -> `knowledge/sev/SPEC.md`
+- consumers: SEV implementers, qxctl, Maestro planners, agents, reviewers
+- deferred_projections: installation and task-scoped engine documentation
+- notes: Direct engine operations remain bounded, caller-neutral, and noncanonical.
+- status: canonical
+
+#### SEV Engine Intent
+- path: `modules/sev-engine/INTENT.md`
+- title: SEV Engine Intent
+- surface_type: module contract surface
+- truth_role: SEV engine purpose and authority boundary
+- owner: SEV engine maintainers
+- scope: Defines the engine's vector-specific reason for existence and caller-neutral non-mutating posture.
+- relationships: declared_by -> `modules/sev-engine/MANIFEST.md`; governed_by -> `knowledge/sev/SPEC.md`
+- consumers: SEV implementers, qxctl, Maestro planners, agents, reviewers
+- deferred_projections: installation and task-scoped engine documentation
+- notes: Direct engine operations remain bounded, caller-neutral, and noncanonical.
+- status: canonical
+
+#### SEV Engine Manifest
+- path: `modules/sev-engine/MANIFEST.md`
+- title: SEV Engine Manifest
+- surface_type: module contract surface
+- truth_role: SEV declared module identity, surfaces, runtime, and packaging
+- owner: SEV engine maintainers
+- scope: Declares the exact executable identity, operations, language, thermal path, and package boundary.
+- relationships: declared_by -> `modules/sev-engine/MANIFEST.md`; governed_by -> `knowledge/sev/SPEC.md`
+- consumers: SEV implementers, qxctl, Maestro planners, agents, reviewers
+- deferred_projections: installation and task-scoped engine documentation
+- notes: Direct engine operations remain bounded, caller-neutral, and noncanonical.
+- status: canonical
+
+#### SEV Engine Skill
+- path: `modules/sev-engine/SKILL.md`
+- title: SEV Engine Skill
+- surface_type: module contract surface
+- truth_role: SEV agent procedure for safe engine work
+- owner: SEV engine maintainers
+- scope: Routes implementation changes through the owning vector contract, protocol, receipt, and tests.
+- relationships: declared_by -> `modules/sev-engine/MANIFEST.md`; governed_by -> `knowledge/sev/SPEC.md`
+- consumers: SEV implementers, qxctl, Maestro planners, agents, reviewers
+- deferred_projections: installation and task-scoped engine documentation
+- notes: Direct engine operations remain bounded, caller-neutral, and noncanonical.
+- status: canonical
+
+#### SEV Engine Spec
+- path: `modules/sev-engine/SPEC.md`
+- title: SEV Engine Spec
+- surface_type: module contract surface
+- truth_role: SEV normative engine process and operation contract
+- owner: SEV engine maintainers
+- scope: Defines exact operations, bounded inputs and outputs, deterministic behavior, and non-authorizations.
+- relationships: declared_by -> `modules/sev-engine/MANIFEST.md`; governed_by -> `knowledge/sev/SPEC.md`
+- consumers: SEV implementers, qxctl, Maestro planners, agents, reviewers
+- deferred_projections: installation and task-scoped engine documentation
+- notes: Direct engine operations remain bounded, caller-neutral, and noncanonical.
+- status: canonical
+
+#### Manifest-Declared Canonical Surface Discovery Interface
+- path: `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/manifest_discovery.hpp`
+- title: Manifest-Declared Canonical Surface Discovery Interface
+- surface_type: shared C++ implementation header
+- truth_role: authority-free manifest discovery API and bounded result contract
+- owner: Knowledge Vector Engine C++ foundation maintainers
+- scope: Declares deterministic discovery from the fixed bootstrap set and explicitly delegated owner manifests.
+- relationships: implements -> `knowledge/MANIFEST.md`; implemented_by -> `libraries/knowledge-vector-engine-cpp/src/manifest_discovery.cpp`; consumed_by -> `modules/skvi-engine/src/skvi.cpp`
+- consumers: SKVI engine, Symphony Validator, C++ maintainers, reviewers
+- deferred_projections: none
+- notes: The API performs no ambient repository crawl and grants no semantic or mutation authority.
+- status: canonical
+
+#### Manifest-Declared Canonical Surface Discovery Implementation
+- path: `libraries/knowledge-vector-engine-cpp/src/manifest_discovery.cpp`
+- title: Manifest-Declared Canonical Surface Discovery Implementation
+- surface_type: shared C++ implementation source
+- truth_role: bounded no-follow owner-manifest traversal and declaration parser
+- owner: Knowledge Vector Engine C++ foundation maintainers
+- scope: Implements fixed-bootstrap discovery, exact manifest grammar, deterministic ordering, and fail-closed duplicate, cycle, path, ownership, and readability checks.
+- relationships: implements -> `libraries/knowledge-vector-engine-cpp/include/symphony/knowledge/engine/manifest_discovery.hpp`; consumed_by -> `modules/skvi-engine/src/skvi.cpp`; mirrored_by -> `tools/symphony-validator/src/canonical_surfaces.cpp`
+- consumers: SKVI engine, Symphony Validator maintainers, C++ maintainers, reviewers
+- deferred_projections: none
+- notes: Discovery identifies declared required surfaces; it does not decide their domain meaning.
+- status: canonical
+
+#### Symphony Validator Canonical Surface Discovery Interface
+- path: `tools/symphony-validator/src/canonical_surfaces.hpp`
+- title: Symphony Validator Canonical Surface Discovery Interface
+- surface_type: validator implementation header
+- truth_role: independent read-only declared-surface validation interface
+- owner: Symphony Validator maintainers
+- scope: Declares validator evidence for manifest grammar, delegated traversal, required paths, and SKVI closure.
+- relationships: implemented_by -> `tools/symphony-validator/src/canonical_surfaces.cpp`; governed_by -> `tools/symphony-validator/SPEC.md`
+- consumers: Symphony Validator, tests, reviewers
+- deferred_projections: validator evidence
+- notes: The independent validator reports drift and cannot repair manifests or SKVI.
+- status: canonical
+
+#### Symphony Validator Canonical Surface Discovery Tests
+- path: `tools/symphony-validator/tests/canonical_surfaces_test.cpp`
+- title: Symphony Validator Canonical Surface Discovery Tests
+- surface_type: implementation test
+- truth_role: manifest discovery and declared-SKVI-closure regression evidence
+- owner: Symphony Validator maintainers
+- scope: Exercises valid delegation and fail-closed missing, unsafe, duplicate, ownership, cycle, and indexing cases.
+- relationships: verifies -> `tools/symphony-validator/src/canonical_surfaces.cpp`; conforms_to -> `tools/symphony-validator/SPEC.md`
+- consumers: Symphony Validator maintainers, reviewers
+- deferred_projections: none
+- notes: Tests preserve validator independence while matching the shared declared-surface contract.
 - status: canonical

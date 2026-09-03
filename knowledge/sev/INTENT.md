@@ -15,13 +15,18 @@ SEV makes Symphony adaptive without making it autonomous in authority. It explai
 - the closed disposition vocabulary;
 - dependency-graph and ready-set rules;
 - novelty admission and voluntary export boundaries;
-- the SCSEV qxctl command-surface evolution profile.
+- the SCSEV qxctl command-surface evolution profile; and
+- the documentation-only knowledge-surface evolution profile.
 
 SEV does not own SAV composition truth, SSFV feature truth, qxctl command truth, engine operations, package receipts, Maestro state, SSIAG decisions, STAV ledgers, coordinator journals, or source-vector contracts.
 
 ## SCSEV Intent
 
 SCSEV is the first governed SEV profile. It evaluates the repercussions of adding, changing, deprecating, or retiring a qxctl leaf by consuming existing SSFV feature-administration truth, the expected qxctl registry, observed qxctl evidence, and engine descriptors. It does not create a third engine or duplicate registry in v1.
+
+## Knowledge-Surface Evolution Intent
+
+`profiles/knowledge-surface-evolution.md` applies the existing SEV case lifecycle to additions, changes, renames, supersessions, deprecations, retirements, and removals of canonical knowledge surfaces. It routes identity and terminology consequences through their owners and preserves current owner truth separately from historical evidence. It is documentation-only and creates no operation, protocol, schema, command, journal, or canonical writer.
 
 ## Caller-Neutral Intent
 

@@ -92,12 +92,20 @@ Status reflects the deterministic outcome of a rule check.
 - `26`: invariant-ownership registry shape, digest, identity, ordering, owner/evidence reference, adapter closure, or IPC real-process evidence failure.
 
 ## Historical/Migration Exception Behavior
-Stale names (e.g. `legacy node execution label`, `legacy native hot-path label`, `legacy bus residency label`) are rejected except in historical contexts or rename records. SCLV `affected_surfaces` are immutable historical provenance: their bounded path shape remains validated and their current presence/index state is summarized, but absence or non-indexing is not a current warning or failure. Only explicit `skvi_references` create current file-presence and SKVI-membership obligations.
+Stale names (e.g. `legacy node execution label`, `legacy native hot-path label`, `legacy bus residency label`) are rejected except in historical contexts or rename records. SCLV `affected_surfaces` are immutable historical provenance: their bounded path shape remains validated and their current presence/index state is summarized, but absence or non-indexing is not a current warning or failure. An admitted record's explicit `skvi_references` retain historical path meaning: later absence or non-indexing emits warning evidence without invalidating the immutable record. Proposal/admission tooling separately requires each new reference to be a current indexed regular file. A path still claimed by current SKVI remains subject to SKVI's current regular-file checks.
+
+## Manifest-Declared Canonical-Surface Boundary
+
+Required canonical-surface closure is the deterministic result of the shared authority-free C++ manifest parser. Its only fixed bootstrap paths are `README.md`, `INTENT.md`, `go.work`, and `knowledge/MANIFEST.md`. The root knowledge manifest supplies the exact owner traversal under `## Subordinate Manifests`; every visited owner manifest supplies its exact surface set under `## Canonical Surfaces` and must declare itself. The first contiguous declaration block after either heading permits blank lines and unindented bullets containing exactly one backtick-delimited safe repository-relative path. The first later nonblank prose, table, divider, or heading ends that machine block. Later manifest prose, ambient directory discovery, and implementation-marker inference do not add declarations.
+
+The parser uses bounded no-follow regular-file reads and safe repository-relative paths. It fails visibly on missing or duplicate sections, malformed or unsafe declarations, unreadable manifests or surfaces, duplicate surface owners, duplicate manifest traversal, traversal cycles, or resource ceilings. Results and evidence are emitted in deterministic lexical order. The validator requires every declared surface to occur in `knowledge/skvi/INDEX.md` exactly once. A separately indexed implementation file may remain outside this required declaration closure; its presence does not establish contract authority.
+
+Manifest discovery supplies routing and repository-shape evidence only. It does not determine whether an owner or surface should exist, add an undeclared owner, generate a manifest, alter SKVI, or replace owner-vector semantic review. Exit `9` reports declaration/presence failure; exit `16` reports declared-surface exact-once coverage failure after SKVI parsing succeeds.
 
 ## Allowlist Behavior
 Allowlists must never become silent bypasses. Every allowlist entry must produce evidence in JSON and Markdown.
 
-The Architect-ratified STAV v1 JSON Schema/conformance fixtures, seventy common SKV process/descriptor/receipt/binding/proposal/provider-evidence/reconciliation/session/SSFV-maintenance/generic-lifecycle/foundational-lifecycle/ownership/temporal/Maestro/validation/feature-administration/invariant schemas (sixty-six v1 and four v2), thirty-two SSIAG authorization/grant-planning/policy-administration/provider-control/provider-trust/provider-binding/readiness schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, eighteen SSFV v1/v2 schemas, eighteen SAV v1 schemas, nineteen SEV v1 schemas, the exact `knowledge/FEATURE-ADMINISTRATION-PROFILE.json` object, and the exact common invariant-ownership registry are canonical protocol truth, not generated projections. The artifact checker may allow only their 210 exact paths and must emit `artifact.canonical_json_authorized` evidence for every encountered file with its exact vector or umbrella authority. Prefix or extension-wide JSON allowlisting is prohibited.
+The Architect-ratified STAV v1 JSON Schema/conformance fixtures, seventy-one common SKV process/descriptor/receipt/binding/proposal/provider-evidence/reconciliation/session/SSFV-maintenance/generic-lifecycle/foundational-lifecycle/ownership/temporal/Maestro/validation/feature-administration/invariant schemas (sixty-six v1 and five v2), thirty-two SSIAG authorization/grant-planning/policy-administration/provider-control/provider-trust/provider-binding/readiness schemas, four SKVI operation/result schemas, five SCLV v3 operation/result schemas, six SACV v1 operation/result schemas, eight SODV operational schemas, eighteen SSFV v1/v2 schemas, eighteen SAV v1 schemas, nineteen SEV v1 schemas, the exact `knowledge/FEATURE-ADMINISTRATION-PROFILE.json` object, and the exact common invariant-ownership registry are canonical protocol truth, not generated projections. The artifact checker may allow only their 211 exact paths and must emit `artifact.canonical_json_authorized` evidence for every encountered file with its exact vector or umbrella authority. Prefix or extension-wide JSON allowlisting is prohibited.
 
 The required common knowledge surfaces include `knowledge/TIME.md`. Its contract-shape gate verifies status/authority, purpose, canonical UTC profiles, target-host durable timestamp authority, implementation/schema separation, and the no-vector promotion boundary. The validator does not synchronize clocks, interpret domain freshness, or become a temporal engine.
 
@@ -200,28 +208,15 @@ The checker is read-only and non-remediating. It does not modify repository cont
 
 Runtime source/AST analysis, remediation, and CI/PR-gate integration are deferred and unauthorized by this increment.
 
-## Troll Doctrine
-trolls are the local residents.
-A troll is a bounded local resident of a Symphony runtime domain.
-A troll is a runtime-residency role, not a caller identity or authorization class.
+## Emerging Runtime Doctrine
 
-node-troll represents the node.
-bus-troll manages bus residency and bus compatibility.
-hotpath-runtime owns the native hot path.
-hotpath-runtime is not a troll; it is the native hot-path runtime substrate.
-
-
-## Bus-Troll Optionality
-bus-troll is first-class and individually installable.
-bus-troll is required only for deployments that use a managed bus boundary.
-Bus bypass remains valid when declared by deployment constraints.
-The existence of bus-troll does not make bus traversal mandatory.
+The validator treats `node-troll` and `bus-troll` as retired, reserved module identities rather than required runtime contracts. Optional future Trolls have user-programmed behavior and receive no Node, bus, authority, or compatibility semantics from the validator. `hotpath-runtime` remains a separate proposal-only native substrate pending its own review. Bus bypass and multiple bus arrangements remain valid.
 
 ## Parser / Checker / Projector Contract
 
 ### Parser Boundary
 
-The implemented validator parser may read canonical Markdown surfaces including:
+The implemented validator parser reads the four fixed canonical-surface bootstrap paths and only the owner manifests explicitly delegated by `knowledge/MANIFEST.md` when computing required closure. Independent bounded checks may also read applicable canonical Markdown surfaces including:
 - `knowledge/skvi/INDEX.md`
 - `knowledge/skvi/SPEC.md`
 - `knowledge/sclv/CHANGELOG.md`
@@ -287,7 +282,7 @@ The implemented validator checks may produce deterministic evidence for:
 - SCLV related_pr shape
 - SCLV merge_commit shape
 - SCLV affected_surfaces deterministic historical provenance summary; current presence and exact SKVI membership are observational counts, not obligations
-- SCLV skvi_references alignment
+- SCLV skvi_references historical/current alignment without retroactive record invalidation
 - deferred projection declarations
 - non-authorized artifact declarations
 - stale namespace terms

@@ -1,5 +1,15 @@
 # SSFV Engine Manifest
 
+## Canonical Surfaces
+
+- `modules/ssfv-engine/CMakeLists.txt`
+- `modules/ssfv-engine/FEATURES.md`
+- `modules/ssfv-engine/INSTALL.md`
+- `modules/ssfv-engine/INTENT.md`
+- `modules/ssfv-engine/MANIFEST.md`
+- `modules/ssfv-engine/SKILL.md`
+- `modules/ssfv-engine/SPEC.md`
+
 ## Identity
 
 - Module: `ssfv-engine`

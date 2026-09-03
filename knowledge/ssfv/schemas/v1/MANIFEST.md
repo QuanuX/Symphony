@@ -1,5 +1,20 @@
 # SSFV v1 Schema Manifest
 
+## Canonical Surfaces
+
+- `knowledge/ssfv/schemas/v1/MANIFEST.md`
+- `knowledge/ssfv/schemas/v1/check-result.schema.json`
+- `knowledge/ssfv/schemas/v1/diff-input.schema.json`
+- `knowledge/ssfv/schemas/v1/diff-result.schema.json`
+- `knowledge/ssfv/schemas/v1/feature-file.schema.json`
+- `knowledge/ssfv/schemas/v1/feature-record.schema.json`
+- `knowledge/ssfv/schemas/v1/graph-input.schema.json`
+- `knowledge/ssfv/schemas/v1/graph-projection.schema.json`
+- `knowledge/ssfv/schemas/v1/namespace-entry.schema.json`
+- `knowledge/ssfv/schemas/v1/proposal-input.schema.json`
+- `knowledge/ssfv/schemas/v1/registry-entry.schema.json`
+- `knowledge/ssfv/schemas/v1/semantic-snapshot.schema.json`
+
 This directory owns the first machine-readable JSON Schema contracts for the Symphony Semantic Feature Vector engine.
 
 | Schema | Purpose |

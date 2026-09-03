@@ -1,5 +1,14 @@
 # SKVI Engine Manifest
 
+## Canonical Surfaces
+
+- `modules/skvi-engine/FEATURES.md`
+- `modules/skvi-engine/INSTALL.md`
+- `modules/skvi-engine/INTENT.md`
+- `modules/skvi-engine/MANIFEST.md`
+- `modules/skvi-engine/SKILL.md`
+- `modules/skvi-engine/SPEC.md`
+
 ## Identity
 
 - module ID: `skvi-engine`
@@ -32,7 +41,7 @@
 
 ## Read and Write Boundaries
 
-The engine reads the repository-relative SKVI index, SKVI contracts, and indexed regular files. It proposes only typed operations targeting `knowledge/skvi/INDEX.md`. It has no filesystem write route; the prospective write set exists only inside an immutable proposal.
+The engine reads the repository-relative SKVI index, the fixed root bootstrap, owner manifests explicitly delegated by `knowledge/MANIFEST.md`, and indexed regular files. The shared authority-free parser supplies required canonical-surface closure; the engine contains no hard-coded owner list. It proposes only typed operations targeting `knowledge/skvi/INDEX.md`. It has no filesystem write route; the prospective write set exists only inside an immutable proposal.
 
 ## Installability
 

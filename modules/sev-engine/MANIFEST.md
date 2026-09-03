@@ -1,5 +1,14 @@
 # SEV Engine Manifest
 
+## Canonical Surfaces
+
+- `modules/sev-engine/FEATURES.md`
+- `modules/sev-engine/INSTALL.md`
+- `modules/sev-engine/INTENT.md`
+- `modules/sev-engine/MANIFEST.md`
+- `modules/sev-engine/SKILL.md`
+- `modules/sev-engine/SPEC.md`
+
 ## Identity
 
 - module: `sev-engine`

@@ -3591,7 +3591,7 @@ engine::Json descriptor() {
             {"request_bytes", engine::Limits::max_request_bytes},
             {"response_bytes", engine::Limits::max_response_bytes},
             {"json_depth", engine::Limits::max_json_depth},
-            {"json_values", engine::Limits::max_json_values},
+            {"json_values", legacy_descriptor_v1_max_json_values},
             {"path_bytes", engine::Limits::max_path_bytes},
             {"file_bytes", engine::Limits::max_snapshot_file_bytes},
             {"total_evidence_bytes", max_total_evidence_bytes},

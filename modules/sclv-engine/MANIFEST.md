@@ -1,5 +1,14 @@
 # SCLV Engine Manifest
 
+## Canonical Surfaces
+
+- `modules/sclv-engine/FEATURES.md`
+- `modules/sclv-engine/INSTALL.md`
+- `modules/sclv-engine/INTENT.md`
+- `modules/sclv-engine/MANIFEST.md`
+- `modules/sclv-engine/SKILL.md`
+- `modules/sclv-engine/SPEC.md`
+
 ## Identity
 
 - module: `sclv-engine`
@@ -16,7 +25,7 @@ The package owns three exact versioned executables, one inactive-undocked receip
 
 ## Read and Proposal Boundaries
 
-The engine reads `knowledge/sclv/CHANGELOG.md`, the SCLV Contract Quad, `RECOVERY.md`, the v3 schema/template surfaces, and record-referenced regular files. Its prospective write set may name only `knowledge/sclv/CHANGELOG.md`, and only inside a noncanonical proposal.
+The engine reads `knowledge/sclv/CHANGELOG.md`, the SCLV Contract Quad, `RECOVERY.md`, the v3 schema/template surfaces, and current regular files named by a new proposal's `skvi_references`. `affected_surfaces` remain bounded historical path provenance and are not read-set or current-presence obligations. Ledger checks observe admitted SKVI-reference paths against the current-only index without making later legitimate retirement retroactively invalid. Its prospective write set may name only `knowledge/sclv/CHANGELOG.md`, and only inside a noncanonical proposal.
 
 The local-Git adapter invokes `/usr/bin/git` directly with fixed arguments and a sanitized environment. The air-gapped adapter validates and digests caller-declared safe metadata. Neither adapter writes provider or repository state.
 

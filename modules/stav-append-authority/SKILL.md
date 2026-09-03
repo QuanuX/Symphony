@@ -13,7 +13,7 @@ No supported caller operation may:
 - edit, append, truncate, rotate, replace, or repair a ledger file;
 - invoke or create a raw append surface;
 - manufacture producer/reader permissions or treat socket access as authorization;
-- make qxctl, SSIAG, node-troll, a supervisor, or any other component a secondary writer;
+- make qxctl, SSIAG, a Troll, a supervisor, or any other component a secondary writer;
 - record proofs, assertions, tokens, credentials, provider payloads, or secret-bearing errors;
 - bypass endpoint/caller authentication, fsync-before-receipt, or evidence preservation;
 - introduce HTTP/OpenAPI or remote producer ingestion;

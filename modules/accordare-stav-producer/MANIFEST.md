@@ -1,5 +1,19 @@
 # Accordare STAV Producer Manifest
 
+## Canonical Surfaces
+
+- `modules/accordare-stav-producer/ARCHITECTURE.md`
+- `modules/accordare-stav-producer/FEATURES.md`
+- `modules/accordare-stav-producer/IMPLEMENTATION.md`
+- `modules/accordare-stav-producer/INSTALL.md`
+- `modules/accordare-stav-producer/INTENT.md`
+- `modules/accordare-stav-producer/MANIFEST.md`
+- `modules/accordare-stav-producer/README.md`
+- `modules/accordare-stav-producer/REQUIREMENTS.md`
+- `modules/accordare-stav-producer/SKILL.md`
+- `modules/accordare-stav-producer/SPEC.md`
+- `modules/accordare-stav-producer/THREAT-MODEL.md`
+
 ## Identity
 
 - module: `modules/accordare-stav-producer/`

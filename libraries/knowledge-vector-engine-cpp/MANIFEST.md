@@ -1,5 +1,14 @@
 # Knowledge Vector Engine C++ Foundation Manifest
 
+## Canonical Surfaces
+
+- `libraries/knowledge-vector-engine-cpp/FEATURES.md`
+- `libraries/knowledge-vector-engine-cpp/INSTALL.md`
+- `libraries/knowledge-vector-engine-cpp/INTENT.md`
+- `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
+- `libraries/knowledge-vector-engine-cpp/SKILL.md`
+- `libraries/knowledge-vector-engine-cpp/SPEC.md`
+
 ## Identity
 
 - module ID: `knowledge-vector-engine-cpp`
@@ -17,6 +26,7 @@
 - first-party SHA-256 and `sha256:` tagged digests;
 - POSIX no-follow component traversal and bounded regular-file reads;
 - deterministic sorted file snapshots;
+- deterministic, no-follow parsing of the exact owner-manifest canonical-surface declaration grammar;
 - canonical Gregorian civil-date, whole-second UTC, and exact-nanosecond UTC validation;
 - versioned static-library, header, CMake-package, receipt, and uninstall surfaces.
 

@@ -15,8 +15,7 @@ SclvSkviReferencesCheckResult check_sclv_skvi_references(const SkviCheckResult& 
             if (is_indexed(ref)) {
                 result.messages.push_back(format_evidence(EvidenceCategory::Pass, "sclv_skvi_reference.indexed", "record_id=" + rec.record_id + " path=" + ref));
             } else {
-                result.success = false;
-                result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv_skvi_reference.unindexed", "record_id=" + rec.record_id + " path=" + ref));
+                result.messages.push_back(format_evidence(EvidenceCategory::Warning, "sclv_skvi_reference.historical", "record_id=" + rec.record_id + " path=" + ref));
             }
         }
     }

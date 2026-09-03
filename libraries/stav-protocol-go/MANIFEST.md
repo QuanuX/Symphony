@@ -1,5 +1,17 @@
 # STAV Protocol Kernel Manifest
 
+## Canonical Surfaces
+
+- `libraries/stav-protocol-go/FEATURES.md`
+- `libraries/stav-protocol-go/GO_1_27_MIGRATION.md`
+- `libraries/stav-protocol-go/IMPLEMENTATION.md`
+- `libraries/stav-protocol-go/INTENT.md`
+- `libraries/stav-protocol-go/MANIFEST.md`
+- `libraries/stav-protocol-go/README.md`
+- `libraries/stav-protocol-go/REQUIREMENTS.md`
+- `libraries/stav-protocol-go/SKILL.md`
+- `libraries/stav-protocol-go/THREAT-MODEL.md`
+
 ## Canonical Source
 
 `knowledge/stav/`

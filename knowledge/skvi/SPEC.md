@@ -19,35 +19,21 @@ SKVI maps files, boundaries, and relationships. The canonical Markdown surface r
 The scope of the structural map spans four layers.
 
 ## Layer 0 Canonical Surfaces
+
+The fixed bootstrap contains exactly:
+
 - `README.md`
 - `INTENT.md`
 - `go.work`
-- `modules/node-troll/`
-- `modules/bus-troll/`
-- `modules/hotpath-runtime/`
-- `modules/secure-identity-access-governance/`
-- `modules/ssiag-provider-macos-keychain/`
-- `libraries/`
-- `libraries/stav-protocol-go/`
-- `tools/symphony-validator/`
-- `knowledge/`
-- `knowledge/skvi/`
-- `knowledge/sacv/`
-- `knowledge/ssiag/`
-- `knowledge/stav/`
-- `knowledge/sclv/`
-- `knowledge/sodv/`
+- `knowledge/MANIFEST.md`
+
+All other required canonical surfaces come from owner manifests reached through the exact `## Subordinate Manifests` list in `knowledge/MANIFEST.md`. Each owner manifest has one exact `## Canonical Surfaces` section and declares itself. The first contiguous declaration block after either heading permits blank lines and unindented `- ` bullets containing exactly one backtick-delimited safe repository-relative path. The first later nonblank prose, table, divider, or heading ends the machine block; such later content is ordinary manifest prose. Directory inference and unlisted manifest discovery are not part of this machine grammar.
 
 ## Layer 1 Contract Files
-Where present:
-- `INTENT.md`
-- `MANIFEST.md`
-- `INSTALL.md`
-- `SKILL.md`
-- `SPEC.md`
-- `REQUIREMENTS.md`
-- `IMPLEMENTATION.md`
-- `THREAT-MODEL.md`
+
+An owner may declare its Contract Quad, companions, schemas, fixtures, or exact build anchors when those surfaces already carry owner-ratified canonical meaning. A path does not enter required closure merely because it exists, follows a conventional filename, is indexed as implementation truth, or sits below a declared directory.
+
+Every declared surface must exist as a bounded no-follow regular file and occur in `knowledge/skvi/INDEX.md` exactly once. Duplicate owners, unsafe declarations, missing declarations or files, repeated/cyclic manifest traversal, zero index entries, and multiple index entries fail closed. Indexed implementation truth may remain beyond this required declaration closure.
 
 ## Layer 2 Relationship Descriptors
 Relationship descriptors among:

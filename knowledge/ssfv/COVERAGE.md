@@ -22,11 +22,9 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 | `libraries/knowledge-vector-engine-cpp` | registered | `ssfv:symphony:knowledge-vector-engine-foundation` | `libraries/knowledge-vector-engine-cpp/FEATURES.md` |
 | `libraries/stav-protocol-go` | registered | `ssfv:symphony:stav-protocol-kernel` | `libraries/stav-protocol-go/FEATURES.md` |
 | `modules/accordare-stav-producer` | registered | `ssfv:symphony:accordare-stav-producer` | `modules/accordare-stav-producer/FEATURES.md` |
-| `modules/bus-troll` | excluded | none | Proposal-only Contract Quad seed; no executable implementation exists. |
 | `modules/hotpath-runtime` | excluded | none | Proposal-only Contract Quad seed; no executable implementation exists. |
 | `modules/knowledge-session-coordinator` | registered | `ssfv:symphony:knowledge-session-coordinator` | `modules/knowledge-session-coordinator/FEATURES.md` |
 | `modules/maestro` | registered | `ssfv:symphony:maestro-presence-authority` | `modules/maestro/FEATURES.md` |
-| `modules/node-troll` | excluded | none | Proposal-only Contract Quad seed; no executable implementation exists. |
 | `modules/sacv-engine` | registered | `ssfv:symphony:sacv-engine` | `modules/sacv-engine/FEATURES.md` |
 | `modules/sav-engine` | registered | `ssfv:symphony:sav-engine` | `modules/sav-engine/FEATURES.md` |
 | `modules/sclv-engine` | registered | `ssfv:symphony:sclv-engine` | `modules/sclv-engine/FEATURES.md` |

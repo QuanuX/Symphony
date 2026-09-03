@@ -1,5 +1,80 @@
 # Symphony Knowledge Vector Common Schemas v1
 
+## Canonical Surfaces
+
+- `knowledge/schemas/v1/MANIFEST.md`
+- `knowledge/schemas/v1/administration-coverage-input.schema.json`
+- `knowledge/schemas/v1/administration-coverage-result.schema.json`
+- `knowledge/schemas/v1/engine-binding-registry.schema.json`
+- `knowledge/schemas/v1/engine-descriptor.schema.json`
+- `knowledge/schemas/v1/engine-process-request.schema.json`
+- `knowledge/schemas/v1/engine-process-response.schema.json`
+- `knowledge/schemas/v1/feature-administration-profile.schema.json`
+- `knowledge/schemas/v1/foundation-lifecycle-adapter.schema.json`
+- `knowledge/schemas/v1/foundation-lifecycle-attempt.schema.json`
+- `knowledge/schemas/v1/foundation-lifecycle-command.schema.json`
+- `knowledge/schemas/v1/foundation-lifecycle-observation.schema.json`
+- `knowledge/schemas/v1/foundation-lifecycle-plan.schema.json`
+- `knowledge/schemas/v1/foundation-lifecycle-result.schema.json`
+- `knowledge/schemas/v1/install-receipt.schema.json`
+- `knowledge/schemas/v1/invariant-ownership-registry.schema.json`
+- `knowledge/schemas/v1/invariant-query-result.schema.json`
+- `knowledge/schemas/v1/lifecycle-applied-state.schema.json`
+- `knowledge/schemas/v1/lifecycle-apply-command.schema.json`
+- `knowledge/schemas/v1/lifecycle-apply-result.schema.json`
+- `knowledge/schemas/v1/lifecycle-boot-command.schema.json`
+- `knowledge/schemas/v1/lifecycle-boot-head.schema.json`
+- `knowledge/schemas/v1/lifecycle-boot-journal.schema.json`
+- `knowledge/schemas/v1/lifecycle-boot-result.schema.json`
+- `knowledge/schemas/v1/lifecycle-desired-state.schema.json`
+- `knowledge/schemas/v1/lifecycle-host-boot-result.schema.json`
+- `knowledge/schemas/v1/lifecycle-host-integration-result.schema.json`
+- `knowledge/schemas/v1/lifecycle-host-integration.schema.json`
+- `knowledge/schemas/v1/lifecycle-observation.schema.json`
+- `knowledge/schemas/v1/lifecycle-plan-command.schema.json`
+- `knowledge/schemas/v1/lifecycle-plan.schema.json`
+- `knowledge/schemas/v1/lifecycle-profile-input.schema.json`
+- `knowledge/schemas/v1/lifecycle-profile.schema.json`
+- `knowledge/schemas/v1/lifecycle-root-ownership-fence.schema.json`
+- `knowledge/schemas/v1/lifecycle-root-ownership-reconciliation.schema.json`
+- `knowledge/schemas/v1/lifecycle-root-ownership-result.schema.json`
+- `knowledge/schemas/v1/lifecycle-root-ownership.schema.json`
+- `knowledge/schemas/v1/lifecycle-runtime-state.schema.json`
+- `knowledge/schemas/v1/maestro-docking-command.schema.json`
+- `knowledge/schemas/v1/maestro-docking-presence-head.schema.json`
+- `knowledge/schemas/v1/maestro-docking-presence-registry.schema.json`
+- `knowledge/schemas/v1/maestro-docking-presence.schema.json`
+- `knowledge/schemas/v1/maestro-docking-result.schema.json`
+- `knowledge/schemas/v1/maestro-receptor-descriptor.schema.json`
+- `knowledge/schemas/v1/maestro-receptor-inventory-command.schema.json`
+- `knowledge/schemas/v1/maestro-receptor-inventory-result.schema.json`
+- `knowledge/schemas/v1/named-version-command.schema.json`
+- `knowledge/schemas/v1/named-version-head.schema.json`
+- `knowledge/schemas/v1/named-version-proposal.schema.json`
+- `knowledge/schemas/v1/named-version-registry.schema.json`
+- `knowledge/schemas/v1/named-version-result.schema.json`
+- `knowledge/schemas/v1/proposal.schema.json`
+- `knowledge/schemas/v1/provider-evidence.schema.json`
+- `knowledge/schemas/v1/qxctl-command-registry.schema.json`
+- `knowledge/schemas/v1/reconciliation-command.schema.json`
+- `knowledge/schemas/v1/reconciliation-head.schema.json`
+- `knowledge/schemas/v1/reconciliation-journal.schema.json`
+- `knowledge/schemas/v1/reconciliation-result.schema.json`
+- `knowledge/schemas/v1/session-command.schema.json`
+- `knowledge/schemas/v1/session-head.schema.json`
+- `knowledge/schemas/v1/session-journal.schema.json`
+- `knowledge/schemas/v1/session-result.schema.json`
+- `knowledge/schemas/v1/session-transition-result.schema.json`
+- `knowledge/schemas/v1/ssfv-maintenance-command.schema.json`
+- `knowledge/schemas/v1/ssfv-maintenance-head.schema.json`
+- `knowledge/schemas/v1/ssfv-maintenance-journal.schema.json`
+- `knowledge/schemas/v1/ssfv-maintenance-result.schema.json`
+- `knowledge/schemas/v1/temporal.schema.json`
+- `knowledge/schemas/v1/validation-baseline.schema.json`
+- `knowledge/schemas/v1/validation-policy.schema.json`
+- `knowledge/schemas/v1/validation-result.schema.json`
+- `knowledge/schemas/v1/validation-warning-state.schema.json`
+
 ## Authority
 
 These exact JSON Schema files are canonical common process and lifecycle contract truth owned by the `knowledge/` umbrella. Implementations remain subordinate to them.
@@ -16,7 +91,7 @@ These exact JSON Schema files are canonical common process and lifecycle contrac
 - `administration-coverage-input.schema.json`: bounded repository-independent SSFV administration-check input with optional observed qxctl evidence.
 - `administration-coverage-result.schema.json`: digest-bound design, live, authorization, uncovered-surface, remediation, and module-integration evidence.
 - `install-receipt.schema.json`: versioned, prefix-relative package ownership and docking state.
-- `engine-binding-registry.schema.json`: protected, noncanonical user-default selection of exact inactive-undocked engine and coordinator installations. A binding is not installation, Maestro docking, authentication, permission, or canonical apply authority.
+- `engine-binding-registry.schema.json`: immutable closed-six-role protected, noncanonical user-default selection of exact inactive-undocked engine and coordinator installations. Registry v2 is a separate protocol; SAV, SEV, and future roles are never added to v1. A binding is not installation, Maestro docking, authentication, permission, or canonical apply authority.
 - `reconciliation-journal.schema.json`: protected noncanonical worktree state, content snapshots, checkpoint chain, compatibility envelope, extensions, and recovery evidence.
 - `reconciliation-head.schema.json`: atomic selector for the active member of a dual-slot reconciliation journal.
 - `reconciliation-command.schema.json`: exact qxctl-to-coordinator reconciliation operation payload.

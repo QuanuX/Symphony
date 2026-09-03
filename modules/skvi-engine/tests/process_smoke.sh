@@ -8,6 +8,8 @@ REPO=${2:?repository root is required}
 "$BINARY" --version | grep '^symphony-skvi 0.1.0-dev$' >/dev/null
 "$BINARY" --descriptor | grep '"canonical_apply_enabled":false' >/dev/null
 "$BINARY" --descriptor | grep '"network_listener":false' >/dev/null
+"$BINARY" --descriptor | grep '"json_values":32768' >/dev/null
+"$BINARY" --descriptor | grep '"snapshot_files":1024' >/dev/null
 
 DEADLINE=$(( $(date +%s) * 1000 + 60000 ))
 INSPECT=$(printf '{"protocol":"symphony.knowledge.engine-process.v1","request_id":"smoke-inspect","correlation_id":"smoke-inspect","operation":"inspect","target_engine":"symphony-skvi","deadline_unix_ms":%s,"payload":{}}' "$DEADLINE")

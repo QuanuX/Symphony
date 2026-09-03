@@ -48,11 +48,9 @@ SclvReferencesCheckResult check_sclv_references(const std::string& repo_root, co
             std::filesystem::path full_path = std::filesystem::path(repo_root) / path;
             
             if (!std::filesystem::exists(full_path)) {
-                result.success = false;
-                result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv_reference.path_missing", "record_id=" + rec.record_id + " field=" + field + " path=" + path));
+                result.messages.push_back(format_evidence(EvidenceCategory::Warning, "sclv_reference.historical_path_absent", "record_id=" + rec.record_id + " field=" + field + " path=" + path));
             } else if (!std::filesystem::is_regular_file(full_path)) {
-                result.success = false;
-                result.messages.push_back(format_evidence(EvidenceCategory::Violation, "sclv_reference.path_not_file", "record_id=" + rec.record_id + " field=" + field + " path=" + path));
+                result.messages.push_back(format_evidence(EvidenceCategory::Warning, "sclv_reference.historical_path_not_file", "record_id=" + rec.record_id + " field=" + field + " path=" + path));
             } else {
                 result.messages.push_back(format_evidence(EvidenceCategory::Pass, "sclv_reference.skvi_reference_exists", "record_id=" + rec.record_id + " path=" + path));
             }

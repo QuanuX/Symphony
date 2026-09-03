@@ -75,13 +75,13 @@ func TestSnapshotJSON_Success(t *testing.T) {
 	if !strings.Contains(output, `"go_baseline": "go1.26.5"`) {
 		t.Errorf("expected JSON to contain go_baseline")
 	}
-	if !strings.Contains(output, `"module": "node-troll"`) {
-		t.Errorf("expected JSON to contain module node-troll")
+	if !strings.Contains(output, `"module": "hotpath-runtime"`) {
+		t.Errorf("expected JSON to contain module hotpath-runtime")
 	}
-	if !strings.Contains(output, `"path": "modules/node-troll/INTENT.md"`) {
+	if !strings.Contains(output, `"path": "modules/hotpath-runtime/INTENT.md"`) {
 		t.Errorf("expected JSON to contain relative paths without absolute prefix")
 	}
-	if !strings.Contains(output, `"path": "modules/node-troll"`) {
+	if !strings.Contains(output, `"path": "modules/hotpath-runtime"`) {
 		t.Errorf("expected JSON to contain relative module path")
 	}
 

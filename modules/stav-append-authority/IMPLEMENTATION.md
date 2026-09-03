@@ -44,11 +44,11 @@ Exit gate: the schemas and codec exist, but this executable still cannot listen,
 ## Phase 5 — Producer Integration (SSIAG Implemented)
 
 1. Integrate SSIAG first with explicit event-class allowlists.
-2. Add node-troll only through a separately reviewed producer authorization.
+2. Add any future optional Troll only through a separately reviewed producer authorization.
 3. Fail security and configuration mutations closed when the required audit event cannot be committed.
 4. Never add a producer-side spool or secondary writer.
 
-Implemented evidence includes strict operational schemas/fixtures, exclusive-lock and restart tests, identical/conflicting request tests, incomplete-tail and corruption tests, authenticated endpoint/caller integration tests, qxctl activation, and the closed SSIAG producer mapping. node-troll remains a separate future producer review.
+Implemented evidence includes strict operational schemas/fixtures, exclusive-lock and restart tests, identical/conflicting request tests, incomplete-tail and corruption tests, authenticated endpoint/caller integration tests, qxctl activation, and the closed SSIAG producer mapping. No Troll producer is authorized.
 
 ## Phase 6 — Foundation Supervision (Implemented)
 

@@ -1,5 +1,15 @@
 # SACV v1 Schema Manifest
 
+## Canonical Surfaces
+
+- `knowledge/sacv/schemas/v1/MANIFEST.md`
+- `knowledge/sacv/schemas/v1/check-result.schema.json`
+- `knowledge/sacv/schemas/v1/diff-input.schema.json`
+- `knowledge/sacv/schemas/v1/diff-result.schema.json`
+- `knowledge/sacv/schemas/v1/projection.schema.json`
+- `knowledge/sacv/schemas/v1/proposal-input.schema.json`
+- `knowledge/sacv/schemas/v1/registry-entry.schema.json`
+
 This directory owns the machine-readable JSON Schema contracts for the initial Symphony API Contract Vector engine.
 
 | Schema | Purpose |

@@ -58,7 +58,7 @@ func buildSAVHostCurrent(ctx context.Context, workRoot string, options accordare
 	registryPayload := canonicalJSONValue(snapshot.Registry)
 	sources = append(sources, savProjection(
 		"host:binding-registry", "knowledge", "knowledge/SPEC.md",
-		knowledgebinding.Protocol, "protected_selection", registryPayload,
+		snapshot.Registry.Protocol, "protected_selection", registryPayload,
 		snapshot.Registry.RegistryDigest, started))
 	required = append(required, "host:binding-registry")
 

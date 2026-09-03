@@ -22,7 +22,7 @@ The checked-in machine-evaluable profile is `knowledge/FEATURE-ADMINISTRATION-PR
 
 ## Bootstrap Close Evidence
 
-The current profile declares 179 reviewed surfaces. Runtime satisfaction counts and the result digest remain evaluation-specific because they also bind supplied engine descriptors and any observed qxctl registry. The canonical profile digest is `sha256:6b666bd14c7ea7372ba74f5521edf3f30761faa237d59e5ff547b62ecba6bb18`, the bound SSFV registry digest is `sha256:57d96cd04b6824f56eeecbbe35ad424e13d739fea714840c6d4b60dbbbc65c1a`, and the expected 197-leaf qxctl registry digest is `sha256:a66b55ad1222ac9a89a2d4dc389753d68d3b6495c19831d9f9157f9e13a91a73`.
+The current profile declares 179 reviewed surfaces. Runtime satisfaction counts and the result digest remain evaluation-specific because they also bind supplied engine descriptors and any observed qxctl registry. The canonical profile digest is `sha256:96e4060392cf8464381386473f3ec359221a8cce3cce2cc73398266bffe8a16e`, the bound SSFV registry digest is `sha256:1ab6fb5708a5046c8a073bea4060657181a411566142ae160716d3f8f774c2de`, and the expected 198-leaf qxctl registry digest is `sha256:05080715181c783d893fc221c0db93e80cfb25dfb7ffea952f0479f3b683f732`.
 
 The four closed surfaces are exact administrator-facing lifecycle routes: SSIAG supervision, SSIAG TOPS enrollment, STAV supervision, and STAV TOPS enrollment. Each exposes status, plan, apply, apply-status, and recover through qxctl while the Go module owns transaction behavior. The expected registry retains the qxctl-owned wrapper binding beside every backend binding so command-layer behavior and administered capability remain distinct and independently auditable.
 
