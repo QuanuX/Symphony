@@ -1,7 +1,7 @@
 # QuanuX Symphony
 
 > [!IMPORTANT]
-> Symphony is in active development. Phase 1 contains substantial working foundations; the Phase 2–8 vector architecture is Architect-ratified but remains deliberately separated from runtime claims that have not yet been implemented.
+> Symphony is in active development. Phase 1 contains substantial working foundations; the emerging vector architecture remains deliberately separated from runtime claims that have not yet been implemented.
 
 Symphony is an agentic-first cockpit for quantitative developers, researchers, traders, and the other participants a user chooses to involve. Its long-range purpose is to provide one coherent, independently installable suite for researching, constructing, testing, deploying, operating, and eventually observing quantitative trading systems—without taking ownership of the user's strategy logic or forcing every installation into one infrastructure model.
 
@@ -44,12 +44,12 @@ The detailed, ratified baseline is in [Symphony Emerging Vector Architecture](kn
 |---|---|---|
 | **SKV — Symphony Knowledge Vector** | Canonical knowledge architecture and the common contracts that let independently owned vectors remain coherent and agent-readable. | Phase 1 foundation is implemented; current and emerging surfaces are manifest-declared and SKVI-indexed. |
 | **SKVI / SCLV / SACV / SODV / SSFV / SAV / SEV** | Source routing, change truth, API governance, official documentation and release-publication governance, semantic feature truth, Accordare composition, and governed evolution. | Contracted Phase 1 domains with bounded engines and administrative integrations where their individual contracts say so. SODV governs official projection; it is not the publisher. |
-| **SOV — Symphony Ops Vector** | qxctl-administered provisioning, Habitat conditioning, Nest delivery, bus-adapter setup, and optional remote-Node operations. | Architect-ratified Phase 2 domain; provider, Terraform, Habitat, Nest, bus, and remote-operation protocols remain to be designed and implemented. |
-| **SCV — Symphony Cloud Vector** | Private knowledge of offsite provider resources, offerings, regions, constraints, observations, and hybrid possibilities. | Architect-ratified domain. A reproducible private graph and independent C++ engines are planned; ontology, storage, adapters, and API are not yet selected. |
-| **SNV — Symphony Node Vector** | Records and relates Node identity, resources, cluster relationships, and names without dictating them. | Architect-ratified composition of **SNIV** (identity), **SNRV** (resources), **SCIV** (cluster identity/connectivity), and SNV-bounded **SCNV** (consolidated naming). Record schemas and engines remain deferred. |
-| **SQV — Symphony Quantitative Vector** | Reusable quantitative and trading-system framework contracts without acquiring user strategy logic. | Architect-ratified domain. **SOOV — Symphony Orchestra Omega Vector** is its first named subvector: a future high-performance, C++-only FIX architecture informed by historic QuanuX work. Detailed FIX behavior is not yet canonical. |
-| **SHV — Symphony Hardware Vector** | Hardware-capability knowledge for processors, CPU topology and execution-unit designs, caches, GPUs, NICs and fibre interfaces, motherboards, RAM, NVMe, and complete builds. | Architect-ratified domain. A reproducible C++ graph engine and private query/AI surfaces are planned; data model and evidence acquisition remain open. |
-| **SIV — Symphony Intelligence Vector** | Future local and remote agent collaboration, extended context, structured long-term logic, communication, and governed Symphony interaction. | Architect-ratified domain. **SMCV** is its optional Markdown conversion component; **SAIV** is reserved for a later integration subvector and currently has no behavior. |
+| **SOV — Symphony Ops Vector** | qxctl-administered provisioning, Habitat conditioning, Nest delivery, bus-adapter setup, and optional remote-Node operations. | Emerging operations domain; provider, Terraform, Habitat, Nest, bus, and remote-operation protocols remain to be designed and implemented. |
+| **SCV — Symphony Cloud Vector** | Private knowledge of offsite provider resources, offerings, regions, constraints, observations, and hybrid possibilities. | Emerging domain. A reproducible private graph and independent C++ engines are planned; ontology, storage, adapters, and API are not yet selected. |
+| **SNV — Symphony Node Vector** | Records and relates Node identity, resources, cluster relationships, and names without dictating them. | Emerging composition of **SNIV** (identity), **SNRV** (resources), **SCIV** (cluster identity/connectivity), and SNV-bounded **SCNV** (consolidated naming). Record schemas and engines remain deferred. |
+| **SQV — Symphony Quantitative Vector** | Reusable quantitative and trading-system framework contracts without acquiring user strategy logic. | Emerging domain. **SOOV — Symphony Orchestra Omega Vector** is its first named subvector: a future high-performance, C++-only FIX architecture informed by historic QuanuX work. Detailed FIX behavior is not yet canonical. |
+| **SHV — Symphony Hardware Vector** | Hardware-capability knowledge for processors, CPU topology and execution-unit designs, caches, GPUs, NICs and fibre interfaces, motherboards, RAM, NVMe, and complete builds. | Emerging domain. A reproducible C++ graph engine and private query/AI surfaces are planned; data model and evidence acquisition remain open. |
+| **SIV — Symphony Intelligence Vector** | Future local and remote agent collaboration, extended context, structured long-term logic, communication, and governed Symphony interaction. | Emerging domain. **SMCV** is its optional Markdown conversion component; **SAIV** is reserved for a later integration subvector and currently has no behavior. |
 
 SAV continues to mean **Symphony Accordare Vector**. It is not the intelligence vector.
 
@@ -84,19 +84,9 @@ Phase 2 research preserves three optional remote-administration arrangements: co
 
 The retired `node-troll` and `bus-troll` module identities remain reserved tombstones. “Troll” may still describe an optional user-programmed resident living at a connection point, but Symphony assigns it no required Node, bus, supervision, compatibility, or messaging role. The concept may disappear entirely if the architecture makes it unnecessary.
 
-## Delivery Roadmap
+## Delivery
 
-1. **Phase 2 — operations and infrastructure:** SOV, SCV, SNV, provider and owned-hardware provisioning research, Terraform communication, exact Habitat conditioning, bus-adapter administration, and optional remote qxctl design.
-2. **Phase 3 — Nest delivery:** build, deliver, update, and manipulate user-purpose Nests on conditioned Nodes; implement Prima Parte if its final contracts close.
-3. **Phase 4 — backtesting:** define the unique backtesting engine architecture with the Architect.
-4. **Phase 5 — broker integration:** design high-performance C++ broker API integration while preserving the distinct FIX domain.
-5. **Phase 6 — quantitative libraries:** integrate Symphony indicators and quantitative mathematics.
-6. **Phase 7 — intelligence:** design SIV's local/remote agent harness, extended context, structured long-term logic, and communication system.
-7. **Phase 8 — governed construction:** convert structured human/agent requests into indicators, strategies, tools, and exact selected-infrastructure deployments.
-
-Backtesting, non-FIX broker/data API lineage, indicator mathematics, freezing-path data handling, persistence and replay adapters, and account truth are recognized design territories whose final ownership is intentionally not inferred here.
-
-Historical QuanuX engines will be reviewed when their author supplies them for the applicable phase. Their major functions may be separated into reusable example components and then reassembled into coherent public engines; function placement follows architectural review, while final engine names remain the author's decision.
+Seven delivery sprints remain. Their detailed sequence and contents will be presented when their architecture and public boundaries are ready.
 
 ## Implemented Foundations
 
