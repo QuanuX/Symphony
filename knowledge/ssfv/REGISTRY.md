@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes ninety-one experimental records across the repository root and seventeen implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 100 experimental records across the repository root and 25 implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -274,6 +274,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:68202bfea27e4bdf2dd578624ef4bfa1e7fec8549a055ef8e9b3facb1109794a`
 - notes: Architect-ratified F1 nested record for Authenticated Maestro receptor administration; coverage remains partial and no broader runtime or canonical authority is implied.
 
+- feature_id: `ssfv:symphony:qxctl.scv-administration`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:54c194baebae7cad41083821af34d187ff32c1bcdb5217a303a06f6f6209bbb2`
+- notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
+
 - feature_id: `ssfv:symphony:qxctl.ssiag-administration`
 - feature_file: `tools/qxctl/FEATURES.md`
 - owner_contract: `tools/qxctl/MANIFEST.md`
@@ -382,6 +391,69 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:60423331d8b23df470f6883a7cba8faf461a82083d7a59ee7075a7b54bf930bf`
 - notes: Nested SAV record for immutable Named Version validation and deterministic lineage diffing without storage or sealing authority.
 
+- feature_id: `ssfv:symphony:scev-cf-engine`
+- feature_file: `modules/scev-cf-engine/FEATURES.md`
+- owner_contract: `modules/scev-cf-engine/SPEC.md`
+- source_scope: `modules/scev-cf-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:16931e960adb52a992c61a0c7e6b22bdb16e5dfd4ca3f2f633eb304d7db7f386`
+- notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
+
+- feature_id: `ssfv:symphony:scev-engine`
+- feature_file: `modules/scev-engine/FEATURES.md`
+- owner_contract: `modules/scev-engine/SPEC.md`
+- source_scope: `modules/scev-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:b062ce3c29a26219f85b5a174818deb8ec9da860eb9a3c44e6b75c5ab1e0c306`
+- notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
+
+- feature_id: `ssfv:symphony:schv-aws-engine`
+- feature_file: `modules/schv-aws-engine/FEATURES.md`
+- owner_contract: `modules/schv-aws-engine/SPEC.md`
+- source_scope: `modules/schv-aws-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:5900d4f053733fa5adf17d84769228eda62133bff637ae2b37a91effa190635f`
+- notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
+
+- feature_id: `ssfv:symphony:schv-azure-engine`
+- feature_file: `modules/schv-azure-engine/FEATURES.md`
+- owner_contract: `modules/schv-azure-engine/SPEC.md`
+- source_scope: `modules/schv-azure-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:c3ce68bf32b8b7756cb7f1efaaa288d935dc779fcbfdfa34513534142f4e4306`
+- notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
+
+- feature_id: `ssfv:symphony:schv-do-engine`
+- feature_file: `modules/schv-do-engine/FEATURES.md`
+- owner_contract: `modules/schv-do-engine/SPEC.md`
+- source_scope: `modules/schv-do-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:e576e52f76e39092ef8ad2e0063ac5ff81e6b8400ffb5d97288c5efa84d8dbc5`
+- notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
+
+- feature_id: `ssfv:symphony:schv-engine`
+- feature_file: `modules/schv-engine/FEATURES.md`
+- owner_contract: `modules/schv-engine/SPEC.md`
+- source_scope: `modules/schv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:89c0dce08ff45d719dcc9b981e12f5dd9fc83ac2fa67f573bad31c646ae4de1f`
+- notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
+
+- feature_id: `ssfv:symphony:schv-gcp-engine`
+- feature_file: `modules/schv-gcp-engine/FEATURES.md`
+- owner_contract: `modules/schv-gcp-engine/SPEC.md`
+- source_scope: `modules/schv-gcp-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:c44de58e3695593b0dd5d1a62a754a30ed597fdfcaa70bfef6d5441c143deb23`
+- notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
+
 - feature_id: `ssfv:symphony:sclv-engine`
 - feature_file: `modules/sclv-engine/FEATURES.md`
 - owner_contract: `modules/sclv-engine/SPEC.md`
@@ -435,6 +507,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:sclv-engine`
 - record_digest: `sha256:fa19e3b49c6c34cd552da01b1b163dce6e46d24cb3c4bf90cf0f78dc71dffe5d`
 - notes: Architect-ratified F3 nested record for provider-neutral local-Git and air-gap evidence normalization; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:scv-engine`
+- feature_file: `modules/scv-engine/FEATURES.md`
+- owner_contract: `modules/scv-engine/SPEC.md`
+- source_scope: `modules/scv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:386b67044ad9ab4a7f40a6661b42c7e5803f5141da12c437d5f954f7609a4ad9`
+- notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
 
 - feature_id: `ssfv:symphony:sev-engine`
 - feature_file: `modules/sev-engine/FEATURES.md`
@@ -688,15 +769,6 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:bf6887e2c67df2fc50d0a0c4a02cdec4f33581718823e513daf1b857028d2af5`
 - notes: Architect-ratified F2 subfeature for safe configured provider metadata; no operational adapter bridge is claimed.
 
-- feature_id: `ssfv:symphony:ssiag-foundation.provider-trust-assurance`
-- feature_file: `modules/secure-identity-access-governance/FEATURES.md`
-- owner_contract: `modules/secure-identity-access-governance/SPEC.md`
-- source_scope: `modules/secure-identity-access-governance`
-- status: `experimental`
-- parent_feature_id: `ssfv:symphony:ssiag-foundation`
-- record_digest: `sha256:ddfccba65c6327f6f6bdafbd3b59ccbbfcebf29d208e3aa254113486f0e89048`
-- notes: Architect-ratified mutually verified provider metadata handshake with control/secret noninterference; operational Keychain access remains disabled.
-
 - feature_id: `ssfv:symphony:ssiag-foundation.provider-readiness-assurance`
 - feature_file: `modules/secure-identity-access-governance/FEATURES.md`
 - owner_contract: `modules/secure-identity-access-governance/SPEC.md`
@@ -705,6 +777,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:ssiag-foundation`
 - record_digest: `sha256:7619926745c9fe2d545898f6c9fa4f1f91b205f1e3c62983034988db9187527f`
 - notes: Architect-ratified Phase 10B complete-bundle staging and three-layer provider-readiness assurance; operational eligibility and all provider operations remain disabled.
+
+- feature_id: `ssfv:symphony:ssiag-foundation.provider-trust-assurance`
+- feature_file: `modules/secure-identity-access-governance/FEATURES.md`
+- owner_contract: `modules/secure-identity-access-governance/SPEC.md`
+- source_scope: `modules/secure-identity-access-governance`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:ssiag-foundation`
+- record_digest: `sha256:ddfccba65c6327f6f6bdafbd3b59ccbbfcebf29d208e3aa254113486f0e89048`
+- notes: Architect-ratified mutually verified provider metadata handshake with control/secret noninterference; operational Keychain access remains disabled.
 
 - feature_id: `ssfv:symphony:ssiag-foundation.safe-audit-production`
 - feature_file: `modules/secure-identity-access-governance/FEATURES.md`
@@ -864,4 +945,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This ninety-one-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This 99-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

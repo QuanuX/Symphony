@@ -25,4 +25,4 @@ Guide agents and implementers in SCV research without introducing provider prefe
 
 ## Stop Conditions
 
-Stop for Architect review before choosing a graph technology, ontology, evidence source, persistence rule, scoring function, provider recommendation policy, account-data store, API, engine operation, or qxctl command.
+Use the admitted source-knowledge operations and owner-selected source definitions within `knowledge/scv/SOURCE-KNOWLEDGE.md`. Preserve unknown formats and unverified interpretation. New graph technology, semantic schema, operational account adapter, authority boundary, scoring policy or network API beyond that contract requires a separate reviewed decision; ordinary authorized use does not reopen an already ratified boundary.

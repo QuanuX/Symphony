@@ -1,0 +1,859 @@
+{
+  "capture": {
+    "body": "# Synthetic service\nMaximum batch size: 16 items.\n[Reference](https://example.invalid/spec)\n",
+    "body_digest": "sha256:733ab4d5aa576fe185e3cadd951feef3dda71b7d3ebe8e1ca8ee45cdc7dc0583",
+    "byte_size": 92,
+    "completeness": "complete",
+    "digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+    "issues": [],
+    "locator_id": "reference",
+    "media_type": "text/markdown",
+    "observed_at": "2026-09-10T12:00:00Z",
+    "protocol": "symphony.scv.capture.v1",
+    "redirects": [],
+    "resolved_uri": "https://example.invalid/reference.md",
+    "source": {
+      "authority_role": "fixture_owned",
+      "continuity_evidence": [
+        "Fixture authors define this synthetic publication."
+      ],
+      "digest": "sha256:2f6fc5aca1005c645853cb0aef4c0f5303e56e20e42f761e43cb9d03d3353c86",
+      "family_id": "schv",
+      "generation": 1,
+      "locators": [
+        {
+          "format": "markdown",
+          "locator_id": "reference",
+          "role": "preferred",
+          "selector": "fixture-1",
+          "uri": "https://example.invalid/reference.md"
+        }
+      ],
+      "predecessor_digest": null,
+      "protocol": "symphony.scv.source.v1",
+      "provider_id": "fixture",
+      "publisher": "Synthetic fixture publisher",
+      "scope": "Synthetic service fixture; not a vendor capability statement",
+      "source_id": "fixture-docs"
+    },
+    "upstream_revision": {
+      "scheme": "fixture",
+      "value": "1"
+    }
+  },
+  "capture_input": {
+    "body": "# Synthetic service\nMaximum batch size: 16 items.\n[Reference](https://example.invalid/spec)\n",
+    "completeness": "complete",
+    "issues": [],
+    "locator_id": "reference",
+    "media_type": "text/markdown",
+    "observed_at": "2026-09-10T12:00:00Z",
+    "redirects": [],
+    "resolved_uri": "https://example.invalid/reference.md",
+    "source": {
+      "authority_role": "fixture_owned",
+      "continuity_evidence": [
+        "Fixture authors define this synthetic publication."
+      ],
+      "digest": "sha256:2f6fc5aca1005c645853cb0aef4c0f5303e56e20e42f761e43cb9d03d3353c86",
+      "family_id": "schv",
+      "generation": 1,
+      "locators": [
+        {
+          "format": "markdown",
+          "locator_id": "reference",
+          "role": "preferred",
+          "selector": "fixture-1",
+          "uri": "https://example.invalid/reference.md"
+        }
+      ],
+      "predecessor_digest": null,
+      "protocol": "symphony.scv.source.v1",
+      "provider_id": "fixture",
+      "publisher": "Synthetic fixture publisher",
+      "scope": "Synthetic service fixture; not a vendor capability statement",
+      "source_id": "fixture-docs"
+    },
+    "upstream_revision": {
+      "scheme": "fixture",
+      "value": "1"
+    }
+  },
+  "expired_query_result": {
+    "conflicts": [],
+    "coverage": {
+      "extent": "bounded_selected_corpus",
+      "matched_claims": 1,
+      "native_nodes": 3,
+      "provider_completeness": "not_asserted",
+      "selected_captures": 1,
+      "selected_claims": 1
+    },
+    "digest": "sha256:360e5cadea06128b5de7effa3843886c8d932d9085044dfa269b76302848886e",
+    "domain": "scv",
+    "evidence_origins": [
+      {
+        "body_digest": "sha256:733ab4d5aa576fe185e3cadd951feef3dda71b7d3ebe8e1ca8ee45cdc7dc0583",
+        "capture_digests": [
+          "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032"
+        ],
+        "independence": "not_asserted",
+        "source_ids": [
+          "fixture-docs"
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "claim": {
+          "alternative_supports": [],
+          "claim_id": "synthetic batch bound",
+          "dependencies": [],
+          "evidence": [
+            {
+              "capture_digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+              "quote": "Maximum batch size: 16 items."
+            }
+          ],
+          "predicate": "maximum batch size",
+          "scope": {
+            "fixture": "1"
+          },
+          "scope_dependencies": [],
+          "statement_kind": "documented_fact",
+          "subject": "Synthetic service",
+          "valid_from": null,
+          "valid_until": null,
+          "value": {
+            "type": "integer",
+            "unit": "items",
+            "value": 16
+          }
+        },
+        "dependent_claim_ids": [],
+        "evidence_roots": [],
+        "reasons": [
+          "no_current_eligible_support_set",
+          "semantic_claim_not_empirically_verified"
+        ],
+        "semantic_validation": "caller_proposed; anchors and bounded support structure checked only",
+        "status": "unsupported",
+        "support_cycle_present": false,
+        "support_sets": [
+          {
+            "dependencies": [],
+            "evidence": [
+              {
+                "capture_digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+                "quote": "Maximum batch size: 16 items."
+              }
+            ],
+            "evidence_roots": [
+              "sha256:733ab4d5aa576fe185e3cadd951feef3dda71b7d3ebe8e1ca8ee45cdc7dc0583"
+            ],
+            "reasons": [
+              "evidence_stale"
+            ],
+            "status": "unsupported",
+            "support_id": "primary",
+            "valid_until_unix_seconds": 1789045201
+          }
+        ],
+        "valid_until_unix_seconds": 1789045201
+      }
+    ],
+    "graph_digest": "sha256:08a24791412f49f8b9429d1fdd5d13221c746f4a47fbb562b7bc3c11636d63ff",
+    "limitations": [
+      "caller-proposed claims retain their statement kinds; quote anchoring is not factual verification",
+      "coverage is limited to selected captures; absence is not provider-wide unavailability",
+      "native extraction describes captured structure; it does not validate provider semantics",
+      "text extraction is limited to headings and Markdown links; prose meaning remains proposed",
+      "evidence roots deduplicate identical body bytes; independent corroboration and arbitrary inference rules are not established"
+    ],
+    "protocol": "symphony.scv.query-result.v1",
+    "query_selection": {
+      "query_time": "2026-09-10T13:00:01Z"
+    },
+    "query_time": "2026-09-10T13:00:01Z",
+    "selection_policy": {
+      "allowed_statement_kinds": [
+        "documented_fact"
+      ],
+      "max_age_seconds": 3600,
+      "partial_capture": "exclude",
+      "policy_id": "fixture-exact-selection"
+    }
+  },
+  "explain_result": {
+    "claim_id": "synthetic batch bound",
+    "conflicts": [],
+    "coverage": {
+      "extent": "bounded_selected_corpus",
+      "matched_claims": 1,
+      "native_nodes": 3,
+      "provider_completeness": "not_asserted",
+      "selected_captures": 1,
+      "selected_claims": 1
+    },
+    "dependency_closure": [
+      "synthetic batch bound"
+    ],
+    "digest": "sha256:ddc734b7b723c7d05bafd446fc9eedd19d3a0f08286517a3fb03255e4898c941",
+    "domain": "scv",
+    "evidence_origins": [
+      {
+        "body_digest": "sha256:733ab4d5aa576fe185e3cadd951feef3dda71b7d3ebe8e1ca8ee45cdc7dc0583",
+        "capture_digests": [
+          "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032"
+        ],
+        "independence": "not_asserted",
+        "source_ids": [
+          "fixture-docs"
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "claim": {
+          "alternative_supports": [],
+          "claim_id": "synthetic batch bound",
+          "dependencies": [],
+          "evidence": [
+            {
+              "capture_digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+              "quote": "Maximum batch size: 16 items."
+            }
+          ],
+          "predicate": "maximum batch size",
+          "scope": {
+            "fixture": "1"
+          },
+          "scope_dependencies": [],
+          "statement_kind": "documented_fact",
+          "subject": "Synthetic service",
+          "valid_from": null,
+          "valid_until": null,
+          "value": {
+            "type": "integer",
+            "unit": "items",
+            "value": 16
+          }
+        },
+        "dependent_claim_ids": [],
+        "evidence_roots": [
+          "sha256:733ab4d5aa576fe185e3cadd951feef3dda71b7d3ebe8e1ca8ee45cdc7dc0583"
+        ],
+        "reasons": [
+          "semantic_claim_not_empirically_verified"
+        ],
+        "semantic_validation": "caller_proposed; anchors and bounded support structure checked only",
+        "status": "supported",
+        "support_cycle_present": false,
+        "support_sets": [
+          {
+            "dependencies": [],
+            "evidence": [
+              {
+                "capture_digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+                "quote": "Maximum batch size: 16 items."
+              }
+            ],
+            "evidence_roots": [
+              "sha256:733ab4d5aa576fe185e3cadd951feef3dda71b7d3ebe8e1ca8ee45cdc7dc0583"
+            ],
+            "reasons": [],
+            "status": "supported",
+            "support_id": "primary",
+            "valid_until_unix_seconds": 1789045201
+          }
+        ],
+        "valid_until_unix_seconds": 1789045201
+      }
+    ],
+    "graph_digest": "sha256:08a24791412f49f8b9429d1fdd5d13221c746f4a47fbb562b7bc3c11636d63ff",
+    "limitations": [
+      "caller-proposed claims retain their statement kinds; quote anchoring is not factual verification",
+      "coverage is limited to selected captures; absence is not provider-wide unavailability",
+      "native extraction describes captured structure; it does not validate provider semantics",
+      "text extraction is limited to headings and Markdown links; prose meaning remains proposed",
+      "evidence roots deduplicate identical body bytes; independent corroboration and arbitrary inference rules are not established"
+    ],
+    "protocol": "symphony.scv.explain-result.v1",
+    "query_selection": {
+      "claim_ids": [
+        "synthetic batch bound"
+      ],
+      "query_time": "2026-09-10T12:00:01Z"
+    },
+    "query_time": "2026-09-10T12:00:01Z",
+    "selection_policy": {
+      "allowed_statement_kinds": [
+        "documented_fact"
+      ],
+      "max_age_seconds": 3600,
+      "partial_capture": "exclude",
+      "policy_id": "fixture-exact-selection"
+    }
+  },
+  "fixture_kind": "synthetic-local-source-knowledge",
+  "graph": {
+    "captures": [
+      {
+        "body": "# Synthetic service\nMaximum batch size: 16 items.\n[Reference](https://example.invalid/spec)\n",
+        "body_digest": "sha256:733ab4d5aa576fe185e3cadd951feef3dda71b7d3ebe8e1ca8ee45cdc7dc0583",
+        "byte_size": 92,
+        "completeness": "complete",
+        "digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+        "issues": [],
+        "locator_id": "reference",
+        "media_type": "text/markdown",
+        "observed_at": "2026-09-10T12:00:00Z",
+        "protocol": "symphony.scv.capture.v1",
+        "redirects": [],
+        "resolved_uri": "https://example.invalid/reference.md",
+        "source": {
+          "authority_role": "fixture_owned",
+          "continuity_evidence": [
+            "Fixture authors define this synthetic publication."
+          ],
+          "digest": "sha256:2f6fc5aca1005c645853cb0aef4c0f5303e56e20e42f761e43cb9d03d3353c86",
+          "family_id": "schv",
+          "generation": 1,
+          "locators": [
+            {
+              "format": "markdown",
+              "locator_id": "reference",
+              "role": "preferred",
+              "selector": "fixture-1",
+              "uri": "https://example.invalid/reference.md"
+            }
+          ],
+          "predecessor_digest": null,
+          "protocol": "symphony.scv.source.v1",
+          "provider_id": "fixture",
+          "publisher": "Synthetic fixture publisher",
+          "scope": "Synthetic service fixture; not a vendor capability statement",
+          "source_id": "fixture-docs"
+        },
+        "upstream_revision": {
+          "scheme": "fixture",
+          "value": "1"
+        }
+      }
+    ],
+    "claims": [
+      {
+        "alternative_supports": [],
+        "claim_id": "synthetic batch bound",
+        "dependencies": [],
+        "evidence": [
+          {
+            "capture_digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+            "quote": "Maximum batch size: 16 items."
+          }
+        ],
+        "predicate": "maximum batch size",
+        "scope": {
+          "fixture": "1"
+        },
+        "scope_dependencies": [],
+        "statement_kind": "documented_fact",
+        "subject": "Synthetic service",
+        "valid_from": null,
+        "valid_until": null,
+        "value": {
+          "type": "integer",
+          "unit": "items",
+          "value": 16
+        }
+      }
+    ],
+    "digest": "sha256:08a24791412f49f8b9429d1fdd5d13221c746f4a47fbb562b7bc3c11636d63ff",
+    "domain": "scv",
+    "interpretations": [
+      {
+        "domain": "scv",
+        "interpreter_version": "fixture-interpretation-1",
+        "knowledge_digest": "sha256:8c4233b7e35df1ac916c0eed5c22c9822bc5fb3718b4e412068c8737cb89029c"
+      }
+    ],
+    "knowledge_digests": [
+      "sha256:8c4233b7e35df1ac916c0eed5c22c9822bc5fb3718b4e412068c8737cb89029c"
+    ],
+    "limitations": [
+      "caller-proposed claims retain their statement kinds; quote anchoring is not factual verification",
+      "coverage is limited to selected captures; absence is not provider-wide unavailability",
+      "native extraction describes captured structure; it does not validate provider semantics",
+      "text extraction is limited to headings and Markdown links; prose meaning remains proposed"
+    ],
+    "native_edges": [
+      {
+        "from": "native:4d85482d8833d23df4b13b383ef9fc2877d9f6fbe2b2e7b188d5da039f8cb83c",
+        "relation": "contains",
+        "to": "native:f22921f8f84831f4e00b465db2273de10b6f94ef62d2e73a4ed5eafbb686dd53"
+      },
+      {
+        "from": "native:4d85482d8833d23df4b13b383ef9fc2877d9f6fbe2b2e7b188d5da039f8cb83c",
+        "relation": "links_to",
+        "to": "native:9358330b377ffda42011d108fc6d7b7410b0bc715e7ce0f9c544460cd2bde3ec"
+      }
+    ],
+    "native_nodes": [
+      {
+        "attributes": {
+          "authority_role": "fixture_owned",
+          "completeness": "complete",
+          "publisher": "Synthetic fixture publisher",
+          "resolved_uri": "https://example.invalid/reference.md",
+          "scope": "Synthetic service fixture; not a vendor capability statement",
+          "source_id": "fixture-docs"
+        },
+        "capture_digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+        "kind": "source",
+        "node_id": "native:4d85482d8833d23df4b13b383ef9fc2877d9f6fbe2b2e7b188d5da039f8cb83c",
+        "pointer": ""
+      },
+      {
+        "attributes": {
+          "label": "Reference",
+          "retrieved": false,
+          "target": "https://example.invalid/spec"
+        },
+        "capture_digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+        "kind": "reference",
+        "node_id": "native:9358330b377ffda42011d108fc6d7b7410b0bc715e7ce0f9c544460cd2bde3ec",
+        "pointer": "line:3:byte:0"
+      },
+      {
+        "attributes": {
+          "term": "Synthetic service"
+        },
+        "capture_digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+        "kind": "section",
+        "node_id": "native:f22921f8f84831f4e00b465db2273de10b6f94ef62d2e73a4ed5eafbb686dd53",
+        "pointer": "line:1"
+      }
+    ],
+    "protocol": "symphony.scv.graph.v1",
+    "selection_policy": {
+      "allowed_statement_kinds": [
+        "documented_fact"
+      ],
+      "max_age_seconds": 3600,
+      "partial_capture": "exclude",
+      "policy_id": "fixture-exact-selection"
+    }
+  },
+  "interpretation_input": {
+    "captures": [
+      {
+        "body": "# Synthetic service\nMaximum batch size: 16 items.\n[Reference](https://example.invalid/spec)\n",
+        "body_digest": "sha256:733ab4d5aa576fe185e3cadd951feef3dda71b7d3ebe8e1ca8ee45cdc7dc0583",
+        "byte_size": 92,
+        "completeness": "complete",
+        "digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+        "issues": [],
+        "locator_id": "reference",
+        "media_type": "text/markdown",
+        "observed_at": "2026-09-10T12:00:00Z",
+        "protocol": "symphony.scv.capture.v1",
+        "redirects": [],
+        "resolved_uri": "https://example.invalid/reference.md",
+        "source": {
+          "authority_role": "fixture_owned",
+          "continuity_evidence": [
+            "Fixture authors define this synthetic publication."
+          ],
+          "digest": "sha256:2f6fc5aca1005c645853cb0aef4c0f5303e56e20e42f761e43cb9d03d3353c86",
+          "family_id": "schv",
+          "generation": 1,
+          "locators": [
+            {
+              "format": "markdown",
+              "locator_id": "reference",
+              "role": "preferred",
+              "selector": "fixture-1",
+              "uri": "https://example.invalid/reference.md"
+            }
+          ],
+          "predecessor_digest": null,
+          "protocol": "symphony.scv.source.v1",
+          "provider_id": "fixture",
+          "publisher": "Synthetic fixture publisher",
+          "scope": "Synthetic service fixture; not a vendor capability statement",
+          "source_id": "fixture-docs"
+        },
+        "upstream_revision": {
+          "scheme": "fixture",
+          "value": "1"
+        }
+      }
+    ],
+    "claims": [
+      {
+        "claim_id": "synthetic batch bound",
+        "dependencies": [],
+        "evidence": [
+          {
+            "capture_digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+            "quote": "Maximum batch size: 16 items."
+          }
+        ],
+        "predicate": "maximum batch size",
+        "scope": {
+          "fixture": "1"
+        },
+        "statement_kind": "documented_fact",
+        "subject": "Synthetic service",
+        "valid_from": null,
+        "valid_until": null,
+        "value": {
+          "type": "integer",
+          "unit": "items",
+          "value": 16
+        }
+      }
+    ],
+    "interpreter_version": "fixture-interpretation-1",
+    "selection_policy": {
+      "allowed_statement_kinds": [
+        "documented_fact"
+      ],
+      "max_age_seconds": 3600,
+      "partial_capture": "exclude",
+      "policy_id": "fixture-exact-selection"
+    }
+  },
+  "knowledge": {
+    "captures": [
+      {
+        "body": "# Synthetic service\nMaximum batch size: 16 items.\n[Reference](https://example.invalid/spec)\n",
+        "body_digest": "sha256:733ab4d5aa576fe185e3cadd951feef3dda71b7d3ebe8e1ca8ee45cdc7dc0583",
+        "byte_size": 92,
+        "completeness": "complete",
+        "digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+        "issues": [],
+        "locator_id": "reference",
+        "media_type": "text/markdown",
+        "observed_at": "2026-09-10T12:00:00Z",
+        "protocol": "symphony.scv.capture.v1",
+        "redirects": [],
+        "resolved_uri": "https://example.invalid/reference.md",
+        "source": {
+          "authority_role": "fixture_owned",
+          "continuity_evidence": [
+            "Fixture authors define this synthetic publication."
+          ],
+          "digest": "sha256:2f6fc5aca1005c645853cb0aef4c0f5303e56e20e42f761e43cb9d03d3353c86",
+          "family_id": "schv",
+          "generation": 1,
+          "locators": [
+            {
+              "format": "markdown",
+              "locator_id": "reference",
+              "role": "preferred",
+              "selector": "fixture-1",
+              "uri": "https://example.invalid/reference.md"
+            }
+          ],
+          "predecessor_digest": null,
+          "protocol": "symphony.scv.source.v1",
+          "provider_id": "fixture",
+          "publisher": "Synthetic fixture publisher",
+          "scope": "Synthetic service fixture; not a vendor capability statement",
+          "source_id": "fixture-docs"
+        },
+        "upstream_revision": {
+          "scheme": "fixture",
+          "value": "1"
+        }
+      }
+    ],
+    "claims": [
+      {
+        "alternative_supports": [],
+        "claim_id": "synthetic batch bound",
+        "dependencies": [],
+        "evidence": [
+          {
+            "capture_digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+            "quote": "Maximum batch size: 16 items."
+          }
+        ],
+        "predicate": "maximum batch size",
+        "scope": {
+          "fixture": "1"
+        },
+        "scope_dependencies": [],
+        "statement_kind": "documented_fact",
+        "subject": "Synthetic service",
+        "valid_from": null,
+        "valid_until": null,
+        "value": {
+          "type": "integer",
+          "unit": "items",
+          "value": 16
+        }
+      }
+    ],
+    "digest": "sha256:8c4233b7e35df1ac916c0eed5c22c9822bc5fb3718b4e412068c8737cb89029c",
+    "domain": "scv",
+    "interpreter_version": "fixture-interpretation-1",
+    "limitations": [
+      "caller-proposed claims retain their statement kinds; quote anchoring is not factual verification",
+      "coverage is limited to selected captures; absence is not provider-wide unavailability",
+      "native extraction describes captured structure; it does not validate provider semantics",
+      "text extraction is limited to headings and Markdown links; prose meaning remains proposed"
+    ],
+    "native_edges": [
+      {
+        "from": "native:4d85482d8833d23df4b13b383ef9fc2877d9f6fbe2b2e7b188d5da039f8cb83c",
+        "relation": "contains",
+        "to": "native:f22921f8f84831f4e00b465db2273de10b6f94ef62d2e73a4ed5eafbb686dd53"
+      },
+      {
+        "from": "native:4d85482d8833d23df4b13b383ef9fc2877d9f6fbe2b2e7b188d5da039f8cb83c",
+        "relation": "links_to",
+        "to": "native:9358330b377ffda42011d108fc6d7b7410b0bc715e7ce0f9c544460cd2bde3ec"
+      }
+    ],
+    "native_nodes": [
+      {
+        "attributes": {
+          "authority_role": "fixture_owned",
+          "completeness": "complete",
+          "publisher": "Synthetic fixture publisher",
+          "resolved_uri": "https://example.invalid/reference.md",
+          "scope": "Synthetic service fixture; not a vendor capability statement",
+          "source_id": "fixture-docs"
+        },
+        "capture_digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+        "kind": "source",
+        "node_id": "native:4d85482d8833d23df4b13b383ef9fc2877d9f6fbe2b2e7b188d5da039f8cb83c",
+        "pointer": ""
+      },
+      {
+        "attributes": {
+          "label": "Reference",
+          "retrieved": false,
+          "target": "https://example.invalid/spec"
+        },
+        "capture_digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+        "kind": "reference",
+        "node_id": "native:9358330b377ffda42011d108fc6d7b7410b0bc715e7ce0f9c544460cd2bde3ec",
+        "pointer": "line:3:byte:0"
+      },
+      {
+        "attributes": {
+          "term": "Synthetic service"
+        },
+        "capture_digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+        "kind": "section",
+        "node_id": "native:f22921f8f84831f4e00b465db2273de10b6f94ef62d2e73a4ed5eafbb686dd53",
+        "pointer": "line:1"
+      }
+    ],
+    "protocol": "symphony.scv.knowledge.v1",
+    "selection_policy": {
+      "allowed_statement_kinds": [
+        "documented_fact"
+      ],
+      "max_age_seconds": 3600,
+      "partial_capture": "exclude",
+      "policy_id": "fixture-exact-selection"
+    }
+  },
+  "not_vendor_evidence": true,
+  "observed_provider_accounts": false,
+  "query_result": {
+    "conflicts": [],
+    "coverage": {
+      "extent": "bounded_selected_corpus",
+      "matched_claims": 1,
+      "native_nodes": 3,
+      "provider_completeness": "not_asserted",
+      "selected_captures": 1,
+      "selected_claims": 1
+    },
+    "digest": "sha256:32b74c8bb9fdfb39df0d7972786ef4620634bcbeb3740c9daed110f70e07eb67",
+    "domain": "scv",
+    "evidence_origins": [
+      {
+        "body_digest": "sha256:733ab4d5aa576fe185e3cadd951feef3dda71b7d3ebe8e1ca8ee45cdc7dc0583",
+        "capture_digests": [
+          "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032"
+        ],
+        "independence": "not_asserted",
+        "source_ids": [
+          "fixture-docs"
+        ]
+      }
+    ],
+    "findings": [
+      {
+        "claim": {
+          "alternative_supports": [],
+          "claim_id": "synthetic batch bound",
+          "dependencies": [],
+          "evidence": [
+            {
+              "capture_digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+              "quote": "Maximum batch size: 16 items."
+            }
+          ],
+          "predicate": "maximum batch size",
+          "scope": {
+            "fixture": "1"
+          },
+          "scope_dependencies": [],
+          "statement_kind": "documented_fact",
+          "subject": "Synthetic service",
+          "valid_from": null,
+          "valid_until": null,
+          "value": {
+            "type": "integer",
+            "unit": "items",
+            "value": 16
+          }
+        },
+        "dependent_claim_ids": [],
+        "evidence_roots": [
+          "sha256:733ab4d5aa576fe185e3cadd951feef3dda71b7d3ebe8e1ca8ee45cdc7dc0583"
+        ],
+        "reasons": [
+          "semantic_claim_not_empirically_verified"
+        ],
+        "semantic_validation": "caller_proposed; anchors and bounded support structure checked only",
+        "status": "supported",
+        "support_cycle_present": false,
+        "support_sets": [
+          {
+            "dependencies": [],
+            "evidence": [
+              {
+                "capture_digest": "sha256:e7f46c392180a393241986543f86a9ee642d10996625fe221d058f77223d4032",
+                "quote": "Maximum batch size: 16 items."
+              }
+            ],
+            "evidence_roots": [
+              "sha256:733ab4d5aa576fe185e3cadd951feef3dda71b7d3ebe8e1ca8ee45cdc7dc0583"
+            ],
+            "reasons": [],
+            "status": "supported",
+            "support_id": "primary",
+            "valid_until_unix_seconds": 1789045201
+          }
+        ],
+        "valid_until_unix_seconds": 1789045201
+      }
+    ],
+    "graph_digest": "sha256:08a24791412f49f8b9429d1fdd5d13221c746f4a47fbb562b7bc3c11636d63ff",
+    "limitations": [
+      "caller-proposed claims retain their statement kinds; quote anchoring is not factual verification",
+      "coverage is limited to selected captures; absence is not provider-wide unavailability",
+      "native extraction describes captured structure; it does not validate provider semantics",
+      "text extraction is limited to headings and Markdown links; prose meaning remains proposed",
+      "evidence roots deduplicate identical body bytes; independent corroboration and arbitrary inference rules are not established"
+    ],
+    "protocol": "symphony.scv.query-result.v1",
+    "query_selection": {
+      "query_time": "2026-09-10T12:00:01Z"
+    },
+    "query_time": "2026-09-10T12:00:01Z",
+    "selection_policy": {
+      "allowed_statement_kinds": [
+        "documented_fact"
+      ],
+      "max_age_seconds": 3600,
+      "partial_capture": "exclude",
+      "policy_id": "fixture-exact-selection"
+    }
+  },
+  "source_plan": {
+    "change_kind": "onboard",
+    "expected_state_digest": null,
+    "operation_id": "fixture-onboard",
+    "plan_digest": "sha256:45a42a85a2d250bc93676e02d026ef36bb27985aa2e8500c4c1c3ee6ea24b249",
+    "protocol": "symphony.scv.source-plan.v1",
+    "reason": "Explicit local synthetic-fixture onboarding",
+    "source": {
+      "authority_role": "fixture_owned",
+      "continuity_evidence": [
+        "Fixture authors define this synthetic publication."
+      ],
+      "digest": "sha256:2f6fc5aca1005c645853cb0aef4c0f5303e56e20e42f761e43cb9d03d3353c86",
+      "family_id": "schv",
+      "generation": 1,
+      "locators": [
+        {
+          "format": "markdown",
+          "locator_id": "reference",
+          "role": "preferred",
+          "selector": "fixture-1",
+          "uri": "https://example.invalid/reference.md"
+        }
+      ],
+      "predecessor_digest": null,
+      "protocol": "symphony.scv.source.v1",
+      "provider_id": "fixture",
+      "publisher": "Synthetic fixture publisher",
+      "scope": "Synthetic service fixture; not a vendor capability statement",
+      "source_id": "fixture-docs"
+    }
+  },
+  "source_plan_input": {
+    "current": null,
+    "desired": {
+      "authority_role": "fixture_owned",
+      "continuity_evidence": [
+        "Fixture authors define this synthetic publication."
+      ],
+      "family_id": "schv",
+      "locators": [
+        {
+          "format": "markdown",
+          "locator_id": "reference",
+          "role": "preferred",
+          "selector": "fixture-1",
+          "uri": "https://example.invalid/reference.md"
+        }
+      ],
+      "provider_id": "fixture",
+      "publisher": "Synthetic fixture publisher",
+      "scope": "Synthetic service fixture; not a vendor capability statement",
+      "source_id": "fixture-docs"
+    },
+    "operation_id": "fixture-onboard",
+    "reason": "Explicit local synthetic-fixture onboarding"
+  },
+  "source_transition": {
+    "expected_state_digest": null,
+    "operation_id": "fixture-onboard",
+    "protocol": "symphony.scv.source-transition.v1",
+    "state": {
+      "authority_role": "fixture_owned",
+      "continuity_evidence": [
+        "Fixture authors define this synthetic publication."
+      ],
+      "digest": "sha256:2f6fc5aca1005c645853cb0aef4c0f5303e56e20e42f761e43cb9d03d3353c86",
+      "family_id": "schv",
+      "generation": 1,
+      "locators": [
+        {
+          "format": "markdown",
+          "locator_id": "reference",
+          "role": "preferred",
+          "selector": "fixture-1",
+          "uri": "https://example.invalid/reference.md"
+        }
+      ],
+      "predecessor_digest": null,
+      "protocol": "symphony.scv.source.v1",
+      "provider_id": "fixture",
+      "publisher": "Synthetic fixture publisher",
+      "scope": "Synthetic service fixture; not a vendor capability statement",
+      "source_id": "fixture-docs"
+    },
+    "state_digest": "sha256:2f6fc5aca1005c645853cb0aef4c0f5303e56e20e42f761e43cb9d03d3353c86"
+  }
+}

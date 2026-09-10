@@ -1,0 +1,3 @@
+# Symphony Cloud Hyperscalers Vector Engine Working Guidance
+
+Read `knowledge/scv/schv/SPEC.md`, `knowledge/scv/SOURCE-KNOWLEDGE.md`, this module specification and the exact installed descriptor. Invoke only advertised operations using the bounded process envelope. Verify retained source/capture digests and graph lineage; preserve partial and unknown findings. Distinguish a computed source transition from an authenticated and durably persisted transition. For protected source changes use the owning storage adapter and its expected-state, audit and retry contract. Keep evidence and reviewable artifacts separate from provider action. Independently installed provider engines do not require SCV or a family engine to run.

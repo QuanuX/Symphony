@@ -27,7 +27,15 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 | `modules/maestro` | registered | `ssfv:symphony:maestro-presence-authority` | `modules/maestro/FEATURES.md` |
 | `modules/sacv-engine` | registered | `ssfv:symphony:sacv-engine` | `modules/sacv-engine/FEATURES.md` |
 | `modules/sav-engine` | registered | `ssfv:symphony:sav-engine` | `modules/sav-engine/FEATURES.md` |
+| `modules/scev-cf-engine` | registered | `ssfv:symphony:scev-cf-engine` | `modules/scev-cf-engine/FEATURES.md` |
+| `modules/scev-engine` | registered | `ssfv:symphony:scev-engine` | `modules/scev-engine/FEATURES.md` |
+| `modules/schv-aws-engine` | registered | `ssfv:symphony:schv-aws-engine` | `modules/schv-aws-engine/FEATURES.md` |
+| `modules/schv-azure-engine` | registered | `ssfv:symphony:schv-azure-engine` | `modules/schv-azure-engine/FEATURES.md` |
+| `modules/schv-do-engine` | registered | `ssfv:symphony:schv-do-engine` | `modules/schv-do-engine/FEATURES.md` |
+| `modules/schv-engine` | registered | `ssfv:symphony:schv-engine` | `modules/schv-engine/FEATURES.md` |
+| `modules/schv-gcp-engine` | registered | `ssfv:symphony:schv-gcp-engine` | `modules/schv-gcp-engine/FEATURES.md` |
 | `modules/sclv-engine` | registered | `ssfv:symphony:sclv-engine` | `modules/sclv-engine/FEATURES.md` |
+| `modules/scv-engine` | registered | `ssfv:symphony:scv-engine` | `modules/scv-engine/FEATURES.md` |
 | `modules/secure-identity-access-governance` | registered | `ssfv:symphony:ssiag-foundation` | `modules/secure-identity-access-governance/FEATURES.md` |
 | `modules/sev-engine` | registered | `ssfv:symphony:sev-engine` | `modules/sev-engine/FEATURES.md` |
 | `modules/skvi-engine` | registered | `ssfv:symphony:skvi-engine` | `modules/skvi-engine/FEATURES.md` |
@@ -40,11 +48,11 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 
 ## Ratified Nested Review Progress
 
-The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, provider-trust assurance slice, provider-binding lifecycle slice, and Accordare durability/supervision review record seventy-one ratified nested feature-worthy boundaries inside seventeen registered non-root owner scopes:
+The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, provider-trust assurance slice, provider-binding lifecycle slice, and Accordare durability/supervision review record seventy-two ratified nested feature-worthy boundaries inside seventeen registered non-root owner scopes:
 
 | Owner scope | Ratified nested records | Review disposition |
 |---|---:|---|
-| `tools/qxctl` | 10 | Exact engine bindings, authenticated sessions, lifecycle convergence, Linux report-only host receptor, SSIAG administration, STAV administration, Maestro administration, governed validation, the stable command registry, and invariant assurance are registered. |
+| `tools/qxctl` | 11 | Exact engine bindings, authenticated sessions, lifecycle convergence, Linux report-only host receptor, SSIAG administration, STAV administration, Maestro administration, governed validation, the stable command registry, invariant assurance, and protected SCV source/graph administration are registered. |
 | `modules/knowledge-session-coordinator` | 6 | Reconciliation, authority epochs, semantic maintenance, lifecycle planning, lifecycle apply coordination, and protected Named Version durability are registered. |
 | `modules/maestro` | 1 | Complete derived receptor inventory is registered separately from durable receptor presence. |
 | `libraries/stav-protocol-go` | 2 | Canonical bytes, digests, and bounded local frames are separated from exact content and identifier validation; durable checksummed ledger framing is explicitly owned by the append authority. |
@@ -123,3 +131,7 @@ The current inventory satisfies top-level owner-scope routing and the exact F1 t
 ## Non-Authorization Statement
 
 This contract authorizes the explicit inventory and completion test. It does not declare nested review complete, create semantic truth from filesystem discovery, register proposal-only modules, authorize canonical apply, or permit tooling to decide feature-worthiness.
+
+## SCV Increment Review
+
+The eight separately installed SCV/family/provider packages each receive one experimental owner feature. Their thirteen operations are bounded facets of source-knowledge computation; helpers, declarations, package build files and parser branches are implementation evidence, not new standalone features. qxctl records its separate protected administration adapter. Full vendor coverage, arbitrary source/graph connectors, provider operations and unimplemented future synthesis receive no feature claim. The catalog remains partial; this increment does not settle unrelated nested review.

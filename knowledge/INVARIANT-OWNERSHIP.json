@@ -59,11 +59,211 @@
       ],
       "owner_contract": "modules/stav-append-authority/SPEC.md",
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-scev-cf.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "scev-cf-engine",
+      "entry_point_id": "symphony-scev-cf",
+      "format_version": 2,
+      "implementation_path": "modules/scv-engine",
+      "operation_ids": [
+        "engop:symphony:scev-cf.capture.compare",
+        "engop:symphony:scev-cf.capture.import",
+        "engop:symphony:scev-cf.graph.build",
+        "engop:symphony:scev-cf.graph.diff",
+        "engop:symphony:scev-cf.graph.evaluate",
+        "engop:symphony:scev-cf.graph.explain",
+        "engop:symphony:scev-cf.graph.query",
+        "engop:symphony:scev-cf.inspect",
+        "engop:symphony:scev-cf.knowledge.interpret",
+        "engop:symphony:scev-cf.provider.onboard",
+        "engop:symphony:scev-cf.source.apply",
+        "engop:symphony:scev-cf.source.plan",
+        "engop:symphony:scev-cf.source.status"
+      ],
+      "owner_contract": "modules/scev-cf-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-scev.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "scev-engine",
+      "entry_point_id": "symphony-scev",
+      "format_version": 2,
+      "implementation_path": "modules/scv-engine",
+      "operation_ids": [
+        "engop:symphony:scev.capture.compare",
+        "engop:symphony:scev.capture.import",
+        "engop:symphony:scev.graph.build",
+        "engop:symphony:scev.graph.diff",
+        "engop:symphony:scev.graph.evaluate",
+        "engop:symphony:scev.graph.explain",
+        "engop:symphony:scev.graph.query",
+        "engop:symphony:scev.inspect",
+        "engop:symphony:scev.knowledge.interpret",
+        "engop:symphony:scev.provider.onboard",
+        "engop:symphony:scev.source.apply",
+        "engop:symphony:scev.source.plan",
+        "engop:symphony:scev.source.status"
+      ],
+      "owner_contract": "modules/scev-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-schv-aws.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "schv-aws-engine",
+      "entry_point_id": "symphony-schv-aws",
+      "format_version": 2,
+      "implementation_path": "modules/scv-engine",
+      "operation_ids": [
+        "engop:symphony:schv-aws.capture.compare",
+        "engop:symphony:schv-aws.capture.import",
+        "engop:symphony:schv-aws.graph.build",
+        "engop:symphony:schv-aws.graph.diff",
+        "engop:symphony:schv-aws.graph.evaluate",
+        "engop:symphony:schv-aws.graph.explain",
+        "engop:symphony:schv-aws.graph.query",
+        "engop:symphony:schv-aws.inspect",
+        "engop:symphony:schv-aws.knowledge.interpret",
+        "engop:symphony:schv-aws.provider.onboard",
+        "engop:symphony:schv-aws.source.apply",
+        "engop:symphony:schv-aws.source.plan",
+        "engop:symphony:schv-aws.source.status"
+      ],
+      "owner_contract": "modules/schv-aws-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-schv-azure.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "schv-azure-engine",
+      "entry_point_id": "symphony-schv-azure",
+      "format_version": 2,
+      "implementation_path": "modules/scv-engine",
+      "operation_ids": [
+        "engop:symphony:schv-azure.capture.compare",
+        "engop:symphony:schv-azure.capture.import",
+        "engop:symphony:schv-azure.graph.build",
+        "engop:symphony:schv-azure.graph.diff",
+        "engop:symphony:schv-azure.graph.evaluate",
+        "engop:symphony:schv-azure.graph.explain",
+        "engop:symphony:schv-azure.graph.query",
+        "engop:symphony:schv-azure.inspect",
+        "engop:symphony:schv-azure.knowledge.interpret",
+        "engop:symphony:schv-azure.provider.onboard",
+        "engop:symphony:schv-azure.source.apply",
+        "engop:symphony:schv-azure.source.plan",
+        "engop:symphony:schv-azure.source.status"
+      ],
+      "owner_contract": "modules/schv-azure-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-schv-do.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "schv-do-engine",
+      "entry_point_id": "symphony-schv-do",
+      "format_version": 2,
+      "implementation_path": "modules/scv-engine",
+      "operation_ids": [
+        "engop:symphony:schv-do.capture.compare",
+        "engop:symphony:schv-do.capture.import",
+        "engop:symphony:schv-do.graph.build",
+        "engop:symphony:schv-do.graph.diff",
+        "engop:symphony:schv-do.graph.evaluate",
+        "engop:symphony:schv-do.graph.explain",
+        "engop:symphony:schv-do.graph.query",
+        "engop:symphony:schv-do.inspect",
+        "engop:symphony:schv-do.knowledge.interpret",
+        "engop:symphony:schv-do.provider.onboard",
+        "engop:symphony:schv-do.source.apply",
+        "engop:symphony:schv-do.source.plan",
+        "engop:symphony:schv-do.source.status"
+      ],
+      "owner_contract": "modules/schv-do-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-schv-gcp.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "schv-gcp-engine",
+      "entry_point_id": "symphony-schv-gcp",
+      "format_version": 2,
+      "implementation_path": "modules/scv-engine",
+      "operation_ids": [
+        "engop:symphony:schv-gcp.capture.compare",
+        "engop:symphony:schv-gcp.capture.import",
+        "engop:symphony:schv-gcp.graph.build",
+        "engop:symphony:schv-gcp.graph.diff",
+        "engop:symphony:schv-gcp.graph.evaluate",
+        "engop:symphony:schv-gcp.graph.explain",
+        "engop:symphony:schv-gcp.graph.query",
+        "engop:symphony:schv-gcp.inspect",
+        "engop:symphony:schv-gcp.knowledge.interpret",
+        "engop:symphony:schv-gcp.provider.onboard",
+        "engop:symphony:schv-gcp.source.apply",
+        "engop:symphony:schv-gcp.source.plan",
+        "engop:symphony:schv-gcp.source.status"
+      ],
+      "owner_contract": "modules/schv-gcp-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-schv.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "schv-engine",
+      "entry_point_id": "symphony-schv",
+      "format_version": 2,
+      "implementation_path": "modules/scv-engine",
+      "operation_ids": [
+        "engop:symphony:schv.capture.compare",
+        "engop:symphony:schv.capture.import",
+        "engop:symphony:schv.graph.build",
+        "engop:symphony:schv.graph.diff",
+        "engop:symphony:schv.graph.evaluate",
+        "engop:symphony:schv.graph.explain",
+        "engop:symphony:schv.graph.query",
+        "engop:symphony:schv.inspect",
+        "engop:symphony:schv.knowledge.interpret",
+        "engop:symphony:schv.provider.onboard",
+        "engop:symphony:schv.source.apply",
+        "engop:symphony:schv.source.plan",
+        "engop:symphony:schv.source.status"
+      ],
+      "owner_contract": "modules/schv-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-scv.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "scv-engine",
+      "entry_point_id": "symphony-scv",
+      "format_version": 2,
+      "implementation_path": "modules/scv-engine",
+      "operation_ids": [
+        "engop:symphony:scv.capture.compare",
+        "engop:symphony:scv.capture.import",
+        "engop:symphony:scv.graph.build",
+        "engop:symphony:scv.graph.diff",
+        "engop:symphony:scv.graph.evaluate",
+        "engop:symphony:scv.graph.explain",
+        "engop:symphony:scv.graph.query",
+        "engop:symphony:scv.inspect",
+        "engop:symphony:scv.knowledge.interpret",
+        "engop:symphony:scv.provider.onboard",
+        "engop:symphony:scv.source.apply",
+        "engop:symphony:scv.source.plan",
+        "engop:symphony:scv.source.status"
+      ],
+      "owner_contract": "modules/scv-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     }
   ],
   "catalog_complete": false,
   "catalog_scope": "registered_incremental",
-  "format_version": 1,
+  "format_version": 2,
   "forward_gate": "enforce_new_or_modified",
   "invariants": [
     {
@@ -453,6 +653,152 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "TestSCVProjectionRejectsForgedGraphBeforeIntent",
+            "TestSCVProjectionRequiresAuditedAuthorization"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_graph_test.go"
+        },
+        {
+          "cases": [
+            "TestInstalledSCVGraphAuthorizedSelectionReplay",
+            "TestSCVAuthorizationExpiryBeforePublication"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:scv.graph-selection-commit",
+      "ipc_boundary": false,
+      "owner_component": "qxctl-scv-graph-store",
+      "owner_contract": "knowledge/scv/SOURCE-KNOWLEDGE.md",
+      "producer_implementations": [
+        "tools/qxctl/internal/scvgraph/store.go",
+        "tools/qxctl/internal/scvstate/projection_unix.go"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestGraphAuthorityExpiryKeepsRecoverableIntent",
+            "TestGraphHistoryRejectsResealedHeadAndFork",
+            "TestGraphIntentRequiresAuthorizationEvidence",
+            "TestGraphPublicationCASAndLostResponse",
+            "TestGraphStoreRejectsSymlinkAndTamper",
+            "TestInterruptedGraphPublicationKeepsOldCoherentHead"
+          ],
+          "path": "tools/qxctl/internal/scvgraph/store_test.go"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "The protected graph-selection adapter retains an exact engine-validated graph and installation in durable intent before authorization, compares both the expected graph digest and selection generation under serialization, and exposes only one coherent committed head with contiguous publication history. A prepared or interrupted attempt cannot become a selected graph without current validated authority.",
+      "status": "active",
+      "title": "Protected graph selection commits only exact validated and authorized evidence"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-scev-cf.v1",
+        "adapter:symphony:symphony-scev.v1",
+        "adapter:symphony:symphony-schv-aws.v1",
+        "adapter:symphony:symphony-schv-azure.v1",
+        "adapter:symphony:symphony-schv-do.v1",
+        "adapter:symphony:symphony-schv-gcp.v1",
+        "adapter:symphony:symphony-schv.v1",
+        "adapter:symphony:symphony-scv.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "test_graph_consumer_rejects_tampered_capture"
+          ],
+          "path": "modules/scv-engine/tests/knowledge_test.cpp"
+        },
+        {
+          "cases": [
+            "TestSCVEmptyQueryRequiresExactAbsenceQualification",
+            "TestSCVExactReceiptRejectsTamperingAndLegacy",
+            "TestSCVResultBoundaryRejectsChangedCaptureAndUnknownFields"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/scv_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:scv.source-knowledge-lineage",
+      "ipc_boundary": true,
+      "owner_component": "scv-source-knowledge",
+      "owner_contract": "knowledge/scv/SOURCE-KNOWLEDGE.md",
+      "producer_implementations": [
+        "modules/scv-engine/src/dispatch.cpp",
+        "modules/scv-engine/src/knowledge.cpp",
+        "modules/scv-engine/src/source.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "test_source_knowledge_producer"
+          ],
+          "path": "modules/scv-engine/tests/knowledge_test.cpp"
+        },
+        {
+          "cases": [
+            "test_source_revision_and_capture_contracts"
+          ],
+          "path": "modules/scv-engine/tests/source_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_capture_provenance_and_graph_process",
+            "test_receipt_owned_standalone_process",
+            "test_source_transition_expected_state_and_digest"
+          ],
+          "path": "modules/scv-engine/tests/installed_integration.py"
+        }
+      ],
+      "statement": "Source reducers reject stale or altered expected-state transitions; capture and graph consumers revalidate retained bytes, domain qualification and semantic digests. A computed transition or projection is evidence and cannot assert authorization or a durable storage commit.",
+      "status": "active",
+      "title": "Source-knowledge process preserves exact domain evidence and revision lineage"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestInstalledSCVSourceDeniedThenAuthorizedReplay",
+            "TestSCVAuthorizationExpiryBeforePublication",
+            "TestSCVAuthorizationRejectsUnavailableAuthority",
+            "TestSCVAuthorizationUsesAuthenticatedSSIAGDecision"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:scv.source-state-commit",
+      "ipc_boundary": false,
+      "owner_component": "qxctl-scv-source-store",
+      "owner_contract": "knowledge/scv/SOURCE-KNOWLEDGE.md",
+      "producer_implementations": [
+        "tools/qxctl/internal/scvstate/storage_unix.go",
+        "tools/qxctl/internal/scvstate/store.go"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestSourceIntentAuthorizationCASAndRecovery",
+            "TestSourceInterruptedAuthorizationRetainsOldHead",
+            "TestSourcePublicationRechecksAuthorizationExpiry",
+            "TestSourceStoreRejectsSymlinksHardlinksAndTampering",
+            "TestSourceStoreSerializesAndRejectsEscapingRoot"
+          ],
+          "path": "tools/qxctl/internal/scvstate/store_test.go"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "The source storage adapter serializes expected-state comparison, retains the exact C++ plan/transition and installation as durable intent before requesting trusted audited SSIAG authorization, and commits only that authorized successor. Recovery observes original operation identity and actual head; denial or an interrupted attempt cannot claim successful mutation.",
+      "status": "active",
+      "title": "Protected source mutation binds exact owner transition before durable commit"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
             "TestProviderBindingAuditProjectionExcludesAdministrativeReason",
             "TestProviderBindingRoutesAreHeadlessStrictAndIdempotent"
           ],
@@ -720,8 +1066,8 @@
       "title": "Provider readiness evidence cannot become operational authority"
     }
   ],
-  "protocol": "symphony.knowledge.invariant-ownership-registry.v1",
-  "registry_digest": "sha256:3b4cc3cdca152245101b5d20118170fd60b92ef5893bc50b2479d6b48f7ab55f",
+  "protocol": "symphony.knowledge.invariant-ownership-registry.v2",
+  "registry_digest": "sha256:7d865ca58bbc83c9a9b5c717aeeb8f0535ab75cbdda8c4c282d39e57bf89b9bc",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

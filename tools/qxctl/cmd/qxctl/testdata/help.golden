@@ -4,6 +4,10 @@ Usage:
   qxctl <command>
 
 Commands:
+  scv inspect|provider-onboard|source-plan|source-check|capture-import|capture-compare|interpret|graph|query|diff|explain|evaluate --prefix PATH [--domain DOMAIN] --input FILE [--json] Invoke exact SCV domain engine
+  scv acquire --prefix PATH --input FILE [--domain DOMAIN] [--json] Collect bounded public HTTPS text with exact source and redirect evidence
+  scv source propose|apply|status|recover --prefix PATH --tops-id UUID --source-id ID [...] Administer protected noncanonical source revisions
+  scv projection select|status|recover --prefix PATH --tops-id UUID --graph-id ID [...] Administer one coherent noncanonical graph selection
   --help                            Print concise usage
   --version                         Print version
   commands manifest --json          Emit digest-bound observed command registry

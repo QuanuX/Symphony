@@ -18,6 +18,7 @@ import (
 
 const (
 	Protocol       = "symphony.knowledge.invariant-ownership-registry.v1"
+	ProtocolV2     = "symphony.knowledge.invariant-ownership-registry.v2"
 	QueryProtocol  = "symphony.knowledge.invariant-query-result.v1"
 	RegistryPath   = "knowledge/INVARIANT-OWNERSHIP.json"
 	maxRegistry    = 512 * 1024
@@ -258,7 +259,7 @@ func setResultDigest(value any, target *string) error {
 }
 
 func validate(registry Registry) error {
-	if registry.Protocol != Protocol || registry.FormatVersion != 1 ||
+	if !(registry.Protocol == Protocol && registry.FormatVersion == 1 || registry.Protocol == ProtocolV2 && registry.FormatVersion == 2) ||
 		registry.Scope != "common_lowest_authoritative_layer" ||
 		registry.CatalogScope != "registered_incremental" || registry.CatalogComplete ||
 		registry.ForwardGate != "enforce_new_or_modified" || !digestPattern.MatchString(registry.RegistryDigest) {
@@ -280,7 +281,7 @@ func validate(registry Registry) error {
 		}
 		prior = adapter.AdapterID
 		adapterIDs[adapter.AdapterID] = struct{}{}
-		if err := validateAdapter(adapter); err != nil {
+		if err := validateAdapterVersion(adapter, registry.FormatVersion); err != nil {
 			return fmt.Errorf("adapter %s: %w", adapter.AdapterID, err)
 		}
 	}
@@ -298,6 +299,29 @@ func validate(registry Registry) error {
 }
 
 func validateAdapter(adapter Adapter) error {
+	return validateAdapterVersion(adapter, 1)
+}
+
+func validateAdapterVersion(adapter Adapter, registryVersion uint64) error {
+	if registryVersion == 2 && adapter.FormatVersion == 2 {
+		domain := strings.TrimPrefix(adapter.EntryPointID, "symphony-")
+		if !tokenPattern.MatchString(adapter.Component) || !tokenPattern.MatchString(adapter.EntryPointID) ||
+			domain == adapter.EntryPointID || domain == "" || adapter.Component != domain+"-engine" ||
+			adapter.OwnerContract != "modules/"+adapter.Component+"/SPEC.md" ||
+			adapter.CommandProtocol != "symphony.knowledge.engine-process.v1" ||
+			adapter.AdapterID != "adapter:symphony:"+adapter.EntryPointID+".v1" ||
+			adapter.VersionPolicy != "exact_receipt_v2_entry_point_and_capability_compatible" ||
+			len(adapter.OperationIDs) < 1 || len(adapter.OperationIDs) > maxOperations ||
+			!safePath(adapter.OwnerContract) || !safePath(adapter.ImplementationPath) {
+			return fmt.Errorf("generic engine adapter shape is invalid")
+		}
+		for _, operation := range adapter.OperationIDs {
+			if !strings.HasPrefix(operation, "engop:symphony:"+domain+".") {
+				return fmt.Errorf("generic engine operation is outside adapter domain")
+			}
+		}
+		return validateSortedUnique(adapter.OperationIDs, operationPattern, "operation IDs")
+	}
 	if adapter.FormatVersion != 1 ||
 		(adapter.CommandProtocol != "symphony.foundation.lifecycle-command.v1" && adapter.CommandProtocol != "symphony.ssiag.provider.control.v1") ||
 		adapter.VersionPolicy != "exact_receipt_v2_entry_point_and_capability_compatible" ||

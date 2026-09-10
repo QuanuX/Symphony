@@ -6,7 +6,7 @@ The Symphony Cloud Vector (SCV) owns private semantic knowledge about offsite ha
 
 ## Scope
 
-SCV maps provider resources, offerings, regions, infrastructure domains, constraints, observed availability, and hybrid possibilities. Its initial provider universe includes AWS, Azure, Google Cloud, DigitalOcean, and user-owned hardware where comparison with offsite resources is required.
+SCV maps provider resources, offerings, regions, infrastructure domains, constraints, observed availability, and hybrid possibilities. Its initial provider universe includes AWS, Azure, Google Cloud, DigitalOcean, Cloudflare, and user-owned hardware where comparison with offsite resources is required.
 
 ## Sovereignty
 

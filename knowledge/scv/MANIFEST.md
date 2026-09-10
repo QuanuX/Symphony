@@ -13,11 +13,12 @@ SCV is the semantic owner of provider/offsite resource possibility, constraint, 
 - `knowledge/scv/INTENT.md`
 - `knowledge/scv/MANIFEST.md`
 - `knowledge/scv/SPEC.md`
+- `knowledge/scv/SOURCE-KNOWLEDGE.md`
 - `knowledge/scv/SKILL.md`
 
-## Planned Implementation Character
+## Admitted Implementation Character
 
-SCV is planned as an independently installable vector with intelligent C++ engines capable of constructing, updating, validating, querying, and projecting a reproducible graph. The graph database product, ontology, evidence adapters, schemas, operations, and API are not yet ratified or implemented.
+The 2026-09-10 source-knowledge increment admits the independently installable C++26 SCV, SCHV, SCEV, SCHV-AWS, SCHV-AZURE, SCHV-DO, SCHV-GCP and SCEV-CF engines. `knowledge/scv/SOURCE-KNOWLEDGE.md` and its v1 schemas own the bounded source, capture, interpretation and graph semantics. Each package shares explicit implementation mechanics while retaining its own domain, receipt and installation. Native provider knowledge precedes optional common capability projections. Complete provider corpora, arbitrary graph connectors, account operations and a network API remain unimplemented or separately scoped.
 
 ## Reproducibility
 
@@ -25,4 +26,4 @@ An independently installed SCV implementation must be able to construct its grap
 
 ## Non-Authorization Statement
 
-This manifest authorizes no provider login, account query, balance persistence, credential storage, recommendation, purchase, provisioning action, network service, graph database selection, or qxctl command.
+This manifest grants no provider login, account query, balance persistence, credential release, purchase, provisioning action, network service or graph database selection. The admitted qxctl source-knowledge mappings administer only their declared evidence and protected local-state scope.

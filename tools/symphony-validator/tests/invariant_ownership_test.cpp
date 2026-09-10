@@ -8,6 +8,7 @@
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <set>
 #include <stdexcept>
 #include <string>
 #include <unistd.h>
@@ -134,6 +135,83 @@ void test_absent() {
         "legacy absence did not remain explicitly compatible");
 }
 
+engine::Json generic_registry_fixture(const fs::path& destination) {
+    write_file(destination / "modules/example-engine/SPEC.md", "# Exact example owner\n");
+    write_file(destination / "modules/example-engine/src/main.cpp", "int main() { return 0; }\n");
+    write_file(destination / "modules/example-engine/tests/owner.cpp", "void owner_rejects_bad_state() {}\n");
+    write_file(destination / "modules/example-engine/tests/consumer.cpp", "void consumer_rejects_bad_result() {}\n");
+    write_file(destination / "modules/example-engine/tests/process.py",
+        "def installed_process():\n"
+        "    receipt = 'install-receipt.json'\n"
+        "    result = subprocess.run([receipt], input=b'{}', capture_output=True)\n"
+        "    assert result.returncode == 0\n");
+    return engine::Json{
+        {"protocol", "symphony.knowledge.invariant-ownership-registry.v2"},
+        {"format_version", 2U}, {"scope", "common_lowest_authoritative_layer"},
+        {"catalog_scope", "registered_incremental"}, {"catalog_complete", false},
+        {"forward_gate", "enforce_new_or_modified"},
+        {"test_policy", {{"consumer_boundary_rejection_required", true},
+            {"owner_producer_regression_required", true}, {"real_process_required_for_ipc", true}}},
+        {"adapters", engine::Json::array({{
+            {"adapter_id", "adapter:symphony:symphony-example.v1"},
+            {"command_protocol", "symphony.knowledge.engine-process.v1"},
+            {"component", "example-engine"}, {"entry_point_id", "symphony-example"},
+            {"format_version", 2U}, {"implementation_path", "modules/example-engine"},
+            {"operation_ids", engine::Json::array({"engop:symphony:example.query"})},
+            {"owner_contract", "modules/example-engine/SPEC.md"},
+            {"version_policy", "exact_receipt_v2_entry_point_and_capability_compatible"}
+        }})},
+        {"invariants", engine::Json::array({{
+            {"invariant_id", "invariant:symphony:example.result-lineage"},
+            {"title", "Example result lineage"}, {"owner_contract", "modules/example-engine/SPEC.md"},
+            {"owner_component", "example-engine"}, {"statement", "Retain exact supplied lineage."},
+            {"producer_implementations", engine::Json::array({"modules/example-engine/src/main.cpp"})},
+            {"producer_regressions", engine::Json::array({{{"path", "modules/example-engine/tests/owner.cpp"},
+                {"cases", engine::Json::array({"owner_rejects_bad_state"})}}})},
+            {"consumer_boundary_rejections", engine::Json::array({{{"path", "modules/example-engine/tests/consumer.cpp"},
+                {"cases", engine::Json::array({"consumer_rejects_bad_result"})}}})},
+            {"allowed_adapter_ids", engine::Json::array({"adapter:symphony:symphony-example.v1"})},
+            {"ipc_boundary", true},
+            {"real_process_regressions", engine::Json::array({{{"path", "modules/example-engine/tests/process.py"},
+                {"cases", engine::Json::array({"installed_process"})}}})},
+            {"status", "active"}
+        }})}
+    };
+}
+
+void test_v2_generic_adapter() {
+    TemporaryDirectory temporary;
+    const auto fixture = generic_registry_fixture(temporary.path());
+    write_registry(temporary.path(), fixture);
+    auto result = check_invariant_ownership(temporary.path().string());
+    require(result.success, "generic v2 adapter traceability failed:" + messages(result));
+    auto wrong = fixture;
+    wrong["protocol"] = "symphony.knowledge.invariant-ownership-registry.v1";
+    wrong["format_version"] = 1U;
+    write_registry(temporary.path(), wrong);
+    result = check_invariant_ownership(temporary.path().string());
+    require(!result.success && contains(result, "invariant_ownership.adapter_shape"),
+        "generic engine adapter widened the unchanged v1 protocol");
+    wrong = fixture;
+    wrong["adapters"][0]["entry_point_id"] = "symphony-other";
+    write_registry(temporary.path(), wrong);
+    result = check_invariant_ownership(temporary.path().string());
+    require(!result.success && contains(result, "invariant_ownership.adapter_identity"),
+        "generic adapter accepted unrelated receipt entrypoint");
+    wrong = fixture;
+    wrong["adapters"][0]["operation_ids"] = engine::Json::array({"engop:symphony:other.query"});
+    write_registry(temporary.path(), wrong);
+    result = check_invariant_ownership(temporary.path().string());
+    require(!result.success && contains(result, "reason=generic_domain_mismatch"),
+        "generic adapter claimed a different domain operation");
+    write_registry(temporary.path(), fixture);
+    write_file(temporary.path() / "modules/example-engine/tests/process.py",
+        "def installed_process():\n    pass\n");
+    result = check_invariant_ownership(temporary.path().string());
+    require(!result.success && contains(result, "invariant_ownership.real_process_mechanics"),
+        "Python placeholder passed installed process traceability");
+}
+
 void test_canonical(const fs::path& repository) {
     const auto registry = read_json(repository / "knowledge/INVARIANT-OWNERSHIP.json");
     const auto expected_invariants = registry.at("invariants").size();
@@ -155,6 +233,38 @@ void test_canonical(const fs::path& repository) {
         " adapters=" + std::to_string(expected_adapters) +
         " evidence_references=" + std::to_string(expected_evidence) + " violations=0"),
         "canonical completion evidence missing");
+}
+
+void test_v1_registry_compatibility(const fs::path& repository) {
+    TemporaryDirectory temporary;
+    copy_fixture(repository, temporary.path());
+    auto registry = read_json(temporary.path() / "knowledge/INVARIANT-OWNERSHIP.json");
+    std::set<std::string> removed;
+    auto retained_adapters = engine::Json::array();
+    for (const auto& adapter : registry.at("adapters")) {
+        if (adapter.at("format_version") == 1U) retained_adapters.push_back(adapter);
+        else removed.insert(adapter.at("adapter_id").get<std::string>());
+    }
+    auto retained_invariants = engine::Json::array();
+    for (const auto& invariant : registry.at("invariants")) {
+        const bool needs_generic = std::any_of(invariant.at("allowed_adapter_ids").begin(),
+            invariant.at("allowed_adapter_ids").end(), [&removed](const engine::Json& id) {
+                return removed.contains(id.get<std::string>());
+            });
+        if (!needs_generic) retained_invariants.push_back(invariant);
+    }
+    registry["adapters"] = retained_adapters;
+    registry["invariants"] = retained_invariants;
+    registry["protocol"] = "symphony.knowledge.invariant-ownership-registry.v1";
+    registry["format_version"] = 1U;
+    write_registry(temporary.path(), registry);
+    auto result = check_invariant_ownership(temporary.path().string());
+    require(result.success, "unchanged v1 registry was rejected:" + messages(result));
+    registry["protocol"] = "symphony.knowledge.invariant-ownership-registry.v2";
+    write_registry(temporary.path(), registry);
+    result = check_invariant_ownership(temporary.path().string());
+    require(!result.success && contains(result, "invariant_ownership.registry_shape"),
+        "mismatched registry protocol and format passed");
 }
 
 void test_shape_digest_and_order(const fs::path& repository) {
@@ -231,7 +341,12 @@ void test_adapter_closure(const fs::path& repository) {
         TemporaryDirectory temporary;
         copy_fixture(repository, temporary.path());
         auto registry = read_json(temporary.path() / "knowledge/INVARIANT-OWNERSHIP.json");
-        registry["adapters"][1]["operation_ids"] = engine::Json::array({
+        auto provider = std::find_if(registry["adapters"].begin(), registry["adapters"].end(),
+            [](const engine::Json& adapter) {
+                return adapter.at("adapter_id") == "adapter:symphony:ssiag.macos-keychain-provider.v1";
+            });
+        require(provider != registry["adapters"].end(), "canonical provider adapter missing");
+        (*provider)["operation_ids"] = engine::Json::array({
             "engop:symphony:ssiag.provider.metadata-invented",
         });
         write_registry(temporary.path(), registry);
@@ -385,7 +500,9 @@ int main(int argc, char** argv) {
         }
         const auto repository = fs::canonical(argv[1]);
         test_absent();
+        test_v2_generic_adapter();
         test_canonical(repository);
+        test_v1_registry_compatibility(repository);
         test_shape_digest_and_order(repository);
         test_adapter_closure(repository);
         test_identifier_grammar(repository);

@@ -3014,6 +3014,1534 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:scv.acquire",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv acquire [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.capture.import",
+        "engop:symphony:scev-cf.source.status",
+        "engop:symphony:scev.capture.import",
+        "engop:symphony:scev.source.status",
+        "engop:symphony:schv-aws.capture.import",
+        "engop:symphony:schv-aws.source.status",
+        "engop:symphony:schv-azure.capture.import",
+        "engop:symphony:schv-azure.source.status",
+        "engop:symphony:schv-do.capture.import",
+        "engop:symphony:schv-do.source.status",
+        "engop:symphony:schv-gcp.capture.import",
+        "engop:symphony:schv-gcp.source.status",
+        "engop:symphony:schv.capture.import",
+        "engop:symphony:schv.source.status",
+        "engop:symphony:scv.capture.import",
+        "engop:symphony:scv.source.status"
+      ],
+      "mutability": "evidence_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.qxctl.scv-acquire-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.scv.capture.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.scv.capture.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.capture-compare",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv capture-compare [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "validate"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.capture.compare",
+        "engop:symphony:scev.capture.compare",
+        "engop:symphony:schv-aws.capture.compare",
+        "engop:symphony:schv-azure.capture.compare",
+        "engop:symphony:schv-do.capture.compare",
+        "engop:symphony:schv-gcp.capture.compare",
+        "engop:symphony:schv.capture.compare",
+        "engop:symphony:scv.capture.compare"
+      ],
+      "mutability": "evidence_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.scv.capture-compare-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.scv.capture-diff.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.scv.capture-diff.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.capture-import",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv capture-import [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.capture.import",
+        "engop:symphony:scev.capture.import",
+        "engop:symphony:schv-aws.capture.import",
+        "engop:symphony:schv-azure.capture.import",
+        "engop:symphony:schv-do.capture.import",
+        "engop:symphony:schv-gcp.capture.import",
+        "engop:symphony:schv.capture.import",
+        "engop:symphony:scv.capture.import"
+      ],
+      "mutability": "evidence_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.scv.capture-import-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.scv.capture.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.scv.capture.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.diff",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv diff [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "validate"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.graph.diff",
+        "engop:symphony:scev.graph.diff",
+        "engop:symphony:schv-aws.graph.diff",
+        "engop:symphony:schv-azure.graph.diff",
+        "engop:symphony:schv-do.graph.diff",
+        "engop:symphony:schv-gcp.graph.diff",
+        "engop:symphony:schv.graph.diff",
+        "engop:symphony:scv.graph.diff"
+      ],
+      "mutability": "evidence_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.scv.graph-diff-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.scv.diff-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.scv.diff-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.evaluate",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv evaluate [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "validate"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.graph.evaluate",
+        "engop:symphony:scev.graph.evaluate",
+        "engop:symphony:schv-aws.graph.evaluate",
+        "engop:symphony:schv-azure.graph.evaluate",
+        "engop:symphony:schv-do.graph.evaluate",
+        "engop:symphony:schv-gcp.graph.evaluate",
+        "engop:symphony:schv.graph.evaluate",
+        "engop:symphony:scv.graph.evaluate"
+      ],
+      "mutability": "evidence_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.scv.graph-evaluate-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.scv.evaluate-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.scv.evaluate-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.explain",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv explain [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "query"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.graph.explain",
+        "engop:symphony:scev.graph.explain",
+        "engop:symphony:schv-aws.graph.explain",
+        "engop:symphony:schv-azure.graph.explain",
+        "engop:symphony:schv-do.graph.explain",
+        "engop:symphony:schv-gcp.graph.explain",
+        "engop:symphony:schv.graph.explain",
+        "engop:symphony:scv.graph.explain"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.scv.graph-explain-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.scv.explain-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.scv.explain-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.graph",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv graph [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.graph.build",
+        "engop:symphony:scev.graph.build",
+        "engop:symphony:schv-aws.graph.build",
+        "engop:symphony:schv-azure.graph.build",
+        "engop:symphony:schv-do.graph.build",
+        "engop:symphony:schv-gcp.graph.build",
+        "engop:symphony:schv.graph.build",
+        "engop:symphony:scv.graph.build"
+      ],
+      "mutability": "evidence_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.scv.graph-build-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.scv.graph.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.scv.graph.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.inspect",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv inspect [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.inspect",
+        "engop:symphony:scev.inspect",
+        "engop:symphony:schv-aws.inspect",
+        "engop:symphony:schv-azure.inspect",
+        "engop:symphony:schv-do.inspect",
+        "engop:symphony:schv-gcp.inspect",
+        "engop:symphony:schv.inspect",
+        "engop:symphony:scv.inspect"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.scv.inspect-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.knowledge.engine-descriptor.v2"
+      ],
+      "result_validation_protocols": [
+        "symphony.knowledge.engine-descriptor.v2"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.interpret",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv interpret [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.knowledge.interpret",
+        "engop:symphony:scev.knowledge.interpret",
+        "engop:symphony:schv-aws.knowledge.interpret",
+        "engop:symphony:schv-azure.knowledge.interpret",
+        "engop:symphony:schv-do.knowledge.interpret",
+        "engop:symphony:schv-gcp.knowledge.interpret",
+        "engop:symphony:schv.knowledge.interpret",
+        "engop:symphony:scv.knowledge.interpret"
+      ],
+      "mutability": "evidence_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.scv.knowledge-interpret-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.scv.knowledge.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.scv.knowledge.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.projection.recover",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv projection recover [--domain VALUE] [--graph-id VALUE] [--input VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--repo VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.graph.query",
+        "engop:symphony:scev.graph.query",
+        "engop:symphony:schv-aws.graph.query",
+        "engop:symphony:schv-azure.graph.query",
+        "engop:symphony:schv-do.graph.query",
+        "engop:symphony:schv-gcp.graph.query",
+        "engop:symphony:schv.graph.query",
+        "engop:symphony:scv.graph.query"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.qxctl.scv-projection-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.qxctl.scv-projection-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:scv.projection.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.projection.select",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv projection select [--domain VALUE] [--graph-id VALUE] [--input VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--repo VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "configure"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.graph.query",
+        "engop:symphony:scev.graph.query",
+        "engop:symphony:schv-aws.graph.query",
+        "engop:symphony:schv-azure.graph.query",
+        "engop:symphony:schv-do.graph.query",
+        "engop:symphony:schv-gcp.graph.query",
+        "engop:symphony:schv.graph.query",
+        "engop:symphony:scv.graph.query"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.qxctl.scv-projection-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.qxctl.scv-projection-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.qxctl.scv-projection-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:scv.projection.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.projection.status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv projection status [--domain VALUE] [--graph-id VALUE] [--input VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--repo VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "query"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.graph.query",
+        "engop:symphony:scev.graph.query",
+        "engop:symphony:schv-aws.graph.query",
+        "engop:symphony:schv-azure.graph.query",
+        "engop:symphony:schv-do.graph.query",
+        "engop:symphony:schv-gcp.graph.query",
+        "engop:symphony:schv.graph.query",
+        "engop:symphony:scv.graph.query"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.qxctl.scv-projection-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.qxctl.scv-projection-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.provider-onboard",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv provider-onboard [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.provider.onboard",
+        "engop:symphony:scev.provider.onboard",
+        "engop:symphony:schv-aws.provider.onboard",
+        "engop:symphony:schv-azure.provider.onboard",
+        "engop:symphony:schv-do.provider.onboard",
+        "engop:symphony:schv-gcp.provider.onboard",
+        "engop:symphony:schv.provider.onboard",
+        "engop:symphony:scv.provider.onboard"
+      ],
+      "mutability": "proposal_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.scv.provider-onboard-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.scv.provider.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.scv.provider.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.query",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv query [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "query"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.graph.query",
+        "engop:symphony:scev.graph.query",
+        "engop:symphony:schv-aws.graph.query",
+        "engop:symphony:schv-azure.graph.query",
+        "engop:symphony:schv-do.graph.query",
+        "engop:symphony:schv-gcp.graph.query",
+        "engop:symphony:schv.graph.query",
+        "engop:symphony:scv.graph.query"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.scv.graph-query-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.scv.query-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.scv.query-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.source-check",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv source-check [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.source.status",
+        "engop:symphony:scev.source.status",
+        "engop:symphony:schv-aws.source.status",
+        "engop:symphony:schv-azure.source.status",
+        "engop:symphony:schv-do.source.status",
+        "engop:symphony:schv-gcp.source.status",
+        "engop:symphony:schv.source.status",
+        "engop:symphony:scv.source.status"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.scv.source-status-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.scv.source-status.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.scv.source-status.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.source-plan",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv source-plan [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "propose"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.source.plan",
+        "engop:symphony:scev.source.plan",
+        "engop:symphony:schv-aws.source.plan",
+        "engop:symphony:schv-azure.source.plan",
+        "engop:symphony:schv-do.source.plan",
+        "engop:symphony:schv-gcp.source.plan",
+        "engop:symphony:schv.source.plan",
+        "engop:symphony:scv.source.plan"
+      ],
+      "mutability": "proposal_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.scv.source-plan-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.scv.source-plan.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.scv.source-plan.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.source.apply",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv source apply [--domain VALUE] [--input VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--repo VALUE] [--source-id VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.source.apply",
+        "engop:symphony:scev.source.apply",
+        "engop:symphony:schv-aws.source.apply",
+        "engop:symphony:schv-azure.source.apply",
+        "engop:symphony:schv-do.source.apply",
+        "engop:symphony:schv-gcp.source.apply",
+        "engop:symphony:schv.source.apply",
+        "engop:symphony:scv.source.apply"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.scv.source-plan.v1"
+      ],
+      "output_protocols": [
+        "symphony.qxctl.scv-source-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.qxctl.scv-source-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:scv.source.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.source.propose",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv source propose [--domain VALUE] [--input VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--repo VALUE] [--source-id VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "propose"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.source.plan",
+        "engop:symphony:scev.source.plan",
+        "engop:symphony:schv-aws.source.plan",
+        "engop:symphony:schv-azure.source.plan",
+        "engop:symphony:schv-do.source.plan",
+        "engop:symphony:schv-gcp.source.plan",
+        "engop:symphony:schv.source.plan",
+        "engop:symphony:scv.source.plan"
+      ],
+      "mutability": "proposal_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.qxctl.scv-source-proposal-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.scv.source-plan.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.scv.source-plan.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.source.recover",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv source recover [--domain VALUE] [--input VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--repo VALUE] [--source-id VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.source.apply",
+        "engop:symphony:scev.source.apply",
+        "engop:symphony:schv-aws.source.apply",
+        "engop:symphony:schv-azure.source.apply",
+        "engop:symphony:schv-do.source.apply",
+        "engop:symphony:schv-gcp.source.apply",
+        "engop:symphony:schv.source.apply",
+        "engop:symphony:scv.source.apply"
+      ],
+      "mutability": "permission_backed_mutation",
+      "authority_mode": "target_host_permission",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.qxctl.scv-source-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.qxctl.scv-source-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:scv.source.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.source.status",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv source status [--domain VALUE] [--input VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--repo VALUE] [--source-id VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "inspect"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.source.status",
+        "engop:symphony:scev.source.status",
+        "engop:symphony:schv-aws.source.status",
+        "engop:symphony:schv-azure.source.status",
+        "engop:symphony:schv-do.source.status",
+        "engop:symphony:schv-gcp.source.status",
+        "engop:symphony:schv.source.status",
+        "engop:symphony:scv.source.status"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.qxctl.scv-source-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.qxctl.scv-source-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:sev.case-open",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -6346,5 +7874,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:05080715181c783d893fc221c0db93e80cfb25dfb7ffea952f0479f3b683f732"
+  "registry_digest": "sha256:dbf4cdde43a8051843b397a104c22ffaf3ab08bacfad72edaf8d942bd0b2d02c"
 }

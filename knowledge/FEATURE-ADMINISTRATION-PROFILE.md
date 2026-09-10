@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical bootstrap policy for `symphony.knowledge.feature-administration-profile.v1`.
+Canonical reviewed policy for `symphony.knowledge.feature-administration-profile.v1`, retaining the `enforce_new_records` gate and explicitly partial catalog.
 
 ## Current Baseline
 
@@ -10,21 +10,15 @@ Canonical bootstrap policy for `symphony.knowledge.feature-administration-profil
 - SSFV source: `knowledge/ssfv/REGISTRY.md`
 - catalog scope: `registered_partial_catalog`
 - catalog complete: `false`
-- registered feature count: `91`
-- reviewed interaction expectations: `179`
+- registered feature count: `100`
+- reviewed interaction expectations: `252`
 - forward gate: `enforce_new_records`
 
-All ninety-one currently registered feature IDs appear exactly once in the normalized machine profile. Their 179 explicit expectations comprise 169 required interactions, nine prohibited interactions, and one not-applicable interaction. Evidence-backed runtime-only and system-orchestrated requirements remain explicit where a direct qxctl leaf would be meaningless or unsafe. SAV and SEV retain exact headless read-only/proposal bindings, while the Accordare producer adds two-phase mutation-audit invocation, separate intent/append status and recovery, exact native supervision, and direct grant administration. Existing lifecycle, invariant, provider-trust/readiness/binding, root-summary, governed-validation, and policy-reset boundaries remain unchanged.
+The 100 registered feature IDs appear exactly once. Their 252 reviewed expectations comprise 242 required, 9 prohibited and 1 not-applicable interactions. Runtime-only and system-orchestrated exceptions retain their owner evidence. The SCV increment adds explicit domain-engine operation mappings and a separately owned qxctl source/graph administration adapter. A source or graph result is not permission, durable selection or a provider action.
 
-All reviewed qxctl-mapped administration surfaces now carry their exact backend feature and interaction bindings. The foundational exception publishes twenty stable commands and twenty separately registered module operations in addition to the established mappings. No operation identity is invented before its dispatch or service contract publishes it. The independently installed SSFV engine evaluates these cross-layer facts from the expected qxctl registry and supplied engine descriptors.
+## Exact Machine Evidence
 
-The checked-in machine-evaluable profile is `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`. Its registry digest binds the exact current registry bytes; its profile digest follows the omit-self canonical JSON rule in `knowledge/FEATURE-ADMINISTRATION.md`.
-
-## Bootstrap Close Evidence
-
-The current profile declares 179 reviewed surfaces. Runtime satisfaction counts and the result digest remain evaluation-specific because they also bind supplied engine descriptors and any observed qxctl registry. The canonical profile digest is `sha256:96e4060392cf8464381386473f3ec359221a8cce3cce2cc73398266bffe8a16e`, the bound SSFV registry digest is `sha256:1ab6fb5708a5046c8a073bea4060657181a411566142ae160716d3f8f774c2de`, and the expected 198-leaf qxctl registry digest is `sha256:05080715181c783d893fc221c0db93e80cfb25dfb7ffea952f0479f3b683f732`.
-
-The four closed surfaces are exact administrator-facing lifecycle routes: SSIAG supervision, SSIAG TOPS enrollment, STAV supervision, and STAV TOPS enrollment. Each exposes status, plan, apply, apply-status, and recover through qxctl while the Go module owns transaction behavior. The expected registry retains the qxctl-owned wrapper binding beside every backend binding so command-layer behavior and administered capability remain distinct and independently auditable.
+The profile digest is `sha256:d5d310e5eb291223a9a5e9116e2526ee42b5444690fef6268ff86605e23891fa`. Its bound SSFV registry digest is `sha256:5cd0bf717c3c9b1ce2a2493a7a01cb2c2f3c36c54f567434ca4ce617f09b8e80`. The expected qxctl registry has 218 leaves with digest `sha256:dbf4cdde43a8051843b397a104c22ffaf3ab08bacfad72edaf8d942bd0b2d02c`. These are source-level mappings; actual installed acceptance also requires the selected engine descriptors, exact receipts and exercised authority/storage boundaries. Catalog completeness remains false.
 
 ## Advancement
 

@@ -2,7 +2,7 @@
 
 ## Authority
 
-This contract assigns every cross-component invariant to the lowest layer that can authoritatively enforce it. A caller, client, validator, or AI assistant may detect a violation, but it MUST NOT duplicate, weaken, rename, or manufacture the owning rule. The canonical machine inventory is `knowledge/INVARIANT-OWNERSHIP.json`, governed by `knowledge/schemas/v1/invariant-ownership-registry.schema.json`.
+This contract assigns every cross-component invariant to the lowest layer that can authoritatively enforce it. A caller, client, validator, or AI assistant may detect a violation, but it MUST NOT duplicate, weaken, rename, or manufacture the owning rule. The canonical machine inventory is `knowledge/INVARIANT-OWNERSHIP.json`, governed by the exactly selected `knowledge/schemas/v1/invariant-ownership-registry.schema.json` or `knowledge/schemas/v2/invariant-ownership-registry.schema.json`. The current registry selects v2; v1 remains supported without widening its adapter definitions.
 
 ## Stable Identity
 
@@ -70,7 +70,7 @@ Both invariants are IPC invariants and require an actual receipt-backed Go-to-na
 
 An allowed adapter record names an exact entry-point ID, protocol major, owner contract, implementation path, and version-selection policy. Version permission is never “latest.” The current foundational adapters are allowed only when an immutable receipt-v2 package proves the exact executable and entry point and capability compatibility accepts the command protocol. Adding a component, entry point, protocol major, or adapter authority requires a reviewed registry and owner-contract change.
 
-Registry v1 distinguishes the two SSIAG/STAV foundational-lifecycle adapters from the separately reviewed macOS provider-control adapter. Other process and socket boundaries—including vector engines, Maestro, the coordinator, validator results, SSIAG authorization, and STAV local requests—must not be mislabeled as non-IPC or forced through those adapters. They require a separately reviewed generic-adapter protocol version plus receipt-backed real-process evidence.
+Registry v1 distinguishes the two SSIAG/STAV foundational-lifecycle adapters from the separately reviewed macOS provider-control adapter. Other process and socket boundaries—including vector engines, Maestro, the coordinator, validator results, SSIAG authorization, and STAV local requests—must not be mislabeled as non-IPC or forced through those adapters. They require a separately reviewed generic-adapter protocol version plus receipt-backed real-process evidence. Registry v2 now admits the exact SCV engine adapters described below; this does not admit every other boundary automatically.
 
 ## AI and Agent Use
 
@@ -83,3 +83,17 @@ AI is optional. To assist without inventing protocol, it needs the exact owner c
 ## Non-Authorization
 
 This contract does not authorize canonical apply, invent feature semantics, add arbitrary adapter execution, require qxctl at runtime, or let a validator repair missing coverage. The engine itself remains the only guaranteed executable in an engine-first assessment; registries and contracts are supplied evidence, and optional clients or AI remain replaceable consumers.
+
+## Generic Engine Adapter Admission v2
+
+The v2 registry preserves all v1 record fields and digest rules. Existing adapter-format-1 entries retain their exact SSIAG/STAV protocol and identity pairs. New adapter-format-2 entries bind one actual `symphony-<domain>` receipt entry point to its `<domain>-engine` component, `modules/<domain>-engine/SPEC.md` owner, finite `engop:symphony:<domain>.*` operations and the exact `symphony.knowledge.engine-process.v1` protocol. Their identity is `adapter:symphony:symphony-<domain>.v1`; the terminal v1 identifies the process-protocol major, while adapter format 2 identifies this declaration shape. Generic does not mean discovered or executable without review.
+
+Eight SCV/family/provider packages are explicitly allocated in the registry. They may point to the shared `modules/scv-engine` implementation and installed-process tests because the same implementation is independently packaged and exercised with each exact domain identity. This source ownership does not merge receipts or imply a parent engine is required. Future domains require a new explicit adapter record and actual installation evidence, without a new hardcoded vendor allowance in the validator.
+
+`invariant:symphony:scv.source-knowledge-lineage` binds source expected-state and capture/graph provenance to C++ owner regression, a graph-consumer rejection of altered nested capture bytes, and the actual installed process. The record is incremental traceability for those boundaries. Protected qxctl storage additionally owns authorization, audit, durable intent, commit and recovery; pure C++ tests alone do not prove those storage properties.
+
+The checker recognizes named Python `def` cases in addition to its established Go/C++/Swift/shell test forms. Python real-process traceability requires subprocess invocation, stdin, captured output, exit handling and receipt evidence in the referenced file. This is a test-source detector, not a claim that execution occurred or permission to run arbitrary referenced source. The actual build/test campaign supplies execution evidence. Query clients dual-read v1/v2 identity/shape/digest evidence and retain `semantic_validity: not_asserted`.
+
+`invariant:symphony:scv.graph-selection-commit` separately assigns coherent graph-head persistence to the qxctl graph store and its protected file adapter. Owner tests cover expected-state commit, lost response, interrupted publication and unsafe/tampered storage; command-consumer cases exercise real installed C++ graph rejection before intent and absence of trusted audited authority before selection. This is a local persistence invariant, not a relabeling of the C++ process boundary, which remains separately registered as IPC. Environment-gated installed tests count as execution evidence only when the selected installation was actually supplied.
+
+`invariant:symphony:scv.source-state-commit` assigns the exact source reducer/store relationship to the protected qxctl source adapter, with separate C++ semantic validation, store-side compare-and-swap/durability tests and command-side authority/replay rejection. Authenticated SSIAG endpoint fixtures test the consumer decision boundary; they are not live SSIAG/STAV producer execution. Closure must state whether actual producer-to-consumer audit acceptance ran.

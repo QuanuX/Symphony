@@ -1452,6 +1452,166 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:scv.source.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.projection.select"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "configure",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.provider-onboard"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.inspect",
+            "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.source-check",
+            "qxcmd:symphony:scv.source.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.graph",
+            "qxcmd:symphony:scv.interpret"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source-plan",
+            "qxcmd:symphony:scv.source.propose"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.query"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.projection.recover",
+            "qxcmd:symphony:scv.source.recover"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.diff",
+            "qxcmd:symphony:scv.evaluate"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:qxctl.scv-administration"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:ssiag.policy.apply"
           ],
           "delivery": "direct",
@@ -1744,189 +1904,1365 @@
       "feature_id": "ssfv:symphony:sacv-engine.openapi-compatibility-evidence"
     },
     {
-      "feature_id": "ssfv:symphony:sav-engine",
       "expectations": [
         {
-          "interaction": "inspect",
-          "requirement": "required",
-          "delivery": "direct",
           "command_ids": [
             "qxcmd:symphony:sav.inspect"
           ],
+          "delivery": "direct",
           "engine_operation_ids": [
             "engop:symphony:sav.inspect"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "The exact headless leaf invokes descriptor-bound read-only SAV inspection."
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The exact headless leaf invokes descriptor-bound read-only SAV inspection.",
+          "requirement": "required"
         },
         {
-          "interaction": "validate",
-          "requirement": "required",
-          "delivery": "direct",
           "command_ids": [
             "qxcmd:symphony:sav.compatibility"
           ],
+          "delivery": "direct",
           "engine_operation_ids": [
             "engop:symphony:sav.compatibility"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "The parent engine exposes exact reader/writer protocol compatibility evidence."
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The parent engine exposes exact reader/writer protocol compatibility evidence.",
+          "requirement": "required"
         }
-      ]
+      ],
+      "feature_id": "ssfv:symphony:sav-engine"
     },
     {
-      "feature_id": "ssfv:symphony:sav-engine.current-accord",
       "expectations": [
         {
-          "interaction": "query",
-          "requirement": "required",
-          "delivery": "composed",
           "command_ids": [
             "qxcmd:symphony:sav.current",
             "qxcmd:symphony:sav.diff",
             "qxcmd:symphony:sav.explain",
             "qxcmd:symphony:sav.graph"
           ],
+          "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:sav.current.diff",
             "engop:symphony:sav.current.resolve",
             "engop:symphony:sav.finding.explain",
             "engop:symphony:sav.graph.project"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "CURRENT, diff, explanation, and disposable graph queries are exact operations of the registered nested feature."
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "CURRENT, diff, explanation, and disposable graph queries are exact operations of the registered nested feature.",
+          "requirement": "required"
         },
         {
-          "interaction": "validate",
-          "requirement": "required",
-          "delivery": "composed",
           "command_ids": [
             "qxcmd:symphony:sav.evaluate",
             "qxcmd:symphony:sav.reference-check"
           ],
+          "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:sav.accord.evaluate",
             "engop:symphony:sav.reference.check"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "Reference and accord validation remain distinct stable command and engine identities."
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Reference and accord validation remain distinct stable command and engine identities.",
+          "requirement": "required"
         }
-      ]
+      ],
+      "feature_id": "ssfv:symphony:sav-engine.current-accord"
     },
     {
-      "feature_id": "ssfv:symphony:sav-engine.extension-capsule",
       "expectations": [
         {
-          "interaction": "validate",
-          "requirement": "required",
-          "delivery": "direct",
           "command_ids": [
             "qxcmd:symphony:sav.capsule-check"
           ],
+          "delivery": "direct",
           "engine_operation_ids": [
             "engop:symphony:sav.extension-capsule.check"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "The exact headless capsule check reports package, semantic, administrative, and docking readiness without applying changes."
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The exact headless capsule check reports package, semantic, administrative, and docking readiness without applying changes.",
+          "requirement": "required"
         }
-      ]
+      ],
+      "feature_id": "ssfv:symphony:sav-engine.extension-capsule"
     },
     {
-      "feature_id": "ssfv:symphony:sav-engine.installation-blueprint",
       "expectations": [
         {
-          "interaction": "propose",
-          "requirement": "required",
-          "delivery": "direct",
           "command_ids": [
             "qxcmd:symphony:sav.blueprint-plan"
           ],
+          "delivery": "direct",
           "engine_operation_ids": [
             "engop:symphony:sav.installation-blueprint.plan"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "Blueprint planning exposes explicit forward and reverse dependency-safe ready sets without authorizing apply."
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Blueprint planning exposes explicit forward and reverse dependency-safe ready sets without authorizing apply.",
+          "requirement": "required"
         }
-      ]
+      ],
+      "feature_id": "ssfv:symphony:sav-engine.installation-blueprint"
     },
     {
-      "feature_id": "ssfv:symphony:sav-engine.named-version",
       "expectations": [
         {
-          "interaction": "query",
-          "requirement": "required",
-          "delivery": "direct",
           "command_ids": [
             "qxcmd:symphony:sav.version-diff"
           ],
+          "delivery": "direct",
           "engine_operation_ids": [
             "engop:symphony:sav.named-version.diff"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "Named Version lineage and field changes are queryable through an exact deterministic diff."
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Named Version lineage and field changes are queryable through an exact deterministic diff.",
+          "requirement": "required"
         },
         {
-          "interaction": "validate",
-          "requirement": "required",
-          "delivery": "direct",
           "command_ids": [
             "qxcmd:symphony:sav.version-validate"
           ],
+          "delivery": "direct",
           "engine_operation_ids": [
             "engop:symphony:sav.named-version.validate"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "Immutable Named Version envelopes have an exact validation route without sealing authority."
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Immutable Named Version envelopes have an exact validation route without sealing authority.",
+          "requirement": "required"
         }
-      ]
+      ],
+      "feature_id": "ssfv:symphony:sav-engine.named-version"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:scev-cf.source.apply"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scev-cf-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.provider-onboard"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:scev-cf.provider.onboard"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scev-cf-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.inspect",
+            "qxcmd:symphony:scv.source-check",
+            "qxcmd:symphony:scv.source.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scev-cf.inspect",
+            "engop:symphony:scev-cf.source.status"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scev-cf-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.graph",
+            "qxcmd:symphony:scv.interpret"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scev-cf.capture.import",
+            "engop:symphony:scev-cf.graph.build",
+            "engop:symphony:scev-cf.knowledge.interpret"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scev-cf-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source-plan",
+            "qxcmd:symphony:scv.source.propose"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scev-cf.source.plan"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scev-cf-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.projection.recover",
+            "qxcmd:symphony:scv.projection.select",
+            "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.query"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scev-cf.graph.explain",
+            "engop:symphony:scev-cf.graph.query"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scev-cf-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:scev-cf.source.apply"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scev-cf-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.diff",
+            "qxcmd:symphony:scv.evaluate"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scev-cf.capture.compare",
+            "engop:symphony:scev-cf.graph.diff",
+            "engop:symphony:scev-cf.graph.evaluate"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scev-cf-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:scev-cf-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:scev.source.apply"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scev-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.provider-onboard"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:scev.provider.onboard"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scev-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.inspect",
+            "qxcmd:symphony:scv.source-check",
+            "qxcmd:symphony:scv.source.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scev.inspect",
+            "engop:symphony:scev.source.status"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scev-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.graph",
+            "qxcmd:symphony:scv.interpret"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scev.capture.import",
+            "engop:symphony:scev.graph.build",
+            "engop:symphony:scev.knowledge.interpret"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scev-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source-plan",
+            "qxcmd:symphony:scv.source.propose"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scev.source.plan"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scev-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.projection.recover",
+            "qxcmd:symphony:scv.projection.select",
+            "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.query"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scev.graph.explain",
+            "engop:symphony:scev.graph.query"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scev-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:scev.source.apply"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scev-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.diff",
+            "qxcmd:symphony:scv.evaluate"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scev.capture.compare",
+            "engop:symphony:scev.graph.diff",
+            "engop:symphony:scev.graph.evaluate"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scev-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:scev-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:schv-aws.source.apply"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-aws-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.provider-onboard"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:schv-aws.provider.onboard"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-aws-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.inspect",
+            "qxcmd:symphony:scv.source-check",
+            "qxcmd:symphony:scv.source.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-aws.inspect",
+            "engop:symphony:schv-aws.source.status"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-aws-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.graph",
+            "qxcmd:symphony:scv.interpret"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-aws.capture.import",
+            "engop:symphony:schv-aws.graph.build",
+            "engop:symphony:schv-aws.knowledge.interpret"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-aws-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source-plan",
+            "qxcmd:symphony:scv.source.propose"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-aws.source.plan"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-aws-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.projection.recover",
+            "qxcmd:symphony:scv.projection.select",
+            "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.query"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-aws.graph.explain",
+            "engop:symphony:schv-aws.graph.query"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-aws-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:schv-aws.source.apply"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-aws-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.diff",
+            "qxcmd:symphony:scv.evaluate"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-aws.capture.compare",
+            "engop:symphony:schv-aws.graph.diff",
+            "engop:symphony:schv-aws.graph.evaluate"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-aws-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:schv-aws-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:schv-azure.source.apply"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-azure-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.provider-onboard"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:schv-azure.provider.onboard"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-azure-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.inspect",
+            "qxcmd:symphony:scv.source-check",
+            "qxcmd:symphony:scv.source.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-azure.inspect",
+            "engop:symphony:schv-azure.source.status"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-azure-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.graph",
+            "qxcmd:symphony:scv.interpret"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-azure.capture.import",
+            "engop:symphony:schv-azure.graph.build",
+            "engop:symphony:schv-azure.knowledge.interpret"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-azure-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source-plan",
+            "qxcmd:symphony:scv.source.propose"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-azure.source.plan"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-azure-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.projection.recover",
+            "qxcmd:symphony:scv.projection.select",
+            "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.query"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-azure.graph.explain",
+            "engop:symphony:schv-azure.graph.query"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-azure-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:schv-azure.source.apply"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-azure-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.diff",
+            "qxcmd:symphony:scv.evaluate"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-azure.capture.compare",
+            "engop:symphony:schv-azure.graph.diff",
+            "engop:symphony:schv-azure.graph.evaluate"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-azure-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:schv-azure-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:schv-do.source.apply"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-do-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.provider-onboard"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:schv-do.provider.onboard"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-do-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.inspect",
+            "qxcmd:symphony:scv.source-check",
+            "qxcmd:symphony:scv.source.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-do.inspect",
+            "engop:symphony:schv-do.source.status"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-do-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.graph",
+            "qxcmd:symphony:scv.interpret"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-do.capture.import",
+            "engop:symphony:schv-do.graph.build",
+            "engop:symphony:schv-do.knowledge.interpret"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-do-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source-plan",
+            "qxcmd:symphony:scv.source.propose"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-do.source.plan"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-do-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.projection.recover",
+            "qxcmd:symphony:scv.projection.select",
+            "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.query"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-do.graph.explain",
+            "engop:symphony:schv-do.graph.query"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-do-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:schv-do.source.apply"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-do-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.diff",
+            "qxcmd:symphony:scv.evaluate"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-do.capture.compare",
+            "engop:symphony:schv-do.graph.diff",
+            "engop:symphony:schv-do.graph.evaluate"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-do-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:schv-do-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:schv.source.apply"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.provider-onboard"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:schv.provider.onboard"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.inspect",
+            "qxcmd:symphony:scv.source-check",
+            "qxcmd:symphony:scv.source.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv.inspect",
+            "engop:symphony:schv.source.status"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.graph",
+            "qxcmd:symphony:scv.interpret"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv.capture.import",
+            "engop:symphony:schv.graph.build",
+            "engop:symphony:schv.knowledge.interpret"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source-plan",
+            "qxcmd:symphony:scv.source.propose"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv.source.plan"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.projection.recover",
+            "qxcmd:symphony:scv.projection.select",
+            "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.query"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv.graph.explain",
+            "engop:symphony:schv.graph.query"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:schv.source.apply"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.diff",
+            "qxcmd:symphony:scv.evaluate"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv.capture.compare",
+            "engop:symphony:schv.graph.diff",
+            "engop:symphony:schv.graph.evaluate"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:schv-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:schv-gcp.source.apply"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-gcp-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.provider-onboard"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:schv-gcp.provider.onboard"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-gcp-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.inspect",
+            "qxcmd:symphony:scv.source-check",
+            "qxcmd:symphony:scv.source.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-gcp.inspect",
+            "engop:symphony:schv-gcp.source.status"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-gcp-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.graph",
+            "qxcmd:symphony:scv.interpret"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-gcp.capture.import",
+            "engop:symphony:schv-gcp.graph.build",
+            "engop:symphony:schv-gcp.knowledge.interpret"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-gcp-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source-plan",
+            "qxcmd:symphony:scv.source.propose"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-gcp.source.plan"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-gcp-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.projection.recover",
+            "qxcmd:symphony:scv.projection.select",
+            "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.query"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-gcp.graph.explain",
+            "engop:symphony:schv-gcp.graph.query"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-gcp-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:schv-gcp.source.apply"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-gcp-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.diff",
+            "qxcmd:symphony:scv.evaluate"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:schv-gcp.capture.compare",
+            "engop:symphony:schv-gcp.graph.diff",
+            "engop:symphony:schv-gcp.graph.evaluate"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/schv-gcp-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:schv-gcp-engine"
     },
     {
       "expectations": [
@@ -2070,231 +3406,399 @@
       "feature_id": "ssfv:symphony:sclv-engine.provider-neutral-evidence-normalization"
     },
     {
-      "feature_id": "ssfv:symphony:sev-engine",
       "expectations": [
         {
-          "interaction": "inspect",
-          "requirement": "required",
+          "command_ids": [
+            "qxcmd:symphony:scv.source.apply"
+          ],
           "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:scv.source.apply"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.provider-onboard"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:scv.provider.onboard"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.inspect",
+            "qxcmd:symphony:scv.source-check",
+            "qxcmd:symphony:scv.source.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scv.inspect",
+            "engop:symphony:scv.source.status"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.graph",
+            "qxcmd:symphony:scv.interpret"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scv.capture.import",
+            "engop:symphony:scv.graph.build",
+            "engop:symphony:scv.knowledge.interpret"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source-plan",
+            "qxcmd:symphony:scv.source.propose"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scv.source.plan"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.projection.recover",
+            "qxcmd:symphony:scv.projection.select",
+            "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.query"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scv.graph.explain",
+            "engop:symphony:scv.graph.query"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.source.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:scv.source.apply"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.diff",
+            "qxcmd:symphony:scv.evaluate"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scv.capture.compare",
+            "engop:symphony:scv.graph.diff",
+            "engop:symphony:scv.graph.evaluate"
+          ],
+          "evidence": [
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; protected source/graph storage remains an explicitly authorized adapter transaction, not authority in a computed result.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:scv-engine"
+    },
+    {
+      "expectations": [
+        {
           "command_ids": [
             "qxcmd:symphony:sev.inspect"
           ],
+          "delivery": "direct",
           "engine_operation_ids": [
             "engop:symphony:sev.inspect"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "The exact headless leaf invokes descriptor-bound read-only SEV inspection."
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "The exact headless leaf invokes descriptor-bound read-only SEV inspection.",
+          "requirement": "required"
         },
         {
-          "interaction": "validate",
-          "requirement": "required",
-          "delivery": "direct",
           "command_ids": [
             "qxcmd:symphony:sev.compatibility"
           ],
+          "delivery": "direct",
           "engine_operation_ids": [
             "engop:symphony:sev.compatibility"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "The parent engine exposes exact reader/writer protocol compatibility evidence."
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "The parent engine exposes exact reader/writer protocol compatibility evidence.",
+          "requirement": "required"
         }
-      ]
+      ],
+      "feature_id": "ssfv:symphony:sev-engine"
     },
     {
-      "feature_id": "ssfv:symphony:sev-engine.dynamic-evolution",
       "expectations": [
         {
-          "interaction": "propose",
-          "requirement": "required",
-          "delivery": "composed",
           "command_ids": [
             "qxcmd:symphony:sev.case-open",
             "qxcmd:symphony:sev.close",
             "qxcmd:symphony:sev.plan"
           ],
+          "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:sev.case.close",
             "engop:symphony:sev.case.open",
             "engop:symphony:sev.disposition.plan"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "Case opening, disposition planning, and closure remain non-authoritative proposals with distinct identities."
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Case opening, disposition planning, and closure remain non-authoritative proposals with distinct identities.",
+          "requirement": "required"
         },
         {
-          "interaction": "query",
-          "requirement": "required",
-          "delivery": "composed",
           "command_ids": [
             "qxcmd:symphony:sev.graph",
             "qxcmd:symphony:sev.impact",
             "qxcmd:symphony:sev.status"
           ],
+          "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:sev.case.status",
             "engop:symphony:sev.graph.project",
             "engop:symphony:sev.impact.assess"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "Impact, state, and disposable graph evidence remain independently queryable."
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Impact, state, and disposable graph evidence remain independently queryable.",
+          "requirement": "required"
         },
         {
-          "interaction": "recover",
-          "requirement": "required",
-          "delivery": "composed",
           "command_ids": [
             "qxcmd:symphony:sev.recalculate",
             "qxcmd:symphony:sev.recover"
           ],
+          "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:sev.case.recalculate",
             "engop:symphony:sev.case.recover"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "Dynamic recalculation and forward-only recovery advice remain explicit operations."
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Dynamic recalculation and forward-only recovery advice remain explicit operations.",
+          "requirement": "required"
         },
         {
-          "interaction": "validate",
-          "requirement": "required",
-          "delivery": "direct",
           "command_ids": [
             "qxcmd:symphony:sev.verify"
           ],
+          "delivery": "direct",
           "engine_operation_ids": [
             "engop:symphony:sev.transition.verify"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "Complete reobservation is validated through an exact transition-verification route."
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Complete reobservation is validated through an exact transition-verification route.",
+          "requirement": "required"
         }
-      ]
+      ],
+      "feature_id": "ssfv:symphony:sev-engine.dynamic-evolution"
     },
     {
-      "feature_id": "ssfv:symphony:sev-engine.lifecycle-binding",
       "expectations": [
         {
-          "interaction": "propose",
-          "requirement": "required",
-          "delivery": "direct",
           "command_ids": [
             "qxcmd:symphony:sev.session-bind"
           ],
+          "delivery": "direct",
           "engine_operation_ids": [
             "engop:symphony:sev.session.bind"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "Evolution cases bind to the shared lifecycle stream through an immutable noncanonical proposal."
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Evolution cases bind to the shared lifecycle stream through an immutable noncanonical proposal.",
+          "requirement": "required"
         }
-      ]
+      ],
+      "feature_id": "ssfv:symphony:sev-engine.lifecycle-binding"
     },
     {
-      "feature_id": "ssfv:symphony:sev-engine.novelty-watch",
       "expectations": [
         {
-          "interaction": "propose",
-          "requirement": "required",
-          "delivery": "direct",
           "command_ids": [
             "qxcmd:symphony:sev.trigger-coalesce"
           ],
+          "delivery": "direct",
           "engine_operation_ids": [
             "engop:symphony:sev.trigger.coalesce"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "Explicit policy-bound events coalesce into a case-kind proposal without opening a case."
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Explicit policy-bound events coalesce into a case-kind proposal without opening a case.",
+          "requirement": "required"
         },
         {
-          "interaction": "validate",
-          "requirement": "required",
-          "delivery": "composed",
           "command_ids": [
             "qxcmd:symphony:sev.novelty-check",
             "qxcmd:symphony:sev.watch-check"
           ],
+          "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:sev.novelty-bundle.check",
             "engop:symphony:sev.watch-policy.check"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "Private novelty bundles and default-disabled watch policies have exact validation routes."
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "Private novelty bundles and default-disabled watch policies have exact validation routes.",
+          "requirement": "required"
         }
-      ]
+      ],
+      "feature_id": "ssfv:symphony:sev-engine.novelty-watch"
     },
     {
-      "feature_id": "ssfv:symphony:sev-engine.scsev",
       "expectations": [
         {
-          "interaction": "validate",
-          "requirement": "required",
-          "delivery": "direct",
           "command_ids": [
             "qxcmd:symphony:sev.command-surface"
           ],
+          "delivery": "direct",
           "engine_operation_ids": [
             "engop:symphony:sev.command-surface.assess"
           ],
-          "inherited_from_feature_id": null,
           "evidence": [
             "knowledge/FEATURE-ADMINISTRATION.md",
             "modules/sav-engine/SPEC.md",
             "modules/sev-engine/SPEC.md",
             "tools/qxctl/COMMANDS.json"
           ],
-          "rationale": "SCSEV validates feature-to-qxctl and engine-operation consequences without creating a second registry."
+          "inherited_from_feature_id": null,
+          "interaction": "validate",
+          "rationale": "SCSEV validates feature-to-qxctl and engine-operation consequences without creating a second registry.",
+          "requirement": "required"
         }
-      ]
+      ],
+      "feature_id": "ssfv:symphony:sev-engine.scsev"
     },
     {
       "expectations": [
@@ -3529,9 +5033,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:96e4060392cf8464381386473f3ec359221a8cce3cce2cc73398266bffe8a16e",
+  "profile_digest": "sha256:d5d310e5eb291223a9a5e9116e2526ee42b5444690fef6268ff86605e23891fa",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 91,
-  "ssfv_registry_digest": "sha256:1ab6fb5708a5046c8a073bea4060657181a411566142ae160716d3f8f774c2de"
+  "registered_feature_count": 100,
+  "ssfv_registry_digest": "sha256:5cd0bf717c3c9b1ce2a2493a7a01cb2c2f3c36c54f567434ca4ce617f09b8e80"
 }

@@ -119,7 +119,7 @@ Historical QuanuX engines will be considered only when their author supplies the
 This baseline does not yet define:
 
 - provider-specific schemas or Terraform recipes;
-- SCV or SHV graph ontology, database product, evidence acquisition, or query API;
+- SHV graph ontology and engine; full SCV provider ontologies, graph database product, broader acquisition adapters or a network query API beyond the admitted bounded source-knowledge process profile;
 - exact SNV identifier encodings or the SNRV remote-resource `::` grammar;
 - Habitat image construction, signing, or package-resolution protocols;
 - a cluster-bus adapter protocol;

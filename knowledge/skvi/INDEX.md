@@ -8000,11 +8000,11 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - path: `knowledge/scv/MANIFEST.md`
 - title: Symphony Cloud Vector Manifest
 - surface_type: vector manifest
-- truth_role: declared SCV truth, planned C++ graph-engine character, and non-authorizations
+- truth_role: declared SCV truth, admitted bounded C++ source-knowledge engines, and non-authorizations
 - owner: Symphony Cloud Vector maintainers
 - scope: Declares reproducible installation-local provider knowledge without selecting graph technology.
 - relationships: depends_on -> `knowledge/scv/INTENT.md`; declares -> `knowledge/scv/SPEC.md`; declares -> `knowledge/scv/SKILL.md`
-- consumers: SKVI, agents, reviewers, future SCV implementers
+- consumers: SKVI, agents, reviewers, SCV implementers
 - deferred_projections: manifest-derived canonical-surface closure
 - notes: Claims no provider access, graph, engine, or API implementation.
 - status: canonical
@@ -9315,4 +9315,1138 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - consumers: Symphony Validator maintainers, reviewers
 - deferred_projections: none
 - notes: Tests preserve validator independence while matching the shared declared-surface contract.
+- status: canonical
+
+### SCV Source-Knowledge Engine Admission
+
+#### Symphony common invariant ownership registry v2
+- path: `knowledge/schemas/v2/invariant-ownership-registry.schema.json`
+- title: Symphony common invariant ownership registry v2
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/schemas/v2/MANIFEST.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### SCV Source Acquisition and Knowledge Interpretation Contract
+- path: `knowledge/scv/SOURCE-KNOWLEDGE.md`
+- title: SCV Source Acquisition and Knowledge Interpretation Contract
+- surface_type: canonical contract companion
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector Intent
+- path: `knowledge/scv/scev/INTENT.md`
+- title: Symphony Cloud Edge Vector Intent
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/scev/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector Manifest
+- path: `knowledge/scv/scev/MANIFEST.md`
+- title: Symphony Cloud Edge Vector Manifest
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/scev/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector Working Guidance
+- path: `knowledge/scv/scev/SKILL.md`
+- title: Symphony Cloud Edge Vector Working Guidance
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/scev/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector Specification
+- path: `knowledge/scv/scev/SPEC.md`
+- title: Symphony Cloud Edge Vector Specification
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector — Cloudflare Intent
+- path: `knowledge/scv/scev/cf/INTENT.md`
+- title: Symphony Cloud Edge Vector — Cloudflare Intent
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/scev/cf/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector — Cloudflare Manifest
+- path: `knowledge/scv/scev/cf/MANIFEST.md`
+- title: Symphony Cloud Edge Vector — Cloudflare Manifest
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/scev/cf/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector — Cloudflare Working Guidance
+- path: `knowledge/scv/scev/cf/SKILL.md`
+- title: Symphony Cloud Edge Vector — Cloudflare Working Guidance
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/scev/cf/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector — Cloudflare Specification
+- path: `knowledge/scv/scev/cf/SPEC.md`
+- title: Symphony Cloud Edge Vector — Cloudflare Specification
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### SCV Source-Knowledge Schemas v1 Manifest
+- path: `knowledge/scv/schemas/v1/MANIFEST.md`
+- title: SCV Source-Knowledge Schemas v1 Manifest
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Capture v1
+- path: `knowledge/scv/schemas/v1/capture.schema.json`
+- title: Capture v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schemas/v1/MANIFEST.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Interpretation Input v1
+- path: `knowledge/scv/schemas/v1/interpretation-input.schema.json`
+- title: Interpretation Input v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schemas/v1/MANIFEST.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Source Operation v1
+- path: `knowledge/scv/schemas/v1/source-operation.schema.json`
+- title: Source Operation v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schemas/v1/MANIFEST.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Source v1
+- path: `knowledge/scv/schemas/v1/source.schema.json`
+- title: Source v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schemas/v1/MANIFEST.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector Intent
+- path: `knowledge/scv/schv/INTENT.md`
+- title: Symphony Cloud Hyperscalers Vector Intent
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector Manifest
+- path: `knowledge/scv/schv/MANIFEST.md`
+- title: Symphony Cloud Hyperscalers Vector Manifest
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector Working Guidance
+- path: `knowledge/scv/schv/SKILL.md`
+- title: Symphony Cloud Hyperscalers Vector Working Guidance
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector Specification
+- path: `knowledge/scv/schv/SPEC.md`
+- title: Symphony Cloud Hyperscalers Vector Specification
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — AWS Intent
+- path: `knowledge/scv/schv/aws/INTENT.md`
+- title: Symphony Cloud Hyperscalers Vector — AWS Intent
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schv/aws/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — AWS Manifest
+- path: `knowledge/scv/schv/aws/MANIFEST.md`
+- title: Symphony Cloud Hyperscalers Vector — AWS Manifest
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schv/aws/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — AWS Working Guidance
+- path: `knowledge/scv/schv/aws/SKILL.md`
+- title: Symphony Cloud Hyperscalers Vector — AWS Working Guidance
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schv/aws/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — AWS Specification
+- path: `knowledge/scv/schv/aws/SPEC.md`
+- title: Symphony Cloud Hyperscalers Vector — AWS Specification
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Azure Intent
+- path: `knowledge/scv/schv/azure/INTENT.md`
+- title: Symphony Cloud Hyperscalers Vector — Azure Intent
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schv/azure/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Azure Manifest
+- path: `knowledge/scv/schv/azure/MANIFEST.md`
+- title: Symphony Cloud Hyperscalers Vector — Azure Manifest
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schv/azure/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Azure Working Guidance
+- path: `knowledge/scv/schv/azure/SKILL.md`
+- title: Symphony Cloud Hyperscalers Vector — Azure Working Guidance
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schv/azure/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Azure Specification
+- path: `knowledge/scv/schv/azure/SPEC.md`
+- title: Symphony Cloud Hyperscalers Vector — Azure Specification
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — DigitalOcean Intent
+- path: `knowledge/scv/schv/do/INTENT.md`
+- title: Symphony Cloud Hyperscalers Vector — DigitalOcean Intent
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schv/do/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — DigitalOcean Manifest
+- path: `knowledge/scv/schv/do/MANIFEST.md`
+- title: Symphony Cloud Hyperscalers Vector — DigitalOcean Manifest
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schv/do/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — DigitalOcean Working Guidance
+- path: `knowledge/scv/schv/do/SKILL.md`
+- title: Symphony Cloud Hyperscalers Vector — DigitalOcean Working Guidance
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schv/do/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — DigitalOcean Specification
+- path: `knowledge/scv/schv/do/SPEC.md`
+- title: Symphony Cloud Hyperscalers Vector — DigitalOcean Specification
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Google Cloud Intent
+- path: `knowledge/scv/schv/gcp/INTENT.md`
+- title: Symphony Cloud Hyperscalers Vector — Google Cloud Intent
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schv/gcp/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Google Cloud Manifest
+- path: `knowledge/scv/schv/gcp/MANIFEST.md`
+- title: Symphony Cloud Hyperscalers Vector — Google Cloud Manifest
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schv/gcp/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Google Cloud Working Guidance
+- path: `knowledge/scv/schv/gcp/SKILL.md`
+- title: Symphony Cloud Hyperscalers Vector — Google Cloud Working Guidance
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/schv/gcp/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Google Cloud Specification
+- path: `knowledge/scv/schv/gcp/SPEC.md`
+- title: Symphony Cloud Hyperscalers Vector — Google Cloud Specification
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Semantic Features
+- path: `modules/scev-cf-engine/FEATURES.md`
+- title: Symphony Semantic Features
+- surface_type: module feature contract
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/scev-cf-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector — Cloudflare Engine Installation
+- path: `modules/scev-cf-engine/INSTALL.md`
+- title: Symphony Cloud Edge Vector — Cloudflare Engine Installation
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/scev-cf-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector — Cloudflare Engine Intent
+- path: `modules/scev-cf-engine/INTENT.md`
+- title: Symphony Cloud Edge Vector — Cloudflare Engine Intent
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/scev-cf-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector — Cloudflare Engine Manifest
+- path: `modules/scev-cf-engine/MANIFEST.md`
+- title: Symphony Cloud Edge Vector — Cloudflare Engine Manifest
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/scev-cf-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector — Cloudflare Engine Working Guidance
+- path: `modules/scev-cf-engine/SKILL.md`
+- title: Symphony Cloud Edge Vector — Cloudflare Engine Working Guidance
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/scev-cf-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector — Cloudflare Engine Specification
+- path: `modules/scev-cf-engine/SPEC.md`
+- title: Symphony Cloud Edge Vector — Cloudflare Engine Specification
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Semantic Features
+- path: `modules/scev-engine/FEATURES.md`
+- title: Symphony Semantic Features
+- surface_type: module feature contract
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/scev-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector Engine Installation
+- path: `modules/scev-engine/INSTALL.md`
+- title: Symphony Cloud Edge Vector Engine Installation
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/scev-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector Engine Intent
+- path: `modules/scev-engine/INTENT.md`
+- title: Symphony Cloud Edge Vector Engine Intent
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/scev-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector Engine Manifest
+- path: `modules/scev-engine/MANIFEST.md`
+- title: Symphony Cloud Edge Vector Engine Manifest
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/scev-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector Engine Working Guidance
+- path: `modules/scev-engine/SKILL.md`
+- title: Symphony Cloud Edge Vector Engine Working Guidance
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/scev-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Edge Vector Engine Specification
+- path: `modules/scev-engine/SPEC.md`
+- title: Symphony Cloud Edge Vector Engine Specification
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Semantic Features
+- path: `modules/schv-aws-engine/FEATURES.md`
+- title: Symphony Semantic Features
+- surface_type: module feature contract
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-aws-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — AWS Engine Installation
+- path: `modules/schv-aws-engine/INSTALL.md`
+- title: Symphony Cloud Hyperscalers Vector — AWS Engine Installation
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-aws-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — AWS Engine Intent
+- path: `modules/schv-aws-engine/INTENT.md`
+- title: Symphony Cloud Hyperscalers Vector — AWS Engine Intent
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-aws-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — AWS Engine Manifest
+- path: `modules/schv-aws-engine/MANIFEST.md`
+- title: Symphony Cloud Hyperscalers Vector — AWS Engine Manifest
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-aws-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — AWS Engine Working Guidance
+- path: `modules/schv-aws-engine/SKILL.md`
+- title: Symphony Cloud Hyperscalers Vector — AWS Engine Working Guidance
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-aws-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — AWS Engine Specification
+- path: `modules/schv-aws-engine/SPEC.md`
+- title: Symphony Cloud Hyperscalers Vector — AWS Engine Specification
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Semantic Features
+- path: `modules/schv-azure-engine/FEATURES.md`
+- title: Symphony Semantic Features
+- surface_type: module feature contract
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-azure-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Azure Engine Installation
+- path: `modules/schv-azure-engine/INSTALL.md`
+- title: Symphony Cloud Hyperscalers Vector — Azure Engine Installation
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-azure-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Azure Engine Intent
+- path: `modules/schv-azure-engine/INTENT.md`
+- title: Symphony Cloud Hyperscalers Vector — Azure Engine Intent
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-azure-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Azure Engine Manifest
+- path: `modules/schv-azure-engine/MANIFEST.md`
+- title: Symphony Cloud Hyperscalers Vector — Azure Engine Manifest
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-azure-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Azure Engine Working Guidance
+- path: `modules/schv-azure-engine/SKILL.md`
+- title: Symphony Cloud Hyperscalers Vector — Azure Engine Working Guidance
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-azure-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Azure Engine Specification
+- path: `modules/schv-azure-engine/SPEC.md`
+- title: Symphony Cloud Hyperscalers Vector — Azure Engine Specification
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Semantic Features
+- path: `modules/schv-do-engine/FEATURES.md`
+- title: Symphony Semantic Features
+- surface_type: module feature contract
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-do-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — DigitalOcean Engine Installation
+- path: `modules/schv-do-engine/INSTALL.md`
+- title: Symphony Cloud Hyperscalers Vector — DigitalOcean Engine Installation
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-do-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — DigitalOcean Engine Intent
+- path: `modules/schv-do-engine/INTENT.md`
+- title: Symphony Cloud Hyperscalers Vector — DigitalOcean Engine Intent
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-do-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — DigitalOcean Engine Manifest
+- path: `modules/schv-do-engine/MANIFEST.md`
+- title: Symphony Cloud Hyperscalers Vector — DigitalOcean Engine Manifest
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-do-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — DigitalOcean Engine Working Guidance
+- path: `modules/schv-do-engine/SKILL.md`
+- title: Symphony Cloud Hyperscalers Vector — DigitalOcean Engine Working Guidance
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-do-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — DigitalOcean Engine Specification
+- path: `modules/schv-do-engine/SPEC.md`
+- title: Symphony Cloud Hyperscalers Vector — DigitalOcean Engine Specification
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Semantic Features
+- path: `modules/schv-engine/FEATURES.md`
+- title: Symphony Semantic Features
+- surface_type: module feature contract
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector Engine Installation
+- path: `modules/schv-engine/INSTALL.md`
+- title: Symphony Cloud Hyperscalers Vector Engine Installation
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector Engine Intent
+- path: `modules/schv-engine/INTENT.md`
+- title: Symphony Cloud Hyperscalers Vector Engine Intent
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector Engine Manifest
+- path: `modules/schv-engine/MANIFEST.md`
+- title: Symphony Cloud Hyperscalers Vector Engine Manifest
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector Engine Working Guidance
+- path: `modules/schv-engine/SKILL.md`
+- title: Symphony Cloud Hyperscalers Vector Engine Working Guidance
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector Engine Specification
+- path: `modules/schv-engine/SPEC.md`
+- title: Symphony Cloud Hyperscalers Vector Engine Specification
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Semantic Features
+- path: `modules/schv-gcp-engine/FEATURES.md`
+- title: Symphony Semantic Features
+- surface_type: module feature contract
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-gcp-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Google Cloud Engine Installation
+- path: `modules/schv-gcp-engine/INSTALL.md`
+- title: Symphony Cloud Hyperscalers Vector — Google Cloud Engine Installation
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-gcp-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Google Cloud Engine Intent
+- path: `modules/schv-gcp-engine/INTENT.md`
+- title: Symphony Cloud Hyperscalers Vector — Google Cloud Engine Intent
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-gcp-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Google Cloud Engine Manifest
+- path: `modules/schv-gcp-engine/MANIFEST.md`
+- title: Symphony Cloud Hyperscalers Vector — Google Cloud Engine Manifest
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-gcp-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Google Cloud Engine Working Guidance
+- path: `modules/schv-gcp-engine/SKILL.md`
+- title: Symphony Cloud Hyperscalers Vector — Google Cloud Engine Working Guidance
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/schv-gcp-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Hyperscalers Vector — Google Cloud Engine Specification
+- path: `modules/schv-gcp-engine/SPEC.md`
+- title: Symphony Cloud Hyperscalers Vector — Google Cloud Engine Specification
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Semantic Features
+- path: `modules/scv-engine/FEATURES.md`
+- title: Symphony Semantic Features
+- surface_type: module feature contract
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/scv-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Vector Engine Installation
+- path: `modules/scv-engine/INSTALL.md`
+- title: Symphony Cloud Vector Engine Installation
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/scv-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Vector Engine Intent
+- path: `modules/scv-engine/INTENT.md`
+- title: Symphony Cloud Vector Engine Intent
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/scv-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Vector Engine Manifest
+- path: `modules/scv-engine/MANIFEST.md`
+- title: Symphony Cloud Vector Engine Manifest
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/scv-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Vector Engine Working Guidance
+- path: `modules/scv-engine/SKILL.md`
+- title: Symphony Cloud Vector Engine Working Guidance
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `modules/scv-engine/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+#### Symphony Cloud Vector Engine Specification
+- path: `modules/scv-engine/SPEC.md`
+- title: Symphony Cloud Vector Engine Specification
+- surface_type: contract surface
+- truth_role: current owner-declared SCV source-knowledge admission truth
+- owner: SCV and delegated domain maintainers
+- scope: Bounded independently installed provider-native source-knowledge computation and its explicit evidence boundaries.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible source and knowledge views
+- notes: No complete provider catalog, provider authority, arbitrary canonical apply or official publication is implied.
+- status: canonical
+
+
+#### Knowledge Graph v1
+- path: `knowledge/scv/schemas/v1/knowledge-graph.schema.json`
+- title: Knowledge Graph v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical bounded knowledge and graph data shapes
+- owner: SCV maintainers
+- scope: Exact retained interpretation, native graph, query and change evidence for the source-knowledge increment.
+- relationships: depends_on -> `knowledge/scv/schemas/v1/MANIFEST.md`
+- consumers: SCV engines, qxctl, tests, user-selected clients
+- deferred_projections: private reproducible knowledge views
+- notes: Shapes do not prove vendor semantics, select durable state or grant operational authority.
+- status: canonical
+
+#### Graph Operation v1
+- path: `knowledge/scv/schemas/v1/graph-operation.schema.json`
+- title: Graph Operation v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: canonical bounded knowledge and graph data shapes
+- owner: SCV maintainers
+- scope: Exact retained interpretation, native graph, query and change evidence for the source-knowledge increment.
+- relationships: depends_on -> `knowledge/scv/schemas/v1/MANIFEST.md`
+- consumers: SCV engines, qxctl, tests, user-selected clients
+- deferred_projections: private reproducible knowledge views
+- notes: Shapes do not prove vendor semantics, select durable state or grant operational authority.
+- status: canonical
+
+#### SCV Source-Knowledge Synthetic Fixtures v1
+- path: `knowledge/scv/fixtures/v1/MANIFEST.md`
+- title: SCV Source-Knowledge Synthetic Fixtures v1
+- surface_type: canonical fixture evidence
+- truth_role: synthetic local source-knowledge reproduction specimen
+- owner: SCV maintainers
+- scope: Bounded source, capture, graph and explicit-time query examples without vendor capability claims.
+- relationships: depends_on -> `knowledge/scv/SOURCE-KNOWLEDGE.md`
+- consumers: maintainers, tests, user-selected tools
+- deferred_projections: noncanonical replay evidence
+- notes: Synthetic material generated by the admitted local engine; no network, account, storage commit or provider truth is asserted.
+- status: canonical
+
+#### SCV Source-Knowledge Synthetic Replay Specimen
+- path: `knowledge/scv/fixtures/v1/source-knowledge.json`
+- title: SCV Source-Knowledge Synthetic Replay Specimen
+- surface_type: canonical fixture evidence
+- truth_role: synthetic local source-knowledge reproduction specimen
+- owner: SCV maintainers
+- scope: Bounded source, capture, graph and explicit-time query examples without vendor capability claims.
+- relationships: depends_on -> `knowledge/scv/SOURCE-KNOWLEDGE.md`
+- consumers: maintainers, tests, user-selected tools
+- deferred_projections: noncanonical replay evidence
+- notes: Synthetic material generated by the admitted local engine; no network, account, storage commit or provider truth is asserted.
 - status: canonical

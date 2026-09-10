@@ -6,6 +6,7 @@
 - `knowledge/schemas/v2/engine-binding-registry.schema.json`
 - `knowledge/schemas/v2/engine-descriptor.schema.json`
 - `knowledge/schemas/v2/install-receipt.schema.json`
+- `knowledge/schemas/v2/invariant-ownership-registry.schema.json`
 - `knowledge/schemas/v2/lifecycle-boot-head.schema.json`
 - `knowledge/schemas/v2/lifecycle-boot-journal.schema.json`
 
@@ -30,3 +31,7 @@ Engine-binding registry v1 remains the exact closed six-role protocol defined by
 Lifecycle journal v1 remains the immutable report-only transaction and source-authorization record. Journal v2 is a side-by-side apply protocol with its own lock, slots, head, compatibility capabilities, and recovery chain. It may read and reference v1 evidence but never rewrites or upgrades a v1 stream in place. Older readers preserve v2 state and remain read-only; version recency alone never proves compatibility.
 
 All schemas use JSON Schema Draft 2020-12, close every common-governed object with `additionalProperties: false`, and carry no secrets.
+
+## Invariant Registry v2
+
+`invariant-ownership-registry.schema.json` adds explicitly declared generic exact-receipt C++ engine adapters through adapter format 2. Legacy adapter format 1 keeps its existing closed identity/protocol pairs. Registry v1 remains a distinct supported read format; v2 never silently widens v1. Each generic entry binds its component, actual entrypoint, module owner, operation namespace, finite operation set and real-process evidence. Presence is traceability, not permission to execute.

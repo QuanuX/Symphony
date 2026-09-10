@@ -16,7 +16,7 @@ func TestLoadAndDeterministicQueryProjections(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if registry.Protocol != Protocol || len(registry.Invariants) == 0 || len(registry.Adapters) == 0 {
+	if (registry.Protocol != Protocol && registry.Protocol != ProtocolV2) || len(registry.Invariants) == 0 || len(registry.Adapters) == 0 {
 		t.Fatalf("registry identity or counts = %#v", registry)
 	}
 
@@ -63,6 +63,38 @@ func TestLoadRejectsTrailingValuesAndGarbage(t *testing.T) {
 				t.Fatalf("trailing input error = %v", err)
 			}
 		})
+	}
+}
+
+func TestGenericEngineAdapterRequiresV2AndPreservesV1(t *testing.T) {
+	adapter := Adapter{AdapterID: "adapter:symphony:symphony-schv-aws.v1", Component: "schv-aws-engine", EntryPointID: "symphony-schv-aws",
+		CommandProtocol: "symphony.knowledge.engine-process.v1", FormatVersion: 2, OwnerContract: "modules/schv-aws-engine/SPEC.md",
+		ImplementationPath: "tools/qxctl/internal/knowledgeengine/scv.go", VersionPolicy: "exact_receipt_v2_entry_point_and_capability_compatible",
+		OperationIDs: []string{"engop:symphony:schv-aws.inspect"}}
+	if err := validateAdapterVersion(adapter, 2); err != nil {
+		t.Fatal(err)
+	}
+	if err := validateAdapterVersion(adapter, 1); err == nil {
+		t.Fatal("v2 generic adapter widened legacy v1")
+	}
+	adapter.FormatVersion = 1
+	if err := validateAdapterVersion(adapter, 2); err == nil {
+		t.Fatal("unrecognized legacy pair accepted in v2")
+	}
+	adapter.FormatVersion = 2
+	adapter.CommandProtocol = "invented.protocol.v1"
+	if err := validateAdapterVersion(adapter, 2); err == nil {
+		t.Fatal("uncontracted process protocol accepted")
+	}
+	for _, legacy := range []Adapter{
+		{AdapterID: "adapter:symphony:ssiag.foundation-lifecycle.v1", Component: "ssiag", EntryPointID: "ssiag.foundation-lifecycle", CommandProtocol: "symphony.foundation.lifecycle-command.v1", FormatVersion: 1, OwnerContract: "knowledge/ssiag/SPEC.md", ImplementationPath: "tools/qxctl/cmd/qxctl/foundation_lifecycle.go", VersionPolicy: "exact_receipt_v2_entry_point_and_capability_compatible", OperationIDs: []string{"engop:symphony:ssiag.enrollment.apply"}},
+	} {
+		if err := validateAdapterVersion(legacy, 1); err != nil {
+			t.Fatal(err)
+		}
+		if err := validateAdapterVersion(legacy, 2); err != nil {
+			t.Fatal(err)
+		}
 	}
 }
 

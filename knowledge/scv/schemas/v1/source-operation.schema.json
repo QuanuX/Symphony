@@ -1,0 +1,590 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:scv:source-operation:v1",
+  "title": "Source Operation v1",
+  "description": "Closed operation/payload pairs selected from the shared process request; result shapes are named definitions. This is not an alternative wire envelope.",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "payload"
+      ],
+      "properties": {
+        "operation": {
+          "const": "provider_onboard"
+        },
+        "payload": {
+          "$ref": "#/$defs/provider_onboard"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "payload"
+      ],
+      "properties": {
+        "operation": {
+          "const": "source_plan"
+        },
+        "payload": {
+          "$ref": "#/$defs/source_plan"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "payload"
+      ],
+      "properties": {
+        "operation": {
+          "const": "source_apply"
+        },
+        "payload": {
+          "$ref": "#/$defs/source_apply"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "payload"
+      ],
+      "properties": {
+        "operation": {
+          "const": "source_status"
+        },
+        "payload": {
+          "$ref": "#/$defs/source_status"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "payload"
+      ],
+      "properties": {
+        "operation": {
+          "const": "capture_import"
+        },
+        "payload": {
+          "$ref": "#/$defs/capture_import"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "payload"
+      ],
+      "properties": {
+        "operation": {
+          "const": "capture_compare"
+        },
+        "payload": {
+          "$ref": "#/$defs/capture_compare"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sourcePlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "operation_id",
+        "expected_state_digest",
+        "change_kind",
+        "reason",
+        "source",
+        "plan_digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.source-plan.v1"
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "expected_state_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "change_kind": {
+          "enum": [
+            "onboard",
+            "relocate",
+            "authority_change",
+            "revise"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "source": {
+          "$ref": "source.schema.json"
+        },
+        "plan_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "sourceTransition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "operation_id",
+        "expected_state_digest",
+        "state",
+        "state_digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.source-transition.v1"
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "expected_state_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "state": {
+          "$ref": "source.schema.json"
+        },
+        "state_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "sourceStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "source",
+        "state_digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.source-status.v1"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "source.schema.json"
+            }
+          ]
+        },
+        "state_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        }
+      }
+    },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "provider_id",
+        "family_id",
+        "display_name",
+        "sources",
+        "disposition",
+        "interpretation_scope",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.provider.v1"
+        },
+        "provider_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "family_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "source.schema.json#/$defs/desired"
+          },
+          "maxItems": 32,
+          "minItems": 1
+        },
+        "disposition": {
+          "const": "candidate"
+        },
+        "interpretation_scope": {
+          "const": "captured-text-and-explicit-assertions"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "captureDiff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "before_digest",
+        "after_digest",
+        "change_kind",
+        "source_identity_preserved",
+        "body_changed",
+        "configuration_changed",
+        "coverage_before",
+        "coverage_after",
+        "requires_reinterpretation",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.capture-diff.v1"
+        },
+        "before_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "after_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "change_kind": {
+          "enum": [
+            "source_changed",
+            "representation_changed",
+            "content_changed",
+            "retrieval_only"
+          ]
+        },
+        "source_identity_preserved": {
+          "type": "boolean"
+        },
+        "body_changed": {
+          "type": "boolean"
+        },
+        "configuration_changed": {
+          "type": "boolean"
+        },
+        "coverage_before": {
+          "enum": [
+            "complete",
+            "partial",
+            "failed"
+          ]
+        },
+        "coverage_after": {
+          "enum": [
+            "complete",
+            "partial",
+            "failed"
+          ]
+        },
+        "requires_reinterpretation": {
+          "type": "boolean"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "provider_onboard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider_id",
+        "family_id",
+        "display_name",
+        "sources"
+      ],
+      "properties": {
+        "provider_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "family_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "source.schema.json#/$defs/desired"
+          },
+          "maxItems": 32,
+          "minItems": 1
+        }
+      }
+    },
+    "source_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_id",
+        "current",
+        "desired",
+        "reason"
+      ],
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "current": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "source.schema.json"
+            }
+          ]
+        },
+        "desired": {
+          "$ref": "source.schema.json#/$defs/desired"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      }
+    },
+    "source_apply": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan",
+        "current"
+      ],
+      "properties": {
+        "plan": {
+          "$ref": "#/$defs/sourcePlan"
+        },
+        "current": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "source.schema.json"
+            }
+          ]
+        }
+      }
+    },
+    "source_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source"
+      ],
+      "properties": {
+        "source": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "source.schema.json"
+            }
+          ]
+        }
+      }
+    },
+    "capture_import": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "locator_id",
+        "resolved_uri",
+        "redirects",
+        "observed_at",
+        "upstream_revision",
+        "media_type",
+        "body",
+        "completeness",
+        "issues"
+      ],
+      "properties": {
+        "source": {
+          "$ref": "source.schema.json"
+        },
+        "locator_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "resolved_uri": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "redirects": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "maxItems": 8,
+          "minItems": 0
+        },
+        "observed_at": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "upstream_revision": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "scheme",
+                "value"
+              ],
+              "properties": {
+                "scheme": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9_.:-]+$"
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                }
+              }
+            }
+          ]
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "body": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 65536
+        },
+        "completeness": {
+          "enum": [
+            "complete",
+            "partial",
+            "failed"
+          ]
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "maxItems": 64,
+          "minItems": 0
+        }
+      }
+    },
+    "capture_compare": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "before",
+        "after"
+      ],
+      "properties": {
+        "before": {
+          "$ref": "capture.schema.json"
+        },
+        "after": {
+          "$ref": "capture.schema.json"
+        }
+      }
+    }
+  }
+}

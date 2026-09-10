@@ -209,6 +209,69 @@ A term is admitted only after its semantic owner exists. A name used in discussi
 - counterexample: `SCV ranks providers or authorizes SOV to provision a resource.`
 - notes: The preferred abbreviation is `SCV`. Owned hardware enters only where its comparison with offsite resources is applicable.
 
+### SCHV
+
+- term: `SCHV`
+- meaning: Symphony Cloud Hyperscalers Vector. Hyperscaler and cloud-hosting family knowledge, preserving each provider vocabulary.
+- owner_contract: `knowledge/scv/schv/SPEC.md`
+- example: `SCHV retains a provider-native fact with its source revision and scope.`
+- counterexample: `SCHV membership proves equivalence, excludes a custom bridge or grants provider authority.`
+- notes: Subordinate to `SCV`; its engine is independently installable.
+
+### SCEV
+
+- term: `SCEV`
+- meaning: Symphony Cloud Edge Vector. Edge-provider family knowledge, preserving distinct product and service boundaries.
+- owner_contract: `knowledge/scv/scev/SPEC.md`
+- example: `SCEV retains a provider-native fact with its source revision and scope.`
+- counterexample: `SCEV membership proves equivalence, excludes a custom bridge or grants provider authority.`
+- notes: Subordinate to `SCV`; its engine is independently installable.
+
+### SCHV-AWS
+
+- term: `SCHV-AWS`
+- meaning: Symphony Cloud Hyperscalers Vector — AWS. AWS-native source, offering, service, version and constraint knowledge.
+- owner_contract: `knowledge/scv/schv/aws/SPEC.md`
+- example: `SCHV-AWS retains a provider-native fact with its source revision and scope.`
+- counterexample: `SCHV-AWS membership proves equivalence, excludes a custom bridge or grants provider authority.`
+- notes: Subordinate to `SCHV`; its engine is independently installable.
+
+### SCHV-AZURE
+
+- term: `SCHV-AZURE`
+- meaning: Symphony Cloud Hyperscalers Vector — Azure. Azure-native source, offering, service, version and constraint knowledge.
+- owner_contract: `knowledge/scv/schv/azure/SPEC.md`
+- example: `SCHV-AZURE retains a provider-native fact with its source revision and scope.`
+- counterexample: `SCHV-AZURE membership proves equivalence, excludes a custom bridge or grants provider authority.`
+- notes: Subordinate to `SCHV`; its engine is independently installable.
+
+### SCHV-DO
+
+- term: `SCHV-DO`
+- meaning: Symphony Cloud Hyperscalers Vector — DigitalOcean. DigitalOcean-native source, offering, service, version and constraint knowledge.
+- owner_contract: `knowledge/scv/schv/do/SPEC.md`
+- example: `SCHV-DO retains a provider-native fact with its source revision and scope.`
+- counterexample: `SCHV-DO membership proves equivalence, excludes a custom bridge or grants provider authority.`
+- notes: Subordinate to `SCHV`; its engine is independently installable.
+
+### SCHV-GCP
+
+- term: `SCHV-GCP`
+- meaning: Symphony Cloud Hyperscalers Vector — Google Cloud. Google Cloud-native source, offering, service, version and constraint knowledge.
+- owner_contract: `knowledge/scv/schv/gcp/SPEC.md`
+- example: `SCHV-GCP retains a provider-native fact with its source revision and scope.`
+- counterexample: `SCHV-GCP membership proves equivalence, excludes a custom bridge or grants provider authority.`
+- notes: Subordinate to `SCHV`; its engine is independently installable.
+
+### SCEV-CF
+
+- term: `SCEV-CF`
+- meaning: Symphony Cloud Edge Vector — Cloudflare. Cloudflare-native source, service, platform version and constraint knowledge.
+- owner_contract: `knowledge/scv/scev/cf/SPEC.md`
+- example: `SCEV-CF retains a provider-native fact with its source revision and scope.`
+- counterexample: `SCEV-CF membership proves equivalence, excludes a custom bridge or grants provider authority.`
+- notes: Subordinate to `SCEV`; its engine is independently installable.
+
 ### Symphony Node Vector
 
 - term: `Symphony Node Vector`

@@ -1,0 +1,1951 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:scv:graph-operation:v1",
+  "title": "Graph Operation v1",
+  "description": "Operation/payload pairs selected from the shared process request; exact result shapes are named definitions. Runtime separately enforces aggregate process limits and semantic digests.",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "payload"
+      ],
+      "properties": {
+        "operation": {
+          "const": "graph_build"
+        },
+        "payload": {
+          "$ref": "#/$defs/graph_build"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "payload"
+      ],
+      "properties": {
+        "operation": {
+          "const": "graph_query"
+        },
+        "payload": {
+          "$ref": "#/$defs/graph_query"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "payload"
+      ],
+      "properties": {
+        "operation": {
+          "const": "graph_evaluate"
+        },
+        "payload": {
+          "$ref": "#/$defs/graph_evaluate"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "payload"
+      ],
+      "properties": {
+        "operation": {
+          "const": "graph_explain"
+        },
+        "payload": {
+          "$ref": "#/$defs/graph_explain"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "payload"
+      ],
+      "properties": {
+        "operation": {
+          "const": "graph_diff"
+        },
+        "payload": {
+          "$ref": "#/$defs/graph_diff"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "graph_build": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "knowledge"
+      ],
+      "properties": {
+        "knowledge": {
+          "type": "array",
+          "items": {
+            "$ref": "knowledge-graph.schema.json#/$defs/knowledge"
+          },
+          "maxItems": 16,
+          "minItems": 1
+        }
+      }
+    },
+    "graph_query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "graph",
+        "query_time"
+      ],
+      "properties": {
+        "graph": {
+          "$ref": "knowledge-graph.schema.json#/$defs/graph"
+        },
+        "query_time": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "maxItems": 128,
+          "minItems": 0
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "predicate": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      }
+    },
+    "graph_evaluate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "graph",
+        "query_time"
+      ],
+      "properties": {
+        "graph": {
+          "$ref": "knowledge-graph.schema.json#/$defs/graph"
+        },
+        "query_time": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "maxItems": 128,
+          "minItems": 0
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "predicate": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      }
+    },
+    "graph_explain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "graph",
+        "query_time",
+        "claim_id"
+      ],
+      "properties": {
+        "graph": {
+          "$ref": "knowledge-graph.schema.json#/$defs/graph"
+        },
+        "query_time": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "claim_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      }
+    },
+    "graph_diff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "before",
+        "after",
+        "query_time"
+      ],
+      "properties": {
+        "before": {
+          "$ref": "knowledge-graph.schema.json#/$defs/graph"
+        },
+        "after": {
+          "$ref": "knowledge-graph.schema.json#/$defs/graph"
+        },
+        "query_time": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        }
+      }
+    },
+    "queryResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "domain",
+        "graph_digest",
+        "query_time",
+        "selection_policy",
+        "findings",
+        "conflicts",
+        "evidence_origins",
+        "limitations",
+        "coverage",
+        "digest",
+        "query_selection"
+      ],
+      "properties": {
+        "protocol": {
+          "enum": [
+            "symphony.scv.query-result.v1",
+            "symphony.scv.evaluate-result.v1"
+          ]
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "graph_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "query_time": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "selection_policy": {
+          "$ref": "interpretation-input.schema.json#/$defs/selectionPolicy"
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "claim",
+              "status",
+              "reasons",
+              "support_sets",
+              "evidence_roots",
+              "dependent_claim_ids",
+              "valid_until_unix_seconds",
+              "support_cycle_present",
+              "semantic_validation"
+            ],
+            "properties": {
+              "claim": {
+                "$ref": "interpretation-input.schema.json#/$defs/claim"
+              },
+              "status": {
+                "enum": [
+                  "supported",
+                  "conditional",
+                  "unsupported",
+                  "excluded",
+                  "inactive",
+                  "stale",
+                  "disputed"
+                ]
+              },
+              "reasons": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 65536
+                },
+                "maxItems": 512,
+                "minItems": 0
+              },
+              "support_sets": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "support_id",
+                    "status",
+                    "evidence",
+                    "dependencies",
+                    "evidence_roots",
+                    "reasons",
+                    "valid_until_unix_seconds"
+                  ],
+                  "properties": {
+                    "support_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 512
+                    },
+                    "status": {
+                      "enum": [
+                        "supported",
+                        "conditional",
+                        "unsupported"
+                      ]
+                    },
+                    "evidence": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "capture_digest",
+                          "quote"
+                        ],
+                        "properties": {
+                          "capture_digest": {
+                            "type": "string",
+                            "pattern": "^sha256:[0-9a-f]{64}$"
+                          },
+                          "quote": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 4096
+                          }
+                        }
+                      },
+                      "maxItems": 16,
+                      "minItems": 0
+                    },
+                    "dependencies": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "claim_id",
+                          "role"
+                        ],
+                        "properties": {
+                          "claim_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 512
+                          },
+                          "role": {
+                            "enum": [
+                              "support",
+                              "requires",
+                              "scope"
+                            ]
+                          }
+                        }
+                      },
+                      "maxItems": 16,
+                      "minItems": 0
+                    },
+                    "evidence_roots": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^sha256:[0-9a-f]{64}$"
+                      },
+                      "maxItems": 16,
+                      "minItems": 0
+                    },
+                    "reasons": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 65536
+                      },
+                      "maxItems": 512,
+                      "minItems": 0
+                    },
+                    "valid_until_unix_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "integer"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "maxItems": 8,
+                "minItems": 0
+              },
+              "evidence_roots": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                },
+                "maxItems": 16,
+                "minItems": 0
+              },
+              "dependent_claim_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "maxItems": 128,
+                "minItems": 0
+              },
+              "valid_until_unix_seconds": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              },
+              "support_cycle_present": {
+                "type": "boolean"
+              },
+              "semantic_validation": {
+                "const": "caller_proposed; anchors and bounded support structure checked only"
+              }
+            }
+          },
+          "maxItems": 128,
+          "minItems": 0
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "left_claim_id",
+              "right_claim_id",
+              "type",
+              "blocking",
+              "resolution"
+            ],
+            "properties": {
+              "left_claim_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "right_claim_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "type": {
+                "enum": [
+                  "statement_kind_distinction",
+                  "unit_mismatch",
+                  "alternative_proposals",
+                  "value_type_mismatch",
+                  "incompatible_values"
+                ]
+              },
+              "blocking": {
+                "type": "boolean"
+              },
+              "resolution": {
+                "const": "unresolved; no precedence rule applied"
+              }
+            }
+          },
+          "maxItems": 8128,
+          "minItems": 0
+        },
+        "evidence_origins": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "body_digest",
+              "source_ids",
+              "capture_digests",
+              "independence"
+            ],
+            "properties": {
+              "body_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "source_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "maxItems": 16,
+                "minItems": 0
+              },
+              "capture_digests": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                },
+                "maxItems": 16,
+                "minItems": 0
+              },
+              "independence": {
+                "const": "not_asserted"
+              }
+            }
+          },
+          "maxItems": 16,
+          "minItems": 0
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536
+          },
+          "maxItems": 512,
+          "minItems": 0
+        },
+        "coverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "selected_captures",
+            "selected_claims",
+            "matched_claims",
+            "native_nodes",
+            "extent",
+            "provider_completeness"
+          ],
+          "properties": {
+            "selected_captures": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16
+            },
+            "selected_claims": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "matched_claims": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "native_nodes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 512
+            },
+            "extent": {
+              "const": "bounded_selected_corpus"
+            },
+            "provider_completeness": {
+              "const": "not_asserted"
+            }
+          }
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "query_selection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "query_time"
+          ],
+          "properties": {
+            "query_time": {
+              "type": "string",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+            },
+            "claim_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "maxItems": 128,
+              "minItems": 0
+            },
+            "subject": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "predicate": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            }
+          }
+        },
+        "absence": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      }
+    },
+    "explainResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "domain",
+        "graph_digest",
+        "query_time",
+        "selection_policy",
+        "findings",
+        "conflicts",
+        "evidence_origins",
+        "limitations",
+        "coverage",
+        "digest",
+        "query_selection",
+        "claim_id",
+        "dependency_closure"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.explain-result.v1"
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "graph_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "query_time": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "selection_policy": {
+          "$ref": "interpretation-input.schema.json#/$defs/selectionPolicy"
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "claim",
+              "status",
+              "reasons",
+              "support_sets",
+              "evidence_roots",
+              "dependent_claim_ids",
+              "valid_until_unix_seconds",
+              "support_cycle_present",
+              "semantic_validation"
+            ],
+            "properties": {
+              "claim": {
+                "$ref": "interpretation-input.schema.json#/$defs/claim"
+              },
+              "status": {
+                "enum": [
+                  "supported",
+                  "conditional",
+                  "unsupported",
+                  "excluded",
+                  "inactive",
+                  "stale",
+                  "disputed"
+                ]
+              },
+              "reasons": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 65536
+                },
+                "maxItems": 512,
+                "minItems": 0
+              },
+              "support_sets": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "support_id",
+                    "status",
+                    "evidence",
+                    "dependencies",
+                    "evidence_roots",
+                    "reasons",
+                    "valid_until_unix_seconds"
+                  ],
+                  "properties": {
+                    "support_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 512
+                    },
+                    "status": {
+                      "enum": [
+                        "supported",
+                        "conditional",
+                        "unsupported"
+                      ]
+                    },
+                    "evidence": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "capture_digest",
+                          "quote"
+                        ],
+                        "properties": {
+                          "capture_digest": {
+                            "type": "string",
+                            "pattern": "^sha256:[0-9a-f]{64}$"
+                          },
+                          "quote": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 4096
+                          }
+                        }
+                      },
+                      "maxItems": 16,
+                      "minItems": 0
+                    },
+                    "dependencies": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "claim_id",
+                          "role"
+                        ],
+                        "properties": {
+                          "claim_id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 512
+                          },
+                          "role": {
+                            "enum": [
+                              "support",
+                              "requires",
+                              "scope"
+                            ]
+                          }
+                        }
+                      },
+                      "maxItems": 16,
+                      "minItems": 0
+                    },
+                    "evidence_roots": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^sha256:[0-9a-f]{64}$"
+                      },
+                      "maxItems": 16,
+                      "minItems": 0
+                    },
+                    "reasons": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 65536
+                      },
+                      "maxItems": 512,
+                      "minItems": 0
+                    },
+                    "valid_until_unix_seconds": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "type": "integer"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "maxItems": 8,
+                "minItems": 0
+              },
+              "evidence_roots": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                },
+                "maxItems": 16,
+                "minItems": 0
+              },
+              "dependent_claim_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "maxItems": 128,
+                "minItems": 0
+              },
+              "valid_until_unix_seconds": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              },
+              "support_cycle_present": {
+                "type": "boolean"
+              },
+              "semantic_validation": {
+                "const": "caller_proposed; anchors and bounded support structure checked only"
+              }
+            }
+          },
+          "maxItems": 128,
+          "minItems": 0
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "left_claim_id",
+              "right_claim_id",
+              "type",
+              "blocking",
+              "resolution"
+            ],
+            "properties": {
+              "left_claim_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "right_claim_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "type": {
+                "enum": [
+                  "statement_kind_distinction",
+                  "unit_mismatch",
+                  "alternative_proposals",
+                  "value_type_mismatch",
+                  "incompatible_values"
+                ]
+              },
+              "blocking": {
+                "type": "boolean"
+              },
+              "resolution": {
+                "const": "unresolved; no precedence rule applied"
+              }
+            }
+          },
+          "maxItems": 8128,
+          "minItems": 0
+        },
+        "evidence_origins": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "body_digest",
+              "source_ids",
+              "capture_digests",
+              "independence"
+            ],
+            "properties": {
+              "body_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "source_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "maxItems": 16,
+                "minItems": 0
+              },
+              "capture_digests": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                },
+                "maxItems": 16,
+                "minItems": 0
+              },
+              "independence": {
+                "const": "not_asserted"
+              }
+            }
+          },
+          "maxItems": 16,
+          "minItems": 0
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536
+          },
+          "maxItems": 512,
+          "minItems": 0
+        },
+        "coverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "selected_captures",
+            "selected_claims",
+            "matched_claims",
+            "native_nodes",
+            "extent",
+            "provider_completeness"
+          ],
+          "properties": {
+            "selected_captures": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16
+            },
+            "selected_claims": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "matched_claims": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "native_nodes": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 512
+            },
+            "extent": {
+              "const": "bounded_selected_corpus"
+            },
+            "provider_completeness": {
+              "const": "not_asserted"
+            }
+          }
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "query_selection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "query_time"
+          ],
+          "properties": {
+            "query_time": {
+              "type": "string",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+            },
+            "claim_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "maxItems": 128,
+              "minItems": 0
+            },
+            "subject": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "predicate": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            }
+          }
+        },
+        "absence": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "claim_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "dependency_closure": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "maxItems": 128,
+          "minItems": 0
+        }
+      }
+    },
+    "diffResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "domain",
+        "before_digest",
+        "after_digest",
+        "query_time",
+        "changes",
+        "affected_claim_ids",
+        "before_evaluation",
+        "after_evaluation",
+        "limitations",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.diff-result.v1"
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "before_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "after_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "query_time": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "changes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "added_claim_ids",
+            "removed_claim_ids",
+            "changed_claim_ids",
+            "captures",
+            "selection_policy_changed",
+            "interpretation_selection_changed"
+          ],
+          "properties": {
+            "added_claim_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "maxItems": 128,
+              "minItems": 0
+            },
+            "removed_claim_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "maxItems": 128,
+              "minItems": 0
+            },
+            "changed_claim_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "maxItems": 128,
+              "minItems": 0
+            },
+            "captures": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "capture_digest",
+                  "change"
+                ],
+                "properties": {
+                  "capture_digest": {
+                    "type": "string",
+                    "pattern": "^sha256:[0-9a-f]{64}$"
+                  },
+                  "change": {
+                    "enum": [
+                      "removed",
+                      "added"
+                    ]
+                  }
+                }
+              },
+              "maxItems": 32,
+              "minItems": 0
+            },
+            "selection_policy_changed": {
+              "type": "boolean"
+            },
+            "interpretation_selection_changed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "affected_claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "maxItems": 256,
+          "minItems": 0
+        },
+        "before_evaluation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "protocol",
+            "domain",
+            "graph_digest",
+            "query_time",
+            "selection_policy",
+            "findings",
+            "conflicts",
+            "evidence_origins",
+            "limitations",
+            "coverage",
+            "digest"
+          ],
+          "properties": {
+            "protocol": {
+              "enum": [
+                "symphony.scv.query-result.v1",
+                "symphony.scv.evaluate-result.v1"
+              ]
+            },
+            "domain": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "graph_digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "query_time": {
+              "type": "string",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+            },
+            "selection_policy": {
+              "$ref": "interpretation-input.schema.json#/$defs/selectionPolicy"
+            },
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "claim",
+                  "status",
+                  "reasons",
+                  "support_sets",
+                  "evidence_roots",
+                  "dependent_claim_ids",
+                  "valid_until_unix_seconds",
+                  "support_cycle_present",
+                  "semantic_validation"
+                ],
+                "properties": {
+                  "claim": {
+                    "$ref": "interpretation-input.schema.json#/$defs/claim"
+                  },
+                  "status": {
+                    "enum": [
+                      "supported",
+                      "conditional",
+                      "unsupported",
+                      "excluded",
+                      "inactive",
+                      "stale",
+                      "disputed"
+                    ]
+                  },
+                  "reasons": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 65536
+                    },
+                    "maxItems": 512,
+                    "minItems": 0
+                  },
+                  "support_sets": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "support_id",
+                        "status",
+                        "evidence",
+                        "dependencies",
+                        "evidence_roots",
+                        "reasons",
+                        "valid_until_unix_seconds"
+                      ],
+                      "properties": {
+                        "support_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 512
+                        },
+                        "status": {
+                          "enum": [
+                            "supported",
+                            "conditional",
+                            "unsupported"
+                          ]
+                        },
+                        "evidence": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "capture_digest",
+                              "quote"
+                            ],
+                            "properties": {
+                              "capture_digest": {
+                                "type": "string",
+                                "pattern": "^sha256:[0-9a-f]{64}$"
+                              },
+                              "quote": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 4096
+                              }
+                            }
+                          },
+                          "maxItems": 16,
+                          "minItems": 0
+                        },
+                        "dependencies": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "claim_id",
+                              "role"
+                            ],
+                            "properties": {
+                              "claim_id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 512
+                              },
+                              "role": {
+                                "enum": [
+                                  "support",
+                                  "requires",
+                                  "scope"
+                                ]
+                              }
+                            }
+                          },
+                          "maxItems": 16,
+                          "minItems": 0
+                        },
+                        "evidence_roots": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^sha256:[0-9a-f]{64}$"
+                          },
+                          "maxItems": 16,
+                          "minItems": 0
+                        },
+                        "reasons": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 65536
+                          },
+                          "maxItems": 512,
+                          "minItems": 0
+                        },
+                        "valid_until_unix_seconds": {
+                          "anyOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "maxItems": 8,
+                    "minItems": 0
+                  },
+                  "evidence_roots": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    },
+                    "maxItems": 16,
+                    "minItems": 0
+                  },
+                  "dependent_claim_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 512
+                    },
+                    "maxItems": 128,
+                    "minItems": 0
+                  },
+                  "valid_until_unix_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "support_cycle_present": {
+                    "type": "boolean"
+                  },
+                  "semantic_validation": {
+                    "const": "caller_proposed; anchors and bounded support structure checked only"
+                  }
+                }
+              },
+              "maxItems": 128,
+              "minItems": 0
+            },
+            "conflicts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "left_claim_id",
+                  "right_claim_id",
+                  "type",
+                  "blocking",
+                  "resolution"
+                ],
+                "properties": {
+                  "left_claim_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  },
+                  "right_claim_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  },
+                  "type": {
+                    "enum": [
+                      "statement_kind_distinction",
+                      "unit_mismatch",
+                      "alternative_proposals",
+                      "value_type_mismatch",
+                      "incompatible_values"
+                    ]
+                  },
+                  "blocking": {
+                    "type": "boolean"
+                  },
+                  "resolution": {
+                    "const": "unresolved; no precedence rule applied"
+                  }
+                }
+              },
+              "maxItems": 8128,
+              "minItems": 0
+            },
+            "evidence_origins": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "body_digest",
+                  "source_ids",
+                  "capture_digests",
+                  "independence"
+                ],
+                "properties": {
+                  "body_digest": {
+                    "type": "string",
+                    "pattern": "^sha256:[0-9a-f]{64}$"
+                  },
+                  "source_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "maxItems": 16,
+                    "minItems": 0
+                  },
+                  "capture_digests": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    },
+                    "maxItems": 16,
+                    "minItems": 0
+                  },
+                  "independence": {
+                    "const": "not_asserted"
+                  }
+                }
+              },
+              "maxItems": 16,
+              "minItems": 0
+            },
+            "limitations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 65536
+              },
+              "maxItems": 512,
+              "minItems": 0
+            },
+            "coverage": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "selected_captures",
+                "selected_claims",
+                "matched_claims",
+                "native_nodes",
+                "extent",
+                "provider_completeness"
+              ],
+              "properties": {
+                "selected_captures": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 16
+                },
+                "selected_claims": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 128
+                },
+                "matched_claims": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 128
+                },
+                "native_nodes": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 512
+                },
+                "extent": {
+                  "const": "bounded_selected_corpus"
+                },
+                "provider_completeness": {
+                  "const": "not_asserted"
+                }
+              }
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "after_evaluation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "protocol",
+            "domain",
+            "graph_digest",
+            "query_time",
+            "selection_policy",
+            "findings",
+            "conflicts",
+            "evidence_origins",
+            "limitations",
+            "coverage",
+            "digest"
+          ],
+          "properties": {
+            "protocol": {
+              "enum": [
+                "symphony.scv.query-result.v1",
+                "symphony.scv.evaluate-result.v1"
+              ]
+            },
+            "domain": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "graph_digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "query_time": {
+              "type": "string",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+            },
+            "selection_policy": {
+              "$ref": "interpretation-input.schema.json#/$defs/selectionPolicy"
+            },
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "claim",
+                  "status",
+                  "reasons",
+                  "support_sets",
+                  "evidence_roots",
+                  "dependent_claim_ids",
+                  "valid_until_unix_seconds",
+                  "support_cycle_present",
+                  "semantic_validation"
+                ],
+                "properties": {
+                  "claim": {
+                    "$ref": "interpretation-input.schema.json#/$defs/claim"
+                  },
+                  "status": {
+                    "enum": [
+                      "supported",
+                      "conditional",
+                      "unsupported",
+                      "excluded",
+                      "inactive",
+                      "stale",
+                      "disputed"
+                    ]
+                  },
+                  "reasons": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 65536
+                    },
+                    "maxItems": 512,
+                    "minItems": 0
+                  },
+                  "support_sets": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "support_id",
+                        "status",
+                        "evidence",
+                        "dependencies",
+                        "evidence_roots",
+                        "reasons",
+                        "valid_until_unix_seconds"
+                      ],
+                      "properties": {
+                        "support_id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 512
+                        },
+                        "status": {
+                          "enum": [
+                            "supported",
+                            "conditional",
+                            "unsupported"
+                          ]
+                        },
+                        "evidence": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "capture_digest",
+                              "quote"
+                            ],
+                            "properties": {
+                              "capture_digest": {
+                                "type": "string",
+                                "pattern": "^sha256:[0-9a-f]{64}$"
+                              },
+                              "quote": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 4096
+                              }
+                            }
+                          },
+                          "maxItems": 16,
+                          "minItems": 0
+                        },
+                        "dependencies": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                              "claim_id",
+                              "role"
+                            ],
+                            "properties": {
+                              "claim_id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 512
+                              },
+                              "role": {
+                                "enum": [
+                                  "support",
+                                  "requires",
+                                  "scope"
+                                ]
+                              }
+                            }
+                          },
+                          "maxItems": 16,
+                          "minItems": 0
+                        },
+                        "evidence_roots": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^sha256:[0-9a-f]{64}$"
+                          },
+                          "maxItems": 16,
+                          "minItems": 0
+                        },
+                        "reasons": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 65536
+                          },
+                          "maxItems": 512,
+                          "minItems": 0
+                        },
+                        "valid_until_unix_seconds": {
+                          "anyOf": [
+                            {
+                              "type": "null"
+                            },
+                            {
+                              "type": "integer"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "maxItems": 8,
+                    "minItems": 0
+                  },
+                  "evidence_roots": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    },
+                    "maxItems": 16,
+                    "minItems": 0
+                  },
+                  "dependent_claim_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 512
+                    },
+                    "maxItems": 128,
+                    "minItems": 0
+                  },
+                  "valid_until_unix_seconds": {
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ]
+                  },
+                  "support_cycle_present": {
+                    "type": "boolean"
+                  },
+                  "semantic_validation": {
+                    "const": "caller_proposed; anchors and bounded support structure checked only"
+                  }
+                }
+              },
+              "maxItems": 128,
+              "minItems": 0
+            },
+            "conflicts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "left_claim_id",
+                  "right_claim_id",
+                  "type",
+                  "blocking",
+                  "resolution"
+                ],
+                "properties": {
+                  "left_claim_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  },
+                  "right_claim_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 512
+                  },
+                  "type": {
+                    "enum": [
+                      "statement_kind_distinction",
+                      "unit_mismatch",
+                      "alternative_proposals",
+                      "value_type_mismatch",
+                      "incompatible_values"
+                    ]
+                  },
+                  "blocking": {
+                    "type": "boolean"
+                  },
+                  "resolution": {
+                    "const": "unresolved; no precedence rule applied"
+                  }
+                }
+              },
+              "maxItems": 8128,
+              "minItems": 0
+            },
+            "evidence_origins": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "body_digest",
+                  "source_ids",
+                  "capture_digests",
+                  "independence"
+                ],
+                "properties": {
+                  "body_digest": {
+                    "type": "string",
+                    "pattern": "^sha256:[0-9a-f]{64}$"
+                  },
+                  "source_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "maxItems": 16,
+                    "minItems": 0
+                  },
+                  "capture_digests": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    },
+                    "maxItems": 16,
+                    "minItems": 0
+                  },
+                  "independence": {
+                    "const": "not_asserted"
+                  }
+                }
+              },
+              "maxItems": 16,
+              "minItems": 0
+            },
+            "limitations": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 65536
+              },
+              "maxItems": 512,
+              "minItems": 0
+            },
+            "coverage": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "selected_captures",
+                "selected_claims",
+                "matched_claims",
+                "native_nodes",
+                "extent",
+                "provider_completeness"
+              ],
+              "properties": {
+                "selected_captures": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 16
+                },
+                "selected_claims": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 128
+                },
+                "matched_claims": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 128
+                },
+                "native_nodes": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 512
+                },
+                "extent": {
+                  "const": "bounded_selected_corpus"
+                },
+                "provider_completeness": {
+                  "const": "not_asserted"
+                }
+              }
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536
+          },
+          "maxItems": 512,
+          "minItems": 0
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

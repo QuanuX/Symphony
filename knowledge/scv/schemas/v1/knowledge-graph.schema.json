@@ -1,0 +1,357 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:scv:knowledge-graph:v1",
+  "title": "Knowledge Graph v1",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/knowledge"
+    },
+    {
+      "$ref": "#/$defs/graph"
+    }
+  ],
+  "description": "Digest and normalization checks replay native extraction and claim normalization. Exact retained inputs and metadata are evidence; neither a digest nor a quote proves vendor semantics.",
+  "$defs": {
+    "knowledge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "interpreter_version",
+        "domain",
+        "selection_policy",
+        "captures",
+        "claims",
+        "native_nodes",
+        "native_edges",
+        "limitations",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.knowledge.v1"
+        },
+        "interpreter_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "selection_policy": {
+          "$ref": "interpretation-input.schema.json#/$defs/selectionPolicy"
+        },
+        "captures": {
+          "type": "array",
+          "items": {
+            "$ref": "capture.schema.json"
+          },
+          "maxItems": 16,
+          "minItems": 0
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "$ref": "interpretation-input.schema.json#/$defs/claim"
+          },
+          "maxItems": 128,
+          "minItems": 0
+        },
+        "native_nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "node_id",
+              "kind",
+              "capture_digest",
+              "pointer",
+              "attributes"
+            ],
+            "properties": {
+              "node_id": {
+                "type": "string",
+                "pattern": "^native:[0-9a-f]{64}$"
+              },
+              "kind": {
+                "enum": [
+                  "source",
+                  "section",
+                  "reference",
+                  "openapi_document",
+                  "api_operation",
+                  "schema_structure"
+                ]
+              },
+              "capture_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "pointer": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 65536
+              },
+              "attributes": {
+                "type": "object",
+                "maxProperties": 16,
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 0,
+                      "maxLength": 65536
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "maxItems": 512,
+          "minItems": 0
+        },
+        "native_edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "from",
+              "to",
+              "relation"
+            ],
+            "properties": {
+              "from": {
+                "type": "string",
+                "pattern": "^native:[0-9a-f]{64}$"
+              },
+              "to": {
+                "type": "string",
+                "pattern": "^native:[0-9a-f]{64}$"
+              },
+              "relation": {
+                "enum": [
+                  "contains",
+                  "links_to",
+                  "describes",
+                  "declares"
+                ]
+              }
+            }
+          },
+          "maxItems": 1024,
+          "minItems": 0
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536
+          },
+          "maxItems": 512,
+          "minItems": 0
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "knowledge_digests",
+        "interpretations",
+        "domain",
+        "selection_policy",
+        "captures",
+        "claims",
+        "native_nodes",
+        "native_edges",
+        "limitations",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.graph.v1"
+        },
+        "knowledge_digests": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "maxItems": 16,
+          "minItems": 1
+        },
+        "interpretations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "knowledge_digest",
+              "domain",
+              "interpreter_version"
+            ],
+            "properties": {
+              "knowledge_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "domain": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "interpreter_version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              }
+            }
+          },
+          "maxItems": 16,
+          "minItems": 1
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "selection_policy": {
+          "$ref": "interpretation-input.schema.json#/$defs/selectionPolicy"
+        },
+        "captures": {
+          "type": "array",
+          "items": {
+            "$ref": "capture.schema.json"
+          },
+          "maxItems": 16,
+          "minItems": 0
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "$ref": "interpretation-input.schema.json#/$defs/claim"
+          },
+          "maxItems": 128,
+          "minItems": 0
+        },
+        "native_nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "node_id",
+              "kind",
+              "capture_digest",
+              "pointer",
+              "attributes"
+            ],
+            "properties": {
+              "node_id": {
+                "type": "string",
+                "pattern": "^native:[0-9a-f]{64}$"
+              },
+              "kind": {
+                "enum": [
+                  "source",
+                  "section",
+                  "reference",
+                  "openapi_document",
+                  "api_operation",
+                  "schema_structure"
+                ]
+              },
+              "capture_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "pointer": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 65536
+              },
+              "attributes": {
+                "type": "object",
+                "maxProperties": 16,
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 0,
+                      "maxLength": 65536
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "maxItems": 512,
+          "minItems": 0
+        },
+        "native_edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "from",
+              "to",
+              "relation"
+            ],
+            "properties": {
+              "from": {
+                "type": "string",
+                "pattern": "^native:[0-9a-f]{64}$"
+              },
+              "to": {
+                "type": "string",
+                "pattern": "^native:[0-9a-f]{64}$"
+              },
+              "relation": {
+                "enum": [
+                  "contains",
+                  "links_to",
+                  "describes",
+                  "declares"
+                ]
+              }
+            }
+          },
+          "maxItems": 1024,
+          "minItems": 0
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536
+          },
+          "maxItems": 512,
+          "minItems": 0
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

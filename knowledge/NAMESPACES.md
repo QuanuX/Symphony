@@ -73,6 +73,7 @@ The following established domains therefore remain delegated without being norma
 - STAV owns its event, producer, ledger, and receipt identities;
 - Maestro owns topology UUIDs, receptor streams, and recorded component relationships;
 - SNIV, SNRV, SCIV, and SCNV own their respective Node, resource, cluster, and SNV-bounded name identities once their currently deferred encodings and lifecycles are ratified; and
+- SCV owns the opaque source/provider/family/locator/claim/support tokens and exact `symphony.scv.*.v1` data shapes in `knowledge/scv/SOURCE-KNOWLEDGE.md`; these do not allocate matching colon families or provider accounts; and
 - each process/schema owner controls its request, correlation, generation, predecessor, and digest fields.
 
 A shared field label such as `module_id` does not create a shared identity space. Consumers qualify it by its protocol and owner contract.

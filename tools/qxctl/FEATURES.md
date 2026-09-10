@@ -724,6 +724,80 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
+          "reason": "Defines source and interpretation owner contracts.",
+          "reference": "knowledge/scv/SOURCE-KNOWLEDGE.md",
+          "vector": "scv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Owns authenticated decisions and their committed audit path.",
+          "reference": "knowledge/ssiag/SPEC.md",
+          "vector": "ssiag"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Distinguishes committed authorization audit evidence from source selection mutation evidence.",
+          "reference": "knowledge/stav/SPEC.md",
+          "vector": "stav"
+        }
+      ],
+      "distinctions": [],
+      "evidence": [
+        "Receipt and result boundary tests reject domain/version drift, tampered executables, changed capture fields and oversized bodies.",
+        "Source transaction tests cover preauthorization intent, absent authorization, stale compare-and-swap, operation identity collisions, interrupted writes, recovery and unsafe filesystem links.",
+        "Transport tests qualify partial/failed captures, retain exact version queries and reject private targets, credential-bearing authorities and unsafe redirects."
+      ],
+      "feature_id": "ssfv:symphony:qxctl.scv-administration",
+      "how": "Reuses receipt-v2 and engine-process validation; bounds public HTTPS retrieval; lets the C++ source owner reduce plans; persists exact intents before authenticated SSIAG decisions and atomically commits the source selection with compare-and-swap and retained operation evidence.",
+      "implementation_languages": [
+        {
+          "language": "Go",
+          "role": "Administrative dispatch, process and result validation, public HTTPS transport, protected local persistence and authenticated permission consumption."
+        }
+      ],
+      "implementation_paths": [
+        "tools/qxctl/cmd/qxctl/scv.go",
+        "tools/qxctl/cmd/qxctl/scv_acquire.go",
+        "tools/qxctl/cmd/qxctl/scv_graph.go",
+        "tools/qxctl/internal/knowledgeengine/scv.go",
+        "tools/qxctl/internal/scvstate/store.go",
+        "tools/qxctl/internal/scvstate/storage_unix.go",
+        "tools/qxctl/internal/scvtransport/https.go"
+      ],
+      "kind": "feature",
+      "non_claims": [
+        "Does not own provider truth, infer arbitrary prose, execute downloaded text or install a universal runtime.",
+        "Does not mutate canonical knowledge registries, create policy grants, append STAV events directly, or claim a source-write receipt from the existing SSIAG policy-decision audit.",
+        "Public HTTPS transport supplies no credentials or account authentication; selected-source coverage is bounded and does not establish provider completeness."
+      ],
+      "owner_contract": "tools/qxctl/MANIFEST.md",
+      "parent_feature_id": "ssfv:symphony:qxctl",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "C++ owns provider source and knowledge semantics; qxctl owns the administrative adapter.",
+          "target_feature_id": "ssfv:symphony:scv-engine",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "Consumes fresh exact authenticated permission decisions without deriving subject or granting permission.",
+          "target_feature_id": "ssfv:symphony:ssiag-foundation",
+          "type": "composes_with"
+        }
+      ],
+      "source_scope": "tools/qxctl",
+      "status": "experimental",
+      "title": "SCV source and knowledge administration",
+      "what": "Administers selected SCV family/provider source, capture, interpretation and graph operations through exact installed C++ engines and permission-backed local source state.",
+      "when": "Runs on explicit cold/freezing administrative invocation, including exact operation recovery.",
+      "where": "Supported local macOS/Linux user-scoped TOPS source stores; pure operations accept an explicitly selected local installation.",
+      "who": "Human users and delegated agents within the same authenticated SSIAG permission contract.",
+      "why": "Makes native knowledge acquisition and interpretation callable through qxctl while preserving source authority, exact engine provenance and caller-selected evidence policy."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
           "reason": "SCLV records reviewed SSIAG client and grammar changes.",
           "reference": "knowledge/sclv/CHANGELOG.md",
           "vector": "sclv"

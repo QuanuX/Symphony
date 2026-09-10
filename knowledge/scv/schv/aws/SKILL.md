@@ -1,0 +1,3 @@
+# Symphony Cloud Hyperscalers Vector — AWS Working Guidance
+
+Read this Contract Quad, `knowledge/scv/SOURCE-KNOWLEDGE.md`, the selected source and interpretation records, and the installed engine descriptor before use. Preserve `schv-aws` identity and the native meaning and qualification of supplied facts. Select source changes and graph revisions explicitly; a source configuration transition is not graph selection. Use the exact receipt-backed process for supported operations and inspect unresolved coverage. Treat private evidence as installation-local. New operational authority or schema meaning requires its own owner-reviewed contract; ordinary authorized use of these admitted operations does not require additional architectural approval.

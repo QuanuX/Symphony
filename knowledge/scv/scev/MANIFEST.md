@@ -1,0 +1,20 @@
+# Symphony Cloud Edge Vector Manifest
+
+## Canonical Target
+
+`knowledge/scv/scev/`
+
+## Declared Contract Truth Role
+
+Edge-provider family knowledge, preserving distinct product and service boundaries. Parent semantics are delegated by `knowledge/scv/SPEC.md`; the installed engine remains subordinate to this contract.
+
+## Canonical Surfaces
+
+- `knowledge/scv/scev/INTENT.md`
+- `knowledge/scv/scev/MANIFEST.md`
+- `knowledge/scv/scev/SKILL.md`
+- `knowledge/scv/scev/SPEC.md`
+
+## Implementation and Projection
+
+`modules/scev-engine/` provides independently packaged C++26 `symphony-scev` at `0.1.0-dev`, using the shared SCV source-knowledge implementation. The source corpus, interpretation records and selected graph remain private installation data; they do not rewrite the canonical repository. Complete provider coverage, a graph database product, a network API and provider operations are not claimed.
