@@ -7933,3 +7933,248 @@ This PR authorizes none of the following:
   - `historical tag movement, checksum bypass, external release publication, repository-wide SSFV completeness, installed-host completeness beyond the exact acceptance harness, or Phase 2 implementation`
 - notes: |
     This post-merge closure records the Architect-ratified Phase 1 stopping point merged by PR #162. Implementation-local files remain affected provenance without artificial SKVI expansion. The closure changes no runtime behavior, does not reopen historical development evidence, and is non-recursive because it appends only immutable SCLV history.
+
+- record_id: `SCLV-CHG-20260910-SCV-SOURCE-KNOWLEDGE-ENGINES`
+- record_version: `3`
+- title: `Bounded SCV source and knowledge engines implemented`
+- status: `canonical`
+- date: `2026-09-10`
+- change_started_at: `2026-09-10T21:20:22Z`
+- change_completed_at: `2026-09-10T22:03:48Z`
+- recorded_at: `2026-09-10T22:04:23Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `The ratified increment was completed as a local Git commit in an isolated checkout; no forge change request was created.`
+- revision_scheme: `git-sha1`
+- revision_value: `cc47f38b2a05865285c91f9ab98fb786375d54a6`
+- tree_digest: `sha256:c3d3792543850c40b8247cce4c028f973e1da9f6dcf3ce585593ede26ed28e2a`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for the SCV source and knowledge engine implementation increment`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-10-scv-engine-implementation.md`
+- ratification_evidence_digest: `sha256:f83f93e03535f309dd221a8ab67cf089cec9315562a8b2c096715abf25c3e266`
+- affected_surfaces:
+  - `README.md`
+  - `cmake/SymphonyScvEngine.cmake`
+  - `knowledge/ARCHITECTURE.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/FEATURE-ADMINISTRATION.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/INVARIANTS.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/NAMESPACES.md`
+  - `knowledge/SLANG.md`
+  - `knowledge/schemas/v2/MANIFEST.md`
+  - `knowledge/schemas/v2/invariant-ownership-registry.schema.json`
+  - `knowledge/scv/INTENT.md`
+  - `knowledge/scv/MANIFEST.md`
+  - `knowledge/scv/SKILL.md`
+  - `knowledge/scv/SOURCE-KNOWLEDGE.md`
+  - `knowledge/scv/SPEC.md`
+  - `knowledge/scv/fixtures/v1/MANIFEST.md`
+  - `knowledge/scv/fixtures/v1/source-knowledge.json`
+  - `knowledge/scv/scev/INTENT.md`
+  - `knowledge/scv/scev/MANIFEST.md`
+  - `knowledge/scv/scev/SKILL.md`
+  - `knowledge/scv/scev/SPEC.md`
+  - `knowledge/scv/scev/cf/INTENT.md`
+  - `knowledge/scv/scev/cf/MANIFEST.md`
+  - `knowledge/scv/scev/cf/SKILL.md`
+  - `knowledge/scv/scev/cf/SPEC.md`
+  - `knowledge/scv/schemas/v1/MANIFEST.md`
+  - `knowledge/scv/schemas/v1/capture.schema.json`
+  - `knowledge/scv/schemas/v1/graph-operation.schema.json`
+  - `knowledge/scv/schemas/v1/interpretation-input.schema.json`
+  - `knowledge/scv/schemas/v1/knowledge-graph.schema.json`
+  - `knowledge/scv/schemas/v1/source-operation.schema.json`
+  - `knowledge/scv/schemas/v1/source.schema.json`
+  - `knowledge/scv/schv/INTENT.md`
+  - `knowledge/scv/schv/MANIFEST.md`
+  - `knowledge/scv/schv/SKILL.md`
+  - `knowledge/scv/schv/SPEC.md`
+  - `knowledge/scv/schv/aws/INTENT.md`
+  - `knowledge/scv/schv/aws/MANIFEST.md`
+  - `knowledge/scv/schv/aws/SKILL.md`
+  - `knowledge/scv/schv/aws/SPEC.md`
+  - `knowledge/scv/schv/azure/INTENT.md`
+  - `knowledge/scv/schv/azure/MANIFEST.md`
+  - `knowledge/scv/schv/azure/SKILL.md`
+  - `knowledge/scv/schv/azure/SPEC.md`
+  - `knowledge/scv/schv/do/INTENT.md`
+  - `knowledge/scv/schv/do/MANIFEST.md`
+  - `knowledge/scv/schv/do/SKILL.md`
+  - `knowledge/scv/schv/do/SPEC.md`
+  - `knowledge/scv/schv/gcp/INTENT.md`
+  - `knowledge/scv/schv/gcp/MANIFEST.md`
+  - `knowledge/scv/schv/gcp/SKILL.md`
+  - `knowledge/scv/schv/gcp/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/MANIFEST.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `modules/scev-cf-engine/CMakeLists.txt`
+  - `modules/scev-cf-engine/FEATURES.md`
+  - `modules/scev-cf-engine/INSTALL.md`
+  - `modules/scev-cf-engine/INTENT.md`
+  - `modules/scev-cf-engine/MANIFEST.md`
+  - `modules/scev-cf-engine/SKILL.md`
+  - `modules/scev-cf-engine/SPEC.md`
+  - `modules/scev-engine/CMakeLists.txt`
+  - `modules/scev-engine/FEATURES.md`
+  - `modules/scev-engine/INSTALL.md`
+  - `modules/scev-engine/INTENT.md`
+  - `modules/scev-engine/MANIFEST.md`
+  - `modules/scev-engine/SKILL.md`
+  - `modules/scev-engine/SPEC.md`
+  - `modules/schv-aws-engine/CMakeLists.txt`
+  - `modules/schv-aws-engine/FEATURES.md`
+  - `modules/schv-aws-engine/INSTALL.md`
+  - `modules/schv-aws-engine/INTENT.md`
+  - `modules/schv-aws-engine/MANIFEST.md`
+  - `modules/schv-aws-engine/SKILL.md`
+  - `modules/schv-aws-engine/SPEC.md`
+  - `modules/schv-azure-engine/CMakeLists.txt`
+  - `modules/schv-azure-engine/FEATURES.md`
+  - `modules/schv-azure-engine/INSTALL.md`
+  - `modules/schv-azure-engine/INTENT.md`
+  - `modules/schv-azure-engine/MANIFEST.md`
+  - `modules/schv-azure-engine/SKILL.md`
+  - `modules/schv-azure-engine/SPEC.md`
+  - `modules/schv-do-engine/CMakeLists.txt`
+  - `modules/schv-do-engine/FEATURES.md`
+  - `modules/schv-do-engine/INSTALL.md`
+  - `modules/schv-do-engine/INTENT.md`
+  - `modules/schv-do-engine/MANIFEST.md`
+  - `modules/schv-do-engine/SKILL.md`
+  - `modules/schv-do-engine/SPEC.md`
+  - `modules/schv-engine/CMakeLists.txt`
+  - `modules/schv-engine/FEATURES.md`
+  - `modules/schv-engine/INSTALL.md`
+  - `modules/schv-engine/INTENT.md`
+  - `modules/schv-engine/MANIFEST.md`
+  - `modules/schv-engine/SKILL.md`
+  - `modules/schv-engine/SPEC.md`
+  - `modules/schv-gcp-engine/CMakeLists.txt`
+  - `modules/schv-gcp-engine/FEATURES.md`
+  - `modules/schv-gcp-engine/INSTALL.md`
+  - `modules/schv-gcp-engine/INTENT.md`
+  - `modules/schv-gcp-engine/MANIFEST.md`
+  - `modules/schv-gcp-engine/SKILL.md`
+  - `modules/schv-gcp-engine/SPEC.md`
+  - `modules/scv-engine/CMakeLists.txt`
+  - `modules/scv-engine/FEATURES.md`
+  - `modules/scv-engine/INSTALL.md`
+  - `modules/scv-engine/INTENT.md`
+  - `modules/scv-engine/MANIFEST.md`
+  - `modules/scv-engine/SKILL.md`
+  - `modules/scv-engine/SPEC.md`
+  - `modules/scv-engine/cmake/uninstall.cmake.in`
+  - `modules/scv-engine/src/dispatch.cpp`
+  - `modules/scv-engine/src/knowledge.cpp`
+  - `modules/scv-engine/src/knowledge.hpp`
+  - `modules/scv-engine/src/main.cpp`
+  - `modules/scv-engine/src/scv.hpp`
+  - `modules/scv-engine/src/source.cpp`
+  - `modules/scv-engine/tests/installed_integration.py`
+  - `modules/scv-engine/tests/knowledge_test.cpp`
+  - `modules/scv-engine/tests/source_test.cpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/scv.go`
+  - `tools/qxctl/cmd/qxctl/scv_acquire.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph_test.go`
+  - `tools/qxctl/cmd/qxctl/scv_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/help.golden`
+  - `tools/qxctl/internal/invariantregistry/registry.go`
+  - `tools/qxctl/internal/invariantregistry/registry_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_test.go`
+  - `tools/qxctl/internal/scvgraph/store.go`
+  - `tools/qxctl/internal/scvgraph/store_test.go`
+  - `tools/qxctl/internal/scvstate/projection_unix.go`
+  - `tools/qxctl/internal/scvstate/projection_unsupported.go`
+  - `tools/qxctl/internal/scvstate/storage_unix.go`
+  - `tools/qxctl/internal/scvstate/store.go`
+  - `tools/qxctl/internal/scvstate/store_test.go`
+  - `tools/qxctl/internal/scvtransport/https.go`
+  - `tools/qxctl/internal/scvtransport/https_test.go`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/src/invariant_ownership.cpp`
+  - `tools/symphony-validator/tests/invariant_ownership_test.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/NAMESPACES.md`
+  - `knowledge/schemas/v2/invariant-ownership-registry.schema.json`
+  - `knowledge/scv/SOURCE-KNOWLEDGE.md`
+  - `knowledge/scv/SPEC.md`
+  - `knowledge/scv/fixtures/v1/source-knowledge.json`
+  - `knowledge/scv/scev/SPEC.md`
+  - `knowledge/scv/scev/cf/SPEC.md`
+  - `knowledge/scv/schemas/v1/capture.schema.json`
+  - `knowledge/scv/schemas/v1/graph-operation.schema.json`
+  - `knowledge/scv/schemas/v1/interpretation-input.schema.json`
+  - `knowledge/scv/schemas/v1/knowledge-graph.schema.json`
+  - `knowledge/scv/schemas/v1/source-operation.schema.json`
+  - `knowledge/scv/schemas/v1/source.schema.json`
+  - `knowledge/scv/schv/SPEC.md`
+  - `knowledge/scv/schv/aws/SPEC.md`
+  - `knowledge/scv/schv/azure/SPEC.md`
+  - `knowledge/scv/schv/do/SPEC.md`
+  - `knowledge/scv/schv/gcp/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/scv-engine/SPEC.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    Implements independently installable C++ SCV, SCHV, SCEV, SCHV-AWS, SCHV-AZURE, SCHV-DO, SCHV-GCP and SCEV-CF development packages using one shared bounded source-knowledge implementation. Thirteen exact owner operations preserve source revision lineage, bounded captures, native structure, explicit claims, support alternatives, graph queries, difference and explanation. qxctl adds exact-installation invocation, bounded public HTTPS acquisition, and protected local source and graph selection with durable intent, audited SSIAG decision evidence, serialization, recovery and final publication expiry guards. The work is a completed bounded increment, not completion of the full provider corpus or general architecture synthesis program.
+- relationship_changes: |
+    SCHV and SCEV own their declared family boundaries; the five provider domains specialize those families without requiring parent or sibling runtime installation. Future provider definitions can use the applicable family or SCV engine data boundary without a mandatory new vendor-specific implementation switch. C++ source transitions and graph evaluation remain pure. qxctl owns the protected installation-local persistence adapter, SSIAG retains actual local caller and grant authority, and STAV retains committed audit semantics. Source configuration, retained evidence and selected graph head are separate states.
+- doctrine_changes: |
+    This increment applies the user's VGAA direction without imposing a universal provider, topology, language or policy on user programs. Explicit assertions retain their provenance and statement kind. Supported means eligible under the selected bounded evidence policy; it is not empirical verification, provider compatibility or permission. Circular support, repeated body bytes, stale evidence and absence of selected coverage cannot manufacture independent evidence or incompatibility. Source authority roles and unknown selectors remain opaque declarations. Publication compares exact state; graph selection also compares generation to reject stale A-to-B-to-A plans.
+- compatibility_consequences: |
+    The eight packages use version 0.1.0-dev, exact receipt-v2 entrypoints and the existing symphony.knowledge.engine-process.v1 envelope. The prospective invariant registry v2 admits generic receipt-bound engine adapters while preserving the v1 reader contract and unchanged v1 schema. Six closed SCV v1 schema artifacts and one synthetic fixture describe the implemented bounded data shapes. The qxctl registry contains 218 commands, SSFV contains 100 features across 25 nonroot owner scopes with 72 reviewed nested features, and feature administration contains 252 reviewed expectations. No existing package version or immutable release identity was replaced.
+- publication_consequences: |
+    No forge request, remote push, tag, external package, documentation publication, provider deployment or credential installation occurred. The source change exists in local commit cc47f38b2a05865285c91f9ab98fb786375d54a6 on codex/scv-source-knowledge-engines in the isolated implementation checkout. Original repository and imported artifacts remain outside this change. Staged local installations and public documentation reads are verification evidence, not a released product or provider operation.
+- projection_consequences: |
+    Current manifests, SKVI routing, SSFV records, feature administration, command metadata and root summary reflect the eight installed domain owners and their qxctl interactions. The root summary digest is sha256:dd3bef9cf7bdb5794b2d7e89374d4ca7670f1a962a2d5ec331f7faf03a7c4ef8. The invariant registry links source lineage, consumer rejection and protected source/graph commit tests to their owning implementations. A private selected graph is not canonical repository truth.
+- evidence:
+  - `Local Git source commit cc47f38b2a05865285c91f9ab98fb786375d54a6 completed 2026-09-10T22:03:48Z; 157 files changed, 17648 insertions, 252 deletions.`
+  - `The tree digest binds exact /usr/bin/git ls-tree -r -z --full-tree cc47f38b2a05865285c91f9ab98fb786375d54a6 output bytes; the ratification digest binds the separate project decision Markdown containing Duncan's explicit build instruction.`
+  - `All ten aggregate CTests passed: source and knowledge owner suites plus eight independent installed-process suites; the knowledge suite exercises 25 named cases and each package exercises five real-process methods.`
+  - `All eight symphony-validator CTests passed, including legacy v1 invariant-reader compatibility, generic v2 adapter validation and source/consumer traceability rejection cases.`
+  - `../evidence/canonical-validator-before-closure.json records 9839 passes, zero warnings and zero violations; result digest sha256:c9fd106ea8b6122b47fc9fddffd41a8b005dd8f5c4a110fd1963b90f597448ed.`
+  - `../evidence/qxctl-final-tests.txt records successful final qxctl package tests against the staged scv-0.1.0-dev installation; internal/version has no test files. Source/graph storage and authenticated SSIAG client fixture race tests also passed.`
+  - `Installed-process CLI fixtures exercise missing authority, authenticated decision acceptance, exact source and graph replay, stale state, graph ABA/history checks and authorization expiry before publication. The SSIAG endpoint is an authenticated fixture, not a live SSIAG-to-STAV producer acceptance run.`
+  - `../evidence/provider-demo-verified/SUMMARY.json retains complete selected public Cloudflare and DigitalOcean captures of 8554 and 16774 bytes, 88 native nodes and two anchored document-title assertions in graph sha256:be4cfa61e74ee436bcf894f5e55502edc04a760c829fae305ce922329104b1d3; later query time makes the same graph's selected assertions stale.`
+  - `The live-page demonstration selected no protected source or graph store and tested no provider compatibility or deployed runtime; it demonstrates bounded capture, native extraction, explicit title assertions and cross-family graph composition only.`
+  - `New JSON artifacts parse and their local schema references resolve; git diff --check passes. The legacy full smoke script stops at pre-existing fixtures_valid bootstrap debt because its fixture lacks go.work and knowledge/MANIFEST.md; that fixture was not broadened by this increment.`
+- non_authorizations:
+  - `Provider operations, deployment, account access, credential release, source-document instruction execution, remote identity federation or permission inferred from a caller's human or agent label.`
+  - `Canonical mutation by qxctl or an engine, historical ledger rewrite, source-specific or graph-specific STAV outcome receipts not actually produced, or authority inferred from a digest or installation receipt.`
+  - `Complete vendor corpus coverage, semantic verification from a matching quote, arbitrary inference-rule validation, general architecture search, graph database integration, automatic alias merging, binary/OCR ingestion or custom selector execution.`
+  - `A claim that the authenticated SSIAG fixture proves live STAV producer acceptance, independent distributed revocation semantics, or provider runtime compatibility.`
+  - `A new DIY family allocation, mandatory parent installation, automatic latest-version substitution, universal restrictions on user composition, release publication or changes to the original archive.`
+- notes: |
+    The prospective post_merge disposition records ordinary completion through the established local-Git evidence path; no remote merge is asserted. The start is the recorded isolated-checkout creation bound, before implementation. The source commit is complete and separately identified; this forward-only closure does not claim to be part of that commit's tree and needs no recursive record of itself. Evidence paths beginning ../ or ../../ are relative to the isolated repository root and point into the local implementation evidence/project decision collection; their historical scope is explicit. Remaining broad SCV acquisition and synthesis work, and stronger live-service acceptance where later deployment requires it, remain separate increments.
