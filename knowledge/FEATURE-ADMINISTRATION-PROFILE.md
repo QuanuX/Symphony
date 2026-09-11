@@ -14,11 +14,11 @@ Canonical reviewed policy for `symphony.knowledge.feature-administration-profile
 - reviewed interaction expectations: `252`
 - forward gate: `enforce_new_records`
 
-The 100 registered feature IDs appear exactly once. Their 252 reviewed expectations comprise 242 required, 9 prohibited and 1 not-applicable interactions. Runtime-only and system-orchestrated exceptions retain their owner evidence. The SCV increment adds explicit domain-engine operation mappings and a separately owned qxctl adapter for immutable corpus retention and protected source/graph administration. A source or graph result is not permission, durable selection or a provider action.
+The 100 registered feature IDs appear exactly once. Their 252 reviewed expectations comprise 242 required, 9 prohibited and 1 not-applicable interactions. Runtime-only and system-orchestrated exceptions retain their owner evidence. The SCV increment adds explicit domain-engine operation mappings and a separately owned qxctl adapter for immutable corpus retention, profile/connection evidence and protected source/graph administration. A source or graph result is not permission, durable selection or a provider action.
 
 ## Exact Machine Evidence
 
-The profile digest is `sha256:362f043bf7ff70ecd34cad8b7d8f350da13a9164665a5b10b4f1252bceb62e3f`. Its bound SSFV registry digest is `sha256:f1dbe46f05e4e15e25e83e7625a6398037d7c289a220c916f529313b264e5b11`. The expected qxctl registry has 224 leaves with digest `sha256:721af1304c0d3bc2f5ef68ec61139eceb77f3b675162a7c4f91ee04d5e0e1cf0`. These are source-level mappings; actual installed acceptance also requires the selected engine descriptors, exact receipts and exercised authority/storage boundaries. Catalog completeness remains false.
+The profile digest is `sha256:08f4f2c2ead5c37c3fa49eaefaa9eca115870a0d4c64e9f7fee17a155b4f138f`. Its bound SSFV registry digest is `sha256:61a0c13ddc3ad745e6a789ba869b8b5647f4880f594d7cd69e686b483b0fc95f`. The expected qxctl registry has 227 leaves with digest `sha256:40c9ecadad91522a666e4dcda6ccc6aa8729e8b80a35f138d605f99eb339578e`. These are source-level mappings; actual installed acceptance also requires the selected engine descriptors, exact receipts and exercised authority/storage boundaries. Catalog completeness remains false.
 
 ## Advancement
 

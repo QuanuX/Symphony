@@ -130,6 +130,8 @@ func newSCVCommand() *cobra.Command {
 	command.AddCommand(source)
 	command.AddCommand(newSCVProjectionCommand())
 	command.AddCommand(newSCVCorpusCommand())
+	command.AddCommand(newSCVProviderCommand())
+	command.AddCommand(newSCVConnectionCommand())
 	return command
 }
 

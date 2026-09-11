@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 bool is_authorized_canonical_json(const std::string& relative_path) {
     // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, SSFV, SAV, and SEV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 233> authorized_paths = {
+    static const std::array<std::string, 236> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -128,6 +128,9 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/scv/schemas/v1/capture-index.schema.json",
         "knowledge/scv/schemas/v1/corpus.schema.json",
         "knowledge/scv/schemas/v1/corpus-operation.schema.json",
+        "knowledge/scv/schemas/v1/interpretation-profile.schema.json",
+        "knowledge/scv/schemas/v1/provider-interpretation.schema.json",
+        "knowledge/scv/schemas/v1/connection-operation.schema.json",
         "knowledge/scv/schemas/v1/source-operation.schema.json",
         "knowledge/scv/schemas/v1/interpretation-input.schema.json",
         "knowledge/scv/schemas/v1/knowledge-graph.schema.json",
@@ -316,6 +319,10 @@ ArtifactCheckResult check_unauthorized_artifacts(const std::string& repo_root) {
                                   rel_path == "knowledge/scv/schemas/v1/corpus.schema.json" ||
                                   rel_path == "knowledge/scv/schemas/v1/corpus-operation.schema.json"
                                 ? "knowledge/scv/CORPUS.md"
+                                : rel_path == "knowledge/scv/schemas/v1/interpretation-profile.schema.json" ||
+                                  rel_path == "knowledge/scv/schemas/v1/provider-interpretation.schema.json" ||
+                                  rel_path == "knowledge/scv/schemas/v1/connection-operation.schema.json"
+                                ? "knowledge/scv/INTERPRETATION.md"
                                 : rel_path.starts_with("knowledge/scv/")
                                 ? "knowledge/scv/SOURCE-KNOWLEDGE.md"
                                 : rel_path.starts_with("knowledge/ssiag/")

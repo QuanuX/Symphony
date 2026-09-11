@@ -724,8 +724,8 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
-          "reason": "Defines source, corpus retention and interpretation owner contracts.",
-          "reference": "knowledge/scv/CORPUS.md",
+          "reason": "Defines source, corpus, authored interpretation and scoped connection owner contracts.",
+          "reference": "knowledge/scv/INTERPRETATION.md",
           "vector": "scv"
         },
         {
@@ -746,10 +746,11 @@
         "Receipt and result boundary tests reject domain/version drift, tampered executables, changed capture fields and oversized bodies.",
         "Source transaction tests cover preauthorization intent, absent authorization, stale compare-and-swap, operation identity collisions, interrupted writes, recovery and unsafe filesystem links.",
         "Transport tests qualify partial/failed captures, retain exact version queries and reject private targets, credential-bearing authorities and unsafe redirects.",
-        "Corpus producer/consumer and storage regressions bind referenced bytes to indexes, preserve failed-refresh evidence, checkpoint jobs and verify retained old-version invocation."
+        "Corpus producer/consumer and storage regressions bind referenced bytes to indexes, preserve failed-refresh evidence, checkpoint jobs and verify retained old-version invocation.",
+        "Profile/connection consumer and exact installed-process tests reject changed extraction evidence, resealed comparison results and changed reassessment bindings; old exact versions remain invocable."
       ],
       "feature_id": "ssfv:symphony:qxctl.scv-administration",
-      "how": "Reuses receipt-v2 and version-specific process/result validation; bounds public HTTPS retrieval; retains immutable exact corpus artifacts with no-replace publication and recoverable job intent; separately applies authenticated SSIAG authorization to protected source/graph selection.",
+      "how": "Reuses receipt-v2 and version-specific process/result validation; bounds public HTTPS retrieval; retains immutable exact corpus artifacts with no-replace publication and recoverable job intent; separately applies authenticated SSIAG authorization to protected source/graph selection. Preserves exact authored interpretation wrappers and independently checks returned evidence, comparisons and reassessment bindings at the process boundary.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -762,6 +763,7 @@
         "tools/qxctl/cmd/qxctl/scv_corpus.go",
         "tools/qxctl/cmd/qxctl/scv_graph.go",
         "tools/qxctl/internal/knowledgeengine/scv.go",
+        "tools/qxctl/internal/knowledgeengine/scv_interpretation.go",
         "tools/qxctl/internal/scvcorpus/rename_darwin.go",
         "tools/qxctl/internal/scvcorpus/rename_linux.go",
         "tools/qxctl/internal/scvcorpus/storage_unix.go",
@@ -795,7 +797,7 @@
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "SCV source and knowledge administration",
-      "what": "Administers selected SCV family/provider source, capture, corpus, interpretation and graph operations through exact installed C++ engines; retains immutable corpus evidence separately from permission-backed source and graph selections.",
+      "what": "Administers selected SCV family/provider source, capture, corpus, interpretation and graph operations through exact installed C++ engines; retains immutable corpus evidence separately from permission-backed source and graph selections. Invokes reusable profile interpretation, scoped connection checks and retained-result reassessment without selecting a graph head or claiming live provider compatibility.",
       "when": "Runs on explicit cold/freezing administrative invocation, including exact operation recovery.",
       "where": "Supported local macOS/Linux user-scoped TOPS evidence stores and separately protected source/graph state; pure operations accept an explicitly selected local installation.",
       "who": "Human or agentic callers using ordinary local filesystem permissions for evidence operations; protected source/graph selection additionally requires the same authenticated SSIAG permission contract.",
@@ -983,6 +985,7 @@
   ],
   "source_scope": "tools/qxctl"
 }
+
 
 
 ```

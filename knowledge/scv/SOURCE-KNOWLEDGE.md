@@ -75,3 +75,7 @@ The adapter's exact storage/result schema and executable evidence belong to qxct
 ## Additive Maintained Corpus Profile
 
 Engine `0.2.0-dev` adds the four bounded operations in `knowledge/scv/CORPUS.md` without changing the original thirteen operation payloads or the source/capture/knowledge/graph v1 shapes. Its qxctl adapter retains immutable evidence and recoverable jobs with explicit snapshot identities. There is no selected corpus head or implicit change to the existing protected source/graph selection circuits.
+
+## Additive Provider Interpretation Profile
+
+Engine `0.3.0-dev` adds the three pure operations in `knowledge/scv/INTERPRETATION.md` while preserving all earlier payloads. Exact authored profiles map selected literal context and values into ordinary knowledge v1. Retained wrappers make profile replay verifiable before connection evaluation. Caller-defined checks and changed-result reassessment preserve evidence, uncertainty, explicit requirements and query time; they do not establish runtime compatibility or choose a topology.

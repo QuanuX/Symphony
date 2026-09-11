@@ -3,6 +3,9 @@
 ## Canonical Surfaces
 
 - `knowledge/scv/schemas/v1/MANIFEST.md`
+- `knowledge/scv/schemas/v1/interpretation-profile.schema.json`
+- `knowledge/scv/schemas/v1/provider-interpretation.schema.json`
+- `knowledge/scv/schemas/v1/connection-operation.schema.json`
 - `knowledge/scv/schemas/v1/capture.schema.json`
 - `knowledge/scv/schemas/v1/capture-index.schema.json`
 - `knowledge/scv/schemas/v1/corpus.schema.json`
@@ -18,3 +21,5 @@
 `knowledge/scv/SOURCE-KNOWLEDGE.md` owns these closed local process data shapes. Structural validation is necessary but does not replace byte limits, strict STSC dates, digest verification, domain/lineage checks or evidence interpretation. These schemas do not define a network API, provider credential, durable commit or canonical mutation. Unknown authority roles and selectors remain opaque declarations.
 
 `knowledge/scv/CORPUS.md` owns the additive capture-index, corpus and corpus-operation schemas introduced with engine `0.2.0-dev`. The original source, capture, source-operation, interpretation-input, knowledge-graph and graph-operation schemas remain unchanged. A corpus index references separately retained exact captures; schema validity does not prove those bytes exist.
+
+`knowledge/scv/INTERPRETATION.md` owns the additive interpretation-profile, provider-interpretation and connection-operation schemas introduced with engine `0.3.0-dev`. The previous nine schemas remain unchanged. Profile replay, exact evidence qualification and connection-result reassessment supplement structural validation without proving empirical truth or selecting a graph head.

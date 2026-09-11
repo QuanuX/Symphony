@@ -10502,3 +10502,55 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: private reproducible corpus and interpretation inputs
 - notes: Does not select a source, corpus or graph head, imply complete provider expertise or grant provider authority.
 - status: canonical
+
+#### SCV Provider Interpretation and Connection Contract v1
+- path: `knowledge/scv/INTERPRETATION.md`
+- title: SCV Provider Interpretation and Connection Contract v1
+- surface_type: canonical contract companion
+- truth_role: current owner-declared bounded SCV interpretation and connection contract
+- owner: SCV and delegated domain maintainers
+- scope: Exact authored profile replay, qualified native claims, caller-defined connection checks and retained-result reassessment.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible interpretation and connection evidence
+- notes: Does not prove complete provider expertise or runtime connectivity, select a topology or graph head, or grant provider authority.
+- status: canonical
+
+#### SCV Interpretation Profile v1
+- path: `knowledge/scv/schemas/v1/interpretation-profile.schema.json`
+- title: SCV Interpretation Profile v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: current owner-declared bounded SCV interpretation and connection contract
+- owner: SCV and delegated domain maintainers
+- scope: Exact authored profile replay, qualified native claims, caller-defined connection checks and retained-result reassessment.
+- relationships: depends_on -> `knowledge/scv/INTERPRETATION.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible interpretation and connection evidence
+- notes: Does not prove complete provider expertise or runtime connectivity, select a topology or graph head, or grant provider authority.
+- status: canonical
+
+#### SCV Provider Interpretation Payloads v1
+- path: `knowledge/scv/schemas/v1/provider-interpretation.schema.json`
+- title: SCV Provider Interpretation Payloads v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: current owner-declared bounded SCV interpretation and connection contract
+- owner: SCV and delegated domain maintainers
+- scope: Exact authored profile replay, qualified native claims, caller-defined connection checks and retained-result reassessment.
+- relationships: depends_on -> `knowledge/scv/INTERPRETATION.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible interpretation and connection evidence
+- notes: Does not prove complete provider expertise or runtime connectivity, select a topology or graph head, or grant provider authority.
+- status: canonical
+
+#### SCV Connection Evaluation and Reassessment Payloads v1
+- path: `knowledge/scv/schemas/v1/connection-operation.schema.json`
+- title: SCV Connection Evaluation and Reassessment Payloads v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: current owner-declared bounded SCV interpretation and connection contract
+- owner: SCV and delegated domain maintainers
+- scope: Exact authored profile replay, qualified native claims, caller-defined connection checks and retained-result reassessment.
+- relationships: depends_on -> `knowledge/scv/INTERPRETATION.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible interpretation and connection evidence
+- notes: Does not prove complete provider expertise or runtime connectivity, select a topology or graph head, or grant provider authority.
+- status: canonical

@@ -2,7 +2,7 @@
 
 ## Status and Ownership
 
-Architect-ratified source-knowledge development increment, version `0.2.0-dev`; not a published release or complete provider implementation. Domain meaning belongs to `knowledge/scv/scev/cf/SPEC.md` and `knowledge/scv/SOURCE-KNOWLEDGE.md`. Common process semantics belong to `knowledge/SPEC.md`. All eight packages use the same explicit operation implementation with an exact installed domain identity.
+Architect-ratified source-knowledge development increment, version `0.3.0-dev`; not a published release or complete provider implementation. Domain meaning belongs to `knowledge/scv/scev/cf/SPEC.md` and `knowledge/scv/SOURCE-KNOWLEDGE.md`. Common process semantics belong to `knowledge/SPEC.md`. All eight packages use the same explicit operation implementation with an exact installed domain identity.
 
 ## Process and Operation Registry
 
@@ -30,8 +30,11 @@ Each operation's stable ID is `engop:symphony:scev-cf.` followed by its wire nam
 | `corpus_build` | `corpus acquire / import / recover / inspect / export / diff` | `symphony.scv.corpus.v1` | invoke |
 | `corpus_query` | `corpus export` | `symphony.scv.corpus-query.v1` | query |
 | `corpus_diff` | `corpus diff` | `symphony.scv.corpus-diff.v1` | validate |
+| `provider_interpret` | `provider interpret` | `symphony.scv.provider-interpretation.v1` | invoke |
+| `connection_evaluate` | `connection evaluate` | `symphony.scv.connection-evaluation.v1` | validate |
+| `connection_reassess` | `connection reassess` | `symphony.scv.connection-reassessment.v1` | validate |
 
-`knowledge/scv/CORPUS.md@v1` owns the four additive operations and their closed schemas. The table records composed qxctl routes; the C++ operations remain independently callable and never persist a corpus head. The `0.2.0-dev` descriptor has exactly seventeen operations. Existing `0.1.0-dev` installations retain their exact thirteen-operation descriptor, immutable receipts/documents and original v1 payloads. The qxctl consumer checks the selected version's operation set; it cannot substitute a newer installed package. Old command defaults remain `0.1.0-dev`, while new corpus commands default exactly to `0.2.0-dev`.
+`knowledge/scv/CORPUS.md@v1` owns the four additive operations and their closed schemas. The table records composed qxctl routes; the C++ operations remain independently callable and never persist a corpus head. The `0.3.0-dev` descriptor has exactly twenty operations, including the three operations owned by `knowledge/scv/INTERPRETATION.md@v1`. Existing `0.1.0-dev` and `0.2.0-dev` installations retain their exact thirteen- and seventeen-operation descriptors, immutable receipts/documents and original payloads. The qxctl consumer checks the selected version's finite operation set; it cannot substitute a newer package. Original command defaults remain `0.1.0-dev`; corpus commands default to `0.2.0-dev` and explicitly permit `0.3.0-dev`; provider interpretation and connection commands default exactly to `0.3.0-dev`.
 
 ## Source and Capture Payloads
 
@@ -52,6 +55,12 @@ Explanation retains transitive dependencies and separate support paths. Differen
 ## Corpus Payloads
 
 `capture_index` validates and projects an exact Capture v1. `corpus_build` constructs a sorted immutable snapshot from the full explicit member set and optional predecessor. Failed/partial refresh retains old complete evidence separately without changing its source revision or age. `corpus_query` applies an explicit latest-attempt or last-complete selection with query time and freshness; `corpus_diff` reports evidence and membership changes without inferring retirement. Corpus/member lineage checks are limited to the supplied immediate predecessor. At most 128 member indexes fit subject to the existing process bounds; materializing captured bytes is separately bounded to sixteen captures and the original request limits.
+
+## Provider Interpretation and Connections
+
+`provider_interpret` accepts exact captures, sealed authored profiles, explicit one-profile/one-capture bindings and the existing selection policy. Literal or delimited extraction requires unique selected context; unresolved or ambiguous extraction emits a finding without a claim. The wrapper retains profiles, bindings and ordinary knowledge v1 for exact replay. Structural attribution is not semantic or empirical proof.
+
+`connection_evaluate` replays retained wrappers, composes explicit additional knowledge and evaluates caller-selected required/optional checks at a specified time. Claims must match exact subjects, scopes, types and units. Missing, stale or conflicted evidence remains unresolved; assumptions and recommendations remain conditional. `connection_reassess` replays both retained results and separates changed captures, profiles, knowledge, policy, requirements and time. Results do not test a deployed route, select a provider or mutate a graph head. `knowledge/scv/INTERPRETATION.md` and its closed schemas define the exact payloads and finite bounds.
 
 ## Storage and Reproduction
 

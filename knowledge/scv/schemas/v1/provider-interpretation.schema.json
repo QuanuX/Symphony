@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:scv:provider-interpretation:v1",
+  "title": "SCV provider interpretation payloads v1",
+  "$defs": {
+    "providerInterpretInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "captures",
+        "profiles",
+        "bindings",
+        "selection_policy"
+      ],
+      "properties": {
+        "captures": {
+          "type": "array",
+          "items": {
+            "$ref": "capture.schema.json"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "profiles": {
+          "type": "array",
+          "items": {
+            "$ref": "interpretation-profile.schema.json"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "profile_digest",
+              "capture_digest"
+            ],
+            "properties": {
+              "profile_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "capture_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            }
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "selection_policy": {
+          "$ref": "interpretation-input.schema.json#/$defs/selectionPolicy"
+        }
+      }
+    },
+    "providerInterpretResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "domain",
+        "profiles",
+        "bindings",
+        "knowledge",
+        "extractions",
+        "limitations",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.provider-interpretation.v1"
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "profiles": {
+          "type": "array",
+          "items": {
+            "$ref": "interpretation-profile.schema.json"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "profile_digest",
+              "capture_digest"
+            ],
+            "properties": {
+              "profile_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "capture_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            }
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "knowledge": {
+          "$ref": "knowledge-graph.schema.json#/$defs/knowledge"
+        },
+        "extractions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "profile_digest",
+              "capture_digest",
+              "rule_id",
+              "claim_id",
+              "status",
+              "reasons"
+            ],
+            "properties": {
+              "profile_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "capture_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "rule_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "claim_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "status": {
+                "enum": [
+                  "matched",
+                  "unresolved"
+                ]
+              },
+              "reasons": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "minItems": 0,
+                "maxItems": 512
+              }
+            }
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536
+          },
+          "minItems": 0,
+          "maxItems": 512
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/providerInterpretInput"
+    },
+    {
+      "$ref": "#/$defs/providerInterpretResult"
+    }
+  ],
+  "description": "The input metadata protocol selects providerInterpretInput without an embedded protocol field. All profiles/captures must be bound, each profile exactly once, with at most 128 rules across the request. Exact replay reconstructs the entire sealed result, including unresolved findings; structural validity alone does not establish faithful mapping or empirical truth. Selected profile IDs must be unique within one interpretation; this runtime selection constraint does not allocate a global identity."
+}

@@ -12,7 +12,8 @@ Guide agents and implementers in SCV research without introducing provider prefe
 4. `knowledge/scv/INTENT.md`
 5. `knowledge/scv/MANIFEST.md`
 6. `knowledge/scv/SPEC.md`
-7. applicable SOV, SNV, SHV, SACV, SSIAG, STAV, and SODV contracts
+7. `knowledge/scv/SOURCE-KNOWLEDGE.md`, `knowledge/scv/CORPUS.md` and `knowledge/scv/INTERPRETATION.md`
+8. applicable SOV, SNV, SHV, SACV, SSIAG, STAV, and SODV contracts
 
 ## Procedure
 
@@ -25,4 +26,4 @@ Guide agents and implementers in SCV research without introducing provider prefe
 
 ## Stop Conditions
 
-Use the admitted source-knowledge operations and owner-selected source definitions within `knowledge/scv/SOURCE-KNOWLEDGE.md`. Preserve unknown formats and unverified interpretation. New graph technology, semantic schema, operational account adapter, authority boundary, scoring policy or network API beyond that contract requires a separate reviewed decision; ordinary authorized use does not reopen an already ratified boundary.
+Use the admitted source-knowledge, corpus and profile/connection operations within their exact contracts. Preserve unknown formats, unresolved extraction and unverified semantic mappings. Retain interpretation wrappers when claiming profile replay and keep caller requirements explicit. New graph technology, semantic schema, operational account adapter, authority boundary, scoring policy or network API beyond these contracts requires a separate reviewed decision; ordinary authorized use does not reopen an already ratified boundary.

@@ -83,6 +83,8 @@ func InvokeSCVDomain(ctx context.Context, domain, prefix, version, cwd, operatio
 		expectedCount := 13
 		if version == "0.2.0-dev" {
 			expectedCount = 17
+		} else if version == "0.3.0-dev" {
+			expectedCount = 20
 		}
 		if !ok || len(operations) != expectedCount {
 			return Response{}, fmt.Errorf("SCV descriptor operation set mismatch")
@@ -118,6 +120,9 @@ func SCVResultProtocol(operation string) (string, bool) {
 		"graph_evaluate": "symphony.scv.evaluate-result.v1", "graph_diff": "symphony.scv.diff-result.v1", "graph_explain": "symphony.scv.explain-result.v1",
 		"capture_index": "symphony.scv.capture-index.v1", "corpus_build": "symphony.scv.corpus.v1",
 		"corpus_query": "symphony.scv.corpus-query.v1", "corpus_diff": "symphony.scv.corpus-diff.v1",
+		"provider_interpret":  "symphony.scv.provider-interpretation.v1",
+		"connection_evaluate": "symphony.scv.connection-evaluation.v1",
+		"connection_reassess": "symphony.scv.connection-reassessment.v1",
 	}[operation]
 	return protocol, ok
 }
@@ -125,13 +130,16 @@ func SCVResultProtocol(operation string) (string, bool) {
 // SCVOperationSupported preserves each exact package's finite operation set.
 // Future versions require an explicit consumer update, never a latest alias.
 func SCVOperationSupported(version, operation string) bool {
-	if version != "0.1.0-dev" && version != "0.2.0-dev" {
+	if version != "0.1.0-dev" && version != "0.2.0-dev" && version != "0.3.0-dev" {
 		return false
 	}
 	if _, ok := SCVResultProtocol(operation); !ok {
 		return false
 	}
-	return version == "0.2.0-dev" || (operation != "capture_index" && !strings.HasPrefix(operation, "corpus_"))
+	if operation == "provider_interpret" || strings.HasPrefix(operation, "connection_") {
+		return version == "0.3.0-dev"
+	}
+	return version != "0.1.0-dev" || (operation != "capture_index" && !strings.HasPrefix(operation, "corpus_"))
 }
 
 // SCVCanonical encodes the same sorted, UTF-8 JSON subset as the C++ owner.
@@ -238,6 +246,9 @@ func ValidateSCVResult(operation string, input, raw []byte) error {
 			return fmt.Errorf("SCV descriptor broadens authority")
 		}
 		return scvSeal(value, "descriptor_digest")
+	}
+	if operation == "provider_interpret" || strings.HasPrefix(operation, "connection_") {
+		return validateSCVInterpretationResult(operation, payload, value)
 	}
 	exact := map[string][]string{
 		"source_plan":         {"protocol", "operation_id", "expected_state_digest", "change_kind", "reason", "source", "plan_digest"},

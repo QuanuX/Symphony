@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:scv:interpretation-profile:v1",
+  "title": "SCV interpretation profile v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "profile_id",
+    "profile_version",
+    "provider_id",
+    "source_id",
+    "locator_id",
+    "media_types",
+    "authored_by",
+    "rationale",
+    "rules",
+    "digest"
+  ],
+  "properties": {
+    "protocol": {
+      "const": "symphony.scv.interpretation-profile.v1"
+    },
+    "profile_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "profile_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "provider_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "locator_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "media_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128
+      },
+      "minItems": 1,
+      "maxItems": 16,
+      "uniqueItems": true
+    },
+    "authored_by": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "rule_id",
+          "claim_id",
+          "subject",
+          "predicate",
+          "scope",
+          "statement_kind",
+          "dependencies",
+          "context",
+          "extractor"
+        ],
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "claim_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "subject": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "predicate": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "scope": {
+            "$ref": "interpretation-input.schema.json#/$defs/claim/properties/scope"
+          },
+          "statement_kind": {
+            "$ref": "interpretation-input.schema.json#/$defs/claim/properties/statement_kind"
+          },
+          "dependencies": {
+            "$ref": "interpretation-input.schema.json#/$defs/claim/properties/dependencies"
+          },
+          "context": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "minItems": 0,
+            "maxItems": 8
+          },
+          "extractor": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "kind",
+                  "quote",
+                  "value"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "literal"
+                  },
+                  "quote": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  "value": {
+                    "allOf": [
+                      {
+                        "$ref": "interpretation-input.schema.json#/$defs/claim/properties/value"
+                      },
+                      {
+                        "required": [
+                          "unit"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "kind",
+                  "prefix",
+                  "suffix",
+                  "type",
+                  "unit"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "delimited"
+                  },
+                  "prefix": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  "suffix": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  "type": {
+                    "enum": [
+                      "integer",
+                      "decimal",
+                      "string"
+                    ]
+                  },
+                  "unit": {
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "minItems": 0,
+      "maxItems": 128
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "description": "Exact authored semantic mapping, not publisher endorsement or authority. Runtime verifies digest, UTF-8 byte bounds, unique rule/claim identities, exact capture binding, aggregate rules and extraction semantics. Values carry explicit units; no unit conversion or executable selector."
+}

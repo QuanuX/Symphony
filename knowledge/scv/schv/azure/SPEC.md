@@ -2,9 +2,9 @@
 
 ## Status and Ownership
 
-Architect-ratified bounded source-knowledge development contract, version `0.2.0-dev`. Azure-native source, offering, service, version and constraint knowledge.
+Architect-ratified bounded source-knowledge development contract, version `0.3.0-dev`. Azure-native source, offering, service, version and constraint knowledge.
 
-The shared operation, evidence, lineage, uncertainty and process contracts are assigned by `knowledge/scv/SPEC.md`, `knowledge/scv/SOURCE-KNOWLEDGE.md`, `knowledge/scv/CORPUS.md` and `knowledge/scv/schemas/v1/MANIFEST.md`. This owner specializes the declared domain identity and scope; it does not fork those mechanics or claim a complete vendor corpus.
+The shared operation, evidence, lineage, uncertainty and process contracts are assigned by `knowledge/scv/SPEC.md`, `knowledge/scv/SOURCE-KNOWLEDGE.md`, `knowledge/scv/CORPUS.md`, `knowledge/scv/INTERPRETATION.md` and `knowledge/scv/schemas/v1/MANIFEST.md`. This owner specializes the declared domain identity and scope; it does not fork those mechanics or claim a complete vendor corpus.
 
 ## Domain Definition
 

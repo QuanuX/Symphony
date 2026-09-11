@@ -90,8 +90,8 @@ type corpusRunner struct {
 }
 
 func newCorpusRunner(options scvOptions) (*corpusRunner, error) {
-	if options.version != "0.2.0-dev" {
-		return nil, fmt.Errorf("corpus commands require exact supported 0.2.0-dev engine")
+	if options.version != "0.2.0-dev" && options.version != "0.3.0-dev" {
+		return nil, fmt.Errorf("corpus commands require exact supported 0.2.0-dev or 0.3.0-dev engine")
 	}
 	installed, err := knowledgeengine.InspectSCVDomain(options.domain, options.prefix, options.version)
 	if err != nil {

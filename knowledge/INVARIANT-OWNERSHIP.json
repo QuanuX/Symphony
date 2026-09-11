@@ -71,6 +71,8 @@
         "engop:symphony:scev-cf.capture.compare",
         "engop:symphony:scev-cf.capture.import",
         "engop:symphony:scev-cf.capture.index",
+        "engop:symphony:scev-cf.connection.evaluate",
+        "engop:symphony:scev-cf.connection.reassess",
         "engop:symphony:scev-cf.corpus.build",
         "engop:symphony:scev-cf.corpus.diff",
         "engop:symphony:scev-cf.corpus.query",
@@ -81,6 +83,7 @@
         "engop:symphony:scev-cf.graph.query",
         "engop:symphony:scev-cf.inspect",
         "engop:symphony:scev-cf.knowledge.interpret",
+        "engop:symphony:scev-cf.provider.interpret",
         "engop:symphony:scev-cf.provider.onboard",
         "engop:symphony:scev-cf.source.apply",
         "engop:symphony:scev-cf.source.plan",
@@ -100,6 +103,8 @@
         "engop:symphony:scev.capture.compare",
         "engop:symphony:scev.capture.import",
         "engop:symphony:scev.capture.index",
+        "engop:symphony:scev.connection.evaluate",
+        "engop:symphony:scev.connection.reassess",
         "engop:symphony:scev.corpus.build",
         "engop:symphony:scev.corpus.diff",
         "engop:symphony:scev.corpus.query",
@@ -110,6 +115,7 @@
         "engop:symphony:scev.graph.query",
         "engop:symphony:scev.inspect",
         "engop:symphony:scev.knowledge.interpret",
+        "engop:symphony:scev.provider.interpret",
         "engop:symphony:scev.provider.onboard",
         "engop:symphony:scev.source.apply",
         "engop:symphony:scev.source.plan",
@@ -129,6 +135,8 @@
         "engop:symphony:schv-aws.capture.compare",
         "engop:symphony:schv-aws.capture.import",
         "engop:symphony:schv-aws.capture.index",
+        "engop:symphony:schv-aws.connection.evaluate",
+        "engop:symphony:schv-aws.connection.reassess",
         "engop:symphony:schv-aws.corpus.build",
         "engop:symphony:schv-aws.corpus.diff",
         "engop:symphony:schv-aws.corpus.query",
@@ -139,6 +147,7 @@
         "engop:symphony:schv-aws.graph.query",
         "engop:symphony:schv-aws.inspect",
         "engop:symphony:schv-aws.knowledge.interpret",
+        "engop:symphony:schv-aws.provider.interpret",
         "engop:symphony:schv-aws.provider.onboard",
         "engop:symphony:schv-aws.source.apply",
         "engop:symphony:schv-aws.source.plan",
@@ -158,6 +167,8 @@
         "engop:symphony:schv-azure.capture.compare",
         "engop:symphony:schv-azure.capture.import",
         "engop:symphony:schv-azure.capture.index",
+        "engop:symphony:schv-azure.connection.evaluate",
+        "engop:symphony:schv-azure.connection.reassess",
         "engop:symphony:schv-azure.corpus.build",
         "engop:symphony:schv-azure.corpus.diff",
         "engop:symphony:schv-azure.corpus.query",
@@ -168,6 +179,7 @@
         "engop:symphony:schv-azure.graph.query",
         "engop:symphony:schv-azure.inspect",
         "engop:symphony:schv-azure.knowledge.interpret",
+        "engop:symphony:schv-azure.provider.interpret",
         "engop:symphony:schv-azure.provider.onboard",
         "engop:symphony:schv-azure.source.apply",
         "engop:symphony:schv-azure.source.plan",
@@ -187,6 +199,8 @@
         "engop:symphony:schv-do.capture.compare",
         "engop:symphony:schv-do.capture.import",
         "engop:symphony:schv-do.capture.index",
+        "engop:symphony:schv-do.connection.evaluate",
+        "engop:symphony:schv-do.connection.reassess",
         "engop:symphony:schv-do.corpus.build",
         "engop:symphony:schv-do.corpus.diff",
         "engop:symphony:schv-do.corpus.query",
@@ -197,6 +211,7 @@
         "engop:symphony:schv-do.graph.query",
         "engop:symphony:schv-do.inspect",
         "engop:symphony:schv-do.knowledge.interpret",
+        "engop:symphony:schv-do.provider.interpret",
         "engop:symphony:schv-do.provider.onboard",
         "engop:symphony:schv-do.source.apply",
         "engop:symphony:schv-do.source.plan",
@@ -216,6 +231,8 @@
         "engop:symphony:schv-gcp.capture.compare",
         "engop:symphony:schv-gcp.capture.import",
         "engop:symphony:schv-gcp.capture.index",
+        "engop:symphony:schv-gcp.connection.evaluate",
+        "engop:symphony:schv-gcp.connection.reassess",
         "engop:symphony:schv-gcp.corpus.build",
         "engop:symphony:schv-gcp.corpus.diff",
         "engop:symphony:schv-gcp.corpus.query",
@@ -226,6 +243,7 @@
         "engop:symphony:schv-gcp.graph.query",
         "engop:symphony:schv-gcp.inspect",
         "engop:symphony:schv-gcp.knowledge.interpret",
+        "engop:symphony:schv-gcp.provider.interpret",
         "engop:symphony:schv-gcp.provider.onboard",
         "engop:symphony:schv-gcp.source.apply",
         "engop:symphony:schv-gcp.source.plan",
@@ -245,6 +263,8 @@
         "engop:symphony:schv.capture.compare",
         "engop:symphony:schv.capture.import",
         "engop:symphony:schv.capture.index",
+        "engop:symphony:schv.connection.evaluate",
+        "engop:symphony:schv.connection.reassess",
         "engop:symphony:schv.corpus.build",
         "engop:symphony:schv.corpus.diff",
         "engop:symphony:schv.corpus.query",
@@ -255,6 +275,7 @@
         "engop:symphony:schv.graph.query",
         "engop:symphony:schv.inspect",
         "engop:symphony:schv.knowledge.interpret",
+        "engop:symphony:schv.provider.interpret",
         "engop:symphony:schv.provider.onboard",
         "engop:symphony:schv.source.apply",
         "engop:symphony:schv.source.plan",
@@ -274,6 +295,8 @@
         "engop:symphony:scv.capture.compare",
         "engop:symphony:scv.capture.import",
         "engop:symphony:scv.capture.index",
+        "engop:symphony:scv.connection.evaluate",
+        "engop:symphony:scv.connection.reassess",
         "engop:symphony:scv.corpus.build",
         "engop:symphony:scv.corpus.diff",
         "engop:symphony:scv.corpus.query",
@@ -284,6 +307,7 @@
         "engop:symphony:scv.graph.query",
         "engop:symphony:scv.inspect",
         "engop:symphony:scv.knowledge.interpret",
+        "engop:symphony:scv.provider.interpret",
         "engop:symphony:scv.provider.onboard",
         "engop:symphony:scv.source.apply",
         "engop:symphony:scv.source.plan",
@@ -847,6 +871,59 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "test_connection_consumer_rejects_resealed_interpretation"
+          ],
+          "path": "modules/scv-engine/tests/interpretation_test.cpp"
+        },
+        {
+          "cases": [
+            "TestInstalledSCVProfileConnectionProvenance",
+            "TestSCVConnectionConsumerRejectsResealedComparison"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/scv_interpretation_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:scv.profile-connection-provenance",
+      "ipc_boundary": true,
+      "owner_component": "scv-interpretation",
+      "owner_contract": "knowledge/scv/INTERPRETATION.md",
+      "producer_implementations": [
+        "modules/scv-engine/src/interpretation.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "test_provider_interpretation_producer"
+          ],
+          "path": "modules/scv-engine/tests/interpretation_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_provider_interpretation_connection_reassessment"
+          ],
+          "path": "modules/scv-engine/tests/installed_integration.py"
+        }
+      ],
+      "statement": "The C++ interpretation owner validates exact sealed profiles and capture bindings, retains qualified extraction findings and replays wrapped interpretations before evaluating caller-defined subject/scope/type/unit checks. Reassessment replays both retained results and distinguishes changed inputs and affected findings. Missing, stale, disputed or conditional support cannot become unqualified runtime compatibility, provider-wide contradiction or authority. Recomputed outer digests do not bypass nested replay.",
+      "status": "active",
+      "title": "Profile and connection results preserve replayable scoped evidence"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-scev-cf.v1",
+        "adapter:symphony:symphony-scev.v1",
+        "adapter:symphony:symphony-schv-aws.v1",
+        "adapter:symphony:symphony-schv-azure.v1",
+        "adapter:symphony:symphony-schv-do.v1",
+        "adapter:symphony:symphony-schv-gcp.v1",
+        "adapter:symphony:symphony-schv.v1",
+        "adapter:symphony:symphony-scv.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
             "test_graph_consumer_rejects_tampered_capture"
           ],
           "path": "modules/scv-engine/tests/knowledge_test.cpp"
@@ -1208,7 +1285,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v2",
-  "registry_digest": "sha256:2a9cf77120c892c23379cc5ae8d539a22f8bf4fba300cc2de5c780099cac7fc9",
+  "registry_digest": "sha256:5c2ee54acfe543b5c763aa9a89ac841add5cdd2b8ae575434583bf0a4a4b09d0",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

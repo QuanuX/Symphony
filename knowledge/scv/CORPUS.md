@@ -39,7 +39,7 @@ Query coverage describes latest attempts for the requested members. It does not 
 
 ## qxctl Retention and Recovery
 
-`qxctl scv corpus acquire|import|recover|inspect|export|diff` administers immutable local evidence retention. New commands default exactly to `0.2.0-dev`; existing SCV commands retain the `0.1.0-dev` default. Explicit version selection uses that version's exact receipt, descriptor and operation set. The old descriptor remains thirteen operations; the new descriptor has seventeen. Unsupported combinations fail without selecting a newer package.
+`qxctl scv corpus acquire|import|recover|inspect|export|diff` administers immutable local evidence retention. Corpus commands default exactly to `0.2.0-dev` and explicitly permit `0.3.0-dev`; original SCV commands retain the `0.1.0-dev` default. Explicit version selection uses that version's exact receipt, descriptor and operation set: thirteen operations in `0.1.0-dev`, seventeen in `0.2.0-dev` and twenty in `0.3.0-dev`. Unsupported combinations fail without selecting a newer package.
 
 Acquisition/import jobs bind the exact operation, corpus identity, predecessor digest, member inputs and installation before processing. Acquire validates sources before public HTTPS retrieval. Import records supplied captures without inventing a live fetch. Completed members are checkpointed; recovery uses the original intent and installation and processes only unfinished members. Replaying a completed operation returns its recorded snapshot without new retrieval. A refresh is a new operation with an explicit predecessor digest. Independent concurrent jobs coexist; no last-writer-wins current alias exists.
 

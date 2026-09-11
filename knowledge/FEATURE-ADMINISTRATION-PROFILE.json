@@ -1458,13 +1458,14 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -1475,13 +1476,14 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "configure",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -1492,13 +1494,14 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -1513,13 +1516,14 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -1529,19 +1533,21 @@
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.import",
             "qxcmd:symphony:scv.graph",
-            "qxcmd:symphony:scv.interpret"
+            "qxcmd:symphony:scv.interpret",
+            "qxcmd:symphony:scv.provider.interpret"
           ],
           "delivery": "composed",
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -1553,13 +1559,14 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -1572,13 +1579,14 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -1591,18 +1599,21 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.connection.evaluate",
+            "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
             "qxcmd:symphony:scv.evaluate"
@@ -1611,13 +1622,14 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         }
       ],
@@ -2115,13 +2127,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2134,13 +2147,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2159,13 +2173,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2179,7 +2194,8 @@
             "qxcmd:symphony:scv.corpus.inspect",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.graph",
-            "qxcmd:symphony:scv.interpret"
+            "qxcmd:symphony:scv.interpret",
+            "qxcmd:symphony:scv.provider.interpret"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2187,17 +2203,19 @@
             "engop:symphony:scev-cf.capture.index",
             "engop:symphony:scev-cf.corpus.build",
             "engop:symphony:scev-cf.graph.build",
-            "engop:symphony:scev-cf.knowledge.interpret"
+            "engop:symphony:scev-cf.knowledge.interpret",
+            "engop:symphony:scev-cf.provider.interpret"
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2211,13 +2229,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2237,13 +2256,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2256,18 +2276,21 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.connection.evaluate",
+            "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
             "qxcmd:symphony:scv.evaluate"
@@ -2275,19 +2298,22 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:scev-cf.capture.compare",
+            "engop:symphony:scev-cf.connection.evaluate",
+            "engop:symphony:scev-cf.connection.reassess",
             "engop:symphony:scev-cf.corpus.diff",
             "engop:symphony:scev-cf.graph.diff",
             "engop:symphony:scev-cf.graph.evaluate"
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         }
       ],
@@ -2305,13 +2331,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2324,13 +2351,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2349,13 +2377,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2369,7 +2398,8 @@
             "qxcmd:symphony:scv.corpus.inspect",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.graph",
-            "qxcmd:symphony:scv.interpret"
+            "qxcmd:symphony:scv.interpret",
+            "qxcmd:symphony:scv.provider.interpret"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2377,17 +2407,19 @@
             "engop:symphony:scev.capture.index",
             "engop:symphony:scev.corpus.build",
             "engop:symphony:scev.graph.build",
-            "engop:symphony:scev.knowledge.interpret"
+            "engop:symphony:scev.knowledge.interpret",
+            "engop:symphony:scev.provider.interpret"
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2401,13 +2433,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2427,13 +2460,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2446,18 +2480,21 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.connection.evaluate",
+            "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
             "qxcmd:symphony:scv.evaluate"
@@ -2465,19 +2502,22 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:scev.capture.compare",
+            "engop:symphony:scev.connection.evaluate",
+            "engop:symphony:scev.connection.reassess",
             "engop:symphony:scev.corpus.diff",
             "engop:symphony:scev.graph.diff",
             "engop:symphony:scev.graph.evaluate"
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         }
       ],
@@ -2495,13 +2535,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2514,13 +2555,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2539,13 +2581,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2559,7 +2602,8 @@
             "qxcmd:symphony:scv.corpus.inspect",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.graph",
-            "qxcmd:symphony:scv.interpret"
+            "qxcmd:symphony:scv.interpret",
+            "qxcmd:symphony:scv.provider.interpret"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2567,17 +2611,19 @@
             "engop:symphony:schv-aws.capture.index",
             "engop:symphony:schv-aws.corpus.build",
             "engop:symphony:schv-aws.graph.build",
-            "engop:symphony:schv-aws.knowledge.interpret"
+            "engop:symphony:schv-aws.knowledge.interpret",
+            "engop:symphony:schv-aws.provider.interpret"
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2591,13 +2637,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2617,13 +2664,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2636,18 +2684,21 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.connection.evaluate",
+            "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
             "qxcmd:symphony:scv.evaluate"
@@ -2655,19 +2706,22 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-aws.capture.compare",
+            "engop:symphony:schv-aws.connection.evaluate",
+            "engop:symphony:schv-aws.connection.reassess",
             "engop:symphony:schv-aws.corpus.diff",
             "engop:symphony:schv-aws.graph.diff",
             "engop:symphony:schv-aws.graph.evaluate"
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         }
       ],
@@ -2685,13 +2739,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2704,13 +2759,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2729,13 +2785,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2749,7 +2806,8 @@
             "qxcmd:symphony:scv.corpus.inspect",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.graph",
-            "qxcmd:symphony:scv.interpret"
+            "qxcmd:symphony:scv.interpret",
+            "qxcmd:symphony:scv.provider.interpret"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2757,17 +2815,19 @@
             "engop:symphony:schv-azure.capture.index",
             "engop:symphony:schv-azure.corpus.build",
             "engop:symphony:schv-azure.graph.build",
-            "engop:symphony:schv-azure.knowledge.interpret"
+            "engop:symphony:schv-azure.knowledge.interpret",
+            "engop:symphony:schv-azure.provider.interpret"
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2781,13 +2841,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2807,13 +2868,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2826,18 +2888,21 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.connection.evaluate",
+            "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
             "qxcmd:symphony:scv.evaluate"
@@ -2845,19 +2910,22 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-azure.capture.compare",
+            "engop:symphony:schv-azure.connection.evaluate",
+            "engop:symphony:schv-azure.connection.reassess",
             "engop:symphony:schv-azure.corpus.diff",
             "engop:symphony:schv-azure.graph.diff",
             "engop:symphony:schv-azure.graph.evaluate"
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         }
       ],
@@ -2875,13 +2943,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2894,13 +2963,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2919,13 +2989,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2939,7 +3010,8 @@
             "qxcmd:symphony:scv.corpus.inspect",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.graph",
-            "qxcmd:symphony:scv.interpret"
+            "qxcmd:symphony:scv.interpret",
+            "qxcmd:symphony:scv.provider.interpret"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2947,17 +3019,19 @@
             "engop:symphony:schv-do.capture.index",
             "engop:symphony:schv-do.corpus.build",
             "engop:symphony:schv-do.graph.build",
-            "engop:symphony:schv-do.knowledge.interpret"
+            "engop:symphony:schv-do.knowledge.interpret",
+            "engop:symphony:schv-do.provider.interpret"
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2971,13 +3045,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -2997,13 +3072,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3016,18 +3092,21 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.connection.evaluate",
+            "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
             "qxcmd:symphony:scv.evaluate"
@@ -3035,19 +3114,22 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-do.capture.compare",
+            "engop:symphony:schv-do.connection.evaluate",
+            "engop:symphony:schv-do.connection.reassess",
             "engop:symphony:schv-do.corpus.diff",
             "engop:symphony:schv-do.graph.diff",
             "engop:symphony:schv-do.graph.evaluate"
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         }
       ],
@@ -3065,13 +3147,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3084,13 +3167,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3109,13 +3193,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3129,7 +3214,8 @@
             "qxcmd:symphony:scv.corpus.inspect",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.graph",
-            "qxcmd:symphony:scv.interpret"
+            "qxcmd:symphony:scv.interpret",
+            "qxcmd:symphony:scv.provider.interpret"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -3137,17 +3223,19 @@
             "engop:symphony:schv.capture.index",
             "engop:symphony:schv.corpus.build",
             "engop:symphony:schv.graph.build",
-            "engop:symphony:schv.knowledge.interpret"
+            "engop:symphony:schv.knowledge.interpret",
+            "engop:symphony:schv.provider.interpret"
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3161,13 +3249,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3187,13 +3276,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3206,18 +3296,21 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.connection.evaluate",
+            "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
             "qxcmd:symphony:scv.evaluate"
@@ -3225,19 +3318,22 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv.capture.compare",
+            "engop:symphony:schv.connection.evaluate",
+            "engop:symphony:schv.connection.reassess",
             "engop:symphony:schv.corpus.diff",
             "engop:symphony:schv.graph.diff",
             "engop:symphony:schv.graph.evaluate"
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         }
       ],
@@ -3255,13 +3351,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3274,13 +3371,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3299,13 +3397,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3319,7 +3418,8 @@
             "qxcmd:symphony:scv.corpus.inspect",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.graph",
-            "qxcmd:symphony:scv.interpret"
+            "qxcmd:symphony:scv.interpret",
+            "qxcmd:symphony:scv.provider.interpret"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -3327,17 +3427,19 @@
             "engop:symphony:schv-gcp.capture.index",
             "engop:symphony:schv-gcp.corpus.build",
             "engop:symphony:schv-gcp.graph.build",
-            "engop:symphony:schv-gcp.knowledge.interpret"
+            "engop:symphony:schv-gcp.knowledge.interpret",
+            "engop:symphony:schv-gcp.provider.interpret"
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3351,13 +3453,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3377,13 +3480,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3396,18 +3500,21 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.connection.evaluate",
+            "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
             "qxcmd:symphony:scv.evaluate"
@@ -3415,19 +3522,22 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-gcp.capture.compare",
+            "engop:symphony:schv-gcp.connection.evaluate",
+            "engop:symphony:schv-gcp.connection.reassess",
             "engop:symphony:schv-gcp.corpus.diff",
             "engop:symphony:schv-gcp.graph.diff",
             "engop:symphony:schv-gcp.graph.evaluate"
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         }
       ],
@@ -3586,13 +3696,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3605,13 +3716,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3630,13 +3742,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3650,7 +3763,8 @@
             "qxcmd:symphony:scv.corpus.inspect",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.graph",
-            "qxcmd:symphony:scv.interpret"
+            "qxcmd:symphony:scv.interpret",
+            "qxcmd:symphony:scv.provider.interpret"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -3658,17 +3772,19 @@
             "engop:symphony:scv.capture.index",
             "engop:symphony:scv.corpus.build",
             "engop:symphony:scv.graph.build",
-            "engop:symphony:scv.knowledge.interpret"
+            "engop:symphony:scv.knowledge.interpret",
+            "engop:symphony:scv.provider.interpret"
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3682,13 +3798,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3708,13 +3825,14 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
@@ -3727,18 +3845,21 @@
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.connection.evaluate",
+            "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
             "qxcmd:symphony:scv.evaluate"
@@ -3746,19 +3867,22 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:scv.capture.compare",
+            "engop:symphony:scv.connection.evaluate",
+            "engop:symphony:scv.connection.reassess",
             "engop:symphony:scv.corpus.diff",
             "engop:symphony:scv.graph.diff",
             "engop:symphony:scv.graph.evaluate"
           ],
           "evidence": [
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention remains separate from explicitly authorized source/graph selection and creates no authority in a computed result.",
+          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
           "requirement": "required"
         }
       ],
@@ -5224,9 +5348,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:362f043bf7ff70ecd34cad8b7d8f350da13a9164665a5b10b4f1252bceb62e3f",
+  "profile_digest": "sha256:08f4f2c2ead5c37c3fa49eaefaa9eca115870a0d4c64e9f7fee17a155b4f138f",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 100,
-  "ssfv_registry_digest": "sha256:f1dbe46f05e4e15e25e83e7625a6398037d7c289a220c916f529313b264e5b11"
+  "ssfv_registry_digest": "sha256:61a0c13ddc3ad745e6a789ba869b8b5647f4880f594d7cd69e686b483b0fc95f"
 }
