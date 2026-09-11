@@ -172,6 +172,8 @@ The sixty-six exact common v1 schemas under `knowledge/schemas/v1/` govern proce
 
 The eight domain engines listed above add bounded source planning, pure expected-state transition validation, UTF-8 capture import, explicit claim interpretation and reproducible graph queries. qxctl supplies a separately governed protected source-store adapter. A computed transition is not a durable or authorized commit. The additive `0.2.0-dev` corpus profile in `knowledge/scv/CORPUS.md` supplies immutable bounded evidence retention and explicit snapshot selection for queries without a selected corpus head. The additive `0.3.0-dev` profile in `knowledge/scv/INTERPRETATION.md` adds retained authored mappings and scoped connection evaluation/reassessment. Exact supported operations and remaining broad acquisition, semantic interpretation and operational gaps are declared in the owner and module contracts.
 
+The `0.4.0-dev` agent operating profile in `knowledge/scv/AGENT-WORKFLOWS.md` adds native profile preparation, exact packaged schema discovery, structured SCV CLI failures, separate artifact provenance records and recoverable runs. It retains the existing owner, authorization and caller-composition boundaries.
+
 ## Non-Authorization Statement
 
 This manifest does not authorize an engine to rewrite canonical files, manufacture ratification, classify callers, hold credentials, edit STAV ledgers, publish documentation or releases, expose network listeners, enter hot/warm execution, or implement semantics not assigned by its vector Contract Quad.

@@ -49,3 +49,5 @@ No SCV record authorizes a provider operation, purchase, deployment, account acc
 ## Family Delegation
 
 SCV delegates cloud-hosting/hyperscaler knowledge to `knowledge/scv/schv/SPEC.md` and edge knowledge to `knowledge/scv/scev/SPEC.md`. SCHV delegates native AWS, Azure, DigitalOcean and Google Cloud knowledge to its aws, azure, do and gcp Contract Quads; SCEV delegates Cloudflare knowledge to its cf Contract Quad. These are domain scopes, not rankings or restrictions on cross-provider or user-defined composition.
+
+Agent-first profile preparation, exact installed schemas and qxctl retained-run coordination are specified in `knowledge/scv/AGENT-WORKFLOWS.md`. That companion adds no provider, deployment or selected-head authority.

@@ -79,7 +79,28 @@ class InstalledProcessTests(unittest.TestCase):
         self.assertEqual(response['request_id'], 'fixture-request')
         self.assertEqual(response['result']['engine_version'], ARGS.version)
         self.assertFalse(response['result']['canonical_apply_enabled'])
-        self.assertEqual(len(response['result']['operations']), {'0.1.0-dev': 13, '0.2.0-dev': 17, '0.3.0-dev': 20}[ARGS.version])
+        self.assertEqual(len(response['result']['operations']), {'0.1.0-dev': 13, '0.2.0-dev': 17, '0.3.0-dev': 20, '0.4.0-dev': 21}[ARGS.version])
+
+    def test_profile_preparation_and_packaged_discovery_evidence(self):
+        if ARGS.version != '0.4.0-dev':
+            self.skipTest('profile preparation is an exact .4 addition')
+        draft = {'protocol': 'symphony.scv.interpretation-profile.v1', 'profile_id': 'fixture-profile',
+                 'profile_version': 'test-1', 'provider_id': self.provider, 'source_id': 'fixture-docs',
+                 'locator_id': 'docs', 'media_types': ['text/markdown'], 'authored_by': 'test fixture',
+                 'rationale': 'Empty authored mapping tests structure, asserts no provider facts', 'rules': []}
+        proc, response = self.invoke('profile_prepare', {'profile': draft})
+        self.assertEqual(proc.returncode, 0, response)
+        self.assertEqual(response['result'], {**draft, 'digest': digest(draft)})
+        proc, response = self.invoke('profile_prepare', {'profile': {**draft, 'digest': digest(draft)}})
+        self.assertNotEqual(proc.returncode, 0)
+        catalog_path = f'share/symphony/schemas/{self.module}/{ARGS.version}/schema-catalog.json'
+        owned = {item['path']: item for item in self.receipt['files']}
+        self.assertIn(catalog_path, owned)
+        raw = (self.prefix / catalog_path).read_bytes()
+        self.assertEqual(owned[catalog_path]['digest'], 'sha256:' + hashlib.sha256(raw).hexdigest())
+        catalog = json.loads(raw)
+        self.assertEqual(catalog['engine_version'], ARGS.version)
+        self.assertTrue(any(e['protocol'] == 'symphony.scv.profile-prepare-input.v1' for e in catalog['entries']))
 
     def test_source_transition_expected_state_and_digest(self):
         current = self.initial()

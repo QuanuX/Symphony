@@ -64,3 +64,5 @@ The Linux-only `qxctl knowledge lifecycle host install|update|status|reconcile|e
 
 ## Relationship
 qxctl reads and reports Symphony repository state and administers independently installed modules and vector engines. It relates to hotpath-runtime, secure-identity-access-governance, STAV, SKV engines, and future vector-owned operational surfaces as an administrative command and inspection surface, not as an owner of their workloads, schemas, semantics, or security state. The retired `node-troll` and `bus-troll` module identities are not qxctl runtime dependencies.
+
+SCV agent-operated schemas, profile preparation, artifact retention and run recovery are governed by `knowledge/scv/AGENT-WORKFLOWS.md`. Read the selected installation's exact schemas/templates, supply caller-owned requirements, and use retained operation identities for status/recovery. SCV `--json` failures use `tools/qxctl/ERRORS.md`; successful owner result protocols are preserved.

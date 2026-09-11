@@ -48,7 +48,8 @@ const std::vector<Operation>& registry() {
         {"corpus_diff", "symphony.scv.corpus-diff.v1", {"validate"}, "evidence_only", false, handle_corpus},
         {"provider_interpret", "symphony.scv.provider-interpretation.v1", {"invoke"}, "evidence_only", false, handle_interpretation},
         {"connection_evaluate", "symphony.scv.connection-evaluation.v1", {"validate"}, "evidence_only", false, handle_interpretation},
-        {"connection_reassess", "symphony.scv.connection-reassessment.v1", {"validate"}, "evidence_only", false, handle_interpretation}
+        {"connection_reassess", "symphony.scv.connection-reassessment.v1", {"validate"}, "evidence_only", false, handle_interpretation},
+        {"profile_prepare", "symphony.scv.interpretation-profile.v1", {"propose"}, "proposal_only", false, handle_interpretation}
     };
     return operations;
 }
@@ -73,7 +74,7 @@ Json descriptor(const std::string& domain) {
     return sealed(Json{{"protocol", engine::descriptor_protocol_v2}, {"format_version", 2},
         {"module_id", domain + "-engine"}, {"engine_id", "symphony-" + domain}, {"vector_id", domain},
         {"engine_version", version}, {"process_protocols", Json::array({engine::process_protocol_v1})},
-        {"contract_versions", Json::array({"knowledge/SPEC.md@v1", "knowledge/scv/SOURCE-KNOWLEDGE.md@v1", "knowledge/scv/CORPUS.md@v1", "knowledge/scv/INTERPRETATION.md@v1"})},
+        {"contract_versions", Json::array({"knowledge/SPEC.md@v1", "knowledge/scv/SOURCE-KNOWLEDGE.md@v1", "knowledge/scv/CORPUS.md@v1", "knowledge/scv/INTERPRETATION.md@v1", "knowledge/scv/AGENT-WORKFLOWS.md@v1"})},
         {"operations", engine::administration_operation_descriptors(operations)},
         {"limits", Json{{"request_bytes", engine::Limits::max_request_bytes}, {"response_bytes", engine::Limits::max_response_bytes},
             {"json_depth", engine::Limits::max_json_depth}, {"json_values", engine::Limits::max_json_values},

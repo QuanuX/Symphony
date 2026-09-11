@@ -131,3 +131,5 @@ Any caller operating within its effective target-host permission should use `qxc
 13. `go run ./cmd/qxctl knowledge session status --tops-id UUID --json` when the exact SSIAG session grants and coordinator binding are available
 14. `go run ./cmd/qxctl knowledge session features status --tops-id UUID --json` when the SSFV maintenance grant and coordinator binding are available
 15. `go run ./cmd/qxctl knowledge lifecycle apply-status --tops-id UUID --json` when exact lifecycle grants and coordinator binding are available
+
+SCV agent-operated schemas, profile preparation, artifact retention and run recovery are governed by `knowledge/scv/AGENT-WORKFLOWS.md`. Read the selected installation's exact schemas/templates, supply caller-owned requirements, and use retained operation identities for status/recovery. SCV `--json` failures use `tools/qxctl/ERRORS.md`; successful owner result protocols are preserved.

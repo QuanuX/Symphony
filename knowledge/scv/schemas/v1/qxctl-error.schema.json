@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:qxctl:error:v1",
+  "title": "qxctl structured failure envelope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "outcome",
+    "command_id",
+    "error",
+    "exit_code"
+  ],
+  "properties": {
+    "protocol": {
+      "const": "symphony.qxctl.error.v1"
+    },
+    "outcome": {
+      "const": "error"
+    },
+    "command_id": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^qxcmd:symphony:"
+        }
+      ]
+    },
+    "error": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "message",
+            "engine_code"
+          ],
+          "properties": {
+            "code": {
+              "const": "invalid_arguments"
+            },
+            "message": {
+              "const": "Select a command and supply valid arguments; use its --help for accepted flags."
+            },
+            "engine_code": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "message",
+            "engine_code"
+          ],
+          "properties": {
+            "code": {
+              "const": "engine_rejected"
+            },
+            "message": {
+              "const": "The selected engine rejected the request."
+            },
+            "engine_code": {
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "enum": [
+                    "argument.count",
+                    "argument.unsupported",
+                    "internal.failure",
+                    "operation.unsupported",
+                    "request.deadline",
+                    "request.deadline_exceeded",
+                    "corpus.invalid",
+                    "interpretation.invalid",
+                    "knowledge.invalid",
+                    "knowledge.evaluation_limit",
+                    "scv.fields",
+                    "scv.type",
+                    "scv.bounds",
+                    "scv.identity",
+                    "scv.locator",
+                    "scv.digest",
+                    "scv.domain",
+                    "scv.duplicate",
+                    "scv.identity_change",
+                    "scv.generation",
+                    "scv.protocol",
+                    "scv.stale_state",
+                    "scv.plan_mismatch",
+                    "scv.time",
+                    "scv.capture_size",
+                    "scv.capture_encoding",
+                    "scv.capture_digest",
+                    "scv.completeness"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "message",
+            "engine_code"
+          ],
+          "properties": {
+            "code": {
+              "const": "command_failed"
+            },
+            "message": {
+              "const": "The command could not complete; no successful result is available."
+            },
+            "engine_code": {
+              "type": "null"
+            }
+          }
+        }
+      ]
+    },
+    "exit_code": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 125
+    }
+  },
+  "description": "Safe bounded failure projection. Runtime uses a finite allowlist for engine codes and fixed messages; successful specialized evidence remains unchanged."
+}

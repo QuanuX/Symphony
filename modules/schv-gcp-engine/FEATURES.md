@@ -11,7 +11,7 @@
         {
           "applicability": "applicable",
           "reason": "SCV owns source, native knowledge and bounded composition meaning.",
-          "reference": "knowledge/scv/INTERPRETATION.md",
+          "reference": "knowledge/scv/AGENT-WORKFLOWS.md",
           "vector": "scv"
         },
         {
@@ -37,7 +37,8 @@
       "evidence": [
         "The module CMake and common SCV implementation expose independently installable exact-domain operation dispatch.",
         "Owner and installed-process regressions exercise source lineage, bounded evidence and reproducible knowledge; execution results belong to the change closure.",
-        "Corpus producer, consumer and installed-process cases exercise immutable snapshot coverage, retained complete evidence, source qualification, explicit selection and exact-version compatibility. Profile and connection tests trace exact mapping replay, scoped checks, changed inputs and rejected forged results."
+        "Corpus producer, consumer and installed-process cases exercise immutable snapshot coverage, retained complete evidence, source qualification, explicit selection and exact-version compatibility. Profile and connection tests trace exact mapping replay, scoped checks, changed inputs and rejected forged results.",
+        "Profile preparation and installed schema discovery are checked without a repository; retained qxctl workflows preserve native owner validation and exact installation provenance."
       ],
       "feature_id": "ssfv:symphony:schv-gcp-engine",
       "how": "Uses shared C++ bounded JSON mechanics, exact source/capture digests, explicit interpretation policy and qualified support paths through a separately packaged process.",
@@ -67,7 +68,7 @@
       ],
       "owner_contract": "modules/schv-gcp-engine/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",
-      "record_version": 2,
+      "record_version": 3,
       "relationships": [
         {
           "rationale": "Statically links the authority-free common process, digest and temporal mechanics.",
@@ -77,8 +78,8 @@
       ],
       "source_scope": "modules/schv-gcp-engine",
       "status": "experimental",
-      "title": "Symphony Cloud Hyperscalers Vector \u2014 Google Cloud source-knowledge engine",
-      "what": "Google Cloud-native source, offering, service, version and constraint knowledge. Provides independently installable source planning, validation, capture import, interpretation, graph, query, difference and explanation operations. The additive maintained-corpus profile provides capture indexes, immutable member snapshots, explicit freshness-qualified selection and corpus differences. Reusable authored interpretation profiles, exact scoped connection checks and retained-result reassessment preserve their supporting evidence and uncertainty.",
+      "title": "Symphony Cloud Hyperscalers Vector — Google Cloud source-knowledge engine",
+      "what": "Google Cloud-native source, offering, service, version and constraint knowledge. Provides independently installable source planning, validation, capture import, interpretation, graph, query, difference and explanation operations. The additive maintained-corpus profile provides capture indexes, immutable member snapshots, explicit freshness-qualified selection and corpus differences. Reusable authored interpretation profiles, exact scoped connection checks and retained-result reassessment preserve their supporting evidence and uncertainty. Native profile preparation seals explicit authored mappings; receipt-owned schemas and templates support exact agent input discovery.",
       "when": "Runs on explicit bounded local process or exact qxctl invocation, never as a continuously resident workload dependency.",
       "where": "An exact versioned inactive-undocked installation; supplied source and graph data remain private installation inputs.",
       "who": "Any caller using owner-authorized local execution; protected state changes additionally require the storage adapter authorization circuit.",
@@ -86,6 +87,5 @@
     }
   ]
 }
-
 ```
 <!-- symphony:ssfv:feature-file:v1:end -->

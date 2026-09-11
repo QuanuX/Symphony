@@ -92,6 +92,19 @@ void test_provider_interpretation_producer() {
     const auto assessed = evaluate(Json::array({result}));
     require(outcome(assessed).at("status") == "satisfied" && outcome(assessed).at("comparison") == true, "documented check matches");
 }
+void test_profile_preparation_preserves_authored_mapping() {
+    const auto expected = profile(); auto draft = expected; draft.erase("digest");
+    const auto prepared = call("profile_prepare", {{"profile", draft}});
+    require(prepared == expected, "preparation preserves exact author mapping and computes native seal");
+    require(interpret(capture(), prepared).at("extractions")[0].at("status") == "matched", "prepared artifact feeds existing interpretation");
+    auto wrong = draft; wrong["rules"][0]["statement_kind"] = "publisher_verified";
+    rejects([&] { static_cast<void>(call("profile_prepare", {{"profile", wrong}})); });
+    wrong = draft; wrong["rules"][0]["scope"] = Json::array();
+    rejects([&] { static_cast<void>(call("profile_prepare", {{"profile", wrong}})); });
+    rejects([&] { static_cast<void>(call("profile_prepare", {{"profile", expected}})); });
+    rejects([&] { static_cast<void>(call("profile_prepare", {{"profile", draft}}, "schv-gcp")); });
+    require(call("profile_prepare", {{"profile", draft}}, "scev-cf") == expected, "matching leaf prepares without invented capture");
+}
 void test_profile_enumeration_is_deterministic() {
     const auto a = capture(), b = capture("Scope: fixture\nLimit: 20 units\n", "other");
     const auto p = profile(), q = profile(Json::array({rule("other-limit")}), "other");
@@ -298,6 +311,7 @@ void test_bounds_deadline_and_real_request() {
 int main() {
     const std::vector<std::pair<std::string, std::function<void()>>> tests = {
         {"provider_interpretation_producer", test_provider_interpretation_producer},
+        {"profile_preparation_preserves_authored_mapping", test_profile_preparation_preserves_authored_mapping},
         {"profile_enumeration_is_deterministic", test_profile_enumeration_is_deterministic},
         {"profile_identity_is_unique_within_each_selection", test_profile_identity_is_unique_within_each_selection},
         {"context_missing_and_ambiguity_remain_unresolved", test_context_missing_and_ambiguity_remain_unresolved},

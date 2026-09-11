@@ -10554,3 +10554,133 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: private reproducible interpretation and connection evidence
 - notes: Does not prove complete provider expertise or runtime connectivity, select a topology or graph head, or grant provider authority.
 - status: canonical
+
+#### SCV Agent Operating Workflow Contract v1
+- path: `knowledge/scv/AGENT-WORKFLOWS.md`
+- title: SCV Agent Operating Workflow Contract v1
+- surface_type: canonical contract companion
+- truth_role: current owner-declared bounded agent operating contract
+- owner: SCV and qxctl maintainers
+- scope: Exact installed schemas, native profile preparation, immutable artifact provenance, structured diagnostics and recoverable evidence runs.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible evidence and agent authoring inputs
+- notes: Does not infer provider facts, grant authority, select a topology or publish private evidence.
+- status: canonical
+
+#### qxctl Structured SCV Failure Contract v1
+- path: `tools/qxctl/ERRORS.md`
+- title: qxctl Structured SCV Failure Contract v1
+- surface_type: canonical contract companion
+- truth_role: current owner-declared bounded agent operating contract
+- owner: qxctl maintainers
+- scope: Exact installed schemas, native profile preparation, immutable artifact provenance, structured diagnostics and recoverable evidence runs.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible evidence and agent authoring inputs
+- notes: Does not infer provider facts, grant authority, select a topology or publish private evidence.
+- status: canonical
+
+#### SCV Agent Interface administration.schema.json
+- path: `knowledge/scv/schemas/v1/administration.schema.json`
+- title: SCV Agent Interface administration.schema.json
+- surface_type: JSON Schema and protocol catalog contract
+- truth_role: current owner-declared bounded agent operating contract
+- owner: SCV and qxctl maintainers
+- scope: Exact installed schemas, native profile preparation, immutable artifact provenance, structured diagnostics and recoverable evidence runs.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible evidence and agent authoring inputs
+- notes: Does not infer provider facts, grant authority, select a topology or publish private evidence.
+- status: canonical
+
+#### SCV Agent Interface engine-descriptor-v2.schema.json
+- path: `knowledge/scv/schemas/v1/engine-descriptor-v2.schema.json`
+- title: SCV Agent Interface engine-descriptor-v2.schema.json
+- surface_type: JSON Schema and protocol catalog contract
+- truth_role: current owner-declared bounded agent operating contract
+- owner: SCV and qxctl maintainers
+- scope: Exact installed schemas, native profile preparation, immutable artifact provenance, structured diagnostics and recoverable evidence runs.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible evidence and agent authoring inputs
+- notes: Does not infer provider facts, grant authority, select a topology or publish private evidence.
+- status: canonical
+
+#### SCV Agent Interface profile-preparation.schema.json
+- path: `knowledge/scv/schemas/v1/profile-preparation.schema.json`
+- title: SCV Agent Interface profile-preparation.schema.json
+- surface_type: JSON Schema and protocol catalog contract
+- truth_role: current owner-declared bounded agent operating contract
+- owner: SCV and qxctl maintainers
+- scope: Exact installed schemas, native profile preparation, immutable artifact provenance, structured diagnostics and recoverable evidence runs.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible evidence and agent authoring inputs
+- notes: Does not infer provider facts, grant authority, select a topology or publish private evidence.
+- status: canonical
+
+#### SCV Agent Interface qxctl-error.schema.json
+- path: `knowledge/scv/schemas/v1/qxctl-error.schema.json`
+- title: SCV Agent Interface qxctl-error.schema.json
+- surface_type: JSON Schema and protocol catalog contract
+- truth_role: current owner-declared bounded agent operating contract
+- owner: SCV and qxctl maintainers
+- scope: Exact installed schemas, native profile preparation, immutable artifact provenance, structured diagnostics and recoverable evidence runs.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible evidence and agent authoring inputs
+- notes: Does not infer provider facts, grant authority, select a topology or publish private evidence.
+- status: canonical
+
+#### SCV Agent Interface schema-catalog.json
+- path: `knowledge/scv/schemas/v1/schema-catalog.json`
+- title: SCV Agent Interface schema-catalog.json
+- surface_type: JSON Schema and protocol catalog contract
+- truth_role: current owner-declared bounded agent operating contract
+- owner: SCV and qxctl maintainers
+- scope: Exact installed schemas, native profile preparation, immutable artifact provenance, structured diagnostics and recoverable evidence runs.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible evidence and agent authoring inputs
+- notes: Does not infer provider facts, grant authority, select a topology or publish private evidence.
+- status: canonical
+
+#### SCV Agent Interface schema-discovery.schema.json
+- path: `knowledge/scv/schemas/v1/schema-discovery.schema.json`
+- title: SCV Agent Interface schema-discovery.schema.json
+- surface_type: JSON Schema and protocol catalog contract
+- truth_role: current owner-declared bounded agent operating contract
+- owner: SCV and qxctl maintainers
+- scope: Exact installed schemas, native profile preparation, immutable artifact provenance, structured diagnostics and recoverable evidence runs.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible evidence and agent authoring inputs
+- notes: Does not infer provider facts, grant authority, select a topology or publish private evidence.
+- status: canonical
+
+#### SCV Agent Interface scv-artifact.schema.json
+- path: `knowledge/scv/schemas/v1/scv-artifact.schema.json`
+- title: SCV Agent Interface scv-artifact.schema.json
+- surface_type: JSON Schema and protocol catalog contract
+- truth_role: current owner-declared bounded agent operating contract
+- owner: SCV and qxctl maintainers
+- scope: Exact installed schemas, native profile preparation, immutable artifact provenance, structured diagnostics and recoverable evidence runs.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible evidence and agent authoring inputs
+- notes: Does not infer provider facts, grant authority, select a topology or publish private evidence.
+- status: canonical
+
+#### SCV Agent Interface scv-workflow.schema.json
+- path: `knowledge/scv/schemas/v1/scv-workflow.schema.json`
+- title: SCV Agent Interface scv-workflow.schema.json
+- surface_type: JSON Schema and protocol catalog contract
+- truth_role: current owner-declared bounded agent operating contract
+- owner: SCV and qxctl maintainers
+- scope: Exact installed schemas, native profile preparation, immutable artifact provenance, structured diagnostics and recoverable evidence runs.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible evidence and agent authoring inputs
+- notes: Does not infer provider facts, grant authority, select a topology or publish private evidence.
+- status: canonical

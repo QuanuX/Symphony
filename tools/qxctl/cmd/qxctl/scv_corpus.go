@@ -19,15 +19,15 @@ const corpusMaxAncestry = 128
 const corpusMaxVerifiedObjects = 4096
 
 func newSCVCorpusCommand() *cobra.Command {
-	group := structural("corpus", fmt.Errorf("corpus subcommand is required: acquire, import, recover, inspect, export, diff"))
-	for _, leaf := range []string{"acquire", "import", "recover", "inspect", "export", "diff"} {
+	group := structural("corpus", fmt.Errorf("corpus subcommand is required: acquire, import, recover, inspect, query, export, diff"))
+	for _, leaf := range []string{"acquire", "import", "recover", "inspect", "query", "export", "diff"} {
 		options := scvOptions{}
 		var root string
 		child := &cobra.Command{Use: leaf, Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error { return runSCVCorpus(leaf, options, root) }}
 		scvFlagsVersion(child, &options, "0.2.0-dev")
 		child.Flags().StringVar(&root, "corpus-root", "", "explicit owned local immutable evidence root")
 		child.Flags().StringVar(&options.topsID, "tops-id", "", "exact TOPS UUID for local evidence namespace")
-		interaction := map[string]string{"acquire": "invoke", "import": "invoke", "recover": "recover", "inspect": "inspect", "export": "query", "diff": "validate"}[leaf]
+		interaction := map[string]string{"acquire": "invoke", "import": "invoke", "recover": "recover", "inspect": "inspect", "query": "query", "export": "query", "diff": "validate"}[leaf]
 		spec := commandSpec("scv.corpus."+leaf, featureSCVAdministration, interaction)
 		spec.Mutability = "read_only"
 		if leaf == "acquire" || leaf == "import" || leaf == "recover" || leaf == "diff" {
@@ -38,6 +38,8 @@ func newSCVCorpusCommand() *cobra.Command {
 		switch leaf {
 		case "inspect":
 			output = "symphony.scv.corpus.v1"
+		case "query":
+			output = "symphony.scv.corpus-query.v1"
 		case "export":
 			output = "symphony.qxctl.scv-corpus-export.v1"
 		case "diff":
@@ -50,7 +52,7 @@ func newSCVCorpusCommand() *cobra.Command {
 			bindings["source_status"] = "inspect"
 			bindings["capture_import"] = "invoke"
 		}
-		if leaf == "export" {
+		if leaf == "export" || leaf == "query" {
 			bindings["corpus_query"] = "query"
 		}
 		if leaf == "diff" {
@@ -90,8 +92,8 @@ type corpusRunner struct {
 }
 
 func newCorpusRunner(options scvOptions) (*corpusRunner, error) {
-	if options.version != "0.2.0-dev" && options.version != "0.3.0-dev" {
-		return nil, fmt.Errorf("corpus commands require exact supported 0.2.0-dev or 0.3.0-dev engine")
+	if options.version != "0.2.0-dev" && options.version != "0.3.0-dev" && options.version != "0.4.0-dev" {
+		return nil, fmt.Errorf("corpus commands require exact supported 0.2.0-dev, 0.3.0-dev or 0.4.0-dev engine")
 	}
 	installed, err := knowledgeengine.InspectSCVDomain(options.domain, options.prefix, options.version)
 	if err != nil {
@@ -441,7 +443,7 @@ func (r *corpusRunner) execute(store scvcorpus.Store, operation string, input ma
 			if err := exactCorpusFields(input, "snapshot_digest"); err != nil {
 				return err
 			}
-		} else if operation == "export" {
+		} else if operation == "export" || operation == "query" {
 			if err := exactCorpusFields(input, "snapshot_digest", "member_ids", "selection", "query_time", "max_age_seconds"); err != nil {
 				return err
 			}
@@ -463,6 +465,10 @@ func (r *corpusRunner) execute(store scvcorpus.Store, operation string, input ma
 		query, err := r.owner("corpus_query", map[string]any{"corpus": snapshot, "member_ids": input["member_ids"], "selection": input["selection"], "query_time": input["query_time"], "max_age_seconds": input["max_age_seconds"]})
 		if err != nil {
 			return err
+		}
+		if operation == "query" {
+			result = query
+			return nil
 		}
 		value, err := scvcorpus.Decode(query)
 		if err != nil {

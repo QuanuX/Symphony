@@ -1,0 +1,668 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:qxctl:scv-schema-discovery:v1",
+  "title": "Receipt-bound SCV schema discovery result shapes",
+  "$defs": {
+    "list": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "domain",
+        "engine_version",
+        "installation",
+        "catalog_digest",
+        "limits",
+        "limitations",
+        "owner_companions",
+        "digest",
+        "entries"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-schema-list.v1"
+        },
+        "domain": {
+          "type": "string"
+        },
+        "engine_version": {
+          "const": "0.4.0-dev"
+        },
+        "installation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "Role",
+            "ModuleID",
+            "EngineID",
+            "Version",
+            "Prefix",
+            "ReceiptPath",
+            "ReceiptDigest",
+            "ReceiptProtocol",
+            "ExecutablePath",
+            "ExecutableDigest"
+          ],
+          "properties": {
+            "Role": {
+              "type": "string"
+            },
+            "ModuleID": {
+              "type": "string"
+            },
+            "EngineID": {
+              "type": "string"
+            },
+            "Version": {
+              "type": "string"
+            },
+            "Prefix": {
+              "type": "string"
+            },
+            "ReceiptPath": {
+              "type": "string"
+            },
+            "ReceiptDigest": {
+              "type": "string"
+            },
+            "ReceiptProtocol": {
+              "type": "string"
+            },
+            "ExecutablePath": {
+              "type": "string"
+            },
+            "ExecutableDigest": {
+              "type": "string"
+            }
+          }
+        },
+        "catalog_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "process_request_bytes",
+            "process_response_bytes",
+            "json_depth",
+            "json_values",
+            "string_bytes",
+            "capture_body_bytes",
+            "selected_captures",
+            "claims",
+            "profile_rules",
+            "profiles",
+            "connections",
+            "connection_checks",
+            "corpus_members",
+            "corpus_export_captures"
+          ],
+          "properties": {
+            "process_request_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "process_response_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "json_depth": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "json_values": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "string_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "capture_body_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "selected_captures": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "claims": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "profile_rules": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "profiles": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "connections": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "connection_checks": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "corpus_members": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "corpus_export_captures": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "owner_companions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "digest"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            }
+          }
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "protocol",
+              "file",
+              "fragment",
+              "kind",
+              "operations",
+              "template_available"
+            ],
+            "properties": {
+              "protocol": {
+                "type": "string"
+              },
+              "file": {
+                "type": "string"
+              },
+              "fragment": {
+                "type": "string"
+              },
+              "kind": {
+                "enum": [
+                  "input",
+                  "output",
+                  "artifact"
+                ]
+              },
+              "operations": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "template_available": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    },
+    "show": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "domain",
+        "engine_version",
+        "installation",
+        "catalog_digest",
+        "limits",
+        "limitations",
+        "owner_companions",
+        "digest",
+        "requested_protocol",
+        "schema_file",
+        "schema_fragment",
+        "schema_digest",
+        "document",
+        "reference_documents"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-schema-show.v1"
+        },
+        "domain": {
+          "type": "string"
+        },
+        "engine_version": {
+          "const": "0.4.0-dev"
+        },
+        "installation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "Role",
+            "ModuleID",
+            "EngineID",
+            "Version",
+            "Prefix",
+            "ReceiptPath",
+            "ReceiptDigest",
+            "ReceiptProtocol",
+            "ExecutablePath",
+            "ExecutableDigest"
+          ],
+          "properties": {
+            "Role": {
+              "type": "string"
+            },
+            "ModuleID": {
+              "type": "string"
+            },
+            "EngineID": {
+              "type": "string"
+            },
+            "Version": {
+              "type": "string"
+            },
+            "Prefix": {
+              "type": "string"
+            },
+            "ReceiptPath": {
+              "type": "string"
+            },
+            "ReceiptDigest": {
+              "type": "string"
+            },
+            "ReceiptProtocol": {
+              "type": "string"
+            },
+            "ExecutablePath": {
+              "type": "string"
+            },
+            "ExecutableDigest": {
+              "type": "string"
+            }
+          }
+        },
+        "catalog_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "process_request_bytes",
+            "process_response_bytes",
+            "json_depth",
+            "json_values",
+            "string_bytes",
+            "capture_body_bytes",
+            "selected_captures",
+            "claims",
+            "profile_rules",
+            "profiles",
+            "connections",
+            "connection_checks",
+            "corpus_members",
+            "corpus_export_captures"
+          ],
+          "properties": {
+            "process_request_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "process_response_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "json_depth": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "json_values": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "string_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "capture_body_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "selected_captures": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "claims": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "profile_rules": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "profiles": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "connections": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "connection_checks": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "corpus_members": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "corpus_export_captures": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "owner_companions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "digest"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            }
+          }
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "requested_protocol": {
+          "type": "string"
+        },
+        "schema_file": {
+          "type": "string"
+        },
+        "schema_fragment": {
+          "type": "string"
+        },
+        "schema_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "document": {
+          "type": "object"
+        },
+        "reference_documents": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "template": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "domain",
+        "engine_version",
+        "installation",
+        "catalog_digest",
+        "limits",
+        "limitations",
+        "owner_companions",
+        "digest",
+        "requested_protocol",
+        "schema_file",
+        "schema_fragment",
+        "schema_digest",
+        "input_template",
+        "required_inputs",
+        "template_is_evidence"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-schema-template.v1"
+        },
+        "domain": {
+          "type": "string"
+        },
+        "engine_version": {
+          "const": "0.4.0-dev"
+        },
+        "installation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "Role",
+            "ModuleID",
+            "EngineID",
+            "Version",
+            "Prefix",
+            "ReceiptPath",
+            "ReceiptDigest",
+            "ReceiptProtocol",
+            "ExecutablePath",
+            "ExecutableDigest"
+          ],
+          "properties": {
+            "Role": {
+              "type": "string"
+            },
+            "ModuleID": {
+              "type": "string"
+            },
+            "EngineID": {
+              "type": "string"
+            },
+            "Version": {
+              "type": "string"
+            },
+            "Prefix": {
+              "type": "string"
+            },
+            "ReceiptPath": {
+              "type": "string"
+            },
+            "ReceiptDigest": {
+              "type": "string"
+            },
+            "ReceiptProtocol": {
+              "type": "string"
+            },
+            "ExecutablePath": {
+              "type": "string"
+            },
+            "ExecutableDigest": {
+              "type": "string"
+            }
+          }
+        },
+        "catalog_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "process_request_bytes",
+            "process_response_bytes",
+            "json_depth",
+            "json_values",
+            "string_bytes",
+            "capture_body_bytes",
+            "selected_captures",
+            "claims",
+            "profile_rules",
+            "profiles",
+            "connections",
+            "connection_checks",
+            "corpus_members",
+            "corpus_export_captures"
+          ],
+          "properties": {
+            "process_request_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "process_response_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "json_depth": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "json_values": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "string_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "capture_body_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "selected_captures": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "claims": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "profile_rules": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "profiles": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "connections": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "connection_checks": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "corpus_members": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "corpus_export_captures": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "owner_companions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "digest"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            }
+          }
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "requested_protocol": {
+          "type": "string"
+        },
+        "schema_file": {
+          "type": "string"
+        },
+        "schema_fragment": {
+          "type": "string"
+        },
+        "schema_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "input_template": {
+          "type": "object"
+        },
+        "required_inputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "template_is_evidence": {
+          "const": false
+        }
+      }
+    }
+  }
+}

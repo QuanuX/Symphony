@@ -141,6 +141,25 @@ Json token_value(const Json& extractor, const std::string& token_text) {
     typed_value(value);
     return value;
 }
+Json prepare_profile(const Json& payload, const std::string& domain, const engine::Request& request) {
+    fields(payload, {"profile"});
+    const auto& draft = payload.at("profile");
+    fields(draft, {"protocol", "profile_id", "profile_version", "provider_id", "source_id", "locator_id", "media_types", "authored_by", "rationale", "rules"});
+    const auto profile = sealed(draft);
+    std::set<std::string> claim_ids;
+    std::size_t rule_count = 0;
+    const auto claims = validate_profile(profile, claim_ids, rule_count);
+    if (domain != "scv" && domain != "schv" && domain != "scev" &&
+        domain != "schv-" + text(profile, "provider_id") && domain != "scev-" + text(profile, "provider_id"))
+        invalid("profile provider differs from selected domain");
+    // This validates metadata and dependency structure without asserting an
+    // extraction match. Family/source binding is checked when captures exist.
+    static_cast<void>(core(request, "knowledge_interpret", {{"captures", Json::array()}, {"claims", claims},
+        {"interpreter_version", "profile-preparation-v1"}, {"selection_policy", {{"policy_id", "profile-structure-validation"},
+            {"max_age_seconds", nullptr}, {"partial_capture", "exclude"}, {"allowed_statement_kinds", Json::array({
+                "documented_fact", "requirement", "recommendation", "observation", "user_assertion", "inference", "hypothesis"})}}}}, domain));
+    return profile;
+}
 Json interpretation(const Json& payload, const std::string& domain, const engine::Request& request) {
     fields(payload, {"captures", "profiles", "bindings", "selection_policy"});
     array(payload.at("captures"), 16); array(payload.at("profiles"), 16); array(payload.at("bindings"), 16);
@@ -472,7 +491,8 @@ Json reassess(const Json& payload, const std::string& domain, const engine::Requ
 }
 Json handle_interpretation(const engine::Request& request, const std::string& domain) {
     deadline(request); Json result;
-    if (request.operation == "provider_interpret") result = interpretation(request.payload, domain, request);
+    if (request.operation == "profile_prepare") result = prepare_profile(request.payload, domain, request);
+    else if (request.operation == "provider_interpret") result = interpretation(request.payload, domain, request);
     else if (request.operation == "connection_evaluate") result = evaluate(request.payload, domain, request);
     else if (request.operation == "connection_reassess") result = reassess(request.payload, domain, request);
     else throw engine::Error("operation.unsupported", "unsupported provider interpretation operation", 4);

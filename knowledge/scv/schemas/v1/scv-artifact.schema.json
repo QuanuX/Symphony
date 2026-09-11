@@ -1,0 +1,543 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:qxctl:scv-artifact:v1",
+  "title": "Retained SCV owner artifact records and lifecycle inputs v1",
+  "$defs": {
+    "ImportInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "input",
+        "result"
+      ],
+      "properties": {
+        "operation": {
+          "enum": [
+            "profile_prepare",
+            "provider_interpret",
+            "connection_evaluate",
+            "connection_reassess",
+            "knowledge_interpret"
+          ]
+        },
+        "input": {
+          "type": "object"
+        },
+        "result": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "profile_prepare"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "profile-preparation.schema.json#/$defs/input"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "interpretation-profile.schema.json"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "provider_interpret"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "provider-interpretation.schema.json#/$defs/providerInterpretInput"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "provider-interpretation.schema.json#/$defs/providerInterpretResult"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "connection_evaluate"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "connection-operation.schema.json#/$defs/connectionEvaluateInput"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "connection-operation.schema.json#/$defs/connectionEvaluateResult"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "connection_reassess"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "connection-operation.schema.json#/$defs/connectionReassessInput"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "connection-operation.schema.json#/$defs/connectionReassessResult"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "knowledge_interpret"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "interpretation-input.schema.json"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "knowledge-graph.schema.json#/$defs/knowledge"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ShowInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_digest"
+      ],
+      "properties": {
+        "record_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "ListInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "after_digest",
+        "limit"
+      ],
+      "properties": {
+        "after_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 128
+        }
+      }
+    },
+    "Record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "kind",
+        "operation",
+        "installation",
+        "input",
+        "artifact",
+        "artifact_digest",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-artifact.v1"
+        },
+        "kind": {
+          "enum": [
+            "profile",
+            "interpretation",
+            "evaluation",
+            "reassessment",
+            "knowledge"
+          ]
+        },
+        "operation": {
+          "enum": [
+            "profile_prepare",
+            "provider_interpret",
+            "connection_evaluate",
+            "connection_reassess",
+            "knowledge_interpret"
+          ]
+        },
+        "installation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "Role",
+            "ModuleID",
+            "EngineID",
+            "Version",
+            "Prefix",
+            "ReceiptPath",
+            "ReceiptDigest",
+            "ReceiptProtocol",
+            "ExecutablePath",
+            "ExecutableDigest"
+          ],
+          "properties": {
+            "Role": {
+              "type": "string"
+            },
+            "ModuleID": {
+              "type": "string"
+            },
+            "EngineID": {
+              "type": "string"
+            },
+            "Version": {
+              "type": "string"
+            },
+            "Prefix": {
+              "type": "string"
+            },
+            "ReceiptPath": {
+              "type": "string"
+            },
+            "ReceiptDigest": {
+              "type": "string"
+            },
+            "ReceiptProtocol": {
+              "type": "string"
+            },
+            "ExecutablePath": {
+              "type": "string"
+            },
+            "ExecutableDigest": {
+              "type": "string"
+            }
+          }
+        },
+        "input": {
+          "type": "object"
+        },
+        "artifact": {
+          "type": "object"
+        },
+        "artifact_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "profile_prepare"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "profile-preparation.schema.json#/$defs/input"
+              },
+              "artifact": {
+                "$ref": "interpretation-profile.schema.json"
+              },
+              "kind": {
+                "const": "profile"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "provider_interpret"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "provider-interpretation.schema.json#/$defs/providerInterpretInput"
+              },
+              "artifact": {
+                "$ref": "provider-interpretation.schema.json#/$defs/providerInterpretResult"
+              },
+              "kind": {
+                "const": "interpretation"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "connection_evaluate"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "connection-operation.schema.json#/$defs/connectionEvaluateInput"
+              },
+              "artifact": {
+                "$ref": "connection-operation.schema.json#/$defs/connectionEvaluateResult"
+              },
+              "kind": {
+                "const": "evaluation"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "connection_reassess"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "connection-operation.schema.json#/$defs/connectionReassessInput"
+              },
+              "artifact": {
+                "$ref": "connection-operation.schema.json#/$defs/connectionReassessResult"
+              },
+              "kind": {
+                "const": "reassessment"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "knowledge_interpret"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "interpretation-input.schema.json"
+              },
+              "artifact": {
+                "$ref": "knowledge-graph.schema.json#/$defs/knowledge"
+              },
+              "kind": {
+                "const": "knowledge"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ListResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "records",
+        "next_after_digest",
+        "validation"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-artifact-list.v1"
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "operation",
+              "installation",
+              "artifact_digest",
+              "digest"
+            ],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "profile",
+                  "interpretation",
+                  "evaluation",
+                  "reassessment",
+                  "knowledge"
+                ]
+              },
+              "operation": {
+                "enum": [
+                  "profile_prepare",
+                  "provider_interpret",
+                  "connection_evaluate",
+                  "connection_reassess",
+                  "knowledge_interpret"
+                ]
+              },
+              "installation": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "Role",
+                  "ModuleID",
+                  "EngineID",
+                  "Version",
+                  "Prefix",
+                  "ReceiptPath",
+                  "ReceiptDigest",
+                  "ReceiptProtocol",
+                  "ExecutablePath",
+                  "ExecutableDigest"
+                ],
+                "properties": {
+                  "Role": {
+                    "type": "string"
+                  },
+                  "ModuleID": {
+                    "type": "string"
+                  },
+                  "EngineID": {
+                    "type": "string"
+                  },
+                  "Version": {
+                    "type": "string"
+                  },
+                  "Prefix": {
+                    "type": "string"
+                  },
+                  "ReceiptPath": {
+                    "type": "string"
+                  },
+                  "ReceiptDigest": {
+                    "type": "string"
+                  },
+                  "ReceiptProtocol": {
+                    "type": "string"
+                  },
+                  "ExecutablePath": {
+                    "type": "string"
+                  },
+                  "ExecutableDigest": {
+                    "type": "string"
+                  }
+                }
+              },
+              "artifact_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            }
+          },
+          "maxItems": 128
+        },
+        "next_after_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "validation": {
+          "const": "sealed_envelopes_only"
+        }
+      }
+    }
+  },
+  "description": "Input protocol IDs select named definitions; request payloads have no protocol field. Import with result:null invokes and retains the exact owner result; non-null result must match owner replay. The record digest binds native artifact digest, exact owner receipt/executable and invocation input. List validates envelopes without owner replay; show/import replay exact owners. No authority head is changed. Listing is digest-ordered pagination over the current directory, not a snapshot; concurrent inserts before a cursor require a restarted scan. Native shapes are selected by operation, then owners enforce semantic validity and exact replay."
+}

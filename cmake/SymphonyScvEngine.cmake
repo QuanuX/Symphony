@@ -20,6 +20,16 @@ set(SCV_EXECUTABLE "symphony-${SYMPHONY_SCV_DOMAIN}")
 set(SCV_VERSION "${PROJECT_VERSION}-dev")
 set(SCV_RUNTIME "libexec/symphony/${SCV_MODULE}/${SCV_VERSION}")
 set(SCV_DOCS "share/doc/symphony/${SCV_MODULE}/${SCV_VERSION}")
+set(SCV_SCHEMAS "share/symphony/schemas/${SCV_MODULE}/${SCV_VERSION}")
+file(GLOB SCV_SCHEMA_FILES CONFIGURE_DEPENDS "${SYMPHONY_REPOSITORY_ROOT}/knowledge/scv/schemas/v1/*.schema.json")
+list(APPEND SCV_SCHEMA_FILES "${SYMPHONY_REPOSITORY_ROOT}/knowledge/scv/schemas/v1/schema-catalog.json")
+set(SCV_SCHEMA_OWNED "")
+set(SCV_SCHEMA_INSTALLED "")
+foreach(schema IN LISTS SCV_SCHEMA_FILES)
+    get_filename_component(schema_name "${schema}" NAME)
+    list(APPEND SCV_SCHEMA_OWNED "${SCV_SCHEMAS}/${schema_name}|regular")
+    list(APPEND SCV_SCHEMA_INSTALLED "${SCV_SCHEMAS}/${schema_name}")
+endforeach()
 set(SCV_LICENSES "share/licenses/symphony-${SCV_MODULE}/${SCV_VERSION}")
 
 if(NOT TARGET scv-domain-core)
@@ -62,6 +72,11 @@ endif()
 
 symphony_install_receipt_v2_preflight(RECEIPT_PATH "share/symphony/receipts/${SCV_MODULE}/${SCV_VERSION}/install-receipt.json")
 install(TARGETS ${SCV_EXECUTABLE} RUNTIME DESTINATION "${SCV_RUNTIME}")
+install(FILES ${SCV_SCHEMA_FILES} DESTINATION "${SCV_SCHEMAS}")
+install(FILES "${SYMPHONY_REPOSITORY_ROOT}/knowledge/scv/SOURCE-KNOWLEDGE.md"
+    "${SYMPHONY_REPOSITORY_ROOT}/knowledge/scv/CORPUS.md"
+    "${SYMPHONY_REPOSITORY_ROOT}/knowledge/scv/INTERPRETATION.md"
+    "${SYMPHONY_REPOSITORY_ROOT}/knowledge/scv/AGENT-WORKFLOWS.md" DESTINATION "${SCV_DOCS}")
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/INTENT.md" "${CMAKE_CURRENT_SOURCE_DIR}/MANIFEST.md"
     "${CMAKE_CURRENT_SOURCE_DIR}/INSTALL.md" "${CMAKE_CURRENT_SOURCE_DIR}/SKILL.md" "${CMAKE_CURRENT_SOURCE_DIR}/SPEC.md"
     DESTINATION "${SCV_DOCS}")
@@ -73,6 +88,9 @@ symphony_install_receipt_v2(
     ENGINE_ID "${SCV_EXECUTABLE}" PACKAGE_ID "${SCV_MODULE}" VERSION "${SCV_VERSION}"
     RECEIPT_PATH "share/symphony/receipts/${SCV_MODULE}/${SCV_VERSION}/install-receipt.json"
     OWNED_FILES
+        ${SCV_SCHEMA_OWNED}
+        "${SCV_DOCS}/SOURCE-KNOWLEDGE.md|regular" "${SCV_DOCS}/CORPUS.md|regular"
+        "${SCV_DOCS}/INTERPRETATION.md|regular" "${SCV_DOCS}/AGENT-WORKFLOWS.md|regular"
         "${SCV_RUNTIME}/${SCV_EXECUTABLE}|executable"
         "${SCV_DOCS}/INSTALL.md|regular" "${SCV_DOCS}/INTENT.md|regular" "${SCV_DOCS}/MANIFEST.md|regular"
         "${SCV_DOCS}/SKILL.md|regular" "${SCV_DOCS}/SPEC.md|regular"

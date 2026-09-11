@@ -83,6 +83,7 @@
         "engop:symphony:scev-cf.graph.query",
         "engop:symphony:scev-cf.inspect",
         "engop:symphony:scev-cf.knowledge.interpret",
+        "engop:symphony:scev-cf.profile.prepare",
         "engop:symphony:scev-cf.provider.interpret",
         "engop:symphony:scev-cf.provider.onboard",
         "engop:symphony:scev-cf.source.apply",
@@ -115,6 +116,7 @@
         "engop:symphony:scev.graph.query",
         "engop:symphony:scev.inspect",
         "engop:symphony:scev.knowledge.interpret",
+        "engop:symphony:scev.profile.prepare",
         "engop:symphony:scev.provider.interpret",
         "engop:symphony:scev.provider.onboard",
         "engop:symphony:scev.source.apply",
@@ -147,6 +149,7 @@
         "engop:symphony:schv-aws.graph.query",
         "engop:symphony:schv-aws.inspect",
         "engop:symphony:schv-aws.knowledge.interpret",
+        "engop:symphony:schv-aws.profile.prepare",
         "engop:symphony:schv-aws.provider.interpret",
         "engop:symphony:schv-aws.provider.onboard",
         "engop:symphony:schv-aws.source.apply",
@@ -179,6 +182,7 @@
         "engop:symphony:schv-azure.graph.query",
         "engop:symphony:schv-azure.inspect",
         "engop:symphony:schv-azure.knowledge.interpret",
+        "engop:symphony:schv-azure.profile.prepare",
         "engop:symphony:schv-azure.provider.interpret",
         "engop:symphony:schv-azure.provider.onboard",
         "engop:symphony:schv-azure.source.apply",
@@ -211,6 +215,7 @@
         "engop:symphony:schv-do.graph.query",
         "engop:symphony:schv-do.inspect",
         "engop:symphony:schv-do.knowledge.interpret",
+        "engop:symphony:schv-do.profile.prepare",
         "engop:symphony:schv-do.provider.interpret",
         "engop:symphony:schv-do.provider.onboard",
         "engop:symphony:schv-do.source.apply",
@@ -243,6 +248,7 @@
         "engop:symphony:schv-gcp.graph.query",
         "engop:symphony:schv-gcp.inspect",
         "engop:symphony:schv-gcp.knowledge.interpret",
+        "engop:symphony:schv-gcp.profile.prepare",
         "engop:symphony:schv-gcp.provider.interpret",
         "engop:symphony:schv-gcp.provider.onboard",
         "engop:symphony:schv-gcp.source.apply",
@@ -275,6 +281,7 @@
         "engop:symphony:schv.graph.query",
         "engop:symphony:schv.inspect",
         "engop:symphony:schv.knowledge.interpret",
+        "engop:symphony:schv.profile.prepare",
         "engop:symphony:schv.provider.interpret",
         "engop:symphony:schv.provider.onboard",
         "engop:symphony:schv.source.apply",
@@ -307,6 +314,7 @@
         "engop:symphony:scv.graph.query",
         "engop:symphony:scv.inspect",
         "engop:symphony:scv.knowledge.interpret",
+        "engop:symphony:scv.profile.prepare",
         "engop:symphony:scv.provider.interpret",
         "engop:symphony:scv.provider.onboard",
         "engop:symphony:scv.source.apply",
@@ -705,6 +713,54 @@
       "title": "qxctl command registry parity"
     },
     {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSCVArtifactsRejectSuppliedResultMismatchAndReplayOriginalOwner",
+            "TestSCVWorkflowReconstructsPendingStageBeforeReplay",
+            "TestSCVWorkflowRejectsIgnoredPolicyAndRelativeCorpusRoot",
+            "TestSCVWorkflowRejectsResealedCheckpointSubstitutionAndCorruptPayload",
+            "TestSCVWorkflowStatusRejectsMatchedUnrelatedCheckpointPair"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_workflow_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:scv.agent-workflow-retention",
+      "ipc_boundary": false,
+      "owner_component": "qxctl-scv-workflow-store",
+      "owner_contract": "knowledge/scv/AGENT-WORKFLOWS.md",
+      "producer_implementations": [
+        "tools/qxctl/cmd/qxctl/scv_workflow.go",
+        "tools/qxctl/internal/scvworkflow/filesystem_unix.go",
+        "tools/qxctl/internal/scvworkflow/rename_darwin.go",
+        "tools/qxctl/internal/scvworkflow/rename_linux.go",
+        "tools/qxctl/internal/scvworkflow/storage_unix.go",
+        "tools/qxctl/internal/scvworkflow/store.go"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestSCVWorkflowResumesEveryDurableBoundaryWithoutReplacingIntent"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_workflow_test.go"
+        },
+        {
+          "cases": [
+            "TestWorkflowImmutablePublicationPaginationAndConcurrentReuse",
+            "TestWorkflowJournalPinsPendingInputsAndCommittedResults",
+            "TestWorkflowRunLockIsBoundedAndRecoversAfterOwnerExit",
+            "TestWorkflowStorageRejectsAliasesCorruptionAndReadCreation"
+          ],
+          "path": "tools/qxctl/internal/scvworkflow/store_test.go"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "The qxctl evidence workflow pins caller intent, exact owner installations, corpus selections and native artifact provenance before advancing durable stages. Immutable content and validation records have separate digests. Status preserves its stated integrity scope; recovery reconstructs stage inputs and replays exact owner results, rejecting changed inputs, missing evidence and substituted checkpoints. Runs create no selected head, provider facts or permission.",
+      "status": "active",
+      "title": "Agent workflow recovery preserves exact caller intent and native evidence"
+    },
+    {
       "allowed_adapter_ids": [
         "adapter:symphony:symphony-scev-cf.v1",
         "adapter:symphony:symphony-scev.v1",
@@ -881,6 +937,12 @@
             "TestSCVConnectionConsumerRejectsResealedComparison"
           ],
           "path": "tools/qxctl/internal/knowledgeengine/scv_interpretation_test.go"
+        },
+        {
+          "cases": [
+            "TestSCVProfilePreparationConsumerRejectsSubstitution"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/scv_profile_test.go"
         }
       ],
       "invariant_id": "invariant:symphony:scv.profile-connection-provenance",
@@ -893,6 +955,7 @@
       "producer_regressions": [
         {
           "cases": [
+            "test_profile_preparation_preserves_authored_mapping",
             "test_provider_interpretation_producer"
           ],
           "path": "modules/scv-engine/tests/interpretation_test.cpp"
@@ -901,12 +964,13 @@
       "real_process_regressions": [
         {
           "cases": [
+            "test_profile_preparation_and_packaged_discovery_evidence",
             "test_provider_interpretation_connection_reassessment"
           ],
           "path": "modules/scv-engine/tests/installed_integration.py"
         }
       ],
-      "statement": "The C++ interpretation owner validates exact sealed profiles and capture bindings, retains qualified extraction findings and replays wrapped interpretations before evaluating caller-defined subject/scope/type/unit checks. Reassessment replays both retained results and distinguishes changed inputs and affected findings. Missing, stale, disputed or conditional support cannot become unqualified runtime compatibility, provider-wide contradiction or authority. Recomputed outer digests do not bypass nested replay.",
+      "statement": "The C++ interpretation owner validates exact sealed profiles and capture bindings, retains qualified extraction findings and replays wrapped interpretations before evaluating caller-defined subject/scope/type/unit checks. Reassessment replays both retained results and distinguishes changed inputs and affected findings. Missing, stale, disputed or conditional support cannot become unqualified runtime compatibility, provider-wide contradiction or authority. Recomputed outer digests do not bypass nested replay. Native profile preparation validates and seals exactly the authored draft without asserting source extraction or substituting fields.",
       "status": "active",
       "title": "Profile and connection results preserve replayable scoped evidence"
     },
@@ -1285,7 +1349,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v2",
-  "registry_digest": "sha256:5c2ee54acfe543b5c763aa9a89ac841add5cdd2b8ae575434583bf0a4a4b09d0",
+  "registry_digest": "sha256:5e0b32d3db604597d22fe7a6f3dc6b4acb34c5c5367a6ab70340a8b62bbbd48d",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

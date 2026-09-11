@@ -1,0 +1,1310 @@
+{
+  "protocol": "symphony.scv.schema-catalog.v1",
+  "engine_version": "0.4.0-dev",
+  "entries": [
+    {
+      "protocol": "symphony.knowledge.engine-descriptor.v2",
+      "file": "engine-descriptor-v2.schema.json",
+      "fragment": "",
+      "kind": "output",
+      "operations": [
+        "inspect"
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.error.v1",
+      "file": "qxctl-error.schema.json",
+      "fragment": "",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-acquire-input.v1",
+      "file": "administration.schema.json",
+      "fragment": "#/$defs/acquire",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "source": {
+          "protocol": "symphony.scv.source.v1",
+          "source_id": null,
+          "provider_id": null,
+          "family_id": null,
+          "publisher": null,
+          "authority_role": null,
+          "scope": null,
+          "locators": [],
+          "continuity_evidence": [],
+          "generation": null,
+          "predecessor_digest": null,
+          "digest": null
+        },
+        "locator_id": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-artifact-import-input.v1",
+      "file": "scv-artifact.schema.json",
+      "fragment": "#/$defs/ImportInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "operation": null,
+        "input": null,
+        "result": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-artifact-list-input.v1",
+      "file": "scv-artifact.schema.json",
+      "fragment": "#/$defs/ListInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "after_digest": null,
+        "limit": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-artifact-list.v1",
+      "file": "scv-artifact.schema.json",
+      "fragment": "#/$defs/ListResult",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-artifact-show-input.v1",
+      "file": "scv-artifact.schema.json",
+      "fragment": "#/$defs/ShowInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "record_digest": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-artifact.v1",
+      "file": "scv-artifact.schema.json",
+      "fragment": "#/$defs/Record",
+      "kind": "artifact",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-corpus-acquire-input.v1",
+      "file": "administration.schema.json",
+      "fragment": "#/$defs/corpusAcquire",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "operation_id": null,
+        "corpus_id": null,
+        "previous_snapshot_digest": null,
+        "members": []
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-corpus-diff-input.v1",
+      "file": "administration.schema.json",
+      "fragment": "#/$defs/corpusDiff",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "before_snapshot_digest": null,
+        "after_snapshot_digest": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-corpus-export-input.v1",
+      "file": "administration.schema.json",
+      "fragment": "#/$defs/corpusExport",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "snapshot_digest": null,
+        "member_ids": [],
+        "selection": null,
+        "query_time": null,
+        "max_age_seconds": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-corpus-export.v1",
+      "file": "administration.schema.json",
+      "fragment": "#/$defs/corpusExportResult",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-corpus-import-input.v1",
+      "file": "administration.schema.json",
+      "fragment": "#/$defs/corpusImport",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "operation_id": null,
+        "corpus_id": null,
+        "previous_snapshot_digest": null,
+        "members": []
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-corpus-inspect-input.v1",
+      "file": "administration.schema.json",
+      "fragment": "#/$defs/corpusInspect",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "snapshot_digest": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-corpus-query-input.v1",
+      "file": "scv-workflow.schema.json",
+      "fragment": "#/$defs/CorpusQueryInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "snapshot_digest": null,
+        "member_ids": [],
+        "selection": null,
+        "query_time": null,
+        "max_age_seconds": null
+      },
+      "required_inputs": [
+        "Supply caller-owned values; null template holes do not represent facts."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-corpus-recover-input.v1",
+      "file": "administration.schema.json",
+      "fragment": "#/$defs/operation",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "operation_id": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-corpus-result.v1",
+      "file": "administration.schema.json",
+      "fragment": "#/$defs/corpusResult",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-projection-input.v1",
+      "file": "administration.schema.json",
+      "fragment": "#/$defs/projectionSelect",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "graph": {
+          "protocol": "symphony.scv.graph.v1",
+          "knowledge_digests": [],
+          "interpretations": [],
+          "domain": null,
+          "selection_policy": {
+            "policy_id": null,
+            "max_age_seconds": null,
+            "allowed_statement_kinds": [],
+            "partial_capture": null
+          },
+          "captures": [],
+          "claims": [],
+          "native_nodes": [],
+          "native_edges": [],
+          "limitations": [],
+          "digest": null
+        },
+        "expected_graph_digest": null,
+        "expected_generation": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-projection-result.v1",
+      "file": "administration.schema.json",
+      "fragment": "#/$defs/projectionResult",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-schema-list.v1",
+      "file": "schema-discovery.schema.json",
+      "fragment": "#/$defs/list",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-schema-show.v1",
+      "file": "schema-discovery.schema.json",
+      "fragment": "#/$defs/show",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-schema-template.v1",
+      "file": "schema-discovery.schema.json",
+      "fragment": "#/$defs/template",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-source-proposal-input.v1",
+      "file": "administration.schema.json",
+      "fragment": "#/$defs/sourcePropose",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "operation_id": null,
+        "desired": {
+          "source_id": null,
+          "provider_id": null,
+          "family_id": null,
+          "publisher": null,
+          "authority_role": null,
+          "scope": null,
+          "locators": [],
+          "continuity_evidence": []
+        },
+        "reason": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-source-result.v1",
+      "file": "administration.schema.json",
+      "fragment": "#/$defs/sourceResult",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-workflow-payload.v1",
+      "file": "scv-workflow.schema.json",
+      "fragment": "#/$defs/Payload",
+      "kind": "artifact",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-workflow-recover-input.v1",
+      "file": "scv-workflow.schema.json",
+      "fragment": "#/$defs/OperationInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "operation_id": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-workflow-result.v1",
+      "file": "scv-workflow.schema.json",
+      "fragment": "#/$defs/Result",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-workflow-run-input.v1",
+      "file": "scv-workflow.schema.json",
+      "fragment": "#/$defs/RunInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "operation_id": null,
+        "corpus": null,
+        "profile_bindings": [],
+        "interpretation_refs": [],
+        "knowledge_refs": [],
+        "selection_policy": null,
+        "query_time": null,
+        "connections": [],
+        "prior_evaluation_ref": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-workflow-run.v1",
+      "file": "scv-workflow.schema.json",
+      "fragment": "#/$defs/Run",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-workflow-status-input.v1",
+      "file": "scv-workflow.schema.json",
+      "fragment": "#/$defs/OperationInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "operation_id": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.capture-compare-input.v1",
+      "file": "source-operation.schema.json",
+      "fragment": "#/$defs/capture_compare",
+      "kind": "input",
+      "operations": [
+        "capture_compare"
+      ],
+      "template": {
+        "before": {
+          "protocol": "symphony.scv.capture.v1",
+          "source": {
+            "protocol": "symphony.scv.source.v1",
+            "source_id": null,
+            "provider_id": null,
+            "family_id": null,
+            "publisher": null,
+            "authority_role": null,
+            "scope": null,
+            "locators": [],
+            "continuity_evidence": [],
+            "generation": null,
+            "predecessor_digest": null,
+            "digest": null
+          },
+          "locator_id": null,
+          "resolved_uri": null,
+          "redirects": [],
+          "observed_at": null,
+          "upstream_revision": null,
+          "media_type": null,
+          "body": null,
+          "completeness": null,
+          "issues": [],
+          "body_digest": null,
+          "byte_size": null,
+          "digest": null
+        },
+        "after": {
+          "protocol": "symphony.scv.capture.v1",
+          "source": {
+            "protocol": "symphony.scv.source.v1",
+            "source_id": null,
+            "provider_id": null,
+            "family_id": null,
+            "publisher": null,
+            "authority_role": null,
+            "scope": null,
+            "locators": [],
+            "continuity_evidence": [],
+            "generation": null,
+            "predecessor_digest": null,
+            "digest": null
+          },
+          "locator_id": null,
+          "resolved_uri": null,
+          "redirects": [],
+          "observed_at": null,
+          "upstream_revision": null,
+          "media_type": null,
+          "body": null,
+          "completeness": null,
+          "issues": [],
+          "body_digest": null,
+          "byte_size": null,
+          "digest": null
+        }
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.capture-diff.v1",
+      "file": "source-operation.schema.json",
+      "fragment": "#/$defs/captureDiff",
+      "kind": "output",
+      "operations": [
+        "capture_compare"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.capture-import-input.v1",
+      "file": "source-operation.schema.json",
+      "fragment": "#/$defs/capture_import",
+      "kind": "input",
+      "operations": [
+        "capture_import"
+      ],
+      "template": {
+        "source": {
+          "protocol": "symphony.scv.source.v1",
+          "source_id": null,
+          "provider_id": null,
+          "family_id": null,
+          "publisher": null,
+          "authority_role": null,
+          "scope": null,
+          "locators": [],
+          "continuity_evidence": [],
+          "generation": null,
+          "predecessor_digest": null,
+          "digest": null
+        },
+        "locator_id": null,
+        "resolved_uri": null,
+        "redirects": [],
+        "observed_at": null,
+        "upstream_revision": null,
+        "media_type": null,
+        "body": null,
+        "completeness": null,
+        "issues": []
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.capture-index-input.v1",
+      "file": "corpus-operation.schema.json",
+      "fragment": "#/$defs/captureIndexInput",
+      "kind": "input",
+      "operations": [
+        "capture_index"
+      ],
+      "template": {
+        "capture": {
+          "protocol": "symphony.scv.capture.v1",
+          "source": {
+            "protocol": "symphony.scv.source.v1",
+            "source_id": null,
+            "provider_id": null,
+            "family_id": null,
+            "publisher": null,
+            "authority_role": null,
+            "scope": null,
+            "locators": [],
+            "continuity_evidence": [],
+            "generation": null,
+            "predecessor_digest": null,
+            "digest": null
+          },
+          "locator_id": null,
+          "resolved_uri": null,
+          "redirects": [],
+          "observed_at": null,
+          "upstream_revision": null,
+          "media_type": null,
+          "body": null,
+          "completeness": null,
+          "issues": [],
+          "body_digest": null,
+          "byte_size": null,
+          "digest": null
+        }
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.capture-index.v1",
+      "file": "capture-index.schema.json",
+      "fragment": "",
+      "kind": "output",
+      "operations": [
+        "capture_index"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.capture.v1",
+      "file": "capture.schema.json",
+      "fragment": "",
+      "kind": "output",
+      "operations": [
+        "capture_import"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.connection-evaluate-input.v1",
+      "file": "connection-operation.schema.json",
+      "fragment": "#/$defs/connectionEvaluateInput",
+      "kind": "input",
+      "operations": [
+        "connection_evaluate"
+      ],
+      "template": {
+        "interpretations": [],
+        "additional_knowledge": [],
+        "query_time": null,
+        "connections": []
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.connection-evaluation.v1",
+      "file": "connection-operation.schema.json",
+      "fragment": "#/$defs/connectionEvaluateResult",
+      "kind": "output",
+      "operations": [
+        "connection_evaluate"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.connection-reassess-input.v1",
+      "file": "connection-operation.schema.json",
+      "fragment": "#/$defs/connectionReassessInput",
+      "kind": "input",
+      "operations": [
+        "connection_reassess"
+      ],
+      "template": {
+        "before": {
+          "protocol": "symphony.scv.connection-evaluation.v1",
+          "domain": null,
+          "input": {
+            "interpretations": [],
+            "additional_knowledge": [],
+            "query_time": null,
+            "connections": []
+          },
+          "graph_digest": null,
+          "graph_evaluation": {
+            "protocol": null,
+            "domain": null,
+            "graph_digest": null,
+            "query_time": null,
+            "selection_policy": {
+              "policy_id": null,
+              "max_age_seconds": null,
+              "allowed_statement_kinds": [],
+              "partial_capture": null
+            },
+            "findings": [],
+            "conflicts": [],
+            "evidence_origins": [],
+            "limitations": [],
+            "coverage": {
+              "selected_captures": null,
+              "selected_claims": null,
+              "matched_claims": null,
+              "native_nodes": null,
+              "extent": "bounded_selected_corpus",
+              "provider_completeness": "not_asserted"
+            },
+            "digest": null,
+            "query_selection": {
+              "query_time": null
+            }
+          },
+          "connections": [],
+          "limitations": [],
+          "digest": null
+        },
+        "after": {
+          "protocol": "symphony.scv.connection-evaluation.v1",
+          "domain": null,
+          "input": {
+            "interpretations": [],
+            "additional_knowledge": [],
+            "query_time": null,
+            "connections": []
+          },
+          "graph_digest": null,
+          "graph_evaluation": {
+            "protocol": null,
+            "domain": null,
+            "graph_digest": null,
+            "query_time": null,
+            "selection_policy": {
+              "policy_id": null,
+              "max_age_seconds": null,
+              "allowed_statement_kinds": [],
+              "partial_capture": null
+            },
+            "findings": [],
+            "conflicts": [],
+            "evidence_origins": [],
+            "limitations": [],
+            "coverage": {
+              "selected_captures": null,
+              "selected_claims": null,
+              "matched_claims": null,
+              "native_nodes": null,
+              "extent": "bounded_selected_corpus",
+              "provider_completeness": "not_asserted"
+            },
+            "digest": null,
+            "query_selection": {
+              "query_time": null
+            }
+          },
+          "connections": [],
+          "limitations": [],
+          "digest": null
+        }
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.connection-reassessment.v1",
+      "file": "connection-operation.schema.json",
+      "fragment": "#/$defs/connectionReassessResult",
+      "kind": "output",
+      "operations": [
+        "connection_reassess"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.corpus-build-input.v1",
+      "file": "corpus-operation.schema.json",
+      "fragment": "#/$defs/corpusBuildInput",
+      "kind": "input",
+      "operations": [
+        "corpus_build"
+      ],
+      "template": {
+        "corpus_id": null,
+        "previous": null,
+        "snapshot_time": null,
+        "attempts": []
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.corpus-diff-input.v1",
+      "file": "corpus-operation.schema.json",
+      "fragment": "#/$defs/corpusDiffInput",
+      "kind": "input",
+      "operations": [
+        "corpus_diff"
+      ],
+      "template": {
+        "before": {
+          "protocol": "symphony.scv.corpus.v1",
+          "domain": null,
+          "corpus_id": null,
+          "generation": null,
+          "parent_digest": null,
+          "snapshot_time": null,
+          "members": [],
+          "coverage": {
+            "requested_members": null,
+            "complete_attempts": null,
+            "partial_attempts": null,
+            "failed_attempts": null,
+            "retained_complete_members": null
+          },
+          "digest": null
+        },
+        "after": {
+          "protocol": "symphony.scv.corpus.v1",
+          "domain": null,
+          "corpus_id": null,
+          "generation": null,
+          "parent_digest": null,
+          "snapshot_time": null,
+          "members": [],
+          "coverage": {
+            "requested_members": null,
+            "complete_attempts": null,
+            "partial_attempts": null,
+            "failed_attempts": null,
+            "retained_complete_members": null
+          },
+          "digest": null
+        }
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.corpus-diff.v1",
+      "file": "corpus-operation.schema.json",
+      "fragment": "#/$defs/corpusDiffResult",
+      "kind": "output",
+      "operations": [
+        "corpus_diff"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.corpus-query-input.v1",
+      "file": "corpus-operation.schema.json",
+      "fragment": "#/$defs/corpusQueryInput",
+      "kind": "input",
+      "operations": [
+        "corpus_query"
+      ],
+      "template": {
+        "corpus": {
+          "protocol": "symphony.scv.corpus.v1",
+          "domain": null,
+          "corpus_id": null,
+          "generation": null,
+          "parent_digest": null,
+          "snapshot_time": null,
+          "members": [],
+          "coverage": {
+            "requested_members": null,
+            "complete_attempts": null,
+            "partial_attempts": null,
+            "failed_attempts": null,
+            "retained_complete_members": null
+          },
+          "digest": null
+        },
+        "query_time": null,
+        "member_ids": [],
+        "selection": null,
+        "max_age_seconds": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.corpus-query.v1",
+      "file": "corpus-operation.schema.json",
+      "fragment": "#/$defs/corpusQueryResult",
+      "kind": "output",
+      "operations": [
+        "corpus_query"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.corpus.v1",
+      "file": "corpus.schema.json",
+      "fragment": "",
+      "kind": "output",
+      "operations": [
+        "corpus_build"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.diff-result.v1",
+      "file": "graph-operation.schema.json",
+      "fragment": "#/$defs/diffResult",
+      "kind": "output",
+      "operations": [
+        "graph_diff"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.evaluate-result.v1",
+      "file": "graph-operation.schema.json",
+      "fragment": "#/$defs/queryResult",
+      "kind": "output",
+      "operations": [
+        "graph_evaluate"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.explain-result.v1",
+      "file": "graph-operation.schema.json",
+      "fragment": "#/$defs/explainResult",
+      "kind": "output",
+      "operations": [
+        "graph_explain"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.graph-build-input.v1",
+      "file": "graph-operation.schema.json",
+      "fragment": "#/$defs/graph_build",
+      "kind": "input",
+      "operations": [
+        "graph_build"
+      ],
+      "template": {
+        "knowledge": []
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.graph-diff-input.v1",
+      "file": "graph-operation.schema.json",
+      "fragment": "#/$defs/graph_diff",
+      "kind": "input",
+      "operations": [
+        "graph_diff"
+      ],
+      "template": {
+        "before": {
+          "protocol": "symphony.scv.graph.v1",
+          "knowledge_digests": [],
+          "interpretations": [],
+          "domain": null,
+          "selection_policy": {
+            "policy_id": null,
+            "max_age_seconds": null,
+            "allowed_statement_kinds": [],
+            "partial_capture": null
+          },
+          "captures": [],
+          "claims": [],
+          "native_nodes": [],
+          "native_edges": [],
+          "limitations": [],
+          "digest": null
+        },
+        "after": {
+          "protocol": "symphony.scv.graph.v1",
+          "knowledge_digests": [],
+          "interpretations": [],
+          "domain": null,
+          "selection_policy": {
+            "policy_id": null,
+            "max_age_seconds": null,
+            "allowed_statement_kinds": [],
+            "partial_capture": null
+          },
+          "captures": [],
+          "claims": [],
+          "native_nodes": [],
+          "native_edges": [],
+          "limitations": [],
+          "digest": null
+        },
+        "query_time": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.graph-evaluate-input.v1",
+      "file": "graph-operation.schema.json",
+      "fragment": "#/$defs/graph_evaluate",
+      "kind": "input",
+      "operations": [
+        "graph_evaluate"
+      ],
+      "template": {
+        "graph": {
+          "protocol": "symphony.scv.graph.v1",
+          "knowledge_digests": [],
+          "interpretations": [],
+          "domain": null,
+          "selection_policy": {
+            "policy_id": null,
+            "max_age_seconds": null,
+            "allowed_statement_kinds": [],
+            "partial_capture": null
+          },
+          "captures": [],
+          "claims": [],
+          "native_nodes": [],
+          "native_edges": [],
+          "limitations": [],
+          "digest": null
+        },
+        "query_time": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.graph-explain-input.v1",
+      "file": "graph-operation.schema.json",
+      "fragment": "#/$defs/graph_explain",
+      "kind": "input",
+      "operations": [
+        "graph_explain"
+      ],
+      "template": {
+        "graph": {
+          "protocol": "symphony.scv.graph.v1",
+          "knowledge_digests": [],
+          "interpretations": [],
+          "domain": null,
+          "selection_policy": {
+            "policy_id": null,
+            "max_age_seconds": null,
+            "allowed_statement_kinds": [],
+            "partial_capture": null
+          },
+          "captures": [],
+          "claims": [],
+          "native_nodes": [],
+          "native_edges": [],
+          "limitations": [],
+          "digest": null
+        },
+        "query_time": null,
+        "claim_id": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.graph-query-input.v1",
+      "file": "graph-operation.schema.json",
+      "fragment": "#/$defs/graph_query",
+      "kind": "input",
+      "operations": [
+        "graph_query"
+      ],
+      "template": {
+        "graph": {
+          "protocol": "symphony.scv.graph.v1",
+          "knowledge_digests": [],
+          "interpretations": [],
+          "domain": null,
+          "selection_policy": {
+            "policy_id": null,
+            "max_age_seconds": null,
+            "allowed_statement_kinds": [],
+            "partial_capture": null
+          },
+          "captures": [],
+          "claims": [],
+          "native_nodes": [],
+          "native_edges": [],
+          "limitations": [],
+          "digest": null
+        },
+        "query_time": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.graph.v1",
+      "file": "knowledge-graph.schema.json",
+      "fragment": "#/$defs/graph",
+      "kind": "output",
+      "operations": [
+        "graph_build"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.inspect-input.v1",
+      "file": "administration.schema.json",
+      "fragment": "#/$defs/empty",
+      "kind": "input",
+      "operations": [
+        "inspect"
+      ],
+      "template": {},
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.interpretation-profile.v1",
+      "file": "interpretation-profile.schema.json",
+      "fragment": "",
+      "kind": "output",
+      "operations": [
+        "profile_prepare"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.knowledge-interpret-input.v1",
+      "file": "interpretation-input.schema.json",
+      "fragment": "",
+      "kind": "input",
+      "operations": [
+        "knowledge_interpret"
+      ],
+      "template": {
+        "captures": [],
+        "claims": [],
+        "interpreter_version": null,
+        "selection_policy": {
+          "policy_id": null,
+          "max_age_seconds": null,
+          "allowed_statement_kinds": [],
+          "partial_capture": null
+        }
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.knowledge.v1",
+      "file": "knowledge-graph.schema.json",
+      "fragment": "#/$defs/knowledge",
+      "kind": "output",
+      "operations": [
+        "knowledge_interpret"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.profile-prepare-input.v1",
+      "file": "profile-preparation.schema.json",
+      "fragment": "#/$defs/input",
+      "kind": "input",
+      "operations": [
+        "profile_prepare"
+      ],
+      "template": {
+        "profile": {
+          "protocol": "symphony.scv.interpretation-profile.v1",
+          "profile_id": null,
+          "profile_version": null,
+          "provider_id": null,
+          "source_id": null,
+          "locator_id": null,
+          "media_types": [],
+          "authored_by": null,
+          "rationale": null,
+          "rules": []
+        }
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact.",
+        "Author profile identity, provider/source/locator, media types, authorship, rationale and extraction rules; preparation seals structure only."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.provider-interpret-input.v1",
+      "file": "provider-interpretation.schema.json",
+      "fragment": "#/$defs/providerInterpretInput",
+      "kind": "input",
+      "operations": [
+        "provider_interpret"
+      ],
+      "template": {
+        "captures": [],
+        "profiles": [],
+        "bindings": [],
+        "selection_policy": {
+          "policy_id": null,
+          "max_age_seconds": null,
+          "allowed_statement_kinds": [],
+          "partial_capture": null
+        }
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.provider-interpretation.v1",
+      "file": "provider-interpretation.schema.json",
+      "fragment": "#/$defs/providerInterpretResult",
+      "kind": "output",
+      "operations": [
+        "provider_interpret"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.provider-onboard-input.v1",
+      "file": "source-operation.schema.json",
+      "fragment": "#/$defs/provider_onboard",
+      "kind": "input",
+      "operations": [
+        "provider_onboard"
+      ],
+      "template": {
+        "provider_id": null,
+        "family_id": null,
+        "display_name": null,
+        "sources": []
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.provider.v1",
+      "file": "source-operation.schema.json",
+      "fragment": "#/$defs/provider",
+      "kind": "output",
+      "operations": [
+        "provider_onboard"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.query-result.v1",
+      "file": "graph-operation.schema.json",
+      "fragment": "#/$defs/queryResult",
+      "kind": "output",
+      "operations": [
+        "graph_query"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.source-apply-input.v1",
+      "file": "source-operation.schema.json",
+      "fragment": "#/$defs/source_apply",
+      "kind": "input",
+      "operations": [
+        "source_apply"
+      ],
+      "template": {
+        "plan": {
+          "protocol": "symphony.scv.source-plan.v1",
+          "operation_id": null,
+          "expected_state_digest": null,
+          "change_kind": null,
+          "reason": null,
+          "source": {
+            "protocol": "symphony.scv.source.v1",
+            "source_id": null,
+            "provider_id": null,
+            "family_id": null,
+            "publisher": null,
+            "authority_role": null,
+            "scope": null,
+            "locators": [],
+            "continuity_evidence": [],
+            "generation": null,
+            "predecessor_digest": null,
+            "digest": null
+          },
+          "plan_digest": null
+        },
+        "current": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.source-plan-input.v1",
+      "file": "source-operation.schema.json",
+      "fragment": "#/$defs/source_plan",
+      "kind": "input",
+      "operations": [
+        "source_plan"
+      ],
+      "template": {
+        "operation_id": null,
+        "current": null,
+        "desired": {
+          "source_id": null,
+          "provider_id": null,
+          "family_id": null,
+          "publisher": null,
+          "authority_role": null,
+          "scope": null,
+          "locators": [],
+          "continuity_evidence": []
+        },
+        "reason": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.source-plan.v1",
+      "file": "source-operation.schema.json",
+      "fragment": "#/$defs/sourcePlan",
+      "kind": "output",
+      "operations": [
+        "source_plan"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.source-status-input.v1",
+      "file": "source-operation.schema.json",
+      "fragment": "#/$defs/source_status",
+      "kind": "input",
+      "operations": [
+        "source_status"
+      ],
+      "template": {
+        "source": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.source-status.v1",
+      "file": "source-operation.schema.json",
+      "fragment": "#/$defs/sourceStatus",
+      "kind": "output",
+      "operations": [
+        "source_status"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.source-transition.v1",
+      "file": "source-operation.schema.json",
+      "fragment": "#/$defs/sourceTransition",
+      "kind": "output",
+      "operations": [
+        "source_apply"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.source.v1",
+      "file": "source.schema.json",
+      "fragment": "",
+      "kind": "artifact",
+      "operations": []
+    }
+  ],
+  "limits": {
+    "process_request_bytes": 1048576,
+    "process_response_bytes": 4194304,
+    "json_depth": 64,
+    "json_values": 32768,
+    "string_bytes": 65536,
+    "capture_body_bytes": 65536,
+    "selected_captures": 16,
+    "claims": 128,
+    "profile_rules": 128,
+    "profiles": 16,
+    "connections": 32,
+    "connection_checks": 128,
+    "corpus_members": 128,
+    "corpus_export_captures": 16
+  },
+  "limitations": [
+    "Schemas describe shape; runtime also verifies digests, exact ownership, byte/time limits and replay.",
+    "Templates are authoring skeletons, not valid evidence or automatically selected policies.",
+    "Only the selected installed package version is described; old installations are not silently upgraded."
+  ]
+}

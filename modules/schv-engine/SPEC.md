@@ -2,7 +2,7 @@
 
 ## Status and Ownership
 
-Architect-ratified source-knowledge development increment, version `0.3.0-dev`; not a published release or complete provider implementation. Domain meaning belongs to `knowledge/scv/schv/SPEC.md` and `knowledge/scv/SOURCE-KNOWLEDGE.md`. Common process semantics belong to `knowledge/SPEC.md`. All eight packages use the same explicit operation implementation with an exact installed domain identity.
+Architect-ratified source-knowledge development increment, version `0.4.0-dev`; not a published release or complete provider implementation. Domain meaning belongs to `knowledge/scv/schv/SPEC.md` and `knowledge/scv/SOURCE-KNOWLEDGE.md`. Common process semantics belong to `knowledge/SPEC.md`. All eight packages use the same explicit operation implementation with an exact installed domain identity.
 
 ## Process and Operation Registry
 
@@ -33,6 +33,7 @@ Each operation's stable ID is `engop:symphony:schv.` followed by its wire name w
 | `provider_interpret` | `provider interpret` | `symphony.scv.provider-interpretation.v1` | invoke |
 | `connection_evaluate` | `connection evaluate` | `symphony.scv.connection-evaluation.v1` | validate |
 | `connection_reassess` | `connection reassess` | `symphony.scv.connection-reassessment.v1` | validate |
+| `profile_prepare` | `profile prepare` | `symphony.scv.interpretation-profile.v1` | propose |
 
 `knowledge/scv/CORPUS.md@v1` owns the four additive operations and their closed schemas. The table records composed qxctl routes; the C++ operations remain independently callable and never persist a corpus head. The `0.3.0-dev` descriptor has exactly twenty operations, including the three operations owned by `knowledge/scv/INTERPRETATION.md@v1`. Existing `0.1.0-dev` and `0.2.0-dev` installations retain their exact thirteen- and seventeen-operation descriptors, immutable receipts/documents and original payloads. The qxctl consumer checks the selected version's finite operation set; it cannot substitute a newer package. Original command defaults remain `0.1.0-dev`; corpus commands default to `0.2.0-dev` and explicitly permit `0.3.0-dev`; provider interpretation and connection commands default exactly to `0.3.0-dev`.
 
@@ -75,3 +76,7 @@ Source/knowledge owner regressions, qxctl consumer rejection and exact installed
 ## Non-Authorization
 
 No valid result grants permission, authorizes canonical source changes, publishes documentation, invokes source instructions, activates an engine or mutates a cloud resource. Private local state and official repository truth remain distinct. The C++ process does not weaken existing SSIAG local kernel-peer and STAV audit contracts.
+
+## Agent Operating Increment
+
+`knowledge/scv/AGENT-WORKFLOWS.md` owns additive `.4` profile preparation, receipt-owned schema discovery and qxctl evidence workflow coordination. The C++ engine seals and validates caller-authored profile drafts without inventing claims. Its `.4` descriptor contains 21 operations. Metadata corpus queries and retained runs use existing owner operations with their original bounds. Existing `.1`/`.2`/`.3` installations and success payloads remain separately valid at their exact scope.

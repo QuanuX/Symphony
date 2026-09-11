@@ -4,6 +4,7 @@
 
 - `tools/qxctl/COMMANDS.json`
 - `tools/qxctl/COMMANDS.md`
+- `tools/qxctl/ERRORS.md`
 - `tools/qxctl/FEATURES.md`
 - `tools/qxctl/INSTALL.md`
 - `tools/qxctl/INTENT.md`
@@ -267,3 +268,7 @@ Interpretation input is `{captures,profiles,bindings,selection_policy}`. Explici
 Result protocols are `symphony.scv.provider-interpretation.v1`, `symphony.scv.connection-evaluation.v1` and `symphony.scv.connection-reassessment.v1`. Input metadata protocols use the existing `symphony.scv.<hyphenated-operation>-input.v1` convention and select owner request definitions without embedding a protocol field in payloads. The consumer independently validates seals, exact request/result binding, the full selected claim inventory and policy, extraction evidence, comparison/aggregation and reassessment evidence. Its finite mechanical re-extraction checks literal/delimited tokens, unique context, admitted media and failed/partial dispositions against exact generated typed values, the complete required context/token anchor set and extraction findings. Scalar types and canonical numeric representations are validated before comparison. It does not become the semantic profile owner or replace C++ replay with a digest check.
 
 Supported extraction is a declared finite mapping, not automated comprehension of all native provider documentation. A satisfied connection finding establishes only the selected documented checks; live identity, account permissions, route, payload contract, installed adapter and runtime performance remain explicitly separate requirements. Missing or expired evidence remains unresolved, and recommendations or user assertions retain their conditional character. Endpoint labels and required/optional choices belong to the caller. No provider action, graph selection, remediation, source instruction execution, profile publication or durable canonical mutation occurs.
+
+## SCV Agent Operating Workflow
+
+`knowledge/scv/AGENT-WORKFLOWS.md` governs exact installed schema discovery, native profile preparation, artifact retention, corpus metadata query and recoverable qxctl runs. `ERRORS.md` defines the additive SCV JSON error contract. New wrapper operations retain exact engine invocation and consumer validation; no source checkout, provider account, model call or hidden background loop is required.

@@ -1,0 +1,562 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:qxctl:scv-workflow:v1",
+  "title": "Exact retained SCV caller workflow v1",
+  "$defs": {
+    "RunInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_id",
+        "corpus",
+        "profile_bindings",
+        "interpretation_refs",
+        "knowledge_refs",
+        "selection_policy",
+        "query_time",
+        "connections",
+        "prior_evaluation_ref"
+      ],
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "corpus": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "domain",
+                "snapshot_digest",
+                "member_ids",
+                "selection",
+                "max_age_seconds"
+              ],
+              "properties": {
+                "domain": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+                },
+                "snapshot_digest": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                },
+                "member_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128,
+                    "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+                  },
+                  "maxItems": 16,
+                  "minItems": 1,
+                  "uniqueItems": true
+                },
+                "selection": {
+                  "enum": [
+                    "latest_attempt",
+                    "last_complete"
+                  ]
+                },
+                "max_age_seconds": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 3155760000
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "profile_bindings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "profile_ref",
+              "member_id"
+            ],
+            "properties": {
+              "profile_ref": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "member_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+              }
+            }
+          },
+          "maxItems": 16
+        },
+        "interpretation_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "knowledge_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "selection_policy": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "interpretation-input.schema.json#/$defs/selectionPolicy"
+            }
+          ]
+        },
+        "query_time": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "connections": {
+          "$ref": "connection-operation.schema.json#/$defs/connectionEvaluateInput/properties/connections"
+        },
+        "prior_evaluation_ref": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "corpus": {
+                "type": "null"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "selection_policy": {
+                "type": "null"
+              },
+              "profile_bindings": {
+                "maxItems": 0
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "selection_policy": {
+                "$ref": "interpretation-input.schema.json#/$defs/selectionPolicy"
+              },
+              "profile_bindings": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "OperationInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_id"
+      ],
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        }
+      }
+    },
+    "Run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "operation_id",
+        "installation",
+        "corpus_installation",
+        "corpus_root",
+        "request",
+        "intent_digest",
+        "stages",
+        "complete",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-workflow-run.v1"
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "installation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "Role",
+            "ModuleID",
+            "EngineID",
+            "Version",
+            "Prefix",
+            "ReceiptPath",
+            "ReceiptDigest",
+            "ReceiptProtocol",
+            "ExecutablePath",
+            "ExecutableDigest"
+          ],
+          "properties": {
+            "Role": {
+              "type": "string"
+            },
+            "ModuleID": {
+              "type": "string"
+            },
+            "EngineID": {
+              "type": "string"
+            },
+            "Version": {
+              "type": "string"
+            },
+            "Prefix": {
+              "type": "string"
+            },
+            "ReceiptPath": {
+              "type": "string"
+            },
+            "ReceiptDigest": {
+              "type": "string"
+            },
+            "ReceiptProtocol": {
+              "type": "string"
+            },
+            "ExecutablePath": {
+              "type": "string"
+            },
+            "ExecutableDigest": {
+              "type": "string"
+            }
+          }
+        },
+        "corpus_installation": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "Role",
+                "ModuleID",
+                "EngineID",
+                "Version",
+                "Prefix",
+                "ReceiptPath",
+                "ReceiptDigest",
+                "ReceiptProtocol",
+                "ExecutablePath",
+                "ExecutableDigest"
+              ],
+              "properties": {
+                "Role": {
+                  "type": "string"
+                },
+                "ModuleID": {
+                  "type": "string"
+                },
+                "EngineID": {
+                  "type": "string"
+                },
+                "Version": {
+                  "type": "string"
+                },
+                "Prefix": {
+                  "type": "string"
+                },
+                "ReceiptPath": {
+                  "type": "string"
+                },
+                "ReceiptDigest": {
+                  "type": "string"
+                },
+                "ReceiptProtocol": {
+                  "type": "string"
+                },
+                "ExecutablePath": {
+                  "type": "string"
+                },
+                "ExecutableDigest": {
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        },
+        "corpus_root": {
+          "type": "string"
+        },
+        "request": {
+          "$ref": "#/$defs/RunInput"
+        },
+        "intent_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "stages": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "interpret": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "input_ref",
+                "result_ref"
+              ],
+              "properties": {
+                "input_ref": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                },
+                "result_ref": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    },
+                    {
+                      "const": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "evaluate": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "input_ref",
+                "result_ref"
+              ],
+              "properties": {
+                "input_ref": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                },
+                "result_ref": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    },
+                    {
+                      "const": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "reassess": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "input_ref",
+                "result_ref"
+              ],
+              "properties": {
+                "input_ref": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                },
+                "result_ref": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    },
+                    {
+                      "const": ""
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "Result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "run",
+        "status",
+        "validation",
+        "evaluation_ref",
+        "reassessment_ref"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-workflow-result.v1"
+        },
+        "run": {
+          "$ref": "#/$defs/Run"
+        },
+        "status": {
+          "enum": [
+            "prepared",
+            "interpreted",
+            "evaluated",
+            "complete"
+          ]
+        },
+        "validation": {
+          "enum": [
+            "owner_replayed",
+            "sealed_checkpoints_only"
+          ]
+        },
+        "evaluation_ref": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "reassessment_ref": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        }
+      }
+    },
+    "Payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "input",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-workflow-payload.v1"
+        },
+        "input": {
+          "type": "object"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "CorpusQueryInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "snapshot_digest",
+        "member_ids",
+        "selection",
+        "query_time",
+        "max_age_seconds"
+      ],
+      "properties": {
+        "snapshot_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "member_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+          },
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "selection": {
+          "enum": [
+            "latest_attempt",
+            "last_complete"
+          ]
+        },
+        "query_time": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "max_age_seconds": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 3155760000
+            }
+          ]
+        }
+      }
+    }
+  },
+  "description": "Every reference selects an immutable artifact RECORD digest, distinct from its native artifact_digest. No implicit latest/source/graph head. Corpus may be null when composing retained interpretation/knowledge records. Non-null corpus requires 1..16 explicit unique member_ids and profile bindings; engine value/process bounds also apply. query_time and all caller requirements remain exact across recovery. Status validates sealed artifacts/checkpoint linkage without executing owners; run/recover replays pinned exact owners and rejects changed installations. Stages durably pin owner input before invocation and immutable result record before advancing. selection_policy must be null when corpus is null; otherwise it governs only the newly generated interpretation. Retained interpretation and knowledge references keep their individually pinned policies."
+}

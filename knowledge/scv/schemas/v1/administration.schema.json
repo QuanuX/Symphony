@@ -1,0 +1,544 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:qxctl:scv-administration:v1",
+  "title": "SCV qxctl administration payloads v1",
+  "$defs": {
+    "empty": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {}
+    },
+    "acquire": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "locator_id"
+      ],
+      "properties": {
+        "source": {
+          "$ref": "source.schema.json"
+        },
+        "locator_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      }
+    },
+    "sourcePropose": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_id",
+        "desired",
+        "reason"
+      ],
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "desired": {
+          "$ref": "source.schema.json#/$defs/desired"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      }
+    },
+    "projectionSelect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "graph",
+        "expected_graph_digest",
+        "expected_generation"
+      ],
+      "properties": {
+        "graph": {
+          "$ref": "knowledge-graph.schema.json#/$defs/graph"
+        },
+        "expected_graph_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "expected_generation": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 127
+        }
+      }
+    },
+    "corpusAcquire": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_id",
+        "corpus_id",
+        "previous_snapshot_digest",
+        "members"
+      ],
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "corpus_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "previous_snapshot_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "members": {
+          "type": "array",
+          "maxItems": 128,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "member_id",
+              "source",
+              "locator_id"
+            ],
+            "properties": {
+              "member_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "source": {
+                "$ref": "source.schema.json"
+              },
+              "locator_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              }
+            }
+          }
+        }
+      }
+    },
+    "corpusImport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_id",
+        "corpus_id",
+        "previous_snapshot_digest",
+        "members"
+      ],
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "corpus_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "previous_snapshot_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "members": {
+          "type": "array",
+          "maxItems": 128,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "member_id",
+              "capture"
+            ],
+            "properties": {
+              "member_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "capture": {
+                "$ref": "capture.schema.json"
+              }
+            }
+          }
+        }
+      }
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_id"
+      ],
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      }
+    },
+    "corpusInspect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "snapshot_digest"
+      ],
+      "properties": {
+        "snapshot_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "corpusExport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "snapshot_digest",
+        "member_ids",
+        "selection",
+        "query_time",
+        "max_age_seconds"
+      ],
+      "properties": {
+        "snapshot_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "member_ids": {
+          "type": "array",
+          "maxItems": 128,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          }
+        },
+        "selection": {
+          "enum": [
+            "latest_attempt",
+            "last_complete"
+          ]
+        },
+        "query_time": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "max_age_seconds": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 3155760000
+            }
+          ]
+        }
+      }
+    },
+    "corpusDiff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "before_snapshot_digest",
+        "after_snapshot_digest"
+      ],
+      "properties": {
+        "before_snapshot_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "after_snapshot_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "corpusResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "operation_id",
+        "intent_digest",
+        "snapshot_digest",
+        "snapshot",
+        "completed_members"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-corpus-result.v1"
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "intent_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "snapshot_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "snapshot": {
+          "$ref": "corpus.schema.json"
+        },
+        "completed_members": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        }
+      }
+    },
+    "corpusExportResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "query",
+        "captures"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-corpus-export.v1"
+        },
+        "query": {
+          "$ref": "corpus-operation.schema.json#/$defs/corpusQueryResult"
+        },
+        "captures": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "$ref": "capture.schema.json"
+          }
+        }
+      }
+    },
+    "sourceResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "operation",
+        "tops_id",
+        "domain",
+        "source_id",
+        "state_digest",
+        "head_operation_id",
+        "owner_result",
+        "attempt",
+        "canonical_apply_enabled",
+        "authorization_audit",
+        "source_write_stav_receipt"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-source-result.v1"
+        },
+        "operation": {
+          "enum": [
+            "status",
+            "apply",
+            "recover"
+          ]
+        },
+        "tops_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "state_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "head_operation_id": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "owner_result": {
+          "oneOf": [
+            {
+              "$ref": "source-operation.schema.json#/$defs/sourceStatus"
+            },
+            {
+              "$ref": "source-operation.schema.json#/$defs/sourceTransition"
+            }
+          ]
+        },
+        "attempt": {
+          "description": "Retained owner journal projection; authorization and replay require its runtime owner."
+        },
+        "canonical_apply_enabled": {
+          "const": false
+        },
+        "authorization_audit": {
+          "const": "ssiag_policy_decision_only"
+        },
+        "source_write_stav_receipt": {
+          "type": "null"
+        }
+      }
+    },
+    "projectionResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "operation",
+        "tops_id",
+        "domain",
+        "graph_id",
+        "generation",
+        "graph_digest",
+        "head_operation_id",
+        "graph",
+        "current_evaluation",
+        "attempt",
+        "canonical_apply_enabled",
+        "authorization_audit"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-projection-result.v1"
+        },
+        "operation": {
+          "enum": [
+            "select",
+            "status",
+            "recover"
+          ]
+        },
+        "tops_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "graph_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "graph_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "head_operation_id": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "graph": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "knowledge-graph.schema.json#/$defs/graph"
+            }
+          ]
+        },
+        "current_evaluation": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "graph-operation.schema.json#/$defs/queryResult"
+            }
+          ]
+        },
+        "attempt": {
+          "description": "Retained owner journal projection; authorization and replay require its runtime owner."
+        },
+        "canonical_apply_enabled": {
+          "const": false
+        },
+        "authorization_audit": {
+          "const": "ssiag_policy_decision_only"
+        }
+      }
+    }
+  }
+}

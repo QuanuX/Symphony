@@ -39,7 +39,7 @@ Query coverage describes latest attempts for the requested members. It does not 
 
 ## qxctl Retention and Recovery
 
-`qxctl scv corpus acquire|import|recover|inspect|export|diff` administers immutable local evidence retention. Corpus commands default exactly to `0.2.0-dev` and explicitly permit `0.3.0-dev`; original SCV commands retain the `0.1.0-dev` default. Explicit version selection uses that version's exact receipt, descriptor and operation set: thirteen operations in `0.1.0-dev`, seventeen in `0.2.0-dev` and twenty in `0.3.0-dev`. Unsupported combinations fail without selecting a newer package.
+`qxctl scv corpus acquire|import|recover|inspect|query|export|diff` administers immutable local evidence retention. Corpus commands default exactly to `0.2.0-dev` and explicitly permit `0.3.0-dev`; original SCV commands retain the `0.1.0-dev` default. Explicit version selection uses that version's exact receipt, descriptor and operation set: thirteen operations in `0.1.0-dev`, seventeen in `0.2.0-dev` and twenty in `0.3.0-dev`. Unsupported combinations fail without selecting a newer package.
 
 Acquisition/import jobs bind the exact operation, corpus identity, predecessor digest, member inputs and installation before processing. Acquire validates sources before public HTTPS retrieval. Import records supplied captures without inventing a live fetch. Completed members are checkpointed; recovery uses the original intent and installation and processes only unfinished members. Replaying a completed operation returns its recorded snapshot without new retrieval. A refresh is a new operation with an explicit predecessor digest. Independent concurrent jobs coexist; no last-writer-wins current alias exists.
 
@@ -60,3 +60,7 @@ The 128-member catalog limit does not enlarge the common 1 MiB request, 4 MiB re
 No selected corpus head is introduced. Immutable cache publication and local job bookkeeping do not create a source/graph selection or require fabrication of an SSIAG/STAV write receipt. Actual protected source and graph selection continue through their existing authorization, intent and audit contracts. The caller owns corpus membership, historical evidence choices and subsequent interpretation/composition policy.
 
 Producer, consumer, interrupted-job, retention-integrity and exact installed-version tests provide evidence only for the exercised scope. Full provider expertise, arbitrary inference, automatic architecture synthesis, provider accounts, deployment, general artifact transport and unimplemented retention deletion/migration remain separate work. A successful source fetch, corpus digest or native parse is not semantic verification.
+
+## Agent Operating Extension
+
+The `.4` adapter additionally permits `corpus query`, which accepts the same exact snapshot, member selection, query time, selection mode and age input as export and returns the owner metadata result for at most 128 selected members without materializing capture bodies. Deep retained-store verification still applies. Export keeps its sixteen-capture bound. Corpus commands also explicitly accept `0.4.0-dev` without changing their `.2` default. See `AGENT-WORKFLOWS.md` for the retained interpretation/evaluation workflow.

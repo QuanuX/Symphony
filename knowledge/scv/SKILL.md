@@ -27,3 +27,5 @@ Guide agents and implementers in SCV research without introducing provider prefe
 ## Stop Conditions
 
 Use the admitted source-knowledge, corpus and profile/connection operations within their exact contracts. Preserve unknown formats, unresolved extraction and unverified semantic mappings. Retain interpretation wrappers when claiming profile replay and keep caller requirements explicit. New graph technology, semantic schema, operational account adapter, authority boundary, scoring policy or network API beyond these contracts requires a separate reviewed decision; ordinary authorized use does not reopen an already ratified boundary.
+
+Agent-first profile preparation, exact installed schemas and qxctl retained-run coordination are specified in `knowledge/scv/AGENT-WORKFLOWS.md`. That companion adds no provider, deployment or selected-head authority.

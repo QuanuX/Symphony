@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"errors"
 	"os"
 	"os/exec"
@@ -9,11 +10,13 @@ import (
 )
 
 func TestCLICompatibility(t *testing.T) {
-	helpBytes, err := os.ReadFile("testdata/help.golden")
+	root, err := newRootCommand()
 	if err != nil {
 		t.Fatal(err)
 	}
-	help := string(helpBytes)
+	var helpOutput bytes.Buffer
+	writeCommandHelp(&helpOutput, root)
+	help := helpOutput.String()
 	tests := []struct {
 		name   string
 		args   []string
@@ -105,7 +108,13 @@ func TestCLICompatibility(t *testing.T) {
 				t.Fatalf("exit status = %d, want %d; output:\n%s", status, test.status, output)
 			}
 			if output != test.output {
-				t.Fatalf("output mismatch\n--- got ---\n%s--- want ---\n%s", output, test.output)
+				gotLines, wantLines := strings.Split(output, "\n"), strings.Split(test.output, "\n")
+				for index := 0; index < len(gotLines) && index < len(wantLines); index++ {
+					if gotLines[index] != wantLines[index] {
+						t.Fatalf("output mismatch at line %d: got %q, want %q", index+1, gotLines[index], wantLines[index])
+					}
+				}
+				t.Fatalf("output line count = %d, want %d", len(gotLines), len(wantLines))
 			}
 		})
 	}

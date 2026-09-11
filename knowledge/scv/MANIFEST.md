@@ -16,6 +16,7 @@ SCV is the semantic owner of provider/offsite resource possibility, constraint, 
 - `knowledge/scv/SOURCE-KNOWLEDGE.md`
 - `knowledge/scv/CORPUS.md`
 - `knowledge/scv/INTERPRETATION.md`
+- `knowledge/scv/AGENT-WORKFLOWS.md`
 - `knowledge/scv/SKILL.md`
 
 ## Admitted Implementation Character
@@ -29,3 +30,7 @@ An independently installed SCV implementation must be able to construct its grap
 ## Non-Authorization Statement
 
 This manifest grants no provider login, account query, balance persistence, credential release, purchase, provisioning action, network service or graph database selection. The admitted qxctl source-knowledge mappings administer only their declared evidence and protected local-state scope.
+
+## Agent Operating Increment
+
+The additive `.4` interface is governed by `knowledge/scv/AGENT-WORKFLOWS.md`: native profile preparation, exact installed schema discovery, immutable local artifact evidence and recoverable qxctl runs. It preserves engine semantic ownership and caller composition authority.

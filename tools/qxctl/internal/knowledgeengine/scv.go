@@ -85,6 +85,8 @@ func InvokeSCVDomain(ctx context.Context, domain, prefix, version, cwd, operatio
 			expectedCount = 17
 		} else if version == "0.3.0-dev" {
 			expectedCount = 20
+		} else if version == "0.4.0-dev" {
+			expectedCount = 21
 		}
 		if !ok || len(operations) != expectedCount {
 			return Response{}, fmt.Errorf("SCV descriptor operation set mismatch")
@@ -120,6 +122,7 @@ func SCVResultProtocol(operation string) (string, bool) {
 		"graph_evaluate": "symphony.scv.evaluate-result.v1", "graph_diff": "symphony.scv.diff-result.v1", "graph_explain": "symphony.scv.explain-result.v1",
 		"capture_index": "symphony.scv.capture-index.v1", "corpus_build": "symphony.scv.corpus.v1",
 		"corpus_query": "symphony.scv.corpus-query.v1", "corpus_diff": "symphony.scv.corpus-diff.v1",
+		"profile_prepare":     "symphony.scv.interpretation-profile.v1",
 		"provider_interpret":  "symphony.scv.provider-interpretation.v1",
 		"connection_evaluate": "symphony.scv.connection-evaluation.v1",
 		"connection_reassess": "symphony.scv.connection-reassessment.v1",
@@ -130,14 +133,17 @@ func SCVResultProtocol(operation string) (string, bool) {
 // SCVOperationSupported preserves each exact package's finite operation set.
 // Future versions require an explicit consumer update, never a latest alias.
 func SCVOperationSupported(version, operation string) bool {
-	if version != "0.1.0-dev" && version != "0.2.0-dev" && version != "0.3.0-dev" {
+	if version != "0.1.0-dev" && version != "0.2.0-dev" && version != "0.3.0-dev" && version != "0.4.0-dev" {
 		return false
 	}
 	if _, ok := SCVResultProtocol(operation); !ok {
 		return false
 	}
+	if operation == "profile_prepare" {
+		return version == "0.4.0-dev"
+	}
 	if operation == "provider_interpret" || strings.HasPrefix(operation, "connection_") {
-		return version == "0.3.0-dev"
+		return version == "0.3.0-dev" || version == "0.4.0-dev"
 	}
 	return version != "0.1.0-dev" || (operation != "capture_index" && !strings.HasPrefix(operation, "corpus_"))
 }
@@ -246,6 +252,9 @@ func ValidateSCVResult(operation string, input, raw []byte) error {
 			return fmt.Errorf("SCV descriptor broadens authority")
 		}
 		return scvSeal(value, "descriptor_digest")
+	}
+	if operation == "profile_prepare" {
+		return validateSCVProfilePreparation(payload, value)
 	}
 	if operation == "provider_interpret" || strings.HasPrefix(operation, "connection_") {
 		return validateSCVInterpretationResult(operation, payload, value)

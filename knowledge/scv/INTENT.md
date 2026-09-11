@@ -22,3 +22,5 @@ An installed SCV knowledge graph belongs to the private user or TOPS installatio
 - SNV records the identities of resulting physical Nodes, resources, clusters, and names.
 - SHV owns detailed hardware capability knowledge.
 - SKV governs SCV contracts, indexing, change, evolution, and official-publication relationships.
+
+Agent-first profile preparation, exact installed schemas and qxctl retained-run coordination are specified in `knowledge/scv/AGENT-WORKFLOWS.md`. That companion adds no provider, deployment or selected-head authority.

@@ -23,3 +23,18 @@
 `knowledge/scv/CORPUS.md` owns the additive capture-index, corpus and corpus-operation schemas introduced with engine `0.2.0-dev`. The original source, capture, source-operation, interpretation-input, knowledge-graph and graph-operation schemas remain unchanged. A corpus index references separately retained exact captures; schema validity does not prove those bytes exist.
 
 `knowledge/scv/INTERPRETATION.md` owns the additive interpretation-profile, provider-interpretation and connection-operation schemas introduced with engine `0.3.0-dev`. The previous nine schemas remain unchanged. Profile replay, exact evidence qualification and connection-result reassessment supplement structural validation without proving empirical truth or selecting a graph head.
+
+## Agent Operating Increment
+
+`knowledge/scv/AGENT-WORKFLOWS.md` governs the following additive exact `.4` package resources:
+
+- `knowledge/scv/schemas/v1/administration.schema.json`
+- `knowledge/scv/schemas/v1/engine-descriptor-v2.schema.json`
+- `knowledge/scv/schemas/v1/profile-preparation.schema.json`
+- `knowledge/scv/schemas/v1/qxctl-error.schema.json`
+- `knowledge/scv/schemas/v1/schema-catalog.json`
+- `knowledge/scv/schemas/v1/schema-discovery.schema.json`
+- `knowledge/scv/schemas/v1/scv-artifact.schema.json`
+- `knowledge/scv/schemas/v1/scv-workflow.schema.json`
+
+The catalog maps exact protocol IDs to closed schema definitions and explicit authoring templates. It is packaged with receipt ownership; the original source/knowledge/corpus/interpretation schemas remain unchanged. Templates are authoring aids, not evidence.

@@ -1,20 +1,16 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"time"
 
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/commandregistry"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/ssiagclient"
-	"github.com/QuanuX/Symphony/tools/qxctl/internal/validation"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/version"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
-
-var errUsageOnly = errors.New("print qxctl usage")
 
 type ssiagOptions struct {
 	topsID          string
@@ -189,13 +185,22 @@ type knowledgeLifecycleOptions struct {
 }
 
 func execute(args []string) int {
+	root, err := newRootCommand()
+	if err != nil {
+		if scvJSONRequested(nil, args) {
+			writeCLIError(nil, err, 1)
+		} else {
+			fmt.Printf("qxctl failed: %v\n", err)
+		}
+		return 1
+	}
 	if len(args) == 0 {
-		printUsage()
+		printCommandHelp(root)
 		return 1
 	}
 	if !knownTopLevel(args[0]) {
 		fmt.Printf("unknown command: %s\n", args[0])
-		printUsage()
+		printCommandHelp(root)
 		return 1
 	}
 	if err := validateLegacySubcommand(args); err != nil {
@@ -203,38 +208,10 @@ func execute(args []string) int {
 		return 1
 	}
 
-	root, err := newRootCommand()
-	if err != nil {
-		fmt.Printf("qxctl failed: %v\n", err)
-		return 1
-	}
 	root.SetArgs(args)
-	if err := root.Execute(); err != nil {
-		if errors.Is(err, errUsageOnly) {
-			printUsage()
-			return 1
-		}
-		var validationFailure *validationOutcomeError
-		if errors.As(err, &validationFailure) {
-			return 1
-		}
-		var exactEvidenceExit *exactEvidenceExitError
-		if errors.As(err, &exactEvidenceExit) {
-			if exactEvidenceExit.code > 0 && exactEvidenceExit.code <= 125 {
-				return exactEvidenceExit.code
-			}
-			return 1
-		}
-		var validatorExit *validation.ValidatorExitError
-		if errors.As(err, &validatorExit) {
-			fmt.Printf("%s failed: %v\n", failurePrefix(args), err)
-			if validatorExit.ExitCode > 0 && validatorExit.ExitCode <= 125 {
-				return validatorExit.ExitCode
-			}
-			return 1
-		}
-		fmt.Printf("%s failed: %v\n", failurePrefix(args), err)
-		return 1
+	command, err := root.ExecuteC()
+	if err != nil {
+		return finishCommandError(root, command, args, err)
 	}
 	return 0
 }
@@ -257,9 +234,9 @@ func newRootCommand() (*cobra.Command, error) {
 	root.SilenceUsage = true
 	root.CompletionOptions.DisableDefaultCmd = true
 	root.SetHelpCommand(commandregistry.Internal(&cobra.Command{Use: "__help"}))
-	root.SetHelpFunc(func(*cobra.Command, []string) { printUsage() })
-	root.SetUsageFunc(func(*cobra.Command) error {
-		printUsage()
+	root.SetHelpFunc(func(command *cobra.Command, _ []string) { printCommandHelp(command) })
+	root.SetUsageFunc(func(command *cobra.Command) error {
+		printCommandHelp(command)
 		return nil
 	})
 	root.Version = version.Version

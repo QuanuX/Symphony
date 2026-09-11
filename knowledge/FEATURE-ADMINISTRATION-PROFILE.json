@@ -1457,15 +1457,15 @@
           "delivery": "direct",
           "engine_operation_ids": [],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -1475,138 +1475,149 @@
           "delivery": "direct",
           "engine_operation_ids": [],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "configure",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
-            "qxcmd:symphony:scv.provider-onboard"
+            "qxcmd:symphony:scv.provider-onboard",
+            "qxcmd:symphony:scv.schema.list",
+            "qxcmd:symphony:scv.schema.show",
+            "qxcmd:symphony:scv.schema.template"
           ],
-          "delivery": "direct",
+          "delivery": "composed",
           "engine_operation_ids": [],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.corpus.inspect",
             "qxcmd:symphony:scv.inspect",
             "qxcmd:symphony:scv.projection.status",
             "qxcmd:symphony:scv.source-check",
-            "qxcmd:symphony:scv.source.status"
+            "qxcmd:symphony:scv.source.status",
+            "qxcmd:symphony:scv.workflow.status"
           ],
           "delivery": "composed",
           "engine_operation_ids": [],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.capture-import",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.import",
             "qxcmd:symphony:scv.graph",
             "qxcmd:symphony:scv.interpret",
-            "qxcmd:symphony:scv.provider.interpret"
+            "qxcmd:symphony:scv.provider.interpret",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.source-plan",
             "qxcmd:symphony:scv.source.propose"
           ],
           "delivery": "composed",
           "engine_operation_ids": [],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.list",
             "qxcmd:symphony:scv.corpus.export",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.query"
           ],
           "delivery": "composed",
           "engine_operation_ids": [],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.projection.recover",
-            "qxcmd:symphony:scv.source.recover"
+            "qxcmd:symphony:scv.source.recover",
+            "qxcmd:symphony:scv.workflow.recover"
           ],
           "delivery": "composed",
           "engine_operation_ids": [],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -1621,15 +1632,15 @@
           "delivery": "composed",
           "engine_operation_ids": [],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -2126,15 +2137,15 @@
             "engop:symphony:scev-cf.source.apply"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2146,15 +2157,15 @@
             "engop:symphony:scev-cf.provider.onboard"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2172,30 +2183,35 @@
             "engop:symphony:scev-cf.source.status"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-import",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.import",
             "qxcmd:symphony:scv.corpus.inspect",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.graph",
             "qxcmd:symphony:scv.interpret",
-            "qxcmd:symphony:scv.provider.interpret"
+            "qxcmd:symphony:scv.provider.interpret",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2207,46 +2223,55 @@
             "engop:symphony:scev-cf.provider.interpret"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.source-plan",
-            "qxcmd:symphony:scv.source.propose"
+            "qxcmd:symphony:scv.source.propose",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:scev-cf.profile.prepare",
             "engop:symphony:scev-cf.source.plan"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.corpus.export",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
-            "qxcmd:symphony:scv.query"
+            "qxcmd:symphony:scv.query",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2255,15 +2280,15 @@
             "engop:symphony:scev-cf.graph.query"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2275,25 +2300,29 @@
             "engop:symphony:scev-cf.source.apply"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
-            "qxcmd:symphony:scv.evaluate"
+            "qxcmd:symphony:scv.evaluate",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2305,15 +2334,15 @@
             "engop:symphony:scev-cf.graph.evaluate"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -2330,15 +2359,15 @@
             "engop:symphony:scev.source.apply"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2350,15 +2379,15 @@
             "engop:symphony:scev.provider.onboard"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2376,30 +2405,35 @@
             "engop:symphony:scev.source.status"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-import",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.import",
             "qxcmd:symphony:scv.corpus.inspect",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.graph",
             "qxcmd:symphony:scv.interpret",
-            "qxcmd:symphony:scv.provider.interpret"
+            "qxcmd:symphony:scv.provider.interpret",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2411,46 +2445,55 @@
             "engop:symphony:scev.provider.interpret"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.source-plan",
-            "qxcmd:symphony:scv.source.propose"
+            "qxcmd:symphony:scv.source.propose",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:scev.profile.prepare",
             "engop:symphony:scev.source.plan"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.corpus.export",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
-            "qxcmd:symphony:scv.query"
+            "qxcmd:symphony:scv.query",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2459,15 +2502,15 @@
             "engop:symphony:scev.graph.query"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2479,25 +2522,29 @@
             "engop:symphony:scev.source.apply"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
-            "qxcmd:symphony:scv.evaluate"
+            "qxcmd:symphony:scv.evaluate",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2509,15 +2556,15 @@
             "engop:symphony:scev.graph.evaluate"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -2534,15 +2581,15 @@
             "engop:symphony:schv-aws.source.apply"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2554,15 +2601,15 @@
             "engop:symphony:schv-aws.provider.onboard"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2580,30 +2627,35 @@
             "engop:symphony:schv-aws.source.status"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-import",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.import",
             "qxcmd:symphony:scv.corpus.inspect",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.graph",
             "qxcmd:symphony:scv.interpret",
-            "qxcmd:symphony:scv.provider.interpret"
+            "qxcmd:symphony:scv.provider.interpret",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2615,46 +2667,55 @@
             "engop:symphony:schv-aws.provider.interpret"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.source-plan",
-            "qxcmd:symphony:scv.source.propose"
+            "qxcmd:symphony:scv.source.propose",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:schv-aws.profile.prepare",
             "engop:symphony:schv-aws.source.plan"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.corpus.export",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
-            "qxcmd:symphony:scv.query"
+            "qxcmd:symphony:scv.query",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2663,15 +2724,15 @@
             "engop:symphony:schv-aws.graph.query"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2683,25 +2744,29 @@
             "engop:symphony:schv-aws.source.apply"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
-            "qxcmd:symphony:scv.evaluate"
+            "qxcmd:symphony:scv.evaluate",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2713,15 +2778,15 @@
             "engop:symphony:schv-aws.graph.evaluate"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -2738,15 +2803,15 @@
             "engop:symphony:schv-azure.source.apply"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2758,15 +2823,15 @@
             "engop:symphony:schv-azure.provider.onboard"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2784,30 +2849,35 @@
             "engop:symphony:schv-azure.source.status"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-import",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.import",
             "qxcmd:symphony:scv.corpus.inspect",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.graph",
             "qxcmd:symphony:scv.interpret",
-            "qxcmd:symphony:scv.provider.interpret"
+            "qxcmd:symphony:scv.provider.interpret",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2819,46 +2889,55 @@
             "engop:symphony:schv-azure.provider.interpret"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.source-plan",
-            "qxcmd:symphony:scv.source.propose"
+            "qxcmd:symphony:scv.source.propose",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:schv-azure.profile.prepare",
             "engop:symphony:schv-azure.source.plan"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.corpus.export",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
-            "qxcmd:symphony:scv.query"
+            "qxcmd:symphony:scv.query",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2867,15 +2946,15 @@
             "engop:symphony:schv-azure.graph.query"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2887,25 +2966,29 @@
             "engop:symphony:schv-azure.source.apply"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
-            "qxcmd:symphony:scv.evaluate"
+            "qxcmd:symphony:scv.evaluate",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -2917,15 +3000,15 @@
             "engop:symphony:schv-azure.graph.evaluate"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -2942,15 +3025,15 @@
             "engop:symphony:schv-do.source.apply"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2962,15 +3045,15 @@
             "engop:symphony:schv-do.provider.onboard"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2988,30 +3071,35 @@
             "engop:symphony:schv-do.source.status"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-import",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.import",
             "qxcmd:symphony:scv.corpus.inspect",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.graph",
             "qxcmd:symphony:scv.interpret",
-            "qxcmd:symphony:scv.provider.interpret"
+            "qxcmd:symphony:scv.provider.interpret",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -3023,46 +3111,55 @@
             "engop:symphony:schv-do.provider.interpret"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.source-plan",
-            "qxcmd:symphony:scv.source.propose"
+            "qxcmd:symphony:scv.source.propose",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:schv-do.profile.prepare",
             "engop:symphony:schv-do.source.plan"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.corpus.export",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
-            "qxcmd:symphony:scv.query"
+            "qxcmd:symphony:scv.query",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -3071,15 +3168,15 @@
             "engop:symphony:schv-do.graph.query"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3091,25 +3188,29 @@
             "engop:symphony:schv-do.source.apply"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
-            "qxcmd:symphony:scv.evaluate"
+            "qxcmd:symphony:scv.evaluate",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -3121,15 +3222,15 @@
             "engop:symphony:schv-do.graph.evaluate"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -3146,15 +3247,15 @@
             "engop:symphony:schv.source.apply"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3166,15 +3267,15 @@
             "engop:symphony:schv.provider.onboard"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3192,30 +3293,35 @@
             "engop:symphony:schv.source.status"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-import",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.import",
             "qxcmd:symphony:scv.corpus.inspect",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.graph",
             "qxcmd:symphony:scv.interpret",
-            "qxcmd:symphony:scv.provider.interpret"
+            "qxcmd:symphony:scv.provider.interpret",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -3227,46 +3333,55 @@
             "engop:symphony:schv.provider.interpret"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.source-plan",
-            "qxcmd:symphony:scv.source.propose"
+            "qxcmd:symphony:scv.source.propose",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:schv.profile.prepare",
             "engop:symphony:schv.source.plan"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.corpus.export",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
-            "qxcmd:symphony:scv.query"
+            "qxcmd:symphony:scv.query",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -3275,15 +3390,15 @@
             "engop:symphony:schv.graph.query"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3295,25 +3410,29 @@
             "engop:symphony:schv.source.apply"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
-            "qxcmd:symphony:scv.evaluate"
+            "qxcmd:symphony:scv.evaluate",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -3325,15 +3444,15 @@
             "engop:symphony:schv.graph.evaluate"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -3350,15 +3469,15 @@
             "engop:symphony:schv-gcp.source.apply"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3370,15 +3489,15 @@
             "engop:symphony:schv-gcp.provider.onboard"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3396,30 +3515,35 @@
             "engop:symphony:schv-gcp.source.status"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-import",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.import",
             "qxcmd:symphony:scv.corpus.inspect",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.graph",
             "qxcmd:symphony:scv.interpret",
-            "qxcmd:symphony:scv.provider.interpret"
+            "qxcmd:symphony:scv.provider.interpret",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -3431,46 +3555,55 @@
             "engop:symphony:schv-gcp.provider.interpret"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.source-plan",
-            "qxcmd:symphony:scv.source.propose"
+            "qxcmd:symphony:scv.source.propose",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:schv-gcp.profile.prepare",
             "engop:symphony:schv-gcp.source.plan"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.corpus.export",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
-            "qxcmd:symphony:scv.query"
+            "qxcmd:symphony:scv.query",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -3479,15 +3612,15 @@
             "engop:symphony:schv-gcp.graph.query"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3499,25 +3632,29 @@
             "engop:symphony:schv-gcp.source.apply"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
-            "qxcmd:symphony:scv.evaluate"
+            "qxcmd:symphony:scv.evaluate",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -3529,15 +3666,15 @@
             "engop:symphony:schv-gcp.graph.evaluate"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -3695,15 +3832,15 @@
             "engop:symphony:scv.source.apply"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3715,15 +3852,15 @@
             "engop:symphony:scv.provider.onboard"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3741,30 +3878,35 @@
             "engop:symphony:scv.source.status"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-import",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.import",
             "qxcmd:symphony:scv.corpus.inspect",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.graph",
             "qxcmd:symphony:scv.interpret",
-            "qxcmd:symphony:scv.provider.interpret"
+            "qxcmd:symphony:scv.provider.interpret",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -3776,46 +3918,55 @@
             "engop:symphony:scv.provider.interpret"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.source-plan",
-            "qxcmd:symphony:scv.source.propose"
+            "qxcmd:symphony:scv.source.propose",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:scv.profile.prepare",
             "engop:symphony:scv.source.plan"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.corpus.export",
+            "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
-            "qxcmd:symphony:scv.query"
+            "qxcmd:symphony:scv.query",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -3824,15 +3975,15 @@
             "engop:symphony:scv.graph.query"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3844,25 +3995,29 @@
             "engop:symphony:scv.source.apply"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.diff",
-            "qxcmd:symphony:scv.evaluate"
+            "qxcmd:symphony:scv.evaluate",
+            "qxcmd:symphony:scv.workflow.recover",
+            "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -3874,15 +4029,15 @@
             "engop:symphony:scv.graph.evaluate"
           ],
           "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/INTERPRETATION.md",
-            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed SCV command bindings preserve exact domain operations; immutable corpus retention and pure profile/connection evidence remain separate from explicitly authorized source/graph selection and create no authority in a computed result.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -5348,9 +5503,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:08f4f2c2ead5c37c3fa49eaefaa9eca115870a0d4c64e9f7fee17a155b4f138f",
+  "profile_digest": "sha256:4107ead42e47a373b23a191851a3623111ed9b2e012c88947322accd779b189a",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 100,
-  "ssfv_registry_digest": "sha256:61a0c13ddc3ad745e6a789ba869b8b5647f4880f594d7cd69e686b483b0fc95f"
+  "ssfv_registry_digest": "sha256:05d49286b63d8aaecd4092f905024195b07454b3feb45c2f8262b0dc00d4e891"
 }
