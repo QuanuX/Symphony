@@ -8178,3 +8178,179 @@ This PR authorizes none of the following:
   - `A new DIY family allocation, mandatory parent installation, automatic latest-version substitution, universal restrictions on user composition, release publication or changes to the original archive.`
 - notes: |
     The prospective post_merge disposition records ordinary completion through the established local-Git evidence path; no remote merge is asserted. The start is the recorded isolated-checkout creation bound, before implementation. The source commit is complete and separately identified; this forward-only closure does not claim to be part of that commit's tree and needs no recursive record of itself. Evidence paths beginning ../ or ../../ are relative to the isolated repository root and point into the local implementation evidence/project decision collection; their historical scope is explicit. Remaining broad SCV acquisition and synthesis work, and stronger live-service acceptance where later deployment requires it, remain separate increments.
+
+- record_id: `SCLV-CHG-20260911-SCV-MAINTAINED-CORPUS`
+- record_version: `3`
+- title: `Immutable SCV corpus acquisition and refresh implemented`
+- status: `canonical`
+- date: `2026-09-11`
+- change_started_at: `2026-09-11T01:11:08Z`
+- change_completed_at: `2026-09-11T01:44:40Z`
+- recorded_at: `2026-09-11T01:45:28Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `The ratified increment was completed as a local Git commit in an isolated checkout; no forge change request was created.`
+- revision_scheme: `git-sha1`
+- revision_value: `d62e7efadf7e723802a299bf398bfec50f34973b`
+- tree_digest: `sha256:76615bd18a5cff8bf816bbfca79dfd1ee56fb790485a924eaad027e113bb747b`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for the SCV corpus acquisition and refresh implementation increment`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-10-scv-corpus-increment.md`
+- ratification_evidence_digest: `sha256:a304aaa773989733a51fd9e65eb6cc9c0753a0987d454b5cde9d1668f4690648`
+- affected_surfaces:
+  - `README.md`
+  - `cmake/SymphonyScvEngine.cmake`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/INVARIANTS.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/scv/CORPUS.md`
+  - `knowledge/scv/MANIFEST.md`
+  - `knowledge/scv/SOURCE-KNOWLEDGE.md`
+  - `knowledge/scv/scev/MANIFEST.md`
+  - `knowledge/scv/scev/SPEC.md`
+  - `knowledge/scv/scev/cf/MANIFEST.md`
+  - `knowledge/scv/scev/cf/SPEC.md`
+  - `knowledge/scv/schemas/v1/MANIFEST.md`
+  - `knowledge/scv/schemas/v1/capture-index.schema.json`
+  - `knowledge/scv/schemas/v1/corpus-operation.schema.json`
+  - `knowledge/scv/schemas/v1/corpus.schema.json`
+  - `knowledge/scv/schv/MANIFEST.md`
+  - `knowledge/scv/schv/SPEC.md`
+  - `knowledge/scv/schv/aws/MANIFEST.md`
+  - `knowledge/scv/schv/aws/SPEC.md`
+  - `knowledge/scv/schv/azure/MANIFEST.md`
+  - `knowledge/scv/schv/azure/SPEC.md`
+  - `knowledge/scv/schv/do/MANIFEST.md`
+  - `knowledge/scv/schv/do/SPEC.md`
+  - `knowledge/scv/schv/gcp/MANIFEST.md`
+  - `knowledge/scv/schv/gcp/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/scev-cf-engine/CMakeLists.txt`
+  - `modules/scev-cf-engine/FEATURES.md`
+  - `modules/scev-cf-engine/INSTALL.md`
+  - `modules/scev-cf-engine/MANIFEST.md`
+  - `modules/scev-cf-engine/SPEC.md`
+  - `modules/scev-engine/CMakeLists.txt`
+  - `modules/scev-engine/FEATURES.md`
+  - `modules/scev-engine/INSTALL.md`
+  - `modules/scev-engine/MANIFEST.md`
+  - `modules/scev-engine/SPEC.md`
+  - `modules/schv-aws-engine/CMakeLists.txt`
+  - `modules/schv-aws-engine/FEATURES.md`
+  - `modules/schv-aws-engine/INSTALL.md`
+  - `modules/schv-aws-engine/MANIFEST.md`
+  - `modules/schv-aws-engine/SPEC.md`
+  - `modules/schv-azure-engine/CMakeLists.txt`
+  - `modules/schv-azure-engine/FEATURES.md`
+  - `modules/schv-azure-engine/INSTALL.md`
+  - `modules/schv-azure-engine/MANIFEST.md`
+  - `modules/schv-azure-engine/SPEC.md`
+  - `modules/schv-do-engine/CMakeLists.txt`
+  - `modules/schv-do-engine/FEATURES.md`
+  - `modules/schv-do-engine/INSTALL.md`
+  - `modules/schv-do-engine/MANIFEST.md`
+  - `modules/schv-do-engine/SPEC.md`
+  - `modules/schv-engine/CMakeLists.txt`
+  - `modules/schv-engine/FEATURES.md`
+  - `modules/schv-engine/INSTALL.md`
+  - `modules/schv-engine/MANIFEST.md`
+  - `modules/schv-engine/SPEC.md`
+  - `modules/schv-gcp-engine/CMakeLists.txt`
+  - `modules/schv-gcp-engine/FEATURES.md`
+  - `modules/schv-gcp-engine/INSTALL.md`
+  - `modules/schv-gcp-engine/MANIFEST.md`
+  - `modules/schv-gcp-engine/SPEC.md`
+  - `modules/scv-engine/CMakeLists.txt`
+  - `modules/scv-engine/FEATURES.md`
+  - `modules/scv-engine/INSTALL.md`
+  - `modules/scv-engine/MANIFEST.md`
+  - `modules/scv-engine/SPEC.md`
+  - `modules/scv-engine/src/corpus.cpp`
+  - `modules/scv-engine/src/corpus.hpp`
+  - `modules/scv-engine/src/dispatch.cpp`
+  - `modules/scv-engine/src/scv.hpp`
+  - `modules/scv-engine/tests/corpus_test.cpp`
+  - `modules/scv-engine/tests/installed_integration.py`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/scv.go`
+  - `tools/qxctl/cmd/qxctl/scv_corpus.go`
+  - `tools/qxctl/cmd/qxctl/scv_corpus_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_corpus_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_test.go`
+  - `tools/qxctl/internal/scvcorpus/rename_darwin.go`
+  - `tools/qxctl/internal/scvcorpus/rename_linux.go`
+  - `tools/qxctl/internal/scvcorpus/storage_unix.go`
+  - `tools/qxctl/internal/scvcorpus/store.go`
+  - `tools/qxctl/internal/scvcorpus/store_test.go`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/scv/CORPUS.md`
+  - `knowledge/scv/SOURCE-KNOWLEDGE.md`
+  - `knowledge/scv/scev/SPEC.md`
+  - `knowledge/scv/scev/cf/SPEC.md`
+  - `knowledge/scv/schemas/v1/capture-index.schema.json`
+  - `knowledge/scv/schemas/v1/corpus-operation.schema.json`
+  - `knowledge/scv/schemas/v1/corpus.schema.json`
+  - `knowledge/scv/schv/SPEC.md`
+  - `knowledge/scv/schv/aws/SPEC.md`
+  - `knowledge/scv/schv/azure/SPEC.md`
+  - `knowledge/scv/schv/do/SPEC.md`
+  - `knowledge/scv/schv/gcp/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/scv-engine/SPEC.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+- change_summary: |
+    Completes the second bounded SCV increment: four additive C++ operations create capture indexes, build immutable corpus snapshots, query explicit evidence selection and compare snapshot changes. Six qxctl commands acquire, import, recover, inspect, export and compare retained corpora through exact installed owners. Durable job intent and per-member checkpoints preserve completed evidence across interruption; complete historical evidence remains separately identifiable when a later attempt is partial or failed. This is maintained selected-corpus acquisition and refresh, not completion of all provider knowledge or architecture synthesis acceptance scenarios.
+- relationship_changes: |
+    Source configuration, acquisition attempts, immutable corpus membership and selected knowledge graphs remain distinct. Capture indexes bind exact captured source revisions and locator identity; their metadata seals do not substitute for retained bytes. Pure C++ accepts indexes within the invoked domain's declared scope. The local qxctl adapter imports exact captures and generates indexes through the selected domain; it has no raw index or snapshot import command and needs no child installation. Corpus membership is a caller's explicit selection. Removing a member does not retire its provider service, and historical source selection does not mutate a source head. The C++ lineage check binds retained member identities to the supplied immediate predecessor; the adapter separately verifies bounded retained ancestry and referenced evidence.
+- doctrine_changes: |
+    The increment preserves user-owned policy and caller-neutral authority. Refresh does not make old evidence current: latest attempts and retained complete captures remain separate, with exact source revision, observation time, query time and selected age bound. A null maximum age still distinguishes future observations. Difference reports separate body, source, observation, coverage and membership changes without inferring retirement, semantic agreement or incompatibility. No selected corpus head or latest alias is introduced. Immutable evidence retention requests no SSIAG authority; deliberate source and graph head selection retains the existing audited authorization boundary.
+- compatibility_consequences: |
+    All eight domain packages advance additively to 0.2.0-dev with exactly seventeen owner operations. Existing 0.1.0-dev installations remain invocable with their thirteen-operation descriptors, exact receipts and original command defaults; only new corpus commands default to 0.2.0-dev. The original source, capture, interpretation and graph wire shapes and their six schema files are unchanged. The existing engine-process v1, descriptor v2 and installation receipt v2 contracts remain in force. Three corpus schema artifacts and CORPUS.md supplement SOURCE-KNOWLEDGE.md. The registry contains 224 commands; existing 100 SSFV features and 252 administration expectations retain their identities and counts. No automatic version substitution or mandatory provider-specific source implementation is added.
+- publication_consequences: |
+    The implementation is local commit d62e7efadf7e723802a299bf398bfec50f34973b on codex/scv-corpus-refresh, descended from the first increment's closure commit 64f48e85b3b038b0a273d6a2bd88dc5a0853b39b. There is no forge request, remote push, tag, external release publication, provider deployment, credential installation or archive change. Staged local development installations, immutable evidence objects and public documentation reads are verification artifacts rather than a product release or provider operation. The live interrupted job and its recovery remain in the evidence record.
+- projection_consequences: |
+    Current manifests, module feature records, SKVI, SSFV coverage, command metadata, feature administration and root summary route the new corpus operations through the established eight owners. The root summary digest is sha256:be98ec27ace774f3d41d2e393d1fda7ebc355c7bb63d46411bc02dc35fde7fc3. The invariant registry has eighteen records, eleven adapters and seventy-two evidence references, including corpus provenance across producer/process/consumer boundaries and local immutable retention/recovery. The registry digest is sha256:2a9cf77120c892c23379cc5ae8d539a22f8bf4fba300cc2de5c780099cac7fc9. Immutable corpus snapshots are inputs to explicitly requested later interpretation; they do not publish a graph head or canonical repository truth.
+- evidence:
+  - `Local Git source commit d62e7efadf7e723802a299bf398bfec50f34973b completed 2026-09-11T01:44:40Z; 94 files changed, 5691 insertions, 208 deletions. The start boundary is the recorded branch checkout at 2026-09-11T01:11:08Z.`
+  - `The tree digest binds exact /usr/bin/git ls-tree -r -z --full-tree d62e7efadf7e723802a299bf398bfec50f34973b output bytes; the ratification digest binds the separate project decision Markdown containing Duncan's explicit instruction to proceed to the next increment.`
+  - `../increment-2/evidence/scv-ctest-final.txt records eleven passing aggregate CTests, including sixteen named corpus owner cases and eight independently installed process suites. ../increment-2/evidence/scev-cf-standalone-final.txt records the separate Cloudflare module's passing installed-process test.`
+  - `../increment-2/evidence/validator-ctest-final.txt records all eight symphony-validator CTests passing. ../increment-2/evidence/canonical-validator-before-closure.json records 9940 passes, zero warnings and zero violations; result digest sha256:60e882ee86d86b6f724ae7c94ccde6ac20903d222a2ea7241fc0b558f28a53b8.`
+  - `../increment-2/evidence/qxctl-tests.txt records the successful final Go suite across twenty-one tested packages; internal/version has no test files. ../increment-2/evidence/qxctl-race.txt records the passing targeted race suite. Linux amd64 qxctl cross-compilation succeeded; Linux runtime and C++ platform acceptance were not exercised.`
+  - `Consumer and installed-process cases reject resealed inconsistent indexes, snapshots and selections; test failed refresh fallback, historical revisions, clock rollback, deadline checkpoints, export bounds and unverifiable successors; and preserve immutable publication, exact job inputs and completed checkpoint replay.`
+  - `../increment-2/evidence/INSTALLED_PACKAGES.json records all sixteen retained exact installations: eight 0.1.0-dev owners with thirteen operations and eight 0.2.0-dev owners with seventeen. Seven final CLI replays matched the saved operation results.`
+  - `../increment-2/evidence/provider-corpus-live/SUMMARY.json records two selected five-provider documentation acquisition jobs with five complete captures and 81390 retained body bytes each. The first job's serialization failure published no snapshot; its five durable checkpoints and original intent were recovered without refetch after the boundary fix.`
+  - `../increment-2/evidence/provider-corpus-live/INTERRUPTED.json, initial-error.txt and initial-recover.json retain the failure and recovery. The second refresh preserved body and source digests while reporting changed observations. Mutable upstream selectors remain explicitly recorded as such.`
+  - `The selected live captures produced five anchored document-title assertions and 261 native structural nodes. A later corpus query reported all five selected captures expired under the selected one-day age bound. This verifies retained evidence and temporal qualification, not semantic provider expertise or runtime interoperability.`
+  - `All nine SCV schema artifacts parse and all sixty-five local references resolve; the original six schemas are byte-identical to the prior increment. git diff --check passes. The pre-existing full smoke fixture bootstrap debt recorded in the first increment was not claimed resolved or rerun as full-suite acceptance.`
+- non_authorizations:
+  - `Provider operations, credentials, deployment, external publication, live service compatibility, complete provider catalog coverage, arbitrary architecture search or semantic verification inferred from document-title assertions or structural extraction.`
+  - `A selected corpus head, implicit latest alias, automatic graph publication, source-head mutation, source retirement inferred from selection removal or permission inferred from a digest, artifact or caller label.`
+  - `Execution of acquired text or selectors, arbitrary parsing extensions, automatic entity reconciliation, recursive web crawling, unbounded capture materialization or mutable upstream selectors represented as exact revision pins.`
+  - `Unbounded historical identity enforcement, ancestry or retained evidence; automatic pruning or migration; a claim that the member scheduling budget bounds total command wall-clock time; or invented observation time after clock rollback.`
+  - `Replacement of retained 0.1.0-dev installations, automatic package version substitution, new universal provider requirements, archive modification or historical SCLV rewrite.`
+- notes: |
+    The post_merge disposition records ordinary completion through the established local-Git adapter; it does not assert a remote merge. Dates and timestamps in this record use UTC, so the September 10 local ratification is closed on September 11 UTC. This append-only closure is separate from the recorded implementation tree and needs no recursive record of itself. Evidence paths beginning ../ or ../../ are relative to the isolated repository root and identify local increment evidence and project ratification. The implemented adapter admits up to 128 members, reconstructs at most 128 retained snapshots and verifies at most 4096 unique index/capture pairs, reserving successor capacity before publication. Its 120-second budget governs member scheduling and networking plus a bounded checkpoint tail; preflight, reconstruction and finalization have their separate object/ancestry and owner-process bounds. Export materialization remains at most sixteen captures with the existing byte/value limits. Future-dated imports are rejected before intent; clock rollback during a job leaves finalization recoverable. Broader acquisition automation, semantic interpretation, provider expertise and later deployment acceptance remain separate work rather than implied completion of the original design packet.
