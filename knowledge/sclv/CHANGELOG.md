@@ -8354,3 +8354,164 @@ This PR authorizes none of the following:
   - `Replacement of retained 0.1.0-dev installations, automatic package version substitution, new universal provider requirements, archive modification or historical SCLV rewrite.`
 - notes: |
     The post_merge disposition records ordinary completion through the established local-Git adapter; it does not assert a remote merge. Dates and timestamps in this record use UTC, so the September 10 local ratification is closed on September 11 UTC. This append-only closure is separate from the recorded implementation tree and needs no recursive record of itself. Evidence paths beginning ../ or ../../ are relative to the isolated repository root and identify local increment evidence and project ratification. The implemented adapter admits up to 128 members, reconstructs at most 128 retained snapshots and verifies at most 4096 unique index/capture pairs, reserving successor capacity before publication. Its 120-second budget governs member scheduling and networking plus a bounded checkpoint tail; preflight, reconstruction and finalization have their separate object/ancestry and owner-process bounds. Export materialization remains at most sixteen captures with the existing byte/value limits. Future-dated imports are rejected before intent; clock rollback during a job leaves finalization recoverable. Broader acquisition automation, semantic interpretation, provider expertise and later deployment acceptance remain separate work rather than implied completion of the original design packet.
+
+- record_id: `SCLV-CHG-20260911-SCV-PROVIDER-INTERPRETATION`
+- record_version: `3`
+- title: `Replayable SCV provider interpretation and connection checks implemented`
+- status: `canonical`
+- date: `2026-09-11`
+- change_started_at: `2026-09-11T02:44:35Z`
+- change_completed_at: `2026-09-11T03:16:33Z`
+- recorded_at: `2026-09-11T03:17:10Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `The ratified increment completed as a local Git commit in the isolated checkout; no forge change request was created.`
+- revision_scheme: `git-sha1`
+- revision_value: `6706665996d398a5119b4c2f44ee02e12fe6e9c4`
+- tree_digest: `sha256:663585b22f8660c272bda979ea024fa1cfa8e94b10f426d2b3276a7bee6b1317`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for the SCV provider interpretation and connection evaluation increment`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-10-scv-provider-interpretation-increment.md`
+- ratification_evidence_digest: `sha256:f14da1d72885c5c00bdb58bd08dc907a872b982fec94097a1d046eea33153708`
+- affected_surfaces:
+  - `README.md`
+  - `cmake/SymphonyScvEngine.cmake`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/INVARIANTS.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/scv/CORPUS.md`
+  - `knowledge/scv/INTERPRETATION.md`
+  - `knowledge/scv/MANIFEST.md`
+  - `knowledge/scv/SKILL.md`
+  - `knowledge/scv/SOURCE-KNOWLEDGE.md`
+  - `knowledge/scv/scev/MANIFEST.md`
+  - `knowledge/scv/scev/SPEC.md`
+  - `knowledge/scv/scev/cf/MANIFEST.md`
+  - `knowledge/scv/scev/cf/SPEC.md`
+  - `knowledge/scv/schemas/v1/MANIFEST.md`
+  - `knowledge/scv/schemas/v1/connection-operation.schema.json`
+  - `knowledge/scv/schemas/v1/interpretation-profile.schema.json`
+  - `knowledge/scv/schemas/v1/provider-interpretation.schema.json`
+  - `knowledge/scv/schv/MANIFEST.md`
+  - `knowledge/scv/schv/SPEC.md`
+  - `knowledge/scv/schv/aws/MANIFEST.md`
+  - `knowledge/scv/schv/aws/SPEC.md`
+  - `knowledge/scv/schv/azure/MANIFEST.md`
+  - `knowledge/scv/schv/azure/SPEC.md`
+  - `knowledge/scv/schv/do/MANIFEST.md`
+  - `knowledge/scv/schv/do/SPEC.md`
+  - `knowledge/scv/schv/gcp/MANIFEST.md`
+  - `knowledge/scv/schv/gcp/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/scev-cf-engine/CMakeLists.txt`
+  - `modules/scev-cf-engine/FEATURES.md`
+  - `modules/scev-cf-engine/INSTALL.md`
+  - `modules/scev-cf-engine/MANIFEST.md`
+  - `modules/scev-cf-engine/SPEC.md`
+  - `modules/scev-engine/CMakeLists.txt`
+  - `modules/scev-engine/FEATURES.md`
+  - `modules/scev-engine/INSTALL.md`
+  - `modules/scev-engine/MANIFEST.md`
+  - `modules/scev-engine/SPEC.md`
+  - `modules/schv-aws-engine/CMakeLists.txt`
+  - `modules/schv-aws-engine/FEATURES.md`
+  - `modules/schv-aws-engine/INSTALL.md`
+  - `modules/schv-aws-engine/MANIFEST.md`
+  - `modules/schv-aws-engine/SPEC.md`
+  - `modules/schv-azure-engine/CMakeLists.txt`
+  - `modules/schv-azure-engine/FEATURES.md`
+  - `modules/schv-azure-engine/INSTALL.md`
+  - `modules/schv-azure-engine/MANIFEST.md`
+  - `modules/schv-azure-engine/SPEC.md`
+  - `modules/schv-do-engine/CMakeLists.txt`
+  - `modules/schv-do-engine/FEATURES.md`
+  - `modules/schv-do-engine/INSTALL.md`
+  - `modules/schv-do-engine/MANIFEST.md`
+  - `modules/schv-do-engine/SPEC.md`
+  - `modules/schv-engine/CMakeLists.txt`
+  - `modules/schv-engine/FEATURES.md`
+  - `modules/schv-engine/INSTALL.md`
+  - `modules/schv-engine/MANIFEST.md`
+  - `modules/schv-engine/SPEC.md`
+  - `modules/schv-gcp-engine/CMakeLists.txt`
+  - `modules/schv-gcp-engine/FEATURES.md`
+  - `modules/schv-gcp-engine/INSTALL.md`
+  - `modules/schv-gcp-engine/MANIFEST.md`
+  - `modules/schv-gcp-engine/SPEC.md`
+  - `modules/scv-engine/CMakeLists.txt`
+  - `modules/scv-engine/FEATURES.md`
+  - `modules/scv-engine/INSTALL.md`
+  - `modules/scv-engine/MANIFEST.md`
+  - `modules/scv-engine/SPEC.md`
+  - `modules/scv-engine/src/dispatch.cpp`
+  - `modules/scv-engine/src/interpretation.cpp`
+  - `modules/scv-engine/src/interpretation.hpp`
+  - `modules/scv-engine/tests/installed_integration.py`
+  - `modules/scv-engine/tests/interpretation_test.cpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/scv.go`
+  - `tools/qxctl/cmd/qxctl/scv_corpus.go`
+  - `tools/qxctl/cmd/qxctl/scv_interpretation.go`
+  - `tools/qxctl/internal/knowledgeengine/scv.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_interpretation.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_interpretation_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_test.go`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/scv/CORPUS.md`
+  - `knowledge/scv/INTERPRETATION.md`
+  - `knowledge/scv/SOURCE-KNOWLEDGE.md`
+  - `knowledge/scv/schemas/v1/connection-operation.schema.json`
+  - `knowledge/scv/schemas/v1/interpretation-profile.schema.json`
+  - `knowledge/scv/schemas/v1/provider-interpretation.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/scv-engine/SPEC.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+- change_summary: |
+    Completes the third bounded SCV increment: reusable authored profiles extract literal or delimited native-document claims with exact context; connection evaluation replays retained interpretations and checks explicit caller requirements; reassessment replays earlier/later results and separates changed inputs and affected findings. qxctl exposes the same three pure C++ operations and independently validates response bindings, complete claim inventory, contextual anchors, canonical values and comparisons. This is a finite interpretation and connection-evidence implementation, not complete provider expertise or a general Composer.
+- relationship_changes: |
+    Retained captures, authored mappings, ordinary knowledge, connection requirements and operational permission remain distinct. Each profile binds an exact capture, and wrappers preserve its replay evidence before cross-provider composition. Additional ordinary knowledge remains an explicit input for user assertions, observations and other modules. Profile IDs are unique only within the selected interpretation/evaluation boundary; this tool constraint creates no global namespace. Existing protected source/graph selection and immutable corpus retention retain their separate owners.
+- doctrine_changes: |
+    Applies existing user-owned policy and caller-neutral authority. Extraction establishes attributed text and an authored mapping, not semantic or empirical truth. Exact subjects, complete scopes, types and units qualify checks; missing/stale evidence is unresolved, and recommendations or assumptions remain conditional. Required/optional choices and endpoints belong to the caller. A scoped contradiction cannot become a provider-wide rejection. Reassessment axes identify differences, not proof that one changed input caused every outcome.
+- compatibility_consequences: |
+    Eight independently installed packages advance to 0.3.0-dev with twenty operations. Exact 0.1.0-dev and 0.2.0-dev installations retain thirteen and seventeen operations and unchanged prior data contracts. Original qxctl leaves still default to 0.1.0-dev; corpus leaves default to 0.2.0-dev and explicitly permit 0.3.0-dev; only the three new leaves default to 0.3.0-dev. The nine historical schemas remain byte-identical; three additive schemas and INTERPRETATION.md define the new artifacts. Process v1, descriptor v2, receipt v2, existing feature IDs and generic adapter identities remain unchanged.
+- publication_consequences: |
+    Local source commit 6706665996d398a5119b4c2f44ee02e12fe6e9c4 on codex/scv-provider-interpretation descends from bbdc2b536463d93075e71d32baad2812d189a94c. No remote merge, push, tag, release, provider deployment, credential installation or archive modification occurred. Local staged packages and selected public-document reads are verification artifacts; they do not publish official provider knowledge or activate infrastructure.
+- projection_consequences: |
+    Manifests, SKVI, SSFV, administration mappings and the command registry route the new operations through the established owners. Counts are 227 qxctl leaves, 100 features, 252 administration expectations and nineteen invariants with eleven adapters. The root summary digest is sha256:58312032af7d830464229bc744f8280f987f33a25dfd4f318744f3f125a6bf86. The profile-connection provenance invariant binds owner, consumer and installed-process evidence. No result selects a corpus or graph head, chooses a topology or becomes canonical repository truth.
+- evidence:
+  - `Source commit 6706665996d398a5119b4c2f44ee02e12fe6e9c4 completed 2026-09-11T03:16:33Z; 91 files changed, 4066 insertions and 248 deletions. The tree digest binds exact /usr/bin/git ls-tree -r -z --full-tree output bytes for that commit.`
+  - `../increment-3/evidence/interpretation-cases.log records twenty-five passing C++ owner cases. ctest-aggregate.log records twelve passing CTests, including all eight receipt-backed process packages with eight cases each; ctest-standalone.log records the separately built Cloudflare package's passing process test.`
+  - `../increment-3/evidence/go-full-final.log records twenty passing qxctl Go packages; internal/version has no test files. Exact installed tests include retained 0.1.0-dev, 0.2.0-dev and current 0.3.0-dev packages, malformed JSON, resealed fabricated findings, dropped context, canonical numeric checks and independently rejected result tampering.`
+  - `../increment-3/evidence/INSTALLED_PACKAGES.json records twenty-four exact receipt/file-hash verified installations and preserved old binaries. The verified qxctl-inc3 executable SHA-256 is ffd8efa153bd0ad81a957bb2966d246e64f9e457cd7567653f7e3c9dd0953e13.`
+  - `../increment-3/evidence/canonical-validator-before-closure.json records 10027 passes, zero warnings and zero violations; result digest sha256:e5d82915a8273bcfc7af9a604d97b89e3bd57400d73e7e572f869d5d8e78de39. validator-ctest-final.txt records all eight validator CTests passing. All twelve SCV schemas parse, all ninety-two local references resolve, and the nine historical schemas remain byte-identical.`
+  - `../increment-3/evidence/provider-demo-live/SUMMARY.json records five selected public Cloudflare/GCP captures totaling 49949 body bytes, five authored profiles and fifteen finite rules. The live-source example's twenty-four checks are fourteen satisfied, nine unresolved and one conditional; the overall connection remains unresolved because runtime, identity and payload requirements lack evidence.`
+  - `The separately labeled synthetic port change yields thirteen satisfied, nine unresolved, one conditional and one contradicted check. Four tunnel-related checks are affected; only the selected port check changes disposition. Captures alone changes among the six input axes. Eleven Cloudflare and four GCP rules replay through provider wrappers into SCV with the same twenty-four dispositions.`
+  - `../increment-3/evidence/provider-demo-live/RUNS/2026-09-11T03-14-26Z-3c8c7956a6d9.json records successful final-package/CLI replay without reacquisition; record digest sha256:3c8c7956a6d91d5405d566d10456bf25d5fa3ad61ca9fbdf509e745a88f4aea6. The example tests bounded source interpretation and explicit checks, not deployed route or workload compatibility.`
+- non_authorizations:
+  - `Empirical or semantic proof inferred from extraction, complete provider expertise, provider-wide incompatibility, arbitrary prose inference, a general Composer or universal restrictions on user composition.`
+  - `Provider accounts, credentials, deployment, live-route verification, model invocation, payload agreement, automatic remediation or authority inferred from a result, profile author label or receipt.`
+  - `Automatic graph selection, a corpus latest alias, new SSIAG/STAV authority, publication, package-version substitution, source instruction execution or historical ledger rewrite.`
+- notes: |
+    The post_merge disposition records ordinary local-Git completion and asserts no remote merge. The start is the first recorded work-clock observation, not an asserted exact client-message or task-creation time. UTC closure dates differ from the September 10 local ratification date. This append-only closure is separate from the completed source tree and needs no recursive record of itself. Evidence paths beginning ../ or ../../ are relative to the isolated repository root; subsequent short evidence filenames share the cited evidence directory. Existing process, capture, graph and JSON limits remain independent of profile/check counts. Current-time evidence and explicit live requirements remain necessary for any later deployment; a synthetic changed-source fixture is not a report of an actual provider change.
