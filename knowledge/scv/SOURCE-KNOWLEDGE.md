@@ -71,3 +71,7 @@ The graph selection adapter uses a separate protected graph namespace. It valida
 Source and graph publication recheck the exact decision and capability expiry at the final publication boundary, after the temporary document is flushed and closed and before atomic rename. An expired grant leaves the earlier head and recoverable intent. This check does not claim an independent distributed revocation protocol or remote authority; the applicable existing SSIAG decision semantics remain in force.
 
 The adapter's exact storage/result schema and executable evidence belong to qxctl's contract. The source/graph data schemas here cannot be used as an authorization token or receipt. No dedicated source-outcome or graph-outcome STAV event, remote identity bridge or cross-host authority is implied by these local profiles.
+
+## Additive Maintained Corpus Profile
+
+Engine `0.2.0-dev` adds the four bounded operations in `knowledge/scv/CORPUS.md` without changing the original thirteen operation payloads or the source/capture/knowledge/graph v1 shapes. Its qxctl adapter retains immutable evidence and recoverable jobs with explicit snapshot identities. There is no selected corpus head or implicit change to the existing protected source/graph selection circuits.

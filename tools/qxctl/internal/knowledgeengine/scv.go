@@ -8,7 +8,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"path/filepath"
+	"sort"
 	"strings"
+	"time"
 )
 
 // SCVDomains is the finite installed surface of this release, not a provider
@@ -55,7 +57,7 @@ func InvokeSCVDomain(ctx context.Context, domain, prefix, version, cwd, operatio
 	if err != nil {
 		return Response{}, err
 	}
-	if _, ok := SCVResultProtocol(operation); !ok {
+	if !SCVOperationSupported(version, operation) {
 		return Response{}, fmt.Errorf("unsupported SCV operation")
 	}
 	if err := validateJSONObject(payload, maxRequestBytes); err != nil {
@@ -78,7 +80,11 @@ func InvokeSCVDomain(ctx context.Context, domain, prefix, version, cwd, operatio
 			return Response{}, fmt.Errorf("SCV descriptor installation identity mismatch")
 		}
 		operations, ok := value["operations"].([]any)
-		if !ok || len(operations) != 13 {
+		expectedCount := 13
+		if version == "0.2.0-dev" {
+			expectedCount = 17
+		}
+		if !ok || len(operations) != expectedCount {
 			return Response{}, fmt.Errorf("SCV descriptor operation set mismatch")
 		}
 		seen := map[string]bool{}
@@ -88,7 +94,7 @@ func InvokeSCVDomain(ctx context.Context, domain, prefix, version, cwd, operatio
 				return Response{}, fmt.Errorf("invalid SCV descriptor operation")
 			}
 			name, _ := item["operation_name"].(string)
-			if _, ok := SCVResultProtocol(name); !ok || seen[name] {
+			if !SCVOperationSupported(version, name) || seen[name] {
 				return Response{}, fmt.Errorf("SCV descriptor operation identity mismatch")
 			}
 			seen[name] = true
@@ -110,8 +116,22 @@ func SCVResultProtocol(operation string) (string, bool) {
 		"capture_compare": "symphony.scv.capture-diff.v1", "knowledge_interpret": "symphony.scv.knowledge.v1",
 		"graph_build": "symphony.scv.graph.v1", "graph_query": "symphony.scv.query-result.v1",
 		"graph_evaluate": "symphony.scv.evaluate-result.v1", "graph_diff": "symphony.scv.diff-result.v1", "graph_explain": "symphony.scv.explain-result.v1",
+		"capture_index": "symphony.scv.capture-index.v1", "corpus_build": "symphony.scv.corpus.v1",
+		"corpus_query": "symphony.scv.corpus-query.v1", "corpus_diff": "symphony.scv.corpus-diff.v1",
 	}[operation]
 	return protocol, ok
+}
+
+// SCVOperationSupported preserves each exact package's finite operation set.
+// Future versions require an explicit consumer update, never a latest alias.
+func SCVOperationSupported(version, operation string) bool {
+	if version != "0.1.0-dev" && version != "0.2.0-dev" {
+		return false
+	}
+	if _, ok := SCVResultProtocol(operation); !ok {
+		return false
+	}
+	return version == "0.2.0-dev" || (operation != "capture_index" && !strings.HasPrefix(operation, "corpus_"))
 }
 
 // SCVCanonical encodes the same sorted, UTF-8 JSON subset as the C++ owner.
@@ -232,6 +252,10 @@ func ValidateSCVResult(operation string, input, raw []byte) error {
 		"graph_evaluate":      {"protocol", "domain", "graph_digest", "query_time", "selection_policy", "findings", "conflicts", "evidence_origins", "limitations", "coverage", "query_selection", "digest"},
 		"graph_explain":       {"protocol", "domain", "graph_digest", "query_time", "selection_policy", "findings", "conflicts", "evidence_origins", "limitations", "coverage", "query_selection", "claim_id", "dependency_closure", "digest"},
 		"graph_diff":          {"protocol", "domain", "before_digest", "after_digest", "query_time", "changes", "affected_claim_ids", "before_evaluation", "after_evaluation", "limitations", "digest"},
+		"capture_index":       {"protocol", "domain", "source_id", "provider_id", "family_id", "source_digest", "source_generation", "locator_id", "requested_uri", "capture_digest", "body_digest", "byte_size", "observed_at", "upstream_revision", "media_type", "completeness", "issues", "digest"},
+		"corpus_build":        {"protocol", "domain", "corpus_id", "generation", "parent_digest", "snapshot_time", "members", "coverage", "digest"},
+		"corpus_query":        {"protocol", "domain", "corpus_digest", "query_time", "selection", "max_age_seconds", "members", "coverage", "digest"},
+		"corpus_diff":         {"protocol", "domain", "before_digest", "after_digest", "added_member_ids", "removed_member_ids", "changes", "affected_member_ids", "digest"},
 	}
 	if names, ok := exact[operation]; ok {
 		if operation == "graph_query" || operation == "graph_evaluate" || operation == "graph_explain" {
@@ -362,5 +386,413 @@ func ValidateSCVResult(operation string, input, raw []byte) error {
 			return fmt.Errorf("graph difference changed request binding")
 		}
 	}
+	if strings.HasPrefix(operation, "corpus_") || operation == "capture_index" {
+		if err := validateSCVCorpusResult(operation, payload, value); err != nil {
+			return err
+		}
+	}
 	return scvSeal(value, "digest")
+}
+
+func validateSCVCorpusResult(operation string, input, value map[string]any) error {
+	switch operation {
+	case "capture_index":
+		capture, ok := input["capture"].(map[string]any)
+		if !ok {
+			return fmt.Errorf("capture index missing input capture")
+		}
+		source, ok := capture["source"].(map[string]any)
+		if !ok {
+			return fmt.Errorf("capture index missing source")
+		}
+		for _, key := range []string{"source_id", "provider_id", "family_id"} {
+			if !scvEqual(value[key], source[key]) {
+				return fmt.Errorf("capture index changed %s", key)
+			}
+		}
+		for _, key := range []string{"locator_id", "body_digest", "byte_size", "observed_at", "upstream_revision", "media_type", "completeness", "issues"} {
+			if !scvEqual(value[key], capture[key]) {
+				return fmt.Errorf("capture index changed %s", key)
+			}
+		}
+		if !scvEqual(value["source_digest"], source["digest"]) || !scvEqual(value["source_generation"], source["generation"]) || !scvEqual(value["capture_digest"], capture["digest"]) {
+			return fmt.Errorf("capture index revision mismatch")
+		}
+		locators, ok := source["locators"].([]any)
+		if !ok {
+			return fmt.Errorf("capture index source locators missing")
+		}
+		found := false
+		for _, raw := range locators {
+			locator, ok := raw.(map[string]any)
+			if ok && scvEqual(locator["locator_id"], capture["locator_id"]) {
+				found = scvEqual(value["requested_uri"], locator["uri"])
+			}
+		}
+		if !found {
+			return fmt.Errorf("capture index changed requested URI")
+		}
+	case "corpus_build":
+		if !scvEqual(value["corpus_id"], input["corpus_id"]) || !scvEqual(value["snapshot_time"], input["snapshot_time"]) {
+			return fmt.Errorf("corpus snapshot changed request")
+		}
+		var parent any
+		generation := int64(1)
+		previousMembers := map[string]map[string]any{}
+		if input["previous"] != nil {
+			previous, old, err := scvCorpusSnapshot(input["previous"])
+			if err != nil {
+				return err
+			}
+			if !scvEqual(previous["corpus_id"], input["corpus_id"]) || !scvEqual(previous["domain"], value["domain"]) {
+				return fmt.Errorf("corpus predecessor owner/identity mismatch")
+			}
+			n, err := scvCorpusInteger(previous["generation"], 1, 9007199254740990)
+			if err != nil {
+				return err
+			}
+			parent, generation, previousMembers = previous["digest"], n+1, old
+		}
+		if !scvEqual(value["parent_digest"], parent) || !scvEqual(value["generation"], generation) {
+			return fmt.Errorf("corpus predecessor mismatch")
+		}
+		attempts, ok := input["attempts"].([]any)
+		if !ok || len(attempts) > 128 {
+			return fmt.Errorf("invalid corpus attempts")
+		}
+		expected := map[string]map[string]any{}
+		for _, raw := range attempts {
+			item, ok := raw.(map[string]any)
+			if !ok || !scvCorpusFields(item, "member_id", "capture") {
+				return fmt.Errorf("invalid corpus attempt fields")
+			}
+			id, err := scvCorpusID(item["member_id"])
+			if err != nil || expected[id] != nil {
+				return fmt.Errorf("invalid or duplicate corpus attempt identity")
+			}
+			index, err := scvCorpusIndex(item["capture"])
+			if err != nil {
+				return err
+			}
+			var last any
+			if previous, exists := previousMembers[id]; exists {
+				if !scvEqual(scvCorpusTuple(previous["latest_attempt"].(map[string]any)), scvCorpusTuple(index)) {
+					return fmt.Errorf("corpus member identity rebound")
+				}
+				last = previous["last_complete"]
+			}
+			if index["completeness"] == "complete" {
+				last = index
+			}
+			expected[id] = map[string]any{"member_id": id, "latest_attempt": index, "last_complete": last}
+		}
+		actual, err := scvCorpusMembers(value["members"])
+		if err != nil {
+			return err
+		}
+		if !scvEqual(actual, expected) || !scvEqual(value["coverage"], scvCorpusCoverage(expected)) {
+			return fmt.Errorf("corpus changed attempt, retained complete evidence or coverage")
+		}
+	case "corpus_query":
+		corpus, available, err := scvCorpusSnapshot(input["corpus"])
+		if err != nil {
+			return err
+		}
+		if !scvEqual(value["corpus_digest"], corpus["digest"]) || !scvEqual(value["domain"], corpus["domain"]) {
+			return fmt.Errorf("corpus query revision or owner mismatch")
+		}
+		for _, key := range []string{"query_time", "selection", "max_age_seconds"} {
+			if !scvEqual(value[key], input[key]) {
+				return fmt.Errorf("corpus query changed %s", key)
+			}
+		}
+		selection, ok := input["selection"].(string)
+		if !ok || (selection != "latest_attempt" && selection != "last_complete") {
+			return fmt.Errorf("invalid corpus query selection")
+		}
+		queryTime, err := scvCorpusTime(input["query_time"])
+		if err != nil {
+			return err
+		}
+		var maximumAge int64
+		if input["max_age_seconds"] != nil {
+			maximumAge, err = scvCorpusInteger(input["max_age_seconds"], 0, 3155760000)
+			if err != nil {
+				return err
+			}
+		}
+		ids, ok := input["member_ids"].([]any)
+		if !ok || len(ids) > 128 {
+			return fmt.Errorf("invalid requested corpus members")
+		}
+		requested := map[string]map[string]any{}
+		for _, raw := range ids {
+			id, err := scvCorpusID(raw)
+			if err != nil || available[id] == nil || requested[id] != nil {
+				return fmt.Errorf("unknown or duplicate requested corpus member")
+			}
+			requested[id] = available[id]
+		}
+		if len(ids) == 0 {
+			requested = available
+		}
+		members, ok := value["members"].([]any)
+		if !ok || len(members) != len(requested) {
+			return fmt.Errorf("corpus query changed requested member count")
+		}
+		lastID := ""
+		for _, raw := range members {
+			member, ok := raw.(map[string]any)
+			if !ok || !scvCorpusFields(member, "member_id", "latest_attempt_digest", "selected", "status", "freshness", "source_revision_matches_latest", "reasons") {
+				return fmt.Errorf("invalid corpus query member fields")
+			}
+			id, err := scvCorpusID(member["member_id"])
+			if err != nil || id <= lastID || requested[id] == nil {
+				return fmt.Errorf("corpus query changed requested member identity/order")
+			}
+			lastID = id
+			original := requested[id]
+			latest := original["latest_attempt"].(map[string]any)
+			selected := original[selection]
+			if !scvEqual(member["latest_attempt_digest"], latest["capture_digest"]) || !scvEqual(member["selected"], selected) {
+				return fmt.Errorf("corpus query substituted selected evidence")
+			}
+			status, freshness := "unavailable", "not_selected"
+			var sameSource any
+			if selected != nil {
+				index := selected.(map[string]any)
+				status = index["completeness"].(string)
+				sameSource = scvEqual(index["source_digest"], latest["source_digest"])
+				observed, err := scvCorpusTime(index["observed_at"])
+				if err != nil {
+					return err
+				}
+				freshness = "current"
+				if observed > queryTime {
+					freshness = "future"
+				} else if input["max_age_seconds"] != nil && queryTime-observed > maximumAge {
+					freshness = "expired"
+				}
+			}
+			if member["status"] != status || member["freshness"] != freshness || !scvEqual(member["source_revision_matches_latest"], sameSource) {
+				return fmt.Errorf("corpus query changed acquisition status, freshness or source attribution")
+			}
+			reasons, ok := member["reasons"].([]any)
+			if !ok || len(reasons) > 64 {
+				return fmt.Errorf("invalid corpus query reasons")
+			}
+			for _, raw := range reasons {
+				reason, ok := raw.(string)
+				if !ok || len(reason) == 0 || len(reason) > 4096 {
+					return fmt.Errorf("invalid corpus query reason")
+				}
+			}
+		}
+		if !scvEqual(value["coverage"], scvCorpusCoverage(requested)) {
+			return fmt.Errorf("corpus query changed requested coverage")
+		}
+	case "corpus_diff":
+		before, old, err := scvCorpusSnapshot(input["before"])
+		if err != nil {
+			return err
+		}
+		after, current, err := scvCorpusSnapshot(input["after"])
+		if err != nil {
+			return err
+		}
+		if !scvEqual(before["corpus_id"], after["corpus_id"]) || !scvEqual(before["domain"], after["domain"]) ||
+			!scvEqual(value["domain"], before["domain"]) || !scvEqual(value["before_digest"], before["digest"]) || !scvEqual(value["after_digest"], after["digest"]) {
+			return fmt.Errorf("corpus diff changed owner or revision binding")
+		}
+		added, removed, changes := []any{}, []any{}, []any{}
+		affected := map[string]map[string]any{}
+		for _, id := range scvCorpusKeys(old) {
+			if current[id] == nil {
+				removed = append(removed, id)
+				affected[id] = old[id]
+			}
+		}
+		for _, id := range scvCorpusKeys(current) {
+			member, prior := current[id], old[id]
+			if prior == nil {
+				added = append(added, id)
+				affected[id] = member
+				continue
+			}
+			a, b := prior["latest_attempt"].(map[string]any), member["latest_attempt"].(map[string]any)
+			if !scvEqual(scvCorpusTuple(a), scvCorpusTuple(b)) {
+				return fmt.Errorf("corpus diff member identity rebound")
+			}
+			body := !scvEqual(a["body_digest"], b["body_digest"]) || !scvEqual(a["byte_size"], b["byte_size"])
+			source := !scvEqual(a["source_digest"], b["source_digest"])
+			observation := !scvEqual(a["capture_digest"], b["capture_digest"]) || !scvEqual(a["domain"], b["domain"])
+			coverage := !scvEqual(a["completeness"], b["completeness"]) || !scvEqual(a["issues"], b["issues"])
+			last := !scvEqual(prior["last_complete"], member["last_complete"])
+			if body || source || observation || coverage || last {
+				changes = append(changes, map[string]any{"member_id": id, "body_changed": body, "source_changed": source,
+					"observation_changed": observation, "coverage_changed": coverage, "last_complete_changed": last})
+				affected[id] = member
+			}
+		}
+		if !scvEqual(value["added_member_ids"], added) || !scvEqual(value["removed_member_ids"], removed) ||
+			!scvEqual(value["changes"], changes) || !scvEqual(value["affected_member_ids"], scvCorpusKeys(affected)) {
+			return fmt.Errorf("corpus diff changed exact member/change attribution")
+		}
+	}
+	return nil
+}
+
+// These helpers bind observable results to exact submitted evidence. They do
+// not interpret provider prose, grant authority or choose a different corpus.
+func scvCorpusFields(value map[string]any, fields ...string) bool {
+	if len(value) != len(fields) {
+		return false
+	}
+	for _, key := range fields {
+		if _, ok := value[key]; !ok {
+			return false
+		}
+	}
+	return true
+}
+func scvCorpusID(value any) (string, error) {
+	id, ok := value.(string)
+	if !ok || len(id) == 0 || len(id) > 128 {
+		return "", fmt.Errorf("invalid corpus identity")
+	}
+	for _, c := range []byte(id) {
+		if c < 32 || c == 127 {
+			return "", fmt.Errorf("control character in corpus identity")
+		}
+	}
+	return id, nil
+}
+func scvCorpusInteger(value any, minimum, maximum int64) (int64, error) {
+	number, ok := value.(json.Number)
+	if !ok {
+		return 0, fmt.Errorf("expected corpus integer")
+	}
+	n, err := number.Int64()
+	if err != nil || n < minimum || n > maximum {
+		return 0, fmt.Errorf("corpus integer outside bounds")
+	}
+	return n, nil
+}
+func scvCorpusTime(value any) (int64, error) {
+	text, ok := value.(string)
+	if !ok || len(text) != 20 {
+		return 0, fmt.Errorf("invalid corpus UTC observation")
+	}
+	timestamp, err := time.Parse("2006-01-02T15:04:05Z", text)
+	if err != nil || timestamp.Format("2006-01-02T15:04:05Z") != text {
+		return 0, fmt.Errorf("invalid corpus UTC observation")
+	}
+	return timestamp.Unix(), nil
+}
+func scvCorpusIndex(raw any) (map[string]any, error) {
+	index, ok := raw.(map[string]any)
+	if !ok || !scvCorpusFields(index, "protocol", "domain", "source_id", "provider_id", "family_id", "source_digest", "source_generation",
+		"locator_id", "requested_uri", "capture_digest", "body_digest", "byte_size", "observed_at", "upstream_revision", "media_type", "completeness", "issues", "digest") ||
+		index["protocol"] != "symphony.scv.capture-index.v1" {
+		return nil, fmt.Errorf("invalid corpus index fields")
+	}
+	for _, field := range []string{"capture_digest", "source_digest", "body_digest"} {
+		digest, ok := index[field].(string)
+		if !ok || !taggedSHA256(digest) {
+			return nil, fmt.Errorf("invalid corpus index reference")
+		}
+	}
+	completeness, ok := index["completeness"].(string)
+	if !ok || (completeness != "complete" && completeness != "partial" && completeness != "failed") {
+		return nil, fmt.Errorf("invalid corpus index completeness")
+	}
+	if err := scvSeal(index, "digest"); err != nil {
+		return nil, err
+	}
+	return index, nil
+}
+func scvCorpusTuple(index map[string]any) any {
+	return []any{index["family_id"], index["provider_id"], index["source_id"], index["locator_id"]}
+}
+func scvCorpusMembers(raw any) (map[string]map[string]any, error) {
+	values, ok := raw.([]any)
+	if !ok || len(values) > 128 {
+		return nil, fmt.Errorf("invalid corpus member count")
+	}
+	result := map[string]map[string]any{}
+	lastID := ""
+	for _, raw := range values {
+		member, ok := raw.(map[string]any)
+		if !ok || !scvCorpusFields(member, "member_id", "latest_attempt", "last_complete") {
+			return nil, fmt.Errorf("invalid corpus member fields")
+		}
+		id, err := scvCorpusID(member["member_id"])
+		if err != nil || id <= lastID {
+			return nil, fmt.Errorf("corpus member identities not unique/sorted")
+		}
+		lastID = id
+		latest, err := scvCorpusIndex(member["latest_attempt"])
+		if err != nil {
+			return nil, err
+		}
+		if member["last_complete"] != nil {
+			last, err := scvCorpusIndex(member["last_complete"])
+			if err != nil {
+				return nil, err
+			}
+			if last["completeness"] != "complete" || !scvEqual(scvCorpusTuple(last), scvCorpusTuple(latest)) {
+				return nil, fmt.Errorf("invalid retained complete corpus index")
+			}
+		}
+		if latest["completeness"] == "complete" && !scvEqual(member["last_complete"], latest) {
+			return nil, fmt.Errorf("complete latest attempt differs from last complete")
+		}
+		result[id] = member
+	}
+	return result, nil
+}
+func scvCorpusSnapshot(raw any) (map[string]any, map[string]map[string]any, error) {
+	corpus, ok := raw.(map[string]any)
+	if !ok || !scvCorpusFields(corpus, "protocol", "domain", "corpus_id", "generation", "parent_digest", "snapshot_time", "members", "coverage", "digest") ||
+		corpus["protocol"] != "symphony.scv.corpus.v1" {
+		return nil, nil, fmt.Errorf("invalid corpus snapshot fields")
+	}
+	if err := scvSeal(corpus, "digest"); err != nil {
+		return nil, nil, err
+	}
+	members, err := scvCorpusMembers(corpus["members"])
+	if err != nil {
+		return nil, nil, err
+	}
+	if !scvEqual(corpus["coverage"], scvCorpusCoverage(members)) {
+		return nil, nil, fmt.Errorf("invalid corpus coverage attribution")
+	}
+	return corpus, members, nil
+}
+func scvCorpusCoverage(members map[string]map[string]any) map[string]any {
+	complete, partial, failed, retained := 0, 0, 0, 0
+	for _, member := range members {
+		latest := member["latest_attempt"].(map[string]any)
+		switch latest["completeness"] {
+		case "complete":
+			complete++
+		case "partial":
+			partial++
+		case "failed":
+			failed++
+		}
+		if latest["completeness"] != "complete" && member["last_complete"] != nil {
+			retained++
+		}
+	}
+	return map[string]any{"requested_members": len(members), "complete_attempts": complete, "partial_attempts": partial,
+		"failed_attempts": failed, "retained_complete_members": retained}
+}
+func scvCorpusKeys(members map[string]map[string]any) []string {
+	ids := make([]string, 0, len(members))
+	for id := range members {
+		ids = append(ids, id)
+	}
+	sort.Strings(ids)
+	return ids
 }

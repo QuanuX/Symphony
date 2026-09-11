@@ -14,7 +14,7 @@
 - module: `schv-do-engine`
 - engine: `symphony-schv-do`
 - vector: `schv-do`
-- version: `0.1.0-dev`
+- version: `0.2.0-dev`
 - language: C++26
 - thermal path: freezing
 - semantic owner: `knowledge/scv/schv/do/SPEC.md`
@@ -26,3 +26,5 @@ The module owns its exact versioned executable, receipt, installed contract docu
 ## Domain State
 
 Source configurations, captured artifacts, accepted interpretations and selected graph revisions are distinct private installation data. The process receives bounded explicit inputs and emits bounded evidence or transitions. It cannot rewrite canonical repository knowledge, grant permissions or commit remote provider changes.
+
+The `0.2.0-dev` descriptor has seventeen operations, including the four corpus operations owned by `knowledge/scv/CORPUS.md`. Immutable corpus bytes and job bookkeeping are qxctl adapter state, not this process's package files or a selected corpus head. Existing exact `0.1.0-dev` installations remain independently invocable.

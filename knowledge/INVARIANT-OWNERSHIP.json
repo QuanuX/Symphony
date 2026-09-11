@@ -70,6 +70,10 @@
       "operation_ids": [
         "engop:symphony:scev-cf.capture.compare",
         "engop:symphony:scev-cf.capture.import",
+        "engop:symphony:scev-cf.capture.index",
+        "engop:symphony:scev-cf.corpus.build",
+        "engop:symphony:scev-cf.corpus.diff",
+        "engop:symphony:scev-cf.corpus.query",
         "engop:symphony:scev-cf.graph.build",
         "engop:symphony:scev-cf.graph.diff",
         "engop:symphony:scev-cf.graph.evaluate",
@@ -95,6 +99,10 @@
       "operation_ids": [
         "engop:symphony:scev.capture.compare",
         "engop:symphony:scev.capture.import",
+        "engop:symphony:scev.capture.index",
+        "engop:symphony:scev.corpus.build",
+        "engop:symphony:scev.corpus.diff",
+        "engop:symphony:scev.corpus.query",
         "engop:symphony:scev.graph.build",
         "engop:symphony:scev.graph.diff",
         "engop:symphony:scev.graph.evaluate",
@@ -120,6 +128,10 @@
       "operation_ids": [
         "engop:symphony:schv-aws.capture.compare",
         "engop:symphony:schv-aws.capture.import",
+        "engop:symphony:schv-aws.capture.index",
+        "engop:symphony:schv-aws.corpus.build",
+        "engop:symphony:schv-aws.corpus.diff",
+        "engop:symphony:schv-aws.corpus.query",
         "engop:symphony:schv-aws.graph.build",
         "engop:symphony:schv-aws.graph.diff",
         "engop:symphony:schv-aws.graph.evaluate",
@@ -145,6 +157,10 @@
       "operation_ids": [
         "engop:symphony:schv-azure.capture.compare",
         "engop:symphony:schv-azure.capture.import",
+        "engop:symphony:schv-azure.capture.index",
+        "engop:symphony:schv-azure.corpus.build",
+        "engop:symphony:schv-azure.corpus.diff",
+        "engop:symphony:schv-azure.corpus.query",
         "engop:symphony:schv-azure.graph.build",
         "engop:symphony:schv-azure.graph.diff",
         "engop:symphony:schv-azure.graph.evaluate",
@@ -170,6 +186,10 @@
       "operation_ids": [
         "engop:symphony:schv-do.capture.compare",
         "engop:symphony:schv-do.capture.import",
+        "engop:symphony:schv-do.capture.index",
+        "engop:symphony:schv-do.corpus.build",
+        "engop:symphony:schv-do.corpus.diff",
+        "engop:symphony:schv-do.corpus.query",
         "engop:symphony:schv-do.graph.build",
         "engop:symphony:schv-do.graph.diff",
         "engop:symphony:schv-do.graph.evaluate",
@@ -195,6 +215,10 @@
       "operation_ids": [
         "engop:symphony:schv-gcp.capture.compare",
         "engop:symphony:schv-gcp.capture.import",
+        "engop:symphony:schv-gcp.capture.index",
+        "engop:symphony:schv-gcp.corpus.build",
+        "engop:symphony:schv-gcp.corpus.diff",
+        "engop:symphony:schv-gcp.corpus.query",
         "engop:symphony:schv-gcp.graph.build",
         "engop:symphony:schv-gcp.graph.diff",
         "engop:symphony:schv-gcp.graph.evaluate",
@@ -220,6 +244,10 @@
       "operation_ids": [
         "engop:symphony:schv.capture.compare",
         "engop:symphony:schv.capture.import",
+        "engop:symphony:schv.capture.index",
+        "engop:symphony:schv.corpus.build",
+        "engop:symphony:schv.corpus.diff",
+        "engop:symphony:schv.corpus.query",
         "engop:symphony:schv.graph.build",
         "engop:symphony:schv.graph.diff",
         "engop:symphony:schv.graph.evaluate",
@@ -245,6 +273,10 @@
       "operation_ids": [
         "engop:symphony:scv.capture.compare",
         "engop:symphony:scv.capture.import",
+        "engop:symphony:scv.capture.index",
+        "engop:symphony:scv.corpus.build",
+        "engop:symphony:scv.corpus.diff",
+        "engop:symphony:scv.corpus.query",
         "engop:symphony:scv.graph.build",
         "engop:symphony:scv.graph.diff",
         "engop:symphony:scv.graph.evaluate",
@@ -647,6 +679,115 @@
       "statement": "Every executable qxctl Cobra leaf has one stable qxcmd identity and exact reviewed grammar, feature and interaction binding, backend-operation binding, mutability, authority, target-scope, noninteractive, structured-result, and recovery metadata; the checked-in expected registry is byte-semantically equal to the executable command tree.",
       "status": "active",
       "title": "qxctl command registry parity"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-scev-cf.v1",
+        "adapter:symphony:symphony-scev.v1",
+        "adapter:symphony:symphony-schv-aws.v1",
+        "adapter:symphony:symphony-schv-azure.v1",
+        "adapter:symphony:symphony-schv-do.v1",
+        "adapter:symphony:symphony-schv-gcp.v1",
+        "adapter:symphony:symphony-schv.v1",
+        "adapter:symphony:symphony-scv.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "test_capture_index_rejects_changed_evidence",
+            "test_corpus_consumer_rejects_resealed_inconsistency",
+            "test_member_identity_and_owner_collisions"
+          ],
+          "path": "modules/scv-engine/tests/corpus_test.cpp"
+        },
+        {
+          "cases": [
+            "TestInstalledSCVCorpusRejectsTamperedCaptureAndWrongCompletedSnapshot"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_corpus_test.go"
+        },
+        {
+          "cases": [
+            "TestSCVCorpusBuildBindsRetainedCompleteAndCoverage",
+            "TestSCVCorpusDiffBindsMembershipAndChangeAxes",
+            "TestSCVCorpusEmptySelectionsAndMalformedInputs",
+            "TestSCVCorpusQueryBindsExactRequestedSubset",
+            "TestSCVCorpusQueryPreservesTemporalQualification"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/scv_corpus_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:scv.corpus-provenance",
+      "ipc_boundary": true,
+      "owner_component": "scv-corpus",
+      "owner_contract": "knowledge/scv/CORPUS.md",
+      "producer_implementations": [
+        "modules/scv-engine/src/corpus.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "test_capture_index_producer",
+            "test_corpus_real_request_round_trip",
+            "test_failed_and_partial_refresh_preserves_complete_evidence",
+            "test_historical_source_revision_is_explicit"
+          ],
+          "path": "modules/scv-engine/tests/corpus_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_corpus_refresh_retains_exact_historical_capture",
+            "test_corpus_selection_removal_is_explicit"
+          ],
+          "path": "modules/scv-engine/tests/installed_integration.py"
+        }
+      ],
+      "statement": "The corpus owner validates sealed indexes, exact domain scope, member identity against the supplied immediate predecessor and consistent latest/retained-complete evidence. Query preserves source revision and observation age; removed selection is not retirement. Capture-index metadata alone cannot prove backing bytes, and no pure result selects a durable head or grants authority.",
+      "status": "active",
+      "title": "Corpus projections preserve exact indexed evidence and selected coverage"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestInstalledSCVCorpusClockRollbackRemainsRecoverable",
+            "TestInstalledSCVCorpusDeadlineRetainsFailureCheckpoint",
+            "TestInstalledSCVCorpusExportBounds",
+            "TestInstalledSCVCorpusRecoveryPinsSourcesAndRetainsFailedAttempts",
+            "TestInstalledSCVCorpusRejectsTamperedCaptureAndWrongCompletedSnapshot",
+            "TestInstalledSCVCorpusRejectsUnverifiableSuccessorBeforePublication"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_corpus_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:scv.corpus-retention",
+      "ipc_boundary": false,
+      "owner_component": "qxctl-scv-corpus-store",
+      "owner_contract": "knowledge/scv/CORPUS.md",
+      "producer_implementations": [
+        "tools/qxctl/cmd/qxctl/scv_corpus.go",
+        "tools/qxctl/internal/scvcorpus/rename_darwin.go",
+        "tools/qxctl/internal/scvcorpus/rename_linux.go",
+        "tools/qxctl/internal/scvcorpus/storage_unix.go",
+        "tools/qxctl/internal/scvcorpus/store.go"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestCorpusImmutablePublicationAndConcurrentReuse",
+            "TestCorpusJournalPreservesIntentAndCompletedCheckpoints",
+            "TestCorpusRejectsUnsafePathsAndStrictJournals"
+          ],
+          "path": "tools/qxctl/internal/scvcorpus/store_test.go"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "The local corpus adapter binds original operation inputs and installation before work, checkpoints exact completed capture/index pairs, publishes immutable objects without replacement and exposes a snapshot only after referenced evidence is durable and verified within declared bounds. Recovery retains exact source inputs and completed results; clock rollback cannot freeze an invalid snapshot. No selected corpus head, latest alias or SSIAG/STAV authority is created by job bookkeeping.",
+      "status": "active",
+      "title": "Immutable corpus retention exposes only reconstructable exact snapshots"
     },
     {
       "allowed_adapter_ids": [],
@@ -1067,7 +1208,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v2",
-  "registry_digest": "sha256:7d865ca58bbc83c9a9b5c717aeeb8f0535ab75cbdda8c4c282d39e57bf89b9bc",
+  "registry_digest": "sha256:2a9cf77120c892c23379cc5ae8d539a22f8bf4fba300cc2de5c780099cac7fc9",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

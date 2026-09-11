@@ -12,6 +12,7 @@ import unittest
 parser = argparse.ArgumentParser()
 parser.add_argument('--build', required=True)
 parser.add_argument('--domain', required=True)
+parser.add_argument('--version', required=True)
 ARGS, REST = parser.parse_known_args()
 
 
@@ -27,8 +28,8 @@ class InstalledProcessTests(unittest.TestCase):
         subprocess.run(['cmake', '--install', ARGS.build, '--prefix', str(cls.prefix)], check=True, capture_output=True)
         cls.module = ARGS.domain + '-engine'
         cls.engine_id = 'symphony-' + ARGS.domain
-        cls.binary = cls.prefix / 'libexec/symphony' / cls.module / '0.1.0-dev' / cls.engine_id
-        cls.receipt = json.loads((cls.prefix / 'share/symphony/receipts' / cls.module / '0.1.0-dev/install-receipt.json').read_text())
+        cls.binary = cls.prefix / 'libexec/symphony' / cls.module / ARGS.version / cls.engine_id
+        cls.receipt = json.loads((cls.prefix / 'share/symphony/receipts' / cls.module / ARGS.version / 'install-receipt.json').read_text())
         if ARGS.domain.startswith('schv-'):
             cls.family, cls.provider = 'schv', ARGS.domain[5:]
         elif ARGS.domain in ('scev', 'scev-cf'):
@@ -71,12 +72,14 @@ class InstalledProcessTests(unittest.TestCase):
     def test_receipt_owned_standalone_process(self):
         self.assertEqual(self.receipt['component_id'], self.module)
         self.assertEqual(self.receipt['engine_id'], self.engine_id)
+        self.assertEqual(self.receipt['version'], ARGS.version)
         proc, response = self.invoke('inspect', {})
         self.assertEqual(proc.returncode, 0, response)
         self.assertEqual(response['engine_id'], self.engine_id)
         self.assertEqual(response['request_id'], 'fixture-request')
+        self.assertEqual(response['result']['engine_version'], ARGS.version)
         self.assertFalse(response['result']['canonical_apply_enabled'])
-        self.assertEqual(len(response['result']['operations']), 13)
+        self.assertEqual(len(response['result']['operations']), 17)
 
     def test_source_transition_expected_state_and_digest(self):
         current = self.initial()
@@ -118,6 +121,59 @@ class InstalledProcessTests(unittest.TestCase):
             proc, response = self.invoke('inspect', {}, **overrides)
             self.assertNotEqual(proc.returncode, 0)
             self.assertEqual(response['outcome'], 'error')
+
+    def capture(self, source, body, observed_at, completeness='complete'):
+        proc, result = self.invoke('capture_import', {'source': source, 'locator_id': 'docs',
+            'resolved_uri': source['locators'][0]['uri'], 'redirects': [], 'observed_at': observed_at,
+            'upstream_revision': None, 'media_type': 'text/markdown', 'body': body,
+            'completeness': completeness, 'issues': [] if completeness == 'complete' else ['fixture_fetch_failed']})
+        self.assertEqual(proc.returncode, 0, result)
+        return result['result']
+
+    def owner(self, operation, payload):
+        proc, response = self.invoke(operation, payload)
+        self.assertEqual(proc.returncode, 0, response)
+        return response['result']
+
+    def test_corpus_refresh_retains_exact_historical_capture(self):
+        source = self.initial()
+        capture = self.capture(source, '# Retained evidence\n', '2026-09-10T12:00:00Z')
+        first_index = self.owner('capture_index', {'capture': capture})
+        first = self.owner('corpus_build', {'corpus_id': 'fixture', 'previous': None,
+            'snapshot_time': '2026-09-10T12:00:01Z', 'attempts': [{'member_id': 'docs', 'capture': first_index}]})
+        desired = self.desired()
+        desired['locators'][0]['uri'] = 'https://example.invalid/moved.md'
+        moved = self.owner('source_plan', {'operation_id': 'move', 'current': source, 'desired': desired, 'reason': 'fixture'})['source']
+        failed = self.capture(moved, '', '2026-09-10T12:01:00Z', 'failed')
+        failed_index = self.owner('capture_index', {'capture': failed})
+        refreshed = self.owner('corpus_build', {'corpus_id': 'fixture', 'previous': first,
+            'snapshot_time': '2026-09-10T12:01:01Z', 'attempts': [{'member_id': 'docs', 'capture': failed_index}]})
+        member = refreshed['members'][0]
+        self.assertEqual(member['latest_attempt'], failed_index)
+        self.assertEqual(member['last_complete'], first_index)
+        selected = self.owner('corpus_query', {'corpus': refreshed, 'member_ids': ['docs'],
+            'selection': 'last_complete', 'max_age_seconds': 60, 'query_time': '2026-09-10T13:00:00Z'})
+        result = selected['members'][0]
+        self.assertEqual(result['selected']['capture_digest'], capture['digest'])
+        self.assertEqual(result['freshness'], 'expired')
+        self.assertFalse(result['source_revision_matches_latest'])
+        self.assertEqual(refreshed['generation'], 2)
+        self.assertEqual(refreshed['parent_digest'], first['digest'])
+
+    def test_corpus_selection_removal_is_explicit(self):
+        captured = self.capture(self.initial(), '# Fixture\n', '2026-09-10T12:00:00Z')
+        index = self.owner('capture_index', {'capture': captured})
+        before = self.owner('corpus_build', {'corpus_id': 'fixture', 'previous': None,
+            'snapshot_time': '2026-09-10T12:00:01Z', 'attempts': [{'member_id': 'docs', 'capture': index}]})
+        after = self.owner('corpus_build', {'corpus_id': 'fixture', 'previous': before,
+            'snapshot_time': '2026-09-10T12:00:02Z', 'attempts': []})
+        changed = self.owner('corpus_diff', {'before': before, 'after': after})
+        self.assertEqual(changed['removed_member_ids'], ['docs'])
+        self.assertEqual(changed['added_member_ids'], [])
+        self.assertEqual(after['coverage']['requested_members'], 0)
+        proc, response = self.invoke('corpus_query', {'corpus': after, 'member_ids': ['docs'],
+            'selection': 'latest_attempt', 'max_age_seconds': None, 'query_time': '2026-09-10T13:00:00Z'})
+        self.assertNotEqual(proc.returncode, 0, response)
 
     def test_duplicate_and_unknown_fields_rejected(self):
         value = json.dumps(self.request('inspect', {}))

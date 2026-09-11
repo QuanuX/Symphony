@@ -724,8 +724,8 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
-          "reason": "Defines source and interpretation owner contracts.",
-          "reference": "knowledge/scv/SOURCE-KNOWLEDGE.md",
+          "reason": "Defines source, corpus retention and interpretation owner contracts.",
+          "reference": "knowledge/scv/CORPUS.md",
           "vector": "scv"
         },
         {
@@ -745,30 +745,37 @@
       "evidence": [
         "Receipt and result boundary tests reject domain/version drift, tampered executables, changed capture fields and oversized bodies.",
         "Source transaction tests cover preauthorization intent, absent authorization, stale compare-and-swap, operation identity collisions, interrupted writes, recovery and unsafe filesystem links.",
-        "Transport tests qualify partial/failed captures, retain exact version queries and reject private targets, credential-bearing authorities and unsafe redirects."
+        "Transport tests qualify partial/failed captures, retain exact version queries and reject private targets, credential-bearing authorities and unsafe redirects.",
+        "Corpus producer/consumer and storage regressions bind referenced bytes to indexes, preserve failed-refresh evidence, checkpoint jobs and verify retained old-version invocation."
       ],
       "feature_id": "ssfv:symphony:qxctl.scv-administration",
-      "how": "Reuses receipt-v2 and engine-process validation; bounds public HTTPS retrieval; lets the C++ source owner reduce plans; persists exact intents before authenticated SSIAG decisions and atomically commits the source selection with compare-and-swap and retained operation evidence.",
+      "how": "Reuses receipt-v2 and version-specific process/result validation; bounds public HTTPS retrieval; retains immutable exact corpus artifacts with no-replace publication and recoverable job intent; separately applies authenticated SSIAG authorization to protected source/graph selection.",
       "implementation_languages": [
         {
           "language": "Go",
-          "role": "Administrative dispatch, process and result validation, public HTTPS transport, protected local persistence and authenticated permission consumption."
+          "role": "Administrative dispatch, exact-version process/result validation, public HTTPS transport, immutable corpus retention and recovery, and separate protected local persistence with authenticated permission consumption."
         }
       ],
       "implementation_paths": [
         "tools/qxctl/cmd/qxctl/scv.go",
         "tools/qxctl/cmd/qxctl/scv_acquire.go",
+        "tools/qxctl/cmd/qxctl/scv_corpus.go",
         "tools/qxctl/cmd/qxctl/scv_graph.go",
         "tools/qxctl/internal/knowledgeengine/scv.go",
-        "tools/qxctl/internal/scvstate/store.go",
+        "tools/qxctl/internal/scvcorpus/rename_darwin.go",
+        "tools/qxctl/internal/scvcorpus/rename_linux.go",
+        "tools/qxctl/internal/scvcorpus/storage_unix.go",
+        "tools/qxctl/internal/scvcorpus/store.go",
         "tools/qxctl/internal/scvstate/storage_unix.go",
+        "tools/qxctl/internal/scvstate/store.go",
         "tools/qxctl/internal/scvtransport/https.go"
       ],
       "kind": "feature",
       "non_claims": [
         "Does not own provider truth, infer arbitrary prose, execute downloaded text or install a universal runtime.",
         "Does not mutate canonical knowledge registries, create policy grants, append STAV events directly, or claim a source-write receipt from the existing SSIAG policy-decision audit.",
-        "Public HTTPS transport supplies no credentials or account authentication; selected-source coverage is bounded and does not establish provider completeness."
+        "Public HTTPS transport supplies no credentials or account authentication; selected-source coverage is bounded and does not establish provider completeness.",
+        "Does not introduce a current/latest corpus alias, a selected corpus head or an SSIAG/STAV write receipt for immutable evidence retention."
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",
@@ -788,10 +795,10 @@
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "SCV source and knowledge administration",
-      "what": "Administers selected SCV family/provider source, capture, interpretation and graph operations through exact installed C++ engines and permission-backed local source state.",
+      "what": "Administers selected SCV family/provider source, capture, corpus, interpretation and graph operations through exact installed C++ engines; retains immutable corpus evidence separately from permission-backed source and graph selections.",
       "when": "Runs on explicit cold/freezing administrative invocation, including exact operation recovery.",
-      "where": "Supported local macOS/Linux user-scoped TOPS source stores; pure operations accept an explicitly selected local installation.",
-      "who": "Human users and delegated agents within the same authenticated SSIAG permission contract.",
+      "where": "Supported local macOS/Linux user-scoped TOPS evidence stores and separately protected source/graph state; pure operations accept an explicitly selected local installation.",
+      "who": "Human or agentic callers using ordinary local filesystem permissions for evidence operations; protected source/graph selection additionally requires the same authenticated SSIAG permission contract.",
       "why": "Makes native knowledge acquisition and interpretation callable through qxctl while preserving source authority, exact engine provenance and caller-selected evidence policy."
     },
     {
@@ -976,5 +983,7 @@
   ],
   "source_scope": "tools/qxctl"
 }
+
+
 ```
 <!-- symphony:ssfv:feature-file:v1:end -->

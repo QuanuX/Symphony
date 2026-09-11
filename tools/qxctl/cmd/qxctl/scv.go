@@ -80,9 +80,12 @@ func attachSCV(command *cobra.Command, key, operation, interaction, mutability s
 }
 
 func scvFlags(command *cobra.Command, options *scvOptions) {
+	scvFlagsVersion(command, options, "0.1.0-dev")
+}
+func scvFlagsVersion(command *cobra.Command, options *scvOptions, version string) {
 	command.Flags().StringVar(&options.domain, "domain", "scv", "exact installed domain: scv, schv, scev, schv-aws, schv-azure, schv-do, schv-gcp, scev-cf")
 	command.Flags().StringVar(&options.prefix, "prefix", "", "exact receipt-v2 installation prefix")
-	command.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed engine version; never latest")
+	command.Flags().StringVar(&options.version, "version", version, "exact installed engine version; never latest")
 	command.Flags().StringVar(&options.repository, "repo", "", "operation working directory; defaults to current directory")
 	command.Flags().StringVar(&options.input, "input", "", "bounded no-follow JSON payload file")
 	command.Flags().BoolVar(&options.jsonOutput, "json", false, "emit validated JSON")
@@ -126,6 +129,7 @@ func newSCVCommand() *cobra.Command {
 	}
 	command.AddCommand(source)
 	command.AddCommand(newSCVProjectionCommand())
+	command.AddCommand(newSCVCorpusCommand())
 	return command
 }
 

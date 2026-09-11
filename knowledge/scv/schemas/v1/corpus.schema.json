@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:scv:corpus:v1",
+  "title": "Corpus snapshot v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "domain",
+    "corpus_id",
+    "generation",
+    "parent_digest",
+    "snapshot_time",
+    "members",
+    "coverage",
+    "digest"
+  ],
+  "properties": {
+    "protocol": {
+      "const": "symphony.scv.corpus.v1"
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9_.:-]+$"
+    },
+    "corpus_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+    },
+    "generation": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "parent_digest": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      ]
+    },
+    "snapshot_time": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "members": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "member_id",
+          "latest_attempt",
+          "last_complete"
+        ],
+        "properties": {
+          "member_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+          },
+          "latest_attempt": {
+            "$ref": "capture-index.schema.json"
+          },
+          "last_complete": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "$ref": "capture-index.schema.json"
+              }
+            ]
+          }
+        }
+      },
+      "minItems": 0,
+      "maxItems": 128
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requested_members",
+        "complete_attempts",
+        "partial_attempts",
+        "failed_attempts",
+        "retained_complete_members"
+      ],
+      "properties": {
+        "requested_members": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        },
+        "complete_attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        },
+        "partial_attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        },
+        "failed_attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        },
+        "retained_complete_members": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        }
+      },
+      "description": "Counts latest-attempt dispositions; retained_complete_members counts only partial/failed latest attempts with a separately retained complete index."
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  },
+  "$defs": {
+    "opaqueId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requested_members",
+        "complete_attempts",
+        "partial_attempts",
+        "failed_attempts",
+        "retained_complete_members"
+      ],
+      "properties": {
+        "requested_members": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        },
+        "complete_attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        },
+        "partial_attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        },
+        "failed_attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        },
+        "retained_complete_members": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        }
+      },
+      "description": "Counts latest-attempt dispositions; retained_complete_members counts only partial/failed latest attempts with a separately retained complete index."
+    }
+  },
+  "description": "Immutable bounded selected-member snapshot, not a current head or complete provider catalog. Runtime validates sorted unique members and owner/source/locator tuples, immediate-predecessor member continuity, capture-index seals and scope, time and coverage consistency. Storage verifies every referenced capture and regenerates its index before claiming replay."
+}

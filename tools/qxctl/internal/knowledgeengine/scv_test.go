@@ -71,6 +71,51 @@ func TestInstalledSCVDomainDescriptors(t *testing.T) {
 	}
 }
 
+func TestInstalledSCVRetainsExactOldAndNewOperationSets(t *testing.T) {
+	oldPrefix, newPrefix := os.Getenv("SYMPHONY_SCV_ACCEPTANCE_PREFIX"), os.Getenv("SYMPHONY_SCV_CORPUS_PREFIX")
+	if oldPrefix == "" || newPrefix == "" {
+		t.Skip("requires retained 0.1.0-dev and separate 0.2.0-dev installations")
+	}
+	cwd, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, domain := range SCVDomains() {
+		for _, installed := range []struct {
+			prefix, version string
+			count           int
+		}{{oldPrefix, "0.1.0-dev", 13}, {newPrefix, "0.2.0-dev", 17}} {
+			t.Run(domain+"/"+installed.version, func(t *testing.T) {
+				response, err := InvokeSCVDomain(context.Background(), domain, installed.prefix, installed.version, cwd, "inspect", []byte(`{}`))
+				if err != nil {
+					t.Fatal(err)
+				}
+				value, err := scvObject(response.Result)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if len(value["operations"].([]any)) != installed.count {
+					t.Fatal("exact version operation surface changed")
+				}
+			})
+		}
+		if _, err := InvokeSCVDomain(context.Background(), domain, oldPrefix, "0.1.0-dev", cwd, "corpus_build", []byte(`{}`)); err == nil {
+			t.Fatal("new corpus operation silently substituted for old version")
+		}
+	}
+}
+
+func TestSCVOperationVersionsAreExplicit(t *testing.T) {
+	for _, version := range []string{"latest", "0.3.0-dev", "", "0.1.0"} {
+		if SCVOperationSupported(version, "inspect") {
+			t.Fatalf("unsupported exact version %s accepted", version)
+		}
+	}
+	if SCVOperationSupported("0.1.0-dev", "capture_index") || !SCVOperationSupported("0.2.0-dev", "capture_index") {
+		t.Fatal("version operation boundary broadened")
+	}
+}
+
 func captureResult(t *testing.T) ([]byte, map[string]any) {
 	t.Helper()
 	payload := map[string]any{"source": map[string]any{"source_id": "docs"}, "locator_id": "docs", "resolved_uri": "https://example.com/",

@@ -3276,6 +3276,674 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:scv.corpus.acquire",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv corpus acquire [--corpus-root VALUE] [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.capture.import",
+        "engop:symphony:scev-cf.capture.index",
+        "engop:symphony:scev-cf.corpus.build",
+        "engop:symphony:scev-cf.source.status",
+        "engop:symphony:scev.capture.import",
+        "engop:symphony:scev.capture.index",
+        "engop:symphony:scev.corpus.build",
+        "engop:symphony:scev.source.status",
+        "engop:symphony:schv-aws.capture.import",
+        "engop:symphony:schv-aws.capture.index",
+        "engop:symphony:schv-aws.corpus.build",
+        "engop:symphony:schv-aws.source.status",
+        "engop:symphony:schv-azure.capture.import",
+        "engop:symphony:schv-azure.capture.index",
+        "engop:symphony:schv-azure.corpus.build",
+        "engop:symphony:schv-azure.source.status",
+        "engop:symphony:schv-do.capture.import",
+        "engop:symphony:schv-do.capture.index",
+        "engop:symphony:schv-do.corpus.build",
+        "engop:symphony:schv-do.source.status",
+        "engop:symphony:schv-gcp.capture.import",
+        "engop:symphony:schv-gcp.capture.index",
+        "engop:symphony:schv-gcp.corpus.build",
+        "engop:symphony:schv-gcp.source.status",
+        "engop:symphony:schv.capture.import",
+        "engop:symphony:schv.capture.index",
+        "engop:symphony:schv.corpus.build",
+        "engop:symphony:schv.source.status",
+        "engop:symphony:scv.capture.import",
+        "engop:symphony:scv.capture.index",
+        "engop:symphony:scv.corpus.build",
+        "engop:symphony:scv.source.status"
+      ],
+      "mutability": "evidence_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.qxctl.scv-corpus-acquire-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.qxctl.scv-corpus-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.qxctl.scv-corpus-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:scv.corpus.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.corpus.diff",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv corpus diff [--corpus-root VALUE] [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "validate"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "validate"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.capture.index",
+        "engop:symphony:scev-cf.corpus.build",
+        "engop:symphony:scev-cf.corpus.diff",
+        "engop:symphony:scev.capture.index",
+        "engop:symphony:scev.corpus.build",
+        "engop:symphony:scev.corpus.diff",
+        "engop:symphony:schv-aws.capture.index",
+        "engop:symphony:schv-aws.corpus.build",
+        "engop:symphony:schv-aws.corpus.diff",
+        "engop:symphony:schv-azure.capture.index",
+        "engop:symphony:schv-azure.corpus.build",
+        "engop:symphony:schv-azure.corpus.diff",
+        "engop:symphony:schv-do.capture.index",
+        "engop:symphony:schv-do.corpus.build",
+        "engop:symphony:schv-do.corpus.diff",
+        "engop:symphony:schv-gcp.capture.index",
+        "engop:symphony:schv-gcp.corpus.build",
+        "engop:symphony:schv-gcp.corpus.diff",
+        "engop:symphony:schv.capture.index",
+        "engop:symphony:schv.corpus.build",
+        "engop:symphony:schv.corpus.diff",
+        "engop:symphony:scv.capture.index",
+        "engop:symphony:scv.corpus.build",
+        "engop:symphony:scv.corpus.diff"
+      ],
+      "mutability": "evidence_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.qxctl.scv-corpus-diff-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.scv.corpus-diff.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.scv.corpus-diff.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.corpus.export",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv corpus export [--corpus-root VALUE] [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "query"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.capture.index",
+        "engop:symphony:scev-cf.corpus.build",
+        "engop:symphony:scev-cf.corpus.query",
+        "engop:symphony:scev.capture.index",
+        "engop:symphony:scev.corpus.build",
+        "engop:symphony:scev.corpus.query",
+        "engop:symphony:schv-aws.capture.index",
+        "engop:symphony:schv-aws.corpus.build",
+        "engop:symphony:schv-aws.corpus.query",
+        "engop:symphony:schv-azure.capture.index",
+        "engop:symphony:schv-azure.corpus.build",
+        "engop:symphony:schv-azure.corpus.query",
+        "engop:symphony:schv-do.capture.index",
+        "engop:symphony:schv-do.corpus.build",
+        "engop:symphony:schv-do.corpus.query",
+        "engop:symphony:schv-gcp.capture.index",
+        "engop:symphony:schv-gcp.corpus.build",
+        "engop:symphony:schv-gcp.corpus.query",
+        "engop:symphony:schv.capture.index",
+        "engop:symphony:schv.corpus.build",
+        "engop:symphony:schv.corpus.query",
+        "engop:symphony:scv.capture.index",
+        "engop:symphony:scv.corpus.build",
+        "engop:symphony:scv.corpus.query"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.qxctl.scv-corpus-export-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.qxctl.scv-corpus-export.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.qxctl.scv-corpus-export.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.corpus.import",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv corpus import [--corpus-root VALUE] [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.capture.index",
+        "engop:symphony:scev-cf.corpus.build",
+        "engop:symphony:scev.capture.index",
+        "engop:symphony:scev.corpus.build",
+        "engop:symphony:schv-aws.capture.index",
+        "engop:symphony:schv-aws.corpus.build",
+        "engop:symphony:schv-azure.capture.index",
+        "engop:symphony:schv-azure.corpus.build",
+        "engop:symphony:schv-do.capture.index",
+        "engop:symphony:schv-do.corpus.build",
+        "engop:symphony:schv-gcp.capture.index",
+        "engop:symphony:schv-gcp.corpus.build",
+        "engop:symphony:schv.capture.index",
+        "engop:symphony:schv.corpus.build",
+        "engop:symphony:scv.capture.index",
+        "engop:symphony:scv.corpus.build"
+      ],
+      "mutability": "evidence_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.qxctl.scv-corpus-import-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.qxctl.scv-corpus-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.qxctl.scv-corpus-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:scv.corpus.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.corpus.inspect",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv corpus inspect [--corpus-root VALUE] [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.capture.index",
+        "engop:symphony:scev-cf.corpus.build",
+        "engop:symphony:scev.capture.index",
+        "engop:symphony:scev.corpus.build",
+        "engop:symphony:schv-aws.capture.index",
+        "engop:symphony:schv-aws.corpus.build",
+        "engop:symphony:schv-azure.capture.index",
+        "engop:symphony:schv-azure.corpus.build",
+        "engop:symphony:schv-do.capture.index",
+        "engop:symphony:schv-do.corpus.build",
+        "engop:symphony:schv-gcp.capture.index",
+        "engop:symphony:schv-gcp.corpus.build",
+        "engop:symphony:schv.capture.index",
+        "engop:symphony:schv.corpus.build",
+        "engop:symphony:scv.capture.index",
+        "engop:symphony:scv.corpus.build"
+      ],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.qxctl.scv-corpus-inspect-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.scv.corpus.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.scv.corpus.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.corpus.recover",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv corpus recover [--corpus-root VALUE] [--domain VALUE] [--input VALUE] [--json] [--prefix VALUE] [--repo VALUE] [--tops-id VALUE] [--version VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.capture.import",
+        "engop:symphony:scev-cf.capture.index",
+        "engop:symphony:scev-cf.corpus.build",
+        "engop:symphony:scev-cf.source.status",
+        "engop:symphony:scev.capture.import",
+        "engop:symphony:scev.capture.index",
+        "engop:symphony:scev.corpus.build",
+        "engop:symphony:scev.source.status",
+        "engop:symphony:schv-aws.capture.import",
+        "engop:symphony:schv-aws.capture.index",
+        "engop:symphony:schv-aws.corpus.build",
+        "engop:symphony:schv-aws.source.status",
+        "engop:symphony:schv-azure.capture.import",
+        "engop:symphony:schv-azure.capture.index",
+        "engop:symphony:schv-azure.corpus.build",
+        "engop:symphony:schv-azure.source.status",
+        "engop:symphony:schv-do.capture.import",
+        "engop:symphony:schv-do.capture.index",
+        "engop:symphony:schv-do.corpus.build",
+        "engop:symphony:schv-do.source.status",
+        "engop:symphony:schv-gcp.capture.import",
+        "engop:symphony:schv-gcp.capture.index",
+        "engop:symphony:schv-gcp.corpus.build",
+        "engop:symphony:schv-gcp.source.status",
+        "engop:symphony:schv.capture.import",
+        "engop:symphony:schv.capture.index",
+        "engop:symphony:schv.corpus.build",
+        "engop:symphony:schv.source.status",
+        "engop:symphony:scv.capture.import",
+        "engop:symphony:scv.capture.index",
+        "engop:symphony:scv.corpus.build",
+        "engop:symphony:scv.source.status"
+      ],
+      "mutability": "evidence_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.qxctl.scv-corpus-recover-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.qxctl.scv-corpus-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.qxctl.scv-corpus-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:scv.corpus.recover",
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:scv.diff",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -7874,5 +8542,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:dbf4cdde43a8051843b397a104c22ffaf3ab08bacfad72edaf8d942bd0b2d02c"
+  "registry_digest": "sha256:721af1304c0d3bc2f5ef68ec61139eceb77f3b675162a7c4f91ee04d5e0e1cf0"
 }

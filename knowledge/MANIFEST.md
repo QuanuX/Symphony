@@ -170,7 +170,7 @@ The sixty-six exact common v1 schemas under `knowledge/schemas/v1/` govern proce
 
 ## SCV Source-Knowledge Increment
 
-The eight domain engines listed above add bounded source planning, pure expected-state transition validation, UTF-8 capture import, explicit claim interpretation and reproducible graph queries. qxctl supplies a separately governed protected source-store adapter. A computed transition is not a durable or authorized commit. Exact supported operations and remaining acquisition, corpus, graph-storage and operational gaps are declared in `knowledge/scv/SOURCE-KNOWLEDGE.md` and the module contracts.
+The eight domain engines listed above add bounded source planning, pure expected-state transition validation, UTF-8 capture import, explicit claim interpretation and reproducible graph queries. qxctl supplies a separately governed protected source-store adapter. A computed transition is not a durable or authorized commit. The additive `0.2.0-dev` corpus profile in `knowledge/scv/CORPUS.md` supplies immutable bounded evidence retention and explicit snapshot selection for queries without a selected corpus head. Exact supported operations and remaining broad acquisition, semantic interpretation and operational gaps are declared in the owner and module contracts.
 
 ## Non-Authorization Statement
 

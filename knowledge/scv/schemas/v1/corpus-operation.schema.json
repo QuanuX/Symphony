@@ -1,0 +1,444 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:scv:corpus-operation:v1",
+  "title": "Corpus operation payloads v1",
+  "$defs": {
+    "captureIndexInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capture"
+      ],
+      "properties": {
+        "capture": {
+          "$ref": "capture.schema.json"
+        }
+      }
+    },
+    "corpusBuildInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "corpus_id",
+        "previous",
+        "snapshot_time",
+        "attempts"
+      ],
+      "properties": {
+        "corpus_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "previous": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "corpus.schema.json"
+            }
+          ]
+        },
+        "snapshot_time": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "attempts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "member_id",
+              "capture"
+            ],
+            "properties": {
+              "member_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+              },
+              "capture": {
+                "$ref": "capture-index.schema.json"
+              }
+            }
+          },
+          "minItems": 0,
+          "maxItems": 128
+        }
+      }
+    },
+    "corpusQueryInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "corpus",
+        "query_time",
+        "member_ids",
+        "selection",
+        "max_age_seconds"
+      ],
+      "properties": {
+        "corpus": {
+          "$ref": "corpus.schema.json"
+        },
+        "query_time": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "member_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+          },
+          "minItems": 0,
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "selection": {
+          "enum": [
+            "latest_attempt",
+            "last_complete"
+          ]
+        },
+        "max_age_seconds": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 3155760000
+            }
+          ]
+        }
+      }
+    },
+    "corpusDiffInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "before",
+        "after"
+      ],
+      "properties": {
+        "before": {
+          "$ref": "corpus.schema.json"
+        },
+        "after": {
+          "$ref": "corpus.schema.json"
+        }
+      }
+    },
+    "corpusQueryResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "domain",
+        "corpus_digest",
+        "query_time",
+        "selection",
+        "max_age_seconds",
+        "members",
+        "coverage",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.corpus-query.v1"
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "corpus_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "query_time": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "selection": {
+          "enum": [
+            "latest_attempt",
+            "last_complete"
+          ]
+        },
+        "max_age_seconds": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 3155760000
+            }
+          ]
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "member_id",
+              "latest_attempt_digest",
+              "selected",
+              "status",
+              "freshness",
+              "source_revision_matches_latest",
+              "reasons"
+            ],
+            "properties": {
+              "member_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+              },
+              "latest_attempt_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "selected": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "capture-index.schema.json"
+                  }
+                ]
+              },
+              "status": {
+                "enum": [
+                  "complete",
+                  "partial",
+                  "failed",
+                  "unavailable"
+                ]
+              },
+              "freshness": {
+                "enum": [
+                  "current",
+                  "expired",
+                  "future",
+                  "not_selected"
+                ]
+              },
+              "source_revision_matches_latest": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "boolean"
+                  }
+                ]
+              },
+              "reasons": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "minItems": 0,
+                "maxItems": 64
+              }
+            }
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "coverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "requested_members",
+            "complete_attempts",
+            "partial_attempts",
+            "failed_attempts",
+            "retained_complete_members"
+          ],
+          "properties": {
+            "requested_members": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "complete_attempts": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "partial_attempts": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "failed_attempts": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "retained_complete_members": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            }
+          },
+          "description": "Counts latest-attempt dispositions over requested members; retained_complete_members counts only partial/failed latest attempts with a separately retained complete index."
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "corpusDiffResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "domain",
+        "before_digest",
+        "after_digest",
+        "added_member_ids",
+        "removed_member_ids",
+        "changes",
+        "affected_member_ids",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.corpus-diff.v1"
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "before_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "after_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "added_member_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "removed_member_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "member_id",
+              "body_changed",
+              "source_changed",
+              "observation_changed",
+              "coverage_changed",
+              "last_complete_changed"
+            ],
+            "properties": {
+              "member_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+              },
+              "body_changed": {
+                "type": "boolean"
+              },
+              "source_changed": {
+                "type": "boolean"
+              },
+              "observation_changed": {
+                "type": "boolean"
+              },
+              "coverage_changed": {
+                "type": "boolean"
+              },
+              "last_complete_changed": {
+                "type": "boolean"
+              }
+            }
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "affected_member_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/captureIndexInput"
+    },
+    {
+      "$ref": "#/$defs/corpusBuildInput"
+    },
+    {
+      "$ref": "#/$defs/corpusQueryInput"
+    },
+    {
+      "$ref": "#/$defs/corpusDiffInput"
+    },
+    {
+      "$ref": "#/$defs/corpusQueryResult"
+    },
+    {
+      "$ref": "#/$defs/corpusDiffResult"
+    }
+  ],
+  "description": "Operation payload catalog: descriptor input protocol names select exact named definitions, without a protocol field in request payloads. Query coverage counts latest-attempt dispositions over requested members; selected capture status and freshness are separate. Runtime enforces request/result bindings, exact digests and byte/value/deadline bounds. No operation mutates a corpus head or grants authority."
+}

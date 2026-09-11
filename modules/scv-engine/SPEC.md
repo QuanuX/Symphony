@@ -2,7 +2,7 @@
 
 ## Status and Ownership
 
-Architect-ratified source-knowledge development increment, version `0.1.0-dev`; not a published release or complete provider implementation. Domain meaning belongs to `knowledge/scv/SPEC.md` and `knowledge/scv/SOURCE-KNOWLEDGE.md`. Common process semantics belong to `knowledge/SPEC.md`. All eight packages use the same explicit operation implementation with an exact installed domain identity.
+Architect-ratified source-knowledge development increment, version `0.2.0-dev`; not a published release or complete provider implementation. Domain meaning belongs to `knowledge/scv/SPEC.md` and `knowledge/scv/SOURCE-KNOWLEDGE.md`. Common process semantics belong to `knowledge/SPEC.md`. All eight packages use the same explicit operation implementation with an exact installed domain identity.
 
 ## Process and Operation Registry
 
@@ -26,6 +26,13 @@ Each operation's stable ID is `engop:symphony:scv.` followed by its wire name wi
 | `graph_explain` | `explain` | `symphony.scv.explain-result.v1` | query |
 | `graph_evaluate` | `evaluate` | `symphony.scv.evaluate-result.v1` | validate |
 
+| `capture_index` | `corpus acquire / import / recover / inspect / export / diff` | `symphony.scv.capture-index.v1` | invoke |
+| `corpus_build` | `corpus acquire / import / recover / inspect / export / diff` | `symphony.scv.corpus.v1` | invoke |
+| `corpus_query` | `corpus export` | `symphony.scv.corpus-query.v1` | query |
+| `corpus_diff` | `corpus diff` | `symphony.scv.corpus-diff.v1` | validate |
+
+`knowledge/scv/CORPUS.md@v1` owns the four additive operations and their closed schemas. The table records composed qxctl routes; the C++ operations remain independently callable and never persist a corpus head. The `0.2.0-dev` descriptor has exactly seventeen operations. Existing `0.1.0-dev` installations retain their exact thirteen-operation descriptor, immutable receipts/documents and original v1 payloads. The qxctl consumer checks the selected version's operation set; it cannot substitute a newer installed package. Old command defaults remain `0.1.0-dev`, while new corpus commands default exactly to `0.2.0-dev`.
+
 ## Source and Capture Payloads
 
 Exact desired-source, source, plan, transition, status, provider and capture objects are governed by `knowledge/scv/schemas/v1/source.schema.json`, `capture.schema.json` and the named definitions in `source-operation.schema.json`. `inspect` accepts an empty object. `source_apply` only computes the owner-validated transition; it is pure and cannot claim a protected storage commit. qxctl storage administration has separate authorization, journal and expected-state responsibilities.
@@ -41,6 +48,10 @@ Capture input retains the exact source revision and supplied retrieval metadata.
 `graph_build` accepts `{knowledge:[Knowledge]}` whose domain and policy must be compatible with the invoked engine. `graph_query` and `graph_evaluate` accept `{graph, query_time}` plus optional `claim_ids`, `subject` and `predicate`. `graph_explain` accepts `{graph, query_time, claim_id}`. `graph_diff` accepts `{before, after, query_time}`. Times use strict UTC whole seconds. Every operation revalidates digest-bound input and emits deterministic semantic evidence under the selected policy.
 
 Explanation retains transitive dependencies and separate support paths. Difference retains before/after identities and evaluates both at one explicit time. Absence, conflict, hypothesis, stale observation, unsupported adapter and proven constraint remain distinct evidence. Results never certify empirical truth, rank a provider, select a deployment or authorize an action.
+
+## Corpus Payloads
+
+`capture_index` validates and projects an exact Capture v1. `corpus_build` constructs a sorted immutable snapshot from the full explicit member set and optional predecessor. Failed/partial refresh retains old complete evidence separately without changing its source revision or age. `corpus_query` applies an explicit latest-attempt or last-complete selection with query time and freshness; `corpus_diff` reports evidence and membership changes without inferring retirement. Corpus/member lineage checks are limited to the supplied immediate predecessor. At most 128 member indexes fit subject to the existing process bounds; materializing captured bytes is separately bounded to sixteen captures and the original request limits.
 
 ## Storage and Reproduction
 

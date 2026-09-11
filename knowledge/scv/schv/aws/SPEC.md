@@ -2,9 +2,9 @@
 
 ## Status and Ownership
 
-Architect-ratified bounded source-knowledge development contract, version `0.1.0-dev`. AWS-native source, offering, service, version and constraint knowledge.
+Architect-ratified bounded source-knowledge development contract, version `0.2.0-dev`. AWS-native source, offering, service, version and constraint knowledge.
 
-The shared operation, evidence, lineage, uncertainty and process contracts are assigned by `knowledge/scv/SPEC.md`, `knowledge/scv/SOURCE-KNOWLEDGE.md` and `knowledge/scv/schemas/v1/MANIFEST.md`. This owner specializes the declared domain identity and scope; it does not fork those mechanics or claim a complete vendor corpus.
+The shared operation, evidence, lineage, uncertainty and process contracts are assigned by `knowledge/scv/SPEC.md`, `knowledge/scv/SOURCE-KNOWLEDGE.md`, `knowledge/scv/CORPUS.md` and `knowledge/scv/schemas/v1/MANIFEST.md`. This owner specializes the declared domain identity and scope; it does not fork those mechanics or claim a complete vendor corpus.
 
 ## Domain Definition
 
@@ -14,7 +14,7 @@ The exact domain key is `schv-aws` and its parent domain is `schv`. Provider-nat
 
 Source statements, published recommendations, supplied runtime observations, derivations, hypotheses and user declarations remain distinguishable. A shared category or related API does not prove substitutability. A missing recipe, missing adapter or unanswered qualifier does not establish incompatibility. Private observations retain their scope and validity boundary; an expired observation cannot satisfy a current requirement merely because its digest is unchanged.
 
-The parent may consume this owner's exported graph. It must preserve exact native facts, support paths, source/capture revisions, interpretation versions and coverage. Parent or future Composer selection cannot turn a hypothesis into documented capability.
+The parent may consume this owner's exported indexes and graph. It must preserve exact native facts, support paths, source/capture revisions, interpretation versions and coverage. Parent or future Composer selection cannot turn a hypothesis into documented capability.
 
 ## Non-Authorization
 

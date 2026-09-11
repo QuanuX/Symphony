@@ -11,7 +11,7 @@
         {
           "applicability": "applicable",
           "reason": "SCV owns source, native knowledge and bounded composition meaning.",
-          "reference": "knowledge/scv/SOURCE-KNOWLEDGE.md",
+          "reference": "knowledge/scv/CORPUS.md",
           "vector": "scv"
         },
         {
@@ -36,7 +36,8 @@
       "distinctions": [],
       "evidence": [
         "The module CMake and common SCV implementation expose independently installable exact-domain operation dispatch.",
-        "Owner and installed-process regressions exercise source lineage, bounded evidence and reproducible knowledge; execution results belong to the change closure."
+        "Owner and installed-process regressions exercise source lineage, bounded evidence and reproducible knowledge; execution results belong to the change closure.",
+        "Corpus producer, consumer and installed-process cases exercise immutable snapshot coverage, retained complete evidence, source qualification, explicit selection and exact-version compatibility."
       ],
       "feature_id": "ssfv:symphony:schv-do-engine",
       "how": "Uses shared C++ bounded JSON mechanics, exact source/capture digests, explicit interpretation policy and qualified support paths through a separately packaged process.",
@@ -52,6 +53,7 @@
       ],
       "implementation_paths": [
         "modules/schv-do-engine/CMakeLists.txt",
+        "modules/scv-engine/src/corpus.cpp",
         "modules/scv-engine/src/dispatch.cpp",
         "modules/scv-engine/src/knowledge.cpp",
         "modules/scv-engine/src/main.cpp",
@@ -75,7 +77,7 @@
       "source_scope": "modules/schv-do-engine",
       "status": "experimental",
       "title": "Symphony Cloud Hyperscalers Vector \u2014 DigitalOcean source-knowledge engine",
-      "what": "DigitalOcean-native source, offering, service, version and constraint knowledge. Provides independently installable source planning, validation, capture import, interpretation, graph, query, difference and explanation operations.",
+      "what": "DigitalOcean-native source, offering, service, version and constraint knowledge. Provides independently installable source planning, validation, capture import, interpretation, graph, query, difference and explanation operations. The additive maintained-corpus profile provides capture indexes, immutable member snapshots, explicit freshness-qualified selection and corpus differences.",
       "when": "Runs on explicit bounded local process or exact qxctl invocation, never as a continuously resident workload dependency.",
       "where": "An exact versioned inactive-undocked installation; supplied source and graph data remain private installation inputs.",
       "who": "Any caller using owner-authorized local execution; protected state changes additionally require the storage adapter authorization circuit.",
@@ -83,5 +85,6 @@
     }
   ]
 }
+
 ```
 <!-- symphony:ssfv:feature-file:v1:end -->
