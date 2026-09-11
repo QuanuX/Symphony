@@ -1458,6 +1458,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -1481,6 +1482,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -1508,6 +1510,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -1526,6 +1529,7 @@
         {
           "command_ids": [
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.workflow.status",
             "qxcmd:symphony:scv.corpus.inspect",
             "qxcmd:symphony:scv.inspect",
             "qxcmd:symphony:scv.projection.status",
@@ -1537,6 +1541,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -1557,6 +1562,7 @@
             "qxcmd:symphony:scv.acquire",
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.import",
             "qxcmd:symphony:scv.graph",
@@ -1568,6 +1574,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -1594,6 +1601,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -1624,6 +1632,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -1641,6 +1650,7 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.composition.workflow.recover",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.source.recover",
@@ -1650,6 +1660,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -1679,6 +1690,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2189,6 +2201,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2216,6 +2229,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2247,6 +2261,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2268,6 +2283,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.corpus.export",
@@ -2292,6 +2309,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2311,6 +2329,8 @@
           "command_ids": [
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
@@ -2326,6 +2346,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2346,6 +2367,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.composition.explore",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
@@ -2369,6 +2392,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2394,6 +2418,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2415,6 +2440,8 @@
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
             "qxcmd:symphony:scv.composition.reassess",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -2435,6 +2462,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2465,6 +2493,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2492,6 +2521,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2523,6 +2553,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2544,6 +2575,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.corpus.export",
@@ -2568,6 +2601,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2587,6 +2621,8 @@
           "command_ids": [
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
@@ -2602,6 +2638,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2622,6 +2659,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.composition.explore",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
@@ -2645,6 +2684,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2670,6 +2710,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2691,6 +2732,8 @@
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
             "qxcmd:symphony:scv.composition.reassess",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -2711,6 +2754,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2741,6 +2785,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2768,6 +2813,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2799,6 +2845,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2820,6 +2867,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.corpus.export",
@@ -2844,6 +2893,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2863,6 +2913,8 @@
           "command_ids": [
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
@@ -2878,6 +2930,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2898,6 +2951,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.composition.explore",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
@@ -2921,6 +2976,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2946,6 +3002,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -2967,6 +3024,8 @@
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
             "qxcmd:symphony:scv.composition.reassess",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -2987,6 +3046,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3017,6 +3077,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3044,6 +3105,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3075,6 +3137,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3096,6 +3159,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.corpus.export",
@@ -3120,6 +3185,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3139,6 +3205,8 @@
           "command_ids": [
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
@@ -3154,6 +3222,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3174,6 +3243,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.composition.explore",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
@@ -3197,6 +3268,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3222,6 +3294,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3243,6 +3316,8 @@
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
             "qxcmd:symphony:scv.composition.reassess",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -3263,6 +3338,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3293,6 +3369,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3320,6 +3397,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3351,6 +3429,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3372,6 +3451,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.corpus.export",
@@ -3396,6 +3477,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3415,6 +3497,8 @@
           "command_ids": [
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
@@ -3430,6 +3514,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3450,6 +3535,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.composition.explore",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
@@ -3473,6 +3560,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3498,6 +3586,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3519,6 +3608,8 @@
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
             "qxcmd:symphony:scv.composition.reassess",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -3539,6 +3630,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3569,6 +3661,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3596,6 +3689,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3627,6 +3721,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3648,6 +3743,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.corpus.export",
@@ -3672,6 +3769,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3691,6 +3789,8 @@
           "command_ids": [
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
@@ -3706,6 +3806,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3726,6 +3827,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.composition.explore",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
@@ -3749,6 +3852,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3774,6 +3878,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3795,6 +3900,8 @@
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
             "qxcmd:symphony:scv.composition.reassess",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -3815,6 +3922,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3845,6 +3953,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3872,6 +3981,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3903,6 +4013,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3924,6 +4035,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.corpus.export",
@@ -3948,6 +4061,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -3967,6 +4081,8 @@
           "command_ids": [
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
@@ -3982,6 +4098,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -4002,6 +4119,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.composition.explore",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
@@ -4025,6 +4144,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -4050,6 +4170,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -4071,6 +4192,8 @@
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
             "qxcmd:symphony:scv.composition.reassess",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -4091,6 +4214,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -4262,6 +4386,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -4289,6 +4414,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -4320,6 +4446,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -4341,6 +4468,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.diff",
             "qxcmd:symphony:scv.corpus.export",
@@ -4365,6 +4494,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -4384,6 +4514,8 @@
           "command_ids": [
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.profile.prepare",
             "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
@@ -4399,6 +4531,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -4419,6 +4552,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.composition.explore",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
@@ -4442,6 +4577,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -4467,6 +4603,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -4488,6 +4625,8 @@
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
             "qxcmd:symphony:scv.composition.reassess",
+            "qxcmd:symphony:scv.composition.workflow.recover",
+            "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -4508,6 +4647,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
@@ -5986,9 +6126,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:26911141b8fa9a176040afa9518493180228b6e1c958c088a55f96be60001729",
+  "profile_digest": "sha256:c4340053843210e2b6903e880c460b328a52effbad9ab97051b0863bcfeffdc6",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 100,
-  "ssfv_registry_digest": "sha256:64b4373d55fbeb4eed9f68ace7f2e57605dcd59d6796a93bd29491fe91b311ba"
+  "ssfv_registry_digest": "sha256:c529bf7d3cb4d6ffd28e29875e503686aac5c96522dfff4f0b020c4630550767"
 }

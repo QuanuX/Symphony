@@ -40,7 +40,8 @@
         "Corpus producer, consumer and installed-process cases exercise immutable snapshot coverage, retained complete evidence, source qualification, explicit selection and exact-version compatibility. Profile and connection tests trace exact mapping replay, scoped checks, changed inputs and rejected forged results.",
         "Profile preparation and installed schema discovery are checked without a repository; retained qxctl workflows preserve native owner validation and exact installation provenance.",
         "Provider coverage owner/consumer and installed-process regressions exercise exact joins, source declaration drift, gap inventories and replayed attempts without inferring complete expertise or runtime compatibility.",
-        "Independent pack and composition owner/consumer regressions, generated-interface history/drift checks and exact installed resource checks define the exercised scope; execution evidence belongs to the increment closure."
+        "Independent pack and composition owner/consumer regressions, generated-interface history/drift checks and exact installed resource checks define the exercised scope; execution evidence belongs to the increment closure.",
+        "Exact .7 retained composition workflow producer, consumer, interruption and installed-process checks preserve original pack owners and fixed caller selections. Strict typed journal roundtrip rejects omitted/null fields that could otherwise normalize under an earlier seal. Execution evidence belongs to the increment closure."
       ],
       "feature_id": "ssfv:symphony:schv-azure-engine",
       "how": "Uses shared C++ bounded JSON mechanics, exact source/capture digests, explicit interpretation policy and qualified support paths through a separately packaged process.",
@@ -75,7 +76,7 @@
       ],
       "owner_contract": "modules/schv-azure-engine/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",
-      "record_version": 5,
+      "record_version": 6,
       "relationships": [
         {
           "rationale": "Statically links the authority-free common process, digest and temporal mechanics.",

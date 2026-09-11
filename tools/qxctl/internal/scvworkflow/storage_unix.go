@@ -15,8 +15,9 @@ import (
 )
 
 type Session struct {
-	directories  map[string]int
-	runDirectory int
+	namespaceDirectory int
+	directories        map[string]int
+	runDirectory       int
 }
 
 func (s Store) With(operation string, create bool, work func(*Session, *Run) error) error {
@@ -44,7 +45,7 @@ func (s Store) With(operation string, create bool, work func(*Session, *Run) err
 		fd = next
 	}
 	defer unix.Close(fd)
-	session := &Session{directories: map[string]int{}, runDirectory: -1}
+	session := &Session{directories: map[string]int{}, runDirectory: -1, namespaceDirectory: fd}
 	defer func() {
 		for _, d := range session.directories {
 			_ = unix.Close(d)

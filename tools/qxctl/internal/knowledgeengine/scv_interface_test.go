@@ -7,12 +7,12 @@ import (
 )
 
 func TestSCVGeneratedInterfacePreservesExactHistoricalAdmissions(t *testing.T) {
-	for i, count := range []int{13, 17, 20, 21, 22, 26} {
-		version := []string{"0.1.0-dev", "0.2.0-dev", "0.3.0-dev", "0.4.0-dev", "0.5.0-dev", "0.6.0-dev"}[i]
+	for i, count := range []int{13, 17, 20, 21, 22, 26, 26} {
+		version := []string{"0.1.0-dev", "0.2.0-dev", "0.3.0-dev", "0.4.0-dev", "0.5.0-dev", "0.6.0-dev", "0.7.0-dev"}[i]
 		if scvInterfaceOperationCount(version) != count {
 			t.Fatalf("%s operation surface changed", version)
 		}
-		expectedCompanions := []int{1, 2, 3, 4, 5, 8}[i]
+		expectedCompanions := []int{1, 2, 3, 4, 5, 8, 9}[i]
 		if len(scvInterfaceCompanions(version)) != expectedCompanions {
 			t.Fatal("companion history changed", version)
 		}
@@ -22,7 +22,7 @@ func TestSCVGeneratedInterfacePreservesExactHistoricalAdmissions(t *testing.T) {
 			}
 		}
 	}
-	for _, version := range []string{"latest", "0.7.0-dev", "0.6.0", ""} {
+	for _, version := range []string{"latest", "0.8.0-dev", "0.6.0", ""} {
 		if SCVOperationSupported(version, "inspect") || SCVSupports(version, "interface") || SCVArtifactSupported(version, "knowledge_interpret") || SCVDomainSupported(version, "scv") {
 			t.Fatal("unselected exact release admitted", version)
 		}
@@ -72,7 +72,7 @@ func TestSCVOwnerInterfaceRejectsChangedOrResealedDeclaration(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err = scvValidateOwnerInterface("0.6.0-dev", definition); err != nil {
+	if _, err = scvValidateOwnerInterface("0.7.0-dev", definition); err != nil {
 		t.Fatal(err)
 	}
 	for _, mutation := range []func(map[string]any){func(d map[string]any) { d["current_release"] = "0.5.0-dev" }, func(d map[string]any) { d["unknown"] = true }, func(d map[string]any) { d["operations"].([]any)[0].(map[string]any)["mutability"] = "proposal_only" }, func(d map[string]any) { d["domains"].([]any)[0].(map[string]any)["name"] = "scev-caller-added" }} {
@@ -81,7 +81,7 @@ func TestSCVOwnerInterfaceRejectsChangedOrResealedDeclaration(t *testing.T) {
 			t.Fatal(err)
 		}
 		mutation(changed)
-		if _, err = scvValidateOwnerInterface("0.6.0-dev", changed); err == nil {
+		if _, err = scvValidateOwnerInterface("0.7.0-dev", changed); err == nil {
 			t.Fatal("changed interface admitted even though its digest can be recomputed")
 		}
 	}

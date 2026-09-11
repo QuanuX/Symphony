@@ -1,6 +1,6 @@
 {
   "protocol": "symphony.scv.schema-catalog.v1",
-  "engine_version": "0.6.0-dev",
+  "engine_version": "0.7.0-dev",
   "entries": [
     {
       "protocol": "symphony.knowledge.engine-descriptor.v2",
@@ -100,6 +100,74 @@
       "fragment": "#/$defs/Record",
       "kind": "artifact",
       "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-composition-workflow-recover-input.v1",
+      "file": "scv-composition-workflow.schema.json",
+      "fragment": "#/$defs/OperationInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "operation_id": null
+      },
+      "required_inputs": [
+        "Select exact retained artifact record digests, caller composition fields and a stable operation ID. pack_evaluations entries contain evaluation_id, pack_ref and evaluation with captures, bindings, selection_policy and fixtures. Each pack stage uses the original retained pack owner; references never authorize execution of evidence obligations."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-composition-workflow-result.v1",
+      "file": "scv-composition-workflow.schema.json",
+      "fragment": "#/$defs/Result",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-composition-workflow-run-input.v1",
+      "file": "scv-composition-workflow.schema.json",
+      "fragment": "#/$defs/RunInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "operation_id": null,
+        "pack_evaluations": [],
+        "pack_evaluation_refs": [],
+        "interpretation_refs": [],
+        "knowledge_refs": [],
+        "composition": {
+          "query_time": null,
+          "requirements": [],
+          "slots": [],
+          "allowed_guarantee_changes": [],
+          "counterfactuals": [],
+          "bounds": {
+            "max_candidates": null
+          }
+        },
+        "prior_composition_ref": null
+      },
+      "required_inputs": [
+        "Select exact retained artifact record digests, caller composition fields and a stable operation ID. pack_evaluations entries contain evaluation_id, pack_ref and evaluation with captures, bindings, selection_policy and fixtures. Each pack stage uses the original retained pack owner; references never authorize execution of evidence obligations."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-composition-workflow-run.v1",
+      "file": "scv-composition-workflow.schema.json",
+      "fragment": "#/$defs/Run",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-composition-workflow-status-input.v1",
+      "file": "scv-composition-workflow.schema.json",
+      "fragment": "#/$defs/OperationInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "operation_id": null
+      },
+      "required_inputs": [
+        "Select exact retained artifact record digests, caller composition fields and a stable operation ID. pack_evaluations entries contain evaluation_id, pack_ref and evaluation with captures, bindings, selection_policy and fixtures. Each pack stage uses the original retained pack owner; references never authorize execution of evidence obligations."
+      ]
     },
     {
       "protocol": "symphony.qxctl.scv-corpus-acquire-input.v1",
@@ -1482,7 +1550,10 @@
     "structured_json_nodes": 8192,
     "structured_pointer_bytes": 1024,
     "structured_pointer_segments": 32,
-    "structured_contexts": 8
+    "structured_contexts": 8,
+    "composition_workflow_pack_evaluations": 16,
+    "composition_workflow_stages": 18,
+    "composition_workflow_evidence_artifacts": 16
   },
   "limitations": [
     "Schemas describe shape; runtime also verifies digests, exact ownership, byte/time limits and replay.",

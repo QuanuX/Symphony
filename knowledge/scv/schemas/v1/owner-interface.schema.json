@@ -70,7 +70,8 @@
                     "workflow",
                     "artifact",
                     "schema",
-                    "interface"
+                    "interface",
+                    "composition_workflow"
                   ]
                 },
                 "minItems": 0,

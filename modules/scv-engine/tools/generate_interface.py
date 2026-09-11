@@ -81,7 +81,7 @@ def validate(manifest):
             if not isinstance(release[field], list) or not all(isinstance(x, str) for x in release[field]):
                 raise Invalid(f"invalid release {field}")
             unique(release[field], field)
-        if any(surface not in ("corpus", "workflow", "artifact", "schema", "interface") for surface in release["surfaces"]):
+        if any(surface not in ("corpus", "workflow", "artifact", "schema", "interface", "composition_workflow") for surface in release["surfaces"]):
             raise Invalid("unknown adapter surface")
         for companion in release["companions"]:
             word(companion, r"[A-Z][A-Z0-9-]*\.md", "owner companion")

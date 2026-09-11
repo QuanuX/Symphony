@@ -35,3 +35,9 @@ Canonical definition digests for supported resource releases derive from release
 Generated structure is not a shared semantic oracle. Native source/pack/interpretation/composition implementations remain authoritative for their published contracts. Go independently checks result identity, exact retained inputs, evidence anchors, comparison results, inventory correspondence, and reported accounting. Hand-authored adversarial tests continue to reject correctly resealed but false results, copied provenance, altered requirements, and invalid recovery checkpoints.
 
 Generator regressions separately cover deterministic regeneration, frozen historical projections, missing/duplicate fields and identities, undeclared releases, invalid handler tokens, broader mutation classes, artifact admission before owner availability, schema escape/missing protocol failures, and modified generated files. Installed tests check receipt-bound interface inspection and preserve the existing exact package/version tests.
+
+## Maintained Composition Coordination
+
+The exact `0.7.0-dev` release retains 26 native operations and adds the installed `knowledge/scv/COMPOSITION-WORKFLOWS.md` companion and its workflow schema. qxctl coordinates original-owner package evaluations, finite exploration and optional reassessment with pinned intent, immutable artifact records and interruption recovery. Nine owner companions and 24 schemas expose 89 protocol entries. The existing native meanings remain unchanged; a completed run preserves source gaps, failed fixtures and implementation obligations. Earlier exact `.1`–`.6` installations and command defaults remain available.
+
+The additional frozen `modules/scv-engine/tests/fixtures/owner-interface-0.6.v1.json` preserves the exact `.6` declaration from closure `186ec79`; regressions compare both its complete release-truncated definition and mechanical projection. The earlier `.1`–`.5` history fixture remains byte-preserved.

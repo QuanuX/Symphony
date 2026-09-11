@@ -18,7 +18,7 @@ The 100 registered feature IDs appear exactly once. Their 252 reviewed expectati
 
 ## Exact Machine Evidence
 
-The profile digest is `sha256:26911141b8fa9a176040afa9518493180228b6e1c958c088a55f96be60001729`. Its bound SSFV registry digest is `sha256:64b4373d55fbeb4eed9f68ace7f2e57605dcd59d6796a93bd29491fe91b311ba`. The expected qxctl registry has 244 leaves with digest `sha256:e278dc338bfa87f9c373768c3a6c85bea92db12ee056cf4591fbe3c8eaee815d`. These are source-level mappings; actual installed acceptance also requires the selected engine descriptors, exact receipts and exercised authority/storage boundaries. Catalog completeness remains false.
+The profile digest is `sha256:c4340053843210e2b6903e880c460b328a52effbad9ab97051b0863bcfeffdc6`. Its bound SSFV registry digest is `sha256:c529bf7d3cb4d6ffd28e29875e503686aac5c96522dfff4f0b020c4630550767`. The expected qxctl registry has 247 leaves with digest `sha256:a38bd8d61c603ddb01f95306505aa5ccbf2f56826543aef4669d1fe16858602d`. These are source-level mappings; actual installed acceptance also requires the selected engine descriptors, exact receipts and exercised authority/storage boundaries. Catalog completeness remains false.
 
 ## Advancement
 

@@ -10801,3 +10801,29 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: private reproducible provider package and exploration evidence
 - notes: Requirements, provider choices, permitted guarantee changes and execution decisions remain with the caller. Interface consistency and selected fixture conformance do not prove complete vendor knowledge or runtime compatibility.
 - status: canonical
+
+#### SCV Maintained Composition Workflow Contract v1
+- path: `knowledge/scv/COMPOSITION-WORKFLOWS.md`
+- title: SCV Maintained Composition Workflow Contract v1
+- surface_type: canonical contract companion
+- truth_role: exact retained package and composition workflow contract
+- owner: SCV and qxctl maintainers
+- scope: Original-owner evidence replay, pinned caller requirements, immutable stage records and bounded recovery.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: qxctl, maintainers, agents, user-selected tools
+- deferred_projections: private retained workflow evidence
+- notes: Completion describes stages; it does not certify provider capability, fixture meaning or runtime compatibility.
+- status: canonical
+
+#### SCV Maintained Composition Workflow Payloads v1
+- path: `knowledge/scv/schemas/v1/scv-composition-workflow.schema.json`
+- title: SCV Maintained Composition Workflow Payloads v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: exact retained package and composition workflow contract
+- owner: SCV and qxctl maintainers
+- scope: Original-owner evidence replay, pinned caller requirements, immutable stage records and bounded recovery.
+- relationships: depends_on -> `knowledge/scv/COMPOSITION-WORKFLOWS.md`
+- consumers: qxctl, maintainers, agents, user-selected tools
+- deferred_projections: private retained workflow evidence
+- notes: Completion describes stages; it does not certify provider capability, fixture meaning or runtime compatibility.
+- status: canonical

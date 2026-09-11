@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 bool is_authorized_canonical_json(const std::string& relative_path) {
     // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, SSFV, SAV, and SEV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 249> authorized_paths = {
+    static const std::array<std::string, 250> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -142,6 +142,7 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/scv/schemas/v1/composition.schema.json",
         "knowledge/scv/schemas/v1/scv-artifact.schema.json",
         "knowledge/scv/schemas/v1/scv-workflow.schema.json",
+        "knowledge/scv/schemas/v1/scv-composition-workflow.schema.json",
         "knowledge/scv/schemas/v1/provider-interpretation.schema.json",
         "knowledge/scv/schemas/v1/connection-operation.schema.json",
         "knowledge/scv/schemas/v1/source-operation.schema.json",
@@ -332,6 +333,8 @@ ArtifactCheckResult check_unauthorized_artifacts(const std::string& repo_root) {
                                   rel_path == "knowledge/scv/schemas/v1/corpus.schema.json" ||
                                   rel_path == "knowledge/scv/schemas/v1/corpus-operation.schema.json"
                                 ? "knowledge/scv/CORPUS.md"
+                                : rel_path == "knowledge/scv/schemas/v1/scv-composition-workflow.schema.json"
+                                ? "knowledge/scv/COMPOSITION-WORKFLOWS.md"
                                 : rel_path == "knowledge/scv/schemas/v1/administration.schema.json" ||
                                   rel_path == "knowledge/scv/schemas/v1/engine-descriptor-v2.schema.json" ||
                                   rel_path == "knowledge/scv/schemas/v1/profile-preparation.schema.json" ||

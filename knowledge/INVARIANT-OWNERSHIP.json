@@ -763,6 +763,13 @@
         },
         {
           "cases": [
+            "TestSCVCompositionWorkflowRejectsBoundsAndUnusedFields",
+            "TestSCVCompositionWorkflowStatusRejectsMatchedCheckpointSubstitution"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_composition_workflow_test.go"
+        },
+        {
+          "cases": [
             "TestSCVArtifactsRejectSuppliedResultMismatchAndReplayOriginalOwner",
             "TestSCVWorkflowReconstructsPendingStageBeforeReplay",
             "TestSCVWorkflowRejectsIgnoredPolicyAndRelativeCorpusRoot",
@@ -777,7 +784,10 @@
       "owner_component": "qxctl-scv-workflow-store",
       "owner_contract": "knowledge/scv/AGENT-WORKFLOWS.md",
       "producer_implementations": [
+        "tools/qxctl/cmd/qxctl/scv_composition_workflow.go",
         "tools/qxctl/cmd/qxctl/scv_workflow.go",
+        "tools/qxctl/internal/scvworkflow/composition.go",
+        "tools/qxctl/internal/scvworkflow/composition_storage_unix.go",
         "tools/qxctl/internal/scvworkflow/filesystem_unix.go",
         "tools/qxctl/internal/scvworkflow/rename_darwin.go",
         "tools/qxctl/internal/scvworkflow/rename_linux.go",
@@ -787,9 +797,24 @@
       "producer_regressions": [
         {
           "cases": [
+            "TestInstalledSCVCompositionWorkflowRetainsOriginalOwnersAndRecovers",
+            "TestSCVCompositionWorkflowPreservesPackOwnerAndCallerSelections",
+            "TestSCVCompositionWorkflowRecoversEveryDurableBoundary"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_composition_workflow_test.go"
+        },
+        {
+          "cases": [
             "TestSCVWorkflowResumesEveryDurableBoundaryWithoutReplacingIntent"
           ],
           "path": "tools/qxctl/cmd/qxctl/scv_workflow_test.go"
+        },
+        {
+          "cases": [
+            "TestCompositionWorkflowJournalRejectsOmittedNullAndReboundFields",
+            "TestCompositionWorkflowStorePinsProgressAndRejectsUnsafePaths"
+          ],
+          "path": "tools/qxctl/internal/scvworkflow/composition_test.go"
         },
         {
           "cases": [
@@ -802,7 +827,7 @@
         }
       ],
       "real_process_regressions": [],
-      "statement": "The qxctl evidence workflow pins caller intent, exact owner installations, corpus selections and native artifact provenance before advancing durable stages. Immutable content and validation records have separate digests. Status preserves its stated integrity scope; recovery reconstructs stage inputs and replays exact owner results, rejecting changed inputs, missing evidence and substituted checkpoints. Runs create no selected head, provider facts or permission. The four additive .6 pack/composition artifact kinds retain their original exact operation, authored input, result and owner installation; generated interface admission neither promotes metadata listing into native replay nor substitutes a current owner for historical provenance.",
+      "statement": "The qxctl evidence workflow pins caller intent, exact owner installations, corpus selections and native artifact provenance before advancing durable stages. Immutable content and validation records have separate digests. Status preserves its stated integrity scope; recovery reconstructs stage inputs and replays exact owner results, rejecting changed inputs, missing evidence and substituted checkpoints. Runs create no selected head, provider facts or permission. The four additive .6 pack/composition artifact kinds retain their original exact operation, authored input, result and owner installation; generated interface admission neither promotes metadata listing into native replay nor substitutes a current owner for historical provenance. The additive .7 composition workflow binds its root/TOPS, selected composition owner and exact caller request; package stages execute through each retained pack original owner. Every checkpoint must match the requested stage and reconstructed input. Typed journal roundtrip rejects field omission or null normalization under an old digest. Progress and conformance remain separate; failed fixtures and native evidence/implementation obligations survive a completed workflow.",
       "status": "active",
       "title": "Agent workflow recovery preserves exact caller intent and native evidence"
     },
@@ -1181,7 +1206,8 @@
             "test_future_domain_does_not_change_old_admission_or_definition",
             "test_historical_projection_is_frozen",
             "test_malformed_catalog_and_references_rejected",
-            "test_malformed_manifest_rejected"
+            "test_malformed_manifest_rejected",
+            "test_sixth_release_declaration_remains_exact"
           ],
           "path": "modules/scv-engine/tests/interface_generation_test.py"
         },
@@ -1524,7 +1550,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v2",
-  "registry_digest": "sha256:82994324c508c2cffc515fff920706f9a9a80383ef9417a3f43b285e70257687",
+  "registry_digest": "sha256:812924405cd05633d8f7c4fd6f9b67c0293ee6c1e1be36e9a6c3b96afabdadbf",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

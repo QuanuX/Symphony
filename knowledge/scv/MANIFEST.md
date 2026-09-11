@@ -22,6 +22,7 @@ SCV is the semantic owner of provider/offsite resource possibility, constraint, 
 - `knowledge/scv/OWNER-INTERFACE.json`
 - `knowledge/scv/PROVIDER-PACKS.md`
 - `knowledge/scv/COMPOSITION.md`
+- `knowledge/scv/COMPOSITION-WORKFLOWS.md`
 - `knowledge/scv/SKILL.md`
 
 ## Admitted Implementation Character
@@ -47,3 +48,7 @@ The additive `0.5.0-dev` interface in `knowledge/scv/COVERAGE.md` accounts indep
 ## Portable Knowledge and Bounded Composition
 
 The additive `0.6.0-dev` release exposes 26 operations in each of the eight supplied exact-domain packages. `knowledge/scv/OWNER-INTERFACE.md` governs the versioned interface declaration and mechanical projections; `knowledge/scv/PROVIDER-PACKS.md` owns authored portable mappings and detached semantic fixtures; `knowledge/scv/COMPOSITION.md` owns finite caller-permitted exploration and changed-input obligations. Independent consumer checks remain implementation, not generated semantics. Users retain provider, requirement, policy, recipe and execution decisions.
+
+## Maintained Composition Coordination
+
+The exact `0.7.0-dev` release retains 26 native operations and adds the installed `knowledge/scv/COMPOSITION-WORKFLOWS.md` companion and its workflow schema. qxctl coordinates original-owner package evaluations, finite exploration and optional reassessment with pinned intent, immutable artifact records and interruption recovery. Nine owner companions and 24 schemas expose 89 protocol entries. The existing native meanings remain unchanged; a completed run preserves source gaps, failed fixtures and implementation obligations. Earlier exact `.1`–`.6` installations and command defaults remain available.

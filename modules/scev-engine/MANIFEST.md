@@ -14,7 +14,7 @@
 - module: `scev-engine`
 - engine: `symphony-scev`
 - vector: `scev`
-- version: `0.6.0-dev`
+- version: `0.7.0-dev`
 - language: C++26
 - thermal path: freezing
 - semantic owner: `knowledge/scv/scev/SPEC.md`
@@ -42,3 +42,7 @@ The additive `0.6.0-dev` package exposes 26 operations. `knowledge/scv/PROVIDER-
 `knowledge/scv/COMPOSITION.md` owns finite exploration of caller-selected recipes against caller-selected requirements. Native operations preserve evidence, prerequisites, interface declarations, guarantee changes and authored resolution pointers; missing evidence remains unresolved. The engine does not enumerate an open-ended design space, rank providers, choose a user's requirements, provision infrastructure or turn a declaration into observed compatibility. Reassessment preserves exact before/after inputs and changed axes.
 
 `knowledge/scv/OWNER-INTERFACE.json` is the versioned owner declaration for operation metadata, release admission, artifact kinds and installation inventories. Its checked-in generated projections drive native dispatch metadata and Go interface admission; domain validation and adversarial consumer tests remain independent. The package includes eight owner companions, the schema catalog and a receipt-owned copy of the declaration, inspectable through `qxctl scv interface show`. Normal builds and engine invocation do not require the Python authoring generator. Earlier exact `.1`–`.5` receipts and CLI defaults remain unchanged; new pack, composition and interface commands default to exact `.6`.
+
+## Maintained Composition Coordination
+
+The exact `0.7.0-dev` release retains 26 native operations and adds the installed `knowledge/scv/COMPOSITION-WORKFLOWS.md` companion and its workflow schema. qxctl coordinates original-owner package evaluations, finite exploration and optional reassessment with pinned intent, immutable artifact records and interruption recovery. Nine owner companions and 24 schemas expose 89 protocol entries. The existing native meanings remain unchanged; a completed run preserves source gaps, failed fixtures and implementation obligations. Earlier exact `.1`–`.6` installations and command defaults remain available.

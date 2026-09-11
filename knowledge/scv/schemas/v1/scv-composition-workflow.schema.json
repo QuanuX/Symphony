@@ -1,0 +1,368 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:qxctl:scv-composition-workflow:v1",
+  "title": "Exact retained provider-package and composition workflow v1",
+  "description": "Exact .7 qxctl coordination over unchanged native semantic operations. Run pins root/TOPS, installation, caller request and exact artifact record references. At most16 combined new package evaluations, retained package evaluations, interpretations and knowledge artifacts; cross-field and process/storage limits remain runtime checks. Stage pack owners come from each retained provider pack. Run/recovery replay original owners; observational status inspects sealed checkpoint linkage without claiming owner replay. No source acquisition, head selection, obligation execution or provider authority.",
+  "$defs": {
+    "RunInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_id",
+        "pack_evaluations",
+        "pack_evaluation_refs",
+        "interpretation_refs",
+        "knowledge_refs",
+        "composition",
+        "prior_composition_ref"
+      ],
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "pack_evaluations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "evaluation_id",
+              "pack_ref",
+              "evaluation"
+            ],
+            "properties": {
+              "evaluation_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+              },
+              "pack_ref": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "evaluation": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "captures",
+                  "bindings",
+                  "selection_policy",
+                  "fixtures"
+                ],
+                "properties": {
+                  "captures": {
+                    "$ref": "provider-pack.schema.json#/$defs/EvaluateInput/properties/captures"
+                  },
+                  "bindings": {
+                    "$ref": "provider-pack.schema.json#/$defs/EvaluateInput/properties/bindings"
+                  },
+                  "selection_policy": {
+                    "$ref": "provider-pack.schema.json#/$defs/EvaluateInput/properties/selection_policy"
+                  },
+                  "fixtures": {
+                    "$ref": "provider-pack.schema.json#/$defs/EvaluateInput/properties/fixtures"
+                  }
+                }
+              }
+            }
+          },
+          "maxItems": 16
+        },
+        "pack_evaluation_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "interpretation_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "knowledge_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "composition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "query_time",
+            "requirements",
+            "slots",
+            "allowed_guarantee_changes",
+            "counterfactuals",
+            "bounds"
+          ],
+          "properties": {
+            "query_time": {
+              "$ref": "composition.schema.json#/$defs/ExploreInput/properties/query_time"
+            },
+            "requirements": {
+              "$ref": "composition.schema.json#/$defs/ExploreInput/properties/requirements"
+            },
+            "slots": {
+              "$ref": "composition.schema.json#/$defs/ExploreInput/properties/slots"
+            },
+            "allowed_guarantee_changes": {
+              "$ref": "composition.schema.json#/$defs/ExploreInput/properties/allowed_guarantee_changes"
+            },
+            "counterfactuals": {
+              "$ref": "composition.schema.json#/$defs/ExploreInput/properties/counterfactuals"
+            },
+            "bounds": {
+              "$ref": "composition.schema.json#/$defs/ExploreInput/properties/bounds"
+            }
+          }
+        },
+        "prior_composition_ref": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        }
+      }
+    },
+    "OperationInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_id"
+      ],
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        }
+      }
+    },
+    "Run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "operation_id",
+        "root",
+        "tops_id",
+        "installation",
+        "request",
+        "intent_digest",
+        "stages",
+        "complete",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-composition-workflow-run.v1"
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "root": {
+          "type": "string"
+        },
+        "tops_id": {
+          "type": "string"
+        },
+        "installation": {
+          "$ref": "scv-artifact.schema.json#/$defs/Record/properties/installation"
+        },
+        "request": {
+          "$ref": "#/$defs/RunInput"
+        },
+        "intent_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "stages": {
+          "type": "object",
+          "maxProperties": 18,
+          "additionalProperties": false,
+          "properties": {
+            "explore": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "input_ref",
+                "result_ref"
+              ],
+              "properties": {
+                "input_ref": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                },
+                "result_ref": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    },
+                    {
+                      "const": ""
+                    }
+                  ]
+                }
+              }
+            },
+            "reassess": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "input_ref",
+                "result_ref"
+              ],
+              "properties": {
+                "input_ref": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                },
+                "result_ref": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    },
+                    {
+                      "const": ""
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "patternProperties": {
+            "^pack:[^\\u0000-\\u001F\\u007F]+$": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "input_ref",
+                "result_ref"
+              ],
+              "properties": {
+                "input_ref": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                },
+                "result_ref": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    },
+                    {
+                      "const": ""
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "Result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "run",
+        "status",
+        "validation",
+        "pack_evaluation_refs",
+        "composition_ref",
+        "reassessment_ref"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-composition-workflow-result.v1"
+        },
+        "run": {
+          "$ref": "#/$defs/Run"
+        },
+        "status": {
+          "enum": [
+            "prepared",
+            "evaluating_packs",
+            "explored",
+            "complete"
+          ]
+        },
+        "validation": {
+          "enum": [
+            "sealed_checkpoints_only",
+            "owner_replayed"
+          ]
+        },
+        "pack_evaluation_refs": {
+          "type": "object",
+          "maxProperties": 16,
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        },
+        "composition_ref": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "reassessment_ref": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

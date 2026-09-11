@@ -724,8 +724,8 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
-          "reason": "Defines source, corpus, authored interpretation and scoped connection owner contracts.",
-          "reference": "knowledge/scv/COVERAGE.md",
+          "reason": "Owns source/evidence meanings and exact package-to-composition workflow boundaries; qxctl coordinates without acquiring native semantic authority.",
+          "reference": "knowledge/scv/COMPOSITION-WORKFLOWS.md",
           "vector": "scv"
         },
         {
@@ -750,7 +750,8 @@
         "Profile/connection consumer and exact installed-process tests reject changed extraction evidence, resealed comparison results and changed reassessment bindings; old exact versions remain invocable.",
         "Agent workflow regressions cover replay, collisions, interrupted stages, altered evidence and machine-readable failures; installed acceptance remains bound to the recorded build.",
         "Provider coverage owner/consumer and installed-process regressions exercise exact joins, source declaration drift, gap inventories and replayed attempts without inferring complete expertise or runtime compatibility.",
-        "Generated-interface tests pin historical exact operation/retention admissions, reject malformed declarations and schema drift, and exercise installed interface discovery and changed receipt-owned bytes. Independent pack/composition consumer tests remain separate from generated metadata; execution scope is recorded in the increment closure."
+        "Generated-interface tests pin historical exact operation/retention admissions, reject malformed declarations and schema drift, and exercise installed interface discovery and changed receipt-owned bytes. Independent pack/composition consumer tests remain separate from generated metadata; execution scope is recorded in the increment closure.",
+        "Exact .7 retained composition workflow producer, consumer, interruption and installed-process checks preserve original pack owners and fixed caller selections. Strict typed journal roundtrip rejects omitted/null fields that could otherwise normalize under an earlier seal. Execution evidence belongs to the increment closure."
       ],
       "feature_id": "ssfv:symphony:qxctl.scv-administration",
       "how": "Reuses receipt-v2 and version-specific process/result validation; bounds public HTTPS retrieval; retains immutable exact corpus artifacts with no-replace publication and recoverable job intent; separately applies authenticated SSIAG authorization to protected source/graph selection. Preserves exact authored interpretation wrappers and independently checks returned evidence, comparisons and reassessment bindings at the process boundary. Coordinates owner operations with pinned inputs and receipts; replays retained evidence before accepting progress and never substitutes current selections on recovery.",
@@ -766,6 +767,7 @@
         "tools/qxctl/cmd/qxctl/scv.go",
         "tools/qxctl/cmd/qxctl/scv_acquire.go",
         "tools/qxctl/cmd/qxctl/scv_composition.go",
+        "tools/qxctl/cmd/qxctl/scv_composition_workflow.go",
         "tools/qxctl/cmd/qxctl/scv_corpus.go",
         "tools/qxctl/cmd/qxctl/scv_graph.go",
         "tools/qxctl/cmd/qxctl/scv_interface.go",
@@ -787,6 +789,8 @@
         "tools/qxctl/internal/scvstate/storage_unix.go",
         "tools/qxctl/internal/scvstate/store.go",
         "tools/qxctl/internal/scvtransport/https.go",
+        "tools/qxctl/internal/scvworkflow/composition.go",
+        "tools/qxctl/internal/scvworkflow/composition_storage_unix.go",
         "tools/qxctl/internal/scvworkflow/filesystem_unix.go",
         "tools/qxctl/internal/scvworkflow/storage_unix.go",
         "tools/qxctl/internal/scvworkflow/store.go"
@@ -800,7 +804,7 @@
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",
-      "record_version": 5,
+      "record_version": 6,
       "relationships": [
         {
           "rationale": "C++ owns provider source and knowledge semantics; qxctl owns the administrative adapter.",
@@ -816,7 +820,7 @@
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "SCV source and knowledge administration",
-      "what": "Administers selected SCV family/provider source, capture, corpus, interpretation and graph operations through exact installed C++ engines; retains immutable corpus evidence separately from permission-backed source and graph selections. Invokes reusable profile interpretation, scoped connection checks and retained-result reassessment without selecting a graph head or claiming live provider compatibility. Provides exact installed schemas and profile preparation, structured SCV failures, immutable native artifact provenance and recoverable interpretation/evaluation runs; metadata corpus query is independent of capture export. Native provider coverage accounts separately for declared inventory, exact selected corpus evidence and independently replayed profile bindings, preserving unlisted, unselected, partial and stale gaps. Invokes portable provider-pack preparation/evaluation and finite caller-selected composition exploration/reassessment, retains their exact artifacts, and exposes the receipt-owned versioned owner interface. Generated release/operation metadata reduces repeated interface tables while independent consumers continue to reject forged semantic results.",
+      "what": "Administers selected SCV family/provider source, capture, corpus, interpretation and graph operations through exact installed C++ engines; retains immutable corpus evidence separately from permission-backed source and graph selections. Invokes reusable profile interpretation, scoped connection checks and retained-result reassessment without selecting a graph head or claiming live provider compatibility. Provides exact installed schemas and profile preparation, structured SCV failures, immutable native artifact provenance and recoverable interpretation/evaluation runs; metadata corpus query is independent of capture export. Native provider coverage accounts separately for declared inventory, exact selected corpus evidence and independently replayed profile bindings, preserving unlisted, unselected, partial and stale gaps. Invokes portable provider-pack preparation/evaluation and finite caller-selected composition exploration/reassessment, retains their exact artifacts, and exposes the receipt-owned versioned owner interface. Generated release/operation metadata reduces repeated interface tables while independent consumers continue to reject forged semantic results. Exact .7 composition workflows checkpoint original-owner package evaluations, finite exploration and optional reassessment while retaining the caller request, root/TOPS and immutable provenance records. Observational status verifies sealed linkage without native replay.",
       "when": "Runs on explicit cold/freezing administrative invocation, including exact operation recovery.",
       "where": "Supported local macOS/Linux user-scoped TOPS evidence stores and separately protected source/graph state; pure operations accept an explicitly selected local installation.",
       "who": "Human or agentic callers using ordinary local filesystem permissions for evidence operations; protected source/graph selection additionally requires the same authenticated SSIAG permission contract.",
