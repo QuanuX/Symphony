@@ -8731,3 +8731,195 @@ This PR authorizes none of the following:
   - `Automatic source/graph selection, latest-version substitution, new SSIAG/STAV authority, canonical apply, publication, source instruction execution or rewriting historical records.`
 - notes: |
     The post_merge disposition denotes ordinary local-Git completion and asserts no remote merge. Start time is the first recorded branch/work timestamp, not an asserted exact user-message timestamp. The append-only closure follows the completed implementation commit and requires no recursive record of itself. Evidence paths beginning ../ or ../../ are relative to the isolated repository root; subsequent short filenames share the cited evidence directory. Workflow records use bounded private immutable storage, explicit continuation and bounded locks. Artifact list and workflow status report limited integrity/progress validation; semantic use requires original-owner replay. Real process acceptance establishes recovery after durable intent; tests separately cover stage-boundary recovery. Runtime verification here is Darwin x86_64.
+
+---
+
+- record_id: `SCLV-CHG-20260911-SCV-PROVIDER-COVERAGE`
+- record_version: `3`
+- title: `Maintained SCV provider coverage and source evidence through qxctl`
+- status: `canonical`
+- date: `2026-09-11`
+- change_started_at: `2026-09-11T08:15:37Z`
+- change_completed_at: `2026-09-11T08:44:34Z`
+- recorded_at: `2026-09-11T08:46:09Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `The authorized continuation completed as a local Git commit in the isolated checkout; no forge change request was created.`
+- revision_scheme: `git-sha1`
+- revision_value: `b09ee2623ac4236c4fd355502095f626c50722de`
+- tree_digest: `sha256:0bc4bf4019f86d9894cab191f5e9659b41381cfef7d8904247b336fe81777ea5`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for the SCV maintained provider coverage increment`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-11-scv-provider-coverage-increment.md`
+- ratification_evidence_digest: `sha256:7fb719d62fc3958cf5215c6c9f5b4d73e26d825629811ad6de3f882d6ed256d1`
+- affected_surfaces:
+  - `README.md`
+  - `cmake/SymphonyScvEngine.cmake`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/INVARIANTS.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/scv/AGENT-WORKFLOWS.md`
+  - `knowledge/scv/CORPUS.md`
+  - `knowledge/scv/COVERAGE.md`
+  - `knowledge/scv/INTENT.md`
+  - `knowledge/scv/MANIFEST.md`
+  - `knowledge/scv/SKILL.md`
+  - `knowledge/scv/SPEC.md`
+  - `knowledge/scv/scev/MANIFEST.md`
+  - `knowledge/scv/scev/SPEC.md`
+  - `knowledge/scv/scev/cf/MANIFEST.md`
+  - `knowledge/scv/scev/cf/SPEC.md`
+  - `knowledge/scv/schemas/v1/MANIFEST.md`
+  - `knowledge/scv/schemas/v1/provider-coverage.schema.json`
+  - `knowledge/scv/schemas/v1/qxctl-error.schema.json`
+  - `knowledge/scv/schemas/v1/schema-catalog.json`
+  - `knowledge/scv/schemas/v1/schema-discovery.schema.json`
+  - `knowledge/scv/schemas/v1/scv-artifact.schema.json`
+  - `knowledge/scv/schv/MANIFEST.md`
+  - `knowledge/scv/schv/SPEC.md`
+  - `knowledge/scv/schv/aws/MANIFEST.md`
+  - `knowledge/scv/schv/aws/SPEC.md`
+  - `knowledge/scv/schv/azure/MANIFEST.md`
+  - `knowledge/scv/schv/azure/SPEC.md`
+  - `knowledge/scv/schv/do/MANIFEST.md`
+  - `knowledge/scv/schv/do/SPEC.md`
+  - `knowledge/scv/schv/gcp/MANIFEST.md`
+  - `knowledge/scv/schv/gcp/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/scev-cf-engine/CMakeLists.txt`
+  - `modules/scev-cf-engine/FEATURES.md`
+  - `modules/scev-cf-engine/INSTALL.md`
+  - `modules/scev-cf-engine/INTENT.md`
+  - `modules/scev-cf-engine/MANIFEST.md`
+  - `modules/scev-cf-engine/SKILL.md`
+  - `modules/scev-cf-engine/SPEC.md`
+  - `modules/scev-engine/CMakeLists.txt`
+  - `modules/scev-engine/FEATURES.md`
+  - `modules/scev-engine/INSTALL.md`
+  - `modules/scev-engine/INTENT.md`
+  - `modules/scev-engine/MANIFEST.md`
+  - `modules/scev-engine/SKILL.md`
+  - `modules/scev-engine/SPEC.md`
+  - `modules/schv-aws-engine/CMakeLists.txt`
+  - `modules/schv-aws-engine/FEATURES.md`
+  - `modules/schv-aws-engine/INSTALL.md`
+  - `modules/schv-aws-engine/INTENT.md`
+  - `modules/schv-aws-engine/MANIFEST.md`
+  - `modules/schv-aws-engine/SKILL.md`
+  - `modules/schv-aws-engine/SPEC.md`
+  - `modules/schv-azure-engine/CMakeLists.txt`
+  - `modules/schv-azure-engine/FEATURES.md`
+  - `modules/schv-azure-engine/INSTALL.md`
+  - `modules/schv-azure-engine/INTENT.md`
+  - `modules/schv-azure-engine/MANIFEST.md`
+  - `modules/schv-azure-engine/SKILL.md`
+  - `modules/schv-azure-engine/SPEC.md`
+  - `modules/schv-do-engine/CMakeLists.txt`
+  - `modules/schv-do-engine/FEATURES.md`
+  - `modules/schv-do-engine/INSTALL.md`
+  - `modules/schv-do-engine/INTENT.md`
+  - `modules/schv-do-engine/MANIFEST.md`
+  - `modules/schv-do-engine/SKILL.md`
+  - `modules/schv-do-engine/SPEC.md`
+  - `modules/schv-engine/CMakeLists.txt`
+  - `modules/schv-engine/FEATURES.md`
+  - `modules/schv-engine/INSTALL.md`
+  - `modules/schv-engine/INTENT.md`
+  - `modules/schv-engine/MANIFEST.md`
+  - `modules/schv-engine/SKILL.md`
+  - `modules/schv-engine/SPEC.md`
+  - `modules/schv-gcp-engine/CMakeLists.txt`
+  - `modules/schv-gcp-engine/FEATURES.md`
+  - `modules/schv-gcp-engine/INSTALL.md`
+  - `modules/schv-gcp-engine/INTENT.md`
+  - `modules/schv-gcp-engine/MANIFEST.md`
+  - `modules/schv-gcp-engine/SKILL.md`
+  - `modules/schv-gcp-engine/SPEC.md`
+  - `modules/scv-engine/CMakeLists.txt`
+  - `modules/scv-engine/FEATURES.md`
+  - `modules/scv-engine/INSTALL.md`
+  - `modules/scv-engine/INTENT.md`
+  - `modules/scv-engine/MANIFEST.md`
+  - `modules/scv-engine/SKILL.md`
+  - `modules/scv-engine/SPEC.md`
+  - `modules/scv-engine/cmake/uninstall.cmake.in`
+  - `modules/scv-engine/src/coverage.cpp`
+  - `modules/scv-engine/src/coverage.hpp`
+  - `modules/scv-engine/src/dispatch.cpp`
+  - `modules/scv-engine/tests/coverage_test.cpp`
+  - `modules/scv-engine/tests/installed_integration.py`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_errors.go`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/scv_corpus.go`
+  - `tools/qxctl/cmd/qxctl/scv_coverage.go`
+  - `tools/qxctl/cmd/qxctl/scv_coverage_test.go`
+  - `tools/qxctl/cmd/qxctl/scv_interpretation.go`
+  - `tools/qxctl/cmd/qxctl/scv_workflow.go`
+  - `tools/qxctl/cmd/qxctl/ssiag_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_coverage.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_coverage_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_schema.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_schema_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_test.go`
+  - `tools/qxctl/internal/scvworkflow/store.go`
+  - `tools/qxctl/internal/ssiagclient/client_test.go`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/scv/COVERAGE.md`
+  - `knowledge/scv/schemas/v1/provider-coverage.schema.json`
+  - `knowledge/scv/schemas/v1/schema-catalog.json`
+  - `knowledge/scv/schemas/v1/schema-discovery.schema.json`
+  - `knowledge/scv/schemas/v1/scv-artifact.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/scv-engine/SPEC.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+- change_summary: |
+    Adds native provider_coverage and first-class qxctl discovery, execution and optional artifact retention. The C++ owner accounts for declared source inventory, exact corpus selection, replayed capture bodies and authored interpretation attempts. Missing evidence remains explicit; successful extraction does not become provider-wide completeness or runtime compatibility.
+- relationship_changes: |
+    Coverage regenerates the provider candidate, recomputes the native corpus query and independently replays each interpretation with its own policy. Source declaration comparison requires supplied replayed capture fields. Parent coverage may consume contained subordinate corpora without changing their domain. Retained provider and coverage artifacts bind original receipt-owned installation provenance and require exact 0.5.0-dev.
+- doctrine_changes: |
+    Applies existing VGAA, quantOS and caller-authority direction. Coverage is a query, not a provider ranking or topology choice. Matched rule counts describe authored extraction attempts, not independent corroboration or semantic truth. Architecture recommendations remain guidance; conflicting source statements remain unresolved without a caller-supplied applicable resolution. No new universal user policy or provider exclusion is introduced.
+- compatibility_consequences: |
+    All eight exact 0.5.0-dev packages expose twenty-two operations. Earlier 0.1.0-dev, 0.2.0-dev, 0.3.0-dev and 0.4.0-dev installations remain immutable with thirteen, seventeen, twenty and twenty-one operations. Earlier command defaults and twelve original schema bytes remain preserved. New coverage and retained artifact kinds require explicit .5 support. Each .5 package contains twenty schema documents covering seventy-four protocols and five contract companions, all discoverable through qxctl. SSIAG production behavior is unchanged; test-only fixtures now reach their intended authenticated status and peer checks.
+- publication_consequences: |
+    Local implementation commit b09ee2623ac4236c4fd355502095f626c50722de on codex/scv-provider-coverage descends from 2caec373b54a53ee19e528368629c54f28a02044. No remote merge, push, tag, release, provider deployment, credential installation or archive modification occurred. Final development packages are in ../installed/scv-0.5.0-dev-verified; earlier .5 staging prefixes remain separate and immutable.
+- projection_consequences: |
+    Updated owner manifests, SKVI, SSFV, feature administration and invariant routing preserve existing semantic ownership. Registry counts are 239 qxctl leaves including 41 SCV leaves, 100 features, 252 administration expectations, twenty-one incremental invariant records and eleven adapters. The root snapshot digest is sha256:2d958c40f56afd7db4623fa8bbff8fe6720a2af61180576121f08ad28c760988. A candidate inventory does not select a source, corpus or graph head.
+- evidence:
+  - `Source commit b09ee2623ac4236c4fd355502095f626c50722de completed 2026-09-11T08:44:34Z; 123 files changed, 3029 insertions and 156 deletions. The tree digest binds the exact recursive NUL-delimited Git listing. ../increment-5/evidence/BUILD_IDENTITY.json records source, executable, installation and authorization identities.`
+  - `../increment-5/evidence/cpp-aggregate-ctest.log records thirteen passing CTests; cpp-coverage-unit-ctest.log records seventeen new native coverage cases; cpp-standalone-cf-ctest.log records one independently configured Cloudflare package CTest. validator-ctest-staging-after-summary.log records eight validator tests passing.`
+  - `../increment-5/evidence/go-full-final-result.json and go-full-final.log record all twenty-one test-bearing packages passing with all SCV installed acceptance selectors enabled, 660 passing test/subtest events and zero failures. Only unrelated installed Named Version acceptance is skipped because its separate prerequisites are unset; internal/version has no tests. Previously masked Unix-socket fixture assertions now execute and pass.`
+  - `../increment-5/evidence/INSTALLED_PACKAGES.json verifies forty exact installations, all thirty-two prior package binaries/receipts/owned-file hashes and four prior CLI binaries unchanged. Final qxctl-inc5 SHA-256 is dc89ba7dc4ee46dd838d7c973cad3e5564eea9865c1edae6b08e5ad82a7bccef. All eight .5 packages expose twenty schemas, seventy-four protocols and five companions through list/show/template without a checkout.`
+  - `../increment-5/evidence/canonical-before-closure.json records 10198 passes, zero warnings and zero violations; result sha256:b2d43ae9497139bdb1c3a57ad13a9fbce27892952f256bfa16b524a945d29d1d. SCHEMA_REVIEW_FINAL.json separately validates all sixty-one final stdout documents, all twenty schema documents and seventy-four protocol references; all twenty-seven authored rule anchors match retained captures. Final installed schema/catalog/companion bytes match source and receipt hashes.`
+  - `../increment-5/evidence/coverage-verified/SUMMARY.json and COMMANDS.json record sixty-one qxctl invocations over eleven current public captures: ten complete and one explicitly partial, totaling 183801 bytes. Seventy declared reference entries include fifty-nine without selected captures. Twenty-seven matched rule attempts do not imply provider-wide expertise; two Azure API findings remain conditional and the DigitalOcean source conflict remains disputed.`
+  - `../increment-5/evidence/source-acquisition/SUMMARY.json and azure-architecture/SUMMARY.json record actual public acquisition via exact prior .4 packages. Final .5 acceptance imports those exact bytes without network; it separately verifies metadata-only evidence, independent policies, time-only expiry and a labeled hypothetical failed refresh preserving last-complete evidence. Empty connection requirements establish no deployed compatibility.`
+- non_authorizations:
+  - `Complete provider knowledge, publisher authority, semantic or empirical truth inferred from extraction, or a working cross-provider deployment.`
+  - `Provider accounts, credentials, automatic network refresh, workload deployment, model invocation, topology selection or general alternative synthesis.`
+  - `Automatic source/graph selection, latest-version substitution, new SSIAG/STAV authority, canonical apply, publication, execution of provider skills, rewriting historical records or naming a DIY family.`
+- notes: |
+    The post_merge disposition denotes ordinary local-Git completion and asserts no remote merge. Start time is the recorded branch/work timestamp. The append-only closure follows the implementation commit and does not recursively record itself. Evidence paths beginning ../ or ../../ are relative to the isolated repository root; subsequent filenames share the cited evidence directory. coverage-verified and scv-0.5.0-dev-verified identify final acceptance; coverage-final is an earlier staging directory despite its name. Source findings and acquisition gaps are documented separately in ../increment-5/SOURCE_FINDINGS.md. Runtime execution evidence is Darwin x86_64.
