@@ -8515,3 +8515,219 @@ This PR authorizes none of the following:
   - `Automatic graph selection, a corpus latest alias, new SSIAG/STAV authority, publication, package-version substitution, source instruction execution or historical ledger rewrite.`
 - notes: |
     The post_merge disposition records ordinary local-Git completion and asserts no remote merge. The start is the first recorded work-clock observation, not an asserted exact client-message or task-creation time. UTC closure dates differ from the September 10 local ratification date. This append-only closure is separate from the completed source tree and needs no recursive record of itself. Evidence paths beginning ../ or ../../ are relative to the isolated repository root; subsequent short evidence filenames share the cited evidence directory. Existing process, capture, graph and JSON limits remain independent of profile/check counts. Current-time evidence and explicit live requirements remain necessary for any later deployment; a synthetic changed-source fixture is not a report of an actual provider change.
+
+---
+
+- record_id: `SCLV-CHG-20260911-SCV-AGENT-WORKFLOWS`
+- record_version: `3`
+- title: `SCV agent operating workflows and recovery completed through qxctl`
+- status: `canonical`
+- date: `2026-09-11`
+- change_started_at: `2026-09-11T07:00:51Z`
+- change_completed_at: `2026-09-11T07:34:05Z`
+- recorded_at: `2026-09-11T07:35:51Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `The ratified increment completed as a local Git commit in the isolated checkout; no forge change request was created.`
+- revision_scheme: `git-sha1`
+- revision_value: `20aa6e471ba43ffaeed50ddb361b5899a05996fd`
+- tree_digest: `sha256:8c907328ebe1d01b4069144c6b60b5b4a876005ed83a8a90b3adc0d001320c17`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for the SCV agent operating workflow increment`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-11-scv-agent-workflow-increment.md`
+- ratification_evidence_digest: `sha256:ad41ffee0f3695c01d5e42d059b4259caa9fbce2b8e7b0be46f9888d04eb3f79`
+- affected_surfaces:
+  - `README.md`
+  - `cmake/SymphonyScvEngine.cmake`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/FEATURE-ADMINISTRATION.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/INVARIANTS.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/scv/AGENT-WORKFLOWS.md`
+  - `knowledge/scv/CORPUS.md`
+  - `knowledge/scv/INTENT.md`
+  - `knowledge/scv/MANIFEST.md`
+  - `knowledge/scv/SKILL.md`
+  - `knowledge/scv/SPEC.md`
+  - `knowledge/scv/scev/MANIFEST.md`
+  - `knowledge/scv/scev/SPEC.md`
+  - `knowledge/scv/scev/cf/MANIFEST.md`
+  - `knowledge/scv/scev/cf/SPEC.md`
+  - `knowledge/scv/schemas/v1/MANIFEST.md`
+  - `knowledge/scv/schemas/v1/administration.schema.json`
+  - `knowledge/scv/schemas/v1/engine-descriptor-v2.schema.json`
+  - `knowledge/scv/schemas/v1/profile-preparation.schema.json`
+  - `knowledge/scv/schemas/v1/qxctl-error.schema.json`
+  - `knowledge/scv/schemas/v1/schema-catalog.json`
+  - `knowledge/scv/schemas/v1/schema-discovery.schema.json`
+  - `knowledge/scv/schemas/v1/scv-artifact.schema.json`
+  - `knowledge/scv/schemas/v1/scv-workflow.schema.json`
+  - `knowledge/scv/schv/MANIFEST.md`
+  - `knowledge/scv/schv/SPEC.md`
+  - `knowledge/scv/schv/aws/MANIFEST.md`
+  - `knowledge/scv/schv/aws/SPEC.md`
+  - `knowledge/scv/schv/azure/MANIFEST.md`
+  - `knowledge/scv/schv/azure/SPEC.md`
+  - `knowledge/scv/schv/do/MANIFEST.md`
+  - `knowledge/scv/schv/do/SPEC.md`
+  - `knowledge/scv/schv/gcp/MANIFEST.md`
+  - `knowledge/scv/schv/gcp/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/scev-cf-engine/CMakeLists.txt`
+  - `modules/scev-cf-engine/FEATURES.md`
+  - `modules/scev-cf-engine/INSTALL.md`
+  - `modules/scev-cf-engine/INTENT.md`
+  - `modules/scev-cf-engine/MANIFEST.md`
+  - `modules/scev-cf-engine/SKILL.md`
+  - `modules/scev-cf-engine/SPEC.md`
+  - `modules/scev-engine/CMakeLists.txt`
+  - `modules/scev-engine/FEATURES.md`
+  - `modules/scev-engine/INSTALL.md`
+  - `modules/scev-engine/INTENT.md`
+  - `modules/scev-engine/MANIFEST.md`
+  - `modules/scev-engine/SKILL.md`
+  - `modules/scev-engine/SPEC.md`
+  - `modules/schv-aws-engine/CMakeLists.txt`
+  - `modules/schv-aws-engine/FEATURES.md`
+  - `modules/schv-aws-engine/INSTALL.md`
+  - `modules/schv-aws-engine/INTENT.md`
+  - `modules/schv-aws-engine/MANIFEST.md`
+  - `modules/schv-aws-engine/SKILL.md`
+  - `modules/schv-aws-engine/SPEC.md`
+  - `modules/schv-azure-engine/CMakeLists.txt`
+  - `modules/schv-azure-engine/FEATURES.md`
+  - `modules/schv-azure-engine/INSTALL.md`
+  - `modules/schv-azure-engine/INTENT.md`
+  - `modules/schv-azure-engine/MANIFEST.md`
+  - `modules/schv-azure-engine/SKILL.md`
+  - `modules/schv-azure-engine/SPEC.md`
+  - `modules/schv-do-engine/CMakeLists.txt`
+  - `modules/schv-do-engine/FEATURES.md`
+  - `modules/schv-do-engine/INSTALL.md`
+  - `modules/schv-do-engine/INTENT.md`
+  - `modules/schv-do-engine/MANIFEST.md`
+  - `modules/schv-do-engine/SKILL.md`
+  - `modules/schv-do-engine/SPEC.md`
+  - `modules/schv-engine/CMakeLists.txt`
+  - `modules/schv-engine/FEATURES.md`
+  - `modules/schv-engine/INSTALL.md`
+  - `modules/schv-engine/INTENT.md`
+  - `modules/schv-engine/MANIFEST.md`
+  - `modules/schv-engine/SKILL.md`
+  - `modules/schv-engine/SPEC.md`
+  - `modules/schv-gcp-engine/CMakeLists.txt`
+  - `modules/schv-gcp-engine/FEATURES.md`
+  - `modules/schv-gcp-engine/INSTALL.md`
+  - `modules/schv-gcp-engine/INTENT.md`
+  - `modules/schv-gcp-engine/MANIFEST.md`
+  - `modules/schv-gcp-engine/SKILL.md`
+  - `modules/schv-gcp-engine/SPEC.md`
+  - `modules/scv-engine/CMakeLists.txt`
+  - `modules/scv-engine/FEATURES.md`
+  - `modules/scv-engine/INSTALL.md`
+  - `modules/scv-engine/INTENT.md`
+  - `modules/scv-engine/MANIFEST.md`
+  - `modules/scv-engine/SKILL.md`
+  - `modules/scv-engine/SPEC.md`
+  - `modules/scv-engine/cmake/uninstall.cmake.in`
+  - `modules/scv-engine/src/dispatch.cpp`
+  - `modules/scv-engine/src/interpretation.cpp`
+  - `modules/scv-engine/src/interpretation.hpp`
+  - `modules/scv-engine/tests/installed_integration.py`
+  - `modules/scv-engine/tests/interpretation_test.cpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/ERRORS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/SKILL.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/cli_errors.go`
+  - `tools/qxctl/cmd/qxctl/cli_errors_test.go`
+  - `tools/qxctl/cmd/qxctl/cli_help.go`
+  - `tools/qxctl/cmd/qxctl/cli_help_test.go`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/main.go`
+  - `tools/qxctl/cmd/qxctl/scv.go`
+  - `tools/qxctl/cmd/qxctl/scv_corpus.go`
+  - `tools/qxctl/cmd/qxctl/scv_profile.go`
+  - `tools/qxctl/cmd/qxctl/scv_schema.go`
+  - `tools/qxctl/cmd/qxctl/scv_schema_test.go`
+  - `tools/qxctl/cmd/qxctl/scv_workflow.go`
+  - `tools/qxctl/cmd/qxctl/scv_workflow_test.go`
+  - `tools/qxctl/cmd/qxctl/testdata/README.md`
+  - `tools/qxctl/internal/knowledgeengine/scv.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_profile.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_profile_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_schema.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_schema_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_test.go`
+  - `tools/qxctl/internal/scvworkflow/filesystem_unix.go`
+  - `tools/qxctl/internal/scvworkflow/rename_darwin.go`
+  - `tools/qxctl/internal/scvworkflow/rename_linux.go`
+  - `tools/qxctl/internal/scvworkflow/storage_unix.go`
+  - `tools/qxctl/internal/scvworkflow/store.go`
+  - `tools/qxctl/internal/scvworkflow/store_test.go`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/scv/AGENT-WORKFLOWS.md`
+  - `knowledge/scv/CORPUS.md`
+  - `knowledge/scv/INTERPRETATION.md`
+  - `knowledge/scv/SOURCE-KNOWLEDGE.md`
+  - `knowledge/scv/schemas/v1/administration.schema.json`
+  - `knowledge/scv/schemas/v1/engine-descriptor-v2.schema.json`
+  - `knowledge/scv/schemas/v1/profile-preparation.schema.json`
+  - `knowledge/scv/schemas/v1/qxctl-error.schema.json`
+  - `knowledge/scv/schemas/v1/schema-catalog.json`
+  - `knowledge/scv/schemas/v1/schema-discovery.schema.json`
+  - `knowledge/scv/schemas/v1/scv-artifact.schema.json`
+  - `knowledge/scv/schemas/v1/scv-workflow.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/scv-engine/SPEC.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/ERRORS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+- change_summary: |
+    Completes the bounded SCV qxctl audit callouts: structured JSON failures, command-tree help, exact installed schema discovery/templates, native authored-profile preparation, immutable artifact provenance records, retained workflow run/status/recover, and metadata-only corpus queries. C++ remains the interpretation, knowledge, graph and connection semantic owner; qxctl coordinates the declared local evidence lifecycle. This is an implemented development interface with bounded acceptance evidence.
+- relationship_changes: |
+    Artifacts bind native content to exact validating inputs, operation and receipt-owned installation through separate record digests. Independently installed provider results retain their original owner when composed by SCV. Workflows pin caller intent, corpus snapshot, profiles, evidence, requirements, policies and time before stage progress. Status verifies mechanical request/checkpoint linkage without invoking engines; execution, recovery and artifact show replay the original owner. Existing protected source and graph selection remain separate SSIAG/STAV-governed circuits.
+- doctrine_changes: |
+    Applies agentic-first, humans-welcome administration and existing user authority without new universal composition restrictions. Native profile preparation seals and validates an authored mapping; it does not certify provider facts. Templates expose required decisions. Reference-only runs retain selected evidence policies and reject an unused replacement policy. Recovery cannot silently substitute current time, new network content, an engine version or user intent. Direct owner operations remain available alongside optional retained workflows.
+- compatibility_consequences: |
+    All eight exact 0.4.0-dev packages expose twenty-one operations, including pure profile_prepare classified as propose. Earlier 0.1.0-dev, 0.2.0-dev and 0.3.0-dev installations remain immutable with thirteen, seventeen and twenty operations. Existing command defaults and native success protocols remain stable. New schema discovery/preparation/workflow execution selects exact 0.4.0-dev by default. Each new package adds receipt-owned schema/catalog and contract companions; twelve previous SCV schema documents remain byte-identical. Artifact/workflow layouts and new administration/error results are explicitly versioned. Observation leaves accept only applicable state-selection flags. The local adapter targets Darwin/Linux, with this run tested on Darwin.
+- publication_consequences: |
+    Local implementation commit 20aa6e471ba43ffaeed50ddb361b5899a05996fd on codex/scv-agent-workflows descends from 697b513f2770544f9bab6c4122e1b39d3c21e48f. No remote merge, push, tag, release, provider deployment, credential installation or archive modification occurred. Exact local packages and replay evidence are development verification artifacts. Final packages are in ../installed/scv-0.4.0-dev; the earlier scv-inc4-agent staging prefix remains separate.
+- projection_consequences: |
+    Updated owner manifests, SKVI, SSFV, administration and invariant routing bind the interface to existing semantic owners. The qxctl registry contains 238 leaves including 40 SCV leaves; all eleven new leaves are additive. Counts are 100 features, 252 administration expectations, twenty incremental invariant records and eleven adapters. The root summary digest is sha256:0dafbf553df3dc50a32c0bbe79575fc903bfa41653bd52bd40054ce078b0b8a7. Registry/catalog checks do not claim complete legacy feature review or complete provider knowledge. No result implicitly selects a source, corpus or graph head.
+- evidence:
+  - `Source commit 20aa6e471ba43ffaeed50ddb361b5899a05996fd completed 2026-09-11T07:34:05Z; 139 files changed, 10319 insertions and 654 deletions. The tree digest binds exact recursive NUL-delimited Git tree listing bytes. ../increment-4/evidence/BUILD_IDENTITY.json records the source, executable and installation identities.`
+  - `../increment-4/evidence/ctest-aggregate.log records twelve passing aggregate CTests including all eight installed package processes. standalone-ctest.log records one independently built Cloudflare package test passing. validator-ctest.log records all eight validator CTests passing.`
+  - `../increment-4/evidence/go-full-final.log records twenty passing internal Go packages; internal/version has no tests. Three existing CLI authorization cases were blocked only by sandbox Unix-socket binding. The entire CLI package was rerun with that access and passed in 58.114 seconds, recorded in go-cli-final-socket-permitted.log. All twenty-one packages containing tests are covered; the CLI rerun used no test-name filter, and existing optional-environment prerequisites remain applicable.`
+  - `../increment-4/evidence/INSTALLED_PACKAGES.json records thirty-two exact installations with descriptor/receipt/owned-file hash verification and preservation of earlier binaries and receipts. The final qxctl-inc4 SHA-256 is ad9d05bd806c450802293cf17a0e12a7b49c01c83fe719f56ab240cafbfaa667. It was built before commit and retains base-plus-modified Go VCS metadata; no later executable source change occurred.`
+  - `../increment-4/evidence/canonical-before-closure.json records 10127 passes, zero warnings and zero violations; result digest sha256:bdcef4cf79f9569b3c213ef83a778747cd42eddd4f252290b3a38a5d67521c3c. The final source check follows the documentation/registry cleanup. Nineteen packaged schema documents cover seventy-two exact protocol identifiers.`
+  - `../increment-4/evidence/workflow-final/SUMMARY.json and COMMANDS.json record twenty-six qxctl invocations using five retained Cloudflare/GCP captures and native-prepared profiles. The supervisor killed the actual workflow process after durable intent, observed partial status and recovered an identical evaluation without checkpoint edits. Native checkpoint substitution, every durable boundary, corrupt payload, collision and original-owner composition are additionally covered by installed/unit regressions.`
+  - `The retained-document example preserves fourteen satisfied, nine unresolved and one conditional check. The separately labeled hypothetical UDP-port change yields thirteen satisfied, nine unresolved, one conditional and one contradicted check; captures is the only changed input axis. No fresh network verification occurred; runtime, identity and payload uncertainty remains explicit.`
+- non_authorizations:
+  - `Complete provider expertise, semantic or empirical truth inferred from extraction, deployed network compatibility or a general Composer.`
+  - `Provider accounts, credentials, deployment, model invocation, automatic remediation, topology selection or universal policy inferred from caller examples or completed workflows.`
+  - `Automatic source/graph selection, latest-version substitution, new SSIAG/STAV authority, canonical apply, publication, source instruction execution or rewriting historical records.`
+- notes: |
+    The post_merge disposition denotes ordinary local-Git completion and asserts no remote merge. Start time is the first recorded branch/work timestamp, not an asserted exact user-message timestamp. The append-only closure follows the completed implementation commit and requires no recursive record of itself. Evidence paths beginning ../ or ../../ are relative to the isolated repository root; subsequent short filenames share the cited evidence directory. Workflow records use bounded private immutable storage, explicit continuation and bounded locks. Artifact list and workflow status report limited integrity/progress validation; semantic use requires original-owner replay. Real process acceptance establishes recovery after durable intent; tests separately cover stage-boundary recovery. Runtime verification here is Darwin x86_64.
