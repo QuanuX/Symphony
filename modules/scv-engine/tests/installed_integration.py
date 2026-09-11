@@ -79,10 +79,10 @@ class InstalledProcessTests(unittest.TestCase):
         self.assertEqual(response['request_id'], 'fixture-request')
         self.assertEqual(response['result']['engine_version'], ARGS.version)
         self.assertFalse(response['result']['canonical_apply_enabled'])
-        self.assertEqual(len(response['result']['operations']), {'0.1.0-dev': 13, '0.2.0-dev': 17, '0.3.0-dev': 20, '0.4.0-dev': 21, '0.5.0-dev': 22}[ARGS.version])
+        self.assertEqual(len(response['result']['operations']), {'0.1.0-dev': 13, '0.2.0-dev': 17, '0.3.0-dev': 20, '0.4.0-dev': 21, '0.5.0-dev': 22, '0.6.0-dev':26}[ARGS.version])
 
     def test_profile_preparation_and_packaged_discovery_evidence(self):
-        if ARGS.version not in ('0.4.0-dev', '0.5.0-dev'):
+        if ARGS.version not in ('0.4.0-dev', '0.5.0-dev', '0.6.0-dev'):
             self.skipTest('profile preparation is an exact .4 addition')
         draft = {'protocol': 'symphony.scv.interpretation-profile.v1', 'profile_id': 'fixture-profile',
                  'profile_version': 'test-1', 'provider_id': self.provider, 'source_id': 'fixture-docs',
@@ -101,6 +101,89 @@ class InstalledProcessTests(unittest.TestCase):
         catalog = json.loads(raw)
         self.assertEqual(catalog['engine_version'], ARGS.version)
         self.assertTrue(any(e['protocol'] == 'symphony.scv.profile-prepare-input.v1' for e in catalog['entries']))
+
+    def portable_pack(self):
+        desired = self.desired()
+        desired['locators'][0]['format'] = 'json'
+        source = self.owner('source_plan', {'operation_id': 'pack-source', 'current': None,
+            'desired': desired, 'reason': 'Synthetic independently authored package fixture'})['source']
+        capture = self.owner('capture_import', {'source': source, 'locator_id': 'docs',
+            'resolved_uri': desired['locators'][0]['uri'], 'redirects': [], 'observed_at': '2026-09-10T12:00:00Z',
+            'upstream_revision': None, 'media_type': 'application/json',
+            'body': '{"plan":"fixture","default":3,"maximum":10}', 'completeness': 'complete', 'issues': []})
+        value = {'type': 'integer', 'value': 10, 'unit': 'units'}
+        expected = {'claim_id': 'maximum', 'subject': 'fixture-service', 'predicate': 'maximum',
+            'scope': {'plan': 'fixture'}, 'statement_kind': 'documented_fact', 'dependencies': [], 'value': value}
+        rule = {k: v for k, v in expected.items() if k != 'value'}
+        rule.update(rule_id='max-rule', context=[{'pointer': '/plan', 'value': {'type': 'string', 'value': 'fixture', 'unit': None}}],
+            extractor={'kind': 'json_pointer', 'pointer': '/maximum', 'type': 'integer', 'unit': 'units'})
+        profile = {'protocol': 'symphony.scv.structured-profile.v1', 'profile_id': 'max-profile', 'profile_version': 'fixture-1',
+            'provider_id': self.provider, 'source_id': 'fixture-docs', 'locator_id': 'docs', 'media_types': ['application/json'],
+            'authored_by': 'Mapping fixture author', 'rationale': 'Map maximum separately from default', 'rules': [rule]}
+        policy = {'policy_id': 'pack-fixture', 'max_age_seconds': 60, 'partial_capture': 'exclude', 'allowed_statement_kinds': ['documented_fact']}
+        fixture = {'fixture_id': 'maximum-not-default', 'captures': [capture],
+            'bindings': [{'profile_id': 'max-profile', 'capture_digest': capture['digest']}], 'selection_policy': policy}
+        draft = {'protocol': 'symphony.scv.provider-pack.v1', 'pack_id': 'installed-fixture', 'pack_version': 'fixture-1',
+            'authored_by': 'Independent package author', 'provenance': ['Synthetic conformance case, not provider capability'],
+            'provider': {'provider_id': self.provider, 'family_id': self.family, 'display_name': 'Fixture', 'sources': [desired]},
+            'profiles': [], 'structured_profiles': [profile], 'fixtures': [{'fixture_id': fixture['fixture_id'],
+                'label': 'Maximum is 10, default is 3', 'authored_by': 'Independent expectation author',
+                'rationale': 'Expected value authored before extraction; synthetic example', 'input_digest': None,
+                'expected_claims': [expected], 'expected_extractions': [{'profile_id': 'max-profile', 'capture_digest': capture['digest'],
+                    'rule_id': 'max-rule', 'claim_id': 'maximum', 'status': 'matched', 'reasons': []}]}]}
+        pack = self.owner('provider_pack_prepare', {'pack': draft, 'fixtures': [fixture]})
+        request = {'pack': pack, 'captures': [capture], 'bindings': fixture['bindings'], 'selection_policy': policy, 'fixtures': [fixture]}
+        return request, self.owner('provider_pack_evaluate', request)
+
+    def test_provider_pack_process_conformance_and_interface_receipt(self):
+        if ARGS.version != '0.6.0-dev':
+            self.skipTest('portable provider package is an exact .6 addition')
+        request, result = self.portable_pack()
+        self.assertEqual(result['conformance'], {'passed': 1, 'failed': 0, 'not_run': 0})
+        self.assertEqual(result['knowledge']['claims'][0]['value']['value'], 10)
+        request['fixtures'] = []
+        self.assertEqual(self.owner('provider_pack_evaluate', request)['conformance']['not_run'], 1)
+        path = f'share/symphony/contracts/{self.module}/{ARGS.version}/OWNER-INTERFACE.json'
+        owned = {item['path']: item for item in self.receipt['files']}
+        self.assertIn(path, owned)
+        manifest_bytes = (self.prefix / path).read_bytes()
+        self.assertEqual(owned[path]['digest'], 'sha256:' + hashlib.sha256(manifest_bytes).hexdigest())
+        self.assertEqual(len(json.loads(manifest_bytes)['operations']), 26)
+
+    def test_composition_process_preserves_caller_choices_and_change_evidence(self):
+        if ARGS.version != '0.6.0-dev':
+            self.skipTest('bounded composition is an exact .6 addition')
+        _, pack = self.portable_pack()
+        how = {'kind': 'adapter', 'reference': 'fixture.adapter.v1', 'description': 'Verify the caller-selected adapter'}
+        recipe = {'recipe_id': 'first', 'provider_id': self.provider,
+            'bindings': [{'requirement_id': 'capacity', 'claim': {'claim_id': 'maximum', 'subject': 'fixture-service', 'scope': {'plan': 'fixture'}}}],
+            'prerequisites': [], 'requires_interfaces': [], 'supplies_interfaces': [], 'guarantee_changes': [],
+            'implementation': {'status': 'unimplemented', 'reference': None}, 'resolution': how}
+        requirement = {'requirement_id': 'capacity', 'importance': 'required', 'operator': 'gte',
+            'right': {'kind': 'literal', 'value': {'type': 'integer', 'value': 8, 'unit': 'units'}}, 'resolution': how}
+        request = {'interpretations': [], 'additional_knowledge': [], 'provider_packs': [pack],
+            'query_time': '2026-09-10T12:00:01Z', 'requirements': [requirement],
+            'slots': [{'slot_id': 'compute', 'allowed_provider_ids': [self.provider], 'recipes': [recipe]}],
+            'allowed_guarantee_changes': [], 'counterfactuals': [], 'bounds': {'max_candidates': 2}}
+        before = self.owner('composition_explore', request)
+        candidate = before['scenarios'][0]['candidates'][0]
+        self.assertEqual(candidate['status'], 'satisfied')
+        self.assertEqual(candidate['implementation_status'], 'unimplemented')
+        self.assertTrue(candidate['obligations'])
+        request['query_time'] = '2026-09-10T12:02:00Z'
+        after = self.owner('composition_explore', request)
+        self.assertEqual(after['scenarios'][0]['candidates'][0]['status'], 'unresolved')
+        changed = self.owner('composition_reassess', {'before': before, 'after': after})
+        self.assertTrue(changed['change_axes']['query_time'])
+        self.assertFalse(changed['change_axes']['evidence'])
+        after['search']['eligible_combinations'] = 99
+        unsigned = dict(after)
+        unsigned.pop('digest')
+        after['digest'] = digest(unsigned)
+        proc, _ = self.invoke('composition_reassess', {'before': before, 'after': after})
+        self.assertNotEqual(proc.returncode, 0)
+        request['slots'][0]['allowed_provider_ids'] = ['unselected-provider']
+        self.assertEqual(self.owner('composition_explore', request)['search']['stop_reason'], 'no_eligible_recipe')
 
     def test_source_transition_expected_state_and_digest(self):
         current = self.initial()

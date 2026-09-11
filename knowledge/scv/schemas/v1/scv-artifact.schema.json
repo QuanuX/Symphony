@@ -14,13 +14,17 @@
       "properties": {
         "operation": {
           "enum": [
-            "profile_prepare",
+            "provider_onboard",
+            "knowledge_interpret",
             "provider_interpret",
             "connection_evaluate",
             "connection_reassess",
-            "knowledge_interpret",
-            "provider_onboard",
-            "provider_coverage"
+            "profile_prepare",
+            "provider_coverage",
+            "provider_pack_prepare",
+            "provider_pack_evaluate",
+            "composition_explore",
+            "composition_reassess"
           ]
         },
         "input": {
@@ -42,14 +46,14 @@
           "if": {
             "properties": {
               "operation": {
-                "const": "profile_prepare"
+                "const": "provider_onboard"
               }
             }
           },
           "then": {
             "properties": {
               "input": {
-                "$ref": "profile-preparation.schema.json#/$defs/input"
+                "$ref": "source-operation.schema.json#/$defs/provider_onboard"
               },
               "result": {
                 "anyOf": [
@@ -57,7 +61,33 @@
                     "type": "null"
                   },
                   {
-                    "$ref": "interpretation-profile.schema.json"
+                    "$ref": "source-operation.schema.json#/$defs/provider"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "knowledge_interpret"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "interpretation-input.schema.json"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "knowledge-graph.schema.json#/$defs/knowledge"
                   }
                 ]
               }
@@ -146,14 +176,14 @@
           "if": {
             "properties": {
               "operation": {
-                "const": "knowledge_interpret"
+                "const": "profile_prepare"
               }
             }
           },
           "then": {
             "properties": {
               "input": {
-                "$ref": "interpretation-input.schema.json"
+                "$ref": "profile-preparation.schema.json#/$defs/input"
               },
               "result": {
                 "anyOf": [
@@ -161,33 +191,7 @@
                     "type": "null"
                   },
                   {
-                    "$ref": "knowledge-graph.schema.json#/$defs/knowledge"
-                  }
-                ]
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "operation": {
-                "const": "provider_onboard"
-              }
-            }
-          },
-          "then": {
-            "properties": {
-              "input": {
-                "$ref": "source-operation.schema.json#/$defs/provider_onboard"
-              },
-              "result": {
-                "anyOf": [
-                  {
-                    "type": "null"
-                  },
-                  {
-                    "$ref": "source-operation.schema.json#/$defs/provider"
+                    "$ref": "interpretation-profile.schema.json"
                   }
                 ]
               }
@@ -214,6 +218,110 @@
                   },
                   {
                     "$ref": "provider-coverage.schema.json#/$defs/ProviderCoverageResult"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "provider_pack_prepare"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "provider-pack.schema.json#/$defs/PrepareInput"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "provider-pack.schema.json#/$defs/Pack"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "provider_pack_evaluate"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "provider-pack.schema.json#/$defs/EvaluateInput"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "provider-pack.schema.json#/$defs/EvaluateResult"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "composition_explore"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "composition.schema.json#/$defs/ExploreInput"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "composition.schema.json#/$defs/ExploreResult"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "composition_reassess"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "composition.schema.json#/$defs/ReassessInput"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "composition.schema.json#/$defs/ReassessResult"
                   }
                 ]
               }
@@ -280,24 +388,32 @@
         },
         "kind": {
           "enum": [
-            "profile",
+            "provider",
+            "knowledge",
             "interpretation",
             "evaluation",
             "reassessment",
-            "knowledge",
-            "provider",
-            "coverage"
+            "profile",
+            "coverage",
+            "provider_pack",
+            "provider_pack_evaluation",
+            "composition",
+            "composition_reassessment"
           ]
         },
         "operation": {
           "enum": [
-            "profile_prepare",
+            "provider_onboard",
+            "knowledge_interpret",
             "provider_interpret",
             "connection_evaluate",
             "connection_reassess",
-            "knowledge_interpret",
-            "provider_onboard",
-            "provider_coverage"
+            "profile_prepare",
+            "provider_coverage",
+            "provider_pack_prepare",
+            "provider_pack_evaluate",
+            "composition_explore",
+            "composition_reassess"
           ]
         },
         "installation": {
@@ -368,86 +484,30 @@
           "if": {
             "properties": {
               "operation": {
-                "const": "profile_prepare"
+                "const": "provider_onboard"
               }
             }
           },
           "then": {
             "properties": {
               "input": {
-                "$ref": "profile-preparation.schema.json#/$defs/input"
+                "$ref": "source-operation.schema.json#/$defs/provider_onboard"
               },
               "artifact": {
-                "$ref": "interpretation-profile.schema.json"
+                "$ref": "source-operation.schema.json#/$defs/provider"
               },
               "kind": {
-                "const": "profile"
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "operation": {
-                "const": "provider_interpret"
-              }
-            }
-          },
-          "then": {
-            "properties": {
-              "input": {
-                "$ref": "provider-interpretation.schema.json#/$defs/providerInterpretInput"
+                "const": "provider"
               },
-              "artifact": {
-                "$ref": "provider-interpretation.schema.json#/$defs/providerInterpretResult"
-              },
-              "kind": {
-                "const": "interpretation"
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "operation": {
-                "const": "connection_evaluate"
-              }
-            }
-          },
-          "then": {
-            "properties": {
-              "input": {
-                "$ref": "connection-operation.schema.json#/$defs/connectionEvaluateInput"
-              },
-              "artifact": {
-                "$ref": "connection-operation.schema.json#/$defs/connectionEvaluateResult"
-              },
-              "kind": {
-                "const": "evaluation"
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "operation": {
-                "const": "connection_reassess"
-              }
-            }
-          },
-          "then": {
-            "properties": {
-              "input": {
-                "$ref": "connection-operation.schema.json#/$defs/connectionReassessInput"
-              },
-              "artifact": {
-                "$ref": "connection-operation.schema.json#/$defs/connectionReassessResult"
-              },
-              "kind": {
-                "const": "reassessment"
+              "installation": {
+                "properties": {
+                  "Version": {
+                    "enum": [
+                      "0.5.0-dev",
+                      "0.6.0-dev"
+                    ]
+                  }
+                }
               }
             }
           }
@@ -470,6 +530,18 @@
               },
               "kind": {
                 "const": "knowledge"
+              },
+              "installation": {
+                "properties": {
+                  "Version": {
+                    "enum": [
+                      "0.3.0-dev",
+                      "0.4.0-dev",
+                      "0.5.0-dev",
+                      "0.6.0-dev"
+                    ]
+                  }
+                }
               }
             }
           }
@@ -478,25 +550,131 @@
           "if": {
             "properties": {
               "operation": {
-                "const": "provider_onboard"
+                "const": "provider_interpret"
               }
             }
           },
           "then": {
             "properties": {
               "input": {
-                "$ref": "source-operation.schema.json#/$defs/provider_onboard"
+                "$ref": "provider-interpretation.schema.json#/$defs/providerInterpretInput"
               },
               "artifact": {
-                "$ref": "source-operation.schema.json#/$defs/provider"
+                "$ref": "provider-interpretation.schema.json#/$defs/providerInterpretResult"
               },
               "kind": {
-                "const": "provider"
+                "const": "interpretation"
               },
               "installation": {
                 "properties": {
                   "Version": {
-                    "const": "0.5.0-dev"
+                    "enum": [
+                      "0.3.0-dev",
+                      "0.4.0-dev",
+                      "0.5.0-dev",
+                      "0.6.0-dev"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "connection_evaluate"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "connection-operation.schema.json#/$defs/connectionEvaluateInput"
+              },
+              "artifact": {
+                "$ref": "connection-operation.schema.json#/$defs/connectionEvaluateResult"
+              },
+              "kind": {
+                "const": "evaluation"
+              },
+              "installation": {
+                "properties": {
+                  "Version": {
+                    "enum": [
+                      "0.3.0-dev",
+                      "0.4.0-dev",
+                      "0.5.0-dev",
+                      "0.6.0-dev"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "connection_reassess"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "connection-operation.schema.json#/$defs/connectionReassessInput"
+              },
+              "artifact": {
+                "$ref": "connection-operation.schema.json#/$defs/connectionReassessResult"
+              },
+              "kind": {
+                "const": "reassessment"
+              },
+              "installation": {
+                "properties": {
+                  "Version": {
+                    "enum": [
+                      "0.3.0-dev",
+                      "0.4.0-dev",
+                      "0.5.0-dev",
+                      "0.6.0-dev"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "profile_prepare"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "profile-preparation.schema.json#/$defs/input"
+              },
+              "artifact": {
+                "$ref": "interpretation-profile.schema.json"
+              },
+              "kind": {
+                "const": "profile"
+              },
+              "installation": {
+                "properties": {
+                  "Version": {
+                    "enum": [
+                      "0.4.0-dev",
+                      "0.5.0-dev",
+                      "0.6.0-dev"
+                    ]
                   }
                 }
               }
@@ -525,7 +703,134 @@
               "installation": {
                 "properties": {
                   "Version": {
-                    "const": "0.5.0-dev"
+                    "enum": [
+                      "0.5.0-dev",
+                      "0.6.0-dev"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "provider_pack_prepare"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "provider-pack.schema.json#/$defs/PrepareInput"
+              },
+              "artifact": {
+                "$ref": "provider-pack.schema.json#/$defs/Pack"
+              },
+              "kind": {
+                "const": "provider_pack"
+              },
+              "installation": {
+                "properties": {
+                  "Version": {
+                    "enum": [
+                      "0.6.0-dev"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "provider_pack_evaluate"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "provider-pack.schema.json#/$defs/EvaluateInput"
+              },
+              "artifact": {
+                "$ref": "provider-pack.schema.json#/$defs/EvaluateResult"
+              },
+              "kind": {
+                "const": "provider_pack_evaluation"
+              },
+              "installation": {
+                "properties": {
+                  "Version": {
+                    "enum": [
+                      "0.6.0-dev"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "composition_explore"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "composition.schema.json#/$defs/ExploreInput"
+              },
+              "artifact": {
+                "$ref": "composition.schema.json#/$defs/ExploreResult"
+              },
+              "kind": {
+                "const": "composition"
+              },
+              "installation": {
+                "properties": {
+                  "Version": {
+                    "enum": [
+                      "0.6.0-dev"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "composition_reassess"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "composition.schema.json#/$defs/ReassessInput"
+              },
+              "artifact": {
+                "$ref": "composition.schema.json#/$defs/ReassessResult"
+              },
+              "kind": {
+                "const": "composition_reassessment"
+              },
+              "installation": {
+                "properties": {
+                  "Version": {
+                    "enum": [
+                      "0.6.0-dev"
+                    ]
                   }
                 }
               }
@@ -562,24 +867,32 @@
             "properties": {
               "kind": {
                 "enum": [
-                  "profile",
+                  "provider",
+                  "knowledge",
                   "interpretation",
                   "evaluation",
                   "reassessment",
-                  "knowledge",
-                  "provider",
-                  "coverage"
+                  "profile",
+                  "coverage",
+                  "provider_pack",
+                  "provider_pack_evaluation",
+                  "composition",
+                  "composition_reassessment"
                 ]
               },
               "operation": {
                 "enum": [
-                  "profile_prepare",
+                  "provider_onboard",
+                  "knowledge_interpret",
                   "provider_interpret",
                   "connection_evaluate",
                   "connection_reassess",
-                  "knowledge_interpret",
-                  "provider_onboard",
-                  "provider_coverage"
+                  "profile_prepare",
+                  "provider_coverage",
+                  "provider_pack_prepare",
+                  "provider_pack_evaluate",
+                  "composition_explore",
+                  "composition_reassess"
                 ]
               },
               "installation": {

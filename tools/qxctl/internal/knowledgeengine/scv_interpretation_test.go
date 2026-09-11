@@ -123,6 +123,13 @@ func TestInstalledSCVProfileConnectionProvenance(t *testing.T) {
 				t.Fatal("resealed false aggregate accepted")
 			}
 			forged = scvTestClone(t, before)
+			forged["connections"].([]any)[0].(map[string]any)["checks"].([]any)[0].(map[string]any)["reasons"] = []any{"provider_observed_incompatible_with_gcp"}
+			forged = scvTestSeal(t, forged)
+			out, _ = SCVCanonical(forged)
+			if err := ValidateSCVResult("connection_evaluate", in, out); err == nil {
+				t.Fatal("consumer accepted fabricated scoped check explanation")
+			}
+			forged = scvTestClone(t, before)
 			check := forged["connections"].([]any)[0].(map[string]any)["checks"].([]any)[0].(map[string]any)
 			check["comparison"] = false
 			forged = scvTestSeal(t, forged)
@@ -198,24 +205,153 @@ func TestSCVConnectionConsumerRejectsResealedComparison(t *testing.T) {
 	scope := map[string]any{"plan": "selected"}
 	findings := map[string]map[string]any{"a": {"status": "supported", "claim": map[string]any{"subject": "service", "scope": scope, "statement_kind": "requirement", "value": map[string]any{"type": "decimal", "value": "9007199254740992.1", "unit": "ms"}}}}
 	spec := map[string]any{"left": map[string]any{"claim_id": "a", "subject": "service", "scope": scope}, "right": map[string]any{"kind": "literal", "value": map[string]any{"type": "decimal", "value": "9007199254740992.2", "unit": "ms"}}, "operator": "gte"}
-	status, comparison, _ := scvCheckOutcome(spec, findings)
+	status, comparison, _, _, _ := scvCheckOutcome(spec, findings)
 	if status != "contradicted" || comparison != false {
 		t.Fatal("decimal rounded during comparison")
 	}
 	spec["right"].(map[string]any)["value"].(map[string]any)["unit"] = "s"
-	status, comparison, _ = scvCheckOutcome(spec, findings)
+	status, comparison, _, _, _ = scvCheckOutcome(spec, findings)
 	if status != "unresolved" || comparison != nil {
 		t.Fatal("unit mismatch promoted to incompatibility")
 	}
 	spec["right"].(map[string]any)["value"].(map[string]any)["unit"] = "ms"
 	findings["a"]["claim"].(map[string]any)["statement_kind"] = "recommendation"
-	status, _, _ = scvCheckOutcome(spec, findings)
+	status, _, _, _, _ = scvCheckOutcome(spec, findings)
 	if status != "conditional" {
 		t.Fatal("recommendation became mandatory")
 	}
 	findings["a"]["claim"].(map[string]any)["value"].(map[string]any)["value"] = "1/2"
-	status, comparison, _ = scvCheckOutcome(spec, findings)
-	if status != "unresolved" || comparison != nil {
+	_, comparison, _, _, err := scvCheckOutcome(spec, findings)
+	if err == nil || comparison != nil {
 		t.Fatal("noncanonical rational accepted as decimal")
+	}
+}
+
+func TestSCVConnectionReasonInventoryPreservesQualifiedOperands(t *testing.T) {
+	scope := map[string]any{"plan": "selected"}
+	literal := func(kind string, value any, unit string) map[string]any {
+		return scvTestClone(t, map[string]any{"kind": "literal", "value": map[string]any{"type": kind, "value": value, "unit": unit}})
+	}
+	reference := func(id string) map[string]any {
+		return map[string]any{"claim_id": id, "subject": "service", "scope": scope}
+	}
+	cases := []struct {
+		name, status, kind, operator string
+		leftValue, right             map[string]any
+		changeReference              bool
+		wantStatus                   string
+		comparison                   any
+		reasons                      []string
+	}{
+		{"satisfied", "supported", "requirement", "eq", map[string]any{"type": "integer", "value": json.Number("10"), "unit": "ms"}, literal("integer", 10, "ms"), false, "satisfied", true, []string{"comparison_matched"}},
+		{"contradicted", "supported", "documented_fact", "gte", map[string]any{"type": "decimal", "value": "1.1", "unit": "ms"}, literal("decimal", "1.2", "ms"), false, "contradicted", false, []string{"comparison_not_matched"}},
+		{"conditional_false", "conditional", "user_assertion", "eq", map[string]any{"type": "integer", "value": json.Number("10"), "unit": "ms"}, literal("integer", 9, "ms"), false, "conditional", false, []string{"comparison_not_matched", "conditional_evidence:a"}},
+		{"ineligible_still_compares_units", "unsupported", "user_assertion", "eq", map[string]any{"type": "integer", "value": json.Number("10"), "unit": "ms"}, literal("integer", 10, "s"), true, "unresolved", nil, []string{"claim_not_eligible:a:unsupported", "conditional_evidence:a", "scope_mismatch:a", "subject_mismatch:a", "unit_mismatch"}},
+		{"type_precedes_unit", "supported", "requirement", "eq", map[string]any{"type": "integer", "value": json.Number("10"), "unit": "ms"}, literal("decimal", "10", "s"), false, "unresolved", nil, []string{"value_type_mismatch"}},
+		{"numeric_ordering_required", "supported", "requirement", "gte", map[string]any{"type": "string", "value": "alpha", "unit": "label"}, literal("string", "beta", "label"), false, "unresolved", nil, []string{"ordering_requires_numeric_type"}},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			left := reference("a")
+			if tc.changeReference {
+				left["subject"] = "other"
+				left["scope"] = map[string]any{}
+			}
+			findings := map[string]map[string]any{"a": {"status": tc.status, "claim": map[string]any{"subject": "service", "scope": scope, "statement_kind": tc.kind, "value": tc.leftValue}}}
+			status, comparison, ids, reasons, err := scvCheckOutcome(map[string]any{"left": left, "right": tc.right, "operator": tc.operator}, findings)
+			if err != nil || status != tc.wantStatus || !scvEqual(comparison, tc.comparison) || !scvEqual(ids, []string{"a"}) || !scvEqual(reasons, tc.reasons) {
+				t.Fatalf("status=%s comparison=%v ids=%v reasons=%v error=%v", status, comparison, ids, reasons, err)
+			}
+		})
+	}
+	right := reference("missing")
+	right["kind"] = "claim"
+	status, comparison, ids, reasons, err := scvCheckOutcome(map[string]any{"left": reference("missing"), "right": right, "operator": "eq"}, map[string]map[string]any{})
+	if err != nil || status != "unresolved" || comparison != nil || !scvEqual(ids, []string{"missing"}) || !scvEqual(reasons, []string{"claim_missing:missing"}) {
+		t.Fatal("duplicate missing operands changed reason/id set", status, comparison, ids, reasons, err)
+	}
+}
+
+func TestSCVConnectionConsumerRejectsFabricatedReasonInventory(t *testing.T) {
+	scope := map[string]any{"plan": "selected"}
+	spec := map[string]any{"check_id": "capacity", "importance": "required", "operator": "gte", "left": map[string]any{"claim_id": "a", "subject": "service", "scope": scope}, "right": map[string]any{"kind": "literal", "value": map[string]any{"type": "integer", "value": json.Number("9"), "unit": "ms"}}}
+	findings := map[string]map[string]any{"a": {"status": "conditional", "claim": map[string]any{"subject": "service", "scope": scope, "statement_kind": "user_assertion", "value": map[string]any{"type": "integer", "value": json.Number("10"), "unit": "ms"}}}}
+	input := []any{map[string]any{"connection_id": "route", "from_subject": "from", "to_subject": "to", "checks": []any{spec}}}
+	result := map[string]any{"connection_id": "route", "from_subject": "from", "to_subject": "to", "status": "conditional", "checks": []any{map[string]any{"specification": spec, "status": "conditional", "comparison": true, "claim_ids": []any{"a"}, "reasons": []any{"comparison_matched", "conditional_evidence:a"}}}}
+	if err := scvValidateConnections(input, []any{result}, findings); err != nil {
+		t.Fatal("exact valid reason inventory", err)
+	}
+	for name, reasons := range map[string][]any{"invented": {"provider_observed_incompatible_with_gcp"}, "removed": {"comparison_matched"}, "duplicate": {"comparison_matched", "conditional_evidence:a", "conditional_evidence:a"}, "reordered": {"conditional_evidence:a", "comparison_matched"}, "empty": {}} {
+		t.Run(name, func(t *testing.T) {
+			v := scvTestClone(t, result)
+			v["checks"].([]any)[0].(map[string]any)["reasons"] = reasons
+			if err := scvValidateConnections(input, []any{v}, findings); err == nil {
+				t.Fatal("altered native reason inventory accepted")
+			}
+		})
+	}
+}
+
+func TestInstalledSCVConnectionReasonParityAcrossExactVersions(t *testing.T) {
+	installations := []struct{ version, selector string }{{"0.3.0-dev", "SYMPHONY_SCV_INTERPRETATION_PREFIX"}, {"0.4.0-dev", "SYMPHONY_SCV_AGENT_PREFIX"}, {"0.5.0-dev", "SYMPHONY_SCV_COVERAGE_PREFIX"}, {"0.6.0-dev", "SYMPHONY_SCV_COMPOSITION_PREFIX"}}
+	for _, installed := range installations {
+		t.Run(installed.version, func(t *testing.T) {
+			prefix := os.Getenv(installed.selector)
+			if prefix == "" {
+				t.Skip("requires exact selected package")
+			}
+			cwd, err := os.Getwd()
+			if err != nil {
+				t.Fatal(err)
+			}
+			owner := func(operation string, payload any) map[string]any {
+				t.Helper()
+				raw, err := SCVCanonical(payload)
+				if err != nil {
+					t.Fatal(err)
+				}
+				response, err := InvokeSCVDomain(context.Background(), "scv", prefix, installed.version, cwd, operation, raw)
+				if err != nil {
+					t.Fatal(operation, err)
+				}
+				result, err := scvObject(response.Result)
+				if err != nil {
+					t.Fatal(err)
+				}
+				return result
+			}
+			scope := map[string]any{"fixture": "reason-parity"}
+			claims := []any{}
+			for _, claim := range []struct {
+				id, kind string
+				value    any
+			}{{"number", "integer", 10}, {"label", "string", "alpha"}} {
+				claims = append(claims, map[string]any{"claim_id": claim.id, "subject": "fixture-service", "predicate": "fixture-value", "scope": scope, "statement_kind": "user_assertion", "value": map[string]any{"type": claim.kind, "value": claim.value, "unit": "units"}, "evidence": []any{}, "dependencies": []any{}})
+			}
+			for _, allowed := range []string{"user_assertion", "documented_fact"} {
+				knowledge := owner("knowledge_interpret", map[string]any{"captures": []any{}, "claims": claims, "interpreter_version": "synthetic-reason-parity-v1", "selection_policy": map[string]any{"policy_id": "reason-parity", "max_age_seconds": 60, "partial_capture": "exclude", "allowed_statement_kinds": []any{allowed}}})
+				checks := []any{}
+				for _, tc := range []struct {
+					id, left, subject, operator, rightType, unit string
+					rightValue                                   any
+				}{{"qualified-false", "number", "fixture-service", "eq", "integer", "units", 9}, {"scope-subject-unit", "number", "wrong-subject", "eq", "integer", "other-units", 10}, {"typed-mismatch", "number", "fixture-service", "eq", "decimal", "units", "10"}, {"nonnumeric-ordering", "label", "fixture-service", "gte", "string", "units", "beta"}, {"missing", "absent", "fixture-service", "eq", "integer", "units", 10}} {
+					selectedScope := scope
+					if tc.id == "scope-subject-unit" {
+						selectedScope = map[string]any{}
+					}
+					checks = append(checks, map[string]any{"check_id": tc.id, "importance": "required", "left": map[string]any{"claim_id": tc.left, "subject": tc.subject, "scope": selectedScope}, "operator": tc.operator, "right": map[string]any{"kind": "literal", "value": map[string]any{"type": tc.rightType, "value": tc.rightValue, "unit": tc.unit}}})
+				}
+				input := map[string]any{"interpretations": []any{}, "additional_knowledge": []any{knowledge}, "query_time": "2026-09-10T12:00:01Z", "connections": []any{map[string]any{"connection_id": "parity", "from_subject": "fixture-service", "to_subject": "fixture-requirements", "checks": checks}}}
+				result := owner("connection_evaluate", input)
+				forged := scvTestClone(t, result)
+				forged["connections"].([]any)[0].(map[string]any)["checks"].([]any)[0].(map[string]any)["reasons"] = []any{"invented_provider_restriction"}
+				forged = scvTestSeal(t, forged)
+				payload, _ := SCVCanonical(input)
+				raw, _ := SCVCanonical(forged)
+				if err := ValidateSCVResult("connection_evaluate", payload, raw); err == nil {
+					t.Fatal("resealed invented reason accepted", installed.version, allowed)
+				}
+			}
+		})
 	}
 }

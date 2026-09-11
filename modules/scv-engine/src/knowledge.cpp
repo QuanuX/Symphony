@@ -598,30 +598,49 @@ Json assess_claim(const Json& claim, const CaptureMap& selected, const Json& sel
 CaptureMap settle(const CaptureMap& assertions, const CaptureMap& selected, const Json& selected_policy,
                   std::int64_t now, const std::set<std::string>& disputed, const engine::Request& request) {
     CaptureMap previous;
+    std::map<std::string, std::set<std::string>> dependents;
+    std::set<std::string> dirty;
     for (const auto& [id, claim] : assertions) {
-        static_cast<void>(claim);
+        dirty.insert(id);
+        for (const auto& support : support_sets(claim))
+            for (const auto& dependency : support.at("dependencies"))
+                dependents[dependency.at("claim_id").get<std::string>()].insert(id);
         previous[id] = {{"status", "unsupported"}, {"evidence_roots", Json::array()}, {"valid_until_unix_seconds", nullptr}};
     }
     // Least fixed point: a cycle begins without eligible premises. It can inherit
-    // existing grounded support, but cannot create a new evidence root.
+    // existing grounded support, but cannot create a new evidence root. Preserve
+    // synchronous rounds: every dirty claim reads the same previous assessment.
+    // Only direct dependents of changed findings need another assessment. All
+    // other inputs are fixed for this invocation, including policy/time/disputes.
     for (std::size_t iteration = 0; iteration <= assertions.size() * 3 + 2; ++iteration) {
         check_deadline(request);
-        CaptureMap next;
-        for (const auto& [id, claim] : assertions) next[id] = assess_claim(claim, selected, selected_policy, now, previous, disputed);
-        if (next == previous) return next;
+        auto next = previous;
+        std::set<std::string> next_dirty;
+        for (const auto& id : dirty) {
+            auto finding = assess_claim(assertions.at(id), selected, selected_policy, now, previous, disputed);
+            if (finding == previous.at(id)) continue;
+            next[id] = std::move(finding);
+            if (const auto found = dependents.find(id); found != dependents.end())
+                next_dirty.insert(found->second.begin(), found->second.end());
+        }
+        if (next_dirty.empty()) return next;
         previous = std::move(next);
+        dirty = std::move(next_dirty);
     }
     throw engine::Error("knowledge.evaluation_limit", "support evaluation did not reach a bounded fixed point", 4);
 }
 Json typed_conflicts(const CaptureMap& assertions, const CaptureMap& findings) {
     Json result = Json::array();
-    for (auto left = assertions.begin(); left != assertions.end(); ++left) {
-        if (!usable(findings.at(left->first))) continue;
-        for (auto right = std::next(left); right != assertions.end(); ++right) {
-            if (!usable(findings.at(right->first))) continue;
-            const auto& a = left->second;
-            const auto& b = right->second;
-            if (a.at("subject") != b.at("subject") || a.at("predicate") != b.at("predicate") || a.at("scope") != b.at("scope")) continue;
+    std::map<std::string, std::vector<std::string>> comparable;
+    for (const auto& [id, claim] : assertions) {
+        if (usable(findings.at(id)))
+            comparable[Json::array({claim.at("subject"), claim.at("predicate"), claim.at("scope")}).dump()].push_back(id);
+    }
+    for (const auto& [key, ids] : comparable) {
+        static_cast<void>(key);
+        for (std::size_t left = 0; left < ids.size(); ++left) for (std::size_t right = left + 1; right < ids.size(); ++right) {
+            const auto& a = assertions.at(ids[left]);
+            const auto& b = assertions.at(ids[right]);
             if (a.at("value") == b.at("value")) continue;
             std::string type;
             bool blocking = false;
@@ -632,10 +651,15 @@ Json typed_conflicts(const CaptureMap& assertions, const CaptureMap& findings) {
                 blocking = true;
                 type = a.at("value").at("type") != b.at("value").at("type") ? "value_type_mismatch" : "incompatible_values";
             }
-            result.push_back({{"left_claim_id", left->first}, {"right_claim_id", right->first},
+            result.push_back({{"left_claim_id", ids[left]}, {"right_claim_id", ids[right]},
                 {"type", type}, {"blocking", blocking}, {"resolution", "unresolved; no precedence rule applied"}});
         }
     }
+    // Group lookup changes traversal order, not the public pair ordering.
+    std::sort(result.begin(), result.end(), [](const Json& a, const Json& b) {
+        if (a.at("left_claim_id") != b.at("left_claim_id")) return a.at("left_claim_id") < b.at("left_claim_id");
+        return a.at("right_claim_id") < b.at("right_claim_id");
+    });
     return result;
 }
 bool reaches(const CaptureMap& assertions, const std::string& from, const std::string& target, std::set<std::string>& visited) {

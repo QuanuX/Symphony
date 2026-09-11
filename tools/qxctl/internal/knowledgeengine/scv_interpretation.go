@@ -545,25 +545,48 @@ func scvFindingMap(evaluation map[string]any) (map[string]map[string]any, error)
 	}
 	return out, nil
 }
-func scvOperand(raw map[string]any, findings map[string]map[string]any) (map[string]any, bool, bool) {
-	id, _ := raw["claim_id"].(string)
+func scvOperand(raw map[string]any, findings map[string]map[string]any) (map[string]any, bool, bool, []string, error) {
+	id, ok := raw["claim_id"].(string)
+	if !ok || id == "" {
+		return nil, false, false, nil, fmt.Errorf("invalid operand claim identity")
+	}
 	f := findings[id]
 	if f == nil {
-		return nil, false, false
+		return nil, false, false, []string{"claim_missing:" + id}, nil
 	}
 	c, ok := f["claim"].(map[string]any)
 	if !ok {
-		return nil, false, false
+		return nil, false, false, nil, fmt.Errorf("invalid operand finding")
 	}
-	if !scvEqual(c["subject"], raw["subject"]) || !scvEqual(c["scope"], raw["scope"]) {
-		return nil, false, false
+	value, ok := c["value"].(map[string]any)
+	if !ok || !scvValidTypedValue(value) {
+		return nil, false, false, nil, fmt.Errorf("invalid operand typed value")
 	}
-	if f["status"] != "supported" && f["status"] != "conditional" {
-		return nil, false, false
+	status, ok := f["status"].(string)
+	if !ok {
+		return nil, false, false, nil, fmt.Errorf("invalid operand finding status")
 	}
-	v, ok := c["value"].(map[string]any)
-	qualified := f["status"] == "conditional" || (c["statement_kind"] != "documented_fact" && c["statement_kind"] != "requirement")
-	return v, qualified, ok
+	reasons := []string{}
+	eligible := true
+	if !scvEqual(c["subject"], raw["subject"]) {
+		eligible = false
+		reasons = append(reasons, "subject_mismatch:"+id)
+	}
+	if !scvEqual(c["scope"], raw["scope"]) {
+		eligible = false
+		reasons = append(reasons, "scope_mismatch:"+id)
+	}
+	if status != "supported" && status != "conditional" {
+		eligible = false
+		reasons = append(reasons, "claim_not_eligible:"+id+":"+status)
+	}
+	qualified := status == "conditional" || (c["statement_kind"] != "documented_fact" && c["statement_kind"] != "requirement")
+	if qualified {
+		reasons = append(reasons, "conditional_evidence:"+id)
+	}
+	// Retain the typed value even when ineligible: type/unit diagnostics are
+	// independent of scope, freshness and conditional-support qualification.
+	return value, qualified, eligible, reasons, nil
 }
 func scvComparison(left, right map[string]any, operator string) (bool, bool) {
 	if !scvValidTypedValue(left) || !scvValidTypedValue(right) || !scvEqual(left["type"], right["type"]) || !scvEqual(left["unit"], right["unit"]) {
@@ -588,45 +611,88 @@ func scvComparison(left, right map[string]any, operator string) (bool, bool) {
 	}
 	return a.Cmp(b) <= 0, true
 }
-func scvCheckOutcome(spec map[string]any, findings map[string]map[string]any) (string, any, []string) {
+func scvCheckOutcome(spec map[string]any, findings map[string]map[string]any) (string, any, []string, []string, error) {
 	left, lok := spec["left"].(map[string]any)
 	right, rok := spec["right"].(map[string]any)
 	if !lok || !rok {
-		return "unresolved", nil, nil
+		return "", nil, nil, nil, fmt.Errorf("invalid check operands")
 	}
-	ids := []string{}
-	if id, ok := left["claim_id"].(string); ok {
-		ids = append(ids, id)
+	op, ok := spec["operator"].(string)
+	if !ok || (op != "eq" && op != "gte" && op != "lte") {
+		return "", nil, nil, nil, fmt.Errorf("invalid check comparison operator")
 	}
-	lv, lq, lu := scvOperand(left, findings)
+	lv, lq, lu, lr, err := scvOperand(left, findings)
+	if err != nil {
+		return "", nil, nil, nil, err
+	}
+	ids := map[string]bool{left["claim_id"].(string): true}
+	reasons := map[string]bool{}
+	for _, reason := range lr {
+		reasons[reason] = true
+	}
 	var rv map[string]any
-	rq, ru := false, false
+	rq, ru := false, true
 	if right["kind"] == "claim" {
-		rv, rq, ru = scvOperand(right, findings)
-		if id, ok := right["claim_id"].(string); ok {
-			if len(ids) == 0 || id != ids[0] {
-				ids = append(ids, id)
-			}
+		var rr []string
+		rv, rq, ru, rr, err = scvOperand(right, findings)
+		if err != nil {
+			return "", nil, nil, nil, err
+		}
+		ids[right["claim_id"].(string)] = true
+		for _, reason := range rr {
+			reasons[reason] = true
 		}
 	} else if right["kind"] == "literal" {
-		rv, ru = right["value"].(map[string]any)
+		rv, ok = right["value"].(map[string]any)
+		if !ok || !scvValidTypedValue(rv) {
+			return "", nil, nil, nil, fmt.Errorf("invalid typed literal")
+		}
+	} else {
+		return "", nil, nil, nil, fmt.Errorf("invalid right operand kind")
 	}
-	sort.Strings(ids)
-	if !lu || !ru {
-		return "unresolved", nil, ids
+	unresolved := !lu || !ru
+	var comparison any
+	if lv != nil && rv != nil {
+		if !scvEqual(lv["type"], rv["type"]) {
+			unresolved = true
+			reasons["value_type_mismatch"] = true
+		} else if !scvEqual(lv["unit"], rv["unit"]) {
+			unresolved = true
+			reasons["unit_mismatch"] = true
+		} else if op != "eq" && lv["type"] != "integer" && lv["type"] != "decimal" {
+			unresolved = true
+			reasons["ordering_requires_numeric_type"] = true
+		}
+		if !unresolved {
+			matched, valid := scvComparison(lv, rv, op)
+			if !valid {
+				return "", nil, nil, nil, fmt.Errorf("invalid typed comparison")
+			}
+			comparison = matched
+			if matched {
+				reasons["comparison_matched"] = true
+			} else {
+				reasons["comparison_not_matched"] = true
+			}
+		}
 	}
-	op, _ := spec["operator"].(string)
-	comparison, valid := scvComparison(lv, rv, op)
-	if !valid {
-		return "unresolved", nil, ids
+	status := "contradicted"
+	if unresolved {
+		status = "unresolved"
+	} else if lq || rq {
+		status = "conditional"
+	} else if comparison == true {
+		status = "satisfied"
 	}
-	if lq || rq {
-		return "conditional", comparison, ids
+	sortedKeys := func(values map[string]bool) []string {
+		keys := make([]string, 0, len(values))
+		for key := range values {
+			keys = append(keys, key)
+		}
+		sort.Strings(keys)
+		return keys
 	}
-	if comparison {
-		return "satisfied", true, ids
-	}
-	return "contradicted", false, ids
+	return status, comparison, sortedKeys(ids), sortedKeys(reasons), nil
 }
 func scvValidateConnections(input, output any, findings map[string]map[string]any) error {
 	specs, err := scvMapList(input, "connection_id")
@@ -670,13 +736,15 @@ func scvValidateConnections(input, output any, findings map[string]map[string]an
 				return fmt.Errorf("check input binding mismatch")
 			}
 			seen[cid] = true
-			status, comparison, ids := scvCheckOutcome(s, findings)
+			status, comparison, ids, reasons, err := scvCheckOutcome(s, findings)
+			if err != nil {
+				return err
+			}
 			if c["status"] != status || !scvEqual(c["comparison"], comparison) || !scvEqual(c["claim_ids"], ids) {
 				return fmt.Errorf("connection comparison/status mismatch for %s", cid)
 			}
-			reasons, ok := c["reasons"].([]any)
-			if !ok || (status != "satisfied" && len(reasons) == 0) {
-				return fmt.Errorf("qualified check lacks reasons")
+			if !scvEqual(c["reasons"], reasons) {
+				return fmt.Errorf("connection reason inventory mismatch for %s", cid)
 			}
 			if s["importance"] == "required" {
 				required++

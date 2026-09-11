@@ -13,12 +13,6 @@ import (
 	"time"
 )
 
-// SCVDomains is the finite installed surface of this release, not a provider
-// admission rule. Every invocation selects one exact domain and version.
-func SCVDomains() []string {
-	return []string{"scv", "schv", "scev", "schv-aws", "schv-azure", "schv-do", "schv-gcp", "scev-cf"}
-}
-
 func scvSpec(domain string) (engineSpec, error) {
 	for _, allowed := range SCVDomains() {
 		if domain == allowed {
@@ -33,6 +27,9 @@ func scvSpec(domain string) (engineSpec, error) {
 // InspectSCVDomain deliberately accepts receipt v2 only. Legacy receipt and
 // engine-binding role vocabularies remain unchanged.
 func InspectSCVDomain(domain, prefix, version string) (Installation, error) {
+	if !SCVDomainSupported(version, domain) {
+		return Installation{}, fmt.Errorf("unsupported exact SCV domain/release")
+	}
 	spec, err := scvSpec(domain)
 	if err != nil {
 		return Installation{}, err
@@ -80,16 +77,7 @@ func InvokeSCVDomain(ctx context.Context, domain, prefix, version, cwd, operatio
 			return Response{}, fmt.Errorf("SCV descriptor installation identity mismatch")
 		}
 		operations, ok := value["operations"].([]any)
-		expectedCount := 13
-		if version == "0.2.0-dev" {
-			expectedCount = 17
-		} else if version == "0.3.0-dev" {
-			expectedCount = 20
-		} else if version == "0.4.0-dev" {
-			expectedCount = 21
-		} else if version == "0.5.0-dev" {
-			expectedCount = 22
-		}
+		expectedCount := scvInterfaceOperationCount(version)
 		if !ok || len(operations) != expectedCount {
 			return Response{}, fmt.Errorf("SCV descriptor operation set mismatch")
 		}
@@ -112,46 +100,6 @@ func InvokeSCVDomain(ctx context.Context, domain, prefix, version, cwd, operatio
 		return Response{}, fmt.Errorf("SCV result domain mismatch")
 	}
 	return response, nil
-}
-
-func SCVResultProtocol(operation string) (string, bool) {
-	protocol, ok := map[string]string{
-		"inspect": "symphony.knowledge.engine-descriptor.v2", "provider_onboard": "symphony.scv.provider.v1",
-		"source_plan": "symphony.scv.source-plan.v1", "source_apply": "symphony.scv.source-transition.v1",
-		"source_status": "symphony.scv.source-status.v1", "capture_import": "symphony.scv.capture.v1",
-		"capture_compare": "symphony.scv.capture-diff.v1", "knowledge_interpret": "symphony.scv.knowledge.v1",
-		"graph_build": "symphony.scv.graph.v1", "graph_query": "symphony.scv.query-result.v1",
-		"graph_evaluate": "symphony.scv.evaluate-result.v1", "graph_diff": "symphony.scv.diff-result.v1", "graph_explain": "symphony.scv.explain-result.v1",
-		"capture_index": "symphony.scv.capture-index.v1", "corpus_build": "symphony.scv.corpus.v1",
-		"corpus_query": "symphony.scv.corpus-query.v1", "corpus_diff": "symphony.scv.corpus-diff.v1",
-		"profile_prepare":     "symphony.scv.interpretation-profile.v1",
-		"provider_coverage":   "symphony.scv.provider-coverage.v1",
-		"provider_interpret":  "symphony.scv.provider-interpretation.v1",
-		"connection_evaluate": "symphony.scv.connection-evaluation.v1",
-		"connection_reassess": "symphony.scv.connection-reassessment.v1",
-	}[operation]
-	return protocol, ok
-}
-
-// SCVOperationSupported preserves each exact package's finite operation set.
-// Future versions require an explicit consumer update, never a latest alias.
-func SCVOperationSupported(version, operation string) bool {
-	if version != "0.1.0-dev" && version != "0.2.0-dev" && version != "0.3.0-dev" && version != "0.4.0-dev" && version != "0.5.0-dev" {
-		return false
-	}
-	if _, ok := SCVResultProtocol(operation); !ok {
-		return false
-	}
-	if operation == "provider_coverage" {
-		return version == "0.5.0-dev"
-	}
-	if operation == "profile_prepare" {
-		return version == "0.4.0-dev" || version == "0.5.0-dev"
-	}
-	if operation == "provider_interpret" || strings.HasPrefix(operation, "connection_") {
-		return version == "0.3.0-dev" || version == "0.4.0-dev" || version == "0.5.0-dev"
-	}
-	return version != "0.1.0-dev" || (operation != "capture_index" && !strings.HasPrefix(operation, "corpus_"))
 }
 
 // SCVCanonical encodes the same sorted, UTF-8 JSON subset as the C++ owner.
@@ -258,6 +206,12 @@ func ValidateSCVResult(operation string, input, raw []byte) error {
 			return fmt.Errorf("SCV descriptor broadens authority")
 		}
 		return scvSeal(value, "descriptor_digest")
+	}
+	if operation == "provider_pack_prepare" || operation == "provider_pack_evaluate" {
+		return validateSCVProviderPack(operation, payload, value)
+	}
+	if operation == "composition_explore" || operation == "composition_reassess" {
+		return validateSCVComposition(operation, payload, value)
 	}
 	if operation == "provider_coverage" {
 		return validateSCVProviderCoverage(payload, value)

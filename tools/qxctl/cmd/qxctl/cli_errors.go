@@ -101,7 +101,7 @@ func writeCLIError(command *cobra.Command, err error, status int) {
 func safeSCVEngineCode(code string) *string {
 	switch code {
 	case "argument.count", "argument.unsupported", "internal.failure", "operation.unsupported",
-		"request.deadline", "request.deadline_exceeded", "corpus.invalid", "interpretation.invalid", "coverage.invalid",
+		"request.deadline", "request.deadline_exceeded", "corpus.invalid", "interpretation.invalid", "coverage.invalid", "pack.invalid", "composition.invalid",
 		"knowledge.invalid", "knowledge.evaluation_limit",
 		"scv.fields", "scv.type", "scv.bounds", "scv.identity", "scv.locator", "scv.digest",
 		"scv.domain", "scv.duplicate", "scv.identity_change", "scv.generation", "scv.protocol",

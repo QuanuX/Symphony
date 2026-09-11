@@ -2,7 +2,7 @@
 
 ## Status and Ownership
 
-Architect-ratified source-knowledge development increment, version `0.5.0-dev`; not a published release or complete provider implementation. Domain meaning belongs to `knowledge/scv/schv/gcp/SPEC.md` and `knowledge/scv/SOURCE-KNOWLEDGE.md`. Common process semantics belong to `knowledge/SPEC.md`. All eight packages use the same explicit operation implementation with an exact installed domain identity.
+Architect-ratified source-knowledge development increment, version `0.6.0-dev`; not a published release or complete provider implementation. Domain meaning belongs to `knowledge/scv/schv/gcp/SPEC.md` and `knowledge/scv/SOURCE-KNOWLEDGE.md`. Common process semantics belong to `knowledge/SPEC.md`. All eight packages use the same explicit operation implementation with an exact installed domain identity.
 
 ## Process and Operation Registry
 
@@ -35,6 +35,10 @@ Each operation's stable ID is `engop:symphony:schv-gcp.` followed by its wire na
 | `connection_reassess` | `connection reassess` | `symphony.scv.connection-reassessment.v1` | validate |
 | `profile_prepare` | `profile prepare` | `symphony.scv.interpretation-profile.v1` | propose |
 | `provider_coverage` | `provider coverage` | `symphony.scv.provider-coverage.v1` | query |
+| `provider_pack_prepare` | `provider pack prepare` | `symphony.scv.provider-pack.v1` | propose |
+| `provider_pack_evaluate` | `provider pack evaluate` | `symphony.scv.provider-pack-evaluation.v1` | query |
+| `composition_explore` | `composition explore` | `symphony.scv.composition-exploration.v1` | query |
+| `composition_reassess` | `composition reassess` | `symphony.scv.composition-reassessment.v1` | validate |
 
 `knowledge/scv/CORPUS.md@v1` owns the four additive operations and their closed schemas. The table records composed qxctl routes; the C++ operations remain independently callable and never persist a corpus head. The `0.3.0-dev` descriptor has exactly twenty operations, including the three operations owned by `knowledge/scv/INTERPRETATION.md@v1`. Existing `0.1.0-dev` and `0.2.0-dev` installations retain their exact thirteen- and seventeen-operation descriptors, immutable receipts/documents and original payloads. The qxctl consumer checks the selected version's finite operation set; it cannot substitute a newer package. Original command defaults remain `0.1.0-dev`; corpus commands default to `0.2.0-dev` and explicitly permit `0.3.0-dev`; provider interpretation and connection commands default exactly to `0.3.0-dev`.
 
@@ -85,3 +89,11 @@ No valid result grants permission, authorizes canonical source changes, publishe
 ## Maintained Provider Coverage
 
 The additive `0.5.0-dev` package has 22 operations. `knowledge/scv/COVERAGE.md` owns native accounting of declared sources, exact corpus selection and independently replayed interpretations. Missing, unlisted, unselected, partial and stale evidence remains explicit. The operation does not rank providers or establish runtime compatibility. Earlier exact `.4` and prior installations remain preserved.
+
+## Portable Provider Authoring and Composition Exploration
+
+The additive `0.6.0-dev` package exposes 26 operations. `knowledge/scv/PROVIDER-PACKS.md` owns portable caller-authored provider packs, native sealing, detached conformance fixtures and bounded structured extraction. A pack links an explicit provider declaration, authored profiles, source references and selected fixture expectations; a successful fixture comparison describes those cases alone. Qualified knowledge remains reusable through the existing evidence interfaces. This is an authoring surface for independently chosen providers, without requiring a new compiled provider enum in SCV; a supplied leaf still enforces its advertised family/provider identity.
+
+`knowledge/scv/COMPOSITION.md` owns finite exploration of caller-selected recipes against caller-selected requirements. Native operations preserve evidence, prerequisites, interface declarations, guarantee changes and authored resolution pointers; missing evidence remains unresolved. The engine does not enumerate an open-ended design space, rank providers, choose a user's requirements, provision infrastructure or turn a declaration into observed compatibility. Reassessment preserves exact before/after inputs and changed axes.
+
+`knowledge/scv/OWNER-INTERFACE.json` is the versioned owner declaration for operation metadata, release admission, artifact kinds and installation inventories. Its checked-in generated projections drive native dispatch metadata and Go interface admission; domain validation and adversarial consumer tests remain independent. The package includes eight owner companions, the schema catalog and a receipt-owned copy of the declaration, inspectable through `qxctl scv interface show`. Normal builds and engine invocation do not require the Python authoring generator. Earlier exact `.1`–`.5` receipts and CLI defaults remain unchanged; new pack, composition and interface commands default to exact `.6`.

@@ -27,3 +27,5 @@ The SKVI, SCLV, SACV, SODV, and SSFV command groups require their separately ins
 
 ## Migration Note
 qxctl targets Go 1.27 only after general availability and the differential fixture/digest, default-vs-`nojsonv2`, vet, race, and supported-platform cross-build gates pass. The workspace and module pins change atomically, and the migration cannot alter qxctl grammar or STAV bytes.
+
+SCV `.6` adds `scv provider pack prepare|evaluate`, `scv composition explore|reassess` and `scv interface show`. The new leaves select exact `.6` by default; existing leaf defaults and `.1`–`.5` installations retain their admitted contracts. Provider packs, detached fixtures, requirements, recipes and counterfactual changes are caller-authored inputs. qxctl validates installed native results and can retain all four new owner artifact kinds through `scv artifact import|show|list`; it does not choose provider policy or execute a recipe. Read `knowledge/scv/PROVIDER-PACKS.md`, `COMPOSITION.md` and `OWNER-INTERFACE.md` for the exact semantics and finite bounds.

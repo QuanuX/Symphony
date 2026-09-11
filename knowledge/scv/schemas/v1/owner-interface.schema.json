@@ -1,0 +1,264 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:scv:owner-interface:v1",
+  "title": "SCV owner interface declaration and exact installed inspection v1",
+  "$defs": {
+    "Manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "current_release",
+        "domains",
+        "releases",
+        "operations",
+        "schema_catalog"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.owner-interface.v1"
+        },
+        "current_release": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+-dev$"
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "introduced_in"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "pattern": "^(scv|schv|scev|(schv|scev)-[a-z0-9][a-z0-9-]{0,63})$"
+              },
+              "introduced_in": {
+                "type": "string",
+                "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+-dev$"
+              }
+            }
+          },
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true
+        },
+        "releases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "version",
+              "surfaces",
+              "companions",
+              "contract_versions"
+            ],
+            "properties": {
+              "version": {
+                "type": "string",
+                "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+-dev$"
+              },
+              "surfaces": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "corpus",
+                    "workflow",
+                    "artifact",
+                    "schema",
+                    "interface"
+                  ]
+                },
+                "minItems": 0,
+                "maxItems": 5,
+                "uniqueItems": true
+              },
+              "companions": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9-]*\\.md$"
+                },
+                "minItems": 1,
+                "maxItems": 64,
+                "uniqueItems": true
+              },
+              "contract_versions": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^knowledge/(SPEC\\.md|scv/[A-Z][A-Z0-9-]*\\.md)@v1$"
+                },
+                "minItems": 2,
+                "maxItems": 65,
+                "uniqueItems": true
+              }
+            }
+          },
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true
+        },
+        "operations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "introduced_in",
+              "input_protocol",
+              "output_protocol",
+              "interactions",
+              "mutability",
+              "expected_state",
+              "handler",
+              "artifact"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(_[a-z0-9]+)*$"
+              },
+              "introduced_in": {
+                "type": "string",
+                "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+-dev$"
+              },
+              "input_protocol": {
+                "type": "string",
+                "pattern": "^symphony\\.[a-z0-9.-]+\\.v[1-9][0-9]*$"
+              },
+              "output_protocol": {
+                "type": "string",
+                "pattern": "^symphony\\.[a-z0-9.-]+\\.v[1-9][0-9]*$"
+              },
+              "interactions": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "inspect",
+                    "discover",
+                    "propose",
+                    "apply",
+                    "recover",
+                    "invoke",
+                    "query",
+                    "validate"
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 8,
+                "uniqueItems": true
+              },
+              "mutability": {
+                "enum": [
+                  "read_only",
+                  "proposal_only",
+                  "evidence_only"
+                ]
+              },
+              "expected_state": {
+                "type": "boolean"
+              },
+              "handler": {
+                "enum": [
+                  "inspect",
+                  "handle_source",
+                  "handle_knowledge",
+                  "handle_corpus",
+                  "handle_interpretation",
+                  "handle_coverage",
+                  "handle_pack",
+                  "handle_composition"
+                ]
+              },
+              "artifact": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "kind",
+                      "introduced_in"
+                    ],
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "pattern": "^[a-z][a-z0-9_]*$"
+                      },
+                      "introduced_in": {
+                        "type": "string",
+                        "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+-dev$"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "minItems": 1,
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "schema_catalog": {
+          "const": "knowledge/scv/schemas/v1/schema-catalog.json"
+        }
+      }
+    },
+    "Result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "domain",
+        "engine_version",
+        "installation",
+        "interface",
+        "interface_digest",
+        "definition_digest",
+        "receipt_validation",
+        "scope"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-owner-interface.v1"
+        },
+        "domain": {
+          "type": "string",
+          "pattern": "^(scv|schv|scev|(schv|scev)-[a-z0-9][a-z0-9-]{0,63})$"
+        },
+        "engine_version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+-dev$"
+        },
+        "installation": {
+          "$ref": "schema-discovery.schema.json#/$defs/list/properties/installation"
+        },
+        "interface": {
+          "$ref": "#/$defs/Manifest"
+        },
+        "interface_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "definition_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "receipt_validation": {
+          "const": "exact_owned_file_verified"
+        },
+        "scope": {
+          "const": "interface_metadata_only"
+        }
+      }
+    }
+  }
+}

@@ -31,3 +31,5 @@ Use the admitted source-knowledge, corpus and profile/connection operations with
 Agent-first profile preparation, exact installed schemas and qxctl retained-run coordination are specified in `knowledge/scv/AGENT-WORKFLOWS.md`. That companion adds no provider, deployment or selected-head authority.
 
 The `0.5.0-dev` coverage operation in `knowledge/scv/COVERAGE.md` makes selected source and interpretation gaps explicit through qxctl. Coverage is scoped accounting, not complete vendor expertise or runtime compatibility.
+
+The additive `.6` owner interfaces, portable provider packages and bounded composition operations are governed by `knowledge/scv/OWNER-INTERFACE.md`, `knowledge/scv/PROVIDER-PACKS.md` and `knowledge/scv/COMPOSITION.md`. qxctl exposes their complete operating surface. Requirements, provider permissions, recipe alternatives, fixture selection and execution decisions remain caller-owned.

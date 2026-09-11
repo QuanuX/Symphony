@@ -43,3 +43,13 @@ The catalog maps exact protocol IDs to closed schema definitions and explicit au
 ## Maintained Provider Coverage
 
 `knowledge/scv/COVERAGE.md` owns the additive provider-coverage schema and `.5` catalog input/result entries. The `.5` installed catalog covers 74 protocols in 20 schema documents. Additive provider/coverage retention kinds use the existing provenance record shape. Earlier installed catalogs remain immutable; the twelve original source, corpus and interpretation schema files remain unchanged.
+
+## Portable Packages and Composition
+
+The exact `.6` catalog adds ten protocol entries, totaling 84 across 23 schema documents. Eight owner companions and a receipt-owned owner declaration support discovery without a checkout. Its new closed schemas are:
+
+- `knowledge/scv/schemas/v1/owner-interface.schema.json`, owned by `knowledge/scv/OWNER-INTERFACE.md`;
+- `knowledge/scv/schemas/v1/provider-pack.schema.json`, owned by `knowledge/scv/PROVIDER-PACKS.md`;
+- `knowledge/scv/schemas/v1/composition.schema.json`, owned by `knowledge/scv/COMPOSITION.md`.
+
+Artifact admission, installation versions and schema discovery remain exact. Bound maxima do not promise that every nested maximum fits simultaneously in the shared process envelope. Schemas describe shape; native replay and independent consumers verify provenance and interpretation.

@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 bool is_authorized_canonical_json(const std::string& relative_path) {
     // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, SSFV, SAV, and SEV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 245> authorized_paths = {
+    static const std::array<std::string, 249> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -136,6 +136,10 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/scv/schemas/v1/schema-catalog.json",
         "knowledge/scv/schemas/v1/schema-discovery.schema.json",
         "knowledge/scv/schemas/v1/provider-coverage.schema.json",
+        "knowledge/scv/OWNER-INTERFACE.json",
+        "knowledge/scv/schemas/v1/owner-interface.schema.json",
+        "knowledge/scv/schemas/v1/provider-pack.schema.json",
+        "knowledge/scv/schemas/v1/composition.schema.json",
         "knowledge/scv/schemas/v1/scv-artifact.schema.json",
         "knowledge/scv/schemas/v1/scv-workflow.schema.json",
         "knowledge/scv/schemas/v1/provider-interpretation.schema.json",
@@ -342,6 +346,13 @@ ArtifactCheckResult check_unauthorized_artifacts(const std::string& repo_root) {
                                   rel_path == "knowledge/scv/schemas/v1/provider-interpretation.schema.json" ||
                                   rel_path == "knowledge/scv/schemas/v1/connection-operation.schema.json"
                                 ? "knowledge/scv/INTERPRETATION.md"
+                                : rel_path == "knowledge/scv/OWNER-INTERFACE.json" ||
+                                  rel_path == "knowledge/scv/schemas/v1/owner-interface.schema.json"
+                                ? "knowledge/scv/OWNER-INTERFACE.md"
+                                : rel_path == "knowledge/scv/schemas/v1/provider-pack.schema.json"
+                                ? "knowledge/scv/PROVIDER-PACKS.md"
+                                : rel_path == "knowledge/scv/schemas/v1/composition.schema.json"
+                                ? "knowledge/scv/COMPOSITION.md"
                                 : rel_path.starts_with("knowledge/scv/")
                                 ? "knowledge/scv/SOURCE-KNOWLEDGE.md"
                                 : rel_path.starts_with("knowledge/ssiag/")

@@ -1,6 +1,6 @@
 {
   "protocol": "symphony.scv.schema-catalog.v1",
-  "engine_version": "0.5.0-dev",
+  "engine_version": "0.6.0-dev",
   "entries": [
     {
       "protocol": "symphony.knowledge.engine-descriptor.v2",
@@ -218,6 +218,13 @@
       "protocol": "symphony.qxctl.scv-corpus-result.v1",
       "file": "administration.schema.json",
       "fragment": "#/$defs/corpusResult",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-owner-interface.v1",
+      "file": "owner-interface.schema.json",
+      "fragment": "#/$defs/Result",
       "kind": "output",
       "operations": []
     },
@@ -557,6 +564,65 @@
       "kind": "output",
       "operations": [
         "capture_import"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.composition-exploration.v1",
+      "file": "composition.schema.json",
+      "fragment": "#/$defs/ExploreResult",
+      "kind": "output",
+      "operations": [
+        "composition_explore"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.composition-explore-input.v1",
+      "file": "composition.schema.json",
+      "fragment": "#/$defs/ExploreInput",
+      "kind": "input",
+      "operations": [
+        "composition_explore"
+      ],
+      "template": {
+        "interpretations": [],
+        "additional_knowledge": [],
+        "provider_packs": [],
+        "query_time": null,
+        "requirements": [],
+        "slots": [],
+        "allowed_guarantee_changes": [],
+        "counterfactuals": [],
+        "bounds": {
+          "max_candidates": 8
+        }
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply caller-selected requirements, mappings, permissions and fixture expectations according to the exact schema. No template is evidence or a policy selection."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.composition-reassess-input.v1",
+      "file": "composition.schema.json",
+      "fragment": "#/$defs/ReassessInput",
+      "kind": "input",
+      "operations": [
+        "composition_reassess"
+      ],
+      "template": {
+        "before": null,
+        "after": null
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply caller-selected requirements, mappings, permissions and fixture expectations according to the exact schema. No template is evidence or a policy selection."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.composition-reassessment.v1",
+      "file": "composition.schema.json",
+      "fragment": "#/$defs/ReassessResult",
+      "kind": "output",
+      "operations": [
+        "composition_reassess"
       ]
     },
     {
@@ -1078,6 +1144,13 @@
       ]
     },
     {
+      "protocol": "symphony.scv.owner-interface.v1",
+      "file": "owner-interface.schema.json",
+      "fragment": "#/$defs/Manifest",
+      "kind": "output",
+      "operations": []
+    },
+    {
       "protocol": "symphony.scv.profile-prepare-input.v1",
       "file": "profile-preparation.schema.json",
       "fragment": "#/$defs/input",
@@ -1186,6 +1259,59 @@
       },
       "required_inputs": [
         "Replace null authoring holes and supply the intended array members according to the exact schema; null is not an inferred provider fact."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.provider-pack-evaluate-input.v1",
+      "file": "provider-pack.schema.json",
+      "fragment": "#/$defs/EvaluateInput",
+      "kind": "input",
+      "operations": [
+        "provider_pack_evaluate"
+      ],
+      "template": {
+        "pack": null,
+        "captures": [],
+        "bindings": [],
+        "selection_policy": null,
+        "fixtures": []
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply caller-selected requirements, mappings, permissions and fixture expectations according to the exact schema. No template is evidence or a policy selection."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.provider-pack-evaluation.v1",
+      "file": "provider-pack.schema.json",
+      "fragment": "#/$defs/EvaluateResult",
+      "kind": "output",
+      "operations": [
+        "provider_pack_evaluate"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.provider-pack-prepare-input.v1",
+      "file": "provider-pack.schema.json",
+      "fragment": "#/$defs/PrepareInput",
+      "kind": "input",
+      "operations": [
+        "provider_pack_prepare"
+      ],
+      "template": {
+        "pack": null,
+        "fixtures": []
+      },
+      "required_inputs": [
+        "Replace null authoring holes and supply caller-selected requirements, mappings, permissions and fixture expectations according to the exact schema. No template is evidence or a policy selection."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.provider-pack.v1",
+      "file": "provider-pack.schema.json",
+      "fragment": "#/$defs/Pack",
+      "kind": "output",
+      "operations": [
+        "provider_pack_prepare"
       ]
     },
     {
@@ -1340,7 +1466,23 @@
     "coverage_query_members": 128,
     "coverage_interpretations": 16,
     "coverage_profile_bindings": 256,
-    "coverage_rule_attempts": 2048
+    "coverage_rule_attempts": 2048,
+    "composition_slots": 4,
+    "composition_recipes_per_slot": 8,
+    "composition_candidates": 32,
+    "composition_requirements": 32,
+    "composition_counterfactuals": 4,
+    "composition_prerequisites_per_recipe": 16,
+    "pack_profiles": 16,
+    "pack_rules": 128,
+    "pack_bindings": 16,
+    "pack_fixtures": 16,
+    "pack_selected_fixture_captures": 16,
+    "structured_json_depth": 32,
+    "structured_json_nodes": 8192,
+    "structured_pointer_bytes": 1024,
+    "structured_pointer_segments": 32,
+    "structured_contexts": 8
   },
   "limitations": [
     "Schemas describe shape; runtime also verifies digests, exact ownership, byte/time limits and replay.",

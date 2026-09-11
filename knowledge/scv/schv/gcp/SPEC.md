@@ -23,3 +23,5 @@ This contract admits local bounded source-knowledge computation and explicit pro
 The additive `.4` agent operating increment is defined by `knowledge/scv/AGENT-WORKFLOWS.md`: exact prepared profiles, receipt-owned schemas and qxctl retained evidence workflows preserve this domain and its original-owner provenance when composed by a parent. Existing exact `.3` and earlier installations remain valid at their recorded scope.
 
 Provider coverage in `knowledge/scv/COVERAGE.md` separately accounts for declared sources, selected acquisition and replayed interpretations within this domain. It does not substitute evidence gaps for a provider limitation.
+
+The additive `0.6.0-dev` package preserves this domain boundary while exposing the portable package and composition contracts in `knowledge/scv/PROVIDER-PACKS.md` and `knowledge/scv/COMPOSITION.md`, with mechanical interface ownership in `knowledge/scv/OWNER-INTERFACE.md`. Parent-family engines accept caller-declared provider packages within their family; separately installed named leaf domains keep their exact released scope. Cross-family composition remains a caller decision.

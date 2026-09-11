@@ -79,3 +79,9 @@ Engine `0.2.0-dev` adds the four bounded operations in `knowledge/scv/CORPUS.md`
 ## Additive Provider Interpretation Profile
 
 Engine `0.3.0-dev` adds the three pure operations in `knowledge/scv/INTERPRETATION.md` while preserving all earlier payloads. Exact authored profiles map selected literal context and values into ordinary knowledge v1. Retained wrappers make profile replay verifiable before connection evaluation. Caller-defined checks and changed-result reassessment preserve evidence, uncertainty, explicit requirements and query time; they do not establish runtime compatibility or choose a topology.
+
+## Additive .6 Interface and Graph Work
+
+The exact `0.6.0-dev` process retains this source/knowledge lineage contract and exposes the mechanical interface declaration governed by `knowledge/scv/OWNER-INTERFACE.md`. `knowledge/scv/PROVIDER-PACKS.md` and `knowledge/scv/COMPOSITION.md` consume the same native captures, typed claims and graph qualification. They do not replace source ownership or turn an authored mapping into publisher endorsement.
+
+Graph settlement retains the previous synchronous least fixed point and typed-conflict semantics. Within one request it indexes direct dependents, recomputes only findings affected by the preceding round, and compares typed claims within exact subject/predicate/scope buckets. No result or policy is cached across requests. Composition evaluates one shared evidence graph before checking its finite candidate products; each new evidence selection, query time or policy is replayed independently.

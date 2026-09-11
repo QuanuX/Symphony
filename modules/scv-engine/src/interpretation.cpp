@@ -489,6 +489,15 @@ Json reassess(const Json& payload, const std::string& domain, const engine::Requ
             "affected checks include exact referenced evidence and dependency changes; old results and user selections remain unchanged"})}});
 }
 }
+Json evaluate_connections(const Json& supplied, const Json& graph_assessment) {
+    const auto selected = connections(supplied);
+    const auto evaluated = findings(graph_assessment);
+    Json result = Json::array();
+    for (const auto& [id, connection] : selected) {
+        static_cast<void>(id); result.push_back(checked_connection(connection, evaluated));
+    }
+    return result;
+}
 Json handle_interpretation(const engine::Request& request, const std::string& domain) {
     deadline(request); Json result;
     if (request.operation == "profile_prepare") result = prepare_profile(request.payload, domain, request);

@@ -134,8 +134,10 @@ func newSCVCommand() *cobra.Command {
 	command.AddCommand(newSCVConnectionCommand())
 	command.AddCommand(newSCVProfileCommand())
 	command.AddCommand(newSCVSchemaCommand())
+	command.AddCommand(newSCVInterfaceCommand())
 	command.AddCommand(newSCVArtifactCommand())
 	command.AddCommand(newSCVWorkflowCommand())
+	command.AddCommand(newSCVCompositionCommand())
 	return command
 }
 

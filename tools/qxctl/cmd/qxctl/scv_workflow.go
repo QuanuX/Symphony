@@ -37,7 +37,7 @@ func newSCVArtifactCommand() *cobra.Command {
 		}
 		operations := []string{}
 		if leaf != "list" {
-			operations = []string{"provider_onboard", "provider_coverage", "profile_prepare", "provider_interpret", "connection_evaluate", "connection_reassess", "knowledge_interpret"}
+			operations = knowledgeengine.SCVArtifactOperations()
 		}
 		attachSCVWorkflow(child, "scv.artifact."+leaf, "symphony.qxctl.scv-artifact-"+leaf+"-input.v1", output, interaction, mutability, operations, false)
 		group.AddCommand(child)
@@ -87,22 +87,7 @@ func attachSCVWorkflow(command *cobra.Command, key, input, output, interaction, 
 	for _, domain := range knowledgeengine.SCVDomains() {
 		seen := map[string]bool{}
 		for _, op := range operations {
-			ownerInteraction := "invoke"
-			if op == "provider_onboard" {
-				ownerInteraction = "discover"
-			}
-			if op == "provider_coverage" {
-				ownerInteraction = "query"
-			}
-			if op == "profile_prepare" {
-				ownerInteraction = "propose"
-			}
-			if op == "connection_evaluate" || op == "connection_reassess" {
-				ownerInteraction = "validate"
-			}
-			if op == "corpus_query" {
-				ownerInteraction = "query"
-			}
+			ownerInteraction := knowledgeengine.SCVOperationInteraction(op)
 			spec.BackendOperationIDs = append(spec.BackendOperationIDs, "engop:symphony:"+domain+"."+strings.ReplaceAll(op, "_", "."))
 			if !seen[ownerInteraction] {
 				spec.FeatureBindings = append(spec.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:" + domain + "-engine", Interaction: ownerInteraction})
@@ -129,8 +114,8 @@ type workflowRunner struct {
 func newWorkflowRunner(options scvOptions, requireCurrent bool) (*workflowRunner, error) {
 	r := &workflowRunner{options: options, inspect: knowledgeengine.InspectSCVDomain}
 	if requireCurrent {
-		if options.version != "0.3.0-dev" && options.version != "0.4.0-dev" && options.version != "0.5.0-dev" {
-			return nil, fmt.Errorf("artifact/workflow execution requires exact supported 0.3.0-dev, 0.4.0-dev or 0.5.0-dev engine")
+		if !knowledgeengine.SCVSupports(options.version, "workflow") {
+			return nil, fmt.Errorf("artifact/workflow execution requires an exact engine release supporting this interface")
 		}
 		var err error
 		r.installation, err = r.inspect(options.domain, options.prefix, options.version)
@@ -238,8 +223,8 @@ func (r *workflowRunner) artifact(store scvworkflow.Store, operation string, inp
 			if !ok || scvworkflow.Kind(op) == "" {
 				return fmt.Errorf("unsupported retained artifact operation")
 			}
-			if (op == "provider_onboard" || op == "provider_coverage") && r.installation.Version != "0.5.0-dev" {
-				return fmt.Errorf("retained provider and coverage artifacts require exact 0.5.0-dev owner")
+			if !knowledgeengine.SCVArtifactSupported(r.installation.Version, op) {
+				return fmt.Errorf("retained artifact is unsupported by the exact selected installation")
 			}
 			payload, err := workflowRaw(input["input"])
 			if err != nil {

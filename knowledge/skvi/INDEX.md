@@ -10710,3 +10710,94 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: private reproducible coverage evidence
 - notes: Does not imply complete provider knowledge, runtime compatibility, provider ranking or authority.
 - status: canonical
+
+#### SCV Versioned Owner Interface Contract v1
+- path: `knowledge/scv/OWNER-INTERFACE.md`
+- title: SCV Versioned Owner Interface Contract v1
+- surface_type: canonical contract companion
+- truth_role: current owner-declared bounded interface and composition contract
+- owner: SCV and qxctl maintainers
+- scope: Exact versioned interface discovery, portable authored mappings and fixture expectations, bounded caller-permitted composition and changed-input evidence.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible provider package and exploration evidence
+- notes: Requirements, provider choices, permitted guarantee changes and execution decisions remain with the caller. Interface consistency and selected fixture conformance do not prove complete vendor knowledge or runtime compatibility.
+- status: canonical
+
+#### SCV Owner Interface Declaration v1
+- path: `knowledge/scv/OWNER-INTERFACE.json`
+- title: SCV Owner Interface Declaration v1
+- surface_type: owner-declared interface manifest
+- truth_role: current owner-declared bounded interface and composition contract
+- owner: SCV and qxctl maintainers
+- scope: Exact versioned interface discovery, portable authored mappings and fixture expectations, bounded caller-permitted composition and changed-input evidence.
+- relationships: depends_on -> `knowledge/scv/OWNER-INTERFACE.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible provider package and exploration evidence
+- notes: Requirements, provider choices, permitted guarantee changes and execution decisions remain with the caller. Interface consistency and selected fixture conformance do not prove complete vendor knowledge or runtime compatibility.
+- status: canonical
+
+#### SCV Portable Provider Package Contract v1
+- path: `knowledge/scv/PROVIDER-PACKS.md`
+- title: SCV Portable Provider Package Contract v1
+- surface_type: canonical contract companion
+- truth_role: current owner-declared bounded interface and composition contract
+- owner: SCV and qxctl maintainers
+- scope: Exact versioned interface discovery, portable authored mappings and fixture expectations, bounded caller-permitted composition and changed-input evidence.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible provider package and exploration evidence
+- notes: Requirements, provider choices, permitted guarantee changes and execution decisions remain with the caller. Interface consistency and selected fixture conformance do not prove complete vendor knowledge or runtime compatibility.
+- status: canonical
+
+#### SCV Bounded Composition Exploration Contract v1
+- path: `knowledge/scv/COMPOSITION.md`
+- title: SCV Bounded Composition Exploration Contract v1
+- surface_type: canonical contract companion
+- truth_role: current owner-declared bounded interface and composition contract
+- owner: SCV and qxctl maintainers
+- scope: Exact versioned interface discovery, portable authored mappings and fixture expectations, bounded caller-permitted composition and changed-input evidence.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible provider package and exploration evidence
+- notes: Requirements, provider choices, permitted guarantee changes and execution decisions remain with the caller. Interface consistency and selected fixture conformance do not prove complete vendor knowledge or runtime compatibility.
+- status: canonical
+
+#### SCV Owner Interface Payloads v1
+- path: `knowledge/scv/schemas/v1/owner-interface.schema.json`
+- title: SCV Owner Interface Payloads v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: current owner-declared bounded interface and composition contract
+- owner: SCV and qxctl maintainers
+- scope: Exact versioned interface discovery, portable authored mappings and fixture expectations, bounded caller-permitted composition and changed-input evidence.
+- relationships: depends_on -> `knowledge/scv/OWNER-INTERFACE.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible provider package and exploration evidence
+- notes: Requirements, provider choices, permitted guarantee changes and execution decisions remain with the caller. Interface consistency and selected fixture conformance do not prove complete vendor knowledge or runtime compatibility.
+- status: canonical
+
+#### SCV Portable Provider Package Payloads v1
+- path: `knowledge/scv/schemas/v1/provider-pack.schema.json`
+- title: SCV Portable Provider Package Payloads v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: current owner-declared bounded interface and composition contract
+- owner: SCV and qxctl maintainers
+- scope: Exact versioned interface discovery, portable authored mappings and fixture expectations, bounded caller-permitted composition and changed-input evidence.
+- relationships: depends_on -> `knowledge/scv/PROVIDER-PACKS.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible provider package and exploration evidence
+- notes: Requirements, provider choices, permitted guarantee changes and execution decisions remain with the caller. Interface consistency and selected fixture conformance do not prove complete vendor knowledge or runtime compatibility.
+- status: canonical
+
+#### SCV Bounded Composition Payloads v1
+- path: `knowledge/scv/schemas/v1/composition.schema.json`
+- title: SCV Bounded Composition Payloads v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: current owner-declared bounded interface and composition contract
+- owner: SCV and qxctl maintainers
+- scope: Exact versioned interface discovery, portable authored mappings and fixture expectations, bounded caller-permitted composition and changed-input evidence.
+- relationships: depends_on -> `knowledge/scv/COMPOSITION.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible provider package and exploration evidence
+- notes: Requirements, provider choices, permitted guarantee changes and execution decisions remain with the caller. Interface consistency and selected fixture conformance do not prove complete vendor knowledge or runtime compatibility.
+- status: canonical

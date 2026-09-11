@@ -26,7 +26,7 @@
           "type": "string"
         },
         "engine_version": {
-          "const": "0.5.0-dev"
+          "const": "0.6.0-dev"
         },
         "installation": {
           "type": "object",
@@ -103,7 +103,23 @@
             "coverage_query_members",
             "coverage_interpretations",
             "coverage_profile_bindings",
-            "coverage_rule_attempts"
+            "coverage_rule_attempts",
+            "composition_slots",
+            "composition_recipes_per_slot",
+            "composition_candidates",
+            "composition_requirements",
+            "composition_counterfactuals",
+            "composition_prerequisites_per_recipe",
+            "pack_profiles",
+            "pack_rules",
+            "pack_bindings",
+            "pack_fixtures",
+            "pack_selected_fixture_captures",
+            "structured_json_depth",
+            "structured_json_nodes",
+            "structured_pointer_bytes",
+            "structured_pointer_segments",
+            "structured_contexts"
           ],
           "properties": {
             "process_request_bytes": {
@@ -183,6 +199,70 @@
               "minimum": 1
             },
             "coverage_rule_attempts": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_slots": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_recipes_per_slot": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_candidates": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_requirements": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_counterfactuals": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_prerequisites_per_recipe": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pack_profiles": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pack_rules": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pack_bindings": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pack_fixtures": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pack_selected_fixture_captures": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "structured_json_depth": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "structured_json_nodes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "structured_pointer_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "structured_pointer_segments": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "structured_contexts": {
               "type": "integer",
               "minimum": 1
             }
@@ -290,7 +370,7 @@
           "type": "string"
         },
         "engine_version": {
-          "const": "0.5.0-dev"
+          "const": "0.6.0-dev"
         },
         "installation": {
           "type": "object",
@@ -367,7 +447,23 @@
             "coverage_query_members",
             "coverage_interpretations",
             "coverage_profile_bindings",
-            "coverage_rule_attempts"
+            "coverage_rule_attempts",
+            "composition_slots",
+            "composition_recipes_per_slot",
+            "composition_candidates",
+            "composition_requirements",
+            "composition_counterfactuals",
+            "composition_prerequisites_per_recipe",
+            "pack_profiles",
+            "pack_rules",
+            "pack_bindings",
+            "pack_fixtures",
+            "pack_selected_fixture_captures",
+            "structured_json_depth",
+            "structured_json_nodes",
+            "structured_pointer_bytes",
+            "structured_pointer_segments",
+            "structured_contexts"
           ],
           "properties": {
             "process_request_bytes": {
@@ -447,6 +543,70 @@
               "minimum": 1
             },
             "coverage_rule_attempts": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_slots": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_recipes_per_slot": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_candidates": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_requirements": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_counterfactuals": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_prerequisites_per_recipe": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pack_profiles": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pack_rules": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pack_bindings": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pack_fixtures": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pack_selected_fixture_captures": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "structured_json_depth": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "structured_json_nodes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "structured_pointer_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "structured_pointer_segments": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "structured_contexts": {
               "type": "integer",
               "minimum": 1
             }
@@ -535,7 +695,7 @@
           "type": "string"
         },
         "engine_version": {
-          "const": "0.5.0-dev"
+          "const": "0.6.0-dev"
         },
         "installation": {
           "type": "object",
@@ -612,7 +772,23 @@
             "coverage_query_members",
             "coverage_interpretations",
             "coverage_profile_bindings",
-            "coverage_rule_attempts"
+            "coverage_rule_attempts",
+            "composition_slots",
+            "composition_recipes_per_slot",
+            "composition_candidates",
+            "composition_requirements",
+            "composition_counterfactuals",
+            "composition_prerequisites_per_recipe",
+            "pack_profiles",
+            "pack_rules",
+            "pack_bindings",
+            "pack_fixtures",
+            "pack_selected_fixture_captures",
+            "structured_json_depth",
+            "structured_json_nodes",
+            "structured_pointer_bytes",
+            "structured_pointer_segments",
+            "structured_contexts"
           ],
           "properties": {
             "process_request_bytes": {
@@ -692,6 +868,70 @@
               "minimum": 1
             },
             "coverage_rule_attempts": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_slots": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_recipes_per_slot": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_candidates": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_requirements": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_counterfactuals": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "composition_prerequisites_per_recipe": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pack_profiles": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pack_rules": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pack_bindings": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pack_fixtures": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pack_selected_fixture_captures": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "structured_json_depth": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "structured_json_nodes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "structured_pointer_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "structured_pointer_segments": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "structured_contexts": {
               "type": "integer",
               "minimum": 1
             }

@@ -14,7 +14,7 @@
 - module: `scv-engine`
 - engine: `symphony-scv`
 - vector: `scv`
-- version: `0.5.0-dev`
+- version: `0.6.0-dev`
 - language: C++26
 - thermal path: freezing
 - semantic owner: `knowledge/scv/SPEC.md`
@@ -34,3 +34,11 @@ The additive `0.4.0-dev` package exposes 21 operations, including native profile
 ## Maintained Provider Coverage
 
 The additive `0.5.0-dev` package has 22 operations. `knowledge/scv/COVERAGE.md` owns native accounting of declared sources, exact corpus selection and independently replayed interpretations. Missing, unlisted, unselected, partial and stale evidence remains explicit. The operation does not rank providers or establish runtime compatibility. Earlier exact `.4` and prior installations remain preserved.
+
+## Portable Provider Authoring and Composition Exploration
+
+The additive `0.6.0-dev` package exposes 26 operations. `knowledge/scv/PROVIDER-PACKS.md` owns portable caller-authored provider packs, native sealing, detached conformance fixtures and bounded structured extraction. A pack links an explicit provider declaration, authored profiles, source references and selected fixture expectations; a successful fixture comparison describes those cases alone. Qualified knowledge remains reusable through the existing evidence interfaces. This is an authoring surface for independently chosen providers, without requiring a new compiled provider enum in SCV; a supplied leaf still enforces its advertised family/provider identity.
+
+`knowledge/scv/COMPOSITION.md` owns finite exploration of caller-selected recipes against caller-selected requirements. Native operations preserve evidence, prerequisites, interface declarations, guarantee changes and authored resolution pointers; missing evidence remains unresolved. The engine does not enumerate an open-ended design space, rank providers, choose a user's requirements, provision infrastructure or turn a declaration into observed compatibility. Reassessment preserves exact before/after inputs and changed axes.
+
+`knowledge/scv/OWNER-INTERFACE.json` is the versioned owner declaration for operation metadata, release admission, artifact kinds and installation inventories. Its checked-in generated projections drive native dispatch metadata and Go interface admission; domain validation and adversarial consumer tests remain independent. The package includes eight owner companions, the schema catalog and a receipt-owned copy of the declaration, inspectable through `qxctl scv interface show`. Normal builds and engine invocation do not require the Python authoring generator. Earlier exact `.1`–`.5` receipts and CLI defaults remain unchanged; new pack, composition and interface commands default to exact `.6`.

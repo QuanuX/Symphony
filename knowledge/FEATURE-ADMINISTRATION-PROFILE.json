@@ -1458,15 +1458,19 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -1477,19 +1481,24 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "configure",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.interface.show",
             "qxcmd:symphony:scv.provider-onboard",
             "qxcmd:symphony:scv.schema.list",
             "qxcmd:symphony:scv.schema.show",
@@ -1499,15 +1508,19 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -1524,15 +1537,19 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -1551,20 +1568,25 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.profile.prepare",
+            "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
             "qxcmd:symphony:scv.source.propose"
           ],
@@ -1572,39 +1594,49 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.artifact.list",
+            "qxcmd:symphony:scv.composition.explore",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.provider.coverage",
+            "qxcmd:symphony:scv.provider.pack.evaluate",
             "qxcmd:symphony:scv.query"
           ],
           "delivery": "composed",
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -1618,20 +1650,25 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.reassess",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -1642,15 +1679,19 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -2148,15 +2189,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2171,15 +2216,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2198,15 +2247,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2239,15 +2292,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2255,6 +2312,7 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.profile.prepare",
+            "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
             "qxcmd:symphony:scv.source.propose",
             "qxcmd:symphony:scv.workflow.recover",
@@ -2263,25 +2321,31 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:scev-cf.profile.prepare",
+            "engop:symphony:scev-cf.provider.pack.prepare",
             "engop:symphony:scev-cf.source.plan"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.explore",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
@@ -2289,28 +2353,35 @@
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
             "qxcmd:symphony:scv.provider.coverage",
+            "qxcmd:symphony:scv.provider.pack.evaluate",
             "qxcmd:symphony:scv.query",
             "qxcmd:symphony:scv.workflow.recover",
             "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:scev-cf.composition.explore",
             "engop:symphony:scev-cf.corpus.query",
             "engop:symphony:scev-cf.graph.explain",
             "engop:symphony:scev-cf.graph.query",
-            "engop:symphony:scev-cf.provider.coverage"
+            "engop:symphony:scev-cf.provider.coverage",
+            "engop:symphony:scev-cf.provider.pack.evaluate"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2323,15 +2394,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2339,6 +2414,7 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.reassess",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -2350,6 +2426,7 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:scev-cf.capture.compare",
+            "engop:symphony:scev-cf.composition.reassess",
             "engop:symphony:scev-cf.connection.evaluate",
             "engop:symphony:scev-cf.connection.reassess",
             "engop:symphony:scev-cf.corpus.diff",
@@ -2358,15 +2435,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -2384,15 +2465,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2407,15 +2492,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2434,15 +2523,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2475,15 +2568,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2491,6 +2588,7 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.profile.prepare",
+            "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
             "qxcmd:symphony:scv.source.propose",
             "qxcmd:symphony:scv.workflow.recover",
@@ -2499,25 +2597,31 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:scev.profile.prepare",
+            "engop:symphony:scev.provider.pack.prepare",
             "engop:symphony:scev.source.plan"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.explore",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
@@ -2525,28 +2629,35 @@
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
             "qxcmd:symphony:scv.provider.coverage",
+            "qxcmd:symphony:scv.provider.pack.evaluate",
             "qxcmd:symphony:scv.query",
             "qxcmd:symphony:scv.workflow.recover",
             "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:scev.composition.explore",
             "engop:symphony:scev.corpus.query",
             "engop:symphony:scev.graph.explain",
             "engop:symphony:scev.graph.query",
-            "engop:symphony:scev.provider.coverage"
+            "engop:symphony:scev.provider.coverage",
+            "engop:symphony:scev.provider.pack.evaluate"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2559,15 +2670,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2575,6 +2690,7 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.reassess",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -2586,6 +2702,7 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:scev.capture.compare",
+            "engop:symphony:scev.composition.reassess",
             "engop:symphony:scev.connection.evaluate",
             "engop:symphony:scev.connection.reassess",
             "engop:symphony:scev.corpus.diff",
@@ -2594,15 +2711,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -2620,15 +2741,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2643,15 +2768,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2670,15 +2799,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2711,15 +2844,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2727,6 +2864,7 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.profile.prepare",
+            "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
             "qxcmd:symphony:scv.source.propose",
             "qxcmd:symphony:scv.workflow.recover",
@@ -2735,25 +2873,31 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-aws.profile.prepare",
+            "engop:symphony:schv-aws.provider.pack.prepare",
             "engop:symphony:schv-aws.source.plan"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.explore",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
@@ -2761,28 +2905,35 @@
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
             "qxcmd:symphony:scv.provider.coverage",
+            "qxcmd:symphony:scv.provider.pack.evaluate",
             "qxcmd:symphony:scv.query",
             "qxcmd:symphony:scv.workflow.recover",
             "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:schv-aws.composition.explore",
             "engop:symphony:schv-aws.corpus.query",
             "engop:symphony:schv-aws.graph.explain",
             "engop:symphony:schv-aws.graph.query",
-            "engop:symphony:schv-aws.provider.coverage"
+            "engop:symphony:schv-aws.provider.coverage",
+            "engop:symphony:schv-aws.provider.pack.evaluate"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2795,15 +2946,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2811,6 +2966,7 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.reassess",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -2822,6 +2978,7 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-aws.capture.compare",
+            "engop:symphony:schv-aws.composition.reassess",
             "engop:symphony:schv-aws.connection.evaluate",
             "engop:symphony:schv-aws.connection.reassess",
             "engop:symphony:schv-aws.corpus.diff",
@@ -2830,15 +2987,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -2856,15 +3017,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2879,15 +3044,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2906,15 +3075,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2947,15 +3120,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -2963,6 +3140,7 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.profile.prepare",
+            "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
             "qxcmd:symphony:scv.source.propose",
             "qxcmd:symphony:scv.workflow.recover",
@@ -2971,25 +3149,31 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-azure.profile.prepare",
+            "engop:symphony:schv-azure.provider.pack.prepare",
             "engop:symphony:schv-azure.source.plan"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.explore",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
@@ -2997,28 +3181,35 @@
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
             "qxcmd:symphony:scv.provider.coverage",
+            "qxcmd:symphony:scv.provider.pack.evaluate",
             "qxcmd:symphony:scv.query",
             "qxcmd:symphony:scv.workflow.recover",
             "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:schv-azure.composition.explore",
             "engop:symphony:schv-azure.corpus.query",
             "engop:symphony:schv-azure.graph.explain",
             "engop:symphony:schv-azure.graph.query",
-            "engop:symphony:schv-azure.provider.coverage"
+            "engop:symphony:schv-azure.provider.coverage",
+            "engop:symphony:schv-azure.provider.pack.evaluate"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3031,15 +3222,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3047,6 +3242,7 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.reassess",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -3058,6 +3254,7 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-azure.capture.compare",
+            "engop:symphony:schv-azure.composition.reassess",
             "engop:symphony:schv-azure.connection.evaluate",
             "engop:symphony:schv-azure.connection.reassess",
             "engop:symphony:schv-azure.corpus.diff",
@@ -3066,15 +3263,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -3092,15 +3293,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3115,15 +3320,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3142,15 +3351,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3183,15 +3396,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3199,6 +3416,7 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.profile.prepare",
+            "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
             "qxcmd:symphony:scv.source.propose",
             "qxcmd:symphony:scv.workflow.recover",
@@ -3207,25 +3425,31 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-do.profile.prepare",
+            "engop:symphony:schv-do.provider.pack.prepare",
             "engop:symphony:schv-do.source.plan"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.explore",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
@@ -3233,28 +3457,35 @@
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
             "qxcmd:symphony:scv.provider.coverage",
+            "qxcmd:symphony:scv.provider.pack.evaluate",
             "qxcmd:symphony:scv.query",
             "qxcmd:symphony:scv.workflow.recover",
             "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:schv-do.composition.explore",
             "engop:symphony:schv-do.corpus.query",
             "engop:symphony:schv-do.graph.explain",
             "engop:symphony:schv-do.graph.query",
-            "engop:symphony:schv-do.provider.coverage"
+            "engop:symphony:schv-do.provider.coverage",
+            "engop:symphony:schv-do.provider.pack.evaluate"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3267,15 +3498,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3283,6 +3518,7 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.reassess",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -3294,6 +3530,7 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-do.capture.compare",
+            "engop:symphony:schv-do.composition.reassess",
             "engop:symphony:schv-do.connection.evaluate",
             "engop:symphony:schv-do.connection.reassess",
             "engop:symphony:schv-do.corpus.diff",
@@ -3302,15 +3539,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -3328,15 +3569,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3351,15 +3596,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3378,15 +3627,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3419,15 +3672,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3435,6 +3692,7 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.profile.prepare",
+            "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
             "qxcmd:symphony:scv.source.propose",
             "qxcmd:symphony:scv.workflow.recover",
@@ -3443,25 +3701,31 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv.profile.prepare",
+            "engop:symphony:schv.provider.pack.prepare",
             "engop:symphony:schv.source.plan"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.explore",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
@@ -3469,28 +3733,35 @@
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
             "qxcmd:symphony:scv.provider.coverage",
+            "qxcmd:symphony:scv.provider.pack.evaluate",
             "qxcmd:symphony:scv.query",
             "qxcmd:symphony:scv.workflow.recover",
             "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:schv.composition.explore",
             "engop:symphony:schv.corpus.query",
             "engop:symphony:schv.graph.explain",
             "engop:symphony:schv.graph.query",
-            "engop:symphony:schv.provider.coverage"
+            "engop:symphony:schv.provider.coverage",
+            "engop:symphony:schv.provider.pack.evaluate"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3503,15 +3774,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3519,6 +3794,7 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.reassess",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -3530,6 +3806,7 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv.capture.compare",
+            "engop:symphony:schv.composition.reassess",
             "engop:symphony:schv.connection.evaluate",
             "engop:symphony:schv.connection.reassess",
             "engop:symphony:schv.corpus.diff",
@@ -3538,15 +3815,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -3564,15 +3845,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3587,15 +3872,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3614,15 +3903,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3655,15 +3948,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3671,6 +3968,7 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.profile.prepare",
+            "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
             "qxcmd:symphony:scv.source.propose",
             "qxcmd:symphony:scv.workflow.recover",
@@ -3679,25 +3977,31 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-gcp.profile.prepare",
+            "engop:symphony:schv-gcp.provider.pack.prepare",
             "engop:symphony:schv-gcp.source.plan"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.explore",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
@@ -3705,28 +4009,35 @@
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
             "qxcmd:symphony:scv.provider.coverage",
+            "qxcmd:symphony:scv.provider.pack.evaluate",
             "qxcmd:symphony:scv.query",
             "qxcmd:symphony:scv.workflow.recover",
             "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:schv-gcp.composition.explore",
             "engop:symphony:schv-gcp.corpus.query",
             "engop:symphony:schv-gcp.graph.explain",
             "engop:symphony:schv-gcp.graph.query",
-            "engop:symphony:schv-gcp.provider.coverage"
+            "engop:symphony:schv-gcp.provider.coverage",
+            "engop:symphony:schv-gcp.provider.pack.evaluate"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3739,15 +4050,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3755,6 +4070,7 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.reassess",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -3766,6 +4082,7 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-gcp.capture.compare",
+            "engop:symphony:schv-gcp.composition.reassess",
             "engop:symphony:schv-gcp.connection.evaluate",
             "engop:symphony:schv-gcp.connection.reassess",
             "engop:symphony:schv-gcp.corpus.diff",
@@ -3774,15 +4091,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -3941,15 +4262,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3964,15 +4289,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -3991,15 +4320,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -4032,15 +4365,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -4048,6 +4385,7 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.profile.prepare",
+            "qxcmd:symphony:scv.provider.pack.prepare",
             "qxcmd:symphony:scv.source-plan",
             "qxcmd:symphony:scv.source.propose",
             "qxcmd:symphony:scv.workflow.recover",
@@ -4056,25 +4394,31 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:scv.profile.prepare",
+            "engop:symphony:scv.provider.pack.prepare",
             "engop:symphony:scv.source.plan"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
           "command_ids": [
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.explore",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
@@ -4082,28 +4426,35 @@
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
             "qxcmd:symphony:scv.provider.coverage",
+            "qxcmd:symphony:scv.provider.pack.evaluate",
             "qxcmd:symphony:scv.query",
             "qxcmd:symphony:scv.workflow.recover",
             "qxcmd:symphony:scv.workflow.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:scv.composition.explore",
             "engop:symphony:scv.corpus.query",
             "engop:symphony:scv.graph.explain",
             "engop:symphony:scv.graph.query",
-            "engop:symphony:scv.provider.coverage"
+            "engop:symphony:scv.provider.coverage",
+            "engop:symphony:scv.provider.pack.evaluate"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -4116,15 +4467,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         },
         {
@@ -4132,6 +4487,7 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.reassess",
             "qxcmd:symphony:scv.connection.evaluate",
             "qxcmd:symphony:scv.connection.reassess",
             "qxcmd:symphony:scv.corpus.diff",
@@ -4143,6 +4499,7 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:scv.capture.compare",
+            "engop:symphony:scv.composition.reassess",
             "engop:symphony:scv.connection.evaluate",
             "engop:symphony:scv.connection.reassess",
             "engop:symphony:scv.corpus.diff",
@@ -4151,15 +4508,19 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, headless discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
           "requirement": "required"
         }
       ],
@@ -5625,9 +5986,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:7dd11e95209c3613bc228ef6c34c4f3697e2ee3f704535eb3cbac44e0fcec62a",
+  "profile_digest": "sha256:26911141b8fa9a176040afa9518493180228b6e1c958c088a55f96be60001729",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 100,
-  "ssfv_registry_digest": "sha256:195b75c32a9f54a8b127c503068cd81a4c007012084ede2b8885a0c435dcd8a8"
+  "ssfv_registry_digest": "sha256:64b4373d55fbeb4eed9f68ace7f2e57605dcd59d6796a93bd29491fe91b311ba"
 }

@@ -65,3 +65,11 @@ A satisfied documentation check does not establish deployed reachability, accoun
 ## Additive Provider Coverage Profile
 
 The `.5` interface in `knowledge/scv/COVERAGE.md` adds native provider coverage and permits provider candidate and coverage-result artifact retention. Earlier installed `.4` schema/catalog bytes and records remain preserved. Existing preparation, workflow, corpus and discovery defaults remain unchanged; explicit `.5` selection uses its exact receipt.
+
+## Exact .6 Agent Surface
+
+The additive `0.6.0-dev` package installs eight owner companions and the receipt-owned declaration `share/symphony/contracts/<module>/<version>/OWNER-INTERFACE.json`. `qxctl scv interface show --prefix <prefix> --version 0.6.0-dev --domain <domain> --json` verifies and reads that declaration without a source checkout. `schema list`, `schema show` and `schema template` expose its exact schema catalog; templates retain caller authoring holes. Existing command defaults continue selecting their earlier exact releases.
+
+New native routes are `scv provider pack prepare`, `scv provider pack evaluate`, `scv composition explore` and `scv composition reassess`. All accept exact installed domain/prefix/version and bounded JSON inputs through qxctl. `artifact import`, `artifact show` and `artifact list` retain and replay the corresponding `provider_pack`, `provider_pack_evaluation`, `composition` and `composition_reassessment` artifacts under their original exact installation. Package preparation computes detached fixture input digests from caller-supplied fixture bodies; callers need no external hashing helper.
+
+These routes expose all four native operations directly. The existing recoverable `workflow run` remains the earlier corpus/profile/connection workflow; it does not silently acquire a new composition stage. Callers explicitly select package fixtures, requirements, provider IDs, recipe alternatives, permitted guarantee changes and candidate bounds. Failed or unrun conformance evidence and required follow-up work remain visible in exploration. Reading an obligation never executes its reference. Exact semantics belong to `knowledge/scv/OWNER-INTERFACE.md`, `knowledge/scv/PROVIDER-PACKS.md` and `knowledge/scv/COMPOSITION.md`.

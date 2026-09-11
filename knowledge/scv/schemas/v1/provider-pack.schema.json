@@ -1,0 +1,965 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:scv:provider-pack:v1",
+  "title": "Portable provider packs and bounded structured extraction",
+  "description": "New additive 0.6 owner contracts. Exact runtime replay, aggregate bounds, fixture digest binding and extraction/accounting checks supplement these closed structural schemas. Detached fixture expectations are authored inputs, not generated certification.",
+  "$defs": {
+    "Binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_id",
+        "capture_digest"
+      ],
+      "properties": {
+        "profile_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "capture_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "StructuredProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "profile_id",
+        "profile_version",
+        "provider_id",
+        "source_id",
+        "locator_id",
+        "media_types",
+        "authored_by",
+        "rationale",
+        "rules"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.structured-profile.v1"
+        },
+        "profile_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "profile_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "provider_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "locator_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "media_types": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "authored_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "rule_id",
+              "claim_id",
+              "subject",
+              "predicate",
+              "scope",
+              "statement_kind",
+              "dependencies",
+              "context",
+              "extractor"
+            ],
+            "properties": {
+              "rule_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "claim_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "subject": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "predicate": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "scope": {
+                "$ref": "interpretation-input.schema.json#/$defs/claim/properties/scope"
+              },
+              "statement_kind": {
+                "$ref": "interpretation-input.schema.json#/$defs/claim/properties/statement_kind"
+              },
+              "dependencies": {
+                "$ref": "interpretation-input.schema.json#/$defs/claim/properties/dependencies"
+              },
+              "context": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "pointer",
+                    "value"
+                  ],
+                  "properties": {
+                    "pointer": {
+                      "type": "string",
+                      "maxLength": 1024,
+                      "pattern": "^(?:/(?:[^~]|~[01])*)?$"
+                    },
+                    "value": {
+                      "allOf": [
+                        {
+                          "$ref": "interpretation-input.schema.json#/$defs/claim/properties/value"
+                        },
+                        {
+                          "required": [
+                            "unit"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                },
+                "minItems": 0,
+                "maxItems": 8
+              },
+              "extractor": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "kind",
+                  "pointer",
+                  "type",
+                  "unit"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "json_pointer"
+                  },
+                  "pointer": {
+                    "type": "string",
+                    "maxLength": 1024,
+                    "pattern": "^(?:/(?:[^~]|~[01])*)?$"
+                  },
+                  "type": {
+                    "enum": [
+                      "integer",
+                      "decimal",
+                      "boolean",
+                      "string",
+                      "reference"
+                    ]
+                  },
+                  "unit": {
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "minItems": 0,
+          "maxItems": 128
+        }
+      }
+    },
+    "ExpectedClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id",
+        "subject",
+        "predicate",
+        "scope",
+        "statement_kind",
+        "value",
+        "dependencies"
+      ],
+      "properties": {
+        "claim_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "predicate": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "scope": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512
+          },
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "maxProperties": 16
+        },
+        "statement_kind": {
+          "enum": [
+            "documented_fact",
+            "requirement",
+            "recommendation",
+            "observation",
+            "user_assertion",
+            "inference",
+            "hypothesis"
+          ]
+        },
+        "value": {
+          "allOf": [
+            {
+              "$ref": "interpretation-input.schema.json#/$defs/claim/properties/value"
+            },
+            {
+              "required": [
+                "unit"
+              ]
+            }
+          ]
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "claim_id",
+              "role"
+            ],
+            "properties": {
+              "claim_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "role": {
+                "enum": [
+                  "support",
+                  "requires",
+                  "scope"
+                ]
+              }
+            }
+          },
+          "maxItems": 16,
+          "minItems": 0
+        }
+      }
+    },
+    "Extraction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_id",
+        "capture_digest",
+        "rule_id",
+        "claim_id",
+        "status",
+        "reasons"
+      ],
+      "properties": {
+        "profile_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "capture_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "rule_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "claim_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "status": {
+          "enum": [
+            "matched",
+            "unresolved"
+          ]
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "minItems": 0,
+          "maxItems": 16
+        }
+      }
+    },
+    "FixtureInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fixture_id",
+        "captures",
+        "bindings",
+        "selection_policy"
+      ],
+      "properties": {
+        "fixture_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "captures": {
+          "type": "array",
+          "items": {
+            "$ref": "capture.schema.json"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Binding"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "selection_policy": {
+          "$ref": "interpretation-input.schema.json#/$defs/selectionPolicy"
+        }
+      }
+    },
+    "FixtureManifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fixture_id",
+        "label",
+        "authored_by",
+        "rationale",
+        "input_digest",
+        "expected_claims",
+        "expected_extractions"
+      ],
+      "properties": {
+        "fixture_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "authored_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "input_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "expected_claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ExpectedClaim"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "expected_extractions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Extraction"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        }
+      }
+    },
+    "FixtureManifestDraft": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fixture_id",
+        "label",
+        "authored_by",
+        "rationale",
+        "input_digest",
+        "expected_claims",
+        "expected_extractions"
+      ],
+      "properties": {
+        "fixture_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "authored_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "input_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "expected_claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ExpectedClaim"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "expected_extractions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Extraction"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        }
+      }
+    },
+    "PackDraft": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "pack_id",
+        "pack_version",
+        "authored_by",
+        "provenance",
+        "provider",
+        "profiles",
+        "structured_profiles",
+        "fixtures"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.provider-pack.v1"
+        },
+        "pack_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "pack_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "authored_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "provenance": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "minItems": 1,
+          "maxItems": 16
+        },
+        "provider": {
+          "$ref": "source-operation.schema.json#/$defs/provider_onboard"
+        },
+        "profiles": {
+          "type": "array",
+          "items": {
+            "$ref": "interpretation-profile.schema.json"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "structured_profiles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StructuredProfile"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "fixtures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FixtureManifestDraft"
+          },
+          "minItems": 1,
+          "maxItems": 16
+        }
+      }
+    },
+    "Pack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "pack_id",
+        "pack_version",
+        "authored_by",
+        "provenance",
+        "provider",
+        "profiles",
+        "structured_profiles",
+        "fixtures",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.provider-pack.v1"
+        },
+        "pack_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "pack_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "authored_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "provenance": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "minItems": 1,
+          "maxItems": 16
+        },
+        "provider": {
+          "$ref": "source-operation.schema.json#/$defs/provider_onboard"
+        },
+        "profiles": {
+          "type": "array",
+          "items": {
+            "$ref": "interpretation-profile.schema.json"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "structured_profiles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StructuredProfile"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "fixtures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FixtureManifest"
+          },
+          "minItems": 1,
+          "maxItems": 16
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "PrepareInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pack",
+        "fixtures"
+      ],
+      "properties": {
+        "pack": {
+          "$ref": "#/$defs/PackDraft"
+        },
+        "fixtures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FixtureInput"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        }
+      }
+    },
+    "EvaluateInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pack",
+        "captures",
+        "bindings",
+        "selection_policy",
+        "fixtures"
+      ],
+      "properties": {
+        "pack": {
+          "$ref": "#/$defs/Pack"
+        },
+        "captures": {
+          "type": "array",
+          "items": {
+            "$ref": "capture.schema.json"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Binding"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "selection_policy": {
+          "$ref": "interpretation-input.schema.json#/$defs/selectionPolicy"
+        },
+        "fixtures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FixtureInput"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        }
+      }
+    },
+    "FixtureResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fixture_id",
+        "status",
+        "expected_claims",
+        "expected_extractions",
+        "actual_claims",
+        "actual_extractions",
+        "difference_axes"
+      ],
+      "properties": {
+        "fixture_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "status": {
+          "enum": [
+            "passed",
+            "failed",
+            "not_run"
+          ]
+        },
+        "expected_claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ExpectedClaim"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "expected_extractions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Extraction"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "actual_claims": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ExpectedClaim"
+              },
+              "minItems": 0,
+              "maxItems": 128
+            }
+          ]
+        },
+        "actual_extractions": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Extraction"
+              },
+              "minItems": 0,
+              "maxItems": 128
+            }
+          ]
+        },
+        "difference_axes": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "claims",
+                "extractions"
+              ],
+              "properties": {
+                "claims": {
+                  "type": "boolean"
+                },
+                "extractions": {
+                  "type": "boolean"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "not_run"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "actual_claims": {
+                "type": "null"
+              },
+              "actual_extractions": {
+                "type": "null"
+              },
+              "difference_axes": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "actual_claims": {
+                "type": "array"
+              },
+              "actual_extractions": {
+                "type": "array"
+              },
+              "difference_axes": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "EvaluateResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "domain",
+        "input",
+        "knowledge",
+        "extractions",
+        "fixture_results",
+        "conformance",
+        "limitations",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.provider-pack-evaluation.v1"
+        },
+        "domain": {
+          "enum": [
+            "scv",
+            "schv",
+            "scev",
+            "schv-aws",
+            "schv-azure",
+            "schv-do",
+            "schv-gcp",
+            "scev-cf"
+          ]
+        },
+        "input": {
+          "$ref": "#/$defs/EvaluateInput"
+        },
+        "knowledge": {
+          "$ref": "knowledge-graph.schema.json#/$defs/knowledge"
+        },
+        "extractions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Extraction"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "fixture_results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FixtureResult"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "conformance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "passed",
+            "failed",
+            "not_run"
+          ],
+          "properties": {
+            "passed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16
+            },
+            "failed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16
+            },
+            "not_run": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 16
+            }
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "minItems": 1,
+          "maxItems": 16
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/Pack"
+    },
+    {
+      "$ref": "#/$defs/EvaluateResult"
+    }
+  ]
+}

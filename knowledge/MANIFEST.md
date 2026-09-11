@@ -179,3 +179,5 @@ The `0.5.0-dev` provider coverage profile in `knowledge/scv/COVERAGE.md` adds na
 ## Non-Authorization Statement
 
 This manifest does not authorize an engine to rewrite canonical files, manufacture ratification, classify callers, hold credentials, edit STAV ledgers, publish documentation or releases, expose network listeners, enter hot/warm execution, or implement semantics not assigned by its vector Contract Quad.
+
+The SCV `.6` increment additionally admits the interface declaration and portable provider/composition companions recorded in `knowledge/scv/MANIFEST.md` and its schema manifest. Each of eight exact C++ packages exposes 26 operations; qxctl has 244 registered leaves, including 46 SCV leaves. This bounded increment extends the existing 21 invariant records and 11 adapter identities and retains caller authority over requirements, evidence policy, providers and permitted recipes.

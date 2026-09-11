@@ -71,6 +71,8 @@
         "engop:symphony:scev-cf.capture.compare",
         "engop:symphony:scev-cf.capture.import",
         "engop:symphony:scev-cf.capture.index",
+        "engop:symphony:scev-cf.composition.explore",
+        "engop:symphony:scev-cf.composition.reassess",
         "engop:symphony:scev-cf.connection.evaluate",
         "engop:symphony:scev-cf.connection.reassess",
         "engop:symphony:scev-cf.corpus.build",
@@ -87,6 +89,8 @@
         "engop:symphony:scev-cf.provider.coverage",
         "engop:symphony:scev-cf.provider.interpret",
         "engop:symphony:scev-cf.provider.onboard",
+        "engop:symphony:scev-cf.provider.pack.evaluate",
+        "engop:symphony:scev-cf.provider.pack.prepare",
         "engop:symphony:scev-cf.source.apply",
         "engop:symphony:scev-cf.source.plan",
         "engop:symphony:scev-cf.source.status"
@@ -105,6 +109,8 @@
         "engop:symphony:scev.capture.compare",
         "engop:symphony:scev.capture.import",
         "engop:symphony:scev.capture.index",
+        "engop:symphony:scev.composition.explore",
+        "engop:symphony:scev.composition.reassess",
         "engop:symphony:scev.connection.evaluate",
         "engop:symphony:scev.connection.reassess",
         "engop:symphony:scev.corpus.build",
@@ -121,6 +127,8 @@
         "engop:symphony:scev.provider.coverage",
         "engop:symphony:scev.provider.interpret",
         "engop:symphony:scev.provider.onboard",
+        "engop:symphony:scev.provider.pack.evaluate",
+        "engop:symphony:scev.provider.pack.prepare",
         "engop:symphony:scev.source.apply",
         "engop:symphony:scev.source.plan",
         "engop:symphony:scev.source.status"
@@ -139,6 +147,8 @@
         "engop:symphony:schv-aws.capture.compare",
         "engop:symphony:schv-aws.capture.import",
         "engop:symphony:schv-aws.capture.index",
+        "engop:symphony:schv-aws.composition.explore",
+        "engop:symphony:schv-aws.composition.reassess",
         "engop:symphony:schv-aws.connection.evaluate",
         "engop:symphony:schv-aws.connection.reassess",
         "engop:symphony:schv-aws.corpus.build",
@@ -155,6 +165,8 @@
         "engop:symphony:schv-aws.provider.coverage",
         "engop:symphony:schv-aws.provider.interpret",
         "engop:symphony:schv-aws.provider.onboard",
+        "engop:symphony:schv-aws.provider.pack.evaluate",
+        "engop:symphony:schv-aws.provider.pack.prepare",
         "engop:symphony:schv-aws.source.apply",
         "engop:symphony:schv-aws.source.plan",
         "engop:symphony:schv-aws.source.status"
@@ -173,6 +185,8 @@
         "engop:symphony:schv-azure.capture.compare",
         "engop:symphony:schv-azure.capture.import",
         "engop:symphony:schv-azure.capture.index",
+        "engop:symphony:schv-azure.composition.explore",
+        "engop:symphony:schv-azure.composition.reassess",
         "engop:symphony:schv-azure.connection.evaluate",
         "engop:symphony:schv-azure.connection.reassess",
         "engop:symphony:schv-azure.corpus.build",
@@ -189,6 +203,8 @@
         "engop:symphony:schv-azure.provider.coverage",
         "engop:symphony:schv-azure.provider.interpret",
         "engop:symphony:schv-azure.provider.onboard",
+        "engop:symphony:schv-azure.provider.pack.evaluate",
+        "engop:symphony:schv-azure.provider.pack.prepare",
         "engop:symphony:schv-azure.source.apply",
         "engop:symphony:schv-azure.source.plan",
         "engop:symphony:schv-azure.source.status"
@@ -207,6 +223,8 @@
         "engop:symphony:schv-do.capture.compare",
         "engop:symphony:schv-do.capture.import",
         "engop:symphony:schv-do.capture.index",
+        "engop:symphony:schv-do.composition.explore",
+        "engop:symphony:schv-do.composition.reassess",
         "engop:symphony:schv-do.connection.evaluate",
         "engop:symphony:schv-do.connection.reassess",
         "engop:symphony:schv-do.corpus.build",
@@ -223,6 +241,8 @@
         "engop:symphony:schv-do.provider.coverage",
         "engop:symphony:schv-do.provider.interpret",
         "engop:symphony:schv-do.provider.onboard",
+        "engop:symphony:schv-do.provider.pack.evaluate",
+        "engop:symphony:schv-do.provider.pack.prepare",
         "engop:symphony:schv-do.source.apply",
         "engop:symphony:schv-do.source.plan",
         "engop:symphony:schv-do.source.status"
@@ -241,6 +261,8 @@
         "engop:symphony:schv-gcp.capture.compare",
         "engop:symphony:schv-gcp.capture.import",
         "engop:symphony:schv-gcp.capture.index",
+        "engop:symphony:schv-gcp.composition.explore",
+        "engop:symphony:schv-gcp.composition.reassess",
         "engop:symphony:schv-gcp.connection.evaluate",
         "engop:symphony:schv-gcp.connection.reassess",
         "engop:symphony:schv-gcp.corpus.build",
@@ -257,6 +279,8 @@
         "engop:symphony:schv-gcp.provider.coverage",
         "engop:symphony:schv-gcp.provider.interpret",
         "engop:symphony:schv-gcp.provider.onboard",
+        "engop:symphony:schv-gcp.provider.pack.evaluate",
+        "engop:symphony:schv-gcp.provider.pack.prepare",
         "engop:symphony:schv-gcp.source.apply",
         "engop:symphony:schv-gcp.source.plan",
         "engop:symphony:schv-gcp.source.status"
@@ -275,6 +299,8 @@
         "engop:symphony:schv.capture.compare",
         "engop:symphony:schv.capture.import",
         "engop:symphony:schv.capture.index",
+        "engop:symphony:schv.composition.explore",
+        "engop:symphony:schv.composition.reassess",
         "engop:symphony:schv.connection.evaluate",
         "engop:symphony:schv.connection.reassess",
         "engop:symphony:schv.corpus.build",
@@ -291,6 +317,8 @@
         "engop:symphony:schv.provider.coverage",
         "engop:symphony:schv.provider.interpret",
         "engop:symphony:schv.provider.onboard",
+        "engop:symphony:schv.provider.pack.evaluate",
+        "engop:symphony:schv.provider.pack.prepare",
         "engop:symphony:schv.source.apply",
         "engop:symphony:schv.source.plan",
         "engop:symphony:schv.source.status"
@@ -309,6 +337,8 @@
         "engop:symphony:scv.capture.compare",
         "engop:symphony:scv.capture.import",
         "engop:symphony:scv.capture.index",
+        "engop:symphony:scv.composition.explore",
+        "engop:symphony:scv.composition.reassess",
         "engop:symphony:scv.connection.evaluate",
         "engop:symphony:scv.connection.reassess",
         "engop:symphony:scv.corpus.build",
@@ -325,6 +355,8 @@
         "engop:symphony:scv.provider.coverage",
         "engop:symphony:scv.provider.interpret",
         "engop:symphony:scv.provider.onboard",
+        "engop:symphony:scv.provider.pack.evaluate",
+        "engop:symphony:scv.provider.pack.prepare",
         "engop:symphony:scv.source.apply",
         "engop:symphony:scv.source.plan",
         "engop:symphony:scv.source.status"
@@ -725,6 +757,12 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "TestInstalledSCVCompositionArtifactsRetainExactOwnerAndRejectEarlierAdmission"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_composition_test.go"
+        },
+        {
+          "cases": [
             "TestSCVArtifactsRejectSuppliedResultMismatchAndReplayOriginalOwner",
             "TestSCVWorkflowReconstructsPendingStageBeforeReplay",
             "TestSCVWorkflowRejectsIgnoredPolicyAndRelativeCorpusRoot",
@@ -764,7 +802,7 @@
         }
       ],
       "real_process_regressions": [],
-      "statement": "The qxctl evidence workflow pins caller intent, exact owner installations, corpus selections and native artifact provenance before advancing durable stages. Immutable content and validation records have separate digests. Status preserves its stated integrity scope; recovery reconstructs stage inputs and replays exact owner results, rejecting changed inputs, missing evidence and substituted checkpoints. Runs create no selected head, provider facts or permission.",
+      "statement": "The qxctl evidence workflow pins caller intent, exact owner installations, corpus selections and native artifact provenance before advancing durable stages. Immutable content and validation records have separate digests. Status preserves its stated integrity scope; recovery reconstructs stage inputs and replays exact owner results, rejecting changed inputs, missing evidence and substituted checkpoints. Runs create no selected head, provider facts or permission. The four additive .6 pack/composition artifact kinds retain their original exact operation, authored input, result and owner installation; generated interface admission neither promotes metadata listing into native replay nor substitutes a current owner for historical provenance.",
       "status": "active",
       "title": "Agent workflow recovery preserves exact caller intent and native evidence"
     },
@@ -935,16 +973,47 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "test_composition_consumer_rejects_resealed_result"
+          ],
+          "path": "modules/scv-engine/tests/composition_test.cpp"
+        },
+        {
+          "cases": [
             "test_connection_consumer_rejects_resealed_interpretation"
           ],
           "path": "modules/scv-engine/tests/interpretation_test.cpp"
         },
         {
           "cases": [
+            "test_provider_pack_rejects_forged_evaluation"
+          ],
+          "path": "modules/scv-engine/tests/pack_test.cpp"
+        },
+        {
+          "cases": [
+            "TestInstalledSCVCompositionEnumerationAndTamper",
+            "TestSCVCompositionFiniteSearchAndInputValidation"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/scv_composition_test.go"
+        },
+        {
+          "cases": [
+            "TestInstalledSCVConnectionReasonParityAcrossExactVersions",
             "TestInstalledSCVProfileConnectionProvenance",
-            "TestSCVConnectionConsumerRejectsResealedComparison"
+            "TestSCVConnectionConsumerRejectsFabricatedReasonInventory",
+            "TestSCVConnectionConsumerRejectsResealedComparison",
+            "TestSCVConnectionReasonInventoryPreservesQualifiedOperands"
           ],
           "path": "tools/qxctl/internal/knowledgeengine/scv_interpretation_test.go"
+        },
+        {
+          "cases": [
+            "TestSCVProviderPackConsumerRejectsResealedEvidenceAndConformance",
+            "TestSCVProviderPackDetachedCasesPreserveNotRunAndFailure",
+            "TestSCVProviderPackIndependentStructuredTokens",
+            "TestSCVProviderPackMalformedSelectionsRejectWithoutPanic"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/scv_pack_test.go"
         },
         {
           "cases": [
@@ -958,27 +1027,49 @@
       "owner_component": "scv-interpretation",
       "owner_contract": "knowledge/scv/INTERPRETATION.md",
       "producer_implementations": [
-        "modules/scv-engine/src/interpretation.cpp"
+        "modules/scv-engine/src/composition.cpp",
+        "modules/scv-engine/src/interpretation.cpp",
+        "modules/scv-engine/src/pack.cpp"
       ],
       "producer_regressions": [
+        {
+          "cases": [
+            "test_composition_exploration_producer",
+            "test_composition_time_only_reassessment",
+            "test_composition_unbound_references_remain_change_dependencies"
+          ],
+          "path": "modules/scv-engine/tests/composition_test.cpp"
+        },
         {
           "cases": [
             "test_profile_preparation_preserves_authored_mapping",
             "test_provider_interpretation_producer"
           ],
           "path": "modules/scv-engine/tests/interpretation_test.cpp"
+        },
+        {
+          "cases": [
+            "test_exact_decimal_lexeme",
+            "test_fixture_failure_retained",
+            "test_pointer_escape_and_array_indices",
+            "test_provider_pack_producer",
+            "test_reference_unresolved"
+          ],
+          "path": "modules/scv-engine/tests/pack_test.cpp"
         }
       ],
       "real_process_regressions": [
         {
           "cases": [
+            "test_composition_process_preserves_caller_choices_and_change_evidence",
             "test_profile_preparation_and_packaged_discovery_evidence",
-            "test_provider_interpretation_connection_reassessment"
+            "test_provider_interpretation_connection_reassessment",
+            "test_provider_pack_process_conformance_and_interface_receipt"
           ],
           "path": "modules/scv-engine/tests/installed_integration.py"
         }
       ],
-      "statement": "The C++ interpretation owner validates exact sealed profiles and capture bindings, retains qualified extraction findings and replays wrapped interpretations before evaluating caller-defined subject/scope/type/unit checks. Reassessment replays both retained results and distinguishes changed inputs and affected findings. Missing, stale, disputed or conditional support cannot become unqualified runtime compatibility, provider-wide contradiction or authority. Recomputed outer digests do not bypass nested replay. Native profile preparation validates and seals exactly the authored draft without asserting source extraction or substituting fields.",
+      "statement": "The C++ interpretation owner validates exact sealed profiles and capture bindings, retains qualified extraction findings and replays wrapped interpretations before evaluating caller-defined subject/scope/type/unit checks. Reassessment replays both retained results and distinguishes changed inputs and affected findings. Missing, stale, disputed or conditional support cannot become unqualified runtime compatibility, provider-wide contradiction or authority. Recomputed outer digests do not bypass nested replay. Native profile preparation validates and seals exactly the authored draft without asserting source extraction or substituting fields. Portable provider packs preserve caller-authored declarations, exact profile and fixture expectations, detached-input identity, structured token provenance and explicit failed/unrun conformance. Finite recipe exploration and reassessment reconstruct selected evidence, requirements, allowed choices, enumeration bounds, interface declarations and obligations without ranking providers, silently relaxing requirements, or treating authored implementation metadata as observed compatibility.",
       "status": "active",
       "title": "Profile and connection results preserve replayable scoped evidence"
     },
@@ -1052,6 +1143,14 @@
         },
         {
           "cases": [
+            "TestInstalledSCVOwnerInterfaceRejectsAlteredOwnedBytes",
+            "TestSCVOwnerInterfaceRejectsChangedOrResealedDeclaration"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/scv_interface_test.go"
+        },
+        {
+          "cases": [
+            "TestInstalledSCVRetainsExactOldAndNewOperationSets",
             "TestSCVEmptyQueryRequiresExactAbsenceQualification",
             "TestSCVExactReceiptRejectsTamperingAndLegacy",
             "TestSCVResultBoundaryRejectsChangedCaptureAndUnknownFields"
@@ -1065,10 +1164,27 @@
       "owner_contract": "knowledge/scv/SOURCE-KNOWLEDGE.md",
       "producer_implementations": [
         "modules/scv-engine/src/dispatch.cpp",
+        "modules/scv-engine/src/interface.generated.inc",
         "modules/scv-engine/src/knowledge.cpp",
-        "modules/scv-engine/src/source.cpp"
+        "modules/scv-engine/src/source.cpp",
+        "modules/scv-engine/tools/generate_interface.py"
       ],
       "producer_regressions": [
+        {
+          "cases": [
+            "test_artifact_schema_admissions_match_owner_interface",
+            "test_check_detects_output_drift",
+            "test_checked_in_complete_inventory_has_no_drift",
+            "test_checked_in_metadata_has_no_drift",
+            "test_complete_generation_is_deterministic",
+            "test_duplicate_json_keys_rejected",
+            "test_future_domain_does_not_change_old_admission_or_definition",
+            "test_historical_projection_is_frozen",
+            "test_malformed_catalog_and_references_rejected",
+            "test_malformed_manifest_rejected"
+          ],
+          "path": "modules/scv-engine/tests/interface_generation_test.py"
+        },
         {
           "cases": [
             "test_source_knowledge_producer"
@@ -1086,13 +1202,14 @@
         {
           "cases": [
             "test_capture_provenance_and_graph_process",
+            "test_provider_pack_process_conformance_and_interface_receipt",
             "test_receipt_owned_standalone_process",
             "test_source_transition_expected_state_and_digest"
           ],
           "path": "modules/scv-engine/tests/installed_integration.py"
         }
       ],
-      "statement": "Source reducers reject stale or altered expected-state transitions; capture and graph consumers revalidate retained bytes, domain qualification and semantic digests. A computed transition or projection is evidence and cannot assert authorization or a durable storage commit.",
+      "statement": "Source reducers reject stale or altered expected-state transitions; capture and graph consumers revalidate retained bytes, domain qualification and semantic digests. A computed transition or projection is evidence and cannot assert authorization or a durable storage commit. Mechanical interface generation preserves exact earlier release admissions; receipt-owned declaration inspection binds retained bytes and canonical metadata to the compiled owner interface. Generated metadata does not replace independent semantic validation or admit arbitrary executable behavior.",
       "status": "active",
       "title": "Source-knowledge process preserves exact domain evidence and revision lineage"
     },
@@ -1407,7 +1524,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v2",
-  "registry_digest": "sha256:7c55378c86f1d3dd6592fa21a36cbd4ece7d1abda03445adfd8271cf7fa83796",
+  "registry_digest": "sha256:82994324c508c2cffc515fff920706f9a9a80383ef9417a3f43b285e70257687",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

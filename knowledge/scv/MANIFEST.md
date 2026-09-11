@@ -18,6 +18,10 @@ SCV is the semantic owner of provider/offsite resource possibility, constraint, 
 - `knowledge/scv/INTERPRETATION.md`
 - `knowledge/scv/AGENT-WORKFLOWS.md`
 - `knowledge/scv/COVERAGE.md`
+- `knowledge/scv/OWNER-INTERFACE.md`
+- `knowledge/scv/OWNER-INTERFACE.json`
+- `knowledge/scv/PROVIDER-PACKS.md`
+- `knowledge/scv/COMPOSITION.md`
 - `knowledge/scv/SKILL.md`
 
 ## Admitted Implementation Character
@@ -39,3 +43,7 @@ The additive `.4` interface is governed by `knowledge/scv/AGENT-WORKFLOWS.md`: n
 ## Maintained Provider Coverage
 
 The additive `0.5.0-dev` interface in `knowledge/scv/COVERAGE.md` accounts independently for declared inventory, exact corpus selection and replayed authored interpretations. It preserves missing evidence and caller choice.
+
+## Portable Knowledge and Bounded Composition
+
+The additive `0.6.0-dev` release exposes 26 operations in each of the eight supplied exact-domain packages. `knowledge/scv/OWNER-INTERFACE.md` governs the versioned interface declaration and mechanical projections; `knowledge/scv/PROVIDER-PACKS.md` owns authored portable mappings and detached semantic fixtures; `knowledge/scv/COMPOSITION.md` owns finite caller-permitted exploration and changed-input obligations. Independent consumer checks remain implementation, not generated semantics. Users retain provider, requirement, policy, recipe and execution decisions.
