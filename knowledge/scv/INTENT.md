@@ -24,3 +24,5 @@ An installed SCV knowledge graph belongs to the private user or TOPS installatio
 - SKV governs SCV contracts, indexing, change, evolution, and official-publication relationships.
 
 Agent-first profile preparation, exact installed schemas and qxctl retained-run coordination are specified in `knowledge/scv/AGENT-WORKFLOWS.md`. That companion adds no provider, deployment or selected-head authority.
+
+The `0.5.0-dev` coverage operation in `knowledge/scv/COVERAGE.md` makes selected source and interpretation gaps explicit through qxctl. Coverage is scoped accounting, not complete vendor expertise or runtime compatibility.

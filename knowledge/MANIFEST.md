@@ -174,6 +174,8 @@ The eight domain engines listed above add bounded source planning, pure expected
 
 The `0.4.0-dev` agent operating profile in `knowledge/scv/AGENT-WORKFLOWS.md` adds native profile preparation, exact packaged schema discovery, structured SCV CLI failures, separate artifact provenance records and recoverable runs. It retains the existing owner, authorization and caller-composition boundaries.
 
+The `0.5.0-dev` provider coverage profile in `knowledge/scv/COVERAGE.md` adds native inventory, selected corpus and replayed interpretation accounting through qxctl while preserving source uncertainty and caller authority.
+
 ## Non-Authorization Statement
 
 This manifest does not authorize an engine to rewrite canonical files, manufacture ratification, classify callers, hold credentials, edit STAV ledgers, publish documentation or releases, expose network listeners, enter hot/warm execution, or implement semantics not assigned by its vector Contract Quad.

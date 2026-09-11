@@ -133,3 +133,5 @@ Any caller operating within its effective target-host permission should use `qxc
 15. `go run ./cmd/qxctl knowledge lifecycle apply-status --tops-id UUID --json` when exact lifecycle grants and coordinator binding are available
 
 SCV agent-operated schemas, profile preparation, artifact retention and run recovery are governed by `knowledge/scv/AGENT-WORKFLOWS.md`. Read the selected installation's exact schemas/templates, supply caller-owned requirements, and use retained operation identities for status/recovery. SCV `--json` failures use `tools/qxctl/ERRORS.md`; successful owner result protocols are preserved.
+
+The SCV `.5` provider coverage interface in `knowledge/scv/COVERAGE.md` preserves declared inventory, exact corpus query and native interpretation replay. Artifact import/show/list additionally retain candidate provider definitions and coverage results through their original validating installation.

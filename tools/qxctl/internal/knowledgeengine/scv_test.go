@@ -96,6 +96,12 @@ func TestInstalledSCVRetainsExactOldAndNewOperationSets(t *testing.T) {
 			count           int
 		}{fourth, "0.4.0-dev", 21})
 	}
+	if fifth := os.Getenv("SYMPHONY_SCV_COVERAGE_PREFIX"); fifth != "" {
+		installations = append(installations, struct {
+			prefix, version string
+			count           int
+		}{fifth, "0.5.0-dev", 22})
+	}
 
 	for _, domain := range SCVDomains() {
 		for _, installed := range installations {
@@ -120,13 +126,15 @@ func TestInstalledSCVRetainsExactOldAndNewOperationSets(t *testing.T) {
 }
 
 func TestSCVOperationVersionsAreExplicit(t *testing.T) {
-	for _, version := range []string{"latest", "0.5.0-dev", "", "0.1.0"} {
+	for _, version := range []string{"latest", "0.6.0-dev", "", "0.1.0"} {
 		if SCVOperationSupported(version, "inspect") {
 			t.Fatalf("unsupported exact version %s accepted", version)
 		}
 	}
 	if SCVOperationSupported("0.1.0-dev", "capture_index") || !SCVOperationSupported("0.2.0-dev", "capture_index") ||
-		SCVOperationSupported("0.2.0-dev", "provider_interpret") || !SCVOperationSupported("0.3.0-dev", "provider_interpret") {
+		SCVOperationSupported("0.2.0-dev", "provider_interpret") || !SCVOperationSupported("0.3.0-dev", "provider_interpret") ||
+		SCVOperationSupported("0.3.0-dev", "profile_prepare") || !SCVOperationSupported("0.4.0-dev", "profile_prepare") ||
+		SCVOperationSupported("0.4.0-dev", "provider_coverage") || !SCVOperationSupported("0.5.0-dev", "provider_coverage") {
 		t.Fatal("version operation boundary broadened")
 	}
 }

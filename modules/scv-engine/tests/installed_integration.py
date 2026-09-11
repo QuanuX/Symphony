@@ -79,10 +79,10 @@ class InstalledProcessTests(unittest.TestCase):
         self.assertEqual(response['request_id'], 'fixture-request')
         self.assertEqual(response['result']['engine_version'], ARGS.version)
         self.assertFalse(response['result']['canonical_apply_enabled'])
-        self.assertEqual(len(response['result']['operations']), {'0.1.0-dev': 13, '0.2.0-dev': 17, '0.3.0-dev': 20, '0.4.0-dev': 21}[ARGS.version])
+        self.assertEqual(len(response['result']['operations']), {'0.1.0-dev': 13, '0.2.0-dev': 17, '0.3.0-dev': 20, '0.4.0-dev': 21, '0.5.0-dev': 22}[ARGS.version])
 
     def test_profile_preparation_and_packaged_discovery_evidence(self):
-        if ARGS.version != '0.4.0-dev':
+        if ARGS.version not in ('0.4.0-dev', '0.5.0-dev'):
             self.skipTest('profile preparation is an exact .4 addition')
         draft = {'protocol': 'symphony.scv.interpretation-profile.v1', 'profile_id': 'fixture-profile',
                  'profile_version': 'test-1', 'provider_id': self.provider, 'source_id': 'fixture-docs',
@@ -202,6 +202,53 @@ class InstalledProcessTests(unittest.TestCase):
         missing = interpret(self.capture(source, 'Port: 7844 UDP.', '2026-09-10T12:00:00Z'))
         self.assertEqual(missing['extractions'][0]['status'], 'unresolved')
         self.assertEqual(evaluate(missing)['connections'][0]['status'], 'unresolved')
+
+    def test_provider_coverage_process_binding_and_declared_gaps(self):
+        if ARGS.version != '0.5.0-dev':
+            self.skipTest('provider coverage is an exact .5 addition')
+        source = self.initial()
+        captured = self.capture(source, 'Fixture limit: 10 units.', '2026-09-10T12:00:00Z')
+        profile = self.owner('profile_prepare', {'profile': {
+            'protocol': 'symphony.scv.interpretation-profile.v1', 'profile_id': 'coverage-profile',
+            'profile_version': 'fixture-1', 'provider_id': self.provider, 'source_id': source['source_id'],
+            'locator_id': 'docs', 'media_types': ['text/markdown'], 'authored_by': 'Synthetic fixture',
+            'rationale': 'A bounded literal extraction fixture, not live provider evidence',
+            'rules': [{'rule_id': 'limit', 'claim_id': 'fixture-limit', 'subject': 'fixture-service',
+                'predicate': 'maximum', 'scope': {}, 'statement_kind': 'documented_fact', 'dependencies': [],
+                'context': [], 'extractor': {'kind': 'delimited', 'prefix': 'Fixture limit: ', 'suffix': ' units.',
+                    'type': 'integer', 'unit': 'units'}}]}})
+        interpreted = self.owner('provider_interpret', {'captures': [captured], 'profiles': [profile],
+            'bindings': [{'profile_digest': profile['digest'], 'capture_digest': captured['digest']}],
+            'selection_policy': {'policy_id': 'coverage-policy', 'max_age_seconds': None,
+                'allowed_statement_kinds': ['documented_fact'], 'partial_capture': 'exclude'}})
+        missing = self.desired()
+        missing['source_id'] = 'not-acquired'
+        declaration = self.owner('provider_onboard', {'provider_id': self.provider, 'family_id': self.family,
+            'display_name': 'Fixture provider', 'sources': [self.desired(), missing]})
+        capture_index = self.owner('capture_index', {'capture': captured})
+        corpus = self.owner('corpus_build', {'corpus_id': 'coverage-corpus', 'previous': None,
+            'snapshot_time': '2026-09-10T12:00:01Z', 'attempts': [{'member_id': 'docs', 'capture': capture_index}]})
+        payload = {'provider': declaration, 'corpus_query': {'corpus': corpus, 'member_ids': [],
+            'selection': 'latest_attempt', 'query_time': '2026-09-10T12:00:01Z', 'max_age_seconds': 60},
+            'interpretations': [interpreted]}
+        result = self.owner('provider_coverage', payload)
+        self.assertEqual(result['protocol'], 'symphony.scv.provider-coverage.v1')
+        self.assertEqual(result['domain'], ARGS.domain)
+        self.assertEqual(result['input'], payload)
+        self.assertEqual(result['summary']['declared_locators'], 2)
+        self.assertEqual(result['summary']['unselected_declared_locators'], 1)
+        self.assertEqual(result['summary']['matched_rule_attempts'], 1)
+        self.assertEqual(result['summary']['replayed_selected_captures'], 1)
+        selected_row = next(row for row in result['sources'] if row['source_id'] == source['source_id'])
+        self.assertEqual(selected_row['declaration_match'], 'matches')
+        metadata = self.owner('provider_coverage', {**payload, 'interpretations': []})
+        self.assertEqual(metadata['summary']['replayed_selected_captures'], 0)
+        forged = json.loads(json.dumps(interpreted))
+        forged['extractions'][0]['status'] = 'unresolved'
+        forged.pop('digest')
+        forged['digest'] = digest(forged)
+        proc, rejected = self.invoke('provider_coverage', {**payload, 'interpretations': [forged]})
+        self.assertNotEqual(proc.returncode, 0, rejected)
 
     def test_corpus_refresh_retains_exact_historical_capture(self):
         source = self.initial()

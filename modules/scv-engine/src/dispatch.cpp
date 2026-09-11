@@ -1,6 +1,7 @@
 #include "scv.hpp"
 #include "knowledge.hpp"
 #include "corpus.hpp"
+#include "coverage.hpp"
 #include "interpretation.hpp"
 
 #include "symphony/knowledge/engine/error.hpp"
@@ -49,7 +50,8 @@ const std::vector<Operation>& registry() {
         {"provider_interpret", "symphony.scv.provider-interpretation.v1", {"invoke"}, "evidence_only", false, handle_interpretation},
         {"connection_evaluate", "symphony.scv.connection-evaluation.v1", {"validate"}, "evidence_only", false, handle_interpretation},
         {"connection_reassess", "symphony.scv.connection-reassessment.v1", {"validate"}, "evidence_only", false, handle_interpretation},
-        {"profile_prepare", "symphony.scv.interpretation-profile.v1", {"propose"}, "proposal_only", false, handle_interpretation}
+        {"profile_prepare", "symphony.scv.interpretation-profile.v1", {"propose"}, "proposal_only", false, handle_interpretation},
+        {"provider_coverage", "symphony.scv.provider-coverage.v1", {"query"}, "read_only", false, handle_coverage}
     };
     return operations;
 }
@@ -74,7 +76,7 @@ Json descriptor(const std::string& domain) {
     return sealed(Json{{"protocol", engine::descriptor_protocol_v2}, {"format_version", 2},
         {"module_id", domain + "-engine"}, {"engine_id", "symphony-" + domain}, {"vector_id", domain},
         {"engine_version", version}, {"process_protocols", Json::array({engine::process_protocol_v1})},
-        {"contract_versions", Json::array({"knowledge/SPEC.md@v1", "knowledge/scv/SOURCE-KNOWLEDGE.md@v1", "knowledge/scv/CORPUS.md@v1", "knowledge/scv/INTERPRETATION.md@v1", "knowledge/scv/AGENT-WORKFLOWS.md@v1"})},
+        {"contract_versions", Json::array({"knowledge/SPEC.md@v1", "knowledge/scv/SOURCE-KNOWLEDGE.md@v1", "knowledge/scv/CORPUS.md@v1", "knowledge/scv/INTERPRETATION.md@v1", "knowledge/scv/AGENT-WORKFLOWS.md@v1", "knowledge/scv/COVERAGE.md@v1"})},
         {"operations", engine::administration_operation_descriptors(operations)},
         {"limits", Json{{"request_bytes", engine::Limits::max_request_bytes}, {"response_bytes", engine::Limits::max_response_bytes},
             {"json_depth", engine::Limits::max_json_depth}, {"json_values", engine::Limits::max_json_values},

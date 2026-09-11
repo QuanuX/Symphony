@@ -80,6 +80,7 @@
                     "request.deadline",
                     "request.deadline_exceeded",
                     "corpus.invalid",
+                    "coverage.invalid",
                     "interpretation.invalid",
                     "knowledge.invalid",
                     "knowledge.evaluation_limit",

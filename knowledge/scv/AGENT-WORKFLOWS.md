@@ -61,3 +61,7 @@ Existing C++ process limits, capture and interpretation bounds remain in force. 
 Verification must exercise prepared-profile rejection, schemas/templates without a repository, native owner replay, machine-readable failures, duplicate/colliding runs, missing or corrupted artifacts, interrupted stages, exact-engine drift, and retained before/after reassessment. Existing retained Cloudflare/GCP documents can test workflow behavior without representing a new live provider verification. A labeled synthetic source change remains separate from actual vendor changes.
 
 A satisfied documentation check does not establish deployed reachability, account permissions, application identity, payload compatibility or a working strategy. Such evidence remains independently supplied and scoped. Neither profile preparation nor workflow completion resolves missing facts by assumption.
+
+## Additive Provider Coverage Profile
+
+The `.5` interface in `knowledge/scv/COVERAGE.md` adds native provider coverage and permits provider candidate and coverage-result artifact retention. Earlier installed `.4` schema/catalog bytes and records remain preserved. Existing preparation, workflow, corpus and discovery defaults remain unchanged; explicit `.5` selection uses its exact receipt.

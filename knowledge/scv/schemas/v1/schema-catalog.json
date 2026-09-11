@@ -1,6 +1,6 @@
 {
   "protocol": "symphony.scv.schema-catalog.v1",
-  "engine_version": "0.4.0-dev",
+  "engine_version": "0.5.0-dev",
   "entries": [
     {
       "protocol": "symphony.knowledge.engine-descriptor.v2",
@@ -1105,6 +1105,40 @@
       ]
     },
     {
+      "protocol": "symphony.scv.provider-coverage-input.v1",
+      "file": "provider-coverage.schema.json",
+      "fragment": "#/$defs/ProviderCoverageInput",
+      "kind": "input",
+      "operations": [
+        "provider_coverage"
+      ],
+      "template": {
+        "provider": null,
+        "corpus_query": {
+          "corpus": null,
+          "member_ids": [],
+          "selection": null,
+          "query_time": null,
+          "max_age_seconds": null
+        },
+        "interpretations": []
+      },
+      "required_inputs": [
+        "Supply the exact sealed provider candidate and full native corpus query with an exact sealed corpus, explicit member selection and query time. The qxctl snapshot-digest query wrapper is not this input.",
+        "Supply independently authored, exact replayable interpretation wrappers when coverage of captured bodies and extraction is intended. Empty interpretations records a metadata-only selection, not verified source contents.",
+        "Provider/source inventory and corpus member selection are caller choices, not an exhaustive vendor catalog. Null template holes are not valid evidence or inferred defaults."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.provider-coverage.v1",
+      "file": "provider-coverage.schema.json",
+      "fragment": "#/$defs/ProviderCoverageResult",
+      "kind": "output",
+      "operations": [
+        "provider_coverage"
+      ]
+    },
+    {
       "protocol": "symphony.scv.provider-interpret-input.v1",
       "file": "provider-interpretation.schema.json",
       "fragment": "#/$defs/providerInterpretInput",
@@ -1300,7 +1334,13 @@
     "connections": 32,
     "connection_checks": 128,
     "corpus_members": 128,
-    "corpus_export_captures": 16
+    "corpus_export_captures": 16,
+    "coverage_declared_sources": 32,
+    "coverage_declared_locators": 512,
+    "coverage_query_members": 128,
+    "coverage_interpretations": 16,
+    "coverage_profile_bindings": 256,
+    "coverage_rule_attempts": 2048
   },
   "limitations": [
     "Schemas describe shape; runtime also verifies digests, exact ownership, byte/time limits and replay.",

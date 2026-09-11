@@ -18,7 +18,9 @@
             "provider_interpret",
             "connection_evaluate",
             "connection_reassess",
-            "knowledge_interpret"
+            "knowledge_interpret",
+            "provider_onboard",
+            "provider_coverage"
           ]
         },
         "input": {
@@ -165,6 +167,58 @@
               }
             }
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "provider_onboard"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "source-operation.schema.json#/$defs/provider_onboard"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "source-operation.schema.json#/$defs/provider"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "provider_coverage"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "provider-coverage.schema.json#/$defs/ProviderCoverageInput"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "provider-coverage.schema.json#/$defs/ProviderCoverageResult"
+                  }
+                ]
+              }
+            }
+          }
         }
       ]
     },
@@ -230,7 +284,9 @@
             "interpretation",
             "evaluation",
             "reassessment",
-            "knowledge"
+            "knowledge",
+            "provider",
+            "coverage"
           ]
         },
         "operation": {
@@ -239,7 +295,9 @@
             "provider_interpret",
             "connection_evaluate",
             "connection_reassess",
-            "knowledge_interpret"
+            "knowledge_interpret",
+            "provider_onboard",
+            "provider_coverage"
           ]
         },
         "installation": {
@@ -415,6 +473,64 @@
               }
             }
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "provider_onboard"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "source-operation.schema.json#/$defs/provider_onboard"
+              },
+              "artifact": {
+                "$ref": "source-operation.schema.json#/$defs/provider"
+              },
+              "kind": {
+                "const": "provider"
+              },
+              "installation": {
+                "properties": {
+                  "Version": {
+                    "const": "0.5.0-dev"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "provider_coverage"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "provider-coverage.schema.json#/$defs/ProviderCoverageInput"
+              },
+              "artifact": {
+                "$ref": "provider-coverage.schema.json#/$defs/ProviderCoverageResult"
+              },
+              "kind": {
+                "const": "coverage"
+              },
+              "installation": {
+                "properties": {
+                  "Version": {
+                    "const": "0.5.0-dev"
+                  }
+                }
+              }
+            }
+          }
         }
       ]
     },
@@ -450,7 +566,9 @@
                   "interpretation",
                   "evaluation",
                   "reassessment",
-                  "knowledge"
+                  "knowledge",
+                  "provider",
+                  "coverage"
                 ]
               },
               "operation": {
@@ -459,7 +577,9 @@
                   "provider_interpret",
                   "connection_evaluate",
                   "connection_reassess",
-                  "knowledge_interpret"
+                  "knowledge_interpret",
+                  "provider_onboard",
+                  "provider_coverage"
                 ]
               },
               "installation": {

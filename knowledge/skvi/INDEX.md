@@ -10684,3 +10684,29 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: private reproducible evidence and agent authoring inputs
 - notes: Does not infer provider facts, grant authority, select a topology or publish private evidence.
 - status: canonical
+
+#### SCV Maintained Provider Coverage Contract v1
+- path: `knowledge/scv/COVERAGE.md`
+- title: SCV Maintained Provider Coverage Contract v1
+- surface_type: canonical contract companion
+- truth_role: current owner-declared bounded provider coverage contract
+- owner: SCV and qxctl maintainers
+- scope: Declared source inventory, selected corpus metadata and independently replayed authored interpretation coverage.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible coverage evidence
+- notes: Does not imply complete provider knowledge, runtime compatibility, provider ranking or authority.
+- status: canonical
+
+#### SCV Provider Coverage Payloads v1
+- path: `knowledge/scv/schemas/v1/provider-coverage.schema.json`
+- title: SCV Provider Coverage Payloads v1
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: current owner-declared bounded provider coverage contract
+- owner: SCV and qxctl maintainers
+- scope: Declared source inventory, selected corpus metadata and independently replayed authored interpretation coverage.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: private reproducible coverage evidence
+- notes: Does not imply complete provider knowledge, runtime compatibility, provider ranking or authority.
+- status: canonical

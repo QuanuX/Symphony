@@ -26,7 +26,7 @@
           "type": "string"
         },
         "engine_version": {
-          "const": "0.4.0-dev"
+          "const": "0.5.0-dev"
         },
         "installation": {
           "type": "object",
@@ -97,7 +97,13 @@
             "connections",
             "connection_checks",
             "corpus_members",
-            "corpus_export_captures"
+            "corpus_export_captures",
+            "coverage_declared_sources",
+            "coverage_declared_locators",
+            "coverage_query_members",
+            "coverage_interpretations",
+            "coverage_profile_bindings",
+            "coverage_rule_attempts"
           ],
           "properties": {
             "process_request_bytes": {
@@ -153,6 +159,30 @@
               "minimum": 1
             },
             "corpus_export_captures": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_declared_sources": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_declared_locators": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_query_members": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_interpretations": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_profile_bindings": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_rule_attempts": {
               "type": "integer",
               "minimum": 1
             }
@@ -260,7 +290,7 @@
           "type": "string"
         },
         "engine_version": {
-          "const": "0.4.0-dev"
+          "const": "0.5.0-dev"
         },
         "installation": {
           "type": "object",
@@ -331,7 +361,13 @@
             "connections",
             "connection_checks",
             "corpus_members",
-            "corpus_export_captures"
+            "corpus_export_captures",
+            "coverage_declared_sources",
+            "coverage_declared_locators",
+            "coverage_query_members",
+            "coverage_interpretations",
+            "coverage_profile_bindings",
+            "coverage_rule_attempts"
           ],
           "properties": {
             "process_request_bytes": {
@@ -387,6 +423,30 @@
               "minimum": 1
             },
             "corpus_export_captures": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_declared_sources": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_declared_locators": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_query_members": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_interpretations": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_profile_bindings": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_rule_attempts": {
               "type": "integer",
               "minimum": 1
             }
@@ -475,7 +535,7 @@
           "type": "string"
         },
         "engine_version": {
-          "const": "0.4.0-dev"
+          "const": "0.5.0-dev"
         },
         "installation": {
           "type": "object",
@@ -546,7 +606,13 @@
             "connections",
             "connection_checks",
             "corpus_members",
-            "corpus_export_captures"
+            "corpus_export_captures",
+            "coverage_declared_sources",
+            "coverage_declared_locators",
+            "coverage_query_members",
+            "coverage_interpretations",
+            "coverage_profile_bindings",
+            "coverage_rule_attempts"
           ],
           "properties": {
             "process_request_bytes": {
@@ -602,6 +668,30 @@
               "minimum": 1
             },
             "corpus_export_captures": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_declared_sources": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_declared_locators": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_query_members": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_interpretations": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_profile_bindings": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "coverage_rule_attempts": {
               "type": "integer",
               "minimum": 1
             }

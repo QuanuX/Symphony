@@ -3,6 +3,7 @@
 ## Canonical Surfaces
 
 - `knowledge/scv/schemas/v1/MANIFEST.md`
+- `knowledge/scv/schemas/v1/provider-coverage.schema.json`
 - `knowledge/scv/schemas/v1/interpretation-profile.schema.json`
 - `knowledge/scv/schemas/v1/provider-interpretation.schema.json`
 - `knowledge/scv/schemas/v1/connection-operation.schema.json`
@@ -38,3 +39,7 @@
 - `knowledge/scv/schemas/v1/scv-workflow.schema.json`
 
 The catalog maps exact protocol IDs to closed schema definitions and explicit authoring templates. It is packaged with receipt ownership; the original source/knowledge/corpus/interpretation schemas remain unchanged. Templates are authoring aids, not evidence.
+
+## Maintained Provider Coverage
+
+`knowledge/scv/COVERAGE.md` owns the additive provider-coverage schema and `.5` catalog input/result entries. The `.5` installed catalog covers 74 protocols in 20 schema documents. Additive provider/coverage retention kinds use the existing provenance record shape. Earlier installed catalogs remain immutable; the twelve original source, corpus and interpretation schema files remain unchanged.

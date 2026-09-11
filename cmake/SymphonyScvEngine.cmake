@@ -33,7 +33,7 @@ endforeach()
 set(SCV_LICENSES "share/licenses/symphony-${SCV_MODULE}/${SCV_VERSION}")
 
 if(NOT TARGET scv-domain-core)
-    add_library(scv-domain-core STATIC "${SCV_SOURCE_DIR}/src/source.cpp" "${SCV_SOURCE_DIR}/src/knowledge.cpp" "${SCV_SOURCE_DIR}/src/corpus.cpp" "${SCV_SOURCE_DIR}/src/interpretation.cpp" "${SCV_SOURCE_DIR}/src/dispatch.cpp")
+    add_library(scv-domain-core STATIC "${SCV_SOURCE_DIR}/src/source.cpp" "${SCV_SOURCE_DIR}/src/knowledge.cpp" "${SCV_SOURCE_DIR}/src/corpus.cpp" "${SCV_SOURCE_DIR}/src/interpretation.cpp" "${SCV_SOURCE_DIR}/src/coverage.cpp" "${SCV_SOURCE_DIR}/src/dispatch.cpp")
     target_include_directories(scv-domain-core PUBLIC "${SCV_SOURCE_DIR}/src")
     target_link_libraries(scv-domain-core PUBLIC Symphony::KnowledgeVectorEngine)
     target_compile_definitions(scv-domain-core PUBLIC SYMPHONY_SCV_VERSION="${SCV_VERSION}")
@@ -65,6 +65,10 @@ if(BUILD_TESTING)
         target_link_libraries(scv-interpretation-tests PRIVATE scv-domain-core)
         set_target_properties(scv-interpretation-tests PROPERTIES CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
         add_test(NAME scv-interpretation-tests COMMAND scv-interpretation-tests)
+        add_executable(scv-coverage-tests "${SCV_SOURCE_DIR}/tests/coverage_test.cpp")
+        target_link_libraries(scv-coverage-tests PRIVATE scv-domain-core)
+        set_target_properties(scv-coverage-tests PROPERTIES CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+        add_test(NAME scv-coverage-tests COMMAND scv-coverage-tests)
     endif()
     add_test(NAME scv-installed-process-integration COMMAND ${Python3_EXECUTABLE}
         "${SCV_SOURCE_DIR}/tests/installed_integration.py" --build "${CMAKE_CURRENT_BINARY_DIR}" --domain "${SYMPHONY_SCV_DOMAIN}" --version "${SCV_VERSION}")
@@ -76,6 +80,7 @@ install(FILES ${SCV_SCHEMA_FILES} DESTINATION "${SCV_SCHEMAS}")
 install(FILES "${SYMPHONY_REPOSITORY_ROOT}/knowledge/scv/SOURCE-KNOWLEDGE.md"
     "${SYMPHONY_REPOSITORY_ROOT}/knowledge/scv/CORPUS.md"
     "${SYMPHONY_REPOSITORY_ROOT}/knowledge/scv/INTERPRETATION.md"
+    "${SYMPHONY_REPOSITORY_ROOT}/knowledge/scv/COVERAGE.md"
     "${SYMPHONY_REPOSITORY_ROOT}/knowledge/scv/AGENT-WORKFLOWS.md" DESTINATION "${SCV_DOCS}")
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/INTENT.md" "${CMAKE_CURRENT_SOURCE_DIR}/MANIFEST.md"
     "${CMAKE_CURRENT_SOURCE_DIR}/INSTALL.md" "${CMAKE_CURRENT_SOURCE_DIR}/SKILL.md" "${CMAKE_CURRENT_SOURCE_DIR}/SPEC.md"
@@ -91,6 +96,7 @@ symphony_install_receipt_v2(
         ${SCV_SCHEMA_OWNED}
         "${SCV_DOCS}/SOURCE-KNOWLEDGE.md|regular" "${SCV_DOCS}/CORPUS.md|regular"
         "${SCV_DOCS}/INTERPRETATION.md|regular" "${SCV_DOCS}/AGENT-WORKFLOWS.md|regular"
+        "${SCV_DOCS}/COVERAGE.md|regular"
         "${SCV_RUNTIME}/${SCV_EXECUTABLE}|executable"
         "${SCV_DOCS}/INSTALL.md|regular" "${SCV_DOCS}/INTENT.md|regular" "${SCV_DOCS}/MANIFEST.md|regular"
         "${SCV_DOCS}/SKILL.md|regular" "${SCV_DOCS}/SPEC.md|regular"

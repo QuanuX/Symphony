@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 bool is_authorized_canonical_json(const std::string& relative_path) {
     // Exact, Architect-ratified STAV v1, common SKV, SKVI, SCLV, SACV, SODV, SSFV, SAV, and SEV protocol artifacts. Directory-prefix
     // allowlisting would silently admit unreviewed JSON and is prohibited.
-    static const std::array<std::string, 244> authorized_paths = {
+    static const std::array<std::string, 245> authorized_paths = {
         "knowledge/stav/schemas/v1/common.schema.json",
         "knowledge/stav/schemas/v1/candidate.schema.json",
         "knowledge/stav/schemas/v1/event.schema.json",
@@ -135,6 +135,7 @@ bool is_authorized_canonical_json(const std::string& relative_path) {
         "knowledge/scv/schemas/v1/qxctl-error.schema.json",
         "knowledge/scv/schemas/v1/schema-catalog.json",
         "knowledge/scv/schemas/v1/schema-discovery.schema.json",
+        "knowledge/scv/schemas/v1/provider-coverage.schema.json",
         "knowledge/scv/schemas/v1/scv-artifact.schema.json",
         "knowledge/scv/schemas/v1/scv-workflow.schema.json",
         "knowledge/scv/schemas/v1/provider-interpretation.schema.json",
@@ -333,6 +334,7 @@ ArtifactCheckResult check_unauthorized_artifacts(const std::string& repo_root) {
                                   rel_path == "knowledge/scv/schemas/v1/qxctl-error.schema.json" ||
                                   rel_path == "knowledge/scv/schemas/v1/schema-catalog.json" ||
                                   rel_path == "knowledge/scv/schemas/v1/schema-discovery.schema.json" ||
+                                  rel_path == "knowledge/scv/schemas/v1/provider-coverage.schema.json" ||
                                   rel_path == "knowledge/scv/schemas/v1/scv-artifact.schema.json" ||
                                   rel_path == "knowledge/scv/schemas/v1/scv-workflow.schema.json"
                                 ? "knowledge/scv/AGENT-WORKFLOWS.md"

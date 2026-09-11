@@ -1459,6 +1459,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
@@ -1477,6 +1478,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
@@ -1498,6 +1500,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
@@ -1522,6 +1525,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
@@ -1548,6 +1552,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
@@ -1568,6 +1573,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
@@ -1583,6 +1589,7 @@
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.provider.coverage",
             "qxcmd:symphony:scv.query"
           ],
           "delivery": "composed",
@@ -1590,6 +1597,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
@@ -1611,6 +1619,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
@@ -1634,6 +1643,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "tools/qxctl/COMMANDS.json",
             "tools/qxctl/FEATURES.md"
@@ -2139,6 +2149,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2150,15 +2161,18 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.provider-onboard"
           ],
-          "delivery": "direct",
+          "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:scev-cf.provider.onboard"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2185,6 +2199,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2225,6 +2240,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2252,6 +2268,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2263,12 +2280,15 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.provider.coverage",
             "qxcmd:symphony:scv.query",
             "qxcmd:symphony:scv.workflow.recover",
             "qxcmd:symphony:scv.workflow.run"
@@ -2277,11 +2297,13 @@
           "engine_operation_ids": [
             "engop:symphony:scev-cf.corpus.query",
             "engop:symphony:scev-cf.graph.explain",
-            "engop:symphony:scev-cf.graph.query"
+            "engop:symphony:scev-cf.graph.query",
+            "engop:symphony:scev-cf.provider.coverage"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2302,6 +2324,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2336,6 +2359,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scev-cf-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2361,6 +2385,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2372,15 +2397,18 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.provider-onboard"
           ],
-          "delivery": "direct",
+          "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:scev.provider.onboard"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2407,6 +2435,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2447,6 +2476,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2474,6 +2504,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2485,12 +2516,15 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.provider.coverage",
             "qxcmd:symphony:scv.query",
             "qxcmd:symphony:scv.workflow.recover",
             "qxcmd:symphony:scv.workflow.run"
@@ -2499,11 +2533,13 @@
           "engine_operation_ids": [
             "engop:symphony:scev.corpus.query",
             "engop:symphony:scev.graph.explain",
-            "engop:symphony:scev.graph.query"
+            "engop:symphony:scev.graph.query",
+            "engop:symphony:scev.provider.coverage"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2524,6 +2560,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2558,6 +2595,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scev-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2583,6 +2621,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2594,15 +2633,18 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.provider-onboard"
           ],
-          "delivery": "direct",
+          "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-aws.provider.onboard"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2629,6 +2671,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2669,6 +2712,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2696,6 +2740,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2707,12 +2752,15 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.provider.coverage",
             "qxcmd:symphony:scv.query",
             "qxcmd:symphony:scv.workflow.recover",
             "qxcmd:symphony:scv.workflow.run"
@@ -2721,11 +2769,13 @@
           "engine_operation_ids": [
             "engop:symphony:schv-aws.corpus.query",
             "engop:symphony:schv-aws.graph.explain",
-            "engop:symphony:schv-aws.graph.query"
+            "engop:symphony:schv-aws.graph.query",
+            "engop:symphony:schv-aws.provider.coverage"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2746,6 +2796,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2780,6 +2831,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-aws-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2805,6 +2857,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2816,15 +2869,18 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.provider-onboard"
           ],
-          "delivery": "direct",
+          "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-azure.provider.onboard"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2851,6 +2907,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2891,6 +2948,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2918,6 +2976,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2929,12 +2988,15 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.provider.coverage",
             "qxcmd:symphony:scv.query",
             "qxcmd:symphony:scv.workflow.recover",
             "qxcmd:symphony:scv.workflow.run"
@@ -2943,11 +3005,13 @@
           "engine_operation_ids": [
             "engop:symphony:schv-azure.corpus.query",
             "engop:symphony:schv-azure.graph.explain",
-            "engop:symphony:schv-azure.graph.query"
+            "engop:symphony:schv-azure.graph.query",
+            "engop:symphony:schv-azure.provider.coverage"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -2968,6 +3032,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3002,6 +3067,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-azure-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3027,6 +3093,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3038,15 +3105,18 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.provider-onboard"
           ],
-          "delivery": "direct",
+          "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-do.provider.onboard"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3073,6 +3143,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3113,6 +3184,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3140,6 +3212,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3151,12 +3224,15 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.provider.coverage",
             "qxcmd:symphony:scv.query",
             "qxcmd:symphony:scv.workflow.recover",
             "qxcmd:symphony:scv.workflow.run"
@@ -3165,11 +3241,13 @@
           "engine_operation_ids": [
             "engop:symphony:schv-do.corpus.query",
             "engop:symphony:schv-do.graph.explain",
-            "engop:symphony:schv-do.graph.query"
+            "engop:symphony:schv-do.graph.query",
+            "engop:symphony:schv-do.provider.coverage"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3190,6 +3268,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3224,6 +3303,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-do-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3249,6 +3329,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3260,15 +3341,18 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.provider-onboard"
           ],
-          "delivery": "direct",
+          "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv.provider.onboard"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3295,6 +3379,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3335,6 +3420,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3362,6 +3448,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3373,12 +3460,15 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.provider.coverage",
             "qxcmd:symphony:scv.query",
             "qxcmd:symphony:scv.workflow.recover",
             "qxcmd:symphony:scv.workflow.run"
@@ -3387,11 +3477,13 @@
           "engine_operation_ids": [
             "engop:symphony:schv.corpus.query",
             "engop:symphony:schv.graph.explain",
-            "engop:symphony:schv.graph.query"
+            "engop:symphony:schv.graph.query",
+            "engop:symphony:schv.provider.coverage"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3412,6 +3504,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3446,6 +3539,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3471,6 +3565,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3482,15 +3577,18 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.provider-onboard"
           ],
-          "delivery": "direct",
+          "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-gcp.provider.onboard"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3517,6 +3615,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3557,6 +3656,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3584,6 +3684,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3595,12 +3696,15 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.provider.coverage",
             "qxcmd:symphony:scv.query",
             "qxcmd:symphony:scv.workflow.recover",
             "qxcmd:symphony:scv.workflow.run"
@@ -3609,11 +3713,13 @@
           "engine_operation_ids": [
             "engop:symphony:schv-gcp.corpus.query",
             "engop:symphony:schv-gcp.graph.explain",
-            "engop:symphony:schv-gcp.graph.query"
+            "engop:symphony:schv-gcp.graph.query",
+            "engop:symphony:schv-gcp.provider.coverage"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3634,6 +3740,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3668,6 +3775,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/schv-gcp-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3834,6 +3942,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3845,15 +3954,18 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.provider-onboard"
           ],
-          "delivery": "direct",
+          "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:scv.provider.onboard"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3880,6 +3992,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3920,6 +4033,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3947,6 +4061,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3958,12 +4073,15 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
+            "qxcmd:symphony:scv.provider.coverage",
             "qxcmd:symphony:scv.query",
             "qxcmd:symphony:scv.workflow.recover",
             "qxcmd:symphony:scv.workflow.run"
@@ -3972,11 +4090,13 @@
           "engine_operation_ids": [
             "engop:symphony:scv.corpus.query",
             "engop:symphony:scv.graph.explain",
-            "engop:symphony:scv.graph.query"
+            "engop:symphony:scv.graph.query",
+            "engop:symphony:scv.provider.coverage"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -3997,6 +4117,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -4031,6 +4152,7 @@
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
             "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
             "knowledge/scv/INTERPRETATION.md",
             "modules/scv-engine/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
@@ -5503,9 +5625,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:4107ead42e47a373b23a191851a3623111ed9b2e012c88947322accd779b189a",
+  "profile_digest": "sha256:7dd11e95209c3613bc228ef6c34c4f3697e2ee3f704535eb3cbac44e0fcec62a",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 100,
-  "ssfv_registry_digest": "sha256:05d49286b63d8aaecd4092f905024195b07454b3feb45c2f8262b0dc00d4e891"
+  "ssfv_registry_digest": "sha256:195b75c32a9f54a8b127c503068cd81a4c007012084ede2b8885a0c435dcd8a8"
 }

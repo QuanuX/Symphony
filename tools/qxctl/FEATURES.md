@@ -725,7 +725,7 @@
         {
           "applicability": "applicable",
           "reason": "Defines source, corpus, authored interpretation and scoped connection owner contracts.",
-          "reference": "knowledge/scv/AGENT-WORKFLOWS.md",
+          "reference": "knowledge/scv/COVERAGE.md",
           "vector": "scv"
         },
         {
@@ -748,7 +748,8 @@
         "Transport tests qualify partial/failed captures, retain exact version queries and reject private targets, credential-bearing authorities and unsafe redirects.",
         "Corpus producer/consumer and storage regressions bind referenced bytes to indexes, preserve failed-refresh evidence, checkpoint jobs and verify retained old-version invocation.",
         "Profile/connection consumer and exact installed-process tests reject changed extraction evidence, resealed comparison results and changed reassessment bindings; old exact versions remain invocable.",
-        "Agent workflow regressions cover replay, collisions, interrupted stages, altered evidence and machine-readable failures; installed acceptance remains bound to the recorded build."
+        "Agent workflow regressions cover replay, collisions, interrupted stages, altered evidence and machine-readable failures; installed acceptance remains bound to the recorded build.",
+        "Provider coverage owner/consumer and installed-process regressions exercise exact joins, source declaration drift, gap inventories and replayed attempts without inferring complete expertise or runtime compatibility."
       ],
       "feature_id": "ssfv:symphony:qxctl.scv-administration",
       "how": "Reuses receipt-v2 and version-specific process/result validation; bounds public HTTPS retrieval; retains immutable exact corpus artifacts with no-replace publication and recoverable job intent; separately applies authenticated SSIAG authorization to protected source/graph selection. Preserves exact authored interpretation wrappers and independently checks returned evidence, comparisons and reassessment bindings at the process boundary. Coordinates owner operations with pinned inputs and receipts; replays retained evidence before accepting progress and never substitutes current selections on recovery.",
@@ -792,7 +793,7 @@
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",
-      "record_version": 3,
+      "record_version": 4,
       "relationships": [
         {
           "rationale": "C++ owns provider source and knowledge semantics; qxctl owns the administrative adapter.",
@@ -808,7 +809,7 @@
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "SCV source and knowledge administration",
-      "what": "Administers selected SCV family/provider source, capture, corpus, interpretation and graph operations through exact installed C++ engines; retains immutable corpus evidence separately from permission-backed source and graph selections. Invokes reusable profile interpretation, scoped connection checks and retained-result reassessment without selecting a graph head or claiming live provider compatibility. Provides exact installed schemas and profile preparation, structured SCV failures, immutable native artifact provenance and recoverable interpretation/evaluation runs; metadata corpus query is independent of capture export.",
+      "what": "Administers selected SCV family/provider source, capture, corpus, interpretation and graph operations through exact installed C++ engines; retains immutable corpus evidence separately from permission-backed source and graph selections. Invokes reusable profile interpretation, scoped connection checks and retained-result reassessment without selecting a graph head or claiming live provider compatibility. Provides exact installed schemas and profile preparation, structured SCV failures, immutable native artifact provenance and recoverable interpretation/evaluation runs; metadata corpus query is independent of capture export. Native provider coverage accounts separately for declared inventory, exact selected corpus evidence and independently replayed profile bindings, preserving unlisted, unselected, partial and stale gaps.",
       "when": "Runs on explicit cold/freezing administrative invocation, including exact operation recovery.",
       "where": "Supported local macOS/Linux user-scoped TOPS evidence stores and separately protected source/graph state; pure operations accept an explicitly selected local installation.",
       "who": "Human or agentic callers using ordinary local filesystem permissions for evidence operations; protected source/graph selection additionally requires the same authenticated SSIAG permission contract.",

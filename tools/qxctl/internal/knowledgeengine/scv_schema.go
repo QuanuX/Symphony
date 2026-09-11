@@ -10,8 +10,8 @@ import (
 // SCVSchemaDiscovery reads only receipt-owned resources from the explicitly
 // selected installation. It requires neither a checkout nor network access.
 func SCVSchemaDiscovery(domain, prefix, version, action, protocol string) (map[string]any, error) {
-	if version != "0.4.0-dev" {
-		return nil, fmt.Errorf("packaged SCV schema discovery requires exact 0.4.0-dev")
+	if version != "0.4.0-dev" && version != "0.5.0-dev" {
+		return nil, fmt.Errorf("packaged SCV schema discovery requires exact 0.4.0-dev or 0.5.0-dev")
 	}
 	if action != "list" && action != "show" && action != "template" {
 		return nil, fmt.Errorf("unsupported schema discovery action")
@@ -82,7 +82,11 @@ func SCVSchemaDiscovery(domain, prefix, version, action, protocol string) (map[s
 	result := map[string]any{"protocol": "symphony.qxctl.scv-schema-" + action + ".v1", "domain": domain, "engine_version": version,
 		"installation": installed, "catalog_digest": catalogDigest, "limits": catalog["limits"], "limitations": catalog["limitations"]}
 	companions := []any{}
-	for _, name := range []string{"SOURCE-KNOWLEDGE.md", "CORPUS.md", "INTERPRETATION.md", "AGENT-WORKFLOWS.md"} {
+	companionNames := []string{"SOURCE-KNOWLEDGE.md", "CORPUS.md", "INTERPRETATION.md", "AGENT-WORKFLOWS.md"}
+	if version == "0.5.0-dev" {
+		companionNames = append(companionNames, "COVERAGE.md")
+	}
+	for _, name := range companionNames {
 		relative := "share/doc/symphony/" + installed.ModuleID + "/" + version + "/" + name
 		file, ok := owned[relative]
 		if !ok || file.Kind != "regular" {

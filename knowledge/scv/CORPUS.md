@@ -64,3 +64,5 @@ Producer, consumer, interrupted-job, retention-integrity and exact installed-ver
 ## Agent Operating Extension
 
 The `.4` adapter additionally permits `corpus query`, which accepts the same exact snapshot, member selection, query time, selection mode and age input as export and returns the owner metadata result for at most 128 selected members without materializing capture bodies. Deep retained-store verification still applies. Export keeps its sixteen-capture bound. Corpus commands also explicitly accept `0.4.0-dev` without changing their `.2` default. See `AGENT-WORKFLOWS.md` for the retained interpretation/evaluation workflow.
+
+The `.5` adapter additionally permits exact `0.5.0-dev` corpus selection without changing the `.2` default. `COVERAGE.md` composes an explicit native corpus query with declared inventory and replayed interpretations, preserving metadata versus body-availability distinctions.

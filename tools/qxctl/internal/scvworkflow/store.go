@@ -104,7 +104,7 @@ func Digest(raw []byte) (string, error) {
 	return digest, nil
 }
 func Kind(operation string) string {
-	return map[string]string{"profile_prepare": "profile", "provider_interpret": "interpretation", "connection_evaluate": "evaluation", "connection_reassess": "reassessment", "knowledge_interpret": "knowledge"}[operation]
+	return map[string]string{"provider_onboard": "provider", "provider_coverage": "coverage", "profile_prepare": "profile", "provider_interpret": "interpretation", "connection_evaluate": "evaluation", "connection_reassess": "reassessment", "knowledge_interpret": "knowledge"}[operation]
 }
 func NewRecord(operation string, installed knowledgeengine.Installation, input, result json.RawMessage) (Record, error) {
 	r := Record{Protocol: "symphony.qxctl.scv-artifact.v1", Kind: Kind(operation), Operation: operation, Installation: installed, Input: input, Artifact: result}
@@ -132,6 +132,9 @@ func ReadRecord(raw []byte) (Record, error) {
 	protocol, ok := knowledgeengine.SCVResultProtocol(r.Operation)
 	if r.Protocol != "symphony.qxctl.scv-artifact.v1" || r.Kind == "" || r.Kind != Kind(r.Operation) || !ok {
 		return r, fmt.Errorf("invalid retained artifact identity")
+	}
+	if (r.Kind == "provider" || r.Kind == "coverage") && r.Installation.Version != "0.5.0-dev" {
+		return r, fmt.Errorf("retained provider/coverage requires exact 0.5.0-dev provenance")
 	}
 	if err := knowledgeengine.ValidateJSONObject(r.Input, MaxInputBytes); err != nil {
 		return r, err

@@ -84,6 +84,7 @@
         "engop:symphony:scev-cf.inspect",
         "engop:symphony:scev-cf.knowledge.interpret",
         "engop:symphony:scev-cf.profile.prepare",
+        "engop:symphony:scev-cf.provider.coverage",
         "engop:symphony:scev-cf.provider.interpret",
         "engop:symphony:scev-cf.provider.onboard",
         "engop:symphony:scev-cf.source.apply",
@@ -117,6 +118,7 @@
         "engop:symphony:scev.inspect",
         "engop:symphony:scev.knowledge.interpret",
         "engop:symphony:scev.profile.prepare",
+        "engop:symphony:scev.provider.coverage",
         "engop:symphony:scev.provider.interpret",
         "engop:symphony:scev.provider.onboard",
         "engop:symphony:scev.source.apply",
@@ -150,6 +152,7 @@
         "engop:symphony:schv-aws.inspect",
         "engop:symphony:schv-aws.knowledge.interpret",
         "engop:symphony:schv-aws.profile.prepare",
+        "engop:symphony:schv-aws.provider.coverage",
         "engop:symphony:schv-aws.provider.interpret",
         "engop:symphony:schv-aws.provider.onboard",
         "engop:symphony:schv-aws.source.apply",
@@ -183,6 +186,7 @@
         "engop:symphony:schv-azure.inspect",
         "engop:symphony:schv-azure.knowledge.interpret",
         "engop:symphony:schv-azure.profile.prepare",
+        "engop:symphony:schv-azure.provider.coverage",
         "engop:symphony:schv-azure.provider.interpret",
         "engop:symphony:schv-azure.provider.onboard",
         "engop:symphony:schv-azure.source.apply",
@@ -216,6 +220,7 @@
         "engop:symphony:schv-do.inspect",
         "engop:symphony:schv-do.knowledge.interpret",
         "engop:symphony:schv-do.profile.prepare",
+        "engop:symphony:schv-do.provider.coverage",
         "engop:symphony:schv-do.provider.interpret",
         "engop:symphony:schv-do.provider.onboard",
         "engop:symphony:schv-do.source.apply",
@@ -249,6 +254,7 @@
         "engop:symphony:schv-gcp.inspect",
         "engop:symphony:schv-gcp.knowledge.interpret",
         "engop:symphony:schv-gcp.profile.prepare",
+        "engop:symphony:schv-gcp.provider.coverage",
         "engop:symphony:schv-gcp.provider.interpret",
         "engop:symphony:schv-gcp.provider.onboard",
         "engop:symphony:schv-gcp.source.apply",
@@ -282,6 +288,7 @@
         "engop:symphony:schv.inspect",
         "engop:symphony:schv.knowledge.interpret",
         "engop:symphony:schv.profile.prepare",
+        "engop:symphony:schv.provider.coverage",
         "engop:symphony:schv.provider.interpret",
         "engop:symphony:schv.provider.onboard",
         "engop:symphony:schv.source.apply",
@@ -315,6 +322,7 @@
         "engop:symphony:scv.inspect",
         "engop:symphony:scv.knowledge.interpret",
         "engop:symphony:scv.profile.prepare",
+        "engop:symphony:scv.provider.coverage",
         "engop:symphony:scv.provider.interpret",
         "engop:symphony:scv.provider.onboard",
         "engop:symphony:scv.source.apply",
@@ -988,6 +996,56 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "TestSCVProviderCoverageRejectsResealedAccountingAndSelection"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/scv_coverage_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:scv.provider-coverage-provenance",
+      "ipc_boundary": true,
+      "owner_component": "scv-provider-coverage",
+      "owner_contract": "knowledge/scv/COVERAGE.md",
+      "producer_implementations": [
+        "modules/scv-engine/src/coverage.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "test_metadata_does_not_claim_body_or_interpretation",
+            "test_partial_policies_remain_independent",
+            "test_provider_coverage_producer",
+            "test_time_only_query_changes_freshness_without_rewriting_evidence",
+            "test_unlisted_members_and_bindings_stay_visible"
+          ],
+          "path": "modules/scv-engine/tests/coverage_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_provider_coverage_process_binding_and_declared_gaps"
+          ],
+          "path": "modules/scv-engine/tests/installed_integration.py"
+        }
+      ],
+      "statement": "The C++ coverage owner replays the declared provider candidate, exact corpus query and independent interpretation wrappers before accounting for inventory, selection and authored rule attempts. Missing or unlisted sources, unselected or stale captures, partial acquisition, declaration drift and unresolved extraction remain explicit. Metadata alone cannot prove body availability, matched rules cannot become runtime support, and recomputed outer seals cannot conceal changed joins or counts. The qxctl consumer independently rejects substituted inventories, source/capture bindings and summaries.",
+      "status": "active",
+      "title": "Provider coverage preserves declared scope and exact selected evidence"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-scev-cf.v1",
+        "adapter:symphony:symphony-scev.v1",
+        "adapter:symphony:symphony-schv-aws.v1",
+        "adapter:symphony:symphony-schv-azure.v1",
+        "adapter:symphony:symphony-schv-do.v1",
+        "adapter:symphony:symphony-schv-gcp.v1",
+        "adapter:symphony:symphony-schv.v1",
+        "adapter:symphony:symphony-scv.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
             "test_graph_consumer_rejects_tampered_capture"
           ],
           "path": "modules/scv-engine/tests/knowledge_test.cpp"
@@ -1349,7 +1407,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v2",
-  "registry_digest": "sha256:5e0b32d3db604597d22fe7a6f3dc6b4acb34c5c5367a6ab70340a8b62bbbd48d",
+  "registry_digest": "sha256:7c55378c86f1d3dd6592fa21a36cbd4ece7d1abda03445adfd8271cf7fa83796",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

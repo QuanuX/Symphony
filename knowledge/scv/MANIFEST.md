@@ -17,6 +17,7 @@ SCV is the semantic owner of provider/offsite resource possibility, constraint, 
 - `knowledge/scv/CORPUS.md`
 - `knowledge/scv/INTERPRETATION.md`
 - `knowledge/scv/AGENT-WORKFLOWS.md`
+- `knowledge/scv/COVERAGE.md`
 - `knowledge/scv/SKILL.md`
 
 ## Admitted Implementation Character
@@ -34,3 +35,7 @@ This manifest grants no provider login, account query, balance persistence, cred
 ## Agent Operating Increment
 
 The additive `.4` interface is governed by `knowledge/scv/AGENT-WORKFLOWS.md`: native profile preparation, exact installed schema discovery, immutable local artifact evidence and recoverable qxctl runs. It preserves engine semantic ownership and caller composition authority.
+
+## Maintained Provider Coverage
+
+The additive `0.5.0-dev` interface in `knowledge/scv/COVERAGE.md` accounts independently for declared inventory, exact corpus selection and replayed authored interpretations. It preserves missing evidence and caller choice.

@@ -21,3 +21,5 @@ The parent may consume this owner's exported indexes and graph. It must preserve
 This contract admits local bounded source-knowledge computation and explicit protected source administration only through their actual owner operations. It grants no provider login, credential use, network route, infrastructure mutation, publication, arbitrary code execution or operational authority. Provider account adapters, online acquisition and deployment remain separately selected and evidenced.
 
 The additive `.4` agent operating increment is defined by `knowledge/scv/AGENT-WORKFLOWS.md`: exact prepared profiles, receipt-owned schemas and qxctl retained evidence workflows preserve this domain and its original-owner provenance when composed by a parent. Existing exact `.3` and earlier installations remain valid at their recorded scope.
+
+Provider coverage in `knowledge/scv/COVERAGE.md` separately accounts for declared sources, selected acquisition and replayed interpretations within this domain. It does not substitute evidence gaps for a provider limitation.

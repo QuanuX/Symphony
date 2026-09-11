@@ -1,0 +1,549 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:scv:provider-coverage:v1",
+  "title": "Selected provider source and interpretation coverage v1",
+  "description": "Closed wire shapes for explicit provider inventory, native corpus query and independently replayed authored interpretations. Runtime also verifies exact seals, candidate regeneration, corpus query replay, domain/source/locator joins, selected capture/index equality, UTF-8 byte bounds, ordering and recomputed counts. Unlisted and unselected evidence remains visible; metadata does not prove body contents, semantic truth, current provider availability or integration compatibility. Each wrapper retains its own policy.",
+  "$defs": {
+    "ProviderCoverageInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "corpus_query",
+        "interpretations"
+      ],
+      "properties": {
+        "provider": {
+          "$ref": "source-operation.schema.json#/$defs/provider"
+        },
+        "corpus_query": {
+          "$ref": "corpus-operation.schema.json#/$defs/corpusQueryInput"
+        },
+        "interpretations": {
+          "type": "array",
+          "items": {
+            "$ref": "provider-interpretation.schema.json#/$defs/providerInterpretResult"
+          },
+          "minItems": 0,
+          "maxItems": 16,
+          "uniqueItems": true
+        }
+      },
+      "description": "The input has exactly these fields and no protocol key. corpus_query is the full native request with the exact sealed corpus; it is not the qxctl snapshot-digest adapter input. Exact duplicate wrapper digests reject; distinct wrappers retain independent policy/profile identities. Empty interpretations explicitly means no replayed body/interpretation evidence."
+    },
+    "InterpretationBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interpretation_digest",
+        "profile_digest",
+        "capture_digest",
+        "matched_rule_ids",
+        "unresolved_rule_ids"
+      ],
+      "properties": {
+        "interpretation_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "profile_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "capture_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "matched_rule_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "minItems": 0,
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "unresolved_rule_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512
+          },
+          "minItems": 0,
+          "maxItems": 128,
+          "uniqueItems": true
+        }
+      },
+      "description": "Sorted by interpretation_digest, profile_digest, capture_digest. Rule IDs are lexical; counts describe extraction attempts under this exact profile and wrapper, without merging equivalent facts."
+    },
+    "SourceCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "locator_id",
+        "member_id",
+        "selection_status",
+        "selected_capture_digest",
+        "declaration_match",
+        "declaration_difference_fields",
+        "interpretations"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "locator_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "member_id": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "corpus.schema.json#/$defs/opaqueId"
+            }
+          ]
+        },
+        "selection_status": {
+          "enum": [
+            "not_selected",
+            "unavailable",
+            "selected"
+          ]
+        },
+        "selected_capture_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "declaration_match": {
+          "enum": [
+            "not_available",
+            "matches",
+            "differs"
+          ]
+        },
+        "declaration_difference_fields": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "source_id",
+              "provider_id",
+              "family_id",
+              "publisher",
+              "authority_role",
+              "scope",
+              "locators",
+              "continuity_evidence"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 8,
+          "uniqueItems": true
+        },
+        "interpretations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/InterpretationBinding"
+          },
+          "minItems": 0,
+          "maxItems": 256
+        }
+      },
+      "description": "One row per declared source locator, sorted by source_id then locator_id. member_id identifies the matching full-corpus member even when excluded from the query; null means no full-corpus match. Metadata-only selection cannot establish source declaration equality: declaration_match requires exact replayed capture bytes. Source declaration comparison excludes generation/sealing fields. Interpretation bindings and rule attempts preserve explicit authored provenance, not runtime proof.",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "selection_status": {
+                "const": "not_selected"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "selected_capture_digest": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "selection_status": {
+                "const": "unavailable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "member_id": {
+                "$ref": "corpus.schema.json#/$defs/opaqueId"
+              },
+              "selected_capture_digest": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "selection_status": {
+                "const": "selected"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "member_id": {
+                "$ref": "corpus.schema.json#/$defs/opaqueId"
+              },
+              "selected_capture_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "declaration_match": {
+                "const": "differs"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "declaration_difference_fields": {
+                "minItems": 1
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "declaration_difference_fields": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "UnlistedMember": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "member_id",
+        "family_id",
+        "provider_id",
+        "source_id",
+        "locator_id",
+        "reason"
+      ],
+      "properties": {
+        "member_id": {
+          "$ref": "corpus.schema.json#/$defs/opaqueId"
+        },
+        "family_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "provider_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "locator_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "reason": {
+          "enum": [
+            "provider_not_declared",
+            "source_not_declared",
+            "locator_not_declared"
+          ]
+        }
+      },
+      "description": "Selected query members outside the explicit provider/source/locator declaration; sorted by member_id. This gap does not assert incompatibility or deny caller composition."
+    },
+    "UnselectedBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interpretation_digest",
+        "profile_digest",
+        "capture_digest",
+        "reason"
+      ],
+      "properties": {
+        "interpretation_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "profile_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "capture_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "reason": {
+          "enum": [
+            "capture_not_selected",
+            "selected_member_not_declared"
+          ]
+        }
+      },
+      "description": "Bindings receive no selected-declared coverage credit when their exact capture is unselected or its selected member is undeclared. Sorted by interpretation_digest, profile_digest, capture_digest, reason."
+    },
+    "Summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "declared_sources",
+        "declared_locators",
+        "selected_declared_members",
+        "unselected_declared_locators",
+        "selected_unlisted_members",
+        "replayed_selected_captures",
+        "selected_profile_bindings",
+        "matched_rule_attempts",
+        "unresolved_rule_attempts",
+        "unselected_profile_bindings",
+        "selected_declared_status",
+        "selected_declared_freshness"
+      ],
+      "properties": {
+        "declared_sources": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        },
+        "declared_locators": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 512
+        },
+        "selected_declared_members": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        },
+        "unselected_declared_locators": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 512
+        },
+        "selected_unlisted_members": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        },
+        "replayed_selected_captures": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        },
+        "selected_profile_bindings": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 256
+        },
+        "matched_rule_attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2048
+        },
+        "unresolved_rule_attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2048
+        },
+        "unselected_profile_bindings": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 256
+        },
+        "selected_declared_status": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "complete",
+            "partial",
+            "failed",
+            "unavailable"
+          ],
+          "properties": {
+            "complete": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "partial": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "failed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "unavailable": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            }
+          }
+        },
+        "selected_declared_freshness": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "current",
+            "expired",
+            "future",
+            "not_selected"
+          ],
+          "properties": {
+            "current": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "expired": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "future": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "not_selected": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            }
+          }
+        }
+      },
+      "description": "Counts refer to this exact declared inventory, explicit query selection and replayed wrappers. Status/freshness partitions count selected declared query members only. Rule attempts and profile bindings are not unique provider facts; there is no universal completeness percentage."
+    },
+    "ProviderCoverageResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "domain",
+        "input",
+        "corpus_query_result",
+        "sources",
+        "unlisted_members",
+        "unselected_bindings",
+        "summary",
+        "limitations",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.provider-coverage.v1"
+        },
+        "domain": {
+          "enum": [
+            "scv",
+            "schv",
+            "scev",
+            "schv-aws",
+            "schv-azure",
+            "schv-do",
+            "schv-gcp",
+            "scev-cf"
+          ]
+        },
+        "input": {
+          "$ref": "#/$defs/ProviderCoverageInput"
+        },
+        "corpus_query_result": {
+          "$ref": "corpus-operation.schema.json#/$defs/corpusQueryResult"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourceCoverage"
+          },
+          "minItems": 1,
+          "maxItems": 512
+        },
+        "unlisted_members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/UnlistedMember"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "unselected_bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/UnselectedBinding"
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "summary": {
+          "$ref": "#/$defs/Summary"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "minItems": 1,
+          "maxItems": 16
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "description": "The exact input is retained unchanged. The whole selected corpus query result remains visible, including unlisted members, unavailable selections and freshness. Row lists, partitions and counts are independently recomputed by consumers; a valid outer digest alone is insufficient."
+    }
+  }
+}

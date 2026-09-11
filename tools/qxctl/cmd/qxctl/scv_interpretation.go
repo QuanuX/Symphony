@@ -16,8 +16,9 @@ func scvInterpretationLeaf(group, leaf, operation, interaction string) *cobra.Co
 }
 
 func newSCVProviderCommand() *cobra.Command {
-	group := structural("provider", fmt.Errorf("provider subcommand is required: interpret"))
+	group := structural("provider", fmt.Errorf("provider subcommand is required: interpret, coverage"))
 	group.AddCommand(scvInterpretationLeaf("provider", "interpret", "provider_interpret", "invoke"))
+	group.AddCommand(newSCVProviderCoverageCommand())
 	return group
 }
 

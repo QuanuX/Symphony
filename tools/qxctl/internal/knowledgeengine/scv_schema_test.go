@@ -32,6 +32,9 @@ func TestInstalledSCVSchemaDiscoveryWithoutCheckout(t *testing.T) {
 			if result["engine_version"] != "0.4.0-dev" {
 				t.Fatal("wrong version")
 			}
+			if len(result["owner_companions"].([]any)) != 4 {
+				t.Fatal(".4 owner companion inventory changed")
+			}
 			entries := result["entries"].([]any)
 			if len(entries) < 60 {
 				t.Fatal("incomplete protocol catalog")
@@ -69,6 +72,50 @@ func TestInstalledSCVSchemaDiscoveryWithoutCheckout(t *testing.T) {
 			}
 			if _, err := SCVSchemaDiscovery(domain, prefix, "0.4.0-dev", "show", "not-an-admitted-protocol"); err == nil {
 				t.Fatal("unknown protocol accepted")
+			}
+		})
+	}
+}
+
+func TestInstalledSCVCoverageDiscoveryIncludesExactCompanion(t *testing.T) {
+	prefix := os.Getenv("SYMPHONY_SCV_COVERAGE_PREFIX")
+	if prefix == "" {
+		t.Skip("requires exact .5 packages")
+	}
+	t.Chdir(t.TempDir())
+	for _, domain := range SCVDomains() {
+		t.Run(domain, func(t *testing.T) {
+			for _, action := range []string{"list", "show", "template"} {
+				protocol := ""
+				if action != "list" {
+					protocol = "symphony.scv.provider-coverage-input.v1"
+				}
+				result, err := SCVSchemaDiscovery(domain, prefix, "0.5.0-dev", action, protocol)
+				if err != nil {
+					t.Fatal(err)
+				}
+				companions := result["owner_companions"].([]any)
+				if len(companions) != 5 {
+					t.Fatal(".5 owner companion inventory incomplete")
+				}
+				found := false
+				for _, raw := range companions {
+					entry := raw.(map[string]any)
+					path := entry["path"].(string)
+					if filepath.Base(path) == "COVERAGE.md" {
+						found = true
+						data, err := os.ReadFile(path)
+						if err != nil {
+							t.Fatal(err)
+						}
+						if entry["digest"] != digestBytes(data) {
+							t.Fatal("coverage companion does not match exact retained bytes")
+						}
+					}
+				}
+				if !found {
+					t.Fatal("installed coverage contract undiscoverable")
+				}
 			}
 		})
 	}

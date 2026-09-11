@@ -272,3 +272,5 @@ Supported extraction is a declared finite mapping, not automated comprehension o
 ## SCV Agent Operating Workflow
 
 `knowledge/scv/AGENT-WORKFLOWS.md` governs exact installed schema discovery, native profile preparation, artifact retention, corpus metadata query and recoverable qxctl runs. `ERRORS.md` defines the additive SCV JSON error contract. New wrapper operations retain exact engine invocation and consumer validation; no source checkout, provider account, model call or hidden background loop is required.
+
+Provider coverage administration and additive provider/coverage artifact retention follow `knowledge/scv/COVERAGE.md`, preserving exact source selection, declared gaps and owner replay.

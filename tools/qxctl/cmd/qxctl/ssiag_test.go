@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 )
@@ -195,17 +196,49 @@ func TestSSIAGProviderBindingGrammarCannotSelectOrOperateAdapters(t *testing.T) 
 
 func serveSSIAGTestSocket(t *testing.T, status string) {
 	t.Helper()
-	socket := filepath.Join(t.TempDir(), "ssiag.sock")
+	runtimeHome, err := os.MkdirTemp("/tmp", "qxctl-ssiag-")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = os.RemoveAll(runtimeHome) })
+	configHome := filepath.Join(t.TempDir(), "config")
+	t.Setenv("XDG_CONFIG_HOME", configHome)
+	t.Setenv("XDG_RUNTIME_DIR", runtimeHome)
+	socket := filepath.Join(runtimeHome, "symphony", ssiagTestTOPSID, "ssiag", "ssiag.sock")
+	if err := os.MkdirAll(filepath.Dir(socket), 0700); err != nil {
+		t.Fatal(err)
+	}
 	listener, err := net.Listen("unix", socket)
 	if err != nil {
 		t.Skipf("unix sockets are unavailable in this test environment: %v", err)
 	}
+	configPath := filepath.Join(configHome, "symphony", ssiagTestTOPSID, "ssiag", "config.json")
+	if err := os.MkdirAll(filepath.Dir(configPath), 0700); err != nil {
+		t.Fatal(err)
+	}
+	config := map[string]any{
+		"schema": "symphony.ssiag.config.v1", "mode": "user",
+		"tops":           map[string]any{"id": ssiagTestTOPSID, "name": "Test"},
+		"listen":         map[string]any{"network": "unix", "address": socket},
+		"authentication": map[string]any{"mechanism": "unix_peer_credentials", "service": map[string]any{"id": "symphony.ssiag.service", "kind": "symphony.identity.service", "uid": os.Geteuid(), "gid": os.Getegid()}, "subjects": []any{}},
+		"authorization":  map[string]any{}, "providers": []any{},
+	}
+	encoded, err := json.Marshal(config)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(configPath, encoded, 0600); err != nil {
+		t.Fatal(err)
+	}
+	var statusReached, providersReached atomic.Bool
 	handler := http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")
 		if request.URL.Path == "/v1/status" {
+			statusReached.Store(true)
 			_, _ = writer.Write([]byte(status))
 			return
 		}
+		providersReached.Store(true)
 		_, _ = writer.Write([]byte(`{"schema":"symphony.ssiag.providers.v1","providers":[]}`))
 	})
 	server := &http.Server{Handler: handler}
@@ -215,5 +248,11 @@ func serveSSIAGTestSocket(t *testing.T, status string) {
 		_ = server.Close()
 		_ = listener.Close()
 		_ = os.Remove(socket)
+		if !statusReached.Load() {
+			t.Error("test did not reach authenticated status response")
+		}
+		if providersReached.Load() {
+			t.Error("provider query escaped rejected server identity or readiness")
+		}
 	})
 }

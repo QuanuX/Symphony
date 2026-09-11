@@ -438,8 +438,19 @@ func TestNewForTOPS(t *testing.T) {
 	}
 }
 
+func socketFixtureHome(t *testing.T) string {
+	t.Helper()
+	// Keep the full canonical Unix socket below the macOS path limit.
+	home, err := os.MkdirTemp("/tmp", "ssiag-")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = os.RemoveAll(home) })
+	return home
+}
+
 func TestPeerVerificationFailsBeforeHTTPBytes(t *testing.T) {
-	home := t.TempDir()
+	home := socketFixtureHome(t)
 	t.Setenv("HOME", home)
 	t.Setenv("XDG_CONFIG_HOME", filepath.Join(home, "config"))
 	t.Setenv("XDG_RUNTIME_DIR", filepath.Join(home, "runtime"))
@@ -488,7 +499,7 @@ func TestPeerVerificationFailsBeforeHTTPBytes(t *testing.T) {
 }
 
 func TestSocketOverrideRetainsConfiguredPeerIdentity(t *testing.T) {
-	home := t.TempDir()
+	home := socketFixtureHome(t)
 	t.Setenv("HOME", home)
 	t.Setenv("XDG_CONFIG_HOME", filepath.Join(home, "config"))
 	t.Setenv("XDG_RUNTIME_DIR", filepath.Join(home, "runtime"))
@@ -536,7 +547,7 @@ func TestSocketOverrideRetainsConfiguredPeerIdentity(t *testing.T) {
 }
 
 func TestAuthenticatedClientReadsStatusOverUnixSocket(t *testing.T) {
-	home := t.TempDir()
+	home := socketFixtureHome(t)
 	t.Setenv("HOME", home)
 	t.Setenv("XDG_CONFIG_HOME", filepath.Join(home, "config"))
 	t.Setenv("XDG_RUNTIME_DIR", filepath.Join(home, "runtime"))

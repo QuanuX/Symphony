@@ -117,3 +117,5 @@ The invariant introduces no graph-head publication, corpus authority, network op
 ## SCV Agent Workflow Retention
 
 `invariant:symphony:scv.agent-workflow-retention` assigns immutable record provenance, pinned run inputs, stage ordering and exact recovery to qxctl's local evidence adapter under `knowledge/scv/AGENT-WORKFLOWS.md`. Status reconstructs mechanical request/reference linkage and states its limited validation scope; use/recovery additionally invokes original owners. The existing profile-connection provenance invariant now covers native prepared-profile preservation and rejecting changed authored fields. Exact schemas and record seals support inspection without conferring provider or canonical authority.
+
+Provider coverage adds the owner-routed `invariant:symphony:scv.provider-coverage-provenance` under `knowledge/scv/COVERAGE.md`. The incremental registry now has 21 invariants and eleven adapters. Producer, independent consumer rejection and installed-process tests preserve declared versus observed coverage without claiming complete legacy assurance.
