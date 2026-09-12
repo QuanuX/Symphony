@@ -24,7 +24,9 @@
             "provider_pack_prepare",
             "provider_pack_evaluate",
             "composition_explore",
-            "composition_reassess"
+            "composition_reassess",
+            "composition_obligations",
+            "composition_followup"
           ]
         },
         "input": {
@@ -327,6 +329,58 @@
               }
             }
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "composition_obligations"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "obligation.schema.json#/$defs/ObligationsInput"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "obligation.schema.json#/$defs/ObligationsResult"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "composition_followup"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "obligation.schema.json#/$defs/FollowupInput"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "obligation.schema.json#/$defs/FollowupResult"
+                  }
+                ]
+              }
+            }
+          }
         }
       ]
     },
@@ -398,7 +452,9 @@
             "provider_pack",
             "provider_pack_evaluation",
             "composition",
-            "composition_reassessment"
+            "composition_reassessment",
+            "composition_obligations",
+            "composition_followup"
           ]
         },
         "operation": {
@@ -413,7 +469,9 @@
             "provider_pack_prepare",
             "provider_pack_evaluate",
             "composition_explore",
-            "composition_reassess"
+            "composition_reassess",
+            "composition_obligations",
+            "composition_followup"
           ]
         },
         "installation": {
@@ -505,7 +563,8 @@
                     "enum": [
                       "0.5.0-dev",
                       "0.6.0-dev",
-                      "0.7.0-dev"
+                      "0.7.0-dev",
+                      "0.8.0-dev"
                     ]
                   }
                 }
@@ -540,7 +599,8 @@
                       "0.4.0-dev",
                       "0.5.0-dev",
                       "0.6.0-dev",
-                      "0.7.0-dev"
+                      "0.7.0-dev",
+                      "0.8.0-dev"
                     ]
                   }
                 }
@@ -575,7 +635,8 @@
                       "0.4.0-dev",
                       "0.5.0-dev",
                       "0.6.0-dev",
-                      "0.7.0-dev"
+                      "0.7.0-dev",
+                      "0.8.0-dev"
                     ]
                   }
                 }
@@ -610,7 +671,8 @@
                       "0.4.0-dev",
                       "0.5.0-dev",
                       "0.6.0-dev",
-                      "0.7.0-dev"
+                      "0.7.0-dev",
+                      "0.8.0-dev"
                     ]
                   }
                 }
@@ -645,7 +707,8 @@
                       "0.4.0-dev",
                       "0.5.0-dev",
                       "0.6.0-dev",
-                      "0.7.0-dev"
+                      "0.7.0-dev",
+                      "0.8.0-dev"
                     ]
                   }
                 }
@@ -679,7 +742,8 @@
                       "0.4.0-dev",
                       "0.5.0-dev",
                       "0.6.0-dev",
-                      "0.7.0-dev"
+                      "0.7.0-dev",
+                      "0.8.0-dev"
                     ]
                   }
                 }
@@ -712,7 +776,8 @@
                     "enum": [
                       "0.5.0-dev",
                       "0.6.0-dev",
-                      "0.7.0-dev"
+                      "0.7.0-dev",
+                      "0.8.0-dev"
                     ]
                   }
                 }
@@ -744,7 +809,8 @@
                   "Version": {
                     "enum": [
                       "0.6.0-dev",
-                      "0.7.0-dev"
+                      "0.7.0-dev",
+                      "0.8.0-dev"
                     ]
                   }
                 }
@@ -776,7 +842,8 @@
                   "Version": {
                     "enum": [
                       "0.6.0-dev",
-                      "0.7.0-dev"
+                      "0.7.0-dev",
+                      "0.8.0-dev"
                     ]
                   }
                 }
@@ -808,7 +875,8 @@
                   "Version": {
                     "enum": [
                       "0.6.0-dev",
-                      "0.7.0-dev"
+                      "0.7.0-dev",
+                      "0.8.0-dev"
                     ]
                   }
                 }
@@ -840,7 +908,70 @@
                   "Version": {
                     "enum": [
                       "0.6.0-dev",
-                      "0.7.0-dev"
+                      "0.7.0-dev",
+                      "0.8.0-dev"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "composition_obligations"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "obligation.schema.json#/$defs/ObligationsInput"
+              },
+              "artifact": {
+                "$ref": "obligation.schema.json#/$defs/ObligationsResult"
+              },
+              "kind": {
+                "const": "composition_obligations"
+              },
+              "installation": {
+                "properties": {
+                  "Version": {
+                    "enum": [
+                      "0.8.0-dev"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "composition_followup"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "obligation.schema.json#/$defs/FollowupInput"
+              },
+              "artifact": {
+                "$ref": "obligation.schema.json#/$defs/FollowupResult"
+              },
+              "kind": {
+                "const": "composition_followup"
+              },
+              "installation": {
+                "properties": {
+                  "Version": {
+                    "enum": [
+                      "0.8.0-dev"
                     ]
                   }
                 }

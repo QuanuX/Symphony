@@ -14,7 +14,7 @@
 - module: `schv-gcp-engine`
 - engine: `symphony-schv-gcp`
 - vector: `schv-gcp`
-- version: `0.7.0-dev`
+- version: `0.8.0-dev`
 - language: C++26
 - thermal path: freezing
 - semantic owner: `knowledge/scv/schv/gcp/SPEC.md`
@@ -46,3 +46,7 @@ The additive `0.6.0-dev` package exposes 26 operations. `knowledge/scv/PROVIDER-
 ## Maintained Composition Coordination
 
 The exact `0.7.0-dev` release retains 26 native operations and adds the installed `knowledge/scv/COMPOSITION-WORKFLOWS.md` companion and its workflow schema. qxctl coordinates original-owner package evaluations, finite exploration and optional reassessment with pinned intent, immutable artifact records and interruption recovery. Nine owner companions and 24 schemas expose 89 protocol entries. The existing native meanings remain unchanged; a completed run preserves source gaps, failed fixtures and implementation obligations. Earlier exact `.1`–`.6` installations and command defaults remain available.
+
+## Precise Obligation Follow-up
+
+Exact `0.8.0-dev` exposes 28 native operations, including replayed obligation inventory and subsequent-evidence comparison under `knowledge/scv/OBLIGATIONS.md`. qxctl exposes direct operations and immutable original-owner relationship retention/show. Native check state remains separate from supplied reference provenance, causal attribution and runtime verification. Ten owner companions and 26 schemas expose 97 catalog protocols. Earlier exact packages, protocols and command defaults remain preserved.

@@ -770,6 +770,14 @@
         },
         {
           "cases": [
+            "TestSCVObligationLinkRejectsNormalizedOwnerRecord",
+            "TestSCVObligationLinkRejectsResealedReferenceSubstitution",
+            "TestSCVObligationLinkRejectsWrongKindsAndUnusedFields"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_obligation_test.go"
+        },
+        {
+          "cases": [
             "TestSCVArtifactsRejectSuppliedResultMismatchAndReplayOriginalOwner",
             "TestSCVWorkflowReconstructsPendingStageBeforeReplay",
             "TestSCVWorkflowRejectsIgnoredPolicyAndRelativeCorpusRoot",
@@ -777,6 +785,15 @@
             "TestSCVWorkflowStatusRejectsMatchedUnrelatedCheckpointPair"
           ],
           "path": "tools/qxctl/cmd/qxctl/scv_workflow_test.go"
+        },
+        {
+          "cases": [
+            "TestWorkflowRecordBudgetLeavesOtherObjectsAndMetadataBounded",
+            "TestWorkflowRecordBudgetPreservesByteLimits",
+            "TestWorkflowRecordBudgetPreservesSharedStructuralChecks",
+            "TestWorkflowRecordBudgetRejectsOversizedChildrenAndNestedEscape"
+          ],
+          "path": "tools/qxctl/internal/scvworkflow/record_budget_test.go"
         }
       ],
       "invariant_id": "invariant:symphony:scv.agent-workflow-retention",
@@ -785,6 +802,7 @@
       "owner_contract": "knowledge/scv/AGENT-WORKFLOWS.md",
       "producer_implementations": [
         "tools/qxctl/cmd/qxctl/scv_composition_workflow.go",
+        "tools/qxctl/cmd/qxctl/scv_obligation.go",
         "tools/qxctl/cmd/qxctl/scv_workflow.go",
         "tools/qxctl/internal/scvworkflow/composition.go",
         "tools/qxctl/internal/scvworkflow/composition_storage_unix.go",
@@ -805,6 +823,12 @@
         },
         {
           "cases": [
+            "TestSCVObligationLinkRetainsOriginalOwnersAndRecovers"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_obligation_test.go"
+        },
+        {
+          "cases": [
             "TestSCVWorkflowResumesEveryDurableBoundaryWithoutReplacingIntent"
           ],
           "path": "tools/qxctl/cmd/qxctl/scv_workflow_test.go"
@@ -818,6 +842,13 @@
         },
         {
           "cases": [
+            "TestWorkflowRecordBudgetAllowsExactChildBoundAndUnsealedEnvelope",
+            "TestWorkflowRecordBudgetRetainsTwoBoundedNativeDocuments"
+          ],
+          "path": "tools/qxctl/internal/scvworkflow/record_budget_test.go"
+        },
+        {
+          "cases": [
             "TestWorkflowImmutablePublicationPaginationAndConcurrentReuse",
             "TestWorkflowJournalPinsPendingInputsAndCommittedResults",
             "TestWorkflowRunLockIsBoundedAndRecoversAfterOwnerExit",
@@ -827,7 +858,7 @@
         }
       ],
       "real_process_regressions": [],
-      "statement": "The qxctl evidence workflow pins caller intent, exact owner installations, corpus selections and native artifact provenance before advancing durable stages. Immutable content and validation records have separate digests. Status preserves its stated integrity scope; recovery reconstructs stage inputs and replays exact owner results, rejecting changed inputs, missing evidence and substituted checkpoints. Runs create no selected head, provider facts or permission. The four additive .6 pack/composition artifact kinds retain their original exact operation, authored input, result and owner installation; generated interface admission neither promotes metadata listing into native replay nor substitutes a current owner for historical provenance. The additive .7 composition workflow binds its root/TOPS, selected composition owner and exact caller request; package stages execute through each retained pack original owner. Every checkpoint must match the requested stage and reconstructed input. Typed journal roundtrip rejects field omission or null normalization under an old digest. Progress and conformance remain separate; failed fixtures and native evidence/implementation obligations survive a completed workflow.",
+      "statement": "The qxctl evidence workflow pins caller intent, exact owner installations, corpus selections and native artifact provenance before advancing durable stages. Immutable content and validation records have separate digests. Status preserves its stated integrity scope; recovery reconstructs stage inputs and replays exact owner results, rejecting changed inputs, missing evidence and substituted checkpoints. Runs create no selected head, provider facts or permission. The four additive .6 pack/composition artifact kinds retain their original exact operation, authored input, result and owner installation; generated interface admission neither promotes metadata listing into native replay nor substitutes a current owner for historical provenance. The additive .7 composition workflow binds its root/TOPS, selected composition owner and exact caller request; package stages execute through each retained pack original owner. Every checkpoint must match the requested stage and reconstructed input. Typed journal roundtrip rejects field omission or null normalization under an old digest. Progress and conformance remain separate; failed fixtures and native evidence/implementation obligations survive a completed workflow. Exact obligation links bind original composition records, the follow-up owner record, root/TOPS and submitted provenance identity. Retention publishes the native result before its immutable link; exact retries reuse records. Show replays original owners and rejects substituted linkage rather than adopting current caller installation. A bounded exact record envelope accounts for its independently bounded input and native result; other objects and each child retain their original value and byte limits.",
       "status": "active",
       "title": "Agent workflow recovery preserves exact caller intent and native evidence"
     },
@@ -1010,6 +1041,12 @@
         },
         {
           "cases": [
+            "test_composition_followup_consumer_rejects_resealed_result"
+          ],
+          "path": "modules/scv-engine/tests/obligation_test.cpp"
+        },
+        {
+          "cases": [
             "test_provider_pack_rejects_forged_evaluation"
           ],
           "path": "modules/scv-engine/tests/pack_test.cpp"
@@ -1030,6 +1067,15 @@
             "TestSCVConnectionReasonInventoryPreservesQualifiedOperands"
           ],
           "path": "tools/qxctl/internal/knowledgeengine/scv_interpretation_test.go"
+        },
+        {
+          "cases": [
+            "TestInstalledSCVObligationConsumerAndCallerContinuity",
+            "TestSCVObligationDistinctPrerequisitesAndTypedTargets",
+            "TestSCVObligationNativeParityAndResealedTampering",
+            "TestSCVObligationProvenanceBoundsAndNoAuthorityFields"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/scv_obligation_test.go"
         },
         {
           "cases": [
@@ -1074,6 +1120,16 @@
         },
         {
           "cases": [
+            "test_composition_followup_criterion_change_does_not_credit_reference",
+            "test_composition_followup_preserves_problem_and_policy",
+            "test_composition_obligations_distinguish_identical_prerequisite_summaries",
+            "test_composition_obligations_fixture_inventory_and_separate_verification",
+            "test_composition_obligations_producer"
+          ],
+          "path": "modules/scv-engine/tests/obligation_test.cpp"
+        },
+        {
+          "cases": [
             "test_exact_decimal_lexeme",
             "test_fixture_failure_retained",
             "test_pointer_escape_and_array_indices",
@@ -1094,7 +1150,7 @@
           "path": "modules/scv-engine/tests/installed_integration.py"
         }
       ],
-      "statement": "The C++ interpretation owner validates exact sealed profiles and capture bindings, retains qualified extraction findings and replays wrapped interpretations before evaluating caller-defined subject/scope/type/unit checks. Reassessment replays both retained results and distinguishes changed inputs and affected findings. Missing, stale, disputed or conditional support cannot become unqualified runtime compatibility, provider-wide contradiction or authority. Recomputed outer digests do not bypass nested replay. Native profile preparation validates and seals exactly the authored draft without asserting source extraction or substituting fields. Portable provider packs preserve caller-authored declarations, exact profile and fixture expectations, detached-input identity, structured token provenance and explicit failed/unrun conformance. Finite recipe exploration and reassessment reconstruct selected evidence, requirements, allowed choices, enumeration bounds, interface declarations and obligations without ranking providers, silently relaxing requirements, or treating authored implementation metadata as observed compatibility.",
+      "statement": "The C++ interpretation owner validates exact sealed profiles and capture bindings, retains qualified extraction findings and replays wrapped interpretations before evaluating caller-defined subject/scope/type/unit checks. Reassessment replays both retained results and distinguishes changed inputs and affected findings. Missing, stale, disputed or conditional support cannot become unqualified runtime compatibility, provider-wide contradiction or authority. Recomputed outer digests do not bypass nested replay. Native profile preparation validates and seals exactly the authored draft without asserting source extraction or substituting fields. Portable provider packs preserve caller-authored declarations, exact profile and fixture expectations, detached-input identity, structured token provenance and explicit failed/unrun conformance. Finite recipe exploration and reassessment reconstruct selected evidence, requirements, allowed choices, enumeration bounds, interface declarations and obligations without ranking providers, silently relaxing requirements, or treating authored implementation metadata as observed compatibility. Native obligation inventory binds each precise check or other work subject to the full replayed composition. Follow-up replays both sides, preserves all non-time caller criteria and policy, reports query-time differences, and never credits an opaque reference with proof or causation. Non-check obligations remain separately unverified.",
       "status": "active",
       "title": "Profile and connection results preserve replayable scoped evidence"
     },
@@ -1207,6 +1263,7 @@
             "test_historical_projection_is_frozen",
             "test_malformed_catalog_and_references_rejected",
             "test_malformed_manifest_rejected",
+            "test_seventh_release_declaration_remains_exact",
             "test_sixth_release_declaration_remains_exact"
           ],
           "path": "modules/scv-engine/tests/interface_generation_test.py"
@@ -1550,7 +1607,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v2",
-  "registry_digest": "sha256:812924405cd05633d8f7c4fd6f9b67c0293ee6c1e1be36e9a6c3b96afabdadbf",
+  "registry_digest": "sha256:2bbbd2fbb6d16a2aca7c5523dd40994411d11a38e877f8fcb2d24e29de2c1bcb",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

@@ -1,0 +1,1060 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:scv:obligation:v1",
+  "title": "Exact composition obligation inventory and evidence follow-up",
+  "description": "Structural shapes for additive native obligation operations. Owner and consumer check exact semantic composition replay, composition-bound target hashes, target completeness/order, distinct submissions and results, unchanged caller definitions/evidence policy and accurate check transitions. Query times may differ explicitly. Provenance is reference-only; no submitted bytes, producer identity, causation, execution or global resolution is verified. String bounds are UTF-8 byte bounds at runtime; individual array maxima do not enlarge 1MiB request/4MiB response limits. No arbitrary external reference is dereferenced.",
+  "$defs": {
+    "Target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scenario_id",
+        "candidate_id",
+        "connection_id",
+        "check_id",
+        "requirement_id",
+        "slot_id",
+        "recipe_id",
+        "interface_ref",
+        "pack_evaluation_digest",
+        "fixture_id"
+      ],
+      "properties": {
+        "scenario_id": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            }
+          ]
+        },
+        "candidate_id": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "connection_id": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            }
+          ]
+        },
+        "check_id": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            }
+          ]
+        },
+        "requirement_id": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            }
+          ]
+        },
+        "slot_id": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            }
+          ]
+        },
+        "recipe_id": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            }
+          ]
+        },
+        "interface_ref": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            }
+          ]
+        },
+        "pack_evaluation_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "fixture_id": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512,
+              "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+            }
+          ]
+        }
+      }
+    },
+    "CheckTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scenario_id",
+        "candidate_id",
+        "connection_id",
+        "check_id",
+        "requirement_id",
+        "slot_id",
+        "recipe_id",
+        "interface_ref",
+        "pack_evaluation_digest",
+        "fixture_id"
+      ],
+      "properties": {
+        "scenario_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "candidate_id": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "connection_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "check_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "requirement_id": {
+          "type": "null"
+        },
+        "slot_id": {
+          "type": "null"
+        },
+        "recipe_id": {
+          "type": "null"
+        },
+        "interface_ref": {
+          "type": "null"
+        },
+        "pack_evaluation_digest": {
+          "type": "null"
+        },
+        "fixture_id": {
+          "type": "null"
+        }
+      }
+    },
+    "BindingTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scenario_id",
+        "candidate_id",
+        "connection_id",
+        "check_id",
+        "requirement_id",
+        "slot_id",
+        "recipe_id",
+        "interface_ref",
+        "pack_evaluation_digest",
+        "fixture_id"
+      ],
+      "properties": {
+        "scenario_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "candidate_id": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "connection_id": {
+          "type": "null"
+        },
+        "check_id": {
+          "type": "null"
+        },
+        "requirement_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "slot_id": {
+          "type": "null"
+        },
+        "recipe_id": {
+          "type": "null"
+        },
+        "interface_ref": {
+          "type": "null"
+        },
+        "pack_evaluation_digest": {
+          "type": "null"
+        },
+        "fixture_id": {
+          "type": "null"
+        }
+      }
+    },
+    "InterfaceTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scenario_id",
+        "candidate_id",
+        "connection_id",
+        "check_id",
+        "requirement_id",
+        "slot_id",
+        "recipe_id",
+        "interface_ref",
+        "pack_evaluation_digest",
+        "fixture_id"
+      ],
+      "properties": {
+        "scenario_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "candidate_id": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "connection_id": {
+          "type": "null"
+        },
+        "check_id": {
+          "type": "null"
+        },
+        "requirement_id": {
+          "type": "null"
+        },
+        "slot_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "recipe_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "interface_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "pack_evaluation_digest": {
+          "type": "null"
+        },
+        "fixture_id": {
+          "type": "null"
+        }
+      }
+    },
+    "ImplementationTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scenario_id",
+        "candidate_id",
+        "connection_id",
+        "check_id",
+        "requirement_id",
+        "slot_id",
+        "recipe_id",
+        "interface_ref",
+        "pack_evaluation_digest",
+        "fixture_id"
+      ],
+      "properties": {
+        "scenario_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "candidate_id": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "connection_id": {
+          "type": "null"
+        },
+        "check_id": {
+          "type": "null"
+        },
+        "requirement_id": {
+          "type": "null"
+        },
+        "slot_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "recipe_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "interface_ref": {
+          "type": "null"
+        },
+        "pack_evaluation_digest": {
+          "type": "null"
+        },
+        "fixture_id": {
+          "type": "null"
+        }
+      }
+    },
+    "FixtureTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scenario_id",
+        "candidate_id",
+        "connection_id",
+        "check_id",
+        "requirement_id",
+        "slot_id",
+        "recipe_id",
+        "interface_ref",
+        "pack_evaluation_digest",
+        "fixture_id"
+      ],
+      "properties": {
+        "scenario_id": {
+          "type": "null"
+        },
+        "candidate_id": {
+          "type": "null"
+        },
+        "connection_id": {
+          "type": "null"
+        },
+        "check_id": {
+          "type": "null"
+        },
+        "requirement_id": {
+          "type": "null"
+        },
+        "slot_id": {
+          "type": "null"
+        },
+        "recipe_id": {
+          "type": "null"
+        },
+        "interface_ref": {
+          "type": "null"
+        },
+        "pack_evaluation_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "fixture_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        }
+      }
+    },
+    "Obligation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "obligation_id",
+        "kind",
+        "target",
+        "prior_status",
+        "claim_ids",
+        "description"
+      ],
+      "properties": {
+        "obligation_id": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "kind": {
+          "enum": [
+            "check",
+            "binding",
+            "interface",
+            "implementation",
+            "fixture"
+          ]
+        },
+        "target": {
+          "$ref": "#/$defs/Target"
+        },
+        "prior_status": {
+          "enum": [
+            "ambiguous_binding",
+            "available",
+            "conditional",
+            "contradicted",
+            "failed",
+            "missing",
+            "missing_binding",
+            "not_run",
+            "unimplemented",
+            "unknown",
+            "unresolved"
+          ]
+        },
+        "claim_ids": {
+          "type": "array",
+          "maxItems": 128,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+          }
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "kind": {
+              "const": "check"
+            },
+            "target": {
+              "$ref": "#/$defs/CheckTarget"
+            },
+            "prior_status": {
+              "enum": [
+                "conditional",
+                "unresolved",
+                "contradicted"
+              ]
+            },
+            "description": {
+              "const": "Review the exact native check and selected evidence; criterion state is not runtime compatibility."
+            }
+          }
+        },
+        {
+          "properties": {
+            "kind": {
+              "const": "binding"
+            },
+            "target": {
+              "$ref": "#/$defs/BindingTarget"
+            },
+            "prior_status": {
+              "enum": [
+                "missing_binding",
+                "ambiguous_binding"
+              ]
+            },
+            "description": {
+              "const": "Supply one unambiguous scoped binding for this caller requirement; mapping changes require a separate composition."
+            }
+          }
+        },
+        {
+          "properties": {
+            "kind": {
+              "const": "interface"
+            },
+            "target": {
+              "$ref": "#/$defs/InterfaceTarget"
+            },
+            "prior_status": {
+              "enum": [
+                "missing"
+              ]
+            },
+            "description": {
+              "const": "Verify or implement the exact declared interface contract; a reference alone does not establish connectivity."
+            },
+            "claim_ids": {
+              "maxItems": 0
+            }
+          }
+        },
+        {
+          "properties": {
+            "kind": {
+              "const": "implementation"
+            },
+            "target": {
+              "$ref": "#/$defs/ImplementationTarget"
+            },
+            "prior_status": {
+              "enum": [
+                "available",
+                "unknown",
+                "unimplemented"
+              ]
+            },
+            "description": {
+              "const": "Verify the declared implementation and its runtime behavior; availability is caller asserted."
+            },
+            "claim_ids": {
+              "maxItems": 0
+            }
+          }
+        },
+        {
+          "properties": {
+            "kind": {
+              "const": "fixture"
+            },
+            "target": {
+              "$ref": "#/$defs/FixtureTarget"
+            },
+            "prior_status": {
+              "enum": [
+                "failed",
+                "not_run"
+              ]
+            },
+            "description": {
+              "const": "Review the exact provider-pack fixture and authored mapping; fixture status is not provider impossibility."
+            }
+          }
+        }
+      ]
+    },
+    "ObligationsInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "composition"
+      ],
+      "properties": {
+        "composition": {
+          "$ref": "composition.schema.json#/$defs/ExploreResult"
+        }
+      }
+    },
+    "ObligationsResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "domain",
+        "input",
+        "composition_digest",
+        "obligations",
+        "limitations",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.composition-obligations.v1"
+        },
+        "domain": {
+          "$ref": "composition.schema.json#/$defs/ExploreResult/properties/domain"
+        },
+        "input": {
+          "$ref": "#/$defs/ObligationsInput"
+        },
+        "composition_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "obligations": {
+          "type": "array",
+          "maxItems": 26496,
+          "items": {
+            "$ref": "#/$defs/Obligation"
+          }
+        },
+        "limitations": {
+          "const": [
+            "inventory covers obligations in the exact replayed finite composition only; it does not establish global completeness or prioritize work",
+            "obligation identities bind the composition digest and precise target; opaque references are never executed or treated as evidence",
+            "implementation and interface declarations require separate verification; check satisfaction is not runtime certification"
+          ]
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "Provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "producer",
+        "reference",
+        "content_digest",
+        "recorded_at",
+        "description"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "source",
+            "observation",
+            "adapter",
+            "caller_decision"
+          ]
+        },
+        "producer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "content_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "recorded_at": {
+          "type": "string",
+          "pattern": "^(?!0000)[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+          "description": "Real UTC seconds date/time checked at runtime; no chronology, producer authentication or content verification is established."
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        }
+      }
+    },
+    "Submission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "submission_id",
+        "obligation_id",
+        "provenance"
+      ],
+      "properties": {
+        "submission_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "obligation_id": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        }
+      }
+    },
+    "FollowupInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "before",
+        "after",
+        "submissions"
+      ],
+      "properties": {
+        "before": {
+          "$ref": "composition.schema.json#/$defs/ExploreResult"
+        },
+        "after": {
+          "$ref": "composition.schema.json#/$defs/ExploreResult"
+        },
+        "submissions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": {
+            "$ref": "#/$defs/Submission"
+          },
+          "description": "Both submission_id and obligation_id must be unique at runtime."
+        }
+      }
+    },
+    "Entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "submission_id",
+        "obligation_id",
+        "kind",
+        "target",
+        "prior_status",
+        "current_status",
+        "outcome",
+        "claim_ids",
+        "provenance_validation",
+        "causation"
+      ],
+      "properties": {
+        "submission_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+        },
+        "obligation_id": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "kind": {
+          "enum": [
+            "check",
+            "binding",
+            "interface",
+            "implementation",
+            "fixture"
+          ]
+        },
+        "target": {
+          "$ref": "#/$defs/Target"
+        },
+        "prior_status": {
+          "enum": [
+            "ambiguous_binding",
+            "available",
+            "conditional",
+            "contradicted",
+            "failed",
+            "missing",
+            "missing_binding",
+            "not_run",
+            "unimplemented",
+            "unknown",
+            "unresolved"
+          ]
+        },
+        "current_status": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "enum": [
+                "satisfied",
+                "conditional",
+                "unresolved",
+                "contradicted"
+              ]
+            }
+          ]
+        },
+        "outcome": {
+          "enum": [
+            "criterion_satisfied",
+            "criterion_not_satisfied",
+            "requires_separate_verification"
+          ]
+        },
+        "claim_ids": {
+          "type": "array",
+          "maxItems": 128,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 512,
+            "pattern": "^[^\\u0000-\\u001F\\u007F]+$"
+          }
+        },
+        "provenance_validation": {
+          "const": "reference_only"
+        },
+        "causation": {
+          "const": "not_established"
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "kind": {
+              "const": "check"
+            },
+            "target": {
+              "$ref": "#/$defs/CheckTarget"
+            },
+            "prior_status": {
+              "enum": [
+                "conditional",
+                "unresolved",
+                "contradicted"
+              ]
+            }
+          },
+          "oneOf": [
+            {
+              "properties": {
+                "current_status": {
+                  "const": "satisfied"
+                },
+                "outcome": {
+                  "const": "criterion_satisfied"
+                }
+              }
+            },
+            {
+              "properties": {
+                "current_status": {
+                  "enum": [
+                    "conditional",
+                    "unresolved",
+                    "contradicted"
+                  ]
+                },
+                "outcome": {
+                  "const": "criterion_not_satisfied"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "properties": {
+            "kind": {
+              "const": "binding"
+            },
+            "target": {
+              "$ref": "#/$defs/BindingTarget"
+            },
+            "prior_status": {
+              "enum": [
+                "missing_binding",
+                "ambiguous_binding"
+              ]
+            },
+            "current_status": {
+              "type": "null"
+            },
+            "outcome": {
+              "const": "requires_separate_verification"
+            }
+          }
+        },
+        {
+          "properties": {
+            "kind": {
+              "const": "interface"
+            },
+            "target": {
+              "$ref": "#/$defs/InterfaceTarget"
+            },
+            "prior_status": {
+              "enum": [
+                "missing"
+              ]
+            },
+            "current_status": {
+              "type": "null"
+            },
+            "outcome": {
+              "const": "requires_separate_verification"
+            },
+            "claim_ids": {
+              "maxItems": 0
+            }
+          }
+        },
+        {
+          "properties": {
+            "kind": {
+              "const": "implementation"
+            },
+            "target": {
+              "$ref": "#/$defs/ImplementationTarget"
+            },
+            "prior_status": {
+              "enum": [
+                "available",
+                "unknown",
+                "unimplemented"
+              ]
+            },
+            "current_status": {
+              "type": "null"
+            },
+            "outcome": {
+              "const": "requires_separate_verification"
+            },
+            "claim_ids": {
+              "maxItems": 0
+            }
+          }
+        },
+        {
+          "properties": {
+            "kind": {
+              "const": "fixture"
+            },
+            "target": {
+              "$ref": "#/$defs/FixtureTarget"
+            },
+            "prior_status": {
+              "enum": [
+                "failed",
+                "not_run"
+              ]
+            },
+            "current_status": {
+              "type": "null"
+            },
+            "outcome": {
+              "const": "requires_separate_verification"
+            }
+          }
+        }
+      ]
+    },
+    "FollowupResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "domain",
+        "input",
+        "before_digest",
+        "after_digest",
+        "change_axes",
+        "candidate_changes",
+        "entries",
+        "limitations",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.composition-followup.v1"
+        },
+        "domain": {
+          "$ref": "composition.schema.json#/$defs/ExploreResult/properties/domain"
+        },
+        "input": {
+          "$ref": "#/$defs/FollowupInput"
+        },
+        "before_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "after_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "change_axes": {
+          "$ref": "composition.schema.json#/$defs/ReassessResult/properties/change_axes"
+        },
+        "candidate_changes": {
+          "$ref": "composition.schema.json#/$defs/ReassessResult/properties/candidates"
+        },
+        "entries": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": {
+            "$ref": "#/$defs/Entry"
+          }
+        },
+        "limitations": {
+          "const": [
+            "submissions retain opaque provenance references only; no content, producer identity, authorization or execution is verified",
+            "criterion state comes only from the independently replayed after composition; a satisfied criterion does not prove the submission caused it",
+            "requirements, recipes, selections, bounds and evidence policy remain fixed; query-time differences are reported without asserting chronology or causation",
+            "non-check obligations require separate verification; no submission globally resolves an obligation or certifies runtime compatibility"
+          ]
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

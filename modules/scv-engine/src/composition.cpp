@@ -3,6 +3,7 @@
 #include "pack.hpp"
 #include "scv.hpp"
 #include "symphony/knowledge/engine/error.hpp"
+#include "symphony/knowledge/engine/temporal.hpp"
 #include <algorithm>
 #include <functional>
 #include <map>
@@ -186,6 +187,139 @@ Json reassess(const Json& input,const std::string& domain,const engine::Request&
         {"candidates",changes},{"search_changed",before.at("search")!=after.at("search")},{"limitations",Json::array({"axes identify exact input differences and may overlap; they do not prove counterfactual causation",
             "affected candidates include referenced evidence changes; absent candidates may reflect search bounds or caller selections rather than impossibility"})}});
 }
+
+Json obligation_target() {
+    return {{"scenario_id",nullptr},{"candidate_id",nullptr},{"connection_id",nullptr},{"check_id",nullptr},
+        {"requirement_id",nullptr},{"slot_id",nullptr},{"recipe_id",nullptr},{"interface_ref",nullptr},
+        {"pack_evaluation_digest",nullptr},{"fixture_id",nullptr}};
 }
-Json handle_composition(const engine::Request& request,const std::string& domain){deadline(request);Json result;if(request.operation=="composition_explore")result=explore(request.payload,domain,request);else if(request.operation=="composition_reassess")result=reassess(request.payload,domain,request);else throw engine::Error("operation.unsupported","unsupported composition operation",4);deadline(request);return result;}
+const char* obligation_description(const std::string& kind) {
+    if(kind=="check")return "Review the exact native check and selected evidence; criterion state is not runtime compatibility.";
+    if(kind=="binding")return "Supply one unambiguous scoped binding for this caller requirement; mapping changes require a separate composition.";
+    if(kind=="interface")return "Verify or implement the exact declared interface contract; a reference alone does not establish connectivity.";
+    if(kind=="implementation")return "Verify the declared implementation and its runtime behavior; availability is caller asserted.";
+    if(kind=="fixture")return "Review the exact provider-pack fixture and authored mapping; fixture status is not provider impossibility.";
+    invalid("unknown obligation kind");
+}
+const Json& selected_recipe(const Json& input,const Json& choice) {
+    for(const auto& slot:input.at("slots"))if(slot.at("slot_id")==choice.at("slot_id"))
+        for(const auto& recipe:slot.at("recipes"))if(recipe.at("recipe_id")==choice.at("recipe_id"))return recipe;
+    invalid("selected obligation recipe is absent");
+}
+// Internal only: composition must have been exactly replayed in this request.
+// Precise native identities are rebuilt here, never inferred from the older
+// anonymous candidate.obligations summaries or their human-readable detail.
+Json obligation_inventory(const Json& composition,const engine::Request& request) {
+    Map entries;
+    const auto append=[&](const std::string& kind,Json target,Json status,Json claims) {
+        deadline(request);
+        const auto id=sealed(Json{{"composition_digest",composition.at("digest")},{"kind",kind},{"target",target}}).at("digest").get<std::string>();
+        Json entry={{"obligation_id",id},{"kind",kind},{"target",target},{"prior_status",status},
+            {"claim_ids",claims},{"description",obligation_description(kind)}};
+        if(!entries.emplace(id,std::move(entry)).second)invalid("duplicate precise obligation identity");
+    };
+    for(const auto& scenario:composition.at("scenarios"))for(const auto& candidate:scenario.at("candidates")) {
+        auto target=obligation_target();target["scenario_id"]=scenario.at("scenario_id");target["candidate_id"]=candidate.at("candidate_id");
+        for(const auto& connection:candidate.at("connections"))for(const auto& check:connection.at("checks"))if(check.at("status")!="satisfied") {
+            auto subject=target;subject["connection_id"]=connection.at("connection_id");subject["check_id"]=check.at("specification").at("check_id");
+            append("check",subject,check.at("status"),check.at("claim_ids"));
+        }
+        for(const auto& binding:candidate.at("unbound_requirements")) {
+            auto subject=target;subject["requirement_id"]=binding.at("requirement_id");
+            std::set<std::string> claims;for(const auto& ref:binding.at("claim_references"))claims.insert(ref.at("claim_id").get<std::string>());
+            append("binding",subject,binding.at("reason"),claims);
+        }
+        for(const auto& interface:candidate.at("interfaces"))if(!interface.at("declared_match").get<bool>()) {
+            auto subject=target;for(const auto* key:{"slot_id","recipe_id","interface_ref"})subject[key]=interface.at(key);
+            append("interface",subject,"missing",Json::array());
+        }
+        for(const auto& choice:candidate.at("choices")) {
+            auto subject=target;subject["slot_id"]=choice.at("slot_id");subject["recipe_id"]=choice.at("recipe_id");
+            append("implementation",subject,selected_recipe(composition.at("input"),choice).at("implementation").at("status"),Json::array());
+        }
+    }
+    for(const auto& fixture:composition.at("evidence_obligations")) {
+        auto target=obligation_target();target["pack_evaluation_digest"]=fixture.at("pack_evaluation_digest");target["fixture_id"]=fixture.at("fixture_id");
+        append("fixture",target,fixture.at("status"),fixture.at("claim_ids"));
+    }
+    Json result=Json::array();for(const auto& [id,entry]:entries){static_cast<void>(id);result.push_back(entry);}return result;
+}
+Json obligations(const Json& input,const std::string& domain,const engine::Request& request) {
+    fields(input,{"composition"});const auto& composition=input.at("composition");
+    if(!composition.is_object()||!composition.contains("input")||explore(composition.at("input"),domain,request)!=composition)
+        invalid("obligation composition cannot be exactly replayed");
+    return sealed(Json{{"protocol","symphony.scv.composition-obligations.v1"},{"domain",domain},{"input",input},
+        {"composition_digest",composition.at("digest")},{"obligations",obligation_inventory(composition,request)},
+        {"limitations",Json::array({
+            "inventory covers obligations in the exact replayed finite composition only; it does not establish global completeness or prioritize work",
+            "obligation identities bind the composition digest and precise target; opaque references are never executed or treated as evidence",
+            "implementation and interface declarations require separate verification; check satisfaction is not runtime certification"})}});
+}
+void obligation_digest(const Json& value) {
+    if(!value.is_string())invalid("expected obligation digest");
+    const auto& s=value.get_ref<const std::string&>();
+    if(s.size()!=71||!s.starts_with("sha256:")||!std::all_of(s.begin()+7,s.end(),[](char c){return (c>='0'&&c<='9')||(c>='a'&&c<='f');}))
+        invalid("invalid obligation digest");
+}
+void submission_provenance(const Json& provenance) {
+    fields(provenance,{"kind","producer","reference","content_digest","recorded_at","description"});
+    const auto kind=text(provenance,"kind");
+    if(kind!="source"&&kind!="observation"&&kind!="adapter"&&kind!="caller_decision")invalid("invalid obligation provenance kind");
+    text(provenance,"producer");text(provenance,"reference");text(provenance,"description",2048);
+    if(!provenance.at("content_digest").is_null())obligation_digest(provenance.at("content_digest"));
+    if(!provenance.at("recorded_at").is_string()||!engine::is_utc_seconds(provenance.at("recorded_at").get_ref<const std::string&>()))
+        invalid("obligation provenance requires canonical UTC seconds");
+}
+Map precise_checks(const Json& composition) {
+    Map result;
+    for(const auto& scenario:composition.at("scenarios"))for(const auto& candidate:scenario.at("candidates"))
+        for(const auto& connection:candidate.at("connections"))for(const auto& check:connection.at("checks"))
+            result.emplace(Json::array({scenario.at("scenario_id"),candidate.at("candidate_id"),connection.at("connection_id"),check.at("specification").at("check_id")}).dump(),check);
+    return result;
+}
+Json followup(const Json& input,const std::string& domain,const engine::Request& request) {
+    fields(input,{"before","after","submissions"});array(input.at("submissions"),32,1);
+    Map submissions;std::set<std::string> targets;
+    for(const auto& submission:input.at("submissions")) {
+        fields(submission,{"submission_id","obligation_id","provenance"});
+        const auto id=text(submission,"submission_id");obligation_digest(submission.at("obligation_id"));submission_provenance(submission.at("provenance"));
+        if(!submissions.emplace(id,submission).second||!targets.insert(submission.at("obligation_id").get<std::string>()).second)
+            invalid("duplicate obligation submission or target");
+    }
+    const auto& before=input.at("before");const auto& after=input.at("after");
+    // Reassessment performs the one full replay of both ordinary compositions.
+    const auto changes=reassess(Json{{"before",before},{"after",after}},domain,request);
+    for(const auto* key:{"requirements","slots","allowed_guarantee_changes","counterfactuals","bounds"})
+        if(before.at("input").at(key)!=after.at("input").at(key))invalid("obligation follow-up changes caller problem");
+    if(before.at("evidence_evaluation").at("graph_evaluation").at("selection_policy")!=after.at("evidence_evaluation").at("graph_evaluation").at("selection_policy"))
+        invalid("obligation follow-up changes evidence selection policy");
+    Map inventory;for(const auto& entry:obligation_inventory(before,request))inventory.emplace(entry.at("obligation_id").get<std::string>(),entry);
+    const auto old_checks=precise_checks(before),new_checks=precise_checks(after);
+    Json entries=Json::array();
+    for(const auto& [id,submission]:submissions) {
+        deadline(request);const auto obligation_id=submission.at("obligation_id").get<std::string>();
+        if(!inventory.contains(obligation_id))invalid("submission does not name an exact prior obligation");
+        const auto& obligation=inventory.at(obligation_id);const auto& target=obligation.at("target");
+        Json current=nullptr;std::string outcome="requires_separate_verification";
+        if(obligation.at("kind")=="check") {
+            const auto key=Json::array({target.at("scenario_id"),target.at("candidate_id"),target.at("connection_id"),target.at("check_id")}).dump();
+            if(!old_checks.contains(key)||!new_checks.contains(key)||old_checks.at(key).at("specification")!=new_checks.at(key).at("specification"))
+                invalid("follow-up check identity or specification changed");
+            current=new_checks.at(key).at("status");outcome=current=="satisfied"?"criterion_satisfied":"criterion_not_satisfied";
+        }
+        entries.push_back({{"submission_id",id},{"obligation_id",obligation_id},{"kind",obligation.at("kind")},{"target",target},
+            {"prior_status",obligation.at("prior_status")},{"current_status",current},{"outcome",outcome},{"claim_ids",obligation.at("claim_ids")},
+            {"provenance_validation","reference_only"},{"causation","not_established"}});
+    }
+    return sealed(Json{{"protocol","symphony.scv.composition-followup.v1"},{"domain",domain},{"input",input},
+        {"before_digest",before.at("digest")},{"after_digest",after.at("digest")},{"change_axes",changes.at("change_axes")},
+        {"candidate_changes",changes.at("candidates")},{"entries",entries},{"limitations",Json::array({
+            "submissions retain opaque provenance references only; no content, producer identity, authorization or execution is verified",
+            "criterion state comes only from the independently replayed after composition; a satisfied criterion does not prove the submission caused it",
+            "requirements, recipes, selections, bounds and evidence policy remain fixed; query-time differences are reported without asserting chronology or causation",
+            "non-check obligations require separate verification; no submission globally resolves an obligation or certifies runtime compatibility"})}});
+}
+
+}
+Json handle_composition(const engine::Request& request,const std::string& domain){deadline(request);Json result;if(request.operation=="composition_explore")result=explore(request.payload,domain,request);else if(request.operation=="composition_reassess")result=reassess(request.payload,domain,request);else if(request.operation=="composition_obligations")result=obligations(request.payload,domain,request);else if(request.operation=="composition_followup")result=followup(request.payload,domain,request);else throw engine::Error("operation.unsupported","unsupported composition operation",4);deadline(request);return result;}
 }

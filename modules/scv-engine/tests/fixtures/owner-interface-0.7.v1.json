@@ -1,6 +1,6 @@
 {
   "protocol": "symphony.scv.owner-interface.v1",
-  "current_release": "0.8.0-dev",
+  "current_release": "0.7.0-dev",
   "domains": [
     {
       "name": "scv",
@@ -190,42 +190,6 @@
         "knowledge/scv/COMPOSITION.md@v1",
         "knowledge/scv/OWNER-INTERFACE.md@v1",
         "knowledge/scv/COMPOSITION-WORKFLOWS.md@v1"
-      ]
-    },
-    {
-      "version": "0.8.0-dev",
-      "surfaces": [
-        "corpus",
-        "workflow",
-        "artifact",
-        "schema",
-        "interface",
-        "composition_workflow"
-      ],
-      "companions": [
-        "SOURCE-KNOWLEDGE.md",
-        "CORPUS.md",
-        "INTERPRETATION.md",
-        "AGENT-WORKFLOWS.md",
-        "COVERAGE.md",
-        "PROVIDER-PACKS.md",
-        "COMPOSITION.md",
-        "OWNER-INTERFACE.md",
-        "COMPOSITION-WORKFLOWS.md",
-        "OBLIGATIONS.md"
-      ],
-      "contract_versions": [
-        "knowledge/SPEC.md@v1",
-        "knowledge/scv/SOURCE-KNOWLEDGE.md@v1",
-        "knowledge/scv/CORPUS.md@v1",
-        "knowledge/scv/INTERPRETATION.md@v1",
-        "knowledge/scv/AGENT-WORKFLOWS.md@v1",
-        "knowledge/scv/COVERAGE.md@v1",
-        "knowledge/scv/PROVIDER-PACKS.md@v1",
-        "knowledge/scv/COMPOSITION.md@v1",
-        "knowledge/scv/OWNER-INTERFACE.md@v1",
-        "knowledge/scv/COMPOSITION-WORKFLOWS.md@v1",
-        "knowledge/scv/OBLIGATIONS.md@v1"
       ]
     }
   ],
@@ -600,38 +564,6 @@
       "artifact": {
         "kind": "composition_reassessment",
         "introduced_in": "0.6.0-dev"
-      }
-    },
-    {
-      "name": "composition_obligations",
-      "introduced_in": "0.8.0-dev",
-      "input_protocol": "symphony.scv.composition-obligations-input.v1",
-      "output_protocol": "symphony.scv.composition-obligations.v1",
-      "interactions": [
-        "query"
-      ],
-      "mutability": "read_only",
-      "expected_state": false,
-      "handler": "handle_composition",
-      "artifact": {
-        "kind": "composition_obligations",
-        "introduced_in": "0.8.0-dev"
-      }
-    },
-    {
-      "name": "composition_followup",
-      "introduced_in": "0.8.0-dev",
-      "input_protocol": "symphony.scv.composition-followup-input.v1",
-      "output_protocol": "symphony.scv.composition-followup.v1",
-      "interactions": [
-        "validate"
-      ],
-      "mutability": "evidence_only",
-      "expected_state": false,
-      "handler": "handle_composition",
-      "artifact": {
-        "kind": "composition_followup",
-        "introduced_in": "0.8.0-dev"
       }
     }
   ],

@@ -41,3 +41,7 @@ Generator regressions separately cover deterministic regeneration, frozen histor
 The exact `0.7.0-dev` release retains 26 native operations and adds the installed `knowledge/scv/COMPOSITION-WORKFLOWS.md` companion and its workflow schema. qxctl coordinates original-owner package evaluations, finite exploration and optional reassessment with pinned intent, immutable artifact records and interruption recovery. Nine owner companions and 24 schemas expose 89 protocol entries. The existing native meanings remain unchanged; a completed run preserves source gaps, failed fixtures and implementation obligations. Earlier exact `.1`–`.6` installations and command defaults remain available.
 
 The additional frozen `modules/scv-engine/tests/fixtures/owner-interface-0.6.v1.json` preserves the exact `.6` declaration from closure `186ec79`; regressions compare both its complete release-truncated definition and mechanical projection. The earlier `.1`–`.5` history fixture remains byte-preserved.
+
+## Precise Obligation Follow-up
+
+Exact `0.8.0-dev` exposes 28 native operations, including replayed obligation inventory and subsequent-evidence comparison under `knowledge/scv/OBLIGATIONS.md`. qxctl exposes direct operations and immutable original-owner relationship retention/show. Native check state remains separate from supplied reference provenance, causal attribution and runtime verification. Ten owner companions and 26 schemas expose 97 catalog protocols. Earlier exact packages, protocols and command defaults remain preserved.

@@ -1,6 +1,6 @@
 {
   "protocol": "symphony.scv.schema-catalog.v1",
-  "engine_version": "0.7.0-dev",
+  "engine_version": "0.8.0-dev",
   "entries": [
     {
       "protocol": "symphony.knowledge.engine-descriptor.v2",
@@ -288,6 +288,48 @@
       "fragment": "#/$defs/corpusResult",
       "kind": "output",
       "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-obligation-link-result.v1",
+      "file": "scv-obligation-link.schema.json",
+      "fragment": "#/$defs/Result",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-obligation-link.v1",
+      "file": "scv-obligation-link.schema.json",
+      "fragment": "#/$defs/Link",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-obligation-retain-input.v1",
+      "file": "scv-obligation-link.schema.json",
+      "fragment": "#/$defs/RetainInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "before_ref": null,
+        "after_ref": null,
+        "submissions": []
+      },
+      "required_inputs": [
+        "Use exact retained record or link digests in the explicit root/TOPS namespace; the original owners must be available for replay."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-obligation-show-input.v1",
+      "file": "scv-obligation-link.schema.json",
+      "fragment": "#/$defs/ShowInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "link_ref": null
+      },
+      "required_inputs": [
+        "Use exact retained record or link digests in the explicit root/TOPS namespace; the original owners must be available for replay."
+      ]
     },
     {
       "protocol": "symphony.qxctl.scv-owner-interface.v1",
@@ -666,6 +708,56 @@
       },
       "required_inputs": [
         "Replace null authoring holes and supply caller-selected requirements, mappings, permissions and fixture expectations according to the exact schema. No template is evidence or a policy selection."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.composition-followup-input.v1",
+      "file": "obligation.schema.json",
+      "fragment": "#/$defs/FollowupInput",
+      "kind": "input",
+      "operations": [
+        "composition_followup"
+      ],
+      "template": {
+        "before": null,
+        "after": null,
+        "submissions": []
+      },
+      "required_inputs": [
+        "Select exact replayable composition results and precise inventoried obligation IDs; preserve caller criteria. Provenance references never prove their contents or cause a criterion change."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.composition-followup.v1",
+      "file": "obligation.schema.json",
+      "fragment": "#/$defs/FollowupResult",
+      "kind": "output",
+      "operations": [
+        "composition_followup"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.composition-obligations-input.v1",
+      "file": "obligation.schema.json",
+      "fragment": "#/$defs/ObligationsInput",
+      "kind": "input",
+      "operations": [
+        "composition_obligations"
+      ],
+      "template": {
+        "composition": null
+      },
+      "required_inputs": [
+        "Select exact replayable composition results and precise inventoried obligation IDs; preserve caller criteria. Provenance references never prove their contents or cause a criterion change."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.composition-obligations.v1",
+      "file": "obligation.schema.json",
+      "fragment": "#/$defs/ObligationsResult",
+      "kind": "output",
+      "operations": [
+        "composition_obligations"
       ]
     },
     {
@@ -1553,7 +1645,8 @@
     "structured_contexts": 8,
     "composition_workflow_pack_evaluations": 16,
     "composition_workflow_stages": 18,
-    "composition_workflow_evidence_artifacts": 16
+    "composition_workflow_evidence_artifacts": 16,
+    "obligation_submissions": 32
   },
   "limitations": [
     "Schemas describe shape; runtime also verifies digests, exact ownership, byte/time limits and replay.",

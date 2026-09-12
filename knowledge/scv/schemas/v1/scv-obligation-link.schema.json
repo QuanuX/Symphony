@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:qxctl:scv-obligation-link:v1",
+  "description": "Immutable local relationship between original composition records and an exact native followup record. Stored inside the existing sealed workflow payload envelope. Root/TOPS binding, owner replay and correspondence are runtime checks. References and digests do not authenticate external evidence.",
+  "$defs": {
+    "RetainInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "before_ref",
+        "after_ref",
+        "submissions"
+      ],
+      "properties": {
+        "before_ref": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "after_ref": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "submissions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": {
+            "$ref": "obligation.schema.json#/$defs/Submission"
+          }
+        }
+      }
+    },
+    "ShowInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "link_ref"
+      ],
+      "properties": {
+        "link_ref": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "Link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "root",
+        "tops_id",
+        "before_ref",
+        "after_ref",
+        "followup_ref",
+        "submissions_digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-obligation-link.v1"
+        },
+        "root": {
+          "type": "string"
+        },
+        "tops_id": {
+          "type": "string"
+        },
+        "before_ref": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "after_ref": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "followup_ref": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "submissions_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "Result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "link_ref",
+        "link",
+        "followup_ref",
+        "validation",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-obligation-link-result.v1"
+        },
+        "link_ref": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "link": {
+          "$ref": "#/$defs/Link"
+        },
+        "followup_ref": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "validation": {
+          "const": "owner_replayed"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

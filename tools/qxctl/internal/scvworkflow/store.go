@@ -14,6 +14,13 @@ const MaxBytes = 4 << 20
 const MaxInputBytes = 1 << 20
 const MaxList = 128
 
+// A retained record contains two separately bounded native JSON documents.
+// Their combined envelope has its own budget; neither child nor any other
+// workflow object receives a larger native value or byte allowance.
+const maxNativeJSONValues = 32768
+const maxRecordMetadataValues = 256
+const maxRecordJSONValues = 2*maxNativeJSONValues + maxRecordMetadataValues
+
 type Store struct{ Root, TOPSID string }
 type Record struct {
 	Protocol       string                       `json:"protocol"`
@@ -50,13 +57,62 @@ func New(root, tops string) (Store, error) {
 }
 func Decode(raw []byte) (map[string]any, error) {
 	if err := knowledgeengine.ValidateJSONObject(raw, MaxBytes); err != nil {
-		return nil, err
+		if recordErr := validateRecordEnvelopeBudget(raw); recordErr != nil {
+			return nil, recordErr
+		}
 	}
 	var result map[string]any
 	d := json.NewDecoder(bytes.NewReader(raw))
 	d.UseNumber()
 	err := d.Decode(&result)
 	return result, err
+}
+
+// This fallback admits only the exact artifact-record envelope, including its
+// pre-seal form without digest. The common validator still owns duplicate-key,
+// Unicode, number, depth and trailing-data rejection. Do not use Decode for the
+// children here: a nested record-shaped value must not inherit this exception.
+func validateRecordEnvelopeBudget(raw []byte) error {
+	if err := knowledgeengine.ValidateJSONObjectWithValueLimit(raw, MaxBytes, maxRecordJSONValues); err != nil {
+		return err
+	}
+	var envelope map[string]json.RawMessage
+	if err := json.Unmarshal(raw, &envelope); err != nil {
+		return err
+	}
+	var protocol string
+	if err := json.Unmarshal(envelope["protocol"], &protocol); err != nil || protocol != "symphony.qxctl.scv-artifact.v1" {
+		return fmt.Errorf("non-record JSON exceeds the default value budget")
+	}
+	required := []string{"protocol", "kind", "operation", "installation", "input", "artifact", "artifact_digest"}
+	expected := len(required)
+	if _, present := envelope["digest"]; present {
+		expected++
+	}
+	if len(envelope) != expected {
+		return fmt.Errorf("extended record budget requires exact envelope fields")
+	}
+	for _, key := range required {
+		if _, present := envelope[key]; !present {
+			return fmt.Errorf("extended record budget requires all envelope fields")
+		}
+	}
+	if err := knowledgeengine.ValidateJSONObject(envelope["input"], MaxInputBytes); err != nil {
+		return fmt.Errorf("retained record input: %w", err)
+	}
+	if err := knowledgeengine.ValidateJSONObject(envelope["artifact"], MaxBytes); err != nil {
+		return fmt.Errorf("retained record artifact: %w", err)
+	}
+	delete(envelope, "input")
+	delete(envelope, "artifact")
+	metadata, err := json.Marshal(envelope)
+	if err != nil {
+		return err
+	}
+	if err = knowledgeengine.ValidateJSONObjectWithValueLimit(metadata, MaxBytes, maxRecordMetadataValues); err != nil {
+		return fmt.Errorf("retained record metadata: %w", err)
+	}
+	return nil
 }
 func Canonical(v any) ([]byte, error) {
 	raw, err := knowledgeengine.SCVCanonical(v)
@@ -137,6 +193,9 @@ func ReadRecord(raw []byte) (Record, error) {
 		return r, fmt.Errorf("retained artifact is unsupported by the exact recorded installation")
 	}
 	if err := knowledgeengine.ValidateJSONObject(r.Input, MaxInputBytes); err != nil {
+		return r, err
+	}
+	if err := knowledgeengine.ValidateJSONObject(r.Artifact, MaxBytes); err != nil {
 		return r, err
 	}
 	artifact, err := Decode(r.Artifact)

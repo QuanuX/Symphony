@@ -57,3 +57,7 @@ Artifact admission, installation versions and schema discovery remain exact. Bou
 ## Maintained Composition Workflow
 
 `knowledge/scv/COMPOSITION-WORKFLOWS.md` owns `knowledge/scv/schemas/v1/scv-composition-workflow.schema.json`. Exact `.7` discovery adds five protocol entries for run/status/recover inputs, the retained run and result. The catalogue contains 89 entries across 24 schemas with nine owner companions. Artifact records admit exact `.7` owners while preserving earlier release admissions; the native operation inventory remains 26.
+
+## Precise Obligation Follow-up
+
+`knowledge/scv/OBLIGATIONS.md` owns `knowledge/scv/schemas/v1/obligation.schema.json` and `knowledge/scv/schemas/v1/scv-obligation-link.schema.json`. The exact `.8` catalog contains 97 protocols in 26 schemas. Native replay, precise target identity, caller criterion equality and retained-record correspondence are separate runtime checks.

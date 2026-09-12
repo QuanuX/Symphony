@@ -10827,3 +10827,42 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: private retained workflow evidence
 - notes: Completion describes stages; it does not certify provider capability, fixture meaning or runtime compatibility.
 - status: canonical
+
+#### SCV Obligation Inventory and Follow-up Contract
+- path: `knowledge/scv/OBLIGATIONS.md`
+- title: SCV Obligation Inventory and Follow-up Contract
+- surface_type: canonical contract companion
+- truth_role: exact obligation identity and subsequent-evidence contract
+- owner: SCV and qxctl maintainers
+- scope: Precise replayed targets, fixed caller criteria, separate provenance and semantic findings, immutable owner references.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, maintainers, agents, user-selected tools
+- deferred_projections: private retained obligation and follow-up evidence
+- notes: References confer no runtime verification or authority; criterion state does not establish submission causation.
+- status: canonical
+
+#### SCV Obligation Native Schema
+- path: `knowledge/scv/schemas/v1/obligation.schema.json`
+- title: SCV Obligation Native Schema
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: exact obligation identity and subsequent-evidence contract
+- owner: SCV and qxctl maintainers
+- scope: Precise replayed targets, fixed caller criteria, separate provenance and semantic findings, immutable owner references.
+- relationships: depends_on -> `knowledge/scv/OBLIGATIONS.md`
+- consumers: engines, qxctl, maintainers, agents, user-selected tools
+- deferred_projections: private retained obligation and follow-up evidence
+- notes: References confer no runtime verification or authority; criterion state does not establish submission causation.
+- status: canonical
+
+#### SCV Retained Obligation Link Schema
+- path: `knowledge/scv/schemas/v1/scv-obligation-link.schema.json`
+- title: SCV Retained Obligation Link Schema
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: exact obligation identity and subsequent-evidence contract
+- owner: SCV and qxctl maintainers
+- scope: Precise replayed targets, fixed caller criteria, separate provenance and semantic findings, immutable owner references.
+- relationships: depends_on -> `knowledge/scv/OBLIGATIONS.md`
+- consumers: engines, qxctl, maintainers, agents, user-selected tools
+- deferred_projections: private retained obligation and follow-up evidence
+- notes: References confer no runtime verification or authority; criterion state does not establish submission causation.
+- status: canonical
