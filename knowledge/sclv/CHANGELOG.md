@@ -9294,3 +9294,161 @@ This PR authorizes none of the following:
   - `Automatic source/graph heads, latest-version substitution, new SSIAG/STAV authority, remote publication, changing original archives, naming the DIY family or implementing SHV runtime.`
 - notes: |
     The post_merge disposition records completed local Git work and asserts no remote merge. This closure follows the implementation commit and does not recursively record itself. Evidence paths beginning ../ or ../../ are relative to the isolated repository root. Staging, sandbox restrictions, incomplete supervisor attempts and corrected stale version-test expectations are preserved separately. Final selections are qxctl-inc7, scv-0.7.0-dev-verified and workflow-verified. Runtime evidence is Darwin x86_64; source fixtures do not establish deployed-provider performance.
+
+---
+
+- record_id: `SCLV-CHG-20260912-SCV-OBLIGATION-FOLLOWUP`
+- record_version: `3`
+- title: `Precise SCV obligations and subsequent-evidence follow-up`
+- status: `canonical`
+- date: `2026-09-12`
+- change_started_at: `2026-09-11T16:43:44Z`
+- change_completed_at: `2026-09-12T14:53:27Z`
+- recorded_at: `2026-09-12T14:53:39Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `The explicitly authorized implementation completed as a local Git commit in the isolated checkout; no forge change request was created.`
+- revision_scheme: `git-sha1`
+- revision_value: `d1cc72c5c5c3cf9a8252e95c9b3a19806972bf88`
+- tree_digest: `sha256:4979d2a67e60797acabd7ba2ab152dcd1f651c81fc3a1e20f75fa04c5c28a064`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SCV obligation follow-up and parallel SHV preparation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-11-scv-obligation-followup.md`
+- ratification_evidence_digest: `sha256:c19eea1ecae5485147554ab0f5154cedcede824ba53cf5fbadaced773e1d08ad`
+- affected_surfaces:
+  - `README.md`
+  - `cmake/ScvInterface.generated.cmake`
+  - `cmake/SymphonyScvEngine.cmake`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/scv/AGENT-WORKFLOWS.md`
+  - `knowledge/scv/MANIFEST.md`
+  - `knowledge/scv/OBLIGATIONS.md`
+  - `knowledge/scv/OWNER-INTERFACE.json`
+  - `knowledge/scv/OWNER-INTERFACE.md`
+  - `knowledge/scv/SPEC.md`
+  - `knowledge/scv/schemas/v1/MANIFEST.md`
+  - `knowledge/scv/schemas/v1/obligation.schema.json`
+  - `knowledge/scv/schemas/v1/schema-catalog.json`
+  - `knowledge/scv/schemas/v1/scv-artifact.schema.json`
+  - `knowledge/scv/schemas/v1/scv-obligation-link.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/scev-cf-engine/CMakeLists.txt`
+  - `modules/scev-cf-engine/FEATURES.md`
+  - `modules/scev-cf-engine/INSTALL.md`
+  - `modules/scev-cf-engine/MANIFEST.md`
+  - `modules/scev-cf-engine/SPEC.md`
+  - `modules/scev-engine/CMakeLists.txt`
+  - `modules/scev-engine/FEATURES.md`
+  - `modules/scev-engine/INSTALL.md`
+  - `modules/scev-engine/MANIFEST.md`
+  - `modules/scev-engine/SPEC.md`
+  - `modules/schv-aws-engine/CMakeLists.txt`
+  - `modules/schv-aws-engine/FEATURES.md`
+  - `modules/schv-aws-engine/INSTALL.md`
+  - `modules/schv-aws-engine/MANIFEST.md`
+  - `modules/schv-aws-engine/SPEC.md`
+  - `modules/schv-azure-engine/CMakeLists.txt`
+  - `modules/schv-azure-engine/FEATURES.md`
+  - `modules/schv-azure-engine/INSTALL.md`
+  - `modules/schv-azure-engine/MANIFEST.md`
+  - `modules/schv-azure-engine/SPEC.md`
+  - `modules/schv-do-engine/CMakeLists.txt`
+  - `modules/schv-do-engine/FEATURES.md`
+  - `modules/schv-do-engine/INSTALL.md`
+  - `modules/schv-do-engine/MANIFEST.md`
+  - `modules/schv-do-engine/SPEC.md`
+  - `modules/schv-engine/CMakeLists.txt`
+  - `modules/schv-engine/FEATURES.md`
+  - `modules/schv-engine/INSTALL.md`
+  - `modules/schv-engine/MANIFEST.md`
+  - `modules/schv-engine/SPEC.md`
+  - `modules/schv-gcp-engine/CMakeLists.txt`
+  - `modules/schv-gcp-engine/FEATURES.md`
+  - `modules/schv-gcp-engine/INSTALL.md`
+  - `modules/schv-gcp-engine/MANIFEST.md`
+  - `modules/schv-gcp-engine/SPEC.md`
+  - `modules/scv-engine/CMakeLists.txt`
+  - `modules/scv-engine/FEATURES.md`
+  - `modules/scv-engine/INSTALL.md`
+  - `modules/scv-engine/MANIFEST.md`
+  - `modules/scv-engine/SPEC.md`
+  - `modules/scv-engine/src/composition.cpp`
+  - `modules/scv-engine/src/composition.hpp`
+  - `modules/scv-engine/src/interface.generated.inc`
+  - `modules/scv-engine/tests/fixtures/owner-interface-0.7.v1.json`
+  - `modules/scv-engine/tests/installed_integration.py`
+  - `modules/scv-engine/tests/interface_generation_test.py`
+  - `modules/scv-engine/tests/obligation_test.cpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/INSTALL.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/scv_composition.go`
+  - `tools/qxctl/cmd/qxctl/scv_obligation.go`
+  - `tools/qxctl/cmd/qxctl/scv_obligation_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_interface_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_obligation.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_obligation_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_test.go`
+  - `tools/qxctl/internal/knowledgeengine/testdata/scv-obligation.v1.json`
+  - `tools/qxctl/internal/scvworkflow/record_budget_test.go`
+  - `tools/qxctl/internal/scvworkflow/store.go`
+  - `tools/symphony-validator/src/artifacts.cpp`
+- skvi_references:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/scv/OWNER-INTERFACE.md`
+  - `knowledge/scv/OWNER-INTERFACE.json`
+  - `knowledge/scv/OBLIGATIONS.md`
+  - `knowledge/scv/schemas/v1/obligation.schema.json`
+  - `knowledge/scv/schemas/v1/scv-obligation-link.schema.json`
+  - `knowledge/scv/schemas/v1/schema-catalog.json`
+  - `knowledge/scv/AGENT-WORKFLOWS.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/scv-engine/SPEC.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/FEATURES.md`
+- change_summary: |
+    Adds C++ composition_obligations and composition_followup for precise outstanding subjects and comparison under unchanged caller criteria. qxctl exposes inspect, followup, retain and show, preserving immutable relationships between original composition owners and the selected follow-up owner. A real official-source acquisition campaign demonstrates sufficient, insufficient and reference-only outcomes.
+- relationship_changes: |
+    SCV C++ owns inventory and follow-up meaning; Go independently reconstructs and validates native output. qxctl owns immutable record/link coordination and original-owner replay. Exact record representation prevents field-alias normalization from changing retained owner meaning. A narrowly scoped record-envelope value allowance accounts for two independently bounded native children; it does not raise native request/result or ordinary workflow budgets.
+- doctrine_changes: |
+    Applies the VGAA quantOS direction. Requirements, provider and recipe choices, policy, time, permissions and execution remain caller-owned. Changed requirements or recipes are allowed as a new composition but cannot satisfy an old fixed question by editing it. Submitted provenance is reference_only, causation remains not_established, and non-check subjects require separate verification. A satisfied documentary criterion does not certify runtime compatibility or deployment.
+- compatibility_consequences: |
+    Eight exact 0.8.0-dev packages expose twenty-eight operations, twenty-six schemas, ninety-seven catalog protocols and ten owner companions. Prior .1 through .7 packages and CLI binaries remain preserved, with a frozen .7 declaration. Native explore and reassess meaning is unchanged. Retained links reuse ordinary records and sealed payloads; no selected head, separate journal or scheduler is added. The exact record envelope has a 65792-value bound with 256 metadata values and individually retained 32768-value child budgets; the four-MiB file bound remains.
+- publication_consequences: |
+    Local implementation commit d1cc72c5c5c3cf9a8252e95c9b3a19806972bf88 on codex/scv-obligation-followup descends from 6b54569bb48c17eca8708e040cdd81c5b14ad190. Final selections are ../bin/qxctl-inc8-verified2 and ../installed/scv-0.8.0-dev-verified2. No remote push, merge, tag, release, provider account, deployment, probe, credentials or original archive changes occurred. SHV remains planning work.
+- projection_consequences: |
+    Owner declarations and generated C++/Go/CMake projections, schema ownership, SKVI, SSFV, feature administration, invariant routing and root summary agree. qxctl has 251 command leaves including 53 SCV leaves. Totals remain 100 features, 252 administration expectations, twenty-one invariant records and eleven adapter identities. New schemas route to their exact canonical owner companion.
+- evidence:
+  - `Source commit d1cc72c5c5c3cf9a8252e95c9b3a19806972bf88 completed 2026-09-12T14:53:27Z; source tree digest sha256:4979d2a67e60797acabd7ba2ab152dcd1f651c81fc3a1e20f75fa04c5c28a064. ../increment-8/evidence/BUILD_IDENTITY.json binds source, authorization, CLI and installation selections.`
+  - `../increment-8/evidence/cpp-final-ctest.log records seventeen native and installed-process CTests passing. interface-final-tests.log records twelve generator tests; interface-final-check.json verifies complete projection parity. validator-final-ctest.log records eight validator regressions passing.`
+  - `../increment-8/evidence/go-full-final-result.json records twenty-one test-bearing Go packages passing, 902 passing test/subtest events and zero failures with exact .1 through .8 SCV selectors enabled. Explicit skipped tests are recorded there; no skipped test is counted as a pass.`
+  - `../increment-8/evidence/INSTALLED_PACKAGES_FINAL.json verifies sixty-four exact packages, fifty-six earlier packages and seven earlier CLI binaries unchanged. Its source-parity companion verifies 304 installed schemas, catalogs, companions and declarations against source. Worked CLI invocations use a separate empty working directory.`
+  - `../increment-8/source-evidence/ preserves two successful public official HTTPS acquisitions through qxctl and original .7 Azure owners, alongside restricted-sandbox DNS failures. The old List prefix remains partial and byte-identical; a separately identified complete 8501-byte operation-group document supplies the scoped statement. The selected documentation view remains rest-compute-2025-02-01 while the displayed API version remains 2021-07-01. Two detached source-meaning fixtures pass separately; bounded production selections retain two not_run fixture obligations.`
+  - `../increment-8/evidence/followup-verified/SUMMARY.json and COMMANDS.json retain the full worked campaign (32 commands). Reference-only and insufficient-refresh cases retain conditional status; complete scoped source evidence satisfies the selected criterion. Unrelated queue findings and all caller criteria remain fixed. Original .7 composition owners survive .8 retention, repeat and show; expected negative cases remain rejected.`
+  - `../increment-8/evidence/SCHEMA_REVIEW_FINAL.json validates twenty-six schemas, ninety-seven local catalog definitions and 85 actual input/output/retained/fixture instances. canonical-before-closure-final.json records 10399 passes, zero warnings and violations, result sha256:e337b40d6a7080b71e38d443dc846620d417a6ffe13af90cca779899dc37a7de.`
+  - `../increment-8/evidence/obligation-link-audit/ preserves an independent Role/Version alias reproduction and passing strict representation fix. record-budget-diagnostic/ records the valid native children whose combined record exceeded the old 32768-value limit. Focused envelope tests and the final installed campaign verify the scoped correction without changing native child bounds. The full fixture-expanded native pair still exceeds one MiB and remains an explicit scale limitation.`
+  - `../../context/roadmap/2026-09-11-shv/FOLLOWUP-SEAM-ADDENDUM-2026-09-12.md records precise subjects, fixed caller criteria, observations separate from action, original-owner replay and measured envelope accounting for SHV preparation. ../increment-8/NEXT.md proposes bounded evidence-reference transport and retains the wider SCV backlog. Neither implements SHV runtime or assigns user architectural choices to the platform.`
+- non_authorizations:
+  - `Comprehensive provider expertise, runtime certification, verification or execution inferred from a submitted reference, and closure of non-check obligations.`
+  - `Provider accounts, purchases, probes, deployments, executing obligations or selecting requirements, providers, policy, recipes or architecture for the caller.`
+  - `Automatic source or graph heads, latest-version substitution, new SSIAG/STAV authority, remote publication, changing original archives, naming the DIY family or implementing SHV runtime.`
+- notes: |
+    The post_merge disposition records completed local Git work and asserts no remote merge. This closure follows the implementation commit and does not recursively record itself. Evidence paths beginning ../ or ../../ are relative to the isolated repository root. Initial version/count/order diagnostics and earlier package selections remain preserved; final selections use verified2 and followup-verified. Runtime evidence is Darwin x86_64. No empirical deployment or latency claim follows from documentary fixtures.
