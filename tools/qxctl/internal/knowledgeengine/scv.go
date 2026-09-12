@@ -213,6 +213,9 @@ func ValidateSCVResult(operation string, input, raw []byte) error {
 	if operation == "composition_explore" || operation == "composition_reassess" {
 		return validateSCVComposition(operation, payload, value)
 	}
+	if operation == "bundle_inspect" || operation == "composition_bundle_evaluate" {
+		return validateSCVBundleWireResult(operation, input, raw)
+	}
 	if operation == "composition_obligations" || operation == "composition_followup" {
 		return validateSCVObligation(operation, payload, value)
 	}

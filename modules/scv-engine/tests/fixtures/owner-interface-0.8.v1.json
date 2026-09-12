@@ -1,0 +1,639 @@
+{
+  "protocol": "symphony.scv.owner-interface.v1",
+  "current_release": "0.8.0-dev",
+  "domains": [
+    {
+      "name": "scv",
+      "introduced_in": "0.1.0-dev"
+    },
+    {
+      "name": "schv",
+      "introduced_in": "0.1.0-dev"
+    },
+    {
+      "name": "scev",
+      "introduced_in": "0.1.0-dev"
+    },
+    {
+      "name": "schv-aws",
+      "introduced_in": "0.1.0-dev"
+    },
+    {
+      "name": "schv-azure",
+      "introduced_in": "0.1.0-dev"
+    },
+    {
+      "name": "schv-do",
+      "introduced_in": "0.1.0-dev"
+    },
+    {
+      "name": "schv-gcp",
+      "introduced_in": "0.1.0-dev"
+    },
+    {
+      "name": "scev-cf",
+      "introduced_in": "0.1.0-dev"
+    }
+  ],
+  "releases": [
+    {
+      "version": "0.1.0-dev",
+      "surfaces": [],
+      "companions": [
+        "SOURCE-KNOWLEDGE.md"
+      ],
+      "contract_versions": [
+        "knowledge/SPEC.md@v1",
+        "knowledge/scv/SOURCE-KNOWLEDGE.md@v1"
+      ]
+    },
+    {
+      "version": "0.2.0-dev",
+      "surfaces": [
+        "corpus"
+      ],
+      "companions": [
+        "SOURCE-KNOWLEDGE.md",
+        "CORPUS.md"
+      ],
+      "contract_versions": [
+        "knowledge/SPEC.md@v1",
+        "knowledge/scv/SOURCE-KNOWLEDGE.md@v1",
+        "knowledge/scv/CORPUS.md@v1"
+      ]
+    },
+    {
+      "version": "0.3.0-dev",
+      "surfaces": [
+        "corpus",
+        "workflow",
+        "artifact"
+      ],
+      "companions": [
+        "SOURCE-KNOWLEDGE.md",
+        "CORPUS.md",
+        "INTERPRETATION.md"
+      ],
+      "contract_versions": [
+        "knowledge/SPEC.md@v1",
+        "knowledge/scv/SOURCE-KNOWLEDGE.md@v1",
+        "knowledge/scv/CORPUS.md@v1",
+        "knowledge/scv/INTERPRETATION.md@v1"
+      ]
+    },
+    {
+      "version": "0.4.0-dev",
+      "surfaces": [
+        "corpus",
+        "workflow",
+        "artifact",
+        "schema"
+      ],
+      "companions": [
+        "SOURCE-KNOWLEDGE.md",
+        "CORPUS.md",
+        "INTERPRETATION.md",
+        "AGENT-WORKFLOWS.md"
+      ],
+      "contract_versions": [
+        "knowledge/SPEC.md@v1",
+        "knowledge/scv/SOURCE-KNOWLEDGE.md@v1",
+        "knowledge/scv/CORPUS.md@v1",
+        "knowledge/scv/INTERPRETATION.md@v1",
+        "knowledge/scv/AGENT-WORKFLOWS.md@v1"
+      ]
+    },
+    {
+      "version": "0.5.0-dev",
+      "surfaces": [
+        "corpus",
+        "workflow",
+        "artifact",
+        "schema"
+      ],
+      "companions": [
+        "SOURCE-KNOWLEDGE.md",
+        "CORPUS.md",
+        "INTERPRETATION.md",
+        "AGENT-WORKFLOWS.md",
+        "COVERAGE.md"
+      ],
+      "contract_versions": [
+        "knowledge/SPEC.md@v1",
+        "knowledge/scv/SOURCE-KNOWLEDGE.md@v1",
+        "knowledge/scv/CORPUS.md@v1",
+        "knowledge/scv/INTERPRETATION.md@v1",
+        "knowledge/scv/AGENT-WORKFLOWS.md@v1",
+        "knowledge/scv/COVERAGE.md@v1"
+      ]
+    },
+    {
+      "version": "0.6.0-dev",
+      "surfaces": [
+        "corpus",
+        "workflow",
+        "artifact",
+        "schema",
+        "interface"
+      ],
+      "companions": [
+        "SOURCE-KNOWLEDGE.md",
+        "CORPUS.md",
+        "INTERPRETATION.md",
+        "AGENT-WORKFLOWS.md",
+        "COVERAGE.md",
+        "PROVIDER-PACKS.md",
+        "COMPOSITION.md",
+        "OWNER-INTERFACE.md"
+      ],
+      "contract_versions": [
+        "knowledge/SPEC.md@v1",
+        "knowledge/scv/SOURCE-KNOWLEDGE.md@v1",
+        "knowledge/scv/CORPUS.md@v1",
+        "knowledge/scv/INTERPRETATION.md@v1",
+        "knowledge/scv/AGENT-WORKFLOWS.md@v1",
+        "knowledge/scv/COVERAGE.md@v1",
+        "knowledge/scv/PROVIDER-PACKS.md@v1",
+        "knowledge/scv/COMPOSITION.md@v1",
+        "knowledge/scv/OWNER-INTERFACE.md@v1"
+      ]
+    },
+    {
+      "version": "0.7.0-dev",
+      "surfaces": [
+        "corpus",
+        "workflow",
+        "artifact",
+        "schema",
+        "interface",
+        "composition_workflow"
+      ],
+      "companions": [
+        "SOURCE-KNOWLEDGE.md",
+        "CORPUS.md",
+        "INTERPRETATION.md",
+        "AGENT-WORKFLOWS.md",
+        "COVERAGE.md",
+        "PROVIDER-PACKS.md",
+        "COMPOSITION.md",
+        "OWNER-INTERFACE.md",
+        "COMPOSITION-WORKFLOWS.md"
+      ],
+      "contract_versions": [
+        "knowledge/SPEC.md@v1",
+        "knowledge/scv/SOURCE-KNOWLEDGE.md@v1",
+        "knowledge/scv/CORPUS.md@v1",
+        "knowledge/scv/INTERPRETATION.md@v1",
+        "knowledge/scv/AGENT-WORKFLOWS.md@v1",
+        "knowledge/scv/COVERAGE.md@v1",
+        "knowledge/scv/PROVIDER-PACKS.md@v1",
+        "knowledge/scv/COMPOSITION.md@v1",
+        "knowledge/scv/OWNER-INTERFACE.md@v1",
+        "knowledge/scv/COMPOSITION-WORKFLOWS.md@v1"
+      ]
+    },
+    {
+      "version": "0.8.0-dev",
+      "surfaces": [
+        "corpus",
+        "workflow",
+        "artifact",
+        "schema",
+        "interface",
+        "composition_workflow"
+      ],
+      "companions": [
+        "SOURCE-KNOWLEDGE.md",
+        "CORPUS.md",
+        "INTERPRETATION.md",
+        "AGENT-WORKFLOWS.md",
+        "COVERAGE.md",
+        "PROVIDER-PACKS.md",
+        "COMPOSITION.md",
+        "OWNER-INTERFACE.md",
+        "COMPOSITION-WORKFLOWS.md",
+        "OBLIGATIONS.md"
+      ],
+      "contract_versions": [
+        "knowledge/SPEC.md@v1",
+        "knowledge/scv/SOURCE-KNOWLEDGE.md@v1",
+        "knowledge/scv/CORPUS.md@v1",
+        "knowledge/scv/INTERPRETATION.md@v1",
+        "knowledge/scv/AGENT-WORKFLOWS.md@v1",
+        "knowledge/scv/COVERAGE.md@v1",
+        "knowledge/scv/PROVIDER-PACKS.md@v1",
+        "knowledge/scv/COMPOSITION.md@v1",
+        "knowledge/scv/OWNER-INTERFACE.md@v1",
+        "knowledge/scv/COMPOSITION-WORKFLOWS.md@v1",
+        "knowledge/scv/OBLIGATIONS.md@v1"
+      ]
+    }
+  ],
+  "operations": [
+    {
+      "name": "inspect",
+      "introduced_in": "0.1.0-dev",
+      "input_protocol": "symphony.scv.inspect-input.v1",
+      "output_protocol": "symphony.knowledge.engine-descriptor.v2",
+      "interactions": [
+        "inspect"
+      ],
+      "mutability": "read_only",
+      "expected_state": false,
+      "handler": "inspect",
+      "artifact": null
+    },
+    {
+      "name": "provider_onboard",
+      "introduced_in": "0.1.0-dev",
+      "input_protocol": "symphony.scv.provider-onboard-input.v1",
+      "output_protocol": "symphony.scv.provider.v1",
+      "interactions": [
+        "discover"
+      ],
+      "mutability": "proposal_only",
+      "expected_state": false,
+      "handler": "handle_source",
+      "artifact": {
+        "kind": "provider",
+        "introduced_in": "0.5.0-dev"
+      }
+    },
+    {
+      "name": "source_plan",
+      "introduced_in": "0.1.0-dev",
+      "input_protocol": "symphony.scv.source-plan-input.v1",
+      "output_protocol": "symphony.scv.source-plan.v1",
+      "interactions": [
+        "propose"
+      ],
+      "mutability": "proposal_only",
+      "expected_state": true,
+      "handler": "handle_source",
+      "artifact": null
+    },
+    {
+      "name": "source_apply",
+      "introduced_in": "0.1.0-dev",
+      "input_protocol": "symphony.scv.source-apply-input.v1",
+      "output_protocol": "symphony.scv.source-transition.v1",
+      "interactions": [
+        "apply",
+        "recover"
+      ],
+      "mutability": "proposal_only",
+      "expected_state": true,
+      "handler": "handle_source",
+      "artifact": null
+    },
+    {
+      "name": "source_status",
+      "introduced_in": "0.1.0-dev",
+      "input_protocol": "symphony.scv.source-status-input.v1",
+      "output_protocol": "symphony.scv.source-status.v1",
+      "interactions": [
+        "inspect"
+      ],
+      "mutability": "read_only",
+      "expected_state": false,
+      "handler": "handle_source",
+      "artifact": null
+    },
+    {
+      "name": "capture_import",
+      "introduced_in": "0.1.0-dev",
+      "input_protocol": "symphony.scv.capture-import-input.v1",
+      "output_protocol": "symphony.scv.capture.v1",
+      "interactions": [
+        "invoke"
+      ],
+      "mutability": "evidence_only",
+      "expected_state": false,
+      "handler": "handle_source",
+      "artifact": null
+    },
+    {
+      "name": "capture_compare",
+      "introduced_in": "0.1.0-dev",
+      "input_protocol": "symphony.scv.capture-compare-input.v1",
+      "output_protocol": "symphony.scv.capture-diff.v1",
+      "interactions": [
+        "validate"
+      ],
+      "mutability": "evidence_only",
+      "expected_state": false,
+      "handler": "handle_source",
+      "artifact": null
+    },
+    {
+      "name": "knowledge_interpret",
+      "introduced_in": "0.1.0-dev",
+      "input_protocol": "symphony.scv.knowledge-interpret-input.v1",
+      "output_protocol": "symphony.scv.knowledge.v1",
+      "interactions": [
+        "invoke"
+      ],
+      "mutability": "evidence_only",
+      "expected_state": false,
+      "handler": "handle_knowledge",
+      "artifact": {
+        "kind": "knowledge",
+        "introduced_in": "0.3.0-dev"
+      }
+    },
+    {
+      "name": "graph_build",
+      "introduced_in": "0.1.0-dev",
+      "input_protocol": "symphony.scv.graph-build-input.v1",
+      "output_protocol": "symphony.scv.graph.v1",
+      "interactions": [
+        "invoke"
+      ],
+      "mutability": "evidence_only",
+      "expected_state": false,
+      "handler": "handle_knowledge",
+      "artifact": null
+    },
+    {
+      "name": "graph_query",
+      "introduced_in": "0.1.0-dev",
+      "input_protocol": "symphony.scv.graph-query-input.v1",
+      "output_protocol": "symphony.scv.query-result.v1",
+      "interactions": [
+        "query"
+      ],
+      "mutability": "read_only",
+      "expected_state": false,
+      "handler": "handle_knowledge",
+      "artifact": null
+    },
+    {
+      "name": "graph_diff",
+      "introduced_in": "0.1.0-dev",
+      "input_protocol": "symphony.scv.graph-diff-input.v1",
+      "output_protocol": "symphony.scv.diff-result.v1",
+      "interactions": [
+        "validate"
+      ],
+      "mutability": "evidence_only",
+      "expected_state": false,
+      "handler": "handle_knowledge",
+      "artifact": null
+    },
+    {
+      "name": "graph_explain",
+      "introduced_in": "0.1.0-dev",
+      "input_protocol": "symphony.scv.graph-explain-input.v1",
+      "output_protocol": "symphony.scv.explain-result.v1",
+      "interactions": [
+        "query"
+      ],
+      "mutability": "read_only",
+      "expected_state": false,
+      "handler": "handle_knowledge",
+      "artifact": null
+    },
+    {
+      "name": "graph_evaluate",
+      "introduced_in": "0.1.0-dev",
+      "input_protocol": "symphony.scv.graph-evaluate-input.v1",
+      "output_protocol": "symphony.scv.evaluate-result.v1",
+      "interactions": [
+        "validate"
+      ],
+      "mutability": "evidence_only",
+      "expected_state": false,
+      "handler": "handle_knowledge",
+      "artifact": null
+    },
+    {
+      "name": "capture_index",
+      "introduced_in": "0.2.0-dev",
+      "input_protocol": "symphony.scv.capture-index-input.v1",
+      "output_protocol": "symphony.scv.capture-index.v1",
+      "interactions": [
+        "invoke"
+      ],
+      "mutability": "evidence_only",
+      "expected_state": false,
+      "handler": "handle_corpus",
+      "artifact": null
+    },
+    {
+      "name": "corpus_build",
+      "introduced_in": "0.2.0-dev",
+      "input_protocol": "symphony.scv.corpus-build-input.v1",
+      "output_protocol": "symphony.scv.corpus.v1",
+      "interactions": [
+        "invoke"
+      ],
+      "mutability": "evidence_only",
+      "expected_state": false,
+      "handler": "handle_corpus",
+      "artifact": null
+    },
+    {
+      "name": "corpus_query",
+      "introduced_in": "0.2.0-dev",
+      "input_protocol": "symphony.scv.corpus-query-input.v1",
+      "output_protocol": "symphony.scv.corpus-query.v1",
+      "interactions": [
+        "query"
+      ],
+      "mutability": "read_only",
+      "expected_state": false,
+      "handler": "handle_corpus",
+      "artifact": null
+    },
+    {
+      "name": "corpus_diff",
+      "introduced_in": "0.2.0-dev",
+      "input_protocol": "symphony.scv.corpus-diff-input.v1",
+      "output_protocol": "symphony.scv.corpus-diff.v1",
+      "interactions": [
+        "validate"
+      ],
+      "mutability": "evidence_only",
+      "expected_state": false,
+      "handler": "handle_corpus",
+      "artifact": null
+    },
+    {
+      "name": "provider_interpret",
+      "introduced_in": "0.3.0-dev",
+      "input_protocol": "symphony.scv.provider-interpret-input.v1",
+      "output_protocol": "symphony.scv.provider-interpretation.v1",
+      "interactions": [
+        "invoke"
+      ],
+      "mutability": "evidence_only",
+      "expected_state": false,
+      "handler": "handle_interpretation",
+      "artifact": {
+        "kind": "interpretation",
+        "introduced_in": "0.3.0-dev"
+      }
+    },
+    {
+      "name": "connection_evaluate",
+      "introduced_in": "0.3.0-dev",
+      "input_protocol": "symphony.scv.connection-evaluate-input.v1",
+      "output_protocol": "symphony.scv.connection-evaluation.v1",
+      "interactions": [
+        "validate"
+      ],
+      "mutability": "evidence_only",
+      "expected_state": false,
+      "handler": "handle_interpretation",
+      "artifact": {
+        "kind": "evaluation",
+        "introduced_in": "0.3.0-dev"
+      }
+    },
+    {
+      "name": "connection_reassess",
+      "introduced_in": "0.3.0-dev",
+      "input_protocol": "symphony.scv.connection-reassess-input.v1",
+      "output_protocol": "symphony.scv.connection-reassessment.v1",
+      "interactions": [
+        "validate"
+      ],
+      "mutability": "evidence_only",
+      "expected_state": false,
+      "handler": "handle_interpretation",
+      "artifact": {
+        "kind": "reassessment",
+        "introduced_in": "0.3.0-dev"
+      }
+    },
+    {
+      "name": "profile_prepare",
+      "introduced_in": "0.4.0-dev",
+      "input_protocol": "symphony.scv.profile-prepare-input.v1",
+      "output_protocol": "symphony.scv.interpretation-profile.v1",
+      "interactions": [
+        "propose"
+      ],
+      "mutability": "proposal_only",
+      "expected_state": false,
+      "handler": "handle_interpretation",
+      "artifact": {
+        "kind": "profile",
+        "introduced_in": "0.4.0-dev"
+      }
+    },
+    {
+      "name": "provider_coverage",
+      "introduced_in": "0.5.0-dev",
+      "input_protocol": "symphony.scv.provider-coverage-input.v1",
+      "output_protocol": "symphony.scv.provider-coverage.v1",
+      "interactions": [
+        "query"
+      ],
+      "mutability": "read_only",
+      "expected_state": false,
+      "handler": "handle_coverage",
+      "artifact": {
+        "kind": "coverage",
+        "introduced_in": "0.5.0-dev"
+      }
+    },
+    {
+      "name": "provider_pack_prepare",
+      "introduced_in": "0.6.0-dev",
+      "input_protocol": "symphony.scv.provider-pack-prepare-input.v1",
+      "output_protocol": "symphony.scv.provider-pack.v1",
+      "interactions": [
+        "propose"
+      ],
+      "mutability": "proposal_only",
+      "expected_state": false,
+      "handler": "handle_pack",
+      "artifact": {
+        "kind": "provider_pack",
+        "introduced_in": "0.6.0-dev"
+      }
+    },
+    {
+      "name": "provider_pack_evaluate",
+      "introduced_in": "0.6.0-dev",
+      "input_protocol": "symphony.scv.provider-pack-evaluate-input.v1",
+      "output_protocol": "symphony.scv.provider-pack-evaluation.v1",
+      "interactions": [
+        "query"
+      ],
+      "mutability": "read_only",
+      "expected_state": false,
+      "handler": "handle_pack",
+      "artifact": {
+        "kind": "provider_pack_evaluation",
+        "introduced_in": "0.6.0-dev"
+      }
+    },
+    {
+      "name": "composition_explore",
+      "introduced_in": "0.6.0-dev",
+      "input_protocol": "symphony.scv.composition-explore-input.v1",
+      "output_protocol": "symphony.scv.composition-exploration.v1",
+      "interactions": [
+        "query"
+      ],
+      "mutability": "read_only",
+      "expected_state": false,
+      "handler": "handle_composition",
+      "artifact": {
+        "kind": "composition",
+        "introduced_in": "0.6.0-dev"
+      }
+    },
+    {
+      "name": "composition_reassess",
+      "introduced_in": "0.6.0-dev",
+      "input_protocol": "symphony.scv.composition-reassess-input.v1",
+      "output_protocol": "symphony.scv.composition-reassessment.v1",
+      "interactions": [
+        "validate"
+      ],
+      "mutability": "evidence_only",
+      "expected_state": false,
+      "handler": "handle_composition",
+      "artifact": {
+        "kind": "composition_reassessment",
+        "introduced_in": "0.6.0-dev"
+      }
+    },
+    {
+      "name": "composition_obligations",
+      "introduced_in": "0.8.0-dev",
+      "input_protocol": "symphony.scv.composition-obligations-input.v1",
+      "output_protocol": "symphony.scv.composition-obligations.v1",
+      "interactions": [
+        "query"
+      ],
+      "mutability": "read_only",
+      "expected_state": false,
+      "handler": "handle_composition",
+      "artifact": {
+        "kind": "composition_obligations",
+        "introduced_in": "0.8.0-dev"
+      }
+    },
+    {
+      "name": "composition_followup",
+      "introduced_in": "0.8.0-dev",
+      "input_protocol": "symphony.scv.composition-followup-input.v1",
+      "output_protocol": "symphony.scv.composition-followup.v1",
+      "interactions": [
+        "validate"
+      ],
+      "mutability": "evidence_only",
+      "expected_state": false,
+      "handler": "handle_composition",
+      "artifact": {
+        "kind": "composition_followup",
+        "introduced_in": "0.8.0-dev"
+      }
+    }
+  ],
+  "schema_catalog": "knowledge/scv/schemas/v1/schema-catalog.json"
+}

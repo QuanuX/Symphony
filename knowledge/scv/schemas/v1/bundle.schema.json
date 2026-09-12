@@ -1,0 +1,405 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:symphony:scv:bundle:v1",
+  "description": "Additive exact evidence-reference transport. Structural schema only: content identities, complete closure, expansion counts, owner matching, operation correspondence and semantic result validation remain independent runtime checks. Prior operation schemas and process framing are unchanged.",
+  "$defs": {
+    "Owner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "domain",
+        "version"
+      ],
+      "properties": {
+        "domain": {
+          "enum": [
+            "scv",
+            "schv",
+            "schv-aws",
+            "schv-azure",
+            "schv-do",
+            "schv-gcp",
+            "scev",
+            "scev-cf"
+          ]
+        },
+        "version": {
+          "const": "0.9.0-dev"
+        }
+      }
+    },
+    "Child": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "scalar"
+          ],
+          "properties": {
+            "scalar": {
+              "type": [
+                "null",
+                "boolean",
+                "integer",
+                "string"
+              ],
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991,
+              "maxLength": 65536
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "ref"
+          ],
+          "properties": {
+            "ref": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          }
+        }
+      ]
+    },
+    "Node": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "digest",
+            "kind",
+            "members"
+          ],
+          "properties": {
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "kind": {
+              "const": "object"
+            },
+            "members": {
+              "type": "object",
+              "propertyNames": {
+                "maxLength": 65536
+              },
+              "additionalProperties": {
+                "$ref": "#/$defs/Child"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "digest",
+            "kind",
+            "items"
+          ],
+          "properties": {
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "kind": {
+              "const": "array"
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Child"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "root_digest",
+        "objects",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.evidence-bundle.v1"
+        },
+        "root_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "objects": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 2048,
+          "items": {
+            "$ref": "#/$defs/Node"
+          }
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "description": "Complete typed container DAG. Object node IDs are strictly sorted and unique. All nodes must be reachable from an object root. Full expanded content hashes include native seal fields; the bundle seal excludes only its own digest. Closure, cycles, ordering, scalar UTF-8 byte bounds and checked expansion budgets require runtime validation."
+    },
+    "Metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object_count",
+        "reference_count",
+        "traversal_steps",
+        "expanded_bytes",
+        "expanded_values",
+        "expanded_depth",
+        "materialized_bytes"
+      ],
+      "properties": {
+        "object_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2048
+        },
+        "reference_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8192
+        },
+        "traversal_steps": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16384
+        },
+        "expanded_bytes": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 4194304
+        },
+        "expanded_values": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32768
+        },
+        "expanded_depth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64
+        },
+        "materialized_bytes": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 67108864
+        }
+      }
+    },
+    "InvocationInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "owner",
+        "bundle"
+      ],
+      "properties": {
+        "operation": {
+          "enum": [
+            "composition_explore",
+            "composition_reassess",
+            "composition_obligations",
+            "composition_followup"
+          ]
+        },
+        "owner": {
+          "$ref": "#/$defs/Owner"
+        },
+        "bundle": {
+          "$ref": "#/$defs/Bundle"
+        }
+      },
+      "description": "Used by bundle_inspect and composition_bundle_evaluate. The owner matches the invoked domain and exact compiled version. The unchanged process envelope limit applies. The selected root reconstructs the exact logical operation input; no lookup is permitted."
+    },
+    "InspectionResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "domain",
+        "operation",
+        "owner",
+        "input_digest",
+        "root_digest",
+        "metrics",
+        "validation",
+        "limitations",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.bundle-inspection.v1"
+        },
+        "domain": {
+          "enum": [
+            "scv",
+            "schv",
+            "schv-aws",
+            "schv-azure",
+            "schv-do",
+            "schv-gcp",
+            "scev",
+            "scev-cf"
+          ]
+        },
+        "operation": {
+          "enum": [
+            "composition_explore",
+            "composition_reassess",
+            "composition_obligations",
+            "composition_followup"
+          ]
+        },
+        "owner": {
+          "$ref": "#/$defs/Owner"
+        },
+        "input_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "root_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "metrics": {
+          "$ref": "#/$defs/Metrics"
+        },
+        "validation": {
+          "const": "transport_only"
+        },
+        "limitations": {
+          "const": [
+            "bundle validation establishes exact bounded reconstruction only; it does not validate composition semantics or authenticate evidence producers",
+            "all dependencies are explicit and complete; no ambient source, graph, filesystem or network lookup occurs"
+          ]
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "EvaluationResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "domain",
+        "operation",
+        "owner",
+        "input_digest",
+        "input_root_digest",
+        "input_metrics",
+        "result_bundle",
+        "native_result_digest",
+        "result_metrics",
+        "validation",
+        "limitations",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.composition-bundle-evaluation.v1"
+        },
+        "domain": {
+          "enum": [
+            "scv",
+            "schv",
+            "schv-aws",
+            "schv-azure",
+            "schv-do",
+            "schv-gcp",
+            "scev",
+            "scev-cf"
+          ]
+        },
+        "operation": {
+          "enum": [
+            "composition_explore",
+            "composition_reassess",
+            "composition_obligations",
+            "composition_followup"
+          ]
+        },
+        "owner": {
+          "$ref": "#/$defs/Owner"
+        },
+        "input_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "input_root_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "input_metrics": {
+          "$ref": "#/$defs/Metrics"
+        },
+        "result_bundle": {
+          "$ref": "#/$defs/Bundle"
+        },
+        "native_result_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "result_metrics": {
+          "$ref": "#/$defs/Metrics"
+        },
+        "validation": {
+          "const": "owner_evaluated"
+        },
+        "limitations": {
+          "const": [
+            "bundled execution preserves the existing composition owner's meanings and caller criteria; it does not certify deployment or authenticate submitted provenance",
+            "content references reduce repeated transport; expanded values and graph work remain explicitly bounded",
+            "historical installation identity belongs to retained owner records; a transport content digest is not a receipt"
+          ]
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "description": "New invocation evidence, with complete native output retained as a typed bundle. Native_result_digest is the logical result self-seal, distinct from result_bundle.root_digest. Consumers reconstruct both sides and independently validate the selected original logical operation; transport labels or seals alone do not establish semantics."
+    },
+    "PackInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation",
+        "input"
+      ],
+      "properties": {
+        "operation": {
+          "enum": [
+            "composition_explore",
+            "composition_reassess",
+            "composition_obligations",
+            "composition_followup"
+          ]
+        },
+        "input": {
+          "type": "object"
+        }
+      },
+      "description": "Bounded local packing request; mechanical encoding and native transport inspection do not require semantically valid composition input. Input remains an arbitrary object here, with 4MiB/32768 values/depth64 enforced at runtime. Semantic evaluation uses the selected operation input contract after exact reconstruction."
+    }
+  }
+}

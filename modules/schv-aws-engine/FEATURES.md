@@ -42,7 +42,8 @@
         "Provider coverage owner/consumer and installed-process regressions exercise exact joins, source declaration drift, gap inventories and replayed attempts without inferring complete expertise or runtime compatibility.",
         "Independent pack and composition owner/consumer regressions, generated-interface history/drift checks and exact installed resource checks define the exercised scope; execution evidence belongs to the increment closure.",
         "Exact .7 retained composition workflow producer, consumer, interruption and installed-process checks preserve original pack owners and fixed caller selections. Strict typed journal roundtrip rejects omitted/null fields that could otherwise normalize under an earlier seal. Execution evidence belongs to the increment closure.",
-        "Owner and independent Go consumer regressions cover exact targets, preserved caller criteria, partial/contradictory evidence and resealed-result rejection. Retained links replay original owners and verify immutable input correspondence; execution evidence belongs to the increment closure."
+        "Owner and independent Go consumer regressions cover exact targets, preserved caller criteria, partial/contradictory evidence and resealed-result rejection. Retained links replay original owners and verify immutable input correspondence; execution evidence belongs to the increment closure.",
+        "Native and independent Go regressions cover complete closure, exact full-value identities, malformed graphs and pre-allocation expansion budgets; installed qxctl evidence belongs to the increment closure."
       ],
       "feature_id": "ssfv:symphony:schv-aws-engine",
       "how": "Uses shared C++ bounded JSON mechanics, exact source/capture digests, explicit interpretation policy and qualified support paths through a separately packaged process.",
@@ -59,6 +60,8 @@
       "implementation_paths": [
         "knowledge/scv/OWNER-INTERFACE.json",
         "modules/schv-aws-engine/CMakeLists.txt",
+        "modules/scv-engine/src/bundle.cpp",
+        "modules/scv-engine/src/bundle.hpp",
         "modules/scv-engine/src/composition.cpp",
         "modules/scv-engine/src/corpus.cpp",
         "modules/scv-engine/src/coverage.cpp",
@@ -77,7 +80,7 @@
       ],
       "owner_contract": "modules/schv-aws-engine/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",
-      "record_version": 7,
+      "record_version": 8,
       "relationships": [
         {
           "rationale": "Statically links the authority-free common process, digest and temporal mechanics.",
@@ -88,7 +91,7 @@
       "source_scope": "modules/schv-aws-engine",
       "status": "experimental",
       "title": "Symphony Cloud Hyperscalers Vector — AWS source-knowledge engine",
-      "what": "AWS-native source, offering, service, version and constraint knowledge. Provides independently installable source planning, validation, capture import, interpretation, graph, query, difference and explanation operations. The additive maintained-corpus profile provides capture indexes, immutable member snapshots, explicit freshness-qualified selection and corpus differences. Reusable authored interpretation profiles, exact scoped connection checks and retained-result reassessment preserve their supporting evidence and uncertainty. Native profile preparation seals explicit authored mappings; receipt-owned schemas and templates support exact agent input discovery. Native provider coverage accounts separately for declared inventory, exact selected corpus evidence and independently replayed profile bindings, preserving unlisted, unselected, partial and stale gaps. Portable provider packs seal caller-authored source/profile contracts and detached fixture expectations; finite composition exploration compares caller-selected recipes and requirements while preserving unresolved evidence and explicit guarantee changes. A versioned owner interface generates mechanical native/Go/installation metadata and is inspectable from the immutable receipt. Exact obligation inventory identifies native checks independently of anonymous summaries; subsequent-evidence follow-up preserves caller criteria and policy, reports explicit query-time changes, and separates criterion state from opaque provenance and runtime verification.",
+      "what": "AWS-native source, offering, service, version and constraint knowledge. Provides independently installable source planning, validation, capture import, interpretation, graph, query, difference and explanation operations. The additive maintained-corpus profile provides capture indexes, immutable member snapshots, explicit freshness-qualified selection and corpus differences. Reusable authored interpretation profiles, exact scoped connection checks and retained-result reassessment preserve their supporting evidence and uncertainty. Native profile preparation seals explicit authored mappings; receipt-owned schemas and templates support exact agent input discovery. Native provider coverage accounts separately for declared inventory, exact selected corpus evidence and independently replayed profile bindings, preserving unlisted, unselected, partial and stale gaps. Portable provider packs seal caller-authored source/profile contracts and detached fixture expectations; finite composition exploration compares caller-selected recipes and requirements while preserving unresolved evidence and explicit guarantee changes. A versioned owner interface generates mechanical native/Go/installation metadata and is inspectable from the immutable receipt. Exact obligation inventory identifies native checks independently of anonymous summaries; subsequent-evidence follow-up preserves caller criteria and policy, reports explicit query-time changes, and separates criterion state from opaque provenance and runtime verification. Complete evidence bundles deduplicate repeated containers, bound graph expansion before allocation, and preserve exact caller-selected composition semantics through independent owner validation.",
       "when": "Runs on explicit bounded local process or exact qxctl invocation, never as a continuously resident workload dependency.",
       "where": "An exact versioned inactive-undocked installation; supplied source and graph data remain private installation inputs.",
       "who": "Any caller using owner-authorized local execution; protected state changes additionally require the storage adapter authorization circuit.",

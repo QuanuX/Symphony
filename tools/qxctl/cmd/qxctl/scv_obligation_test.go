@@ -6,6 +6,9 @@ import (
 	"fmt"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgeengine"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/scvworkflow"
+	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -136,6 +139,7 @@ func TestSCVObligationLinkRejectsNormalizedOwnerRecord(t *testing.T) {
 		t.Run(key, func(t *testing.T) {
 			r, store, input := mockObligationLink(t)
 			var forgedRef string
+			var altered []byte
 			err := store.With("", true, func(s *scvworkflow.Session, _ *scvworkflow.Run) error {
 				raw, err := s.Get("records", input["before_ref"].(string))
 				if err != nil {
@@ -149,15 +153,34 @@ func TestSCVObligationLinkRejectsNormalizedOwnerRecord(t *testing.T) {
 				lower := map[string]string{"Role": "role", "Version": "version"}[key]
 				inst[lower] = inst[key]
 				delete(inst, key)
-				altered, err := scvworkflow.Seal(object)
+				altered, err = scvworkflow.Seal(object)
 				if err != nil {
 					return err
 				}
-				forgedRef, err = s.Put("records", altered)
-				return err
+				forgedRef, err = scvworkflow.Digest(altered)
+				if err != nil {
+					return err
+				}
+				if _, err = s.Put("records", altered); err == nil {
+					return fmt.Errorf("published record that changes under typed interpretation")
+				}
+				return nil
 			})
 			if err != nil {
 				t.Fatal(err)
+			}
+			// Publication now rejects this shape. Bypass the writer only in
+			// this private fixture to retain coverage of corruption on disk.
+			path := filepath.Join(store.Root, "symphony", "qxctl", "scv", "workflows-v1", store.TOPSID, "records", strings.TrimPrefix(forgedRef, "sha256:")+".json")
+			if _, err = os.Lstat(path); !errors.Is(err, os.ErrNotExist) {
+				t.Fatal("rejected publication left a retained object", err)
+			}
+			if err = os.WriteFile(path, altered, 0o600); err != nil {
+				t.Fatal(err)
+			}
+			r.owner = func(knowledgeengine.Installation, string, any) (json.RawMessage, error) {
+				t.Fatal("malformed retained identity reached owner invocation")
+				return nil, nil
 			}
 			input["before_ref"] = forgedRef
 			if _, err = r.obligationLink(store, "retain", input); err == nil {

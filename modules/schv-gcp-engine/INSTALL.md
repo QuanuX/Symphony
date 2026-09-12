@@ -9,13 +9,13 @@ ctest --test-dir build/schv-gcp-engine --output-on-failure
 cmake --install build/schv-gcp-engine --prefix /chosen/prefix
 ```
 
-The exact executable is `libexec/symphony/schv-gcp-engine/0.8.0-dev/symphony-schv-gcp` beneath the selected prefix. Install receipts and contract documents use the common exact `share` layout. Installation is inactive `installed_undocked`; it neither selects a binding nor installs another domain. Use an explicit prefix, exact version and selected domain through the admitted qxctl command surface. Direct `--descriptor` returns the supported operations.
+The exact executable is `libexec/symphony/schv-gcp-engine/0.9.0-dev/symphony-schv-gcp` beneath the selected prefix. Install receipts and contract documents use the common exact `share` layout. Installation is inactive `installed_undocked`; it neither selects a binding nor installs another domain. Use an explicit prefix, exact version and selected domain through the admitted qxctl command surface. Direct `--descriptor` returns the supported operations.
 
 Only receipt-owned files may be removed by the module's receipt-verified uninstaller. Source stores, captured evidence, selected graphs, other versions and containing directories are not package files. An immutable version cannot be overwritten in place. No remote acquisition, provider credential, network activation or publication is part of installation.
 
 The additive `0.3.0-dev` package can coexist with retained exact `0.1.0-dev` and `0.2.0-dev` installations. Do not rebuild changed source under the old version identity, overwrite an existing receipt, or install a latest alias. Corpus operations retain exact `.2` admission; provider interpretation and connection operations retain exact `.3` admission. Later explicitly selected supported releases add their declared interfaces. Existing command defaults remain unchanged until the caller selects another admitted exact version.
 
-The current `0.7.0-dev` installation includes receipt-owned SCV schemas, templates, nine owner companions and `OWNER-INTERFACE.json`. Profile preparation and schema discovery retain their original `.4` defaults; choose `.7` explicitly for current definitions. Existing operations may explicitly select `.4`; their earlier defaults and installed versions are preserved. Do not overwrite an existing exact-version receipt with rebuilt bytes.
+The current `0.9.0-dev` installation includes 27 receipt-owned SCV schemas, templates, eleven owner companions and `OWNER-INTERFACE.json`. Profile preparation and schema discovery retain their original `.4` defaults; choose `.9` explicitly for current definitions. Existing operations may explicitly select `.4`; their earlier defaults and installed versions are preserved. Do not overwrite an existing exact-version receipt with rebuilt bytes.
 
 ## Maintained Provider Coverage
 
@@ -36,3 +36,7 @@ The exact `0.7.0-dev` release retains 26 native operations and adds the installe
 ## Precise Obligation Follow-up
 
 Exact `0.8.0-dev` exposes 28 native operations, including replayed obligation inventory and subsequent-evidence comparison under `knowledge/scv/OBLIGATIONS.md`. qxctl exposes direct operations and immutable original-owner relationship retention/show. Native check state remains separate from supplied reference provenance, causal attribution and runtime verification. Ten owner companions and 26 schemas expose 97 catalog protocols. Earlier exact packages, protocols and command defaults remain preserved.
+
+## Exact Evidence Bundles
+
+Exact `0.9.0-dev` exposes 30 native operations. `knowledge/scv/BUNDLES.md` owns complete bounded evidence-reference transport, transport-only inspection and evaluation through the unchanged composition owner. qxctl exposes pack, inspect, evaluate and expanded-result routes, plus existing exact-owner artifact retention/show. Repeated evidence is stored once inside a complete bundle; reconstruction counts all logical occurrences before allocation. Caller requirements, provider selections and semantics remain unchanged. Eleven owner companions and 27 schemas expose 103 catalog protocols. Earlier exact packages and command defaults remain preserved.

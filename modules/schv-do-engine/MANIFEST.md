@@ -14,7 +14,7 @@
 - module: `schv-do-engine`
 - engine: `symphony-schv-do`
 - vector: `schv-do`
-- version: `0.8.0-dev`
+- version: `0.9.0-dev`
 - language: C++26
 - thermal path: freezing
 - semantic owner: `knowledge/scv/schv/do/SPEC.md`
@@ -50,3 +50,7 @@ The exact `0.7.0-dev` release retains 26 native operations and adds the installe
 ## Precise Obligation Follow-up
 
 Exact `0.8.0-dev` exposes 28 native operations, including replayed obligation inventory and subsequent-evidence comparison under `knowledge/scv/OBLIGATIONS.md`. qxctl exposes direct operations and immutable original-owner relationship retention/show. Native check state remains separate from supplied reference provenance, causal attribution and runtime verification. Ten owner companions and 26 schemas expose 97 catalog protocols. Earlier exact packages, protocols and command defaults remain preserved.
+
+## Exact Evidence Bundles
+
+Exact `0.9.0-dev` exposes 30 native operations. `knowledge/scv/BUNDLES.md` owns complete bounded evidence-reference transport, transport-only inspection and evaluation through the unchanged composition owner. qxctl exposes pack, inspect, evaluate and expanded-result routes, plus existing exact-owner artifact retention/show. Repeated evidence is stored once inside a complete bundle; reconstruction counts all logical occurrences before allocation. Caller requirements, provider selections and semantics remain unchanged. Eleven owner companions and 27 schemas expose 103 catalog protocols. Earlier exact packages and command defaults remain preserved.

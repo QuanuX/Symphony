@@ -10866,3 +10866,29 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: private retained obligation and follow-up evidence
 - notes: References confer no runtime verification or authority; criterion state does not establish submission causation.
 - status: canonical
+
+#### SCV Exact Evidence Bundle Contract
+- path: `knowledge/scv/BUNDLES.md`
+- title: SCV Exact Evidence Bundle Contract
+- surface_type: canonical contract companion
+- truth_role: bounded complete evidence transport and original semantic replay
+- owner: SCV and qxctl maintainers
+- scope: Exact content identities, closure and expansion budgets, explicit owner selection, independent composition replay.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, maintainers, agents, user-selected tools
+- deferred_projections: private retained bundle evidence
+- notes: Transport content identity is distinct from native self-seals, installation receipts and runtime proof.
+- status: canonical
+
+#### SCV Exact Evidence Bundle Schema
+- path: `knowledge/scv/schemas/v1/bundle.schema.json`
+- title: SCV Exact Evidence Bundle Schema
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: bounded complete evidence transport and original semantic replay
+- owner: SCV and qxctl maintainers
+- scope: Exact content identities, closure and expansion budgets, explicit owner selection, independent composition replay.
+- relationships: depends_on -> `knowledge/scv/BUNDLES.md`
+- consumers: engines, qxctl, maintainers, agents, user-selected tools
+- deferred_projections: private retained bundle evidence
+- notes: Transport content identity is distinct from native self-seals, installation receipts and runtime proof.
+- status: canonical

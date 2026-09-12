@@ -185,6 +185,21 @@ func ReadRecord(raw []byte) (Record, error) {
 	if err := d.Decode(&r); err != nil {
 		return r, err
 	}
+	if r.Operation == "bundle_inspect" || r.Operation == "composition_bundle_evaluate" {
+		// Digest already applied this record's byte/value/child budgets. Check
+		// raw spellings before canonical comparison could replace malformed
+		// escaped surrogates, including in a retained native result or metadata.
+		if err := knowledgeengine.ValidateSCVBundleUnicode(raw); err != nil {
+			return r, err
+		}
+	}
+	// Typed decoding must preserve the exact fields beneath the retained seal.
+	// encoding/json otherwise accepts case aliases and omitted/null fields that
+	// normalize into a different installation identity before owner replay.
+	normalized, err := Canonical(r)
+	if err != nil || !Same(raw, normalized) {
+		return r, fmt.Errorf("retained artifact changes under typed interpretation")
+	}
 	protocol, ok := knowledgeengine.SCVResultProtocol(r.Operation)
 	if r.Protocol != "symphony.qxctl.scv-artifact.v1" || r.Kind == "" || r.Kind != Kind(r.Operation) || !ok {
 		return r, fmt.Errorf("invalid retained artifact identity")

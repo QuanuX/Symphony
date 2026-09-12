@@ -117,7 +117,7 @@ def validate(manifest):
             raise Invalid("unknown operation interaction")
         if operation["mutability"] not in ("read_only", "proposal_only", "evidence_only") or type(operation["expected_state"]) is not bool:
             raise Invalid("operation broadens mutation authority")
-        if operation["handler"] not in ("inspect", "handle_source", "handle_knowledge", "handle_corpus", "handle_interpretation", "handle_coverage", "handle_pack", "handle_composition"):
+        if operation["handler"] not in ("inspect", "handle_source", "handle_knowledge", "handle_corpus", "handle_interpretation", "handle_coverage", "handle_pack", "handle_composition", "handle_bundle"):
             raise Invalid("unknown compiled handler")
         artifact = operation["artifact"]
         if artifact is not None:

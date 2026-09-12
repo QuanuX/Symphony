@@ -197,7 +197,7 @@ func runSCVArtifact(operation string, options scvOptions, root string) error {
 	if err != nil {
 		return err
 	}
-	input, err := scvInput(options)
+	input, err := scvArtifactInput(operation, options)
 	if err != nil {
 		return err
 	}

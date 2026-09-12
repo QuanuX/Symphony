@@ -3,6 +3,7 @@
 ## Canonical Surfaces
 
 - `knowledge/scv/schemas/v1/MANIFEST.md`
+- `knowledge/scv/schemas/v1/bundle.schema.json`
 - `knowledge/scv/schemas/v1/provider-coverage.schema.json`
 - `knowledge/scv/schemas/v1/interpretation-profile.schema.json`
 - `knowledge/scv/schemas/v1/provider-interpretation.schema.json`
@@ -61,3 +62,7 @@ Artifact admission, installation versions and schema discovery remain exact. Bou
 ## Precise Obligation Follow-up
 
 `knowledge/scv/OBLIGATIONS.md` owns `knowledge/scv/schemas/v1/obligation.schema.json` and `knowledge/scv/schemas/v1/scv-obligation-link.schema.json`. The exact `.8` catalog contains 97 protocols in 26 schemas. Native replay, precise target identity, caller criterion equality and retained-record correspondence are separate runtime checks.
+
+## Exact Evidence Bundles
+
+`knowledge/scv/BUNDLES.md` owns `knowledge/scv/schemas/v1/bundle.schema.json`. The exact `.9` catalog contains 103 protocols in 27 schemas. Structural validity is supplemented by independent closure, digest, owner, expansion budget and native semantic checks. Existing artifact records admit the two new operation kinds without changing legacy input limits.

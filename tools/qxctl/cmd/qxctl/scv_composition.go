@@ -25,10 +25,11 @@ func newSCVProviderPackCommand() *cobra.Command {
 }
 
 func newSCVCompositionCommand() *cobra.Command {
-	group := structural("composition", fmt.Errorf("composition subcommand is required: explore, reassess, workflow, obligations"))
+	group := structural("composition", fmt.Errorf("composition subcommand is required: explore, reassess, workflow, obligations, bundle"))
 	group.AddCommand(scvExtensionLeaf("composition", "explore", "composition_explore", "query", "read_only"))
 	group.AddCommand(scvExtensionLeaf("composition", "reassess", "composition_reassess", "validate", "evidence_only"))
 	group.AddCommand(newSCVCompositionWorkflowCommand())
 	group.AddCommand(newSCVObligationsCommand())
+	group.AddCommand(newSCVBundleCommand())
 	return group
 }

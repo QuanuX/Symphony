@@ -794,6 +794,13 @@
             "TestWorkflowRecordBudgetRejectsOversizedChildrenAndNestedEscape"
           ],
           "path": "tools/qxctl/internal/scvworkflow/record_budget_test.go"
+        },
+        {
+          "cases": [
+            "TestWorkflowBundleRecordRejectsInvalidRawUnicode",
+            "TestWorkflowRecordExactIdentityRejectsResealedNormalization"
+          ],
+          "path": "tools/qxctl/internal/scvworkflow/record_exact_test.go"
         }
       ],
       "invariant_id": "invariant:symphony:scv.agent-workflow-retention",
@@ -849,6 +856,13 @@
         },
         {
           "cases": [
+            "TestWorkflowBundleRecordPreservesUnicodeAndSeparateEnvelopeBudget",
+            "TestWorkflowRecordExactIdentityPreservesValidHistoricalAndBundleRecords"
+          ],
+          "path": "tools/qxctl/internal/scvworkflow/record_exact_test.go"
+        },
+        {
+          "cases": [
             "TestWorkflowImmutablePublicationPaginationAndConcurrentReuse",
             "TestWorkflowJournalPinsPendingInputsAndCommittedResults",
             "TestWorkflowRunLockIsBoundedAndRecoversAfterOwnerExit",
@@ -858,7 +872,7 @@
         }
       ],
       "real_process_regressions": [],
-      "statement": "The qxctl evidence workflow pins caller intent, exact owner installations, corpus selections and native artifact provenance before advancing durable stages. Immutable content and validation records have separate digests. Status preserves its stated integrity scope; recovery reconstructs stage inputs and replays exact owner results, rejecting changed inputs, missing evidence and substituted checkpoints. Runs create no selected head, provider facts or permission. The four additive .6 pack/composition artifact kinds retain their original exact operation, authored input, result and owner installation; generated interface admission neither promotes metadata listing into native replay nor substitutes a current owner for historical provenance. The additive .7 composition workflow binds its root/TOPS, selected composition owner and exact caller request; package stages execute through each retained pack original owner. Every checkpoint must match the requested stage and reconstructed input. Typed journal roundtrip rejects field omission or null normalization under an old digest. Progress and conformance remain separate; failed fixtures and native evidence/implementation obligations survive a completed workflow. Exact obligation links bind original composition records, the follow-up owner record, root/TOPS and submitted provenance identity. Retention publishes the native result before its immutable link; exact retries reuse records. Show replays original owners and rejects substituted linkage rather than adopting current caller installation. A bounded exact record envelope accounts for its independently bounded input and native result; other objects and each child retain their original value and byte limits.",
+      "statement": "The qxctl evidence workflow pins caller intent, exact owner installations, corpus selections and native artifact provenance before advancing durable stages. Immutable content and validation records have separate digests. Status preserves its stated integrity scope; recovery reconstructs stage inputs and replays exact owner results, rejecting changed inputs, missing evidence and substituted checkpoints. Runs create no selected head, provider facts or permission. The four additive .6 pack/composition artifact kinds retain their original exact operation, authored input, result and owner installation; generated interface admission neither promotes metadata listing into native replay nor substitutes a current owner for historical provenance. The additive .7 composition workflow binds its root/TOPS, selected composition owner and exact caller request; package stages execute through each retained pack original owner. Every checkpoint must match the requested stage and reconstructed input. Typed journal roundtrip rejects field omission or null normalization under an old digest. Progress and conformance remain separate; failed fixtures and native evidence/implementation obligations survive a completed workflow. Exact obligation links bind original composition records, the follow-up owner record, root/TOPS and submitted provenance identity. Retention publishes the native result before its immutable link; exact retries reuse records. Show replays original owners and rejects substituted linkage rather than adopting current caller installation. A bounded exact record envelope accounts for its independently bounded input and native result; other objects and each child retain their original value and byte limits. Every retained artifact must preserve its exact canonical field representation through typed interpretation, rejecting case aliases and omitted installation fields before original-owner replay.",
       "status": "active",
       "title": "Agent workflow recovery preserves exact caller intent and native evidence"
     },
@@ -1029,6 +1043,13 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "test_bundle_codec_rejects_exponential_fanout_before_materialization",
+            "test_composition_bundle_consumer_rejects_forgery_and_problem_changes"
+          ],
+          "path": "modules/scv-engine/tests/bundle_test.cpp"
+        },
+        {
+          "cases": [
             "test_composition_consumer_rejects_resealed_result"
           ],
           "path": "modules/scv-engine/tests/composition_test.cpp"
@@ -1050,6 +1071,30 @@
             "test_provider_pack_rejects_forged_evaluation"
           ],
           "path": "modules/scv-engine/tests/pack_test.cpp"
+        },
+        {
+          "cases": [
+            "TestInstalledSCVBundleRoutesPreserveValidReplacementAndSurrogatePair",
+            "TestSCVBundleRawGuardPreservesValidUnicodeAndLegacyScope",
+            "TestSCVBundleRoutesRejectRawSurrogateBeforeOwnerInvocation"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_bundle_test.go"
+        },
+        {
+          "cases": [
+            "TestSCVBundleFileReaderRejectsUnsafeOrInvalidFiles",
+            "TestSCVBundlePackEnvelopeDoesNotWidenLogicalValueBound"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/scv_bundle_file_test.go"
+        },
+        {
+          "cases": [
+            "TestInstalledSCVBundleCodecAndFourLogicalOperations",
+            "TestSCVBundleConsumerRejectsMalformedAndResealedClosure",
+            "TestSCVBundleExpansionBudgetsPrecedeMaterialization",
+            "TestSCVBundleIndependentConsumerRejectsResealedNativeOutcomes"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/scv_bundle_test.go"
         },
         {
           "cases": [
@@ -1098,11 +1143,20 @@
       "owner_component": "scv-interpretation",
       "owner_contract": "knowledge/scv/INTERPRETATION.md",
       "producer_implementations": [
+        "modules/scv-engine/src/bundle.cpp",
         "modules/scv-engine/src/composition.cpp",
         "modules/scv-engine/src/interpretation.cpp",
-        "modules/scv-engine/src/pack.cpp"
+        "modules/scv-engine/src/pack.cpp",
+        "tools/qxctl/cmd/qxctl/scv_bundle.go"
       ],
       "producer_regressions": [
+        {
+          "cases": [
+            "test_bundle_codec_producer_exact_sharing_and_metrics",
+            "test_composition_bundle_evaluation_producer_preserves_all_four_operations"
+          ],
+          "path": "modules/scv-engine/tests/bundle_test.cpp"
+        },
         {
           "cases": [
             "test_composition_exploration_producer",
@@ -1137,6 +1191,12 @@
             "test_reference_unresolved"
           ],
           "path": "modules/scv-engine/tests/pack_test.cpp"
+        },
+        {
+          "cases": [
+            "TestInstalledSCVBundlePackOutputRoundtripsAtFileBound"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_bundle_test.go"
         }
       ],
       "real_process_regressions": [
@@ -1150,7 +1210,7 @@
           "path": "modules/scv-engine/tests/installed_integration.py"
         }
       ],
-      "statement": "The C++ interpretation owner validates exact sealed profiles and capture bindings, retains qualified extraction findings and replays wrapped interpretations before evaluating caller-defined subject/scope/type/unit checks. Reassessment replays both retained results and distinguishes changed inputs and affected findings. Missing, stale, disputed or conditional support cannot become unqualified runtime compatibility, provider-wide contradiction or authority. Recomputed outer digests do not bypass nested replay. Native profile preparation validates and seals exactly the authored draft without asserting source extraction or substituting fields. Portable provider packs preserve caller-authored declarations, exact profile and fixture expectations, detached-input identity, structured token provenance and explicit failed/unrun conformance. Finite recipe exploration and reassessment reconstruct selected evidence, requirements, allowed choices, enumeration bounds, interface declarations and obligations without ranking providers, silently relaxing requirements, or treating authored implementation metadata as observed compatibility. Native obligation inventory binds each precise check or other work subject to the full replayed composition. Follow-up replays both sides, preserves all non-time caller criteria and policy, reports query-time differences, and never credits an opaque reference with proof or causation. Non-check obligations remain separately unverified.",
+      "statement": "The C++ interpretation owner validates exact sealed profiles and capture bindings, retains qualified extraction findings and replays wrapped interpretations before evaluating caller-defined subject/scope/type/unit checks. Reassessment replays both retained results and distinguishes changed inputs and affected findings. Missing, stale, disputed or conditional support cannot become unqualified runtime compatibility, provider-wide contradiction or authority. Recomputed outer digests do not bypass nested replay. Native profile preparation validates and seals exactly the authored draft without asserting source extraction or substituting fields. Portable provider packs preserve caller-authored declarations, exact profile and fixture expectations, detached-input identity, structured token provenance and explicit failed/unrun conformance. Finite recipe exploration and reassessment reconstruct selected evidence, requirements, allowed choices, enumeration bounds, interface declarations and obligations without ranking providers, silently relaxing requirements, or treating authored implementation metadata as observed compatibility. Native obligation inventory binds each precise check or other work subject to the full replayed composition. Follow-up replays both sides, preserves all non-time caller criteria and policy, reports query-time differences, and never credits an opaque reference with proof or causation. Non-check obligations remain separately unverified. Complete content-addressed transport bounds every expanded occurrence before allocation and reuses the exact composition owner; independent consumers reconstruct and replay semantics. Content hashes remain separate from native seals, historical installation identity and authority.",
       "status": "active",
       "title": "Profile and connection results preserve replayable scoped evidence"
     },
@@ -1259,6 +1319,7 @@
             "test_checked_in_metadata_has_no_drift",
             "test_complete_generation_is_deterministic",
             "test_duplicate_json_keys_rejected",
+            "test_eighth_release_declaration_remains_exact",
             "test_future_domain_does_not_change_old_admission_or_definition",
             "test_historical_projection_is_frozen",
             "test_malformed_catalog_and_references_rejected",
@@ -1607,7 +1668,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v2",
-  "registry_digest": "sha256:2bbbd2fbb6d16a2aca7c5523dd40994411d11a38e877f8fcb2d24e29de2c1bcb",
+  "registry_digest": "sha256:dda088d288569f598f47f0bff44661f1b4f6b47d78ea3cf168d8bf6fe345414f",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

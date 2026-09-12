@@ -1,6 +1,6 @@
 {
   "protocol": "symphony.scv.schema-catalog.v1",
-  "engine_version": "0.8.0-dev",
+  "engine_version": "0.9.0-dev",
   "entries": [
     {
       "protocol": "symphony.knowledge.engine-descriptor.v2",
@@ -498,6 +498,49 @@
       ]
     },
     {
+      "protocol": "symphony.qxctl.scv.bundle-pack-input.v1",
+      "file": "bundle.schema.json",
+      "fragment": "#/$defs/PackInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "operation": null,
+        "input": null
+      },
+      "required_inputs": [
+        "Supply the exact logical input and selected composition operation in an explicit bounded file. Packing validates transport only; use evaluate for native semantics."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.bundle-inspect-input.v1",
+      "file": "bundle.schema.json",
+      "fragment": "#/$defs/InvocationInput",
+      "kind": "input",
+      "operations": [
+        "bundle_inspect"
+      ],
+      "template": {
+        "operation": null,
+        "owner": {
+          "domain": null,
+          "version": "0.9.0-dev"
+        },
+        "bundle": null
+      },
+      "required_inputs": [
+        "Choose one existing composition operation and the exact installed .9 owner. Supply a complete typed evidence bundle; missing objects, altered content and exceeded reconstruction budgets fail explicitly."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.bundle-inspection.v1",
+      "file": "bundle.schema.json",
+      "fragment": "#/$defs/InspectionResult",
+      "kind": "output",
+      "operations": [
+        "bundle_inspect"
+      ]
+    },
+    {
       "protocol": "symphony.scv.capture-compare-input.v1",
       "file": "source-operation.schema.json",
       "fragment": "#/$defs/capture_compare",
@@ -674,6 +717,35 @@
       "kind": "output",
       "operations": [
         "capture_import"
+      ]
+    },
+    {
+      "protocol": "symphony.scv.composition-bundle-evaluate-input.v1",
+      "file": "bundle.schema.json",
+      "fragment": "#/$defs/InvocationInput",
+      "kind": "input",
+      "operations": [
+        "composition_bundle_evaluate"
+      ],
+      "template": {
+        "operation": null,
+        "owner": {
+          "domain": null,
+          "version": "0.9.0-dev"
+        },
+        "bundle": null
+      },
+      "required_inputs": [
+        "Choose one existing composition operation and the exact installed .9 owner. Supply a complete typed evidence bundle; missing objects, altered content and exceeded reconstruction budgets fail explicitly."
+      ]
+    },
+    {
+      "protocol": "symphony.scv.composition-bundle-evaluation.v1",
+      "file": "bundle.schema.json",
+      "fragment": "#/$defs/EvaluationResult",
+      "kind": "output",
+      "operations": [
+        "composition_bundle_evaluate"
       ]
     },
     {
@@ -1064,6 +1136,13 @@
       "operations": [
         "graph_evaluate"
       ]
+    },
+    {
+      "protocol": "symphony.scv.evidence-bundle.v1",
+      "file": "bundle.schema.json",
+      "fragment": "#/$defs/Bundle",
+      "kind": "output",
+      "operations": []
     },
     {
       "protocol": "symphony.scv.explain-result.v1",
@@ -1646,7 +1725,14 @@
     "composition_workflow_pack_evaluations": 16,
     "composition_workflow_stages": 18,
     "composition_workflow_evidence_artifacts": 16,
-    "obligation_submissions": 32
+    "obligation_submissions": 32,
+    "bundle_objects": 2048,
+    "bundle_references": 8192,
+    "bundle_traversal_steps": 16384,
+    "bundle_expanded_bytes": 4194304,
+    "bundle_expanded_values": 32768,
+    "bundle_expanded_depth": 64,
+    "bundle_materialized_bytes": 67108864
   },
   "limitations": [
     "Schemas describe shape; runtime also verifies digests, exact ownership, byte/time limits and replay.",

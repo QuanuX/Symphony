@@ -5,6 +5,7 @@
 #include "interpretation.hpp"
 #include "pack.hpp"
 #include "composition.hpp"
+#include "bundle.hpp"
 
 #include "symphony/knowledge/engine/error.hpp"
 #include "symphony/knowledge/engine/limits.hpp"

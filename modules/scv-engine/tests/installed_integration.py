@@ -79,10 +79,10 @@ class InstalledProcessTests(unittest.TestCase):
         self.assertEqual(response['request_id'], 'fixture-request')
         self.assertEqual(response['result']['engine_version'], ARGS.version)
         self.assertFalse(response['result']['canonical_apply_enabled'])
-        self.assertEqual(len(response['result']['operations']), {'0.1.0-dev': 13, '0.2.0-dev': 17, '0.3.0-dev': 20, '0.4.0-dev': 21, '0.5.0-dev': 22, '0.6.0-dev':26, '0.7.0-dev':26, '0.8.0-dev':28}[ARGS.version])
+        self.assertEqual(len(response['result']['operations']), {'0.1.0-dev': 13, '0.2.0-dev': 17, '0.3.0-dev': 20, '0.4.0-dev': 21, '0.5.0-dev': 22, '0.6.0-dev':26, '0.7.0-dev':26, '0.8.0-dev':28, '0.9.0-dev':30}[ARGS.version])
 
     def test_profile_preparation_and_packaged_discovery_evidence(self):
-        if ARGS.version not in ('0.4.0-dev', '0.5.0-dev', '0.6.0-dev', '0.7.0-dev', '0.8.0-dev'):
+        if ARGS.version not in ('0.4.0-dev', '0.5.0-dev', '0.6.0-dev', '0.7.0-dev', '0.8.0-dev', '0.9.0-dev'):
             self.skipTest('profile preparation is an exact .4 addition')
         draft = {'protocol': 'symphony.scv.interpretation-profile.v1', 'profile_id': 'fixture-profile',
                  'profile_version': 'test-1', 'provider_id': self.provider, 'source_id': 'fixture-docs',
@@ -136,7 +136,7 @@ class InstalledProcessTests(unittest.TestCase):
         return request, self.owner('provider_pack_evaluate', request)
 
     def test_provider_pack_process_conformance_and_interface_receipt(self):
-        if ARGS.version not in ('0.6.0-dev', '0.7.0-dev', '0.8.0-dev'):
+        if ARGS.version not in ('0.6.0-dev', '0.7.0-dev', '0.8.0-dev', '0.9.0-dev'):
             self.skipTest('portable provider package is an exact .6 addition')
         request, result = self.portable_pack()
         self.assertEqual(result['conformance'], {'passed': 1, 'failed': 0, 'not_run': 0})
@@ -148,10 +148,10 @@ class InstalledProcessTests(unittest.TestCase):
         self.assertIn(path, owned)
         manifest_bytes = (self.prefix / path).read_bytes()
         self.assertEqual(owned[path]['digest'], 'sha256:' + hashlib.sha256(manifest_bytes).hexdigest())
-        self.assertEqual(len(json.loads(manifest_bytes)['operations']), 28 if ARGS.version == '0.8.0-dev' else 26)
+        self.assertEqual(len(json.loads(manifest_bytes)['operations']), {'0.6.0-dev':26,'0.7.0-dev':26,'0.8.0-dev':28,'0.9.0-dev':30}[ARGS.version])
 
     def test_composition_process_preserves_caller_choices_and_change_evidence(self):
-        if ARGS.version not in ('0.6.0-dev', '0.7.0-dev', '0.8.0-dev'):
+        if ARGS.version not in ('0.6.0-dev', '0.7.0-dev', '0.8.0-dev', '0.9.0-dev'):
             self.skipTest('bounded composition is an exact .6 addition')
         _, pack = self.portable_pack()
         how = {'kind': 'adapter', 'reference': 'fixture.adapter.v1', 'description': 'Verify the caller-selected adapter'}
@@ -176,7 +176,7 @@ class InstalledProcessTests(unittest.TestCase):
         changed = self.owner('composition_reassess', {'before': before, 'after': after})
         self.assertTrue(changed['change_axes']['query_time'])
         self.assertFalse(changed['change_axes']['evidence'])
-        if ARGS.version == '0.8.0-dev':
+        if ARGS.version in ('0.8.0-dev','0.9.0-dev'):
             inventory = self.owner('composition_obligations', {'composition': after})
             submissions = [{'submission_id': item['kind'], 'obligation_id': item['obligation_id'],
                 'provenance': {'kind': 'observation', 'producer': 'Synthetic installed-process fixture',

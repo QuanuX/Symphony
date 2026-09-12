@@ -1458,6 +1458,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -1483,6 +1484,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -1512,6 +1514,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -1532,6 +1535,7 @@
         {
           "command_ids": [
             "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.bundle.inspect",
             "qxcmd:symphony:scv.composition.obligations.show",
             "qxcmd:symphony:scv.composition.workflow.status",
             "qxcmd:symphony:scv.corpus.inspect",
@@ -1545,6 +1549,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -1567,6 +1572,7 @@
             "qxcmd:symphony:scv.acquire",
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.capture-import",
+            "qxcmd:symphony:scv.composition.bundle.pack",
             "qxcmd:symphony:scv.composition.obligations.retain",
             "qxcmd:symphony:scv.composition.workflow.run",
             "qxcmd:symphony:scv.corpus.acquire",
@@ -1580,6 +1586,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -1608,6 +1615,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -1628,6 +1636,7 @@
         {
           "command_ids": [
             "qxcmd:symphony:scv.artifact.list",
+            "qxcmd:symphony:scv.composition.bundle.expand",
             "qxcmd:symphony:scv.composition.explore",
             "qxcmd:symphony:scv.composition.obligations.inspect",
             "qxcmd:symphony:scv.corpus.export",
@@ -1641,6 +1650,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -1670,6 +1680,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -1690,6 +1701,7 @@
         {
           "command_ids": [
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.bundle.evaluate",
             "qxcmd:symphony:scv.composition.obligations.followup",
             "qxcmd:symphony:scv.composition.reassess",
             "qxcmd:symphony:scv.connection.evaluate",
@@ -1702,6 +1714,7 @@
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2214,6 +2227,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2243,6 +2257,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2263,6 +2278,10 @@
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.bundle.inspect",
+            "qxcmd:symphony:scv.composition.bundle.pack",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.inspect",
@@ -2271,11 +2290,13 @@
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:scev-cf.bundle.inspect",
             "engop:symphony:scev-cf.inspect",
             "engop:symphony:scev-cf.source.status"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2325,6 +2346,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2363,6 +2385,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2414,6 +2437,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2441,6 +2465,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2463,6 +2488,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.bundle.evaluate",
+            "qxcmd:symphony:scv.composition.bundle.expand",
             "qxcmd:symphony:scv.composition.obligations.followup",
             "qxcmd:symphony:scv.composition.obligations.retain",
             "qxcmd:symphony:scv.composition.obligations.show",
@@ -2480,6 +2507,7 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:scev-cf.capture.compare",
+            "engop:symphony:scev-cf.composition.bundle.evaluate",
             "engop:symphony:scev-cf.composition.followup",
             "engop:symphony:scev-cf.composition.reassess",
             "engop:symphony:scev-cf.connection.evaluate",
@@ -2490,6 +2518,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2522,6 +2551,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2551,6 +2581,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2571,6 +2602,10 @@
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.bundle.inspect",
+            "qxcmd:symphony:scv.composition.bundle.pack",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.inspect",
@@ -2579,11 +2614,13 @@
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:scev.bundle.inspect",
             "engop:symphony:scev.inspect",
             "engop:symphony:scev.source.status"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2633,6 +2670,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2671,6 +2709,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2722,6 +2761,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2749,6 +2789,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2771,6 +2812,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.bundle.evaluate",
+            "qxcmd:symphony:scv.composition.bundle.expand",
             "qxcmd:symphony:scv.composition.obligations.followup",
             "qxcmd:symphony:scv.composition.obligations.retain",
             "qxcmd:symphony:scv.composition.obligations.show",
@@ -2788,6 +2831,7 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:scev.capture.compare",
+            "engop:symphony:scev.composition.bundle.evaluate",
             "engop:symphony:scev.composition.followup",
             "engop:symphony:scev.composition.reassess",
             "engop:symphony:scev.connection.evaluate",
@@ -2798,6 +2842,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2830,6 +2875,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2859,6 +2905,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2879,6 +2926,10 @@
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.bundle.inspect",
+            "qxcmd:symphony:scv.composition.bundle.pack",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.inspect",
@@ -2887,11 +2938,13 @@
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:schv-aws.bundle.inspect",
             "engop:symphony:schv-aws.inspect",
             "engop:symphony:schv-aws.source.status"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2941,6 +2994,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -2979,6 +3033,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3030,6 +3085,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3057,6 +3113,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3079,6 +3136,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.bundle.evaluate",
+            "qxcmd:symphony:scv.composition.bundle.expand",
             "qxcmd:symphony:scv.composition.obligations.followup",
             "qxcmd:symphony:scv.composition.obligations.retain",
             "qxcmd:symphony:scv.composition.obligations.show",
@@ -3096,6 +3155,7 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-aws.capture.compare",
+            "engop:symphony:schv-aws.composition.bundle.evaluate",
             "engop:symphony:schv-aws.composition.followup",
             "engop:symphony:schv-aws.composition.reassess",
             "engop:symphony:schv-aws.connection.evaluate",
@@ -3106,6 +3166,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3138,6 +3199,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3167,6 +3229,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3187,6 +3250,10 @@
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.bundle.inspect",
+            "qxcmd:symphony:scv.composition.bundle.pack",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.inspect",
@@ -3195,11 +3262,13 @@
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:schv-azure.bundle.inspect",
             "engop:symphony:schv-azure.inspect",
             "engop:symphony:schv-azure.source.status"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3249,6 +3318,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3287,6 +3357,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3338,6 +3409,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3365,6 +3437,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3387,6 +3460,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.bundle.evaluate",
+            "qxcmd:symphony:scv.composition.bundle.expand",
             "qxcmd:symphony:scv.composition.obligations.followup",
             "qxcmd:symphony:scv.composition.obligations.retain",
             "qxcmd:symphony:scv.composition.obligations.show",
@@ -3404,6 +3479,7 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-azure.capture.compare",
+            "engop:symphony:schv-azure.composition.bundle.evaluate",
             "engop:symphony:schv-azure.composition.followup",
             "engop:symphony:schv-azure.composition.reassess",
             "engop:symphony:schv-azure.connection.evaluate",
@@ -3414,6 +3490,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3446,6 +3523,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3475,6 +3553,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3495,6 +3574,10 @@
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.bundle.inspect",
+            "qxcmd:symphony:scv.composition.bundle.pack",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.inspect",
@@ -3503,11 +3586,13 @@
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:schv-do.bundle.inspect",
             "engop:symphony:schv-do.inspect",
             "engop:symphony:schv-do.source.status"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3557,6 +3642,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3595,6 +3681,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3646,6 +3733,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3673,6 +3761,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3695,6 +3784,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.bundle.evaluate",
+            "qxcmd:symphony:scv.composition.bundle.expand",
             "qxcmd:symphony:scv.composition.obligations.followup",
             "qxcmd:symphony:scv.composition.obligations.retain",
             "qxcmd:symphony:scv.composition.obligations.show",
@@ -3712,6 +3803,7 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-do.capture.compare",
+            "engop:symphony:schv-do.composition.bundle.evaluate",
             "engop:symphony:schv-do.composition.followup",
             "engop:symphony:schv-do.composition.reassess",
             "engop:symphony:schv-do.connection.evaluate",
@@ -3722,6 +3814,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3754,6 +3847,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3783,6 +3877,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3803,6 +3898,10 @@
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.bundle.inspect",
+            "qxcmd:symphony:scv.composition.bundle.pack",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.inspect",
@@ -3811,11 +3910,13 @@
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:schv.bundle.inspect",
             "engop:symphony:schv.inspect",
             "engop:symphony:schv.source.status"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3865,6 +3966,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3903,6 +4005,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3954,6 +4057,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -3981,6 +4085,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4003,6 +4108,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.bundle.evaluate",
+            "qxcmd:symphony:scv.composition.bundle.expand",
             "qxcmd:symphony:scv.composition.obligations.followup",
             "qxcmd:symphony:scv.composition.obligations.retain",
             "qxcmd:symphony:scv.composition.obligations.show",
@@ -4020,6 +4127,7 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv.capture.compare",
+            "engop:symphony:schv.composition.bundle.evaluate",
             "engop:symphony:schv.composition.followup",
             "engop:symphony:schv.composition.reassess",
             "engop:symphony:schv.connection.evaluate",
@@ -4030,6 +4138,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4062,6 +4171,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4091,6 +4201,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4111,6 +4222,10 @@
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.bundle.inspect",
+            "qxcmd:symphony:scv.composition.bundle.pack",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.inspect",
@@ -4119,11 +4234,13 @@
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:schv-gcp.bundle.inspect",
             "engop:symphony:schv-gcp.inspect",
             "engop:symphony:schv-gcp.source.status"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4173,6 +4290,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4211,6 +4329,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4262,6 +4381,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4289,6 +4409,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4311,6 +4432,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.bundle.evaluate",
+            "qxcmd:symphony:scv.composition.bundle.expand",
             "qxcmd:symphony:scv.composition.obligations.followup",
             "qxcmd:symphony:scv.composition.obligations.retain",
             "qxcmd:symphony:scv.composition.obligations.show",
@@ -4328,6 +4451,7 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:schv-gcp.capture.compare",
+            "engop:symphony:schv-gcp.composition.bundle.evaluate",
             "engop:symphony:schv-gcp.composition.followup",
             "engop:symphony:schv-gcp.composition.reassess",
             "engop:symphony:schv-gcp.connection.evaluate",
@@ -4338,6 +4462,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4511,6 +4636,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4540,6 +4666,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4560,6 +4687,10 @@
         {
           "command_ids": [
             "qxcmd:symphony:scv.acquire",
+            "qxcmd:symphony:scv.artifact.import",
+            "qxcmd:symphony:scv.artifact.show",
+            "qxcmd:symphony:scv.composition.bundle.inspect",
+            "qxcmd:symphony:scv.composition.bundle.pack",
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.recover",
             "qxcmd:symphony:scv.inspect",
@@ -4568,11 +4699,13 @@
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:scv.bundle.inspect",
             "engop:symphony:scv.inspect",
             "engop:symphony:scv.source.status"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4622,6 +4755,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4660,6 +4794,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4711,6 +4846,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4738,6 +4874,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -4760,6 +4897,8 @@
             "qxcmd:symphony:scv.artifact.import",
             "qxcmd:symphony:scv.artifact.show",
             "qxcmd:symphony:scv.capture-compare",
+            "qxcmd:symphony:scv.composition.bundle.evaluate",
+            "qxcmd:symphony:scv.composition.bundle.expand",
             "qxcmd:symphony:scv.composition.obligations.followup",
             "qxcmd:symphony:scv.composition.obligations.retain",
             "qxcmd:symphony:scv.composition.obligations.show",
@@ -4777,6 +4916,7 @@
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:scv.capture.compare",
+            "engop:symphony:scv.composition.bundle.evaluate",
             "engop:symphony:scv.composition.followup",
             "engop:symphony:scv.composition.reassess",
             "engop:symphony:scv.connection.evaluate",
@@ -4787,6 +4927,7 @@
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
             "knowledge/scv/COMPOSITION-WORKFLOWS.md",
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
@@ -6267,9 +6408,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:58b05adee55f018bd7799ded6d233156d948d55d64a1d29c8c0a9f73e369b751",
+  "profile_digest": "sha256:d56a1fb3077c0b9b488ff3f881610aebb6bee69a7fe61cb3a97819e349bbdba0",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 100,
-  "ssfv_registry_digest": "sha256:ed1ea7145e1a99ad9b3d09933b4f87b4be53b93f80cec11274a1cca982a4ddf9"
+  "ssfv_registry_digest": "sha256:4a9473c55fa586805d03e5c57cbcecd259deb5d857e6bbc0943b3b9aefaa14ee"
 }

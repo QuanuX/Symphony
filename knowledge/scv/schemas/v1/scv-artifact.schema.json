@@ -26,7 +26,9 @@
             "composition_explore",
             "composition_reassess",
             "composition_obligations",
-            "composition_followup"
+            "composition_followup",
+            "bundle_inspect",
+            "composition_bundle_evaluate"
           ]
         },
         "input": {
@@ -381,6 +383,58 @@
               }
             }
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "bundle_inspect"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "bundle.schema.json#/$defs/InvocationInput"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "bundle.schema.json#/$defs/InspectionResult"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "composition_bundle_evaluate"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "bundle.schema.json#/$defs/InvocationInput"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "bundle.schema.json#/$defs/EvaluationResult"
+                  }
+                ]
+              }
+            }
+          }
         }
       ]
     },
@@ -454,7 +508,9 @@
             "composition",
             "composition_reassessment",
             "composition_obligations",
-            "composition_followup"
+            "composition_followup",
+            "bundle_inspection",
+            "composition_bundle_evaluation"
           ]
         },
         "operation": {
@@ -471,7 +527,9 @@
             "composition_explore",
             "composition_reassess",
             "composition_obligations",
-            "composition_followup"
+            "composition_followup",
+            "bundle_inspect",
+            "composition_bundle_evaluate"
           ]
         },
         "installation": {
@@ -564,7 +622,8 @@
                       "0.5.0-dev",
                       "0.6.0-dev",
                       "0.7.0-dev",
-                      "0.8.0-dev"
+                      "0.8.0-dev",
+                      "0.9.0-dev"
                     ]
                   }
                 }
@@ -600,7 +659,8 @@
                       "0.5.0-dev",
                       "0.6.0-dev",
                       "0.7.0-dev",
-                      "0.8.0-dev"
+                      "0.8.0-dev",
+                      "0.9.0-dev"
                     ]
                   }
                 }
@@ -636,7 +696,8 @@
                       "0.5.0-dev",
                       "0.6.0-dev",
                       "0.7.0-dev",
-                      "0.8.0-dev"
+                      "0.8.0-dev",
+                      "0.9.0-dev"
                     ]
                   }
                 }
@@ -672,7 +733,8 @@
                       "0.5.0-dev",
                       "0.6.0-dev",
                       "0.7.0-dev",
-                      "0.8.0-dev"
+                      "0.8.0-dev",
+                      "0.9.0-dev"
                     ]
                   }
                 }
@@ -708,7 +770,8 @@
                       "0.5.0-dev",
                       "0.6.0-dev",
                       "0.7.0-dev",
-                      "0.8.0-dev"
+                      "0.8.0-dev",
+                      "0.9.0-dev"
                     ]
                   }
                 }
@@ -743,7 +806,8 @@
                       "0.5.0-dev",
                       "0.6.0-dev",
                       "0.7.0-dev",
-                      "0.8.0-dev"
+                      "0.8.0-dev",
+                      "0.9.0-dev"
                     ]
                   }
                 }
@@ -777,7 +841,8 @@
                       "0.5.0-dev",
                       "0.6.0-dev",
                       "0.7.0-dev",
-                      "0.8.0-dev"
+                      "0.8.0-dev",
+                      "0.9.0-dev"
                     ]
                   }
                 }
@@ -810,7 +875,8 @@
                     "enum": [
                       "0.6.0-dev",
                       "0.7.0-dev",
-                      "0.8.0-dev"
+                      "0.8.0-dev",
+                      "0.9.0-dev"
                     ]
                   }
                 }
@@ -843,7 +909,8 @@
                     "enum": [
                       "0.6.0-dev",
                       "0.7.0-dev",
-                      "0.8.0-dev"
+                      "0.8.0-dev",
+                      "0.9.0-dev"
                     ]
                   }
                 }
@@ -876,7 +943,8 @@
                     "enum": [
                       "0.6.0-dev",
                       "0.7.0-dev",
-                      "0.8.0-dev"
+                      "0.8.0-dev",
+                      "0.9.0-dev"
                     ]
                   }
                 }
@@ -909,7 +977,8 @@
                     "enum": [
                       "0.6.0-dev",
                       "0.7.0-dev",
-                      "0.8.0-dev"
+                      "0.8.0-dev",
+                      "0.9.0-dev"
                     ]
                   }
                 }
@@ -940,7 +1009,8 @@
                 "properties": {
                   "Version": {
                     "enum": [
-                      "0.8.0-dev"
+                      "0.8.0-dev",
+                      "0.9.0-dev"
                     ]
                   }
                 }
@@ -971,7 +1041,70 @@
                 "properties": {
                   "Version": {
                     "enum": [
-                      "0.8.0-dev"
+                      "0.8.0-dev",
+                      "0.9.0-dev"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "bundle_inspect"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "bundle.schema.json#/$defs/InvocationInput"
+              },
+              "artifact": {
+                "$ref": "bundle.schema.json#/$defs/InspectionResult"
+              },
+              "kind": {
+                "const": "bundle_inspection"
+              },
+              "installation": {
+                "properties": {
+                  "Version": {
+                    "enum": [
+                      "0.9.0-dev"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "composition_bundle_evaluate"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "input": {
+                "$ref": "bundle.schema.json#/$defs/InvocationInput"
+              },
+              "artifact": {
+                "$ref": "bundle.schema.json#/$defs/EvaluationResult"
+              },
+              "kind": {
+                "const": "composition_bundle_evaluation"
+              },
+              "installation": {
+                "properties": {
+                  "Version": {
+                    "enum": [
+                      "0.9.0-dev"
                     ]
                   }
                 }
