@@ -372,3 +372,7 @@ This contract does not authorize:
 - publication pipeline
 - NotebookLM automation
 - CI files
+
+## Explicit adapter registration
+
+Invariant ownership registry v3 admits format-3 adapter records with explicit component, entrypoint and operation ownership. It does not infer an engine suffix or provider domain from a connector name. Frozen v1/v2 registry and adapter formats retain their existing rules; format-3 records are rejected by older registry protocols. The validator and qxctl independently enforce unique operation ownership. The exact canonical artifact inventory is enumerated in `src/artifacts.cpp`, including the v3 registry schema.

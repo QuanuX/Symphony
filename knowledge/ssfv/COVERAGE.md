@@ -36,6 +36,7 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 | `modules/schv-gcp-engine` | registered | `ssfv:symphony:schv-gcp-engine` | `modules/schv-gcp-engine/FEATURES.md` |
 | `modules/sclv-engine` | registered | `ssfv:symphony:sclv-engine` | `modules/sclv-engine/FEATURES.md` |
 | `modules/scv-engine` | registered | `ssfv:symphony:scv-engine` | `modules/scv-engine/FEATURES.md` |
+| `modules/scv-graph-duckdb-connector` | registered | `ssfv:symphony:scv-graph-duckdb-connector` | `modules/scv-graph-duckdb-connector/FEATURES.md` |
 | `modules/secure-identity-access-governance` | registered | `ssfv:symphony:ssiag-foundation` | `modules/secure-identity-access-governance/FEATURES.md` |
 | `modules/sev-engine` | registered | `ssfv:symphony:sev-engine` | `modules/sev-engine/FEATURES.md` |
 | `modules/skvi-engine` | registered | `ssfv:symphony:skvi-engine` | `modules/skvi-engine/FEATURES.md` |

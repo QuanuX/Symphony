@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"testing"
 )
@@ -16,7 +17,7 @@ func TestLoadAndDeterministicQueryProjections(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if (registry.Protocol != Protocol && registry.Protocol != ProtocolV2) || len(registry.Invariants) == 0 || len(registry.Adapters) == 0 {
+	if (registry.Protocol != Protocol && registry.Protocol != ProtocolV2 && registry.Protocol != ProtocolV3) || len(registry.Invariants) == 0 || len(registry.Adapters) == 0 {
 		t.Fatalf("registry identity or counts = %#v", registry)
 	}
 
@@ -225,4 +226,68 @@ func queryDigest(t *testing.T, value any) string {
 	}
 	digest := sha256.Sum256(canonical)
 	return "sha256:" + hex.EncodeToString(digest[:])
+}
+
+func TestV3ExplicitAdapterIdentityAndFrozenOlderContracts(t *testing.T) {
+	adapter := Adapter{AdapterID: "adapter:symphony:symphony-index-worker.v1", Component: "storage-adapter",
+		EntryPointID: "symphony-index-worker", CommandProtocol: "symphony.knowledge.engine-process.v1",
+		FormatVersion: 3, OwnerContract: "modules/storage-adapter/SPEC.md", ImplementationPath: "modules/storage-adapter",
+		VersionPolicy: "exact_receipt_v2_entry_point_and_capability_compatible", OperationIDs: []string{"engop:symphony:scv.graph-index.query"}}
+	if err := validateAdapterVersion(adapter, 3); err != nil {
+		t.Fatal(err)
+	}
+	for _, version := range []uint64{1, 2} {
+		if err := validateAdapterVersion(adapter, version); err == nil {
+			t.Fatal("explicit adapter widened old registry", version)
+		}
+	}
+	for name, mutate := range map[string]func(*Adapter){
+		"long-component": func(a *Adapter) {
+			a.Component = strings.Repeat("a", 257)
+			a.OwnerContract = "modules/" + a.Component + "/SPEC.md"
+			a.ImplementationPath = "modules/" + a.Component
+		},
+		"uppercase-component": func(a *Adapter) {
+			a.Component = "Storage-adapter"
+			a.OwnerContract = "modules/" + a.Component + "/SPEC.md"
+			a.ImplementationPath = "modules/" + a.Component
+		},
+		"owner":                func(a *Adapter) { a.OwnerContract = "modules/other/SPEC.md" },
+		"path":                 func(a *Adapter) { a.ImplementationPath = "modules/storage-adapter/src" },
+		"entrypoint":           func(a *Adapter) { a.EntryPointID = "symphony-other" },
+		"protocol":             func(a *Adapter) { a.CommandProtocol = "other.v1" },
+		"frozen-v2":            func(a *Adapter) { a.FormatVersion = 2 },
+		"duplicate-operations": func(a *Adapter) { a.OperationIDs = []string{"engop:symphony:a.query", "engop:symphony:a.query"} },
+	} {
+		t.Run(name, func(t *testing.T) {
+			changed := adapter
+			mutate(&changed)
+			if validateAdapterVersion(changed, 3) == nil {
+				t.Fatal("malformed explicit adapter accepted")
+			}
+		})
+	}
+}
+
+func TestV3ResealedRegistryRejectsCrossAdapterOperationOwnership(t *testing.T) {
+	object := canonicalRegistryObject(t)
+	object["protocol"], object["format_version"] = ProtocolV3, 3
+	adapters := object["adapters"].([]any)
+	existing := adapters[0].(map[string]any)["operation_ids"].([]any)[0]
+	adapters = append(adapters, map[string]any{"adapter_id": "adapter:symphony:zz-index-worker.v1", "component": "storage-adapter",
+		"entry_point_id": "zz-index-worker", "command_protocol": "symphony.knowledge.engine-process.v1", "format_version": 3,
+		"owner_contract": "modules/storage-adapter/SPEC.md", "implementation_path": "modules/storage-adapter",
+		"version_policy": "exact_receipt_v2_entry_point_and_capability_compatible", "operation_ids": []any{existing}})
+	// Use a valid, sorted entrypoint so duplicate operation ownership is the rejection.
+	added := adapters[len(adapters)-1].(map[string]any)
+	added["adapter_id"] = "adapter:symphony:symphony-zz-index-worker.v1"
+	added["entry_point_id"] = "symphony-zz-index-worker"
+	sort.Slice(adapters, func(i, j int) bool {
+		return adapters[i].(map[string]any)["adapter_id"].(string) < adapters[j].(map[string]any)["adapter_id"].(string)
+	})
+	object["adapters"] = adapters
+	_, err := Load(writeRepository(t, encodeRegistry(t, object)))
+	if err == nil || !strings.Contains(err.Error(), "multiple adapters") {
+		t.Fatalf("duplicate operation ownership: %v", err)
+	}
 }

@@ -327,6 +327,24 @@
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     },
     {
+      "adapter_id": "adapter:symphony:symphony-scv-graph-duckdb-connector.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "scv-graph-duckdb-connector",
+      "entry_point_id": "symphony-scv-graph-duckdb-connector",
+      "format_version": 3,
+      "implementation_path": "modules/scv-graph-duckdb-connector",
+      "operation_ids": [
+        "engop:symphony:scv.graph-index.commit",
+        "engop:symphony:scv.graph-index.export",
+        "engop:symphony:scv.graph-index.inspect",
+        "engop:symphony:scv.graph-index.prepare",
+        "engop:symphony:scv.graph-index.query",
+        "engop:symphony:scv.graph-index.status"
+      ],
+      "owner_contract": "modules/scv-graph-duckdb-connector/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
       "adapter_id": "adapter:symphony:symphony-scv.v1",
       "command_protocol": "symphony.knowledge.engine-process.v1",
       "component": "scv-engine",
@@ -367,7 +385,7 @@
   ],
   "catalog_complete": false,
   "catalog_scope": "registered_incremental",
-  "format_version": 2,
+  "format_version": 3,
   "forward_gate": "enforce_new_or_modified",
   "invariants": [
     {
@@ -684,6 +702,13 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "TestV3ExplicitAdapterIdentityAndFrozenOlderContracts",
+            "TestV3ResealedRegistryRejectsCrossAdapterOperationOwnership"
+          ],
+          "path": "tools/qxctl/internal/invariantregistry/registry_test.go"
+        },
+        {
+          "cases": [
             "test_forward_gate_and_command_reference",
             "test_module_admission"
           ],
@@ -695,7 +720,8 @@
       "owner_component": "ssfv-engine",
       "owner_contract": "knowledge/FEATURE-ADMINISTRATION.md",
       "producer_implementations": [
-        "modules/ssfv-engine/src/ssfv.cpp"
+        "modules/ssfv-engine/src/ssfv.cpp",
+        "tools/symphony-validator/src/invariant_ownership.cpp"
       ],
       "producer_regressions": [
         {
@@ -703,6 +729,12 @@
             "test_administration_coverage_and_module_admission"
           ],
           "path": "modules/ssfv-engine/tests/ssfv_test.cpp"
+        },
+        {
+          "cases": [
+            "test_v3_explicit_adapter_ownership"
+          ],
+          "path": "tools/symphony-validator/tests/invariant_ownership_test.cpp"
         }
       ],
       "real_process_regressions": [],
@@ -984,6 +1016,60 @@
       "statement": "The local corpus adapter binds original operation inputs and installation before work, checkpoints exact completed capture/index pairs, publishes immutable objects without replacement and exposes a snapshot only after referenced evidence is durable and verified within declared bounds. Recovery retains exact source inputs and completed results; clock rollback cannot freeze an invalid snapshot. No selected corpus head, latest alias or SSIAG/STAV authority is created by job bookkeeping.",
       "status": "active",
       "title": "Immutable corpus retention exposes only reconstructable exact snapshots"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-scv-graph-duckdb-connector.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSCVGraphIndexImportReturnsOwnerEvaluation",
+            "TestSCVGraphIndexQueryTimeAndMissingOwnerSeparation"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_graph_index_test.go"
+        },
+        {
+          "cases": [
+            "TestSCVGraphIndexConsumerRejectsResealedProjectionAndBinding",
+            "TestSCVGraphIndexExactFiltersCursorAndOrdering",
+            "TestSCVGraphIndexPreparedCommitAndUnicodeBoundaries"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/scv_graph_index_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:scv.graph-index-provenance",
+      "ipc_boundary": true,
+      "owner_component": "scv-graph-duckdb-connector",
+      "owner_contract": "modules/scv-graph-duckdb-connector/SPEC.md",
+      "producer_implementations": [
+        "modules/scv-graph-duckdb-connector/src/connector.cpp",
+        "modules/scv-graph-duckdb-connector/src/main.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "test_abrupt_duckdb_transaction_rollback_preserves_committed_projection",
+            "test_exact_filters_pagination_and_cursor_binding",
+            "test_operation_collision_and_expected_digest_reject",
+            "test_prepare_reopen_commit_idempotence",
+            "test_reject_deleted_projection_row",
+            "test_reject_index_column_and_inventory_corruption"
+          ],
+          "path": "modules/scv-graph-duckdb-connector/tests/connector_test.py"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_graph_index_recovery_and_retrieval"
+          ],
+          "path": "modules/scv-graph-duckdb-connector/tests/installed_integration.py"
+        }
+      ],
+      "statement": "The C++ connector atomically publishes an immutable snapshot and complete structural rows from durable exact intent. It validates retained graph and projection identities without changing source evidence or selected heads. Independent qxctl checks preserve namespace, ordering and page correspondence and replay the exact retained SCV validating owner at explicit query time before semantic use or recovery. Index integrity status remains distinct from native semantic evaluation.",
+      "status": "active",
+      "title": "Immutable graph index publication preserves exact graph and validating owners"
     },
     {
       "allowed_adapter_ids": [],
@@ -1719,8 +1805,8 @@
       "title": "Provider readiness evidence cannot become operational authority"
     }
   ],
-  "protocol": "symphony.knowledge.invariant-ownership-registry.v2",
-  "registry_digest": "sha256:c169adc95bf142a3a63a2f51b175f29b87367af1bd6ebe36d54e4fa9b4046537",
+  "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
+  "registry_digest": "sha256:a64ee6605f7c8834b6511786907a70b015797a3c78d58dea2808fa14b2adc913",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

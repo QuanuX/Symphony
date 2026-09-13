@@ -45,7 +45,7 @@ The detailed, ratified baseline is in [Symphony Emerging Vector Architecture](kn
 | **SKV — Symphony Knowledge Vector** | Canonical knowledge architecture and the common contracts that let independently owned vectors remain coherent and agent-readable. | Phase 1 foundation is implemented; current and emerging surfaces are manifest-declared and SKVI-indexed. |
 | **SKVI / SCLV / SACV / SODV / SSFV / SAV / SEV** | Source routing, change truth, API governance, official documentation and release-publication governance, semantic feature truth, Accordare composition, and governed evolution. | Contracted Phase 1 domains with bounded engines and administrative integrations where their individual contracts say so. SODV governs official projection; it is not the publisher. |
 | **SOV — Symphony Ops Vector** | qxctl-administered provisioning, Habitat conditioning, Nest delivery, bus-adapter setup, and optional remote-Node operations. | Emerging operations domain; provider, Terraform, Habitat, Nest, bus, and remote-operation protocols remain to be designed and implemented. |
-| **SCV — Symphony Cloud Vector** | Private knowledge of offsite provider resources, offerings, regions, constraints, observations, and hybrid possibilities. | Eight independently installed C++ engines provide bounded source/corpus knowledge, portable provider packages and finite caller-directed composition. qxctl supports retained workflows and protected graph selection; comprehensive provider coverage, general database integration and operational adapters remain separate work. |
+| **SCV — Symphony Cloud Vector** | Private knowledge of offsite provider resources, offerings, regions, constraints, observations, and hybrid possibilities. | Eight independently installed C++ engines provide bounded source/corpus knowledge, portable provider packages and finite caller-directed composition. qxctl supports retained workflows and protected graph selection; an optional DuckDB connector adds retained relational graph indexing through qxctl. Comprehensive provider coverage, dedicated graph traversal and operational adapters remain separate work. |
 | **SNV — Symphony Node Vector** | Records and relates Node identity, resources, cluster relationships, and names without dictating them. | Emerging composition of **SNIV** (identity), **SNRV** (resources), **SCIV** (cluster identity/connectivity), and SNV-bounded **SCNV** (consolidated naming). Record schemas and engines remain deferred. |
 | **SQV — Symphony Quantitative Vector** | Reusable quantitative and trading-system framework contracts without acquiring user strategy logic. | Emerging domain. **SOOV — Symphony Orchestra Omega Vector** is its first named subvector: a future high-performance, C++-only FIX architecture informed by historic QuanuX work. Detailed FIX behavior is not yet canonical. |
 | **SHV — Symphony Hardware Vector** | Hardware-capability knowledge for processors, CPU topology and execution-unit designs, caches, GPUs, NICs and fibre interfaces, motherboards, RAM, NVMe, and complete builds. | Emerging domain. A reproducible C++ graph engine and private query/AI surfaces are planned; data model and evidence acquisition remain open. |
@@ -90,7 +90,7 @@ Seven delivery sprints remain. Their detailed sequence and contents will be pres
 
 ## Implemented Foundations
 
-- [`qxctl`](tools/qxctl/) is Symphony's Go-based, agentic-first administrative and query CLI. Its checked-in registry binds **260** executable command leaves to stable machine identities and reviewed feature-administration evidence. It implements repository and contract inspection; validator, warning, invariant, feature, lifecycle, session, reconciliation, binding, Maestro, SSIAG, STAV, Accordare, and implemented vector-engine administration. Exact installation verification, bounded subprocesses, hard deadlines, response identity/digest checks, expected-state transactions, and durable recovery are used where the owning contract requires them. Engine-binding registry v2 supports the eight established roles and bounded future role identities; legacy v1 state is dual-read and requires explicit digest-bound migration before mutation.
+- [`qxctl`](tools/qxctl/) is Symphony's Go-based, agentic-first administrative and query CLI. Its checked-in registry binds **266** executable command leaves to stable machine identities and reviewed feature-administration evidence. It implements repository and contract inspection; validator, warning, invariant, feature, lifecycle, session, reconciliation, binding, Maestro, SSIAG, STAV, Accordare, and implemented vector-engine administration. Exact installation verification, bounded subprocesses, hard deadlines, response identity/digest checks, expected-state transactions, and durable recovery are used where the owning contract requires them. Engine-binding registry v2 supports the eight established roles and bounded future role identities; legacy v1 state is dual-read and requires explicit digest-bound migration before mutation.
 - [Symphony Secure Identity and Access Governance](modules/secure-identity-access-governance/) is an independently installable, cgo-free Go foundation for exact caller-neutral authorization, per-TOPS enrollment, local endpoint trust, protected policy lifecycle, provider-installation and binding lifecycle, safe audit metadata, and native launchd/systemd supervision. Ordinary foundational mutation fails closed pending its required audit route. Operational credential use, canonical knowledge apply, and secret delivery remain disabled.
 - [STAV Append Authority](modules/stav-append-authority/) is an independently installable Go service for per-TOPS append-only audit ledgers, mutually authenticated local IPC, exact producer/reader grants, fsync-before-receipt durability, bounded reads, verification, recovery, enrollment, and native supervision. qxctl never receives raw append authority.
 - [STAV Protocol for Go](libraries/stav-protocol-go/) is an authority-free Go library implementing the canonical STAV v1 codec, strict validation, digests, framing, conformance rules, and closed producer vocabulary.
@@ -125,9 +125,9 @@ The emerging SOV remote-operation and deployment contracts do not make provider 
 
 This bounded summary is derived from canonical SSFV coverage and routing, the feature-administration profile, the qxctl command registry, and completed SODV publication records. Edit its source contracts, then regenerate; do not hand-edit the values below.
 
-- SSFV catalog state: `partial`; registered features: **100**; registered owner scopes: **25**; ratified nested features: **72**.
-- Feature-administration expectations: **252** reviewed surfaces; **242** required, **13** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
-- qxctl stable command identities: **260**.
+- SSFV catalog state: `partial`; registered features: **101**; registered owner scopes: **26**; ratified nested features: **72**.
+- Feature-administration expectations: **256** reviewed surfaces; **246** required, **13** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
+- qxctl stable command identities: **266**.
 - Registered owner capabilities:
   - `ssfv:symphony:accordare-stav-producer`
   - `ssfv:symphony:knowledge-session-coordinator`
@@ -145,6 +145,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `ssfv:symphony:schv-gcp-engine`
   - `ssfv:symphony:sclv-engine`
   - `ssfv:symphony:scv-engine`
+  - `ssfv:symphony:scv-graph-duckdb-connector`
   - `ssfv:symphony:sev-engine`
   - `ssfv:symphony:skvi-engine`
   - `ssfv:symphony:sodv-engine`
@@ -158,7 +159,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `github.com/QuanuX/Symphony/libraries/stav-protocol-go` `v0.2.0` (tag `libraries/stav-protocol-go/v0.2.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.1.0` (tag `modules/stav-append-authority/v0.1.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
-- Snapshot digest: `sha256:96eb3eca54babc82d4a149949ff94554a30988849ab8cd30e864e968331b24f8`
+- Snapshot digest: `sha256:1783f8176c4d64fc0c0b68aa15a621f88375aa86451fa526230826f3a6d711f1`
 <!-- symphony:root-summary:v1:end -->
 
 ## Releases and Documentation

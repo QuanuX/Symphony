@@ -2,7 +2,7 @@
 
 ## Status
 
-Architect-ratified domain specification. The bounded source-knowledge process increment is assigned to `knowledge/scv/SOURCE-KNOWLEDGE.md` and its v1 schemas. A network API, full provider corpus, general graph database integration and operational provider adapters remain deferred.
+Architect-ratified domain specification. The bounded source-knowledge process increment is assigned to `knowledge/scv/SOURCE-KNOWLEDGE.md` and its v1 schemas. The optional C++ DuckDB integration adapter in `knowledge/scv/GRAPH-INDEX.md` retains immutable graph snapshots and indexes structural rows, with qxctl replay of the exact validating SCV owner. A network API, full provider corpus, general graph traversal/service integration and operational provider adapters remain deferred.
 
 ## Knowledge Model Obligations
 

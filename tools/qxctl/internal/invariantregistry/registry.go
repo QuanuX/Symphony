@@ -19,6 +19,7 @@ import (
 const (
 	Protocol       = "symphony.knowledge.invariant-ownership-registry.v1"
 	ProtocolV2     = "symphony.knowledge.invariant-ownership-registry.v2"
+	ProtocolV3     = "symphony.knowledge.invariant-ownership-registry.v3"
 	QueryProtocol  = "symphony.knowledge.invariant-query-result.v1"
 	RegistryPath   = "knowledge/INVARIANT-OWNERSHIP.json"
 	maxRegistry    = 512 * 1024
@@ -259,7 +260,7 @@ func setResultDigest(value any, target *string) error {
 }
 
 func validate(registry Registry) error {
-	if !(registry.Protocol == Protocol && registry.FormatVersion == 1 || registry.Protocol == ProtocolV2 && registry.FormatVersion == 2) ||
+	if !(registry.Protocol == Protocol && registry.FormatVersion == 1 || registry.Protocol == ProtocolV2 && registry.FormatVersion == 2 || registry.Protocol == ProtocolV3 && registry.FormatVersion == 3) ||
 		registry.Scope != "common_lowest_authoritative_layer" ||
 		registry.CatalogScope != "registered_incremental" || registry.CatalogComplete ||
 		registry.ForwardGate != "enforce_new_or_modified" || !digestPattern.MatchString(registry.RegistryDigest) {
@@ -274,10 +275,22 @@ func validate(registry Registry) error {
 		return fmt.Errorf("invariant ownership registry collection bounds are invalid")
 	}
 	adapterIDs := make(map[string]struct{}, len(registry.Adapters))
+	entryPoints := make(map[string]bool)
+	operationOwners := make(map[string]bool)
 	prior := ""
 	for _, adapter := range registry.Adapters {
 		if !adapterPattern.MatchString(adapter.AdapterID) || prior != "" && prior >= adapter.AdapterID {
 			return fmt.Errorf("invariant ownership adapter identity ordering is invalid")
+		}
+		if entryPoints[adapter.EntryPointID] {
+			return fmt.Errorf("entrypoint belongs to multiple adapters")
+		}
+		entryPoints[adapter.EntryPointID] = true
+		for _, operation := range adapter.OperationIDs {
+			if operationOwners[operation] {
+				return fmt.Errorf("operation belongs to multiple adapters")
+			}
+			operationOwners[operation] = true
 		}
 		prior = adapter.AdapterID
 		adapterIDs[adapter.AdapterID] = struct{}{}
@@ -303,7 +316,21 @@ func validateAdapter(adapter Adapter) error {
 }
 
 func validateAdapterVersion(adapter Adapter, registryVersion uint64) error {
-	if registryVersion == 2 && adapter.FormatVersion == 2 {
+	if registryVersion == 3 && adapter.FormatVersion == 3 {
+		if len(adapter.Component) > 256 || !regexp.MustCompile(`^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$`).MatchString(adapter.Component) || !tokenPattern.MatchString(adapter.EntryPointID) ||
+			!strings.HasPrefix(adapter.EntryPointID, "symphony-") || len(adapter.EntryPointID) <= len("symphony-") ||
+			adapter.OwnerContract != "modules/"+adapter.Component+"/SPEC.md" ||
+			adapter.ImplementationPath != "modules/"+adapter.Component ||
+			adapter.CommandProtocol != "symphony.knowledge.engine-process.v1" ||
+			adapter.AdapterID != "adapter:symphony:"+adapter.EntryPointID+".v1" ||
+			adapter.VersionPolicy != "exact_receipt_v2_entry_point_and_capability_compatible" ||
+			len(adapter.OperationIDs) < 1 || len(adapter.OperationIDs) > maxOperations ||
+			!safePath(adapter.OwnerContract) || !safePath(adapter.ImplementationPath) {
+			return fmt.Errorf("explicit process adapter shape is invalid")
+		}
+		return validateSortedUnique(adapter.OperationIDs, operationPattern, "operation IDs")
+	}
+	if registryVersion >= 2 && adapter.FormatVersion == 2 {
 		domain := strings.TrimPrefix(adapter.EntryPointID, "symphony-")
 		if !tokenPattern.MatchString(adapter.Component) || !tokenPattern.MatchString(adapter.EntryPointID) ||
 			domain == adapter.EntryPointID || domain == "" || adapter.Component != domain+"-engine" ||

@@ -14,6 +14,7 @@ SCV is the semantic owner of provider/offsite resource possibility, constraint, 
 - `knowledge/scv/MANIFEST.md`
 - `knowledge/scv/SPEC.md`
 - `knowledge/scv/SOURCE-KNOWLEDGE.md`
+- `knowledge/scv/GRAPH-INDEX.md`
 - `knowledge/scv/CORPUS.md`
 - `knowledge/scv/INTERPRETATION.md`
 - `knowledge/scv/AGENT-WORKFLOWS.md`
@@ -67,3 +68,5 @@ Exact `0.9.0-dev` exposes 30 native operations. `knowledge/scv/BUNDLES.md` owns 
 ## Explicit Bundle Workflows
 
 Exact `0.10.0-dev` retains thirty native operations and adds qxctl bundle workflow run/status/recover and immutable bundled obligation retain/show. `knowledge/scv/BUNDLE-WORKFLOWS.md` owns the versioned coordination and logical-reference contracts. Separate v2 journals pin explicit transport, caller input and exact installation before work; original records preserve both native and transport identities. Status reports sealed checkpoint validation, while run/recovery and relationship inspection replay original owners. Twenty-nine schemas expose112 catalog protocols with twelve owner companions. Prior routes, defaults, records and packages remain preserved.
+
+The independently installed `scv-graph-duckdb-connector` provides a bounded relational projection of immutable native graphs, separate from existing SCV engine releases. DuckDB is the user-selected default SQL database; dedicated graph engines remain caller-selectable future adapters. Structural retrieval, native semantic evaluation and protected graph-head selection retain separate contracts.

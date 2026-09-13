@@ -430,7 +430,8 @@
       "evidence": [
         "tools/qxctl/internal/invariantregistry/registry_test.go verifies bounded no-follow loading, exact shape and digest checks, ordering, hostile-text refusal, and digest-bearing status/list/show projections.",
         "tools/qxctl/cmd/qxctl/knowledge_invariant_test.go verifies four stable read-only noninteractive commands and preservation of the installed validator's exact invariant-assurance exit status.",
-        "knowledge/INVARIANTS.md keeps semantic ownership in the common contract while qxctl remains a replaceable consumer and administrative projection."
+        "knowledge/INVARIANTS.md keeps semantic ownership in the common contract while qxctl remains a replaceable consumer and administrative projection.",
+        "Focused v3 producer and consumer regressions reject older-version widening, substituted owner paths and duplicate operation ownership. Test execution is recorded in the change closure."
       ],
       "feature_id": "ssfv:symphony:qxctl.invariant-assurance",
       "how": "qxctl performs a bounded consumer-side identity, shape, ordering, reference, and omit-self digest check for status/list/show, marks semantic validity as not asserted, and delegates complete assurance to one exact receipt-validated Symphony Validator invocation.",
@@ -453,7 +454,7 @@
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",
-      "record_version": 2,
+      "record_version": 3,
       "relationships": [
         {
           "rationale": "The validator produces complete repository assurance while qxctl provides stable headless inspection and exact installed invocation.",
@@ -464,7 +465,7 @@
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "Headless invariant ownership administration",
-      "what": "Provides stable status, list, show, and complete-check commands for the common incremental invariant ownership registry with deterministic structured output for headless callers.",
+      "what": "Provides stable status, list, show, and complete-check commands for the common incremental invariant ownership registry with deterministic structured output for headless callers. Versioned v3 registry admission preserves exact earlier adapter definitions and independently named process adapters with explicit module/entrypoint ownership and unique operation declarations.",
       "when": "Runs only on explicit local qxctl invocation during development, review, integration admission, or diagnostics.",
       "where": "Executes on an administrative node against one selected repository and one exact independently installed validator, outside hot and warm paths.",
       "who": "Target-host administrators, independent module developers, automated release gates, and agentic callers using qxctl as the administrative spine.",
@@ -754,7 +755,8 @@
         "Exact .7 retained composition workflow producer, consumer, interruption and installed-process checks preserve original pack owners and fixed caller selections. Strict typed journal roundtrip rejects omitted/null fields that could otherwise normalize under an earlier seal. Execution evidence belongs to the increment closure.",
         "Owner and independent Go consumer regressions cover exact targets, preserved caller criteria, partial/contradictory evidence and resealed-result rejection. Retained links replay original owners and verify immutable input correspondence; execution evidence belongs to the increment closure.",
         "Native and independent Go regressions cover complete closure, exact full-value identities, malformed graphs and pre-allocation expansion budgets; installed qxctl evidence belongs to the increment closure. Raw bundle Unicode spelling and exact typed retained-record identity are independently checked before decoder normalization can alter sealed meaning.",
-        "Versioned coordination regressions cover exact checkpoint reconstruction, original-owner replay, observational status, malformed retained evidence and interrupted publication. Installed complete-fixture evidence is recorded in the increment closure."
+        "Versioned coordination regressions cover exact checkpoint reconstruction, original-owner replay, observational status, malformed retained evidence and interrupted publication. Installed complete-fixture evidence is recorded in the increment closure.",
+        "Graph-index consumer and installed-process regressions cover independently reconstructed rows, namespace isolation, idempotent prepare/commit recovery, exact owner replay and missing-owner observations. Execution evidence remains in the increment closure."
       ],
       "feature_id": "ssfv:symphony:qxctl.scv-administration",
       "how": "Reuses receipt-v2 and version-specific process/result validation; bounds public HTTPS retrieval; retains immutable exact corpus artifacts with no-replace publication and recoverable job intent; separately applies authenticated SSIAG authorization to protected source/graph selection. Preserves exact authored interpretation wrappers and independently checks returned evidence, comparisons and reassessment bindings at the process boundary. Coordinates owner operations with pinned inputs and receipts; replays retained evidence before accepting progress and never substitutes current selections on recovery.",
@@ -776,6 +778,7 @@
         "tools/qxctl/cmd/qxctl/scv_composition_workflow.go",
         "tools/qxctl/cmd/qxctl/scv_corpus.go",
         "tools/qxctl/cmd/qxctl/scv_graph.go",
+        "tools/qxctl/cmd/qxctl/scv_graph_index.go",
         "tools/qxctl/cmd/qxctl/scv_interface.go",
         "tools/qxctl/cmd/qxctl/scv_logical_reference.go",
         "tools/qxctl/cmd/qxctl/scv_obligation.go",
@@ -787,6 +790,7 @@
         "tools/qxctl/internal/knowledgeengine/scv_bundle_file.go",
         "tools/qxctl/internal/knowledgeengine/scv_bundle_text.go",
         "tools/qxctl/internal/knowledgeengine/scv_composition.go",
+        "tools/qxctl/internal/knowledgeengine/scv_graph_index.go",
         "tools/qxctl/internal/knowledgeengine/scv_interface_generated.go",
         "tools/qxctl/internal/knowledgeengine/scv_interpretation.go",
         "tools/qxctl/internal/knowledgeengine/scv_obligation.go",
@@ -817,11 +821,16 @@
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",
-      "record_version": 9,
+      "record_version": 10,
       "relationships": [
         {
           "rationale": "C++ owns provider source and knowledge semantics; qxctl owns the administrative adapter.",
           "target_feature_id": "ssfv:symphony:scv-engine",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "Administers the optional relational graph index through its exact installed C++ connector and independently validates retained evidence.",
+          "target_feature_id": "ssfv:symphony:scv-graph-duckdb-connector",
           "type": "composes_with"
         },
         {
@@ -833,7 +842,7 @@
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "SCV source and knowledge administration",
-      "what": "Administers selected SCV family/provider source, capture, corpus, interpretation and graph operations through exact installed C++ engines; retains immutable corpus evidence separately from permission-backed source and graph selections. Invokes reusable profile interpretation, scoped connection checks and retained-result reassessment without selecting a graph head or claiming live provider compatibility. Provides exact installed schemas and profile preparation, structured SCV failures, immutable native artifact provenance and recoverable interpretation/evaluation runs; metadata corpus query is independent of capture export. Native provider coverage accounts separately for declared inventory, exact selected corpus evidence and independently replayed profile bindings, preserving unlisted, unselected, partial and stale gaps. Invokes portable provider-pack preparation/evaluation and finite caller-selected composition exploration/reassessment, retains their exact artifacts, and exposes the receipt-owned versioned owner interface. Generated release/operation metadata reduces repeated interface tables while independent consumers continue to reject forged semantic results. Exact .7 composition workflows checkpoint original-owner package evaluations, finite exploration and optional reassessment while retaining the caller request, root/TOPS and immutable provenance records. Observational status verifies sealed linkage without native replay. Exact obligation inventory identifies native checks independently of anonymous summaries; subsequent-evidence follow-up preserves caller criteria and policy, reports explicit query-time changes, and separates criterion state from opaque provenance and runtime verification. Complete evidence bundles deduplicate repeated containers, bound graph expansion before allocation, and preserve exact caller-selected composition semantics through independent owner validation. Explicit v2 bundle workflows and immutable obligation relationships preserve original owners, caller fields and separate logical/transport/record identities through local recovery.",
+      "what": "Administers selected SCV family/provider source, capture, corpus, interpretation and graph operations through exact installed C++ engines; retains immutable corpus evidence separately from permission-backed source and graph selections. Invokes reusable profile interpretation, scoped connection checks and retained-result reassessment without selecting a graph head or claiming live provider compatibility. Provides exact installed schemas and profile preparation, structured SCV failures, immutable native artifact provenance and recoverable interpretation/evaluation runs; metadata corpus query is independent of capture export. Native provider coverage accounts separately for declared inventory, exact selected corpus evidence and independently replayed profile bindings, preserving unlisted, unselected, partial and stale gaps. Invokes portable provider-pack preparation/evaluation and finite caller-selected composition exploration/reassessment, retains their exact artifacts, and exposes the receipt-owned versioned owner interface. Generated release/operation metadata reduces repeated interface tables while independent consumers continue to reject forged semantic results. Exact .7 composition workflows checkpoint original-owner package evaluations, finite exploration and optional reassessment while retaining the caller request, root/TOPS and immutable provenance records. Observational status verifies sealed linkage without native replay. Exact obligation inventory identifies native checks independently of anonymous summaries; subsequent-evidence follow-up preserves caller criteria and policy, reports explicit query-time changes, and separates criterion state from opaque provenance and runtime verification. Complete evidence bundles deduplicate repeated containers, bound graph expansion before allocation, and preserve exact caller-selected composition semantics through independent owner validation. Explicit v2 bundle workflows and immutable obligation relationships preserve original owners, caller fields and separate logical/transport/record identities through local recovery. An optional receipt-owned C++ DuckDB connector retains immutable graph snapshots and derived structural indexes. qxctl independently validates exact row/page correspondence and replays the retained validating SCV owner at explicit query time; indexing does not select a graph head.",
       "when": "Runs on explicit cold/freezing administrative invocation, including exact operation recovery.",
       "where": "Supported local macOS/Linux user-scoped TOPS evidence stores and separately protected source/graph state; pure operations accept an explicitly selected local installation.",
       "who": "Human or agentic callers using ordinary local filesystem permissions for evidence operations; protected source/graph selection additionally requires the same authenticated SSIAG permission contract.",

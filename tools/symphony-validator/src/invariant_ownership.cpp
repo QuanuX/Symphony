@@ -495,13 +495,15 @@ std::map<std::string, AdapterEvidence> check_adapters(
             !token(adapter.value("component", Json{})) || !token(adapter.value("entry_point_id", Json{})) ||
             !adapter.at("format_version").is_number_unsigned() ||
             (adapter.at("format_version").get<unsigned>() != 1U &&
-             !(registry_version == 2U && adapter.at("format_version").get<unsigned>() == 2U)) ||
+             !((registry_version >= 2U && adapter.at("format_version").get<unsigned>() == 2U) ||
+               (registry_version == 3U && adapter.at("format_version").get<unsigned>() == 3U))) ||
             !path_token(adapter.value("owner_contract", Json{})) ||
             !path_token(adapter.value("implementation_path", Json{})) ||
             !adapter.at("command_protocol").is_string() ||
             (adapter.at("command_protocol").get<std::string>() != "symphony.foundation.lifecycle-command.v1" &&
              adapter.at("command_protocol").get<std::string>() != "symphony.ssiag.provider.control.v1" &&
-             !(registry_version == 2U && adapter.at("format_version").get<unsigned>() == 2U &&
+             !(((registry_version >= 2U && adapter.at("format_version").get<unsigned>() == 2U) ||
+                (registry_version == 3U && adapter.at("format_version").get<unsigned>() == 3U)) &&
                adapter.at("command_protocol").get<std::string>() == "symphony.knowledge.engine-process.v1")) ||
             !adapter.at("version_policy").is_string() ||
             adapter.at("version_policy").get<std::string>() !=
@@ -521,13 +523,18 @@ std::map<std::string, AdapterEvidence> check_adapters(
              command_protocol == "symphony.ssiag.provider.control.v1") ||
             (component == "stav" && entry_point == "stav.foundation-lifecycle" &&
              command_protocol == "symphony.foundation.lifecycle-command.v1"));
-        const bool generic_pair = registry_version == 2U &&
+        const bool generic_pair = registry_version >= 2U &&
             adapter.at("format_version").get<unsigned>() == 2U &&
             command_protocol == "symphony.knowledge.engine-process.v1" &&
             component.ends_with("-engine") && entry_point.starts_with("symphony-") &&
             component == entry_point.substr(9U) + "-engine";
+        const bool explicit_pair = registry_version == 3U &&
+            adapter.at("format_version").get<unsigned>() == 3U &&
+            command_protocol == "symphony.knowledge.engine-process.v1" &&
+            invariant_or_adapter_identifier(component, "") &&
+            invariant_or_adapter_identifier(entry_point, "symphony-");
         const auto expected_id = "adapter:symphony:" + entry_point + ".v1";
-        if ((!legacy_pair && !generic_pair) || id != expected_id) {
+        if ((!legacy_pair && !generic_pair && !explicit_pair) || id != expected_id) {
             finding(result, EvidenceCategory::Violation, "invariant_ownership.adapter_identity",
                 "adapter_id=" + id + " component=" + component + " entry_point_id=" + entry_point);
         }
@@ -543,9 +550,13 @@ std::map<std::string, AdapterEvidence> check_adapters(
         }
         const auto owner_contract = adapter.at("owner_contract").get<std::string>();
         const auto implementation_path = adapter.at("implementation_path").get<std::string>();
-        if (generic_pair && owner_contract != "modules/" + component + "/SPEC.md") {
+        if ((generic_pair || explicit_pair) && owner_contract != "modules/" + component + "/SPEC.md") {
             finding(result, EvidenceCategory::Violation, "invariant_ownership.adapter_identity",
                 "adapter_id=" + id + " reason=generic_owner_mismatch");
+        }
+        if (explicit_pair && implementation_path != "modules/" + component) {
+            finding(result, EvidenceCategory::Violation, "invariant_ownership.adapter_identity",
+                "adapter_id=" + id + " reason=explicit_implementation_mismatch");
         }
         static_cast<void>(check_regular_path(root, owner_contract, result, cache, false));
         static_cast<void>(check_directory_path(root, implementation_path, result));
@@ -778,7 +789,9 @@ InvariantOwnershipCheckResult check_invariant_ownership(const std::string& repo_
         ((registry->at("protocol") == "symphony.knowledge.invariant-ownership-registry.v1" &&
           registry->at("format_version") == 1U) ||
          (registry->at("protocol") == "symphony.knowledge.invariant-ownership-registry.v2" &&
-          registry->at("format_version") == 2U));
+          registry->at("format_version") == 2U) ||
+         (registry->at("protocol") == "symphony.knowledge.invariant-ownership-registry.v3" &&
+          registry->at("format_version") == 3U));
     if (!exact_fields(*registry, {"adapters", "catalog_complete", "catalog_scope", "format_version",
             "forward_gate", "invariants", "protocol", "registry_digest", "scope", "test_policy"}) ||
         !known_version ||

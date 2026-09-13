@@ -1,0 +1,26 @@
+{
+  "protocol": "symphony.scv.graph-index-duckdb-dependency.v1",
+  "version": "1.5.5",
+  "runtime_version": "v1.5.5",
+  "commit": "d8cdaa33fda8df955cc76ef58a280f68f4cd43fa",
+  "source": "https://github.com/duckdb/duckdb/releases/tag/v1.5.5",
+  "archive_url": "https://github.com/duckdb/duckdb/releases/download/v1.5.5/libduckdb-osx-universal.zip",
+  "archive_sha256": "7b5b8915cc382d0708636fe6385c0cdad5a61c9ff8ba2638b3e2141640783155",
+  "archive_bytes": 36178910,
+  "platform": "macos-amd64",
+  "derivation": "Apple lipo -thin x86_64; no source or machine-code changes",
+  "files": {
+    "duckdb.h": {
+      "bytes": 244057,
+      "sha256": "48e716b9ce96ca8fead9cb35693fdc0343ac0fc1f6e7db5561fa0f44b674153d"
+    },
+    "LICENSE": {
+      "bytes": 1072,
+      "sha256": "7e17fd31249fa875cb3b1c5e05c6c3e99b75509f6a2804ca176c217834de1dcb"
+    },
+    "x86_64/libduckdb.dylib": {
+      "bytes": 59743808,
+      "sha256": "822d5334a21745b490baef99bc346bdff7fcfd57eb1f7c58ab250f137e931466"
+    }
+  }
+}

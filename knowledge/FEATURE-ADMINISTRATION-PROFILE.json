@@ -1464,6 +1464,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -1474,7 +1475,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -1491,6 +1492,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -1501,7 +1503,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "configure",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -1522,6 +1524,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -1532,7 +1535,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -1544,6 +1547,8 @@
             "qxcmd:symphony:scv.composition.obligations.show",
             "qxcmd:symphony:scv.composition.workflow.status",
             "qxcmd:symphony:scv.corpus.inspect",
+            "qxcmd:symphony:scv.graph-index.inspect",
+            "qxcmd:symphony:scv.graph-index.status",
             "qxcmd:symphony:scv.inspect",
             "qxcmd:symphony:scv.projection.status",
             "qxcmd:symphony:scv.source-check",
@@ -1560,6 +1565,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -1570,7 +1576,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -1586,6 +1592,7 @@
             "qxcmd:symphony:scv.corpus.acquire",
             "qxcmd:symphony:scv.corpus.import",
             "qxcmd:symphony:scv.graph",
+            "qxcmd:symphony:scv.graph-index.import",
             "qxcmd:symphony:scv.interpret",
             "qxcmd:symphony:scv.provider.interpret",
             "qxcmd:symphony:scv.workflow.run"
@@ -1600,6 +1607,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -1610,7 +1618,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -1630,6 +1638,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -1640,7 +1649,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -1652,6 +1661,8 @@
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.graph-index.export",
+            "qxcmd:symphony:scv.graph-index.query",
             "qxcmd:symphony:scv.provider.coverage",
             "qxcmd:symphony:scv.provider.pack.evaluate",
             "qxcmd:symphony:scv.query"
@@ -1666,6 +1677,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -1676,7 +1688,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -1684,6 +1696,7 @@
             "qxcmd:symphony:scv.composition.bundle.workflow.recover",
             "qxcmd:symphony:scv.composition.workflow.recover",
             "qxcmd:symphony:scv.corpus.recover",
+            "qxcmd:symphony:scv.graph-index.recover",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.source.recover",
             "qxcmd:symphony:scv.workflow.recover"
@@ -1698,6 +1711,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -1708,7 +1722,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -1733,6 +1747,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -1743,7 +1758,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         }
       ],
@@ -2247,6 +2262,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2257,7 +2273,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -2278,6 +2294,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2288,7 +2305,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -2318,6 +2335,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2328,7 +2346,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -2371,6 +2389,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2381,7 +2400,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -2413,6 +2432,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2423,7 +2443,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -2443,6 +2463,10 @@
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.graph-index.export",
+            "qxcmd:symphony:scv.graph-index.import",
+            "qxcmd:symphony:scv.graph-index.query",
+            "qxcmd:symphony:scv.graph-index.recover",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
@@ -2470,6 +2494,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2480,7 +2505,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -2499,6 +2524,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2509,7 +2535,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -2557,6 +2583,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2567,7 +2594,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         }
       ],
@@ -2591,6 +2618,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2601,7 +2629,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -2622,6 +2650,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2632,7 +2661,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -2662,6 +2691,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2672,7 +2702,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -2715,6 +2745,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2725,7 +2756,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -2757,6 +2788,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2767,7 +2799,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -2787,6 +2819,10 @@
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.graph-index.export",
+            "qxcmd:symphony:scv.graph-index.import",
+            "qxcmd:symphony:scv.graph-index.query",
+            "qxcmd:symphony:scv.graph-index.recover",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
@@ -2814,6 +2850,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2824,7 +2861,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -2843,6 +2880,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2853,7 +2891,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -2901,6 +2939,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2911,7 +2950,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         }
       ],
@@ -2935,6 +2974,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2945,7 +2985,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -2966,6 +3006,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -2976,7 +3017,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3006,6 +3047,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3016,7 +3058,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3059,6 +3101,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3069,7 +3112,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3101,6 +3144,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3111,7 +3155,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3131,6 +3175,10 @@
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.graph-index.export",
+            "qxcmd:symphony:scv.graph-index.import",
+            "qxcmd:symphony:scv.graph-index.query",
+            "qxcmd:symphony:scv.graph-index.recover",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
@@ -3158,6 +3206,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3168,7 +3217,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3187,6 +3236,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3197,7 +3247,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3245,6 +3295,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3255,7 +3306,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         }
       ],
@@ -3279,6 +3330,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3289,7 +3341,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3310,6 +3362,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3320,7 +3373,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3350,6 +3403,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3360,7 +3414,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3403,6 +3457,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3413,7 +3468,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3445,6 +3500,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3455,7 +3511,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3475,6 +3531,10 @@
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.graph-index.export",
+            "qxcmd:symphony:scv.graph-index.import",
+            "qxcmd:symphony:scv.graph-index.query",
+            "qxcmd:symphony:scv.graph-index.recover",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
@@ -3502,6 +3562,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3512,7 +3573,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3531,6 +3592,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3541,7 +3603,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3589,6 +3651,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3599,7 +3662,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         }
       ],
@@ -3623,6 +3686,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3633,7 +3697,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3654,6 +3718,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3664,7 +3729,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3694,6 +3759,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3704,7 +3770,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3747,6 +3813,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3757,7 +3824,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3789,6 +3856,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3799,7 +3867,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3819,6 +3887,10 @@
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.graph-index.export",
+            "qxcmd:symphony:scv.graph-index.import",
+            "qxcmd:symphony:scv.graph-index.query",
+            "qxcmd:symphony:scv.graph-index.recover",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
@@ -3846,6 +3918,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3856,7 +3929,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3875,6 +3948,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3885,7 +3959,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3933,6 +4007,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3943,7 +4018,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         }
       ],
@@ -3967,6 +4042,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -3977,7 +4053,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -3998,6 +4074,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4008,7 +4085,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4038,6 +4115,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4048,7 +4126,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4091,6 +4169,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4101,7 +4180,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4133,6 +4212,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4143,7 +4223,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4163,6 +4243,10 @@
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.graph-index.export",
+            "qxcmd:symphony:scv.graph-index.import",
+            "qxcmd:symphony:scv.graph-index.query",
+            "qxcmd:symphony:scv.graph-index.recover",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
@@ -4190,6 +4274,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4200,7 +4285,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4219,6 +4304,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4229,7 +4315,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4277,6 +4363,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4287,7 +4374,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         }
       ],
@@ -4311,6 +4398,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4321,7 +4409,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4342,6 +4430,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4352,7 +4441,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4382,6 +4471,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4392,7 +4482,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4435,6 +4525,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4445,7 +4536,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4477,6 +4568,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4487,7 +4579,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4507,6 +4599,10 @@
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.graph-index.export",
+            "qxcmd:symphony:scv.graph-index.import",
+            "qxcmd:symphony:scv.graph-index.query",
+            "qxcmd:symphony:scv.graph-index.recover",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
@@ -4534,6 +4630,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4544,7 +4641,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4563,6 +4660,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4573,7 +4671,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4621,6 +4719,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4631,7 +4730,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         }
       ],
@@ -4796,6 +4895,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4806,7 +4906,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "apply",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4827,6 +4927,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4837,7 +4938,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "discover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4867,6 +4968,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4877,7 +4979,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "inspect",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4920,6 +5022,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4930,7 +5033,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4962,6 +5065,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -4972,7 +5076,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "propose",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -4992,6 +5096,10 @@
             "qxcmd:symphony:scv.corpus.export",
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
+            "qxcmd:symphony:scv.graph-index.export",
+            "qxcmd:symphony:scv.graph-index.import",
+            "qxcmd:symphony:scv.graph-index.query",
+            "qxcmd:symphony:scv.graph-index.recover",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
@@ -5019,6 +5127,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -5029,7 +5138,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "query",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -5048,6 +5157,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -5058,7 +5168,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "recover",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         },
         {
@@ -5106,6 +5216,7 @@
             "knowledge/scv/COMPOSITION.md",
             "knowledge/scv/CORPUS.md",
             "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
             "knowledge/scv/INTERPRETATION.md",
             "knowledge/scv/OBLIGATIONS.md",
             "knowledge/scv/OWNER-INTERFACE.md",
@@ -5116,11 +5227,144 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "validate",
-          "rationale": "The reviewed command routes administer exact owner operations and immutable local evidence; native validation, portable provider authoring, finite evidence exploration, installed interface discovery and recoverable coordination preserve caller choice without granting source, graph or provider authority.",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
           "requirement": "required"
         }
       ],
       "feature_id": "ssfv:symphony:scv-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.graph-index.inspect",
+            "qxcmd:symphony:scv.graph-index.recover",
+            "qxcmd:symphony:scv.graph-index.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scv.graph-index.inspect",
+            "engop:symphony:scv.graph-index.status"
+          ],
+          "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLE-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
+            "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
+            "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OBLIGATIONS.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scv-graph-duckdb-connector/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.graph-index.import",
+            "qxcmd:symphony:scv.graph-index.recover"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scv.graph-index.commit",
+            "engop:symphony:scv.graph-index.prepare"
+          ],
+          "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLE-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
+            "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
+            "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OBLIGATIONS.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scv-graph-duckdb-connector/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.graph-index.export",
+            "qxcmd:symphony:scv.graph-index.query"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:scv.graph-index.export",
+            "engop:symphony:scv.graph-index.query"
+          ],
+          "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLE-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
+            "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
+            "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OBLIGATIONS.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scv-graph-duckdb-connector/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:scv.graph-index.recover"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:scv.graph-index.commit",
+            "engop:symphony:scv.graph-index.status"
+          ],
+          "evidence": [
+            "knowledge/scv/AGENT-WORKFLOWS.md",
+            "knowledge/scv/BUNDLE-WORKFLOWS.md",
+            "knowledge/scv/BUNDLES.md",
+            "knowledge/scv/COMPOSITION-WORKFLOWS.md",
+            "knowledge/scv/COMPOSITION.md",
+            "knowledge/scv/CORPUS.md",
+            "knowledge/scv/COVERAGE.md",
+            "knowledge/scv/GRAPH-INDEX.md",
+            "knowledge/scv/INTERPRETATION.md",
+            "knowledge/scv/OBLIGATIONS.md",
+            "knowledge/scv/OWNER-INTERFACE.md",
+            "knowledge/scv/PROVIDER-PACKS.md",
+            "knowledge/scv/SOURCE-KNOWLEDGE.md",
+            "modules/scv-graph-duckdb-connector/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Reviewed qxctl routes preserve immutable evidence, exact installation ownership and explicit caller policy. Optional relational graph indexing is separate from native semantic evaluation and protected source or graph-head selection.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:scv-graph-duckdb-connector"
     },
     {
       "expectations": [
@@ -6582,9 +6826,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:f6503228fe05cbcf73464845446aa6f67db3901877429237dffc07820385e26b",
+  "profile_digest": "sha256:4846150d55e2bb64ade826f41e21bf5984fd3587c66b9d1c2943140ac1e28327",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 100,
-  "ssfv_registry_digest": "sha256:c237e216f875237c715c1f463dc3cb75dd197e826cdf5ef3dcb8bd6976583d7e"
+  "registered_feature_count": 101,
+  "ssfv_registry_digest": "sha256:e730564df4e8a2fd3fa4054ba7bb5e5b4ef69459ff60bbc8d5de6efa9a49a884"
 }

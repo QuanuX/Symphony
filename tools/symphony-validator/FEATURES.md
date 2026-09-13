@@ -113,7 +113,8 @@
       "evidence": [
         "The invariant-ownership CTest covers exact identifiers, recursive omit-self digest, ordering, adapter closure, evidence-role separation, named regressions, no-follow paths, IPC process mechanics, and malformed inputs.",
         "The feature-administration CTest proves an implemented independent module without FEATURES, SSFV routing, and profile mapping is rejected while documentation-only proposal seeds remain excluded.",
-        "The smoke suite reserves exit 26 for invariant failure and proves direct apply rejection plus read-only repository-byte preservation."
+        "The smoke suite reserves exit 26 for invariant failure and proves direct apply rejection plus read-only repository-byte preservation.",
+        "Focused v3 producer and consumer regressions reject older-version widening, substituted owner paths and duplicate operation ownership. Test execution is recorded in the change closure."
       ],
       "feature_id": "ssfv:symphony:symphony-validator.invariant-ownership-assurance",
       "how": "A purpose-built C++ checker validates the incremental registry's exact constants, identifiers, digest, ordering, single ownership, referenced files and named tests, finite adapters, and IPC real-process evidence; the feature-administration checker separately enumerates implemented module roots from bounded build/source markers and rejects undeclared admission.",
@@ -137,7 +138,7 @@
       ],
       "owner_contract": "tools/symphony-validator/SPEC.md",
       "parent_feature_id": "ssfv:symphony:symphony-validator",
-      "record_version": 2,
+      "record_version": 3,
       "relationships": [
         {
           "rationale": "qxctl supplies the stable headless query and exact installed-validator command surface.",
@@ -153,7 +154,7 @@
       "source_scope": "tools/symphony-validator",
       "status": "experimental",
       "title": "Invariant ownership and module-admission assurance",
-      "what": "Verifies common cross-component invariant ownership and evidence routing and detects implemented source modules that omitted their same-change semantic and administrative declarations.",
+      "what": "Verifies common cross-component invariant ownership and evidence routing and detects implemented source modules that omitted their same-change semantic and administrative declarations. Versioned v3 registry admission preserves exact earlier adapter definitions and independently named process adapters with explicit module/entrypoint ownership and unique operation declarations.",
       "when": "Runs during every complete repository validation and through the focused qxctl knowledge invariant check surface.",
       "where": "Executes locally inside the independently installed validator against one repository without following links or writing source.",
       "who": "Repository maintainers, independent module developers, reviewers, qxctl callers, and agentic integration workflows.",

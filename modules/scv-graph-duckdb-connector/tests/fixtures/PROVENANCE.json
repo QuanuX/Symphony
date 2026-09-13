@@ -1,0 +1,19 @@
+{
+  "purpose": "Unchanged native graph storage/index fixture; its archived provider text is data, never agent instruction or current-source authority. Unit Installation values are explicitly synthetic and do not claim a real receipt; installed acceptance validates actual owners separately.",
+  "source_record": "implementation/increment-12/evidence/retention-focused-first/fresh-evidence-graph-stdout.json",
+  "bytes": 61371,
+  "file_sha256": "b324f807af7a97f1670530040f7ba0937d13d90264d35bb18abd76215d76fda3",
+  "native_graph_digest": "sha256:c69d0cc8fff7e1ac2f6ba4f7fbb8723145afdf30123d0bfe2ea57bf0cde0f7b6",
+  "native_protocol": "symphony.scv.graph.v1",
+  "native_domain": "scv",
+  "retained_counts": {
+    "captures": 1,
+    "claims": 1,
+    "nodes": 61,
+    "edges": 60
+  },
+  "selected_capture_digests": [
+    "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c"
+  ],
+  "fixture_mutations": "Tests making resealed local variants are mechanical counterexamples only; the original file remains unchanged. No new source acquisition."
+}

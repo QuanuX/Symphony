@@ -10931,3 +10931,120 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: private retained workflow evidence
 - notes: Local record, native result, bundle self-seal and complete content identities remain distinct; none authenticates provenance.
 - status: canonical
+
+#### SCV Immutable Graph Index
+- path: `knowledge/scv/GRAPH-INDEX.md`
+- title: SCV Immutable Graph Index
+- surface_type: contract surface
+- truth_role: owner-declared optional SCV graph-index contract
+- owner: SCV connector maintainers
+- scope: Immutable relational graph snapshots, exact installations, structural retrieval and native semantic replay.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: C++ connector, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: other explicitly selected graph adapters
+- notes: DuckDB SQL default does not select a universal graph backend or authorize graph-head changes.
+- status: canonical
+
+#### SCV DuckDB Graph Connector Intent
+- path: `modules/scv-graph-duckdb-connector/INTENT.md`
+- title: SCV DuckDB Graph Connector Intent
+- surface_type: contract surface
+- truth_role: owner-declared optional SCV graph-index contract
+- owner: SCV connector maintainers
+- scope: Immutable relational graph snapshots, exact installations, structural retrieval and native semantic replay.
+- relationships: depends_on -> `modules/scv-graph-duckdb-connector/SPEC.md`
+- consumers: C++ connector, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: other explicitly selected graph adapters
+- notes: DuckDB SQL default does not select a universal graph backend or authorize graph-head changes.
+- status: canonical
+
+#### SCV DuckDB Graph Connector Manifest
+- path: `modules/scv-graph-duckdb-connector/MANIFEST.md`
+- title: SCV DuckDB Graph Connector Manifest
+- surface_type: contract surface
+- truth_role: owner-declared optional SCV graph-index contract
+- owner: SCV connector maintainers
+- scope: Immutable relational graph snapshots, exact installations, structural retrieval and native semantic replay.
+- relationships: depends_on -> `modules/scv-graph-duckdb-connector/SPEC.md`
+- consumers: C++ connector, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: other explicitly selected graph adapters
+- notes: DuckDB SQL default does not select a universal graph backend or authorize graph-head changes.
+- status: canonical
+
+#### SCV DuckDB Graph Connector Working Guidance
+- path: `modules/scv-graph-duckdb-connector/SKILL.md`
+- title: SCV DuckDB Graph Connector Working Guidance
+- surface_type: contract surface
+- truth_role: owner-declared optional SCV graph-index contract
+- owner: SCV connector maintainers
+- scope: Immutable relational graph snapshots, exact installations, structural retrieval and native semantic replay.
+- relationships: depends_on -> `modules/scv-graph-duckdb-connector/SPEC.md`
+- consumers: C++ connector, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: other explicitly selected graph adapters
+- notes: DuckDB SQL default does not select a universal graph backend or authorize graph-head changes.
+- status: canonical
+
+#### SCV DuckDB Graph Connector Specification
+- path: `modules/scv-graph-duckdb-connector/SPEC.md`
+- title: SCV DuckDB Graph Connector Specification
+- surface_type: contract surface
+- truth_role: owner-declared optional SCV graph-index contract
+- owner: SCV connector maintainers
+- scope: Immutable relational graph snapshots, exact installations, structural retrieval and native semantic replay.
+- relationships: depends_on -> `knowledge/scv/GRAPH-INDEX.md`
+- consumers: C++ connector, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: other explicitly selected graph adapters
+- notes: DuckDB SQL default does not select a universal graph backend or authorize graph-head changes.
+- status: canonical
+
+#### SCV DuckDB Graph Connector Installation
+- path: `modules/scv-graph-duckdb-connector/INSTALL.md`
+- title: SCV DuckDB Graph Connector Installation
+- surface_type: contract surface
+- truth_role: owner-declared optional SCV graph-index contract
+- owner: SCV connector maintainers
+- scope: Immutable relational graph snapshots, exact installations, structural retrieval and native semantic replay.
+- relationships: depends_on -> `modules/scv-graph-duckdb-connector/SPEC.md`
+- consumers: C++ connector, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: other explicitly selected graph adapters
+- notes: DuckDB SQL default does not select a universal graph backend or authorize graph-head changes.
+- status: canonical
+
+#### SCV DuckDB Graph Connector Semantic Features
+- path: `modules/scv-graph-duckdb-connector/FEATURES.md`
+- title: SCV DuckDB Graph Connector Semantic Features
+- surface_type: contract surface
+- truth_role: owner-declared optional SCV graph-index contract
+- owner: SCV connector maintainers
+- scope: Immutable relational graph snapshots, exact installations, structural retrieval and native semantic replay.
+- relationships: depends_on -> `modules/scv-graph-duckdb-connector/SPEC.md`
+- consumers: C++ connector, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: other explicitly selected graph adapters
+- notes: DuckDB SQL default does not select a universal graph backend or authorize graph-head changes.
+- status: canonical
+
+#### SCV Graph Index v1 Schema
+- path: `modules/scv-graph-duckdb-connector/schemas/v1/graph-index.schema.json`
+- title: SCV Graph Index v1 Schema
+- surface_type: schema
+- truth_role: owner-declared optional SCV graph-index contract
+- owner: SCV connector maintainers
+- scope: Immutable relational graph snapshots, exact installations, structural retrieval and native semantic replay.
+- relationships: depends_on -> `modules/scv-graph-duckdb-connector/SPEC.md`
+- consumers: C++ connector, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: other explicitly selected graph adapters
+- notes: DuckDB SQL default does not select a universal graph backend or authorize graph-head changes.
+- status: canonical
+
+#### Explicit Process Adapter Invariant Registry v3 Schema
+- path: `knowledge/schemas/v3/invariant-ownership-registry.schema.json`
+- title: Explicit Process Adapter Invariant Registry v3 Schema
+- surface_type: schema
+- truth_role: versioned invariant admission contract
+- owner: Symphony common knowledge maintainers
+- scope: Explicit module and entrypoint ownership with preserved legacy adapter definitions.
+- relationships: depends_on -> `knowledge/INVARIANTS.md`
+- consumers: validator, qxctl, maintainers, user-selected tools
+- deferred_projections: inspected invariant inventory
+- notes: Registration is separate from live receipt verification and execution authority.
+- status: canonical

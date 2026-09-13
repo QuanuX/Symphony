@@ -179,6 +179,46 @@ engine::Json generic_registry_fixture(const fs::path& destination) {
     };
 }
 
+void test_v3_explicit_adapter_ownership() {
+    TemporaryDirectory temporary;
+    auto fixture = generic_registry_fixture(temporary.path());
+    fs::rename(temporary.path() / "modules/example-engine", temporary.path() / "modules/storage-adapter");
+    auto encoded = fixture.dump();
+    const std::string old_name = "example-engine", new_name = "storage-adapter";
+    std::size_t position = 0;
+    while ((position = encoded.find(old_name, position)) != std::string::npos) {
+        encoded.replace(position, old_name.size(), new_name); position += new_name.size();
+    }
+    fixture = engine::Json::parse(encoded);
+    fixture["protocol"] = "symphony.knowledge.invariant-ownership-registry.v3";
+    fixture["format_version"] = 3U;
+    fixture["adapters"][0]["format_version"] = 3U;
+    fixture["adapters"][0]["operation_ids"] = engine::Json::array({"engop:symphony:scv.graph-index.query"});
+    write_registry(temporary.path(), fixture);
+    auto result = check_invariant_ownership(temporary.path().string());
+    require(result.success, "explicit v3 adapter rejected independent module/operation names:" + messages(result));
+    for (const auto old_version : {1U, 2U}) {
+        auto wrong = fixture;
+        wrong["protocol"] = "symphony.knowledge.invariant-ownership-registry.v" + std::to_string(old_version);
+        wrong["format_version"] = old_version;
+        write_registry(temporary.path(), wrong);
+        result = check_invariant_ownership(temporary.path().string());
+        require(!result.success && contains(result, "invariant_ownership.adapter_shape"), "explicit adapter widened an older registry");
+    }
+    auto wrong = fixture; wrong["adapters"][0]["format_version"] = 2U;
+    write_registry(temporary.path(), wrong); result = check_invariant_ownership(temporary.path().string());
+    require(!result.success && contains(result, "invariant_ownership.adapter_identity"), "v3 relaxed existing v2 adapter identity");
+    wrong = fixture; wrong["adapters"][0]["implementation_path"] = "modules/storage-adapter/src";
+    write_registry(temporary.path(), wrong); result = check_invariant_ownership(temporary.path().string());
+    require(!result.success && contains(result, "explicit_implementation_mismatch"), "explicit adapter accepted a substituted implementation owner");
+    wrong = fixture; wrong["adapters"][0]["owner_contract"] = "modules/example-engine/SPEC.md";
+    write_registry(temporary.path(), wrong); result = check_invariant_ownership(temporary.path().string());
+    require(!result.success && contains(result, "generic_owner_mismatch"), "explicit adapter accepted a substituted contract owner");
+    wrong = fixture; wrong["adapters"][0]["adapter_id"] = "adapter:symphony:symphony-other.v1";
+    write_registry(temporary.path(), wrong); result = check_invariant_ownership(temporary.path().string());
+    require(!result.success && contains(result, "invariant_ownership.adapter_identity"), "explicit adapter accepted a mismatched entrypoint identity");
+}
+
 void test_v2_generic_adapter() {
     TemporaryDirectory temporary;
     const auto fixture = generic_registry_fixture(temporary.path());
@@ -501,6 +541,7 @@ int main(int argc, char** argv) {
         const auto repository = fs::canonical(argv[1]);
         test_absent();
         test_v2_generic_adapter();
+        test_v3_explicit_adapter_ownership();
         test_canonical(repository);
         test_v1_registry_compatibility(repository);
         test_shape_digest_and_order(repository);

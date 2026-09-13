@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 100 experimental records across the repository root and 25 implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 101 experimental records across the repository root and 26 implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -244,7 +244,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:431602ffeb5eea64aa2f148498b78b0c181ceeafac2a947293ce1059ccd0c783`
+- record_digest: `sha256:9b9d69914de23fd90eb0c79844a362dd7d75b96dcc1b32734ecab2b89cd205a8`
 - notes: Architect-ratified headless invariant status, list, show, and exact-validator check administration; coverage remains partial and qxctl does not own invariant semantics.
 
 - feature_id: `ssfv:symphony:qxctl.lifecycle-convergence`
@@ -280,7 +280,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:67e5ba8d3876ead118ac43881e77c40ef50d8c622cb8ab1922ec7c036239fb22`
+- record_digest: `sha256:123cc7ed3298c227526e47c1883822acd179fff7ac32f315155d22b9b8d56c4c`
 - notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
 
 - feature_id: `ssfv:symphony:qxctl.ssiag-administration`
@@ -516,6 +516,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:platform`
 - record_digest: `sha256:080787f1321ed67930528a511bb6fb420ef4af9c1c8b94f816280dd12641c86b`
 - notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
+
+- feature_id: `ssfv:symphony:scv-graph-duckdb-connector`
+- feature_file: `modules/scv-graph-duckdb-connector/FEATURES.md`
+- owner_contract: `modules/scv-graph-duckdb-connector/SPEC.md`
+- source_scope: `modules/scv-graph-duckdb-connector`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:88c016115edaf4a4e4ab6064eca9a208ea5db743e2b9501f382709b4cfefa35b`
+- notes: Optional C++ DuckDB relational graph index with exact native semantic owner, immutable snapshots and qxctl recovery.
 
 - feature_id: `ssfv:symphony:sev-engine`
 - feature_file: `modules/sev-engine/FEATURES.md`
@@ -919,7 +928,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/symphony-validator`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:symphony-validator`
-- record_digest: `sha256:4e1b358e46a2c625356a7c5e17b45b0008a681abe8b325902f2f80277e8beff3`
+- record_digest: `sha256:2a2b5cfc06770816da3b2cfeb7fa244b00cde68d27d7152939c78dbc6628adca`
 - notes: Architect-ratified common invariant ownership and implemented-module admission assurance; coverage remains partial and the registry does not claim complete legacy coverage.
 
 - feature_id: `ssfv:symphony:symphony-validator.root-summary-assurance`

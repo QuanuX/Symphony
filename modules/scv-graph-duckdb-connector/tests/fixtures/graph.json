@@ -1,0 +1,1061 @@
+{
+  "captures": [
+    {
+      "body": "---\ntitle: App Platform Limits\ndescription: Limits and known issues for App Platform.\nproduct: App Platform\nurl: https://docs.digitalocean.com/products/app-platform/details/limits/\nlast_updated: \"2022-06-16\"\n---\n\n\u003e **For AI agents:** The documentation index is at [https://docs.digitalocean.com/llms.txt](https://docs.digitalocean.com/llms.txt). Markdown versions of pages use the same URL with `index.html.md` in place of the HTML page (for example, append `index.html.md` to the directory path instead of opening the HTML document).\n\n# App Platform Limits\n\nApp Platform is a fully managed Platform-as-a-Service (PaaS) that deploys applications from Git repositories or container images. It automatically builds, deploys, and scales components while handling all underlying infrastructure.\n\n## Storage Limits\n\n- The host instances running App Platform containers do not provide persistent data storage. Data in the host instance’s local filesystem is permanently lost after deployments and other container replacements. The local filesystem is additionally limited to 4 GiB, and if it is filled to capacity, the container is detected as unhealthy and replaced.\n\n  Apps should only use the host instance’s local filesystem for small amounts of temporary storage. For persistent storage, you can use [Spaces Object Storage](https://docs.digitalocean.com/products/spaces/index.html.md) or [DigitalOcean Managed Databases](https://docs.digitalocean.com/products/databases/index.html.md).\n- File uploads to apps timeout after 600 seconds.\n- App Platform does not support volumes.\n\n## Build and Deployment Limits\n\n- App Platform allocates 8 CPU cores, 15 GiB of memory, and 24 GiB of disk space to each build. Processes related to managing the build and its export consume a small portion of these resources, so the build itself may have access to a slightly smaller amount of resources than listed here. If you require more resources for builds, you can use [GitHub Actions](https://docs.digitalocean.com/products/app-platform/how-to/deploy-from-github-actions/index.html.md) or other CI/CD tools to externally [build containers and push them to App Platform](https://docs.digitalocean.com/products/app-platform/how-to/deploy-from-container-images/index.html.md).\n- Builds time out after 1 hour.\n- You can configure a deployment timeout for jobs in the app spec, API, or Control Panel. The default timeout remains 30 minutes.\n\n## Image Limits\n\n- We do not limit the size of images deployed to App Platform, but we recommend using images less than 1 GiB in size. Images larger than 2 GiB are likely to experience build and deployment issues.\n- App Platform only supports Linux-based container images built for the AMD64 architecture. If you push an image with a different OS or architecture, the build fails.\n\n## Scaling Limits\n\n- CPU-based autoscaling is only available for app components using [dedicated CPUs](https://docs.digitalocean.com/products/app-platform/details/pricing/index.html.md#container-pricing). Request-based autoscaling works with both shared and dedicated CPU plans.\n- Each app supports a maximum of 250 containers (`instance_count` in app spec for fixed scaling, or `max_instance_count` for CPU-based autoscaling). When using request-based autoscaling, `max_instance_count` is limited to 100. To scale beyond these limits, use larger container sizes or [contact support](https://cloudsupport.digitalocean.com).\n- Request-based autoscaling and [Scale to Zero](https://docs.digitalocean.com/products/app-platform/how-to/scale-to-zero/index.html.md) (Inactivity Sleep) cannot be used on the same service. The two features are mutually exclusive.\n- Request-based autoscaling is only available for service components that receive external HTTP traffic. Workers and other non-service components are not eligible.\n\n## Repository Service Limits\n\n- App Platform can integrate with GitHub, GitLab, or Bitbucket repositories, or with public Git repositories over HTTPS. Support for other source providers may be added later. When the source is a GitLab repository, you must first [enable HTTPS and SSH protocols](https://docs.gitlab.com/administration/settings/visibility_and_access_controls/#configure-enabled-git-access-protocols) to prevent a cloning error.\n- Currently, [Git LFS support](https://docs.digitalocean.com/products/app-platform/how-to/manage-source-repo/index.html.md#git-lfs) is available only for GitHub repositories.\n- App Platform does not support automatic redeploys from Docker Hub or GitHub Container Registry. If you need to auto-deploy your images, consider using [DigitalOcean Container Registry](https://docs.digitalocean.com/products/container-registry/index.html.md).\n- Git submodules that reference SSH path style repos fail to build. Replace SSH submodule links with HTTPS to avoid this limitation.\n- You must store private git submodules in the GitHub account you have authorized App Platform to use. Referencing private git submodules that the authorized GitHub account cannot access causes the build to fail.\n- You must have an [**Owner** or **Maintainer** permissions-role](https://docs.github.com/en/organizations/managing-peoples-access-to-your-organization-with-roles/roles-in-an-organization) in any GitHub repository that you want to access from App Platform.\n- App Platform does not support SHA-256 repositories.\n\n## Database Limits\n\n- Dev database cluster permissions do not allow you to create additional databases. You can only use the cluster’s default database. If you need additional databases in your cluster, consider using a [DigitalOcean Managed Database](https://docs.digitalocean.com/products/databases/index.html.md) instead.\n- App Platform’s engine support for dev databases is currently limited to PostgreSQL, but you can create a [PostgreSQL, MySQL, MongoDB, Kafka, OpenSearch, or Valkey managed database](https://docs.digitalocean.com/products/databases/index.html.md) with DigitalOcean for use in your app.\n- Dev databases are located in the same region as your app and cannot be migrated to another region. If you migrate your app to a different region, the app won’t be able to access the associated dev database anymore. If you need to migrate your app and dev database, we recommend either backing up the contents of the database and restoring it after the app’s migration, or using a [DigitalOcean Managed Database](https://docs.digitalocean.com/products/databases/index.html.md) instead. You can migrate managed databases independently of apps to different regions as needed.\n- App Platform does not support connecting to DigitalOcean Managed Databases during the build process if the database has trusted sources enabled. This is because the app’s network configuration information can only be provided to the database’s trusted sources list after the app has been built.\n- App Platform does not currently support connections to Kafka databases that have trusted sources enabled. You must [disable trusted sources](https://docs.digitalocean.com/products/app-platform/how-to/manage-databases/index.html.md#disable-trusted-sources) on the Kafka database before it can be integrated with an App Platform app.\n- App Platform does not currently support logging to OpenSearch databases that have trusted sources enabled. OpenSearch clusters with trusted sources enabled are supported as a regular database connection.\n- MongoDB database names cannot contain capital letters when adding them [using an app spec](https://docs.digitalocean.com/products/app-platform/how-to/update-app-spec/index.html.md).\n- In [bindable environment variables](https://docs.digitalocean.com/products/app-platform/how-to/use-environment-variables/index.html.md#using-bindable-variables-within-environment-variables), the component name prefix (for example, `postgres-db` in `${postgres-db.DATABASE_URL}`) can be at most 32 characters. If the component `name` in the app spec is longer, use only the first 32 characters in `${...}`.\n\n## Networking Limits\n\n- You cannot attach the same [dedicated egress IP addresses](https://docs.digitalocean.com/products/app-platform/how-to/add-ip-address/index.html.md#add-dedicated-egress-ips) to multiple apps. App Platform assigns dedicated IPs to each app individually. Apps may run in different clusters or regions, so they cannot share IPs. To use the same egress IP, deploy your apps in a single [Kubernetes cluster](https://docs.digitalocean.com/products/kubernetes/how-to/create-clusters/index.html.md).\n- App Platform does not directly support adding `301` and `302` redirects. However, you can work around this by [creating a free app that redirects traffic to another domain](https://docs.digitalocean.com/products/app-platform/how-to/manage-domains/index.html.md).\n- We do not offer [dedicated egress IPv6 addresses](https://docs.digitalocean.com/products/app-platform/how-to/add-ip-address/index.html.md#add-dedicated-egress-ips).\n- App Platform apps do not support connecting to IPv6 services or hosts. If you have explicitly configured your app’s code to use IPv6, you may experience `ETIMEDOUT` timeout errors when using IPv6 connections. To solve this issue, enable IPv4 connections in your app’s code. For example, in a `server.js` file, bind your host to `0.0.0.0` to enable all interfaces, including IPv4. Alternatively, for apps built with Dockerfiles, you can [enable IPv6 on custom Docker images](https://docs.docker.com/engine/daemon/ipv6).\n- App Platform does not support adding DNSSEC-enabled domains to apps.\n- Dedicated egress IPs are an app-level feature. When you assign them to an app, all egress (outgoing) traffic from the app’s components uses the assigned IPs, except for [functions](https://docs.digitalocean.com/products/app-platform/how-to/manage-functions/index.html.md). Egress traffic from functions cannot use dedicated egress IPs and their own addresses can change at any time.\n- You cannot [forward logs](https://docs.digitalocean.com/products/app-platform/how-to/forward-logs/index.html.md) from [dedicated egress IPs](https://docs.digitalocean.com/products/app-platform/how-to/add-ip-address/index.html.md). Log forwarding uses its own routing to send logs.\n- Individual log messages forwarded from apps have a maximum size limit of 2,048 bytes.\n- Browsers aggressively cache redirects, and as such you may need to clear your cache and hard refresh to see changes in your redirect configuration.\n- App Platform only supports high availability (HA) for apps running two or more containers so that there is a failover for App Platform’s load balancer to use.\n- You cannot open SSH or SFTP ports on App Platform containers. You must deploy code changes through your code repository or container image.\n- You cannot open SMTP ports on App Platform containers.\n- App Platform supports HTTP/2, however you need to [configure your app to use the protocol](https://docs.digitalocean.com/products/app-platform/how-to/configure-http2/index.html.md). App Platform’s edge servers negotiate HTTP/2 connections from supported clients, but if your app is not configured to receive these requests, App Platform downgrades these requests to HTTP/1.1 when relayed to the app’s container.\n- App Platform’s edge servers negotiate HTTP/2 and HTTP/3 connections from supported clients. However, App Platform downgrades these requests to HTTP/1.1 when relayed to an app’s container. We do not support [gRPC](https://grpc.io/about/) over HTTP/2.\n- While App Platform automatically upgrades all HTTP requests to HTTPS requests, it does not set HTTP Strict-Transport-Security (HSTS) headers for apps. If you want to set HSTS headers for your app, you need to set the headers in your app’s code. All apps hosted on the `.ondigitalocean.app` domain automatically behave as if HSTS has been set as the `.app` TLD is on the [HSTS preload](https://hstspreload.org) list.\n- We do not limit the number of concurrent connections to your app, but each connection consumes system resources and may affect your app’s performance when it is under heavy load. If you are experiencing performance issues related to large numbers of concurrent connections, we recommend [scaling your app](https://docs.digitalocean.com/products/app-platform/how-to/scale-app/index.html.md) to better handle the workload.\n- Apps are hosted in the region you select during the initial deployment but the app’s IP address may appear to be in a US region. This is expected behavior as App Platform routes traffic to apps through Cloudflare’s global CDN, a US-based company. Learn more about [why apps have US-based IP addresses](https://docs.digitalocean.com/support/why-does-my-app-have-a-us-based-ip-address-when-i-created-it-in-a-different-region/index.html.md).\n- App Platform does not officially support node clustering, such as [Erlang clustering](https://www.erlang.org/doc/reference_manual/distributed.html). This is because we currently don’t expose a way to discover the cluster nodes.\n- You cannot disable the CDN cache for apps with static sites. As a workaround, you can either create a new app for the static site or serve the static site from a [web service](https://docs.digitalocean.com/products/app-platform/how-to/manage-services/index.html.md).\n- Disabling the CDN cache requires a [custom domain](https://docs.digitalocean.com/products/app-platform/how-to/manage-domains/index.html.md) and does not work with the starter domain.\n- VPC is not currently supported for Function components.\n\n## Other Limits\n\n- Each App Platform application can have up to 500 domains.\n- You cannot move apps between teams. You can only move them between projects within the same team. To transfer an app to a different team, [recreate it in the new team](https://docs.digitalocean.com/products/app-platform/how-to/create-apps/index.html.md), then [delete it from the original team](https://docs.digitalocean.com/products/app-platform/how-to/destroy-app/index.html.md).\n- App Platform does not currently support injecting values on disk at build time. However, you can use environment variables to inject values at runtime using runtime commands.\n- App Platform is not [PCI DSS compliant](https://www.pcisecuritystandards.org/standards/) and may not be suitable for fintech applications. You can use a [Droplet](https://docs.digitalocean.com/products/droplets/index.html.md) as an alternative to App Platform to give you more control over your infrastructure.\n- You cannot increase or decrease resources for static sites. App Platform deploys and serves static sites using [DigitalOcean’s Spaces CDN](https://docs.digitalocean.com/products/spaces/index.html.md), as they do not require a container or runtime. You can only increase or decrease resources for [service components](https://docs.digitalocean.com/products/app-platform/how-to/manage-services/index.html.md), [worker components](https://docs.digitalocean.com/products/app-platform/how-to/manage-workers/index.html.md), and [job components](https://docs.digitalocean.com/products/app-platform/how-to/manage-jobs/index.html.md).\n- Configuration changes that redeploy your app also trigger a pull of the latest source code from your repo. This is by design.\n- App Platform only supports binaries built for the [AMD64](https://en.wikipedia.org/wiki/X86-64) CPU architecture.\n- App Platform uses the [gVisor](https://gvisor.dev/) container runtime sandbox and some [system calls are not supported](https://gvisor.dev/docs/user_guide/compatibility/linux/amd64/).\n- App Platform does not support resource usage reporting with [PM2](https://pm2.keymetrics.io/) in Node.js apps. Instead, use the **Insights** tab [to see insights](https://docs.digitalocean.com/products/app-platform/how-to/view-insights/index.html.md) such as memory and CPU usage.\n- You must explicitly start system-level cron jobs using your app’s run commands. cron jobs do not start automatically like on standard Linux systems.\n- You cannot view accrued transfer allowance or cumulative usage for App Platform. You can [view ingress bandwidth](https://docs.digitalocean.com/products/app-platform/how-to/view-insights/index.html.md) for individual apps.\n- App Platform does not currently support changing time zones for build and runtime logs, which are displayed in UTC.\n- The “Deploy to DO” button only supports public repositories and Dev Databases.\n\n## Known Issues\n\n- Next.js apps deployed to App Platform can be vulnerable to [Cache Poisoning Denial of Service (CPDoS) attacks](https://cpdos.org). To avoid this, we recommend [omitting the `cache-control` header](https://nextjs.org/docs/app/building-your-application/caching#opting-out-2) from your app’s responses or setting them to `private` if the response is not cacheable.",
+      "body_digest": "sha256:334622aa839248ca84ac4f20b14f11ef3464ef0d0c9cdaef1e5ee59b996f8428",
+      "byte_size": 16774,
+      "completeness": "complete",
+      "digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "issues": [],
+      "locator_id": "docs",
+      "media_type": "text/markdown",
+      "observed_at": "2026-09-13T04:30:18Z",
+      "protocol": "symphony.scv.capture.v1",
+      "redirects": [],
+      "resolved_uri": "https://docs.digitalocean.com/products/app-platform/details/limits/index.html.md",
+      "source": {
+        "authority_role": "first_party_documentation",
+        "continuity_evidence": [
+          "Finite public source selected for increment 5. Rolling URI is explicit; capture identity does not claim an immutable upstream release. Vendor instructions are data only.",
+          "Candidate canonical-locator adoption: the retained 2026-09-11 capture already records this destination. Official original URI returned HTTP 301 to this exact path on 2026-09-13; official HTML links the same Markdown representation. Retrieval evidence does not authorize protected source adoption."
+        ],
+        "digest": "sha256:62b87a5fabbddd5432c6ae67d3ccfcbadba8d15ec41a065ac7a98f11cb2561a3",
+        "family_id": "schv",
+        "generation": 2,
+        "locators": [
+          {
+            "format": "markdown",
+            "locator_id": "docs",
+            "role": "selected-reference",
+            "selector": "Explicit URI; preserve exact observation and content identity",
+            "uri": "https://docs.digitalocean.com/products/app-platform/details/limits/index.html.md"
+          }
+        ],
+        "predecessor_digest": "sha256:d137a13d2d8920bb06753289579865f90c8210abab86af917807a1329b599919",
+        "protocol": "symphony.scv.source.v1",
+        "provider_id": "do",
+        "publisher": "DigitalOcean",
+        "scope": "App Platform native limits and storage lifecycle",
+        "source_id": "do-app-platform-limits"
+      },
+      "upstream_revision": {
+        "scheme": "etag",
+        "value": "W/\"6aa5b024-4186\""
+      }
+    }
+  ],
+  "claims": [
+    {
+      "alternative_supports": [],
+      "claim_id": "maintenance-host-local-storage",
+      "dependencies": [],
+      "evidence": [
+        {
+          "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+          "quote": "The host instances running App Platform containers do not provide persistent data storage."
+        }
+      ],
+      "predicate": "local-storage.persistent",
+      "scope": {
+        "provider": "do",
+        "service": "app-platform",
+        "storage": "host-local-filesystem"
+      },
+      "scope_dependencies": [],
+      "statement_kind": "documented_fact",
+      "subject": "do.app-platform.container",
+      "valid_from": null,
+      "valid_until": null,
+      "value": {
+        "type": "boolean",
+        "unit": null,
+        "value": false
+      }
+    }
+  ],
+  "digest": "sha256:c69d0cc8fff7e1ac2f6ba4f7fbb8723145afdf30123d0bfe2ea57bf0cde0f7b6",
+  "domain": "scv",
+  "interpretations": [
+    {
+      "domain": "scv",
+      "interpreter_version": "source-maintenance-acceptance-v1",
+      "knowledge_digest": "sha256:2288363c2f3fcf63ed565e5d58b0207eb389d4b52ea88a0056d181776d743621"
+    }
+  ],
+  "knowledge_digests": [
+    "sha256:2288363c2f3fcf63ed565e5d58b0207eb389d4b52ea88a0056d181776d743621"
+  ],
+  "limitations": [
+    "caller-proposed claims retain their statement kinds; quote anchoring is not factual verification",
+    "coverage is limited to selected captures; absence is not provider-wide unavailability",
+    "native extraction describes captured structure; it does not validate provider semantics",
+    "text extraction is limited to headings and Markdown links; prose meaning remains proposed"
+  ],
+  "native_edges": [
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "contains",
+      "to": "native:3b4e765e5fd1abbd2720d193a4ded37b72577e1ab5355664344e149f20c45232"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "contains",
+      "to": "native:53fa9996eb91f40d9b80b583316391d63c674785a42b89ce5c50ea1e25e498fc"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "contains",
+      "to": "native:642ccf7949bc8ea0ead42bc8a842476a12497d0abfae0ddcf2a3e555dfe29640"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "contains",
+      "to": "native:64891693799c1b4b0c663ae904dd9c0c45f7bb045e6feab6bccf3c78e530a5a1"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "contains",
+      "to": "native:825b6c3c33ed9588a1d5f472ad40f479c4b6af3fc65df4680c734e25e5df74a9"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "contains",
+      "to": "native:89180df11d882760adddbc2d06c06d7b1648e56964816e48995b48eeb1023c46"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "contains",
+      "to": "native:9b1ee179dc16bdf1c0f0efea755438543bb23cacf1b2b075460325323e5f48cd"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "contains",
+      "to": "native:aa4dc9e9a332fe607f1ed9036d1ccfc7d5e00ee79944ebdb2050daef396d9f4e"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "contains",
+      "to": "native:bbc75c6117adf56c0c6f0753fa0c97ee0ea5534c63aef2150c5b22c7bb38aa97"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "contains",
+      "to": "native:d81f0c9cf0228fbca86700d868953bd2a1c1052f09d4b41718d34d026923a57d"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:0127f807293e5519511d616b3cf74354ef037aa3669c73e62ba8edbdaf6cf616"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:088ba4aaef572d5cea84450ce6ff955d182817fc97f4e0e9e874e8aa7eb88b47"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:1219b129aef89d3425a06eaadd3cd2269c1ec7f5c62c39bfa397fa60ec01700d"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:13c959cba53a82e8a9e841353aa9415c49fbc47c8429b1e99ca4dfc95bf605b2"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:1e8e380360324bc067e3168351903e92847739dcd430da5157dd0b44523bc97f"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:21cbc384feaf76a1bd0089b4c15cfbd0b9e6c05cb04494f5554870547b3c3189"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:21f77844f8b723ce58069aa468e47e136596a4db87e7914f6af40373eaf274f0"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:2512bd4b7cc97ada31cc041ca1f97d5ba52d7043ae926fbcef8f922e0c09c29a"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:265585c77bce2093ae94adea04385c260425e9c1b1e9d64f0591f1a337ef2ced"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:3305bde03cfca6dbbf0f59dff605dfba88f7de2347c9543ad653ee799d3c78f6"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:3bda904b65e783a001cc95f99174cdf4383b7515ace44b71780b3316495cf1d5"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:420e56f347828fcaca37ab4696d52aae0e7786968a8d702c7a8f6235a3c9e7d6"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:44f36a4aecc752c72e944499b1c657d0cb5402f2fcec1e5c652e8247fe1964d7"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:4b709a0d13ae7eae8b2008a1eebb276fae18852b4437eea49f00bb4ce41e414c"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:4e24f345eaef3a84b76156215472644313a42f679485019692660b53da1c46fd"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:4ff82b824061b11df34fab42e6e51fa9ca6800f2f10a1eca5b763ef05e43d08e"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:50216b4aa9a524f5d78a1d710ff7699ca056d56f124a3ab8c58f6feacb58c0b1"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:517cf210261028c4d51e5f97b8bcd027ae8971bfa7fa42ab31c54e44b8b7ec13"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:528b42191e63a44f7b5628aadab3801333356b9ad6aedd86a6d392a5be71e701"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:56d7026618e86ae571c434c90754ab6b2d3dd1eb7f9a7d133827a42290eed6eb"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:5777295938c4f10777b207389eef4917971e777d686499fbad01a23ec604e1f8"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:6cc6a7a3e39a7ff8d89a5d5591f86a62e1c2e9c47b9cdb52d4d9f6417bd90460"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:7291db08a4a38fed63704e81b411a35d0fd58f1d6382d871aa472977fccf9ab6"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:77181feb5cf57558353aba8cad6287f88a09ba28880b9509359487001606c6d9"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:7beb182a6cf22cc41f7d547938a9dc23a4c32da7cc08afefc7575789532c9df4"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:8135836ba43907aa32de316bb7ed4f3b894fe83d5e0ce2351d9895a1cf35c5a3"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:8486c265cd2085bf5853cc59a316a431c930bec2a0e8b532e9896f0ff5d02e1b"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:89cabd2a1407be902928ae1818dbb2fb674ecb351312229eb2d189ee728c02f0"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:90006913484b53956d529e9204cf9d0d71f42bb086c858ca53ce46b2cd3ee2de"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:93c42069f2b26fedf8a62ae49e065ae061784e5df1cb66c525a154c51250aaf6"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:987b944b774891ad1e3f0bc97d521f037e62a73b23184f330e376afe56054214"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:994507633c86b4edf4ad90b64277fbade9a4c5f748253fc126cc0c2bc337b05a"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:9a7df2e4f58f097b8bab3b79da3433190338b60b8bbbb720e475b42d8a14638e"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:9ace37592a964559b6fcb17f61265c73a5ecada8a7a5c1aa7db2c1d09b8f5f5d"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:af6bfb1f5abbeedee660145be9f259a9fbe5d930cab73302c6843aa7583285ce"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:b2f0f2cb99ea2244759169fcaacb9baa0856efdfde1955ebe659a61b671d39c9"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:bd4d772a0bb7df7668867f416ee2cfc06f171b683e33cf67499bfa53ba1b7fc9"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:c015170e3fb257f96a08c8438dcfc58a778138c6706fa96b77686589f0d895a4"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:ca7c726860ed0f36714155c8fff1c8a76ad93e33b6869c23d5c9122a81b4d7e8"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:cde99635a79476f2736ecaca83163db184007ec37d0d726bec4911a69190d83d"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:cdf4dd303d4d86435a2005f47dc2ea50af96046d2fb4d3b6f7216b10e962fc29"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:d570f84b40bc7d8d3d60be1d541e32dfe1d0b9a316725f13164819a40b83a9e4"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:d843e812c5f2f167dd2ce6f2b818b9f2d9037d4bfa7069e9c2c1732353ccbe62"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:d9c2f8853097cb352f640480d3dea6943de0934de89d6598910e030f7abd3725"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:e624b8e4b8f15c4d780c258517b33a00f15bab354c5e540400f90e0b175d904f"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:e82b80075a51b5c22a3ff574c1f2c6dd34096c38eff4df87d5ad385018cd34f2"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:e9ed0ab4d05334d5033725574e298ac855ec152d79d27e24fabbd94b46097f3e"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:eea21dba49c3d63c261ff22e7e84e2de656c8d23c00bbf5013f3e118b677a8c7"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:f80fed47ba7828acf0270b393989c5761b1417a4b125587e8c5d23ba74b2b82d"
+    },
+    {
+      "from": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "relation": "links_to",
+      "to": "native:fb3e9fde2c03c829439ad98d3049746af6d624aad60b6fa4e2202cbb54ffabea"
+    }
+  ],
+  "native_nodes": [
+    {
+      "attributes": {
+        "label": "DigitalOcean Managed Database",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/databases/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:0127f807293e5519511d616b3cf74354ef037aa3669c73e62ba8edbdaf6cf616",
+      "pointer": "line:53:byte:202"
+    },
+    {
+      "attributes": {
+        "label": "bindable environment variables",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/use-environment-variables/index.html.md#using-bindable-variables-within-environment-variables"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:088ba4aaef572d5cea84450ce6ff955d182817fc97f4e0e9e874e8aa7eb88b47",
+      "pointer": "line:60:byte:5"
+    },
+    {
+      "attributes": {
+        "label": "DigitalOcean Managed Database",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/databases/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:1219b129aef89d3425a06eaadd3cd2269c1ec7f5c62c39bfa397fa60ec01700d",
+      "pointer": "line:55:byte:386"
+    },
+    {
+      "attributes": {
+        "label": "view ingress bandwidth",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/view-insights/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:13c959cba53a82e8a9e841353aa9415c49fbc47c8429b1e99ca4dfc95bf605b2",
+      "pointer": "line:98:byte:91"
+    },
+    {
+      "attributes": {
+        "label": "configure your app to use the protocol",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/configure-http2/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:1e8e380360324bc067e3168351903e92847739dcd430da5157dd0b44523bc97f",
+      "pointer": "line:76:byte:52"
+    },
+    {
+      "attributes": {
+        "label": "delete it from the original team",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/destroy-app/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:21cbc384feaf76a1bd0089b4c15cfbd0b9e6c05cb04494f5554870547b3c3189",
+      "pointer": "line:89:byte:262"
+    },
+    {
+      "attributes": {
+        "label": "system calls are not supported",
+        "retrieved": false,
+        "target": "https://gvisor.dev/docs/user_guide/compatibility/linux/amd64/"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:21f77844f8b723ce58069aa468e47e136596a4db87e7914f6af40373eaf274f0",
+      "pointer": "line:95:byte:89"
+    },
+    {
+      "attributes": {
+        "label": "recreate it in the new team",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/create-apps/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:2512bd4b7cc97ada31cc041ca1f97d5ba52d7043ae926fbcef8f922e0c09c29a",
+      "pointer": "line:89:byte:140"
+    },
+    {
+      "attributes": {
+        "label": "Droplet",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/droplets/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:265585c77bce2093ae94adea04385c260425e9c1b1e9d64f0591f1a337ef2ced",
+      "pointer": "line:91:byte:155"
+    },
+    {
+      "attributes": {
+        "label": "dedicated egress IP addresses",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/add-ip-address/index.html.md#add-dedicated-egress-ips"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:3305bde03cfca6dbbf0f59dff605dfba88f7de2347c9543ad653ee799d3c78f6",
+      "pointer": "line:64:byte:29"
+    },
+    {
+      "attributes": {
+        "term": "App Platform Limits"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "section",
+      "node_id": "native:3b4e765e5fd1abbd2720d193a4ded37b72577e1ab5355664344e149f20c45232",
+      "pointer": "line:11"
+    },
+    {
+      "attributes": {
+        "label": "to see insights",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/view-insights/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:3bda904b65e783a001cc95f99174cdf4383b7515ace44b71780b3316495cf1d5",
+      "pointer": "line:96:byte:147"
+    },
+    {
+      "attributes": {
+        "authority_role": "first_party_documentation",
+        "completeness": "complete",
+        "publisher": "DigitalOcean",
+        "resolved_uri": "https://docs.digitalocean.com/products/app-platform/details/limits/index.html.md",
+        "scope": "App Platform native limits and storage lifecycle",
+        "source_id": "do-app-platform-limits"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "source",
+      "node_id": "native:417f27e39e09dbe55b3c71280f27c83c1d81845ac018170aa1e5c08d4334ce54",
+      "pointer": ""
+    },
+    {
+      "attributes": {
+        "label": "functions",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/manage-functions/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:420e56f347828fcaca37ab4696d52aae0e7786968a8d702c7a8f6235a3c9e7d6",
+      "pointer": "line:69:byte:173"
+    },
+    {
+      "attributes": {
+        "label": "scaling your app",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/scale-app/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:44f36a4aecc752c72e944499b1c657d0cb5402f2fcec1e5c652e8247fe1964d7",
+      "pointer": "line:79:byte:291"
+    },
+    {
+      "attributes": {
+        "label": "worker components",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/manage-workers/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:4b709a0d13ae7eae8b2008a1eebb276fae18852b4437eea49f00bb4ce41e414c",
+      "pointer": "line:92:byte:412"
+    },
+    {
+      "attributes": {
+        "label": "DigitalOcean Container Registry",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/container-registry/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:4e24f345eaef3a84b76156215472644313a42f679485019692660b53da1c46fd",
+      "pointer": "line:45:byte:153"
+    },
+    {
+      "attributes": {
+        "label": "DigitalOcean’s Spaces CDN",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/spaces/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:4ff82b824061b11df34fab42e6e51fa9ca6800f2f10a1eca5b763ef05e43d08e",
+      "pointer": "line:92:byte:113"
+    },
+    {
+      "attributes": {
+        "label": "dedicated egress IPs",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/add-ip-address/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:50216b4aa9a524f5d78a1d710ff7699ca056d56f124a3ab8c58f6feacb58c0b1",
+      "pointer": "line:70:byte:120"
+    },
+    {
+      "attributes": {
+        "label": "web service",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/manage-services/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:517cf210261028c4d51e5f97b8bcd027ae8971bfa7fa42ab31c54e44b8b7ec13",
+      "pointer": "line:82:byte:164"
+    },
+    {
+      "attributes": {
+        "label": "Erlang clustering",
+        "retrieved": false,
+        "target": "https://www.erlang.org/doc/reference_manual/distributed.html"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:528b42191e63a44f7b5628aadab3801333356b9ad6aedd86a6d392a5be71e701",
+      "pointer": "line:81:byte:68"
+    },
+    {
+      "attributes": {
+        "term": "Database Limits"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "section",
+      "node_id": "native:53fa9996eb91f40d9b80b583316391d63c674785a42b89ce5c50ea1e25e498fc",
+      "pointer": "line:51"
+    },
+    {
+      "attributes": {
+        "label": "Git LFS support",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/manage-source-repo/index.html.md#git-lfs"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:56d7026618e86ae571c434c90754ab6b2d3dd1eb7f9a7d133827a42290eed6eb",
+      "pointer": "line:44:byte:13"
+    },
+    {
+      "attributes": {
+        "label": "custom domain",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/manage-domains/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:5777295938c4f10777b207389eef4917971e777d686499fbad01a23ec604e1f8",
+      "pointer": "line:83:byte:37"
+    },
+    {
+      "attributes": {
+        "term": "Networking Limits"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "section",
+      "node_id": "native:642ccf7949bc8ea0ead42bc8a842476a12497d0abfae0ddcf2a3e555dfe29640",
+      "pointer": "line:62"
+    },
+    {
+      "attributes": {
+        "term": "Scaling Limits"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "section",
+      "node_id": "native:64891693799c1b4b0c663ae904dd9c0c45f7bb045e6feab6bccf3c78e530a5a1",
+      "pointer": "line:34"
+    },
+    {
+      "attributes": {
+        "label": "PostgreSQL, MySQL, MongoDB, Kafka, OpenSearch, or Valkey managed database",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/databases/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:6cc6a7a3e39a7ff8d89a5d5591f86a62e1c2e9c47b9cdb52d4d9f6417bd90460",
+      "pointer": "line:54:byte:109"
+    },
+    {
+      "attributes": {
+        "label": "Cache Poisoning Denial of Service (CPDoS) attacks",
+        "retrieved": false,
+        "target": "https://cpdos.org"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:7291db08a4a38fed63704e81b411a35d0fd58f1d6382d871aa472977fccf9ab6",
+      "pointer": "line:104:byte:61"
+    },
+    {
+      "attributes": {
+        "label": "job components",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/manage-jobs/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:77181feb5cf57558353aba8cad6287f88a09ba28880b9509359487001606c6d9",
+      "pointer": "line:92:byte:526"
+    },
+    {
+      "attributes": {
+        "label": "creating a free app that redirects traffic to another domain",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/manage-domains/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:7beb182a6cf22cc41f7d547938a9dc23a4c32da7cc08afefc7575789532c9df4",
+      "pointer": "line:65:byte:112"
+    },
+    {
+      "attributes": {
+        "label": "GitHub Actions",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/deploy-from-github-actions/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:8135836ba43907aa32de316bb7ed4f3b894fe83d5e0ce2351d9895a1cf35c5a3",
+      "pointer": "line:25:byte:345"
+    },
+    {
+      "attributes": {
+        "term": "Other Limits"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "section",
+      "node_id": "native:825b6c3c33ed9588a1d5f472ad40f479c4b6af3fc65df4680c734e25e5df74a9",
+      "pointer": "line:86"
+    },
+    {
+      "attributes": {
+        "label": "DigitalOcean Managed Databases",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/databases/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:8486c265cd2085bf5853cc59a316a431c930bec2a0e8b532e9896f0ff5d02e1b",
+      "pointer": "line:19:byte:226"
+    },
+    {
+      "attributes": {
+        "term": "Repository Service Limits"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "section",
+      "node_id": "native:89180df11d882760adddbc2d06c06d7b1648e56964816e48995b48eeb1023c46",
+      "pointer": "line:41"
+    },
+    {
+      "attributes": {
+        "label": "dedicated CPUs",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/details/pricing/index.html.md#container-pricing"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:89cabd2a1407be902928ae1818dbb2fb674ecb351312229eb2d189ee728c02f0",
+      "pointer": "line:36:byte:67"
+    },
+    {
+      "attributes": {
+        "label": "**Owner** or **Maintainer** permissions-role",
+        "retrieved": false,
+        "target": "https://docs.github.com/en/organizations/managing-peoples-access-to-your-organization-with-roles/roles-in-an-organization"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:90006913484b53956d529e9204cf9d0d71f42bb086c858ca53ce46b2cd3ee2de",
+      "pointer": "line:48:byte:19"
+    },
+    {
+      "attributes": {
+        "label": "disable trusted sources",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/manage-databases/index.html.md#disable-trusted-sources"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:93c42069f2b26fedf8a62ae49e065ae061784e5df1cb66c525a154c51250aaf6",
+      "pointer": "line:57:byte:117"
+    },
+    {
+      "attributes": {
+        "label": "enable HTTPS and SSH protocols",
+        "retrieved": false,
+        "target": "https://docs.gitlab.com/administration/settings/visibility_and_access_controls/#configure-enabled-git-access-protocols"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:987b944b774891ad1e3f0bc97d521f037e62a73b23184f330e376afe56054214",
+      "pointer": "line:43:byte:231"
+    },
+    {
+      "attributes": {
+        "label": "gVisor",
+        "retrieved": false,
+        "target": "https://gvisor.dev/"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:994507633c86b4edf4ad90b64277fbade9a4c5f748253fc126cc0c2bc337b05a",
+      "pointer": "line:95:byte:24"
+    },
+    {
+      "attributes": {
+        "label": "Kubernetes cluster",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/kubernetes/how-to/create-clusters/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:9a7df2e4f58f097b8bab3b79da3433190338b60b8bbbb720e475b42d8a14638e",
+      "pointer": "line:64:byte:383"
+    },
+    {
+      "attributes": {
+        "label": "AMD64",
+        "retrieved": false,
+        "target": "https://en.wikipedia.org/wiki/X86-64"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:9ace37592a964559b6fcb17f61265c73a5ecada8a7a5c1aa7db2c1d09b8f5f5d",
+      "pointer": "line:94:byte:52"
+    },
+    {
+      "attributes": {
+        "term": "Known Issues"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "section",
+      "node_id": "native:9b1ee179dc16bdf1c0f0efea755438543bb23cacf1b2b075460325323e5f48cd",
+      "pointer": "line:102"
+    },
+    {
+      "attributes": {
+        "term": "Storage Limits"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "section",
+      "node_id": "native:aa4dc9e9a332fe607f1ed9036d1ccfc7d5e00ee79944ebdb2050daef396d9f4e",
+      "pointer": "line:15"
+    },
+    {
+      "attributes": {
+        "label": "omitting the `cache-control` header",
+        "retrieved": false,
+        "target": "https://nextjs.org/docs/app/building-your-application/caching#opting-out-2"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:af6bfb1f5abbeedee660145be9f259a9fbe5d930cab73302c6843aa7583285ce",
+      "pointer": "line:104:byte:161"
+    },
+    {
+      "attributes": {
+        "label": "HSTS preload",
+        "retrieved": false,
+        "target": "https://hstspreload.org"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:b2f0f2cb99ea2244759169fcaacb9baa0856efdfde1955ebe659a61b671d39c9",
+      "pointer": "line:78:byte:374"
+    },
+    {
+      "attributes": {
+        "term": "Build and Deployment Limits"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "section",
+      "node_id": "native:bbc75c6117adf56c0c6f0753fa0c97ee0ea5534c63aef2150c5b22c7bb38aa97",
+      "pointer": "line:23"
+    },
+    {
+      "attributes": {
+        "label": "service components",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/manage-services/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:bd4d772a0bb7df7668867f416ee2cfc06f171b683e33cf67499bfa53ba1b7fc9",
+      "pointer": "line:92:byte:300"
+    },
+    {
+      "attributes": {
+        "label": "PCI DSS compliant",
+        "retrieved": false,
+        "target": "https://www.pcisecuritystandards.org/standards/"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:c015170e3fb257f96a08c8438dcfc58a778138c6706fa96b77686589f0d895a4",
+      "pointer": "line:91:byte:22"
+    },
+    {
+      "attributes": {
+        "label": "contact support",
+        "retrieved": false,
+        "target": "https://cloudsupport.digitalocean.com"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:ca7c726860ed0f36714155c8fff1c8a76ad93e33b6869c23d5c9122a81b4d7e8",
+      "pointer": "line:37:byte:287"
+    },
+    {
+      "attributes": {
+        "label": "Spaces Object Storage",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/spaces/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:cde99635a79476f2736ecaca83163db184007ec37d0d726bec4911a69190d83d",
+      "pointer": "line:19:byte:138"
+    },
+    {
+      "attributes": {
+        "label": "forward logs",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/forward-logs/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:cdf4dd303d4d86435a2005f47dc2ea50af96046d2fb4d3b6f7216b10e962fc29",
+      "pointer": "line:70:byte:13"
+    },
+    {
+      "attributes": {
+        "label": "dedicated egress IPv6 addresses",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/add-ip-address/index.html.md#add-dedicated-egress-ips"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:d570f84b40bc7d8d3d60be1d541e32dfe1d0b9a316725f13164819a40b83a9e4",
+      "pointer": "line:66:byte:18"
+    },
+    {
+      "attributes": {
+        "term": "Image Limits"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "section",
+      "node_id": "native:d81f0c9cf0228fbca86700d868953bd2a1c1052f09d4b41718d34d026923a57d",
+      "pointer": "line:29"
+    },
+    {
+      "attributes": {
+        "label": "build containers and push them to App Platform",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/deploy-from-container-images/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:d843e812c5f2f167dd2ce6f2b818b9f2d9037d4bfa7069e9c2c1732353ccbe62",
+      "pointer": "line:25:byte:498"
+    },
+    {
+      "attributes": {
+        "label": "why apps have US-based IP addresses",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/support/why-does-my-app-have-a-us-based-ip-address-when-i-created-it-in-a-different-region/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:d9c2f8853097cb352f640480d3dea6943de0934de89d6598910e030f7abd3725",
+      "pointer": "line:80:byte:270"
+    },
+    {
+      "attributes": {
+        "label": "enable IPv6 on custom Docker images",
+        "retrieved": false,
+        "target": "https://docs.docker.com/engine/daemon/ipv6"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:e624b8e4b8f15c4d780c258517b33a00f15bab354c5e540400f90e0b175d904f",
+      "pointer": "line:67:byte:442"
+    },
+    {
+      "attributes": {
+        "label": "Scale to Zero",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/scale-to-zero/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:e82b80075a51b5c22a3ff574c1f2c6dd34096c38eff4df87d5ad385018cd34f2",
+      "pointer": "line:38:byte:32"
+    },
+    {
+      "attributes": {
+        "label": "using an app spec",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/products/app-platform/how-to/update-app-spec/index.html.md"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:e9ed0ab4d05334d5033725574e298ac855ec152d79d27e24fabbd94b46097f3e",
+      "pointer": "line:59:byte:73"
+    },
+    {
+      "attributes": {
+        "label": "PM2",
+        "retrieved": false,
+        "target": "https://pm2.keymetrics.io/"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:eea21dba49c3d63c261ff22e7e84e2de656c8d23c00bbf5013f3e118b677a8c7",
+      "pointer": "line:96:byte:62"
+    },
+    {
+      "attributes": {
+        "label": "https://docs.digitalocean.com/llms.txt",
+        "retrieved": false,
+        "target": "https://docs.digitalocean.com/llms.txt"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:f80fed47ba7828acf0270b393989c5761b1417a4b125587e8c5d23ba74b2b82d",
+      "pointer": "line:9:byte:51"
+    },
+    {
+      "attributes": {
+        "label": "gRPC",
+        "retrieved": false,
+        "target": "https://grpc.io/about/"
+      },
+      "capture_digest": "sha256:8b8bbc97b2cec02d58b5a768bc43605bda38c77e5cdceace0c5da1d70c86087c",
+      "kind": "reference",
+      "node_id": "native:fb3e9fde2c03c829439ad98d3049746af6d624aad60b6fa4e2202cbb54ffabea",
+      "pointer": "line:77:byte:212"
+    }
+  ],
+  "protocol": "symphony.scv.graph.v1",
+  "selection_policy": {
+    "allowed_statement_kinds": [
+      "documented_fact"
+    ],
+    "max_age_seconds": 86400,
+    "partial_capture": "exclude",
+    "policy_id": "source-maintenance-one-day"
+  }
+}
