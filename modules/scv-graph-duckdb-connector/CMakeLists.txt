@@ -62,6 +62,15 @@ foreach(target scv-graph-duckdb-core ${CONNECTOR_EXECUTABLE})
     target_compile_options(${target} PRIVATE $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>)
 endforeach()
 if(BUILD_TESTING)
+    # The installed target never links these test barriers. This separate target
+    # compiles the same connector implementation for deterministic SIGKILL tests.
+    add_executable(scv-graph-duckdb-commit-fault-test EXCLUDE_FROM_ALL
+        src/main.cpp src/connector.cpp tests/commit_barrier.cpp)
+    target_compile_definitions(scv-graph-duckdb-commit-fault-test PRIVATE SYMPHONY_SCV_GRAPH_INDEX_TEST_BARRIERS=1)
+    target_include_directories(scv-graph-duckdb-commit-fault-test PRIVATE src tests)
+    target_link_libraries(scv-graph-duckdb-commit-fault-test PRIVATE Symphony::KnowledgeVectorEngine scv-pinned-duckdb Threads::Threads)
+    set_target_properties(scv-graph-duckdb-commit-fault-test PROPERTIES CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+    target_compile_options(scv-graph-duckdb-commit-fault-test PRIVATE $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>)
     find_package(Python3 COMPONENTS Interpreter REQUIRED)
     add_test(NAME scv-graph-duckdb-connector-process COMMAND ${Python3_EXECUTABLE}
         "${CMAKE_CURRENT_SOURCE_DIR}/tests/connector_test.py" --engine $<TARGET_FILE:${CONNECTOR_EXECUTABLE}> --library "${DUCKDB_LIBRARY}")

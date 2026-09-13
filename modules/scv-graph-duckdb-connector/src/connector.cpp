@@ -22,6 +22,13 @@
 #include <unistd.h>
 #include <vector>
 
+#ifdef SYMPHONY_SCV_GRAPH_INDEX_TEST_BARRIERS
+#include "commit_barrier.hpp"
+#define SCV_TEST_BARRIER(point) test_support::commit_barrier(point)
+#else
+#define SCV_TEST_BARRIER(point) ((void)0)
+#endif
+
 namespace symphony::scv::duckdb_connector {
 namespace {
 [[noreturn]] void fail(const std::string& code, const std::string& message) { throw engine::Error("connector." + code, message, 4); }
@@ -267,7 +274,11 @@ Json prepare(const engine::Request& request) {
     if(existing->size()!=0) { std::string state; auto saved=get_intent(db,input,state); require(saved==intent,"operation identifier conflict"); auto result=status_result(db,saved,state); db.commit(); return result; }
     auto total=db.query("SELECT operation_id FROM intents LIMIT 129"); require(total->size()<128,"intent capacity exhausted");
     parameters.push_back(text(intent.at("digest"))); parameters.push_back(text(snapshot.at("digest"))); parameters.push_back("prepared"); parameters.push_back(intent.dump());
-    db.exec("INSERT INTO intents VALUES (?,?,?,?,?,?,?)",parameters); auto result=status_result(db,intent,"prepared"); db.commit(); return result;
+    db.exec("INSERT INTO intents VALUES (?,?,?,?,?,?,?)",parameters); auto result=status_result(db,intent,"prepared");
+    SCV_TEST_BARRIER("prepare.before_commit");
+    db.commit();
+    SCV_TEST_BARRIER("prepare.after_commit");
+    return result;
 }
 Json commit(const engine::Request& request) {
     const auto& input=request.payload; fields(input,{"tops_id","namespace","operation_id","expected_intent_digest"}); scope(input); static_cast<void>(digest(input.at("expected_intent_digest")));
@@ -280,15 +291,21 @@ Json commit(const engine::Request& request) {
     else {
         auto total=db.query("SELECT snapshot_digest FROM snapshots LIMIT 129"); require(total->size()<128,"snapshot capacity exhausted");
         auto snapshot_parameters=parameters; snapshot_parameters.push_back(snapshot.dump()); db.exec("INSERT INTO snapshots VALUES (?,?,?,?)",snapshot_parameters);
+        SCV_TEST_BARRIER("commit.after_snapshot");
         for(const auto& [kind,filter_names]:indexed_fields) for(const auto& row:projected.at(kind)) {
             deadline(request); auto values=parameters; values.push_back(text(row.at("key"))); values.push_back(row.at("value").dump());
             std::string sql="INSERT INTO "+kind+" VALUES (?,?,?,?,?";
             for(const auto& name:filter_names) { sql+=",?"; values.push_back(name=="scope"?row.at("value").at(name).dump():text(row.at("value").at(name))); }
             sql+=")"; db.exec(sql,values);
+            SCV_TEST_BARRIER("commit.after_row");
         }
     }
     auto operation=identity(input); operation.push_back(text(input.at("operation_id"))); db.exec("UPDATE intents SET state='committed' WHERE tops_id=? AND namespace=? AND operation_id=?",operation);
-    auto result=status_result(db,intent,"committed"); db.commit(); return result;
+    auto result=status_result(db,intent,"committed");
+    SCV_TEST_BARRIER("commit.before_commit");
+    db.commit();
+    SCV_TEST_BARRIER("commit.after_commit");
+    return result;
 }
 Json status(const engine::Request& request) { const auto& input=request.payload; fields(input,{"tops_id","namespace","operation_id"}); scope(input); Database db(request,false); db.begin(); std::string state; auto intent=get_intent(db,input,state); auto result=status_result(db,intent,state); db.commit(); return result; }
 Json exported(const engine::Request& request) {
