@@ -10562,3 +10562,85 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/knowledgeengine/shv_lifecycle_schema.go`
   - `tools/qxctl/internal/knowledgeengine/shv_lifecycle_test.go`
   - `tools/qxctl/internal/knowledgeengine/shv_lifecycle_validation.go`
+
+---
+
+- record_id: `SCLV-CHG-20260913-SHV-SCOPED-TABLES`
+- record_version: `3`
+- title: `Preserve component operating profiles and quarter precision in SHV`
+- status: `canonical`
+- change_started_at: `2026-09-13T22:34:04Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV scoped table continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-13-shv-scoped-table-continuation.md`
+- skvi_references:
+  - `knowledge/shv/KERNEL.md`
+  - `modules/shv-engine/SPEC.md`
+- change_summary: |
+    Adds exact C++ kernel 0.2.0-dev scoped table interpretation with component-specific scalar fields, complete operating-profile rows and quarter launch precision. All eight operations and discovery remain available through qxctl with independent Go source replay.
+- relationship_changes: |
+    SHV retains hardware semantics and exact source mappings. Generic adapter 0.1.0-dev preserves structured catalogue values without assuming hardware authority; source lifecycle remains an independent 0.1.0-dev owner.
+- doctrine_changes: |
+    Preserves source conditions and caller selections. Quarter precision never becomes a fabricated day; operating modes stay as complete rows with no independent maxima or inferred units. Actual Node state, source authorization and hardware compatibility remain distinct.
+- compatibility_consequences: |
+    New explicit kernel version preserves actual legacy AMD catalogue semantics and old 0.1.0-dev selection. Old selected engines reject tagged table mappings. Graph ownership binds the selected kernel version; generic adapter and source lifecycle packages remain unchanged.
+- publication_consequences: |
+    Local source and append-only closure with independent rebuild comparison. No remote publication, deployment, authenticated vendor account or hardware mutation.
+- projection_consequences: |
+    Existing operation IDs, command identities and feature counts are unchanged. The SHV provenance invariant adds native table and independent consumer checks; SKVI and feature paths reflect the new implementation.
+- evidence:
+  - `../shv-03/evidence/FOCUSED_TESTS.json records 68 new native cases including 51 rejections, 56 affected legacy native cases, 20 Go groups and affected contract validation.`
+  - `../shv-03/evidence/specimens/SUMMARY.json records 19 production qxctl calls, retained Intel 12 assertions/3 profile rows, exact graph transport and unchanged AMD legacy semantics.`
+  - `../shv-03/evidence/INDEPENDENT_REVIEW.md retains two reproduced parser defects and verified installed resolutions.`
+  - `../shv-03/evidence/PACKAGE_VERIFICATION.json verifies 11 owned files, receipt and guarded uninstall.`
+  - `../shv-03/evidence/SOURCE_BUILD_PARITY.json binds clean source and byte-identical CLI/package rebuilds.`
+  - `../shv-03/MANIFEST.json and NEXT.md preserve evidence and the activation/atlas backlog.`
+- non_authorizations:
+  - `Protected source activation, permission issuance, publisher authentication or automatic HTTP acquisition.`
+  - `Rebrand equivalence inference, whole-system enumeration, live hardware measurements or structured row comparisons with inferred units.`
+  - `Hardware/provider/topology/tool selection for users or mandatory graph database choice.`
+  - `Remote publication, deployment, firmware modification or original archive edits.`
+- notes: |
+    Closes only SHV-03 scoped table interpretation. Protected source activation/recovery is planned concretely for the next increment; no protected head is claimed. Full suites remain milestone work. Local source completion uses the established post_merge disposition without claiming a remote merge. The recorded change start uses the first SHV-03 wire artifact creation time.
+- date: `2026-09-13`
+- change_completed_at: `2026-09-13T22:49:44Z`
+- recorded_at: `2026-09-13T22:51:05Z`
+- revision_value: `66d6fd29906f616d3b57d68f5cf3215d5c8295d5`
+- tree_digest: `sha256:e8009afab3451801889fbad33cf2dfddbdebf834006ee4c50fc8a88bac8c8aa2`
+- ratification_evidence_digest: `sha256:fa5ae4482a1896da6b5cc6ad55a4e517652d7e345d51770998fb6fd925827c54`
+- affected_surfaces:
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/shv/KERNEL.md`
+  - `knowledge/skvi/INDEX.md`
+  - `modules/shv-engine/CMakeLists.txt`
+  - `modules/shv-engine/FEATURES.md`
+  - `modules/shv-engine/INSTALL.md`
+  - `modules/shv-engine/MANIFEST.md`
+  - `modules/shv-engine/SKILL.md`
+  - `modules/shv-engine/SPEC.md`
+  - `modules/shv-engine/cmake/uninstall.cmake.in`
+  - `modules/shv-engine/schemas/v1/shv.schema.json`
+  - `modules/shv-engine/scripts/build_schema.py`
+  - `modules/shv-engine/src/catalogue.cpp`
+  - `modules/shv-engine/src/html.cpp`
+  - `modules/shv-engine/src/shv.hpp`
+  - `modules/shv-engine/src/table.cpp`
+  - `modules/shv-engine/tests/kernel_test.py`
+  - `modules/shv-engine/tests/table_test.py`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/internal/knowledgeengine/shv.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_source.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_tables.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_tables_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_validation.go`
