@@ -9777,3 +9777,68 @@ This PR authorizes none of the following:
   - `Provider accounts, purchases, acquisition, probes, deployment, remote publication, preserved archive edits or SHV runtime.`
 - notes: |
     The post_merge disposition records completed local Git work and asserts no remote merge. This append follows the source commit and does not recursively record itself. Evidence paths beginning ../ or ../../ are relative to the isolated repository root. Earlier staging evidence remains preserved; final selections are explicitly named verified. Runtime evidence is Darwin x86_64. The measured caller plan fit the original limit; its assembled reassessment required bundle transport. No claim of faster execution is made by this coordination increment.
+
+---
+
+- record_id: `SCLV-CHG-20260913-SCV-VALIDATION-REUSE`
+- record_version: `3`
+- title: `Reuse complete SCV bundle validation within the logical projection boundary`
+- status: `canonical`
+- date: `2026-09-13`
+- change_started_at: `2026-09-13T03:14:17Z`
+- change_completed_at: `2026-09-13T03:42:36Z`
+- recorded_at: `2026-09-13T03:42:56Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `The authorized implementation completed as a local Git commit in the isolated checkout; no forge change request was created.`
+- revision_scheme: `git-sha1`
+- revision_value: `00228f3af6cdfd02dd9502a1e14521afeefe4b68`
+- tree_digest: `sha256:f510ea565539b6448531ea9d7faa0ca51ecc0599009949282d1128adc91ffab3`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for measured SCV efficiency and parallel SHV preparation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-12-scv-validation-efficiency.md`
+- ratification_evidence_digest: `sha256:aa987980689f3be55d793649486519e2d1bb379798075deec37e2dc4f40225cd`
+- affected_surfaces:
+  - `tools/qxctl/cmd/qxctl/scv_logical_reference.go`
+  - `tools/qxctl/cmd/qxctl/scv_projection_bench_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_bundle.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_bundle_projection_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_bundle_test.go`
+- skvi_references:
+  - `knowledge/scv/BUNDLES.md`
+  - `knowledge/scv/BUNDLE-WORKFLOWS.md`
+  - `tools/qxctl/README.md`
+- change_summary: |
+    The strict SCV bundle consumer now returns the complete independently checked logical input, result and exact identity subjects. qxctl reuses those values in the same projection call instead of repeating bundle reconstruction and hashing. Early bundle dispatch also removes discarded generic parsing and redundant normalization roundtrips. Typed native-digest checks reject malformed container values without a panic.
+- relationship_changes: |
+    All input and result bounds, graph closure, hashes, metrics, attribution and independent logical validation remain required. Retained installation correlation, raw record validation, original-owner inspection and replay, immutable storage and workflow checkpoint logic remain unchanged. The derived Go result is not a wire protocol, retained authority or producer receipt.
+- doctrine_changes: |
+    Requirements, provider selection, policy, architecture, permissions and execution remain caller-owned. Reusing one complete consumer result within a call transfers no semantic ownership and introduces no persistent or cross-record cache. Hash identity is not authority, causation or deployment certification.
+- compatibility_consequences: |
+    No new native release, operation, schema, catalog entry, qxctl route, command default, record or journal shape. The selected native owner remains exact 0.10.0-dev, with existing historical owner replay. Native code, package resources and command/interface metadata are byte-for-byte unchanged in this source commit. Legacy direct consumers remain unchanged.
+- publication_consequences: |
+    Local source commit 00228f3af6cdfd02dd9502a1e14521afeefe4b68 on codex/scv-single-pass-validation descends from e6587caf1c6466db4c0bf934f38bc88ed526ee6d. The new local CLI is ../bin/qxctl-inc11-verified; native selection remains ../installed/scv-0.10.0-dev-verified. No remote publication, provider action, acquisition, deployment or original artifact edit occurred. SHV remains planning work.
+- projection_consequences: |
+    No canonical metadata projection changes are needed for this internal consumer optimization. Source scope is restricted to three production Go files and three focused test/benchmark files. Prior full-suite evidence remains historical. Duncan explicitly selected focused incremental verification, with broad SCV acceptance deferred to the final gate before SHV implementation.
+- evidence:
+  - `Source 00228f3af6cdfd02dd9502a1e14521afeefe4b68, completed 2026-09-13T03:42:36Z, tree sha256:f510ea565539b6448531ea9d7faa0ca51ecc0599009949282d1128adc91ffab3; ../increment-11/evidence/BUILD_IDENTITY.json binds authorization, CLI, exact selected owner and focused evidence.`
+  - `../increment-11/evidence/FOCUSED_TESTS.json records only changed bundle consumers and logical-reference boundaries, including installed .9 four-operation coverage and .10 workflow recovery through original .6 owners. All selected test events passed without skips; no full suite or comprehensive acceptance campaign was run.`
+  - `../increment-11/evidence/PROJECTION_COMPARISON.json and baseline/candidate CPU/allocation profiles retain the no-optimization control, complete logical oracle and measured local tradeoffs. Profile call stacks include setup; timer-derived per-operation statistics exclude fixture setup.`
+  - `../increment-11/evidence/replay-comparison-verified/SUMMARY.json records21 interleaved whole-command/native-control samples. Complete status, recovery and native bundle results match their unchanged full-fixture .10 oracles; all40 original store files retain exact bytes, inode and modification time after every call.`
+  - `../increment-11/REVIEW.md records independent review, the inherited malformed-digest panic and typed correction. Focused regressions preserve raw Unicode, exact owner/version attribution, semantic-forgery rejection, expansion preflight, caller criteria and publication/recovery boundaries.`
+  - `../increment-11/evidence/SOURCE_SCOPE.json verifies the exact limited source changes and preserved native/interface metadata. Broader Go/native suites, schema/catalog sweeps, installation sweeps, Linux acceptance and whole-repository validation remain deferred under ../../context/decisions/2026-09-12-focused-increment-testing.md.`
+  - `../../context/roadmap/2026-09-11-shv/VALIDATION-REUSE-ADDENDUM-2026-09-12.md transfers within-call validation reuse only. ../increment-11/NEXT.md prioritizes source locator continuity and retains broader provider, graph, operational and portability work.`
+- non_authorizations:
+  - `Persistent caching, skipping original-owner replay or weakening exact evidence validation.`
+  - `New provider facts, comprehensive compatibility, authenticated provenance, causal proof or runtime certification.`
+  - `Selecting caller requirements, providers, policies, architecture, permissions or execution.`
+  - `Native engine release, source acquisition, provider actions, remote publication, preserved artifact modification or SHV runtime.`
+- notes: |
+    The post_merge disposition records completed local Git work and asserts no remote merge. This append follows the source commit and does not recursively record itself. Evidence paths are relative to the isolated source root. Performance evidence is a small Darwin x86_64 sample, not a universal speed guarantee; CLI resource reports include waited-child accounting. Focused validation is explicitly not fresh whole-system verification.
