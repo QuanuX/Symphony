@@ -10185,3 +10185,87 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/knowledgeengine/scv_graph_index.go`
   - `tools/qxctl/internal/knowledgeengine/scv_graph_index_maintenance.go`
   - `tools/qxctl/internal/knowledgeengine/scv_graph_index_maintenance_test.go`
+
+---
+
+- record_id: `SCLV-CHG-20260913-SCV-TRANSFER-EXECUTION`
+- record_version: `3`
+- title: `Add recoverable exact-plan SCV index transfer through qxctl`
+- status: `canonical`
+- change_started_at: `2026-09-13T08:03:12Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for bounded SCV recoverable transfer continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-13-scv-transfer-execution.md`
+- skvi_references:
+  - `knowledge/scv/INDEX-TRANSFER.md`
+  - `tools/qxctl/internal/scvtransfer/transfer.schema.json`
+- change_summary: |
+    Adds transfer, transfer-recover and transfer-status routes that bind an exact native plan and source/target roots, retain immutable linked progress before mutation, invoke existing C++ prepare/commit operations and close only after reobservation. Prepared states, selected operation history and shared snapshots remain exact.
+- relationship_changes: |
+    qxctl owns local orchestration evidence only. Existing installed C++ engines continue to own graph semantics and database transitions. An immutable target journal serializes cooperating transfers without selecting an active graph head or acquiring SSIAG/STAV authority.
+- doctrine_changes: |
+    Caller plan, selection, source, target and execution remain explicit. Recorded completion and current revalidated completion are distinct. No provider, topology, retention, deletion or universal user architecture policy is selected.
+- compatibility_consequences: |
+    Native connector releases 0.1.0-dev and 0.2.0-dev, SCV owner 0.10.0-dev, all frozen schemas and actual C++ DuckDB 1.5.5 remain unchanged. The new local journal and schema have explicit v1 identities and do not reinterpret an older workflow protocol.
+- publication_consequences: |
+    Authorized local source commit and clean-source CLI rebuild only. Exact existing package receipts were verified. The separate fault-control CLI is test-only and never represented as production. No remote publication, provider action, deployment or archive edit.
+- projection_consequences: |
+    Three new qxctl routes produce 271 stable command identities. The 101 features and 256 reviewed interaction expectations remain registered; affected command, feature, invariant and root-summary projections are refreshed. SHV receives a planning addendum only.
+- evidence:
+  - `../increment-16/evidence/FOCUSED_TESTS.json records 35 Go groups and 95 passing events, 38 installed calls, 26 assertions and five process interruption recoveries.`
+  - `../increment-16/evidence/installed-final/FAULTS.json records observed SIGSTOP, SIGKILL, absent responses and exact test-only executable identity.`
+  - `../increment-16/evidence/SCHEMA_FINAL.json validates 75 structural instances under 27 definitions, retaining exact reused native definitions.`
+  - `../increment-16/evidence/PACKAGE_VERIFICATION.json verifies unchanged exact native packages and production absence of fault controls.`
+  - `../increment-16/evidence/SOURCE_BUILD_PARITY.json binds byte-identical production and test-only qxctl rebuilds to the clean source commit.`
+  - `../increment-16/TRANSFER_MANIFEST.json, VERIFICATION.md and REVIEW.md retain selected logical evidence and bounded recovery claims.`
+- non_authorizations:
+  - `Choosing caller requirements, providers, backend, topology, policy or a different transfer plan.`
+  - `Source deletion, retirement, cancellation, database migration, active graph-head switching or automatic retention.`
+  - `Cross-root atomicity, hardware power-loss certification, performance or cross-platform claims.`
+  - `Full SCV suite, SHV runtime, provider deployment, remote publication or original archive edits.`
+- notes: |
+    The post_merge disposition records local Git completion, not a remote merge. The separate closure appends after its source commit without recursively recording itself. Change start is the recorded scope timestamp before implementation. Full-suite SCV acceptance is the next milestone objective; optional expansions remain explicit. An incomplete transfer result is partial evidence, not completed execution.
+- date: `2026-09-13`
+- change_completed_at: `2026-09-13T08:22:21Z`
+- recorded_at: `2026-09-13T08:24:11Z`
+- revision_value: `10e1e419e5d27743a77e416ea0db4fe3324af4ac`
+- tree_digest: `sha256:25d43d4bd3c79d40b18434f916debd45675ca1f6d8aa34f16630813740842ffe`
+- ratification_evidence_digest: `sha256:ddb1f41c0b10d86d5110224a0b56cbb5bbf2ac070fa9c7fff91392d7066c5fe6`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/scv/INDEX-TRANSFER.md`
+  - `knowledge/scv/MANIFEST.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph_index.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph_index_test.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph_index_transfer.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph_index_transfer_commands.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph_index_transfer_test.go`
+  - `tools/qxctl/cmd/qxctl/scv_transfer_barrier.go`
+  - `tools/qxctl/cmd/qxctl/scv_transfer_barrier_fault.go`
+  - `tools/qxctl/internal/scvtransfer/journal.go`
+  - `tools/qxctl/internal/scvtransfer/journal_test.go`
+  - `tools/qxctl/internal/scvtransfer/rename_darwin.go`
+  - `tools/qxctl/internal/scvtransfer/rename_linux.go`
+  - `tools/qxctl/internal/scvtransfer/storage_unix.go`
+  - `tools/qxctl/internal/scvtransfer/transfer.schema.json`
+  - `tools/qxctl/tests/scv-index-transfer/installed.py`
