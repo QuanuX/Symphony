@@ -280,7 +280,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:a1c2c5873da2a7fbdaddb0f134f56f28645d8a1f2d882dd1c6c977f68a2acb18`
+- record_digest: `sha256:eec0b3ddc1cdeb9e2a7fbdf98cc3b10703cfdebb3b55bf1963039ef5a6256292`
 - notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
 
 - feature_id: `ssfv:symphony:qxctl.ssiag-administration`

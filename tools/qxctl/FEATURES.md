@@ -780,6 +780,8 @@
         "tools/qxctl/cmd/qxctl/scv_graph.go",
         "tools/qxctl/cmd/qxctl/scv_graph_index.go",
         "tools/qxctl/cmd/qxctl/scv_graph_index_maintenance.go",
+        "tools/qxctl/cmd/qxctl/scv_graph_index_transfer.go",
+        "tools/qxctl/cmd/qxctl/scv_graph_index_transfer_commands.go",
         "tools/qxctl/cmd/qxctl/scv_interface.go",
         "tools/qxctl/cmd/qxctl/scv_logical_reference.go",
         "tools/qxctl/cmd/qxctl/scv_obligation.go",
@@ -806,6 +808,8 @@
         "tools/qxctl/internal/scvcorpus/store.go",
         "tools/qxctl/internal/scvstate/storage_unix.go",
         "tools/qxctl/internal/scvstate/store.go",
+        "tools/qxctl/internal/scvtransfer/journal.go",
+        "tools/qxctl/internal/scvtransfer/storage_unix.go",
         "tools/qxctl/internal/scvtransport/https.go",
         "tools/qxctl/internal/scvworkflow/composition.go",
         "tools/qxctl/internal/scvworkflow/composition_storage_unix.go",
@@ -1034,3 +1038,5 @@
 }
 ```
 <!-- symphony:ssfv:feature-file:v1:end -->
+
+SCV index transfer adds exact-plan execution, journal-only inspection and recoverable replay under `knowledge/scv/INDEX-TRANSFER.md`. Native C++ prepare/commit owners remain unchanged; qxctl retains only durable copy progress and independently checks target evidence.

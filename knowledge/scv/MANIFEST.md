@@ -72,3 +72,5 @@ Exact `0.10.0-dev` retains thirty native operations and adds qxctl bundle workfl
 The independently installed `scv-graph-duckdb-connector` provides a bounded relational projection of immutable native graphs, separate from existing SCV engine releases. DuckDB is the user-selected default SQL database; dedicated graph engines remain caller-selectable future adapters. Structural retrieval, native semantic evaluation and protected graph-head selection retain separate contracts.
 
 The optional graph-index inventory and transfer-planning companion is `knowledge/scv/INDEX-MAINTENANCE.md`. It defines caller-selected maintenance evidence without executing transfer, deletion or semantic policy.
+
+`INDEX-TRANSFER.md` is the qxctl orchestration companion for recoverable exact-plan index copying. It does not change native SCV or connector release ownership.

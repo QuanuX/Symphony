@@ -294,3 +294,7 @@ Exact `0.9.0-dev` exposes 30 native operations. `knowledge/scv/BUNDLES.md` owns 
 ## Explicit Bundle Workflows
 
 Exact `0.10.0-dev` retains thirty native operations and adds qxctl bundle workflow run/status/recover and immutable bundled obligation retain/show. `knowledge/scv/BUNDLE-WORKFLOWS.md` owns the versioned coordination and logical-reference contracts. Separate v2 journals pin explicit transport, caller input and exact installation before work; original records preserve both native and transport identities. Status reports sealed checkpoint validation, while run/recovery and relationship inspection replay original owners. Twenty-nine schemas expose112 catalog protocols with twelve owner companions. Prior routes, defaults, records and packages remain preserved.
+
+## Recoverable index transfer
+
+`knowledge/scv/INDEX-TRANSFER.md` governs the three graph-index transfer routes and `internal/scvtransfer/` journal. Exact native source and target owners remain external installed C++ components. The new journal is local orchestration evidence, not a canonical head or authorization service.

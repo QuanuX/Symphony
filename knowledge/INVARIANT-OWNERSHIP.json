@@ -1040,6 +1040,13 @@
         },
         {
           "cases": [
+            "TestSCVGraphIndexTransferPreflightNoReservation",
+            "TestSCVGraphIndexTransferTargetIdentity"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_graph_index_transfer_test.go"
+        },
+        {
+          "cases": [
             "TestSCVGraphIndexInventoryIndependentValidation",
             "TestSCVGraphIndexTransferIndependentValidation"
           ],
@@ -1836,7 +1843,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:39ffcce5e8e4179f5c5a4ee36b8083d63443f10f74df47081fb8ecb9f75b5bdf",
+  "registry_digest": "sha256:d3acdfd0683b0fbf9b237cddd0d4a0dd85488853b19f39204446892e85c72e59",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

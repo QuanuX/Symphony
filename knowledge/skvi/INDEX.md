@@ -11074,3 +11074,29 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: transfer execution and retirement
 - notes: Frozen v1 schemas and exact older installations remain preserved.
 - status: canonical
+
+#### SCV Recoverable Index Transfer
+- path: `knowledge/scv/INDEX-TRANSFER.md`
+- title: SCV Recoverable Index Transfer
+- surface_type: contract surface
+- truth_role: owner-declared qxctl orchestration evidence contract
+- owner: qxctl maintainers
+- scope: Exact-plan transfer, immutable local progress and reobserved target evidence.
+- relationships: depends_on -> `modules/scv-graph-duckdb-connector/SPEC.md`
+- consumers: qxctl, validators, maintainers, caller-selected tools
+- deferred_projections: retirement, cancellation and migration
+- notes: Native C++ connector ownership and frozen protocols remain unchanged.
+- status: canonical
+
+#### qxctl SCV Transfer Schema
+- path: `tools/qxctl/internal/scvtransfer/transfer.schema.json`
+- title: qxctl SCV Transfer Schema
+- surface_type: schema
+- truth_role: owner-declared qxctl orchestration evidence contract
+- owner: qxctl maintainers
+- scope: Exact-plan transfer, immutable local progress and reobserved target evidence.
+- relationships: depends_on -> `knowledge/scv/INDEX-TRANSFER.md`
+- consumers: qxctl, validators, maintainers, caller-selected tools
+- deferred_projections: retirement, cancellation and migration
+- notes: Native C++ connector ownership and frozen protocols remain unchanged.
+- status: canonical

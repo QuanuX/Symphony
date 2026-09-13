@@ -1,0 +1,1968 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://symphony.local/contracts/qxctl/scv-index-transfer/v1",
+  "title": "qxctl SCV transfer orchestration v1",
+  "description": "Local orchestration evidence; native plan and inventory definitions copied exactly from frozen connector v2. Semantic seals, adjacent progress and current observations are checked by Go/C++ implementations.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/TransferInput"
+    },
+    {
+      "$ref": "#/$defs/TransferIntent"
+    },
+    {
+      "$ref": "#/$defs/TransferEvent"
+    },
+    {
+      "$ref": "#/$defs/TransferResult"
+    }
+  ],
+  "$defs": {
+    "TransferInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan",
+        "expected_plan_digest"
+      ],
+      "properties": {
+        "plan": {
+          "$ref": "#/$defs/TransferPlanResult"
+        },
+        "expected_plan_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "TransferPlanResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "backend",
+        "input",
+        "manifest",
+        "selected",
+        "excluded_operation_ids",
+        "requirements",
+        "blockers",
+        "disposition",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.graph-index-transfer-plan.v1"
+        },
+        "backend": {
+          "const": "duckdb"
+        },
+        "input": {
+          "$ref": "#/$defs/TransferPlanInput"
+        },
+        "manifest": {
+          "$ref": "#/$defs/InventoryManifest"
+        },
+        "selected": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TransferSelection"
+          },
+          "minItems": 1,
+          "maxItems": 16
+        },
+        "excluded_operation_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OperationID"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "requirements": {
+          "$ref": "#/$defs/IndexCapacity"
+        },
+        "blockers": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "intent_capacity",
+              "snapshot_capacity"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 2
+        },
+        "disposition": {
+          "enum": [
+            "ready",
+            "blocked"
+          ]
+        },
+        "digest": {
+          "$ref": "#/$defs/Digest"
+        }
+      }
+    },
+    "TransferPlanInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tops_id",
+        "namespace",
+        "expected_revision",
+        "operation_ids",
+        "source_connector",
+        "target_connector",
+        "target_root",
+        "capacity"
+      ],
+      "properties": {
+        "tops_id": {
+          "$ref": "#/$defs/TOPSID"
+        },
+        "namespace": {
+          "$ref": "#/$defs/Namespace"
+        },
+        "expected_revision": {
+          "$ref": "#/$defs/Digest"
+        },
+        "operation_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OperationID"
+          },
+          "minItems": 1,
+          "maxItems": 16
+        },
+        "source_connector": {
+          "$ref": "#/$defs/ConnectorInstallation"
+        },
+        "target_connector": {
+          "$ref": "#/$defs/ConnectorInstallation"
+        },
+        "target_root": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096,
+          "pattern": "^/"
+        },
+        "capacity": {
+          "$ref": "#/$defs/IndexCapacity"
+        }
+      }
+    },
+    "TOPSID": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "Namespace": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "Digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "OperationID": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+    },
+    "ConnectorInstallation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "Role",
+        "ModuleID",
+        "EngineID",
+        "Version",
+        "Prefix",
+        "ReceiptPath",
+        "ReceiptDigest",
+        "ReceiptProtocol",
+        "ExecutablePath",
+        "ExecutableDigest"
+      ],
+      "properties": {
+        "Role": {
+          "const": "scv-graph-duckdb-connector"
+        },
+        "ModuleID": {
+          "const": "scv-graph-duckdb-connector"
+        },
+        "EngineID": {
+          "const": "symphony-scv-graph-duckdb-connector"
+        },
+        "Version": {
+          "enum": [
+            "0.1.0-dev",
+            "0.2.0-dev"
+          ]
+        },
+        "Prefix": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^/[^\\u0000]*$"
+        },
+        "ReceiptPath": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^/[^\\u0000]*$"
+        },
+        "ReceiptDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "ReceiptProtocol": {
+          "const": "symphony.knowledge.install-receipt.v2"
+        },
+        "ExecutablePath": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^/[^\\u0000]*$"
+        },
+        "ExecutableDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "IndexCapacity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "intents",
+        "snapshots"
+      ],
+      "properties": {
+        "intents": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        },
+        "snapshots": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        }
+      }
+    },
+    "InventoryManifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "tops_id",
+        "namespace",
+        "entries",
+        "snapshots",
+        "global_revision",
+        "global_counts",
+        "capacity",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.graph-index-inventory-manifest.v1"
+        },
+        "tops_id": {
+          "$ref": "#/$defs/TOPSID"
+        },
+        "namespace": {
+          "$ref": "#/$defs/Namespace"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/InventoryEntry"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "snapshots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SnapshotReferences"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "global_revision": {
+          "$ref": "#/$defs/Digest"
+        },
+        "global_counts": {
+          "$ref": "#/$defs/IndexCapacity"
+        },
+        "capacity": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "intents",
+            "snapshots"
+          ],
+          "properties": {
+            "intents": {
+              "const": 128
+            },
+            "snapshots": {
+              "const": 128
+            }
+          }
+        },
+        "digest": {
+          "$ref": "#/$defs/Digest"
+        }
+      }
+    },
+    "InventoryEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operation_id",
+        "intent_digest",
+        "snapshot_digest",
+        "state",
+        "graph_digest",
+        "owner",
+        "connector",
+        "validation_query_time",
+        "counts",
+        "projection_digest"
+      ],
+      "properties": {
+        "operation_id": {
+          "$ref": "#/$defs/OperationID"
+        },
+        "intent_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "snapshot_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "state": {
+          "enum": [
+            "prepared",
+            "committed"
+          ]
+        },
+        "graph_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "owner": {
+          "$ref": "#/$defs/OwnerInstallation"
+        },
+        "connector": {
+          "$ref": "#/$defs/ConnectorInstallation"
+        },
+        "validation_query_time": {
+          "$ref": "#/$defs/QueryTime"
+        },
+        "counts": {
+          "$ref": "#/$defs/Counts"
+        },
+        "projection_digest": {
+          "$ref": "#/$defs/Digest"
+        }
+      }
+    },
+    "OwnerInstallation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "Role",
+        "ModuleID",
+        "EngineID",
+        "Version",
+        "Prefix",
+        "ReceiptPath",
+        "ReceiptDigest",
+        "ReceiptProtocol",
+        "ExecutablePath",
+        "ExecutableDigest"
+      ],
+      "properties": {
+        "Role": {
+          "enum": [
+            "scv",
+            "schv",
+            "scev",
+            "schv-aws",
+            "schv-azure",
+            "schv-do",
+            "schv-gcp",
+            "scev-cf"
+          ]
+        },
+        "ModuleID": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000]*$"
+        },
+        "EngineID": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[^\\u0000]*$"
+        },
+        "Version": {
+          "enum": [
+            "0.1.0-dev",
+            "0.2.0-dev",
+            "0.3.0-dev",
+            "0.4.0-dev",
+            "0.5.0-dev",
+            "0.6.0-dev",
+            "0.7.0-dev",
+            "0.8.0-dev",
+            "0.9.0-dev",
+            "0.10.0-dev"
+          ]
+        },
+        "Prefix": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^/[^\\u0000]*$"
+        },
+        "ReceiptPath": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^/[^\\u0000]*$"
+        },
+        "ReceiptDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "ReceiptProtocol": {
+          "const": "symphony.knowledge.install-receipt.v2"
+        },
+        "ExecutablePath": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096,
+          "pattern": "^/[^\\u0000]*$"
+        },
+        "ExecutableDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "Role": {
+                "const": "scv"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ModuleID": {
+                "const": "scv-engine"
+              },
+              "EngineID": {
+                "const": "symphony-scv"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "Role": {
+                "const": "schv"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ModuleID": {
+                "const": "schv-engine"
+              },
+              "EngineID": {
+                "const": "symphony-schv"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "Role": {
+                "const": "scev"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ModuleID": {
+                "const": "scev-engine"
+              },
+              "EngineID": {
+                "const": "symphony-scev"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "Role": {
+                "const": "schv-aws"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ModuleID": {
+                "const": "schv-aws-engine"
+              },
+              "EngineID": {
+                "const": "symphony-schv-aws"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "Role": {
+                "const": "schv-azure"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ModuleID": {
+                "const": "schv-azure-engine"
+              },
+              "EngineID": {
+                "const": "symphony-schv-azure"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "Role": {
+                "const": "schv-do"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ModuleID": {
+                "const": "schv-do-engine"
+              },
+              "EngineID": {
+                "const": "symphony-schv-do"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "Role": {
+                "const": "schv-gcp"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ModuleID": {
+                "const": "schv-gcp-engine"
+              },
+              "EngineID": {
+                "const": "symphony-schv-gcp"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "Role": {
+                "const": "scev-cf"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "ModuleID": {
+                "const": "scev-cf-engine"
+              },
+              "EngineID": {
+                "const": "symphony-scev-cf"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "QueryTime": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"
+    },
+    "Counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claims",
+        "nodes",
+        "edges"
+      ],
+      "properties": {
+        "claims": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        },
+        "nodes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 512
+        },
+        "edges": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024
+        }
+      }
+    },
+    "SnapshotReferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "snapshot_digest",
+        "operation_ids",
+        "committed_operations"
+      ],
+      "properties": {
+        "snapshot_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "operation_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OperationID"
+          },
+          "minItems": 1,
+          "maxItems": 128
+        },
+        "committed_operations": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        }
+      }
+    },
+    "TransferSelection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "target_snapshot_digest",
+        "target_intent_digest"
+      ],
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/StatusResult"
+        },
+        "target_snapshot_digest": {
+          "$ref": "#/$defs/Digest"
+        },
+        "target_intent_digest": {
+          "$ref": "#/$defs/Digest"
+        }
+      }
+    },
+    "StatusResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "backend",
+        "intent",
+        "state",
+        "snapshot_digest",
+        "projection_digest",
+        "counts",
+        "index_verified",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.graph-index-status.v1"
+        },
+        "backend": {
+          "const": "duckdb"
+        },
+        "intent": {
+          "$ref": "#/$defs/Intent"
+        },
+        "state": {
+          "enum": [
+            "prepared",
+            "committed"
+          ]
+        },
+        "snapshot_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "projection_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "counts": {
+          "$ref": "#/$defs/Counts"
+        },
+        "index_verified": {
+          "type": "boolean"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "prepared"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "index_verified": {
+                "const": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "committed"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "index_verified": {
+                "const": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "operation_id",
+        "snapshot",
+        "validation_query_time",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.graph-index-intent.v1"
+        },
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+        },
+        "snapshot": {
+          "$ref": "#/$defs/Snapshot"
+        },
+        "validation_query_time": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "Snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "backend",
+        "mapping_version",
+        "tops_id",
+        "namespace",
+        "graph",
+        "owner",
+        "connector",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.graph-index-snapshot.v1"
+        },
+        "backend": {
+          "const": "duckdb"
+        },
+        "mapping_version": {
+          "const": "1"
+        },
+        "tops_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "namespace": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "graph": {
+          "$ref": "#/$defs/Graph"
+        },
+        "owner": {
+          "$ref": "#/$defs/OwnerInstallation"
+        },
+        "connector": {
+          "$ref": "#/$defs/ConnectorInstallation"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "Graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "knowledge_digests",
+        "interpretations",
+        "domain",
+        "selection_policy",
+        "captures",
+        "claims",
+        "native_nodes",
+        "native_edges",
+        "limitations",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.graph.v1"
+        },
+        "knowledge_digests": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "maxItems": 16,
+          "minItems": 1
+        },
+        "interpretations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "knowledge_digest",
+              "domain",
+              "interpreter_version"
+            ],
+            "properties": {
+              "knowledge_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "domain": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "interpreter_version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              }
+            }
+          },
+          "maxItems": 16,
+          "minItems": 1
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "selection_policy": {
+          "$ref": "#/$defs/Imported_interpretation_input_schema___defs_selectionPolicy"
+        },
+        "captures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Imported_capture_schema_"
+          },
+          "maxItems": 16,
+          "minItems": 0
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Imported_interpretation_input_schema___defs_claim"
+          },
+          "maxItems": 128,
+          "minItems": 0
+        },
+        "native_nodes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "node_id",
+              "kind",
+              "capture_digest",
+              "pointer",
+              "attributes"
+            ],
+            "properties": {
+              "node_id": {
+                "type": "string",
+                "pattern": "^native:[0-9a-f]{64}$"
+              },
+              "kind": {
+                "enum": [
+                  "source",
+                  "section",
+                  "reference",
+                  "openapi_document",
+                  "api_operation",
+                  "schema_structure"
+                ]
+              },
+              "capture_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "pointer": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 65536
+              },
+              "attributes": {
+                "type": "object",
+                "maxProperties": 16,
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "minLength": 0,
+                      "maxLength": 65536
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "maxItems": 512,
+          "minItems": 0
+        },
+        "native_edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "from",
+              "to",
+              "relation"
+            ],
+            "properties": {
+              "from": {
+                "type": "string",
+                "pattern": "^native:[0-9a-f]{64}$"
+              },
+              "to": {
+                "type": "string",
+                "pattern": "^native:[0-9a-f]{64}$"
+              },
+              "relation": {
+                "enum": [
+                  "contains",
+                  "links_to",
+                  "describes",
+                  "declares"
+                ]
+              }
+            }
+          },
+          "maxItems": 1024,
+          "minItems": 0
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65536
+          },
+          "maxItems": 512,
+          "minItems": 0
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "Imported_interpretation_input_schema___defs_selectionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "max_age_seconds",
+        "allowed_statement_kinds",
+        "partial_capture"
+      ],
+      "properties": {
+        "policy_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "max_age_seconds": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 3155760000
+            }
+          ]
+        },
+        "allowed_statement_kinds": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 7,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "documented_fact",
+              "requirement",
+              "recommendation",
+              "observation",
+              "user_assertion",
+              "inference",
+              "hypothesis"
+            ]
+          }
+        },
+        "partial_capture": {
+          "enum": [
+            "exclude",
+            "include_qualified"
+          ]
+        }
+      }
+    },
+    "Imported_capture_schema_": {
+      "title": "Capture v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "source",
+        "locator_id",
+        "resolved_uri",
+        "redirects",
+        "observed_at",
+        "upstream_revision",
+        "media_type",
+        "body",
+        "completeness",
+        "issues",
+        "body_digest",
+        "byte_size",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.capture.v1"
+        },
+        "source": {
+          "$ref": "#/$defs/Imported_source_schema_"
+        },
+        "locator_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "resolved_uri": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "redirects": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "maxItems": 8,
+          "minItems": 0
+        },
+        "observed_at": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "upstream_revision": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "scheme",
+                "value"
+              ],
+              "properties": {
+                "scheme": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9_.:-]+$"
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                }
+              }
+            }
+          ]
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "body": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 65536
+        },
+        "completeness": {
+          "enum": [
+            "complete",
+            "partial",
+            "failed"
+          ]
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "maxItems": 64,
+          "minItems": 0
+        },
+        "body_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "byte_size": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65536
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "description": "body maxLength is a structural character bound; runtime separately enforces 65536 UTF-8 bytes, excludes NUL, validates both digests and requires issues for partial/failed captures."
+    },
+    "Imported_source_schema_": {
+      "title": "Source v1",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "source_id",
+        "provider_id",
+        "family_id",
+        "publisher",
+        "authority_role",
+        "scope",
+        "locators",
+        "continuity_evidence",
+        "generation",
+        "predecessor_digest",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.scv.source.v1"
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "provider_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "family_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "publisher": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "authority_role": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.:-]+$"
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "locators": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "locator_id",
+              "uri",
+              "role",
+              "format",
+              "selector"
+            ],
+            "properties": {
+              "locator_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9_.:-]+$"
+              },
+              "uri": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "role": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9_.:-]+$"
+              },
+              "format": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9_.:-]+$"
+              },
+              "selector": {
+                "type": "string",
+                "minLength": 0,
+                "maxLength": 4096
+              }
+            }
+          },
+          "maxItems": 16,
+          "minItems": 1
+        },
+        "continuity_evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "maxItems": 64,
+          "minItems": 0
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "predecessor_digest": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          ]
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "description": "Semantic checks additionally enforce source lineage, unique locator IDs, domain scope, URI safety, UTF-8 byte bounds and exact omit-self digest."
+    },
+    "Imported_interpretation_input_schema___defs_claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id",
+        "subject",
+        "predicate",
+        "value",
+        "scope",
+        "statement_kind",
+        "evidence",
+        "dependencies"
+      ],
+      "properties": {
+        "claim_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "predicate": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "value": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "value"
+              ],
+              "properties": {
+                "type": {
+                  "const": "string"
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "unit": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "value"
+              ],
+              "properties": {
+                "type": {
+                  "const": "reference"
+                },
+                "value": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "unit": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "value"
+              ],
+              "properties": {
+                "type": {
+                  "const": "boolean"
+                },
+                "value": {
+                  "type": "boolean"
+                },
+                "unit": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "value"
+              ],
+              "properties": {
+                "type": {
+                  "const": "integer"
+                },
+                "value": {
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                },
+                "unit": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "type",
+                "value"
+              ],
+              "properties": {
+                "type": {
+                  "const": "decimal"
+                },
+                "value": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "pattern": "^-?(?:0|[1-9][0-9]*)(?:\\.[0-9]*[1-9])?$",
+                  "not": {
+                    "const": "-0"
+                  }
+                },
+                "unit": {
+                  "anyOf": [
+                    {
+                      "type": "null"
+                    },
+                    {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "scope": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 0,
+            "maxLength": 512
+          },
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "maxProperties": 16
+        },
+        "statement_kind": {
+          "enum": [
+            "documented_fact",
+            "requirement",
+            "recommendation",
+            "observation",
+            "user_assertion",
+            "inference",
+            "hypothesis"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "capture_digest",
+              "quote"
+            ],
+            "properties": {
+              "capture_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "quote": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              }
+            }
+          },
+          "maxItems": 16,
+          "minItems": 0
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "claim_id",
+              "role"
+            ],
+            "properties": {
+              "claim_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "role": {
+                "enum": [
+                  "support",
+                  "requires",
+                  "scope"
+                ]
+              }
+            }
+          },
+          "maxItems": 16,
+          "minItems": 0
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+            }
+          ]
+        },
+        "valid_until": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+            }
+          ]
+        },
+        "alternative_supports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "support_id",
+              "evidence",
+              "dependencies"
+            ],
+            "properties": {
+              "support_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "capture_digest",
+                    "quote"
+                  ],
+                  "properties": {
+                    "capture_digest": {
+                      "type": "string",
+                      "pattern": "^sha256:[0-9a-f]{64}$"
+                    },
+                    "quote": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4096
+                    }
+                  }
+                },
+                "maxItems": 16,
+                "minItems": 0
+              },
+              "dependencies": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "claim_id",
+                    "role"
+                  ],
+                  "properties": {
+                    "claim_id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 512
+                    },
+                    "role": {
+                      "enum": [
+                        "support",
+                        "requires",
+                        "scope"
+                      ]
+                    }
+                  }
+                },
+                "maxItems": 16,
+                "minItems": 0
+              }
+            }
+          },
+          "maxItems": 7,
+          "minItems": 0
+        },
+        "scope_dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source_id",
+              "capture_digests"
+            ],
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 512
+              },
+              "capture_digests": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                },
+                "maxItems": 16,
+                "minItems": 0
+              }
+            }
+          },
+          "maxItems": 16,
+          "minItems": 0
+        }
+      }
+    },
+    "TransferIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "source_root",
+        "target_root",
+        "plan",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-index-transfer-intent.v1"
+        },
+        "source_root": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096,
+          "pattern": "^/"
+        },
+        "target_root": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096,
+          "pattern": "^/"
+        },
+        "plan": {
+          "$ref": "#/$defs/TransferPlanResult"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "TransferEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "transfer_digest",
+        "sequence",
+        "previous",
+        "phase",
+        "operation_id",
+        "result_digest",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-index-transfer-event.v1"
+        },
+        "transfer_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64
+        },
+        "previous": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "phase": {
+          "enum": [
+            "prepare_pending",
+            "prepared",
+            "commit_pending",
+            "committed",
+            "complete"
+          ]
+        },
+        "operation_id": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "result_digest": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            {
+              "const": ""
+            }
+          ]
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "phase": {
+                "enum": [
+                  "prepared",
+                  "committed"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "result_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "result_digest": {
+                "const": ""
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "phase": {
+                "const": "complete"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "operation_id": {
+                "const": ""
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "operation_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "TransferResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "transfer_digest",
+        "source_root",
+        "target_root",
+        "events",
+        "next_phase",
+        "next_operation_id",
+        "status",
+        "problem",
+        "target_manifest",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.scv-index-transfer-result.v1"
+        },
+        "transfer_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "source_root": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096,
+          "pattern": "^/"
+        },
+        "target_root": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096,
+          "pattern": "^/"
+        },
+        "events": {
+          "type": "array",
+          "maxItems": 65,
+          "items": {
+            "$ref": "#/$defs/TransferEvent"
+          }
+        },
+        "next_phase": {
+          "enum": [
+            "prepare_pending",
+            "prepared",
+            "commit_pending",
+            "committed",
+            "complete",
+            ""
+          ]
+        },
+        "next_operation_id": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "status": {
+          "enum": [
+            "complete",
+            "incomplete",
+            "recorded_complete",
+            "recorded_incomplete"
+          ]
+        },
+        "problem": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "target_manifest": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/InventoryManifest"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    }
+  }
+}

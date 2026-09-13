@@ -24,7 +24,7 @@ type graphIndexOptions struct {
 }
 
 func newSCVGraphIndexCommand() *cobra.Command {
-	group := structural("graph-index", fmt.Errorf("graph-index subcommand is required: inspect, import, status, recover, query, export, inventory, transfer-plan"))
+	group := structural("graph-index", fmt.Errorf("graph-index subcommand is required: inspect, import, status, recover, query, export, inventory, transfer-plan, transfer, transfer-status, transfer-recover"))
 	for _, action := range []string{"inspect", "import", "status", "recover", "query", "export"} {
 		o := graphIndexOptions{}
 		child := &cobra.Command{Use: action, Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error { return runSCVGraphIndex(action, o) }}
@@ -92,6 +92,9 @@ func newSCVGraphIndexCommand() *cobra.Command {
 		}
 		commandregistry.Attach(child, spec)
 		group.AddCommand(child)
+	}
+	for _, action := range []string{"transfer", "transfer-status", "transfer-recover"} {
+		group.AddCommand(newSCVGraphIndexTransferCommand(action))
 	}
 	group.AddCommand(newSCVGraphIndexMaintenanceCommand("inventory"), newSCVGraphIndexMaintenanceCommand("transfer-plan"))
 	return group
