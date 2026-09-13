@@ -9616,3 +9616,164 @@ This PR authorizes none of the following:
   - `Ambient dependency lookup, selected graph heads, latest-version substitution, new database or operational adapter, remote publication, original archive edits or SHV runtime.`
 - notes: |
     The post_merge disposition describes completed local Git work and asserts no remote merge. This append follows the source commit and does not recursively record itself. Evidence paths beginning ../ or ../../ are relative to the isolated repository root. Staging diagnostics, initial registry/test setup failures and a native deadline rejection during concurrent checks remain preserved; the separately named complete campaign passes without raising deadlines or bounds. Final release selections are explicitly named verified. Runtime evidence is Darwin x86_64. Shared mechanics do not merge semantic owners.
+
+---
+
+- record_id: `SCLV-CHG-20260913-SCV-BUNDLE-WORKFLOWS`
+- record_version: `3`
+- title: `Explicit SCV bundle workflows and immutable logical evidence relationships`
+- status: `canonical`
+- date: `2026-09-13`
+- change_started_at: `2026-09-13T00:19:53Z`
+- change_completed_at: `2026-09-13T01:01:55Z`
+- recorded_at: `2026-09-13T01:02:24Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `The authorized implementation completed as a local Git commit in the isolated checkout; no forge change request was created.`
+- revision_scheme: `git-sha1`
+- revision_value: `0c7a8a2796e956867f1ed369fb0da8de4ffa7c9e`
+- tree_digest: `sha256:d31cc0b6476a90e822251d74d964b73fbae554aa48aa80fe4de58447da45f6d7`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SCV explicit bundle coordination and parallel SHV preparation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-12-scv-bundle-workflows.md`
+- ratification_evidence_digest: `sha256:7c3c92d751d41e26c88b100c81796d3d3182e4347e84a1d76b8c9cd0a2f226c4`
+- affected_surfaces:
+  - `README.md`
+  - `cmake/ScvInterface.generated.cmake`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/scv/AGENT-WORKFLOWS.md`
+  - `knowledge/scv/BUNDLE-WORKFLOWS.md`
+  - `knowledge/scv/MANIFEST.md`
+  - `knowledge/scv/OWNER-INTERFACE.json`
+  - `knowledge/scv/OWNER-INTERFACE.md`
+  - `knowledge/scv/SPEC.md`
+  - `knowledge/scv/schemas/v1/MANIFEST.md`
+  - `knowledge/scv/schemas/v1/bundle.schema.json`
+  - `knowledge/scv/schemas/v1/owner-interface.schema.json`
+  - `knowledge/scv/schemas/v1/schema-catalog.json`
+  - `knowledge/scv/schemas/v1/scv-artifact.schema.json`
+  - `knowledge/scv/schemas/v1/scv-bundle-obligation-link.schema.json`
+  - `knowledge/scv/schemas/v1/scv-bundle-workflow.schema.json`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/scev-cf-engine/CMakeLists.txt`
+  - `modules/scev-cf-engine/FEATURES.md`
+  - `modules/scev-cf-engine/INSTALL.md`
+  - `modules/scev-cf-engine/MANIFEST.md`
+  - `modules/scev-cf-engine/SPEC.md`
+  - `modules/scev-engine/CMakeLists.txt`
+  - `modules/scev-engine/FEATURES.md`
+  - `modules/scev-engine/INSTALL.md`
+  - `modules/scev-engine/MANIFEST.md`
+  - `modules/scev-engine/SPEC.md`
+  - `modules/schv-aws-engine/CMakeLists.txt`
+  - `modules/schv-aws-engine/FEATURES.md`
+  - `modules/schv-aws-engine/INSTALL.md`
+  - `modules/schv-aws-engine/MANIFEST.md`
+  - `modules/schv-aws-engine/SPEC.md`
+  - `modules/schv-azure-engine/CMakeLists.txt`
+  - `modules/schv-azure-engine/FEATURES.md`
+  - `modules/schv-azure-engine/INSTALL.md`
+  - `modules/schv-azure-engine/MANIFEST.md`
+  - `modules/schv-azure-engine/SPEC.md`
+  - `modules/schv-do-engine/CMakeLists.txt`
+  - `modules/schv-do-engine/FEATURES.md`
+  - `modules/schv-do-engine/INSTALL.md`
+  - `modules/schv-do-engine/MANIFEST.md`
+  - `modules/schv-do-engine/SPEC.md`
+  - `modules/schv-engine/CMakeLists.txt`
+  - `modules/schv-engine/FEATURES.md`
+  - `modules/schv-engine/INSTALL.md`
+  - `modules/schv-engine/MANIFEST.md`
+  - `modules/schv-engine/SPEC.md`
+  - `modules/schv-gcp-engine/CMakeLists.txt`
+  - `modules/schv-gcp-engine/FEATURES.md`
+  - `modules/schv-gcp-engine/INSTALL.md`
+  - `modules/schv-gcp-engine/MANIFEST.md`
+  - `modules/schv-gcp-engine/SPEC.md`
+  - `modules/scv-engine/CMakeLists.txt`
+  - `modules/scv-engine/FEATURES.md`
+  - `modules/scv-engine/INSTALL.md`
+  - `modules/scv-engine/MANIFEST.md`
+  - `modules/scv-engine/SPEC.md`
+  - `modules/scv-engine/src/interface.generated.inc`
+  - `modules/scv-engine/tests/fixtures/owner-interface-0.9.v1.json`
+  - `modules/scv-engine/tests/installed_integration.py`
+  - `modules/scv-engine/tests/interface_generation_test.py`
+  - `modules/scv-engine/tools/generate_interface.py`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/INSTALL.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/scv_bundle.go`
+  - `tools/qxctl/cmd/qxctl/scv_bundle_obligation.go`
+  - `tools/qxctl/cmd/qxctl/scv_bundle_obligation_test.go`
+  - `tools/qxctl/cmd/qxctl/scv_bundle_workflow.go`
+  - `tools/qxctl/cmd/qxctl/scv_bundle_workflow_test.go`
+  - `tools/qxctl/cmd/qxctl/scv_logical_reference.go`
+  - `tools/qxctl/cmd/qxctl/scv_logical_reference_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_bundle.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_interface_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_test.go`
+  - `tools/qxctl/internal/scvworkflow/composition_v2.go`
+  - `tools/qxctl/internal/scvworkflow/composition_v2_storage_unix.go`
+  - `tools/qxctl/internal/scvworkflow/composition_v2_test.go`
+  - `tools/symphony-validator/src/artifacts.cpp`
+- skvi_references:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/scv/OWNER-INTERFACE.md`
+  - `knowledge/scv/OWNER-INTERFACE.json`
+  - `knowledge/scv/BUNDLE-WORKFLOWS.md`
+  - `knowledge/scv/schemas/v1/scv-bundle-workflow.schema.json`
+  - `knowledge/scv/schemas/v1/scv-bundle-obligation-link.schema.json`
+  - `knowledge/scv/schemas/v1/schema-catalog.json`
+  - `knowledge/scv/AGENT-WORKFLOWS.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/scv-engine/SPEC.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/FEATURES.md`
+- change_summary: |
+    Adds explicit versioned qxctl bundle workflow run/status/recover and immutable bundled obligation retain/show. Existing native bundle operations evaluate unchanged composition meanings. Complete full-fixture reassessment now passes through maintained stage assembly, retention and interrupted recovery.
+- relationship_changes: |
+    Direct and bundled original records remain distinct. A logical resolver derives native result, stored artifact and transport descriptors from exact records; run/recovery and relationship inspection replay their original installations. Checkpoint validation rebuilds the requested input from pinned references. Relationship inspection compares expanded follow-up inputs to selected original logical documents and submissions.
+- doctrine_changes: |
+    Applies VGAA quantOS direction. Caller requirements, providers, recipes, policy, topology, permissions and execution remain user decisions. Status validates sealed checkpoints without claiming owner replay. A complete workflow does not imply a satisfied criterion, an implemented recipe, authenticated provenance, causal proof or deployment success.
+- compatibility_consequences: |
+    Eight exact 0.10.0-dev packages retain thirty native operations and supply twenty-nine schemas,112 catalog protocols and twelve companions. Seventy-two earlier packages and nine earlier final CLI binaries remain unchanged. A frozen .9 declaration preserves historical admission. Existing v1 workflow/link shapes, defaults, native process bounds and operation meanings remain unchanged. New v2 paths explicitly select bundle transport and reject malformed Unicode in every selected raw record and acknowledged publication.
+- publication_consequences: |
+    Local source commit 0c7a8a2796e956867f1ed369fb0da8de4ffa7c9e on codex/scv-bundle-workflows descends from 3fef86adb8453c82c803b8ad5a9147157c458cec. Final selections are ../bin/qxctl-inc10-verified and ../installed/scv-0.10.0-dev-verified. No remote push, merge, tag, acquisition, provider action, deployment, credential use or preserved archive edit occurred. SHV remains planning work.
+- projection_consequences: |
+    Owner interface, generated C++/Go/CMake metadata, schema ownership, SKVI, SSFV, feature administration, invariant routing and root summary agree. qxctl has260 command leaves including62 SCV leaves. Totals remain100 features,252 administration expectations,twenty-one invariant records and eleven adapter identities. The new companion owns the two v2 schemas; current discovery also corrects the surface-count bound and directly validates its declaration.
+- evidence:
+  - `Source commit 0c7a8a2796e956867f1ed369fb0da8de4ffa7c9e completed 2026-09-13T01:01:55Z; source tree sha256:d31cc0b6476a90e822251d74d964b73fbae554aa48aa80fe4de58447da45f6d7. ../increment-10/evidence/BUILD_IDENTITY.json binds source, authorization, final CLI and selected native installation.`
+  - `../increment-10/evidence/cpp-final-ctest.log records18 native/installed CTests. interface-final-tests.log records14 interface tests; interface-final-check.json verifies complete projections. validator-final3-ctest.log records8 validator regressions.`
+  - `../increment-10/evidence/go-full-final-result.json records21 test-bearing packages and 1105 passing test/subtest events with exact .1 through .10 selectors, zero failures. Explicit skips are retained and are not counted as passes.`
+  - `../increment-10/evidence/EXISTING_COMMAND_PARITY.json verifies all255 prior structured command definitions exactly unchanged, with only the five intended v2 leaves added.`
+  - `../increment-10/evidence/INSTALLED_PACKAGES_FINAL.json verifies80 packages,72 earlier packages and9 earlier final CLIs unchanged. Its source-parity companion verifies344 current installed resources against source.`
+  - `../increment-10/evidence/workflows-verified/SUMMARY.json records 65 exact qxctl calls, 53 successes, 11 expected rejections and one observed process interruption. Full-fixture before, unchanged-refresh and completed-group results preserve two passed fixtures and exact prior semantic outputs. Original .6/.7 pack owners and .7/.9/.10 direct/bundled composition provenance remain selected explicitly.`
+  - `../increment-10/evidence/workflows-verified/COMMANDS.json preserves actual process-group SIGKILL after the reassessment input checkpoint, its immutable observed journal, and exact recovered result. Deterministic installed regressions separately cover all eleven workflow durable boundaries. Relationship tests cover both publication boundaries, concurrent identical reuse and mismatched original evidence.`
+  - `../increment-10/REVIEW.md records independent review and the scoped raw-Unicode publication readback correction. New paths reject poisoned preexisting objects before acknowledging checkpoints or relationships; legacy parser behavior remains separately scoped. A full workflow result is bounded before publishing completion.`
+  - `../increment-10/evidence/SCHEMA_REVIEW_FINAL.json validates29 schemas,112 protocol definitions, the exact owner declaration and 169 actual instances. canonical-before-closure.json records 10518 passes with zero warnings/violations and result sha256:685227c829d2fdc07bd03e375adb9ff311cf42ef7666eca914d3bb6fbf2dfa5e.`
+  - `../../context/roadmap/2026-09-11-shv/BUNDLE-WORKFLOW-ADDENDUM-2026-09-12.md transfers identity, complete dependencies, original-owner replay and journal mechanics into the separately scoped hardware dossier plan. ../increment-10/NEXT.md retains measured efficiency work, broader provider dossiers, graph/operational adapters and Linux acceptance. SHV runtime is deferred.`
+- non_authorizations:
+  - `Universal provider knowledge, compatibility, authenticated provenance or runtime certification inferred from local evidence identities.`
+  - `Selecting requirements, providers, recipes, policies, architecture, permissions or execution for the caller.`
+  - `Ambient dependency lookup, authoritative graph heads, latest-version substitution, persistent cache policy, new database or operational adapter.`
+  - `Provider accounts, purchases, acquisition, probes, deployment, remote publication, preserved archive edits or SHV runtime.`
+- notes: |
+    The post_merge disposition records completed local Git work and asserts no remote merge. This append follows the source commit and does not recursively record itself. Evidence paths beginning ../ or ../../ are relative to the isolated repository root. Earlier staging evidence remains preserved; final selections are explicitly named verified. Runtime evidence is Darwin x86_64. The measured caller plan fit the original limit; its assembled reassessment required bundle transport. No claim of faster execution is made by this coordination increment.
