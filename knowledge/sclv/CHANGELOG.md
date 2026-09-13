@@ -10345,3 +10345,125 @@ This PR authorizes none of the following:
   - `tools/qxctl/cmd/qxctl/scv_schema_test.go`
   - `tools/qxctl/internal/knowledgeengine/scv_graph_index_schema.go`
   - `tools/qxctl/internal/scvtransfer/schema.go`
+
+---
+
+- record_id: `SCLV-CHG-20260913-SHV-KERNEL-ADAPTERS`
+- record_version: `3`
+- title: `Deliver the SHV source-backed kernel and generic graph adapter interface`
+- status: `canonical`
+- change_started_at: `2026-09-13T17:27:41Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV initial kernel and generic graph adapters`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-13-shv-kernel-and-generic-adapters.md`
+- skvi_references:
+  - `knowledge/shv/KERNEL.md`
+  - `modules/shv-engine/SPEC.md`
+  - `modules/shv-graph-adapter/SPEC.md`
+- change_summary: |
+    Adds independently installed C++ SHV coverage, exact-source catalogue replay, caller requirement evaluation and graph projection/validation, with a separate generic C++ graph port, portable reference adapter and full qxctl administration.
+- relationship_changes: |
+    SHV retains source and hardware semantics; generic adapters retain structural exchange. The qxctl consumer verifies exact installations and independently checks result correspondence. Shared Phase 1 mechanics, feature administration and invariant records preserve separate owners.
+- doctrine_changes: |
+    The 2018-onward model-introduction profile is a configurable tool default. Users retain hardware, source mapping, requirement, topology, provider and tool choices. Missing evidence stays unresolved and processor fields do not establish whole-system compatibility.
+- compatibility_consequences: |
+    Initial exact 0.1.0-dev SHV and adapter protocols are additive. Existing SCV engines, selected installations and C++ DuckDB SQL default remain unchanged. No dedicated graph vendor or persistent graph driver is selected.
+- publication_consequences: |
+    Local source and append-only closure commits with independent source rebuild and exact receipt verification. No remote publication, deployment, vendor account or hardware mutation.
+- projection_consequences: |
+    Thirteen new qxctl leaves produce285 command identities. Three new features produce104 registered features with266 reviewed expectations and256 required surfaces. Two new invariants and adapters produce24 and14 respectively; SKVI and root summary are refreshed.
+- evidence:
+  - `../shv-01/evidence/FOCUSED_TESTS.json records scoped native, independent Go, actual production CLI and affected repository contract verification.`
+  - `../shv-01/evidence/specimen/SUMMARY.json binds retained AMD primary files, two exact models, six assertions, source-replayed findings and lossless graph roundtrip.`
+  - `../shv-01/evidence/PACKAGE_VERIFICATION.json records exact final owned bytes and guarded uninstall behavior.`
+  - `../shv-01/evidence/SCHEMA_VERIFICATION.json records actual artifacts validated against exact installed or separately CLI-owned schemas.`
+  - `../shv-01/evidence/SOURCE_BUILD_PARITY.json binds clean source rebuilds to complete selected package and qxctl bytes.`
+  - `../shv-01/MANIFEST.json, SCOPE.md, REVIEW.md and NEXT.md preserve provenance, resolved findings and explicit remaining atlas/database scope.`
+- non_authorizations:
+  - `Choosing user hardware, requirements, sources, providers, topology, tools or graph database vendor.`
+  - `Broad atlas completeness, source authentication, manufacture-date inference or whole-system compatibility from processor fields.`
+  - `Persistent graph storage, dynamic driver loading, deployed infrastructure, operational probes or hardware mutation.`
+  - `Remote publication or original archive edits.`
+- notes: |
+    This closes only the bounded SHV-01 kernel and generic adapter increment. The post_merge disposition records local source completion, not a remote merge. The closure does not recursively record itself. Intermediate diagnostic packages remain distinct from final receipt-selected acceptance. Full SHV testing remains a milestone gate; this run tested changed code and affected boundaries.
+- date: `2026-09-13`
+- change_completed_at: `2026-09-13T18:13:28Z`
+- recorded_at: `2026-09-13T18:17:16Z`
+- revision_value: `81d926200f9c68c84f7c6f99b304e48ef9b0690c`
+- tree_digest: `sha256:c6b8468ca5bfda91cd45be7c905d472dbf2abc4f0e14d126c1447991b542510c`
+- ratification_evidence_digest: `sha256:b1d3549520235089368c5b03d8a021fb92d4e9ffd9b703ab0cff5eb52a896156`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/INVARIANTS.md`
+  - `knowledge/shv/INTENT.md`
+  - `knowledge/shv/KERNEL.md`
+  - `knowledge/shv/MANIFEST.md`
+  - `knowledge/shv/SKILL.md`
+  - `knowledge/shv/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/shv-engine/CMakeLists.txt`
+  - `modules/shv-engine/FEATURES.md`
+  - `modules/shv-engine/INSTALL.md`
+  - `modules/shv-engine/INTENT.md`
+  - `modules/shv-engine/MANIFEST.md`
+  - `modules/shv-engine/SKILL.md`
+  - `modules/shv-engine/SPEC.md`
+  - `modules/shv-engine/cmake/uninstall.cmake.in`
+  - `modules/shv-engine/schemas/v1/shv.schema.json`
+  - `modules/shv-engine/schemas/v1/shv.templates.json`
+  - `modules/shv-engine/src/catalogue.cpp`
+  - `modules/shv-engine/src/common.cpp`
+  - `modules/shv-engine/src/coverage.cpp`
+  - `modules/shv-engine/src/descriptor.cpp`
+  - `modules/shv-engine/src/evaluation.cpp`
+  - `modules/shv-engine/src/html.cpp`
+  - `modules/shv-engine/src/main.cpp`
+  - `modules/shv-engine/src/shv.hpp`
+  - `modules/shv-engine/tests/kernel_test.py`
+  - `modules/shv-graph-adapter/CMakeLists.txt`
+  - `modules/shv-graph-adapter/FEATURES.md`
+  - `modules/shv-graph-adapter/INSTALL.md`
+  - `modules/shv-graph-adapter/INTENT.md`
+  - `modules/shv-graph-adapter/MANIFEST.md`
+  - `modules/shv-graph-adapter/SKILL.md`
+  - `modules/shv-graph-adapter/SPEC.md`
+  - `modules/shv-graph-adapter/cmake/SymphonyShvGraphAdapterConfig.cmake.in`
+  - `modules/shv-graph-adapter/cmake/uninstall.cmake.in`
+  - `modules/shv-graph-adapter/include/symphony/graph/adapter.hpp`
+  - `modules/shv-graph-adapter/schemas/v1/graph-adapter.schema.json`
+  - `modules/shv-graph-adapter/schemas/v1/graph-adapter.templates.json`
+  - `modules/shv-graph-adapter/src/adapter.cpp`
+  - `modules/shv-graph-adapter/src/adapter.hpp`
+  - `modules/shv-graph-adapter/src/main.cpp`
+  - `modules/shv-graph-adapter/tests/conformance.py`
+  - `modules/shv-graph-adapter/tests/sdk-consumer/CMakeLists.txt`
+  - `modules/shv-graph-adapter/tests/sdk-consumer/main.cpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/shv.go`
+  - `tools/qxctl/cmd/qxctl/shv_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_discovery_schema.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_schema.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_source.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_validation.go`
