@@ -9925,3 +9925,107 @@ This PR authorizes none of the following:
   - `Remote publication, provider-account actions, full-suite validation, original archive edits or SHV runtime.`
 - notes: |
     This post_merge disposition records completed local Git work and asserts no remote merge. Closure appends after its source commit and does not recursively record itself. Acquisition/offline evidence used the unchanged prior CLI; corrected real authority used the new CLI. Source-maintained authority harness received syntax/help checks after path-only portability transfer; its external equivalent executed the live campaign.
+
+---
+
+- record_id: `SCLV-CHG-20260913-SCV-GRAPH-INDEX`
+- record_version: `3`
+- title: `Add optional DuckDB graph indexing and explicit adapter ownership`
+- status: `canonical`
+- change_started_at: `2026-09-13T05:27:43Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for bounded SCV continuation and DuckDB default SQL selection`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-13-scv-graph-connector.md`
+- skvi_references:
+  - `knowledge/scv/GRAPH-INDEX.md`
+  - `modules/scv-graph-duckdb-connector/SPEC.md`
+- change_summary: |
+    Adds an independently installed C++26 DuckDB 1.5.5 connector and six qxctl graph-index routes for retained immutable snapshots, exact filters, export and recoverable publication. Registry v3 admits explicitly declared adapter identity and operation ownership without inferred engine naming.
+- relationship_changes: |
+    The storage connector retains exact graph and installation identities. qxctl semantic query, export and recovery replay the exact SCV owner. Connector integrity and retrieval do not replace semantic owner authority.
+- doctrine_changes: |
+    Caller requirements, provider/backend choice, architecture, evidence time, policy and execution remain caller-owned. DuckDB is the user-selected default SQL engine; no dedicated graph product is selected. Published module contracts do not restrict arbitrary user-authored systems.
+- compatibility_consequences: |
+    Frozen v1/v2 invariant contracts remain unchanged. New registry v3 admits format-3 adapters; older protocol readers reject the newer registry. Native SCV 0.10.0-dev code and schemas remain unchanged. The optional connector uses separate storage and versioned installation; its reference dependency recipe is macOS amd64 only.
+- publication_consequences: |
+    Local source commit and receipt-owned installations only. qxctl and the complete connector package reproduce byte-for-byte from the clean source commit. No provider operation, deployment, remote publication or archive edit occurred.
+- projection_consequences: |
+    Registered command and feature profiles and the bounded README projection include the six qxctl routes and optional connector. Current projection has 266 command identities, 101 features and 256 reviewed expectations. SHV receives planning methodology only.
+- evidence:
+  - `../increment-13/evidence/SOURCE_BUILD_PARITY.json binds the clean source commit to byte-identical qxctl and complete connector package rebuilds.`
+  - `../increment-13/evidence/FOCUSED_TESTS.json records 17 native cases, 26 Go top-level groups, changed C++ invariant checks, and 28 installed calls with 19 assertions.`
+  - `../increment-13/evidence/SCHEMA_FINAL_REVIEW.json records 157 structural instances and 98 process envelopes; semantic evidence is separate.`
+  - `../increment-13/GRAPH_INDEX_MANIFEST.json hash-binds selected evidence and installation identities.`
+  - `../increment-13/VERIFICATION.md distinguishes direct DuckDB writer interruption from actual connector commit recovery and deferred power-loss verification.`
+- non_authorizations:
+  - `Choosing caller requirements, providers, architecture, policy or execution.`
+  - `Selecting a universal dedicated graph backend or claiming graph benchmark results.`
+  - `Provider deployment, comprehensive vendor coverage, remote publication or original artifact edits.`
+  - `Full-suite validation, SHV runtime, cross-platform or power-loss certification.`
+- notes: |
+    The post_merge disposition records completed local Git work, not a remote merge. Closure appends after its source commit without recursive self-recording. Full SCV testing remains reserved for the milestone gate before SHV runtime. Earlier failed runs remain diagnostic evidence and are not counted as final passes.
+- date: `2026-09-13`
+- change_completed_at: `2026-09-13T06:24:10Z`
+- recorded_at: `2026-09-13T06:26:56Z`
+- revision_value: `f3699ad8ae0322025d7f5a5b12e2f20e82536c48`
+- tree_digest: `sha256:2f3fffd7eaae5ffd7fc451ad93c222ec58bcd74499be42689a24fc1ccbf49718`
+- ratification_evidence_digest: `sha256:4967fc89ce91c29b06b987f9ac5e24c4eb72c0e1bf038c9b618490bb120611cf`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/ARCHITECTURE.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/INVARIANTS.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/schemas/v3/invariant-ownership-registry.schema.json`
+  - `knowledge/scv/GRAPH-INDEX.md`
+  - `knowledge/scv/MANIFEST.md`
+  - `knowledge/scv/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/scv-graph-duckdb-connector/CMakeLists.txt`
+  - `modules/scv-graph-duckdb-connector/DUCKDB-PROVENANCE.json`
+  - `modules/scv-graph-duckdb-connector/FEATURES.md`
+  - `modules/scv-graph-duckdb-connector/INSTALL.md`
+  - `modules/scv-graph-duckdb-connector/INTENT.md`
+  - `modules/scv-graph-duckdb-connector/MANIFEST.md`
+  - `modules/scv-graph-duckdb-connector/SKILL.md`
+  - `modules/scv-graph-duckdb-connector/SPEC.md`
+  - `modules/scv-graph-duckdb-connector/cmake/uninstall.cmake.in`
+  - `modules/scv-graph-duckdb-connector/schemas/v1/graph-index.schema.json`
+  - `modules/scv-graph-duckdb-connector/src/connector.cpp`
+  - `modules/scv-graph-duckdb-connector/src/connector.hpp`
+  - `modules/scv-graph-duckdb-connector/src/main.cpp`
+  - `modules/scv-graph-duckdb-connector/tests/connector_test.py`
+  - `modules/scv-graph-duckdb-connector/tests/fixtures/PROVENANCE.json`
+  - `modules/scv-graph-duckdb-connector/tests/fixtures/graph.json`
+  - `modules/scv-graph-duckdb-connector/tests/installed_integration.py`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/scv.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph_index.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph_index_test.go`
+  - `tools/qxctl/internal/invariantregistry/registry.go`
+  - `tools/qxctl/internal/invariantregistry/registry_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_graph_index.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_graph_index_test.go`
+  - `tools/symphony-validator/FEATURES.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/artifacts.cpp`
+  - `tools/symphony-validator/src/invariant_ownership.cpp`
+  - `tools/symphony-validator/tests/invariant_ownership_test.cpp`
