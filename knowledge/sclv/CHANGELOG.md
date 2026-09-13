@@ -10093,3 +10093,95 @@ This PR authorizes none of the following:
   - `modules/scv-graph-duckdb-connector/tests/commit_barrier.cpp`
   - `modules/scv-graph-duckdb-connector/tests/commit_barrier.hpp`
   - `modules/scv-graph-duckdb-connector/tests/interrupted_commit.py`
+
+---
+
+- record_id: `SCLV-CHG-20260913-SCV-INDEX-PLANNING`
+- record_version: `3`
+- title: `Add exact SCV index inventory and caller-directed transfer planning`
+- status: `canonical`
+- change_started_at: `2026-09-13T07:12:31Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for bounded SCV inventory and planning continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-13-scv-index-planning.md`
+- skvi_references:
+  - `knowledge/scv/INDEX-MAINTENANCE.md`
+  - `modules/scv-graph-duckdb-connector/SPEC.md`
+- change_summary: |
+    Adds C++ connector 0.2.0-dev inventory and transfer_plan operations, independent Go result verification and first-class qxctl inventory and transfer-plan routes. Plans retain exact caller selection, source revision, target identity, owner lineage and capacity blockers without executing transfers.
+- relationship_changes: |
+    The connector checks complete bounded physical inventory and projects a scoped manifest with opaque global identity. Go verifies scoped correspondence and reconstructs target snapshot and intent identities; exact native SCV owners still interpret retained graphs. No provider semantics move into SQL or Go.
+- doctrine_changes: |
+    Caller requirements, provider/backend choices, target, capacity and execution remain explicit user authority. Ready is planning-time evidence only. No retention, deletion or architectural policy is imposed on caller programs.
+- compatibility_consequences: |
+    The explicit new 0.2.0-dev connector and v2 wire schema retain observation of exact 0.1.0-dev records. qxctl data operations still require the exact retained writer. Frozen v1 schemas, existing installed packages, physical schema and pinned C++ DuckDB 1.5.5 remain unchanged.
+- publication_consequences: |
+    Authorized local source commit and separate receipt-owned installation only. A clean-source rebuild reproduces qxctl and every installed connector package file. No remote publication, provider action, deployment or original archive change.
+- projection_consequences: |
+    Two qxctl routes produce 268 stable command identities; 101 features and 256 reviewed expectations remain registered. The affected feature, invariant and root summary projections are refreshed. SHV receives only a methodology planning addendum.
+- evidence:
+  - `../increment-15/evidence/FOCUSED_TESTS.json records seven native cases, one descriptor case, 26 Go groups and 80 passing events, plus 27 installed calls and 17 assertions.`
+  - `../increment-15/evidence/SCHEMA_FINAL.json validates 134 structural instances across 79 process envelopes against the exact installed v2 schema.`
+  - `../increment-15/evidence/PACKAGE_FINAL.json verifies all 15 receipt-owned files and the unchanged legacy connector.`
+  - `../increment-15/evidence/SOURCE_BUILD_PARITY.json binds the clean source commit to identical rebuilt CLI and package files.`
+  - `../increment-15/INVENTORY_MANIFEST.json binds selected logical evidence and documentation; VERIFICATION.md and REVIEW.md distinguish pre-fix diagnostics from final acceptance.`
+- non_authorizations:
+  - `Choosing caller requirements, providers, backend, topology, policy or execution.`
+  - `Executing transfers, retiring operation IDs, deleting snapshots, migrating databases or selecting automatic retention.`
+  - `Destination reservation, distributed atomicity, power-loss certification, load/performance or cross-platform claims.`
+  - `Full SCV suite, SHV runtime, provider deployment, remote publication or original archive edits.`
+- notes: |
+    The post_merge disposition records completed local Git work, not a remote merge. Closure appends after its source commit without recursively recording itself. Change start is the recorded continuation-scope timestamp before implementation. Full SCV testing remains reserved for the milestone gate. Final evidence includes the reproduced and corrected overflowing page-limit defect; prior failed runs remain diagnostic.
+- date: `2026-09-13`
+- change_completed_at: `2026-09-13T07:53:56Z`
+- recorded_at: `2026-09-13T07:56:15Z`
+- revision_value: `75dea9c92d7c2f9afae05d7a85dbe77299376487`
+- tree_digest: `sha256:f5663e29abe115088fa3e27acc676813c18e3bca22db5bd48c732f398c2ad3b7`
+- ratification_evidence_digest: `sha256:88abe69c7bb41e081b95f62516960fc80a3b75fe8cd4893327bf082a3902546c`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/scv/INDEX-MAINTENANCE.md`
+  - `knowledge/scv/MANIFEST.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/scv-graph-duckdb-connector/CMakeLists.txt`
+  - `modules/scv-graph-duckdb-connector/FEATURES.md`
+  - `modules/scv-graph-duckdb-connector/INSTALL.md`
+  - `modules/scv-graph-duckdb-connector/INTENT.md`
+  - `modules/scv-graph-duckdb-connector/MANIFEST.md`
+  - `modules/scv-graph-duckdb-connector/SKILL.md`
+  - `modules/scv-graph-duckdb-connector/SPEC.md`
+  - `modules/scv-graph-duckdb-connector/schemas/v2/graph-index.schema.json`
+  - `modules/scv-graph-duckdb-connector/src/connector.cpp`
+  - `modules/scv-graph-duckdb-connector/src/connector.hpp`
+  - `modules/scv-graph-duckdb-connector/tests/README.md`
+  - `modules/scv-graph-duckdb-connector/tests/connector_test.py`
+  - `modules/scv-graph-duckdb-connector/tests/fixtures/maintenance-provenance.md`
+  - `modules/scv-graph-duckdb-connector/tests/fixtures/maintenance-wire.json`
+  - `modules/scv-graph-duckdb-connector/tests/installed_integration.py`
+  - `modules/scv-graph-duckdb-connector/tests/inventory_installed.py`
+  - `modules/scv-graph-duckdb-connector/tests/inventory_test.py`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph_index.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph_index_maintenance.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph_index_maintenance_test.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph_index_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_graph_index.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_graph_index_maintenance.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_graph_index_maintenance_test.go`
