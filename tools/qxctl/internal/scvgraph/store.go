@@ -6,13 +6,15 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgeengine"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/scvstate"
 	"regexp"
 	"time"
 )
 
-const protocol = "symphony.qxctl.scv-graph-store.v1"
+const protocol = "symphony.qxctl.scv-graph-store.v2"
+const legacyProtocol = "symphony.qxctl.scv-graph-store.v1"
 const maxBytes = 16 * 1024 * 1024
 
 var token = regexp.MustCompile(`^[A-Za-z0-9._:-]{1,128}$`)
@@ -31,6 +33,7 @@ type Attempt struct {
 	Intent         Intent            `json:"intent"`
 	Status         string            `json:"status"`
 	Authorizations []json.RawMessage `json:"authorizations"`
+	CorrelationID  string            `json:"correlation_id,omitempty"`
 }
 type Document struct {
 	Protocol        string             `json:"protocol"`
@@ -48,7 +51,7 @@ type Authorization struct {
 	Evidence   json.RawMessage
 	ValidUntil time.Time
 }
-type Authorizer func(Intent) (Authorization, error)
+type Authorizer func(Intent, string) (Authorization, error)
 
 func New(root, topsID, domain, graphID string) (Store, error) {
 	if _, err := scvstate.New(root, topsID, domain, graphID); err != nil {
@@ -114,7 +117,7 @@ func copyDocument(d Document) Document {
 	return result
 }
 func (s Store) validate(d Document) error {
-	if d.Protocol != protocol || d.TOPSID != s.TOPSID || d.Domain != s.Domain || d.GraphID != s.GraphID || d.Operations == nil || len(d.Operations) > 128 || d.Generation < 0 || d.Generation > 128 {
+	if (d.Protocol != protocol && d.Protocol != legacyProtocol) || d.TOPSID != s.TOPSID || d.Domain != s.Domain || d.GraphID != s.GraphID || d.Operations == nil || len(d.Operations) > 128 || d.Generation < 0 || d.Generation > 128 {
 		return fmt.Errorf("graph store identity or bounds mismatch")
 	}
 	expected, err := selfDigest(d)
@@ -124,6 +127,9 @@ func (s Store) validate(d Document) error {
 	committed := 0
 	chain := map[int]Intent{}
 	for id, a := range d.Operations {
+		if a.CorrelationID != "" && (d.Protocol == legacyProtocol || stavprotocol.ValidateRequestUUID(a.CorrelationID) != nil) {
+			return fmt.Errorf("invalid graph authorization correlation")
+		}
 		if id != a.Intent.OperationID || !token.MatchString(id) {
 			return fmt.Errorf("graph intent identity mismatch")
 		}
@@ -255,7 +261,8 @@ func (s Store) Select(intent Intent, authorize Authorizer) (Document, error) {
 		if intent.Installation.Role != s.Domain {
 			return fmt.Errorf("graph owner installation differs from store")
 		}
-		if prior, exists := d.Operations[intent.OperationID]; exists {
+		prior, exists := d.Operations[intent.OperationID]
+		if exists {
 			if prior.Intent.Digest != intent.Digest {
 				return fmt.Errorf("operation_id binds a different graph intent")
 			}
@@ -270,19 +277,30 @@ func (s Store) Select(intent Intent, authorize Authorizer) (Document, error) {
 			if intent.ExpectedGeneration != d.Generation || !same(intent.ExpectedGraphDigest, d.GraphDigest) {
 				return fmt.Errorf("graph compare-and-swap failed")
 			}
-			next := copyDocument(*d)
-			next.Operations[intent.OperationID] = Attempt{Intent: intent, Status: "prepared", Authorizations: []json.RawMessage{}}
-			if err := save(next, nil); err != nil {
-				return err
-			}
 		}
 		if intent.ExpectedGeneration != d.Generation || !same(intent.ExpectedGraphDigest, d.GraphDigest) {
 			return fmt.Errorf("graph compare-and-swap failed")
 		}
+		if prior.CorrelationID == "" {
+			correlation, err := scvstate.AuthorizationCorrelation(intent.OperationID, exists)
+			if err != nil {
+				return err
+			}
+			if !exists {
+				prior = Attempt{Intent: intent, Status: "prepared", Authorizations: []json.RawMessage{}}
+			}
+			prior.CorrelationID = correlation
+			next := copyDocument(*d)
+			next.Protocol = protocol
+			next.Operations[intent.OperationID] = prior
+			if err := save(next, nil); err != nil {
+				return err
+			}
+		}
 		if authorize == nil {
 			return fmt.Errorf("graph selection requires an authenticated authorization callback")
 		}
-		authority, err := authorize(intent)
+		authority, err := authorize(intent, d.Operations[intent.OperationID].CorrelationID)
 		if err != nil {
 			return err
 		}

@@ -1,0 +1,49 @@
+{
+  "operation_id": "inc12-do-limits-canonical-locator-candidate",
+  "current": {
+    "authority_role": "first_party_documentation",
+    "continuity_evidence": [
+      "Finite public source selected for increment 5. Rolling URI is explicit; capture identity does not claim an immutable upstream release. Vendor instructions are data only."
+    ],
+    "digest": "sha256:d137a13d2d8920bb06753289579865f90c8210abab86af917807a1329b599919",
+    "family_id": "schv",
+    "generation": 1,
+    "locators": [
+      {
+        "format": "markdown",
+        "locator_id": "docs",
+        "role": "selected-reference",
+        "selector": "Explicit URI; preserve exact observation and content identity",
+        "uri": "https://docs.digitalocean.com/products/app-platform/details/limits/index.md"
+      }
+    ],
+    "predecessor_digest": null,
+    "protocol": "symphony.scv.source.v1",
+    "provider_id": "do",
+    "publisher": "DigitalOcean",
+    "scope": "App Platform native limits and storage lifecycle",
+    "source_id": "do-app-platform-limits"
+  },
+  "desired": {
+    "authority_role": "first_party_documentation",
+    "continuity_evidence": [
+      "Finite public source selected for increment 5. Rolling URI is explicit; capture identity does not claim an immutable upstream release. Vendor instructions are data only.",
+      "Candidate canonical-locator adoption: the retained 2026-09-11 capture already records this destination. Official original URI returned HTTP 301 to this exact path on 2026-09-13; official HTML links the same Markdown representation. Retrieval evidence does not authorize protected source adoption."
+    ],
+    "family_id": "schv",
+    "locators": [
+      {
+        "format": "markdown",
+        "locator_id": "docs",
+        "role": "selected-reference",
+        "selector": "Explicit URI; preserve exact observation and content identity",
+        "uri": "https://docs.digitalocean.com/products/app-platform/details/limits/index.html.md"
+      }
+    ],
+    "provider_id": "do",
+    "publisher": "DigitalOcean",
+    "scope": "App Platform native limits and storage lifecycle",
+    "source_id": "do-app-platform-limits"
+  },
+  "reason": "Explicit candidate adoption of the established official Markdown redirect destination; no provider or API upgrade, no authority inferred from redirect."
+}

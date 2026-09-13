@@ -7,11 +7,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgeengine"
 	"regexp"
 )
 
-const protocol = "symphony.qxctl.scv-source-store.v1"
+const protocol = "symphony.qxctl.scv-source-store.v2"
+const legacyProtocol = "symphony.qxctl.scv-source-store.v1"
 const maxStoreBytes = 16 * 1024 * 1024
 const maxOperations = 128
 
@@ -30,6 +32,9 @@ type Intent struct {
 type Attempt struct {
 	Intent Intent `json:"intent"`
 	Status string `json:"status"`
+	// Bound durably before authorization; deliberately outside the native intent.
+	// Omission preserves exact legacy documents and untouched historical attempts.
+	CorrelationID string `json:"correlation_id,omitempty"`
 	// This is the actual SSIAG decision returned after its committed policy
 	// audit, never a fabricated STAV source-write receipt.
 	Authorization       json.RawMessage   `json:"authorization"`
@@ -152,7 +157,7 @@ func (s Store) WithLock(operation func(*Transaction) error) error {
 }
 
 func validateDocument(d Document, s Store) error {
-	if d.Protocol != protocol || d.TOPSID != s.TOPSID || d.Domain != s.Domain || d.SourceID != s.SourceID || d.Operations == nil || len(d.Operations) > maxOperations {
+	if (d.Protocol != protocol && d.Protocol != legacyProtocol) || d.TOPSID != s.TOPSID || d.Domain != s.Domain || d.SourceID != s.SourceID || d.Operations == nil || len(d.Operations) > maxOperations {
 		return fmt.Errorf("source store identity/bounds mismatch")
 	}
 	digest, err := seal(d)
@@ -193,6 +198,9 @@ func validateDocument(d Document, s Store) error {
 	}
 	committed := map[string]retainedState{}
 	for id, attempt := range d.Operations {
+		if attempt.CorrelationID != "" && (d.Protocol == legacyProtocol || stavprotocol.ValidateRequestUUID(attempt.CorrelationID) != nil) {
+			return fmt.Errorf("invalid source authorization correlation")
+		}
 		if id != attempt.Intent.OperationID || !tokenPattern.MatchString(id) {
 			return fmt.Errorf("source operation identity mismatch")
 		}
@@ -277,13 +285,16 @@ func (t *Transaction) Attempt(id string) (Attempt, bool) {
 // Prepare persists the exact intent before any authorization request. It never
 // changes the selected source. Reuse with a different plan/installation fails.
 func (t *Transaction) Prepare(intent Intent) (bool, error) {
-	if prior, ok := t.Attempt(intent.OperationID); ok {
+	prior, exists := t.Attempt(intent.OperationID)
+	if exists {
 		if prior.Intent.Digest != intent.Digest {
 			return false, fmt.Errorf("operation_id already binds a different exact intent")
 		}
-		return prior.Status == "committed", nil
+		if prior.Status == "committed" {
+			return true, nil
+		}
 	}
-	if len(t.document.Operations) >= maxOperations {
+	if !exists && len(t.document.Operations) >= maxOperations {
 		return false, fmt.Errorf("source operation history is full (%d entries)", maxOperations)
 	}
 	var transition struct {
@@ -295,9 +306,31 @@ func (t *Transaction) Prepare(intent Intent) (bool, error) {
 	if !sameDigest(transition.Expected, t.document.StateDigest) {
 		return false, fmt.Errorf("source compare-and-swap failed")
 	}
+	if exists && prior.CorrelationID != "" {
+		return false, nil
+	}
+	correlation, err := AuthorizationCorrelation(intent.OperationID, exists)
+	if err != nil {
+		return false, err
+	}
 	next := cloneDocument(t.document)
-	next.Operations[intent.OperationID] = Attempt{Intent: intent, Status: "prepared", Authorization: json.RawMessage("null"), PriorAuthorizations: []json.RawMessage{}}
+	next.Protocol = protocol
+	if !exists {
+		prior = Attempt{Intent: intent, Status: "prepared", Authorization: json.RawMessage("null"), PriorAuthorizations: []json.RawMessage{}}
+	}
+	prior.CorrelationID = correlation
+	next.Operations[intent.OperationID] = prior
 	return false, t.save(next)
+}
+
+// AuthorizationCorrelation preserves an eligible preexisting operation UUID on
+// legacy recovery. New attempts always receive a genuinely random UUIDv4; no
+// content hash is disguised as a UUID. Callers must persist this before use.
+func AuthorizationCorrelation(operationID string, legacy bool) (string, error) {
+	if legacy && stavprotocol.ValidateRequestUUID(operationID) == nil {
+		return operationID, nil
+	}
+	return stavprotocol.GenerateUUIDv4()
 }
 
 // Commit is called only after the command's authenticated SSIAG client has
@@ -310,6 +343,9 @@ func (t *Transaction) Commit(id string, authorization json.RawMessage, stillVali
 	}
 	if attempt.Status == "committed" {
 		return nil
+	}
+	if stavprotocol.ValidateRequestUUID(attempt.CorrelationID) != nil {
+		return fmt.Errorf("source authorization correlation must be durably prepared")
 	}
 	if len(authorization) == 0 || bytes.Equal(authorization, []byte("null")) || stillValid == nil {
 		return fmt.Errorf("authorization evidence is required")

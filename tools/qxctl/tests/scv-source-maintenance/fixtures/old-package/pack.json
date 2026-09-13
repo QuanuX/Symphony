@@ -1,0 +1,671 @@
+{
+  "authored_by": "Symphony increment 7 package author (Codex)",
+  "digest": "sha256:7f8f04847992ae692da73a5c430b5637e5ce4935c2dc1e8ae9cf5c5aa4376e85",
+  "fixtures": [
+    {
+      "authored_by": "Symphony increment 7 source-first fixture author (Codex)",
+      "expected_claims": [
+        {
+          "claim_id": "do-guide-dev-valkey",
+          "dependencies": [],
+          "predicate": "engine.valkey.available",
+          "scope": {
+            "component": "development-database",
+            "engine": "valkey",
+            "provider": "do",
+            "service": "app-platform"
+          },
+          "statement_kind": "documented_fact",
+          "subject": "do.app-platform.development-database",
+          "value": {
+            "type": "boolean",
+            "unit": null,
+            "value": true
+          }
+        },
+        {
+          "claim_id": "do-app-platform-amd64",
+          "dependencies": [],
+          "predicate": "image.architecture",
+          "scope": {
+            "operating-system": "linux",
+            "provider": "do",
+            "service": "app-platform"
+          },
+          "statement_kind": "documented_fact",
+          "subject": "do.app-platform.container",
+          "value": {
+            "type": "string",
+            "unit": null,
+            "value": "amd64"
+          }
+        },
+        {
+          "claim_id": "do-app-platform-local-storage",
+          "dependencies": [],
+          "predicate": "local-storage.persistent",
+          "scope": {
+            "provider": "do",
+            "service": "app-platform",
+            "storage": "host-local-filesystem"
+          },
+          "statement_kind": "documented_fact",
+          "subject": "do.app-platform.container",
+          "value": {
+            "type": "boolean",
+            "unit": null,
+            "value": false
+          }
+        },
+        {
+          "claim_id": "do-limits-dev-valkey",
+          "dependencies": [],
+          "predicate": "engine.valkey.available",
+          "scope": {
+            "component": "development-database",
+            "engine": "valkey",
+            "provider": "do",
+            "service": "app-platform"
+          },
+          "statement_kind": "documented_fact",
+          "subject": "do.app-platform.development-database",
+          "value": {
+            "type": "boolean",
+            "unit": null,
+            "value": false
+          }
+        }
+      ],
+      "expected_extractions": [
+        {
+          "capture_digest": "sha256:76259fb205421c944cddb30e37f110ce8ce9bb819b209403e008842c7900af06",
+          "claim_id": "do-guide-dev-valkey",
+          "profile_id": "coverage-do-app-platform-designer",
+          "reasons": [],
+          "rule_id": "do-guide-dev-valkey",
+          "status": "matched"
+        },
+        {
+          "capture_digest": "sha256:c742b1cae2468cdc784ec336f49a0f231902f01fd86f5c77ab91dda914bab99f",
+          "claim_id": "do-app-platform-amd64",
+          "profile_id": "coverage-do-app-platform-limits",
+          "reasons": [],
+          "rule_id": "do-app-platform-amd64",
+          "status": "matched"
+        },
+        {
+          "capture_digest": "sha256:c742b1cae2468cdc784ec336f49a0f231902f01fd86f5c77ab91dda914bab99f",
+          "claim_id": "do-app-platform-local-storage",
+          "profile_id": "coverage-do-app-platform-limits",
+          "reasons": [],
+          "rule_id": "do-app-platform-local-storage",
+          "status": "matched"
+        },
+        {
+          "capture_digest": "sha256:c742b1cae2468cdc784ec336f49a0f231902f01fd86f5c77ab91dda914bab99f",
+          "claim_id": "do-limits-dev-valkey",
+          "profile_id": "coverage-do-app-platform-limits",
+          "reasons": [],
+          "rule_id": "do-limits-dev-valkey",
+          "status": "matched"
+        }
+      ],
+      "fixture_id": "do-all-retained-source-semantics",
+      "input_digest": "sha256:5a19acf8187d9b960447ad272a94d2ae846c0a90e6c3449df33f2d159f5eaa34",
+      "label": "do-all-retained-source-semantics",
+      "rationale": "Independently authored source statements retain exact scope, typed values, recommendation/requirement distinctions and acquisition qualifications; source reading lines are in SEMANTIC_EXPECTATIONS.json."
+    },
+    {
+      "authored_by": "Symphony increment 7 source-first fixture author (Codex)",
+      "expected_claims": [
+        {
+          "claim_id": "do-app-platform-amd64",
+          "dependencies": [],
+          "predicate": "image.architecture",
+          "scope": {
+            "operating-system": "linux",
+            "provider": "do",
+            "service": "app-platform"
+          },
+          "statement_kind": "documented_fact",
+          "subject": "do.app-platform.container",
+          "value": {
+            "type": "string",
+            "unit": null,
+            "value": "amd64"
+          }
+        },
+        {
+          "claim_id": "do-app-platform-local-storage",
+          "dependencies": [],
+          "predicate": "local-storage.persistent",
+          "scope": {
+            "provider": "do",
+            "service": "app-platform",
+            "storage": "host-local-filesystem"
+          },
+          "statement_kind": "documented_fact",
+          "subject": "do.app-platform.container",
+          "value": {
+            "type": "boolean",
+            "unit": null,
+            "value": false
+          }
+        },
+        {
+          "claim_id": "do-limits-dev-valkey",
+          "dependencies": [],
+          "predicate": "engine.valkey.available",
+          "scope": {
+            "component": "development-database",
+            "engine": "valkey",
+            "provider": "do",
+            "service": "app-platform"
+          },
+          "statement_kind": "documented_fact",
+          "subject": "do.app-platform.development-database",
+          "value": {
+            "type": "boolean",
+            "unit": null,
+            "value": false
+          }
+        }
+      ],
+      "expected_extractions": [
+        {
+          "capture_digest": "sha256:c742b1cae2468cdc784ec336f49a0f231902f01fd86f5c77ab91dda914bab99f",
+          "claim_id": "do-app-platform-amd64",
+          "profile_id": "coverage-do-app-platform-limits",
+          "reasons": [],
+          "rule_id": "do-app-platform-amd64",
+          "status": "matched"
+        },
+        {
+          "capture_digest": "sha256:c742b1cae2468cdc784ec336f49a0f231902f01fd86f5c77ab91dda914bab99f",
+          "claim_id": "do-app-platform-local-storage",
+          "profile_id": "coverage-do-app-platform-limits",
+          "reasons": [],
+          "rule_id": "do-app-platform-local-storage",
+          "status": "matched"
+        },
+        {
+          "capture_digest": "sha256:c742b1cae2468cdc784ec336f49a0f231902f01fd86f5c77ab91dda914bab99f",
+          "claim_id": "do-limits-dev-valkey",
+          "profile_id": "coverage-do-app-platform-limits",
+          "reasons": [],
+          "rule_id": "do-limits-dev-valkey",
+          "status": "matched"
+        }
+      ],
+      "fixture_id": "do-product-limits-only",
+      "input_digest": "sha256:34510a39307eddfc855f3671ddf5e074dd228259649265e30c926a1366cf83c5",
+      "label": "do-product-limits-only",
+      "rationale": "Product limits exclude Valkey development DB while offering managed Valkey separately; Labs conflict is not silently selected here."
+    },
+    {
+      "authored_by": "Symphony increment 7 source-first fixture author (Codex)",
+      "expected_claims": [
+        {
+          "claim_id": "do-guide-dev-valkey",
+          "dependencies": [],
+          "predicate": "engine.valkey.available",
+          "scope": {
+            "component": "development-database",
+            "engine": "valkey",
+            "provider": "do",
+            "service": "app-platform"
+          },
+          "statement_kind": "documented_fact",
+          "subject": "do.app-platform.development-database",
+          "value": {
+            "type": "boolean",
+            "unit": null,
+            "value": true
+          }
+        }
+      ],
+      "expected_extractions": [
+        {
+          "capture_digest": "sha256:76259fb205421c944cddb30e37f110ce8ce9bb819b209403e008842c7900af06",
+          "claim_id": "do-guide-dev-valkey",
+          "profile_id": "coverage-do-app-platform-designer",
+          "reasons": [],
+          "rule_id": "do-guide-dev-valkey",
+          "status": "matched"
+        }
+      ],
+      "fixture_id": "do-labs-guide-only",
+      "input_digest": "sha256:86a36afbad25b02aa9363f821e29e5cd64a11ccccaadae9c527058584b528a90",
+      "label": "do-labs-guide-only",
+      "rationale": "Labs guide's affirmative development-DB statement remains an independently selected source, not inferred authoritative reconciliation."
+    }
+  ],
+  "pack_id": "symphony-retained-do-knowledge",
+  "pack_version": "2026-09-11.1",
+  "profiles": [
+    {
+      "authored_by": "Symphony increment 5 authored source mapping",
+      "digest": "sha256:9d0819e98782f8ea230d7639350e908d21a375d67ab12dfbcb7e84205886b1ca",
+      "locator_id": "docs",
+      "media_types": [
+        "text/plain"
+      ],
+      "profile_id": "coverage-do-app-platform-designer",
+      "profile_version": "1",
+      "protocol": "symphony.scv.interpretation-profile.v1",
+      "provider_id": "do",
+      "rationale": "Bounded native-source mapping with explicit scope. Statements retain source authority and acquisition qualification; recommendation is not user policy.",
+      "rules": [
+        {
+          "claim_id": "do-guide-dev-valkey",
+          "context": [
+            "| Engine | Slug | Dev DB? | Notes |"
+          ],
+          "dependencies": [],
+          "extractor": {
+            "kind": "literal",
+            "quote": "| Valkey | `VALKEY` | Yes | Use instead of Redis |",
+            "value": {
+              "type": "boolean",
+              "unit": null,
+              "value": true
+            }
+          },
+          "predicate": "engine.valkey.available",
+          "rule_id": "do-guide-dev-valkey",
+          "scope": {
+            "component": "development-database",
+            "engine": "valkey",
+            "provider": "do",
+            "service": "app-platform"
+          },
+          "statement_kind": "documented_fact",
+          "subject": "do.app-platform.development-database"
+        }
+      ],
+      "source_id": "do-app-platform-designer"
+    },
+    {
+      "authored_by": "Symphony increment 5 authored source mapping",
+      "digest": "sha256:3c7ff0b5870a13a24465959039deda2f5d3fd6305386d22ed6058b78262beeca",
+      "locator_id": "docs",
+      "media_types": [
+        "text/markdown"
+      ],
+      "profile_id": "coverage-do-app-platform-limits",
+      "profile_version": "1",
+      "protocol": "symphony.scv.interpretation-profile.v1",
+      "provider_id": "do",
+      "rationale": "Bounded native-source mapping with explicit scope. Statements retain source authority and acquisition qualification; recommendation is not user policy.",
+      "rules": [
+        {
+          "claim_id": "do-app-platform-amd64",
+          "context": [],
+          "dependencies": [],
+          "extractor": {
+            "kind": "literal",
+            "quote": "App Platform only supports Linux-based container images built for the AMD64 architecture.",
+            "value": {
+              "type": "string",
+              "unit": null,
+              "value": "amd64"
+            }
+          },
+          "predicate": "image.architecture",
+          "rule_id": "do-app-platform-amd64",
+          "scope": {
+            "operating-system": "linux",
+            "provider": "do",
+            "service": "app-platform"
+          },
+          "statement_kind": "documented_fact",
+          "subject": "do.app-platform.container"
+        },
+        {
+          "claim_id": "do-app-platform-local-storage",
+          "context": [],
+          "dependencies": [],
+          "extractor": {
+            "kind": "literal",
+            "quote": "The host instances running App Platform containers do not provide persistent data storage.",
+            "value": {
+              "type": "boolean",
+              "unit": null,
+              "value": false
+            }
+          },
+          "predicate": "local-storage.persistent",
+          "rule_id": "do-app-platform-local-storage",
+          "scope": {
+            "provider": "do",
+            "service": "app-platform",
+            "storage": "host-local-filesystem"
+          },
+          "statement_kind": "documented_fact",
+          "subject": "do.app-platform.container"
+        },
+        {
+          "claim_id": "do-limits-dev-valkey",
+          "context": [],
+          "dependencies": [],
+          "extractor": {
+            "kind": "literal",
+            "quote": "App Platform’s engine support for dev databases is currently limited to PostgreSQL",
+            "value": {
+              "type": "boolean",
+              "unit": null,
+              "value": false
+            }
+          },
+          "predicate": "engine.valkey.available",
+          "rule_id": "do-limits-dev-valkey",
+          "scope": {
+            "component": "development-database",
+            "engine": "valkey",
+            "provider": "do",
+            "service": "app-platform"
+          },
+          "statement_kind": "documented_fact",
+          "subject": "do.app-platform.development-database"
+        }
+      ],
+      "source_id": "do-app-platform-limits"
+    }
+  ],
+  "protocol": "symphony.scv.provider-pack.v1",
+  "provenance": [
+    "Bounded historical source collection observed 2026-09-11; no new acquisition or provider/API version upgrade.",
+    "Exact captures and sealed profiles from increment 5; independent expectations from source-reading ledger.",
+    "Full declared source inventory is retained, including unacquired references; package conformance does not establish full provider coverage.",
+    "Authors are declarative provenance, not authenticated provider endorsement.",
+    "Source-first oracle file digest sha256:a85269dc9a14db5e9ad4c1c7d1bde324b4ac5d7939e93e99b72b1e595fa280bd"
+  ],
+  "provider": {
+    "display_name": "DigitalOcean",
+    "family_id": "schv",
+    "provider_id": "do",
+    "sources": [
+      {
+        "authority_role": "selected-publisher-reference",
+        "continuity_evidence": [
+          "Historical reconnaissance candidate dated 2026-09-10; not freshly acquired. Overview scanned; entire product corpus not ingested."
+        ],
+        "family_id": "schv",
+        "locators": [
+          {
+            "format": "declared-native-source",
+            "locator_id": "docs",
+            "role": "selected-reference",
+            "selector": "Explicit URI; preserve exact observation and content identity",
+            "uri": "https://docs.digitalocean.com/products/"
+          }
+        ],
+        "provider_id": "do",
+        "publisher": "DigitalOcean",
+        "scope": "First-party product documentation index.",
+        "source_id": "do-reference-01"
+      },
+      {
+        "authority_role": "selected-publisher-reference",
+        "continuity_evidence": [
+          "Historical reconnaissance candidate dated 2026-09-10; not freshly acquired. Advertised full-text/JSON routes not all fetched; guidance can be opinionated."
+        ],
+        "family_id": "schv",
+        "locators": [
+          {
+            "format": "declared-native-source",
+            "locator_id": "docs",
+            "role": "selected-reference",
+            "selector": "Explicit URI; preserve exact observation and content identity",
+            "uri": "https://docs.digitalocean.com/llms.txt"
+          }
+        ],
+        "provider_id": "do",
+        "publisher": "DigitalOcean",
+        "scope": "First-party navigation, Markdown conventions and agent guidance.",
+        "source_id": "do-reference-02"
+      },
+      {
+        "authority_role": "selected-publisher-reference",
+        "continuity_evidence": [
+          "Historical reconnaissance candidate dated 2026-09-10; not freshly acquired. Tools inventoried, not newly installed or invoked."
+        ],
+        "family_id": "schv",
+        "locators": [
+          {
+            "format": "declared-native-source",
+            "locator_id": "docs",
+            "role": "selected-reference",
+            "selector": "Explicit URI; preserve exact observation and content identity",
+            "uri": "https://docs.digitalocean.com/reference/mcp/documentation-mcp-tools/"
+          }
+        ],
+        "provider_id": "do",
+        "publisher": "DigitalOcean",
+        "scope": "First-party docs list read-only, unauthenticated public-document retrieval tools.",
+        "source_id": "do-reference-03"
+      },
+      {
+        "authority_role": "selected-publisher-reference",
+        "continuity_evidence": [
+          "Historical reconnaissance candidate dated 2026-09-10; not freshly acquired. README marks specification Early Availability; full schema not parsed."
+        ],
+        "family_id": "schv",
+        "locators": [
+          {
+            "format": "declared-native-source",
+            "locator_id": "docs",
+            "role": "selected-reference",
+            "selector": "Explicit URI; preserve exact observation and content identity",
+            "uri": "https://github.com/digitalocean/openapi"
+          }
+        ],
+        "provider_id": "do",
+        "publisher": "DigitalOcean",
+        "scope": "DigitalOcean-owned public API v2 specification in OpenAPI v3 format.",
+        "source_id": "do-reference-04"
+      },
+      {
+        "authority_role": "selected-publisher-reference",
+        "continuity_evidence": [
+          "Historical reconnaissance candidate dated 2026-09-10; not freshly acquired. Endpoint/format inspected; not a comprehensive historical or private-preview inventory."
+        ],
+        "family_id": "schv",
+        "locators": [
+          {
+            "format": "declared-native-source",
+            "locator_id": "docs",
+            "role": "selected-reference",
+            "selector": "Explicit URI; preserve exact observation and content identity",
+            "uri": "https://docs.digitalocean.com/release-notes/recent/index.json"
+          }
+        ],
+        "provider_id": "do",
+        "publisher": "DigitalOcean",
+        "scope": "First-party public release listing.",
+        "source_id": "do-reference-05"
+      },
+      {
+        "authority_role": "selected-publisher-reference",
+        "continuity_evidence": [
+          "Historical reconnaissance candidate dated 2026-09-10; not freshly acquired. Some statements require reconciliation; scope is App Platform, not all DigitalOcean."
+        ],
+        "family_id": "schv",
+        "locators": [
+          {
+            "format": "declared-native-source",
+            "locator_id": "docs",
+            "role": "selected-reference",
+            "selector": "Explicit URI; preserve exact observation and content identity",
+            "uri": "https://docs.digitalocean.com/products/app-platform/details/limits/"
+          }
+        ],
+        "provider_id": "do",
+        "publisher": "DigitalOcean",
+        "scope": "First-party service-specific limits and known issues.",
+        "source_id": "do-reference-06"
+      },
+      {
+        "authority_role": "selected-publisher-reference",
+        "continuity_evidence": [
+          "Historical reconnaissance candidate dated 2026-09-10; not freshly acquired. All linked recipes have not been read or tested."
+        ],
+        "family_id": "schv",
+        "locators": [
+          {
+            "format": "declared-native-source",
+            "locator_id": "docs",
+            "role": "selected-reference",
+            "selector": "Explicit URI; preserve exact observation and content identity",
+            "uri": "https://docs.digitalocean.com/products/app-platform/how-to/"
+          }
+        ],
+        "provider_id": "do",
+        "publisher": "DigitalOcean",
+        "scope": "First-party operational guidance navigation.",
+        "source_id": "do-reference-07"
+      },
+      {
+        "authority_role": "selected-publisher-reference",
+        "continuity_evidence": [
+          "Historical reconnaissance candidate dated 2026-09-10; not freshly acquired. Announcement and opinionated defaults do not establish general product guarantees."
+        ],
+        "family_id": "schv",
+        "locators": [
+          {
+            "format": "declared-native-source",
+            "locator_id": "docs",
+            "role": "selected-reference",
+            "selector": "Explicit URI; preserve exact observation and content identity",
+            "uri": "https://www.digitalocean.com/blog/deploy-smarter-with-ai-app-platform-skills-on-digitalocean"
+          }
+        ],
+        "provider_id": "do",
+        "publisher": "DigitalOcean",
+        "scope": "DigitalOcean announcement explicitly endorsing its App Platform skills source.",
+        "source_id": "do-reference-08"
+      },
+      {
+        "authority_role": "selected-publisher-reference",
+        "continuity_evidence": [
+          "Historical reconnaissance candidate dated 2026-09-10; not freshly acquired. Organization explicitly supplies no guarantee of support or maintenance."
+        ],
+        "family_id": "schv",
+        "locators": [
+          {
+            "format": "declared-native-source",
+            "locator_id": "docs",
+            "role": "selected-reference",
+            "selector": "Explicit URI; preserve exact observation and content identity",
+            "uri": "https://github.com/digitalocean-labs"
+          }
+        ],
+        "provider_id": "do",
+        "publisher": "DigitalOcean",
+        "scope": "Verified digitalocean.com organization for employee experiments.",
+        "source_id": "do-reference-09"
+      },
+      {
+        "authority_role": "selected-publisher-reference",
+        "continuity_evidence": [
+          "Historical reconnaissance candidate dated 2026-09-10; not freshly acquired. Product-specific, Labs support qualifications; not a complete vendor corpus."
+        ],
+        "family_id": "schv",
+        "locators": [
+          {
+            "format": "declared-native-source",
+            "locator_id": "docs",
+            "role": "selected-reference",
+            "selector": "Explicit URI; preserve exact observation and content identity",
+            "uri": "https://github.com/digitalocean-labs/do-app-platform-skills"
+          }
+        ],
+        "provider_id": "do",
+        "publisher": "DigitalOcean",
+        "scope": "Vendor-endorsed DigitalOcean Labs App Platform guidance.",
+        "source_id": "do-reference-10"
+      },
+      {
+        "authority_role": "selected-publisher-reference",
+        "continuity_evidence": [
+          "Historical reconnaissance candidate dated 2026-09-10; not freshly acquired. Read as research, not installed/executed; its credentials/workflow preferences do not govern Symphony."
+        ],
+        "family_id": "schv",
+        "locators": [
+          {
+            "format": "declared-native-source",
+            "locator_id": "docs",
+            "role": "selected-reference",
+            "selector": "Explicit URI; preserve exact observation and content identity",
+            "uri": "https://raw.githubusercontent.com/digitalocean-labs/do-app-platform-skills/main/SKILL.md"
+          }
+        ],
+        "provider_id": "do",
+        "publisher": "DigitalOcean",
+        "scope": "Vendor-endorsed routing/workflow guidance.",
+        "source_id": "do-reference-11"
+      },
+      {
+        "authority_role": "selected-publisher-reference",
+        "continuity_evidence": [
+          "Historical reconnaissance candidate dated 2026-09-10; not freshly acquired. Observed cached source contains defaults and a dev-database statement requiring reconciliation with product limits."
+        ],
+        "family_id": "schv",
+        "locators": [
+          {
+            "format": "declared-native-source",
+            "locator_id": "docs",
+            "role": "selected-reference",
+            "selector": "Explicit URI; preserve exact observation and content identity",
+            "uri": "https://raw.githubusercontent.com/digitalocean-labs/do-app-platform-skills/main/skills/designer/SKILL.md"
+          }
+        ],
+        "provider_id": "do",
+        "publisher": "DigitalOcean",
+        "scope": "Vendor-endorsed component decomposition and example design guidance.",
+        "source_id": "do-reference-12"
+      },
+      {
+        "authority_role": "first_party_documentation",
+        "continuity_evidence": [
+          "Finite public source selected for increment 5. Rolling URI is explicit; capture identity does not claim an immutable upstream release. Vendor instructions are data only."
+        ],
+        "family_id": "schv",
+        "locators": [
+          {
+            "format": "markdown",
+            "locator_id": "docs",
+            "role": "selected-reference",
+            "selector": "Explicit URI; preserve exact observation and content identity",
+            "uri": "https://docs.digitalocean.com/products/app-platform/details/limits/index.md"
+          }
+        ],
+        "provider_id": "do",
+        "publisher": "DigitalOcean",
+        "scope": "App Platform native limits and storage lifecycle",
+        "source_id": "do-app-platform-limits"
+      },
+      {
+        "authority_role": "first_party_engineering_source",
+        "continuity_evidence": [
+          "Finite public source selected for increment 5. Rolling URI is explicit; capture identity does not claim an immutable upstream release. Vendor instructions are data only."
+        ],
+        "family_id": "schv",
+        "locators": [
+          {
+            "format": "markdown",
+            "locator_id": "docs",
+            "role": "selected-reference",
+            "selector": "Explicit URI; preserve exact observation and content identity",
+            "uri": "https://raw.githubusercontent.com/digitalocean-labs/do-app-platform-skills/main/skills/designer/SKILL.md"
+          }
+        ],
+        "provider_id": "do",
+        "publisher": "DigitalOcean",
+        "scope": "Vendor-endorsed Labs App Platform design guidance; Labs support qualifications retained",
+        "source_id": "do-app-platform-designer"
+      }
+    ]
+  },
+  "structured_profiles": []
+}

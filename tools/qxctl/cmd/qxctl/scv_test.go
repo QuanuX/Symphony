@@ -17,11 +17,12 @@ func TestSCVAuthorizationUsesAuthenticatedSSIAGDecision(t *testing.T) {
 	// running SSIAG/STAV producer. Production audit durability is owned by SSIAG.
 	serveNamedVersionAcceptanceSSIAG(t)
 	options := scvOptions{topsID: ssiagTestTOPSID, domain: "schv-aws", sourceID: "aws-models"}
-	decision, err := authorizeSCVSource(options, "relocate-1", "relocate")
+	correlation := "83c9dbb8-5445-49e9-8012-fccceade9bd5"
+	decision, err := authorizeSCVSource(options, correlation, "relocate")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if decision.CorrelationID != "relocate-1" || decision.Target.Operation != "symphony.scv.source.relocate" || decision.Target.Resource != scvSourceResource(options) || decision.Capability == nil {
+	if decision.CorrelationID != correlation || decision.Target.Operation != "symphony.scv.source.relocate" || decision.Target.Resource != scvSourceResource(options) || decision.Capability == nil {
 		t.Fatal("source decision binding mismatch")
 	}
 	other := options
@@ -35,7 +36,7 @@ func TestSCVAuthorizationRejectsUnavailableAuthority(t *testing.T) {
 	t.Setenv("XDG_CONFIG_HOME", t.TempDir())
 	t.Setenv("XDG_RUNTIME_DIR", t.TempDir())
 	t.Setenv("SYMPHONY_SSIAG_SOCKET", "")
-	if _, err := authorizeSCVSource(scvOptions{topsID: ssiagTestTOPSID, domain: "scv", sourceID: "docs"}, "change-1", "onboard"); err == nil {
+	if _, err := authorizeSCVSource(scvOptions{topsID: ssiagTestTOPSID, domain: "scv", sourceID: "docs"}, "83c9dbb8-5445-49e9-8012-fccceade9bd5", "onboard"); err == nil {
 		t.Fatal("unavailable authenticated authority accepted")
 	}
 }
@@ -182,5 +183,13 @@ func TestSCVAuthorizationExpiryBeforePublication(t *testing.T) {
 	decision.Capability.ExpiresAt = expired
 	if err := scvAuthorizationFreshness(decision)(); err == nil {
 		t.Fatal("expired capability accepted before publication")
+	}
+}
+
+func TestSCVAuthorizationRejectsInvalidAuditCorrelation(t *testing.T) {
+	for _, correlation := range []string{"relocate-1", "", "83c9dbb8-5445-59e9-8012-fccceade9bd5"} {
+		if _, err := authorizeSCVRequest(ssiagTestTOPSID, correlation, "symphony.scv.source.relocate", "source-fixture"); err == nil {
+			t.Fatalf("non-STAV correlation accepted: %q", correlation)
+		}
 	}
 }

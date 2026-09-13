@@ -1,0 +1,42 @@
+{
+  "body": "---\ntitle: App Platform Quickstart\ndescription: Get your source code live on App Platform in a few minutes.\nproduct: App Platform\nurl: https://docs.digitalocean.com/products/app-platform/getting-started/quickstart/\nlast_updated: \"2026-07-13\"\n---\n\n\u003e **For AI agents:** The documentation index is at [https://docs.digitalocean.com/llms.txt](https://docs.digitalocean.com/llms.txt). Markdown versions of pages use the same URL with `index.html.md` in place of the HTML page (for example, append `index.html.md` to the directory path instead of opening the HTML document).\n\n# App Platform Quickstart\n\nApp Platform is a fully managed Platform-as-a-Service (PaaS) that deploys applications from Git repositories or container images. It automatically builds, deploys, and scales components while handling all underlying infrastructure.\n\n## Create an App\n\n1. Go to [DigitalOcean Control Panel](https://cloud.digitalocean.com/apps) and click **Create App**.\n2. Select the source for your app. You can choose a GitHub, GitLab, or Bitbucket repository. You can also select a container image you [uploaded to DigitalOcean Container Registry](https://docs.digitalocean.com/products/container-registry/getting-started/quickstart/index.html.md), Docker Hub, or GitHub Container Registry. When the source is a GitLab respository, to prevent a cloning error, you must first [enable HTTPS and SSH protocols](https://docs.gitlab.com/administration/settings/visibility_and_access_controls/#configure-enabled-git-access-protocols) on it.\n3. Select the repository that contains your source code and specify the branch or tag in your repository that contains your app’s source code.\n\n   - For a monorepo, specify the folder that contains the source. See [Deploy from a Monorepo](https://docs.digitalocean.com/products/app-platform/how-to/deploy-from-monorepo/index.html.md) for more information on how App Platform builds apps from monorepos.\n\n   App Platform inspects the code and app resources, and selects an appropriate runtime environment (such as Node, Ruby, etc). If you need to override this, upload a [Dockerfile](https://docs.docker.com/engine/reference/builder/) to your branch and restart the app creation process.\n\n   If you’d like to automatically re-deploy your app when pushing to this branch/tag, select **Autodeploy** and click **Next**.\n4. Configure resources for your app.\n\n   - On the **Resources** page, click the **Edit** link beside app resource components to configure their details such as the component’s instance size (the container size and its cost), HTTP routes, the run command, or the HTTP port. App Platform displays build and run commands that it detected, which you can customize as needed. Refer to the cloud-native buildpacks for instructions for specific buildpacks. For Dockerfile-based builds, entering a run command overrides the Dockerfile’s entrypoint.\n   - Add additional resources by expanding the **Add Resource (Optional)** section and selecting the **Detect from Source Code** option. Then, click **Add**. If your app needs a database, select the **Database** option to add a dev database or an existing managed database from your DigitalOcean account. The connection details for your database are accessible via environment variables so that you can access them in your code.\n\n   Click **Next**.\n5. If you want to use resource- and app-level environment variables, on the **Environment** page, click **Edit** to supply them. Click the **Encrypt** checkbox to ensure a variable’s value is encrypted in the App Spec. Click **Next**.\n6. If you want to change the default name or project for your app, or choose the region where you would like your app to be hosted, click **Edit** on the **Info** page. Click **Save** and then click **Next**.\n\n   - The option to select a region is not available for static sites. Static components are served on DigitalOcean’s [global CDN](https://docs.digitalocean.com/platform/regional-availability/index.html.md#app-platform-availability).\n7. Review your app’s resources, environment variables and billing information on the **Review** page and then click **Create Resources**.\n\nOnce your app deploys, you can view the app at the URL at the top of the app’s **Overview** page.\n\n## Scale an App\n\n1. Go to [https://cloud.digitalocean.com/apps](https://cloud.digitalocean.com/apps), click your app, and click the **Settings** tab.\n2. Click the resource you’d like to scale and click the **Edit** link next to the **Scaling** heading.\n3. Scale your application horizontally by increasing the number of containers, or vertically by increasing the container size.\n4. Click **Save**.\n\n## Add a Database to an App\n\n1. Go to [https://cloud.digitalocean.com/apps](https://cloud.digitalocean.com/apps) and click your app.\n2. Click the **Create** button and choose the **Create/Attach Database** option.\n3. Give your database a name, select an engine, and select a plan.\n4. Click **Create and Attach**.\n5. View connection details for your database by clicking on your new database resource.\n\n## Register a Custom Domain\n\n1. Go to [https://cloud.digitalocean.com/apps](https://cloud.digitalocean.com/apps), click your app, and click the **Settings** tab.\n2. Then click the **Edit** link to the right of **Domains**, then click **Add Domain**.\n3. Enter your domain name at the top of the screen, then follow the onscreen instructions to create a CNAME record with your DNS provider.\n4. Click **Add Domain**.\n\n## Destroy an App\n\n1. Go to [https://cloud.digitalocean.com/apps](https://cloud.digitalocean.com/apps), and click your app.\n2. Click the **Settings** tab, and scroll down to the red **Destroy** button.\n3. Enter the app name to confirm you’d like to delete the app and all its associated resources. Then click **Destroy**.",
+  "body_digest": "sha256:345d4c6318bfa9c34e954eaa3db04082851a580663be45d80be71f90a8f1be57",
+  "byte_size": 5797,
+  "completeness": "complete",
+  "digest": "sha256:38bd4dcfafa89e0cbafc9f86d98c1098993d17b41cadd6bc81fd3b425d5d2e31",
+  "issues": [],
+  "locator_id": "docs",
+  "media_type": "text/markdown",
+  "observed_at": "2026-09-13T04:37:02Z",
+  "protocol": "symphony.scv.capture.v1",
+  "redirects": [],
+  "resolved_uri": "https://docs.digitalocean.com/products/app-platform/getting-started/quickstart/index.html.md",
+  "source": {
+    "authority_role": "first_party_documentation",
+    "continuity_evidence": [
+      "Deliberately unsuitable replacement candidate for acceptance. Quickstart is a different publication; this same-identity proposal is NOT a continuity claim or protected adoption."
+    ],
+    "digest": "sha256:3668d144b96cbce085ea38811549ebca2ad6a2c9c3e3b6b18b160193fdef7682",
+    "family_id": "schv",
+    "generation": 3,
+    "locators": [
+      {
+        "format": "markdown",
+        "locator_id": "docs",
+        "role": "selected-reference",
+        "selector": "Explicit URI; preserve exact observation and content identity",
+        "uri": "https://docs.digitalocean.com/products/app-platform/getting-started/quickstart/index.html.md"
+      }
+    ],
+    "predecessor_digest": "sha256:62b87a5fabbddd5432c6ae67d3ccfcbadba8d15ec41a065ac7a98f11cb2561a3",
+    "protocol": "symphony.scv.source.v1",
+    "provider_id": "do",
+    "publisher": "DigitalOcean",
+    "scope": "App Platform native limits and storage lifecycle",
+    "source_id": "do-app-platform-limits"
+  },
+  "upstream_revision": {
+    "scheme": "etag",
+    "value": "W/\"6aa5b024-16a5\""
+  }
+}

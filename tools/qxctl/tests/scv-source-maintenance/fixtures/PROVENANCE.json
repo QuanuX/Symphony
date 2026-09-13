@@ -1,0 +1,48 @@
+{
+  "format": "local.scv.maintenance-fixture-provenance.v1",
+  "scope": "Exact copies of retained public-source and authored-mapping evidence. Rolling documents, no selected provider API release. No provider-account or deployed behavior evidence.",
+  "candidate_acquisition_before_protected_adoption": true,
+  "insufficient_candidate_adopted": false,
+  "files": [
+    {
+      "fixture": "old-package/pack.json",
+      "source_workspace_path": "implementation/increment-7/provider-packs/evidence/native-0.6-complete/packages/do/pack.json",
+      "file_sha256": "022c80585caea10d044055e75ee85439ab774c0816a095f378c4849e98cb1b8c"
+    },
+    {
+      "fixture": "old-package/prepare-input.json",
+      "source_workspace_path": "implementation/increment-7/provider-packs/evidence/native-0.6-complete/packages/do/prepare-input.json",
+      "file_sha256": "6e4e7d4d04e3c3ef97459a9b4f488f30eb8fd38bb3e0e2d81b86af9f0cc420f5"
+    },
+    {
+      "fixture": "old-capture.json",
+      "source_workspace_path": "implementation/increment-7/provider-packs/evidence/native-0.6-complete/packages/do/captures/do-app-platform-limits.json",
+      "file_sha256": "13f837b5ddac4176869b52dad08a2faa51c155ce33fa69e2966510fe7f1534cb"
+    },
+    {
+      "fixture": "limits-profile.json",
+      "source_workspace_path": "implementation/increment-7/provider-packs/evidence/native-0.6-complete/packages/do/profiles/coverage-do-app-platform-limits.json",
+      "file_sha256": "42f73fdd9d01ef0fc13352613f58711274b9e92cb5053a7fd315804714333b27"
+    },
+    {
+      "fixture": "fresh-capture.json",
+      "source_workspace_path": "implementation/increment-12/source-evidence/canonical-source-acquire-stdout.json",
+      "file_sha256": "8bd29e4e1d0ffd6e006b16defd7780cdfb2254835141c66e9a012ecc50c61245"
+    },
+    {
+      "fixture": "insufficient-capture.json",
+      "source_workspace_path": "implementation/increment-12/source-evidence/insufficient-source-acquire-stdout.json",
+      "file_sha256": "e678b077f41c24141417ce214551ef7cdd2cac96ce47a75fe59edd92e509e8fa"
+    },
+    {
+      "fixture": "relocation-plan.json",
+      "source_workspace_path": "implementation/increment-12/source-evidence/canonical-source-plan-stdout.json",
+      "file_sha256": "480ca0a0abfd421c19fad1efb4691c9bd3192214160bdf996ce10cfa776994e8"
+    },
+    {
+      "fixture": "relocation-plan-input.json",
+      "source_workspace_path": "implementation/increment-12/source-evidence/canonical-source-plan-input.json",
+      "file_sha256": "396ea4e6423142dfc03dfb5fd21a2f0ac190a00edf8c7bf6f0996899f2bd6a0a"
+    }
+  ]
+}

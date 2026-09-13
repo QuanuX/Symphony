@@ -1,0 +1,86 @@
+{
+  "authored_by": "Symphony increment 5 authored source mapping",
+  "digest": "sha256:3c7ff0b5870a13a24465959039deda2f5d3fd6305386d22ed6058b78262beeca",
+  "locator_id": "docs",
+  "media_types": [
+    "text/markdown"
+  ],
+  "profile_id": "coverage-do-app-platform-limits",
+  "profile_version": "1",
+  "protocol": "symphony.scv.interpretation-profile.v1",
+  "provider_id": "do",
+  "rationale": "Bounded native-source mapping with explicit scope. Statements retain source authority and acquisition qualification; recommendation is not user policy.",
+  "rules": [
+    {
+      "claim_id": "do-app-platform-amd64",
+      "context": [],
+      "dependencies": [],
+      "extractor": {
+        "kind": "literal",
+        "quote": "App Platform only supports Linux-based container images built for the AMD64 architecture.",
+        "value": {
+          "type": "string",
+          "unit": null,
+          "value": "amd64"
+        }
+      },
+      "predicate": "image.architecture",
+      "rule_id": "do-app-platform-amd64",
+      "scope": {
+        "operating-system": "linux",
+        "provider": "do",
+        "service": "app-platform"
+      },
+      "statement_kind": "documented_fact",
+      "subject": "do.app-platform.container"
+    },
+    {
+      "claim_id": "do-app-platform-local-storage",
+      "context": [],
+      "dependencies": [],
+      "extractor": {
+        "kind": "literal",
+        "quote": "The host instances running App Platform containers do not provide persistent data storage.",
+        "value": {
+          "type": "boolean",
+          "unit": null,
+          "value": false
+        }
+      },
+      "predicate": "local-storage.persistent",
+      "rule_id": "do-app-platform-local-storage",
+      "scope": {
+        "provider": "do",
+        "service": "app-platform",
+        "storage": "host-local-filesystem"
+      },
+      "statement_kind": "documented_fact",
+      "subject": "do.app-platform.container"
+    },
+    {
+      "claim_id": "do-limits-dev-valkey",
+      "context": [],
+      "dependencies": [],
+      "extractor": {
+        "kind": "literal",
+        "quote": "App Platform’s engine support for dev databases is currently limited to PostgreSQL",
+        "value": {
+          "type": "boolean",
+          "unit": null,
+          "value": false
+        }
+      },
+      "predicate": "engine.valkey.available",
+      "rule_id": "do-limits-dev-valkey",
+      "scope": {
+        "component": "development-database",
+        "engine": "valkey",
+        "provider": "do",
+        "service": "app-platform"
+      },
+      "statement_kind": "documented_fact",
+      "subject": "do.app-platform.development-database"
+    }
+  ],
+  "source_id": "do-app-platform-limits"
+}

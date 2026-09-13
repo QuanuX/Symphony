@@ -46,7 +46,7 @@ func intent(t *testing.T, id string, expected *string, generation int, body json
 	}
 	return v
 }
-func authority(Intent) (Authorization, error) {
+func authority(Intent, string) (Authorization, error) {
 	return Authorization{Evidence: json.RawMessage(`{"test_authorizer":"storage-unit-fixture-not-SSIAG-evidence"}`), ValidUntil: time.Now().Add(time.Minute)}, nil
 }
 
@@ -60,7 +60,7 @@ func TestGraphPublicationCASAndLostResponse(t *testing.T) {
 	if d.Generation != 1 || *d.GraphDigest != first.GraphDigest {
 		t.Fatal("wrong initial head")
 	}
-	denied := func(Intent) (Authorization, error) {
+	denied := func(Intent, string) (Authorization, error) {
 		t.Fatal("committed retry must not request new authority")
 		return Authorization{}, errors.New("unexpected")
 	}
@@ -98,7 +98,7 @@ func TestInterruptedGraphPublicationKeepsOldCoherentHead(t *testing.T) {
 		t.Fatal(err)
 	}
 	next := intent(t, "two", initial.GraphDigest, initial.Generation, graph(t, "two"), i)
-	failure := func(Intent) (Authorization, error) {
+	failure := func(Intent, string) (Authorization, error) {
 		return Authorization{}, errors.New("fixture authority unavailable")
 	}
 	if _, err = s.Select(next, failure); err == nil {
@@ -186,8 +186,8 @@ func TestGraphIntentRequiresAuthorizationEvidence(t *testing.T) {
 func TestGraphAuthorityExpiryKeepsRecoverableIntent(t *testing.T) {
 	s, i := fixture(t)
 	first := intent(t, "expires", nil, 0, graph(t, "one"), i)
-	expired := func(v Intent) (Authorization, error) {
-		a, e := authority(v)
+	expired := func(v Intent, correlation string) (Authorization, error) {
+		a, e := authority(v, correlation)
 		a.ValidUntil = time.Now().Add(-time.Second)
 		return a, e
 	}

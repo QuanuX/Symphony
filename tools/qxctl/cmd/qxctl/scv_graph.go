@@ -142,8 +142,8 @@ func runSCVProjection(operation string, options scvOptions, graphID string) erro
 		if err != nil || rechecked != installed {
 			return fmt.Errorf("graph owner installation changed during validation")
 		}
-		selected, err = store.Select(intent, func(bound scvgraph.Intent) (scvgraph.Authorization, error) {
-			decision, err := authorizeSCVRequest(options.topsID, bound.OperationID, "symphony.scv.graph.select", graphResource(options, graphID))
+		selected, err = store.Select(intent, func(bound scvgraph.Intent, correlationID string) (scvgraph.Authorization, error) {
+			decision, err := authorizeSCVRequest(options.topsID, correlationID, "symphony.scv.graph.select", graphResource(options, graphID))
 			if err != nil {
 				return scvgraph.Authorization{}, err
 			}

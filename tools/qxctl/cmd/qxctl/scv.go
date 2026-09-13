@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/commandregistry"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgebinding"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgeengine"
@@ -328,7 +329,11 @@ func runSCVSource(operation string, options scvOptions) error {
 		if _, err := tx.Prepare(intent); err != nil {
 			return err
 		}
-		decision, err := authorizeSCVSource(options, binding.OperationID, binding.ChangeKind)
+		prepared, ok := tx.Attempt(binding.OperationID)
+		if !ok {
+			return fmt.Errorf("durable source authorization correlation is absent")
+		}
+		decision, err := authorizeSCVSource(options, prepared.CorrelationID, binding.ChangeKind)
 		if err != nil {
 			return fmt.Errorf("source intent retained; authorization failed before source mutation: %w", err)
 		}
@@ -368,14 +373,19 @@ func scvSourceResource(options scvOptions) string {
 	digest, _ := knowledgeengine.SCVDigest(map[string]any{"tops_id": options.topsID, "domain": options.domain, "source_id": options.sourceID})
 	return "symphony.scv.source:" + strings.TrimPrefix(digest, "sha256:")
 }
-func authorizeSCVSource(options scvOptions, operationID, kind string) (ssiagclient.AuthorizationDecision, error) {
+func authorizeSCVSource(options scvOptions, correlationID, kind string) (ssiagclient.AuthorizationDecision, error) {
 	if kind != "onboard" && kind != "relocate" && kind != "authority_change" && kind != "revise" {
 		return ssiagclient.AuthorizationDecision{}, fmt.Errorf("unsupported source change kind")
 	}
-	return authorizeSCVRequest(options.topsID, operationID, "symphony.scv.source."+strings.ReplaceAll(kind, "_", "-"), scvSourceResource(options))
+	return authorizeSCVRequest(options.topsID, correlationID, "symphony.scv.source."+strings.ReplaceAll(kind, "_", "-"), scvSourceResource(options))
 }
 
-func authorizeSCVRequest(topsID, operationID, permissionOperation, resource string) (ssiagclient.AuthorizationDecision, error) {
+func authorizeSCVRequest(topsID, correlationID, permissionOperation, resource string) (ssiagclient.AuthorizationDecision, error) {
+	// The opaque operation ID remains journal identity. This separately persisted
+	// correlation satisfies the downstream committed-audit contract.
+	if err := stavprotocol.ValidateRequestUUID(correlationID); err != nil {
+		return ssiagclient.AuthorizationDecision{}, fmt.Errorf("invalid durable SCV authorization correlation: %w", err)
+	}
 	client, err := ssiagclient.NewForTOPS("user", topsID, 4*time.Second)
 	if err != nil {
 		return ssiagclient.AuthorizationDecision{}, err
@@ -390,7 +400,7 @@ func authorizeSCVRequest(topsID, operationID, permissionOperation, resource stri
 		return ssiagclient.AuthorizationDecision{}, err
 	}
 	now := time.Now().UTC().Truncate(time.Second)
-	request := ssiagclient.AuthorizationRequest{Schema: "symphony.ssiag.authorization-request.v1", RequestID: requestID, CorrelationID: operationID,
+	request := ssiagclient.AuthorizationRequest{Schema: "symphony.ssiag.authorization-request.v1", RequestID: requestID, CorrelationID: correlationID,
 		Operation: permissionOperation, Resource: resource, Audience: "qxctl", Scope: "tops:" + topsID,
 		RequestedAt: now, RequestedExpiresAt: now.Add(time.Minute)}
 	decision, err := client.Authorize(ctx, request)
