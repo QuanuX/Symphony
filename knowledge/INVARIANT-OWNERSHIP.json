@@ -1729,6 +1729,19 @@
         },
         {
           "cases": [
+            "TestSHVTablesFinalScalarAndProfileBounds",
+            "TestSHVTablesInstalled",
+            "TestSHVTablesParserBoundaries",
+            "TestSHVTablesQualificationAndGroupIntegrity",
+            "TestSHVTablesQuarterAndCoverage",
+            "TestSHVTablesQueryEvaluationGraph",
+            "TestSHVTablesReplayForgeries",
+            "TestSHVTablesVersionAndLegacy"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/shv_tables_test.go"
+        },
+        {
+          "cases": [
             "TestSHVCoverageIndependentBoundaryCases",
             "TestSHVEvaluationAndProjectionCorrespondence",
             "TestSHVHTMLSectionAndTagBoundaries",
@@ -1749,7 +1762,8 @@
         "modules/shv-engine/src/coverage.cpp",
         "modules/shv-engine/src/evaluation.cpp",
         "modules/shv-engine/src/html.cpp",
-        "modules/shv-engine/src/main.cpp"
+        "modules/shv-engine/src/main.cpp",
+        "modules/shv-engine/src/table.cpp"
       ],
       "producer_regressions": [
         {
@@ -1757,6 +1771,12 @@
             "test_kernel_conformance"
           ],
           "path": "modules/shv-engine/tests/kernel_test.py"
+        },
+        {
+          "cases": [
+            "test_table_interpretation"
+          ],
+          "path": "modules/shv-engine/tests/table_test.py"
         }
       ],
       "real_process_regressions": [
@@ -1765,9 +1785,15 @@
             "test_installed_process"
           ],
           "path": "modules/shv-engine/tests/kernel_test.py"
+        },
+        {
+          "cases": [
+            "test_installed_table_process"
+          ],
+          "path": "modules/shv-engine/tests/table_test.py"
         }
       ],
-      "statement": "The C++ SHV owner reads exact retained source bytes through bounded no-follow paths, checks manifest sizes and digests, and replays selected finite source mappings before catalogue query, requirement evaluation or owner graph projection/validation. Product heading and definition fields bind caller-selected exact tag#id sections. Coverage preserves caller selectors and unresolved dates. Findings preserve subject, requirement, qualifier and evidence identity without promoting declared component facts to whole-system or active-Node proof. Independent qxctl checks reject resealed false results and preserve exact receipt-backed owner selection; a valid graph seal alone is not source replay.",
+      "statement": "The C++ SHV owner reads exact retained source bytes through bounded no-follow paths, checks manifest sizes and digests, and replays selected finite source mappings before catalogue query, requirement evaluation or owner graph projection/validation. Product heading and definition fields bind caller-selected exact tag#id sections. Coverage preserves caller selectors and unresolved dates. Findings preserve subject, requirement, qualifier and evidence identity without promoting declared component facts to whole-system or active-Node proof. Independent qxctl checks reject resealed false results and preserve exact receipt-backed owner selection; a valid graph seal alone is not source replay. Explicit table profiles retain quarter precision and complete operating-mode rows, rejecting structural ambiguity and resealed mixed-mode values.",
       "status": "active",
       "title": "Hardware findings preserve exact retained sources and caller selections"
     },
@@ -2044,11 +2070,11 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:49d5ffce4c9d2a42371fc7c4a8ae14a9022fba3ef159940bd8d32348c474e6e5",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,
     "owner_producer_regression_required": true,
     "real_process_required_for_ipc": true
-  }
+  },
+  "registry_digest": "sha256:10bc771ce001874d9c6d1d4699ef0863ab65a052a7f3a706a223860142bbc994"
 }

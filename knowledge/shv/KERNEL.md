@@ -1,6 +1,6 @@
 # SHV initial kernel and generic graph integration
 
-Status: implemented bounded 0.1.0-dev contract. The broader Hardware Capability Atlas inventory remains a roadmap. This increment follows the September 13 SHV review and explicit user authorization for generic graph adapters.
+Status: implemented bounded kernel 0.2.0-dev contract; the separate generic adapter and source lifecycle engine remain 0.1.0-dev. qxctl retains explicit legacy kernel 0.1.0-dev selection. The broader Hardware Capability Atlas inventory remains a roadmap. This increment follows the September 13 SHV review and explicit user authorization for generic graph adapters.
 
 ## Ownership
 
@@ -24,7 +24,7 @@ Discovery reads receipt-owned versioned schemas/templates, distinguishes CLI-own
 
 ## Rebuildable evidence
 
-Catalogue build consumes exact manifest sizes/digests through bounded no-follow file reads. The caller supplies literal mappings and exact distinct product-heading/specification `tag#id` selectors. This finite HTML profile consumes paired DT/DD fields and ignores script/style/comments and unrelated navigation. It supports typed integer/string/date/finite tokens. Opaque files can be retained without deriving claims. Query, evaluation and graph operations rebuild from the retained files and mappings; resealing a changed assertion is insufficient.
+Catalogue build consumes exact manifest sizes/digests through bounded no-follow file reads. The caller supplies literal mappings and exact distinct product-heading/specification `tag#id` selectors. This finite HTML profile consumes paired DT/DD fields and ignores script/style/comments and unrelated navigation. The legacy profile supports typed integer/string/date/finite tokens. The explicit scoped_tables.v1 profile adds per-field table sections, quarter_20yy dates with inclusive quarter intervals, and table_rows values that retain complete operating-profile rows, header order and blank cells. Missing units are not inferred. Scalar evaluation cannot flatten structured tables; query and graph transport retain them unchanged. Opaque files can be retained without deriving claims. Query, evaluation and graph operations rebuild from the retained files and mappings; resealing a changed assertion is insufficient.
 
 The reviewed AMD EPYC 7313/7313P specimen distinguishes the documented socket-mode sets. A dual-socket processor finding cannot establish motherboard, BIOS, operating-system or active-node compatibility. Those require their own evidence; the kernel reports unresolved when no matching predicate/qualifier exists. Caller mappings are declarations, not authenticated publisher interpretations.
 
@@ -42,4 +42,4 @@ The finite section selector is lowercase HTML tag followed by `#` and a literal 
 
 ## Component source lifecycle
 
-The independent `modules/shv-source-engine/` implements `SOURCES.md`: stable source identity, explicit relocation/authority-change plans, pure transition and finite history validation, actual-byte capture binding/comparison, and source-replayed provenance graphs through qxctl. These read-only operations do not activate a source registry or authenticate publisher authority. Core curation prioritizes original component/product identity and evidenced variants; user-selected source coverage remains extensible. Whole-system catalogue permutations, new component mappings, protected activation and durable vendor storage remain separate increments.
+The independent `modules/shv-source-engine/` implements `SOURCES.md`: stable source identity, explicit relocation/authority-change plans, pure transition and finite history validation, actual-byte capture binding/comparison, and source-replayed provenance graphs through qxctl. These read-only operations do not activate a source registry or authenticate publisher authority. Core curation prioritizes original component/product identity and evidenced variants; user-selected source coverage remains extensible. The retained Intel Xeon Gold 5418Y specification is mapped with quarter precision, component fields and complete SST performance-profile rows. Whole-system catalogue permutations, further component mappings, protected activation and durable vendor storage remain separate increments.

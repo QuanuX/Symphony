@@ -11111,7 +11111,7 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - relationships: depends_on -> `knowledge/shv/MANIFEST.md`
 - consumers: C++ engines, qxctl, validators and user-selected tools
 - deferred_projections: broad atlas, durable vendor drivers and Composer integration
-- notes: Initial 0.1.0-dev contracts; no persistent database selected.
+- notes: Kernel 0.2.0-dev adds explicit scoped tables and quarter precision; legacy selection remains available and no persistent database is selected.
 - status: canonical
 
 #### SHV C++ Kernel
@@ -11124,7 +11124,7 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - relationships: depends_on -> `knowledge/shv/MANIFEST.md`
 - consumers: C++ engines, qxctl, validators and user-selected tools
 - deferred_projections: broad atlas, durable vendor drivers and Composer integration
-- notes: Initial 0.1.0-dev contracts; no persistent database selected.
+- notes: Kernel 0.2.0-dev adds explicit scoped tables and quarter precision; legacy selection remains available and no persistent database is selected.
 - status: canonical
 
 #### SHV v1 Schema
@@ -11137,7 +11137,7 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - relationships: depends_on -> `knowledge/shv/MANIFEST.md`
 - consumers: C++ engines, qxctl, validators and user-selected tools
 - deferred_projections: broad atlas, durable vendor drivers and Composer integration
-- notes: Initial 0.1.0-dev contracts; no persistent database selected.
+- notes: Kernel 0.2.0-dev adds explicit scoped tables and quarter precision; legacy selection remains available and no persistent database is selected.
 - status: canonical
 
 #### SHV Unanswered Templates
@@ -11150,7 +11150,7 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - relationships: depends_on -> `knowledge/shv/MANIFEST.md`
 - consumers: C++ engines, qxctl, validators and user-selected tools
 - deferred_projections: broad atlas, durable vendor drivers and Composer integration
-- notes: Initial 0.1.0-dev contracts; no persistent database selected.
+- notes: Kernel 0.2.0-dev adds explicit scoped tables and quarter precision; legacy selection remains available and no persistent database is selected.
 - status: canonical
 
 #### SHV Kernel Features
@@ -11163,7 +11163,7 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - relationships: depends_on -> `knowledge/shv/MANIFEST.md`
 - consumers: C++ engines, qxctl, validators and user-selected tools
 - deferred_projections: broad atlas, durable vendor drivers and Composer integration
-- notes: Initial 0.1.0-dev contracts; no persistent database selected.
+- notes: Kernel 0.2.0-dev adds explicit scoped tables and quarter precision; legacy selection remains available and no persistent database is selected.
 - status: canonical
 
 #### Generic Graph Adapter Port

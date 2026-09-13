@@ -6,8 +6,7 @@
 #include <filesystem>
 #include <map>
 namespace symphony::knowledge::shv {
-namespace {
-Json value(const std::string &input, const std::string &type) {
+Json source_value(const std::string &input, const std::string &type) {
   if (input.empty() || input.size() > 4096)
     invalid("field value outside bounds");
   if (type == "string")
@@ -29,6 +28,20 @@ Json value(const std::string &input, const std::string &type) {
     if (!date_valid(iso))
       invalid("invalid source date");
     return iso;
+  }
+  if (type == "quarter_20yy") {
+    if (input.size() != 5 || input[0] != 'Q' || input[1] < '1' ||
+        input[1] > '4' || input[2] != '\'' || input[3] < '0' ||
+        input[3] > '9' || input[4] < '0' || input[4] > '9')
+      invalid("unsupported 2000-2099 source quarter");
+    const std::string starts[] = {"01-01", "04-01", "07-01", "10-01"};
+    const std::string ends[] = {"03-31", "06-30", "09-30", "12-31"};
+    auto year = "20" + input.substr(3);
+    auto q = input[1] - '1';
+    return Json{{"precision", "quarter"},
+                {"source_text", input},
+                {"from", year + "-" + starts[q]},
+                {"through", year + "-" + ends[q]}};
   }
   if (type == "tokens") {
     std::set<std::string> seen;
@@ -57,6 +70,7 @@ Json value(const std::string &input, const std::string &type) {
   }
   invalid("unsupported value_type");
 }
+namespace {
 std::map<std::string, std::pair<std::string, std::string>>
 pairs(const std::string &normalized) {
   std::vector<std::string> lines;
@@ -118,10 +132,19 @@ Json catalogue_build(const engine::Request &r, const Json &p) {
   std::size_t assertions = 0;
   for (const auto &spec : p.at("subjects")) {
     deadline(r);
-    fields(spec, {"id", "manufacturer", "model", "hardware_class", "source_id",
-                  "heading_section", "field_section", "fields"});
+    const bool tables = spec.contains("interpretation_profile");
+    if (tables) {
+      fields(spec,
+             {"id", "manufacturer", "model", "hardware_class", "source_id",
+              "heading_section", "interpretation_profile", "fields"});
+      if (text(spec, "interpretation_profile") != "scoped_tables.v1")
+        invalid("unsupported interpretation profile");
+    } else {
+      fields(spec, {"id", "manufacturer", "model", "hardware_class",
+                    "source_id", "heading_section", "field_section", "fields"});
+      text(spec, "field_section", 128);
+    }
     text(spec, "heading_section", 128);
-    text(spec, "field_section", 128);
     auto id = ident(spec, "id"), model = text(spec, "model", 256),
          manufacturer = text(spec, "manufacturer", 256),
          hardware = ident(spec, "hardware_class"),
@@ -134,7 +157,7 @@ Json catalogue_build(const engine::Request &r, const Json &p) {
       invalid("assertion bound exceeded");
     if (!spec.at("fields").empty() && formats.at(source) != "html")
       invalid("opaque source cannot emit interpreted assertions");
-    auto normalized = spec.at("fields").empty()
+    auto normalized = spec.at("fields").empty() || tables
                           ? std::string{}
                           : html_text(bytes.at(source), model,
                                       text(spec, "heading_section", 128),
@@ -142,23 +165,41 @@ Json catalogue_build(const engine::Request &r, const Json &p) {
     auto entries = pairs(normalized);
     Json values = Json::array(), introduced = nullptr;
     std::set<std::string> predicates;
+    std::map<std::string, Json> table_cache;
     for (const auto &f : spec.at("fields")) {
-      fields(f,
-             {"predicate", "label", "next_label", "value_type", "qualifier"});
-      auto pred = ident(f, "predicate"), label = text(f, "label", 256),
-           next = text(f, "next_label", 256), type = text(f, "value_type", 16),
+      auto pred = ident(f, "predicate"), type = text(f, "value_type", 16),
            qualifier = text(f, "qualifier", 256);
       if (!predicates.insert(pred).second)
         invalid("duplicate predicate: conflicting input requires a later "
                 "explicit conflict contract");
-      auto it = entries.find(label);
-      if (it == entries.end() || it->second.second != next)
-        invalid("missing or changed adjacent source field");
-      auto typed = value(it->second.first, type);
+      Json typed;
+      if (tables) {
+        auto section = text(f, "section", 128);
+        if (!table_cache.contains(section))
+          table_cache[section] =
+              html_table(bytes.at(source), model,
+                         text(spec, "heading_section", 128), section);
+        typed = table_value(table_cache.at(section), f);
+      } else {
+        fields(f,
+               {"predicate", "label", "next_label", "value_type", "qualifier"});
+        auto label = text(f, "label", 256), next = text(f, "next_label", 256);
+        auto it = entries.find(label);
+        if (it == entries.end() || it->second.second != next)
+          invalid("missing or changed adjacent source field");
+        if (type == "quarter_20yy")
+          invalid("quarter mapping requires explicit scoped_tables.v1 profile");
+        typed = source_value(it->second.first, type);
+      }
       if (pred == "model_introduction") {
-        if (type != "date")
-          invalid("model introduction requires exact date mapping");
-        introduced = Json{{"from", typed}, {"through", typed}};
+        if (type == "date")
+          introduced = Json{{"from", typed}, {"through", typed}};
+        else if (tables && type == "quarter_20yy")
+          introduced = Json{{"from", typed.at("from")},
+                            {"through", typed.at("through")}};
+        else
+          invalid(
+              "model introduction requires date or explicit quarter mapping");
       }
       values.push_back(Json{{"predicate", pred},
                             {"value", typed},

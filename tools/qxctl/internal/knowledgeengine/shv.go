@@ -9,6 +9,11 @@ import (
 )
 
 const SHVVersion = "0.1.0-dev"
+const SHVTableVersion = "0.2.0-dev"
+
+func shvKernelVersion(version string) bool {
+	return version == SHVVersion || version == SHVTableVersion
+}
 
 var shvEngineSpec = engineSpec{label: "SHV", moduleID: "shv-engine", engineID: "symphony-shv", componentKind: "vector_engine", vectorID: "shv", processProtocol: processProtocol}
 var shvAdapterSpec = engineSpec{label: "shv-graph-adapter", moduleID: "shv-graph-adapter", engineID: "symphony-shv-graph-adapter", componentKind: "adapter", vectorID: "shv", processProtocol: processProtocol}
@@ -35,8 +40,8 @@ func SHVInputProtocol(op string, adapter bool) string {
 	return prefix + strings.ReplaceAll(op, "_", "-") + "-input.v1"
 }
 func inspectSHV(prefix, version string, adapter bool) (Installation, error) {
-	if prefix == "" || version != SHVVersion {
-		return Installation{}, fmt.Errorf("SHV requires explicit prefix and exact supported version %s", SHVVersion)
+	if prefix == "" || (adapter && version != SHVVersion) || (!adapter && !shvKernelVersion(version)) {
+		return Installation{}, fmt.Errorf("SHV requires an explicit prefix and supported exact version (kernel %s or %s; adapter %s)", SHVVersion, SHVTableVersion, SHVVersion)
 	}
 	s := shvEngineSpec
 	if adapter {
@@ -82,7 +87,7 @@ func invokeSHV(ctx context.Context, prefix, version, cwd, op string, payload []b
 	if err != nil {
 		return r, err
 	}
-	if err = ValidateSHVResult(op, payload, r.Result, adapter); err != nil {
+	if err = ValidateSHVResultVersion(op, payload, r.Result, adapter, version); err != nil {
 		return Response{}, err
 	}
 	after, err := inspectSHV(prefix, version, adapter)

@@ -5,7 +5,7 @@
 namespace symphony::knowledge::shv {
 namespace engine = symphony::knowledge::engine;
 using Json = engine::Json;
-inline constexpr auto version = "0.1.0-dev";
+inline constexpr auto version = "0.2.0-dev";
 inline constexpr auto engine_id = "symphony-shv";
 [[noreturn]] void invalid(const std::string &why);
 void fields(const Json &, std::initializer_list<const char *>);
@@ -22,6 +22,11 @@ Json coverage_plan(const Json &);
 std::string html_text(const std::string &, const std::string &model,
                       const std::string &heading_section,
                       const std::string &field_section);
+Json html_table(const std::string &, const std::string &model,
+                const std::string &heading_section,
+                const std::string &field_section);
+Json table_value(const Json &, const Json &);
+Json source_value(const std::string &, const std::string &);
 Json catalogue_build(const engine::Request &, const Json &);
 void catalogue_replay(const engine::Request &, const Json &,
                       const std::string &);

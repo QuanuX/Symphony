@@ -875,7 +875,8 @@
       "distinctions": [],
       "evidence": [
         "tools/qxctl/cmd/qxctl/shv_test.go exercises all native routes and exact-version grammar.",
-        "tools/qxctl/internal/knowledgeengine/shv_test.go rejects resealed changed evidence and verifies receipt-backed installed process results."
+        "tools/qxctl/internal/knowledgeengine/shv_test.go rejects resealed changed evidence and verifies receipt-backed installed process results.",
+        "SHV-03 adds version-bound scoped-table replay, complete operating-profile rows and quarter-date consumer checks, with focused production-qxctl Intel/AMD acceptance."
       ],
       "feature_id": "ssfv:symphony:qxctl.shv-administration",
       "how": "Validates exact receipts, descriptors, bounded process responses and independently rederives coverage, source-backed catalogue claims, evaluation, graph projection and adapter row correspondence.",
@@ -901,7 +902,8 @@
         "tools/qxctl/internal/knowledgeengine/shv_schema.go",
         "tools/qxctl/internal/knowledgeengine/shv_source.go",
         "tools/qxctl/internal/knowledgeengine/shv_test.go",
-        "tools/qxctl/internal/knowledgeengine/shv_validation.go"
+        "tools/qxctl/internal/knowledgeengine/shv_validation.go",
+        "tools/qxctl/internal/knowledgeengine/shv_tables.go"
       ],
       "kind": "feature",
       "non_claims": [

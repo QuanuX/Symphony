@@ -24,6 +24,12 @@
           },
           "maxItems": 32,
           "uniqueItems": true
+        },
+        {
+          "$ref": "#/$defs/QuarterValue"
+        },
+        {
+          "$ref": "#/$defs/TableRowsValue"
         }
       ]
     },
@@ -164,61 +170,14 @@
       "additionalProperties": false
     },
     "SubjectSpec": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+      "oneOf": [
+        {
+          "$ref": "#/$defs/LegacySubjectSpec"
         },
-        "manufacturer": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 256
-        },
-        "model": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 256
-        },
-        "hardware_class": {
-          "type": "string",
-          "pattern": "^[A-Za-z0-9._-]{1,128}$"
-        },
-        "source_id": {
-          "type": "string",
-          "pattern": "^[A-Za-z0-9._-]{1,128}$"
-        },
-        "heading_section": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 128,
-          "pattern": "^[a-z][a-z0-9-]*#[^#]+$"
-        },
-        "field_section": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 128,
-          "pattern": "^[a-z][a-z0-9-]*#[^#]+$"
-        },
-        "fields": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/MappingField"
-          },
-          "maxItems": 16
+        {
+          "$ref": "#/$defs/TableSubjectSpec"
         }
-      },
-      "required": [
-        "id",
-        "manufacturer",
-        "model",
-        "hardware_class",
-        "source_id",
-        "heading_section",
-        "field_section",
-        "fields"
-      ],
-      "additionalProperties": false
+      ]
     },
     "Assertion": {
       "type": "object",
@@ -723,6 +682,30 @@
       ],
       "additionalProperties": false
     },
+    "ScalarValue": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "maxItems": 32,
+          "uniqueItems": true
+        }
+      ]
+    },
     "Requirement": {
       "type": "object",
       "properties": {
@@ -742,7 +725,7 @@
           ]
         },
         "value": {
-          "$ref": "#/$defs/Value"
+          "$ref": "#/$defs/ScalarValue"
         },
         "qualifier": {
           "type": "string",
@@ -1429,6 +1412,283 @@
           "$ref": "#/$defs/digest"
         }
       }
+    },
+    "QuarterValue": {
+      "type": "object",
+      "properties": {
+        "precision": {
+          "const": "quarter"
+        },
+        "source_text": {
+          "type": "string",
+          "pattern": "^Q[1-4]'[0-9]{2}$"
+        },
+        "from": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "through": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        }
+      },
+      "required": [
+        "precision",
+        "source_text",
+        "from",
+        "through"
+      ],
+      "additionalProperties": false
+    },
+    "TableRowsValue": {
+      "type": "object",
+      "properties": {
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 4096
+            },
+            "maxItems": 16,
+            "minItems": 1
+          },
+          "maxItems": 32,
+          "minItems": 1
+        }
+      },
+      "required": [
+        "columns",
+        "rows"
+      ],
+      "additionalProperties": false
+    },
+    "ScalarTableField": {
+      "type": "object",
+      "properties": {
+        "predicate": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-z][a-z0-9-]*#[^#]+$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "next_label": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "value_type": {
+          "enum": [
+            "string",
+            "integer",
+            "date",
+            "tokens",
+            "quarter_20yy"
+          ]
+        },
+        "qualifier": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "predicate",
+        "section",
+        "label",
+        "next_label",
+        "value_type",
+        "qualifier"
+      ],
+      "additionalProperties": false
+    },
+    "MatrixTableField": {
+      "type": "object",
+      "properties": {
+        "predicate": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-z][a-z0-9-]*#[^#]+$"
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "maxItems": 16,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "value_type": {
+          "const": "table_rows"
+        },
+        "qualifier": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "predicate",
+        "section",
+        "columns",
+        "value_type",
+        "qualifier"
+      ],
+      "additionalProperties": false
+    },
+    "TableSubjectSpec": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "manufacturer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "hardware_class": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "source_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "heading_section": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-z][a-z0-9-]*#[^#]+$"
+        },
+        "interpretation_profile": {
+          "const": "scoped_tables.v1"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ScalarTableField"
+              },
+              {
+                "$ref": "#/$defs/MatrixTableField"
+              }
+            ]
+          },
+          "maxItems": 16
+        }
+      },
+      "required": [
+        "id",
+        "manufacturer",
+        "model",
+        "hardware_class",
+        "source_id",
+        "heading_section",
+        "interpretation_profile",
+        "fields"
+      ],
+      "additionalProperties": false
+    },
+    "LegacySubjectSpec": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "manufacturer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "hardware_class": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "source_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "heading_section": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-z][a-z0-9-]*#[^#]+$"
+        },
+        "field_section": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-z][a-z0-9-]*#[^#]+$"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MappingField"
+          },
+          "maxItems": 16
+        }
+      },
+      "required": [
+        "id",
+        "manufacturer",
+        "model",
+        "hardware_class",
+        "source_id",
+        "heading_section",
+        "field_section",
+        "fields"
+      ],
+      "additionalProperties": false
     }
   }
 }

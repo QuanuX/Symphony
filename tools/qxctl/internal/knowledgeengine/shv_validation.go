@@ -233,7 +233,11 @@ func shvCoverage(p map[string]any) (map[string]any, error) {
 	})
 	return shvSealNew(map[string]any{"protocol": "symphony.shv.coverage-result.v1", "profile": profile, "subjects": a, "decisions": decisions, "counts": counts}), nil
 }
-func shvCatalogue(v any) error {
+func shvCatalogue(v any) error { return shvCatalogueVersion(v, SHVVersion) }
+func shvCatalogueVersion(v any, version string) error {
+	if !shvKernelVersion(version) {
+		return shvFail()
+	}
 	c := shvMap(v)
 	if !shvFields(c, "protocol", "sources", "subjects", "mapping", "digest") || c["protocol"] != "symphony.shv.catalogue.v1" {
 		return shvFail()
@@ -269,7 +273,7 @@ func shvCatalogue(v any) error {
 		m := shvMap(v)
 		fields, ok := m["fields"].([]any)
 		id := shvText(m["id"])
-		if !shvFields(m, "id", "manufacturer", "model", "hardware_class", "source_id", "heading_section", "field_section", "fields") || !shvID(id) || maps[id] != nil || !shvBoundedText(m["heading_section"], 128) || !shvBoundedText(m["field_section"], 128) || m["heading_section"] == m["field_section"] || !ok || len(fields) > 16 || !sourceIDs[shvText(m["source_id"])] {
+		if !shvMappingShape(m, version) || !shvID(id) || maps[id] != nil || !shvBoundedText(m["heading_section"], 128) || !ok || len(fields) > 16 || !sourceIDs[shvText(m["source_id"])] {
 			return shvFail()
 		}
 		maps[id] = m
@@ -294,7 +298,7 @@ func shvCatalogue(v any) error {
 		for _, f := range shvList(m["fields"]) {
 			x := shvMap(f)
 			pred := shvText(x["predicate"])
-			if !shvFields(x, "predicate", "label", "next_label", "value_type", "qualifier") || !shvID(pred) || fieldMap[pred] != nil || !shvBoundedText(x["label"], 256) || !shvBoundedText(x["next_label"], 256) || !shvBoundedText(x["qualifier"], 256) {
+			if !shvFieldShape(x, m, version) || !shvID(pred) || fieldMap[pred] != nil || !shvBoundedText(x["qualifier"], 256) {
 				return shvFail()
 			}
 			fieldMap[pred] = x
@@ -305,7 +309,10 @@ func shvCatalogue(v any) error {
 			x := shvMap(v)
 			pred := shvText(x["predicate"])
 			f := fieldMap[pred]
-			if !shvFields(x, "predicate", "value", "qualifier", "source_id") || pred <= prev || f == nil || x["source_id"] != m["source_id"] || !scvEqual(x["qualifier"], f["qualifier"]) || !shvValue(x["value"]) {
+			if !shvValue(x["value"]) && !(version == SHVTableVersion && (f["value_type"] == "quarter_20yy" || f["value_type"] == "table_rows")) {
+				return shvFail()
+			}
+			if !shvFields(x, "predicate", "value", "qualifier", "source_id") || pred <= prev || f == nil || x["source_id"] != m["source_id"] || !scvEqual(x["qualifier"], f["qualifier"]) {
 				return shvFail()
 			}
 			prev = pred
@@ -326,11 +333,19 @@ func shvCatalogue(v any) error {
 				if !shvDate(x["value"]) {
 					return shvFail()
 				}
+			case "quarter_20yy", "table_rows":
+				if version != SHVTableVersion || m["interpretation_profile"] != "scoped_tables.v1" || !shvStructuredValue(x["value"], shvText(f["value_type"]), f) {
+					return shvFail()
+				}
 			default:
 				return shvFail()
 			}
 			if pred == "model_introduction" && f["value_type"] == "date" {
 				intro = map[string]any{"from": x["value"], "through": x["value"]}
+			}
+			if pred == "model_introduction" && f["value_type"] == "quarter_20yy" {
+				q := shvMap(x["value"])
+				intro = map[string]any{"from": q["from"], "through": q["through"]}
 			}
 		}
 		if !scvEqual(intro, s["introduced"]) {
@@ -364,9 +379,10 @@ func shvSelect(rows []any, ids []any) ([]any, []any, error) {
 	}
 	return out, missing, nil
 }
-func shvQuery(p map[string]any) (map[string]any, error) {
+func shvQuery(p map[string]any) (map[string]any, error) { return shvQueryVersion(p, SHVVersion) }
+func shvQueryVersion(p map[string]any, version string) (map[string]any, error) {
 	c := shvMap(p["catalogue"])
-	if e := shvCatalogue(c); e != nil {
+	if e := shvCatalogueVersion(c, version); e != nil {
 		return nil, e
 	}
 	ids, ok := p["subject_ids"].([]any)
@@ -385,8 +401,11 @@ func shvQuery(p map[string]any) (map[string]any, error) {
 	return shvSealNew(map[string]any{"protocol": "symphony.shv.query-result.v1", "catalogue_digest": c["digest"], "subject_ids": ids, "subjects": rows, "missing_subject_ids": missing}), nil
 }
 func shvEvaluation(p map[string]any) (map[string]any, error) {
+	return shvEvaluationVersion(p, SHVVersion)
+}
+func shvEvaluationVersion(p map[string]any, version string) (map[string]any, error) {
 	c := shvMap(p["catalogue"])
-	if e := shvCatalogue(c); e != nil {
+	if e := shvCatalogueVersion(c, version); e != nil {
 		return nil, e
 	}
 	ids, ok := p["subject_ids"].([]any)
@@ -437,6 +456,9 @@ func shvEvaluation(p map[string]any) (map[string]any, error) {
 				if a["predicate"] != r["predicate"] || !scvEqual(a["qualifier"], r["qualifier"]) {
 					continue
 				}
+				if shvMap(a["value"]) != nil {
+					return nil, shvFail()
+				}
 				pass := false
 				switch r["operator"] {
 				case "eq":
@@ -473,7 +495,10 @@ func shvEvaluation(p map[string]any) (map[string]any, error) {
 	return shvSealNew(map[string]any{"protocol": "symphony.shv.evaluation.v1", "catalogue_digest": c["digest"], "subject_ids": ids, "requirements": reqs, "findings": findings, "missing_subject_ids": missing}), nil
 }
 func shvProjection(c map[string]any) (map[string]any, error) {
-	if e := shvCatalogue(c); e != nil {
+	return shvProjectionVersion(c, SHVVersion)
+}
+func shvProjectionVersion(c map[string]any, version string) (map[string]any, error) {
+	if e := shvCatalogueVersion(c, version); e != nil {
 		return nil, e
 	}
 	nodes, edges := []any{}, []any{}
@@ -492,7 +517,7 @@ func shvProjection(c map[string]any) (map[string]any, error) {
 	}
 	sort.Slice(nodes, func(i, j int) bool { return shvText(shvMap(nodes[i])["id"]) < shvText(shvMap(nodes[j])["id"]) })
 	sort.Slice(edges, func(i, j int) bool { return shvText(shvMap(edges[i])["id"]) < shvText(shvMap(edges[j])["id"]) })
-	return shvSealNew(map[string]any{"protocol": "symphony.graph.exchange.v1", "owner": map[string]any{"engine_id": "symphony-shv", "engine_version": SHVVersion, "artifact_protocol": c["protocol"], "artifact_digest": c["digest"]}, "owner_artifact": c, "nodes": nodes, "edges": edges}), nil
+	return shvSealNew(map[string]any{"protocol": "symphony.graph.exchange.v1", "owner": map[string]any{"engine_id": "symphony-shv", "engine_version": version, "artifact_protocol": c["protocol"], "artifact_digest": c["digest"]}, "owner_artifact": c, "nodes": nodes, "edges": edges}), nil
 }
 func shvGraph(g map[string]any) error {
 	raw, err := SCVCanonical(g)
@@ -585,6 +610,12 @@ func shvAdapterResult(op string, p map[string]any) (map[string]any, error) {
 // ValidateSHVResult independently rederives caller/result correspondence. The
 // portable adapter verifies graph structure only, never primary-source truth.
 func ValidateSHVResult(op string, input, raw []byte, adapter bool) error {
+	return ValidateSHVResultVersion(op, input, raw, adapter, SHVVersion)
+}
+func ValidateSHVResultVersion(op string, input, raw []byte, adapter bool, version string) error {
+	if (adapter && version != SHVVersion) || (!adapter && !shvKernelVersion(version)) {
+		return shvFail()
+	}
 	p, e := shvObject(input)
 	if e != nil {
 		return e
@@ -598,7 +629,7 @@ func ValidateSHVResult(op string, input, raw []byte, adapter bool) error {
 		return shvFail()
 	}
 	if op == "inspect" {
-		return shvDescriptor(p, r, adapter)
+		return shvDescriptorVersion(p, r, adapter, version)
 	}
 	if e = shvSealed(r); e != nil {
 		return e
@@ -616,29 +647,29 @@ func ValidateSHVResult(op string, input, raw []byte, adapter bool) error {
 		case "coverage_plan":
 			expected, e = shvCoverage(p)
 		case "catalogue_build":
-			return shvValidateBuild(p, r)
+			return shvValidateBuildVersion(p, r, version)
 		case "catalogue_query":
 			if !shvFields(p, "source_root", "catalogue", "subject_ids") {
 				return shvFail()
 			}
-			expected, e = shvQuery(p)
+			expected, e = shvQueryVersion(p, version)
 		case "evaluate":
 			if !shvFields(p, "source_root", "catalogue", "subject_ids", "requirements") {
 				return shvFail()
 			}
-			expected, e = shvEvaluation(p)
+			expected, e = shvEvaluationVersion(p, version)
 		case "graph_project":
 			if !shvFields(p, "source_root", "catalogue") {
 				return shvFail()
 			}
-			expected, e = shvProjection(shvMap(p["catalogue"]))
+			expected, e = shvProjectionVersion(shvMap(p["catalogue"]), version)
 		case "graph_validate":
 			if !shvFields(p, "source_root", "graph") {
 				return shvFail()
 			}
 			g := shvMap(p["graph"])
 			c := shvMap(g["owner_artifact"])
-			projection, err := shvProjection(c)
+			projection, err := shvProjectionVersion(c, version)
 			if err != nil {
 				return err
 			}
@@ -656,7 +687,7 @@ func ValidateSHVResult(op string, input, raw []byte, adapter bool) error {
 		if op == "graph_validate" {
 			c = shvMap(shvMap(p["graph"])["owner_artifact"])
 		}
-		if err := shvValidateBuild(map[string]any{"source_root": p["source_root"], "sources": c["sources"], "subjects": c["mapping"]}, c); err != nil {
+		if err := shvValidateBuildVersion(map[string]any{"source_root": p["source_root"], "sources": c["sources"], "subjects": c["mapping"]}, c, version); err != nil {
 			return err
 		}
 	}
@@ -666,6 +697,9 @@ func ValidateSHVResult(op string, input, raw []byte, adapter bool) error {
 	return nil
 }
 func shvDescriptor(p, r map[string]any, adapter bool) error {
+	return shvDescriptorVersion(p, r, adapter, SHVVersion)
+}
+func shvDescriptorVersion(p, r map[string]any, adapter bool, version string) error {
 	if len(p) != 0 || !shvFields(r, "protocol", "format_version", "module_id", "engine_id", "vector_id", "engine_version", "process_protocols", "contract_versions", "operations", "limits", "supported_scopes", "language", "thermal_path", "canonical_apply_enabled", "session_mutation_enabled", "network_listener", "descriptor_digest") {
 		return shvFail()
 	}
@@ -676,7 +710,7 @@ func shvDescriptor(p, r map[string]any, adapter bool) error {
 	if adapter {
 		s = shvAdapterSpec
 	}
-	if r["module_id"] != s.moduleID || r["engine_id"] != s.engineID || r["vector_id"] != "shv" || r["engine_version"] != SHVVersion || r["format_version"] != json.Number("2") || r["language"] != "C++26" || r["thermal_path"] != "freezing" || r["canonical_apply_enabled"] != false || r["session_mutation_enabled"] != false || r["network_listener"] != false || !scvEqual(r["process_protocols"], []any{processProtocol}) || !scvEqual(r["supported_scopes"], []any{"user"}) {
+	if r["module_id"] != s.moduleID || r["engine_id"] != s.engineID || r["vector_id"] != "shv" || r["engine_version"] != version || r["format_version"] != json.Number("2") || r["language"] != "C++26" || r["thermal_path"] != "freezing" || r["canonical_apply_enabled"] != false || r["session_mutation_enabled"] != false || r["network_listener"] != false || !scvEqual(r["process_protocols"], []any{processProtocol}) || !scvEqual(r["supported_scopes"], []any{"user"}) {
 		return shvFail()
 	}
 	limits := map[string]any{"request_bytes": 1048576, "response_bytes": 4194304, "json_depth": 64, "json_values": 32768, "path_bytes": 4096, "snapshot_files": 1024, "snapshot_file_bytes": 4194304, "deadline_ahead_ms": 300000}

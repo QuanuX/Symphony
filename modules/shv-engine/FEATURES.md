@@ -29,10 +29,11 @@
       ],
       "distinctions": [],
       "evidence": [
-        "Focused native, Go and installed acceptance is recorded at the increment closure; tests include wrong-model, changed-source, forged-result and caller-coverage cases."
+        "Focused native, Go and installed acceptance is recorded at the increment closure; tests include wrong-model, changed-source, forged-result and caller-coverage cases.",
+        "SHV-03 adds focused table/date boundary cases and production qxctl acceptance over retained Intel and AMD sources; exact counts and builds are recorded in its closure packet."
       ],
       "feature_id": "ssfv:symphony:shv-engine",
-      "how": "Uses shared strict process/receipt mechanics, no-follow consumed-byte checks, finite HTML mappings and independent consumer validation.",
+      "how": "Uses shared strict process/receipt mechanics, no-follow consumed-byte checks, legacy definition-list and explicit scoped-table mappings, quarter precision and complete mode rows, with independent consumer validation.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -51,7 +52,8 @@
         "modules/shv-engine/src/catalogue.cpp",
         "modules/shv-engine/src/evaluation.cpp",
         "modules/shv-engine/src/descriptor.cpp",
-        "modules/shv-engine/src/main.cpp"
+        "modules/shv-engine/src/main.cpp",
+        "modules/shv-engine/src/table.cpp"
       ],
       "kind": "feature",
       "non_claims": [

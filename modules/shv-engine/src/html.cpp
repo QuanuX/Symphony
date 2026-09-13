@@ -92,13 +92,12 @@ std::string decode(const std::string &s) {
   }
   return normalize(out);
 }
-} // namespace
 // Finite, non-executing extraction profile. The caller names exact, unique
 // element IDs for the product heading and specification fields. Content in
 // navigation, scripts, and similarly named custom elements is not evidence.
-std::string html_text(const std::string &raw, const std::string &model,
-                      const std::string &heading_section,
-                      const std::string &field_section) {
+Json html_fields(const std::string &raw, const std::string &model,
+                 const std::string &heading_section,
+                 const std::string &field_section, bool table) {
   if (raw.find('\0') != raw.npos)
     invalid("NUL in HTML");
   try {
@@ -131,6 +130,10 @@ std::string html_text(const std::string &raw, const std::string &model,
   std::string active, buffer, label, heading;
   std::size_t headings = 0;
   bool waiting = false;
+  Json rows = Json::array(), cells = Json::array();
+  bool in_table = false, in_row = false;
+  std::string table_group;
+  std::size_t tables = 0;
   for (std::size_t pos = 0; pos < raw.size();) {
     if (raw[pos] != '<') {
       auto end = raw.find('<', pos);
@@ -140,6 +143,10 @@ std::string html_text(const std::string &raw, const std::string &model,
         if (buffer.size() + end - pos > 65536)
           invalid("HTML field exceeds bound");
         buffer.append(raw, pos, end - pos);
+      } else if (table && in_table) {
+        for (auto i = pos; i < end; ++i)
+          if (!space(raw[i]))
+            invalid("text outside selected table cell");
       }
       pos = end;
       continue;
@@ -177,6 +184,10 @@ std::string html_text(const std::string &raw, const std::string &model,
     if (tag.empty() || tag.starts_with('!') || tag.starts_with('?'))
       continue;
     bool self_closing = end > start && raw[end - 1] == '/';
+    if (table && in_table && closing)
+      for (auto i = n; i < end; ++i)
+        if (!space(raw[i]))
+          invalid("attributes or junk on closing table tag");
     if (!closing && (tag == "script" || tag == "style")) {
       auto close = pos;
       for (;;) {
@@ -197,6 +208,7 @@ std::string html_text(const std::string &raw, const std::string &model,
     }
     std::string element_id;
     bool has_id = false;
+    bool span = false;
     if (!closing) {
       while (n < end) {
         while (n < end && (space(raw[n]) || raw[n] == '/'))
@@ -240,6 +252,7 @@ std::string html_text(const std::string &raw, const std::string &model,
           has_id = true;
           element_id = value;
         }
+        span = span || attr == "colspan" || attr == "rowspan";
       }
       for (auto *scope : {&hs, &fs}) {
         if (scope->depth && tag == scope->tag && !self_closing)
@@ -248,15 +261,67 @@ std::string html_text(const std::string &raw, const std::string &model,
           if (scope == &hs && fs.depth)
             invalid("heading section inside field section");
           if (++scope->count != 1 || self_closing || tag == "h1" ||
-              tag == "dt" || tag == "dd")
+              tag == "dt" || tag == "dd" ||
+              (table &&
+               (tag == "table" || tag == "tr" || tag == "td" || tag == "th")))
             invalid("ambiguous HTML section");
           scope->tag = tag;
           scope->depth = 1;
         }
       }
     }
+    if (table && fs.depth && tag == "table") {
+      if (!closing) {
+        if (in_table || in_row || !active.empty() || self_closing ||
+            ++tables != 1)
+          invalid("ambiguous or nested table");
+        in_table = true;
+      } else {
+        if (!in_table || in_row || !active.empty() || !table_group.empty())
+          invalid("unpaired table");
+        in_table = false;
+      }
+    }
+    if (table && fs.depth &&
+        (tag == "thead" || tag == "tbody" || tag == "tfoot") &&
+        (!in_table || !active.empty()))
+      invalid("row group outside table or inside cell");
+    if (table && in_table && active.empty() && tag != "table" && tag != "tr" &&
+        tag != "td" && tag != "th") {
+      if ((tag != "thead" && tag != "tbody" && tag != "tfoot") || in_row ||
+          self_closing)
+        invalid("unsupported structure outside table cells");
+      if (!closing) {
+        if (!table_group.empty())
+          invalid("nested table row group");
+        table_group = tag;
+      } else {
+        if (table_group != tag)
+          invalid("unpaired table row group");
+        table_group.clear();
+      }
+    }
+    if (table && fs.depth && tag == "tr") {
+      if (!in_table || !active.empty() || self_closing)
+        invalid("row outside table or nested cell");
+      if (!closing) {
+        if (in_row)
+          invalid("nested table row");
+        in_row = true;
+        cells = Json::array();
+      } else {
+        if (!in_row || cells.empty() || rows.size() >= 256)
+          invalid("unpaired, empty or excessive table row");
+        rows.push_back(cells);
+        in_row = false;
+      }
+    }
+    if (table && fs.depth && (tag == "td" || tag == "th") &&
+        (!in_table || !in_row || span))
+      invalid("cell outside row or spanning cell");
     const bool selected = (tag == "h1" && hs.depth && !fs.depth) ||
-                          (fs.depth && (tag == "dt" || tag == "dd"));
+                          (fs.depth && (table ? (tag == "th" || tag == "td")
+                                              : (tag == "dt" || tag == "dd")));
     if (selected) {
       if (!closing) {
         if (!active.empty() || self_closing)
@@ -268,7 +333,7 @@ std::string html_text(const std::string &raw, const std::string &model,
         if (tag == "dd" && !waiting)
           invalid("HTML definition without term");
       } else {
-        if (active != tag)
+        if (active != tag || buffer.size() > 65536)
           invalid("unmatched HTML profile field");
         auto value = decode(buffer);
         active.clear();
@@ -281,25 +346,38 @@ std::string html_text(const std::string &raw, const std::string &model,
             invalid("empty HTML term");
           label = value;
           waiting = true;
-        } else {
+        } else if (tag == "dd") {
           pairs.emplace_back(label, value);
           waiting = false;
           if (pairs.size() > 256)
             invalid("too many HTML fields");
+        } else {
+          if (cells.size() >= 16 || value.size() > 4096)
+            invalid("table cell bound exceeded");
+          cells.push_back(Json{{"tag", tag}, {"value", value}});
         }
       }
-    } else if (!active.empty())
+    } else if (!active.empty()) {
+      if (buffer.size() >= 65536)
+        invalid("HTML field exceeds bound");
       buffer += ' ';
+    }
     if (closing)
       for (auto *scope : {&hs, &fs})
         if (scope->depth && tag == scope->tag) {
-          if (--scope->depth == 0 && (!active.empty() || waiting))
+          if (--scope->depth == 0 &&
+              (!active.empty() || waiting || (table && (in_table || in_row))))
             invalid("unclosed HTML section field");
         }
   }
   if (hs.depth || fs.depth || hs.count != 1 || fs.count != 1 ||
       !active.empty() || waiting || headings != 1 || heading != model)
     invalid("exact product sections, heading or paired fields unavailable");
+  if (table) {
+    if (tables != 1 || in_table || in_row || rows.empty())
+      invalid("exact closed table unavailable");
+    return rows;
+  }
   std::set<std::string> seen;
   std::string out;
   for (const auto &[key, value] : pairs) {
@@ -311,5 +389,17 @@ std::string html_text(const std::string &raw, const std::string &model,
     out += '\n';
   }
   return out;
+}
+} // namespace
+std::string html_text(const std::string &raw, const std::string &model,
+                      const std::string &heading_section,
+                      const std::string &field_section) {
+  return html_fields(raw, model, heading_section, field_section, false)
+      .get<std::string>();
+}
+Json html_table(const std::string &raw, const std::string &model,
+                const std::string &heading_section,
+                const std::string &field_section) {
+  return html_fields(raw, model, heading_section, field_section, true);
 }
 } // namespace symphony::knowledge::shv

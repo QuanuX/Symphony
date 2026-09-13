@@ -335,11 +335,12 @@ func shvSourceValue(text, kind string) (any, error) {
 	}
 	return nil, shvFail()
 }
-func shvValidateBuild(p, r map[string]any) error {
-	if !shvFields(p, "source_root", "sources", "subjects") || (!filepath.IsAbs(shvText(p["source_root"])) || filepath.Clean(shvText(p["source_root"])) != shvText(p["source_root"])) || !scvEqual(p["sources"], r["sources"]) || !scvEqual(p["subjects"], r["mapping"]) {
+func shvValidateBuild(p, r map[string]any) error { return shvValidateBuildVersion(p, r, SHVVersion) }
+func shvValidateBuildVersion(p, r map[string]any, version string) error {
+	if !shvFields(p, "source_root", "sources", "subjects") || !shvBoundedText(p["source_root"], 4096) || (!filepath.IsAbs(shvText(p["source_root"])) || filepath.Clean(shvText(p["source_root"])) != shvText(p["source_root"])) || !scvEqual(p["sources"], r["sources"]) || !scvEqual(p["subjects"], r["mapping"]) {
 		return shvFail()
 	}
-	if e := shvCatalogue(r); e != nil {
+	if e := shvCatalogueVersion(r, version); e != nil {
 		return e
 	}
 	rawSources := map[string]string{}
@@ -372,6 +373,12 @@ func shvValidateBuild(p, r map[string]any) error {
 		sid := shvText(m["source_id"])
 		if formats[sid] != "html" {
 			return shvFail()
+		}
+		if m["interpretation_profile"] == "scoped_tables.v1" {
+			if e := shvValidateTableSubject(rawSources[sid], m, s); e != nil {
+				return e
+			}
+			continue
 		}
 		pairs, e := shvHTMLPairs(rawSources[sid], shvText(m["model"]), shvText(m["heading_section"]), shvText(m["field_section"]))
 		if e != nil {
