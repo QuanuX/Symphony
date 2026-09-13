@@ -10029,3 +10029,67 @@ This PR authorizes none of the following:
   - `tools/symphony-validator/src/artifacts.cpp`
   - `tools/symphony-validator/src/invariant_ownership.cpp`
   - `tools/symphony-validator/tests/invariant_ownership_test.cpp`
+
+---
+
+- record_id: `SCLV-CHG-20260913-SCV-COMMIT-RECOVERY`
+- record_version: `3`
+- title: `Verify SCV interrupted prepare and commit recovery through qxctl`
+- status: `canonical`
+- change_started_at: `2026-09-13T06:53:03Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for bounded SCV interrupted-commit continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-13-scv-commit-recovery.md`
+- skvi_references:
+  - `knowledge/scv/GRAPH-INDEX.md`
+  - `modules/scv-graph-duckdb-connector/SPEC.md`
+- change_summary: |
+    Adds a noninstalled test executable with deterministic barriers in the actual connector prepare/commit translation unit. Eight SIGKILL cases recover through exact installed qxctl and native owners. Documentation separates absent, prepared, committed, shared-snapshot and lost-response outcomes.
+- relationship_changes: |
+    No production relationship or semantic ownership changes. Fault controls belong only to the separate test target. The instrumented writer does not authenticate its supplied production Installation; installed qxctl recovery independently validates that exact connector and semantic owner.
+- doctrine_changes: |
+    No caller policy or provider/backend choice changes. The accompanying maintenance design remains a proposal: preserving operation-ID history and shared references precedes any retirement contract. No automatic retention or deletion policy is selected.
+- compatibility_consequences: |
+    Production connector bytes remain identical to increment 13. Native SCV engines, Go implementation, command routes, registry/schema protocols, dependency version and storage format remain unchanged. A fresh explicit installation prefix retains the updated coverage specification and therefore has a distinct receipt identity at the same runtime version.
+- publication_consequences: |
+    Authorized local source commit and separate receipt-owned installation only. Clean-source rebuilds bind qxctl and connector package identity. No provider action, deployment, remote publication, background service or preserved archive mutation occurred.
+- projection_consequences: |
+    No command, feature registry, invariant registry or root summary change. Local evidence records 71 normal process calls and 56 assertions, separately from eight killed test writers. SHV receives planning methodology only.
+- evidence:
+  - `../increment-14/evidence/FOCUSED_TESTS.json records eight successful interruption cases, 71 normal process calls, 56 assertions and zero test failures/skips.`
+  - `../increment-14/evidence/interrupted-first/FAULTS.json records observed SIGSTOP, SIGKILL exit, absent responses and reaped owned writers.`
+  - `../increment-14/evidence/SCHEMA_REVIEW.json validates 103 normal structural instances across 71 process envelopes; killed requests are separate evidence.`
+  - `../increment-14/evidence/PACKAGE_VERIFICATION.json establishes unchanged production executable bytes, receipt-owned file integrity and absence of installed test controls.`
+  - `../increment-14/evidence/SOURCE_BUILD_PARITY.json binds the clean source commit to rebuilt artifacts.`
+  - `../increment-14/RECOVERY_MANIFEST.json and VERIFICATION.md preserve evidence identity and bounded crash scope; MAINTENANCE-DESIGN.md remains a proposal.`
+- non_authorizations:
+  - `Choosing caller requirements, providers, backend, topology, policy or execution.`
+  - `Deleting or migrating indexes, introducing automatic retention, or claiming transfer/inventory implementation.`
+  - `Power-loss or hardware durability certification, internal DuckDB COMMIT interruption or performance claims.`
+  - `Full SCV suite, SHV runtime, provider deployment, remote publication or original archive edits.`
+- notes: |
+    The post_merge disposition records completed local Git work, not a remote merge. Closure appends after its source commit without recursively recording itself. Change start is the recorded continuation-scope timestamp before implementation. The separate instrumented writer must not be described as the production binary; only normal recovery uses the exact receipt-owned connector. Full SCV testing remains reserved for the milestone gate.
+- date: `2026-09-13`
+- change_completed_at: `2026-09-13T07:03:19Z`
+- recorded_at: `2026-09-13T07:05:21Z`
+- revision_value: `baf5a99cbf92370c3b43315c247dbab566e9cb1d`
+- tree_digest: `sha256:86841ae15a3178b645014b1fee1a37a0e343413d264cb9888dc5dd644058acfb`
+- ratification_evidence_digest: `sha256:b03b1535d65efa9ba6e1e18463ff49c41009576d13e36660b7810218c4eca419`
+- affected_surfaces:
+  - `modules/scv-graph-duckdb-connector/CMakeLists.txt`
+  - `modules/scv-graph-duckdb-connector/SPEC.md`
+  - `modules/scv-graph-duckdb-connector/src/connector.cpp`
+  - `modules/scv-graph-duckdb-connector/tests/README.md`
+  - `modules/scv-graph-duckdb-connector/tests/commit_barrier.cpp`
+  - `modules/scv-graph-duckdb-connector/tests/commit_barrier.hpp`
+  - `modules/scv-graph-duckdb-connector/tests/interrupted_commit.py`
