@@ -493,95 +493,116 @@ func SCVBundleDecode(bundle json.RawMessage) (json.RawMessage, error) {
 	return raw, err
 }
 
-func validateSCVBundleResult(operation string, input, result map[string]any) error {
-	// Normalize only this new path; native parsing canonicalizes integral -0.
-	inBytes, err := SCVCanonical(input)
-	if err != nil {
-		return err
-	}
-	input, err = scvBundleObject(inBytes)
-	if err != nil {
-		return err
-	}
-	outBytes, err := SCVCanonical(result)
-	if err != nil {
-		return err
-	}
-	result, err = scvBundleObject(outBytes)
-	if err != nil {
-		return err
-	}
+// SCVBundleEvaluation contains canonical logical documents from one complete
+// strict bundle consumer validation, including the independent logical checks.
+// It is local derived data, not a wire protocol, receipt or owner replay claim.
+// Each call returns its own byte slices; no result is cached across calls.
+type SCVBundleEvaluation struct {
+	Operation, Domain, Version                               string
+	Input, Result                                            json.RawMessage
+	NativeResultDigest, ResultBundleDigest, ResultRootDigest string
+}
+
+// ValidateSCVBundleEvaluation validates the complete raw invocation and result
+// before returning any logical documents. It uses the existing JSON, graph and
+// materialization budgets and returns a zero value on failure. Callers must
+// separately check the retained installation and perform any required replay.
+func ValidateSCVBundleEvaluation(input, result []byte) (SCVBundleEvaluation, error) {
+	return readSCVBundleResult("composition_bundle_evaluate", input, result)
+}
+
+// Only readSCVBundleResult supplies these privately decoded, normalized maps.
+// Re-encoding and parsing them cannot add information to the completed raw
+// checks; expansion and semantic validation below still run on every call.
+func validateSCVBundleResult(operation string, input, result map[string]any) (SCVBundleEvaluation, error) {
 	if !scvCorpusFields(input, "operation", "owner", "bundle") {
-		return fmt.Errorf("invalid bundle invocation fields")
+		return SCVBundleEvaluation{}, fmt.Errorf("invalid bundle invocation fields")
 	}
 	logical, ok := input["operation"].(string)
 	if !ok || !scvBundleOperation(logical) {
-		return fmt.Errorf("unsupported bundled operation")
+		return SCVBundleEvaluation{}, fmt.Errorf("unsupported bundled operation")
 	}
 	owner, ok := input["owner"].(map[string]any)
 	if !ok || !scvCorpusFields(owner, "domain", "version") {
-		return fmt.Errorf("invalid bundle owner")
+		return SCVBundleEvaluation{}, fmt.Errorf("invalid bundle owner")
 	}
 	domain, ok := owner["domain"].(string)
 	if !ok || !scvCoverageAdmits(domain, domain) || (owner["version"] != "0.9.0-dev" && owner["version"] != "0.10.0-dev") {
-		return fmt.Errorf("unsupported exact bundle owner")
+		return SCVBundleEvaluation{}, fmt.Errorf("unsupported exact bundle owner")
 	}
-	if err = scvSeal(result, "digest"); err != nil {
-		return err
+	if err := scvSeal(result, "digest"); err != nil {
+		return SCVBundleEvaluation{}, err
 	}
 	inputDigest, err := SCVDigest(input)
 	if err != nil {
-		return err
+		return SCVBundleEvaluation{}, err
 	}
 	if !scvEqual(result["owner"], owner) || result["domain"] != domain || result["operation"] != logical || result["input_digest"] != inputDigest {
-		return fmt.Errorf("bundle result input or owner correspondence mismatch")
+		return SCVBundleEvaluation{}, fmt.Errorf("bundle result input or owner correspondence mismatch")
 	}
 	bundle, ok := input["bundle"].(map[string]any)
 	if !ok {
-		return fmt.Errorf("missing input bundle")
+		return SCVBundleEvaluation{}, fmt.Errorf("missing input bundle")
 	}
 	expanded, metrics, err := scvBundleExpand(bundle)
 	if err != nil {
-		return err
+		return SCVBundleEvaluation{}, err
 	}
 	if operation == "bundle_inspect" {
 		if !scvCorpusFields(result, "protocol", "domain", "operation", "owner", "input_digest", "root_digest", "metrics", "validation", "limitations", "digest") || result["protocol"] != "symphony.scv.bundle-inspection.v1" || result["validation"] != "transport_only" || result["root_digest"] != bundle["root_digest"] || !scvEqual(result["metrics"], metrics) || !scvEqual(result["limitations"], scvBundleInspectionLimitations) {
-			return fmt.Errorf("bundle inspection attribution mismatch")
+			return SCVBundleEvaluation{}, fmt.Errorf("bundle inspection attribution mismatch")
 		}
-		return nil
+		return SCVBundleEvaluation{}, nil
 	}
 	if operation != "composition_bundle_evaluate" || !scvCorpusFields(result, "protocol", "domain", "operation", "owner", "input_digest", "input_root_digest", "input_metrics", "result_bundle", "native_result_digest", "result_metrics", "validation", "limitations", "digest") || result["protocol"] != "symphony.scv.composition-bundle-evaluation.v1" || result["validation"] != "owner_evaluated" || result["input_root_digest"] != bundle["root_digest"] || !scvEqual(result["input_metrics"], metrics) || !scvEqual(result["limitations"], scvBundleEvaluationLimitations) {
-		return fmt.Errorf("bundle evaluation attribution mismatch")
+		return SCVBundleEvaluation{}, fmt.Errorf("bundle evaluation attribution mismatch")
 	}
 	output, ok := result["result_bundle"].(map[string]any)
 	if !ok {
-		return fmt.Errorf("missing result bundle")
+		return SCVBundleEvaluation{}, fmt.Errorf("missing result bundle")
 	}
 	expandedResult, resultMetrics, err := scvBundleExpand(output)
 	if err != nil {
-		return err
+		return SCVBundleEvaluation{}, err
 	}
 	native, err := scvBundleObject(expandedResult)
 	if err != nil {
-		return err
+		return SCVBundleEvaluation{}, err
 	}
-	if native["domain"] != domain || !scvEqual(result["result_metrics"], resultMetrics) || result["native_result_digest"] != native["digest"] {
-		return fmt.Errorf("bundled native result identity mismatch")
+	nativeDigest, nativeDigestOK := native["digest"].(string)
+	claimedDigest, claimedDigestOK := result["native_result_digest"].(string)
+	// These fields are still untrusted. Interface equality on two containers
+	// would panic before the logical consumer could reject their digest types.
+	if !nativeDigestOK || !claimedDigestOK || !taggedSHA256(nativeDigest) || claimedDigest != nativeDigest || native["domain"] != domain || !scvEqual(result["result_metrics"], resultMetrics) {
+		return SCVBundleEvaluation{}, fmt.Errorf("bundled native result identity mismatch")
 	}
-	return ValidateSCVResult(logical, expanded, expandedResult)
+	if err = ValidateSCVResult(logical, expanded, expandedResult); err != nil {
+		return SCVBundleEvaluation{}, err
+	}
+	return SCVBundleEvaluation{
+		Operation: logical, Domain: domain, Version: owner["version"].(string),
+		Input: expanded, Result: expandedResult,
+		NativeResultDigest: nativeDigest,
+		ResultBundleDigest: output["digest"].(string), ResultRootDigest: output["root_digest"].(string),
+	}, nil
 }
 
 // Preserve the original wire escape spelling until strict bundle decoding. The
 // generic JSON decoder otherwise replaces unpaired UTF-16 escapes before the
 // new consumer could distinguish them from a literal replacement character.
 func validateSCVBundleWireResult(operation string, input, result []byte) error {
+	_, err := readSCVBundleResult(operation, input, result)
+	return err
+}
+
+func readSCVBundleResult(operation string, input, result []byte) (SCVBundleEvaluation, error) {
 	payload, err := scvBundleObject(input)
 	if err != nil {
-		return err
+		return SCVBundleEvaluation{}, err
 	}
 	value, err := scvBundleObject(result)
 	if err != nil {
-		return err
+		return SCVBundleEvaluation{}, err
 	}
 	return validateSCVBundleResult(operation, payload, value)
 }

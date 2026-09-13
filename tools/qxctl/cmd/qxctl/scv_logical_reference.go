@@ -35,47 +35,24 @@ func projectLogicalRecord(record scvworkflow.Record, requiredOperation string) (
 	input, artifact := record.Input, record.Artifact
 	var transport any
 	if record.Operation == "composition_bundle_evaluate" {
-		payload, err := scvworkflow.Decode(input)
+		// Reuse the documents produced by this call's complete consumer check.
+		// There is no cached record, installation decision or native replay here.
+		checked, err := knowledgeengine.ValidateSCVBundleEvaluation(input, artifact)
 		if err != nil {
 			return reference, err
 		}
-		result, err := scvworkflow.Decode(artifact)
-		if err != nil {
-			return reference, err
-		}
-		if payload["operation"] != requiredOperation || result["operation"] != requiredOperation {
+		if checked.Operation != requiredOperation {
 			return reference, fmt.Errorf("bundled record has a different logical operation")
 		}
-		owner, ok := payload["owner"].(map[string]any)
-		if !ok || owner["domain"] != record.Installation.Role || owner["version"] != record.Installation.Version {
+		if checked.Domain != record.Installation.Role || checked.Version != record.Installation.Version {
 			return reference, fmt.Errorf("bundled record owner differs from its retained installation")
 		}
-		// This validates complete input/output closure, exact metrics and seals,
-		// and the logical consumer. Mere decoding cannot supply these claims.
-		if err = knowledgeengine.ValidateSCVResult(record.Operation, input, artifact); err != nil {
-			return reference, err
-		}
-		inputBundle, err := knowledgeengine.SCVCanonical(payload["bundle"])
-		if err != nil {
-			return reference, err
-		}
-		resultBundle, err := knowledgeengine.SCVCanonical(result["result_bundle"])
-		if err != nil {
-			return reference, err
-		}
-		input, err = knowledgeengine.SCVBundleDecode(inputBundle)
-		if err != nil {
-			return reference, err
-		}
-		artifact, err = knowledgeengine.SCVBundleDecode(resultBundle)
-		if err != nil {
-			return reference, err
-		}
-		bundle, err := scvworkflow.Decode(resultBundle)
-		if err != nil {
-			return reference, err
-		}
-		transport = map[string]any{"result_bundle_digest": bundle["digest"], "result_root_digest": bundle["root_digest"]}
+		protocol, _ := knowledgeengine.SCVResultProtocol(requiredOperation)
+		return logicalArtifactReference{Record: record, Input: checked.Input, Artifact: checked.Result, Descriptor: map[string]any{
+			"record_ref": record.Digest, "logical_operation": requiredOperation, "logical_protocol": protocol,
+			"logical_digest": checked.NativeResultDigest, "artifact_digest": record.ArtifactDigest,
+			"transport": map[string]any{"result_bundle_digest": checked.ResultBundleDigest, "result_root_digest": checked.ResultRootDigest},
+		}}, nil
 	} else {
 		if record.Operation != requiredOperation {
 			return reference, fmt.Errorf("retained record has a different logical operation")

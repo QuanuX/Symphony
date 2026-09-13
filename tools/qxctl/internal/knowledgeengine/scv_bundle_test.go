@@ -231,7 +231,7 @@ func TestSCVBundleIndependentConsumerRejectsResealedNativeOutcomes(t *testing.T)
 	fixture := bundleTestMap(t, raw)
 	inv := bundleTestInvocation(t, "composition_followup", fixture["followup_input"])
 	result := bundleTestResult(t, inv, fixture["followup_result"])
-	if err := validateSCVBundleResult("composition_bundle_evaluate", inv, result); err != nil {
+	if err := validateSCVBundleWireResult("composition_bundle_evaluate", bundleTestRaw(t, inv), bundleTestRaw(t, result)); err != nil {
 		t.Fatal(err)
 	}
 	for name, mutate := range map[string]func(map[string]any){"metrics": func(v map[string]any) { v["result_metrics"].(map[string]any)["expanded_bytes"] = 1 }, "owner": func(v map[string]any) { v["owner"] = map[string]any{"domain": "schv", "version": "0.9.0-dev"} }, "validation": func(v map[string]any) { v["validation"] = "certified" }, "native_seal": func(v map[string]any) { v["native_result_digest"] = v["result_bundle"].(map[string]any)["root_digest"] }, "input_root": func(v map[string]any) { v["input_root_digest"] = v["result_bundle"].(map[string]any)["root_digest"] }, "extra": func(v map[string]any) { v["other"] = true }} {
@@ -239,7 +239,7 @@ func TestSCVBundleIndependentConsumerRejectsResealedNativeOutcomes(t *testing.T)
 			v := scvTestClone(t, result)
 			mutate(v)
 			v = scvTestSeal(t, v)
-			if err := validateSCVBundleResult("composition_bundle_evaluate", inv, v); err == nil {
+			if err := validateSCVBundleWireResult("composition_bundle_evaluate", bundleTestRaw(t, inv), bundleTestRaw(t, v)); err == nil {
 				t.Fatal("resealed wrapper mismatch accepted")
 			}
 		})
@@ -249,7 +249,7 @@ func TestSCVBundleIndependentConsumerRejectsResealedNativeOutcomes(t *testing.T)
 		native["entries"].([]any)[0].(map[string]any)["outcome"] = "runtime_verified"
 		native = scvTestSeal(t, native)
 		v := bundleTestResult(t, inv, native)
-		if err := validateSCVBundleResult("composition_bundle_evaluate", inv, v); err == nil {
+		if err := validateSCVBundleWireResult("composition_bundle_evaluate", bundleTestRaw(t, inv), bundleTestRaw(t, v)); err == nil {
 			t.Fatal("transport reconstruction bypassed semantic consumer")
 		}
 	})

@@ -186,6 +186,11 @@ func scvEqual(a, b any) bool {
 // C++; this checks result identity, exact source/capture fields, seals and the
 // correspondence to the submitted request before printing or persisting it.
 func ValidateSCVResult(operation string, input, raw []byte) error {
+	// Bundle parsing owns strict raw Unicode and integer normalization. Route
+	// before generic decoding so no parsed documents are discarded or repaired.
+	if operation == "bundle_inspect" || operation == "composition_bundle_evaluate" {
+		return validateSCVBundleWireResult(operation, input, raw)
+	}
 	value, err := scvObject(raw)
 	if err != nil {
 		return err
@@ -212,9 +217,6 @@ func ValidateSCVResult(operation string, input, raw []byte) error {
 	}
 	if operation == "composition_explore" || operation == "composition_reassess" {
 		return validateSCVComposition(operation, payload, value)
-	}
-	if operation == "bundle_inspect" || operation == "composition_bundle_evaluate" {
-		return validateSCVBundleWireResult(operation, input, raw)
 	}
 	if operation == "composition_obligations" || operation == "composition_followup" {
 		return validateSCVObligation(operation, payload, value)
