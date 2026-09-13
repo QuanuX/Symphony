@@ -861,6 +861,74 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
+          "reason": "Source contract discovery and exact closure traceability.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Material source change closes append-only after verification.",
+          "reference": "knowledge/sclv/SPEC.md",
+          "vector": "sclv"
+        }
+      ],
+      "distinctions": [],
+      "evidence": [
+        "tools/qxctl/cmd/qxctl/shv_test.go exercises all native routes and exact-version grammar.",
+        "tools/qxctl/internal/knowledgeengine/shv_test.go rejects resealed changed evidence and verifies receipt-backed installed process results."
+      ],
+      "feature_id": "ssfv:symphony:qxctl.shv-administration",
+      "how": "Validates exact receipts, descriptors, bounded process responses and independently rederives coverage, source-backed catalogue claims, evaluation, graph projection and adapter row correspondence.",
+      "implementation_languages": [
+        {
+          "language": "Go",
+          "role": "Exact installation discovery, process consumption, independent evidence checks and command grammar."
+        }
+      ],
+      "implementation_paths": [
+        "tools/qxctl/cmd/qxctl/commands.go",
+        "tools/qxctl/cmd/qxctl/shv.go",
+        "tools/qxctl/cmd/qxctl/shv_test.go",
+        "tools/qxctl/internal/knowledgeengine/shv.go",
+        "tools/qxctl/internal/knowledgeengine/shv_discovery_schema.go",
+        "tools/qxctl/internal/knowledgeengine/shv_schema.go",
+        "tools/qxctl/internal/knowledgeengine/shv_source.go",
+        "tools/qxctl/internal/knowledgeengine/shv_test.go",
+        "tools/qxctl/internal/knowledgeengine/shv_validation.go"
+      ],
+      "kind": "feature",
+      "non_claims": [
+        "Does not select hardware, requirements, providers, topology or a graph database vendor.",
+        "Does not persist a graph, authenticate publisher claims, fetch sources or infer whole-system compatibility from processor fields."
+      ],
+      "owner_contract": "tools/qxctl/MANIFEST.md",
+      "parent_feature_id": "ssfv:symphony:qxctl",
+      "record_version": 2,
+      "relationships": [
+        {
+          "rationale": "C++ owns SHV semantic rebuild and findings.",
+          "target_feature_id": "ssfv:symphony:shv-engine",
+          "type": "composes_with"
+        },
+        {
+          "rationale": "Independent generic C++ adapter owns structural exchange and queries.",
+          "target_feature_id": "ssfv:symphony:shv-graph-adapter",
+          "type": "composes_with"
+        }
+      ],
+      "source_scope": "tools/qxctl",
+      "status": "experimental",
+      "title": "SHV source-backed hardware and generic graph administration",
+      "what": "Exposes every delivered SHV kernel and generic adapter operation, exact installed schemas and unanswered templates.",
+      "when": "Only upon an explicit read-only qxctl shv invocation.",
+      "where": "Local administrative process against explicit exact receipt-owned C++ installations and retained source roots.",
+      "who": "Users, agents and automation selecting exact independently installed components.",
+      "why": "Keeps the agentic operating interface complete while preserving user-selected hardware, coverage, source mappings and requirements."
+    },
+    {
+      "cross_vector_references": [
+        {
+          "applicability": "applicable",
           "reason": "SCLV records reviewed SSIAG client and grammar changes.",
           "reference": "knowledge/sclv/CHANGELOG.md",
           "vector": "sclv"

@@ -11,3 +11,7 @@
 ## Stop Conditions
 
 Stop before selecting a graph technology, ontology, benchmark authority, scoring formula, API, AI behavior, probe, engine operation, or purchasing recommendation.
+
+## Initial kernel administration
+
+Read `KERNEL.md` and the exact installed schema before constructing input. Select explicit kernel/adapter prefix and version through `qxctl shv`. Preserve caller-selected coverage, mappings, evidence roots, subjects and requirements. Structural adapter acceptance does not replace `shv graph validate`; unknown whole-system compatibility remains unresolved.

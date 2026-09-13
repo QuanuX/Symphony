@@ -27,7 +27,7 @@ SNIV identifies a physical Node. SNRV records the resources associated with that
 
 ## Graph and Query Boundary
 
-The planned graph is a rebuildable representation of source and observed evidence. Its C++ engine may validate and query that graph only through ratified operations. AI or private API access must preserve exact version, provenance, compatibility, authorization, and private-installation boundaries.
+The initial implemented contract is `KERNEL.md`, with exact schemas in `modules/shv-engine/schemas/v1/` and the separate generic port in `modules/shv-graph-adapter/`. A graph is a rebuildable representation of retained source evidence. SHV validates its semantic projection by replaying source bytes and caller mappings. The generic adapter validates structural exchange without claiming hardware truth. qxctl preserves exact version and input/result correspondence; callers keep their hardware and architecture choices. Broader observed-evidence and AI integration remain future contracts.
 
 ## Non-Authorization Statement
 

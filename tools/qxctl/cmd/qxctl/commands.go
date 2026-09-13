@@ -259,7 +259,7 @@ func newRootCommand() (*cobra.Command, error) {
 	stav := newSTAVCommand()
 	root.AddCommand(
 		ssiag, stav, newKnowledgeCommand(), newSKVICommand(), newSCLVCommand(),
-		newSACVCommand(), newSODVCommand(), newSAVCommand(), newSEVCommand(), newSSFVCommand(), newMaestroCommand(), newSCVCommand(),
+		newSACVCommand(), newSODVCommand(), newSAVCommand(), newSEVCommand(), newSSFVCommand(), newMaestroCommand(), newSCVCommand(), newSHVCommand(),
 		newValidateCommand(),
 	)
 	if err := commandregistry.Validate(root); err != nil {
@@ -1517,7 +1517,7 @@ func exactOneUsageArg(_ *cobra.Command, args []string) error {
 
 func knownTopLevel(value string) bool {
 	switch value {
-	case "--help", "--version", "doctor", "contracts", "commands", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "sav", "sev", "ssfv", "maestro", "validate", "scv":
+	case "--help", "--version", "doctor", "contracts", "commands", "inventory", "status", "modules", "module", "ssiag", "stav", "knowledge", "skvi", "sclv", "sacv", "sodv", "sav", "sev", "ssfv", "maestro", "validate", "scv", "shv":
 		return true
 	default:
 		return false

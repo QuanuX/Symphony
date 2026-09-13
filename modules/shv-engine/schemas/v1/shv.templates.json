@@ -1,0 +1,34 @@
+{
+  "inspect": {},
+  "coverage_default": {
+    "as_of": null
+  },
+  "coverage_plan": {
+    "profile": null,
+    "subjects": []
+  },
+  "catalogue_build": {
+    "source_root": null,
+    "sources": [],
+    "subjects": []
+  },
+  "catalogue_query": {
+    "source_root": null,
+    "catalogue": null,
+    "subject_ids": []
+  },
+  "evaluate": {
+    "source_root": null,
+    "catalogue": null,
+    "subject_ids": [],
+    "requirements": []
+  },
+  "graph_project": {
+    "source_root": null,
+    "catalogue": null
+  },
+  "graph_validate": {
+    "source_root": null,
+    "graph": null
+  }
+}

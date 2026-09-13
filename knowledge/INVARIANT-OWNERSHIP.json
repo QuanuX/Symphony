@@ -383,6 +383,41 @@
       ],
       "owner_contract": "modules/scv-engine/SPEC.md",
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-shv-graph-adapter.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "shv-graph-adapter",
+      "entry_point_id": "symphony-shv-graph-adapter",
+      "format_version": 3,
+      "implementation_path": "modules/shv-graph-adapter",
+      "operation_ids": [
+        "engop:symphony:shv-graph-adapter.inspect",
+        "engop:symphony:shv-graph-adapter.query",
+        "engop:symphony:shv-graph-adapter.roundtrip"
+      ],
+      "owner_contract": "modules/shv-graph-adapter/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-shv.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "shv-engine",
+      "entry_point_id": "symphony-shv",
+      "format_version": 3,
+      "implementation_path": "modules/shv-engine",
+      "operation_ids": [
+        "engop:symphony:shv.catalogue.build",
+        "engop:symphony:shv.catalogue.query",
+        "engop:symphony:shv.coverage.default",
+        "engop:symphony:shv.coverage.plan",
+        "engop:symphony:shv.evaluate",
+        "engop:symphony:shv.graph.project",
+        "engop:symphony:shv.graph.validate",
+        "engop:symphony:shv.inspect"
+      ],
+      "owner_contract": "modules/shv-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     }
   ],
   "catalog_complete": false,
@@ -1571,6 +1606,109 @@
       "title": "Protected source mutation binds exact owner transition before durable commit"
     },
     {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-shv-graph-adapter.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSHVInstalledCLIProcess"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/shv_test.go"
+        },
+        {
+          "cases": [
+            "TestSHVAdapterIndependentStructuralContract",
+            "TestSHVInstalledNativeOperations",
+            "TestSHVRawAndExactReceiptBoundary"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/shv_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:shv.graph-adapter-structural-provenance",
+      "ipc_boundary": true,
+      "owner_component": "shv-graph-adapter",
+      "owner_contract": "modules/shv-graph-adapter/SPEC.md",
+      "producer_implementations": [
+        "modules/shv-graph-adapter/src/adapter.cpp",
+        "modules/shv-graph-adapter/src/main.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "test_adapter_conformance"
+          ],
+          "path": "modules/shv-graph-adapter/tests/conformance.py"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_process"
+          ],
+          "path": "modules/shv-graph-adapter/tests/conformance.py"
+        }
+      ],
+      "statement": "The generic portable-reference adapter checks canonical graph and owner-artifact self-seals, exact fields, unique sorted node/edge identities, labels and endpoint closure. Roundtrip preserves full arbitrary canonical property values; bounded query preserves exact graph and caller ID correspondence with explicit missing IDs. Independent qxctl rejection checks retain the exact receipt-backed adapter and reconstruct structural results. This pure in-memory exchange neither replays hardware sources nor establishes semantic truth, vendor-driver support, durable database state or a universal graph backend.",
+      "status": "active",
+      "title": "Generic graph exchange preserves structural identity without semantic authority"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-shv.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSHVInstalledCLIProcess"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/shv_test.go"
+        },
+        {
+          "cases": [
+            "TestSHVCoverageIndependentBoundaryCases",
+            "TestSHVEvaluationAndProjectionCorrespondence",
+            "TestSHVHTMLSectionAndTagBoundaries",
+            "TestSHVInstalledNativeOperations",
+            "TestSHVRawAndExactReceiptBoundary",
+            "TestSHVSourceConsumerRejectsResealedFalseValues"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/shv_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:shv.source-replay-provenance",
+      "ipc_boundary": true,
+      "owner_component": "shv-engine",
+      "owner_contract": "modules/shv-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/shv-engine/src/catalogue.cpp",
+        "modules/shv-engine/src/common.cpp",
+        "modules/shv-engine/src/coverage.cpp",
+        "modules/shv-engine/src/evaluation.cpp",
+        "modules/shv-engine/src/html.cpp",
+        "modules/shv-engine/src/main.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "test_kernel_conformance"
+          ],
+          "path": "modules/shv-engine/tests/kernel_test.py"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_process"
+          ],
+          "path": "modules/shv-engine/tests/kernel_test.py"
+        }
+      ],
+      "statement": "The C++ SHV owner reads exact retained source bytes through bounded no-follow paths, checks manifest sizes and digests, and replays selected finite source mappings before catalogue query, requirement evaluation or owner graph projection/validation. Product heading and definition fields bind caller-selected exact tag#id sections. Coverage preserves caller selectors and unresolved dates. Findings preserve subject, requirement, qualifier and evidence identity without promoting declared component facts to whole-system or active-Node proof. Independent qxctl checks reject resealed false results and preserve exact receipt-backed owner selection; a valid graph seal alone is not source replay.",
+      "status": "active",
+      "title": "Hardware findings preserve exact retained sources and caller selections"
+    },
+    {
       "allowed_adapter_ids": [],
       "consumer_boundary_rejections": [
         {
@@ -1843,7 +1981,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:618f3c0d69cdc6f38eeef7b847830cca573d7c5a89318683668bf9943415fc06",
+  "registry_digest": "sha256:735c0cae87cedb53e571959faa0641d7c3ad3b3622fa37b7e3b19ff242293b85",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

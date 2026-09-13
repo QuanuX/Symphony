@@ -39,6 +39,8 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 | `modules/scv-graph-duckdb-connector` | registered | `ssfv:symphony:scv-graph-duckdb-connector` | `modules/scv-graph-duckdb-connector/FEATURES.md` |
 | `modules/secure-identity-access-governance` | registered | `ssfv:symphony:ssiag-foundation` | `modules/secure-identity-access-governance/FEATURES.md` |
 | `modules/sev-engine` | registered | `ssfv:symphony:sev-engine` | `modules/sev-engine/FEATURES.md` |
+| `modules/shv-engine` | registered | `ssfv:symphony:shv-engine` | `modules/shv-engine/FEATURES.md` |
+| `modules/shv-graph-adapter` | registered | `ssfv:symphony:shv-graph-adapter` | `modules/shv-graph-adapter/FEATURES.md` |
 | `modules/skvi-engine` | registered | `ssfv:symphony:skvi-engine` | `modules/skvi-engine/FEATURES.md` |
 | `modules/sodv-engine` | registered | `ssfv:symphony:sodv-engine` | `modules/sodv-engine/FEATURES.md` |
 | `modules/ssfv-engine` | registered | `ssfv:symphony:ssfv-engine` | `modules/ssfv-engine/FEATURES.md` |
@@ -49,11 +51,11 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 
 ## Ratified Nested Review Progress
 
-The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, provider-trust assurance slice, provider-binding lifecycle slice, and Accordare durability/supervision review record seventy-two ratified nested feature-worthy boundaries inside seventeen registered non-root owner scopes:
+The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, provider-trust assurance slice, provider-binding lifecycle slice, and Accordare durability/supervision review record seventy-three ratified nested feature-worthy boundaries inside seventeen registered non-root owner scopes:
 
 | Owner scope | Ratified nested records | Review disposition |
 |---|---:|---|
-| `tools/qxctl` | 11 | Exact engine bindings, authenticated sessions, lifecycle convergence, Linux report-only host receptor, SSIAG administration, STAV administration, Maestro administration, governed validation, the stable command registry, invariant assurance, and protected SCV source/graph administration are registered. |
+| `tools/qxctl` | 12 | Exact engine bindings, authenticated sessions, lifecycle convergence, Linux report-only host receptor, SSIAG administration, STAV administration, Maestro administration, governed validation, the stable command registry, invariant assurance, protected SCV source/graph administration, and SHV source-backed kernel/generic graph administration are registered. |
 | `modules/knowledge-session-coordinator` | 6 | Reconciliation, authority epochs, semantic maintenance, lifecycle planning, lifecycle apply coordination, and protected Named Version durability are registered. |
 | `modules/maestro` | 1 | Complete derived receptor inventory is registered separately from durable receptor presence. |
 | `libraries/stav-protocol-go` | 2 | Canonical bytes, digests, and bounded local frames are separated from exact content and identifier validation; durable checksummed ledger framing is explicitly owned by the append authority. |
@@ -136,3 +138,7 @@ This contract authorizes the explicit inventory and completion test. It does not
 ## SCV Increment Review
 
 The eight separately installed SCV/family/provider packages each receive one experimental owner feature. Their original thirteen operations, four additive corpus operations in `0.2.0-dev` and three interpretation/connection operations in `0.3.0-dev` are bounded facets of source-knowledge computation; helpers, declarations, package build files and parser branches are implementation evidence, not new standalone features. qxctl records its separate administration adapter, distinguishing immutable corpus retention from protected source/graph selection. Full vendor coverage, arbitrary source/graph connectors, provider operations and unimplemented future synthesis receive no feature claim. The catalog remains partial; this increment does not settle unrelated nested review.
+
+## SHV Initial Kernel Review
+
+The independently installed C++ SHV kernel and generic graph adapter receive separate experimental owner features, and qxctl receives one administration subfeature. Coverage filtering, field parsing, replay, evaluation and projection remain facets of the kernel; the adapter interface/reference implementation form one structural transport feature. No feature claim is made for a broad atlas, vendor driver, durable graph, runtime hardware probe or Composer integration. Nested catalog completeness remains partial.

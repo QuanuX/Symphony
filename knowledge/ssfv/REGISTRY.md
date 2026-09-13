@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 101 experimental records across the repository root and 26 implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 104 experimental records across the repository root and 28 implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -525,6 +525,33 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:platform`
 - record_digest: `sha256:1b4383820e67c796562b9b2d5b540fe3b875644b69389c59b19814f6adcc32ed`
 - notes: Optional C++ DuckDB relational graph index with exact native semantic owner, immutable snapshots and qxctl recovery.
+
+- feature_id: `ssfv:symphony:qxctl.shv-administration`
+- feature_file: `tools/qxctl/FEATURES.md`
+- owner_contract: `tools/qxctl/MANIFEST.md`
+- source_scope: `tools/qxctl`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:qxctl`
+- record_digest: `sha256:3d36ed872366dc507221653cde3a1cd951c52c9602622b3ae5cbb61324c95390`
+- notes: Bounded SHV source replay and generic graph exchange; caller choices and exact owners preserved.
+
+- feature_id: `ssfv:symphony:shv-engine`
+- feature_file: `modules/shv-engine/FEATURES.md`
+- owner_contract: `modules/shv-engine/SPEC.md`
+- source_scope: `modules/shv-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:c4bd1f1dbbef2968da8b3c7e7b3cde1a3cf79f478115a4f59b49c3ae63c77d51`
+- notes: Bounded SHV source replay and generic graph exchange; caller choices and exact owners preserved.
+
+- feature_id: `ssfv:symphony:shv-graph-adapter`
+- feature_file: `modules/shv-graph-adapter/FEATURES.md`
+- owner_contract: `modules/shv-graph-adapter/SPEC.md`
+- source_scope: `modules/shv-graph-adapter`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:b7f0a9931c0caa50f70f48191a9646be924eb8045d7e8ba29e54262002f47129`
+- notes: Bounded SHV source replay and generic graph exchange; caller choices and exact owners preserved.
 
 - feature_id: `ssfv:symphony:sev-engine`
 - feature_file: `modules/sev-engine/FEATURES.md`

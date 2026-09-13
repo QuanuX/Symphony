@@ -1774,6 +1774,84 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:shv.schema",
+            "qxcmd:symphony:shv.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.graph.adapter.inspect",
+            "qxcmd:symphony:shv.inspect"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.catalogue.build",
+            "qxcmd:symphony:shv.coverage.default",
+            "qxcmd:symphony:shv.coverage.plan",
+            "qxcmd:symphony:shv.evaluate",
+            "qxcmd:symphony:shv.graph.adapter.roundtrip",
+            "qxcmd:symphony:shv.graph.project",
+            "qxcmd:symphony:shv.graph.validate"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.catalogue.query",
+            "qxcmd:symphony:shv.graph.adapter.query"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "tools/qxctl/COMMANDS.json",
+            "tools/qxctl/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:qxctl.shv-administration"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:ssiag.policy.apply"
           ],
           "delivery": "direct",
@@ -5638,6 +5716,134 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:shv.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:shv.inspect"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.catalogue.build",
+            "qxcmd:symphony:shv.coverage.default",
+            "qxcmd:symphony:shv.coverage.plan",
+            "qxcmd:symphony:shv.evaluate",
+            "qxcmd:symphony:shv.graph.project",
+            "qxcmd:symphony:shv.graph.validate"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:shv.catalogue.build",
+            "engop:symphony:shv.coverage.default",
+            "engop:symphony:shv.coverage.plan",
+            "engop:symphony:shv.evaluate",
+            "engop:symphony:shv.graph.project",
+            "engop:symphony:shv.graph.validate"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.catalogue.query"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:shv.catalogue.query"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:shv-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.graph.adapter.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:shv-graph-adapter.inspect"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-graph-adapter/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.graph.adapter.roundtrip"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:shv-graph-adapter.roundtrip"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-graph-adapter/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.graph.adapter.query"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:shv-graph-adapter.query"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-graph-adapter/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:shv-graph-adapter"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:skvi.inspect"
           ],
           "delivery": "direct",
@@ -6867,9 +7073,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:409cd27b8c3f3d07235cbd19b0e4b4c353104af2279cea5cc6a90aea8a64ec36",
+  "profile_digest": "sha256:d41b7df8f202a8c9769f1f309c38427a90ca1fb177ec0f8a640e39da83af5a23",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 101,
-  "ssfv_registry_digest": "sha256:3cfbc231086e7602df2c04f21b3898ee9b2bf1ae59e8913d449e937eb68dc0e6"
+  "registered_feature_count": 104,
+  "ssfv_registry_digest": "sha256:81ae8cf55a688f95227311f2b9757517f93014cc263ed8f225cbe207b716d59b"
 }

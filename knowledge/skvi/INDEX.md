@@ -11100,3 +11100,120 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: retirement, cancellation and migration
 - notes: Native C++ connector ownership and frozen protocols remain unchanged.
 - status: canonical
+
+#### SHV Initial Kernel and Generic Graph Integration
+- path: `knowledge/shv/KERNEL.md`
+- title: SHV Initial Kernel and Generic Graph Integration
+- surface_type: contract surface
+- truth_role: owner-declared bounded SHV kernel contract
+- owner: SHV maintainers
+- scope: Source-replayed hardware knowledge and generic structural graph exchange with caller-owned selection.
+- relationships: depends_on -> `knowledge/shv/MANIFEST.md`
+- consumers: C++ engines, qxctl, validators and user-selected tools
+- deferred_projections: broad atlas, durable vendor drivers and Composer integration
+- notes: Initial 0.1.0-dev contracts; no persistent database selected.
+- status: canonical
+
+#### SHV C++ Kernel
+- path: `modules/shv-engine/SPEC.md`
+- title: SHV C++ Kernel
+- surface_type: contract surface
+- truth_role: owner-declared bounded SHV kernel contract
+- owner: SHV maintainers
+- scope: Source-replayed hardware knowledge and generic structural graph exchange with caller-owned selection.
+- relationships: depends_on -> `knowledge/shv/MANIFEST.md`
+- consumers: C++ engines, qxctl, validators and user-selected tools
+- deferred_projections: broad atlas, durable vendor drivers and Composer integration
+- notes: Initial 0.1.0-dev contracts; no persistent database selected.
+- status: canonical
+
+#### SHV v1 Schema
+- path: `modules/shv-engine/schemas/v1/shv.schema.json`
+- title: SHV v1 Schema
+- surface_type: schema
+- truth_role: owner-declared bounded SHV kernel contract
+- owner: SHV maintainers
+- scope: Source-replayed hardware knowledge and generic structural graph exchange with caller-owned selection.
+- relationships: depends_on -> `knowledge/shv/MANIFEST.md`
+- consumers: C++ engines, qxctl, validators and user-selected tools
+- deferred_projections: broad atlas, durable vendor drivers and Composer integration
+- notes: Initial 0.1.0-dev contracts; no persistent database selected.
+- status: canonical
+
+#### SHV Unanswered Templates
+- path: `modules/shv-engine/schemas/v1/shv.templates.json`
+- title: SHV Unanswered Templates
+- surface_type: reference document
+- truth_role: owner-declared bounded SHV kernel contract
+- owner: SHV maintainers
+- scope: Source-replayed hardware knowledge and generic structural graph exchange with caller-owned selection.
+- relationships: depends_on -> `knowledge/shv/MANIFEST.md`
+- consumers: C++ engines, qxctl, validators and user-selected tools
+- deferred_projections: broad atlas, durable vendor drivers and Composer integration
+- notes: Initial 0.1.0-dev contracts; no persistent database selected.
+- status: canonical
+
+#### SHV Kernel Features
+- path: `modules/shv-engine/FEATURES.md`
+- title: SHV Kernel Features
+- surface_type: contract surface
+- truth_role: owner-declared bounded SHV kernel contract
+- owner: SHV maintainers
+- scope: Source-replayed hardware knowledge and generic structural graph exchange with caller-owned selection.
+- relationships: depends_on -> `knowledge/shv/MANIFEST.md`
+- consumers: C++ engines, qxctl, validators and user-selected tools
+- deferred_projections: broad atlas, durable vendor drivers and Composer integration
+- notes: Initial 0.1.0-dev contracts; no persistent database selected.
+- status: canonical
+
+#### Generic Graph Adapter Port
+- path: `modules/shv-graph-adapter/SPEC.md`
+- title: Generic Graph Adapter Port
+- surface_type: contract surface
+- truth_role: owner-declared bounded SHV kernel contract
+- owner: SHV maintainers
+- scope: Source-replayed hardware knowledge and generic structural graph exchange with caller-owned selection.
+- relationships: depends_on -> `knowledge/shv/MANIFEST.md`
+- consumers: C++ engines, qxctl, validators and user-selected tools
+- deferred_projections: broad atlas, durable vendor drivers and Composer integration
+- notes: Initial 0.1.0-dev contracts; no persistent database selected.
+- status: canonical
+
+#### Generic C++ Graph Adapter Interface
+- path: `modules/shv-graph-adapter/include/symphony/graph/adapter.hpp`
+- title: Generic C++ Graph Adapter Interface
+- surface_type: reference document
+- truth_role: owner-declared bounded SHV kernel contract
+- owner: SHV maintainers
+- scope: Source-replayed hardware knowledge and generic structural graph exchange with caller-owned selection.
+- relationships: depends_on -> `knowledge/shv/MANIFEST.md`
+- consumers: C++ engines, qxctl, validators and user-selected tools
+- deferred_projections: broad atlas, durable vendor drivers and Composer integration
+- notes: Initial 0.1.0-dev contracts; no persistent database selected.
+- status: canonical
+
+#### Generic Graph Exchange Schema
+- path: `modules/shv-graph-adapter/schemas/v1/graph-adapter.schema.json`
+- title: Generic Graph Exchange Schema
+- surface_type: schema
+- truth_role: owner-declared bounded SHV kernel contract
+- owner: SHV maintainers
+- scope: Source-replayed hardware knowledge and generic structural graph exchange with caller-owned selection.
+- relationships: depends_on -> `knowledge/shv/MANIFEST.md`
+- consumers: C++ engines, qxctl, validators and user-selected tools
+- deferred_projections: broad atlas, durable vendor drivers and Composer integration
+- notes: Initial 0.1.0-dev contracts; no persistent database selected.
+- status: canonical
+
+#### Generic Graph Adapter Features
+- path: `modules/shv-graph-adapter/FEATURES.md`
+- title: Generic Graph Adapter Features
+- surface_type: contract surface
+- truth_role: owner-declared bounded SHV kernel contract
+- owner: SHV maintainers
+- scope: Source-replayed hardware knowledge and generic structural graph exchange with caller-owned selection.
+- relationships: depends_on -> `knowledge/shv/MANIFEST.md`
+- consumers: C++ engines, qxctl, validators and user-selected tools
+- deferred_projections: broad atlas, durable vendor drivers and Composer integration
+- notes: Initial 0.1.0-dev contracts; no persistent database selected.
+- status: canonical

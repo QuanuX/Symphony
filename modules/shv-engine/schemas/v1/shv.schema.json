@@ -1,0 +1,1434 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "symphony.shv.kernel-schema.v1",
+  "$comment": "Graph, Node, Edge copied verbatim from generic graph adapter contract. Structural schema checks do not replace source replay, canonical seals, sorting or runtime budgets.",
+  "$defs": {
+    "Value": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "maxItems": 32,
+          "uniqueItems": true
+        }
+      ]
+    },
+    "DateInterval": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "through": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        }
+      },
+      "required": [
+        "from",
+        "through"
+      ],
+      "additionalProperties": false
+    },
+    "SubjectSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "manufacturer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "hardware_class": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "introduced": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DateInterval"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "manufacturer",
+        "model",
+        "hardware_class",
+        "introduced"
+      ],
+      "additionalProperties": false
+    },
+    "Source": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1048576
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "format": {
+          "enum": [
+            "html",
+            "opaque"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "path",
+        "bytes",
+        "digest",
+        "format"
+      ],
+      "additionalProperties": false
+    },
+    "MappingField": {
+      "type": "object",
+      "properties": {
+        "predicate": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "next_label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "value_type": {
+          "enum": [
+            "string",
+            "integer",
+            "date",
+            "tokens"
+          ]
+        },
+        "qualifier": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "predicate",
+        "label",
+        "next_label",
+        "value_type",
+        "qualifier"
+      ],
+      "additionalProperties": false
+    },
+    "SubjectSpec": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "manufacturer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "hardware_class": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "source_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "heading_section": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-z][a-z0-9-]*#[^#]+$"
+        },
+        "field_section": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-z][a-z0-9-]*#[^#]+$"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MappingField"
+          },
+          "maxItems": 16
+        }
+      },
+      "required": [
+        "id",
+        "manufacturer",
+        "model",
+        "hardware_class",
+        "source_id",
+        "heading_section",
+        "field_section",
+        "fields"
+      ],
+      "additionalProperties": false
+    },
+    "Assertion": {
+      "type": "object",
+      "properties": {
+        "predicate": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "value": {
+          "$ref": "#/$defs/Value"
+        },
+        "qualifier": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "source_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        }
+      },
+      "required": [
+        "predicate",
+        "value",
+        "qualifier",
+        "source_id"
+      ],
+      "additionalProperties": false
+    },
+    "Subject": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "manufacturer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "hardware_class": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "introduced": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DateInterval"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assertions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Assertion"
+          },
+          "maxItems": 16
+        }
+      },
+      "required": [
+        "id",
+        "manufacturer",
+        "model",
+        "hardware_class",
+        "introduced",
+        "assertions"
+      ],
+      "additionalProperties": false
+    },
+    "Selector": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "all"
+            }
+          },
+          "required": [
+            "op"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "date"
+            },
+            "basis": {
+              "const": "model_introduction"
+            },
+            "from": {
+              "type": "string",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+            },
+            "through": {
+              "type": "string",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+            }
+          },
+          "required": [
+            "op",
+            "basis",
+            "from",
+            "through"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "enum": [
+                "ids",
+                "class"
+              ]
+            },
+            "values": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9._-]{1,128}$"
+              },
+              "maxItems": 128,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "op",
+            "values"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "manufacturer"
+            },
+            "values": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "maxItems": 128,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "op",
+            "values"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "enum": [
+                "and",
+                "or"
+              ]
+            },
+            "args": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Selector"
+              },
+              "maxItems": 32,
+              "minItems": 1
+            }
+          },
+          "required": [
+            "op",
+            "args"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "const": "not"
+            },
+            "arg": {
+              "$ref": "#/$defs/Selector"
+            }
+          },
+          "required": [
+            "op",
+            "arg"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "CoverageProfile": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.shv.coverage-profile.v1"
+        },
+        "as_of": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        "selector": {
+          "$ref": "#/$defs/Selector"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "as_of",
+        "selector",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "InspectInput": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false
+    },
+    "CoverageDefaultInput": {
+      "type": "object",
+      "properties": {
+        "as_of": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        }
+      },
+      "required": [
+        "as_of"
+      ],
+      "additionalProperties": false
+    },
+    "CoveragePlanInput": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "$ref": "#/$defs/CoverageProfile"
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SubjectSummary"
+          },
+          "maxItems": 128
+        }
+      },
+      "required": [
+        "profile",
+        "subjects"
+      ],
+      "additionalProperties": false
+    },
+    "CoverageResult": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.shv.coverage-result.v1"
+        },
+        "profile": {
+          "$ref": "#/$defs/CoverageProfile"
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SubjectSummary"
+          },
+          "maxItems": 128
+        },
+        "decisions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "subject_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9._-]{1,128}$"
+              },
+              "status": {
+                "enum": [
+                  "included",
+                  "excluded",
+                  "unresolved"
+                ]
+              }
+            },
+            "required": [
+              "subject_id",
+              "status"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 128
+        },
+        "counts": {
+          "type": "object",
+          "properties": {
+            "included": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "excluded": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "unresolved": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            }
+          },
+          "required": [
+            "included",
+            "excluded",
+            "unresolved"
+          ],
+          "additionalProperties": false
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "profile",
+        "subjects",
+        "decisions",
+        "counts",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "CatalogueBuildInput": {
+      "type": "object",
+      "properties": {
+        "source_root": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "maxItems": 8
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SubjectSpec"
+          },
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "source_root",
+        "sources",
+        "subjects"
+      ],
+      "additionalProperties": false
+    },
+    "Catalogue": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.shv.catalogue.v1"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "maxItems": 8
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Subject"
+          },
+          "maxItems": 32
+        },
+        "mapping": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SubjectSpec"
+          },
+          "maxItems": 32
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "sources",
+        "subjects",
+        "mapping",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "CatalogueQueryInput": {
+      "type": "object",
+      "properties": {
+        "source_root": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "catalogue": {
+          "$ref": "#/$defs/Catalogue"
+        },
+        "subject_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._-]{1,128}$"
+          },
+          "maxItems": 128,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "source_root",
+        "catalogue",
+        "subject_ids"
+      ],
+      "additionalProperties": false
+    },
+    "QueryResult": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.shv.query-result.v1"
+        },
+        "catalogue_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "subject_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._-]{1,128}$"
+          },
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Subject"
+          },
+          "maxItems": 32
+        },
+        "missing_subject_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._-]{1,128}$"
+          },
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "catalogue_digest",
+        "subject_ids",
+        "subjects",
+        "missing_subject_ids",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "Requirement": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "predicate": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "operator": {
+          "enum": [
+            "eq",
+            "contains",
+            "gte"
+          ]
+        },
+        "value": {
+          "$ref": "#/$defs/Value"
+        },
+        "qualifier": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "id",
+        "predicate",
+        "operator",
+        "value",
+        "qualifier"
+      ],
+      "additionalProperties": false
+    },
+    "EvaluateInput": {
+      "type": "object",
+      "properties": {
+        "source_root": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "catalogue": {
+          "$ref": "#/$defs/Catalogue"
+        },
+        "subject_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._-]{1,128}$"
+          },
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Requirement"
+          },
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "source_root",
+        "catalogue",
+        "subject_ids",
+        "requirements"
+      ],
+      "additionalProperties": false
+    },
+    "Evaluation": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.shv.evaluation.v1"
+        },
+        "catalogue_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "subject_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._-]{1,128}$"
+          },
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Requirement"
+          },
+          "maxItems": 32
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "subject_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9._-]{1,128}$"
+              },
+              "requirement_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9._-]{1,128}$"
+              },
+              "status": {
+                "enum": [
+                  "supported",
+                  "contradicted",
+                  "unresolved"
+                ]
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/Assertion"
+                },
+                "maxItems": 1
+              }
+            },
+            "required": [
+              "subject_id",
+              "requirement_id",
+              "status",
+              "evidence"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 1024
+        },
+        "missing_subject_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._-]{1,128}$"
+          },
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "catalogue_digest",
+        "subject_ids",
+        "requirements",
+        "findings",
+        "missing_subject_ids",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "Graph": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.graph.exchange.v1"
+        },
+        "owner": {
+          "type": "object",
+          "properties": {
+            "engine_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "engine_version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "artifact_protocol": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "artifact_digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "engine_id",
+            "engine_version",
+            "artifact_protocol",
+            "artifact_digest"
+          ],
+          "additionalProperties": false
+        },
+        "owner_artifact": {
+          "type": "object",
+          "required": [
+            "protocol",
+            "digest"
+          ]
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Node"
+          },
+          "maxItems": 1024
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Edge"
+          },
+          "maxItems": 2048
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "owner",
+        "owner_artifact",
+        "nodes",
+        "edges",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "Node": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "maxItems": 32
+        },
+        "properties": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "labels",
+        "properties"
+      ],
+      "additionalProperties": false
+    },
+    "Edge": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "from": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "to": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "properties": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "from",
+        "to",
+        "label",
+        "properties"
+      ],
+      "additionalProperties": false
+    },
+    "GraphProjectInput": {
+      "type": "object",
+      "properties": {
+        "source_root": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "catalogue": {
+          "$ref": "#/$defs/Catalogue"
+        }
+      },
+      "required": [
+        "source_root",
+        "catalogue"
+      ],
+      "additionalProperties": false
+    },
+    "GraphValidateInput": {
+      "type": "object",
+      "properties": {
+        "source_root": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "graph": {
+          "$ref": "#/$defs/Graph"
+        }
+      },
+      "required": [
+        "source_root",
+        "graph"
+      ],
+      "additionalProperties": false
+    },
+    "GraphValidation": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.shv.graph-validation.v1"
+        },
+        "graph_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "catalogue_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "valid": {
+          "const": true
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "graph_digest",
+        "catalogue_digest",
+        "valid",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "featureId": {
+      "type": "string",
+      "maxLength": 256,
+      "pattern": "^ssfv:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+    },
+    "operationId": {
+      "type": "string",
+      "maxLength": 256,
+      "pattern": "^engop:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "engine_operation_id",
+        "operation_name",
+        "availability",
+        "feature_ids",
+        "administrative_interactions",
+        "administration_disposition",
+        "input_protocol",
+        "output_protocol",
+        "mutability",
+        "idempotency",
+        "expected_state_required",
+        "authorization_requirement",
+        "recovery_operation_id",
+        "direct_invocation",
+        "thermal_path"
+      ],
+      "properties": {
+        "engine_operation_id": {
+          "$ref": "#/$defs/operationId"
+        },
+        "operation_name": {
+          "$ref": "#/$defs/token"
+        },
+        "availability": {
+          "enum": [
+            "implemented",
+            "reserved",
+            "disabled"
+          ]
+        },
+        "feature_ids": {
+          "type": "array",
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/featureId"
+          }
+        },
+        "administrative_interactions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/interaction"
+          }
+        },
+        "administration_disposition": {
+          "enum": [
+            "unreviewed",
+            "qxctl_required",
+            "lifecycle_only",
+            "runtime_only",
+            "system_orchestrated",
+            "prohibited",
+            "not_applicable"
+          ]
+        },
+        "input_protocol": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/token"
+            }
+          ]
+        },
+        "output_protocol": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/token"
+            }
+          ]
+        },
+        "mutability": {
+          "enum": [
+            "read_only",
+            "evidence_only",
+            "proposal_only",
+            "permission_backed_mutation",
+            "prohibited"
+          ]
+        },
+        "idempotency": {
+          "enum": [
+            "not_applicable",
+            "idempotent",
+            "idempotent_with_invocation_id",
+            "non_idempotent"
+          ]
+        },
+        "expected_state_required": {
+          "type": "boolean"
+        },
+        "authorization_requirement": {
+          "enum": [
+            "none",
+            "target_host_permission",
+            "ssiag"
+          ]
+        },
+        "recovery_operation_id": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/operationId"
+            }
+          ]
+        },
+        "direct_invocation": {
+          "enum": [
+            "supported",
+            "diagnostic_only",
+            "prohibited"
+          ]
+        },
+        "thermal_path": {
+          "enum": [
+            "freezing",
+            "warm",
+            "hot"
+          ]
+        }
+      }
+    },
+    "interaction": {
+      "enum": [
+        "discover",
+        "inspect",
+        "query",
+        "validate",
+        "configure",
+        "propose",
+        "invoke",
+        "apply",
+        "lifecycle",
+        "recover"
+      ]
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_bytes",
+        "response_bytes",
+        "json_depth",
+        "json_values",
+        "path_bytes",
+        "snapshot_files",
+        "snapshot_file_bytes",
+        "deadline_ahead_ms"
+      ],
+      "properties": {
+        "request_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "response_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "json_depth": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "json_values": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "path_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "snapshot_files": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "snapshot_file_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "deadline_ahead_ms": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "Descriptor": {
+      "title": "Symphony knowledge engine descriptor v2",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "format_version",
+        "module_id",
+        "engine_id",
+        "vector_id",
+        "engine_version",
+        "process_protocols",
+        "contract_versions",
+        "operations",
+        "limits",
+        "supported_scopes",
+        "language",
+        "thermal_path",
+        "canonical_apply_enabled",
+        "session_mutation_enabled",
+        "network_listener",
+        "descriptor_digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.knowledge.engine-descriptor.v2"
+        },
+        "format_version": {
+          "const": 2
+        },
+        "module_id": {
+          "$ref": "#/$defs/token"
+        },
+        "engine_id": {
+          "$ref": "#/$defs/token"
+        },
+        "vector_id": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/token"
+            }
+          ]
+        },
+        "engine_version": {
+          "$ref": "#/$defs/version"
+        },
+        "process_protocols": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/token"
+          }
+        },
+        "contract_versions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "operations": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1024,
+          "items": {
+            "$ref": "#/$defs/operation"
+          }
+        },
+        "limits": {
+          "$ref": "#/$defs/limits"
+        },
+        "supported_scopes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "user",
+              "system",
+              "tops"
+            ]
+          }
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9+.#_-]+$"
+        },
+        "thermal_path": {
+          "enum": [
+            "freezing",
+            "warm",
+            "hot"
+          ]
+        },
+        "canonical_apply_enabled": {
+          "type": "boolean"
+        },
+        "session_mutation_enabled": {
+          "type": "boolean"
+        },
+        "network_listener": {
+          "type": "boolean"
+        },
+        "descriptor_digest": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    }
+  }
+}

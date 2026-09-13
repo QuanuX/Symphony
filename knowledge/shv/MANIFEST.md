@@ -14,12 +14,15 @@ SHV is the owner of the Hardware Capability Atlas and hardware matrix concept. T
 - `knowledge/shv/MANIFEST.md`
 - `knowledge/shv/SPEC.md`
 - `knowledge/shv/SKILL.md`
+- `knowledge/shv/KERNEL.md`
+- `modules/shv-engine/SPEC.md`
+- `modules/shv-graph-adapter/SPEC.md`
 
-## Planned Implementation Character
+## Implemented Initial Kernel
 
-SHV is planned as an independently installable C++ vector engine that builds, updates, validates, queries, and projects an underlying graph database and connects bounded AI or API consumers to that knowledge.
+`modules/shv-engine/` supplies the independently installable C++ 0.1.0-dev kernel: explicit coverage profiles, retained-source catalogue build/replay, exact requirement evaluation, deterministic graph projection and source-backed graph validation. `modules/shv-graph-adapter/` supplies a separately installable generic C++ graph port and working in-memory portable reference adapter for lossless exchange and structural queries. `qxctl shv` administers every delivered native operation and discovers exact installed schemas and unanswered templates.
 
-The graph technology, ontology, ingestion sources, evidence adapters, schemas, query API, engine operations, and AI connection are not yet ratified or implemented.
+These bounded v1 contracts are implemented; a broad hardware atlas, automated source acquisition, multi-source conflict aggregation, persistence, vendor database drivers, custom plugin loading and Composer integration remain later work. No dedicated graph database is selected. The existing C++ DuckDB SQL default is unchanged. Read `KERNEL.md` and both module SPEC files for exact ownership and limits.
 
 ## Reproducibility
 

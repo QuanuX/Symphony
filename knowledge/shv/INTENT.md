@@ -10,7 +10,7 @@ SHV may cover processors, CPU core types, GPUs, NICs and fibre interfaces, mothe
 
 ## Time Horizon
 
-The initial research universe is expected to concentrate on roughly the preceding ten years of relevant hardware while allowing explicit extension where older or newer equipment matters.
+The default core coverage starts in 2018 and extends through a caller-supplied as-of date. The initial date basis is model introduction, never an inferred individual manufacture date. Users may expand, narrow, replace or remove this filter through qxctl coverage profiles. Default coverage is a research starting point, not hardware admission policy.
 
 ## Non-Scope
 
