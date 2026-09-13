@@ -10269,3 +10269,79 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/scvtransfer/storage_unix.go`
   - `tools/qxctl/internal/scvtransfer/transfer.schema.json`
   - `tools/qxctl/tests/scv-index-transfer/installed.py`
+
+---
+
+- record_id: `SCLV-CHG-20260913-SCV-MVP-GATE`
+- record_version: `3`
+- title: `Close the SCV knowledge and local index lifecycle MVP gate`
+- status: `canonical`
+- change_started_at: `2026-09-13T13:58:31Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SCV milestone validation and necessary fixes`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-13-scv-mvp-gate.md`
+- skvi_references:
+  - `knowledge/scv/INDEX-TRANSFER.md`
+  - `tools/qxctl/internal/scvtransfer/transfer.schema.json`
+- change_summary: |
+    Adds exact installed graph-index and CLI transfer schema discovery and corrects shared process-harness attribution. Full qxctl, SCV native, connector, foundation and validator suites plus maintained-source, authority and fault-recovery acceptance close the implemented MVP gate.
+- relationship_changes: |
+    Read-only qxctl discovery distinguishes receipt-owned connector contracts from CLI-embedded orchestration contracts. Existing C++ owners retain all provider and graph semantics; the invariant registry identifies the actual shared process harness.
+- doctrine_changes: |
+    Caller-defined requirements, provider choice and architecture remain explicit. Unknowns, private evidence boundaries and exact versions remain preserved. This gate is bounded knowledge/index lifecycle acceptance, not exhaustive cloud coverage or deployed infrastructure.
+- compatibility_consequences: |
+    Selected SCV 0.10.0-dev and connector 0.1.0-dev/0.2.0-dev contracts and installations remain unchanged, using actual C++ DuckDB 1.5.5. New read-only CLI schema discovery exposes separate ownership without rewriting frozen native catalogues.
+- publication_consequences: |
+    Local source and append-only closure commits only. Production/test-only CLI rebuilds reproduce bytes; selected receipt files reverify. Independent current native build reproduces executables and schemas, with later SOURCE-KNOWLEDGE.md explicitly recorded as a document/receipt difference. No selected installation replaced.
+- projection_consequences: |
+    One new command yields 272 stable qxctl identities. The 101 features, 256 reviewed expectations and 246 required expectations remain registered. Affected metadata and root summary are refreshed.
+- evidence:
+  - `../scv-gate/evidence/FULL_TESTS.json records 472 top-level Go groups, 1300 passing events, 29 CTest groups and no unresolved testcase skips.`
+  - `../scv-gate/evidence/VALIDATOR_FIXED.json records 10737 passes, zero warnings and zero violations.`
+  - `../scv-gate/evidence/SCHEMA_DISCOVERY.json records exact current/legacy schema discovery and tamper rejection.`
+  - `../scv-gate/evidence/native-faults/SUMMARY.json and transfer/SUMMARY.json record eight native and five transfer interruption cases.`
+  - `../scv-gate/evidence/authority/ADOPTION.json and RUNTIME.json record real local authority/audit acceptance and stopped test services.`
+  - `../scv-gate/evidence/PACKAGE_VERIFICATION.json and SOURCE_BUILD_PARITY.json bind selected installations and clean source builds.`
+  - `../scv-gate/GATE_MANIFEST.json, SCOPE.md and VERIFICATION.md preserve acceptance, six-scope structural limits and continuing expansion backlog.`
+- non_authorizations:
+  - `Choosing user requirements, providers, hardware, topology, backend or retention policy.`
+  - `Provider deployment, live account mutation, source deletion, retirement or automatic migration.`
+  - `Exhaustive vendor knowledge, cross-platform performance, hardware power-loss certification or production supervision claims.`
+  - `SHV runtime, remote publication or original archive edits.`
+- notes: |
+    The post_merge disposition records local Git completion, not a remote merge. This append-only closure does not recursively record itself. The full SCV milestone gate is now complete for its implemented scope; SHV source/contract adoption is the next objective. Initial diagnostic failures and the separately resolved projection fixture skip remain documented.
+- date: `2026-09-13`
+- change_completed_at: `2026-09-13T14:18:11Z`
+- recorded_at: `2026-09-13T14:22:18Z`
+- revision_value: `2e2362221caac413fa0375b65f396e0010642f39`
+- tree_digest: `sha256:9548b2f9e313e7e30e20d64275b722b02e4221a9c692dad4e61744a4b0f0e9ea`
+- ratification_evidence_digest: `sha256:3b123a803584383440ff01446a9111a05aef61aad2155a91619aeca55ce1c5d9`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/scv/INDEX-TRANSFER.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph_index.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph_index_schema.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph_index_schema_test.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph_index_test.go`
+  - `tools/qxctl/cmd/qxctl/scv_schema_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_graph_index_schema.go`
+  - `tools/qxctl/internal/scvtransfer/schema.go`
