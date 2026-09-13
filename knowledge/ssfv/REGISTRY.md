@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 104 experimental records across the repository root and 28 implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 105 experimental records across the repository root and 29 implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -244,7 +244,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:9b9d69914de23fd90eb0c79844a362dd7d75b96dcc1b32734ecab2b89cd205a8`
+- record_digest: `sha256:c42aa96434fd1ae140a1515aadbbed21094429a1331cc82550e9364bc0ebf39b`
 - notes: Architect-ratified headless invariant status, list, show, and exact-validator check administration; coverage remains partial and qxctl does not own invariant semantics.
 
 - feature_id: `ssfv:symphony:qxctl.lifecycle-convergence`
@@ -280,7 +280,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:94df367b67e2a850c0f86227468c17b3ecbc006728446aab7023e6941dde1184`
+- record_digest: `sha256:cf8a4e9b40d308ad9b4eacc27c2ee2b48a46df89502253cab5623bc834a83097`
 - notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
 
 - feature_id: `ssfv:symphony:qxctl.ssiag-administration`
@@ -532,7 +532,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:3d36ed872366dc507221653cde3a1cd951c52c9602622b3ae5cbb61324c95390`
+- record_digest: `sha256:ab30f6794ef523550e7ef5f4b81f3e1418b39e0ed87b64356da493945359b5b6`
 - notes: Bounded SHV source replay and generic graph exchange; caller choices and exact owners preserved.
 
 - feature_id: `ssfv:symphony:shv-engine`
@@ -551,6 +551,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
 - record_digest: `sha256:b7f0a9931c0caa50f70f48191a9646be924eb8045d7e8ba29e54262002f47129`
+- notes: Bounded SHV source replay and generic graph exchange; caller choices and exact owners preserved.
+
+- feature_id: `ssfv:symphony:shv-source-engine`
+- feature_file: `modules/shv-source-engine/FEATURES.md`
+- owner_contract: `modules/shv-source-engine/SPEC.md`
+- source_scope: `modules/shv-source-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:64904c36ee070c0e5e6b0baae3d6f23baa4f39ae7644fd22786f7b6274501155`
 - notes: Bounded SHV source replay and generic graph exchange; caller choices and exact owners preserved.
 
 - feature_id: `ssfv:symphony:sev-engine`

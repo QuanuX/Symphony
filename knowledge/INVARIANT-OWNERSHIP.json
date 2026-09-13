@@ -400,6 +400,26 @@
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     },
     {
+      "adapter_id": "adapter:symphony:symphony-shv-source.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "shv-source-engine",
+      "entry_point_id": "symphony-shv-source",
+      "format_version": 3,
+      "implementation_path": "modules/shv-source-engine",
+      "operation_ids": [
+        "engop:symphony:shv-source.capture.compare",
+        "engop:symphony:shv-source.capture.import",
+        "engop:symphony:shv-source.graph.project",
+        "engop:symphony:shv-source.graph.validate",
+        "engop:symphony:shv-source.inspect",
+        "engop:symphony:shv-source.source.plan",
+        "engop:symphony:shv-source.source.reduce",
+        "engop:symphony:shv-source.source.status"
+      ],
+      "owner_contract": "modules/shv-source-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
       "adapter_id": "adapter:symphony:symphony-shv.v1",
       "command_protocol": "symphony.knowledge.engine-process.v1",
       "component": "shv-engine",
@@ -1655,6 +1675,49 @@
     },
     {
       "allowed_adapter_ids": [
+        "adapter:symphony:symphony-shv-source.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSHVLifecycleCaptureReplayAndProvenance",
+            "TestSHVLifecycleGraphCorrespondence",
+            "TestSHVLifecycleLineage",
+            "TestSHVLifecycleURIAndExactVersion"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/shv_lifecycle_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:shv.source-lifecycle-provenance",
+      "ipc_boundary": true,
+      "owner_component": "shv-source-engine",
+      "owner_contract": "modules/shv-source-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/shv-source-engine/src/main.cpp",
+        "modules/shv-source-engine/src/source.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "test_source_conformance"
+          ],
+          "path": "modules/shv-source-engine/tests/source_test.py"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_process"
+          ],
+          "path": "modules/shv-source-engine/tests/source_test.py"
+        }
+      ],
+      "statement": "Pure source transitions preserve exact expected predecessor and source identity; capture import/comparison and source graph replay verify actual retained bytes and complete scoped provenance. Independent qxctl rederivation rejects resealed false lineage or graph results. No source approval, publisher authentication, protected activation or hardware capability is inferred from a source digest.",
+      "status": "active",
+      "title": "Source lifecycle preserves exact lineage and consumed capture provenance"
+    },
+    {
+      "allowed_adapter_ids": [
         "adapter:symphony:symphony-shv.v1"
       ],
       "consumer_boundary_rejections": [
@@ -1981,7 +2044,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:735c0cae87cedb53e571959faa0641d7c3ad3b3622fa37b7e3b19ff242293b85",
+  "registry_digest": "sha256:49d5ffce4c9d2a42371fc7c4a8ae14a9022fba3ef159940bd8d32348c474e6e5",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

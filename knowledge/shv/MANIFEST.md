@@ -31,3 +31,7 @@ An installation must be able to generate its own graph through the same defined 
 ## Non-Authorization Statement
 
 This manifest authorizes no hardware probe, benchmark, purchase, provider action, graph technology, network API, AI operation, or performance claim.
+
+## Component source lifecycle
+
+The independent `modules/shv-source-engine/` implements `SOURCES.md`: stable source identity, explicit relocation/authority-change plans, pure transition and finite history validation, actual-byte capture binding/comparison, and source-replayed provenance graphs through qxctl. These read-only operations do not activate a source registry or authenticate publisher authority. Core curation prioritizes original component/product identity and evidenced variants; user-selected source coverage remains extensible. Whole-system catalogue permutations, new component mappings, protected activation and durable vendor storage remain separate increments.

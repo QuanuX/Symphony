@@ -454,7 +454,7 @@
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",
-      "record_version": 3,
+      "record_version": 2,
       "relationships": [
         {
           "rationale": "The validator produces complete repository assurance while qxctl provides stable headless inspection and exact installed invocation.",
@@ -830,7 +830,7 @@
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",
-      "record_version": 10,
+      "record_version": 2,
       "relationships": [
         {
           "rationale": "C++ owns provider source and knowledge semantics; qxctl owns the administrative adapter.",
@@ -888,9 +888,16 @@
       "implementation_paths": [
         "tools/qxctl/cmd/qxctl/commands.go",
         "tools/qxctl/cmd/qxctl/shv.go",
+        "tools/qxctl/cmd/qxctl/shv_source.go",
+        "tools/qxctl/cmd/qxctl/shv_source_test.go",
         "tools/qxctl/cmd/qxctl/shv_test.go",
         "tools/qxctl/internal/knowledgeengine/shv.go",
         "tools/qxctl/internal/knowledgeengine/shv_discovery_schema.go",
+        "tools/qxctl/internal/knowledgeengine/shv_lifecycle.go",
+        "tools/qxctl/internal/knowledgeengine/shv_lifecycle_descriptor.go",
+        "tools/qxctl/internal/knowledgeengine/shv_lifecycle_schema.go",
+        "tools/qxctl/internal/knowledgeengine/shv_lifecycle_test.go",
+        "tools/qxctl/internal/knowledgeengine/shv_lifecycle_validation.go",
         "tools/qxctl/internal/knowledgeengine/shv_schema.go",
         "tools/qxctl/internal/knowledgeengine/shv_source.go",
         "tools/qxctl/internal/knowledgeengine/shv_test.go",
@@ -914,12 +921,17 @@
           "rationale": "Independent generic C++ adapter owns structural exchange and queries.",
           "target_feature_id": "ssfv:symphony:shv-graph-adapter",
           "type": "composes_with"
+        },
+        {
+          "rationale": "C++ owns source revision and capture provenance; qxctl independently verifies exact correspondence.",
+          "target_feature_id": "ssfv:symphony:shv-source-engine",
+          "type": "depends_on"
         }
       ],
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "SHV source-backed hardware and generic graph administration",
-      "what": "Exposes every delivered SHV kernel and generic adapter operation, exact installed schemas and unanswered templates.",
+      "what": "Exposes SHV kernel, source lifecycle and generic adapter operations with exact installed schemas/templates and independent evidence checks.",
       "when": "Only upon an explicit read-only qxctl shv invocation.",
       "where": "Local administrative process against explicit exact receipt-owned C++ installations and retained source roots.",
       "who": "Users, agents and automation selecting exact independently installed components.",

@@ -32,3 +32,7 @@ The initial implemented contract is `KERNEL.md`, with exact schemas in `modules/
 ## Non-Authorization Statement
 
 SHV cannot guarantee latency, infer undisclosed silicon behavior, select hardware for the user, allocate a remote resource, or claim an algorithm is correct because its hardware requirements match.
+
+## Component source lifecycle
+
+The independent `modules/shv-source-engine/` implements `SOURCES.md`: stable source identity, explicit relocation/authority-change plans, pure transition and finite history validation, actual-byte capture binding/comparison, and source-replayed provenance graphs through qxctl. These read-only operations do not activate a source registry or authenticate publisher authority. Core curation prioritizes original component/product identity and evidenced variants; user-selected source coverage remains extensible. Whole-system catalogue permutations, new component mappings, protected activation and durable vendor storage remain separate increments.

@@ -1775,6 +1775,8 @@
         {
           "command_ids": [
             "qxcmd:symphony:shv.schema",
+            "qxcmd:symphony:shv.source.schema",
+            "qxcmd:symphony:shv.source.template",
             "qxcmd:symphony:shv.template"
           ],
           "delivery": "composed",
@@ -1792,7 +1794,9 @@
         {
           "command_ids": [
             "qxcmd:symphony:shv.graph.adapter.inspect",
-            "qxcmd:symphony:shv.inspect"
+            "qxcmd:symphony:shv.inspect",
+            "qxcmd:symphony:shv.source.inspect",
+            "qxcmd:symphony:shv.source.status"
           ],
           "delivery": "composed",
           "engine_operation_ids": [],
@@ -1814,7 +1818,13 @@
             "qxcmd:symphony:shv.evaluate",
             "qxcmd:symphony:shv.graph.adapter.roundtrip",
             "qxcmd:symphony:shv.graph.project",
-            "qxcmd:symphony:shv.graph.validate"
+            "qxcmd:symphony:shv.graph.validate",
+            "qxcmd:symphony:shv.source.capture.compare",
+            "qxcmd:symphony:shv.source.capture.import",
+            "qxcmd:symphony:shv.source.graph.project",
+            "qxcmd:symphony:shv.source.graph.validate",
+            "qxcmd:symphony:shv.source.plan",
+            "qxcmd:symphony:shv.source.reduce"
           ],
           "delivery": "composed",
           "engine_operation_ids": [],
@@ -5844,6 +5854,59 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:shv.source.inspect",
+            "qxcmd:symphony:shv.source.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:shv-source.inspect",
+            "engop:symphony:shv-source.source.status"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-source-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.source.capture.compare",
+            "qxcmd:symphony:shv.source.capture.import",
+            "qxcmd:symphony:shv.source.graph.project",
+            "qxcmd:symphony:shv.source.graph.validate",
+            "qxcmd:symphony:shv.source.plan",
+            "qxcmd:symphony:shv.source.reduce"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:shv-source.capture.compare",
+            "engop:symphony:shv-source.capture.import",
+            "engop:symphony:shv-source.graph.project",
+            "engop:symphony:shv-source.graph.validate",
+            "engop:symphony:shv-source.source.plan",
+            "engop:symphony:shv-source.source.reduce"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-source-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:shv-source-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:skvi.inspect"
           ],
           "delivery": "direct",
@@ -7073,9 +7136,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:d41b7df8f202a8c9769f1f309c38427a90ca1fb177ec0f8a640e39da83af5a23",
+  "profile_digest": "sha256:7b9fa37fb30ef31e48377c58e7b3dae6c445f83c86a21ec0aa51b54b145171d3",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 104,
-  "ssfv_registry_digest": "sha256:81ae8cf55a688f95227311f2b9757517f93014cc263ed8f225cbe207b716d59b"
+  "registered_feature_count": 105,
+  "ssfv_registry_digest": "sha256:8c7a9ae11f085b2cd74635190da76c86457254261534a4d59a8f821d5c7c03bb"
 }

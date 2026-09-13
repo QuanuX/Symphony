@@ -1,0 +1,41 @@
+{
+  "inspect": {},
+  "source_plan": {
+    "operation_id": null,
+    "current": null,
+    "desired": null,
+    "reason": null
+  },
+  "source_reduce": {
+    "current": null,
+    "plan": null
+  },
+  "source_status": {
+    "history": []
+  },
+  "capture_import": {
+    "source_root": null,
+    "source": null,
+    "locator_id": null,
+    "resolved_uri": null,
+    "redirect_chain": [],
+    "observed_at": null,
+    "upstream_revision": null,
+    "manifest": null,
+    "completeness": null,
+    "issues": []
+  },
+  "capture_compare": {
+    "source_root": null,
+    "previous": null,
+    "current": null
+  },
+  "graph_project": {
+    "source_root": null,
+    "captures": []
+  },
+  "graph_validate": {
+    "source_root": null,
+    "graph": null
+  }
+}

@@ -1,0 +1,3 @@
+# SHV source engine manifest
+
+Canonical owner: modules/shv-source-engine/SPEC.md. Semantic owner: knowledge/shv/SOURCES.md. Package shv-source-engine0.1.0-dev, vector shv, engine symphony-shv-source, independently installed C++26 executable with exact receipt-v2 entry point. Owned surfaces: src/, tests/, scripts/, CMakeLists.txt, cmake/, schemas/v1/source.schema.json and source.templates.json, INTENT.md, MANIFEST.md, SPEC.md, SKILL.md, INSTALL.md, FEATURES.md. The source owner SOURCES.md companion is installed with the package. No source selection, permissions, acquisition network client or durable graph store is installed.

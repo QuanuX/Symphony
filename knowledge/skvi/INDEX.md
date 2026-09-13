@@ -11217,3 +11217,68 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: broad atlas, durable vendor drivers and Composer integration
 - notes: Initial 0.1.0-dev contracts; no persistent database selected.
 - status: canonical
+
+#### SHV Source Lifecycle Contract
+- path: `knowledge/shv/SOURCES.md`
+- title: SHV Source Lifecycle Contract
+- surface_type: contract surface
+- truth_role: owner-declared bounded SHV source lifecycle contract
+- owner: SHV maintainers
+- scope: Explicit source lineage, actual-byte capture provenance and graph replay.
+- relationships: depends_on -> `knowledge/shv/MANIFEST.md`
+- consumers: C++ engines, qxctl, validators and caller-selected tools
+- deferred_projections: protected activation, broad component mappings and durable vendor storage
+- notes: Pure 0.1.0-dev computations do not approve or activate a registry.
+- status: canonical
+
+#### SHV Source Lifecycle C++ Engine
+- path: `modules/shv-source-engine/SPEC.md`
+- title: SHV Source Lifecycle C++ Engine
+- surface_type: contract surface
+- truth_role: owner-declared bounded SHV source lifecycle contract
+- owner: SHV maintainers
+- scope: Explicit source lineage, actual-byte capture provenance and graph replay.
+- relationships: depends_on -> `knowledge/shv/MANIFEST.md`
+- consumers: C++ engines, qxctl, validators and caller-selected tools
+- deferred_projections: protected activation, broad component mappings and durable vendor storage
+- notes: Pure 0.1.0-dev computations do not approve or activate a registry.
+- status: canonical
+
+#### SHV Source Lifecycle Features
+- path: `modules/shv-source-engine/FEATURES.md`
+- title: SHV Source Lifecycle Features
+- surface_type: contract surface
+- truth_role: owner-declared bounded SHV source lifecycle contract
+- owner: SHV maintainers
+- scope: Explicit source lineage, actual-byte capture provenance and graph replay.
+- relationships: depends_on -> `knowledge/shv/MANIFEST.md`
+- consumers: C++ engines, qxctl, validators and caller-selected tools
+- deferred_projections: protected activation, broad component mappings and durable vendor storage
+- notes: Pure 0.1.0-dev computations do not approve or activate a registry.
+- status: canonical
+
+#### SHV Source Lifecycle Schema
+- path: `modules/shv-source-engine/schemas/v1/source.schema.json`
+- title: SHV Source Lifecycle Schema
+- surface_type: schema
+- truth_role: owner-declared bounded SHV source lifecycle contract
+- owner: SHV maintainers
+- scope: Explicit source lineage, actual-byte capture provenance and graph replay.
+- relationships: depends_on -> `knowledge/shv/MANIFEST.md`
+- consumers: C++ engines, qxctl, validators and caller-selected tools
+- deferred_projections: protected activation, broad component mappings and durable vendor storage
+- notes: Pure 0.1.0-dev computations do not approve or activate a registry.
+- status: canonical
+
+#### SHV Source Lifecycle Templates
+- path: `modules/shv-source-engine/schemas/v1/source.templates.json`
+- title: SHV Source Lifecycle Templates
+- surface_type: reference document
+- truth_role: owner-declared bounded SHV source lifecycle contract
+- owner: SHV maintainers
+- scope: Explicit source lineage, actual-byte capture provenance and graph replay.
+- relationships: depends_on -> `knowledge/shv/MANIFEST.md`
+- consumers: C++ engines, qxctl, validators and caller-selected tools
+- deferred_projections: protected activation, broad component mappings and durable vendor storage
+- notes: Pure 0.1.0-dev computations do not approve or activate a registry.
+- status: canonical

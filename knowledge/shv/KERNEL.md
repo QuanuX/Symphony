@@ -39,3 +39,7 @@ A future driver must declare its storage behavior, exact installation/descriptor
 Partitioning and resumable corpus lifecycle; mutable approved source-location registries and refresh history; broader manufacturer/form-factor sources; generic interpretation profiles beyond this finite HTML grammar; conflict/freshness/evidence policies; hardware relationship inference with explicit scope; measurements and active observations through their proper owners; vendor database drivers and durable indexes; and Composer consumption remain future increments. Existing SCV contracts provide reuse candidates without transferring ownership implicitly.
 
 The finite section selector is lowercase HTML tag followed by `#` and a literal nonempty ID, with exactly one `#`; this is not a CSS interpreter. Uniqueness binds the complete tag and ID pair. A different tag with the same ID does not match.
+
+## Component source lifecycle
+
+The independent `modules/shv-source-engine/` implements `SOURCES.md`: stable source identity, explicit relocation/authority-change plans, pure transition and finite history validation, actual-byte capture binding/comparison, and source-replayed provenance graphs through qxctl. These read-only operations do not activate a source registry or authenticate publisher authority. Core curation prioritizes original component/product identity and evidenced variants; user-selected source coverage remains extensible. Whole-system catalogue permutations, new component mappings, protected activation and durable vendor storage remain separate increments.
