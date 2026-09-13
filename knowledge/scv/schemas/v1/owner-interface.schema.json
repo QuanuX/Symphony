@@ -71,11 +71,13 @@
                     "artifact",
                     "schema",
                     "interface",
-                    "composition_workflow"
+                    "composition_workflow",
+                    "composition_bundle_workflow",
+                    "composition_bundle_obligation_link"
                   ]
                 },
                 "minItems": 0,
-                "maxItems": 5,
+                "maxItems": 8,
                 "uniqueItems": true
               },
               "companions": {
@@ -174,7 +176,8 @@
                   "handle_interpretation",
                   "handle_coverage",
                   "handle_pack",
-                  "handle_composition"
+                  "handle_composition",
+                  "handle_bundle"
                 ]
               },
               "artifact": {

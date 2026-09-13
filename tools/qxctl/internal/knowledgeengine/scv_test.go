@@ -124,7 +124,17 @@ func TestInstalledSCVRetainsExactOldAndNewOperationSets(t *testing.T) {
 	}
 
 	if ninth := os.Getenv("SYMPHONY_SCV_BUNDLE_PREFIX"); ninth != "" {
-		installations = append(installations, struct { prefix, version string; count int }{ninth,"0.9.0-dev",30})
+		installations = append(installations, struct {
+			prefix, version string
+			count           int
+		}{ninth, "0.9.0-dev", 30})
+	}
+
+	if tenth := os.Getenv("SYMPHONY_SCV_BUNDLE_WORKFLOW_PREFIX"); tenth != "" {
+		installations = append(installations, struct {
+			prefix, version string
+			count           int
+		}{tenth, "0.10.0-dev", 30})
 	}
 
 	for _, domain := range SCVDomains() {
@@ -150,7 +160,7 @@ func TestInstalledSCVRetainsExactOldAndNewOperationSets(t *testing.T) {
 }
 
 func TestSCVOperationVersionsAreExplicit(t *testing.T) {
-	for _, version := range []string{"latest", "0.10.0-dev", "", "0.1.0"} {
+	for _, version := range []string{"latest", "0.11.0-dev", "", "0.1.0"} {
 		if SCVOperationSupported(version, "inspect") {
 			t.Fatalf("unsupported exact version %s accepted", version)
 		}

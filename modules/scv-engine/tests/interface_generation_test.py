@@ -41,7 +41,7 @@ class InterfaceGeneration(unittest.TestCase):
 
     def test_historical_projection_is_frozen(self):
         gen.check_history(self.manifest, ROOT)
-        self.assertEqual([len(gen.projection(self.manifest, f"0.{n}.0-dev")["operations"]) for n in range(1, 10)], [13, 17, 20, 21, 22, 26, 26, 28, 30])
+        self.assertEqual([len(gen.projection(self.manifest, f"0.{n}.0-dev")["operations"]) for n in range(1, 11)], [13, 17, 20, 21, 22, 26, 26, 28, 30, 30])
         self.manifest["operations"][1]["output_protocol"] = "symphony.scv.changed.v1"
         with self.assertRaisesRegex(gen.Invalid, "frozen interface changed"):
             gen.check_history(self.manifest, ROOT)
@@ -49,16 +49,16 @@ class InterfaceGeneration(unittest.TestCase):
     def test_future_domain_does_not_change_old_admission_or_definition(self):
         original = copy.deepcopy(self.manifest)
         next_release = copy.deepcopy(self.manifest["releases"][-1])
-        next_release["version"] = "0.10.0-dev"
+        next_release["version"] = "0.11.0-dev"
         self.manifest["releases"].append(next_release)
-        self.manifest["current_release"] = "0.10.0-dev"
-        self.manifest["domains"].append({"name": "scev-new-provider", "introduced_in": "0.10.0-dev"})
+        self.manifest["current_release"] = "0.11.0-dev"
+        self.manifest["domains"].append({"name": "scev-new-provider", "introduced_in": "0.11.0-dev"})
         gen.validate(self.manifest)
         for release in original["releases"]:
             version = release["version"]
             self.assertEqual(gen.projection(original, version), gen.projection(self.manifest, version))
             self.assertEqual(gen.definition_digest(gen.release_manifest(original, version)), gen.definition_digest(gen.release_manifest(self.manifest, version)))
-        self.assertIn("scev-new-provider", gen.projection(self.manifest, "0.10.0-dev")["domains"])
+        self.assertIn("scev-new-provider", gen.projection(self.manifest, "0.11.0-dev")["domains"])
 
     def test_sixth_release_declaration_remains_exact(self):
         original = gen.read_json(ROOT / "modules/scv-engine/tests/fixtures/owner-interface-0.6.v1.json")
@@ -80,6 +80,14 @@ class InterfaceGeneration(unittest.TestCase):
         self.assertEqual(gen.release_manifest(self.manifest, "0.8.0-dev"), original)
         self.assertEqual(gen.projection(self.manifest, "0.8.0-dev"), gen.projection(original, "0.8.0-dev"))
 
+    def test_ninth_release_declaration_remains_exact(self):
+        original = gen.read_json(ROOT / "modules/scv-engine/tests/fixtures/owner-interface-0.9.v1.json")
+        self.assertEqual(original["current_release"], "0.9.0-dev")
+        self.assertEqual(gen.release_manifest(self.manifest, "0.9.0-dev"), original)
+        self.assertEqual(gen.projection(self.manifest, "0.9.0-dev"), gen.projection(original, "0.9.0-dev"))
+        self.assertNotIn("composition_bundle_workflow", gen.projection(self.manifest, "0.9.0-dev")["surfaces"])
+        self.assertIn("composition_bundle_workflow", gen.projection(self.manifest, "0.10.0-dev")["surfaces"])
+
     def test_complete_generation_is_deterministic(self):
         first = gen.render(self.manifest, self.root)
         self.assertEqual(first, gen.render(self.manifest, self.root))
@@ -100,7 +108,7 @@ class InterfaceGeneration(unittest.TestCase):
     def test_malformed_manifest_rejected(self):
         mutations = [
             lambda m: m.update(unknown=True),
-            lambda m: m.update(current_release="0.10.0-dev"),
+            lambda m: m.update(current_release="0.11.0-dev"),
             lambda m: m["domains"].append(copy.deepcopy(m["domains"][0])),
             lambda m: m["domains"][0].update(introduced_in="unknown"),
             lambda m: m["operations"].append(copy.deepcopy(m["operations"][0])),

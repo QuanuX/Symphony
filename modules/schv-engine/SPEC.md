@@ -109,3 +109,7 @@ Exact `0.8.0-dev` exposes 28 native operations, including replayed obligation in
 ## Exact Evidence Bundles
 
 Exact `0.9.0-dev` exposes 30 native operations. `knowledge/scv/BUNDLES.md` owns complete bounded evidence-reference transport, transport-only inspection and evaluation through the unchanged composition owner. qxctl exposes pack, inspect, evaluate and expanded-result routes, plus existing exact-owner artifact retention/show. Repeated evidence is stored once inside a complete bundle; reconstruction counts all logical occurrences before allocation. Caller requirements, provider selections and semantics remain unchanged. Eleven owner companions and 27 schemas expose 103 catalog protocols. Earlier exact packages and command defaults remain preserved.
+
+## Explicit Bundle Workflows
+
+Exact `0.10.0-dev` retains thirty native operations and adds qxctl bundle workflow run/status/recover and immutable bundled obligation retain/show. `knowledge/scv/BUNDLE-WORKFLOWS.md` owns the versioned coordination and logical-reference contracts. Separate v2 journals pin explicit transport, caller input and exact installation before work; original records preserve both native and transport identities. Status reports sealed checkpoint validation, while run/recovery and relationship inspection replay original owners. Twenty-nine schemas expose112 catalog protocols with twelve owner companions. Prior routes, defaults, records and packages remain preserved.

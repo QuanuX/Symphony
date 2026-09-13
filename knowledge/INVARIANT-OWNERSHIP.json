@@ -1074,11 +1074,41 @@
         },
         {
           "cases": [
+            "TestSCVBundledObligationLinkConcurrentIdenticalPublication",
+            "TestSCVBundledObligationLinkPreservesExplicitRequestAndOriginalOwners",
+            "TestSCVBundledObligationLinkRejectsPoisonedExistingPayload",
+            "TestSCVBundledObligationLinkRejectsResealedDescriptorAndCorrespondence"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_bundle_obligation_test.go"
+        },
+        {
+          "cases": [
             "TestInstalledSCVBundleRoutesPreserveValidReplacementAndSurrogatePair",
             "TestSCVBundleRawGuardPreservesValidUnicodeAndLegacyScope",
             "TestSCVBundleRoutesRejectRawSurrogateBeforeOwnerInvocation"
           ],
           "path": "tools/qxctl/cmd/qxctl/scv_bundle_test.go"
+        },
+        {
+          "cases": [
+            "TestInstalledSCVBundleWorkflowOriginalOwnersAndEveryDurableBoundary",
+            "TestSCVBundleWorkflowOutputEnvelopeKeepsDefaultBounds",
+            "TestSCVBundleWorkflowRejectsPoisonedImmutableReuse",
+            "TestSCVBundleWorkflowRejectsRawLegacyOwnerResultBeforeCheckpoint",
+            "TestSCVBundleWorkflowRejectsRawUnicodeAcrossRoutesAndLegacyReferences",
+            "TestSCVBundleWorkflowRejectsSubstitutionTransportAndOwnerDrift"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_bundle_workflow_test.go"
+        },
+        {
+          "cases": [
+            "TestSCVLogicalBundleInputPreservesSeparateBounds",
+            "TestSCVLogicalReferenceRejectsLegacyRawUnicode",
+            "TestSCVLogicalReferenceRejectsResealedBundleAttribution",
+            "TestSCVLogicalReferenceRequiresOriginalOwnerAndLogicalKind",
+            "TestSCVLogicalReferenceSeparatesEquivalentProvenance"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_logical_reference_test.go"
         },
         {
           "cases": [
@@ -1136,6 +1166,14 @@
             "TestSCVProfilePreparationConsumerRejectsSubstitution"
           ],
           "path": "tools/qxctl/internal/knowledgeengine/scv_profile_test.go"
+        },
+        {
+          "cases": [
+            "TestCompositionBundleWorkflowJournalRejectsOmittedNullAndReboundFields",
+            "TestCompositionBundleWorkflowRequestBoundsUnicodeAndIsolation",
+            "TestCompositionBundleWorkflowStorePinsProgressAndRejectsUnsafePaths"
+          ],
+          "path": "tools/qxctl/internal/scvworkflow/composition_v2_test.go"
         }
       ],
       "invariant_id": "invariant:symphony:scv.profile-connection-provenance",
@@ -1194,9 +1232,22 @@
         },
         {
           "cases": [
+            "TestSCVBundledObligationLinkRecoversBothPublicationBoundaries",
+            "TestSCVBundledObligationLinkRetainsMixedOriginalProvenance"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_bundle_obligation_test.go"
+        },
+        {
+          "cases": [
             "TestInstalledSCVBundlePackOutputRoundtripsAtFileBound"
           ],
           "path": "tools/qxctl/cmd/qxctl/scv_bundle_test.go"
+        },
+        {
+          "cases": [
+            "TestSCVBundleWorkflowRecoversEveryCompositionBoundary"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_bundle_workflow_test.go"
         }
       ],
       "real_process_regressions": [
@@ -1210,7 +1261,7 @@
           "path": "modules/scv-engine/tests/installed_integration.py"
         }
       ],
-      "statement": "The C++ interpretation owner validates exact sealed profiles and capture bindings, retains qualified extraction findings and replays wrapped interpretations before evaluating caller-defined subject/scope/type/unit checks. Reassessment replays both retained results and distinguishes changed inputs and affected findings. Missing, stale, disputed or conditional support cannot become unqualified runtime compatibility, provider-wide contradiction or authority. Recomputed outer digests do not bypass nested replay. Native profile preparation validates and seals exactly the authored draft without asserting source extraction or substituting fields. Portable provider packs preserve caller-authored declarations, exact profile and fixture expectations, detached-input identity, structured token provenance and explicit failed/unrun conformance. Finite recipe exploration and reassessment reconstruct selected evidence, requirements, allowed choices, enumeration bounds, interface declarations and obligations without ranking providers, silently relaxing requirements, or treating authored implementation metadata as observed compatibility. Native obligation inventory binds each precise check or other work subject to the full replayed composition. Follow-up replays both sides, preserves all non-time caller criteria and policy, reports query-time differences, and never credits an opaque reference with proof or causation. Non-check obligations remain separately unverified. Complete content-addressed transport bounds every expanded occurrence before allocation and reuses the exact composition owner; independent consumers reconstruct and replay semantics. Content hashes remain separate from native seals, historical installation identity and authority.",
+      "statement": "The C++ interpretation owner validates exact sealed profiles and capture bindings, retains qualified extraction findings and replays wrapped interpretations before evaluating caller-defined subject/scope/type/unit checks. Reassessment replays both retained results and distinguishes changed inputs and affected findings. Missing, stale, disputed or conditional support cannot become unqualified runtime compatibility, provider-wide contradiction or authority. Recomputed outer digests do not bypass nested replay. Native profile preparation validates and seals exactly the authored draft without asserting source extraction or substituting fields. Portable provider packs preserve caller-authored declarations, exact profile and fixture expectations, detached-input identity, structured token provenance and explicit failed/unrun conformance. Finite recipe exploration and reassessment reconstruct selected evidence, requirements, allowed choices, enumeration bounds, interface declarations and obligations without ranking providers, silently relaxing requirements, or treating authored implementation metadata as observed compatibility. Native obligation inventory binds each precise check or other work subject to the full replayed composition. Follow-up replays both sides, preserves all non-time caller criteria and policy, reports query-time differences, and never credits an opaque reference with proof or causation. Non-check obligations remain separately unverified. Complete content-addressed transport bounds every expanded occurrence before allocation and reuses the exact composition owner; independent consumers reconstruct and replay semantics. Content hashes remain separate from native seals, historical installation identity and authority. Explicit v2 coordination pins original record identities, exact owner and caller request before work. Direct and bundled results retain distinct logical and transport identities; checkpoint recovery reconstructs the requested input and immutable relationships verify their selected logical documents.",
       "status": "active",
       "title": "Profile and connection results preserve replayable scoped evidence"
     },
@@ -1324,6 +1375,7 @@
             "test_historical_projection_is_frozen",
             "test_malformed_catalog_and_references_rejected",
             "test_malformed_manifest_rejected",
+            "test_ninth_release_declaration_remains_exact",
             "test_seventh_release_declaration_remains_exact",
             "test_sixth_release_declaration_remains_exact"
           ],
@@ -1668,7 +1720,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v2",
-  "registry_digest": "sha256:dda088d288569f598f47f0bff44661f1b4f6b47d78ea3cf168d8bf6fe345414f",
+  "registry_digest": "sha256:c169adc95bf142a3a63a2f51b175f29b87367af1bd6ebe36d54e4fa9b4046537",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

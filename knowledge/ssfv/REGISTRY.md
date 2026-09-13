@@ -280,7 +280,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:19d3d9662e68e56e3d2dbc97c79250c7f0cb6907a97098013fc33dfc4875445b`
+- record_digest: `sha256:67e5ba8d3876ead118ac43881e77c40ef50d8c622cb8ab1922ec7c036239fb22`
 - notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
 
 - feature_id: `ssfv:symphony:qxctl.ssiag-administration`
@@ -397,7 +397,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/scev-cf-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:471d6812a56d964e82bc7f6469c8fdcaacf8be798c4e4873bcd71b7ac203c48d`
+- record_digest: `sha256:cd6d8bcec79cdfd5518f496be44ac9ba564c6eb3756b6fb3e66853a2d08ff8b8`
 - notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
 
 - feature_id: `ssfv:symphony:scev-engine`
@@ -406,7 +406,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/scev-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:ad5f2d6a187d95400393c825d46042c6f9bb088d1dd961579d2fc2d176461027`
+- record_digest: `sha256:d06609a20b5588e65bbc36fdae1963d6a05951f7b8cc62de62e02f3a3e5b3bce`
 - notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
 
 - feature_id: `ssfv:symphony:schv-aws-engine`
@@ -415,7 +415,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/schv-aws-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:c60e792c3582c8455b8b0f45448a899f9c2ad5231d042a9f05448476f34b8159`
+- record_digest: `sha256:36d2a5357044545837c2a77aa47f2c4eefb0c2aa2649626beff319e062440a22`
 - notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
 
 - feature_id: `ssfv:symphony:schv-azure-engine`
@@ -424,7 +424,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/schv-azure-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:b9d513b5de19bf51a299a2d6364fb5313fc5eaaa49aa2193998a96c3d263d696`
+- record_digest: `sha256:3d76e6ae9adbed7d1454b28c4e191416d5092c259e4b398d4280b1795228a19c`
 - notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
 
 - feature_id: `ssfv:symphony:schv-do-engine`
@@ -433,7 +433,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/schv-do-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:ca6dbdde7ffecaf32a6ee1e2f1798063907c1294ec7486aefb11acfefa683825`
+- record_digest: `sha256:498ab6a502a9d50193fd2b4aa5357b0f3af21461d529b925c3b5de6d2460b28f`
 - notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
 
 - feature_id: `ssfv:symphony:schv-engine`
@@ -442,7 +442,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/schv-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:15b04f365d4d1c08b74fc7e031642cc085d1001db9fc132b7874f12067c130f6`
+- record_digest: `sha256:f38cb4cc520913f912a06202a6648b36a573f34b221fdde49d9f0cecd1613bc6`
 - notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
 
 - feature_id: `ssfv:symphony:schv-gcp-engine`
@@ -451,7 +451,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/schv-gcp-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:78584615d8c4b86314f6ebc005a39edd36f1d41b1e580acf5f8402b17a3d2e38`
+- record_digest: `sha256:5c49332d6e0ae38ef8e49565428e5d098de48fe1c53711054e091d3ca1a7abae`
 - notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
 
 - feature_id: `ssfv:symphony:sclv-engine`
@@ -514,7 +514,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/scv-engine`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:860ef4f2aa0e58651891a14eec579d131434fc40879d1e017147e5b5306cef5f`
+- record_digest: `sha256:080787f1321ed67930528a511bb6fb420ef4af9c1c8b94f816280dd12641c86b`
 - notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
 
 - feature_id: `ssfv:symphony:sev-engine`

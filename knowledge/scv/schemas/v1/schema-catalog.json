@@ -1,6 +1,6 @@
 {
   "protocol": "symphony.scv.schema-catalog.v1",
-  "engine_version": "0.9.0-dev",
+  "engine_version": "0.10.0-dev",
   "entries": [
     {
       "protocol": "symphony.knowledge.engine-descriptor.v2",
@@ -115,8 +115,58 @@
       ]
     },
     {
+      "protocol": "symphony.qxctl.scv-composition-workflow-recover-input.v2",
+      "file": "scv-bundle-workflow.schema.json",
+      "fragment": "#/$defs/OperationInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "operation_id": null
+      },
+      "required_inputs": [
+        "Select explicit bundle transport, a stable operation ID and exact original record references. Keep all caller requirements and fixtures. Pack stages retain their original provider owner and one-MiB request limit. No owner or evidence substitution occurs."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-composition-workflow-request.v2",
+      "file": "scv-bundle-workflow.schema.json",
+      "fragment": "#/$defs/RunInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "operation_id": null,
+        "pack_evaluations": [],
+        "pack_evaluation_refs": [],
+        "interpretation_refs": [],
+        "knowledge_refs": [],
+        "composition": {
+          "query_time": null,
+          "requirements": [],
+          "slots": [],
+          "allowed_guarantee_changes": [],
+          "counterfactuals": [],
+          "bounds": {
+            "max_candidates": null
+          }
+        },
+        "prior_composition_ref": null,
+        "protocol": "symphony.qxctl.scv-composition-workflow-request.v2",
+        "transport": "bundle"
+      },
+      "required_inputs": [
+        "Select explicit bundle transport, a stable operation ID and exact original record references. Keep all caller requirements and fixtures. Pack stages retain their original provider owner and one-MiB request limit. No owner or evidence substitution occurs."
+      ]
+    },
+    {
       "protocol": "symphony.qxctl.scv-composition-workflow-result.v1",
       "file": "scv-composition-workflow.schema.json",
+      "fragment": "#/$defs/Result",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-composition-workflow-result.v2",
+      "file": "scv-bundle-workflow.schema.json",
       "fragment": "#/$defs/Result",
       "kind": "output",
       "operations": []
@@ -157,6 +207,13 @@
       "operations": []
     },
     {
+      "protocol": "symphony.qxctl.scv-composition-workflow-run.v2",
+      "file": "scv-bundle-workflow.schema.json",
+      "fragment": "#/$defs/Run",
+      "kind": "output",
+      "operations": []
+    },
+    {
       "protocol": "symphony.qxctl.scv-composition-workflow-status-input.v1",
       "file": "scv-composition-workflow.schema.json",
       "fragment": "#/$defs/OperationInput",
@@ -167,6 +224,19 @@
       },
       "required_inputs": [
         "Select exact retained artifact record digests, caller composition fields and a stable operation ID. pack_evaluations entries contain evaluation_id, pack_ref and evaluation with captures, bindings, selection_policy and fixtures. Each pack stage uses the original retained pack owner; references never authorize execution of evidence obligations."
+      ]
+    },
+    {
+      "protocol": "symphony.qxctl.scv-composition-workflow-status-input.v2",
+      "file": "scv-bundle-workflow.schema.json",
+      "fragment": "#/$defs/OperationInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "operation_id": null
+      },
+      "required_inputs": [
+        "Select explicit bundle transport, a stable operation ID and exact original record references. Keep all caller requirements and fixtures. Pack stages retain their original provider owner and one-MiB request limit. No owner or evidence substitution occurs."
       ]
     },
     {
@@ -290,6 +360,23 @@
       "operations": []
     },
     {
+      "protocol": "symphony.qxctl.scv-obligation-link-request.v2",
+      "file": "scv-bundle-obligation-link.schema.json",
+      "fragment": "#/$defs/RetainInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "protocol": "symphony.qxctl.scv-obligation-link-request.v2",
+        "transport": "bundle",
+        "before_ref": null,
+        "after_ref": null,
+        "submissions": []
+      },
+      "required_inputs": [
+        "Select exact original exploration records and caller-authored submissions. Both direct and bundled original records are explicitly admitted. References do not execute obligations or authenticate evidence."
+      ]
+    },
+    {
       "protocol": "symphony.qxctl.scv-obligation-link-result.v1",
       "file": "scv-obligation-link.schema.json",
       "fragment": "#/$defs/Result",
@@ -297,8 +384,35 @@
       "operations": []
     },
     {
+      "protocol": "symphony.qxctl.scv-obligation-link-result.v2",
+      "file": "scv-bundle-obligation-link.schema.json",
+      "fragment": "#/$defs/Result",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-obligation-link-show-input.v2",
+      "file": "scv-bundle-obligation-link.schema.json",
+      "fragment": "#/$defs/ShowInput",
+      "kind": "input",
+      "operations": [],
+      "template": {
+        "link_ref": null
+      },
+      "required_inputs": [
+        "Select exact original exploration records and caller-authored submissions. Both direct and bundled original records are explicitly admitted. References do not execute obligations or authenticate evidence."
+      ]
+    },
+    {
       "protocol": "symphony.qxctl.scv-obligation-link.v1",
       "file": "scv-obligation-link.schema.json",
+      "fragment": "#/$defs/Link",
+      "kind": "output",
+      "operations": []
+    },
+    {
+      "protocol": "symphony.qxctl.scv-obligation-link.v2",
+      "file": "scv-bundle-obligation-link.schema.json",
       "fragment": "#/$defs/Link",
       "kind": "output",
       "operations": []
@@ -523,12 +637,12 @@
         "operation": null,
         "owner": {
           "domain": null,
-          "version": "0.9.0-dev"
+          "version": "0.10.0-dev"
         },
         "bundle": null
       },
       "required_inputs": [
-        "Choose one existing composition operation and the exact installed .9 owner. Supply a complete typed evidence bundle; missing objects, altered content and exceeded reconstruction budgets fail explicitly."
+        "Choose one existing composition operation and exact installed .9 or .10 owner. Supply a complete bounded bundle; missing or altered objects fail explicitly."
       ]
     },
     {
@@ -731,12 +845,12 @@
         "operation": null,
         "owner": {
           "domain": null,
-          "version": "0.9.0-dev"
+          "version": "0.10.0-dev"
         },
         "bundle": null
       },
       "required_inputs": [
-        "Choose one existing composition operation and the exact installed .9 owner. Supply a complete typed evidence bundle; missing objects, altered content and exceeded reconstruction budgets fail explicitly."
+        "Choose one existing composition operation and exact installed .9 or .10 owner. Supply a complete bounded bundle; missing or altered objects fail explicitly."
       ]
     },
     {

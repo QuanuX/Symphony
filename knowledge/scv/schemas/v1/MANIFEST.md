@@ -3,6 +3,8 @@
 ## Canonical Surfaces
 
 - `knowledge/scv/schemas/v1/MANIFEST.md`
+- `knowledge/scv/schemas/v1/scv-bundle-workflow.schema.json`
+- `knowledge/scv/schemas/v1/scv-bundle-obligation-link.schema.json`
 - `knowledge/scv/schemas/v1/bundle.schema.json`
 - `knowledge/scv/schemas/v1/provider-coverage.schema.json`
 - `knowledge/scv/schemas/v1/interpretation-profile.schema.json`
@@ -66,3 +68,7 @@ Artifact admission, installation versions and schema discovery remain exact. Bou
 ## Exact Evidence Bundles
 
 `knowledge/scv/BUNDLES.md` owns `knowledge/scv/schemas/v1/bundle.schema.json`. The exact `.9` catalog contains 103 protocols in 27 schemas. Structural validity is supplemented by independent closure, digest, owner, expansion budget and native semantic checks. Existing artifact records admit the two new operation kinds without changing legacy input limits.
+
+## Explicit Bundle Workflows
+
+Exact `0.10.0-dev` retains thirty native operations and adds qxctl bundle workflow run/status/recover and immutable bundled obligation retain/show. `knowledge/scv/BUNDLE-WORKFLOWS.md` owns the versioned coordination and logical-reference contracts. Separate v2 journals pin explicit transport, caller input and exact installation before work; original records preserve both native and transport identities. Status reports sealed checkpoint validation, while run/recovery and relationship inspection replay original owners. Twenty-nine schemas expose112 catalog protocols with twelve owner companions. Prior routes, defaults, records and packages remain preserved.

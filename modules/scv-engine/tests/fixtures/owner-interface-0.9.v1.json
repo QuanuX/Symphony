@@ -1,6 +1,6 @@
 {
   "protocol": "symphony.scv.owner-interface.v1",
-  "current_release": "0.10.0-dev",
+  "current_release": "0.9.0-dev",
   "domains": [
     {
       "name": "scv",
@@ -264,48 +264,6 @@
         "knowledge/scv/COMPOSITION-WORKFLOWS.md@v1",
         "knowledge/scv/OBLIGATIONS.md@v1",
         "knowledge/scv/BUNDLES.md@v1"
-      ]
-    },
-    {
-      "version": "0.10.0-dev",
-      "surfaces": [
-        "corpus",
-        "workflow",
-        "artifact",
-        "schema",
-        "interface",
-        "composition_workflow",
-        "composition_bundle_workflow",
-        "composition_bundle_obligation_link"
-      ],
-      "companions": [
-        "SOURCE-KNOWLEDGE.md",
-        "CORPUS.md",
-        "INTERPRETATION.md",
-        "AGENT-WORKFLOWS.md",
-        "COVERAGE.md",
-        "PROVIDER-PACKS.md",
-        "COMPOSITION.md",
-        "OWNER-INTERFACE.md",
-        "COMPOSITION-WORKFLOWS.md",
-        "OBLIGATIONS.md",
-        "BUNDLES.md",
-        "BUNDLE-WORKFLOWS.md"
-      ],
-      "contract_versions": [
-        "knowledge/SPEC.md@v1",
-        "knowledge/scv/SOURCE-KNOWLEDGE.md@v1",
-        "knowledge/scv/CORPUS.md@v1",
-        "knowledge/scv/INTERPRETATION.md@v1",
-        "knowledge/scv/AGENT-WORKFLOWS.md@v1",
-        "knowledge/scv/COVERAGE.md@v1",
-        "knowledge/scv/PROVIDER-PACKS.md@v1",
-        "knowledge/scv/COMPOSITION.md@v1",
-        "knowledge/scv/OWNER-INTERFACE.md@v1",
-        "knowledge/scv/COMPOSITION-WORKFLOWS.md@v1",
-        "knowledge/scv/OBLIGATIONS.md@v1",
-        "knowledge/scv/BUNDLES.md@v1",
-        "knowledge/scv/BUNDLE-WORKFLOWS.md@v1"
       ]
     }
   ],

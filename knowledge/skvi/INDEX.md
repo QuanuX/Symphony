@@ -10892,3 +10892,42 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: private retained bundle evidence
 - notes: Transport content identity is distinct from native self-seals, installation receipts and runtime proof.
 - status: canonical
+
+#### SCV Explicit Bundle Workflow Contract
+- path: `knowledge/scv/BUNDLE-WORKFLOWS.md`
+- title: SCV Explicit Bundle Workflow Contract
+- surface_type: canonical contract companion
+- truth_role: explicit bounded evidence transport coordination and original semantic replay
+- owner: SCV and qxctl maintainers
+- scope: Versioned journals, immutable logical references, exact original owners, checkpoint recovery and fixed-problem obligation links.
+- relationships: depends_on -> `knowledge/scv/SPEC.md`
+- consumers: engines, qxctl, maintainers, agents, user-selected tools
+- deferred_projections: private retained workflow evidence
+- notes: Local record, native result, bundle self-seal and complete content identities remain distinct; none authenticates provenance.
+- status: canonical
+
+#### SCV Bundle Workflow Schema
+- path: `knowledge/scv/schemas/v1/scv-bundle-workflow.schema.json`
+- title: SCV Bundle Workflow Schema
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: explicit bounded evidence transport coordination and original semantic replay
+- owner: SCV and qxctl maintainers
+- scope: Versioned journals, immutable logical references, exact original owners, checkpoint recovery and fixed-problem obligation links.
+- relationships: depends_on -> `knowledge/scv/BUNDLE-WORKFLOWS.md`
+- consumers: engines, qxctl, maintainers, agents, user-selected tools
+- deferred_projections: private retained workflow evidence
+- notes: Local record, native result, bundle self-seal and complete content identities remain distinct; none authenticates provenance.
+- status: canonical
+
+#### SCV Bundle Obligation Link Schema
+- path: `knowledge/scv/schemas/v1/scv-bundle-obligation-link.schema.json`
+- title: SCV Bundle Obligation Link Schema
+- surface_type: JSON Schema Draft 2020-12 contract
+- truth_role: explicit bounded evidence transport coordination and original semantic replay
+- owner: SCV and qxctl maintainers
+- scope: Versioned journals, immutable logical references, exact original owners, checkpoint recovery and fixed-problem obligation links.
+- relationships: depends_on -> `knowledge/scv/BUNDLE-WORKFLOWS.md`
+- consumers: engines, qxctl, maintainers, agents, user-selected tools
+- deferred_projections: private retained workflow evidence
+- notes: Local record, native result, bundle self-seal and complete content identities remain distinct; none authenticates provenance.
+- status: canonical

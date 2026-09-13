@@ -523,7 +523,7 @@ func validateSCVBundleResult(operation string, input, result map[string]any) err
 		return fmt.Errorf("invalid bundle owner")
 	}
 	domain, ok := owner["domain"].(string)
-	if !ok || !scvCoverageAdmits(domain, domain) || owner["version"] != "0.9.0-dev" {
+	if !ok || !scvCoverageAdmits(domain, domain) || (owner["version"] != "0.9.0-dev" && owner["version"] != "0.10.0-dev") {
 		return fmt.Errorf("unsupported exact bundle owner")
 	}
 	if err = scvSeal(result, "digest"); err != nil {

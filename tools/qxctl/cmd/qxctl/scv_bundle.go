@@ -13,7 +13,7 @@ import (
 )
 
 func newSCVBundleCommand() *cobra.Command {
-	group := structural("bundle", fmt.Errorf("bundle subcommand is required: pack, inspect, evaluate, expand"))
+	group := structural("bundle", fmt.Errorf("bundle subcommand is required: pack, inspect, evaluate, expand, workflow, obligations"))
 	for _, leaf := range []string{"pack", "inspect", "evaluate", "expand"} {
 		options := scvOptions{}
 		command := &cobra.Command{Use: leaf, Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error { return runSCVBundle(leaf, options) }}
@@ -47,6 +47,7 @@ func newSCVBundleCommand() *cobra.Command {
 		}
 		group.AddCommand(command)
 	}
+	group.AddCommand(newSCVBundleWorkflowCommand(), newSCVBundleObligationsCommand())
 	return group
 }
 
