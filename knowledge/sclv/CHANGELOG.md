@@ -10467,3 +10467,98 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/knowledgeengine/shv_source.go`
   - `tools/qxctl/internal/knowledgeengine/shv_test.go`
   - `tools/qxctl/internal/knowledgeengine/shv_validation.go`
+
+---
+
+- record_id: `SCLV-CHG-20260913-SHV-SOURCE-LIFECYCLE`
+- record_version: `3`
+- title: `Deliver SHV component source lifecycle and exact capture provenance`
+- status: `canonical`
+- change_started_at: `2026-09-13T20:58:09Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV component source lifecycle continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-13-shv-source-lifecycle-continuation.md`
+- skvi_references:
+  - `knowledge/shv/SOURCES.md`
+  - `modules/shv-source-engine/SPEC.md`
+- change_summary: |
+    Adds an independently installed C++ source lifecycle engine with explicit revision plans/reductions, finite history validation, actual-byte capture import/comparison and replayable provenance graphs. Ten qxctl leaves expose eight native operations plus exact installed schema/template discovery.
+- relationship_changes: |
+    SHV owns component source semantics while shared Phase1 mechanics handle bounded process, paths, digests and receipts. Independent Go checks replay source/capture/graph correspondence; the existing generic graph adapter transports complete source-owner artifacts.
+- doctrine_changes: |
+    Default curation focuses on original components and sourced variants, with user-selected coverage and optional system knowledge. Pure candidate transitions neither approve nor activate a registry. Capability interpretation remains separate from source retention.
+- compatibility_consequences: |
+    New shv-source-engine0.1.0-dev package and additive qxctl routes preserve the exact original kernel, generic adapter and all SCV packages. C++ DuckDB remains the SQL default; no dedicated graph vendor is selected.
+- publication_consequences: |
+    Local source and append-only closure with independent rebuild comparison. No remote publication, deployment, authenticated vendor account or hardware mutation.
+- projection_consequences: |
+    Ten new qxctl leaves produce295 command identities. One new feature produces105 registered features with268 reviewed expectations and258 required surfaces. One source-lifecycle invariant and adapter produce25 and15 respectively. SKVI and the generated root summary are refreshed.
+- evidence:
+  - `../shv-02/evidence/FOCUSED_TESTS.json records70nativecases48rejections,14focusedGo groups and affected contract validation.`
+  - `../shv-02/evidence/intel/SUMMARY.json binds266713actualIntelresponsebytes, source/capture provenance, generic roundtrip and source replay; no hardware assertions extracted.`
+  - `../shv-02/evidence/PACKAGE_VERIFICATION.json verifies12ownedfiles and guarded uninstall preservation.`
+  - `../shv-02/evidence/SOURCE_BUILD_PARITY.json binds clean source and byte-identical CLI/package rebuilds.`
+  - `../shv-02/REVIEW.md resolves the independent path mismatch and records registration/schema corrections.`
+  - `../shv-02/MANIFEST.json and NEXT.md preserve scope, evidence and the remaining interpretation/activation/persistence backlog.`
+- non_authorizations:
+  - `Protected source activation, caller permission issuance, publisher authentication or automatic HTTP acquisition.`
+  - `Intel hardware table interpretation, rebrand equivalence inference, whole-system catalogue enumeration or physical Node observations.`
+  - `Hardware/provider/topology/tool selection for users or mandatory graph database choice.`
+  - `Remote publication, deployment, firmware modification or original archive edits.`
+- notes: |
+    This closes only SHV-02 immutable source lifecycle computations and qxctl administration. Successful normal ARK/HTTPS capture establishes a usable Intel route without diagnosing earlier403responses. Candidate prefixes remain distinct from the final verified package. Full suites remain milestone work; only changed code and affected boundaries were tested. Local source completion uses the established post_merge disposition without claiming a remote merge.
+- date: `2026-09-13`
+- change_completed_at: `2026-09-13T21:06:51Z`
+- recorded_at: `2026-09-13T21:09:54Z`
+- revision_value: `9a0ea3d08c938ca05dfcb993954245aa46c8d053`
+- tree_digest: `sha256:d1e3b9e085d6ef7001118204097acf3d3db5e2c05b4b92440826d6680ee3d366`
+- ratification_evidence_digest: `sha256:69d04c053c8a306ca18e225076abdea9fc1b8df6fc7d3b3f576dc49b7fa90837`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/shv/KERNEL.md`
+  - `knowledge/shv/MANIFEST.md`
+  - `knowledge/shv/SOURCES.md`
+  - `knowledge/shv/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/shv-source-engine/CMakeLists.txt`
+  - `modules/shv-source-engine/FEATURES.md`
+  - `modules/shv-source-engine/INSTALL.md`
+  - `modules/shv-source-engine/INTENT.md`
+  - `modules/shv-source-engine/MANIFEST.md`
+  - `modules/shv-source-engine/SKILL.md`
+  - `modules/shv-source-engine/SPEC.md`
+  - `modules/shv-source-engine/cmake/uninstall.cmake.in`
+  - `modules/shv-source-engine/schemas/v1/source.schema.json`
+  - `modules/shv-source-engine/schemas/v1/source.templates.json`
+  - `modules/shv-source-engine/scripts/build_schema.py`
+  - `modules/shv-source-engine/src/descriptor.cpp`
+  - `modules/shv-source-engine/src/main.cpp`
+  - `modules/shv-source-engine/src/source.cpp`
+  - `modules/shv-source-engine/src/source.hpp`
+  - `modules/shv-source-engine/tests/source_test.py`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv.go`
+  - `tools/qxctl/cmd/qxctl/shv_source.go`
+  - `tools/qxctl/cmd/qxctl/shv_source_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_lifecycle.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_lifecycle_descriptor.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_lifecycle_schema.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_lifecycle_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_lifecycle_validation.go`
