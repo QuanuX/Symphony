@@ -9842,3 +9842,86 @@ This PR authorizes none of the following:
   - `Native engine release, source acquisition, provider actions, remote publication, preserved artifact modification or SHV runtime.`
 - notes: |
     The post_merge disposition records completed local Git work and asserts no remote merge. This append follows the source commit and does not recursively record itself. Evidence paths are relative to the isolated source root. Performance evidence is a small Darwin x86_64 sample, not a universal speed guarantee; CLI resource reports include waited-child accounting. Focused validation is explicitly not fresh whole-system verification.
+
+---
+
+- record_id: `SCLV-CHG-20260913-SCV-SOURCE-MAINTENANCE`
+- record_version: `3`
+- title: `Preserve durable SCV audit correlations and verify provider-source maintenance`
+- status: `canonical`
+- date: `2026-09-13`
+- change_started_at: `2026-09-13T04:21:55Z`
+- change_completed_at: `2026-09-13T04:58:22Z`
+- recorded_at: `2026-09-13T05:00:51Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- revision_value: `f33cf7aecdc718b6569ddac66048ede0c7200b36`
+- tree_digest: `sha256:f11b0e8f92dc9f26a486a24c9689f6008486c2f48100c8087e882440f7cf7a33`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for the bounded SCV maintenance continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-13-scv-source-maintenance.md`
+- ratification_evidence_digest: `sha256:3483e5d2a2e3f1467066bf4be6e768c0659fc3bee6c545e82710b1ef432ed063`
+- affected_surfaces:
+  - `knowledge/scv/SOURCE-KNOWLEDGE.md`
+  - `tools/qxctl/cmd/qxctl/scv.go`
+  - `tools/qxctl/cmd/qxctl/scv_graph.go`
+  - `tools/qxctl/cmd/qxctl/scv_test.go`
+  - `tools/qxctl/internal/scvgraph/correlation_test.go`
+  - `tools/qxctl/internal/scvgraph/store.go`
+  - `tools/qxctl/internal/scvgraph/store_test.go`
+  - `tools/qxctl/internal/scvstate/correlation_test.go`
+  - `tools/qxctl/internal/scvstate/store.go`
+  - `tools/qxctl/tests/scv-source-maintenance/PACK-FIXTURES.md`
+  - `tools/qxctl/tests/scv-source-maintenance/README.md`
+  - `tools/qxctl/tests/scv-source-maintenance/fixtures/PROVENANCE.json`
+  - `tools/qxctl/tests/scv-source-maintenance/fixtures/fresh-capture.json`
+  - `tools/qxctl/tests/scv-source-maintenance/fixtures/insufficient-capture.json`
+  - `tools/qxctl/tests/scv-source-maintenance/fixtures/limits-profile.json`
+  - `tools/qxctl/tests/scv-source-maintenance/fixtures/old-capture.json`
+  - `tools/qxctl/tests/scv-source-maintenance/fixtures/old-package/pack.json`
+  - `tools/qxctl/tests/scv-source-maintenance/fixtures/old-package/prepare-input.json`
+  - `tools/qxctl/tests/scv-source-maintenance/fixtures/relocation-plan-input.json`
+  - `tools/qxctl/tests/scv-source-maintenance/fixtures/relocation-plan.json`
+  - `tools/qxctl/tests/scv-source-maintenance/verify_authority.py`
+  - `tools/qxctl/tests/scv-source-maintenance/verify_pack.py`
+  - `tools/qxctl/tests/scv-source-maintenance/verify_retention.py`
+  - `tools/qxctl/tests/scv-source-maintenance/verify_semantics.py`
+- skvi_references:
+  - `knowledge/scv/SOURCE-KNOWLEDGE.md`
+  - `knowledge/scv/CORPUS.md`
+  - `knowledge/scv/INTERPRETATION.md`
+  - `knowledge/scv/COMPOSITION.md`
+- change_summary: |
+    Real SSIAG/STAV execution exposed readable SCV operation IDs being passed into a UUID-only audit correlation field. Source and graph attempts now durably bind a separate random UUID before authorization and reuse it during recovery. Portable acceptance covers official source relocation, independent semantic mappings, matching provider packages, failed-refresh retention and caller-directed reassessment.
+- relationship_changes: |
+    Caller operation identity, native intent and installed owner remain exact. Per-attempt correlation joins the protected journal to SSIAG policy audit; request UUIDs stay fresh. Stale CAS, expiry and original-owner checks remain required. Candidate acquisition is explicitly linked by exact source digest to later protected adoption, not treated as its authority.
+- doctrine_changes: |
+    No provider preference, architecture rule or evidence-age policy is imposed universally. Requirements, providers, recipes, policy and execution remain caller-owned. HTTP success and matching text do not certify semantic sufficiency, publisher authenticity, runtime compatibility or deployment.
+- compatibility_consequences: |
+    Private source/graph stores write v2 with durable correlation fields. Exact v1 inspection and committed replay preserve bytes; pending legacy recovery adds required correlation before authorization without changing intent. Older qxctl readers reject migrated v2 stores. Native .10 operations, schemas, command routes and defaults remain unchanged; existing public attempt projections admit the retained journal field.
+- publication_consequences: |
+    Local source commit only, with byte-identical explicit source rebuild of qxctl-inc12-verified. Two bounded public documents acquired; real authority used new private TOPS namespaces and empty provider configurations. Owned processes are stopped. No provider action, remote publication, deployment or preserved artifact edit occurred.
+- projection_consequences: |
+    No command/schema/catalog projection change. A noncanonical maintenance manifest joins source, capture, corpus, mapping/package and composition evidence. SHV receives planning methodology only. Full SCV acceptance remains deferred to the gate before SHV runtime under the user-selected focused test cadence.
+- evidence:
+  - `../increment-12/evidence/SOURCE_BUILD_PARITY.json binds the clean source commit to a byte-identical rebuilt CLI; buildvcs=false avoids misleading dirty-checkout VCS metadata.`
+  - `../increment-12/evidence/FOCUSED_TESTS.json records 27 focused Go tests /44 passing events, zero failures/skips;49 offline qxctl calls include45 successes and4 expected rejections.`
+  - `../increment-12/evidence/AUTHORITY_REVIEW.json binds real SSIAG/STAV denial, qxctl exact grants, audit outage/recovery, stale-plan rejection, legacy pending recovery and verified process/socket cleanup.`
+  - `../increment-12/MAINTENANCE_MANIFEST.json verifies exact adopted-source/capture/package/corpus joins and retains all selected result identities; it is not an authority token.`
+  - `../increment-12/VERIFICATION.md distinguishes actual public retrieval, synthetic failed capture, simulated age queries, complete typed claim expectations, hypothetical recipes and deferred broad checks.`
+  - `../increment-12/REVIEW.md and ../../context/roadmap/2026-09-11-shv/SOURCE-MAINTENANCE-ADDENDUM-2026-09-13.md preserve independent review and bounded SHV planning transfer.`
+- non_authorizations:
+  - `Selecting caller requirements, providers, architecture, evidence policy, permissions or execution.`
+  - `Authenticating publisher continuity, certifying complete vendor coverage or proving deployed compatibility.`
+  - `Source-write STAV receipt, production supervision, distinct-user isolation or comprehensive graph backend acceptance.`
+  - `Remote publication, provider-account actions, full-suite validation, original archive edits or SHV runtime.`
+- notes: |
+    This post_merge disposition records completed local Git work and asserts no remote merge. Closure appends after its source commit and does not recursively record itself. Acquisition/offline evidence used the unchanged prior CLI; corrected real authority used the new CLI. Source-maintained authority harness received syntax/help checks after path-only portability transfer; its external equivalent executed the live campaign.
