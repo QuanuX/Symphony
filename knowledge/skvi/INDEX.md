@@ -11048,3 +11048,29 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: inspected invariant inventory
 - notes: Registration is separate from live receipt verification and execution authority.
 - status: canonical
+
+#### SCV Index Inventory and Transfer Planning
+- path: `knowledge/scv/INDEX-MAINTENANCE.md`
+- title: SCV Index Inventory and Transfer Planning
+- surface_type: contract surface
+- truth_role: owner-declared optional SCV graph-index contract
+- owner: SCV connector maintainers
+- scope: Revision-bound inventory and caller-selected transfer planning; no execution or retirement.
+- relationships: depends_on -> `modules/scv-graph-duckdb-connector/SPEC.md`
+- consumers: C++ connector, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: transfer execution and retirement
+- notes: Frozen v1 schemas and exact older installations remain preserved.
+- status: canonical
+
+#### SCV Graph Index v2 Schema
+- path: `modules/scv-graph-duckdb-connector/schemas/v2/graph-index.schema.json`
+- title: SCV Graph Index v2 Schema
+- surface_type: schema
+- truth_role: owner-declared optional SCV graph-index contract
+- owner: SCV connector maintainers
+- scope: Revision-bound inventory and caller-selected transfer planning; no execution or retirement.
+- relationships: depends_on -> `modules/scv-graph-duckdb-connector/SPEC.md`
+- consumers: C++ connector, qxctl, validator, maintainers, user-selected tools
+- deferred_projections: transfer execution and retirement
+- notes: Frozen v1 schemas and exact older installations remain preserved.
+- status: canonical

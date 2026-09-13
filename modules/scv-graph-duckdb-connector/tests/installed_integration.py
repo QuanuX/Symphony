@@ -31,6 +31,7 @@ def seal_valid(value):
 class Campaign:
     def __init__(self, args):
         self.args = args
+        self.connector_version = getattr(args, "connector_version", "0.1.0-dev")
         self.out = args.out.resolve()
         self.out.mkdir(parents=True, exist_ok=False, mode=0o700)
         self.root = self.out / "index"
@@ -78,7 +79,7 @@ class Campaign:
     def qx(self, name, leaf, value=None, *, namespace=None, tops=None, root=None, owner=None, ok=True):
         command = [str(self.args.qxctl.resolve()), "scv", "graph-index", leaf,
                    "--connector-prefix", str(self.args.connector_prefix.resolve()),
-                   "--connector-version", "0.1.0-dev", "--json"]
+                   "--connector-version", self.connector_version, "--json"]
         if leaf != "inspect":
             command += ["--index-root", str(root or self.root), "--tops-id", tops or self.tops,
                         "--namespace", namespace or self.namespace]
@@ -198,6 +199,7 @@ class Campaign:
 
 def main():
     p = argparse.ArgumentParser()
+    p.add_argument("--connector-version", default="0.1.0-dev", choices=["0.1.0-dev", "0.2.0-dev"])
     p.add_argument("--qxctl", type=Path, required=True)
     p.add_argument("--connector-prefix", type=Path, required=True)
     p.add_argument("--owner-prefix", type=Path, required=True)

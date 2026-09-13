@@ -12,7 +12,12 @@ import (
 	stavprotocol "github.com/QuanuX/Symphony/libraries/stav-protocol-go"
 )
 
-const SCVGraphIndexConnectorVersion = "0.1.0-dev"
+const SCVGraphIndexConnectorVersion = "0.1.0-dev" // Frozen legacy release.
+const SCVGraphIndexPlanningVersion = "0.2.0-dev"
+
+func SCVGraphIndexVersionSupported(version string) bool {
+	return version == SCVGraphIndexConnectorVersion || version == SCVGraphIndexPlanningVersion
+}
 
 var scvGraphIndexConnectorSpec = engineSpec{
 	label: "scv-graph-duckdb-connector", moduleID: "scv-graph-duckdb-connector",
@@ -23,7 +28,7 @@ var scvGraphIndexConnectorSpec = engineSpec{
 // InspectSCVGraphIndexConnector selects one explicit optional backend and exact
 // receipt-owned executable. It never discovers or chooses a default database.
 func InspectSCVGraphIndexConnector(backend, prefix, version string) (Installation, error) {
-	if backend != "duckdb" || version != SCVGraphIndexConnectorVersion || prefix == "" {
+	if backend != "duckdb" || !SCVGraphIndexVersionSupported(version) || prefix == "" {
 		return Installation{}, fmt.Errorf("graph index requires explicit duckdb backend, connector prefix and exact supported version")
 	}
 	s := scvGraphIndexConnectorSpec
@@ -44,9 +49,12 @@ func InspectSCVGraphIndexConnector(backend, prefix, version string) (Installatio
 
 func InvokeSCVGraphIndexConnector(ctx context.Context, backend, prefix, version, cwd, operation string, payload []byte) (Response, error) {
 	switch operation {
-	case "inspect", "prepare", "commit", "status", "query", "export":
+	case "inspect", "prepare", "commit", "status", "query", "export", "inventory", "transfer_plan":
 	default:
 		return Response{}, fmt.Errorf("unsupported graph connector operation")
+	}
+	if (operation == "inventory" || operation == "transfer_plan") && version != SCVGraphIndexPlanningVersion {
+		return Response{}, fmt.Errorf("inventory/planning requires exact connector 0.2.0-dev")
 	}
 	if err := ValidateSCVBundleText(payload); err != nil {
 		return Response{}, err
@@ -62,7 +70,21 @@ func InvokeSCVGraphIndexConnector(ctx context.Context, backend, prefix, version,
 	if err := ValidateSCVGraphIndexResult(operation, payload, response.Result); err != nil {
 		return Response{}, err
 	}
-	if operation != "inspect" {
+	if operation == "transfer_plan" {
+		value, _ := scvObject(response.Result)
+		input := value["input"].(map[string]any)
+		selected, err := graphIndexInstallation(input["source_connector"], true)
+		if err != nil || selected != installed {
+			return Response{}, fmt.Errorf("transfer plan changed exact source reader")
+		}
+	}
+	if operation == "inspect" {
+		value, _ := scvObject(response.Result)
+		if value["engine_version"] != version {
+			return Response{}, fmt.Errorf("descriptor changed selected version")
+		}
+	}
+	if operation != "inspect" && operation != "inventory" && operation != "transfer_plan" {
 		ref, err := SCVGraphIndexReference(response.Result)
 		if err != nil || ref.Connector != installed {
 			return Response{}, fmt.Errorf("graph index snapshot binds another connector installation")
@@ -151,7 +173,7 @@ func graphIndexInstallation(value any, connector bool) (Installation, error) {
 	}
 	if connector {
 		s := scvGraphIndexConnectorSpec
-		if inst.Role != s.moduleID || inst.ModuleID != s.moduleID || inst.EngineID != s.engineID || inst.Version != SCVGraphIndexConnectorVersion {
+		if inst.Role != s.moduleID || inst.ModuleID != s.moduleID || inst.EngineID != s.engineID || !SCVGraphIndexVersionSupported(inst.Version) {
 			return Installation{}, fmt.Errorf("graph index connector identity mismatch")
 		}
 	} else if !SCVDomainSupported(inst.Version, inst.Role) || inst.ModuleID != inst.Role+"-engine" || inst.EngineID != "symphony-"+inst.Role {
@@ -340,6 +362,9 @@ func ValidateSCVGraphIndexResult(operation string, input, raw []byte) error {
 	}
 	if operation == "inspect" {
 		return graphIndexDescriptor(payload, result)
+	}
+	if operation == "inventory" || operation == "transfer_plan" {
+		return validateGraphIndexMaintenance(operation, payload, result)
 	}
 	if !graphIndexScope(payload) || result["backend"] != "duckdb" {
 		return fmt.Errorf("graph index namespace/backend mismatch")
@@ -555,7 +580,7 @@ func graphIndexDescriptor(input, result map[string]any) error {
 		return err
 	}
 	s := scvGraphIndexConnectorSpec
-	if result["module_id"] != s.moduleID || result["engine_id"] != s.engineID || result["vector_id"] != "scv" || result["engine_version"] != SCVGraphIndexConnectorVersion {
+	if result["module_id"] != s.moduleID || result["engine_id"] != s.engineID || result["vector_id"] != "scv" || !SCVGraphIndexVersionSupported(fmt.Sprint(result["engine_version"])) {
 		return fmt.Errorf("graph connector descriptor identity mismatch")
 	}
 
@@ -569,7 +594,11 @@ func graphIndexDescriptor(input, result map[string]any) error {
 		}
 	}
 	ops, ok := result["operations"].([]any)
-	if !ok || len(ops) != 6 {
+	expectedOps := 6
+	if result["engine_version"] == SCVGraphIndexPlanningVersion {
+		expectedOps = 8
+	}
+	if !ok || len(ops) != expectedOps {
 		return fmt.Errorf("graph connector descriptor operation count mismatch")
 	}
 	seen := map[string]bool{}
@@ -584,17 +613,25 @@ func graphIndexDescriptor(input, result map[string]any) error {
 		}
 		switch name {
 		case "inspect", "prepare", "commit", "status", "query", "export":
+		case "inventory", "transfer_plan":
+			if expectedOps != 8 {
+				return fmt.Errorf("legacy descriptor added a planning operation")
+			}
 		default:
 			return fmt.Errorf("unknown graph connector operation")
 		}
-		if m["engine_operation_id"] != "engop:symphony:scv.graph-index."+name {
+		operationKey := name
+		if name == "transfer_plan" {
+			operationKey = "transfer.plan"
+		}
+		if m["engine_operation_id"] != "engop:symphony:scv.graph-index."+operationKey {
 			return fmt.Errorf("graph connector backend operation identity mismatch")
 		}
 
 		if !graphIndexFields(m, "engine_operation_id", "operation_name", "availability", "feature_ids", "administrative_interactions", "administration_disposition", "input_protocol", "output_protocol", "mutability", "idempotency", "expected_state_required", "authorization_requirement", "recovery_operation_id", "direct_invocation", "thermal_path") {
 			return fmt.Errorf("graph connector operation has missing or unknown fields")
 		}
-		interactions := map[string][]string{"inspect": {"inspect"}, "prepare": {"invoke"}, "commit": {"invoke", "recover"}, "status": {"inspect", "recover"}, "query": {"query"}, "export": {"query"}}[name]
+		interactions := map[string][]string{"inspect": {"inspect"}, "prepare": {"invoke"}, "commit": {"invoke", "recover"}, "status": {"inspect", "recover"}, "query": {"query"}, "export": {"query"}, "inventory": {"query"}, "transfer_plan": {"query"}}[name]
 		output := "symphony.scv.graph-index-status.v1"
 		if name == "inspect" {
 			output = result["protocol"].(string)
@@ -602,6 +639,12 @@ func graphIndexDescriptor(input, result map[string]any) error {
 			output = "symphony.scv.graph-index-query.v1"
 		} else if name == "export" {
 			output = "symphony.scv.graph-index-export.v1"
+		}
+		if name == "inventory" {
+			output = "symphony.scv.graph-index-inventory.v1"
+		}
+		if name == "transfer_plan" {
+			output = "symphony.scv.graph-index-transfer-plan.v1"
 		}
 		mutability := "evidence_only"
 		if name == "inspect" {
@@ -612,7 +655,7 @@ func graphIndexDescriptor(input, result map[string]any) error {
 				return fmt.Errorf("graph connector operation changed %s", key)
 			}
 		}
-		if !scvEqual(m["expected_state_required"], name == "commit") {
+		if !scvEqual(m["expected_state_required"], name == "commit" || name == "transfer_plan") {
 			return fmt.Errorf("graph connector expected-state declaration mismatch")
 		}
 		seen[name] = true

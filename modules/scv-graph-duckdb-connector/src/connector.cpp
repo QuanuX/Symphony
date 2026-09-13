@@ -61,7 +61,7 @@ void installation(const Json& value, bool connector) {
     }
     static_cast<void>(digest(value.at("ReceiptDigest"))); static_cast<void>(digest(value.at("ExecutableDigest")));
     require(value.at("ReceiptProtocol") == "symphony.knowledge.install-receipt.v2", "receipt protocol differs");
-    if (connector) require(value.at("Role") == "scv-graph-duckdb-connector" && value.at("ModuleID") == "scv-graph-duckdb-connector" && value.at("EngineID") == engine_id && value.at("Version") == version, "connector identity differs");
+    if (connector) require(value.at("Role") == "scv-graph-duckdb-connector" && value.at("ModuleID") == "scv-graph-duckdb-connector" && value.at("EngineID") == engine_id && (value.at("Version") == "0.1.0-dev" || value.at("Version") == "0.2.0-dev"), "connector identity differs");
     else {
         const std::set<std::string> domains={"scv","schv","scev","schv-aws","schv-azure","schv-do","schv-gcp","scev-cf"};
         const std::set<std::string> versions={"0.1.0-dev","0.2.0-dev","0.3.0-dev","0.4.0-dev","0.5.0-dev","0.6.0-dev","0.7.0-dev","0.8.0-dev","0.9.0-dev","0.10.0-dev"};
@@ -265,10 +265,103 @@ Json status_result(Database& db,const Json& intent,const std::string& state) {
     if(state=="committed") { auto actual=get_snapshot(db,Json{{"tops_id",snapshot.at("tops_id")},{"namespace",snapshot.at("namespace")},{"snapshot_digest",snapshot.at("digest")}}); require(actual==snapshot,"committed snapshot differs"); verify_rows(db,snapshot,projected); }
     return seal(Json{{"protocol","symphony.scv.graph-index-status.v1"},{"backend","duckdb"},{"intent",intent},{"state",state},{"snapshot_digest",snapshot.at("digest")},{"projection_digest",engine::tagged_sha256(projected.dump())},{"counts",counts(projected)},{"index_verified",state=="committed"}});
 }
+struct Inventory final { Json manifest; std::map<std::string,Json> records; };
+Json summary(const Json& status) {
+    const auto& intent=status.at("intent"); const auto& snapshot=intent.at("snapshot");
+    return {{"operation_id",intent.at("operation_id")},{"intent_digest",intent.at("digest")},{"snapshot_digest",snapshot.at("digest")},
+        {"state",status.at("state")},{"graph_digest",snapshot.at("graph").at("digest")},{"owner",snapshot.at("owner")},
+        {"connector",snapshot.at("connector")},{"validation_query_time",intent.at("validation_query_time")},
+        {"counts",status.at("counts")},{"projection_digest",status.at("projection_digest")}};
+}
+Inventory read_inventory(Database& db,const Json& input) {
+    Inventory out; Json global=Json::array(), entries=Json::array();
+    auto all=db.query("SELECT tops_id,namespace,operation_id FROM intents ORDER BY tops_id,namespace,operation_id LIMIT 129");
+    require(all->size()<=128,"intent capacity exceeded");
+    std::map<std::string,Json> published; std::map<std::string,Json> references;
+    for(std::size_t i=0;i<all->size();++i) {
+        Json key={{"tops_id",all->string(i,0)},{"namespace",all->string(i,1)},{"operation_id",all->string(i,2)}};
+        std::string state; auto intent=get_intent(db,key,state); auto status=status_result(db,intent,state);
+        auto row=summary(status); global.push_back(Json{{"scope",key},{"intent_digest",intent.at("digest")},{"state",state}});
+        const auto& snapshot=intent.at("snapshot");
+        if(state=="committed") published.emplace(Json::array({key.at("tops_id"),key.at("namespace"),snapshot.at("digest")}).dump(),snapshot);
+        if(key.at("tops_id")==input.at("tops_id") && key.at("namespace")==input.at("namespace")) {
+            entries.push_back(row); out.records.emplace(text(key.at("operation_id")),status);
+            const auto sd=text(snapshot.at("digest"));
+            if(!references.contains(sd)) references.emplace(sd,Json{{"snapshot_digest",sd},{"operation_ids",Json::array()},{"committed_operations",0}});
+            auto& ref=references.at(sd); ref["operation_ids"].push_back(key.at("operation_id"));
+            if(state=="committed") ref["committed_operations"]=ref.at("committed_operations").get<unsigned>()+1;
+        }
+    }
+    auto snapshots=db.query("SELECT tops_id,namespace,snapshot_digest FROM snapshots ORDER BY tops_id,namespace,snapshot_digest LIMIT 129");
+    require(snapshots->size()==published.size() && snapshots->size()<=128,"orphan or missing snapshot inventory");
+    Json snapshot_keys=Json::array();
+    for(std::size_t i=0;i<snapshots->size();++i) {
+        auto key=Json::array({snapshots->string(i,0),snapshots->string(i,1),snapshots->string(i,2)});
+        require(published.contains(key.dump()),"snapshot has no committed intent"); snapshot_keys.push_back(key);
+    }
+    // Every published row belongs to an exact verified snapshot. Extra rows in
+    // another scope must not disappear behind a namespace-filtered inventory.
+    for(const auto* kind:{"claims","nodes","edges"}) {
+        std::size_t expected=0;
+        for(const auto& [key,snapshot]:published) { static_cast<void>(key); expected+=projection(snapshot.at("graph")).at(kind).size(); }
+        auto actual=db.query(std::string("SELECT CAST(count(*) AS VARCHAR) FROM ")+kind);
+        require(actual->size()==1 && actual->string(0,0)==std::to_string(expected),"orphan projection rows in inventory");
+    }
+    Json refs=Json::array(); for(const auto& [key,value]:references) { static_cast<void>(key); refs.push_back(value); }
+    out.manifest=seal(Json{{"protocol","symphony.scv.graph-index-inventory-manifest.v1"},{"tops_id",input.at("tops_id")},{"namespace",input.at("namespace")},
+        {"entries",entries},{"snapshots",refs},{"global_revision",engine::tagged_sha256(Json{{"intents",global},{"snapshots",snapshot_keys}}.dump())},
+        {"global_counts",{{"intents",all->size()},{"snapshots",snapshots->size()}}},{"capacity",{{"intents",128},{"snapshots",128}}}});
+    return out;
+}
+void expected_revision(const Json& input,const Inventory& inventory,bool required) {
+    const auto& expected=input.at("expected_revision");
+    require(!required || !expected.is_null(),"expected inventory revision required");
+    if(!expected.is_null()) require(digest(expected)==text(inventory.manifest.at("digest")),"inventory revision changed");
+}
+Json inventory(const engine::Request& request) {
+    const auto& input=request.payload; fields(input,{"tops_id","namespace","expected_revision","cursor","limit"}); scope(input);
+    require(input.at("limit").is_number_integer() && input.at("limit")>=1 && input.at("limit")<=16,"inventory page limit outside bound"); const auto limit=input.at("limit").get<int>();
+    Database db(request,false); db.begin(); auto value=read_inventory(db,input); expected_revision(input,value,false);
+    std::string after;
+    if(!input.at("cursor").is_null()) { const auto& cursor=input.at("cursor"); fields(cursor,{"revision","after_operation_id"});
+        require(digest(cursor.at("revision"))==text(value.manifest.at("digest")),"inventory cursor revision changed"); after=operation_id(cursor.at("after_operation_id")); require(value.records.contains(after),"inventory cursor operation absent"); }
+    Json rows=Json::array(), next=nullptr; auto it=after.empty()?value.records.begin():value.records.upper_bound(after);
+    for(int n=0;n<limit && it!=value.records.end();++n,++it) rows.push_back(it->second);
+    if(it!=value.records.end() && !rows.empty()) next={{"revision",value.manifest.at("digest")},{"after_operation_id",rows.back().at("intent").at("operation_id")}};
+    struct stat database{},wal{}; require(::fstatat(db.root.fd,"index.duckdb",&database,AT_SYMLINK_NOFOLLOW)==0,"database size unavailable");
+    auto wal_bytes=::fstatat(db.root.fd,"index.duckdb.wal",&wal,AT_SYMLINK_NOFOLLOW)==0?wal.st_size:0;
+    auto result=seal(Json{{"protocol","symphony.scv.graph-index-inventory.v1"},{"backend","duckdb"},{"input",input},{"manifest",value.manifest},{"records",rows},{"next_cursor",next},
+        {"physical_bytes",{{"database",database.st_size},{"wal",wal_bytes}}}}); db.commit(); return result;
+}
+Json transfer_plan(const engine::Request& request) {
+    const auto& input=request.payload; fields(input,{"tops_id","namespace","expected_revision","operation_ids","source_connector","target_connector","target_root","capacity"}); scope(input);
+    installation(input.at("source_connector"),true); installation(input.at("target_connector"),true);
+    require(input.at("source_connector").at("Version")==version,"source reader release differs");
+    const auto root=text(input.at("target_root"),4096); require(root.starts_with('/') && root!="/" && std::filesystem::path(root).lexically_normal().string()==root && !root.ends_with('/'),"target root must be clean absolute");
+    fields(input.at("capacity"),{"intents","snapshots"}); for(const auto* key:{"intents","snapshots"}) require(input.at("capacity").at(key).is_number_integer() && input.at("capacity").at(key)>=0 && input.at("capacity").at(key)<=128,"caller capacity outside installed profile");
+    const auto& ids=input.at("operation_ids"); require(ids.is_array() && !ids.empty() && ids.size()<=16,"select 1..16 operation IDs"); std::set<std::string> selected_ids;
+    for(const auto& id:ids) require(selected_ids.insert(operation_id(id)).second,"duplicate selected operation ID");
+    Database db(request,false); db.begin(); auto value=read_inventory(db,input); expected_revision(input,value,true);
+    Json selected=Json::array(), excluded=Json::array(), blockers=Json::array(); std::set<std::string> target_snapshots;
+    for(const auto& id:ids) {
+        require(value.records.contains(text(id)),"selected operation absent"); const auto& source=value.records.at(text(id));
+        auto target_intent=source.at("intent"); auto target_snapshot=target_intent.at("snapshot"); target_snapshot.erase("digest"); target_snapshot["connector"]=input.at("target_connector"); target_snapshot=seal(target_snapshot);
+        target_intent.erase("digest"); target_intent["snapshot"]=target_snapshot; target_intent=seal(target_intent);
+        selected.push_back(Json{{"source",source},{"target_snapshot_digest",target_snapshot.at("digest")},{"target_intent_digest",target_intent.at("digest")}});
+        if(source.at("state")=="committed") target_snapshots.insert(text(target_snapshot.at("digest")));
+    }
+    for(const auto& [id,record]:value.records) { static_cast<void>(record); if(!selected_ids.contains(id)) excluded.push_back(id); }
+    if(ids.size()>input.at("capacity").at("intents").get<unsigned>()) blockers.push_back("intent_capacity");
+    if(target_snapshots.size()>input.at("capacity").at("snapshots").get<unsigned>()) blockers.push_back("snapshot_capacity");
+    auto result=seal(Json{{"protocol","symphony.scv.graph-index-transfer-plan.v1"},{"backend","duckdb"},{"input",input},{"manifest",value.manifest},{"selected",selected},{"excluded_operation_ids",excluded},
+        {"requirements",{{"intents",ids.size()},{"snapshots",target_snapshots.size()}}},{"blockers",blockers},{"disposition",blockers.empty()?"ready":"blocked"}});
+    db.commit(); return result;
+}
+
 Json prepare(const engine::Request& request) {
     const auto& input=request.payload; fields(input,{"tops_id","namespace","operation_id","graph","owner","connector","query_time"}); scope(input); static_cast<void>(operation_id(input.at("operation_id")));
     Json snapshot=seal(Json{{"protocol","symphony.scv.graph-index-snapshot.v1"},{"backend","duckdb"},{"mapping_version","1"},{"tops_id",input.at("tops_id")},{"namespace",input.at("namespace")},{"graph",input.at("graph")},{"owner",input.at("owner")},{"connector",input.at("connector")}});
-    Json intent=seal(Json{{"protocol","symphony.scv.graph-index-intent.v1"},{"operation_id",input.at("operation_id")},{"snapshot",snapshot},{"validation_query_time",input.at("query_time")}}); validate_intent(intent);
+    Json intent=seal(Json{{"protocol","symphony.scv.graph-index-intent.v1"},{"operation_id",input.at("operation_id")},{"snapshot",snapshot},{"validation_query_time",input.at("query_time")}}); validate_intent(intent); require(input.at("connector").at("Version")==version,"prepare requires current exact connector release");
     Database db(request,true); db.begin(); auto parameters=identity(input); parameters.push_back(text(input.at("operation_id")));
     auto existing=db.query("SELECT operation_id FROM intents WHERE tops_id=? AND namespace=? AND operation_id=? LIMIT 2",parameters);
     if(existing->size()!=0) { std::string state; auto saved=get_intent(db,input,state); require(saved==intent,"operation identifier conflict"); auto result=status_result(db,saved,state); db.commit(); return result; }
@@ -338,17 +431,21 @@ Json queried(const engine::Request& request) {
 }
 Json descriptor() {
     std::vector<engine::OperationSpec> operations;
-    for(const auto* name:{"inspect","prepare","commit","status","query","export"}) {
+    for(const auto* name:{"inspect","prepare","commit","status","query","export","inventory","transfer_plan"}) {
         std::string output=name==std::string("inspect")?engine::descriptor_protocol_v2:name==std::string("query")?"symphony.scv.graph-index-query.v1":name==std::string("export")?"symphony.scv.graph-index-export.v1":"symphony.scv.graph-index-status.v1";
-        operations.push_back({std::string("engop:symphony:scv.graph-index.")+name,name,"implemented",false,true,{"ssfv:symphony:scv-graph-duckdb-connector"},{name==std::string("inspect")?"inspect":name==std::string("prepare")?"invoke":name==std::string("commit")?"invoke":"query"},"qxctl_required",std::string("symphony.scv.graph-index-")+name+"-input.v1",output,name==std::string("inspect")?"read_only":"evidence_only","idempotent",false,"none","","supported","freezing"});
+        if(name==std::string("inventory")) output="symphony.scv.graph-index-inventory.v1";
+        if(name==std::string("transfer_plan")) output="symphony.scv.graph-index-transfer-plan.v1";
+        operations.push_back({std::string("engop:symphony:scv.graph-index.")+(name==std::string("transfer_plan")?"transfer.plan":name),name,"implemented",false,true,{"ssfv:symphony:scv-graph-duckdb-connector"},{name==std::string("inspect")?"inspect":name==std::string("prepare")?"invoke":name==std::string("commit")?"invoke":"query"},"qxctl_required",std::string("symphony.scv.graph-index-")+name+"-input.v1",output,name==std::string("inspect")?"read_only":"evidence_only","idempotent",false,"none","","supported","freezing"});
     }
-    for (auto& op : operations) { if (op.operation_name == "commit") { op.administrative_interactions = {"invoke","recover"}; op.expected_state_required = true; } if (op.operation_name == "status") op.administrative_interactions = {"inspect","recover"}; }
+    for (auto& op : operations) { if ((op.operation_name == "commit" || op.operation_name == "transfer_plan")) { if(op.operation_name == "commit") op.administrative_interactions = {"invoke","recover"}; op.expected_state_required = true; } if (op.operation_name == "status") op.administrative_interactions = {"inspect","recover"}; }
     engine::validate_operation_specs(operations);
-    return seal(Json{{"protocol",engine::descriptor_protocol_v2},{"format_version",2},{"module_id","scv-graph-duckdb-connector"},{"engine_id",engine_id},{"vector_id","scv"},{"engine_version",version},{"process_protocols",Json::array({engine::process_protocol_v1})},{"contract_versions",Json::array({"knowledge/SPEC.md@v1","scv-graph-duckdb-connector/SPEC.md@v1","scv-graph-duckdb-connector/DUCKDB-PROVENANCE.json@1.5.5"})},{"operations",engine::administration_operation_descriptors(operations)},{"limits",{{"request_bytes",engine::Limits::max_request_bytes},{"response_bytes",engine::Limits::max_response_bytes},{"json_depth",engine::Limits::max_json_depth},{"json_values",engine::Limits::max_json_values},{"path_bytes",engine::Limits::max_path_bytes},{"snapshot_files",engine::Limits::max_snapshot_files},{"snapshot_file_bytes",engine::Limits::max_snapshot_file_bytes},{"deadline_ahead_ms",engine::Limits::max_deadline_ahead_ms}}},{"supported_scopes",Json::array({"tops"})},{"language","C++26"},{"thermal_path","freezing"},{"canonical_apply_enabled",false},{"session_mutation_enabled",false},{"network_listener",false}},"descriptor_digest");
+    return seal(Json{{"protocol",engine::descriptor_protocol_v2},{"format_version",2},{"module_id","scv-graph-duckdb-connector"},{"engine_id",engine_id},{"vector_id","scv"},{"engine_version",version},{"process_protocols",Json::array({engine::process_protocol_v1})},{"contract_versions",Json::array({"knowledge/SPEC.md@v1","scv-graph-duckdb-connector/SPEC.md@v2","scv-graph-duckdb-connector/DUCKDB-PROVENANCE.json@1.5.5"})},{"operations",engine::administration_operation_descriptors(operations)},{"limits",{{"request_bytes",engine::Limits::max_request_bytes},{"response_bytes",engine::Limits::max_response_bytes},{"json_depth",engine::Limits::max_json_depth},{"json_values",engine::Limits::max_json_values},{"path_bytes",engine::Limits::max_path_bytes},{"snapshot_files",engine::Limits::max_snapshot_files},{"snapshot_file_bytes",engine::Limits::max_snapshot_file_bytes},{"deadline_ahead_ms",engine::Limits::max_deadline_ahead_ms}}},{"supported_scopes",Json::array({"tops"})},{"language","C++26"},{"thermal_path","freezing"},{"canonical_apply_enabled",false},{"session_mutation_enabled",false},{"network_listener",false}},"descriptor_digest");
 }
 Json handle(const engine::Request& request) {
     deadline(request);
     if(request.operation=="inspect") { fields(request.payload,{}); return descriptor(); }
+    if(request.operation=="inventory") return inventory(request);
+    if(request.operation=="transfer_plan") return transfer_plan(request);
     if(request.operation=="prepare") return prepare(request);
     if(request.operation=="commit") return commit(request);
     if(request.operation=="status") return status(request);

@@ -1,0 +1,51 @@
+# SCV index inventory and transfer planning
+
+Contract v1; connector release `0.2.0-dev`, September 13, 2026. This extends the frozen [graph-index contract](GRAPH-INDEX.md) with two native operations and two qxctl routes. The physical DuckDB v1 schema, dependency 1.5.5, graph/intent/snapshot protocols and common request/response bounds remain unchanged. Existing 0.1.0-dev installations remain explicitly selectable for their six operations.
+
+## Ownership and scope
+
+The native connector owns mechanical storage inspection and transfer identity calculation. qxctl independently validates result consistency, exact installation identity and selected semantic-owner replay. Callers supply TOPS/namespace, expected inventory revision, selected operation IDs, target installation/root and capacity requirements. No source or target is selected by discovery.
+
+This release implements planning only. A ready plan performs no transfer, selects no active root and grants no mutation permission. No operation deletes an intent or snapshot, evicts evidence, runs a TTL, migrates a database or creates the target database. Completed operation history remains necessary for idempotence and conflict checks.
+
+## Inventory revision and contents
+
+Native `inventory` input is `{tops_id,namespace,expected_revision,cursor,limit}`. Expected revision is null for a first observation or an exact manifest digest. Limit is 1–16. Cursor is null or `{revision,after_operation_id}` and must name an existing operation in that same revision. Operation IDs sort in unsigned UTF-8 byte order; the admitted IDs are ASCII. A new intent or state transition invalidates earlier pages, even when its graph is unchanged. An exact idempotent retry leaves the logical revision unchanged.
+
+The sealed `symphony.scv.graph-index-inventory-manifest.v1` contains `{protocol,tops_id,namespace,entries,snapshots,global_revision,global_counts,capacity,digest}`. Entries contain complete compact scoped summaries: operation ID, intent/snapshot/graph/projection digests, state, exact owner and retained connector Installations, original validation time and row counts. Each snapshot reference group contains its digest, all referencing scoped operation IDs and committed-operation count. Prepared aliases retain references without implying publication. Published snapshot count is the number of groups with a committed reference.
+
+The native process reads all globally bounded intents and snapshots in one transaction. It validates stored seals, exact identity columns, every committed projection, snapshot references and global row counts; orphan snapshots or rows fail. The opaque global revision hashes `{intents:[{scope:{tops_id,namespace,operation_id},intent_digest,state}],snapshots:[[tops_id,namespace,snapshot_digest]]}` in sorted database-key order. Other namespaces' contents are not returned. Global counts disclose only physical-index totals, with maxima of 128 intents and 128 snapshots. This index-root boundary is not a tenant security model.
+
+The manifest digest seals its entire logical content excluding its own `digest`. It includes the global revision and capacity observations, so activity in another namespace also invalidates a plan or page. It excludes file sizes and observation time. The Go consumer independently checks seals, scoped order, references, bounds, requested revision and page correspondence; the global revision and counts remain native observations of storage, not independently re-derived claims about undisclosed namespaces.
+
+Inventory returns sealed `{protocol:"symphony.scv.graph-index-inventory.v1",backend,input,manifest,records,next_cursor,physical_bytes,digest}`. `records` is the selected page of complete existing status objects, enabling independent graph/projection reconstruction. The complete compact manifest accompanies every page. Empty scope is an empty page with explicit global counts. A missing database is an error; observation does not create it. `physical_bytes:{database,wal}` records sizes inside the current operation before final backend commit/close. Physical recovery/checkpoint activity may change those bytes without changing the logical revision.
+
+## Transfer plan
+
+Native `transfer_plan` input is `{tops_id,namespace,expected_revision,operation_ids,source_connector,target_connector,target_root,capacity}`. Expected revision is mandatory. Choose 1–16 unique operation IDs in caller order. `source_connector` is the exact 0.2.0-dev reader; stored records retain their own connector identities, including 0.1.0-dev. Target supports the exact selected 0.1.0-dev or 0.2.0-dev DuckDB mapping-1 profile. Other versions/backends fail explicitly. Native target-root validation is lexical; qxctl separately inspects its actual existence, ownership and emptiness.
+
+Capacity is `{intents,snapshots}` with caller-selected integer ceilings 0–128, bounded by the selected profile. The plan models a new empty destination. It preserves each selected operation ID, namespace, graph, validating owner, validation time and prepared/committed state. Replacing only the connector Installation computes the target snapshot seal and then target intent seal. A different receipt/prefix/executable changes identity even if the version label matches. No actual target record is written.
+
+The sealed `symphony.scv.graph-index-transfer-plan.v1` result contains `{protocol,backend,input,manifest,selected,excluded_operation_ids,requirements,blockers,disposition,digest}`. Each selected entry is `{source:<complete status>,target_snapshot_digest,target_intent_digest}`. Excluded scoped IDs are explicit and sorted; nothing automatically includes an alias the caller did not select. Required intent count is selection size. Required published snapshot count deduplicates only selected committed target snapshots; a prepared-only selection preserves preparation and requires zero published snapshots. `intent_capacity` and `snapshot_capacity` are mechanical blockers. Native `ready` means the mechanical plan fits its stated empty-target assumptions.
+
+Global integrity is checked and expected revision matched in the same source transaction as selection. The plan retains complete inputs and selected records so an independent consumer can recompute identities, selection, exclusions, capacity and blockers. Complete responses remain subject to 4 MiB and existing JSON value limits; large selections fail explicitly and can be narrowed by the caller. No raised bound or silent truncation is introduced.
+
+## qxctl operating interface
+
+`qxctl scv graph-index inventory` takes `{expected_revision,cursor,limit}` through `--input`. `qxctl scv graph-index transfer-plan` takes `{expected_revision,operation_ids,target:{prefix,version,root},capacity}`. Both require explicit `--connector-prefix`, `--connector-version 0.2.0-dev`, `--index-root`, `--tops-id` and `--namespace`. Backend defaults to the user-selected DuckDB and is explicit in results. No unused owner or repository flags are added.
+
+qxctl inspects the target's exact receipt and descriptor, requires a clean existing owned private 0700 directory without symlinks, and observes whether it is empty. A nonempty target is a reported blocker. Unsupported or missing target installation fails because no exact target can be bound. Planning neither opens a target database nor creates its lock. No destination is reserved.
+
+For every selected operation qxctl resolves and replays the exact retained SCV validating owner at the intent's original validation time. Missing or changed owners and unavailable semantic validation become per-operation `owner_validation_unavailable` blockers, not substitute owners or renewed evidence. A native evaluation may legitimately contain expired, conflicting or unknown findings under its own contract: successfully obtaining that evaluation does not mean every provider claim is satisfied. Transfer planning preserves such evidence rather than imposing a strategy policy.
+
+After semantic work, qxctl rechecks the source expected revision and target observation. A changed source or target fails rather than returning a mixed-time ready plan. These are bounded observations, not an atomic transaction over both roots or assurance that state will remain unchanged after the response. Transfer execution must later revalidate everything.
+
+The sealed `symphony.qxctl.scv-graph-index-maintenance-result.v1` wrapper contains `{protocol,operation,source_connector,connector_result,target_observation,owner_evaluations,blockers,disposition,digest}`. Inventory has null target, no owner evaluations/blockers and disposition `observed`. Planning retains the exact target observation and per-operation evaluation or unavailability reason; disposition is `ready` only when no native capacity, target or owner blocker exists. This readiness is explicitly planning-only.
+
+Both new native operations are `evidence_only` because DuckDB may physically recover during reads. Administrative interaction is `query`; transfer_plan requires expected state. Stable operation IDs are `engop:symphony:scv.graph-index.inventory` and `engop:symphony:scv.graph-index.transfer.plan`. qxctl command IDs use `scv.graph-index.inventory` and `scv.graph-index.transfer-plan` under the existing `qxcmd:symphony:` prefix. They bind the existing connector feature and SCV semantic-owner query operations without assigning new semantic authority.
+
+## Compatibility and deferred work
+
+Old graph-index schemas are preserved under source v1. The current package installs the self-contained v2 schema at its versioned schema path. New readers may inspect old retained connector identities through inventory/planning; the six existing qxctl data operations still require the exact retained writer installation and do not silently migrate to the current reader. Older binaries reject newer snapshot identities they cannot understand.
+
+Actual transfer journals, cancellation, tombstones, retirement, database migration, cross-platform recipes, dedicated graph traversal and SHV runtime remain separate work. Future retirement must address operation-ID history and shared references before reclaiming storage. These tool-specific limits do not restrict how Symphony users compose their own programs or choose other adapters.

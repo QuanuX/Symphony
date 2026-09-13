@@ -337,9 +337,11 @@
         "engop:symphony:scv.graph-index.commit",
         "engop:symphony:scv.graph-index.export",
         "engop:symphony:scv.graph-index.inspect",
+        "engop:symphony:scv.graph-index.inventory",
         "engop:symphony:scv.graph-index.prepare",
         "engop:symphony:scv.graph-index.query",
-        "engop:symphony:scv.graph-index.status"
+        "engop:symphony:scv.graph-index.status",
+        "engop:symphony:scv.graph-index.transfer.plan"
       ],
       "owner_contract": "modules/scv-graph-duckdb-connector/SPEC.md",
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
@@ -1024,10 +1026,24 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "TestSCVGraphIndexPlanOwnerAndTargetBlockers",
+            "TestSCVGraphIndexPlanReobservesSourceAndTarget"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/scv_graph_index_maintenance_test.go"
+        },
+        {
+          "cases": [
             "TestSCVGraphIndexImportReturnsOwnerEvaluation",
             "TestSCVGraphIndexQueryTimeAndMissingOwnerSeparation"
           ],
           "path": "tools/qxctl/cmd/qxctl/scv_graph_index_test.go"
+        },
+        {
+          "cases": [
+            "TestSCVGraphIndexInventoryIndependentValidation",
+            "TestSCVGraphIndexTransferIndependentValidation"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/scv_graph_index_maintenance_test.go"
         },
         {
           "cases": [
@@ -1057,6 +1073,14 @@
             "test_reject_index_column_and_inventory_corruption"
           ],
           "path": "modules/scv-graph-duckdb-connector/tests/connector_test.py"
+        },
+        {
+          "cases": [
+            "test_inventory_rejects_orphan_rows_and_snapshots",
+            "test_inventory_revision_alias_and_pages",
+            "test_transfer_plan_preserves_selection_and_lineage"
+          ],
+          "path": "modules/scv-graph-duckdb-connector/tests/inventory_test.py"
         }
       ],
       "real_process_regressions": [
@@ -1065,9 +1089,15 @@
             "test_installed_graph_index_recovery_and_retrieval"
           ],
           "path": "modules/scv-graph-duckdb-connector/tests/installed_integration.py"
+        },
+        {
+          "cases": [
+            "test_inventory_and_transfer_planning"
+          ],
+          "path": "modules/scv-graph-duckdb-connector/tests/inventory_installed.py"
         }
       ],
-      "statement": "The C++ connector atomically publishes an immutable snapshot and complete structural rows from durable exact intent. It validates retained graph and projection identities without changing source evidence or selected heads. Independent qxctl checks preserve namespace, ordering and page correspondence and replay the exact retained SCV validating owner at explicit query time before semantic use or recovery. Index integrity status remains distinct from native semantic evaluation.",
+      "statement": "The C++ connector atomically publishes an immutable snapshot and complete structural rows from durable exact intent. It validates retained graph and projection identities without changing source evidence or selected heads. Independent qxctl checks preserve namespace, ordering and page correspondence and replay the exact retained SCV validating owner at explicit query time before semantic use or recovery. Index integrity status remains distinct from native semantic evaluation. Inventory revisions bind changing intent state and global capacity observations. Transfer plans preserve exact caller selection and target identity mapping; no planning operation executes transfer or deletes retained history.",
       "status": "active",
       "title": "Immutable graph index publication preserves exact graph and validating owners"
     },
@@ -1806,7 +1836,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:a64ee6605f7c8834b6511786907a70b015797a3c78d58dea2808fa14b2adc913",
+  "registry_digest": "sha256:39ffcce5e8e4179f5c5a4ee36b8083d63443f10f74df47081fb8ecb9f75b5bdf",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

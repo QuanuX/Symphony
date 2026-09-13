@@ -289,7 +289,7 @@ func TestSCVGraphIndexClosedInputAndRawUnicode(t *testing.T) {
 }
 func TestSCVGraphIndexAgenticCommandBindings(t *testing.T) {
 	group := newSCVGraphIndexCommand()
-	if len(group.Commands()) != 6 {
+	if len(group.Commands()) != 8 {
 		t.Fatal("graph index leaves missing")
 	}
 	for _, c := range group.Commands() {
@@ -300,7 +300,7 @@ func TestSCVGraphIndexAgenticCommandBindings(t *testing.T) {
 		if c.Name() != "inspect" && spec.Mutability != "evidence_only" {
 			t.Fatal("physical recovery misclassified")
 		}
-		if c.Name() == "import" || c.Name() == "recover" || c.Name() == "query" || c.Name() == "export" {
+		if c.Name() == "import" || c.Name() == "recover" || c.Name() == "query" || c.Name() == "export" || c.Name() == "transfer-plan" {
 			for _, domain := range knowledgeengine.SCVDomains() {
 				want := "engop:symphony:" + domain + ".graph.query"
 				found := false

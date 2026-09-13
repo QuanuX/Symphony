@@ -21,7 +21,7 @@ The default source build links the shared foundation from this checkout. An alre
 
 ## Exact Installed Files
 
-The versioned executable is `libexec/symphony/scv-graph-duckdb-connector/0.1.0-dev/symphony-scv-graph-duckdb-connector`. Contracts are under `share/doc/symphony/scv-graph-duckdb-connector/0.1.0-dev`; the closed schema is under `share/symphony/schemas/scv-graph-duckdb-connector/0.1.0-dev`. The receipt is `share/symphony/receipts/scv-graph-duckdb-connector/0.1.0-dev/install-receipt.json`, with component kind `adapter`, vector `scv`, and the process-v1 entry point. Inspect its exact owned-file list rather than assuming ownership from a directory name.
+The versioned executable is `libexec/symphony/scv-graph-duckdb-connector/0.2.0-dev/symphony-scv-graph-duckdb-connector`. Contracts are under `share/doc/symphony/scv-graph-duckdb-connector/0.2.0-dev`; the closed schema is under `share/symphony/schemas/scv-graph-duckdb-connector/0.2.0-dev`. The receipt is `share/symphony/receipts/scv-graph-duckdb-connector/0.2.0-dev/install-receipt.json`, with component kind `adapter`, vector `scv`, and the process-v1 entry point. Inspect its exact owned-file list rather than assuming ownership from a directory name.
 
 No active executable alias, background process, database, source/graph selection or network service is installed. Reinstalling over different receipt-owned bytes is not an upgrade mechanism; select another exact release/prefix according to the package lifecycle contract.
 

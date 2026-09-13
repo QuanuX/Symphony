@@ -5,7 +5,7 @@
 - module: `scv-graph-duckdb-connector`
 - engine: `symphony-scv-graph-duckdb-connector`
 - vector: `scv`
-- version: `0.1.0-dev`
+- version: `0.2.0-dev`
 - language: C++26
 - thermal path: freezing
 - semantic owner: `knowledge/scv/GRAPH-INDEX.md`
@@ -19,7 +19,9 @@
 - `modules/scv-graph-duckdb-connector/INSTALL.md`
 - `modules/scv-graph-duckdb-connector/FEATURES.md`
 - `modules/scv-graph-duckdb-connector/schemas/v1/graph-index.schema.json`
+- `modules/scv-graph-duckdb-connector/schemas/v2/graph-index.schema.json`
 - `knowledge/scv/GRAPH-INDEX.md`
+- `knowledge/scv/INDEX-MAINTENANCE.md`
 
 ## Package and State Boundary
 

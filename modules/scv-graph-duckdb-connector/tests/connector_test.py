@@ -5,6 +5,7 @@ resealed variants isolate mechanical index invariants, not new provider facts.
 """
 import argparse, copy, ctypes, fcntl, hashlib, json, os, pathlib, signal, subprocess, sys, tempfile, time, unittest, uuid
 P = pathlib.Path(__file__).resolve().parent
+VERSION = "0.1.0-dev"
 ENGINE = None
 LIBRARY = None
 EVIDENCE = None
@@ -51,7 +52,7 @@ class ConnectorTests(unittest.TestCase):
         self.graph=json.loads((P/'fixtures/graph.json').read_text())
         self.base={'tops_id':'01993d63-b40d-7000-8000-000000000013','namespace':'native-test','operation_id':'prepare-1','graph':self.graph,
           'owner':installation('scv-engine','scv','0.10.0-dev'),
-          'connector':installation('scv-graph-duckdb-connector','scv-graph-duckdb-connector','0.1.0-dev'),
+          'connector':installation('scv-graph-duckdb-connector','scv-graph-duckdb-connector',VERSION),
           'query_time':'2026-09-13T04:30:18Z'}
     def tearDown(self): self.temp.cleanup()
     def call(self,op,payload,okay=True,timeout=5):
@@ -69,7 +70,7 @@ class ConnectorTests(unittest.TestCase):
     def query_input(self,done,kind='claims',filters=None,limit=128,cursor=None):
         return {k:self.base[k] for k in ('tops_id','namespace')}|{'snapshot_digest':done['snapshot_digest'],'kind':kind,'filters':filters or {},'limit':limit,'cursor':cursor}
     def test_descriptor_does_not_open_database(self):
-        d=self.call('inspect',{});self.assertEqual(len(d['operations']),6);self.assertEqual(list(self.root.iterdir()),[])
+        d=self.call('inspect',{});self.assertEqual(len(d['operations']),6 if VERSION=="0.1.0-dev" else 8);self.assertEqual(list(self.root.iterdir()),[])
         commit=next(op for op in d['operations'] if op['operation_name']=='commit');self.assertTrue(commit['expected_state_required']);self.assertEqual(commit['administrative_interactions'],['invoke','recover'])
     def test_prepare_reopen_commit_idempotence(self):
         p=self.prepare();self.assertEqual(p['state'],'prepared');self.assertFalse(p['index_verified'])
@@ -157,8 +158,9 @@ class ConnectorTests(unittest.TestCase):
             if process.poll() is None:process.kill();process.wait()
 
 def main():
-    global ENGINE,LIBRARY,EVIDENCE
-    ap=argparse.ArgumentParser();ap.add_argument('--engine');ap.add_argument('--library');ap.add_argument('--evidence');ap.add_argument('--crash-writer');ap.add_argument('--ready');args,rest=ap.parse_known_args()
+    global ENGINE,LIBRARY,EVIDENCE,VERSION
+    ap=argparse.ArgumentParser();ap.add_argument('--version',default='0.1.0-dev',choices=['0.1.0-dev','0.2.0-dev']);ap.add_argument('--engine');ap.add_argument('--library');ap.add_argument('--evidence');ap.add_argument('--crash-writer');ap.add_argument('--ready');args,rest=ap.parse_known_args()
+    VERSION=args.version
     LIBRARY=str(pathlib.Path(args.library).resolve())
     if args.crash_writer:
         db=SQL(pathlib.Path(args.crash_writer));db.query('BEGIN TRANSACTION');db.query('DELETE FROM nodes');pathlib.Path(args.ready).write_text('uncommitted delete completed\n');time.sleep(60);return

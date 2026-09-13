@@ -24,7 +24,7 @@ type graphIndexOptions struct {
 }
 
 func newSCVGraphIndexCommand() *cobra.Command {
-	group := structural("graph-index", fmt.Errorf("graph-index subcommand is required: inspect, import, status, recover, query, export"))
+	group := structural("graph-index", fmt.Errorf("graph-index subcommand is required: inspect, import, status, recover, query, export, inventory, transfer-plan"))
 	for _, action := range []string{"inspect", "import", "status", "recover", "query", "export"} {
 		o := graphIndexOptions{}
 		child := &cobra.Command{Use: action, Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error { return runSCVGraphIndex(action, o) }}
@@ -41,7 +41,7 @@ func newSCVGraphIndexCommand() *cobra.Command {
 		}
 		child.Flags().StringVar(&o.backend, "backend", "duckdb", "selected optional SQL index backend (user-selected default duckdb)")
 		child.Flags().StringVar(&o.connectorPrefix, "connector-prefix", "", "exact receipt-owned connector installation prefix")
-		child.Flags().StringVar(&o.connectorVersion, "connector-version", "", "exact connector version, currently 0.1.0-dev; never latest")
+		child.Flags().StringVar(&o.connectorVersion, "connector-version", "", "exact connector version, 0.1.0-dev or 0.2.0-dev; never latest")
 		_ = child.MarkFlagRequired("connector-prefix")
 		_ = child.MarkFlagRequired("connector-version")
 		if action != "inspect" {
@@ -93,6 +93,7 @@ func newSCVGraphIndexCommand() *cobra.Command {
 		commandregistry.Attach(child, spec)
 		group.AddCommand(child)
 	}
+	group.AddCommand(newSCVGraphIndexMaintenanceCommand("inventory"), newSCVGraphIndexMaintenanceCommand("transfer-plan"))
 	return group
 }
 
@@ -109,7 +110,7 @@ func newGraphIndexRunner(action string, o graphIndexOptions) (*graphIndexRunner,
 	if o.scv.repository != "" {
 		return nil, fmt.Errorf("graph-index does not accept --repo; the operation working directory is --index-root")
 	}
-	if o.backend != "duckdb" || o.connectorPrefix == "" || o.connectorVersion != knowledgeengine.SCVGraphIndexConnectorVersion {
+	if o.backend != "duckdb" || o.connectorPrefix == "" || !knowledgeengine.SCVGraphIndexVersionSupported(o.connectorVersion) {
 		return nil, fmt.Errorf("graph index requires selected duckdb backend and exact connector prefix/version")
 	}
 	cwd := ""

@@ -27,3 +27,7 @@ The writer is an instrumented test build of the actual connector implementation,
 The last two barriers also run when another operation has already published the exact same snapshot. Every case verifies an earlier sentinel snapshot, full native/Go export validation, exact owner replay, idempotent recovery and expected-intent mismatch refusal. No elapsed delay is used to guess a transaction boundary.
 
 These are process-interruption checks at explicit boundaries surrounding DuckDB COMMIT. They do not interrupt inside DuckDB's COMMIT implementation, simulate power loss, prove filesystem/hardware durability, establish load performance or constitute the full SCV milestone suite. Keep actual results and hashes in the increment evidence rather than inferring execution from this coverage description.
+
+## Inventory and transfer-planning release
+
+For 0.2.0-dev, `inventory_test.py` runs the focused native inventory/plan cases (also registered as the `scv-graph-duckdb-inventory` CTest). `inventory_installed.py` accepts explicit qxctl, connector, SCV owner, legacy connector and graph paths and records real namespace, stale revision, target, owner and version-boundary evidence. Neither executes transfer nor retires source history. `connector_test.py --version 0.2.0-dev` selects the current descriptor/fixture profile; its default 0.1.0-dev remains available for explicit legacy checks. The installed workflow helper accepts an explicit connector version without changing its legacy default.

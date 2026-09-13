@@ -35,7 +35,7 @@
       ],
       "distinctions": [],
       "evidence": [
-        "The new connector and independent qxctl consumer have focused producer, persistence, projection and original-owner boundary checks. Test names identify coverage; actual execution and dependency provenance belong to the increment closure."
+        "The new connector and independent qxctl consumer have focused producer, persistence, projection original-owner boundary checks, mutable inventory consistency and transfer-plan lineage checks. Test names identify coverage; actual execution and dependency provenance belong to the increment closure."
       ],
       "feature_id": "ssfv:symphony:scv-graph-duckdb-connector",
       "how": "Uses bounded C++ process requests, pinned DuckDB transactions and independent qxctl projection verification. Semantic queries replay the exact selected SCV owner against the complete retained graph.",
@@ -78,9 +78,9 @@
       "source_scope": "modules/scv-graph-duckdb-connector",
       "status": "experimental",
       "title": "SCV DuckDB graph index connector",
-      "what": "Independently installed DuckDB adapter for immutable SCV graph snapshots, exact relational row projection, bounded indexed retrieval and export, and recoverable prepare/commit publication.",
+      "what": "Independently installed DuckDB adapter for immutable SCV graph snapshots, exact relational row projection, bounded indexed retrieval and export, recoverable prepare/commit publication, revision-bound inventory and exact caller-selected transfer planning.",
       "when": "Runs only on explicit local qxctl or native process invocation; status observes durable connector state without invoking a semantic owner.",
-      "where": "A versioned integration_adapter installation and a caller-selected private local index root; no active alias or service is installed.",
+      "where": "A versioned adapter installation and a caller-selected private local index root; no active alias or service is installed.",
       "who": "Humans and agents using qxctl with explicit installations, namespace and TOPS identity; connector publication does not authorize a selected graph head.",
       "why": "Makes caller-selected graphs persistently retrievable while preserving native SCV semantic ownership and explicit backend and namespace selection."
     }

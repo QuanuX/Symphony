@@ -7391,6 +7391,45 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:scv.graph-index.inventory",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv graph-index inventory [--backend VALUE] [--connector-prefix VALUE] [--connector-version VALUE] [--index-root VALUE] [--input VALUE] [--json] [--namespace VALUE] [--tops-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-graph-duckdb-connector",
+          "interaction": "query"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scv.graph-index.inventory"
+      ],
+      "mutability": "evidence_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.qxctl.scv-graph-index-inventory-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.qxctl.scv-graph-index-maintenance-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.qxctl.scv-graph-index-maintenance-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:scv.graph-index.query",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -7587,6 +7626,91 @@
       ],
       "result_validation_protocols": [
         "symphony.qxctl.scv-graph-index-result.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
+      "command_id": "qxcmd:symphony:scv.graph-index.transfer-plan",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv graph-index transfer-plan [--backend VALUE] [--connector-prefix VALUE] [--connector-version VALUE] [--index-root VALUE] [--input VALUE] [--json] [--namespace VALUE] [--tops-id VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-cf-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scev-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-aws-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-azure-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-do-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:schv-gcp-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-engine",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-graph-duckdb-connector",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:scv-graph-duckdb-connector",
+          "interaction": "query"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [
+        "engop:symphony:scev-cf.graph.query",
+        "engop:symphony:scev.graph.query",
+        "engop:symphony:schv-aws.graph.query",
+        "engop:symphony:schv-azure.graph.query",
+        "engop:symphony:schv-do.graph.query",
+        "engop:symphony:schv-gcp.graph.query",
+        "engop:symphony:schv.graph.query",
+        "engop:symphony:scv.graph-index.inspect",
+        "engop:symphony:scv.graph-index.inventory",
+        "engop:symphony:scv.graph-index.transfer.plan",
+        "engop:symphony:scv.graph.query"
+      ],
+      "mutability": "evidence_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [
+        "symphony.qxctl.scv-graph-index-transfer-plan-input.v1"
+      ],
+      "output_protocols": [
+        "symphony.qxctl.scv-graph-index-maintenance-result.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.qxctl.scv-graph-index-maintenance-result.v1"
       ],
       "recovery_command_id": null,
       "noninteractive": true,
@@ -12874,5 +12998,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:45e02186457ea0e3afc4831c50eab630631b4b46ae108f999b5538e2390c431c"
+  "registry_digest": "sha256:961dab1447323d20869d1a778585b75749f062c32b67d590c7b62afaaaa250f4"
 }

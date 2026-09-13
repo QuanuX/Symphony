@@ -280,7 +280,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:123cc7ed3298c227526e47c1883822acd179fff7ac32f315155d22b9b8d56c4c`
+- record_digest: `sha256:a1c2c5873da2a7fbdaddb0f134f56f28645d8a1f2d882dd1c6c977f68a2acb18`
 - notes: Architect-ratified bounded SCV source-knowledge increment; private source/graph evidence remains separate from provider or canonical authority.
 
 - feature_id: `ssfv:symphony:qxctl.ssiag-administration`
@@ -523,7 +523,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/scv-graph-duckdb-connector`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:88c016115edaf4a4e4ab6064eca9a208ea5db743e2b9501f382709b4cfefa35b`
+- record_digest: `sha256:1b4383820e67c796562b9b2d5b540fe3b875644b69389c59b19814f6adcc32ed`
 - notes: Optional C++ DuckDB relational graph index with exact native semantic owner, immutable snapshots and qxctl recovery.
 
 - feature_id: `ssfv:symphony:sev-engine`

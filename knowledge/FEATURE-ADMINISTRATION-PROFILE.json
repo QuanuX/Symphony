@@ -1662,7 +1662,9 @@
             "qxcmd:symphony:scv.corpus.query",
             "qxcmd:symphony:scv.explain",
             "qxcmd:symphony:scv.graph-index.export",
+            "qxcmd:symphony:scv.graph-index.inventory",
             "qxcmd:symphony:scv.graph-index.query",
+            "qxcmd:symphony:scv.graph-index.transfer-plan",
             "qxcmd:symphony:scv.provider.coverage",
             "qxcmd:symphony:scv.provider.pack.evaluate",
             "qxcmd:symphony:scv.query"
@@ -2467,6 +2469,7 @@
             "qxcmd:symphony:scv.graph-index.import",
             "qxcmd:symphony:scv.graph-index.query",
             "qxcmd:symphony:scv.graph-index.recover",
+            "qxcmd:symphony:scv.graph-index.transfer-plan",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
@@ -2823,6 +2826,7 @@
             "qxcmd:symphony:scv.graph-index.import",
             "qxcmd:symphony:scv.graph-index.query",
             "qxcmd:symphony:scv.graph-index.recover",
+            "qxcmd:symphony:scv.graph-index.transfer-plan",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
@@ -3179,6 +3183,7 @@
             "qxcmd:symphony:scv.graph-index.import",
             "qxcmd:symphony:scv.graph-index.query",
             "qxcmd:symphony:scv.graph-index.recover",
+            "qxcmd:symphony:scv.graph-index.transfer-plan",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
@@ -3535,6 +3540,7 @@
             "qxcmd:symphony:scv.graph-index.import",
             "qxcmd:symphony:scv.graph-index.query",
             "qxcmd:symphony:scv.graph-index.recover",
+            "qxcmd:symphony:scv.graph-index.transfer-plan",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
@@ -3891,6 +3897,7 @@
             "qxcmd:symphony:scv.graph-index.import",
             "qxcmd:symphony:scv.graph-index.query",
             "qxcmd:symphony:scv.graph-index.recover",
+            "qxcmd:symphony:scv.graph-index.transfer-plan",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
@@ -4247,6 +4254,7 @@
             "qxcmd:symphony:scv.graph-index.import",
             "qxcmd:symphony:scv.graph-index.query",
             "qxcmd:symphony:scv.graph-index.recover",
+            "qxcmd:symphony:scv.graph-index.transfer-plan",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
@@ -4603,6 +4611,7 @@
             "qxcmd:symphony:scv.graph-index.import",
             "qxcmd:symphony:scv.graph-index.query",
             "qxcmd:symphony:scv.graph-index.recover",
+            "qxcmd:symphony:scv.graph-index.transfer-plan",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
@@ -5100,6 +5109,7 @@
             "qxcmd:symphony:scv.graph-index.import",
             "qxcmd:symphony:scv.graph-index.query",
             "qxcmd:symphony:scv.graph-index.recover",
+            "qxcmd:symphony:scv.graph-index.transfer-plan",
             "qxcmd:symphony:scv.projection.recover",
             "qxcmd:symphony:scv.projection.select",
             "qxcmd:symphony:scv.projection.status",
@@ -5239,7 +5249,8 @@
           "command_ids": [
             "qxcmd:symphony:scv.graph-index.inspect",
             "qxcmd:symphony:scv.graph-index.recover",
-            "qxcmd:symphony:scv.graph-index.status"
+            "qxcmd:symphony:scv.graph-index.status",
+            "qxcmd:symphony:scv.graph-index.transfer-plan"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -5303,12 +5314,16 @@
         {
           "command_ids": [
             "qxcmd:symphony:scv.graph-index.export",
-            "qxcmd:symphony:scv.graph-index.query"
+            "qxcmd:symphony:scv.graph-index.inventory",
+            "qxcmd:symphony:scv.graph-index.query",
+            "qxcmd:symphony:scv.graph-index.transfer-plan"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:scv.graph-index.export",
-            "engop:symphony:scv.graph-index.query"
+            "engop:symphony:scv.graph-index.inventory",
+            "engop:symphony:scv.graph-index.query",
+            "engop:symphony:scv.graph-index.transfer.plan"
           ],
           "evidence": [
             "knowledge/scv/AGENT-WORKFLOWS.md",
@@ -6826,9 +6841,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:4846150d55e2bb64ade826f41e21bf5984fd3587c66b9d1c2943140ac1e28327",
+  "profile_digest": "sha256:0ea8f72f543d94fc6a6f270dec9367ebbd01ca053a161f6661dfdece5d25eb41",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 101,
-  "ssfv_registry_digest": "sha256:e730564df4e8a2fd3fa4054ba7bb5e5b4ef69459ff60bbc8d5de6efa9a49a884"
+  "ssfv_registry_digest": "sha256:9533c189ed98f4a5c0468868b498cd3991e18ea83aa3746bf4d16564638d7fc3"
 }

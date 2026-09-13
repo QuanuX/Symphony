@@ -7,3 +7,5 @@ Use only the connector's finite operations. Keep raw SQL, database schema change
 Treat index matches as stored graph structure, not newly validated provider facts or fresh evidence. Native semantic evaluation remains with the exact SCV owner and caller-selected query time and policy. Keep unsupported queries and backend limitations visible. No index operation selects a protected source or graph head.
 
 Run focused checks for changed connector code and affected producer/consumer boundaries. Report actual test execution separately from declared test names. Preserve original graph artifacts, installed receipts and databases not selected for the current task.
+
+For inventory and transfer planning, read `knowledge/scv/INDEX-MAINTENANCE.md`. Select connector 0.2.0-dev explicitly. Preserve the expected inventory revision, caller record selection and target requirements; report semantic or target blockers without silently choosing replacements. A ready plan creates no target database and authorizes no deletion or migration.
