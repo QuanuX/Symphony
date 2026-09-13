@@ -1508,6 +1508,7 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:scv.graph-index.schema",
             "qxcmd:symphony:scv.interface.show",
             "qxcmd:symphony:scv.provider-onboard",
             "qxcmd:symphony:scv.schema.list",
@@ -6866,9 +6867,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:7df8bc0e6f0e7b95f4b973f531f44abaab31309625c14f461ba28f5361ad17b4",
+  "profile_digest": "sha256:409cd27b8c3f3d07235cbd19b0e4b4c353104af2279cea5cc6a90aea8a64ec36",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 101,
-  "ssfv_registry_digest": "sha256:29f15a45d18b9105b582df7cfc0b53334223990e4c8c952448deb1181b4f64d8"
+  "ssfv_registry_digest": "sha256:3cfbc231086e7602df2c04f21b3898ee9b2bf1ae59e8913d449e937eb68dc0e6"
 }

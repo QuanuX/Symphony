@@ -63,6 +63,11 @@ func TestSCVSchemaCatalogCoversCurrentCommandProtocolsAndReferences(t *testing.T
 			}
 		}
 	}
+	// Optional connector and CLI-owned orchestration protocols have separate
+	// exact schema discovery; they do not belong to a frozen SCV engine release.
+	for protocol := range graphIndexSchemaEntries("0.2.0-dev") {
+		seen[protocol] = true
+	}
 	root, err := newRootCommand()
 	if err != nil {
 		t.Fatal(err)

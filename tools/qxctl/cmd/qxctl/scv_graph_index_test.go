@@ -289,7 +289,7 @@ func TestSCVGraphIndexClosedInputAndRawUnicode(t *testing.T) {
 }
 func TestSCVGraphIndexAgenticCommandBindings(t *testing.T) {
 	group := newSCVGraphIndexCommand()
-	if len(group.Commands()) != 11 {
+	if len(group.Commands()) != 12 {
 		t.Fatal("graph index leaves missing")
 	}
 	for _, c := range group.Commands() {
@@ -297,7 +297,7 @@ func TestSCVGraphIndexAgenticCommandBindings(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if c.Name() != "inspect" && c.Name() != "transfer-status" && spec.Mutability != "evidence_only" {
+		if c.Name() != "inspect" && c.Name() != "transfer-status" && c.Name() != "schema" && spec.Mutability != "evidence_only" {
 			t.Fatal("physical recovery misclassified")
 		}
 		if c.Name() == "import" || c.Name() == "recover" || c.Name() == "query" || c.Name() == "export" || c.Name() == "transfer-plan" || c.Name() == "transfer" || c.Name() == "transfer-recover" {

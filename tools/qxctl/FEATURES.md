@@ -780,6 +780,7 @@
         "tools/qxctl/cmd/qxctl/scv_graph.go",
         "tools/qxctl/cmd/qxctl/scv_graph_index.go",
         "tools/qxctl/cmd/qxctl/scv_graph_index_maintenance.go",
+        "tools/qxctl/cmd/qxctl/scv_graph_index_schema.go",
         "tools/qxctl/cmd/qxctl/scv_graph_index_transfer.go",
         "tools/qxctl/cmd/qxctl/scv_graph_index_transfer_commands.go",
         "tools/qxctl/cmd/qxctl/scv_interface.go",
@@ -795,6 +796,7 @@
         "tools/qxctl/internal/knowledgeengine/scv_composition.go",
         "tools/qxctl/internal/knowledgeengine/scv_graph_index.go",
         "tools/qxctl/internal/knowledgeengine/scv_graph_index_maintenance.go",
+        "tools/qxctl/internal/knowledgeengine/scv_graph_index_schema.go",
         "tools/qxctl/internal/knowledgeengine/scv_interface_generated.go",
         "tools/qxctl/internal/knowledgeengine/scv_interpretation.go",
         "tools/qxctl/internal/knowledgeengine/scv_obligation.go",
@@ -809,6 +811,7 @@
         "tools/qxctl/internal/scvstate/storage_unix.go",
         "tools/qxctl/internal/scvstate/store.go",
         "tools/qxctl/internal/scvtransfer/journal.go",
+        "tools/qxctl/internal/scvtransfer/schema.go",
         "tools/qxctl/internal/scvtransfer/storage_unix.go",
         "tools/qxctl/internal/scvtransport/https.go",
         "tools/qxctl/internal/scvworkflow/composition.go",
@@ -1040,3 +1043,5 @@
 <!-- symphony:ssfv:feature-file:v1:end -->
 
 SCV index transfer adds exact-plan execution, journal-only inspection and recoverable replay under `knowledge/scv/INDEX-TRANSFER.md`. Native C++ prepare/commit owners remain unchanged; qxctl retains only durable copy progress and independently checks target evidence.
+
+`scv graph-index schema` lists or returns exact native receipt-owned and separately embedded qxctl orchestration definitions. Discovery labels ownership and file digests and never substitutes a newer connector profile.

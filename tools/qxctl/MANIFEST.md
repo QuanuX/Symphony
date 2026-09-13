@@ -298,3 +298,5 @@ Exact `0.10.0-dev` retains thirty native operations and adds qxctl bundle workfl
 ## Recoverable index transfer
 
 `knowledge/scv/INDEX-TRANSFER.md` governs the three graph-index transfer routes and `internal/scvtransfer/` journal. Exact native source and target owners remain external installed C++ components. The new journal is local orchestration evidence, not a canonical head or authorization service.
+
+The SCV gate adds exact graph-index schema discovery, keeping connector receipt-owned definitions and qxctl embedded transfer definitions separate. A preserved SCV engine catalog is not extended with another owner’s protocols.

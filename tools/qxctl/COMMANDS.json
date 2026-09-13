@@ -7595,6 +7595,37 @@
       "json_output": true
     },
     {
+      "command_id": "qxcmd:symphony:scv.graph-index.schema",
+      "status": "experimental",
+      "introduced_in": "0.1.0-dev",
+      "deprecated_in": null,
+      "replacement_ids": [],
+      "grammar": "qxctl scv graph-index schema [--connector-prefix VALUE] [--connector-version VALUE] [--json] [--protocol VALUE]",
+      "aliases": [],
+      "visibility": "public",
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.scv-administration",
+          "interaction": "discover"
+        }
+      ],
+      "infrastructure_purpose": null,
+      "backend_operation_ids": [],
+      "mutability": "read_only",
+      "authority_mode": "none",
+      "target_scope": "local",
+      "input_protocols": [],
+      "output_protocols": [
+        "symphony.qxctl.scv-index-schema.v1"
+      ],
+      "result_validation_protocols": [
+        "symphony.qxctl.scv-index-schema.v1"
+      ],
+      "recovery_command_id": null,
+      "noninteractive": true,
+      "json_output": true
+    },
+    {
       "command_id": "qxcmd:symphony:scv.graph-index.status",
       "status": "experimental",
       "introduced_in": "0.1.0-dev",
@@ -13211,5 +13242,5 @@
       "json_output": true
     }
   ],
-  "registry_digest": "sha256:89e9680ed70f008b8ad3c4d59e2b23169e3a337ec2c316d18a66d83fb06c9265"
+  "registry_digest": "sha256:f3f78bf44225d981b4af4989320ad2d0a36c83492c88eee9c872d2b1aa48afff"
 }

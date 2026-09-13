@@ -1026,6 +1026,12 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "test_inventory_and_transfer_planning"
+          ],
+          "path": "modules/scv-graph-duckdb-connector/tests/inventory_installed.py"
+        },
+        {
+          "cases": [
             "TestSCVGraphIndexPlanOwnerAndTargetBlockers",
             "TestSCVGraphIndexPlanReobservesSourceAndTarget"
           ],
@@ -1096,12 +1102,6 @@
             "test_installed_graph_index_recovery_and_retrieval"
           ],
           "path": "modules/scv-graph-duckdb-connector/tests/installed_integration.py"
-        },
-        {
-          "cases": [
-            "test_inventory_and_transfer_planning"
-          ],
-          "path": "modules/scv-graph-duckdb-connector/tests/inventory_installed.py"
         }
       ],
       "statement": "The C++ connector atomically publishes an immutable snapshot and complete structural rows from durable exact intent. It validates retained graph and projection identities without changing source evidence or selected heads. Independent qxctl checks preserve namespace, ordering and page correspondence and replay the exact retained SCV validating owner at explicit query time before semantic use or recovery. Index integrity status remains distinct from native semantic evaluation. Inventory revisions bind changing intent state and global capacity observations. Transfer plans preserve exact caller selection and target identity mapping; no planning operation executes transfer or deletes retained history.",
@@ -1843,7 +1843,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:d3acdfd0683b0fbf9b237cddd0d4a0dd85488853b19f39204446892e85c72e59",
+  "registry_digest": "sha256:618f3c0d69cdc6f38eeef7b847830cca573d7c5a89318683668bf9943415fc06",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

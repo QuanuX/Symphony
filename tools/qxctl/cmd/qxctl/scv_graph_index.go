@@ -96,6 +96,7 @@ func newSCVGraphIndexCommand() *cobra.Command {
 	for _, action := range []string{"transfer", "transfer-status", "transfer-recover"} {
 		group.AddCommand(newSCVGraphIndexTransferCommand(action))
 	}
+	group.AddCommand(newSCVGraphIndexSchemaCommand())
 	group.AddCommand(newSCVGraphIndexMaintenanceCommand("inventory"), newSCVGraphIndexMaintenanceCommand("transfer-plan"))
 	return group
 }
