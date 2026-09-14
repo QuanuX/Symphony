@@ -68,6 +68,11 @@
           "rationale": "Authority-free process, path and digest mechanics.",
           "target_feature_id": "ssfv:symphony:knowledge-vector-engine-foundation",
           "type": "depends_on"
+        },
+        {
+          "rationale": "Reuses the bounded native PDF reader in the exact kernel executable; original bytes and decoder remain explicit.",
+          "target_feature_id": "ssfv:symphony:shv-pdf-adapter",
+          "type": "depends_on"
         }
       ],
       "source_scope": "modules/shv-engine",

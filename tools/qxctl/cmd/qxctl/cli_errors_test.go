@@ -194,3 +194,19 @@ func TestInstalledSCVJSONFailureAndSuccessCompatibility(t *testing.T) {
 		t.Fatalf("success payload changed or was wrapped: status %d, output %s, expected %s", status, output, expected)
 	}
 }
+
+func TestSHVJSONFailuresAreSingleSanitizedEnvelopes(t *testing.T) {
+	for _, tc := range []struct {
+		args []string
+		code string
+	}{
+		{[]string{"shv", "catalogue", "build", "--json"}, "command_failed"},
+		{[]string{"shv", "evaluate", "--json"}, "command_failed"},
+		{[]string{"shv", "source", "inspect", "--json"}, "command_failed"},
+		{[]string{"shv", "catalogue", "build", "--unknown", "--json"}, "invalid_arguments"},
+		{[]string{"shv", "graph", "--json"}, "invalid_arguments"},
+	} {
+		out, status := invokeCLI(t, tc.args...)
+		decodeCLIError(t, out, status, tc.code)
+	}
+}

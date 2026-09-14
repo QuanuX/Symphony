@@ -26,7 +26,7 @@ func partEngine(v any, source bool) bool {
 	if source {
 		return m["engine_id"] == "symphony-shv-source" && m["version"] == "0.1.0-dev"
 	}
-	return m["engine_id"] == "symphony-shv" && (m["version"] == "0.1.0-dev" || m["version"] == "0.2.0-dev")
+	return m["engine_id"] == "symphony-shv" && (m["version"] == "0.1.0-dev" || m["version"] == "0.2.0-dev" || m["version"] == "0.3.0-dev")
 }
 func partBuild(p map[string]any) (map[string]any, error) {
 	if !shvFields(p, "dependencies", "subject_ids") {
@@ -220,6 +220,12 @@ func shvPartitionExpected(op string, p map[string]any) (map[string]any, error) {
 	return nil, shvFail()
 }
 func ValidateSHVPartitionResult(op string, input, result []byte) error {
+	return ValidateSHVPartitionResultVersion(op, input, result, SHVPartitionVersion)
+}
+func ValidateSHVPartitionResultVersion(op string, input, result []byte, version string) error {
+	if version != SHVPartitionVersion && version != SHVDocumentPartitionVersion {
+		return shvFail()
+	}
 	p, e := shvObject(input)
 	if e != nil {
 		return e
@@ -229,7 +235,7 @@ func ValidateSHVPartitionResult(op string, input, result []byte) error {
 		return e
 	}
 	if op == "inspect" {
-		return shvPartitionDescriptor(p, r)
+		return shvPartitionDescriptor(p, r, version)
 	}
 	want, e := shvPartitionExpected(op, p)
 	if e != nil {

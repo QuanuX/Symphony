@@ -114,7 +114,7 @@ def test_table_interpretation():
         assert call('evaluate',dict(query, requirements=[req]))['findings'][0]['status'] == 'supported'
         call('evaluate',dict(query,requirements=[dict(req, predicate='profiles', operator='eq',value='24',qualifier='source_rows_units_unspecified')]),False)
         graph = call('graph_project',dict(source_root=str(root),catalogue=cat))
-        assert graph['owner']['engine_version'] == '0.2.0-dev'
+        assert graph['owner']['engine_version'] == '0.3.0-dev'
         assert call('graph_validate',dict(source_root=str(root),graph=graph))['valid']
         wrong_version = copy.deepcopy(graph);wrong_version['owner']['engine_version']='0.1.0-dev'
         call('graph_validate',dict(source_root=str(root),graph=kernel.seal(wrong_version)),False)

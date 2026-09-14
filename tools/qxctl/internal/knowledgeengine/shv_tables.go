@@ -22,14 +22,22 @@ func shvTableSelector(v any) bool {
 	return true
 }
 func shvMappingShape(m map[string]any, version string) bool {
+	if m["interpretation_profile"] == "pdf_opn.v1" {
+		return version == SHVDocumentVersion && shvFields(m, "id", "manufacturer", "model", "hardware_class", "source_id", "heading_section", "interpretation_profile", "document", "fields") && m["heading_section"] == "table8" && shvFields(shvMap(m["document"]), "decoder_root", "extraction")
+	}
+
 	if _, tagged := m["interpretation_profile"]; tagged {
-		return version == SHVTableVersion && m["interpretation_profile"] == "scoped_tables.v1" && shvFields(m, "id", "manufacturer", "model", "hardware_class", "source_id", "heading_section", "interpretation_profile", "fields") && (len(shvList(m["fields"])) == 0 || shvTableSelector(m["heading_section"]))
+		return (version == SHVTableVersion || version == SHVDocumentVersion) && m["interpretation_profile"] == "scoped_tables.v1" && shvFields(m, "id", "manufacturer", "model", "hardware_class", "source_id", "heading_section", "interpretation_profile", "fields") && (len(shvList(m["fields"])) == 0 || shvTableSelector(m["heading_section"]))
 	}
 	return shvFields(m, "id", "manufacturer", "model", "hardware_class", "source_id", "heading_section", "field_section", "fields") && shvBoundedText(m["field_section"], 128) && m["heading_section"] != m["field_section"]
 }
 func shvFieldShape(f, m map[string]any, version string) bool {
+	if m["interpretation_profile"] == "pdf_opn.v1" {
+		return version == SHVDocumentVersion && shvFields(f, "predicate", "label", "next_label", "value_type", "qualifier") && f["label"] == "OPN" && f["next_label"] == "Model" && f["value_type"] == "string" && f["qualifier"] == "issuer=AMD;namespace=opn;profile=1"
+	}
+
 	if m["interpretation_profile"] == "scoped_tables.v1" {
-		if version != SHVTableVersion || !shvTableSelector(f["section"]) || f["section"] == m["heading_section"] {
+		if (version != SHVTableVersion && version != SHVDocumentVersion) || !shvTableSelector(f["section"]) || f["section"] == m["heading_section"] {
 			return false
 		}
 		if f["predicate"] == "model_introduction" && f["value_type"] != "date" && f["value_type"] != "quarter_20yy" {

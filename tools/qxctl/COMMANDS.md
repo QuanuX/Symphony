@@ -24,3 +24,13 @@ qxctl commands manifest --json
 Expected evidence has null client version, executable digest, and receipt digest. Observed evidence binds the exact client version and executable digest, plus a receipt digest when one is available. Both forms use `symphony.qxctl.command-registry.v1` and cover every public or hidden executable leaf, including executable parents with subcommands.
 
 The registry records identities and reviewed evidence; it does not inject commands, allocate names, infer feature-worthiness, or grant authority. Any proposal generator must know the registry protocol, the target feature and interaction, stable engine operation and I/O protocols, mutability and authority boundary, recovery requirements, noninteractive/JSON behavior, and required tests. Only reviewed source changes can ratify a new `qxcmd` identity, regardless of caller class.
+
+## Semantic ownership and routing
+
+Canonical paths follow semantic owner, capability, operation. SHV catalogue/evaluation remains under `shv catalogue` and `shv evaluate`; PDF source interpretation remains under `shv pdf`; transport remains under the explicit graph adapter surface. Hardware classes are caller mapping/profile data, not duplicate command trees. `--version` selects the exact primary owner, while `--source-version` and `--adapter-version` name their distinct selected dependencies. Schema and mapping revisions are data identities, not aliases for installed engine versions.
+
+Registry validation rejects sibling name/alias collisions, including structural and hidden routes. Distinct flags cannot disambiguate the same command name. Aliases may be reused under different parents. No command renames or aliases are introduced by the consolidated SHV gate.
+
+A conformance check groups matching backend operations, input/output protocols, mutability and target scope to expose potential competing surfaces. Two exact lifecycle pairs are reviewed: `scv graph-index transfer` versus `transfer-recover`, and `shv materialization run` versus `resume`. They preserve separate lifecycle behavior while reusing an owner operation. Other matching groups require review; a shared native operation alone is not grounds for creating a new semantic owner. This check is a review aid, not a proof that all differently described commands have different meaning.
+
+SHV `--json` errors use the common CLI error boundary once, without printing an additional native envelope or plain-text suffix. Successful native results retain their own protocol.

@@ -57,7 +57,8 @@ void engine_ref(const Json &v, bool source) {
   hash(v["executable_digest"]);
   if (v["engine_id"] != (source ? "symphony-shv-source" : "symphony-shv"))
     bad();
-  if (v["version"] != "0.1.0-dev" && (source || v["version"] != "0.2.0-dev"))
+  if (v["version"] != "0.1.0-dev" &&
+      (source || (v["version"] != "0.2.0-dev" && v["version"] != "0.3.0-dev")))
     bad();
 }
 Json partition(const Json &input) {

@@ -94,7 +94,7 @@ def receipt_read(root, relative, maximum):
  finally:os.close(fd)
 
 def installed_engine(prefix):
- root=Path(prefix).absolute();module='shv-engine';engine='symphony-shv';version='0.2.0-dev'
+ root=Path(prefix).absolute();module='shv-engine';engine='symphony-shv';version='0.3.0-dev'
  receipt_path=f'share/symphony/receipts/{module}/{version}/install-receipt.json'
  raw,_=receipt_read(root,receipt_path,1048576);receipt=json.loads(raw)
  assert receipt==seal(receipt,'receipt_digest')

@@ -32,7 +32,7 @@ func newSHVCommand() *cobra.Command {
 	root.AddCommand(newSHVSourceCommand(), newSHVRefreshCommand(), newSHVPartitionCommand(), newSHVMaterializationCommand())
 	root.AddCommand(newSHVInventoryCommand())
 	root.AddCommand(newSHVDossierCommand())
- root.AddCommand(newSHVPDFCommand())
+	root.AddCommand(newSHVPDFCommand())
 	return root
 }
 func newSHVLeaf(leaf, key, op string, adapter bool) *cobra.Command {
@@ -59,9 +59,6 @@ func newSHVLeaf(leaf, key, op string, adapter bool) *cobra.Command {
 			response, err = knowledgeengine.InvokeSHV(context.Background(), prefix, version, cwd, op, payload)
 		}
 		if err != nil {
-			if response.Protocol != "" {
-				_ = printIndentedJSON(response)
-			}
 			return err
 		}
 		return printIndentedJSON(response)

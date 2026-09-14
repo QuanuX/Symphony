@@ -1,3 +1,4 @@
+#include "pdf.hpp"
 #include "shv.hpp"
 #include "symphony/knowledge/engine/digest.hpp"
 #include "symphony/knowledge/engine/path.hpp"
@@ -5,6 +6,11 @@
 #include <charconv>
 #include <filesystem>
 #include <map>
+#include <string_view>
+static_assert(std::string_view(symphony::knowledge::shv_pdf::version) ==
+                  "0.2.0-dev",
+              "Review the exact document reader contract before upgrading the "
+              "kernel dependency");
 namespace symphony::knowledge::shv {
 Json source_value(const std::string &input, const std::string &type) {
   if (input.empty() || input.size() > 4096)
@@ -127,13 +133,20 @@ Json catalogue_build(const engine::Request &r, const Json &p) {
     bytes[id] = std::move(raw);
     formats[id] = format;
   }
+  std::map<std::string, Json> document_cache;
   Json subjects = Json::array();
   std::set<std::string> ids;
   std::size_t assertions = 0;
   for (const auto &spec : p.at("subjects")) {
     deadline(r);
-    const bool tables = spec.contains("interpretation_profile");
-    if (tables) {
+    const bool pdf =
+        spec.value("interpretation_profile", std::string{}) == "pdf_opn.v1";
+    const bool tables = !pdf && spec.contains("interpretation_profile");
+    if (pdf) {
+      fields(spec, {"id", "manufacturer", "model", "hardware_class",
+                    "source_id", "heading_section", "interpretation_profile",
+                    "document", "fields"});
+    } else if (tables) {
       fields(spec,
              {"id", "manufacturer", "model", "hardware_class", "source_id",
               "heading_section", "interpretation_profile", "fields"});
@@ -155,9 +168,43 @@ Json catalogue_build(const engine::Request &r, const Json &p) {
     assertions += spec.at("fields").size();
     if (assertions > 256)
       invalid("assertion bound exceeded");
-    if (!spec.at("fields").empty() && formats.at(source) != "html")
+    Json pdf_row;
+    if (pdf) {
+      if (formats.at(source) != "opaque" ||
+          spec.at("heading_section") != "table8")
+        invalid("PDF mapping source/heading mismatch");
+      const auto &document = spec.at("document");
+      fields(document, {"decoder_root", "extraction"});
+      const auto &x = document.at("extraction");
+      Json manifest;
+      for (const auto &s : p.at("sources"))
+        if (s.at("id") == source) {
+          manifest = s;
+          manifest.erase("format");
+        }
+      auto request = r;
+      request.operation = "extract";
+      request.payload = Json{{"source_root", root},
+                             {"source", manifest},
+                             {"decoder_root", document.at("decoder_root")},
+                             {"decoder", x.at("decoder")},
+                             {"profile", x.at("profile")}};
+      const auto key = request.payload.dump();
+      if (!document_cache.contains(key))
+        document_cache[key] =
+            symphony::knowledge::shv_pdf::handle_request(request);
+      const auto &replay = document_cache.at(key);
+      if (replay != x)
+        invalid("PDF derivation differs from original-byte replay");
+      for (const auto &row : replay.at("rows"))
+        if (row.at("model") == model)
+          pdf_row = row;
+      if (pdf_row.is_null())
+        invalid("PDF model absent from selected table");
+    }
+    if (!pdf && !spec.at("fields").empty() && formats.at(source) != "html")
       invalid("opaque source cannot emit interpreted assertions");
-    auto normalized = spec.at("fields").empty() || tables
+    auto normalized = spec.at("fields").empty() || tables || pdf
                           ? std::string{}
                           : html_text(bytes.at(source), model,
                                       text(spec, "heading_section", 128),
@@ -173,7 +220,15 @@ Json catalogue_build(const engine::Request &r, const Json &p) {
         invalid("duplicate predicate: conflicting input requires a later "
                 "explicit conflict contract");
       Json typed;
-      if (tables) {
+      if (pdf) {
+        fields(f,
+               {"predicate", "label", "next_label", "value_type", "qualifier"});
+        if (type != "string" || f.at("label") != "OPN" ||
+            f.at("next_label") != "Model" ||
+            qualifier != "issuer=AMD;namespace=opn;profile=1")
+          invalid("unsupported PDF field mapping");
+        typed = pdf_row.at("opn");
+      } else if (tables) {
         auto section = text(f, "section", 128);
         if (!table_cache.contains(section))
           table_cache[section] =

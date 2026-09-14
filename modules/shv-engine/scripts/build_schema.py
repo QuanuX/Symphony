@@ -48,6 +48,11 @@ D['TableSubjectSpec']=obj({'id':id,'manufacturer':txt(256),'model':txt(256),'har
 D['LegacySubjectSpec']=D['SubjectSpec']
 D['SubjectSpec']={'oneOf':[ref('LegacySubjectSpec'),ref('TableSubjectSpec')]}
 
+
+pdf=json.loads((R/'modules/shv-pdf-adapter/schemas/v1/pdf.schema.json').read_text())
+D['PDFSubjectSpec']=obj({'id':id,'manufacturer':txt(256),'model':txt(256),'hardware_class':id,'source_id':id,'heading_section':{'const':'table8'},'interpretation_profile':{'const':'pdf_opn.v1'},'document':obj({'decoder_root':txt(),'extraction':pdf['$defs']['Extraction']}),'fields':arr(obj({'predicate':id,'label':{'const':'OPN'},'next_label':{'const':'Model'},'value_type':{'const':'string'},'qualifier':{'const':'issuer=AMD;namespace=opn;profile=1'}}),16)})
+D['SubjectSpec']['oneOf'].append(ref('PDFSubjectSpec'))
+
 schema={'$schema':'https://json-schema.org/draft/2020-12/schema','$id':'symphony.shv.kernel-schema.v1','$comment':'Graph, Node, Edge copied verbatim from generic graph adapter contract. Structural schema checks do not replace source replay, canonical seals, sorting or runtime budgets.','$defs':D}
 (B/'shv.schema.json').write_text(json.dumps(schema,indent=2)+'\n')
 templates={'inspect':{},'coverage_default':{'as_of':None},'coverage_plan':{'profile':None,'subjects':[]},'catalogue_build':{'source_root':None,'sources':[],'subjects':[]},'catalogue_query':{'source_root':None,'catalogue':None,'subject_ids':[]},'evaluate':{'source_root':None,'catalogue':None,'subject_ids':[],'requirements':[]},'graph_project':{'source_root':None,'catalogue':None},'graph_validate':{'source_root':None,'graph':None}}

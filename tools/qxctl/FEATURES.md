@@ -902,6 +902,7 @@
         "tools/qxctl/internal/knowledgeengine/shv_lifecycle_validation.go",
         "tools/qxctl/internal/knowledgeengine/shv_schema.go",
         "tools/qxctl/internal/knowledgeengine/shv_source.go",
+        "tools/qxctl/internal/knowledgeengine/shv_document.go",
         "tools/qxctl/internal/knowledgeengine/shv_test.go",
         "tools/qxctl/internal/knowledgeengine/shv_validation.go",
         "tools/qxctl/internal/knowledgeengine/shv_tables.go",

@@ -188,3 +188,49 @@ var errTestStructural = &testError{}
 type testError struct{}
 
 func (*testError) Error() string { return "subcommand required" }
+
+func TestSiblingRoutesRejectAmbiguity(t *testing.T) {
+	for _, kind := range []string{"names with different flags", "alias shadows name", "aliases collide", "self alias", "structural alias", "hidden alias"} {
+		t.Run(kind, func(t *testing.T) {
+			root := Structural("qxctl", cobra.NoArgs, errTestStructural)
+			a := Attach(&cobra.Command{Use: "one", RunE: func(*cobra.Command, []string) error { return nil }}, testSpec("qxcmd:test:one"))
+			b := Attach(&cobra.Command{Use: "two", RunE: func(*cobra.Command, []string) error { return nil }}, testSpec("qxcmd:test:two"))
+			switch kind {
+			case "names with different flags":
+				b.Use = "one"
+				a.Flags().String("alpha", "", "alpha")
+				b.Flags().String("beta", "", "beta")
+			case "alias shadows name":
+				a.Aliases = []string{"two"}
+			case "aliases collide":
+				a.Aliases = []string{"same"}
+				b.Aliases = []string{"same"}
+			case "self alias":
+				a.Aliases = []string{"one"}
+			case "structural alias":
+				a = Structural("group", cobra.NoArgs, errTestStructural)
+				a.Aliases = []string{"two"}
+				a.AddCommand(Attach(&cobra.Command{Use: "leaf", RunE: func(*cobra.Command, []string) error { return nil }}, testSpec("qxcmd:test:leaf")))
+			case "hidden alias":
+				a.Hidden = true
+				a.Aliases = []string{"two"}
+			}
+			root.AddCommand(a, b)
+			if err := Validate(root); err == nil || !strings.Contains(err.Error(), "ambiguous command route") {
+				t.Fatalf("collision error = %v", err)
+			}
+		})
+	}
+}
+func TestSiblingRoutesAllowScopedReuse(t *testing.T) {
+	root := Structural("qxctl", cobra.NoArgs, errTestStructural)
+	for _, name := range []string{"shv", "scv"} {
+		group := Structural(name, cobra.NoArgs, errTestStructural)
+		leaf := Attach(&cobra.Command{Use: "inspect", Aliases: []string{"show"}, RunE: func(*cobra.Command, []string) error { return nil }}, testSpec("qxcmd:test:"+name))
+		group.AddCommand(leaf)
+		root.AddCommand(group)
+	}
+	if err := Validate(root); err != nil {
+		t.Fatal(err)
+	}
+}

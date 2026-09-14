@@ -424,6 +424,9 @@ func commandRecords(root *cobra.Command) ([]CommandRecord, error) {
 		default:
 			return fmt.Errorf("command %q has unknown command-registry role %q", path, role)
 		}
+		if err := validateChildRoutes(command); err != nil {
+			return err
+		}
 		for _, child := range command.Commands() {
 			if err := visit(child); err != nil {
 				return err
@@ -669,4 +672,22 @@ func validTaggedDigest(value string) bool {
 	}
 	_, err := hex.DecodeString(strings.TrimPrefix(value, "sha256:"))
 	return err == nil
+}
+
+// validateChildRoutes checks Cobra's actual sibling routing namespace, including
+// structural and hidden routes. Different flags do not disambiguate a name.
+func validateChildRoutes(parent *cobra.Command) error {
+	seen := map[string]string{}
+	for _, child := range parent.Commands() {
+		for _, token := range append([]string{child.Name()}, child.Aliases...) {
+			if token == "" || strings.ContainsAny(token, " \t\r\n") {
+				return fmt.Errorf("invalid command route token under %q", parent.CommandPath())
+			}
+			if prior, exists := seen[token]; exists {
+				return fmt.Errorf("ambiguous command route %q under %q: %q and %q", token, parent.CommandPath(), prior, child.CommandPath())
+			}
+			seen[token] = child.CommandPath()
+		}
+	}
+	return nil
 }

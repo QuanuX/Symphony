@@ -50,9 +50,6 @@ func newSHVSourceLeaf(leaf, key, op string) *cobra.Command {
 		}
 		response, err := knowledgeengine.InvokeSHVSource(context.Background(), prefix, version, cwd, op, payload)
 		if err != nil {
-			if response.Protocol != "" {
-				_ = printIndentedJSON(response)
-			}
 			return err
 		}
 		return printIndentedJSON(response)

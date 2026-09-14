@@ -1,4 +1,4 @@
-# SHV kernel specification 0.2.0-dev
+# SHV kernel specification 0.3.0-dev
 
 ## Exact operations
 
@@ -18,7 +18,7 @@ Mappings explicitly bind predicate, adjacent labels, type and qualifier. Types a
 
 The catalogue retains manifests and complete mappings, sorted subjects/assertions and exact source IDs. Consumers replay the whole build from the explicit source_root before query, evaluation, projection or graph validation. Missing/changed files, altered source-derived assertions or an altered graph fail even if resealed. Replay verifies correspondence to selected bytes/mappings; it does not establish publisher truth or the appropriateness of a caller's mapping.
 
-## Explicit scoped tables in 0.2.0-dev
+## Explicit scoped tables in 0.3.0-dev
 
 New subject mapping exact fields: `id`, `manufacturer`, `model`, `hardware_class`, `source_id`, `heading_section`, `interpretation_profile`, `fields`. `interpretation_profile` is exactly `scoped_tables.v1`. The identity and heading semantics and 16-field/32-subject/256-assertion bounds remain as before. Each field selects its own distinct-from-heading exact `tag#id` section containing exactly one closed, nonnested table. H1 is uniquely selected within the heading section and equals the model. Text normalization/entities and ignored script/style/comment semantics match the existing finite parser. No browser repair, execution or remote acquisition.
 
@@ -46,3 +46,5 @@ Graph exchange protocol symphony.graph.exchange.v1 preserves exact owner engine/
 The shared foundation keeps one MiB requests, four MiB responses, 65,536-byte JSON strings, depth64 and parser-value bounds. Source bytes travel by verified references. Selectors cap depth16/nodes128; input inventory128; requirements32; fields256 bytes for labels and4,096 for values. Bounded exhaustion rejects; no clipping or partial success. This is a useful specimen kernel, not the broad core atlas, partition protocol, firmware/Node observation owner, performance guarantee or provisioning action. qxctl must expose every delivered operation and exact installed schema/template.
 
 The finite section selector is lowercase HTML tag followed by `#` and a literal nonempty ID, with exactly one `#`; this is not a CSS interpreter. Uniqueness binds the complete tag and ID pair. A different tag with the same ID does not match.
+
+The consolidated SHV gate adds provenance-bearing PDF ingestion (kernel 0.3.0-dev) and explicit kernel dependency admission (partition 0.2.0-dev), described in knowledge/shv/DOCUMENT-INGESTION.md. Earlier installations remain explicitly selectable.

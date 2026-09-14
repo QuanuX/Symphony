@@ -5,7 +5,7 @@
 namespace symphony::knowledge::shv {
 namespace engine = symphony::knowledge::engine;
 using Json = engine::Json;
-inline constexpr auto version = "0.2.0-dev";
+inline constexpr auto version = "0.3.0-dev";
 inline constexpr auto engine_id = "symphony-shv";
 [[noreturn]] void invalid(const std::string &why);
 void fields(const Json &, std::initializer_list<const char *>);

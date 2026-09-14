@@ -61,3 +61,7 @@ The separate `shv-partition-engine` now implements `PARTITIONS.md`: immutable de
 ## Qualified OEM identifiers
 
 `IDENTIFIERS.md` records the tested AMD boxed/tray mapping profile using existing exact-string extraction and qualified equality. Original source IDs, namespace qualifiers and unmodified values remain explicit. Identity resolution is not inferred.
+
+## Consolidated document-ingestion gate
+
+`DOCUMENT-INGESTION.md` defines kernel 0.3.0-dev ingestion and replay of the retained PDF derivation through the existing operations. This supersedes the earlier HTML-only interpretation boundary for the explicit pdf_opn.v1 mapping. It preserves caller namespaces and original documentary lineage.

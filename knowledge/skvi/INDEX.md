@@ -11605,3 +11605,18 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - relationships:
   - `knowledge/shv/PDF-EVIDENCE.md`
 - notes: `Original lineage retained; no OPN/tray namespace equivalence or general PDF decoder ownership.`
+
+- path: `knowledge/shv/DOCUMENT-INGESTION.md`
+- title: `SHV provenance-bearing document ingestion`
+- surface_type: `reference document`
+- truth_role: `owner-declared ingestion and evolution contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `document replay and caller-owned class mappings`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `canonical catalogue publication`
+- relationships:
+  - `knowledge/shv/PDF-ADAPTER.md`
+- notes: `No inferred namespace equivalence or prepopulated hardware universe.`

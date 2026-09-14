@@ -367,6 +367,12 @@ func shvValidateBuildVersion(p, r map[string]any, version string) error {
 		s := shvMap(v)
 		m := maps[shvText(s["id"])]
 		fields := shvList(m["fields"])
+		if m["interpretation_profile"] == "pdf_opn.v1" {
+			if e := validateSHVDocumentSubject(p, m, s, version); e != nil {
+				return e
+			}
+			continue
+		}
 		if len(fields) == 0 {
 			continue
 		}

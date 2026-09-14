@@ -1,6 +1,6 @@
 import argparse,copy,hashlib,json,subprocess,time,os,stat
 from pathlib import Path
-p=argparse.ArgumentParser();g=p.add_mutually_exclusive_group(required=True);g.add_argument('--engine');g.add_argument('--prefix');a=p.parse_args();engine=a.engine or str(Path(a.prefix)/'libexec/symphony/shv-partition-engine/0.1.0-dev/symphony-shv-partition');count=0;rejects=0
+p=argparse.ArgumentParser();g=p.add_mutually_exclusive_group(required=True);g.add_argument('--engine');g.add_argument('--prefix');a=p.parse_args();engine=a.engine or str(Path(a.prefix)/'libexec/symphony/shv-partition-engine/0.2.0-dev/symphony-shv-partition');count=0;rejects=0
 H=lambda n:'sha256:'+hashlib.sha256(str(n).encode()).hexdigest()
 def seal(v):v=copy.deepcopy(v);v.pop('digest',None);v['digest']='sha256:'+hashlib.sha256(json.dumps(v,sort_keys=True,separators=(',',':')).encode()).hexdigest();return v
 def call(op,p,fail=False):
@@ -72,7 +72,7 @@ def receipt_read(root, relative, maximum):
  finally:os.close(fd)
 
 def installed_engine(prefix):
- root=Path(prefix).absolute();module='shv-partition-engine';engine='symphony-shv-partition';version='0.1.0-dev'
+ root=Path(prefix).absolute();module='shv-partition-engine';engine='symphony-shv-partition';version='0.2.0-dev'
  receipt_path=f'share/symphony/receipts/{module}/{version}/install-receipt.json'
  raw,_=receipt_read(root,receipt_path,1048576);receipt=json.loads(raw)
  unsigned=copy.deepcopy(receipt);signed=unsigned.pop('receipt_digest');assert signed=='sha256:'+hashlib.sha256(json.dumps(unsigned,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()).hexdigest()

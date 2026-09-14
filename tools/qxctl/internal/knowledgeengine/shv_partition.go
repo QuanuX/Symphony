@@ -9,6 +9,7 @@ import (
 )
 
 const SHVPartitionVersion = "0.1.0-dev"
+const SHVDocumentPartitionVersion = "0.2.0-dev"
 
 var shvPartitionSpec = engineSpec{label: "shv-partition-engine", moduleID: "shv-partition-engine", engineID: "symphony-shv-partition", componentKind: "vector_engine", vectorID: "shv", processProtocol: processProtocol}
 var shvPartitionOutputs = map[string]string{"inspect": "symphony.knowledge.engine-descriptor.v2", "partition_build": "symphony.shv.partition.v1", "manifest_build": "symphony.shv.partition-manifest.v1", "manifest_query": "symphony.shv.partition-query.v1"}
@@ -51,7 +52,7 @@ func InvokeSHVPartition(ctx context.Context, prefix, version, cwd, op string, pa
 	if e != nil {
 		return r, e
 	}
-	if e = ValidateSHVPartitionResult(op, payload, r.Result); e != nil {
+	if e = ValidateSHVPartitionResultVersion(op, payload, r.Result, version); e != nil {
 		return Response{}, e
 	}
 	after, e := InspectSHVPartition(prefix, version)
@@ -61,8 +62,8 @@ func InvokeSHVPartition(ctx context.Context, prefix, version, cwd, op string, pa
 	return r, nil
 }
 func InspectSHVPartition(prefix, version string) (Installation, error) {
-	if prefix == "" || version != SHVPartitionVersion {
-		return Installation{}, fmt.Errorf("SHV requires explicit prefix and exact supported version %s", SHVPartitionVersion)
+	if prefix == "" || (version != SHVPartitionVersion && version != SHVDocumentPartitionVersion) {
+		return Installation{}, fmt.Errorf("SHV requires explicit prefix and exact supported version %s or %s", SHVPartitionVersion, SHVDocumentPartitionVersion)
 	}
 	s := shvPartitionSpec
 	e, err := InspectReceiptV2EntryPoint(prefix, version, ReceiptV2EntryPointSpec{Label: s.label, ComponentID: s.moduleID, ComponentKind: s.componentKind, ModuleID: s.moduleID, PackageID: s.moduleID, VectorID: &s.vectorID, EngineID: &s.engineID, EntryPointID: s.engineID, EntryPointKind: "executable", EntryPointRelativePath: filepath.ToSlash(filepath.Join("libexec", "symphony", s.moduleID, version, s.engineID)), RequiredProtocols: []string{processProtocol}})

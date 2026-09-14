@@ -181,6 +181,9 @@
                 },
                 {
                   "$ref": "#/$defs/Refresh/$defs/Kernel/$defs/TableSubjectSpec"
+                },
+                {
+                  "$ref": "#/$defs/Refresh/$defs/Kernel/$defs/PDFSubjectSpec"
                 }
               ]
             },
@@ -1691,6 +1694,231 @@
                 "source_id",
                 "heading_section",
                 "field_section",
+                "fields"
+              ],
+              "additionalProperties": false
+            },
+            "PDFSubjectSpec": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9._-]{1,128}$"
+                },
+                "manufacturer": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "model": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "hardware_class": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9._-]{1,128}$"
+                },
+                "source_id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9._-]{1,128}$"
+                },
+                "heading_section": {
+                  "const": "table8"
+                },
+                "interpretation_profile": {
+                  "const": "pdf_opn.v1"
+                },
+                "document": {
+                  "type": "object",
+                  "properties": {
+                    "decoder_root": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 4096
+                    },
+                    "extraction": {
+                      "type": "object",
+                      "properties": {
+                        "protocol": {
+                          "const": "symphony.shv.pdf-extraction.v1"
+                        },
+                        "profile": {
+                          "const": "amd-69290-table8.v1"
+                        },
+                        "source": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z0-9._-]{1,128}$"
+                            },
+                            "path": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 4096
+                            },
+                            "bytes": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 1048576
+                            },
+                            "digest": {
+                              "type": "string",
+                              "pattern": "^sha256:[0-9a-f]{64}$"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "path",
+                            "bytes",
+                            "digest"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "decoder": {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 4096
+                            },
+                            "digest": {
+                              "type": "string",
+                              "pattern": "^sha256:[0-9a-f]{64}$"
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "digest"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "page_index": {
+                          "const": 12
+                        },
+                        "page_count": {
+                          "const": 16
+                        },
+                        "text": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 131072
+                        },
+                        "text_digest": {
+                          "type": "string",
+                          "pattern": "^sha256:[0-9a-f]{64}$"
+                        },
+                        "rows": {
+                          "type": "array",
+                          "minItems": 28,
+                          "maxItems": 28,
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "opn": {
+                                "type": "string",
+                                "pattern": "^100-[0-9]{9}$"
+                              },
+                              "model": {
+                                "type": "string",
+                                "pattern": "^[0-9A-Z]{4,8}$"
+                              },
+                              "source_metric_text": {
+                                "type": "string",
+                                "pattern": "^[0-9]+\\.[0-9]+$"
+                              }
+                            },
+                            "required": [
+                              "opn",
+                              "model",
+                              "source_metric_text"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "namespace": {
+                          "const": "AMD.OPN"
+                        },
+                        "namespace_equivalence": {
+                          "const": "not_asserted"
+                        },
+                        "documentary_lineages": {
+                          "const": 1
+                        },
+                        "digest": {
+                          "type": "string",
+                          "pattern": "^sha256:[0-9a-f]{64}$"
+                        }
+                      },
+                      "required": [
+                        "protocol",
+                        "profile",
+                        "source",
+                        "decoder",
+                        "page_index",
+                        "page_count",
+                        "text",
+                        "text_digest",
+                        "rows",
+                        "namespace",
+                        "namespace_equivalence",
+                        "documentary_lineages",
+                        "digest"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "decoder_root",
+                    "extraction"
+                  ],
+                  "additionalProperties": false
+                },
+                "fields": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "predicate": {
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9._-]{1,128}$"
+                      },
+                      "label": {
+                        "const": "OPN"
+                      },
+                      "next_label": {
+                        "const": "Model"
+                      },
+                      "value_type": {
+                        "const": "string"
+                      },
+                      "qualifier": {
+                        "const": "issuer=AMD;namespace=opn;profile=1"
+                      }
+                    },
+                    "required": [
+                      "predicate",
+                      "label",
+                      "next_label",
+                      "value_type",
+                      "qualifier"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 16
+                }
+              },
+              "required": [
+                "id",
+                "manufacturer",
+                "model",
+                "hardware_class",
+                "source_id",
+                "heading_section",
+                "interpretation_profile",
+                "document",
                 "fields"
               ],
               "additionalProperties": false
@@ -3693,7 +3921,8 @@
             "version": {
               "enum": [
                 "0.1.0-dev",
-                "0.2.0-dev"
+                "0.2.0-dev",
+                "0.3.0-dev"
               ]
             },
             "executable_digest": {

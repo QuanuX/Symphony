@@ -10,9 +10,10 @@ import (
 
 const SHVVersion = "0.1.0-dev"
 const SHVTableVersion = "0.2.0-dev"
+const SHVDocumentVersion = "0.3.0-dev"
 
 func shvKernelVersion(version string) bool {
-	return version == SHVVersion || version == SHVTableVersion
+	return version == SHVVersion || version == SHVTableVersion || version == SHVDocumentVersion
 }
 
 var shvEngineSpec = engineSpec{label: "SHV", moduleID: "shv-engine", engineID: "symphony-shv", componentKind: "vector_engine", vectorID: "shv", processProtocol: processProtocol}
@@ -41,7 +42,7 @@ func SHVInputProtocol(op string, adapter bool) string {
 }
 func inspectSHV(prefix, version string, adapter bool) (Installation, error) {
 	if prefix == "" || (adapter && version != SHVVersion) || (!adapter && !shvKernelVersion(version)) {
-		return Installation{}, fmt.Errorf("SHV requires an explicit prefix and supported exact version (kernel %s or %s; adapter %s)", SHVVersion, SHVTableVersion, SHVVersion)
+		return Installation{}, fmt.Errorf("SHV requires an explicit prefix and supported exact version (kernel %s, %s or %s; adapter %s)", SHVVersion, SHVTableVersion, SHVDocumentVersion, SHVVersion)
 	}
 	s := shvEngineSpec
 	if adapter {
