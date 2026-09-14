@@ -10801,3 +10801,75 @@ This PR authorizes none of the following:
   - `tools/qxctl/cmd/qxctl/shv_refresh.schema.json`
   - `tools/qxctl/cmd/qxctl/shv_refresh_test.go`
   - `tools/qxctl/scripts/build_shv_refresh_schema.py`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-REFRESH-COMPARISON`
+- record_version: `3`
+- title: `Compare exact natively replayed SHV refresh bundles`
+- status: `canonical`
+- change_started_at: `2026-09-14T05:43:40Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for verified SHV comparison`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-comparison-continuation.md`
+- skvi_references:
+  - `knowledge/shv/REFRESH-COMPARISON.md`
+  - `knowledge/shv/REFRESH.md`
+- change_summary: |
+    Adds qxctl refresh compare with exact caller-selected endpoints, native replay on both sides, 15 dependency dimensions and directional subject/assertion differences.
+- relationship_changes: |
+    Unchanged C++ engines retain semantic interpretation and graph ownership. qxctl structurally compares independently replayed artifacts and records each observed source head.
+- doctrine_changes: |
+    No causal attribution, cross-source identity inference or hardware compatibility conclusion. Coverage, requirements, mapping, source bodies and exact engines remain separately identified.
+- compatibility_consequences: |
+    One additional read-only command with additive comparison schema definitions and optional compare template selection. Existing build template and native installations remain unchanged.
+- publication_consequences: |
+    Local source and append-only evidence closure. No vendor acquisition, new authority grant, service startup, remote publication or deployment.
+- projection_consequences: |
+    306 command identities, 105 features and 274 reviewed administration expectations. New SKVI reference identifies the structural comparison contract.
+- evidence:
+  - `../shv-06/evidence/FOCUSED_TESTS.json records nine groups and 30 passing events with no failures or skips.`
+  - `../shv-06/evidence/final/ACCEPTANCE.json records 19 comparison calls, seven rejections and 12 comparison schema/seal checks, plus 18 baseline calls and five additional native materializations.`
+  - `../shv-06/VERIFICATION.md records scope and cases; PARTITION_PLAN.md remains prospective.`
+  - `../shv-06/evidence/SOURCE_BUILD_PARITY.json binds clean source and byte-identical CLI rebuilds.`
+  - `../shv-06/MANIFEST.json seals bounded evidence and NEXT.md preserves subsequent scope.`
+- non_authorizations:
+  - `Causal attribution, hardware compatibility inference, cross-source identity equivalence or user architecture selection.`
+  - `Durable catalogue publication, resumable partitions, automatic acquisition or mandatory graph storage vendor.`
+  - `Remote publication, deployment, firmware mutation or original archive edits.`
+- notes: |
+    Closes only verified structural comparison. Partition-manifest work remains proposed. Full suites remain milestone work. Start time is shv_refresh_compare.go creation timestamp; local completion uses established post_merge disposition without claiming a remote merge.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T05:50:37Z`
+- recorded_at: `2026-09-14T05:52:11Z`
+- revision_value: `fc500ca332cb26a79be2ef103c157cd15459cff4`
+- tree_digest: `sha256:f5b0e4ed96b5195f749cdfa8813dcaba41cca48983a70acff4a16688d27f2d9a`
+- ratification_evidence_digest: `sha256:3c5561374cf449daa91c8e1610e70409be9414ced6e23560f47f369a8a76b431`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/shv/REFRESH-COMPARISON.md`
+  - `knowledge/shv/REFRESH.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv_refresh.go`
+  - `tools/qxctl/cmd/qxctl/shv_refresh.schema.json`
+  - `tools/qxctl/cmd/qxctl/shv_refresh_compare.go`
+  - `tools/qxctl/cmd/qxctl/shv_refresh_compare_test.go`
+  - `tools/qxctl/scripts/build_shv_refresh_schema.py`
