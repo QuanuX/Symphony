@@ -118,7 +118,8 @@ func safeSCVEngineCode(code string) *string {
 // This does not make misplaced/unknown flags valid or change Cobra's grammar.
 func scvJSONRequested(root *cobra.Command, args []string) bool {
 	activation := len(args) >= 3 && args[0] == "shv" && args[1] == "source" && args[2] == "activation"
-	if len(args) == 0 || (args[0] != "scv" && !activation) {
+	refresh := len(args) >= 2 && args[0] == "shv" && args[1] == "refresh"
+	if len(args) == 0 || (args[0] != "scv" && !activation && !refresh) {
 		return false
 	}
 	consumesValue := map[string]bool{}

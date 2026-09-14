@@ -10876,6 +10876,164 @@
     {
       "aliases": [],
       "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-source.capture.import",
+        "engop:symphony:shv-source.graph.project",
+        "engop:symphony:shv.catalogue.build",
+        "engop:symphony:shv.coverage.plan",
+        "engop:symphony:shv.evaluate",
+        "engop:symphony:shv.graph.project"
+      ],
+      "command_id": "qxcmd:symphony:shv.refresh.build",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-source-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl shv refresh build [--input VALUE] [--json] [--prefix VALUE] [--source-id VALUE] [--source-prefix VALUE] [--source-root VALUE] [--source-version VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.qxctl.shv-refresh-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-refresh-bundle.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-refresh-bundle.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:shv.refresh.schema",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl shv refresh schema [--json] [--prefix VALUE] [--source-prefix VALUE] [--source-version VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-refresh-schema.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-refresh-schema.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:shv.refresh.template",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl shv refresh template [--json] [--prefix VALUE] [--source-prefix VALUE] [--source-version VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-refresh-template.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-refresh-template.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-source.capture.import",
+        "engop:symphony:shv-source.graph.project",
+        "engop:symphony:shv.catalogue.build",
+        "engop:symphony:shv.coverage.plan",
+        "engop:symphony:shv.evaluate",
+        "engop:symphony:shv.graph.project"
+      ],
+      "command_id": "qxcmd:symphony:shv.refresh.verify",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-source-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl shv refresh verify [--input VALUE] [--json] [--prefix VALUE] [--source-id VALUE] [--source-prefix VALUE] [--source-root VALUE] [--source-version VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.qxctl.shv-refresh-bundle.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-refresh-verification.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-refresh-verification.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
       "backend_operation_ids": [],
       "command_id": "qxcmd:symphony:shv.schema",
       "deprecated_in": null,
@@ -14328,6 +14486,6 @@
   "format_version": 1,
   "protocol": "symphony.qxctl.command-registry.v1",
   "receipt_digest": null,
-  "registry_digest": "sha256:4214208a23a964712e9c04d83e5e9b1c352c4a41a72e8f85e91c446cfb0f7a3d",
+  "registry_digest": "sha256:a0f635271a896ac7c0f876d4a54193b5e2cd17acff07fa4026e18ad4bb932fe1",
   "registry_kind": "expected"
 }

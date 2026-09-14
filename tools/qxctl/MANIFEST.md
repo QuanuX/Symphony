@@ -312,3 +312,7 @@ The SCV gate adds exact graph-index schema discovery, keeping connector receipt-
 ### Protected SHV source activation
 
 `shv source activation propose|apply|status|recover|schema|template` implements the separately owned local journal and authority boundary in `knowledge/shv/ACTIVATION.md`. Exact source-engine0.1.0-dev installation, TOPS/source/state-root selection and SSIAG-backed publication preserve the pure native owner. Prepared/authorized/committed history, original-installation recovery and historical replay are explicit; source adoption does not select hardware, update captures or publish a graph.
+
+### Source-bound SHV refresh
+
+`shv refresh build|verify|schema|template` composes unchanged C++ owners under `knowledge/shv/REFRESH.md`. Full source/request/installation provenance binds replayable capture, catalogue, coverage, evaluation and separate owner graphs. New builds require the protected current source; historical verification uses committed history. No source approval, acquisition or catalogue publication is performed.

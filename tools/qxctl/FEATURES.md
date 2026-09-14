@@ -911,7 +911,11 @@
         "tools/qxctl/internal/shvstate/validation.go",
         "tools/qxctl/internal/shvstate/authorization.go",
         "tools/qxctl/internal/shvstate/storage_unix.go",
-        "tools/qxctl/internal/shvstate/storage_unsupported.go"
+        "tools/qxctl/internal/shvstate/storage_unsupported.go",
+        "tools/qxctl/cmd/qxctl/shv_refresh.go",
+        "tools/qxctl/cmd/qxctl/shv_refresh_test.go",
+        "tools/qxctl/cmd/qxctl/shv_refresh.schema.json",
+        "tools/qxctl/scripts/build_shv_refresh_schema.py"
       ],
       "kind": "feature",
       "non_claims": [

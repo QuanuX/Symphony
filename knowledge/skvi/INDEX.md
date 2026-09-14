@@ -11295,3 +11295,20 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - scope: Exact local source journal, SSIAG authorization, publication and recovery; pure source owner remains separate.
 - relationships: depends_on -> `knowledge/shv/SOURCES.md`; depends_on -> `tools/qxctl/MANIFEST.md`
 - notes: Source engine0.1.0-dev retained; no automatic graph or hardware selection.
+
+- path: `knowledge/shv/REFRESH.md`
+- surface_type: `reference document`
+- truth_role: `owner-declared source-bound SHV composition contract`
+- owner: `qxctl maintainers`
+- status: `canonical`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `durable catalogue publication`
+- title: `SHV source-bound refresh contract`
+- scope: `bounded local qxctl composition over exact C++ owners`
+- relationships:
+  - `knowledge/shv/ACTIVATION.md`
+  - `knowledge/shv/SOURCES.md`
+  - `knowledge/shv/KERNEL.md`
+- notes: `Replayable materialization, not durable catalogue publication or publisher authentication.`
