@@ -10964,3 +10964,79 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/knowledgeengine/shv_partition_descriptor.go`
   - `tools/qxctl/internal/knowledgeengine/shv_partition_test.go`
   - `tools/qxctl/internal/knowledgeengine/shv_partition_validation.go`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-RESUMABLE-MATERIALIZATION`
+- record_version: `3`
+- title: `Add private resumable SHV materialization jobs`
+- status: `canonical`
+- change_started_at: `2026-09-14T07:12:15Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for private SHV materialization`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-materialization-continuation.md`
+- skvi_references:
+  - `knowledge/shv/MATERIALIZATION.md`
+  - `knowledge/shv/PARTITIONS.md`
+- change_summary: |
+    Adds seven qxctl operations for private bounded materialization jobs, atomic task checkpoints, recovery and replayed native manifest export.
+- relationship_changes: |
+    qxctl owns private orchestration. Existing installed C++ source, kernel and partition owners retain evidence semantics. Their packages are unchanged.
+- doctrine_changes: |
+    Caller endpoints and bundle snapshots stay pinned. Offline status does not claim fresh replay; export replays each task. Local checkpoints are not catalogue heads or publisher authentication.
+- compatibility_consequences: |
+    Additive commands and separately versioned checkpoint protocol. Jobs contain 1–8 tasks with one-MiB JSON admission bounds. Prior jobs and native contracts remain unchanged.
+- publication_consequences: |
+    Local source and append-only closure only. No source adoption, acquisition, canonical catalogue head or external publication.
+- projection_consequences: |
+    320 commands,106 features,278 reviewed expectations,27 invariants and16 adapters. SKVI records the separate orchestration contract.
+- evidence:
+  - `../shv-08/evidence/FOCUSED_TESTS.json records 15 Go groups and 37 test pass events.`
+  - `../shv-08/evidence/release/ACCEPTANCE.json records 21 job calls, seven rejections, 14 result schema checks and actual SIGKILL recovery; the 18-call refresh baseline is retained.`
+  - `../shv-08/evidence/SOURCE_BUILD_PARITY.json binds clean source and byte-identical rebuilt CLI.`
+  - `../shv-08/MANIFEST.json seals evidence and NEXT.md preserves remaining scope.`
+- non_authorizations:
+  - `Canonical catalogue heads or catalogue publication authority.`
+  - `Automatic source acquisition, endpoint rebind, implicit hardware or provider choice.`
+  - `Remote publication, deployment, firmware changes or original archive edits.`
+- notes: |
+    Closes private task-boundary materialization recovery. Full suites remain milestone work. Start time is shv_materialization.go creation timestamp. Existing native installations remain unchanged. Established local post_merge disposition does not claim a remote merge.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T07:26:58Z`
+- recorded_at: `2026-09-14T07:29:51Z`
+- revision_value: `b1e21e1cf6e40e9adb05336c44b083dda1f243df`
+- tree_digest: `sha256:c79bdb1835c9cc2b5ced7e3e4138a6d07dc5dd23715838bedb89b1b5727de3c1`
+- ratification_evidence_digest: `sha256:e8f926abfea84d6c82af709c3871a9308462a99d5033985be0bf24a2ca668298`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/shv/MATERIALIZATION.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/cli_errors.go`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv.go`
+  - `tools/qxctl/cmd/qxctl/shv_materialization.go`
+  - `tools/qxctl/cmd/qxctl/shv_materialization.schema.json`
+  - `tools/qxctl/cmd/qxctl/shv_materialization_discovery.go`
+  - `tools/qxctl/cmd/qxctl/shv_materialization_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_partition_validation.go`
+  - `tools/qxctl/internal/shvjob/storage_unix.go`
+  - `tools/qxctl/internal/shvjob/storage_unsupported.go`
+  - `tools/qxctl/internal/shvjob/store.go`
+  - `tools/qxctl/internal/shvjob/store_test.go`
