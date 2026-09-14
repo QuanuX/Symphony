@@ -36,7 +36,9 @@ A future driver must declare its storage behavior, exact installation/descriptor
 
 ## Remaining atlas work
 
-Partitioning and resumable corpus lifecycle; mutable approved source-location registries and refresh history; broader manufacturer/form-factor sources; generic interpretation profiles beyond this finite HTML grammar; conflict/freshness/evidence policies; hardware relationship inference with explicit scope; measurements and active observations through their proper owners; vendor database drivers and durable indexes; and Composer consumption remain future increments. Existing SCV contracts provide reuse candidates without transferring ownership implicitly.
+Protected source history and activation, source-bound refresh/comparison, immutable partitions, bounded resumable materialization, explicit dependency resolution and source-data relocation are now implemented under their separate contracts: `ACTIVATION.md`, `REFRESH.md`, `REFRESH-COMPARISON.md`, `PARTITIONS.md`, `MATERIALIZATION.md`, `RESOLUTION.md` and `RELOCATION.md`. Relocation adds v2 derived checkpoints while preserving v1 jobs; it does not relocate authority stores or engine installations.
+
+Remaining atlas work includes broader manufacturer/form-factor source rosters and acquisition; interpretation profiles beyond the finite HTML grammar; larger staged inventories; canonical catalogue publication with its own authority and concurrency contract; conflict/freshness/evidence policies; scoped hardware relationships; active observations through their proper owners; vendor database drivers/durable indexes; and Composer consumption. Existing SCV contracts provide reuse candidates without transferring ownership implicitly. A complete declared manifest is not a comprehensive hardware catalogue.
 
 The finite section selector is lowercase HTML tag followed by `#` and a literal nonempty ID, with exactly one `#`; this is not a CSS interpreter. Uniqueness binds the complete tag and ID pair. A different tag with the same ID does not match.
 
