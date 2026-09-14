@@ -1870,6 +1870,9 @@
             "qxcmd:symphony:shv.partition.manifest",
             "qxcmd:symphony:shv.partition.resolution.run",
             "qxcmd:symphony:shv.pdf.extract",
+            "qxcmd:symphony:shv.pdf.graph.project",
+            "qxcmd:symphony:shv.pdf.graph.roundtrip",
+            "qxcmd:symphony:shv.pdf.graph.validate",
             "qxcmd:symphony:shv.pdf.verify",
             "qxcmd:symphony:shv.refresh.build",
             "qxcmd:symphony:shv.refresh.compare",
@@ -5920,11 +5923,13 @@
         {
           "command_ids": [
             "qxcmd:symphony:shv.dossier.graph",
-            "qxcmd:symphony:shv.graph.adapter.roundtrip"
+            "qxcmd:symphony:shv.graph.adapter.roundtrip",
+            "qxcmd:symphony:shv.pdf.graph.roundtrip"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:shv-graph-adapter.roundtrip",
+            "engop:symphony:shv-pdf.graph.validate",
             "engop:symphony:shv-source.capture.import",
             "engop:symphony:shv-source.graph.project",
             "engop:symphony:shv.catalogue.build",
@@ -6094,11 +6099,17 @@
         {
           "command_ids": [
             "qxcmd:symphony:shv.pdf.extract",
+            "qxcmd:symphony:shv.pdf.graph.project",
+            "qxcmd:symphony:shv.pdf.graph.roundtrip",
+            "qxcmd:symphony:shv.pdf.graph.validate",
             "qxcmd:symphony:shv.pdf.verify"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
-            "engop:symphony:shv-pdf.extract"
+            "engop:symphony:shv-graph-adapter.roundtrip",
+            "engop:symphony:shv-pdf.extract",
+            "engop:symphony:shv-pdf.graph.project",
+            "engop:symphony:shv-pdf.graph.validate"
           ],
           "evidence": [
             "knowledge/shv/KERNEL.md",
@@ -7473,9 +7484,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:9e7f40fa2c2f9bacd5d8c338a0da17380643e74c9891b921c308a9e9da4f2460",
+  "profile_digest": "sha256:b8cfa33bd762ce75687fd635ade9336e79619de1fd3a708e9692b15fbcba9e72",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 107,
-  "ssfv_registry_digest": "sha256:20fa43a1434dd401450fc28c63c45c754f8b81b7676f0252cf0ee56bac857ab4"
+  "ssfv_registry_digest": "sha256:52a5e84f922ad54f0c260f3e224d833c2023d790d231c16ddf0f1c8b1012b026"
 }

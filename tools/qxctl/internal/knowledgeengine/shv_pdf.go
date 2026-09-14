@@ -9,9 +9,10 @@ import (
 )
 
 const SHVPDFVersion = "0.1.0-dev"
+const SHVPDFGraphVersion = "0.2.0-dev"
 
 var shvPDFSpec = engineSpec{label: "shv-pdf-adapter", moduleID: "shv-pdf-adapter", engineID: "symphony-shv-pdf", componentKind: "adapter", vectorID: "shv", processProtocol: processProtocol}
-var shvPDFOutputs = map[string]string{"inspect": "symphony.knowledge.engine-descriptor.v2", "extract": "symphony.shv.pdf-extraction.v1"}
+var shvPDFOutputs = map[string]string{"inspect": "symphony.knowledge.engine-descriptor.v2", "extract": "symphony.shv.pdf-extraction.v1", "graph_project": "symphony.graph.exchange.v1", "graph_validate": "symphony.shv.pdf-graph-validation.v1"}
 
 func SHVPDFResultProtocol(op string) (string, bool) {
 	p, ok := shvPDFOutputs[op]
@@ -32,7 +33,17 @@ func InvokeSHVPDF(ctx context.Context, prefix, version, cwd, op string, payload 
 	if e = validateJSONObject(payload, maxRequestBytes); e != nil {
 		return Response{}, e
 	}
-	if op == "extract" {
+	if (op == "graph_project" || op == "graph_validate") && version != SHVPDFGraphVersion {
+		return Response{}, shvFail()
+	}
+	if op == "graph_validate" {
+		if !shvFields(p, "request", "graph") {
+			return Response{}, shvFail()
+		}
+		if e = validatePDFInput(shvMap(p["request"])); e != nil {
+			return Response{}, e
+		}
+	} else if op == "extract" || op == "graph_project" {
 		if e = validatePDFInput(p); e != nil {
 			return Response{}, e
 		}
@@ -47,7 +58,7 @@ func InvokeSHVPDF(ctx context.Context, prefix, version, cwd, op string, payload 
 	if e != nil {
 		return r, e
 	}
-	if e = ValidateSHVPDFResult(op, payload, r.Result); e != nil {
+	if e = ValidateSHVPDFResultVersion(op, payload, r.Result, version); e != nil {
 		return Response{}, e
 	}
 	after, e := InspectSHVPDF(prefix, version)
@@ -57,7 +68,7 @@ func InvokeSHVPDF(ctx context.Context, prefix, version, cwd, op string, payload 
 	return r, nil
 }
 func InspectSHVPDF(prefix, version string) (Installation, error) {
-	if prefix == "" || version != SHVPDFVersion {
+	if prefix == "" || (version != SHVPDFVersion && version != SHVPDFGraphVersion) {
 		return Installation{}, fmt.Errorf("SHV requires explicit prefix and exact supported version %s", SHVPDFVersion)
 	}
 	s := shvPDFSpec

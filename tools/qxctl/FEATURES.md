@@ -913,6 +913,8 @@
         "tools/qxctl/internal/shvstate/storage_unix.go",
         "tools/qxctl/internal/shvstate/storage_unsupported.go",
         "tools/qxctl/cmd/qxctl/shv_pdf.go",
+        "tools/qxctl/cmd/qxctl/shv_pdf_graph.go",
+        "tools/qxctl/internal/knowledgeengine/shv_pdf_graph.go",
         "tools/qxctl/cmd/qxctl/shv_pdf_test.go",
         "tools/qxctl/internal/knowledgeengine/shv_pdf.go",
         "tools/qxctl/internal/knowledgeengine/shv_pdf_descriptor.go",

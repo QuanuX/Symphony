@@ -48,6 +48,23 @@ int main() {
   auto reordered = heading + rows.substr(first.size()) + first + "[Public]";
   if (parse_table(reordered).at(0).at("model") != "7001")
     return 9;
+  auto rows_json = parse_table(good);
+  symphony::knowledge::shv_pdf::Json extraction = {
+      {"source", {{"id", "synthetic"}, {"digest", "sha256:synthetic"}}},
+      {"digest", "sha256:derivation"},
+      {"protocol", "symphony.shv.pdf-extraction.v1"},
+      {"profile", "amd-69290-table8.v1"},
+      {"decoder", {{"path", "synthetic"}}},
+      {"text_digest", "sha256:text"},
+      {"rows", rows_json}};
+  auto graph = symphony::knowledge::shv_pdf::project_graph(extraction);
+  if (graph.at("nodes").size() != 30 || graph.at("edges").size() != 57)
+    return 10;
+  if (graph.at("edges").at(0).at("properties").at("qualifier") !=
+      "issuer=AMD;namespace=opn;profile=1")
+    return 11;
+  if (graph.at("owner").at("engine_version") != "0.2.0-dev")
+    return 12;
   std::cout << "bounded table parser: success and 7 rejection cases, source "
                "order preserved\n";
 }

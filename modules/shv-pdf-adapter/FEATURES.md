@@ -29,7 +29,7 @@
       ],
       "distinctions": [],
       "evidence": [
-        "Focused SHV-15 original PDF extraction, tamper rejection and replay evidence."
+        "Focused SHV-15 extraction and SHV-16 assertion graph replay evidence."
       ],
       "feature_id": "ssfv:symphony:shv-pdf-adapter",
       "how": "Independent C++ adapter plus strict qxctl correspondence and replay.",
@@ -46,6 +46,7 @@
       "implementation_paths": [
         "modules/shv-pdf-adapter/CMakeLists.txt",
         "modules/shv-pdf-adapter/src/pdf.cpp",
+        "modules/shv-pdf-adapter/src/graph.cpp",
         "modules/shv-pdf-adapter/src/descriptor.cpp",
         "modules/shv-pdf-adapter/src/main.cpp"
       ],

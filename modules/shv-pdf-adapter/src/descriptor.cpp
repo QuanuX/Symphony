@@ -14,7 +14,9 @@ Json descriptor() {
   std::vector<engine::OperationSpec> specs;
   const std::vector<std::pair<std::string, std::string>> operations = {
       {"inspect", engine::descriptor_protocol_v2},
-      {"extract", "symphony.shv.pdf-extraction.v1"}};
+      {"extract", "symphony.shv.pdf-extraction.v1"},
+      {"graph_project", "symphony.graph.exchange.v1"},
+      {"graph_validate", "symphony.shv.pdf-graph-validation.v1"}};
   for (const auto &[name, output] : operations) {
     auto id = name, input = name;
     std::replace(id.begin(), id.end(), '_', '.');

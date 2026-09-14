@@ -63,6 +63,37 @@ func TestSHVPDFResultBoundary(t *testing.T) {
 			}
 		})
 	}
+	t.Run("graph correspondence", func(t *testing.T) {
+		x, _ := shvObject(good)
+		graph := pdfGraph(x)
+		raw, _ := json.Marshal(graph)
+		if e := ValidateSHVPDFResultVersion("graph_project", input, raw, SHVPDFGraphVersion); e != nil {
+			t.Fatal(e)
+		}
+		if ValidateSHVPDFResultVersion("graph_project", input, raw, SHVPDFVersion) == nil {
+			t.Fatal("legacy version accepted graph operation")
+		}
+		for _, kind := range []string{"qualifier", "citation", "identity", "lineage", "owner"} {
+			t.Run(kind, func(t *testing.T) {
+				v, _ := shvObject(raw)
+				switch kind {
+				case "qualifier":
+					shvMap(shvMap(v["edges"].([]any)[0])["properties"])["qualifier"] = "issuer=AMD;namespace=product-id-tray;profile=1"
+				case "citation":
+					shvMap(shvMap(shvMap(v["edges"].([]any)[0])["properties"])["citation"])["page_index"] = 13
+				case "identity":
+					shvMap(shvMap(v["nodes"].([]any)[1])["properties"])["identity_verified"] = true
+				case "lineage":
+					shvMap(v["owner_artifact"])["documentary_lineages"] = 2
+				case "owner":
+					shvMap(v["owner"])["engine_id"] = "symphony-shv"
+				}
+				if ValidateSHVPDFResultVersion("graph_project", input, seal(v), SHVPDFGraphVersion) == nil {
+					t.Fatal("accepted resealed graph mutation")
+				}
+			})
+		}
+	})
 	if e := os.WriteFile(filepath.Join(root, "source.pdf"), []byte("changed"), 0600); e != nil {
 		t.Fatal(e)
 	}

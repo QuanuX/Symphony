@@ -53,3 +53,5 @@ The independent `modules/shv-source-engine/` implements `SOURCES.md`: stable sou
 `PDF-EVIDENCE.md` distinguishes implemented opaque capture/replay from prospective document decoding and native PDF hardware interpretation.
 
 `PDF-ADAPTER.md` now defines the independently installable C++ adapter and qxctl extraction/replay of one explicit AMD PDF table. General PDF coverage, kernel assertion ingestion, derived graph integration and namespace equivalence remain separate.
+
+PDF adapter 0.2.0 now projects qualified documentary assertion edges and revalidates them from original bytes after generic graph exchange. These remain PDF-owned artifacts; kernel catalogue ingestion requires its own explicit versioned contract.

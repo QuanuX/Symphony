@@ -41,6 +41,12 @@ func validatePDFInput(p map[string]any) error {
 	return nil
 }
 func ValidateSHVPDFResult(op string, payload, result []byte) error {
+	return ValidateSHVPDFResultVersion(op, payload, result, SHVPDFVersion)
+}
+func ValidateSHVPDFResultVersion(op string, payload, result []byte, version string) error {
+	if version != SHVPDFVersion && version != SHVPDFGraphVersion {
+		return shvFail()
+	}
 	p, e := shvObject(payload)
 	if e != nil {
 		return e
@@ -50,7 +56,10 @@ func ValidateSHVPDFResult(op string, payload, result []byte) error {
 		return e
 	}
 	if op == "inspect" {
-		return shvPDFDescriptor(p, r)
+		return shvPDFDescriptor(p, r, version)
+	}
+	if op == "graph_project" || op == "graph_validate" {
+		return validatePDFGraphResult(op, p, r, version)
 	}
 	if op != "extract" || validatePDFInput(p) != nil || !shvFields(r, "protocol", "profile", "source", "decoder", "page_index", "page_count", "text", "text_digest", "rows", "namespace", "namespace_equivalence", "documentary_lineages", "digest") {
 		return shvFail()

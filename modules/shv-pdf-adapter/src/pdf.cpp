@@ -213,9 +213,24 @@ Json handle_request(const engine::Request &r) {
   if (r.operation == "inspect") {
     fields(r.payload, {});
     result = descriptor();
-  } else if (r.operation == "extract")
+  } else if (r.operation == "extract" || r.operation == "graph_project") {
     result = extract(r);
-  else
+    if (r.operation == "graph_project")
+      result = project_graph(result);
+  } else if (r.operation == "graph_validate") {
+    fields(r.payload, {"request", "graph"});
+    auto replay = r;
+    replay.payload = r.payload.at("request");
+    auto expected = project_graph(extract(replay));
+    if (expected != r.payload.at("graph"))
+      bad();
+    result = seal(
+        Json{{"protocol", "symphony.shv.pdf-graph-validation.v1"},
+             {"graph_digest", expected.at("digest")},
+             {"derivation_digest", expected.at("owner_artifact").at("digest")},
+             {"replayed", true},
+             {"documentary_lineages", 1}});
+  } else
     bad();
   if (engine::unix_time_ms() > r.deadline_unix_ms)
     bad();

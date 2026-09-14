@@ -424,6 +424,197 @@
         "artifact"
       ],
       "additionalProperties": false
+    },
+    "Node": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "maxItems": 32
+        },
+        "properties": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "labels",
+        "properties"
+      ],
+      "additionalProperties": false
+    },
+    "Edge": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "from": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "to": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "properties": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "from",
+        "to",
+        "label",
+        "properties"
+      ],
+      "additionalProperties": false
+    },
+    "Graph": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.graph.exchange.v1"
+        },
+        "owner": {
+          "type": "object",
+          "properties": {
+            "engine_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "engine_version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "artifact_protocol": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "artifact_digest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "engine_id",
+            "engine_version",
+            "artifact_protocol",
+            "artifact_digest"
+          ],
+          "additionalProperties": false
+        },
+        "owner_artifact": {
+          "type": "object",
+          "required": [
+            "protocol",
+            "digest"
+          ]
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Node"
+          },
+          "maxItems": 1024
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Edge"
+          },
+          "maxItems": 2048
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "owner",
+        "owner_artifact",
+        "nodes",
+        "edges",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "GraphProjectInput": {
+      "$ref": "#/$defs/ExtractInput"
+    },
+    "GraphValidateInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request",
+        "graph"
+      ],
+      "properties": {
+        "request": {
+          "$ref": "#/$defs/ExtractInput"
+        },
+        "graph": {
+          "$ref": "#/$defs/Graph"
+        }
+      }
+    },
+    "PDFGraphValidation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "graph_digest",
+        "derivation_digest",
+        "replayed",
+        "documentary_lineages",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.shv.pdf-graph-validation.v1"
+        },
+        "graph_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "derivation_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "replayed": {
+          "const": true
+        },
+        "documentary_lineages": {
+          "const": 1
+        }
+      }
     }
   }
 }

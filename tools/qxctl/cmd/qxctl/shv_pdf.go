@@ -114,5 +114,6 @@ func newSHVPDFCommand() *cobra.Command {
 		commandregistry.Attach(c, s)
 		root.AddCommand(c)
 	}
+	root.AddCommand(newSHVPDFGraphCommand())
 	return root
 }
