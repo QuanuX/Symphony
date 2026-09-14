@@ -47,3 +47,7 @@ The independent `modules/shv-source-engine/` implements `SOURCES.md`: stable sou
 ## Documented identifier profile
 
 `IDENTIFIERS.md` and `AMD-PRODUCT-IDENTIFIERS.v1.md` define a versioned, source-specific mapping composed through existing C++ catalogue/evaluation operations. No new native operation or automatic loader is added.
+
+## PDF evidence boundary
+
+`PDF-EVIDENCE.md` distinguishes implemented opaque capture/replay from prospective document decoding and native PDF hardware interpretation.

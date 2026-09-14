@@ -11484,3 +11484,19 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
   - `knowledge/shv/KERNEL.md`
   - `knowledge/shv/DOSSIERS.md`
 - notes: `Caller-selectable profile; exact identifiers do not verify physical identity.`
+
+- path: `knowledge/shv/PDF-EVIDENCE.md`
+- title: `SHV opaque PDF evidence and interpretation boundary`
+- surface_type: `reference document`
+- truth_role: `implemented boundary and prospective design`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `opaque capture semantics and explicit interpretation gaps`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `native PDF interpretation and decoder ownership`
+- relationships:
+  - `knowledge/shv/SOURCES.md`
+  - `knowledge/shv/IDENTIFIERS.md`
+- notes: `Research literal agreement does not establish namespace equivalence or native PDF assertions.`
