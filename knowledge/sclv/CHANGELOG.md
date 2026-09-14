@@ -11040,3 +11040,72 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/shvjob/storage_unsupported.go`
   - `tools/qxctl/internal/shvjob/store.go`
   - `tools/qxctl/internal/shvjob/store_test.go`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-EXACT-DEPENDENCY-RESOLUTION`
+- record_version: `3`
+- title: `Resolve declared SHV partition dependencies from explicit inventory`
+- status: `canonical`
+- change_started_at: `2026-09-14T07:45:30Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV exact dependency resolution`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-resolution-continuation.md`
+- skvi_references:
+  - `knowledge/shv/RESOLUTION.md`
+  - `knowledge/shv/PARTITIONS.md`
+- change_summary: |
+    Adds three read-only qxctl operations for exact caller-inventory resolution and discovery.
+- relationship_changes: |
+    qxctl routes explicit candidate records; unchanged C++ partition ownership validates base, candidate inventory and result. Go independently checks correspondence.
+- doctrine_changes: |
+    Only declared missing partitions are filled. Unlisted references and missing subjects remain visible. Resolution validates declarations, not source bytes or authentication.
+- compatibility_consequences: |
+    Additive commands and CLI-owned resolution schema. Native version0.1.0-dev, existing materialization protocols and stored jobs remain unchanged.
+- publication_consequences: |
+    Local source and closure only; no artifact mutation, acquisition, source adoption or canonical catalogue publication.
+- projection_consequences: |
+    323 commands,106 features,278 expectations,27 invariants and16 adapters. SKVI records resolution ownership.
+- evidence:
+  - `../shv-09/evidence/FOCUSED_TESTS.json records seven Go groups and17 passing test events.`
+  - `../shv-09/evidence/release/ACCEPTANCE.json records12 installed calls,seven rejections andfive schema-validated results.`
+  - `../shv-09/evidence/SOURCE_BUILD_PARITY.json binds the clean source revision and byte-identical rebuild.`
+  - `../shv-09/MANIFEST.json seals the verification packet and remaining scope.`
+- non_authorizations:
+  - `Source replay, automatic acquisition, endpoint substitution or canonical catalogue publication.`
+  - `Hardware compatibility inference, publisher authentication or cross-partition subject unification.`
+  - `Remote publication, deployment, firmware changes or original archive edits.`
+- notes: |
+    Start time is shv_resolution.go creation timestamp. Full SHV tests remain milestone work. Existing C++ packages are unchanged. Established local post_merge disposition does not claim a remote merge.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T07:50:46Z`
+- recorded_at: `2026-09-14T07:52:28Z`
+- revision_value: `b8e89a1f3deff0d6a594e92ca7631b50729d6775`
+- tree_digest: `sha256:c0d63c8e530dcdb886bec8aa13432f2bf80fb51f004bc48fe3eb70c23ccc21be`
+- ratification_evidence_digest: `sha256:b7766eb26a6727a09bbc2a6fcef3a4b4b8ee1fe07a662cd03f488130708d545f`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/shv/RESOLUTION.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv_partition.go`
+  - `tools/qxctl/cmd/qxctl/shv_resolution.go`
+  - `tools/qxctl/cmd/qxctl/shv_resolution.schema.json`
+  - `tools/qxctl/cmd/qxctl/shv_resolution_test.go`
