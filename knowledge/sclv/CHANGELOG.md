@@ -10728,3 +10728,76 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/shvstate/store_test.go`
   - `tools/qxctl/internal/shvstate/validation.go`
   - `tools/qxctl/scripts/build_shv_activation_schema.py`
+
+---
+
+- record_id: `SCLV-CHG-20260913-SHV-SOURCE-BOUND-REFRESH`
+- record_version: `3`
+- title: `Compose source-bound SHV materialization and historical replay`
+- status: `canonical`
+- change_started_at: `2026-09-14T03:25:16Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for source-bound SHV refresh`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-13-shv-refresh-continuation.md`
+- skvi_references:
+  - `knowledge/shv/REFRESH.md`
+  - `knowledge/shv/KERNEL.md`
+- change_summary: |
+    Adds qxctl refresh build/verify/schema/template composing exact protected source, native captures, catalogue, coverage, evaluation and separate owner graphs into replayable evidence.
+- relationship_changes: |
+    qxctl owns composition and exact installation/source binding. Unchanged independently installed C++ source and kernel engines retain all semantic operations and independent Go consumer checks.
+- doctrine_changes: |
+    Coverage never silently filters evaluation. Mapping changes do not rewrite captures. Historical replay identifies current source state without rewinding it. Source approval is not publisher authentication.
+- compatibility_consequences: |
+    Four additional read-only CLI leaves; unchanged native versions and source journal. Formatted bundle output fits the one-MiB replay input bound. No durable partial state or catalogue publication.
+- publication_consequences: |
+    Local clean source commit and append-only closure. No remote publication, deployment, service startup or original archive changes.
+- projection_consequences: |
+    305 command identities, 105 features and 274 reviewed expectations. SKVI and feature registration identify the bounded composition contract.
+- evidence:
+  - `../shv-05/evidence/FOCUSED_TESTS.json records nine focused groups and 30 passing events without failure or skip.`
+  - `../shv-05/evidence/final/ACCEPTANCE.json records 18 installed CLI calls, eight rejections and ten schema/seal checks.`
+  - `../shv-05/VERIFICATION.md preserves observed diagnostics, resolved replay comparison defect and formatted output bound.`
+  - `../shv-05/evidence/SOURCE_BUILD_PARITY.json binds clean source and byte-identical CLI rebuilds.`
+  - `../shv-05/MANIFEST.json seals bounded evidence; NEXT.md preserves remaining scope.`
+- non_authorizations:
+  - `Durable catalogue publication, resumable checkpoints, automated vendor acquisition or publisher authentication.`
+  - `Hardware/provider/topology choices, cross-source conflict policy or mandatory graph database selection.`
+  - `Remote publication, deployment, firmware mutation or original archive edits.`
+- notes: |
+    Closes SHV-05 bounded source-bound materialization and replay only. Full suites remain milestone work. Start time is shv_refresh.go creation timestamp. Retained diagnostic authority history is copied without new grants; native engines are unchanged. Local completion uses established post_merge disposition without claiming a remote merge.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T03:32:55Z`
+- recorded_at: `2026-09-14T03:34:56Z`
+- revision_value: `3c99fd4d1b73aa18c3bbb6f3fec5254a5079a613`
+- tree_digest: `sha256:4f5bbf8e0f9da2ab21ed4fff55890d08d32954bbaf8a5d48d06f775a2a31028a`
+- ratification_evidence_digest: `sha256:dce1ae59459425603023d5c2ed9a9ba82d51b3878257d3bdbaf3f290a9019915`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/shv/KERNEL.md`
+  - `knowledge/shv/REFRESH.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/cli_errors.go`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv.go`
+  - `tools/qxctl/cmd/qxctl/shv_refresh.go`
+  - `tools/qxctl/cmd/qxctl/shv_refresh.schema.json`
+  - `tools/qxctl/cmd/qxctl/shv_refresh_test.go`
+  - `tools/qxctl/scripts/build_shv_refresh_schema.py`
