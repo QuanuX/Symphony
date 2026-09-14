@@ -11665,3 +11665,110 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/knowledgeengine/shv_pdf_graph.go`
   - `tools/qxctl/internal/knowledgeengine/shv_pdf_test.go`
   - `tools/qxctl/internal/knowledgeengine/shv_pdf_validation.go`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-CONSOLIDATED-GATE`
+- record_version: `3`
+- title: `Integrate provenance-bearing PDF catalogues and guard qxctl command ownership`
+- status: `canonical`
+- change_started_at: `2026-09-14T16:32:45Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for the consolidated SHV gate`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-consolidated-gate.md`
+- skvi_references:
+  - `knowledge/shv/DOCUMENT-INGESTION.md`
+  - `knowledge/shv/KERNEL.md`
+- change_summary: |
+    Adds original-byte PDF kernel ingestion, partition admission and collision guards on existing qxctl surfaces; completes bounded SHV gate.
+- relationship_changes: |
+    Kernel compiles the exact PDF reader contract; generic graph transport stays structural. No competing command is added.
+- doctrine_changes: |
+    Caller mappings and historical replay remain extensible; original lineage and qualified namespaces are retained.
+- compatibility_consequences: |
+    Kernel 0.3.0-dev and partition 0.2.0-dev are additive exact installations; old explicit selections remain supported. qxctl retains 342 commands.
+- publication_consequences: |
+    Local diagnostic activation only; canonical catalogue publication remains subsequent scope.
+- projection_consequences: |
+    PDF mappings survive kernel graph, refresh, dossier and partition workflows.
+- evidence:
+  - `../shv-consolidated-gate/VERIFICATION.md records the full bounded gate and explicit non-SHV skips.`
+  - `../shv-consolidated-gate/evidence/SOURCE_BUILD_PARITY.json binds binaries and source.`
+  - `../shv-consolidated-gate/MANIFEST.json seals selected evidence.`
+- non_authorizations:
+  - `Canonical catalogue publication, automatic acquisition, source alias inference or hardware changes.`
+  - `Remote publication, deployment, engine substitution or original archive edits.`
+- notes: |
+    No unresolved contingency finding. Canonical publication and durable database adapters are next; no graph default is selected.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T17:20:44Z`
+- recorded_at: `2026-09-14T17:22:09Z`
+- revision_value: `88e42e12c8bee401926d066d86d2f42137e44c31`
+- tree_digest: `sha256:cadf6af7b9323d3e446a01545938da4f17e10f7c5be006a7b3f39a743006445e`
+- ratification_evidence_digest: `sha256:d9c181c3aa5cd8c3a030027ffb89bef10f10a1975158e9ef872cd49cada7e66d`
+- affected_surfaces:
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/shv/DOCUMENT-INGESTION.md`
+  - `knowledge/shv/KERNEL.md`
+  - `knowledge/shv/MANIFEST.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/shv-engine/CMakeLists.txt`
+  - `modules/shv-engine/FEATURES.md`
+  - `modules/shv-engine/INSTALL.md`
+  - `modules/shv-engine/INTENT.md`
+  - `modules/shv-engine/MANIFEST.md`
+  - `modules/shv-engine/SKILL.md`
+  - `modules/shv-engine/SPEC.md`
+  - `modules/shv-engine/cmake/uninstall.cmake.in`
+  - `modules/shv-engine/schemas/v1/shv.schema.json`
+  - `modules/shv-engine/scripts/build_schema.py`
+  - `modules/shv-engine/src/catalogue.cpp`
+  - `modules/shv-engine/src/shv.hpp`
+  - `modules/shv-engine/tests/kernel_test.py`
+  - `modules/shv-engine/tests/table_test.py`
+  - `modules/shv-partition-engine/CMakeLists.txt`
+  - `modules/shv-partition-engine/INSTALL.md`
+  - `modules/shv-partition-engine/INTENT.md`
+  - `modules/shv-partition-engine/MANIFEST.md`
+  - `modules/shv-partition-engine/SKILL.md`
+  - `modules/shv-partition-engine/SPEC.md`
+  - `modules/shv-partition-engine/cmake/uninstall.cmake.in`
+  - `modules/shv-partition-engine/schemas/v1/partition.schema.json`
+  - `modules/shv-partition-engine/src/partition.cpp`
+  - `modules/shv-partition-engine/src/partition.hpp`
+  - `modules/shv-partition-engine/tests/partition_test.py`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/cmd/qxctl/cli_errors.go`
+  - `tools/qxctl/cmd/qxctl/cli_errors_test.go`
+  - `tools/qxctl/cmd/qxctl/command_surface_test.go`
+  - `tools/qxctl/cmd/qxctl/shv.go`
+  - `tools/qxctl/cmd/qxctl/shv_dossier.schema.json`
+  - `tools/qxctl/cmd/qxctl/shv_inventory.schema.json`
+  - `tools/qxctl/cmd/qxctl/shv_materialization.schema.json`
+  - `tools/qxctl/cmd/qxctl/shv_refresh.schema.json`
+  - `tools/qxctl/cmd/qxctl/shv_relocation.schema.json`
+  - `tools/qxctl/cmd/qxctl/shv_resolution.schema.json`
+  - `tools/qxctl/cmd/qxctl/shv_source.go`
+  - `tools/qxctl/internal/commandregistry/registry.go`
+  - `tools/qxctl/internal/commandregistry/registry_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_document.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_partition.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_partition_descriptor.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_partition_validation.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_source.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_tables.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_validation.go`
