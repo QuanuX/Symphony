@@ -11772,3 +11772,91 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/knowledgeengine/shv_source.go`
   - `tools/qxctl/internal/knowledgeengine/shv_tables.go`
   - `tools/qxctl/internal/knowledgeengine/shv_validation.go`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-DURABLE-GRAPH-STORE`
+- record_version: `3`
+- title: `Persist generic SHV graph evidence through a dedicated DuckDB adapter`
+- status: `canonical`
+- change_started_at: `2026-09-14T18:35:24Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV durable storage continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-durable-storage-continuation.md`
+- skvi_references:
+  - `knowledge/shv/GRAPH-STORE.md`
+  - `modules/shv-graph-duckdb-connector/SPEC.md`
+- change_summary: |
+    Adds independent C++ DuckDB graph storage, exact qxctl controls and independent result verification.
+- relationship_changes: |
+    Reuses generic structural graph contract and isolated SCV durability mechanics; semantic hardware authority remains with original owners.
+- doctrine_changes: |
+    Immutable storage commit does not select a canonical catalogue head; arbitrary caller graph properties remain intact.
+- compatibility_consequences: |
+    New adapter 0.1.0-dev and eight qxctl leaves;350 commands total. Existing exact packages remain unchanged.
+- publication_consequences: |
+    Canonical head transaction is planned separately, not enabled; no remote publication.
+- projection_consequences: |
+    Complete scoped node/edge projection is verified before committed reads; original graph remains exportable for owner replay.
+- evidence:
+  - `../shv-17/VERIFICATION.md records focused checks and six killed-process recoveries.`
+  - `../shv-17/evidence/SOURCE_BUILD_PARITY.json binds source and installed bytes.`
+  - `../shv-17/MANIFEST.json seals the evidence.`
+- non_authorizations:
+  - `Canonical catalogue publication, automatic acquisition, source alias inference or hardware changes.`
+  - `Remote publication, deployment, engine substitution or original archive edits.`
+- notes: |
+    Durable graph storage is implemented. Protected catalogue-head publication remains the next increment; no graph database default is selected.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T18:53:03Z`
+- recorded_at: `2026-09-14T18:54:11Z`
+- revision_value: `81b5f866dd4565a59d3cef67616f0c9077763edd`
+- tree_digest: `sha256:90fafb840d8e57a4b3757ee8db60f56a2b09763b271b6cd0b48db02d65b4cfcd`
+- ratification_evidence_digest: `sha256:6b835c7b38b59484c855548c395fb55328d4fb41f540879b4af3fbda20540966`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/shv/CATALOGUE-PUBLICATION-PLAN.md`
+  - `knowledge/shv/GRAPH-STORE.md`
+  - `knowledge/shv/MANIFEST.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/shv-graph-duckdb-connector/CMakeLists.txt`
+  - `modules/shv-graph-duckdb-connector/DUCKDB-PROVENANCE.json`
+  - `modules/shv-graph-duckdb-connector/FEATURES.md`
+  - `modules/shv-graph-duckdb-connector/INSTALL.md`
+  - `modules/shv-graph-duckdb-connector/INTENT.md`
+  - `modules/shv-graph-duckdb-connector/MANIFEST.md`
+  - `modules/shv-graph-duckdb-connector/SKILL.md`
+  - `modules/shv-graph-duckdb-connector/SPEC.md`
+  - `modules/shv-graph-duckdb-connector/cmake/uninstall.cmake.in`
+  - `modules/shv-graph-duckdb-connector/schemas/v1/graph-store.schema.json`
+  - `modules/shv-graph-duckdb-connector/schemas/v1/graph-store.templates.json`
+  - `modules/shv-graph-duckdb-connector/src/connector.cpp`
+  - `modules/shv-graph-duckdb-connector/src/connector.hpp`
+  - `modules/shv-graph-duckdb-connector/src/main.cpp`
+  - `modules/shv-graph-duckdb-connector/tests/commit_barrier.cpp`
+  - `modules/shv-graph-duckdb-connector/tests/commit_barrier.hpp`
+  - `modules/shv-graph-duckdb-connector/tests/connector_test.py`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv.go`
+  - `tools/qxctl/cmd/qxctl/shv_store.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store_descriptor.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store_validation.go`
+  - `tools/qxctl/internal/knowledgeengine/testdata/shv-store/native-results.json`
