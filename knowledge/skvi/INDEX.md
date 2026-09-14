@@ -11436,3 +11436,19 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
   - `knowledge/shv/REFRESH.md`
   - `knowledge/shv/KERNEL.md`
 - notes: `Declared locators and coverage inclusion do not establish interpreted hardware facts.`
+
+- path: `knowledge/shv/DOSSIERS.md`
+- title: `SHV explicit component dossiers`
+- surface_type: `reference document`
+- truth_role: `owner-declared orchestration contract`
+- owner: `qxctl maintainers`
+- status: `canonical`
+- scope: `caller associations and replayed source citations`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `vendor alias entailment and canonical publication`
+- relationships:
+  - `knowledge/shv/INVENTORY.md`
+  - `knowledge/shv/REFRESH.md`
+- notes: `Exact citations do not verify physical identity or entail caller relations.`

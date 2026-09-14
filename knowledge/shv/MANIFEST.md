@@ -39,3 +39,7 @@ The independent `modules/shv-source-engine/` implements `SOURCES.md`: stable sou
 ## Caller-owned coverage accounting
 
 `INVENTORY.md` defines qxctl inventory snapshots and replayed comparison. Native owners retain source and coverage semantics.
+
+## Explicit component dossiers
+
+`DOSSIERS.md` defines caller-owned associations, exact citations and generic graph exchange through qxctl, with no inferred physical identity.

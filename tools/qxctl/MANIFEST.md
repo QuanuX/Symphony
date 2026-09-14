@@ -340,3 +340,7 @@ The SCV gate adds exact graph-index schema discovery, keeping connector receipt-
 ### SHV caller-owned inventory
 
 `shv inventory run|compare|schema|template` implements `knowledge/shv/INVENTORY.md`: explicit roster accounting, sequential evidence replay and native caller-selected coverage, with structured JSON errors.
+
+### SHV component dossiers
+
+`shv dossier run|graph|schema|template` implements `knowledge/shv/DOSSIERS.md` using existing native replay/coverage/evaluation and an explicitly selected generic adapter. Caller associations never become inferred identity claims.

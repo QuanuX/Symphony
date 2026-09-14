@@ -1790,6 +1790,8 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.dossier.schema",
+            "qxcmd:symphony:shv.dossier.template",
             "qxcmd:symphony:shv.inventory.schema",
             "qxcmd:symphony:shv.inventory.template",
             "qxcmd:symphony:shv.materialization.relocation.schema",
@@ -1848,6 +1850,8 @@
             "qxcmd:symphony:shv.catalogue.build",
             "qxcmd:symphony:shv.coverage.default",
             "qxcmd:symphony:shv.coverage.plan",
+            "qxcmd:symphony:shv.dossier.graph",
+            "qxcmd:symphony:shv.dossier.run",
             "qxcmd:symphony:shv.evaluate",
             "qxcmd:symphony:shv.graph.adapter.roundtrip",
             "qxcmd:symphony:shv.graph.project",
@@ -5827,6 +5831,8 @@
             "qxcmd:symphony:shv.catalogue.build",
             "qxcmd:symphony:shv.coverage.default",
             "qxcmd:symphony:shv.coverage.plan",
+            "qxcmd:symphony:shv.dossier.graph",
+            "qxcmd:symphony:shv.dossier.run",
             "qxcmd:symphony:shv.evaluate",
             "qxcmd:symphony:shv.graph.project",
             "qxcmd:symphony:shv.graph.validate",
@@ -5843,6 +5849,7 @@
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:shv-graph-adapter.roundtrip",
             "engop:symphony:shv-partition.manifest.build",
             "engop:symphony:shv-partition.partition.build",
             "engop:symphony:shv-source.capture.import",
@@ -5907,11 +5914,18 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.dossier.graph",
             "qxcmd:symphony:shv.graph.adapter.roundtrip"
           ],
-          "delivery": "direct",
+          "delivery": "composed",
           "engine_operation_ids": [
-            "engop:symphony:shv-graph-adapter.roundtrip"
+            "engop:symphony:shv-graph-adapter.roundtrip",
+            "engop:symphony:shv-source.capture.import",
+            "engop:symphony:shv-source.graph.project",
+            "engop:symphony:shv.catalogue.build",
+            "engop:symphony:shv.coverage.plan",
+            "engop:symphony:shv.evaluate",
+            "engop:symphony:shv.graph.project"
           ],
           "evidence": [
             "knowledge/shv/KERNEL.md",
@@ -6078,6 +6092,8 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.dossier.graph",
+            "qxcmd:symphony:shv.dossier.run",
             "qxcmd:symphony:shv.inventory.compare",
             "qxcmd:symphony:shv.inventory.run",
             "qxcmd:symphony:shv.materialization.export",
@@ -6097,6 +6113,7 @@
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:shv-graph-adapter.roundtrip",
             "engop:symphony:shv-partition.manifest.build",
             "engop:symphony:shv-partition.partition.build",
             "engop:symphony:shv-source.capture.compare",
@@ -7392,9 +7409,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:78c2cf66dbe86ca3c01bc6c636325fe6541e08f2dccd12bd36e71357f884c517",
+  "profile_digest": "sha256:79f58c8a7585f7a219cb4eb56a3825c9f98c5c1a6b22971e2904436c2b6aa31b",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 106,
-  "ssfv_registry_digest": "sha256:5258d91b7e401276a3c0a2dfd3a094421b22cc716004993e865122d284151690"
+  "ssfv_registry_digest": "sha256:f8aedbd92fdd0a099a841752e885520f2277f7aa60614ecd8356d016e6bed699"
 }
