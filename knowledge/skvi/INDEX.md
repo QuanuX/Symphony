@@ -11725,3 +11725,108 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - relationships:
   - `modules/shv-graph-adapter/SPEC.md`
 - notes: `Storage does not authenticate or reinterpret hardware evidence.`
+
+- path: `knowledge/shv/PUBLICATION.md`
+- title: `SHV catalogue publication PUBLICATION`
+- surface_type: `reference document`
+- truth_role: `owner-declared protected publication contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-selected local catalogue heads`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `Symphony-wide CanonicalApply`
+- relationships:
+  - `knowledge/shv/GRAPH-STORE.md`
+- notes: `Distinct publication authority and original evidence replay; no default hardware universe.`
+
+- path: `modules/shv-publication-engine/INTENT.md`
+- title: `SHV catalogue publication INTENT`
+- surface_type: `reference document`
+- truth_role: `owner-declared protected publication contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-selected local catalogue heads`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `Symphony-wide CanonicalApply`
+- relationships:
+  - `knowledge/shv/GRAPH-STORE.md`
+- notes: `Distinct publication authority and original evidence replay; no default hardware universe.`
+
+- path: `modules/shv-publication-engine/MANIFEST.md`
+- title: `SHV catalogue publication MANIFEST`
+- surface_type: `reference document`
+- truth_role: `owner-declared protected publication contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-selected local catalogue heads`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `Symphony-wide CanonicalApply`
+- relationships:
+  - `knowledge/shv/GRAPH-STORE.md`
+- notes: `Distinct publication authority and original evidence replay; no default hardware universe.`
+
+- path: `modules/shv-publication-engine/SPEC.md`
+- title: `SHV catalogue publication SPEC`
+- surface_type: `reference document`
+- truth_role: `owner-declared protected publication contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-selected local catalogue heads`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `Symphony-wide CanonicalApply`
+- relationships:
+  - `knowledge/shv/GRAPH-STORE.md`
+- notes: `Distinct publication authority and original evidence replay; no default hardware universe.`
+
+- path: `modules/shv-publication-engine/SKILL.md`
+- title: `SHV catalogue publication SKILL`
+- surface_type: `reference document`
+- truth_role: `owner-declared protected publication contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-selected local catalogue heads`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `Symphony-wide CanonicalApply`
+- relationships:
+  - `knowledge/shv/GRAPH-STORE.md`
+- notes: `Distinct publication authority and original evidence replay; no default hardware universe.`
+
+- path: `modules/shv-publication-engine/INSTALL.md`
+- title: `SHV catalogue publication INSTALL`
+- surface_type: `reference document`
+- truth_role: `owner-declared protected publication contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-selected local catalogue heads`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `Symphony-wide CanonicalApply`
+- relationships:
+  - `knowledge/shv/GRAPH-STORE.md`
+- notes: `Distinct publication authority and original evidence replay; no default hardware universe.`
+
+- path: `modules/shv-publication-engine/FEATURES.md`
+- title: `SHV catalogue publication FEATURES`
+- surface_type: `reference document`
+- truth_role: `owner-declared protected publication contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-selected local catalogue heads`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `Symphony-wide CanonicalApply`
+- relationships:
+  - `knowledge/shv/GRAPH-STORE.md`
+- notes: `Distinct publication authority and original evidence replay; no default hardware universe.`

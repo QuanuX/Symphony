@@ -1,5 +1,7 @@
 # Canonical catalogue publication — next transaction
 
+SHV-18 implementation: see `PUBLICATION.md` for the current protected local catalogue-head contract. The design below remains provenance; completed validation is recorded separately in the SHV-18 packet.
+
 Implementation plan, not an enabled publication command. The durable graph store is a prerequisite, not the head authority.
 
 SHV owns a named, TOPS-scoped selected catalogue head. A publication candidate must bind the exact immutable partition manifest, complete declared dependency inventory, caller selection policy, retained refresh endpoints and original owner replay. Missing partitions remain visible; whether incompleteness is permitted is an explicit caller publication requirement, never inferred from a store commit.

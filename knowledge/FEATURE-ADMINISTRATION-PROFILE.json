@@ -1774,9 +1774,10 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:shv.catalogue.publication.apply",
             "qxcmd:symphony:shv.source.activation.apply"
           ],
-          "delivery": "direct",
+          "delivery": "composed",
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/shv/KERNEL.md",
@@ -1790,6 +1791,8 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.catalogue.publication.schema",
+            "qxcmd:symphony:shv.catalogue.publication.template",
             "qxcmd:symphony:shv.dossier.schema",
             "qxcmd:symphony:shv.dossier.template",
             "qxcmd:symphony:shv.graph.store.schema",
@@ -1829,6 +1832,8 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.catalogue.publication.inspect",
+            "qxcmd:symphony:shv.catalogue.publication.status",
             "qxcmd:symphony:shv.graph.adapter.inspect",
             "qxcmd:symphony:shv.graph.store.inspect",
             "qxcmd:symphony:shv.graph.store.status",
@@ -1904,9 +1909,10 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.catalogue.publication.plan",
             "qxcmd:symphony:shv.source.activation.propose"
           ],
-          "delivery": "direct",
+          "delivery": "composed",
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/shv/KERNEL.md",
@@ -5845,6 +5851,8 @@
         {
           "command_ids": [
             "qxcmd:symphony:shv.catalogue.build",
+            "qxcmd:symphony:shv.catalogue.publication.apply",
+            "qxcmd:symphony:shv.catalogue.publication.plan",
             "qxcmd:symphony:shv.coverage.default",
             "qxcmd:symphony:shv.coverage.plan",
             "qxcmd:symphony:shv.dossier.graph",
@@ -5868,12 +5876,15 @@
             "engop:symphony:shv-graph-adapter.roundtrip",
             "engop:symphony:shv-partition.manifest.build",
             "engop:symphony:shv-partition.partition.build",
+            "engop:symphony:shv-publication.publication.plan",
+            "engop:symphony:shv-publication.publication.reduce",
             "engop:symphony:shv-source.capture.import",
             "engop:symphony:shv-source.graph.project",
             "engop:symphony:shv.catalogue.build",
             "engop:symphony:shv.coverage.default",
             "engop:symphony:shv.coverage.plan",
             "engop:symphony:shv.evaluate",
+            "engop:symphony:shv.graph-store.export",
             "engop:symphony:shv.graph.project",
             "engop:symphony:shv.graph.validate"
           ],
@@ -6037,13 +6048,25 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.catalogue.publication.apply",
+            "qxcmd:symphony:shv.catalogue.publication.plan",
             "qxcmd:symphony:shv.graph.store.export",
             "qxcmd:symphony:shv.graph.store.query"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:shv-partition.manifest.build",
+            "engop:symphony:shv-partition.partition.build",
+            "engop:symphony:shv-publication.publication.plan",
+            "engop:symphony:shv-publication.publication.reduce",
+            "engop:symphony:shv-source.capture.import",
+            "engop:symphony:shv-source.graph.project",
+            "engop:symphony:shv.catalogue.build",
+            "engop:symphony:shv.coverage.plan",
+            "engop:symphony:shv.evaluate",
             "engop:symphony:shv.graph-store.export",
-            "engop:symphony:shv.graph-store.query"
+            "engop:symphony:shv.graph-store.query",
+            "engop:symphony:shv.graph.project"
           ],
           "evidence": [
             "knowledge/shv/KERNEL.md",
@@ -6117,6 +6140,8 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.catalogue.publication.apply",
+            "qxcmd:symphony:shv.catalogue.publication.plan",
             "qxcmd:symphony:shv.materialization.export",
             "qxcmd:symphony:shv.materialization.prepare",
             "qxcmd:symphony:shv.materialization.relocation.run",
@@ -6131,11 +6156,14 @@
           "engine_operation_ids": [
             "engop:symphony:shv-partition.manifest.build",
             "engop:symphony:shv-partition.partition.build",
+            "engop:symphony:shv-publication.publication.plan",
+            "engop:symphony:shv-publication.publication.reduce",
             "engop:symphony:shv-source.capture.import",
             "engop:symphony:shv-source.graph.project",
             "engop:symphony:shv.catalogue.build",
             "engop:symphony:shv.coverage.plan",
             "engop:symphony:shv.evaluate",
+            "engop:symphony:shv.graph-store.export",
             "engop:symphony:shv.graph.project"
           ],
           "evidence": [
@@ -6238,6 +6266,129 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:shv.catalogue.publication.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:shv-partition.manifest.build",
+            "engop:symphony:shv-partition.partition.build",
+            "engop:symphony:shv-publication.publication.reduce",
+            "engop:symphony:shv-source.capture.import",
+            "engop:symphony:shv-source.graph.project",
+            "engop:symphony:shv.catalogue.build",
+            "engop:symphony:shv.coverage.plan",
+            "engop:symphony:shv.evaluate",
+            "engop:symphony:shv.graph-store.export",
+            "engop:symphony:shv.graph.project"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-publication-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "apply",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.catalogue.publication.schema",
+            "qxcmd:symphony:shv.catalogue.publication.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-publication-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.catalogue.publication.inspect",
+            "qxcmd:symphony:shv.catalogue.publication.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:shv-publication.inspect",
+            "engop:symphony:shv-publication.publication.status"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-publication-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.catalogue.publication.plan"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:shv-partition.manifest.build",
+            "engop:symphony:shv-partition.partition.build",
+            "engop:symphony:shv-publication.publication.plan",
+            "engop:symphony:shv-source.capture.import",
+            "engop:symphony:shv-source.graph.project",
+            "engop:symphony:shv.catalogue.build",
+            "engop:symphony:shv.coverage.plan",
+            "engop:symphony:shv.evaluate",
+            "engop:symphony:shv.graph-store.export",
+            "engop:symphony:shv.graph.project"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-publication-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "propose",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.catalogue.publication.apply"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:shv-partition.manifest.build",
+            "engop:symphony:shv-partition.partition.build",
+            "engop:symphony:shv-publication.publication.reduce",
+            "engop:symphony:shv-source.capture.import",
+            "engop:symphony:shv-source.graph.project",
+            "engop:symphony:shv.catalogue.build",
+            "engop:symphony:shv.coverage.plan",
+            "engop:symphony:shv.evaluate",
+            "engop:symphony:shv.graph-store.export",
+            "engop:symphony:shv.graph.project"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-publication-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:shv-publication-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:shv.source.activation.apply"
           ],
           "delivery": "direct",
@@ -6277,6 +6428,8 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.catalogue.publication.apply",
+            "qxcmd:symphony:shv.catalogue.publication.plan",
             "qxcmd:symphony:shv.dossier.graph",
             "qxcmd:symphony:shv.dossier.run",
             "qxcmd:symphony:shv.inventory.compare",
@@ -6301,6 +6454,8 @@
             "engop:symphony:shv-graph-adapter.roundtrip",
             "engop:symphony:shv-partition.manifest.build",
             "engop:symphony:shv-partition.partition.build",
+            "engop:symphony:shv-publication.publication.plan",
+            "engop:symphony:shv-publication.publication.reduce",
             "engop:symphony:shv-source.capture.compare",
             "engop:symphony:shv-source.capture.import",
             "engop:symphony:shv-source.graph.project",
@@ -6310,6 +6465,7 @@
             "engop:symphony:shv.catalogue.build",
             "engop:symphony:shv.coverage.plan",
             "engop:symphony:shv.evaluate",
+            "engop:symphony:shv.graph-store.export",
             "engop:symphony:shv.graph.project"
           ],
           "evidence": [
@@ -7594,9 +7750,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:d716958396b1675057fa0254e02d60ec44acc692d3f8ee6e0b07309bb931db68",
+  "profile_digest": "sha256:6c5042a48b83efb609d26a1c5dffd2cea0342d2b1d0a587debe590434860cfaf",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 108,
-  "ssfv_registry_digest": "sha256:2213d7452b2244cb5d93c3ca7614a2d7352da788dcef70bc51f0d2dab4aeb76a"
+  "registered_feature_count": 109,
+  "ssfv_registry_digest": "sha256:2eeb81dac3db1d9184166a578b462e6acc7f1864d92655027f862f00d2631631"
 }

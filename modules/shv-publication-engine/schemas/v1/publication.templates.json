@@ -1,0 +1,25 @@
+{
+  "plan": {
+    "operation_id": null,
+    "reason": null,
+    "desired": {
+      "manifest": null,
+      "policy": {
+        "missing_partitions": null,
+        "missing_references": null
+      },
+      "partition_prefix": null,
+      "partition_version": "0.2.0-dev",
+      "members": []
+    }
+  },
+  "apply": {
+    "protocol": "symphony.shv.publication-plan.v1",
+    "operation_id": null,
+    "expected_state_digest": null,
+    "change_kind": "publish",
+    "reason": null,
+    "head": null,
+    "digest": null
+  }
+}

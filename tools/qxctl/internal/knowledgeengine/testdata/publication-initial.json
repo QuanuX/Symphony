@@ -1,0 +1,45 @@
+{
+  "change_kind": "publish",
+  "digest": "sha256:dcd11e83e9aa3cd2ee5a469c918b5a53ff07310a9a15fde2e738f38bb14b9763",
+  "expected_state_digest": null,
+  "head": {
+    "definition": {
+      "catalogue_id": "specimen",
+      "manifest": {
+        "complete_inventory": true,
+        "digest": "sha256:5dedf5c23808d1c702574afc4c7fce141d4208b612f7b5bce7ddc6c1a3325f57",
+        "entries": [],
+        "loaded_count": 0,
+        "missing_count": 0,
+        "protocol": "symphony.shv.partition-manifest.v1",
+        "reference_statuses": [],
+        "required_references": []
+      },
+      "members": [],
+      "partition_installation": {
+        "EngineID": "symphony-shv-partition",
+        "ExecutableDigest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "ExecutablePath": "/synthetic-partition/libexec/symphony/shv-partition-engine/0.2.0-dev/symphony-shv-partition",
+        "ModuleID": "shv-partition-engine",
+        "Prefix": "/synthetic-partition",
+        "ReceiptDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "ReceiptPath": "/synthetic-partition/share/symphony/receipts/shv-partition-engine/0.2.0-dev/install-receipt.json",
+        "ReceiptProtocol": "symphony.knowledge.install-receipt.v2",
+        "Role": "shv-partition-engine",
+        "Version": "0.2.0-dev"
+      },
+      "policy": {
+        "missing_partitions": "allow",
+        "missing_references": "allow"
+      },
+      "tops_id": "00000000-0000-4000-8000-000000000001"
+    },
+    "digest": "sha256:40d4ba20081e7ae510e6b68234e5c976f671adcacd8b0ad835770722227b213e",
+    "generation": 1,
+    "previous_digest": null,
+    "protocol": "symphony.shv.publication-head.v1"
+  },
+  "operation_id": "initial",
+  "protocol": "symphony.shv.publication-plan.v1",
+  "reason": "Synthetic semantic fixture; no authority or installed receipt claim"
+}

@@ -20,6 +20,7 @@ func newSHVCommand() *cobra.Command {
 	root.AddCommand(coverage)
 	catalogue := structural("catalogue", fmt.Errorf("catalogue requires build or query"))
 	catalogue.AddCommand(newSHVLeaf("build", "shv.catalogue.build", "catalogue_build", false), newSHVLeaf("query", "shv.catalogue.query", "catalogue_query", false))
+	catalogue.AddCommand(newSHVPublicationCommand())
 	root.AddCommand(catalogue)
 	graph := structural("graph", fmt.Errorf("graph requires project, validate or adapter"))
 	graph.AddCommand(newSHVLeaf("project", "shv.graph.project", "graph_project", false), newSHVLeaf("validate", "shv.graph.validate", "graph_validate", false))

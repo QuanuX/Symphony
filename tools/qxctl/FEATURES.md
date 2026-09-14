@@ -955,7 +955,12 @@
         "tools/qxctl/cmd/qxctl/shv_store.go",
         "tools/qxctl/internal/knowledgeengine/shv_store.go",
         "tools/qxctl/internal/knowledgeengine/shv_store_validation.go",
-        "tools/qxctl/internal/knowledgeengine/shv_store_descriptor.go"
+        "tools/qxctl/internal/knowledgeengine/shv_store_descriptor.go",
+        "tools/qxctl/cmd/qxctl/shv_publication.go",
+        "tools/qxctl/cmd/qxctl/shv_publication_evidence.go",
+        "tools/qxctl/internal/knowledgeengine/shv_publication.go",
+        "tools/qxctl/internal/knowledgeengine/shv_publication_validation.go",
+        "tools/qxctl/internal/shvpublicationstate/store.go"
       ],
       "kind": "feature",
       "non_claims": [

@@ -10485,6 +10485,286 @@
     },
     {
       "aliases": [],
+      "authority_mode": "target_host_permission",
+      "backend_operation_ids": [
+        "engop:symphony:shv-partition.manifest.build",
+        "engop:symphony:shv-partition.partition.build",
+        "engop:symphony:shv-publication.publication.reduce",
+        "engop:symphony:shv-source.capture.import",
+        "engop:symphony:shv-source.graph.project",
+        "engop:symphony:shv.catalogue.build",
+        "engop:symphony:shv.coverage.plan",
+        "engop:symphony:shv.evaluate",
+        "engop:symphony:shv.graph-store.export",
+        "engop:symphony:shv.graph.project"
+      ],
+      "command_id": "qxcmd:symphony:shv.catalogue.publication.apply",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-graph-duckdb-connector",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-partition-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-publication-engine",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-publication-engine",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-source-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl shv catalogue publication apply [--catalogue-id VALUE] [--input VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.shv.publication-plan.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "permission_backed_mutation",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-publication-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:shv.catalogue.publication.apply",
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-publication-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-publication.inspect"
+      ],
+      "command_id": "qxcmd:symphony:shv.catalogue.publication.inspect",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-publication-engine",
+          "interaction": "inspect"
+        }
+      ],
+      "grammar": "qxctl shv catalogue publication inspect [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.knowledge.engine-descriptor.v2"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.knowledge.engine-descriptor.v2"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-partition.manifest.build",
+        "engop:symphony:shv-partition.partition.build",
+        "engop:symphony:shv-publication.publication.plan",
+        "engop:symphony:shv-source.capture.import",
+        "engop:symphony:shv-source.graph.project",
+        "engop:symphony:shv.catalogue.build",
+        "engop:symphony:shv.coverage.plan",
+        "engop:symphony:shv.evaluate",
+        "engop:symphony:shv.graph-store.export",
+        "engop:symphony:shv.graph.project"
+      ],
+      "command_id": "qxcmd:symphony:shv.catalogue.publication.plan",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-graph-duckdb-connector",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-partition-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-publication-engine",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-source-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl shv catalogue publication plan [--catalogue-id VALUE] [--input VALUE] [--json] [--prefix VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.qxctl.shv-publication-proposal.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "proposal_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.shv.publication-plan.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.shv.publication-plan.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:shv.catalogue.publication.schema",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-publication-engine",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl shv catalogue publication schema [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-publication-schema.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-publication-schema.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-publication.publication.status"
+      ],
+      "command_id": "qxcmd:symphony:shv.catalogue.publication.status",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-publication-engine",
+          "interaction": "inspect"
+        }
+      ],
+      "grammar": "qxctl shv catalogue publication status [--catalogue-id VALUE] [--json] [--operation-id VALUE] [--prefix VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-publication-result.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-publication-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:shv.catalogue.publication.template",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-publication-engine",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl shv catalogue publication template [--json] [--operation VALUE] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-publication-template.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-publication-template.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
       "authority_mode": "none",
       "backend_operation_ids": [
         "engop:symphony:shv.catalogue.query"
@@ -16257,6 +16537,6 @@
   "format_version": 1,
   "protocol": "symphony.qxctl.command-registry.v1",
   "receipt_digest": null,
-  "registry_digest": "sha256:10fc332f3e2729a74123d61d49d5c23160830f41334282ff75e0c5adc33e3161",
+  "registry_digest": "sha256:162670fbe043c1cfaa7dc5c5313b6dff1800a8045aedd694332e089b8696905f",
   "registry_kind": "expected"
 }
