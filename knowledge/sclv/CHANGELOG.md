@@ -11307,3 +11307,74 @@ This PR authorizes none of the following:
   - `tools/qxctl/cmd/qxctl/shv_inventory.go`
   - `tools/qxctl/cmd/qxctl/shv_inventory.schema.json`
   - `tools/qxctl/cmd/qxctl/shv_inventory_test.go`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-COMPONENT-DOSSIERS`
+- record_version: `3`
+- title: `Retain caller component dossiers with exact source citations`
+- status: `canonical`
+- change_started_at: `2026-09-14T11:00:00Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV component dossier continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-dossier-continuation.md`
+- skvi_references:
+  - `knowledge/shv/DOSSIERS.md`
+  - `knowledge/shv/INVENTORY.md`
+- change_summary: |
+    Adds four qxctl dossier commands with caller associations, exact source-scoped citations, retained evaluations and native generic graph roundtrip.
+- relationship_changes: |
+    qxctl organizes caller declarations and exact citations; unchanged C++ owners replay source facts, coverage, requirements and structural graph exchange.
+- doctrine_changes: |
+    Citation presence does not entail a caller relationship or verify physical identity. Unknown identifiers and divergent records remain visible.
+- compatibility_consequences: |
+    Additive dossier protocols and JSON error routing. Existing native versions and inventory behavior remain unchanged.
+- publication_consequences: |
+    Private dossier and graph evidence only; no catalogue publication or source alias promotion.
+- projection_consequences: |
+    334 commands,106 features,278 expectations,27 invariants and16 adapters. SKVI records dossier ownership.
+- evidence:
+  - `../shv-12/evidence/FOCUSED_TESTS.json records14 groups and25 passing test events.`
+  - `../shv-12/evidence/release-final/ACCEPTANCE.json records14 dossier calls plus a native refresh fixture.`
+  - `../shv-12/evidence/inventory-regression/ACCEPTANCE.json records13 inventory regression calls.`
+  - `../shv-12/evidence/SOURCE_BUILD_PARITY.json binds clean source and byte-identical rebuild.`
+  - `../shv-12/MANIFEST.json seals scoped implementation evidence.`
+- non_authorizations:
+  - `Canonical catalogue publication, automatic acquisition, source alias inference or hardware changes.`
+  - `Remote publication, deployment, engine substitution or original archive edits.`
+- notes: |
+    Local post_merge disposition does not claim a remote merge. Two retained AMD documents, one assertion-bearing subject; native vendor-identifier entailment remains future scope. Start timestamp is a conservative increment boundary before source fixture work.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T12:04:14Z`
+- recorded_at: `2026-09-14T12:06:29Z`
+- revision_value: `6536d0bef84a532beb4732a4c77b8fdb96a4d7d1`
+- tree_digest: `sha256:baf7c797720edb4e70b54a5ade07eba799fc600a7dba6de8157d82549dfb7953`
+- ratification_evidence_digest: `sha256:b083ce5c840485d9bd555de13fdd2b0c8d3d11244bbe60d8ae653ffa5dce0c4a`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/shv/DOSSIERS.md`
+  - `knowledge/shv/MANIFEST.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/cli_errors.go`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv.go`
+  - `tools/qxctl/cmd/qxctl/shv_dossier.go`
+  - `tools/qxctl/cmd/qxctl/shv_dossier.schema.json`
+  - `tools/qxctl/cmd/qxctl/shv_dossier_test.go`
