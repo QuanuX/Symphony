@@ -11491,3 +11491,91 @@ This PR authorizes none of the following:
   - `knowledge/shv/MANIFEST.md`
   - `knowledge/shv/PDF-EVIDENCE.md`
   - `knowledge/skvi/INDEX.md`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-PDF-ADAPTER`
+- record_version: `3`
+- title: `Add bounded native PDF extraction and original-byte replay`
+- status: `canonical`
+- change_started_at: `2026-09-14T14:48:40Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for bounded SHV PDF adapter pass`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-pdf-adapter-pass.md`
+- skvi_references:
+  - `knowledge/shv/PDF-ADAPTER.md`
+  - `modules/shv-pdf-adapter/SPEC.md`
+- change_summary: |
+    Adds independently installable C++ SHV PDF adapter and five qxctl leaves for the selected AMD table.
+- relationship_changes: |
+    SHV owns the narrow consumer profile; SODV publication and SMCV Markdown scopes remain intact. PDFium is caller-selected external executable code.
+- doctrine_changes: |
+    Original lineage and AMD.OPN namespace are retained; no inferred OPN/tray equivalence.
+- compatibility_consequences: |
+    Additive experimental adapter; existing source and kernel semantics unchanged. qxctl now registers 339 commands.
+- publication_consequences: |
+    Local extraction and replay only; no catalogue activation or remote publication.
+- projection_consequences: |
+    SKVI indexes owner contracts; SSFV and administration profile register the new adapter.
+- evidence:
+  - `../shv-15/evidence/ACCEPTANCE.json records 14 checks and nine expected rejections.`
+  - `../shv-15/evidence/FOCUSED_TESTS.json records native and affected Go tests.`
+  - `../shv-15/evidence/SOURCE_BUILD_PARITY.json binds selected binaries to clean source.`
+  - `../shv-15/MANIFEST.json seals the scoped packet.`
+- non_authorizations:
+  - `Canonical catalogue publication, automatic acquisition, source alias inference or hardware changes.`
+  - `Remote publication, deployment, engine substitution or original archive edits.`
+- notes: |
+    Native selected-table interpretation is implemented. Kernel assertion ingestion, derived graph integration and namespace equivalence remain outside this bounded pass.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T14:58:34Z`
+- recorded_at: `2026-09-14T15:00:37Z`
+- revision_value: `011346cfc7a9d0d52ef56e253dc5dfc8eafcba9a`
+- tree_digest: `sha256:8f4e5f843e275c3a6bdbc6f6ed205326e95c04011c26855f813118446b302e97`
+- ratification_evidence_digest: `sha256:3604c30dfd2ec309c9130bf285a26aa1aec7487767396cf4a5a718ee0b9a30f0`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/shv/MANIFEST.md`
+  - `knowledge/shv/PDF-ADAPTER.md`
+  - `knowledge/shv/PDF-EVIDENCE.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/shv-pdf-adapter/CMakeLists.txt`
+  - `modules/shv-pdf-adapter/FEATURES.md`
+  - `modules/shv-pdf-adapter/INSTALL.md`
+  - `modules/shv-pdf-adapter/INTENT.md`
+  - `modules/shv-pdf-adapter/MANIFEST.md`
+  - `modules/shv-pdf-adapter/SKILL.md`
+  - `modules/shv-pdf-adapter/SPEC.md`
+  - `modules/shv-pdf-adapter/cmake/uninstall.cmake.in`
+  - `modules/shv-pdf-adapter/schemas/v1/pdf.schema.json`
+  - `modules/shv-pdf-adapter/schemas/v1/pdf.templates.json`
+  - `modules/shv-pdf-adapter/src/descriptor.cpp`
+  - `modules/shv-pdf-adapter/src/main.cpp`
+  - `modules/shv-pdf-adapter/src/pdf.cpp`
+  - `modules/shv-pdf-adapter/src/pdf.hpp`
+  - `modules/shv-pdf-adapter/tests/pdf_test.cpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/cmd/qxctl/cli_errors.go`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv.go`
+  - `tools/qxctl/cmd/qxctl/shv_pdf.go`
+  - `tools/qxctl/cmd/qxctl/shv_pdf_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_pdf.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_pdf_descriptor.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_pdf_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_pdf_validation.go`
