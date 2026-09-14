@@ -10877,6 +10877,164 @@
       "aliases": [],
       "authority_mode": "none",
       "backend_operation_ids": [
+        "engop:symphony:shv-source.capture.import",
+        "engop:symphony:shv-source.graph.project",
+        "engop:symphony:shv.catalogue.build",
+        "engop:symphony:shv.coverage.plan",
+        "engop:symphony:shv.evaluate",
+        "engop:symphony:shv.graph.project"
+      ],
+      "command_id": "qxcmd:symphony:shv.inventory.compare",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-source-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl shv inventory compare [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.qxctl.shv-inventory-comparison-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-inventory-comparison.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-inventory-comparison.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-source.capture.import",
+        "engop:symphony:shv-source.graph.project",
+        "engop:symphony:shv.catalogue.build",
+        "engop:symphony:shv.coverage.plan",
+        "engop:symphony:shv.evaluate",
+        "engop:symphony:shv.graph.project"
+      ],
+      "command_id": "qxcmd:symphony:shv.inventory.run",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-source-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl shv inventory run [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.qxctl.shv-inventory-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-inventory.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-inventory.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:shv.inventory.schema",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl shv inventory schema [--json]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-inventory-schema.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-inventory-schema.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:shv.inventory.template",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl shv inventory template [--json]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-inventory-template.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-inventory-template.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
         "engop:symphony:shv-partition.manifest.build",
         "engop:symphony:shv-partition.partition.build",
         "engop:symphony:shv-source.capture.import",
@@ -15315,6 +15473,6 @@
   "format_version": 1,
   "protocol": "symphony.qxctl.command-registry.v1",
   "receipt_digest": null,
-  "registry_digest": "sha256:275e0374d7e1bcd7ccf01384ce9c6614869dd45a9cd553c5206550e5a31323af",
+  "registry_digest": "sha256:9a5982b9d8b9054635ffd7e6c9002c3b5e58a677d0824c292550841392a5e171",
   "registry_kind": "expected"
 }

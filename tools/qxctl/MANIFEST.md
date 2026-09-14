@@ -336,3 +336,7 @@ The SCV gate adds exact graph-index schema discovery, keeping connector receipt-
 ### SHV source-data relocation
 
 `shv materialization relocation run|schema|template` implements `knowledge/shv/RELOCATION.md`: original immutable bundles and installed owners replay caller-selected data roots before atomic creation of a separate v2 derived job. Parent bytes, authority store and engine selection remain preserved. Existing v1 jobs remain supported.
+
+### SHV caller-owned inventory
+
+`shv inventory run|compare|schema|template` implements `knowledge/shv/INVENTORY.md`: explicit roster accounting, sequential evidence replay and native caller-selected coverage, with structured JSON errors.

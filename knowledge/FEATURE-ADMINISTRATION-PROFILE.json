@@ -1790,6 +1790,8 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.inventory.schema",
+            "qxcmd:symphony:shv.inventory.template",
             "qxcmd:symphony:shv.materialization.relocation.schema",
             "qxcmd:symphony:shv.materialization.relocation.template",
             "qxcmd:symphony:shv.materialization.schema",
@@ -1850,6 +1852,8 @@
             "qxcmd:symphony:shv.graph.adapter.roundtrip",
             "qxcmd:symphony:shv.graph.project",
             "qxcmd:symphony:shv.graph.validate",
+            "qxcmd:symphony:shv.inventory.compare",
+            "qxcmd:symphony:shv.inventory.run",
             "qxcmd:symphony:shv.materialization.export",
             "qxcmd:symphony:shv.materialization.prepare",
             "qxcmd:symphony:shv.materialization.relocation.run",
@@ -5826,6 +5830,8 @@
             "qxcmd:symphony:shv.evaluate",
             "qxcmd:symphony:shv.graph.project",
             "qxcmd:symphony:shv.graph.validate",
+            "qxcmd:symphony:shv.inventory.compare",
+            "qxcmd:symphony:shv.inventory.run",
             "qxcmd:symphony:shv.materialization.export",
             "qxcmd:symphony:shv.materialization.relocation.run",
             "qxcmd:symphony:shv.materialization.resume",
@@ -6072,6 +6078,8 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.inventory.compare",
+            "qxcmd:symphony:shv.inventory.run",
             "qxcmd:symphony:shv.materialization.export",
             "qxcmd:symphony:shv.materialization.relocation.run",
             "qxcmd:symphony:shv.materialization.resume",
@@ -7384,9 +7392,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:f17d55d546068d9ff367a64de041da142f0930e04ab29469a78dfe2b23e59830",
+  "profile_digest": "sha256:78c2cf66dbe86ca3c01bc6c636325fe6541e08f2dccd12bd36e71357f884c517",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 106,
-  "ssfv_registry_digest": "sha256:4c7a798ec7c682a9eda146bb885a40cc7290b82914446a0d18114a4a440bc3d0"
+  "ssfv_registry_digest": "sha256:5258d91b7e401276a3c0a2dfd3a094421b22cc716004993e865122d284151690"
 }

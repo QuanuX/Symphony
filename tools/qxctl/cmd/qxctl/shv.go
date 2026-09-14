@@ -30,6 +30,7 @@ func newSHVCommand() *cobra.Command {
 	graph.AddCommand(adapter)
 	root.AddCommand(graph)
 	root.AddCommand(newSHVSourceCommand(), newSHVRefreshCommand(), newSHVPartitionCommand(), newSHVMaterializationCommand())
+	root.AddCommand(newSHVInventoryCommand())
 	return root
 }
 func newSHVLeaf(leaf, key, op string, adapter bool) *cobra.Command {

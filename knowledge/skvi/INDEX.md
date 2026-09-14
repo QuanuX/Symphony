@@ -11420,3 +11420,19 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
   - `knowledge/shv/MATERIALIZATION.md`
   - `knowledge/shv/REFRESH.md`
 - notes: `Parent evidence is preserved; no publisher authentication is inferred.`
+
+- path: `knowledge/shv/INVENTORY.md`
+- title: `SHV caller-owned coverage inventory`
+- surface_type: `reference document`
+- truth_role: `owner-declared orchestration contract`
+- owner: `qxctl maintainers`
+- status: `canonical`
+- scope: `caller rosters and replayed coverage accounting`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `automated acquisition and canonical catalogue publication`
+- relationships:
+  - `knowledge/shv/REFRESH.md`
+  - `knowledge/shv/KERNEL.md`
+- notes: `Declared locators and coverage inclusion do not establish interpreted hardware facts.`
