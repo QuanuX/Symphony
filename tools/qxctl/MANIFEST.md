@@ -320,3 +320,7 @@ The SCV gate adds exact graph-index schema discovery, keeping connector receipt-
 ### Verified SHV refresh comparison
 
 `shv refresh compare` implements `knowledge/shv/REFRESH-COMPARISON.md`: caller-selected endpoints, bounded immutable input bytes, native replay on both sides and exact structural dependency/subject/assertion differences. Existing refresh schema and `template --operation compare` expose this interface; the default build template is preserved. No hardware inference or causal attribution is added.
+
+### Immutable SHV partitions
+
+`shv partition inspect|build|manifest|query|schema|template|from-refresh` administers the exact independent C++ partition engine0.1.0-dev under `knowledge/shv/PARTITIONS.md`. Direct references remain declarations. from-refresh replays original evidence before deriving a partition; policies and local roots stay outside partition identity. Missing inventory and cursor-bound query scope remain explicit.

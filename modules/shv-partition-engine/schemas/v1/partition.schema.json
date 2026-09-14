@@ -1,0 +1,772 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "Hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "Token": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]{1,128}$"
+    },
+    "SourceEngine": {
+      "type": "object",
+      "required": [
+        "engine_id",
+        "version",
+        "executable_digest"
+      ],
+      "properties": {
+        "engine_id": {
+          "const": "symphony-shv-source"
+        },
+        "version": {
+          "const": "0.1.0-dev"
+        },
+        "executable_digest": {
+          "$ref": "#/$defs/Hash"
+        }
+      },
+      "additionalProperties": false
+    },
+    "KernelEngine": {
+      "type": "object",
+      "required": [
+        "engine_id",
+        "version",
+        "executable_digest"
+      ],
+      "properties": {
+        "engine_id": {
+          "const": "symphony-shv"
+        },
+        "version": {
+          "enum": [
+            "0.1.0-dev",
+            "0.2.0-dev"
+          ]
+        },
+        "executable_digest": {
+          "$ref": "#/$defs/Hash"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Capture": {
+      "type": "object",
+      "required": [
+        "capture_id",
+        "capture_digest",
+        "content_digest",
+        "bytes"
+      ],
+      "properties": {
+        "capture_id": {
+          "$ref": "#/$defs/Token"
+        },
+        "capture_digest": {
+          "$ref": "#/$defs/Hash"
+        },
+        "content_digest": {
+          "$ref": "#/$defs/Hash"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1048576
+        }
+      },
+      "additionalProperties": false
+    },
+    "Dependencies": {
+      "type": "object",
+      "required": [
+        "source_revision_digest",
+        "source_engine",
+        "kernel_engine",
+        "captures",
+        "mapping_digest",
+        "catalogue_digest"
+      ],
+      "properties": {
+        "source_revision_digest": {
+          "$ref": "#/$defs/Hash"
+        },
+        "source_engine": {
+          "$ref": "#/$defs/SourceEngine"
+        },
+        "kernel_engine": {
+          "$ref": "#/$defs/KernelEngine"
+        },
+        "captures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Capture"
+          },
+          "maxItems": 8,
+          "minItems": 1
+        },
+        "mapping_digest": {
+          "$ref": "#/$defs/Hash"
+        },
+        "catalogue_digest": {
+          "$ref": "#/$defs/Hash"
+        }
+      },
+      "additionalProperties": false
+    },
+    "PartitionInput": {
+      "type": "object",
+      "required": [
+        "dependencies",
+        "subject_ids"
+      ],
+      "properties": {
+        "dependencies": {
+          "$ref": "#/$defs/Dependencies"
+        },
+        "subject_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Token"
+          },
+          "maxItems": 32,
+          "minItems": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "Partition": {
+      "type": "object",
+      "required": [
+        "protocol",
+        "dependencies",
+        "subject_ids",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.shv.partition.v1"
+        },
+        "dependencies": {
+          "$ref": "#/$defs/Dependencies"
+        },
+        "subject_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Token"
+          },
+          "maxItems": 32,
+          "minItems": 0
+        },
+        "digest": {
+          "$ref": "#/$defs/Hash"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Reference": {
+      "type": "object",
+      "required": [
+        "partition_digest",
+        "subject_id"
+      ],
+      "properties": {
+        "partition_digest": {
+          "$ref": "#/$defs/Hash"
+        },
+        "subject_id": {
+          "$ref": "#/$defs/Token"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Entry": {
+      "type": "object",
+      "required": [
+        "partition_digest",
+        "partition"
+      ],
+      "properties": {
+        "partition_digest": {
+          "$ref": "#/$defs/Hash"
+        },
+        "partition": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Partition"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "Status": {
+      "type": "object",
+      "required": [
+        "reference",
+        "status"
+      ],
+      "properties": {
+        "reference": {
+          "$ref": "#/$defs/Reference"
+        },
+        "status": {
+          "enum": [
+            "found",
+            "missing_partition",
+            "missing_subject",
+            "unlisted_partition"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "ManifestInput": {
+      "type": "object",
+      "required": [
+        "entries",
+        "required_references"
+      ],
+      "properties": {
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Entry"
+          },
+          "maxItems": 64,
+          "minItems": 0
+        },
+        "required_references": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "maxItems": 128,
+          "minItems": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "Manifest": {
+      "type": "object",
+      "required": [
+        "protocol",
+        "entries",
+        "required_references",
+        "reference_statuses",
+        "loaded_count",
+        "missing_count",
+        "complete_inventory",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.shv.partition-manifest.v1"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Entry"
+          },
+          "maxItems": 64,
+          "minItems": 0
+        },
+        "required_references": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "maxItems": 128,
+          "minItems": 0
+        },
+        "reference_statuses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Status"
+          },
+          "maxItems": 128,
+          "minItems": 0
+        },
+        "loaded_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64
+        },
+        "missing_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64
+        },
+        "complete_inventory": {
+          "type": "boolean"
+        },
+        "digest": {
+          "$ref": "#/$defs/Hash"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Cursor": {
+      "type": "object",
+      "required": [
+        "manifest_digest",
+        "selection_digest",
+        "offset"
+      ],
+      "properties": {
+        "manifest_digest": {
+          "$ref": "#/$defs/Hash"
+        },
+        "selection_digest": {
+          "$ref": "#/$defs/Hash"
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 127
+        }
+      },
+      "additionalProperties": false
+    },
+    "QueryInput": {
+      "type": "object",
+      "required": [
+        "manifest",
+        "selection",
+        "limit",
+        "cursor"
+      ],
+      "properties": {
+        "manifest": {
+          "$ref": "#/$defs/Manifest"
+        },
+        "selection": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Reference"
+          },
+          "maxItems": 128,
+          "minItems": 0
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        },
+        "cursor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Cursor"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "Query": {
+      "type": "object",
+      "required": [
+        "protocol",
+        "manifest_digest",
+        "selection_digest",
+        "offset",
+        "rows",
+        "total_selected",
+        "next_cursor",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.shv.partition-query.v1"
+        },
+        "manifest_digest": {
+          "$ref": "#/$defs/Hash"
+        },
+        "selection_digest": {
+          "$ref": "#/$defs/Hash"
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 127
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Status"
+          },
+          "maxItems": 32,
+          "minItems": 0
+        },
+        "total_selected": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Cursor"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "digest": {
+          "$ref": "#/$defs/Hash"
+        }
+      },
+      "additionalProperties": false
+    },
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[0-9A-Za-z.+-]+$"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "featureId": {
+      "type": "string",
+      "maxLength": 256,
+      "pattern": "^ssfv:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+    },
+    "operationId": {
+      "type": "string",
+      "maxLength": 256,
+      "pattern": "^engop:[a-z][a-z0-9-]{0,62}:[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "engine_operation_id",
+        "operation_name",
+        "availability",
+        "feature_ids",
+        "administrative_interactions",
+        "administration_disposition",
+        "input_protocol",
+        "output_protocol",
+        "mutability",
+        "idempotency",
+        "expected_state_required",
+        "authorization_requirement",
+        "recovery_operation_id",
+        "direct_invocation",
+        "thermal_path"
+      ],
+      "properties": {
+        "engine_operation_id": {
+          "$ref": "#/$defs/operationId"
+        },
+        "operation_name": {
+          "$ref": "#/$defs/token"
+        },
+        "availability": {
+          "enum": [
+            "implemented",
+            "reserved",
+            "disabled"
+          ]
+        },
+        "feature_ids": {
+          "type": "array",
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/featureId"
+          }
+        },
+        "administrative_interactions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/interaction"
+          }
+        },
+        "administration_disposition": {
+          "enum": [
+            "unreviewed",
+            "qxctl_required",
+            "lifecycle_only",
+            "runtime_only",
+            "system_orchestrated",
+            "prohibited",
+            "not_applicable"
+          ]
+        },
+        "input_protocol": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/token"
+            }
+          ]
+        },
+        "output_protocol": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/token"
+            }
+          ]
+        },
+        "mutability": {
+          "enum": [
+            "read_only",
+            "evidence_only",
+            "proposal_only",
+            "permission_backed_mutation",
+            "prohibited"
+          ]
+        },
+        "idempotency": {
+          "enum": [
+            "not_applicable",
+            "idempotent",
+            "idempotent_with_invocation_id",
+            "non_idempotent"
+          ]
+        },
+        "expected_state_required": {
+          "type": "boolean"
+        },
+        "authorization_requirement": {
+          "enum": [
+            "none",
+            "target_host_permission",
+            "ssiag"
+          ]
+        },
+        "recovery_operation_id": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/operationId"
+            }
+          ]
+        },
+        "direct_invocation": {
+          "enum": [
+            "supported",
+            "diagnostic_only",
+            "prohibited"
+          ]
+        },
+        "thermal_path": {
+          "enum": [
+            "freezing",
+            "warm",
+            "hot"
+          ]
+        }
+      }
+    },
+    "interaction": {
+      "enum": [
+        "discover",
+        "inspect",
+        "query",
+        "validate",
+        "configure",
+        "propose",
+        "invoke",
+        "apply",
+        "lifecycle",
+        "recover"
+      ]
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_bytes",
+        "response_bytes",
+        "json_depth",
+        "json_values",
+        "path_bytes",
+        "snapshot_files",
+        "snapshot_file_bytes",
+        "deadline_ahead_ms"
+      ],
+      "properties": {
+        "request_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "response_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "json_depth": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "json_values": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "path_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "snapshot_files": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "snapshot_file_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "deadline_ahead_ms": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "Descriptor": {
+      "title": "Symphony knowledge engine descriptor v2",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "format_version",
+        "module_id",
+        "engine_id",
+        "vector_id",
+        "engine_version",
+        "process_protocols",
+        "contract_versions",
+        "operations",
+        "limits",
+        "supported_scopes",
+        "language",
+        "thermal_path",
+        "canonical_apply_enabled",
+        "session_mutation_enabled",
+        "network_listener",
+        "descriptor_digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.knowledge.engine-descriptor.v2"
+        },
+        "format_version": {
+          "const": 2
+        },
+        "module_id": {
+          "$ref": "#/$defs/token"
+        },
+        "engine_id": {
+          "$ref": "#/$defs/token"
+        },
+        "vector_id": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/token"
+            }
+          ]
+        },
+        "engine_version": {
+          "$ref": "#/$defs/version"
+        },
+        "process_protocols": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/token"
+          }
+        },
+        "contract_versions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "operations": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1024,
+          "items": {
+            "$ref": "#/$defs/operation"
+          }
+        },
+        "limits": {
+          "$ref": "#/$defs/limits"
+        },
+        "supported_scopes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "user",
+              "system",
+              "tops"
+            ]
+          }
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9+.#_-]+$"
+        },
+        "thermal_path": {
+          "enum": [
+            "freezing",
+            "warm",
+            "hot"
+          ]
+        },
+        "canonical_apply_enabled": {
+          "type": "boolean"
+        },
+        "session_mutation_enabled": {
+          "type": "boolean"
+        },
+        "network_listener": {
+          "type": "boolean"
+        },
+        "descriptor_digest": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    }
+  }
+}

@@ -400,6 +400,22 @@
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     },
     {
+      "adapter_id": "adapter:symphony:symphony-shv-partition.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "shv-partition-engine",
+      "entry_point_id": "symphony-shv-partition",
+      "format_version": 3,
+      "implementation_path": "modules/shv-partition-engine",
+      "operation_ids": [
+        "engop:symphony:shv-partition.inspect",
+        "engop:symphony:shv-partition.manifest.build",
+        "engop:symphony:shv-partition.manifest.query",
+        "engop:symphony:shv-partition.partition.build"
+      ],
+      "owner_contract": "modules/shv-partition-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
       "adapter_id": "adapter:symphony:symphony-shv-source.v1",
       "command_protocol": "symphony.knowledge.engine-process.v1",
       "component": "shv-source-engine",
@@ -1675,6 +1691,47 @@
     },
     {
       "allowed_adapter_ids": [
+        "adapter:symphony:symphony-shv-partition.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "path": "tools/qxctl/internal/knowledgeengine/shv_partition_test.go",
+          "cases": [
+            "TestSHVPartitionCorrespondence",
+            "TestSHVPartitionCursorBindings"
+          ]
+        }
+      ],
+      "invariant_id": "invariant:symphony:shv.partition-inventory-correspondence",
+      "ipc_boundary": true,
+      "owner_component": "shv-partition-engine",
+      "owner_contract": "modules/shv-partition-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/shv-partition-engine/src/main.cpp",
+        "modules/shv-partition-engine/src/partition.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "path": "modules/shv-partition-engine/tests/partition_test.py",
+          "cases": [
+            "test_native_partition_contract"
+          ]
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "path": "modules/shv-partition-engine/tests/partition_test.py",
+          "cases": [
+            "test_installed_process"
+          ]
+        }
+      ],
+      "statement": "Native partition manifests preserve declared immutable dependencies, missing inventory and separately scoped references. Independent Go rederivation rejects falsely resealed completeness, inventory or cursor results; no global hardware absence or publisher authentication is inferred.",
+      "status": "active",
+      "title": "Partition inventory and query cursors preserve exact dependency scope"
+    },
+    {
+      "allowed_adapter_ids": [
         "adapter:symphony:symphony-shv-source.v1"
       ],
       "consumer_boundary_rejections": [
@@ -2119,5 +2176,5 @@
     "owner_producer_regression_required": true,
     "real_process_required_for_ipc": true
   },
-  "registry_digest": "sha256:e890b1758ea7741ebc78d552f8280432891c1ae61c0b5711ee065a65ddd54eab"
+  "registry_digest": "sha256:0ed9c3cb56e46f141b6a623d6baeffe41f0cb214a985404070367822aa404fcc"
 }

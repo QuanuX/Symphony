@@ -11327,3 +11327,48 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - relationships:
   - `knowledge/shv/REFRESH.md`
 - notes: `Dependency differences do not establish causality or hardware compatibility.`
+
+- path: `knowledge/shv/PARTITIONS.md`
+- title: `SHV partition manifest semantics`
+- surface_type: `reference document`
+- truth_role: `owner-declared immutable partition contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `bounded C++ partition and query semantics`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `durable catalogue publication`
+- relationships:
+  - `knowledge/shv/REFRESH.md`
+- notes: `No implicit hardware identity, publisher authentication or complete atlas claim.`
+
+- path: `modules/shv-partition-engine/SPEC.md`
+- title: `SHV partition engine contract`
+- surface_type: `reference document`
+- truth_role: `owner-declared immutable partition contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `bounded C++ partition and query semantics`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `durable catalogue publication`
+- relationships:
+  - `knowledge/shv/REFRESH.md`
+- notes: `No implicit hardware identity, publisher authentication or complete atlas claim.`
+
+- path: `modules/shv-partition-engine/FEATURES.md`
+- title: `SHV partition semantic features`
+- surface_type: `reference document`
+- truth_role: `owner-declared immutable partition contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `bounded C++ partition and query semantics`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `durable catalogue publication`
+- relationships:
+  - `knowledge/shv/REFRESH.md`
+- notes: `No implicit hardware identity, publisher authentication or complete atlas claim.`

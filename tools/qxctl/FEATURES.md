@@ -917,7 +917,12 @@
         "tools/qxctl/cmd/qxctl/shv_refresh.schema.json",
         "tools/qxctl/scripts/build_shv_refresh_schema.py",
         "tools/qxctl/cmd/qxctl/shv_refresh_compare.go",
-        "tools/qxctl/cmd/qxctl/shv_refresh_compare_test.go"
+        "tools/qxctl/cmd/qxctl/shv_refresh_compare_test.go",
+        "tools/qxctl/cmd/qxctl/shv_partition.go",
+        "tools/qxctl/internal/knowledgeengine/shv_partition.go",
+        "tools/qxctl/internal/knowledgeengine/shv_partition_descriptor.go",
+        "tools/qxctl/internal/knowledgeengine/shv_partition_validation.go",
+        "tools/qxctl/internal/knowledgeengine/shv_partition_test.go"
       ],
       "kind": "feature",
       "non_claims": [

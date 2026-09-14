@@ -1790,6 +1790,8 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.partition.schema",
+            "qxcmd:symphony:shv.partition.template",
             "qxcmd:symphony:shv.refresh.schema",
             "qxcmd:symphony:shv.refresh.template",
             "qxcmd:symphony:shv.schema",
@@ -1815,6 +1817,7 @@
           "command_ids": [
             "qxcmd:symphony:shv.graph.adapter.inspect",
             "qxcmd:symphony:shv.inspect",
+            "qxcmd:symphony:shv.partition.inspect",
             "qxcmd:symphony:shv.source.activation.status",
             "qxcmd:symphony:shv.source.inspect",
             "qxcmd:symphony:shv.source.status"
@@ -1840,6 +1843,9 @@
             "qxcmd:symphony:shv.graph.adapter.roundtrip",
             "qxcmd:symphony:shv.graph.project",
             "qxcmd:symphony:shv.graph.validate",
+            "qxcmd:symphony:shv.partition.build",
+            "qxcmd:symphony:shv.partition.from-refresh",
+            "qxcmd:symphony:shv.partition.manifest",
             "qxcmd:symphony:shv.refresh.build",
             "qxcmd:symphony:shv.refresh.compare",
             "qxcmd:symphony:shv.refresh.verify",
@@ -1881,7 +1887,8 @@
         {
           "command_ids": [
             "qxcmd:symphony:shv.catalogue.query",
-            "qxcmd:symphony:shv.graph.adapter.query"
+            "qxcmd:symphony:shv.graph.adapter.query",
+            "qxcmd:symphony:shv.partition.query"
           ],
           "delivery": "composed",
           "engine_operation_ids": [],
@@ -5806,12 +5813,14 @@
             "qxcmd:symphony:shv.evaluate",
             "qxcmd:symphony:shv.graph.project",
             "qxcmd:symphony:shv.graph.validate",
+            "qxcmd:symphony:shv.partition.from-refresh",
             "qxcmd:symphony:shv.refresh.build",
             "qxcmd:symphony:shv.refresh.compare",
             "qxcmd:symphony:shv.refresh.verify"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:shv-partition.partition.build",
             "engop:symphony:shv-source.capture.import",
             "engop:symphony:shv-source.graph.project",
             "engop:symphony:shv.catalogue.build",
@@ -5915,6 +5924,91 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:shv.partition.schema",
+            "qxcmd:symphony:shv.partition.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-partition-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.partition.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:shv-partition.inspect"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-partition-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.partition.build",
+            "qxcmd:symphony:shv.partition.from-refresh",
+            "qxcmd:symphony:shv.partition.manifest"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:shv-partition.manifest.build",
+            "engop:symphony:shv-partition.partition.build",
+            "engop:symphony:shv-source.capture.import",
+            "engop:symphony:shv-source.graph.project",
+            "engop:symphony:shv.catalogue.build",
+            "engop:symphony:shv.coverage.plan",
+            "engop:symphony:shv.evaluate",
+            "engop:symphony:shv.graph.project"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-partition-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.partition.query"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:shv-partition.manifest.query"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-partition-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:shv-partition-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:shv.source.activation.apply"
           ],
           "delivery": "direct",
@@ -5954,6 +6048,7 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.partition.from-refresh",
             "qxcmd:symphony:shv.refresh.build",
             "qxcmd:symphony:shv.refresh.compare",
             "qxcmd:symphony:shv.refresh.verify",
@@ -5966,6 +6061,7 @@
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:shv-partition.partition.build",
             "engop:symphony:shv-source.capture.compare",
             "engop:symphony:shv-source.capture.import",
             "engop:symphony:shv-source.graph.project",
@@ -7259,9 +7355,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:92c1f6d9fb40de3516c52f448067bd8d00aca8b3d706dc78e66d0086598bd406",
+  "profile_digest": "sha256:b7111f44723ba475dbc86b0b007a6f9d3ef8b993120de076ce77105ff9644cae",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 105,
-  "ssfv_registry_digest": "sha256:c35fa2f66b67ae2aedc2eabf0ee5e42275e4a99773768412e3f338035ea169f1"
+  "registered_feature_count": 106,
+  "ssfv_registry_digest": "sha256:2b112a0cc231afa276dbeee4ad1d03c14d9ce5bbd92cf4a94050dff9baf7f6c1"
 }

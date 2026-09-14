@@ -10877,6 +10877,285 @@
       "aliases": [],
       "authority_mode": "none",
       "backend_operation_ids": [
+        "engop:symphony:shv-partition.partition.build"
+      ],
+      "command_id": "qxcmd:symphony:shv.partition.build",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-partition-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl shv partition build [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.shv.partition-build-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.shv.partition.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.shv.partition.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-partition.partition.build",
+        "engop:symphony:shv-source.capture.import",
+        "engop:symphony:shv-source.graph.project",
+        "engop:symphony:shv.catalogue.build",
+        "engop:symphony:shv.coverage.plan",
+        "engop:symphony:shv.evaluate",
+        "engop:symphony:shv.graph.project"
+      ],
+      "command_id": "qxcmd:symphony:shv.partition.from-refresh",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-partition-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-source-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl shv partition from-refresh [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.qxctl.shv-refresh-endpoint.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-partition-from-refresh.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-partition-from-refresh.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-partition.inspect"
+      ],
+      "command_id": "qxcmd:symphony:shv.partition.inspect",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-partition-engine",
+          "interaction": "inspect"
+        }
+      ],
+      "grammar": "qxctl shv partition inspect [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.shv.partition-inspect-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.knowledge.engine-descriptor.v2"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.knowledge.engine-descriptor.v2"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-partition.manifest.build"
+      ],
+      "command_id": "qxcmd:symphony:shv.partition.manifest",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-partition-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl shv partition manifest [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.shv.partition-manifest-build-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.shv.partition-manifest.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.shv.partition-manifest.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-partition.manifest.query"
+      ],
+      "command_id": "qxcmd:symphony:shv.partition.query",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-partition-engine",
+          "interaction": "query"
+        }
+      ],
+      "grammar": "qxctl shv partition query [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.shv.partition-manifest-query-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.shv.partition-query.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.shv.partition-query.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:shv.partition.schema",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-partition-engine",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl shv partition schema [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-partition-schema.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-partition-schema.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:shv.partition.template",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "discover"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-partition-engine",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl shv partition template [--json] [--operation VALUE] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-partition-template.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-partition-template.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
         "engop:symphony:shv-source.capture.import",
         "engop:symphony:shv-source.graph.project",
         "engop:symphony:shv.catalogue.build",
@@ -14534,6 +14813,6 @@
   "format_version": 1,
   "protocol": "symphony.qxctl.command-registry.v1",
   "receipt_digest": null,
-  "registry_digest": "sha256:6ff6483f5e0bf317f50ba27fb1b2c8fef123cbb780e9d30491c99aee4d331d72",
+  "registry_digest": "sha256:4d316b963ec9a98337dc622c73527c15d5deb2e3facf4ec52c76587df4c0911a",
   "registry_kind": "expected"
 }

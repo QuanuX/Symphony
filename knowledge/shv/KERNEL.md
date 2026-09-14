@@ -51,3 +51,7 @@ The independent `modules/shv-source-engine/` implements `SOURCES.md`: stable sou
 ## Source-bound materialization
 
 `REFRESH.md` composes the delivered native operations through qxctl with exact protected source and installation binding. This supersedes earlier statements above that protected activation is unimplemented. Source-bound bundles and historical replay are now delivered; durable catalogue publication, corpus partitions and automatic acquisition remain future work.
+
+## Immutable partition inventory
+
+The separate `shv-partition-engine` now implements `PARTITIONS.md`: immutable dependency-reference identities, explicit missing inventory and cursor-bound reference queries. qxctl from-refresh replays evidence first. This is the initial bounded manifest owner; durable publication, cross-partition semantic aggregation and resumable stage persistence remain unimplemented.

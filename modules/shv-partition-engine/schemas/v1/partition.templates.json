@@ -1,0 +1,16 @@
+{
+  "partition_build": {
+    "dependencies": null,
+    "subject_ids": null
+  },
+  "manifest_build": {
+    "entries": null,
+    "required_references": null
+  },
+  "manifest_query": {
+    "manifest": null,
+    "selection": null,
+    "limit": null,
+    "cursor": null
+  }
+}
