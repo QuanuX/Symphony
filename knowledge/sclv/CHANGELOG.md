@@ -11955,3 +11955,81 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/shvpublicationstate/store.go`
   - `tools/qxctl/internal/shvpublicationstate/store_test.go`
   - `tools/qxctl/internal/shvpublicationstate/validation.go`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-STORAGE-INVENTORY`
+- record_version: `3`
+- title: `Inspect verified SHV storage inventory without replacing historical writers`
+- status: `canonical`
+- change_started_at: `2026-09-14T22:13:26Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV storage inventory continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-inventory-continuation.md`
+- skvi_references:
+  - `knowledge/shv/GRAPH-STORE.md`
+  - `modules/shv-graph-duckdb-connector/SPEC.md`
+- change_summary: |
+    Adds C++ inventory verification, scoped operation/reference manifests and revision-bound qxctl pagination.
+- relationship_changes: |
+    Reuses bounded SCV inventory mechanics under the existing SHV storage owner while keeping graph semantics and historical writer identities distinct.
+- doctrine_changes: |
+    Inventory exposes retained storage state, not canonical knowledge or retention authority. No implicit newest-row selection or writer upgrade.
+- compatibility_consequences: |
+    Connector 0.2.0-dev adds inventory; exact 0.1 selection remains supported. Inventory admits historical 0.1 and current 0.2 records; original writers own commits. 357 qxctl commands total.
+- publication_consequences: |
+    No catalogue head or remote publication changes. SHV-18 publication retains its explicitly supported 0.1 store binding.
+- projection_consequences: |
+    Complete native verification rejects orphan snapshots and unrequested-scope projection rows; independent consumer checks scoped reference accounting and page correspondence.
+- evidence:
+  - `../shv-19/VERIFICATION.md records focused native, Go and installed legacy/current writer checks.`
+  - `../shv-19/evidence/SOURCE_BUILD_PARITY.json binds clean-source and exact native installation bytes.`
+  - `../shv-19/MANIFEST.json seals designated evidence.`
+- non_authorizations:
+  - `No transfer execution, migration, pruning, deletion, retention policy or protected head mutation.`
+  - `No default graph database, provider/hardware policy, remote publication or production deployment.`
+- notes: |
+    Inventory is logical read-only; WAL recovery may write physically. Opaque global revision/count observations are not independent reconstruction of other scopes. Mapping diagnostics, hardware-class conformance and portable universes remain future work.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T22:21:20Z`
+- recorded_at: `2026-09-14T22:23:56Z`
+- revision_value: `4b2ae5d7ce5200ef9ea1ce3152aade752e203834`
+- tree_digest: `sha256:0f6d6ab6a46fe9399a23e710a0fbfdbed240c58b530a12eef8d697705137169e`
+- ratification_evidence_digest: `sha256:e537b9b95687ba00b645bef4f4df0cb2d97f4e9d5365a0aec180f202bcae0452`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/shv/GRAPH-STORE.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/shv-graph-duckdb-connector/CMakeLists.txt`
+  - `modules/shv-graph-duckdb-connector/FEATURES.md`
+  - `modules/shv-graph-duckdb-connector/INSTALL.md`
+  - `modules/shv-graph-duckdb-connector/SKILL.md`
+  - `modules/shv-graph-duckdb-connector/SPEC.md`
+  - `modules/shv-graph-duckdb-connector/schemas/v1/graph-store.schema.json`
+  - `modules/shv-graph-duckdb-connector/schemas/v1/graph-store.templates.json`
+  - `modules/shv-graph-duckdb-connector/src/connector.cpp`
+  - `modules/shv-graph-duckdb-connector/src/connector.hpp`
+  - `modules/shv-graph-duckdb-connector/tests/connector_test.py`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv_store.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store_descriptor.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store_inventory.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store_inventory_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store_validation.go`
+  - `tools/qxctl/internal/knowledgeengine/testdata/shv-store/inventory.json`
