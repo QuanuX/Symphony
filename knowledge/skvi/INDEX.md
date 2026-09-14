@@ -11500,3 +11500,108 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
   - `knowledge/shv/SOURCES.md`
   - `knowledge/shv/IDENTIFIERS.md`
 - notes: `Research literal agreement does not establish namespace equivalence or native PDF assertions.`
+
+- path: `knowledge/shv/PDF-ADAPTER.md`
+- title: `SHV bounded PDF adapter PDF-ADAPTER`
+- surface_type: `reference document`
+- truth_role: `owner-declared bounded interpretation contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `selected AMD PDF table extraction and replay`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `durable catalogue publication`
+- relationships:
+  - `knowledge/shv/PDF-EVIDENCE.md`
+- notes: `Original lineage retained; no OPN/tray namespace equivalence or general PDF decoder ownership.`
+
+- path: `modules/shv-pdf-adapter/INTENT.md`
+- title: `SHV bounded PDF adapter INTENT`
+- surface_type: `reference document`
+- truth_role: `owner-declared bounded interpretation contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `selected AMD PDF table extraction and replay`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `durable catalogue publication`
+- relationships:
+  - `knowledge/shv/PDF-EVIDENCE.md`
+- notes: `Original lineage retained; no OPN/tray namespace equivalence or general PDF decoder ownership.`
+
+- path: `modules/shv-pdf-adapter/MANIFEST.md`
+- title: `SHV bounded PDF adapter MANIFEST`
+- surface_type: `reference document`
+- truth_role: `owner-declared bounded interpretation contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `selected AMD PDF table extraction and replay`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `durable catalogue publication`
+- relationships:
+  - `knowledge/shv/PDF-EVIDENCE.md`
+- notes: `Original lineage retained; no OPN/tray namespace equivalence or general PDF decoder ownership.`
+
+- path: `modules/shv-pdf-adapter/SPEC.md`
+- title: `SHV bounded PDF adapter SPEC`
+- surface_type: `reference document`
+- truth_role: `owner-declared bounded interpretation contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `selected AMD PDF table extraction and replay`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `durable catalogue publication`
+- relationships:
+  - `knowledge/shv/PDF-EVIDENCE.md`
+- notes: `Original lineage retained; no OPN/tray namespace equivalence or general PDF decoder ownership.`
+
+- path: `modules/shv-pdf-adapter/SKILL.md`
+- title: `SHV bounded PDF adapter SKILL`
+- surface_type: `reference document`
+- truth_role: `owner-declared bounded interpretation contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `selected AMD PDF table extraction and replay`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `durable catalogue publication`
+- relationships:
+  - `knowledge/shv/PDF-EVIDENCE.md`
+- notes: `Original lineage retained; no OPN/tray namespace equivalence or general PDF decoder ownership.`
+
+- path: `modules/shv-pdf-adapter/INSTALL.md`
+- title: `SHV bounded PDF adapter INSTALL`
+- surface_type: `reference document`
+- truth_role: `owner-declared bounded interpretation contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `selected AMD PDF table extraction and replay`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `durable catalogue publication`
+- relationships:
+  - `knowledge/shv/PDF-EVIDENCE.md`
+- notes: `Original lineage retained; no OPN/tray namespace equivalence or general PDF decoder ownership.`
+
+- path: `modules/shv-pdf-adapter/FEATURES.md`
+- title: `SHV bounded PDF adapter FEATURES`
+- surface_type: `reference document`
+- truth_role: `owner-declared bounded interpretation contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `selected AMD PDF table extraction and replay`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `durable catalogue publication`
+- relationships:
+  - `knowledge/shv/PDF-EVIDENCE.md`
+- notes: `Original lineage retained; no OPN/tray namespace equivalence or general PDF decoder ownership.`

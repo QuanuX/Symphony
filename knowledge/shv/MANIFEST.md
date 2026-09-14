@@ -51,3 +51,5 @@ The independent `modules/shv-source-engine/` implements `SOURCES.md`: stable sou
 ## PDF evidence boundary
 
 `PDF-EVIDENCE.md` distinguishes implemented opaque capture/replay from prospective document decoding and native PDF hardware interpretation.
+
+`PDF-ADAPTER.md` now defines the independently installable C++ adapter and qxctl extraction/replay of one explicit AMD PDF table. General PDF coverage, kernel assertion ingestion, derived graph integration and namespace equivalence remain separate.

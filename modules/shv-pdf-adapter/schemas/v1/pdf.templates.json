@@ -1,0 +1,17 @@
+{
+  "extract": {
+    "source_root": null,
+    "source": {
+      "id": null,
+      "path": null,
+      "bytes": null,
+      "digest": null
+    },
+    "decoder_root": null,
+    "decoder": {
+      "path": null,
+      "digest": null
+    },
+    "profile": "amd-69290-table8.v1"
+  }
+}

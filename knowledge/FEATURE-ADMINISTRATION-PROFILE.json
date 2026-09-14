@@ -1802,6 +1802,8 @@
             "qxcmd:symphony:shv.partition.resolution.template",
             "qxcmd:symphony:shv.partition.schema",
             "qxcmd:symphony:shv.partition.template",
+            "qxcmd:symphony:shv.pdf.schema",
+            "qxcmd:symphony:shv.pdf.template",
             "qxcmd:symphony:shv.refresh.schema",
             "qxcmd:symphony:shv.refresh.template",
             "qxcmd:symphony:shv.schema",
@@ -1829,6 +1831,7 @@
             "qxcmd:symphony:shv.inspect",
             "qxcmd:symphony:shv.materialization.status",
             "qxcmd:symphony:shv.partition.inspect",
+            "qxcmd:symphony:shv.pdf.inspect",
             "qxcmd:symphony:shv.source.activation.status",
             "qxcmd:symphony:shv.source.inspect",
             "qxcmd:symphony:shv.source.status"
@@ -1866,6 +1869,8 @@
             "qxcmd:symphony:shv.partition.from-refresh",
             "qxcmd:symphony:shv.partition.manifest",
             "qxcmd:symphony:shv.partition.resolution.run",
+            "qxcmd:symphony:shv.pdf.extract",
+            "qxcmd:symphony:shv.pdf.verify",
             "qxcmd:symphony:shv.refresh.build",
             "qxcmd:symphony:shv.refresh.compare",
             "qxcmd:symphony:shv.refresh.verify",
@@ -6053,6 +6058,65 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:shv.pdf.schema",
+            "qxcmd:symphony:shv.pdf.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-pdf-adapter/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.pdf.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:shv-pdf.inspect"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-pdf-adapter/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.pdf.extract",
+            "qxcmd:symphony:shv.pdf.verify"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:shv-pdf.extract"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-pdf-adapter/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:shv-pdf-adapter"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:shv.source.activation.apply"
           ],
           "delivery": "direct",
@@ -7409,9 +7473,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:79f58c8a7585f7a219cb4eb56a3825c9f98c5c1a6b22971e2904436c2b6aa31b",
+  "profile_digest": "sha256:9e7f40fa2c2f9bacd5d8c338a0da17380643e74c9891b921c308a9e9da4f2460",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 106,
-  "ssfv_registry_digest": "sha256:f8aedbd92fdd0a099a841752e885520f2277f7aa60614ecd8356d016e6bed699"
+  "registered_feature_count": 107,
+  "ssfv_registry_digest": "sha256:20fa43a1434dd401450fc28c63c45c754f8b81b7676f0252cf0ee56bac857ab4"
 }
