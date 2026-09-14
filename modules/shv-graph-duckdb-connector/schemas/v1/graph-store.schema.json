@@ -690,9 +690,10 @@
           "maxLength": 4096
         },
         "Version": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 4096
+          "enum": [
+            "0.1.0-dev",
+            "0.2.0-dev"
+          ]
         },
         "Prefix": {
           "type": "string",
@@ -1175,6 +1176,314 @@
         "operation_id",
         "graph"
       ],
+      "additionalProperties": false
+    },
+    "InventoryCounts": {
+      "type": "object",
+      "required": [
+        "nodes",
+        "edges"
+      ],
+      "properties": {
+        "nodes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024
+        },
+        "edges": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2048
+        }
+      },
+      "additionalProperties": false
+    },
+    "InventoryEntry": {
+      "type": "object",
+      "required": [
+        "operation_id",
+        "intent_digest",
+        "snapshot_digest",
+        "graph_digest",
+        "projection_digest",
+        "state",
+        "connector",
+        "counts"
+      ],
+      "properties": {
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+        },
+        "intent_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "snapshot_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "graph_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "projection_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "state": {
+          "enum": [
+            "prepared",
+            "committed"
+          ]
+        },
+        "connector": {
+          "$ref": "#/$defs/Installation"
+        },
+        "counts": {
+          "$ref": "#/$defs/InventoryCounts"
+        }
+      },
+      "additionalProperties": false
+    },
+    "InventoryReference": {
+      "type": "object",
+      "required": [
+        "snapshot_digest",
+        "operation_ids",
+        "committed_operations"
+      ],
+      "properties": {
+        "snapshot_digest": {
+          "$ref": "#/$defs/digest"
+        },
+        "operation_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+          },
+          "minItems": 1,
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "committed_operations": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        }
+      },
+      "additionalProperties": false
+    },
+    "InventoryCursor": {
+      "type": "object",
+      "required": [
+        "revision",
+        "after_operation_id"
+      ],
+      "properties": {
+        "revision": {
+          "$ref": "#/$defs/digest"
+        },
+        "after_operation_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._:-]{1,128}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "InventoryInput": {
+      "type": "object",
+      "required": [
+        "tops_id",
+        "namespace",
+        "expected_revision",
+        "cursor",
+        "limit"
+      ],
+      "properties": {
+        "tops_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "namespace": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "expected_revision": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/digest"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cursor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/InventoryCursor"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16
+        }
+      },
+      "additionalProperties": false
+    },
+    "InventoryManifest": {
+      "type": "object",
+      "required": [
+        "protocol",
+        "tops_id",
+        "namespace",
+        "entries",
+        "snapshots",
+        "global_revision",
+        "global_counts",
+        "capacity",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.shv.graph-store-inventory-manifest.v1"
+        },
+        "tops_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        },
+        "namespace": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/InventoryEntry"
+          },
+          "maxItems": 128
+        },
+        "snapshots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/InventoryReference"
+          },
+          "maxItems": 128
+        },
+        "global_revision": {
+          "$ref": "#/$defs/digest"
+        },
+        "global_counts": {
+          "type": "object",
+          "required": [
+            "intents",
+            "snapshots"
+          ],
+          "properties": {
+            "intents": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            },
+            "snapshots": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 128
+            }
+          },
+          "additionalProperties": false
+        },
+        "capacity": {
+          "type": "object",
+          "required": [
+            "intents",
+            "snapshots"
+          ],
+          "properties": {
+            "intents": {
+              "const": 128
+            },
+            "snapshots": {
+              "const": 128
+            }
+          },
+          "additionalProperties": false
+        },
+        "digest": {
+          "$ref": "#/$defs/digest"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Inventory": {
+      "type": "object",
+      "required": [
+        "protocol",
+        "backend",
+        "input",
+        "manifest",
+        "records",
+        "next_cursor",
+        "physical_bytes",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.shv.graph-store-inventory.v1"
+        },
+        "backend": {
+          "const": "duckdb"
+        },
+        "input": {
+          "$ref": "#/$defs/InventoryInput"
+        },
+        "manifest": {
+          "$ref": "#/$defs/InventoryManifest"
+        },
+        "records": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Status"
+          },
+          "maxItems": 16
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/InventoryCursor"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "physical_bytes": {
+          "type": "object",
+          "required": [
+            "database",
+            "wal"
+          ],
+          "properties": {
+            "database": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "wal": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "additionalProperties": false
+        },
+        "digest": {
+          "$ref": "#/$defs/digest"
+        }
+      },
       "additionalProperties": false
     }
   }

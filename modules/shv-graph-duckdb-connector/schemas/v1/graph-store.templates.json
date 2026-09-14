@@ -48,5 +48,12 @@
       "namespace": null,
       "snapshot_digest": null
     }
+  },
+  "inventory": {
+    "tops_id": null,
+    "namespace": null,
+    "expected_revision": null,
+    "cursor": null,
+    "limit": 16
   }
 }

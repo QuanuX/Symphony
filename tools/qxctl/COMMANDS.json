@@ -11363,6 +11363,45 @@
       "aliases": [],
       "authority_mode": "none",
       "backend_operation_ids": [
+        "engop:symphony:shv.graph-store.inventory"
+      ],
+      "command_id": "qxcmd:symphony:shv.graph.store.inventory",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-graph-duckdb-connector",
+          "interaction": "query"
+        }
+      ],
+      "grammar": "qxctl shv graph store inventory [--backend VALUE] [--connector-prefix VALUE] [--connector-version VALUE] [--input VALUE] [--json] [--store-root VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.shv.graph-store-inventory-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.shv.graph-store-inventory.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.shv.graph-store-inventory.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
         "engop:symphony:shv.graph-store.prepare"
       ],
       "command_id": "qxcmd:symphony:shv.graph.store.prepare",
@@ -16537,6 +16576,6 @@
   "format_version": 1,
   "protocol": "symphony.qxctl.command-registry.v1",
   "receipt_digest": null,
-  "registry_digest": "sha256:162670fbe043c1cfaa7dc5c5313b6dff1800a8045aedd694332e089b8696905f",
+  "registry_digest": "sha256:2e8d9fb4312a8524a75160e3cd26ffc23a0b9e71b9f96dde697de27ab25c612d",
   "registry_kind": "expected"
 }

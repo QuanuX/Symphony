@@ -29,7 +29,8 @@
       ],
       "distinctions": [],
       "evidence": [
-        "tests/connector_test.py exercises durable replay, corruption and scope boundaries; process interruption evidence is recorded separately."
+        "tests/connector_test.py exercises durable replay, corruption and scope boundaries; process interruption evidence is recorded separately.",
+        "SHV-19 focused inventory, legacy-reader and independent consumer conformance."
       ],
       "feature_id": "ssfv:symphony:shv-graph-duckdb-connector",
       "how": "C++26 and pinned DuckDB provide storage; qxctl independently checks structural correspondence.",
@@ -54,7 +55,7 @@
       ],
       "owner_contract": "modules/shv-graph-duckdb-connector/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",
-      "record_version": 2,
+      "record_version": 3,
       "relationships": [
         {
           "rationale": "Uses bounded strict process and canonical digest mechanics.",
@@ -70,7 +71,7 @@
       "source_scope": "modules/shv-graph-duckdb-connector",
       "status": "experimental",
       "title": "SHV durable DuckDB graph storage",
-      "what": "Prepare, atomically commit, inspect, query and export scoped immutable generic graph snapshots.",
+      "what": "Prepare, atomically commit, inspect, query and export scoped immutable generic graph snapshots. Enumerates verified scoped inventory with revision-bound pagination and retained writer identities.",
       "when": "Runs only on explicit native process or qxctl invocation.",
       "where": "Explicit caller-owned private database root and exact installed connector.",
       "who": "Humans and agents using exact qxctl adapter selection; structural transport conveys no hardware authority.",

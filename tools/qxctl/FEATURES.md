@@ -960,7 +960,8 @@
         "tools/qxctl/cmd/qxctl/shv_publication_evidence.go",
         "tools/qxctl/internal/knowledgeengine/shv_publication.go",
         "tools/qxctl/internal/knowledgeengine/shv_publication_validation.go",
-        "tools/qxctl/internal/shvpublicationstate/store.go"
+        "tools/qxctl/internal/shvpublicationstate/store.go",
+        "tools/qxctl/internal/knowledgeengine/shv_store_inventory.go"
       ],
       "kind": "feature",
       "non_claims": [

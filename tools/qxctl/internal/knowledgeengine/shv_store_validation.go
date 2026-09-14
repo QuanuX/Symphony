@@ -10,19 +10,29 @@ import (
 func storeScope(p map[string]any) bool {
 	return stavprotocol.ValidateTOPSID(shvText(p["tops_id"])) == nil && graphIndexNamespace.MatchString(shvText(p["namespace"]))
 }
-func storeInstallation(v any) error {
+func storeInstallation(v any) error { return storeInstallationVersion(v, SHVStoreVersion) }
+func storeInstallationVersion(v any, version string) error {
 	m := shvMap(v)
 	if !shvFields(m, "Role", "ModuleID", "EngineID", "Version", "Prefix", "ReceiptPath", "ReceiptDigest", "ReceiptProtocol", "ExecutablePath", "ExecutableDigest") {
 		return shvFail()
 	}
 	prefix := shvText(m["Prefix"])
 	mod := shvStoreSpec.moduleID
-	if prefix == "/" || !filepath.IsAbs(prefix) || filepath.Clean(prefix) != prefix || m["Role"] != mod || m["ModuleID"] != mod || m["EngineID"] != shvStoreSpec.engineID || m["Version"] != SHVStoreVersion || m["ReceiptProtocol"] != receiptProtocolV2 || m["ReceiptPath"] != prefix+"/share/symphony/receipts/"+mod+"/"+SHVStoreVersion+"/install-receipt.json" || m["ExecutablePath"] != prefix+"/libexec/symphony/"+mod+"/"+SHVStoreVersion+"/"+shvStoreSpec.engineID || !storeDigest(m["ReceiptDigest"]) || !storeDigest(m["ExecutableDigest"]) {
+	if prefix == "/" || !filepath.IsAbs(prefix) || filepath.Clean(prefix) != prefix || m["Role"] != mod || m["ModuleID"] != mod || m["EngineID"] != shvStoreSpec.engineID || m["Version"] != version || m["ReceiptProtocol"] != receiptProtocolV2 || m["ReceiptPath"] != prefix+"/share/symphony/receipts/"+mod+"/"+version+"/install-receipt.json" || m["ExecutablePath"] != prefix+"/libexec/symphony/"+mod+"/"+version+"/"+shvStoreSpec.engineID || !storeDigest(m["ReceiptDigest"]) || !storeDigest(m["ExecutableDigest"]) {
 		return shvFail()
 	}
 	return nil
 }
 func shvStoreInput(op string, p map[string]any) error {
+	return shvStoreInputVersion(op, p, SHVStoreVersion)
+}
+func shvStoreInputVersion(op string, p map[string]any, version string) error {
+	if op == "inventory" {
+		if version != SHVStoreInventoryVersion {
+			return shvFail()
+		}
+		return shvStoreInventoryInput(p)
+	}
 	if op == "inspect" {
 		if !shvFields(p) {
 			return shvFail()
@@ -34,7 +44,7 @@ func shvStoreInput(op string, p map[string]any) error {
 	}
 	switch op {
 	case "prepare":
-		if !shvFields(p, "tops_id", "namespace", "operation_id", "graph", "connector") || !graphIndexOperation.MatchString(shvText(p["operation_id"])) || storeInstallation(p["connector"]) != nil {
+		if !shvFields(p, "tops_id", "namespace", "operation_id", "graph", "connector") || !graphIndexOperation.MatchString(shvText(p["operation_id"])) || storeInstallationVersion(p["connector"], version) != nil {
 			return shvFail()
 		}
 		return shvGraph(shvMap(p["graph"]))
@@ -81,8 +91,9 @@ func shvStoreInput(op string, p map[string]any) error {
 	}
 	return nil
 }
-func storeSnapshot(s map[string]any) error {
-	if !shvFields(s, "protocol", "backend", "mapping_version", "tops_id", "namespace", "graph", "connector", "digest") || s["protocol"] != "symphony.shv.graph-store-snapshot.v1" || s["backend"] != "duckdb" || s["mapping_version"] != "1" || !storeScope(s) || storeInstallation(s["connector"]) != nil || shvSealed(s) != nil {
+func storeSnapshot(s map[string]any) error { return storeSnapshotVersion(s, SHVStoreVersion) }
+func storeSnapshotVersion(s map[string]any, version string) error {
+	if !shvFields(s, "protocol", "backend", "mapping_version", "tops_id", "namespace", "graph", "connector", "digest") || s["protocol"] != "symphony.shv.graph-store-snapshot.v1" || s["backend"] != "duckdb" || s["mapping_version"] != "1" || !storeScope(s) || storeInstallationVersion(s["connector"], version) != nil || shvSealed(s) != nil {
 		return shvFail()
 	}
 	return shvGraph(shvMap(s["graph"]))
@@ -103,11 +114,17 @@ func storeProjection(s map[string]any) (map[string]any, map[string]any) {
 	return projection, counts
 }
 func ValidateSHVStoreResult(op string, input, result []byte) error {
+	return ValidateSHVStoreResultVersion(op, input, result, SHVStoreVersion)
+}
+func ValidateSHVStoreResultVersion(op string, input, result []byte, version string) error {
+	if version != SHVStoreVersion && version != SHVStoreInventoryVersion {
+		return shvFail()
+	}
 	p, e := shvObject(input)
 	if e != nil {
 		return e
 	}
-	if e = shvStoreInput(op, p); e != nil {
+	if e = shvStoreInputVersion(op, p, version); e != nil {
 		return e
 	}
 	r, e := shvObject(result)
@@ -115,7 +132,10 @@ func ValidateSHVStoreResult(op string, input, result []byte) error {
 		return e
 	}
 	if op == "inspect" {
-		return shvStoreDescriptor(p, r, SHVStoreVersion)
+		return shvStoreDescriptor(p, r, version)
+	}
+	if op == "inventory" {
+		return validateSHVStoreInventory(op, p, r)
 	}
 	if shvSealed(r) != nil {
 		return shvFail()
@@ -149,7 +169,7 @@ func ValidateSHVStoreResult(op string, input, result []byte) error {
 			return shvFail()
 		}
 	}
-	if storeSnapshot(s) != nil || s["tops_id"] != p["tops_id"] || s["namespace"] != p["namespace"] {
+	if storeSnapshotVersion(s, version) != nil || s["tops_id"] != p["tops_id"] || s["namespace"] != p["namespace"] {
 		return shvFail()
 	}
 	if (op == "export" || op == "query") && s["digest"] != p["snapshot_digest"] {

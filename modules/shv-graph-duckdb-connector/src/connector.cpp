@@ -117,28 +117,29 @@ void installation(const Json &value) {
   fields(value, {"Role", "ModuleID", "EngineID", "Version", "Prefix",
                  "ReceiptPath", "ReceiptDigest", "ReceiptProtocol",
                  "ExecutablePath", "ExecutableDigest"});
-  require(value.at("Role") == "shv-graph-duckdb-connector" &&
-              value.at("ModuleID") == "shv-graph-duckdb-connector" &&
-              value.at("EngineID") == engine_id &&
-              value.at("Version") == version &&
-              value.at("ReceiptProtocol") ==
-                  "symphony.knowledge.install-receipt.v2",
-          "connector identity differs");
+  auto selected_version = text(value.at("Version"), 128);
+  require(
+      value.at("Role") == "shv-graph-duckdb-connector" &&
+          value.at("ModuleID") == "shv-graph-duckdb-connector" &&
+          value.at("EngineID") == engine_id &&
+          (selected_version == "0.1.0-dev" || selected_version == version) &&
+          value.at("ReceiptProtocol") ==
+              "symphony.knowledge.install-receipt.v2",
+      "connector identity differs");
   auto prefix = text(value.at("Prefix"), 4096);
   require(prefix.starts_with('/') &&
               std::filesystem::path(prefix).lexically_normal().string() ==
                   prefix &&
               !prefix.ends_with('/'),
           "clean absolute installation prefix required");
-  require(
-      value.at("ReceiptPath") ==
-              prefix + "/share/symphony/receipts/shv-graph-duckdb-connector/"
-                       "0.1.0-dev/install-receipt.json" &&
-          value.at("ExecutablePath") ==
-              prefix +
-                  "/libexec/symphony/shv-graph-duckdb-connector/0.1.0-dev/" +
-                  engine_id,
-      "installation paths differ");
+  require(value.at("ReceiptPath") ==
+                  prefix +
+                      "/share/symphony/receipts/shv-graph-duckdb-connector/" +
+                      selected_version + "/install-receipt.json" &&
+              value.at("ExecutablePath") ==
+                  prefix + "/libexec/symphony/shv-graph-duckdb-connector/" +
+                      selected_version + "/" + engine_id,
+          "installation paths differ");
   digest(value.at("ReceiptDigest"));
   digest(value.at("ExecutableDigest"));
 }
@@ -612,6 +613,170 @@ Json status_result(Database &db, const Json &intent, const std::string &state) {
            {"counts", counts(projected)},
            {"index_verified", state == "committed"}});
 }
+struct Inventory final {
+  Json manifest;
+  std::map<std::string, Json> records;
+};
+Json summary(const Json &status) {
+  const auto &intent = status.at("intent");
+  const auto &snapshot = intent.at("snapshot");
+  return {{"operation_id", intent.at("operation_id")},
+          {"intent_digest", intent.at("digest")},
+          {"snapshot_digest", snapshot.at("digest")},
+          {"state", status.at("state")},
+          {"graph_digest", snapshot.at("graph").at("digest")},
+          {"connector", snapshot.at("connector")},
+          {"counts", status.at("counts")},
+          {"projection_digest", status.at("projection_digest")}};
+}
+Inventory read_inventory(Database &db, const Json &input) {
+  Inventory out;
+  Json global = Json::array(), entries = Json::array();
+  auto all = db.query("SELECT tops_id,namespace,operation_id FROM intents "
+                      "ORDER BY tops_id,namespace,operation_id LIMIT 129");
+  require(all->size() <= 128, "intent capacity exceeded");
+  std::map<std::string, Json> published;
+  std::map<std::string, Json> references;
+  for (std::size_t i = 0; i < all->size(); ++i) {
+    deadline(db.request);
+    Json key = {{"tops_id", all->string(i, 0)},
+                {"namespace", all->string(i, 1)},
+                {"operation_id", all->string(i, 2)}};
+    std::string state;
+    auto intent = get_intent(db, key, state);
+    auto status = status_result(db, intent, state);
+    auto row = summary(status);
+    global.push_back(Json{{"scope", key},
+                          {"intent_digest", intent.at("digest")},
+                          {"state", state}});
+    const auto &snapshot = intent.at("snapshot");
+    if (state == "committed")
+      published.emplace(Json::array({key.at("tops_id"), key.at("namespace"),
+                                     snapshot.at("digest")})
+                            .dump(),
+                        snapshot);
+    if (key.at("tops_id") == input.at("tops_id") &&
+        key.at("namespace") == input.at("namespace")) {
+      entries.push_back(row);
+      out.records.emplace(text(key.at("operation_id")), status);
+      const auto sd = text(snapshot.at("digest"));
+      if (!references.contains(sd))
+        references.emplace(sd, Json{{"snapshot_digest", sd},
+                                    {"operation_ids", Json::array()},
+                                    {"committed_operations", 0}});
+      auto &ref = references.at(sd);
+      ref["operation_ids"].push_back(key.at("operation_id"));
+      if (state == "committed")
+        ref["committed_operations"] =
+            ref.at("committed_operations").get<unsigned>() + 1;
+    }
+  }
+  auto snapshots =
+      db.query("SELECT tops_id,namespace,snapshot_digest FROM snapshots ORDER "
+               "BY tops_id,namespace,snapshot_digest LIMIT 129");
+  require(snapshots->size() == published.size() && snapshots->size() <= 128,
+          "orphan or missing snapshot inventory");
+  Json snapshot_keys = Json::array();
+  for (std::size_t i = 0; i < snapshots->size(); ++i) {
+    auto key = Json::array({snapshots->string(i, 0), snapshots->string(i, 1),
+                            snapshots->string(i, 2)});
+    require(published.contains(key.dump()), "snapshot has no committed intent");
+    snapshot_keys.push_back(key);
+  }
+  // Every published row belongs to an exact verified snapshot. Extra rows in
+  // another scope must not disappear behind a namespace-filtered inventory.
+  for (const auto *kind : {"nodes", "edges"}) {
+    std::size_t expected = 0;
+    for (const auto &[key, snapshot] : published) {
+      static_cast<void>(key);
+      expected += projection(snapshot.at("graph")).at(kind).size();
+    }
+    auto actual =
+        db.query(std::string("SELECT CAST(count(*) AS VARCHAR) FROM ") + kind);
+    require(actual->size() == 1 &&
+                actual->string(0, 0) == std::to_string(expected),
+            "orphan projection rows in inventory");
+  }
+  Json refs = Json::array();
+  for (const auto &[key, value] : references) {
+    static_cast<void>(key);
+    refs.push_back(value);
+  }
+  out.manifest = seal(Json{
+      {"protocol", "symphony.shv.graph-store-inventory-manifest.v1"},
+      {"tops_id", input.at("tops_id")},
+      {"namespace", input.at("namespace")},
+      {"entries", entries},
+      {"snapshots", refs},
+      {"global_revision",
+       engine::tagged_sha256(
+           Json{{"intents", global}, {"snapshots", snapshot_keys}}.dump())},
+      {"global_counts",
+       {{"intents", all->size()}, {"snapshots", snapshots->size()}}},
+      {"capacity", {{"intents", 128}, {"snapshots", 128}}}});
+  return out;
+}
+void expected_revision(const Json &input, const Inventory &inventory,
+                       bool required) {
+  const auto &expected = input.at("expected_revision");
+  require(!required || !expected.is_null(),
+          "expected inventory revision required");
+  if (!expected.is_null())
+    require(digest(expected) == text(inventory.manifest.at("digest")),
+            "inventory revision changed");
+}
+Json inventory(const engine::Request &request) {
+  const auto &input = request.payload;
+  fields(input,
+         {"tops_id", "namespace", "expected_revision", "cursor", "limit"});
+  scope(input);
+  require(input.at("limit").is_number_integer() && input.at("limit") >= 1 &&
+              input.at("limit") <= 16,
+          "inventory page limit outside bound");
+  const auto limit = input.at("limit").get<int>();
+  Database db(request, false);
+  db.begin();
+  auto value = read_inventory(db, input);
+  expected_revision(input, value, false);
+  std::string after;
+  if (!input.at("cursor").is_null()) {
+    const auto &cursor = input.at("cursor");
+    fields(cursor, {"revision", "after_operation_id"});
+    require(digest(cursor.at("revision")) == text(value.manifest.at("digest")),
+            "inventory cursor revision changed");
+    after = operation_id(cursor.at("after_operation_id"));
+    require(value.records.contains(after), "inventory cursor operation absent");
+  }
+  Json rows = Json::array(), next = nullptr;
+  auto it =
+      after.empty() ? value.records.begin() : value.records.upper_bound(after);
+  for (int n = 0; n < limit && it != value.records.end(); ++n, ++it)
+    rows.push_back(it->second);
+  if (it != value.records.end() && !rows.empty())
+    next = {
+        {"revision", value.manifest.at("digest")},
+        {"after_operation_id", rows.back().at("intent").at("operation_id")}};
+  struct stat database{}, wal{};
+  require(::fstatat(db.root.fd, "index.duckdb", &database,
+                    AT_SYMLINK_NOFOLLOW) == 0,
+          "database size unavailable");
+  auto wal_bytes =
+      ::fstatat(db.root.fd, "index.duckdb.wal", &wal, AT_SYMLINK_NOFOLLOW) == 0
+          ? wal.st_size
+          : 0;
+  auto result =
+      seal(Json{{"protocol", "symphony.shv.graph-store-inventory.v1"},
+                {"backend", "duckdb"},
+                {"input", input},
+                {"manifest", value.manifest},
+                {"records", rows},
+                {"next_cursor", next},
+                {"physical_bytes",
+                 {{"database", database.st_size}, {"wal", wal_bytes}}}});
+  db.commit();
+  return result;
+}
+
 Json prepare(const engine::Request &request) {
   const auto &input = request.payload;
   fields(input, {"tops_id", "namespace", "operation_id", "graph", "connector"});
@@ -631,6 +796,8 @@ Json prepare(const engine::Request &request) {
   validate_intent(intent);
   require(input.at("connector").at("Version") == version,
           "prepare requires current exact connector release");
+  require(input.at("connector").at("Version") == version,
+          "prepare requires current connector release");
   Database db(request, true);
   db.begin();
   auto parameters = identity(input);
@@ -669,6 +836,8 @@ Json commit(const engine::Request &request) {
   db.begin();
   std::string state;
   auto intent = get_intent(db, input, state);
+  require(intent.at("snapshot").at("connector").at("Version") == version,
+          "commit requires original writer release");
   require(intent.at("digest") == input.at("expected_intent_digest"),
           "expected intent digest differs");
   if (state == "committed") {
@@ -837,13 +1006,15 @@ Json queried(const engine::Request &request) {
 } // namespace
 Json descriptor() {
   std::vector<engine::OperationSpec> operations;
-  for (const auto *name :
-       {"inspect", "prepare", "commit", "status", "query", "export"}) {
+  for (const auto *name : {"inspect", "prepare", "commit", "status", "query",
+                           "export", "inventory"}) {
     std::string output =
-        name == std::string("inspect")  ? engine::descriptor_protocol_v2
-        : name == std::string("query")  ? "symphony.shv.graph-store-query.v1"
-        : name == std::string("export") ? "symphony.shv.graph-store-export.v1"
-                                        : "symphony.shv.graph-store-status.v1";
+        name == std::string("inventory")
+            ? "symphony.shv.graph-store-inventory.v1"
+        : name == std::string("inspect") ? engine::descriptor_protocol_v2
+        : name == std::string("query")   ? "symphony.shv.graph-store-query.v1"
+        : name == std::string("export")  ? "symphony.shv.graph-store-export.v1"
+                                         : "symphony.shv.graph-store-status.v1";
     operations.push_back(
         {std::string("engop:symphony:shv.graph-store.") + name,
          name,
@@ -858,7 +1029,9 @@ Json descriptor() {
          "qxctl_required",
          std::string("symphony.shv.graph-store-") + name + "-input.v1",
          output,
-         name == std::string("inspect") ? "read_only" : "evidence_only",
+         (name == std::string("inspect") || name == std::string("inventory"))
+             ? "read_only"
+             : "evidence_only",
          "idempotent",
          false,
          "none",
@@ -922,6 +1095,8 @@ Json handle(const engine::Request &request) {
     return status(request);
   if (request.operation == "query")
     return queried(request);
+  if (request.operation == "inventory")
+    return inventory(request);
   if (request.operation == "export")
     return exported(request);
   fail("operation", "unsupported connector operation");

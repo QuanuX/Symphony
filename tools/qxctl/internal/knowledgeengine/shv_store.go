@@ -8,15 +8,16 @@ import (
 )
 
 const SHVStoreVersion = "0.1.0-dev"
+const SHVStoreInventoryVersion = "0.2.0-dev"
 
 var shvStoreSpec = engineSpec{label: "shv-graph-duckdb-connector", moduleID: "shv-graph-duckdb-connector", engineID: "symphony-shv-graph-duckdb-connector", componentKind: "adapter", vectorID: "shv", processProtocol: processProtocol}
-var shvStoreOutputs = map[string]string{"inspect": "symphony.knowledge.engine-descriptor.v2", "prepare": "symphony.shv.graph-store-status.v1", "commit": "symphony.shv.graph-store-status.v1", "status": "symphony.shv.graph-store-status.v1", "query": "symphony.shv.graph-store-query.v1", "export": "symphony.shv.graph-store-export.v1"}
+var shvStoreOutputs = map[string]string{"inspect": "symphony.knowledge.engine-descriptor.v2", "prepare": "symphony.shv.graph-store-status.v1", "commit": "symphony.shv.graph-store-status.v1", "status": "symphony.shv.graph-store-status.v1", "query": "symphony.shv.graph-store-query.v1", "export": "symphony.shv.graph-store-export.v1", "inventory": "symphony.shv.graph-store-inventory.v1"}
 
 func SHVStoreResultProtocol(op string) (string, bool) { v, ok := shvStoreOutputs[op]; return v, ok }
 func SHVStoreInputProtocol(op string) string          { return "symphony.shv.graph-store-" + op + "-input.v1" }
 func InspectSHVStore(prefix, version string) (Installation, error) {
-	if prefix == "" || version != SHVStoreVersion {
-		return Installation{}, fmt.Errorf("graph store requires an explicit prefix and exact version %s", SHVStoreVersion)
+	if prefix == "" || (version != SHVStoreVersion && version != SHVStoreInventoryVersion) {
+		return Installation{}, fmt.Errorf("graph store requires an explicit prefix and exact version %s or %s", SHVStoreVersion, SHVStoreInventoryVersion)
 	}
 	s := shvStoreSpec
 	e, err := InspectReceiptV2EntryPoint(prefix, version, ReceiptV2EntryPointSpec{Label: s.label, ComponentID: s.moduleID, ComponentKind: s.componentKind, ModuleID: s.moduleID, PackageID: s.moduleID, VectorID: &s.vectorID, EngineID: &s.engineID, EntryPointID: s.engineID, EntryPointKind: "executable", EntryPointRelativePath: filepath.ToSlash(filepath.Join("libexec", "symphony", s.moduleID, version, s.engineID)), RequiredProtocols: []string{processProtocol}})
@@ -75,7 +76,7 @@ func InvokeSHVStore(ctx context.Context, prefix, version, cwd, op string, payloa
 	if e != nil {
 		return Response{}, e
 	}
-	if e = shvStoreInput(op, p); e != nil {
+	if e = shvStoreInputVersion(op, p, version); e != nil {
 		return Response{}, e
 	}
 	inst, e := InspectSHVStore(prefix, version)
@@ -93,10 +94,10 @@ func InvokeSHVStore(ctx context.Context, prefix, version, cwd, op string, payloa
 	if e != nil {
 		return response, e
 	}
-	if e = ValidateSHVStoreResult(op, payload, response.Result); e != nil {
+	if e = ValidateSHVStoreResultVersion(op, payload, response.Result, version); e != nil {
 		return Response{}, e
 	}
-	if op != "inspect" {
+	if op != "inspect" && op != "inventory" {
 		r, _ := shvObject(response.Result)
 		snap := shvMap(r["snapshot"])
 		if snap == nil {

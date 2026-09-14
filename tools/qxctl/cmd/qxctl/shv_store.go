@@ -12,7 +12,7 @@ import (
 
 func newSHVStoreCommand() *cobra.Command {
 	root := structural("store", fmt.Errorf("graph store operation required"))
-	for _, op := range []string{"inspect", "prepare", "commit", "status", "query", "export", "schema", "template"} {
+	for _, op := range []string{"inspect", "prepare", "commit", "status", "query", "export", "inventory", "schema", "template"} {
 		var prefix, version, backend, storeRoot, input, selection string
 		c := &cobra.Command{Use: op, Short: "Persist or read structural graph evidence using an exact durable adapter", Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error {
 			if backend != "duckdb" {
@@ -114,7 +114,7 @@ func newSHVStoreCommand() *cobra.Command {
 		spec := commandSpec("shv.graph.store."+op, featureSHVAdministration, interaction)
 		spec.Mutability = "evidence_only"
 		spec.TargetScope = "local"
-		if op == "inspect" || op == "schema" || op == "template" {
+		if op == "inspect" || op == "schema" || op == "template" || op == "inventory" {
 			spec.Mutability = "read_only"
 			spec.TargetScope = "local"
 		}
