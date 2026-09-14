@@ -933,7 +933,10 @@
         "tools/qxctl/internal/shvjob/store_test.go",
         "tools/qxctl/cmd/qxctl/shv_resolution.go",
         "tools/qxctl/cmd/qxctl/shv_resolution.schema.json",
-        "tools/qxctl/cmd/qxctl/shv_resolution_test.go"
+        "tools/qxctl/cmd/qxctl/shv_resolution_test.go",
+        "tools/qxctl/cmd/qxctl/shv_relocation.go",
+        "tools/qxctl/cmd/qxctl/shv_relocation.schema.json",
+        "tools/qxctl/cmd/qxctl/shv_relocation_test.go"
       ],
       "kind": "feature",
       "non_claims": [

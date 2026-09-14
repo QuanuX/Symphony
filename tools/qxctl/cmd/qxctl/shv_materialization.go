@@ -85,6 +85,7 @@ func newSHVMaterializationCommand() *cobra.Command {
 		commandregistry.Attach(c, s)
 		root.AddCommand(c)
 	}
+	root.AddCommand(newSHVRelocationCommand())
 	return root
 }
 func jobDecode(raw json.RawMessage, keys ...string) (map[string]json.RawMessage, error) {
@@ -116,11 +117,20 @@ func jobBundle(raw json.RawMessage, o shvRefreshOptions) (map[string]json.RawMes
 	return b, nil
 }
 func jobValidate(raw json.RawMessage, id string) (map[string]json.RawMessage, []map[string]json.RawMessage, error) {
-	j, e := jobDecode(raw, "protocol", "job_id", "installation", "tasks", "required_references", "digest")
+	var header map[string]json.RawMessage
+	if e := json.Unmarshal(raw, &header); e != nil {
+		return nil, nil, e
+	}
+	keys := []string{"protocol", "job_id", "installation", "tasks", "required_references", "digest"}
+	derived := refreshString(header["protocol"]) == derivedJobProtocol
+	if derived {
+		keys = append(keys, "origin")
+	}
+	j, e := jobDecode(raw, keys...)
 	if e != nil {
 		return nil, nil, e
 	}
-	if refreshString(j["protocol"]) != jobProtocol || refreshString(j["job_id"]) != id {
+	if (!derived && refreshString(j["protocol"]) != jobProtocol) || refreshString(j["job_id"]) != id {
 		return nil, nil, fmt.Errorf("job identity differs")
 	}
 	var tasks []map[string]json.RawMessage
@@ -173,6 +183,11 @@ func jobValidate(raw json.RawMessage, id string) (map[string]json.RawMessage, []
 			if e != nil || !refreshEqual(sealed, c["replay"]) || refreshString(proof["protocol"]) != "symphony.qxctl.shv-refresh-verification.v1" || !refreshEqual(proof["bundle_digest"], b["digest"]) || !refreshEqual(proof["selected_source_digest"], source["digest"]) || string(proof["valid"]) != "true" || !regexp.MustCompile(`^sha256:[0-9a-f]{64}$`).MatchString(refreshString(proof["current_source_digest"])) || (string(proof["source_is_current"]) != "true" && string(proof["source_is_current"]) != "false") || (string(proof["source_is_current"]) == "true") != refreshEqual(proof["current_source_digest"], proof["selected_source_digest"]) {
 				return nil, nil, fmt.Errorf("retained replay correspondence differs")
 			}
+		}
+	}
+	if derived {
+		if e = validateJobOrigin(j["origin"], tasks); e != nil {
+			return nil, nil, e
 		}
 	}
 	return j, tasks, nil

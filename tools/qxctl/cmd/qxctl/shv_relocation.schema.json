@@ -4806,6 +4806,95 @@
         "completion"
       ],
       "additionalProperties": false
+    },
+    "Input": {
+      "type": "object",
+      "properties": {
+        "tasks": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "properties": {
+              "task_id": {
+                "$ref": "#/$defs/Partition/$defs/Token"
+              },
+              "source_root": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "task_id",
+              "source_root"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "tasks"
+      ],
+      "additionalProperties": false
+    },
+    "RelocationResult": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.shv-relocation.v1"
+        },
+        "job_id": {
+          "$ref": "#/$defs/Partition/$defs/Token"
+        },
+        "checkpoint_digest": {
+          "$ref": "#/$defs/Partition/$defs/Hash"
+        },
+        "origin": {
+          "$ref": "#/$defs/RelocationOrigin"
+        },
+        "replays": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "properties": {
+              "task_id": {
+                "$ref": "#/$defs/Partition/$defs/Token"
+              },
+              "replay": {
+                "$ref": "#/$defs/Refresh/$defs/Verification"
+              }
+            },
+            "required": [
+              "task_id",
+              "replay"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "dependency_validation": {
+          "const": "sequential_replay"
+        },
+        "catalogue_published": {
+          "const": false
+        },
+        "digest": {
+          "$ref": "#/$defs/Partition/$defs/Hash"
+        }
+      },
+      "required": [
+        "protocol",
+        "job_id",
+        "checkpoint_digest",
+        "origin",
+        "replays",
+        "dependency_validation",
+        "catalogue_published",
+        "digest"
+      ],
+      "additionalProperties": false
     }
   }
 }

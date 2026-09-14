@@ -11404,3 +11404,19 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
   - `knowledge/shv/PARTITIONS.md`
   - `knowledge/shv/MATERIALIZATION.md`
 - notes: `Reference declarations do not establish source replay or publisher authentication.`
+
+- path: `knowledge/shv/RELOCATION.md`
+- title: `SHV source-data relocation and derived jobs`
+- surface_type: `reference document`
+- truth_role: `owner-declared orchestration contract`
+- owner: `qxctl maintainers`
+- status: `canonical`
+- scope: `source-data replay and private derived checkpoints`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `authority-store relocation and canonical catalogue publication`
+- relationships:
+  - `knowledge/shv/MATERIALIZATION.md`
+  - `knowledge/shv/REFRESH.md`
+- notes: `Parent evidence is preserved; no publisher authentication is inferred.`

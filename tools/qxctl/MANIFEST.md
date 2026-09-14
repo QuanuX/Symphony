@@ -332,3 +332,7 @@ The SCV gate adds exact graph-index schema discovery, keeping connector receipt-
 ### Exact SHV partition dependency resolution
 
 `shv partition resolution run|schema|template` implements `knowledge/shv/RESOLUTION.md`: explicit candidate inventory fills only declared missing partitions by exact digest, preserving caller scope and visible unresolved references. Unchanged C++ owners validate all declarations. Output explicitly does not claim source replay or catalogue publication.
+
+### SHV source-data relocation
+
+`shv materialization relocation run|schema|template` implements `knowledge/shv/RELOCATION.md`: original immutable bundles and installed owners replay caller-selected data roots before atomic creation of a separate v2 derived job. Parent bytes, authority store and engine selection remain preserved. Existing v1 jobs remain supported.

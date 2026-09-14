@@ -1790,6 +1790,8 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.materialization.relocation.schema",
+            "qxcmd:symphony:shv.materialization.relocation.template",
             "qxcmd:symphony:shv.materialization.schema",
             "qxcmd:symphony:shv.materialization.template",
             "qxcmd:symphony:shv.partition.resolution.schema",
@@ -1850,6 +1852,7 @@
             "qxcmd:symphony:shv.graph.validate",
             "qxcmd:symphony:shv.materialization.export",
             "qxcmd:symphony:shv.materialization.prepare",
+            "qxcmd:symphony:shv.materialization.relocation.run",
             "qxcmd:symphony:shv.materialization.run",
             "qxcmd:symphony:shv.partition.build",
             "qxcmd:symphony:shv.partition.from-refresh",
@@ -5824,6 +5827,7 @@
             "qxcmd:symphony:shv.graph.project",
             "qxcmd:symphony:shv.graph.validate",
             "qxcmd:symphony:shv.materialization.export",
+            "qxcmd:symphony:shv.materialization.relocation.run",
             "qxcmd:symphony:shv.materialization.resume",
             "qxcmd:symphony:shv.materialization.run",
             "qxcmd:symphony:shv.partition.from-refresh",
@@ -5975,6 +5979,7 @@
           "command_ids": [
             "qxcmd:symphony:shv.materialization.export",
             "qxcmd:symphony:shv.materialization.prepare",
+            "qxcmd:symphony:shv.materialization.relocation.run",
             "qxcmd:symphony:shv.materialization.resume",
             "qxcmd:symphony:shv.materialization.run",
             "qxcmd:symphony:shv.partition.build",
@@ -6068,6 +6073,7 @@
         {
           "command_ids": [
             "qxcmd:symphony:shv.materialization.export",
+            "qxcmd:symphony:shv.materialization.relocation.run",
             "qxcmd:symphony:shv.materialization.resume",
             "qxcmd:symphony:shv.materialization.run",
             "qxcmd:symphony:shv.partition.from-refresh",
@@ -7378,9 +7384,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:c07fee59e41b4a3da413c93d28a4d4b5cdca9697de630d777c9c6904d2bb5a73",
+  "profile_digest": "sha256:f17d55d546068d9ff367a64de041da142f0930e04ab29469a78dfe2b23e59830",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 106,
-  "ssfv_registry_digest": "sha256:9e8a688e73b1404026b06f222d101927471710547cb85ea3b3eecd36a24c76fe"
+  "ssfv_registry_digest": "sha256:4c7a798ec7c682a9eda146bb885a40cc7290b82914446a0d18114a4a440bc3d0"
 }
