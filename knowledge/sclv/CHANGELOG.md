@@ -11436,3 +11436,58 @@ This PR authorizes none of the following:
   - `knowledge/shv/KERNEL.md`
   - `knowledge/shv/MANIFEST.md`
   - `knowledge/skvi/INDEX.md`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-PDF-EVIDENCE`
+- record_version: `3`
+- title: `Retain independent PDF evidence and define interpretation boundary`
+- status: `canonical`
+- change_started_at: `2026-09-14T12:53:38Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV corroboration continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-corroboration-continuation.md`
+- skvi_references:
+  - `knowledge/shv/PDF-EVIDENCE.md`
+- change_summary: |
+    Documents implemented opaque PDF capture and explicit gaps after acquiring independent vendor evidence.
+- relationship_changes: |
+    Existing native source and graph adapter semantics remain unchanged; generic decoder ownership is prospective.
+- doctrine_changes: |
+    Literal research corroboration does not establish namespace equivalence or native PDF interpretation. Derived evidence must retain original lineage.
+- compatibility_consequences: |
+    Documentation-only source change; runtime, native packages and334 qxctl commands unchanged.
+- publication_consequences: |
+    Local captured evidence and explicit source boundary; no native hardware assertion or protected registry activation.
+- projection_consequences: |
+    SKVI records PDF evidence boundary; command and feature counts unchanged.
+- evidence:
+  - `../shv-14/evidence/FOCUSED_TESTS.json records7 installed calls, one expected rejection and6 schema checks.`
+  - `../shv-14/evidence/CORROBORATION.json records research-only literal equality with namespaces unresolved.`
+  - `../shv-14/evidence/SOURCE_BUILD_PARITY.json binds clean source and reproducible CLI.`
+  - `../shv-14/MANIFEST.json seals original source and scoped evidence.`
+- non_authorizations:
+  - `Canonical catalogue publication, automatic acquisition, source alias inference or hardware changes.`
+  - `Remote publication, deployment, engine substitution or original archive edits.`
+- notes: |
+    Larger qualified machine-corroboration objective remains open. Local post_merge disposition does not claim a remote merge.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T12:59:45Z`
+- recorded_at: `2026-09-14T13:01:37Z`
+- revision_value: `dd4ad09fe92f520ac77d057f77119b07e11a1a08`
+- tree_digest: `sha256:eb7dfbe13ebbf0a961ec927c95b68452dfb7bc3f246dcb06fca0fa7feb0a4e96`
+- ratification_evidence_digest: `sha256:16d3a2e403945945830c0cf2f7794a8298837d4a8d33cf1f559e57ac091fd277`
+- affected_surfaces:
+  - `knowledge/shv/MANIFEST.md`
+  - `knowledge/shv/PDF-EVIDENCE.md`
+  - `knowledge/skvi/INDEX.md`
