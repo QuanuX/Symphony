@@ -11180,3 +11180,59 @@ This PR authorizes none of the following:
   - `tools/qxctl/cmd/qxctl/shv_relocation.go`
   - `tools/qxctl/cmd/qxctl/shv_relocation.schema.json`
   - `tools/qxctl/cmd/qxctl/shv_relocation_test.go`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-MILESTONE-GATE`
+- record_version: `3`
+- title: `Record passed bounded SHV milestone and correct obsolete backlog prose`
+- status: `canonical`
+- change_started_at: `2026-09-14T08:29:56Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `documentation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV milestone verification`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-milestone-gate.md`
+- skvi_references:
+  - `knowledge/shv/KERNEL.md`
+- change_summary: |
+    Corrects stale lifecycle backlog prose following the passed full bounded SHV gate. Runtime implementation is unchanged.
+- relationship_changes: |
+    Confirms native semantic ownership, qxctl administration and independent generic C++ adapter consumption across retained exact versions.
+- doctrine_changes: |
+    The passed implementation gate does not establish comprehensive2018+ hardware coverage. Caller coverage and architecture authority remain unchanged.
+- compatibility_consequences: |
+    Documentation-only source change. Full SHV Go, native, installed, authority, package and SDK checks passed against the preceding implementation revision.
+- publication_consequences: |
+    Local verification and documentation closure only. No external publication, catalogue head or hardware action.
+- projection_consequences: |
+    54 SHV leaves bind23 native operations within326 total qxctl leaves; feature counts unchanged.
+- evidence:
+  - `../shv-gate/evidence/GO_SUMMARY.json records57 SHV groups and155 passing test events,zero SHV failures/skips;42 out-of-scope non-SHV opt-in skips remain explicit.`
+  - `../shv-gate/evidence/NATIVE.json binds fresh builds andfive CTest groups acrossfour components.`
+  - `../shv-gate/evidence/WORKFLOW_FINAL.json and authority-authorized/SUPERVISOR.json bindnine installed campaigns and79 real authority checks.`
+  - `../shv-gate/evidence/PACKAGES.json and SDK.json bindfive retained packages,disposable uninstall andindependent C++ consumer.`
+  - `../shv-gate/evidence/SOURCE_IDENTITY.json distinguishes the tested implementation from the documentation-only source commit.`
+  - `../shv-gate/MANIFEST.json seals the bounded gate evidence and scope audit.`
+- non_authorizations:
+  - `Comprehensive hardware atlas, canonical catalogue publication or durable vendor graph driver.`
+  - `Hardware changes, live source acquisition or authority/engine migration.`
+  - `Remote publication or full SCV integration recertification.`
+- notes: |
+    Initial sandbox socket/process restrictions were resolved through approved isolated test runs. SDK harness filename corrected. Full SHV installed opt-ins passed. Start time is initial gate Go log creation. Documentation source correction only; no runtime fix was necessary.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T08:41:44Z`
+- recorded_at: `2026-09-14T08:43:16Z`
+- revision_value: `da99ae046a02c114c93f9750fb4f9f9eb2ee69f2`
+- tree_digest: `sha256:b585f3625eeafb99c048d5fa2d662df249ba58b3b7612f867093c2cd678d516d`
+- ratification_evidence_digest: `sha256:750e27f98a8fdd655bde6c52b3752d5134c923313c31feaee7b01c8539950d50`
+- affected_surfaces:
+  - `knowledge/shv/KERNEL.md`
