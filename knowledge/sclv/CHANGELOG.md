@@ -11109,3 +11109,74 @@ This PR authorizes none of the following:
   - `tools/qxctl/cmd/qxctl/shv_resolution.go`
   - `tools/qxctl/cmd/qxctl/shv_resolution.schema.json`
   - `tools/qxctl/cmd/qxctl/shv_resolution_test.go`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-SOURCE-DATA-RELOCATION`
+- record_version: `3`
+- title: `Replay relocated SHV source data into preserved-lineage derived jobs`
+- status: `canonical`
+- change_started_at: `2026-09-14T08:04:49Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV source-data relocation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-relocation-continuation.md`
+- skvi_references:
+  - `knowledge/shv/RELOCATION.md`
+  - `knowledge/shv/MATERIALIZATION.md`
+- change_summary: |
+    Adds three qxctl relocation commands, explicit parent provenance and atomic fully replayed v2 derived jobs.
+- relationship_changes: |
+    qxctl retains orchestration and lineage. Original C++ owners replay source data; protected history and installations remain pinned.
+- doctrine_changes: |
+    Relocation changes explicit data roots only and preserves the parent. Source revision, bundle and completed partition identities are not silently replaced. Offline inspection remains distinct from fresh sequential replay.
+- compatibility_consequences: |
+    Additive relocation commands and v2 checkpoint support alongside unchanged v1 meanings. Existing job operations accept both versions. Native packages are unchanged.
+- publication_consequences: |
+    Private derived checkpoints only. No authority-store migration, engine replacement, acquisition, source adoption or canonical catalogue publication.
+- projection_consequences: |
+    326 commands,106 features,278 expectations,27 invariants and16 adapters. SKVI records relocation ownership.
+- evidence:
+  - `../shv-10/evidence/FOCUSED_TESTS.json records9 groups and14 passing test events.`
+  - `../shv-10/evidence/release-final/ACCEPTANCE.json records16 calls,8 expected rejections and preserved parent/partition identities.`
+  - `../shv-10/evidence/v1-regression/ACCEPTANCE.json records the affected21-call materialization workflow with actual crash recovery and18-call refresh baseline.`
+  - `../shv-10/evidence/SOURCE_BUILD_PARITY.json binds the clean source and byte-identical rebuild.`
+  - `../shv-10/MANIFEST.json seals evidence and the planned milestone gate.`
+- non_authorizations:
+  - `Protected-authority relocation, engine substitution or canonical catalogue publication.`
+  - `Source acquisition, hardware changes, publisher authentication or automatic provider selection.`
+  - `Remote publication, deployment, firmware changes or original archive edits.`
+- notes: |
+    Start time is shv_relocation.go creation timestamp. Full SHV suite is the next milestone scope. Existing C++ packages are unchanged. Established local post_merge disposition does not claim a remote merge.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T08:10:26Z`
+- recorded_at: `2026-09-14T08:14:01Z`
+- revision_value: `87c0c838cbb909f023d9677c71e729c0630e664d`
+- tree_digest: `sha256:f02524a3a0e1ece4968e81f2c230e316005ad54c5bfebbf56d320e89ff389d52`
+- ratification_evidence_digest: `sha256:2432a1278f9ff13b39ad782137935b97a3718716b8b113835a9e550f3704ef49`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/shv/RELOCATION.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv_materialization.go`
+  - `tools/qxctl/cmd/qxctl/shv_materialization.schema.json`
+  - `tools/qxctl/cmd/qxctl/shv_relocation.go`
+  - `tools/qxctl/cmd/qxctl/shv_relocation.schema.json`
+  - `tools/qxctl/cmd/qxctl/shv_relocation_test.go`
