@@ -308,3 +308,7 @@ The SCV gate adds exact graph-index schema discovery, keeping connector receipt-
 ### SHV scoped table kernel selection
 
 `shv` kernel leaves explicitly accept installed `0.1.0-dev` or `0.2.0-dev`; adapter leaves continue to accept only adapter `0.1.0-dev`. No version is selected implicitly and source lifecycle selection is independent. Kernel 0.2.0-dev adds the named `scoped_tables.v1` mapping described in `modules/shv-engine/SPEC.md`. qxctl independently checks exact table sections, adjacent/final rows, quarter precision, complete matrix rows, and source replay; the selected version governs both descriptor and graph ownership. Old untagged mappings retain their meaning, and an old selected engine cannot emit a new tagged mapping. Structured table and quarter values are queryable/transportable but are not scalar requirement operands.
+
+### Protected SHV source activation
+
+`shv source activation propose|apply|status|recover|schema|template` implements the separately owned local journal and authority boundary in `knowledge/shv/ACTIVATION.md`. Exact source-engine0.1.0-dev installation, TOPS/source/state-root selection and SSIAG-backed publication preserve the pure native owner. Prepared/authorized/committed history, original-installation recovery and historical replay are explicit; source adoption does not select hardware, update captures or publish a graph.

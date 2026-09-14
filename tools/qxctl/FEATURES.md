@@ -876,7 +876,8 @@
       "evidence": [
         "tools/qxctl/cmd/qxctl/shv_test.go exercises all native routes and exact-version grammar.",
         "tools/qxctl/internal/knowledgeengine/shv_test.go rejects resealed changed evidence and verifies receipt-backed installed process results.",
-        "SHV-03 adds version-bound scoped-table replay, complete operating-profile rows and quarter-date consumer checks, with focused production-qxctl Intel/AMD acceptance."
+        "SHV-03 adds version-bound scoped-table replay, complete operating-profile rows and quarter-date consumer checks, with focused production-qxctl Intel/AMD acceptance.",
+        "SHV-04 adds protected source CAS/journal tests and production qxctl with isolated real SSIAG/STAV acceptance; no global source-write STAV receipt is claimed."
       ],
       "feature_id": "ssfv:symphony:qxctl.shv-administration",
       "how": "Validates exact receipts, descriptors, bounded process responses and independently rederives coverage, source-backed catalogue claims, evaluation, graph projection and adapter row correspondence.",
@@ -903,7 +904,14 @@
         "tools/qxctl/internal/knowledgeengine/shv_source.go",
         "tools/qxctl/internal/knowledgeengine/shv_test.go",
         "tools/qxctl/internal/knowledgeengine/shv_validation.go",
-        "tools/qxctl/internal/knowledgeengine/shv_tables.go"
+        "tools/qxctl/internal/knowledgeengine/shv_tables.go",
+        "tools/qxctl/cmd/qxctl/shv_source_activation.go",
+        "tools/qxctl/cmd/qxctl/shv_activation_discovery.go",
+        "tools/qxctl/internal/shvstate/store.go",
+        "tools/qxctl/internal/shvstate/validation.go",
+        "tools/qxctl/internal/shvstate/authorization.go",
+        "tools/qxctl/internal/shvstate/storage_unix.go",
+        "tools/qxctl/internal/shvstate/storage_unsupported.go"
       ],
       "kind": "feature",
       "non_claims": [
@@ -933,7 +941,7 @@
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "SHV source-backed hardware and generic graph administration",
-      "what": "Exposes SHV kernel, source lifecycle and generic adapter operations with exact installed schemas/templates and independent evidence checks.",
+      "what": "Administers exact SHV kernel, source lifecycle and generic graph operations, including separately authorized local source activation and recovery.",
       "when": "Only upon an explicit read-only qxctl shv invocation.",
       "where": "Local administrative process against explicit exact receipt-owned C++ installations and retained source roots.",
       "who": "Users, agents and automation selecting exact independently installed components.",

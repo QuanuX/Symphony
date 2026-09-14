@@ -11282,3 +11282,16 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: protected activation, broad component mappings and durable vendor storage
 - notes: Pure 0.1.0-dev computations do not approve or activate a registry.
 - status: canonical
+
+#### SHV protected source activation
+- path: `knowledge/shv/ACTIVATION.md`
+- title: Protected SHV source activation through qxctl
+- surface_type: reference document
+- truth_role: owner-declared protected SHV source administration contract
+- owner: qxctl maintainers
+- status: canonical
+- consumers: qxctl, SHV source engine, SSIAG and caller-selected tools
+- deferred_projections: partitioned histories and graph selection
+- scope: Exact local source journal, SSIAG authorization, publication and recovery; pure source owner remains separate.
+- relationships: depends_on -> `knowledge/shv/SOURCES.md`; depends_on -> `tools/qxctl/MANIFEST.md`
+- notes: Source engine0.1.0-dev retained; no automatic graph or hardware selection.

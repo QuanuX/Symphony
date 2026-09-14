@@ -382,10 +382,16 @@ func authorizeSCVSource(options scvOptions, correlationID, kind string) (ssiagcl
 }
 
 func authorizeSCVRequest(topsID, correlationID, permissionOperation, resource string) (ssiagclient.AuthorizationDecision, error) {
+	return authorizeKnowledgeRequest(topsID, correlationID, permissionOperation, resource)
+}
+
+// Shared authenticated request mechanics; callers supply their own exact action
+// and resource. This helper does not assign source or vector authority.
+func authorizeKnowledgeRequest(topsID, correlationID, permissionOperation, resource string) (ssiagclient.AuthorizationDecision, error) {
 	// The opaque operation ID remains journal identity. This separately persisted
 	// correlation satisfies the downstream committed-audit contract.
 	if err := stavprotocol.ValidateRequestUUID(correlationID); err != nil {
-		return ssiagclient.AuthorizationDecision{}, fmt.Errorf("invalid durable SCV authorization correlation: %w", err)
+		return ssiagclient.AuthorizationDecision{}, fmt.Errorf("invalid durable knowledge authorization correlation: %w", err)
 	}
 	client, err := ssiagclient.NewForTOPS("user", topsID, 4*time.Second)
 	if err != nil {
@@ -417,6 +423,9 @@ func authorizeSCVRequest(topsID, correlationID, permissionOperation, resource st
 // The decision was authenticated and fully validated before this closure is
 // created. Check both exact expiry bounds again immediately before publication.
 func scvAuthorizationFreshness(decision ssiagclient.AuthorizationDecision) func() error {
+	return knowledgeAuthorizationFreshness(decision)
+}
+func knowledgeAuthorizationFreshness(decision ssiagclient.AuthorizationDecision) func() error {
 	return func() error {
 		now := time.Now().UTC()
 		if decision.ExpiresAt == nil || decision.Capability == nil || !decision.ExpiresAt.After(now) || !decision.Capability.ExpiresAt.After(now) {

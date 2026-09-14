@@ -43,3 +43,7 @@ The finite section selector is lowercase HTML tag followed by `#` and a literal 
 ## Component source lifecycle
 
 The independent `modules/shv-source-engine/` implements `SOURCES.md`: stable source identity, explicit relocation/authority-change plans, pure transition and finite history validation, actual-byte capture binding/comparison, and source-replayed provenance graphs through qxctl. These read-only operations do not activate a source registry or authenticate publisher authority. Core curation prioritizes original component/product identity and evidenced variants; user-selected source coverage remains extensible. The retained Intel Xeon Gold 5418Y specification is mapped with quarter precision, component fields and complete SST performance-profile rows. Whole-system catalogue permutations, further component mappings, protected activation and durable vendor storage remain separate increments.
+
+## Protected source selection
+
+`ACTIVATION.md` now contracts the qxctl-owned SHV source journal, exact proposal/apply/status/recovery and authenticated SSIAG publication boundary. The source engine remains pure and independently selected. Adoption does not change the component catalogue or graph automatically.

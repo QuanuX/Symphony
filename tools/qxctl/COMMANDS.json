@@ -10906,6 +10906,228 @@
     },
     {
       "aliases": [],
+      "authority_mode": "target_host_permission",
+      "backend_operation_ids": [
+        "engop:symphony:shv-source.source.reduce"
+      ],
+      "command_id": "qxcmd:symphony:shv.source.activation.apply",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-source-engine",
+          "interaction": "apply"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl shv source activation apply [--input VALUE] [--json] [--prefix VALUE] [--source-id VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.shv.source-plan.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "permission_backed_mutation",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-source-activation-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:shv.source.activation.recover",
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-source-activation-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-source.source.plan"
+      ],
+      "command_id": "qxcmd:symphony:shv.source.activation.propose",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "propose"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-source-engine",
+          "interaction": "propose"
+        }
+      ],
+      "grammar": "qxctl shv source activation propose [--input VALUE] [--json] [--prefix VALUE] [--source-id VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.qxctl.shv-source-proposal-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "proposal_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.shv.source-plan.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.shv.source-plan.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "target_host_permission",
+      "backend_operation_ids": [
+        "engop:symphony:shv-source.source.reduce"
+      ],
+      "command_id": "qxcmd:symphony:shv.source.activation.recover",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-source-engine",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:ssiag-foundation",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl shv source activation recover [--json] [--operation-id VALUE] [--prefix VALUE] [--source-id VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "permission_backed_mutation",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-source-activation-result.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:shv.source.activation.recover",
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-source-activation-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:shv.source.activation.schema",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl shv source activation schema [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-source-activation-schema.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-source-activation-schema.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-source.source.status"
+      ],
+      "command_id": "qxcmd:symphony:shv.source.activation.status",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "inspect"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-source-engine",
+          "interaction": "inspect"
+        }
+      ],
+      "grammar": "qxctl shv source activation status [--json] [--operation-id VALUE] [--prefix VALUE] [--source-id VALUE] [--state-root VALUE] [--tops-id VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-source-activation-result.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-source-activation-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:shv.source.activation.template",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl shv source activation template [--json] [--operation VALUE] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-source-activation-template.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-source-activation-template.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
       "authority_mode": "none",
       "backend_operation_ids": [
         "engop:symphony:shv-source.capture.compare"
@@ -14106,6 +14328,6 @@
   "format_version": 1,
   "protocol": "symphony.qxctl.command-registry.v1",
   "receipt_digest": null,
-  "registry_digest": "sha256:a3aa8f88ce8741c6fdd3036624fefe1b4acab769a246ec8042960edb1490a5ad",
+  "registry_digest": "sha256:4214208a23a964712e9c04d83e5e9b1c352c4a41a72e8f85e91c446cfb0f7a3d",
   "registry_kind": "expected"
 }

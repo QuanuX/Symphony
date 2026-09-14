@@ -1802,6 +1802,49 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "TestSHVActivationCanonicalEnvelope",
+            "TestSHVActivationInstalledReadOnlyAndRejections",
+            "TestSHVActivationMachineErrors",
+            "TestSHVActivationRoutesAndAuthority"
+          ],
+          "path": "tools/qxctl/cmd/qxctl/shv_source_activation_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:shv.source-state-commit",
+      "ipc_boundary": false,
+      "owner_component": "qxctl-shv-source-store",
+      "owner_contract": "knowledge/shv/ACTIVATION.md",
+      "producer_implementations": [
+        "tools/qxctl/internal/shvstate/authorization.go",
+        "tools/qxctl/internal/shvstate/storage_unix.go",
+        "tools/qxctl/internal/shvstate/store.go",
+        "tools/qxctl/internal/shvstate/validation.go"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestSHVStateAuthorizationBinding",
+            "TestSHVStateCASReplayAndHistory",
+            "TestSHVStateForgedNonHeadAndPendingLineage",
+            "TestSHVStateHistoryEnvelopeBudget",
+            "TestSHVStateInterruptedPublicationAndExpiry",
+            "TestSHVStatePathAndHistoryBounds",
+            "TestSHVStateRootAndEmptySnapshot",
+            "TestSHVStateStrictDecodeAndLimits"
+          ],
+          "path": "tools/qxctl/internal/shvstate/store_test.go"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Protected SHV source selection retains the exact owner plan, source transition and installation before requesting authenticated SSIAG permission. The journal verifies every retained predecessor and contiguous committed history, serializes CAS, and atomically publishes only with fresh permission and unchanged installation. Recovery preserves intent/correlation; historical replay never rewinds current head. Source and permission semantics remain with their owners.",
+      "status": "active",
+      "title": "SHV source selection commits only the exact authorized owner transition"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
             "TestProviderBindingAuditProjectionExcludesAdministrativeReason",
             "TestProviderBindingRoutesAreHeadlessStrictAndIdempotent"
           ],
@@ -2076,5 +2119,5 @@
     "owner_producer_regression_required": true,
     "real_process_required_for_ipc": true
   },
-  "registry_digest": "sha256:10bc771ce001874d9c6d1d4699ef0863ab65a052a7f3a706a223860142bbc994"
+  "registry_digest": "sha256:e890b1758ea7741ebc78d552f8280432891c1ae61c0b5711ee065a65ddd54eab"
 }

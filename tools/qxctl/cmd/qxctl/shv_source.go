@@ -28,7 +28,7 @@ func newSHVSourceCommand() *cobra.Command {
 	for _, op := range []string{"project", "validate"} {
 		graph.AddCommand(newSHVSourceLeaf(op, "shv.source.graph."+op, "graph_"+op))
 	}
-	root.AddCommand(graph, newSHVSourceDiscovery(false), newSHVSourceDiscovery(true))
+	root.AddCommand(graph, newSHVSourceDiscovery(false), newSHVSourceDiscovery(true), newSHVSourceActivationCommand())
 	return root
 }
 func newSHVSourceLeaf(leaf, key, op string) *cobra.Command {
