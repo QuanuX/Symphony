@@ -532,7 +532,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:3065eb17319b591d2b443895357b2c0c7eff977353c6523e5357bfb76ac41804`
+- record_digest: `sha256:17025d321fc8a5f6e4d7b1d67067101ef22aa91f4b665c9f546faaf1169b70f9`
 - notes: Bounded SHV source replay and generic graph exchange; caller choices and exact owners preserved.
 
 - feature_id: `ssfv:symphony:shv-engine`

@@ -11388,3 +11388,19 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
   - `knowledge/shv/PARTITIONS.md`
   - `knowledge/shv/REFRESH.md`
 - notes: `Offline status does not claim fresh source replay or publisher authentication.`
+
+- path: `knowledge/shv/RESOLUTION.md`
+- title: `SHV exact partition dependency resolution`
+- surface_type: `reference document`
+- truth_role: `owner-declared orchestration contract`
+- owner: `qxctl maintainers`
+- status: `canonical`
+- scope: `explicit candidate routing and native manifest validation`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `acquisition and canonical catalogue publication`
+- relationships:
+  - `knowledge/shv/PARTITIONS.md`
+  - `knowledge/shv/MATERIALIZATION.md`
+- notes: `Reference declarations do not establish source replay or publisher authentication.`

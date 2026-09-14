@@ -1792,6 +1792,8 @@
           "command_ids": [
             "qxcmd:symphony:shv.materialization.schema",
             "qxcmd:symphony:shv.materialization.template",
+            "qxcmd:symphony:shv.partition.resolution.schema",
+            "qxcmd:symphony:shv.partition.resolution.template",
             "qxcmd:symphony:shv.partition.schema",
             "qxcmd:symphony:shv.partition.template",
             "qxcmd:symphony:shv.refresh.schema",
@@ -1852,6 +1854,7 @@
             "qxcmd:symphony:shv.partition.build",
             "qxcmd:symphony:shv.partition.from-refresh",
             "qxcmd:symphony:shv.partition.manifest",
+            "qxcmd:symphony:shv.partition.resolution.run",
             "qxcmd:symphony:shv.refresh.build",
             "qxcmd:symphony:shv.refresh.compare",
             "qxcmd:symphony:shv.refresh.verify",
@@ -5976,7 +5979,8 @@
             "qxcmd:symphony:shv.materialization.run",
             "qxcmd:symphony:shv.partition.build",
             "qxcmd:symphony:shv.partition.from-refresh",
-            "qxcmd:symphony:shv.partition.manifest"
+            "qxcmd:symphony:shv.partition.manifest",
+            "qxcmd:symphony:shv.partition.resolution.run"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -7374,9 +7378,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:bc3b7abef27ba2ce54c5ac9a2c52e55c15fbb3288414420341203ee22c2f3bfc",
+  "profile_digest": "sha256:c07fee59e41b4a3da413c93d28a4d4b5cdca9697de630d777c9c6904d2bb5a73",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 106,
-  "ssfv_registry_digest": "sha256:26eddf63c5c0d1e11846cd20d2590f7439ee2bf9377a37a34cfdec72a11dcde8"
+  "ssfv_registry_digest": "sha256:9e8a688e73b1404026b06f222d101927471710547cb85ea3b3eecd36a24c76fe"
 }

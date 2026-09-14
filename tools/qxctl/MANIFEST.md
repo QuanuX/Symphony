@@ -328,3 +328,7 @@ The SCV gate adds exact graph-index schema discovery, keeping connector receipt-
 ### Private resumable SHV materialization
 
 `shv materialization prepare|run|resume|status|export|schema|template` administers `knowledge/shv/MATERIALIZATION.md`. Private checkpoints snapshot caller-selected refresh bundles and exact installations. Native replay precedes each atomic task completion and every exported manifest. Offline status explicitly reports retained evidence. This adds no native engine operation or catalogue publication authority.
+
+### Exact SHV partition dependency resolution
+
+`shv partition resolution run|schema|template` implements `knowledge/shv/RESOLUTION.md`: explicit candidate inventory fills only declared missing partitions by exact digest, preserving caller scope and visible unresolved references. Unchanged C++ owners validate all declarations. Output explicitly does not claim source replay or catalogue publication.

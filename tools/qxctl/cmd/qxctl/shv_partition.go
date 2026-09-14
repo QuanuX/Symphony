@@ -146,6 +146,7 @@ func newSHVPartitionCommand() *cobra.Command {
 		commandregistry.Attach(c, s)
 		root.AddCommand(c)
 	}
+	root.AddCommand(newSHVResolutionCommand())
 	return root
 }
 func partitionFromBundle(b map[string]json.RawMessage) (json.RawMessage, error) {
