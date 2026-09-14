@@ -43,3 +43,7 @@ The independent `modules/shv-source-engine/` implements `SOURCES.md`: stable sou
 ## Explicit component dossiers
 
 `DOSSIERS.md` defines caller-owned associations, exact citations and generic graph exchange through qxctl, with no inferred physical identity.
+
+## Documented identifier profile
+
+`IDENTIFIERS.md` and `AMD-PRODUCT-IDENTIFIERS.v1.md` define a versioned, source-specific mapping composed through existing C++ catalogue/evaluation operations. No new native operation or automatic loader is added.

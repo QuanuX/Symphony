@@ -11452,3 +11452,35 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
   - `knowledge/shv/INVENTORY.md`
   - `knowledge/shv/REFRESH.md`
 - notes: `Exact citations do not verify physical identity or entail caller relations.`
+
+- path: `knowledge/shv/IDENTIFIERS.md`
+- title: `SHV documented identifier mapping`
+- surface_type: `reference document`
+- truth_role: `owner-declared mapping contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `source-specific identifier fields and qualified equality`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `vendor alias entailment and automatic profile loading`
+- relationships:
+  - `knowledge/shv/KERNEL.md`
+  - `knowledge/shv/DOSSIERS.md`
+- notes: `Caller-selectable profile; exact identifiers do not verify physical identity.`
+
+- path: `knowledge/shv/AMD-PRODUCT-IDENTIFIERS.v1.md`
+- title: `AMD boxed and tray identifier mapping profile v1`
+- surface_type: `reference document`
+- truth_role: `owner-declared mapping contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `source-specific identifier fields and qualified equality`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `vendor alias entailment and automatic profile loading`
+- relationships:
+  - `knowledge/shv/KERNEL.md`
+  - `knowledge/shv/DOSSIERS.md`
+- notes: `Caller-selectable profile; exact identifiers do not verify physical identity.`

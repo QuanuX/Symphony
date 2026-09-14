@@ -57,3 +57,7 @@ The independent `modules/shv-source-engine/` implements `SOURCES.md`: stable sou
 ## Immutable partition inventory
 
 The separate `shv-partition-engine` now implements `PARTITIONS.md`: immutable dependency-reference identities, explicit missing inventory and cursor-bound reference queries. qxctl from-refresh replays evidence first. This is the initial bounded manifest owner; durable publication, cross-partition semantic aggregation and resumable stage persistence remain unimplemented.
+
+## Qualified OEM identifiers
+
+`IDENTIFIERS.md` records the tested AMD boxed/tray mapping profile using existing exact-string extraction and qualified equality. Original source IDs, namespace qualifiers and unmodified values remain explicit. Identity resolution is not inferred.
