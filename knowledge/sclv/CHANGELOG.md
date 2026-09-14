@@ -11378,3 +11378,61 @@ This PR authorizes none of the following:
   - `tools/qxctl/cmd/qxctl/shv_dossier.go`
   - `tools/qxctl/cmd/qxctl/shv_dossier.schema.json`
   - `tools/qxctl/cmd/qxctl/shv_dossier_test.go`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-OEM-IDENTIFIERS`
+- record_version: `3`
+- title: `Define and verify qualified OEM identifier mapping`
+- status: `canonical`
+- change_started_at: `2026-09-14T12:30:10Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV identifier continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-identifier-continuation.md`
+- skvi_references:
+  - `knowledge/shv/IDENTIFIERS.md`
+  - `knowledge/shv/AMD-PRODUCT-IDENTIFIERS.v1.md`
+- change_summary: |
+    Adds a versioned AMD boxed/tray identifier mapping contract and installed native extraction/comparison evidence.
+- relationship_changes: |
+    Existing C++ catalogue, qualified evaluation and graph adapter owners execute unchanged; profile stays caller-selectable.
+- doctrine_changes: |
+    Namespace-qualified exact identifiers do not entail physical identity or vendor aliases. Differing and absent evidence remain visible.
+- compatibility_consequences: |
+    Canonical Markdown mapping data only; runtime code, native package versions and334 qxctl commands remain unchanged.
+- publication_consequences: |
+    Local reviewed profile and evidence only; no standalone canonical JSON projection, automatic loader or catalogue publication.
+- projection_consequences: |
+    SKVI records identifier profile and contract; command and feature counts unchanged.
+- evidence:
+  - `../shv-13/evidence/FOCUSED_TESTS.json records8 installed calls and six native comparison findings.`
+  - `../shv-13/evidence/release-final/ACCEPTANCE.json binds two source documents and four identifier assertions.`
+  - `../shv-13/evidence/SOURCE_BUILD_PARITY.json binds the clean source and reproducible CLI build.`
+  - `../shv-13/MANIFEST.json seals scoped evidence.`
+- non_authorizations:
+  - `Canonical catalogue publication, automatic acquisition, source alias inference or hardware changes.`
+  - `Remote publication, deployment, engine substitution or original archive edits.`
+- notes: |
+    Two different CPU product pages establish independent extraction and comparison; same-component corroboration remains future source work. Local post_merge disposition does not claim a remote merge.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T12:33:31Z`
+- recorded_at: `2026-09-14T12:34:43Z`
+- revision_value: `1e4b19f628c38fcf5e98d27957715a550db93b98`
+- tree_digest: `sha256:16bd394bb7fa4d4336aa9737b5cc786572b628995e15e46e140d982e6d38e0c3`
+- ratification_evidence_digest: `sha256:f293f3b73c91e06133662bae944892604b9abbdd7d429020efea3f4dd358600f`
+- affected_surfaces:
+  - `knowledge/shv/AMD-PRODUCT-IDENTIFIERS.v1.md`
+  - `knowledge/shv/IDENTIFIERS.md`
+  - `knowledge/shv/KERNEL.md`
+  - `knowledge/shv/MANIFEST.md`
+  - `knowledge/skvi/INDEX.md`
