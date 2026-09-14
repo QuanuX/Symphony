@@ -11860,3 +11860,98 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/knowledgeengine/shv_store_test.go`
   - `tools/qxctl/internal/knowledgeengine/shv_store_validation.go`
   - `tools/qxctl/internal/knowledgeengine/testdata/shv-store/native-results.json`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-CATALOGUE-PUBLICATION`
+- record_version: `3`
+- title: `Publish protected caller-selected SHV catalogue heads`
+- status: `canonical`
+- change_started_at: `2026-09-14T19:00:23Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV protected catalogue publication continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-publication-continuation.md`
+- skvi_references:
+  - `knowledge/shv/PUBLICATION.md`
+  - `modules/shv-publication-engine/SPEC.md`
+- change_summary: |
+    Adds independent C++ publication semantics, exact qxctl controls, original-source/durable-snapshot replay and protected expected-head publication.
+- relationship_changes: |
+    Partition identity, source refresh, durable DuckDB graph evidence and distinct SSIAG/STAV policy authority compose without transferring hardware decisions from the caller.
+- doctrine_changes: |
+    Caller-selected completeness policy and exact evidence remain explicit. Local named-head publication does not enable Symphony-wide CanonicalApply.
+- compatibility_consequences: |
+    New publication engine 0.1.0-dev and six qxctl leaves; 356 commands total. Existing installed packages and source activation/store contracts remain unchanged.
+- publication_consequences: |
+    Permission-backed local catalogue head selection is enabled. Remote publication and Symphony-wide CanonicalApply remain outside this increment.
+- projection_consequences: |
+    Each loaded partition requires original refresh replay and exact durable graph export; committed retries preserve the latest selected head.
+- evidence:
+  - `../shv-18/VERIFICATION.md records focused native, independent consumer, journal and real authority checks.`
+  - `../shv-18/evidence/SOURCE_BUILD_PARITY.json binds clean source, native installation and CLI bytes.`
+  - `../shv-18/MANIFEST.json seals designated acceptance evidence.`
+- non_authorizations:
+  - `Remote publication, production deployment, universal hardware or provider policy, and a default graph database.`
+  - `Symphony-wide CanonicalApply, fabricated STAV head-write receipts, automatic source acquisition and original archive changes.`
+- notes: |
+    Five killed-process boundaries and live revocation/capture/receipt changes recover through the single apply surface. Final rechecks do not create a cross-authority atomic transaction; current bounded history has no pruning.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T19:25:33Z`
+- recorded_at: `2026-09-14T19:30:11Z`
+- revision_value: `6c1e6121012f5d0af63c45bd03c6548c8ab2b2a1`
+- tree_digest: `sha256:edc39dd5ecb7ac9f352cb4a513c6f4e29b46b381fa845d187125f96633a4bdd6`
+- ratification_evidence_digest: `sha256:9766de55ba60adf786e3af1c15303437aa0743b171094b51ff395d665bfa1785`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/shv/CATALOGUE-PUBLICATION-PLAN.md`
+  - `knowledge/shv/MANIFEST.md`
+  - `knowledge/shv/PUBLICATION.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/shv-publication-engine/CMakeLists.txt`
+  - `modules/shv-publication-engine/FEATURES.md`
+  - `modules/shv-publication-engine/INSTALL.md`
+  - `modules/shv-publication-engine/INTENT.md`
+  - `modules/shv-publication-engine/MANIFEST.md`
+  - `modules/shv-publication-engine/SKILL.md`
+  - `modules/shv-publication-engine/SPEC.md`
+  - `modules/shv-publication-engine/cmake/uninstall.cmake.in`
+  - `modules/shv-publication-engine/schemas/v1/publication.schema.json`
+  - `modules/shv-publication-engine/schemas/v1/publication.templates.json`
+  - `modules/shv-publication-engine/src/descriptor.cpp`
+  - `modules/shv-publication-engine/src/main.cpp`
+  - `modules/shv-publication-engine/src/publication.cpp`
+  - `modules/shv-publication-engine/src/publication.hpp`
+  - `modules/shv-publication-engine/tests/publication_test.py`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv.go`
+  - `tools/qxctl/cmd/qxctl/shv_publication.go`
+  - `tools/qxctl/cmd/qxctl/shv_publication_evidence.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_publication.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_publication_descriptor.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_publication_validation.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_publication_validation_test.go`
+  - `tools/qxctl/internal/knowledgeengine/testdata/publication-initial.json`
+  - `tools/qxctl/internal/shvpublicationstate/authorization.go`
+  - `tools/qxctl/internal/shvpublicationstate/barrier.go`
+  - `tools/qxctl/internal/shvpublicationstate/barrier_faults.go`
+  - `tools/qxctl/internal/shvpublicationstate/storage_unix.go`
+  - `tools/qxctl/internal/shvpublicationstate/storage_unsupported.go`
+  - `tools/qxctl/internal/shvpublicationstate/store.go`
+  - `tools/qxctl/internal/shvpublicationstate/store_test.go`
+  - `tools/qxctl/internal/shvpublicationstate/validation.go`
