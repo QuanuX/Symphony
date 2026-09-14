@@ -11236,3 +11236,74 @@ This PR authorizes none of the following:
 - ratification_evidence_digest: `sha256:750e27f98a8fdd655bde6c52b3752d5134c923313c31feaee7b01c8539950d50`
 - affected_surfaces:
   - `knowledge/shv/KERNEL.md`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-COVERAGE-INVENTORY`
+- record_version: `3`
+- title: `Account for caller SHV rosters through exact native replay`
+- status: `canonical`
+- change_started_at: `2026-09-14T09:00:00Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV coverage continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-inventory-continuation.md`
+- skvi_references:
+  - `knowledge/shv/INVENTORY.md`
+  - `knowledge/shv/KERNEL.md`
+- change_summary: |
+    Adds four qxctl inventory commands with explicit stages, caller-selected native coverage and replayed comparison.
+- relationship_changes: |
+    qxctl owns roster accounting; unchanged C++ engines own source and coverage semantics.
+- doctrine_changes: |
+    Locator declarations and coverage inclusion do not establish interpreted facts. Unknown introduction dates remain unresolved; caller choices are preserved.
+- compatibility_consequences: |
+    Additive CLI inventory protocols and JSON error routing; exact native packages and prior protocols remain unchanged.
+- publication_consequences: |
+    Caller-saved observations and private GPU evidence only; no canonical catalogue publication.
+- projection_consequences: |
+    330 commands,106 features,278 expectations,27 invariants and16 adapters. SKVI records inventory ownership.
+- evidence:
+  - `../shv-11/evidence/FOCUSED_TESTS.json records10 groups and21 passing test events.`
+  - `../shv-11/evidence/release-final/ACCEPTANCE.json records13 installed inventory calls.`
+  - `../shv-11/evidence/gpu-workflow-final/ACCEPTANCE.json records5 installed GPU workflow calls.`
+  - `../shv-11/evidence/SOURCE_BUILD_PARITY.json binds the clean source and byte-identical rebuild.`
+  - `../shv-11/MANIFEST.json seals evidence and source provenance.`
+- non_authorizations:
+  - `Canonical catalogue publication, automatic acquisition, source alias inference or hardware changes.`
+  - `Remote publication, deployment, engine substitution or original archive edits.`
+- notes: |
+    Focused tests follow the preceding full milestone gate. AMD source capture and isolated activation were explicitly authorized for evidence. Established local post_merge disposition does not claim a remote merge. Start time is a conservative increment boundary before retained source acquisition.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T09:36:21Z`
+- recorded_at: `2026-09-14T09:39:21Z`
+- revision_value: `c6473ad422d997f4e20255ede7fe394f9be92cf8`
+- tree_digest: `sha256:0a52e44c113917d52b28fcbcd6ea40471534286cc869571ec1248c9c04bf9df2`
+- ratification_evidence_digest: `sha256:85105d3de43c900b288162dc62570e6188c6bf94b6f6403ea4a5ed1a4bf1d57d`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/shv/INVENTORY.md`
+  - `knowledge/shv/MANIFEST.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/cli_errors.go`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv.go`
+  - `tools/qxctl/cmd/qxctl/shv_inventory.go`
+  - `tools/qxctl/cmd/qxctl/shv_inventory.schema.json`
+  - `tools/qxctl/cmd/qxctl/shv_inventory_test.go`
