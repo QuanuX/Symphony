@@ -10644,3 +10644,87 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/knowledgeengine/shv_tables.go`
   - `tools/qxctl/internal/knowledgeengine/shv_tables_test.go`
   - `tools/qxctl/internal/knowledgeengine/shv_validation.go`
+
+---
+
+- record_id: `SCLV-CHG-20260913-SHV-SOURCE-ACTIVATION`
+- record_version: `3`
+- title: `Protect SHV source activation and recovery through qxctl`
+- status: `canonical`
+- change_started_at: `2026-09-14T02:32:24Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV source activation continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-13-shv-source-activation-continuation.md`
+- skvi_references:
+  - `knowledge/shv/ACTIVATION.md`
+  - `knowledge/shv/KERNEL.md`
+- change_summary: |
+    Adds qxctl protected source propose/apply/status/recover with exact installed C++ source reduction, durable operation identity, locked compare-and-swap publication and SSIAG authorization.
+- relationship_changes: |
+    qxctl owns local administration; unchanged C++ source engine owns source semantics. SSIAG authenticates policy decisions and STAV audits those decisions. No source-write STAV receipt is invented.
+- doctrine_changes: |
+    Pure reduction is not permission. Sources and hardware selections remain caller controlled. Historical replay reports current state without rewinding the head.
+- compatibility_consequences: |
+    Six new qxctl leaves; exact source engine 0.1.0-dev remains unchanged. Separate SHV authority namespace and journal; bounded history rejects prospective overflow before publication.
+- publication_consequences: |
+    Local source commit and append-only closure. No remote deployment, publication or original archive edits.
+- projection_consequences: |
+    301 command identities, 105 features, 274 reviewed administration expectations and 26 invariants. Embedded activation schema and templates are first-class qxctl discovery.
+- evidence:
+  - `../shv-04/evidence/FOCUSED_TESTS.json records 22 groups and 52 passing events with no failures or skips.`
+  - `../shv-04/evidence/authority-final/ACCEPTANCE.json retains the committed CLI real SSIAG/STAV acceptance campaign.`
+  - `../shv-04/evidence/INDEPENDENT_REVIEW.md records fixed Unicode replay and aggregate history bounds findings.`
+  - `../shv-04/evidence/SCHEMA_VERIFICATION.json validates actual artifacts and rejects unknown fields.`
+  - `../shv-04/evidence/SOURCE_BUILD_PARITY.json records byte-identical clean CLI rebuilds.`
+  - `../shv-04/MANIFEST.json seals the bounded packet evidence.`
+- non_authorizations:
+  - `Automatic vendor acquisition or publisher authentication.`
+  - `Hardware/provider/topology decisions on behalf of users or mandatory graph database selection.`
+  - `Persistent vendor graph drivers, source-write STAV receipt or Symphony-wide canonical application.`
+  - `Remote publication, deployment, firmware mutation or original archive edits.`
+- notes: |
+    Closes only SHV-04 protected source activation. Full suites remain milestone work. Change start is the new store.go filesystem creation timestamp; local completion uses the established post_merge disposition without claiming a remote merge.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T02:54:25Z`
+- recorded_at: `2026-09-14T02:57:43Z`
+- revision_value: `584bc51941353c8b498085438c413f9bb7284617`
+- tree_digest: `sha256:2ec0f9bca47a028cd32c70df57ffc634e93ed2fd9ebeddb0d1f4714ccce9dc9e`
+- ratification_evidence_digest: `sha256:ba33684eb9202a93de1b856c9701a17bbb2a998295aecd45f67ebcab79c7e8c9`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/shv/ACTIVATION.md`
+  - `knowledge/shv/KERNEL.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/cli_errors.go`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/scv.go`
+  - `tools/qxctl/cmd/qxctl/shv_activation.schema.json`
+  - `tools/qxctl/cmd/qxctl/shv_activation_discovery.go`
+  - `tools/qxctl/cmd/qxctl/shv_source.go`
+  - `tools/qxctl/cmd/qxctl/shv_source_activation.go`
+  - `tools/qxctl/cmd/qxctl/shv_source_activation_test.go`
+  - `tools/qxctl/internal/shvstate/authorization.go`
+  - `tools/qxctl/internal/shvstate/storage_unix.go`
+  - `tools/qxctl/internal/shvstate/storage_unsupported.go`
+  - `tools/qxctl/internal/shvstate/store.go`
+  - `tools/qxctl/internal/shvstate/store_test.go`
+  - `tools/qxctl/internal/shvstate/validation.go`
+  - `tools/qxctl/scripts/build_shv_activation_schema.py`
