@@ -27,7 +27,7 @@ func newSHVCommand() *cobra.Command {
 	for _, op := range []string{"inspect", "roundtrip", "query"} {
 		adapter.AddCommand(newSHVLeaf(op, "shv.graph.adapter."+op, op, true))
 	}
-	graph.AddCommand(adapter)
+	graph.AddCommand(adapter, newSHVStoreCommand())
 	root.AddCommand(graph)
 	root.AddCommand(newSHVSourceCommand(), newSHVRefreshCommand(), newSHVPartitionCommand(), newSHVMaterializationCommand())
 	root.AddCommand(newSHVInventoryCommand())

@@ -1,0 +1,1773 @@
+[
+  {
+    "operation": "prepare",
+    "input": {
+      "tops_id": "01993d63-b40d-7000-8000-000000000017",
+      "namespace": "shv-catalogue",
+      "operation_id": "original-graph",
+      "graph": {
+        "digest": "sha256:f561710ae0ee08f1b5ca902d6174a0982c8ddba9785736ca840b156b320103b6",
+        "edges": [
+          {
+            "from": "subject:pdf-7313",
+            "id": "assertion:pdf-7313:oem_identifier",
+            "label": "supported_by_source",
+            "properties": {
+              "predicate": "oem_identifier",
+              "qualifier": "issuer=AMD;namespace=opn;profile=1",
+              "source_id": "amd-69290-rev-1-00",
+              "value": "100-000000329"
+            },
+            "to": "source:amd-69290-rev-1-00"
+          }
+        ],
+        "nodes": [
+          {
+            "id": "source:amd-69290-rev-1-00",
+            "labels": [
+              "evidence_source"
+            ],
+            "properties": {
+              "bytes": 738352,
+              "digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+              "format": "opaque",
+              "id": "amd-69290-rev-1-00",
+              "path": "amd-export.pdf"
+            }
+          },
+          {
+            "id": "subject:pdf-7313",
+            "labels": [
+              "hardware_subject"
+            ],
+            "properties": {
+              "assertions": [
+                {
+                  "predicate": "oem_identifier",
+                  "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                  "source_id": "amd-69290-rev-1-00",
+                  "value": "100-000000329"
+                }
+              ],
+              "hardware_class": "cpu",
+              "id": "pdf-7313",
+              "introduced": null,
+              "manufacturer": "AMD",
+              "model": "7313"
+            }
+          }
+        ],
+        "owner": {
+          "artifact_digest": "sha256:bbde9a66804a2d5bb453f522663f55696d3ba658e5ef93c6ca78cee1b9b8e885",
+          "artifact_protocol": "symphony.shv.catalogue.v1",
+          "engine_id": "symphony-shv",
+          "engine_version": "0.3.0-dev"
+        },
+        "owner_artifact": {
+          "digest": "sha256:bbde9a66804a2d5bb453f522663f55696d3ba658e5ef93c6ca78cee1b9b8e885",
+          "mapping": [
+            {
+              "document": {
+                "decoder_root": "/Users/Duncan/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pypdfium2_raw",
+                "extraction": {
+                  "decoder": {
+                    "digest": "sha256:bbd84063a8d475c4b433056cce13451c65c2ef41e643cccbf22ba9dcc220a90d",
+                    "path": "libpdfium.dylib"
+                  },
+                  "digest": "sha256:541a34cec6e299b97bdc411db0841770a19f78fe877ce9610e828c2ad69f9b86",
+                  "documentary_lineages": 1,
+                  "namespace": "AMD.OPN",
+                  "namespace_equivalence": "not_asserted",
+                  "page_count": 16,
+                  "page_index": 12,
+                  "profile": "amd-69290-table8.v1",
+                  "protocol": "symphony.shv.pdf-extraction.v1",
+                  "rows": [
+                    {
+                      "model": "7763",
+                      "opn": "100-000000312",
+                      "source_metric_text": "1.0752"
+                    },
+                    {
+                      "model": "75F3",
+                      "opn": "100-000000313",
+                      "source_metric_text": "0.6144"
+                    },
+                    {
+                      "model": "74F3",
+                      "opn": "100-000000317",
+                      "source_metric_text": "0.4608"
+                    },
+                    {
+                      "model": "7663",
+                      "opn": "100-000000318",
+                      "source_metric_text": "0.9408"
+                    },
+                    {
+                      "model": "7453",
+                      "opn": "100-000000319",
+                      "source_metric_text": "0.4637"
+                    },
+                    {
+                      "model": "73F3",
+                      "opn": "100-000000321",
+                      "source_metric_text": "0.3072"
+                    },
+                    {
+                      "model": "7413",
+                      "opn": "100-000000323",
+                      "source_metric_text": "0.4147"
+                    },
+                    {
+                      "model": "7643",
+                      "opn": "100-000000326",
+                      "source_metric_text": "0.8294"
+                    },
+                    {
+                      "model": "72F3",
+                      "opn": "100-000000327",
+                      "source_metric_text": "0.1574"
+                    },
+                    {
+                      "model": "7313",
+                      "opn": "100-000000329",
+                      "source_metric_text": "0.2842"
+                    },
+                    {
+                      "model": "7513",
+                      "opn": "100-000000334",
+                      "source_metric_text": "0.5606"
+                    },
+                    {
+                      "model": "7713P",
+                      "opn": "100-000000337",
+                      "source_metric_text": "1.129"
+                    },
+                    {
+                      "model": "7343",
+                      "opn": "100-000000338",
+                      "source_metric_text": "0.2995"
+                    },
+                    {
+                      "model": "7313P",
+                      "opn": "100-000000339",
+                      "source_metric_text": "0.2842"
+                    },
+                    {
+                      "model": "7443",
+                      "opn": "100-000000340",
+                      "source_metric_text": "0.4608"
+                    },
+                    {
+                      "model": "7543P",
+                      "opn": "100-000000341",
+                      "source_metric_text": "0.5683"
+                    },
+                    {
+                      "model": "7443P",
+                      "opn": "100-000000342",
+                      "source_metric_text": "0.4608"
+                    },
+                    {
+                      "model": "7713",
+                      "opn": "100-000000344",
+                      "source_metric_text": "1.129"
+                    },
+                    {
+                      "model": "7543",
+                      "opn": "100-000000345",
+                      "source_metric_text": "0.5683"
+                    },
+                    {
+                      "model": "7773X",
+                      "opn": "100-000000504",
+                      "source_metric_text": "1.0752"
+                    },
+                    {
+                      "model": "7573X",
+                      "opn": "100-000000506",
+                      "source_metric_text": "0.553"
+                    },
+                    {
+                      "model": "7473X",
+                      "opn": "100-000000507",
+                      "source_metric_text": "0.4262"
+                    },
+                    {
+                      "model": "7373X",
+                      "opn": "100-000000508",
+                      "source_metric_text": "0.2918"
+                    },
+                    {
+                      "model": "7663P",
+                      "opn": "100-000001284",
+                      "source_metric_text": "0.9408"
+                    },
+                    {
+                      "model": "7643P",
+                      "opn": "100-000001285",
+                      "source_metric_text": "0.8294"
+                    },
+                    {
+                      "model": "7203",
+                      "opn": "100-000001286",
+                      "source_metric_text": "0.1306"
+                    },
+                    {
+                      "model": "7203P",
+                      "opn": "100-000001287",
+                      "source_metric_text": "0.1306"
+                    },
+                    {
+                      "model": "7303",
+                      "opn": "100-000001288",
+                      "source_metric_text": "0.2611"
+                    }
+                  ],
+                  "source": {
+                    "bytes": 738352,
+                    "digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+                    "id": "amd-69290-rev-1-00",
+                    "path": "amd-export.pdf"
+                  },
+                  "text": "Chapter 1 Adjusted Peak Performance (APP) 13\n69290 Rev. 1.00 April 2026 AMD EPYC\u2122 Processor Export Compliance Metrics (PUB)\n1.7 AMD EPYC 7003 Series, formerly codenamed \u201cMilan\u201d\nTable 8. EPYC 7003 Series Portfolio APP Values\nOPN Model\nNumber\nAPP \n(Weighted TFLOPS)\n100-000000312 7763 1.0752\n100-000000313 75F3 0.6144\n100-000000317 74F3 0.4608\n100-000000318 7663 0.9408\n100-000000319 7453 0.4637\n100-000000321 73F3 0.3072\n100-000000323 7413 0.4147\n100-000000326 7643 0.8294\n100-000000327 72F3 0.1574\n100-000000329 7313 0.2842\n100-000000334 7513 0.5606\n100-000000337 7713P 1.129\n100-000000338 7343 0.2995\n100-000000339 7313P 0.2842\n100-000000340 7443 0.4608\n100-000000341 7543P 0.5683\n100-000000342 7443P 0.4608\n100-000000344 7713 1.129\n100-000000345 7543 0.5683\n100-000000504 7773X 1.0752\n100-000000506 7573X 0.553\n100-000000507 7473X 0.4262\n100-000000508 7373X 0.2918\n100-000001284 7663P 0.9408\n100-000001285 7643P 0.8294\n100-000001286 7203 0.1306\n100-000001287 7203P 0.1306\n100-000001288 7303 0.2611\n[Public]",
+                  "text_digest": "sha256:8a14fe936ff92c0808cfe7124d1acbcd33c7437a4fec898d5c391a4eb2db046a"
+                }
+              },
+              "fields": [
+                {
+                  "label": "OPN",
+                  "next_label": "Model",
+                  "predicate": "oem_identifier",
+                  "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                  "value_type": "string"
+                }
+              ],
+              "hardware_class": "cpu",
+              "heading_section": "table8",
+              "id": "pdf-7313",
+              "interpretation_profile": "pdf_opn.v1",
+              "manufacturer": "AMD",
+              "model": "7313",
+              "source_id": "amd-69290-rev-1-00"
+            }
+          ],
+          "protocol": "symphony.shv.catalogue.v1",
+          "sources": [
+            {
+              "bytes": 738352,
+              "digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+              "format": "opaque",
+              "id": "amd-69290-rev-1-00",
+              "path": "amd-export.pdf"
+            }
+          ],
+          "subjects": [
+            {
+              "assertions": [
+                {
+                  "predicate": "oem_identifier",
+                  "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                  "source_id": "amd-69290-rev-1-00",
+                  "value": "100-000000329"
+                }
+              ],
+              "hardware_class": "cpu",
+              "id": "pdf-7313",
+              "introduced": null,
+              "manufacturer": "AMD",
+              "model": "7313"
+            }
+          ]
+        },
+        "protocol": "symphony.graph.exchange.v1"
+      },
+      "connector": {
+        "EngineID": "symphony-shv-graph-duckdb-connector",
+        "ExecutableDigest": "sha256:c3774d2de68ad7b746532cf897bec26512500e55c0f6ae5720f57f6318471b39",
+        "ExecutablePath": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-17-store/libexec/symphony/shv-graph-duckdb-connector/0.1.0-dev/symphony-shv-graph-duckdb-connector",
+        "ModuleID": "shv-graph-duckdb-connector",
+        "Prefix": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-17-store",
+        "ReceiptDigest": "sha256:33394ee827c692bc20970aea27548e81e22e9da04acdc5b282b27592c7d9d481",
+        "ReceiptPath": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-17-store/share/symphony/receipts/shv-graph-duckdb-connector/0.1.0-dev/install-receipt.json",
+        "ReceiptProtocol": "symphony.knowledge.install-receipt.v2",
+        "Role": "shv-graph-duckdb-connector",
+        "Version": "0.1.0-dev"
+      }
+    },
+    "result": {
+      "backend": "duckdb",
+      "counts": {
+        "edges": 1,
+        "nodes": 2
+      },
+      "digest": "sha256:c905bbed20934d77e36d599846def7425e02a003f4f3dc88c8a9a38184baf42b",
+      "index_verified": false,
+      "intent": {
+        "digest": "sha256:c95c740866077e0d70ae38c552194546dfd521113393a3b5aeaa55cd55d472b8",
+        "operation_id": "original-graph",
+        "protocol": "symphony.shv.graph-store-intent.v1",
+        "snapshot": {
+          "backend": "duckdb",
+          "connector": {
+            "EngineID": "symphony-shv-graph-duckdb-connector",
+            "ExecutableDigest": "sha256:c3774d2de68ad7b746532cf897bec26512500e55c0f6ae5720f57f6318471b39",
+            "ExecutablePath": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-17-store/libexec/symphony/shv-graph-duckdb-connector/0.1.0-dev/symphony-shv-graph-duckdb-connector",
+            "ModuleID": "shv-graph-duckdb-connector",
+            "Prefix": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-17-store",
+            "ReceiptDigest": "sha256:33394ee827c692bc20970aea27548e81e22e9da04acdc5b282b27592c7d9d481",
+            "ReceiptPath": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-17-store/share/symphony/receipts/shv-graph-duckdb-connector/0.1.0-dev/install-receipt.json",
+            "ReceiptProtocol": "symphony.knowledge.install-receipt.v2",
+            "Role": "shv-graph-duckdb-connector",
+            "Version": "0.1.0-dev"
+          },
+          "digest": "sha256:cff58c9c5dc3b6db82238307989aec6124097f45de4362a5f16f108df8ec4855",
+          "graph": {
+            "digest": "sha256:f561710ae0ee08f1b5ca902d6174a0982c8ddba9785736ca840b156b320103b6",
+            "edges": [
+              {
+                "from": "subject:pdf-7313",
+                "id": "assertion:pdf-7313:oem_identifier",
+                "label": "supported_by_source",
+                "properties": {
+                  "predicate": "oem_identifier",
+                  "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                  "source_id": "amd-69290-rev-1-00",
+                  "value": "100-000000329"
+                },
+                "to": "source:amd-69290-rev-1-00"
+              }
+            ],
+            "nodes": [
+              {
+                "id": "source:amd-69290-rev-1-00",
+                "labels": [
+                  "evidence_source"
+                ],
+                "properties": {
+                  "bytes": 738352,
+                  "digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+                  "format": "opaque",
+                  "id": "amd-69290-rev-1-00",
+                  "path": "amd-export.pdf"
+                }
+              },
+              {
+                "id": "subject:pdf-7313",
+                "labels": [
+                  "hardware_subject"
+                ],
+                "properties": {
+                  "assertions": [
+                    {
+                      "predicate": "oem_identifier",
+                      "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                      "source_id": "amd-69290-rev-1-00",
+                      "value": "100-000000329"
+                    }
+                  ],
+                  "hardware_class": "cpu",
+                  "id": "pdf-7313",
+                  "introduced": null,
+                  "manufacturer": "AMD",
+                  "model": "7313"
+                }
+              }
+            ],
+            "owner": {
+              "artifact_digest": "sha256:bbde9a66804a2d5bb453f522663f55696d3ba658e5ef93c6ca78cee1b9b8e885",
+              "artifact_protocol": "symphony.shv.catalogue.v1",
+              "engine_id": "symphony-shv",
+              "engine_version": "0.3.0-dev"
+            },
+            "owner_artifact": {
+              "digest": "sha256:bbde9a66804a2d5bb453f522663f55696d3ba658e5ef93c6ca78cee1b9b8e885",
+              "mapping": [
+                {
+                  "document": {
+                    "decoder_root": "/Users/Duncan/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pypdfium2_raw",
+                    "extraction": {
+                      "decoder": {
+                        "digest": "sha256:bbd84063a8d475c4b433056cce13451c65c2ef41e643cccbf22ba9dcc220a90d",
+                        "path": "libpdfium.dylib"
+                      },
+                      "digest": "sha256:541a34cec6e299b97bdc411db0841770a19f78fe877ce9610e828c2ad69f9b86",
+                      "documentary_lineages": 1,
+                      "namespace": "AMD.OPN",
+                      "namespace_equivalence": "not_asserted",
+                      "page_count": 16,
+                      "page_index": 12,
+                      "profile": "amd-69290-table8.v1",
+                      "protocol": "symphony.shv.pdf-extraction.v1",
+                      "rows": [
+                        {
+                          "model": "7763",
+                          "opn": "100-000000312",
+                          "source_metric_text": "1.0752"
+                        },
+                        {
+                          "model": "75F3",
+                          "opn": "100-000000313",
+                          "source_metric_text": "0.6144"
+                        },
+                        {
+                          "model": "74F3",
+                          "opn": "100-000000317",
+                          "source_metric_text": "0.4608"
+                        },
+                        {
+                          "model": "7663",
+                          "opn": "100-000000318",
+                          "source_metric_text": "0.9408"
+                        },
+                        {
+                          "model": "7453",
+                          "opn": "100-000000319",
+                          "source_metric_text": "0.4637"
+                        },
+                        {
+                          "model": "73F3",
+                          "opn": "100-000000321",
+                          "source_metric_text": "0.3072"
+                        },
+                        {
+                          "model": "7413",
+                          "opn": "100-000000323",
+                          "source_metric_text": "0.4147"
+                        },
+                        {
+                          "model": "7643",
+                          "opn": "100-000000326",
+                          "source_metric_text": "0.8294"
+                        },
+                        {
+                          "model": "72F3",
+                          "opn": "100-000000327",
+                          "source_metric_text": "0.1574"
+                        },
+                        {
+                          "model": "7313",
+                          "opn": "100-000000329",
+                          "source_metric_text": "0.2842"
+                        },
+                        {
+                          "model": "7513",
+                          "opn": "100-000000334",
+                          "source_metric_text": "0.5606"
+                        },
+                        {
+                          "model": "7713P",
+                          "opn": "100-000000337",
+                          "source_metric_text": "1.129"
+                        },
+                        {
+                          "model": "7343",
+                          "opn": "100-000000338",
+                          "source_metric_text": "0.2995"
+                        },
+                        {
+                          "model": "7313P",
+                          "opn": "100-000000339",
+                          "source_metric_text": "0.2842"
+                        },
+                        {
+                          "model": "7443",
+                          "opn": "100-000000340",
+                          "source_metric_text": "0.4608"
+                        },
+                        {
+                          "model": "7543P",
+                          "opn": "100-000000341",
+                          "source_metric_text": "0.5683"
+                        },
+                        {
+                          "model": "7443P",
+                          "opn": "100-000000342",
+                          "source_metric_text": "0.4608"
+                        },
+                        {
+                          "model": "7713",
+                          "opn": "100-000000344",
+                          "source_metric_text": "1.129"
+                        },
+                        {
+                          "model": "7543",
+                          "opn": "100-000000345",
+                          "source_metric_text": "0.5683"
+                        },
+                        {
+                          "model": "7773X",
+                          "opn": "100-000000504",
+                          "source_metric_text": "1.0752"
+                        },
+                        {
+                          "model": "7573X",
+                          "opn": "100-000000506",
+                          "source_metric_text": "0.553"
+                        },
+                        {
+                          "model": "7473X",
+                          "opn": "100-000000507",
+                          "source_metric_text": "0.4262"
+                        },
+                        {
+                          "model": "7373X",
+                          "opn": "100-000000508",
+                          "source_metric_text": "0.2918"
+                        },
+                        {
+                          "model": "7663P",
+                          "opn": "100-000001284",
+                          "source_metric_text": "0.9408"
+                        },
+                        {
+                          "model": "7643P",
+                          "opn": "100-000001285",
+                          "source_metric_text": "0.8294"
+                        },
+                        {
+                          "model": "7203",
+                          "opn": "100-000001286",
+                          "source_metric_text": "0.1306"
+                        },
+                        {
+                          "model": "7203P",
+                          "opn": "100-000001287",
+                          "source_metric_text": "0.1306"
+                        },
+                        {
+                          "model": "7303",
+                          "opn": "100-000001288",
+                          "source_metric_text": "0.2611"
+                        }
+                      ],
+                      "source": {
+                        "bytes": 738352,
+                        "digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+                        "id": "amd-69290-rev-1-00",
+                        "path": "amd-export.pdf"
+                      },
+                      "text": "Chapter 1 Adjusted Peak Performance (APP) 13\n69290 Rev. 1.00 April 2026 AMD EPYC\u2122 Processor Export Compliance Metrics (PUB)\n1.7 AMD EPYC 7003 Series, formerly codenamed \u201cMilan\u201d\nTable 8. EPYC 7003 Series Portfolio APP Values\nOPN Model\nNumber\nAPP \n(Weighted TFLOPS)\n100-000000312 7763 1.0752\n100-000000313 75F3 0.6144\n100-000000317 74F3 0.4608\n100-000000318 7663 0.9408\n100-000000319 7453 0.4637\n100-000000321 73F3 0.3072\n100-000000323 7413 0.4147\n100-000000326 7643 0.8294\n100-000000327 72F3 0.1574\n100-000000329 7313 0.2842\n100-000000334 7513 0.5606\n100-000000337 7713P 1.129\n100-000000338 7343 0.2995\n100-000000339 7313P 0.2842\n100-000000340 7443 0.4608\n100-000000341 7543P 0.5683\n100-000000342 7443P 0.4608\n100-000000344 7713 1.129\n100-000000345 7543 0.5683\n100-000000504 7773X 1.0752\n100-000000506 7573X 0.553\n100-000000507 7473X 0.4262\n100-000000508 7373X 0.2918\n100-000001284 7663P 0.9408\n100-000001285 7643P 0.8294\n100-000001286 7203 0.1306\n100-000001287 7203P 0.1306\n100-000001288 7303 0.2611\n[Public]",
+                      "text_digest": "sha256:8a14fe936ff92c0808cfe7124d1acbcd33c7437a4fec898d5c391a4eb2db046a"
+                    }
+                  },
+                  "fields": [
+                    {
+                      "label": "OPN",
+                      "next_label": "Model",
+                      "predicate": "oem_identifier",
+                      "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                      "value_type": "string"
+                    }
+                  ],
+                  "hardware_class": "cpu",
+                  "heading_section": "table8",
+                  "id": "pdf-7313",
+                  "interpretation_profile": "pdf_opn.v1",
+                  "manufacturer": "AMD",
+                  "model": "7313",
+                  "source_id": "amd-69290-rev-1-00"
+                }
+              ],
+              "protocol": "symphony.shv.catalogue.v1",
+              "sources": [
+                {
+                  "bytes": 738352,
+                  "digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+                  "format": "opaque",
+                  "id": "amd-69290-rev-1-00",
+                  "path": "amd-export.pdf"
+                }
+              ],
+              "subjects": [
+                {
+                  "assertions": [
+                    {
+                      "predicate": "oem_identifier",
+                      "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                      "source_id": "amd-69290-rev-1-00",
+                      "value": "100-000000329"
+                    }
+                  ],
+                  "hardware_class": "cpu",
+                  "id": "pdf-7313",
+                  "introduced": null,
+                  "manufacturer": "AMD",
+                  "model": "7313"
+                }
+              ]
+            },
+            "protocol": "symphony.graph.exchange.v1"
+          },
+          "mapping_version": "1",
+          "namespace": "shv-catalogue",
+          "protocol": "symphony.shv.graph-store-snapshot.v1",
+          "tops_id": "01993d63-b40d-7000-8000-000000000017"
+        }
+      },
+      "projection_digest": "sha256:f320b052925c54530917aaeb44158c37c18ca9d6237c14bf6f2fc626aaa00c60",
+      "protocol": "symphony.shv.graph-store-status.v1",
+      "snapshot_digest": "sha256:cff58c9c5dc3b6db82238307989aec6124097f45de4362a5f16f108df8ec4855",
+      "state": "prepared"
+    }
+  },
+  {
+    "operation": "commit",
+    "input": {
+      "tops_id": "01993d63-b40d-7000-8000-000000000017",
+      "namespace": "shv-catalogue",
+      "operation_id": "original-graph",
+      "expected_intent_digest": "sha256:c95c740866077e0d70ae38c552194546dfd521113393a3b5aeaa55cd55d472b8"
+    },
+    "result": {
+      "backend": "duckdb",
+      "counts": {
+        "edges": 1,
+        "nodes": 2
+      },
+      "digest": "sha256:c5df600ea01d074bff51ff8b0cba4e3910c2db87547cfcb3d8bd1642e35f6b44",
+      "index_verified": true,
+      "intent": {
+        "digest": "sha256:c95c740866077e0d70ae38c552194546dfd521113393a3b5aeaa55cd55d472b8",
+        "operation_id": "original-graph",
+        "protocol": "symphony.shv.graph-store-intent.v1",
+        "snapshot": {
+          "backend": "duckdb",
+          "connector": {
+            "EngineID": "symphony-shv-graph-duckdb-connector",
+            "ExecutableDigest": "sha256:c3774d2de68ad7b746532cf897bec26512500e55c0f6ae5720f57f6318471b39",
+            "ExecutablePath": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-17-store/libexec/symphony/shv-graph-duckdb-connector/0.1.0-dev/symphony-shv-graph-duckdb-connector",
+            "ModuleID": "shv-graph-duckdb-connector",
+            "Prefix": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-17-store",
+            "ReceiptDigest": "sha256:33394ee827c692bc20970aea27548e81e22e9da04acdc5b282b27592c7d9d481",
+            "ReceiptPath": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-17-store/share/symphony/receipts/shv-graph-duckdb-connector/0.1.0-dev/install-receipt.json",
+            "ReceiptProtocol": "symphony.knowledge.install-receipt.v2",
+            "Role": "shv-graph-duckdb-connector",
+            "Version": "0.1.0-dev"
+          },
+          "digest": "sha256:cff58c9c5dc3b6db82238307989aec6124097f45de4362a5f16f108df8ec4855",
+          "graph": {
+            "digest": "sha256:f561710ae0ee08f1b5ca902d6174a0982c8ddba9785736ca840b156b320103b6",
+            "edges": [
+              {
+                "from": "subject:pdf-7313",
+                "id": "assertion:pdf-7313:oem_identifier",
+                "label": "supported_by_source",
+                "properties": {
+                  "predicate": "oem_identifier",
+                  "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                  "source_id": "amd-69290-rev-1-00",
+                  "value": "100-000000329"
+                },
+                "to": "source:amd-69290-rev-1-00"
+              }
+            ],
+            "nodes": [
+              {
+                "id": "source:amd-69290-rev-1-00",
+                "labels": [
+                  "evidence_source"
+                ],
+                "properties": {
+                  "bytes": 738352,
+                  "digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+                  "format": "opaque",
+                  "id": "amd-69290-rev-1-00",
+                  "path": "amd-export.pdf"
+                }
+              },
+              {
+                "id": "subject:pdf-7313",
+                "labels": [
+                  "hardware_subject"
+                ],
+                "properties": {
+                  "assertions": [
+                    {
+                      "predicate": "oem_identifier",
+                      "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                      "source_id": "amd-69290-rev-1-00",
+                      "value": "100-000000329"
+                    }
+                  ],
+                  "hardware_class": "cpu",
+                  "id": "pdf-7313",
+                  "introduced": null,
+                  "manufacturer": "AMD",
+                  "model": "7313"
+                }
+              }
+            ],
+            "owner": {
+              "artifact_digest": "sha256:bbde9a66804a2d5bb453f522663f55696d3ba658e5ef93c6ca78cee1b9b8e885",
+              "artifact_protocol": "symphony.shv.catalogue.v1",
+              "engine_id": "symphony-shv",
+              "engine_version": "0.3.0-dev"
+            },
+            "owner_artifact": {
+              "digest": "sha256:bbde9a66804a2d5bb453f522663f55696d3ba658e5ef93c6ca78cee1b9b8e885",
+              "mapping": [
+                {
+                  "document": {
+                    "decoder_root": "/Users/Duncan/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pypdfium2_raw",
+                    "extraction": {
+                      "decoder": {
+                        "digest": "sha256:bbd84063a8d475c4b433056cce13451c65c2ef41e643cccbf22ba9dcc220a90d",
+                        "path": "libpdfium.dylib"
+                      },
+                      "digest": "sha256:541a34cec6e299b97bdc411db0841770a19f78fe877ce9610e828c2ad69f9b86",
+                      "documentary_lineages": 1,
+                      "namespace": "AMD.OPN",
+                      "namespace_equivalence": "not_asserted",
+                      "page_count": 16,
+                      "page_index": 12,
+                      "profile": "amd-69290-table8.v1",
+                      "protocol": "symphony.shv.pdf-extraction.v1",
+                      "rows": [
+                        {
+                          "model": "7763",
+                          "opn": "100-000000312",
+                          "source_metric_text": "1.0752"
+                        },
+                        {
+                          "model": "75F3",
+                          "opn": "100-000000313",
+                          "source_metric_text": "0.6144"
+                        },
+                        {
+                          "model": "74F3",
+                          "opn": "100-000000317",
+                          "source_metric_text": "0.4608"
+                        },
+                        {
+                          "model": "7663",
+                          "opn": "100-000000318",
+                          "source_metric_text": "0.9408"
+                        },
+                        {
+                          "model": "7453",
+                          "opn": "100-000000319",
+                          "source_metric_text": "0.4637"
+                        },
+                        {
+                          "model": "73F3",
+                          "opn": "100-000000321",
+                          "source_metric_text": "0.3072"
+                        },
+                        {
+                          "model": "7413",
+                          "opn": "100-000000323",
+                          "source_metric_text": "0.4147"
+                        },
+                        {
+                          "model": "7643",
+                          "opn": "100-000000326",
+                          "source_metric_text": "0.8294"
+                        },
+                        {
+                          "model": "72F3",
+                          "opn": "100-000000327",
+                          "source_metric_text": "0.1574"
+                        },
+                        {
+                          "model": "7313",
+                          "opn": "100-000000329",
+                          "source_metric_text": "0.2842"
+                        },
+                        {
+                          "model": "7513",
+                          "opn": "100-000000334",
+                          "source_metric_text": "0.5606"
+                        },
+                        {
+                          "model": "7713P",
+                          "opn": "100-000000337",
+                          "source_metric_text": "1.129"
+                        },
+                        {
+                          "model": "7343",
+                          "opn": "100-000000338",
+                          "source_metric_text": "0.2995"
+                        },
+                        {
+                          "model": "7313P",
+                          "opn": "100-000000339",
+                          "source_metric_text": "0.2842"
+                        },
+                        {
+                          "model": "7443",
+                          "opn": "100-000000340",
+                          "source_metric_text": "0.4608"
+                        },
+                        {
+                          "model": "7543P",
+                          "opn": "100-000000341",
+                          "source_metric_text": "0.5683"
+                        },
+                        {
+                          "model": "7443P",
+                          "opn": "100-000000342",
+                          "source_metric_text": "0.4608"
+                        },
+                        {
+                          "model": "7713",
+                          "opn": "100-000000344",
+                          "source_metric_text": "1.129"
+                        },
+                        {
+                          "model": "7543",
+                          "opn": "100-000000345",
+                          "source_metric_text": "0.5683"
+                        },
+                        {
+                          "model": "7773X",
+                          "opn": "100-000000504",
+                          "source_metric_text": "1.0752"
+                        },
+                        {
+                          "model": "7573X",
+                          "opn": "100-000000506",
+                          "source_metric_text": "0.553"
+                        },
+                        {
+                          "model": "7473X",
+                          "opn": "100-000000507",
+                          "source_metric_text": "0.4262"
+                        },
+                        {
+                          "model": "7373X",
+                          "opn": "100-000000508",
+                          "source_metric_text": "0.2918"
+                        },
+                        {
+                          "model": "7663P",
+                          "opn": "100-000001284",
+                          "source_metric_text": "0.9408"
+                        },
+                        {
+                          "model": "7643P",
+                          "opn": "100-000001285",
+                          "source_metric_text": "0.8294"
+                        },
+                        {
+                          "model": "7203",
+                          "opn": "100-000001286",
+                          "source_metric_text": "0.1306"
+                        },
+                        {
+                          "model": "7203P",
+                          "opn": "100-000001287",
+                          "source_metric_text": "0.1306"
+                        },
+                        {
+                          "model": "7303",
+                          "opn": "100-000001288",
+                          "source_metric_text": "0.2611"
+                        }
+                      ],
+                      "source": {
+                        "bytes": 738352,
+                        "digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+                        "id": "amd-69290-rev-1-00",
+                        "path": "amd-export.pdf"
+                      },
+                      "text": "Chapter 1 Adjusted Peak Performance (APP) 13\n69290 Rev. 1.00 April 2026 AMD EPYC\u2122 Processor Export Compliance Metrics (PUB)\n1.7 AMD EPYC 7003 Series, formerly codenamed \u201cMilan\u201d\nTable 8. EPYC 7003 Series Portfolio APP Values\nOPN Model\nNumber\nAPP \n(Weighted TFLOPS)\n100-000000312 7763 1.0752\n100-000000313 75F3 0.6144\n100-000000317 74F3 0.4608\n100-000000318 7663 0.9408\n100-000000319 7453 0.4637\n100-000000321 73F3 0.3072\n100-000000323 7413 0.4147\n100-000000326 7643 0.8294\n100-000000327 72F3 0.1574\n100-000000329 7313 0.2842\n100-000000334 7513 0.5606\n100-000000337 7713P 1.129\n100-000000338 7343 0.2995\n100-000000339 7313P 0.2842\n100-000000340 7443 0.4608\n100-000000341 7543P 0.5683\n100-000000342 7443P 0.4608\n100-000000344 7713 1.129\n100-000000345 7543 0.5683\n100-000000504 7773X 1.0752\n100-000000506 7573X 0.553\n100-000000507 7473X 0.4262\n100-000000508 7373X 0.2918\n100-000001284 7663P 0.9408\n100-000001285 7643P 0.8294\n100-000001286 7203 0.1306\n100-000001287 7203P 0.1306\n100-000001288 7303 0.2611\n[Public]",
+                      "text_digest": "sha256:8a14fe936ff92c0808cfe7124d1acbcd33c7437a4fec898d5c391a4eb2db046a"
+                    }
+                  },
+                  "fields": [
+                    {
+                      "label": "OPN",
+                      "next_label": "Model",
+                      "predicate": "oem_identifier",
+                      "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                      "value_type": "string"
+                    }
+                  ],
+                  "hardware_class": "cpu",
+                  "heading_section": "table8",
+                  "id": "pdf-7313",
+                  "interpretation_profile": "pdf_opn.v1",
+                  "manufacturer": "AMD",
+                  "model": "7313",
+                  "source_id": "amd-69290-rev-1-00"
+                }
+              ],
+              "protocol": "symphony.shv.catalogue.v1",
+              "sources": [
+                {
+                  "bytes": 738352,
+                  "digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+                  "format": "opaque",
+                  "id": "amd-69290-rev-1-00",
+                  "path": "amd-export.pdf"
+                }
+              ],
+              "subjects": [
+                {
+                  "assertions": [
+                    {
+                      "predicate": "oem_identifier",
+                      "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                      "source_id": "amd-69290-rev-1-00",
+                      "value": "100-000000329"
+                    }
+                  ],
+                  "hardware_class": "cpu",
+                  "id": "pdf-7313",
+                  "introduced": null,
+                  "manufacturer": "AMD",
+                  "model": "7313"
+                }
+              ]
+            },
+            "protocol": "symphony.graph.exchange.v1"
+          },
+          "mapping_version": "1",
+          "namespace": "shv-catalogue",
+          "protocol": "symphony.shv.graph-store-snapshot.v1",
+          "tops_id": "01993d63-b40d-7000-8000-000000000017"
+        }
+      },
+      "projection_digest": "sha256:f320b052925c54530917aaeb44158c37c18ca9d6237c14bf6f2fc626aaa00c60",
+      "protocol": "symphony.shv.graph-store-status.v1",
+      "snapshot_digest": "sha256:cff58c9c5dc3b6db82238307989aec6124097f45de4362a5f16f108df8ec4855",
+      "state": "committed"
+    }
+  },
+  {
+    "operation": "export",
+    "input": {
+      "tops_id": "01993d63-b40d-7000-8000-000000000017",
+      "namespace": "shv-catalogue",
+      "snapshot_digest": "sha256:cff58c9c5dc3b6db82238307989aec6124097f45de4362a5f16f108df8ec4855"
+    },
+    "result": {
+      "backend": "duckdb",
+      "counts": {
+        "edges": 1,
+        "nodes": 2
+      },
+      "digest": "sha256:e21c64eb095dc9034054e419903cbc55898e5fd0bae809a99c7779643fadafe4",
+      "projection_digest": "sha256:f320b052925c54530917aaeb44158c37c18ca9d6237c14bf6f2fc626aaa00c60",
+      "protocol": "symphony.shv.graph-store-export.v1",
+      "snapshot": {
+        "backend": "duckdb",
+        "connector": {
+          "EngineID": "symphony-shv-graph-duckdb-connector",
+          "ExecutableDigest": "sha256:c3774d2de68ad7b746532cf897bec26512500e55c0f6ae5720f57f6318471b39",
+          "ExecutablePath": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-17-store/libexec/symphony/shv-graph-duckdb-connector/0.1.0-dev/symphony-shv-graph-duckdb-connector",
+          "ModuleID": "shv-graph-duckdb-connector",
+          "Prefix": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-17-store",
+          "ReceiptDigest": "sha256:33394ee827c692bc20970aea27548e81e22e9da04acdc5b282b27592c7d9d481",
+          "ReceiptPath": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-17-store/share/symphony/receipts/shv-graph-duckdb-connector/0.1.0-dev/install-receipt.json",
+          "ReceiptProtocol": "symphony.knowledge.install-receipt.v2",
+          "Role": "shv-graph-duckdb-connector",
+          "Version": "0.1.0-dev"
+        },
+        "digest": "sha256:cff58c9c5dc3b6db82238307989aec6124097f45de4362a5f16f108df8ec4855",
+        "graph": {
+          "digest": "sha256:f561710ae0ee08f1b5ca902d6174a0982c8ddba9785736ca840b156b320103b6",
+          "edges": [
+            {
+              "from": "subject:pdf-7313",
+              "id": "assertion:pdf-7313:oem_identifier",
+              "label": "supported_by_source",
+              "properties": {
+                "predicate": "oem_identifier",
+                "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                "source_id": "amd-69290-rev-1-00",
+                "value": "100-000000329"
+              },
+              "to": "source:amd-69290-rev-1-00"
+            }
+          ],
+          "nodes": [
+            {
+              "id": "source:amd-69290-rev-1-00",
+              "labels": [
+                "evidence_source"
+              ],
+              "properties": {
+                "bytes": 738352,
+                "digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+                "format": "opaque",
+                "id": "amd-69290-rev-1-00",
+                "path": "amd-export.pdf"
+              }
+            },
+            {
+              "id": "subject:pdf-7313",
+              "labels": [
+                "hardware_subject"
+              ],
+              "properties": {
+                "assertions": [
+                  {
+                    "predicate": "oem_identifier",
+                    "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                    "source_id": "amd-69290-rev-1-00",
+                    "value": "100-000000329"
+                  }
+                ],
+                "hardware_class": "cpu",
+                "id": "pdf-7313",
+                "introduced": null,
+                "manufacturer": "AMD",
+                "model": "7313"
+              }
+            }
+          ],
+          "owner": {
+            "artifact_digest": "sha256:bbde9a66804a2d5bb453f522663f55696d3ba658e5ef93c6ca78cee1b9b8e885",
+            "artifact_protocol": "symphony.shv.catalogue.v1",
+            "engine_id": "symphony-shv",
+            "engine_version": "0.3.0-dev"
+          },
+          "owner_artifact": {
+            "digest": "sha256:bbde9a66804a2d5bb453f522663f55696d3ba658e5ef93c6ca78cee1b9b8e885",
+            "mapping": [
+              {
+                "document": {
+                  "decoder_root": "/Users/Duncan/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pypdfium2_raw",
+                  "extraction": {
+                    "decoder": {
+                      "digest": "sha256:bbd84063a8d475c4b433056cce13451c65c2ef41e643cccbf22ba9dcc220a90d",
+                      "path": "libpdfium.dylib"
+                    },
+                    "digest": "sha256:541a34cec6e299b97bdc411db0841770a19f78fe877ce9610e828c2ad69f9b86",
+                    "documentary_lineages": 1,
+                    "namespace": "AMD.OPN",
+                    "namespace_equivalence": "not_asserted",
+                    "page_count": 16,
+                    "page_index": 12,
+                    "profile": "amd-69290-table8.v1",
+                    "protocol": "symphony.shv.pdf-extraction.v1",
+                    "rows": [
+                      {
+                        "model": "7763",
+                        "opn": "100-000000312",
+                        "source_metric_text": "1.0752"
+                      },
+                      {
+                        "model": "75F3",
+                        "opn": "100-000000313",
+                        "source_metric_text": "0.6144"
+                      },
+                      {
+                        "model": "74F3",
+                        "opn": "100-000000317",
+                        "source_metric_text": "0.4608"
+                      },
+                      {
+                        "model": "7663",
+                        "opn": "100-000000318",
+                        "source_metric_text": "0.9408"
+                      },
+                      {
+                        "model": "7453",
+                        "opn": "100-000000319",
+                        "source_metric_text": "0.4637"
+                      },
+                      {
+                        "model": "73F3",
+                        "opn": "100-000000321",
+                        "source_metric_text": "0.3072"
+                      },
+                      {
+                        "model": "7413",
+                        "opn": "100-000000323",
+                        "source_metric_text": "0.4147"
+                      },
+                      {
+                        "model": "7643",
+                        "opn": "100-000000326",
+                        "source_metric_text": "0.8294"
+                      },
+                      {
+                        "model": "72F3",
+                        "opn": "100-000000327",
+                        "source_metric_text": "0.1574"
+                      },
+                      {
+                        "model": "7313",
+                        "opn": "100-000000329",
+                        "source_metric_text": "0.2842"
+                      },
+                      {
+                        "model": "7513",
+                        "opn": "100-000000334",
+                        "source_metric_text": "0.5606"
+                      },
+                      {
+                        "model": "7713P",
+                        "opn": "100-000000337",
+                        "source_metric_text": "1.129"
+                      },
+                      {
+                        "model": "7343",
+                        "opn": "100-000000338",
+                        "source_metric_text": "0.2995"
+                      },
+                      {
+                        "model": "7313P",
+                        "opn": "100-000000339",
+                        "source_metric_text": "0.2842"
+                      },
+                      {
+                        "model": "7443",
+                        "opn": "100-000000340",
+                        "source_metric_text": "0.4608"
+                      },
+                      {
+                        "model": "7543P",
+                        "opn": "100-000000341",
+                        "source_metric_text": "0.5683"
+                      },
+                      {
+                        "model": "7443P",
+                        "opn": "100-000000342",
+                        "source_metric_text": "0.4608"
+                      },
+                      {
+                        "model": "7713",
+                        "opn": "100-000000344",
+                        "source_metric_text": "1.129"
+                      },
+                      {
+                        "model": "7543",
+                        "opn": "100-000000345",
+                        "source_metric_text": "0.5683"
+                      },
+                      {
+                        "model": "7773X",
+                        "opn": "100-000000504",
+                        "source_metric_text": "1.0752"
+                      },
+                      {
+                        "model": "7573X",
+                        "opn": "100-000000506",
+                        "source_metric_text": "0.553"
+                      },
+                      {
+                        "model": "7473X",
+                        "opn": "100-000000507",
+                        "source_metric_text": "0.4262"
+                      },
+                      {
+                        "model": "7373X",
+                        "opn": "100-000000508",
+                        "source_metric_text": "0.2918"
+                      },
+                      {
+                        "model": "7663P",
+                        "opn": "100-000001284",
+                        "source_metric_text": "0.9408"
+                      },
+                      {
+                        "model": "7643P",
+                        "opn": "100-000001285",
+                        "source_metric_text": "0.8294"
+                      },
+                      {
+                        "model": "7203",
+                        "opn": "100-000001286",
+                        "source_metric_text": "0.1306"
+                      },
+                      {
+                        "model": "7203P",
+                        "opn": "100-000001287",
+                        "source_metric_text": "0.1306"
+                      },
+                      {
+                        "model": "7303",
+                        "opn": "100-000001288",
+                        "source_metric_text": "0.2611"
+                      }
+                    ],
+                    "source": {
+                      "bytes": 738352,
+                      "digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+                      "id": "amd-69290-rev-1-00",
+                      "path": "amd-export.pdf"
+                    },
+                    "text": "Chapter 1 Adjusted Peak Performance (APP) 13\n69290 Rev. 1.00 April 2026 AMD EPYC\u2122 Processor Export Compliance Metrics (PUB)\n1.7 AMD EPYC 7003 Series, formerly codenamed \u201cMilan\u201d\nTable 8. EPYC 7003 Series Portfolio APP Values\nOPN Model\nNumber\nAPP \n(Weighted TFLOPS)\n100-000000312 7763 1.0752\n100-000000313 75F3 0.6144\n100-000000317 74F3 0.4608\n100-000000318 7663 0.9408\n100-000000319 7453 0.4637\n100-000000321 73F3 0.3072\n100-000000323 7413 0.4147\n100-000000326 7643 0.8294\n100-000000327 72F3 0.1574\n100-000000329 7313 0.2842\n100-000000334 7513 0.5606\n100-000000337 7713P 1.129\n100-000000338 7343 0.2995\n100-000000339 7313P 0.2842\n100-000000340 7443 0.4608\n100-000000341 7543P 0.5683\n100-000000342 7443P 0.4608\n100-000000344 7713 1.129\n100-000000345 7543 0.5683\n100-000000504 7773X 1.0752\n100-000000506 7573X 0.553\n100-000000507 7473X 0.4262\n100-000000508 7373X 0.2918\n100-000001284 7663P 0.9408\n100-000001285 7643P 0.8294\n100-000001286 7203 0.1306\n100-000001287 7203P 0.1306\n100-000001288 7303 0.2611\n[Public]",
+                    "text_digest": "sha256:8a14fe936ff92c0808cfe7124d1acbcd33c7437a4fec898d5c391a4eb2db046a"
+                  }
+                },
+                "fields": [
+                  {
+                    "label": "OPN",
+                    "next_label": "Model",
+                    "predicate": "oem_identifier",
+                    "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                    "value_type": "string"
+                  }
+                ],
+                "hardware_class": "cpu",
+                "heading_section": "table8",
+                "id": "pdf-7313",
+                "interpretation_profile": "pdf_opn.v1",
+                "manufacturer": "AMD",
+                "model": "7313",
+                "source_id": "amd-69290-rev-1-00"
+              }
+            ],
+            "protocol": "symphony.shv.catalogue.v1",
+            "sources": [
+              {
+                "bytes": 738352,
+                "digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+                "format": "opaque",
+                "id": "amd-69290-rev-1-00",
+                "path": "amd-export.pdf"
+              }
+            ],
+            "subjects": [
+              {
+                "assertions": [
+                  {
+                    "predicate": "oem_identifier",
+                    "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                    "source_id": "amd-69290-rev-1-00",
+                    "value": "100-000000329"
+                  }
+                ],
+                "hardware_class": "cpu",
+                "id": "pdf-7313",
+                "introduced": null,
+                "manufacturer": "AMD",
+                "model": "7313"
+              }
+            ]
+          },
+          "protocol": "symphony.graph.exchange.v1"
+        },
+        "mapping_version": "1",
+        "namespace": "shv-catalogue",
+        "protocol": "symphony.shv.graph-store-snapshot.v1",
+        "tops_id": "01993d63-b40d-7000-8000-000000000017"
+      }
+    }
+  },
+  {
+    "operation": "query",
+    "input": {
+      "tops_id": "01993d63-b40d-7000-8000-000000000017",
+      "namespace": "shv-catalogue",
+      "snapshot_digest": "sha256:cff58c9c5dc3b6db82238307989aec6124097f45de4362a5f16f108df8ec4855",
+      "kind": "nodes",
+      "filters": {},
+      "cursor": null,
+      "limit": 1
+    },
+    "result": {
+      "backend": "duckdb",
+      "counts": {
+        "edges": 1,
+        "nodes": 2
+      },
+      "digest": "sha256:42d3f8b851281e50dd3553e523e3f0e8dbbb54f4fd91454d89792f23552cf220",
+      "input": {
+        "cursor": null,
+        "filters": {},
+        "kind": "nodes",
+        "limit": 1,
+        "namespace": "shv-catalogue",
+        "snapshot_digest": "sha256:cff58c9c5dc3b6db82238307989aec6124097f45de4362a5f16f108df8ec4855",
+        "tops_id": "01993d63-b40d-7000-8000-000000000017"
+      },
+      "matched_count": 2,
+      "next_cursor": {
+        "after_key": "source:amd-69290-rev-1-00",
+        "query_digest": "sha256:3ddee192fe7485097cabfa76836d9c0d1eb8b321c0d6b8e107d6df9ea4941a8c"
+      },
+      "projection_digest": "sha256:f320b052925c54530917aaeb44158c37c18ca9d6237c14bf6f2fc626aaa00c60",
+      "protocol": "symphony.shv.graph-store-query.v1",
+      "rows": [
+        {
+          "key": "source:amd-69290-rev-1-00",
+          "value": {
+            "id": "source:amd-69290-rev-1-00",
+            "labels": [
+              "evidence_source"
+            ],
+            "properties": {
+              "bytes": 738352,
+              "digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+              "format": "opaque",
+              "id": "amd-69290-rev-1-00",
+              "path": "amd-export.pdf"
+            }
+          }
+        }
+      ],
+      "snapshot": {
+        "backend": "duckdb",
+        "connector": {
+          "EngineID": "symphony-shv-graph-duckdb-connector",
+          "ExecutableDigest": "sha256:c3774d2de68ad7b746532cf897bec26512500e55c0f6ae5720f57f6318471b39",
+          "ExecutablePath": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-17-store/libexec/symphony/shv-graph-duckdb-connector/0.1.0-dev/symphony-shv-graph-duckdb-connector",
+          "ModuleID": "shv-graph-duckdb-connector",
+          "Prefix": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-17-store",
+          "ReceiptDigest": "sha256:33394ee827c692bc20970aea27548e81e22e9da04acdc5b282b27592c7d9d481",
+          "ReceiptPath": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-17-store/share/symphony/receipts/shv-graph-duckdb-connector/0.1.0-dev/install-receipt.json",
+          "ReceiptProtocol": "symphony.knowledge.install-receipt.v2",
+          "Role": "shv-graph-duckdb-connector",
+          "Version": "0.1.0-dev"
+        },
+        "digest": "sha256:cff58c9c5dc3b6db82238307989aec6124097f45de4362a5f16f108df8ec4855",
+        "graph": {
+          "digest": "sha256:f561710ae0ee08f1b5ca902d6174a0982c8ddba9785736ca840b156b320103b6",
+          "edges": [
+            {
+              "from": "subject:pdf-7313",
+              "id": "assertion:pdf-7313:oem_identifier",
+              "label": "supported_by_source",
+              "properties": {
+                "predicate": "oem_identifier",
+                "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                "source_id": "amd-69290-rev-1-00",
+                "value": "100-000000329"
+              },
+              "to": "source:amd-69290-rev-1-00"
+            }
+          ],
+          "nodes": [
+            {
+              "id": "source:amd-69290-rev-1-00",
+              "labels": [
+                "evidence_source"
+              ],
+              "properties": {
+                "bytes": 738352,
+                "digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+                "format": "opaque",
+                "id": "amd-69290-rev-1-00",
+                "path": "amd-export.pdf"
+              }
+            },
+            {
+              "id": "subject:pdf-7313",
+              "labels": [
+                "hardware_subject"
+              ],
+              "properties": {
+                "assertions": [
+                  {
+                    "predicate": "oem_identifier",
+                    "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                    "source_id": "amd-69290-rev-1-00",
+                    "value": "100-000000329"
+                  }
+                ],
+                "hardware_class": "cpu",
+                "id": "pdf-7313",
+                "introduced": null,
+                "manufacturer": "AMD",
+                "model": "7313"
+              }
+            }
+          ],
+          "owner": {
+            "artifact_digest": "sha256:bbde9a66804a2d5bb453f522663f55696d3ba658e5ef93c6ca78cee1b9b8e885",
+            "artifact_protocol": "symphony.shv.catalogue.v1",
+            "engine_id": "symphony-shv",
+            "engine_version": "0.3.0-dev"
+          },
+          "owner_artifact": {
+            "digest": "sha256:bbde9a66804a2d5bb453f522663f55696d3ba658e5ef93c6ca78cee1b9b8e885",
+            "mapping": [
+              {
+                "document": {
+                  "decoder_root": "/Users/Duncan/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/site-packages/pypdfium2_raw",
+                  "extraction": {
+                    "decoder": {
+                      "digest": "sha256:bbd84063a8d475c4b433056cce13451c65c2ef41e643cccbf22ba9dcc220a90d",
+                      "path": "libpdfium.dylib"
+                    },
+                    "digest": "sha256:541a34cec6e299b97bdc411db0841770a19f78fe877ce9610e828c2ad69f9b86",
+                    "documentary_lineages": 1,
+                    "namespace": "AMD.OPN",
+                    "namespace_equivalence": "not_asserted",
+                    "page_count": 16,
+                    "page_index": 12,
+                    "profile": "amd-69290-table8.v1",
+                    "protocol": "symphony.shv.pdf-extraction.v1",
+                    "rows": [
+                      {
+                        "model": "7763",
+                        "opn": "100-000000312",
+                        "source_metric_text": "1.0752"
+                      },
+                      {
+                        "model": "75F3",
+                        "opn": "100-000000313",
+                        "source_metric_text": "0.6144"
+                      },
+                      {
+                        "model": "74F3",
+                        "opn": "100-000000317",
+                        "source_metric_text": "0.4608"
+                      },
+                      {
+                        "model": "7663",
+                        "opn": "100-000000318",
+                        "source_metric_text": "0.9408"
+                      },
+                      {
+                        "model": "7453",
+                        "opn": "100-000000319",
+                        "source_metric_text": "0.4637"
+                      },
+                      {
+                        "model": "73F3",
+                        "opn": "100-000000321",
+                        "source_metric_text": "0.3072"
+                      },
+                      {
+                        "model": "7413",
+                        "opn": "100-000000323",
+                        "source_metric_text": "0.4147"
+                      },
+                      {
+                        "model": "7643",
+                        "opn": "100-000000326",
+                        "source_metric_text": "0.8294"
+                      },
+                      {
+                        "model": "72F3",
+                        "opn": "100-000000327",
+                        "source_metric_text": "0.1574"
+                      },
+                      {
+                        "model": "7313",
+                        "opn": "100-000000329",
+                        "source_metric_text": "0.2842"
+                      },
+                      {
+                        "model": "7513",
+                        "opn": "100-000000334",
+                        "source_metric_text": "0.5606"
+                      },
+                      {
+                        "model": "7713P",
+                        "opn": "100-000000337",
+                        "source_metric_text": "1.129"
+                      },
+                      {
+                        "model": "7343",
+                        "opn": "100-000000338",
+                        "source_metric_text": "0.2995"
+                      },
+                      {
+                        "model": "7313P",
+                        "opn": "100-000000339",
+                        "source_metric_text": "0.2842"
+                      },
+                      {
+                        "model": "7443",
+                        "opn": "100-000000340",
+                        "source_metric_text": "0.4608"
+                      },
+                      {
+                        "model": "7543P",
+                        "opn": "100-000000341",
+                        "source_metric_text": "0.5683"
+                      },
+                      {
+                        "model": "7443P",
+                        "opn": "100-000000342",
+                        "source_metric_text": "0.4608"
+                      },
+                      {
+                        "model": "7713",
+                        "opn": "100-000000344",
+                        "source_metric_text": "1.129"
+                      },
+                      {
+                        "model": "7543",
+                        "opn": "100-000000345",
+                        "source_metric_text": "0.5683"
+                      },
+                      {
+                        "model": "7773X",
+                        "opn": "100-000000504",
+                        "source_metric_text": "1.0752"
+                      },
+                      {
+                        "model": "7573X",
+                        "opn": "100-000000506",
+                        "source_metric_text": "0.553"
+                      },
+                      {
+                        "model": "7473X",
+                        "opn": "100-000000507",
+                        "source_metric_text": "0.4262"
+                      },
+                      {
+                        "model": "7373X",
+                        "opn": "100-000000508",
+                        "source_metric_text": "0.2918"
+                      },
+                      {
+                        "model": "7663P",
+                        "opn": "100-000001284",
+                        "source_metric_text": "0.9408"
+                      },
+                      {
+                        "model": "7643P",
+                        "opn": "100-000001285",
+                        "source_metric_text": "0.8294"
+                      },
+                      {
+                        "model": "7203",
+                        "opn": "100-000001286",
+                        "source_metric_text": "0.1306"
+                      },
+                      {
+                        "model": "7203P",
+                        "opn": "100-000001287",
+                        "source_metric_text": "0.1306"
+                      },
+                      {
+                        "model": "7303",
+                        "opn": "100-000001288",
+                        "source_metric_text": "0.2611"
+                      }
+                    ],
+                    "source": {
+                      "bytes": 738352,
+                      "digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+                      "id": "amd-69290-rev-1-00",
+                      "path": "amd-export.pdf"
+                    },
+                    "text": "Chapter 1 Adjusted Peak Performance (APP) 13\n69290 Rev. 1.00 April 2026 AMD EPYC\u2122 Processor Export Compliance Metrics (PUB)\n1.7 AMD EPYC 7003 Series, formerly codenamed \u201cMilan\u201d\nTable 8. EPYC 7003 Series Portfolio APP Values\nOPN Model\nNumber\nAPP \n(Weighted TFLOPS)\n100-000000312 7763 1.0752\n100-000000313 75F3 0.6144\n100-000000317 74F3 0.4608\n100-000000318 7663 0.9408\n100-000000319 7453 0.4637\n100-000000321 73F3 0.3072\n100-000000323 7413 0.4147\n100-000000326 7643 0.8294\n100-000000327 72F3 0.1574\n100-000000329 7313 0.2842\n100-000000334 7513 0.5606\n100-000000337 7713P 1.129\n100-000000338 7343 0.2995\n100-000000339 7313P 0.2842\n100-000000340 7443 0.4608\n100-000000341 7543P 0.5683\n100-000000342 7443P 0.4608\n100-000000344 7713 1.129\n100-000000345 7543 0.5683\n100-000000504 7773X 1.0752\n100-000000506 7573X 0.553\n100-000000507 7473X 0.4262\n100-000000508 7373X 0.2918\n100-000001284 7663P 0.9408\n100-000001285 7643P 0.8294\n100-000001286 7203 0.1306\n100-000001287 7203P 0.1306\n100-000001288 7303 0.2611\n[Public]",
+                    "text_digest": "sha256:8a14fe936ff92c0808cfe7124d1acbcd33c7437a4fec898d5c391a4eb2db046a"
+                  }
+                },
+                "fields": [
+                  {
+                    "label": "OPN",
+                    "next_label": "Model",
+                    "predicate": "oem_identifier",
+                    "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                    "value_type": "string"
+                  }
+                ],
+                "hardware_class": "cpu",
+                "heading_section": "table8",
+                "id": "pdf-7313",
+                "interpretation_profile": "pdf_opn.v1",
+                "manufacturer": "AMD",
+                "model": "7313",
+                "source_id": "amd-69290-rev-1-00"
+              }
+            ],
+            "protocol": "symphony.shv.catalogue.v1",
+            "sources": [
+              {
+                "bytes": 738352,
+                "digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7",
+                "format": "opaque",
+                "id": "amd-69290-rev-1-00",
+                "path": "amd-export.pdf"
+              }
+            ],
+            "subjects": [
+              {
+                "assertions": [
+                  {
+                    "predicate": "oem_identifier",
+                    "qualifier": "issuer=AMD;namespace=opn;profile=1",
+                    "source_id": "amd-69290-rev-1-00",
+                    "value": "100-000000329"
+                  }
+                ],
+                "hardware_class": "cpu",
+                "id": "pdf-7313",
+                "introduced": null,
+                "manufacturer": "AMD",
+                "model": "7313"
+              }
+            ]
+          },
+          "protocol": "symphony.graph.exchange.v1"
+        },
+        "mapping_version": "1",
+        "namespace": "shv-catalogue",
+        "protocol": "symphony.shv.graph-store-snapshot.v1",
+        "tops_id": "01993d63-b40d-7000-8000-000000000017"
+      }
+    }
+  },
+  {
+    "operation": "inspect",
+    "input": {},
+    "result": {
+      "canonical_apply_enabled": false,
+      "contract_versions": [
+        "knowledge/SPEC.md@v1",
+        "shv-graph-duckdb-connector/SPEC.md@v1",
+        "shv-graph-duckdb-connector/DUCKDB-PROVENANCE.json@1.5.5"
+      ],
+      "descriptor_digest": "sha256:09c8a0d3cafa97f7ca7ae5d422c06af318f61011e3c686b808e6866065c11bfc",
+      "engine_id": "symphony-shv-graph-duckdb-connector",
+      "engine_version": "0.1.0-dev",
+      "format_version": 2,
+      "language": "C++26",
+      "limits": {
+        "deadline_ahead_ms": 300000,
+        "json_depth": 64,
+        "json_values": 32768,
+        "path_bytes": 4096,
+        "request_bytes": 1048576,
+        "response_bytes": 4194304,
+        "snapshot_file_bytes": 4194304,
+        "snapshot_files": 1024
+      },
+      "module_id": "shv-graph-duckdb-connector",
+      "network_listener": false,
+      "operations": [
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "inspect"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.inspect",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-inspect-input.v1",
+          "mutability": "read_only",
+          "operation_name": "inspect",
+          "output_protocol": "symphony.knowledge.engine-descriptor.v2",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.prepare",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-prepare-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "prepare",
+          "output_protocol": "symphony.shv.graph-store-status.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke",
+            "recover"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.commit",
+          "expected_state_required": true,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-commit-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "commit",
+          "output_protocol": "symphony.shv.graph-store-status.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "inspect",
+            "recover"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.status",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-status-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "status",
+          "output_protocol": "symphony.shv.graph-store-status.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.query",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-query-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "query",
+          "output_protocol": "symphony.shv.graph-store-query.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.export",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-export-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "export",
+          "output_protocol": "symphony.shv.graph-store-export.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        }
+      ],
+      "process_protocols": [
+        "symphony.knowledge.engine-process.v1"
+      ],
+      "protocol": "symphony.knowledge.engine-descriptor.v2",
+      "session_mutation_enabled": false,
+      "supported_scopes": [
+        "tops"
+      ],
+      "thermal_path": "freezing",
+      "vector_id": "shv"
+    }
+  }
+]

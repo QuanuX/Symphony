@@ -1792,6 +1792,8 @@
           "command_ids": [
             "qxcmd:symphony:shv.dossier.schema",
             "qxcmd:symphony:shv.dossier.template",
+            "qxcmd:symphony:shv.graph.store.schema",
+            "qxcmd:symphony:shv.graph.store.template",
             "qxcmd:symphony:shv.inventory.schema",
             "qxcmd:symphony:shv.inventory.template",
             "qxcmd:symphony:shv.materialization.relocation.schema",
@@ -1828,6 +1830,8 @@
         {
           "command_ids": [
             "qxcmd:symphony:shv.graph.adapter.inspect",
+            "qxcmd:symphony:shv.graph.store.inspect",
+            "qxcmd:symphony:shv.graph.store.status",
             "qxcmd:symphony:shv.inspect",
             "qxcmd:symphony:shv.materialization.status",
             "qxcmd:symphony:shv.partition.inspect",
@@ -1858,6 +1862,8 @@
             "qxcmd:symphony:shv.evaluate",
             "qxcmd:symphony:shv.graph.adapter.roundtrip",
             "qxcmd:symphony:shv.graph.project",
+            "qxcmd:symphony:shv.graph.store.commit",
+            "qxcmd:symphony:shv.graph.store.prepare",
             "qxcmd:symphony:shv.graph.validate",
             "qxcmd:symphony:shv.inventory.compare",
             "qxcmd:symphony:shv.inventory.run",
@@ -1916,6 +1922,8 @@
           "command_ids": [
             "qxcmd:symphony:shv.catalogue.query",
             "qxcmd:symphony:shv.graph.adapter.query",
+            "qxcmd:symphony:shv.graph.store.export",
+            "qxcmd:symphony:shv.graph.store.query",
             "qxcmd:symphony:shv.partition.query"
           ],
           "delivery": "composed",
@@ -5972,6 +5980,108 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:shv.graph.store.schema",
+            "qxcmd:symphony:shv.graph.store.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-graph-duckdb-connector/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.graph.store.inspect",
+            "qxcmd:symphony:shv.graph.store.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:shv.graph-store.inspect",
+            "engop:symphony:shv.graph-store.status"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-graph-duckdb-connector/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.graph.store.commit",
+            "qxcmd:symphony:shv.graph.store.prepare"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:shv.graph-store.commit",
+            "engop:symphony:shv.graph-store.prepare"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-graph-duckdb-connector/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.graph.store.export",
+            "qxcmd:symphony:shv.graph.store.query"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:shv.graph-store.export",
+            "engop:symphony:shv.graph-store.query"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-graph-duckdb-connector/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.graph.store.commit",
+            "qxcmd:symphony:shv.graph.store.status"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:shv.graph-store.commit",
+            "engop:symphony:shv.graph-store.status"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-graph-duckdb-connector/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "recover",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:shv-graph-duckdb-connector"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:shv.partition.schema",
             "qxcmd:symphony:shv.partition.template"
           ],
@@ -7484,9 +7594,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:087d54cdea28a0fd8e593fd29d8ef8e23a2fc0adebc0ba249cc24e570dc90686",
+  "profile_digest": "sha256:d716958396b1675057fa0254e02d60ec44acc692d3f8ee6e0b07309bb931db68",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 107,
-  "ssfv_registry_digest": "sha256:9f07f832f39ffb674f1fdc40d0009d6593c0d5e5aadc7727d7c1a0243298eea5"
+  "registered_feature_count": 108,
+  "ssfv_registry_digest": "sha256:2213d7452b2244cb5d93c3ca7614a2d7352da788dcef70bc51f0d2dab4aeb76a"
 }

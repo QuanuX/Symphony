@@ -1,0 +1,52 @@
+{
+  "inspect": {
+    "status": "unanswered_template_not_validated_input",
+    "input": {}
+  },
+  "prepare": {
+    "status": "unanswered_template_not_validated_input",
+    "input": {
+      "tops_id": null,
+      "namespace": null,
+      "operation_id": null,
+      "graph": null
+    }
+  },
+  "commit": {
+    "status": "unanswered_template_not_validated_input",
+    "input": {
+      "tops_id": null,
+      "namespace": null,
+      "operation_id": null,
+      "expected_intent_digest": null
+    }
+  },
+  "status": {
+    "status": "unanswered_template_not_validated_input",
+    "input": {
+      "tops_id": null,
+      "namespace": null,
+      "operation_id": null
+    }
+  },
+  "query": {
+    "status": "unanswered_template_not_validated_input",
+    "input": {
+      "tops_id": null,
+      "namespace": null,
+      "snapshot_digest": null,
+      "kind": null,
+      "filters": null,
+      "cursor": null,
+      "limit": null
+    }
+  },
+  "export": {
+    "status": "unanswered_template_not_validated_input",
+    "input": {
+      "tops_id": null,
+      "namespace": null,
+      "snapshot_digest": null
+    }
+  }
+}

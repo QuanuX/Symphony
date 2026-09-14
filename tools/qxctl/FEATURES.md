@@ -951,7 +951,11 @@
         "tools/qxctl/cmd/qxctl/shv_resolution_test.go",
         "tools/qxctl/cmd/qxctl/shv_relocation.go",
         "tools/qxctl/cmd/qxctl/shv_relocation.schema.json",
-        "tools/qxctl/cmd/qxctl/shv_relocation_test.go"
+        "tools/qxctl/cmd/qxctl/shv_relocation_test.go",
+        "tools/qxctl/cmd/qxctl/shv_store.go",
+        "tools/qxctl/internal/knowledgeengine/shv_store.go",
+        "tools/qxctl/internal/knowledgeengine/shv_store_validation.go",
+        "tools/qxctl/internal/knowledgeengine/shv_store_descriptor.go"
       ],
       "kind": "feature",
       "non_claims": [

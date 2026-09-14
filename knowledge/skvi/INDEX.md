@@ -11620,3 +11620,108 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - relationships:
   - `knowledge/shv/PDF-ADAPTER.md`
 - notes: `No inferred namespace equivalence or prepopulated hardware universe.`
+
+- path: `knowledge/shv/GRAPH-STORE.md`
+- title: `SHV durable graph storage GRAPH-STORE`
+- surface_type: `reference document`
+- truth_role: `owner-declared structural persistence contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-owned immutable graph storage`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `canonical catalogue head publication`
+- relationships:
+  - `modules/shv-graph-adapter/SPEC.md`
+- notes: `Storage does not authenticate or reinterpret hardware evidence.`
+
+- path: `modules/shv-graph-duckdb-connector/INTENT.md`
+- title: `SHV durable graph storage INTENT`
+- surface_type: `reference document`
+- truth_role: `owner-declared structural persistence contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-owned immutable graph storage`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `canonical catalogue head publication`
+- relationships:
+  - `modules/shv-graph-adapter/SPEC.md`
+- notes: `Storage does not authenticate or reinterpret hardware evidence.`
+
+- path: `modules/shv-graph-duckdb-connector/MANIFEST.md`
+- title: `SHV durable graph storage MANIFEST`
+- surface_type: `reference document`
+- truth_role: `owner-declared structural persistence contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-owned immutable graph storage`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `canonical catalogue head publication`
+- relationships:
+  - `modules/shv-graph-adapter/SPEC.md`
+- notes: `Storage does not authenticate or reinterpret hardware evidence.`
+
+- path: `modules/shv-graph-duckdb-connector/SPEC.md`
+- title: `SHV durable graph storage SPEC`
+- surface_type: `reference document`
+- truth_role: `owner-declared structural persistence contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-owned immutable graph storage`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `canonical catalogue head publication`
+- relationships:
+  - `modules/shv-graph-adapter/SPEC.md`
+- notes: `Storage does not authenticate or reinterpret hardware evidence.`
+
+- path: `modules/shv-graph-duckdb-connector/SKILL.md`
+- title: `SHV durable graph storage SKILL`
+- surface_type: `reference document`
+- truth_role: `owner-declared structural persistence contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-owned immutable graph storage`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `canonical catalogue head publication`
+- relationships:
+  - `modules/shv-graph-adapter/SPEC.md`
+- notes: `Storage does not authenticate or reinterpret hardware evidence.`
+
+- path: `modules/shv-graph-duckdb-connector/INSTALL.md`
+- title: `SHV durable graph storage INSTALL`
+- surface_type: `reference document`
+- truth_role: `owner-declared structural persistence contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-owned immutable graph storage`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `canonical catalogue head publication`
+- relationships:
+  - `modules/shv-graph-adapter/SPEC.md`
+- notes: `Storage does not authenticate or reinterpret hardware evidence.`
+
+- path: `modules/shv-graph-duckdb-connector/FEATURES.md`
+- title: `SHV durable graph storage FEATURES`
+- surface_type: `reference document`
+- truth_role: `owner-declared structural persistence contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-owned immutable graph storage`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `canonical catalogue head publication`
+- relationships:
+  - `modules/shv-graph-adapter/SPEC.md`
+- notes: `Storage does not authenticate or reinterpret hardware evidence.`
