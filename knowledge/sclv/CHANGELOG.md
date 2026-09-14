@@ -11579,3 +11579,89 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/knowledgeengine/shv_pdf_descriptor.go`
   - `tools/qxctl/internal/knowledgeengine/shv_pdf_test.go`
   - `tools/qxctl/internal/knowledgeengine/shv_pdf_validation.go`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-PDF-GRAPH`
+- record_version: `3`
+- title: `Project and replay qualified PDF documentary assertion graphs`
+- status: `canonical`
+- change_started_at: `2026-09-14T15:18:47Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV PDF graph continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-pdf-graph-continuation.md`
+- skvi_references:
+  - `knowledge/shv/PDF-ADAPTER.md`
+  - `modules/shv-pdf-adapter/SPEC.md`
+- change_summary: |
+    Adds PDF-owned qualified assertion graphs and original-source validation before and after generic adapter exchange.
+- relationship_changes: |
+    PDF adapter remains the source interpretation owner; generic graph transport remains structural. Existing kernel catalogue profiles are unchanged.
+- doctrine_changes: |
+    Original lineage and AMD.OPN namespace are retained; no inferred OPN/tray equivalence.
+- compatibility_consequences: |
+    PDF adapter 0.2.0-dev adds graph operations; qxctl retains explicit 0.1.0 selection and now has 342 commands.
+- publication_consequences: |
+    Local extraction and replay only; no catalogue activation or remote publication.
+- projection_consequences: |
+    Qualified OPN assertions carry original-source and derivation citations in the native graph. Registry and administration profile include all new operations.
+- evidence:
+  - `../shv-16/evidence/ACCEPTANCE.json records 22 checks, 14 expected rejections and four schemas.`
+  - `../shv-16/evidence/FOCUSED_TESTS.json records targeted native and affected Go validation.`
+  - `../shv-16/evidence/SOURCE_BUILD_PARITY.json binds exact binaries and source.`
+  - `../shv-16/MANIFEST.json seals the evidence.`
+- non_authorizations:
+  - `Canonical catalogue publication, automatic acquisition, source alias inference or hardware changes.`
+  - `Remote publication, deployment, engine substitution or original archive edits.`
+- notes: |
+    Graph integration is implemented. Kernel catalogue ingestion and namespace equivalence remain separate. No remote merge or publication is claimed.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T15:26:28Z`
+- recorded_at: `2026-09-14T15:27:39Z`
+- revision_value: `f95a7d391bb0d63ede8a7ceb9d438b28eaa343aa`
+- tree_digest: `sha256:ffe4301492aa5417bf7d14fc16d1f9fad5cec3aee5be0412cbf3977461e1f1ab`
+- ratification_evidence_digest: `sha256:83e7beda02074bacea74a71342737d7bad810f584a0060c5010cc836f54af725`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/shv/MANIFEST.md`
+  - `knowledge/shv/PDF-ADAPTER.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/shv-pdf-adapter/CMakeLists.txt`
+  - `modules/shv-pdf-adapter/FEATURES.md`
+  - `modules/shv-pdf-adapter/INSTALL.md`
+  - `modules/shv-pdf-adapter/INTENT.md`
+  - `modules/shv-pdf-adapter/MANIFEST.md`
+  - `modules/shv-pdf-adapter/SKILL.md`
+  - `modules/shv-pdf-adapter/SPEC.md`
+  - `modules/shv-pdf-adapter/cmake/uninstall.cmake.in`
+  - `modules/shv-pdf-adapter/schemas/v1/pdf.schema.json`
+  - `modules/shv-pdf-adapter/schemas/v1/pdf.templates.json`
+  - `modules/shv-pdf-adapter/src/descriptor.cpp`
+  - `modules/shv-pdf-adapter/src/graph.cpp`
+  - `modules/shv-pdf-adapter/src/pdf.cpp`
+  - `modules/shv-pdf-adapter/src/pdf.hpp`
+  - `modules/shv-pdf-adapter/tests/pdf_test.cpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv_pdf.go`
+  - `tools/qxctl/cmd/qxctl/shv_pdf_graph.go`
+  - `tools/qxctl/cmd/qxctl/shv_pdf_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_pdf.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_pdf_descriptor.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_pdf_graph.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_pdf_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_pdf_validation.go`
