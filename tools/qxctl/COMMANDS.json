@@ -10924,6 +10924,54 @@
     {
       "aliases": [],
       "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-source.capture.import",
+        "engop:symphony:shv-source.graph.project",
+        "engop:symphony:shv.catalogue.build",
+        "engop:symphony:shv.coverage.plan",
+        "engop:symphony:shv.evaluate",
+        "engop:symphony:shv.graph.project"
+      ],
+      "command_id": "qxcmd:symphony:shv.refresh.compare",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-source-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl shv refresh compare [--input VALUE] [--json]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.qxctl.shv-refresh-comparison-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-refresh-comparison.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-refresh-comparison.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
       "backend_operation_ids": [],
       "command_id": "qxcmd:symphony:shv.refresh.schema",
       "deprecated_in": null,
@@ -10964,7 +11012,7 @@
           "interaction": "discover"
         }
       ],
-      "grammar": "qxctl shv refresh template [--json] [--prefix VALUE] [--source-prefix VALUE] [--source-version VALUE] [--version VALUE]",
+      "grammar": "qxctl shv refresh template [--json] [--operation VALUE] [--prefix VALUE] [--source-prefix VALUE] [--source-version VALUE] [--version VALUE]",
       "infrastructure_purpose": null,
       "input_protocols": [],
       "introduced_in": "0.1.0-dev",
@@ -14486,6 +14534,6 @@
   "format_version": 1,
   "protocol": "symphony.qxctl.command-registry.v1",
   "receipt_digest": null,
-  "registry_digest": "sha256:a0f635271a896ac7c0f876d4a54193b5e2cd17acff07fa4026e18ad4bb932fe1",
+  "registry_digest": "sha256:6ff6483f5e0bf317f50ba27fb1b2c8fef123cbb780e9d30491c99aee4d331d72",
   "registry_kind": "expected"
 }

@@ -19,10 +19,10 @@ const shvRefreshProtocol = "symphony.qxctl.shv-refresh-bundle.v1"
 //go:embed shv_refresh.schema.json
 var shvRefreshSchema json.RawMessage
 
-type shvRefreshOptions struct{ sourcePrefix, sourceVersion, prefix, version, stateRoot, topsID, sourceID, sourceRoot, input string }
+type shvRefreshOptions struct{ sourcePrefix, sourceVersion, prefix, version, stateRoot, topsID, sourceID, sourceRoot, input, templateOperation string }
 
 func newSHVRefreshCommand() *cobra.Command {
-	root := structural("refresh", fmt.Errorf("refresh requires build, verify, schema or template"))
+	root := structural("refresh", fmt.Errorf("refresh requires build, verify, compare, schema or template"))
 	for _, op := range []string{"build", "verify", "schema", "template"} {
 		o := shvRefreshOptions{}
 		c := &cobra.Command{Use: op, Short: "Materialize or replay evidence under an exact protected source revision", Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error { return runSHVRefresh(op, o) }}
@@ -41,6 +41,9 @@ func newSHVRefreshCommand() *cobra.Command {
 				c.Flags().StringVar(f.value, f.name, "", "explicit source selection or retained input")
 				_ = c.MarkFlagRequired(f.name)
 			}
+		}
+		if op == "template" {
+			c.Flags().StringVar(&o.templateOperation, "operation", "build", "build or compare unanswered template")
 		}
 		c.Flags().Bool("json", false, "emit complete structured evidence")
 		c.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
@@ -68,6 +71,7 @@ func newSHVRefreshCommand() *cobra.Command {
 		commandregistry.Attach(c, s)
 		root.AddCommand(c)
 	}
+	root.AddCommand(newSHVRefreshCompareCommand())
 	return root
 }
 
@@ -97,6 +101,13 @@ func refreshEqual(a, b any) bool {
 func refreshString(raw json.RawMessage) string { var v string; _ = json.Unmarshal(raw, &v); return v }
 
 func runSHVRefresh(op string, o shvRefreshOptions) error {
+	return emitSHVRefresh(op, o, nil, printIndentedJSONRaw)
+}
+func printIndentedJSONRaw(raw json.RawMessage) error { return printIndentedJSON(raw) }
+
+// supplied is already bounded and strictly parsed by the composing caller. It
+// prevents rereading a mutable bundle path between selection and verification.
+func emitSHVRefresh(op string, o shvRefreshOptions, supplied json.RawMessage, emit func(json.RawMessage) error) error {
 	sourceInstall, e := knowledgeengine.InspectSHVSource(o.sourcePrefix, o.sourceVersion)
 	if e != nil {
 		return e
@@ -112,20 +123,28 @@ func runSHVRefresh(op string, o shvRefreshOptions) error {
 			result["origin"] = "qxctl_embedded"
 		} else {
 			result["template"] = map[string]any{"expected_source_digest": nil, "captures": nil, "mapping": nil, "profile": nil, "subject_ids": nil, "requirements": nil}
+			if o.templateOperation == "compare" {
+				result["template"] = comparisonTemplate()
+			} else if o.templateOperation != "" && o.templateOperation != "build" {
+				return fmt.Errorf("template operation must be build or compare")
+			}
 			result["status"] = "unanswered_template_not_validated_input"
 		}
 		raw, e := sealSHVActivation(result)
 		if e != nil {
 			return e
 		}
-		return printIndentedJSON(raw)
+		return emit(raw)
 	}
 	if op != "build" && op != "verify" {
 		return fmt.Errorf("unknown refresh operation")
 	}
-	raw, e := knowledgeengine.ReadPayload(o.input)
-	if e != nil {
-		return e
+	raw := supplied
+	if raw == nil {
+		raw, e = knowledgeengine.ReadPayload(o.input)
+		if e != nil {
+			return e
+		}
 	}
 	if e = knowledgeengine.ValidateSCVBundleText(raw); e != nil {
 		return e
@@ -217,7 +236,7 @@ func runSHVRefresh(op string, o shvRefreshOptions) error {
 	if e != nil {
 		return e
 	}
-	return printIndentedJSON(output)
+	return emit(output)
 }
 
 func buildSHVRefresh(o shvRefreshOptions, source, request json.RawMessage, in map[string]json.RawMessage, si, ki knowledgeengine.Installation) (json.RawMessage, error) {

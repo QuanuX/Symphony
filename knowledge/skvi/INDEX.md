@@ -11312,3 +11312,18 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
   - `knowledge/shv/SOURCES.md`
   - `knowledge/shv/KERNEL.md`
 - notes: `Replayable materialization, not durable catalogue publication or publisher authentication.`
+
+- path: `knowledge/shv/REFRESH-COMPARISON.md`
+- title: `Verified SHV refresh comparison`
+- surface_type: `reference document`
+- truth_role: `owner-declared structural comparison of verified SHV artifacts`
+- owner: `qxctl maintainers`
+- status: `canonical`
+- scope: `bounded CLI composition after exact native replay`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `partition planning`
+- relationships:
+  - `knowledge/shv/REFRESH.md`
+- notes: `Dependency differences do not establish causality or hardware compatibility.`

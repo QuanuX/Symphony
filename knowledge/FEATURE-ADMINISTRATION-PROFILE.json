@@ -1841,6 +1841,7 @@
             "qxcmd:symphony:shv.graph.project",
             "qxcmd:symphony:shv.graph.validate",
             "qxcmd:symphony:shv.refresh.build",
+            "qxcmd:symphony:shv.refresh.compare",
             "qxcmd:symphony:shv.refresh.verify",
             "qxcmd:symphony:shv.source.capture.compare",
             "qxcmd:symphony:shv.source.capture.import",
@@ -5806,6 +5807,7 @@
             "qxcmd:symphony:shv.graph.project",
             "qxcmd:symphony:shv.graph.validate",
             "qxcmd:symphony:shv.refresh.build",
+            "qxcmd:symphony:shv.refresh.compare",
             "qxcmd:symphony:shv.refresh.verify"
           ],
           "delivery": "composed",
@@ -5953,6 +5955,7 @@
         {
           "command_ids": [
             "qxcmd:symphony:shv.refresh.build",
+            "qxcmd:symphony:shv.refresh.compare",
             "qxcmd:symphony:shv.refresh.verify",
             "qxcmd:symphony:shv.source.capture.compare",
             "qxcmd:symphony:shv.source.capture.import",
@@ -7256,9 +7259,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:0152ac362868234ead1b69fe29eb74ee45efa396f1f287a948daaaca536446cd",
+  "profile_digest": "sha256:92c1f6d9fb40de3516c52f448067bd8d00aca8b3d706dc78e66d0086598bd406",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 105,
-  "ssfv_registry_digest": "sha256:ba90c23efab61cde2de60db695958144b96174a700587311f102a735dbe72c5a"
+  "ssfv_registry_digest": "sha256:c35fa2f66b67ae2aedc2eabf0ee5e42275e4a99773768412e3f338035ea169f1"
 }

@@ -13,3 +13,7 @@ Verify takes an exact bundle, requires its source revision in the selected prote
 This is one-source bounded materialization and historical replay. Cross-source aggregation, comparing successive materializations, durable catalogue heads, resumable partitions and automated acquisition remain subsequent contracts. Request/profile/requirements identities remain individually present, allowing later change classification without attributing a mapping change to a vendor.
 
 The CLI-owned embedded schema exposes Request, Bundle, Verification, Schema and Template definitions. Native schemas are copied with scoped references; independently selected source 0.1.0-dev and kernel 0.1.0-dev/0.2.0-dev enforce their exact semantics. No native version substitution occurs.
+
+## Verified comparison
+
+`REFRESH-COMPARISON.md` adds exact structural comparison after native replay of both bundles. This supersedes the earlier deferred comparison status above. Partitioning, durable publication and causal inference remain unimplemented.

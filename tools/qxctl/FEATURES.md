@@ -915,7 +915,9 @@
         "tools/qxctl/cmd/qxctl/shv_refresh.go",
         "tools/qxctl/cmd/qxctl/shv_refresh_test.go",
         "tools/qxctl/cmd/qxctl/shv_refresh.schema.json",
-        "tools/qxctl/scripts/build_shv_refresh_schema.py"
+        "tools/qxctl/scripts/build_shv_refresh_schema.py",
+        "tools/qxctl/cmd/qxctl/shv_refresh_compare.go",
+        "tools/qxctl/cmd/qxctl/shv_refresh_compare_test.go"
       ],
       "kind": "feature",
       "non_claims": [

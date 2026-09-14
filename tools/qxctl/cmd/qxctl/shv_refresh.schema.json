@@ -3233,36 +3233,413 @@
           "const": "unanswered_template_not_validated_input"
         },
         "template": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": [
-            "expected_source_digest",
-            "captures",
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "expected_source_digest",
+                "captures",
+                "mapping",
+                "profile",
+                "subject_ids",
+                "requirements"
+              ],
+              "properties": {
+                "expected_source_digest": {
+                  "type": "null"
+                },
+                "captures": {
+                  "type": "null"
+                },
+                "mapping": {
+                  "type": "null"
+                },
+                "profile": {
+                  "type": "null"
+                },
+                "subject_ids": {
+                  "type": "null"
+                },
+                "requirements": {
+                  "type": "null"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "previous",
+                "current"
+              ],
+              "properties": {
+                "previous": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "bundle_path",
+                    "source_root",
+                    "state_root",
+                    "tops_id",
+                    "source_id",
+                    "source_prefix",
+                    "source_version",
+                    "kernel_prefix",
+                    "kernel_version"
+                  ],
+                  "properties": {
+                    "bundle_path": {
+                      "type": "null"
+                    },
+                    "source_root": {
+                      "type": "null"
+                    },
+                    "state_root": {
+                      "type": "null"
+                    },
+                    "tops_id": {
+                      "type": "null"
+                    },
+                    "source_id": {
+                      "type": "null"
+                    },
+                    "source_prefix": {
+                      "type": "null"
+                    },
+                    "source_version": {
+                      "type": "null"
+                    },
+                    "kernel_prefix": {
+                      "type": "null"
+                    },
+                    "kernel_version": {
+                      "type": "null"
+                    }
+                  }
+                },
+                "current": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "bundle_path",
+                    "source_root",
+                    "state_root",
+                    "tops_id",
+                    "source_id",
+                    "source_prefix",
+                    "source_version",
+                    "kernel_prefix",
+                    "kernel_version"
+                  ],
+                  "properties": {
+                    "bundle_path": {
+                      "type": "null"
+                    },
+                    "source_root": {
+                      "type": "null"
+                    },
+                    "state_root": {
+                      "type": "null"
+                    },
+                    "tops_id": {
+                      "type": "null"
+                    },
+                    "source_id": {
+                      "type": "null"
+                    },
+                    "source_prefix": {
+                      "type": "null"
+                    },
+                    "source_version": {
+                      "type": "null"
+                    },
+                    "kernel_prefix": {
+                      "type": "null"
+                    },
+                    "kernel_version": {
+                      "type": "null"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "ComparisonEndpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bundle_path",
+        "source_root",
+        "state_root",
+        "tops_id",
+        "source_id",
+        "source_prefix",
+        "source_version",
+        "kernel_prefix",
+        "kernel_version"
+      ],
+      "properties": {
+        "bundle_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_root": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state_root": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tops_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_prefix": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kernel_prefix": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kernel_version": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "ComparisonRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "previous",
+        "current"
+      ],
+      "properties": {
+        "previous": {
+          "$ref": "#/$defs/ComparisonEndpoint"
+        },
+        "current": {
+          "$ref": "#/$defs/ComparisonEndpoint"
+        }
+      }
+    },
+    "SubjectChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "subject_id",
+        "previous",
+        "current"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "added",
+            "removed",
+            "changed"
+          ]
+        },
+        "subject_id": {
+          "$ref": "#/$defs/Kernel/$defs/token"
+        },
+        "previous": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Kernel/$defs/SubjectSummary"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "current": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Kernel/$defs/SubjectSummary"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "AssertionChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "subject_id",
+        "predicate",
+        "previous",
+        "current"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "added",
+            "removed",
+            "changed"
+          ]
+        },
+        "subject_id": {
+          "$ref": "#/$defs/Kernel/$defs/token"
+        },
+        "predicate": {
+          "$ref": "#/$defs/Kernel/$defs/token"
+        },
+        "previous": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Kernel/$defs/Assertion"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "current": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Kernel/$defs/Assertion"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "Dimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dimension",
+        "changed",
+        "previous_digest",
+        "current_digest"
+      ],
+      "properties": {
+        "dimension": {
+          "enum": [
+            "source",
+            "source_installation",
+            "kernel_installation",
             "mapping",
             "profile",
             "subject_ids",
-            "requirements"
-          ],
-          "properties": {
-            "expected_source_digest": {
-              "type": "null"
-            },
-            "captures": {
-              "type": "null"
-            },
-            "mapping": {
-              "type": "null"
-            },
-            "profile": {
-              "type": "null"
-            },
-            "subject_ids": {
-              "type": "null"
-            },
-            "requirements": {
-              "type": "null"
-            }
+            "requirements",
+            "capture_bodies",
+            "capture_manifests",
+            "capture_observations",
+            "catalogue",
+            "coverage",
+            "evaluation",
+            "source_graph",
+            "catalogue_graph"
+          ]
+        },
+        "changed": {
+          "type": "boolean"
+        },
+        "previous_digest": {
+          "$ref": "#/$defs/SourceOwner/$defs/digest"
+        },
+        "current_digest": {
+          "$ref": "#/$defs/SourceOwner/$defs/digest"
+        }
+      }
+    },
+    "Comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "tops_id",
+        "source_id",
+        "previous_bundle_digest",
+        "current_bundle_digest",
+        "same_bundle",
+        "previous_replay",
+        "current_replay",
+        "observation_scope",
+        "causal_attribution",
+        "dimensions",
+        "subject_changes",
+        "assertion_changes",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.shv-refresh-comparison.v1"
+        },
+        "tops_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "source_id": {
+          "$ref": "#/$defs/SourceOwner/$defs/token"
+        },
+        "previous_bundle_digest": {
+          "$ref": "#/$defs/SourceOwner/$defs/digest"
+        },
+        "current_bundle_digest": {
+          "$ref": "#/$defs/SourceOwner/$defs/digest"
+        },
+        "same_bundle": {
+          "type": "boolean"
+        },
+        "previous_replay": {
+          "$ref": "#/$defs/Verification"
+        },
+        "current_replay": {
+          "$ref": "#/$defs/Verification"
+        },
+        "observation_scope": {
+          "const": "sequential_source_replays"
+        },
+        "causal_attribution": {
+          "const": "not_inferred"
+        },
+        "dimensions": {
+          "type": "array",
+          "minItems": 15,
+          "maxItems": 15,
+          "items": {
+            "$ref": "#/$defs/Dimension"
           }
+        },
+        "subject_changes": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/SubjectChange"
+          }
+        },
+        "assertion_changes": {
+          "type": "array",
+          "maxItems": 512,
+          "items": {
+            "$ref": "#/$defs/AssertionChange"
+          }
+        },
+        "digest": {
+          "$ref": "#/$defs/SourceOwner/$defs/digest"
         }
       }
     }

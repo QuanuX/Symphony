@@ -23,4 +23,15 @@ base={'source_installation':ref('Installation'),'kernel_installation':ref('Insta
 d['Schema']=obj({**base,'protocol':{'const':'symphony.qxctl.shv-refresh-schema.v1'},'origin':{'const':'qxctl_embedded'},'schema':{'type':'object'}})
 d['Template']=obj({**base,'protocol':{'const':'symphony.qxctl.shv-refresh-template.v1'},'status':{'const':'unanswered_template_not_validated_input'},'template':obj({k:{'type':'null'} for k in req['properties']})})
 s={'$schema':'https://json-schema.org/draft/2020-12/schema','$defs':d}
+# Additive CLI comparison definitions. Exact owner schemas above remain unchanged.
+endpoint=obj({k:{'type':'string','minLength':1} for k in ['bundle_path','source_root','state_root','tops_id','source_id','source_prefix','source_version','kernel_prefix','kernel_version']})
+d['ComparisonEndpoint']=endpoint;d['ComparisonRequest']=obj({'previous':ref('ComparisonEndpoint'),'current':ref('ComparisonEndpoint')})
+nullable=lambda value:{'anyOf':[value,{'type':'null'}]}
+base={'kind':{'enum':['added','removed','changed']},'subject_id':ref('Kernel/$defs/token')}
+d['SubjectChange']=obj({**base,'previous':nullable(ref('Kernel/$defs/SubjectSummary')),'current':nullable(ref('Kernel/$defs/SubjectSummary'))})
+d['AssertionChange']=obj({**base,'predicate':ref('Kernel/$defs/token'),'previous':nullable(ref('Kernel/$defs/Assertion')),'current':nullable(ref('Kernel/$defs/Assertion'))})
+names=['source','source_installation','kernel_installation','mapping','profile','subject_ids','requirements','capture_bodies','capture_manifests','capture_observations','catalogue','coverage','evaluation','source_graph','catalogue_graph']
+d['Dimension']=obj({'dimension':{'enum':names},'changed':{'type':'boolean'},'previous_digest':ref('SourceOwner/$defs/digest'),'current_digest':ref('SourceOwner/$defs/digest')})
+d['Comparison']=obj({'protocol':{'const':'symphony.qxctl.shv-refresh-comparison.v1'},'tops_id':{'type':'string','format':'uuid'},'source_id':ref('SourceOwner/$defs/token'),'previous_bundle_digest':ref('SourceOwner/$defs/digest'),'current_bundle_digest':ref('SourceOwner/$defs/digest'),'same_bundle':{'type':'boolean'},'previous_replay':ref('Verification'),'current_replay':ref('Verification'),'observation_scope':{'const':'sequential_source_replays'},'causal_attribution':{'const':'not_inferred'},'dimensions':{'type':'array','minItems':15,'maxItems':15,'items':ref('Dimension')},'subject_changes':{'type':'array','maxItems':64,'items':ref('SubjectChange')},'assertion_changes':{'type':'array','maxItems':512,'items':ref('AssertionChange')},'digest':ref('SourceOwner/$defs/digest')})
+old=d['Template']['properties']['template'];blank=obj({k:{'type':'null'} for k in endpoint['properties']});d['Template']['properties']['template']={'oneOf':[old,obj({'previous':blank,'current':blank})]}
 (r/'tools/qxctl/cmd/qxctl/shv_refresh.schema.json').write_text(json.dumps(s,indent=2)+'\n')

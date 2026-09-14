@@ -316,3 +316,7 @@ The SCV gate adds exact graph-index schema discovery, keeping connector receipt-
 ### Source-bound SHV refresh
 
 `shv refresh build|verify|schema|template` composes unchanged C++ owners under `knowledge/shv/REFRESH.md`. Full source/request/installation provenance binds replayable capture, catalogue, coverage, evaluation and separate owner graphs. New builds require the protected current source; historical verification uses committed history. No source approval, acquisition or catalogue publication is performed.
+
+### Verified SHV refresh comparison
+
+`shv refresh compare` implements `knowledge/shv/REFRESH-COMPARISON.md`: caller-selected endpoints, bounded immutable input bytes, native replay on both sides and exact structural dependency/subject/assertion differences. Existing refresh schema and `template --operation compare` expose this interface; the default build template is preserved. No hardware inference or causal attribution is added.
