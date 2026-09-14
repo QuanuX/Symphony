@@ -6,15 +6,17 @@ import (
 	"fmt"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/commandregistry"
 	"github.com/QuanuX/Symphony/tools/qxctl/internal/knowledgeengine"
+	"github.com/QuanuX/Symphony/tools/qxctl/internal/shvtransfer"
 	"github.com/spf13/cobra"
 	"os"
+	"strings"
 )
 
 func newSHVStoreCommand() *cobra.Command {
 	root := structural("store", fmt.Errorf("graph store operation required"))
-	for _, op := range []string{"inspect", "prepare", "commit", "status", "query", "export", "inventory", "schema", "template"} {
+	for _, op := range []string{"inspect", "prepare", "commit", "status", "query", "export", "inventory", "transfer_plan", "schema", "template"} {
 		var prefix, version, backend, storeRoot, input, selection string
-		c := &cobra.Command{Use: op, Short: "Persist or read structural graph evidence using an exact durable adapter", Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error {
+		c := &cobra.Command{Use: strings.ReplaceAll(op, "_", "-"), Short: "Persist or read structural graph evidence using an exact durable adapter", Args: usageOnlyArgs, RunE: func(*cobra.Command, []string) error {
 			if backend != "duckdb" {
 				return fmt.Errorf("unsupported graph store backend")
 			}
@@ -26,6 +28,9 @@ func newSHVStoreCommand() *cobra.Command {
 				out := map[string]any{"protocol": "symphony.qxctl.shv-graph-store-" + op + ".v1", "installation": inst}
 				if op == "schema" {
 					out["schema"] = raw
+					if version == knowledgeengine.SHVStoreTransferVersion {
+						out["transfer_schema"] = json.RawMessage(shvtransfer.Schema())
+					}
 				} else {
 					var all map[string]json.RawMessage
 					if e = json.Unmarshal(raw, &all); e != nil {
@@ -111,16 +116,16 @@ func newSHVStoreCommand() *cobra.Command {
 		if op == "schema" || op == "template" {
 			interaction = "discover"
 		}
-		spec := commandSpec("shv.graph.store."+op, featureSHVAdministration, interaction)
+		spec := commandSpec("shv.graph.store."+strings.ReplaceAll(op, "_", "-"), featureSHVAdministration, interaction)
 		spec.Mutability = "evidence_only"
 		spec.TargetScope = "local"
-		if op == "inspect" || op == "schema" || op == "template" || op == "inventory" {
+		if op == "inspect" || op == "schema" || op == "template" || op == "inventory" || op == "transfer_plan" {
 			spec.Mutability = "read_only"
 			spec.TargetScope = "local"
 		}
 		spec.FeatureBindings = append(spec.FeatureBindings, commandregistry.FeatureBinding{FeatureID: "ssfv:symphony:shv-graph-duckdb-connector", Interaction: interaction})
 		if out, ok := knowledgeengine.SHVStoreResultProtocol(op); ok {
-			spec.BackendOperationIDs = []string{"engop:symphony:shv.graph-store." + op}
+			spec.BackendOperationIDs = []string{"engop:symphony:shv.graph-store." + strings.ReplaceAll(op, "_", ".")}
 			spec.InputProtocols = []string{knowledgeengine.SHVStoreInputProtocol(op)}
 			spec.OutputProtocols = []string{out}
 		} else {
@@ -136,5 +141,6 @@ func newSHVStoreCommand() *cobra.Command {
 		commandregistry.Attach(c, spec)
 		root.AddCommand(c)
 	}
+	root.AddCommand(newSHVStoreTransferCommand("transfer"), newSHVStoreTransferCommand("transfer-status"))
 	return root
 }

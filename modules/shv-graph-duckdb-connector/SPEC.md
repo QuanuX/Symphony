@@ -64,3 +64,39 @@ installation for its writes, exports and SHV-18 publication bindings. Publicatio
 engine 0.1 does not silently admit a 0.2 writer. Existing installed packages remain
 unchanged. This release adds no transfer execution, deletion, pruning, retention
 policy, catalogue selection or database migration. These require later contracts.
+
+## Transfer release 0.3.0-dev (SHV-20)
+
+The new reader inventories original 0.1/0.2/0.3 writer identities. New prepare and
+commit still require the exact selected writer. `transfer_plan` is read-only and
+binds the source manifest revision, caller-ordered selection of 1..16 operation
+IDs, exact source reader and target writer installations, clean absolute target
+root, and caller-declared intent/snapshot capacity (0..128 each). It derives target
+snapshot/intent identities by replacing only the connector, preserving the complete
+graph and original operation state. Capacity blockers are explicit; the declared
+budget is not a measurement of free disk or existing destination capacity.
+
+`qxctl shv graph store transfer-plan` exposes that native operation. Its input is
+`{tops_id,namespace,expected_revision,operation_ids,source_connector,target_connector,
+target_root,capacity}`. `transfer` takes `{plan,expected_plan_digest}` with the same
+source reader flags and `--store-root`. Repeat the identical command to recover.
+The tool requires separate, nonnested source and destination roots and an initially
+empty private destination. This is this copy tool's boundary, not a restriction on
+user architectures. A durable immutable journal reserves the target, records pending
+steps before native writes and verifies lost acknowledgements against full native
+inventory. Prepared source operations remain prepared; committed operations are
+committed by the selected target writer. Source drift, foreign destination records,
+changed installations, journal corruption and conflicting retries reject progress.
+
+`transfer-status --target-root ... --transfer-digest ...` reports **recorded**
+progress only. Running `transfer` again revalidates source and destination. An
+incomplete execution may return a structured result with `status: incomplete` and
+`problem`; agents must check status, not only process success. The schema command
+exposes the CLI transfer schema separately from the installed native schema.
+
+Transfer completion establishes structural copy correspondence, not original-source
+semantic replay. It neither deletes evidence nor changes catalogue publication.
+Explicit publication under publisher 0.2.0-dev replays the original source/kernel,
+verifies the target store and obtains publication authority before advancing a head.
+There is no cross-store or store-to-authority atomic transaction. Retention remains
+out of scope pending reference accounting across catalogue history.

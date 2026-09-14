@@ -1837,6 +1837,7 @@
             "qxcmd:symphony:shv.graph.adapter.inspect",
             "qxcmd:symphony:shv.graph.store.inspect",
             "qxcmd:symphony:shv.graph.store.status",
+            "qxcmd:symphony:shv.graph.store.transfer-status",
             "qxcmd:symphony:shv.inspect",
             "qxcmd:symphony:shv.materialization.status",
             "qxcmd:symphony:shv.partition.inspect",
@@ -1869,6 +1870,7 @@
             "qxcmd:symphony:shv.graph.project",
             "qxcmd:symphony:shv.graph.store.commit",
             "qxcmd:symphony:shv.graph.store.prepare",
+            "qxcmd:symphony:shv.graph.store.transfer",
             "qxcmd:symphony:shv.graph.validate",
             "qxcmd:symphony:shv.inventory.compare",
             "qxcmd:symphony:shv.inventory.run",
@@ -1931,6 +1933,7 @@
             "qxcmd:symphony:shv.graph.store.export",
             "qxcmd:symphony:shv.graph.store.inventory",
             "qxcmd:symphony:shv.graph.store.query",
+            "qxcmd:symphony:shv.graph.store.transfer-plan",
             "qxcmd:symphony:shv.partition.query"
           ],
           "delivery": "composed",
@@ -6010,12 +6013,17 @@
         {
           "command_ids": [
             "qxcmd:symphony:shv.graph.store.inspect",
-            "qxcmd:symphony:shv.graph.store.status"
+            "qxcmd:symphony:shv.graph.store.status",
+            "qxcmd:symphony:shv.graph.store.transfer"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:shv.graph-store.commit",
             "engop:symphony:shv.graph-store.inspect",
-            "engop:symphony:shv.graph-store.status"
+            "engop:symphony:shv.graph-store.inventory",
+            "engop:symphony:shv.graph-store.prepare",
+            "engop:symphony:shv.graph-store.status",
+            "engop:symphony:shv.graph-store.transfer.plan"
           ],
           "evidence": [
             "knowledge/shv/KERNEL.md",
@@ -6030,12 +6038,16 @@
         {
           "command_ids": [
             "qxcmd:symphony:shv.graph.store.commit",
-            "qxcmd:symphony:shv.graph.store.prepare"
+            "qxcmd:symphony:shv.graph.store.prepare",
+            "qxcmd:symphony:shv.graph.store.transfer"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:shv.graph-store.commit",
-            "engop:symphony:shv.graph-store.prepare"
+            "engop:symphony:shv.graph-store.inspect",
+            "engop:symphony:shv.graph-store.inventory",
+            "engop:symphony:shv.graph-store.prepare",
+            "engop:symphony:shv.graph-store.transfer.plan"
           ],
           "evidence": [
             "knowledge/shv/KERNEL.md",
@@ -6053,7 +6065,9 @@
             "qxcmd:symphony:shv.catalogue.publication.plan",
             "qxcmd:symphony:shv.graph.store.export",
             "qxcmd:symphony:shv.graph.store.inventory",
-            "qxcmd:symphony:shv.graph.store.query"
+            "qxcmd:symphony:shv.graph.store.query",
+            "qxcmd:symphony:shv.graph.store.transfer",
+            "qxcmd:symphony:shv.graph.store.transfer-plan"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
@@ -6066,9 +6080,13 @@
             "engop:symphony:shv.catalogue.build",
             "engop:symphony:shv.coverage.plan",
             "engop:symphony:shv.evaluate",
+            "engop:symphony:shv.graph-store.commit",
             "engop:symphony:shv.graph-store.export",
+            "engop:symphony:shv.graph-store.inspect",
             "engop:symphony:shv.graph-store.inventory",
+            "engop:symphony:shv.graph-store.prepare",
             "engop:symphony:shv.graph-store.query",
+            "engop:symphony:shv.graph-store.transfer.plan",
             "engop:symphony:shv.graph.project"
           ],
           "evidence": [
@@ -6084,12 +6102,17 @@
         {
           "command_ids": [
             "qxcmd:symphony:shv.graph.store.commit",
-            "qxcmd:symphony:shv.graph.store.status"
+            "qxcmd:symphony:shv.graph.store.status",
+            "qxcmd:symphony:shv.graph.store.transfer"
           ],
           "delivery": "composed",
           "engine_operation_ids": [
             "engop:symphony:shv.graph-store.commit",
-            "engop:symphony:shv.graph-store.status"
+            "engop:symphony:shv.graph-store.inspect",
+            "engop:symphony:shv.graph-store.inventory",
+            "engop:symphony:shv.graph-store.prepare",
+            "engop:symphony:shv.graph-store.status",
+            "engop:symphony:shv.graph-store.transfer.plan"
           ],
           "evidence": [
             "knowledge/shv/KERNEL.md",
@@ -7753,9 +7776,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:34553ce74f654bfa04d45c57e5b20926961099d0d41fb740902a177d1b38efbe",
+  "profile_digest": "sha256:4ef2d90ec78eec99d6dea305b7bac87cdf76ff39562cdab283c68336607dfa65",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 109,
-  "ssfv_registry_digest": "sha256:e015cde62abd7a326686b23f3ddf0b47af25b3383b6c65f6ed5453548c25f75c"
+  "ssfv_registry_digest": "sha256:19d0d1bc465ddb0a7483d824a87ea9f08ebb133f2645351ab9ea5d9bb4618ef4"
 }

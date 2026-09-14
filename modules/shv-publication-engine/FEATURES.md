@@ -32,7 +32,7 @@
         "SHV-18 focused native, consumer, journal, installed authority and interrupted-process evidence is recorded in the increment packet."
       ],
       "feature_id": "ssfv:symphony:shv-publication-engine",
-      "how": "Pure C++ publication owner, independent Go verifier and protected qxctl journal.",
+      "how": "Pure C++ publication owner, independent Go verifier and protected qxctl journal. Explicit publisher 0.2 admission for store writers 0.1, 0.2 and 0.3; original publisher 0.1 remains strict.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -56,7 +56,7 @@
       ],
       "owner_contract": "modules/shv-publication-engine/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",
-      "record_version": 1,
+      "record_version": 2,
       "relationships": [
         {
           "rationale": "Authority-free process, path and digest mechanics.",

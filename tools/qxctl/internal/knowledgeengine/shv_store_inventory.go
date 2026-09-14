@@ -2,6 +2,7 @@ package knowledgeengine
 
 import (
 	"fmt"
+	"path/filepath"
 	"sort"
 )
 
@@ -45,7 +46,7 @@ func validateStoreInventoryManifest(value any, input map[string]any) (map[string
 			return nil, nil, fail
 		}
 		writer := shvText(shvMap(e["connector"])["Version"])
-		if (writer != SHVStoreVersion && writer != SHVStoreInventoryVersion) || storeInstallationVersion(e["connector"], writer) != nil {
+		if (writer != SHVStoreVersion && writer != SHVStoreInventoryVersion && writer != SHVStoreTransferVersion) || storeInstallationVersion(e["connector"], writer) != nil {
 			return nil, nil, fail
 		}
 		counts, ok := e["counts"].(map[string]any)
@@ -186,7 +187,92 @@ func validateSHVStoreInventory(operation string, input, result map[string]any) e
 		}
 		return nil
 	}
-	return fail
+	if operation != "transfer_plan" || !shvFields(input, "tops_id", "namespace", "expected_revision", "operation_ids", "source_connector", "target_connector", "target_root", "capacity") || !indexDigest(input["expected_revision"]) || !shvFields(result, "protocol", "backend", "input", "manifest", "selected", "excluded_operation_ids", "requirements", "blockers", "disposition", "digest") || result["protocol"] != "symphony.shv.graph-store-transfer-plan.v1" {
+		return fail
+	}
+	err = shvStoreTransferInput(input)
+	if err != nil {
+		return fail
+	}
+	root, ok := graphIndexText(input["target_root"], 4096)
+	if !ok || !filepath.IsAbs(root) || filepath.Clean(root) != root || root == "/" {
+		return fail
+	}
+	capacity, ok := input["capacity"].(map[string]any)
+	if !ok || !shvFields(capacity, "intents", "snapshots") {
+		return fail
+	}
+	ci, oi := indexCount(capacity["intents"], 128)
+	cs, os := indexCount(capacity["snapshots"], 128)
+	if !oi || !os {
+		return fail
+	}
+	ids, ok := input["operation_ids"].([]any)
+	if !ok || len(ids) == 0 || len(ids) > 16 {
+		return fail
+	}
+	selected, ok := result["selected"].([]any)
+	if !ok || len(selected) != len(ids) {
+		return fail
+	}
+	byID := map[string]any{}
+	for _, entry := range entries {
+		byID[entry.(map[string]any)["operation_id"].(string)] = entry
+	}
+	seen := map[string]bool{}
+	published := map[string]bool{}
+	for i, item := range ids {
+		id, ok := item.(string)
+		if !ok || seen[id] || byID[id] == nil {
+			return fail
+		}
+		seen[id] = true
+		row, ok := selected[i].(map[string]any)
+		if !ok || !shvFields(row, "source", "target_snapshot_digest", "target_intent_digest") {
+			return fail
+		}
+		if err = validateStoreInventoryRecord(row["source"], m, byID[id]); err != nil {
+			return err
+		}
+		raw, _ := SCVCanonical(row["source"])
+		status, _ := scvObject(raw)
+		intent := status["intent"].(map[string]any)
+		snapshot := intent["snapshot"].(map[string]any)
+		delete(snapshot, "digest")
+		snapshot["connector"] = input["target_connector"]
+		sd, _ := SCVDigest(snapshot)
+		snapshot["digest"] = sd
+		delete(intent, "digest")
+		td, _ := SCVDigest(intent)
+		if row["target_snapshot_digest"] != sd || row["target_intent_digest"] != td {
+			return fmt.Errorf("transfer changed target lineage")
+		}
+		if status["state"] == "committed" {
+			published[sd] = true
+		}
+	}
+	excluded := []string{}
+	for _, e := range entries {
+		id := e.(map[string]any)["operation_id"].(string)
+		if !seen[id] {
+			excluded = append(excluded, id)
+		}
+	}
+	blockers := []string{}
+	if int64(len(ids)) > ci {
+		blockers = append(blockers, "intent_capacity")
+	}
+	if int64(len(published)) > cs {
+		blockers = append(blockers, "snapshot_capacity")
+	}
+	disposition := "ready"
+	if len(blockers) > 0 {
+		disposition = "blocked"
+	}
+	if !scvEqual(result["excluded_operation_ids"], excluded) || !scvEqual(result["requirements"], map[string]int{"intents": len(ids), "snapshots": len(published)}) || !scvEqual(result["blockers"], blockers) || result["disposition"] != disposition {
+		return fail
+	}
+	return nil
 }
 
 func shvStoreInventoryInput(p map[string]any) error {
@@ -204,6 +290,45 @@ func shvStoreInventoryInput(p map[string]any) error {
 		if !shvFields(c, "revision", "after_operation_id") || !storeDigest(c["revision"]) || !graphIndexOperation.MatchString(shvText(c["after_operation_id"])) {
 			return shvFail()
 		}
+	}
+	return nil
+}
+
+func shvStoreTransferInput(p map[string]any) error {
+	if !storeScope(p) || !shvFields(p, "tops_id", "namespace", "expected_revision", "operation_ids", "source_connector", "target_connector", "target_root", "capacity") || !storeDigest(p["expected_revision"]) {
+		return shvFail()
+	}
+	if storeInstallationVersion(p["source_connector"], SHVStoreTransferVersion) != nil {
+		return shvFail()
+	}
+	v := shvText(shvMap(p["target_connector"])["Version"])
+	if (v != SHVStoreVersion && v != SHVStoreInventoryVersion && v != SHVStoreTransferVersion) || storeInstallationVersion(p["target_connector"], v) != nil {
+		return shvFail()
+	}
+	root := shvText(p["target_root"])
+	if root == "/" || !filepath.IsAbs(root) || filepath.Clean(root) != root {
+		return shvFail()
+	}
+	c := shvMap(p["capacity"])
+	if !shvFields(c, "intents", "snapshots") {
+		return shvFail()
+	}
+	for _, k := range []string{"intents", "snapshots"} {
+		if _, e := storeInteger(c[k], 0, 128); e != nil {
+			return e
+		}
+	}
+	ids := shvList(p["operation_ids"])
+	if len(ids) < 1 || len(ids) > 16 {
+		return shvFail()
+	}
+	seen := map[string]bool{}
+	for _, v := range ids {
+		id := shvText(v)
+		if !graphIndexOperation.MatchString(id) || seen[id] {
+			return shvFail()
+		}
+		seen[id] = true
 	}
 	return nil
 }

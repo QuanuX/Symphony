@@ -55,5 +55,24 @@
     "expected_revision": null,
     "cursor": null,
     "limit": 16
+  },
+  "transfer_plan": {
+    "tops_id": "<caller TOPS UUID>",
+    "namespace": "<caller namespace>",
+    "expected_revision": "<exact inventory manifest digest>",
+    "operation_ids": [
+      "<selected operation>"
+    ],
+    "source_connector": "<exact planning reader installation>",
+    "target_connector": "<exact target writer installation>",
+    "target_root": "<separate existing empty private directory>",
+    "capacity": {
+      "intents": 16,
+      "snapshots": 16
+    }
+  },
+  "transfer": {
+    "plan": "<verified native transfer plan result>",
+    "expected_plan_digest": "<exact plan digest>"
   }
 }

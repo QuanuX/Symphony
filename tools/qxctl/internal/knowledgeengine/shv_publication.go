@@ -9,6 +9,7 @@ import (
 )
 
 const SHVPublicationVersion = "0.1.0-dev"
+const SHVPublicationTransferVersion = "0.2.0-dev"
 
 var shvPublicationSpec = engineSpec{label: "shv-publication-engine", moduleID: "shv-publication-engine", engineID: "symphony-shv-publication", componentKind: "vector_engine", vectorID: "shv", processProtocol: processProtocol}
 var shvPublicationOutputs = map[string]string{"inspect": "symphony.knowledge.engine-descriptor.v2", "publication_plan": "symphony.shv.publication-plan.v1", "publication_reduce": "symphony.shv.publication-transition.v1", "publication_status": "symphony.shv.publication-status.v1"}
@@ -21,8 +22,8 @@ func SHVPublicationInputProtocol(op string) string {
 	return "symphony.shv." + strings.ReplaceAll(op, "_", "-") + "-input.v1"
 }
 func InspectSHVPublication(prefix, version string) (Installation, error) {
-	if prefix == "" || version != SHVPublicationVersion {
-		return Installation{}, fmt.Errorf("publication engine requires an explicit prefix and exact version %s", SHVPublicationVersion)
+	if prefix == "" || (version != SHVPublicationVersion && version != SHVPublicationTransferVersion) {
+		return Installation{}, fmt.Errorf("publication engine requires an explicit prefix and exact version %s or %s", SHVPublicationVersion, SHVPublicationTransferVersion)
 	}
 	s := shvPublicationSpec
 	e, err := InspectReceiptV2EntryPoint(prefix, version, ReceiptV2EntryPointSpec{Label: s.label, ComponentID: s.moduleID, ComponentKind: s.componentKind, ModuleID: s.moduleID, PackageID: s.moduleID, VectorID: &s.vectorID, EngineID: &s.engineID, EntryPointID: s.engineID, EntryPointKind: "executable", EntryPointRelativePath: filepath.ToSlash(filepath.Join("libexec", "symphony", s.moduleID, version, s.engineID)), RequiredProtocols: []string{processProtocol}})
@@ -88,7 +89,7 @@ func InvokeSHVPublication(ctx context.Context, prefix, version, cwd, op string, 
 	if e != nil {
 		return r, e
 	}
-	if e = ValidateSHVPublicationResult(op, payload, r.Result); e != nil {
+	if e = ValidateSHVPublicationResultVersion(op, payload, r.Result, version); e != nil {
 		return Response{}, e
 	}
 	after, e := InspectSHVPublication(prefix, version)

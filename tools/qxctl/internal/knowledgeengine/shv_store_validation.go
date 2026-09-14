@@ -28,10 +28,16 @@ func shvStoreInput(op string, p map[string]any) error {
 }
 func shvStoreInputVersion(op string, p map[string]any, version string) error {
 	if op == "inventory" {
-		if version != SHVStoreInventoryVersion {
+		if version != SHVStoreInventoryVersion && version != SHVStoreTransferVersion {
 			return shvFail()
 		}
 		return shvStoreInventoryInput(p)
+	}
+	if op == "transfer_plan" {
+		if version != SHVStoreTransferVersion {
+			return shvFail()
+		}
+		return shvStoreTransferInput(p)
 	}
 	if op == "inspect" {
 		if !shvFields(p) {
@@ -117,7 +123,7 @@ func ValidateSHVStoreResult(op string, input, result []byte) error {
 	return ValidateSHVStoreResultVersion(op, input, result, SHVStoreVersion)
 }
 func ValidateSHVStoreResultVersion(op string, input, result []byte, version string) error {
-	if version != SHVStoreVersion && version != SHVStoreInventoryVersion {
+	if version != SHVStoreVersion && version != SHVStoreInventoryVersion && version != SHVStoreTransferVersion {
 		return shvFail()
 	}
 	p, e := shvObject(input)
@@ -134,7 +140,14 @@ func ValidateSHVStoreResultVersion(op string, input, result []byte, version stri
 	if op == "inspect" {
 		return shvStoreDescriptor(p, r, version)
 	}
-	if op == "inventory" {
+	if op == "inventory" && version == SHVStoreInventoryVersion {
+		for _, v := range shvList(shvMap(r["manifest"])["entries"]) {
+			if shvMap(shvMap(v)["connector"])["Version"] == SHVStoreTransferVersion {
+				return shvFail()
+			}
+		}
+	}
+	if op == "inventory" || op == "transfer_plan" {
 		return validateSHVStoreInventory(op, p, r)
 	}
 	if shvSealed(r) != nil {

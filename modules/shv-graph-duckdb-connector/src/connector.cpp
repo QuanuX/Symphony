@@ -118,14 +118,15 @@ void installation(const Json &value) {
                  "ReceiptPath", "ReceiptDigest", "ReceiptProtocol",
                  "ExecutablePath", "ExecutableDigest"});
   auto selected_version = text(value.at("Version"), 128);
-  require(
-      value.at("Role") == "shv-graph-duckdb-connector" &&
-          value.at("ModuleID") == "shv-graph-duckdb-connector" &&
-          value.at("EngineID") == engine_id &&
-          (selected_version == "0.1.0-dev" || selected_version == version) &&
-          value.at("ReceiptProtocol") ==
-              "symphony.knowledge.install-receipt.v2",
-      "connector identity differs");
+  require(value.at("Role") == "shv-graph-duckdb-connector" &&
+              value.at("ModuleID") == "shv-graph-duckdb-connector" &&
+              value.at("EngineID") == engine_id &&
+              (selected_version == "0.1.0-dev" ||
+               selected_version == "0.2.0-dev" ||
+               selected_version == version) &&
+              value.at("ReceiptProtocol") ==
+                  "symphony.knowledge.install-receipt.v2",
+          "connector identity differs");
   auto prefix = text(value.at("Prefix"), 4096);
   require(prefix.starts_with('/') &&
               std::filesystem::path(prefix).lexically_normal().string() ==
@@ -777,6 +778,84 @@ Json inventory(const engine::Request &request) {
   return result;
 }
 
+Json transfer_plan(const engine::Request &request) {
+  const auto &input = request.payload;
+  fields(input,
+         {"tops_id", "namespace", "expected_revision", "operation_ids",
+          "source_connector", "target_connector", "target_root", "capacity"});
+  scope(input);
+  installation(input.at("source_connector"));
+  installation(input.at("target_connector"));
+  require(input.at("source_connector").at("Version") == version,
+          "source reader release differs");
+  const auto root = text(input.at("target_root"), 4096);
+  require(root.starts_with('/') && root != "/" &&
+              std::filesystem::path(root).lexically_normal().string() == root &&
+              !root.ends_with('/'),
+          "target root must be clean absolute");
+  fields(input.at("capacity"), {"intents", "snapshots"});
+  for (const auto *key : {"intents", "snapshots"})
+    require(input.at("capacity").at(key).is_number_integer() &&
+                input.at("capacity").at(key) >= 0 &&
+                input.at("capacity").at(key) <= 128,
+            "caller capacity outside installed profile");
+  const auto &ids = input.at("operation_ids");
+  require(ids.is_array() && !ids.empty() && ids.size() <= 16,
+          "select 1..16 operation IDs");
+  std::set<std::string> selected_ids;
+  for (const auto &id : ids)
+    require(selected_ids.insert(operation_id(id)).second,
+            "duplicate selected operation ID");
+  Database db(request, false);
+  db.begin();
+  auto value = read_inventory(db, input);
+  expected_revision(input, value, true);
+  Json selected = Json::array(), excluded = Json::array(),
+       blockers = Json::array();
+  std::set<std::string> target_snapshots;
+  for (const auto &id : ids) {
+    require(value.records.contains(text(id)), "selected operation absent");
+    const auto &source = value.records.at(text(id));
+    auto target_intent = source.at("intent");
+    auto target_snapshot = target_intent.at("snapshot");
+    target_snapshot.erase("digest");
+    target_snapshot["connector"] = input.at("target_connector");
+    target_snapshot = seal(target_snapshot);
+    target_intent.erase("digest");
+    target_intent["snapshot"] = target_snapshot;
+    target_intent = seal(target_intent);
+    selected.push_back(
+        Json{{"source", source},
+             {"target_snapshot_digest", target_snapshot.at("digest")},
+             {"target_intent_digest", target_intent.at("digest")}});
+    if (source.at("state") == "committed")
+      target_snapshots.insert(text(target_snapshot.at("digest")));
+  }
+  for (const auto &[id, record] : value.records) {
+    static_cast<void>(record);
+    if (!selected_ids.contains(id))
+      excluded.push_back(id);
+  }
+  if (ids.size() > input.at("capacity").at("intents").get<unsigned>())
+    blockers.push_back("intent_capacity");
+  if (target_snapshots.size() >
+      input.at("capacity").at("snapshots").get<unsigned>())
+    blockers.push_back("snapshot_capacity");
+  auto result = seal(
+      Json{{"protocol", "symphony.shv.graph-store-transfer-plan.v1"},
+           {"backend", "duckdb"},
+           {"input", input},
+           {"manifest", value.manifest},
+           {"selected", selected},
+           {"excluded_operation_ids", excluded},
+           {"requirements",
+            {{"intents", ids.size()}, {"snapshots", target_snapshots.size()}}},
+           {"blockers", blockers},
+           {"disposition", blockers.empty() ? "ready" : "blocked"}});
+  db.commit();
+  return result;
+}
+
 Json prepare(const engine::Request &request) {
   const auto &input = request.payload;
   fields(input, {"tops_id", "namespace", "operation_id", "graph", "connector"});
@@ -1007,16 +1086,19 @@ Json queried(const engine::Request &request) {
 Json descriptor() {
   std::vector<engine::OperationSpec> operations;
   for (const auto *name : {"inspect", "prepare", "commit", "status", "query",
-                           "export", "inventory"}) {
+                           "export", "inventory", "transfer_plan"}) {
     std::string output =
-        name == std::string("inventory")
+        name == std::string("transfer_plan")
+            ? "symphony.shv.graph-store-transfer-plan.v1"
+        : name == std::string("inventory")
             ? "symphony.shv.graph-store-inventory.v1"
         : name == std::string("inspect") ? engine::descriptor_protocol_v2
         : name == std::string("query")   ? "symphony.shv.graph-store-query.v1"
         : name == std::string("export")  ? "symphony.shv.graph-store-export.v1"
                                          : "symphony.shv.graph-store-status.v1";
     operations.push_back(
-        {std::string("engop:symphony:shv.graph-store.") + name,
+        {std::string("engop:symphony:shv.graph-store.") +
+             (name == std::string("transfer_plan") ? "transfer.plan" : name),
          name,
          "implemented",
          false,
@@ -1029,7 +1111,8 @@ Json descriptor() {
          "qxctl_required",
          std::string("symphony.shv.graph-store-") + name + "-input.v1",
          output,
-         (name == std::string("inspect") || name == std::string("inventory"))
+         (name == std::string("inspect") || name == std::string("inventory") ||
+          name == std::string("transfer_plan"))
              ? "read_only"
              : "evidence_only",
          "idempotent",
@@ -1040,7 +1123,7 @@ Json descriptor() {
          "freezing"});
   }
   for (auto &op : operations) {
-    if ((op.operation_name == "commit")) {
+    if (op.operation_name == "commit" || op.operation_name == "transfer_plan") {
       if (op.operation_name == "commit")
         op.administrative_interactions = {"invoke", "recover"};
       op.expected_state_required = true;
@@ -1095,6 +1178,8 @@ Json handle(const engine::Request &request) {
     return status(request);
   if (request.operation == "query")
     return queried(request);
+  if (request.operation == "transfer_plan")
+    return transfer_plan(request);
   if (request.operation == "inventory")
     return inventory(request);
   if (request.operation == "export")

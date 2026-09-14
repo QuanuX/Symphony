@@ -23,6 +23,9 @@ func shvStoreDescriptor(p, r map[string]any, version string) error {
 	}
 	ops, ok := r["operations"].([]any)
 	count := len(shvStoreOutputs)
+	if version != SHVStoreTransferVersion {
+		count--
+	}
 	if version == SHVStoreVersion {
 		count--
 	}
@@ -51,13 +54,13 @@ func shvStoreDescriptor(p, r map[string]any, version string) error {
 			interactions = []any{"inspect", "recover"}
 		}
 		mutability := "evidence_only"
-		if name == "inspect" || name == "inventory" {
+		if name == "inspect" || name == "inventory" || name == "transfer_plan" {
 			mutability = "read_only"
 		}
 		if !shvFields(o, "engine_operation_id", "operation_name", "availability", "feature_ids", "administrative_interactions", "administration_disposition", "input_protocol", "output_protocol", "mutability", "idempotency", "expected_state_required", "authorization_requirement", "recovery_operation_id", "direct_invocation", "thermal_path") || !scvEqual(o["administrative_interactions"], interactions) || o["administration_disposition"] != "qxctl_required" || o["mutability"] != mutability || o["idempotency"] != "idempotent" || o["recovery_operation_id"] != nil || o["direct_invocation"] != "supported" {
 			return shvFail()
 		}
-		if !ok || (name == "inventory" && version == SHVStoreVersion) || seen[name] || o["engine_operation_id"] != "engop:symphony:"+domain+"."+strings.ReplaceAll(name, "_", ".") || o["availability"] != "implemented" || !scvEqual(o["feature_ids"], []any{feature}) || o["input_protocol"] != SHVStoreInputProtocol(name) || o["output_protocol"] != out || o["authorization_requirement"] != "none" || o["expected_state_required"] != (name == "commit") || o["thermal_path"] != "freezing" {
+		if !ok || (name == "transfer_plan" && version != SHVStoreTransferVersion) || (name == "inventory" && version == SHVStoreVersion) || seen[name] || o["engine_operation_id"] != "engop:symphony:"+domain+"."+strings.ReplaceAll(name, "_", ".") || o["availability"] != "implemented" || !scvEqual(o["feature_ids"], []any{feature}) || o["input_protocol"] != SHVStoreInputProtocol(name) || o["output_protocol"] != out || o["authorization_requirement"] != "none" || o["expected_state_required"] != (name == "commit" || name == "transfer_plan") || o["thermal_path"] != "freezing" {
 			return shvFail()
 		}
 		seen[name] = true

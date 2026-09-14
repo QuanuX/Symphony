@@ -921,7 +921,11 @@
           "$ref": "#/$defs/Path"
         },
         "version": {
-          "const": "0.1.0-dev"
+          "enum": [
+            "0.1.0-dev",
+            "0.2.0-dev",
+            "0.3.0-dev"
+          ]
         }
       },
       "additionalProperties": false

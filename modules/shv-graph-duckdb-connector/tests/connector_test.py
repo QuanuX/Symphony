@@ -7,7 +7,7 @@ def graph():
  a=seal({'protocol':'caller.example.v1','future_field':{'class':'networking-card','retired':None}})
  return seal({'protocol':'symphony.graph.exchange.v1','owner':{'engine_id':'caller-owner','engine_version':'1','artifact_protocol':a['protocol'],'artifact_digest':a['digest']},'owner_artifact':a,'nodes':[{'id':str(i),'labels':['component'],'properties':{'unknown_metric':{'unit':'caller','value':i}}} for i in range(3)],'edges':[{'id':str(i),'from':'0','to':'1','label':'caller-link','properties':{'future':[i]}} for i in range(3)]})
 def installation():
- m='shv-graph-duckdb-connector';v='0.2.0-dev';p='/fixture';return {'Role':m,'ModuleID':m,'EngineID':'symphony-'+m,'Version':v,'Prefix':p,'ReceiptPath':p+'/share/symphony/receipts/'+m+'/'+v+'/install-receipt.json','ReceiptProtocol':'symphony.knowledge.install-receipt.v2','ReceiptDigest':'sha256:'+'1'*64,'ExecutablePath':p+'/libexec/symphony/'+m+'/'+v+'/symphony-'+m,'ExecutableDigest':'sha256:'+'2'*64}
+ m='shv-graph-duckdb-connector';v='0.3.0-dev';p='/fixture';return {'Role':m,'ModuleID':m,'EngineID':'symphony-'+m,'Version':v,'Prefix':p,'ReceiptPath':p+'/share/symphony/receipts/'+m+'/'+v+'/install-receipt.json','ReceiptProtocol':'symphony.knowledge.install-receipt.v2','ReceiptDigest':'sha256:'+'1'*64,'ExecutablePath':p+'/libexec/symphony/'+m+'/'+v+'/symphony-'+m,'ExecutableDigest':'sha256:'+'2'*64}
 def request(op,p):return {'protocol':'symphony.knowledge.engine-process.v1','request_id':str(uuid.uuid4()),'correlation_id':str(uuid.uuid4()),'target_engine':'symphony-shv-graph-duckdb-connector','operation':op,'deadline_unix_ms':int(time.time()*1000)+20000,'payload':p}
 def raw(root,op,p):
  x=subprocess.run([ENGINE],cwd=root,input=canonical(request(op,p)),capture_output=True,timeout=25);r=json.loads(x.stdout);return x,r
@@ -33,6 +33,13 @@ class StoreTests(unittest.TestCase):
   x,r=raw(self.root,op,p);self.assertEqual(x.returncode==0,ok,r);self.assertEqual(r['outcome']=='ok',ok,r);return r['result'] if ok else r
  def commit(self):
   p=self.call('prepare',self.p);c={**self.key,'expected_intent_digest':p['intent']['digest']};r=self.call('commit',c);return r,c
+ def test_descriptor_and_transfer_plan(self):
+  self.assertEqual(len(self.call('inspect',{})['operations']),8)
+  stored,_=self.commit();inv=self.inventory();p={**self.scope,'expected_revision':inv['manifest']['digest'],'operation_ids':['one'],'source_connector':installation(),'target_connector':installation(),'target_root':'/caller-target','capacity':{'intents':1,'snapshots':1}}
+  plan=self.call('transfer_plan',p);self.assertEqual(plan['disposition'],'ready');self.assertEqual(plan['selected'][0]['source'],stored)
+  blocked=self.call('transfer_plan',{**p,'capacity':{'intents':0,'snapshots':0}});self.assertEqual(blocked['blockers'],['intent_capacity','snapshot_capacity'])
+  for change in [{'expected_revision':'sha256:'+'0'*64},{'operation_ids':['absent']},{'operation_ids':['one','one']},{'target_root':'/bad/../root'}]:self.call('transfer_plan',{**p,**change},False)
+  self.assertEqual(self.inventory()['manifest'],inv['manifest'])
  def test_reopen_retry_export_and_pagination(self):
   prepared=self.call('prepare',self.p);self.assertEqual(prepared,self.call('prepare',self.p));self.call('export',{**self.scope,'snapshot_digest':prepared['snapshot_digest']},False)
   r,c=self.commit();self.assertEqual(r,self.call('commit',c));self.assertEqual(r,self.call('status',self.key));e=self.call('export',{**self.scope,'snapshot_digest':r['snapshot_digest']});self.assertEqual(e['snapshot']['graph'],self.p['graph'])

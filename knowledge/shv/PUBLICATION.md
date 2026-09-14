@@ -86,3 +86,13 @@ receipt tests and live SSIAG interruption/revocation evidence are separate claim
 Only completed evidence recorded in the SHV-18 packet establishes a tested boundary.
 Test process barriers compile only with symphony_publication_faults; production
 builds contain no environment-controlled stop behavior.
+
+## Explicit writer admission, publisher 0.2.0-dev
+
+This publisher accepts exact graph-store writer installations 0.1.0-dev, 0.2.0-dev
+and 0.3.0-dev. The unchanged 0.1 publisher and its independent consumer retain
+0.1-only admission. Each historical journal attempt is validated using its recorded
+publisher version; a newer history reader does not retroactively broaden an old
+attempt. Newer publication can bind a transferred graph only through the existing
+source/kernel replay, partition correspondence and actual SSIAG authorization checks.
+Copying a graph alone never changes a catalogue head.

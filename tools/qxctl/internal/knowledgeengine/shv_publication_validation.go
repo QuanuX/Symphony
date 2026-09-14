@@ -23,7 +23,8 @@ func pubInstall(v any, module, engine string, versions ...string) bool {
 	}
 	return found && x["Role"] == module && x["ModuleID"] == module && x["EngineID"] == engine && x["ReceiptProtocol"] == receiptProtocolV2 && pubPath(p) && pubPath(x["ReceiptPath"]) && pubPath(x["ExecutablePath"]) && partHash(x["ReceiptDigest"]) && partHash(x["ExecutableDigest"]) && x["ReceiptPath"] == p+"/share/symphony/receipts/"+module+"/"+vstr+"/install-receipt.json" && x["ExecutablePath"] == p+"/libexec/symphony/"+module+"/"+vstr+"/"+engine
 }
-func pubDefinition(d map[string]any) error {
+func pubDefinition(d map[string]any) error { return pubDefinitionVersion(d, SHVPublicationVersion) }
+func pubDefinitionVersion(d map[string]any, version string) error {
 	if !shvFields(d, "catalogue_id", "tops_id", "manifest", "policy", "partition_installation", "members") || !shvID(d["catalogue_id"]) || stavprotocol.ValidateTOPSID(shvText(d["tops_id"])) != nil || !pubInstall(d["partition_installation"], "shv-partition-engine", "symphony-shv-partition", "0.2.0-dev") {
 		return shvFail()
 	}
@@ -74,7 +75,7 @@ func pubDefinition(d map[string]any) error {
 			return shvFail()
 		}
 		seen[pd] = true
-		if !pubInstall(x["source_installation"], "shv-source-engine", "symphony-shv-source", "0.1.0-dev") || !pubInstall(x["kernel_installation"], "shv-engine", "symphony-shv", "0.1.0-dev", "0.2.0-dev", "0.3.0-dev") || storeInstallation(x["store_installation"]) != nil {
+		if !pubInstall(x["source_installation"], "shv-source-engine", "symphony-shv-source", "0.1.0-dev") || !pubInstall(x["kernel_installation"], "shv-engine", "symphony-shv", "0.1.0-dev", "0.2.0-dev", "0.3.0-dev") || pubStoreInstallation(x["store_installation"], version) != nil {
 			return shvFail()
 		}
 		ep := shvMap(x["endpoint"])
@@ -100,7 +101,8 @@ func pubDefinition(d map[string]any) error {
 	}
 	return nil
 }
-func pubHead(h map[string]any) error {
+func pubHead(h map[string]any) error { return pubHeadVersion(h, SHVPublicationVersion) }
+func pubHeadVersion(h map[string]any, version string) error {
 	if !shvFields(h, "protocol", "definition", "generation", "previous_digest", "digest") || h["protocol"] != "symphony.shv.publication-head.v1" || shvSealed(h) != nil {
 		return shvFail()
 	}
@@ -108,10 +110,13 @@ func pubHead(h map[string]any) error {
 	if !ok || (g == 1 && h["previous_digest"] != nil) || (g > 1 && !partHash(h["previous_digest"])) {
 		return shvFail()
 	}
-	return pubDefinition(shvMap(h["definition"]))
+	return pubDefinitionVersion(shvMap(h["definition"]), version)
 }
 func pubPlan(p map[string]any) (map[string]any, error) {
-	if !shvFields(p, "operation_id", "current", "desired", "reason") || !shvID(p["operation_id"]) || !shvBoundedText(p["reason"], 4096) || pubDefinition(shvMap(p["desired"])) != nil {
+	return pubPlanVersion(p, SHVPublicationVersion)
+}
+func pubPlanVersion(p map[string]any, version string) (map[string]any, error) {
+	if !shvFields(p, "operation_id", "current", "desired", "reason") || !shvID(p["operation_id"]) || !shvBoundedText(p["reason"], 4096) || pubDefinitionVersion(shvMap(p["desired"]), version) != nil {
 		return nil, shvFail()
 	}
 	var previous any
@@ -119,7 +124,7 @@ func pubPlan(p map[string]any) (map[string]any, error) {
 	d := shvMap(p["desired"])
 	if p["current"] != nil {
 		c := shvMap(p["current"])
-		if pubHead(c) != nil {
+		if pubHeadVersion(c, version) != nil {
 			return nil, shvFail()
 		}
 		cd := shvMap(c["definition"])
@@ -136,6 +141,12 @@ func pubPlan(p map[string]any) (map[string]any, error) {
 	return shvSealNew(map[string]any{"protocol": "symphony.shv.publication-plan.v1", "operation_id": p["operation_id"], "expected_state_digest": previous, "change_kind": "publish", "reason": p["reason"], "head": shvSealNew(map[string]any{"protocol": "symphony.shv.publication-head.v1", "definition": d, "generation": generation, "previous_digest": previous})}), nil
 }
 func ValidateSHVPublicationResult(op string, input, result []byte) error {
+	return ValidateSHVPublicationResultVersion(op, input, result, SHVPublicationVersion)
+}
+func ValidateSHVPublicationResultVersion(op string, input, result []byte, version string) error {
+	if version != SHVPublicationVersion && version != SHVPublicationTransferVersion {
+		return shvFail()
+	}
 	p, e := shvObject(input)
 	if e != nil {
 		return e
@@ -145,12 +156,12 @@ func ValidateSHVPublicationResult(op string, input, result []byte) error {
 		return e
 	}
 	if op == "inspect" {
-		return shvPublicationDescriptor(p, r, SHVPublicationVersion)
+		return shvPublicationDescriptor(p, r, version)
 	}
 	var want map[string]any
 	switch op {
 	case "publication_plan":
-		want, e = pubPlan(p)
+		want, e = pubPlanVersion(p, version)
 	case "publication_reduce":
 		if !shvFields(p, "current", "plan") {
 			return shvFail()
@@ -159,7 +170,7 @@ func ValidateSHVPublicationResult(op string, input, result []byte) error {
 		if !shvFields(plan, "protocol", "operation_id", "expected_state_digest", "change_kind", "reason", "head", "digest") {
 			return shvFail()
 		}
-		expected, err := pubPlan(map[string]any{"operation_id": plan["operation_id"], "current": p["current"], "desired": shvMap(plan["head"])["definition"], "reason": plan["reason"]})
+		expected, err := pubPlanVersion(map[string]any{"operation_id": plan["operation_id"], "current": p["current"], "desired": shvMap(plan["head"])["definition"], "reason": plan["reason"]}, version)
 		if err != nil || !scvEqual(expected, plan) {
 			return shvFail()
 		}
@@ -174,7 +185,7 @@ func ValidateSHVPublicationResult(op string, input, result []byte) error {
 		for j, v := range a {
 			h := shvMap(v)
 			d := shvMap(h["definition"])
-			if pubHead(h) != nil || !scvEqual(h["generation"], j+1) || !scvEqual(h["previous_digest"], previous) {
+			if pubHeadVersion(h, version) != nil || !scvEqual(h["generation"], j+1) || !scvEqual(h["previous_digest"], previous) {
 				return shvFail()
 			}
 			key := []any{d["tops_id"], d["catalogue_id"]}
@@ -193,4 +204,12 @@ func ValidateSHVPublicationResult(op string, input, result []byte) error {
 		return shvFail()
 	}
 	return nil
+}
+
+func pubStoreInstallation(v any, version string) error {
+	writer := shvText(shvMap(v)["Version"])
+	if writer != SHVStoreVersion && (version != SHVPublicationTransferVersion || (writer != SHVStoreInventoryVersion && writer != SHVStoreTransferVersion)) {
+		return shvFail()
+	}
+	return storeInstallationVersion(v, writer)
 }

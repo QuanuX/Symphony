@@ -150,7 +150,8 @@ void definition(const engine::Request &r, const Json &d) {
     installation(member.at("kernel_installation"), "shv-engine", "symphony-shv",
                  {"0.1.0-dev", "0.2.0-dev", "0.3.0-dev"});
     installation(member.at("store_installation"), "shv-graph-duckdb-connector",
-                 "symphony-shv-graph-duckdb-connector", {"0.1.0-dev"});
+                 "symphony-shv-graph-duckdb-connector",
+                 {"0.1.0-dev", "0.2.0-dev", "0.3.0-dev"});
     const auto &ep = member.at("endpoint");
     fields(ep, {"bundle_path", "source_root", "state_root", "tops_id",
                 "source_id", "source_prefix", "source_version", "kernel_prefix",

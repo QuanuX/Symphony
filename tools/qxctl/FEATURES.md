@@ -880,7 +880,7 @@
         "SHV-04 adds protected source CAS/journal tests and production qxctl with isolated real SSIAG/STAV acceptance; no global source-write STAV receipt is claimed."
       ],
       "feature_id": "ssfv:symphony:qxctl.shv-administration",
-      "how": "Validates exact receipts, descriptors, bounded process responses and independently rederives coverage, source-backed catalogue claims, evaluation, graph projection and adapter row correspondence.",
+      "how": "Validates exact receipts, descriptors, bounded process responses and independently rederives coverage, source-backed catalogue claims, evaluation, graph projection and adapter row correspondence. Single SHV graph-store transfer surface supports execution and recovery; explicit publication remains separate.",
       "implementation_languages": [
         {
           "language": "Go",
@@ -961,7 +961,11 @@
         "tools/qxctl/internal/knowledgeengine/shv_publication.go",
         "tools/qxctl/internal/knowledgeengine/shv_publication_validation.go",
         "tools/qxctl/internal/shvpublicationstate/store.go",
-        "tools/qxctl/internal/knowledgeengine/shv_store_inventory.go"
+        "tools/qxctl/internal/knowledgeengine/shv_store_inventory.go",
+        "tools/qxctl/cmd/qxctl/shv_store_transfer.go",
+        "tools/qxctl/cmd/qxctl/shv_store_transfer_commands.go",
+        "tools/qxctl/internal/shvtransfer/journal.go",
+        "tools/qxctl/internal/shvtransfer/storage_unix.go"
       ],
       "kind": "feature",
       "non_claims": [
@@ -970,7 +974,7 @@
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",
-      "record_version": 2,
+      "record_version": 3,
       "relationships": [
         {
           "rationale": "C++ owns SHV semantic rebuild and findings.",

@@ -34,3 +34,10 @@ installation for its writes, exports and SHV-18 publication bindings. Publicatio
 engine 0.1 does not silently admit a 0.2 writer. Existing installed packages remain
 unchanged. This release adds no transfer execution, deletion, pruning, retention
 policy, catalogue selection or database migration. These require later contracts.
+
+## Transfer release 0.3.0-dev (SHV-20)
+
+The current release adds exact-revision transfer planning and qxctl execution/recovery.
+It admits historical 0.1/0.2/0.3 writers for inventory while preserving original writer
+identity. See SPEC.md for transfer-plan, transfer and transfer-status, private target
+requirements and explicit publication under publication engine 0.2.0-dev.

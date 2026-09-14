@@ -1,6 +1,22 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "symphony.shv.graph-store.schema.v1",
+  "$id": "https://symphony.local/contracts/qxctl/shv-store-transfer/v1",
+  "title": "qxctl SHV transfer orchestration v1",
+  "description": "SHV structural graph transfer and durable recovery evidence; publication and semantic replay remain separate.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/TransferInput"
+    },
+    {
+      "$ref": "#/$defs/TransferIntent"
+    },
+    {
+      "$ref": "#/$defs/TransferEvent"
+    },
+    {
+      "$ref": "#/$defs/TransferResult"
+    }
+  ],
   "$defs": {
     "Node": {
       "type": "object",
@@ -1661,6 +1677,241 @@
         "expected_plan_digest"
       ],
       "additionalProperties": false
+    },
+    "TransferIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "source_root",
+        "target_root",
+        "plan",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.shv-store-transfer-intent.v1"
+        },
+        "source_root": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096,
+          "pattern": "^/"
+        },
+        "target_root": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096,
+          "pattern": "^/"
+        },
+        "plan": {
+          "$ref": "#/$defs/TransferPlan"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "TransferEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "transfer_digest",
+        "sequence",
+        "previous",
+        "phase",
+        "operation_id",
+        "result_digest",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.shv-store-transfer-event.v1"
+        },
+        "transfer_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64
+        },
+        "previous": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "phase": {
+          "enum": [
+            "prepare_pending",
+            "prepared",
+            "commit_pending",
+            "committed",
+            "complete"
+          ]
+        },
+        "operation_id": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "result_digest": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            {
+              "const": ""
+            }
+          ]
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "phase": {
+                "enum": [
+                  "prepared",
+                  "committed"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "result_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "result_digest": {
+                "const": ""
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "phase": {
+                "const": "complete"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "operation_id": {
+                "const": ""
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "operation_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "TransferResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "transfer_digest",
+        "source_root",
+        "target_root",
+        "events",
+        "next_phase",
+        "next_operation_id",
+        "status",
+        "problem",
+        "target_manifest",
+        "digest"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "symphony.qxctl.shv-store-transfer-result.v1"
+        },
+        "transfer_digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "source_root": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096,
+          "pattern": "^/"
+        },
+        "target_root": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 4096,
+          "pattern": "^/"
+        },
+        "events": {
+          "type": "array",
+          "maxItems": 65,
+          "items": {
+            "$ref": "#/$defs/TransferEvent"
+          }
+        },
+        "next_phase": {
+          "enum": [
+            "prepare_pending",
+            "prepared",
+            "commit_pending",
+            "committed",
+            "complete",
+            ""
+          ]
+        },
+        "next_operation_id": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "status": {
+          "enum": [
+            "complete",
+            "incomplete",
+            "recorded_complete",
+            "recorded_incomplete"
+          ]
+        },
+        "problem": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "target_manifest": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/InventoryManifest"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
     }
   }
 }

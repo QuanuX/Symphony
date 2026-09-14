@@ -1,0 +1,126 @@
+{
+  "catalogue_id": "specimen",
+  "manifest": {
+    "complete_inventory": true,
+    "digest": "sha256:c27758ca3d4c0b426e44a764281017770cbcdc3ec8c5f1edb4ad4079adf4f622",
+    "entries": [
+      {
+        "partition": {
+          "dependencies": {
+            "captures": [
+              {
+                "bytes": 738352,
+                "capture_digest": "sha256:932d3d3e177ace7be844acfe7b6e7e88bd367032cf0487cafb3bdb9ab424bd3e",
+                "capture_id": "amd-69290-rev-1-00",
+                "content_digest": "sha256:5178cba64d77199eb7b8e7baa2cf5f6c15308784939396a0d3338c0fb81e04f7"
+              }
+            ],
+            "catalogue_digest": "sha256:bbde9a66804a2d5bb453f522663f55696d3ba658e5ef93c6ca78cee1b9b8e885",
+            "kernel_engine": {
+              "engine_id": "symphony-shv",
+              "executable_digest": "sha256:0dcd91b01e2175ad646c5fb1aa6504e17dc45f468fb2b9d23c4b727b1aa746af",
+              "version": "0.3.0-dev"
+            },
+            "mapping_digest": "sha256:dd4154dbe8a07064b9c56fcf0aef36ba7a2a6c7e355a88f9055cf02bee6e8898",
+            "source_engine": {
+              "engine_id": "symphony-shv-source",
+              "executable_digest": "sha256:9288c0dc30a46245d4f6217e012cae400cf9cc03eff49b36c18fc98b6bdbe20d",
+              "version": "0.1.0-dev"
+            },
+            "source_revision_digest": "sha256:ed73a5f1916acb55d05527a28fdc45d310983cff2a311118677a7a0425c66f4b"
+          },
+          "digest": "sha256:ab54ee35fb184b9724a89c1671bd727eae5745ea57218c3cc76c9b0a05f32ec3",
+          "protocol": "symphony.shv.partition.v1",
+          "subject_ids": [
+            "pdf-7313"
+          ]
+        },
+        "partition_digest": "sha256:ab54ee35fb184b9724a89c1671bd727eae5745ea57218c3cc76c9b0a05f32ec3"
+      }
+    ],
+    "loaded_count": 1,
+    "missing_count": 0,
+    "protocol": "symphony.shv.partition-manifest.v1",
+    "reference_statuses": [],
+    "required_references": []
+  },
+  "members": [
+    {
+      "bundle_digest": "sha256:213e2e4d9e2c8e5deb16a0fc5117840100770f184c1a1d9df79f698787c44c5c",
+      "endpoint": {
+        "bundle_path": "/fixture/shv-20/evidence/publication/refresh-bundle.json",
+        "kernel_prefix": "/fixture/installed/shv-consolidated-kernel",
+        "kernel_version": "0.3.0-dev",
+        "source_id": "amd-69290-r1",
+        "source_prefix": "/fixture/installed/shv-02-source-final",
+        "source_root": "/fixture/shv-20/evidence/publication/original-source",
+        "source_version": "0.1.0-dev",
+        "state_root": "/fixture/shv-20/evidence/publication/source-state",
+        "tops_id": "76055acd-fb17-4aa7-958f-ac0ef4b3b084"
+      },
+      "graph_digest": "sha256:f561710ae0ee08f1b5ca902d6174a0982c8ddba9785736ca840b156b320103b6",
+      "kernel_installation": {
+        "EngineID": "symphony-shv",
+        "ExecutableDigest": "sha256:0dcd91b01e2175ad646c5fb1aa6504e17dc45f468fb2b9d23c4b727b1aa746af",
+        "ExecutablePath": "/fixture/installed/shv-consolidated-kernel/libexec/symphony/shv-engine/0.3.0-dev/symphony-shv",
+        "ModuleID": "shv-engine",
+        "Prefix": "/fixture/installed/shv-consolidated-kernel",
+        "ReceiptDigest": "sha256:a42c71eb9d5341dd0564f8b122dc2af61a1d9becf283b56ac7933b233f7930ec",
+        "ReceiptPath": "/fixture/installed/shv-consolidated-kernel/share/symphony/receipts/shv-engine/0.3.0-dev/install-receipt.json",
+        "ReceiptProtocol": "symphony.knowledge.install-receipt.v2",
+        "Role": "shv-engine",
+        "Version": "0.3.0-dev"
+      },
+      "partition_digest": "sha256:ab54ee35fb184b9724a89c1671bd727eae5745ea57218c3cc76c9b0a05f32ec3",
+      "source_installation": {
+        "EngineID": "symphony-shv-source",
+        "ExecutableDigest": "sha256:9288c0dc30a46245d4f6217e012cae400cf9cc03eff49b36c18fc98b6bdbe20d",
+        "ExecutablePath": "/fixture/installed/shv-02-source-final/libexec/symphony/shv-source-engine/0.1.0-dev/symphony-shv-source",
+        "ModuleID": "shv-source-engine",
+        "Prefix": "/fixture/installed/shv-02-source-final",
+        "ReceiptDigest": "sha256:156de84ea261f9a0cb19b0c413af170a632378eca2792589bb8fa87b92f01bb0",
+        "ReceiptPath": "/fixture/installed/shv-02-source-final/share/symphony/receipts/shv-source-engine/0.1.0-dev/install-receipt.json",
+        "ReceiptProtocol": "symphony.knowledge.install-receipt.v2",
+        "Role": "shv-source-engine",
+        "Version": "0.1.0-dev"
+      },
+      "store": {
+        "namespace": "publication",
+        "prefix": "/fixture/installed/shv-20-store-final",
+        "root": "/fixture/shv-20/evidence/publication/transferred-store",
+        "snapshot_digest": "sha256:720b3cf2f76ed5c07ded517e24df6343947582c5ea1c2fd00dd81f6cd845c996",
+        "tops_id": "76055acd-fb17-4aa7-958f-ac0ef4b3b084",
+        "version": "0.3.0-dev"
+      },
+      "store_installation": {
+        "EngineID": "symphony-shv-graph-duckdb-connector",
+        "ExecutableDigest": "sha256:ad0cfdce1a53de21c627f7ea158280970dad53bd53e56c7bb189dd08977e3a93",
+        "ExecutablePath": "/fixture/installed/shv-20-store-final/libexec/symphony/shv-graph-duckdb-connector/0.3.0-dev/symphony-shv-graph-duckdb-connector",
+        "ModuleID": "shv-graph-duckdb-connector",
+        "Prefix": "/fixture/installed/shv-20-store-final",
+        "ReceiptDigest": "sha256:2300488592c6c825958986d5ae1a207992be1c7f83178915a223d9aff10851ac",
+        "ReceiptPath": "/fixture/installed/shv-20-store-final/share/symphony/receipts/shv-graph-duckdb-connector/0.3.0-dev/install-receipt.json",
+        "ReceiptProtocol": "symphony.knowledge.install-receipt.v2",
+        "Role": "shv-graph-duckdb-connector",
+        "Version": "0.3.0-dev"
+      }
+    }
+  ],
+  "partition_installation": {
+    "EngineID": "symphony-shv-partition",
+    "ExecutableDigest": "sha256:b505d74acade9204fa49d9f5af8252a56f5f86876e93e2f8d24bd61b35adb765",
+    "ExecutablePath": "/fixture/installed/shv-consolidated-partition/libexec/symphony/shv-partition-engine/0.2.0-dev/symphony-shv-partition",
+    "ModuleID": "shv-partition-engine",
+    "Prefix": "/fixture/installed/shv-consolidated-partition",
+    "ReceiptDigest": "sha256:58e60645126f3db8ff8fcda6f61acd502ac9adfdf8c788496112fffb663c7054",
+    "ReceiptPath": "/fixture/installed/shv-consolidated-partition/share/symphony/receipts/shv-partition-engine/0.2.0-dev/install-receipt.json",
+    "ReceiptProtocol": "symphony.knowledge.install-receipt.v2",
+    "Role": "shv-partition-engine",
+    "Version": "0.2.0-dev"
+  },
+  "policy": {
+    "missing_partitions": "reject",
+    "missing_references": "reject"
+  },
+  "tops_id": "76055acd-fb17-4aa7-958f-ac0ef4b3b084"
+}

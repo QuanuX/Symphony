@@ -90,7 +90,7 @@ Seven delivery sprints remain. Their detailed sequence and contents will be pres
 
 ## Implemented Foundations
 
-- [`qxctl`](tools/qxctl/) is Symphony's Go-based, agentic-first administrative and query CLI. Its checked-in registry binds **357** executable command leaves to stable machine identities and reviewed feature-administration evidence. It implements repository and contract inspection; validator, warning, invariant, feature, lifecycle, session, reconciliation, binding, Maestro, SSIAG, STAV, Accordare, and implemented vector-engine administration. Exact installation verification, bounded subprocesses, hard deadlines, response identity/digest checks, expected-state transactions, and durable recovery are used where the owning contract requires them. Engine-binding registry v2 supports the eight established roles and bounded future role identities; legacy v1 state is dual-read and requires explicit digest-bound migration before mutation.
+- [`qxctl`](tools/qxctl/) is Symphony's Go-based, agentic-first administrative and query CLI. Its checked-in registry binds **360** executable command leaves to stable machine identities and reviewed feature-administration evidence. It implements repository and contract inspection; validator, warning, invariant, feature, lifecycle, session, reconciliation, binding, Maestro, SSIAG, STAV, Accordare, and implemented vector-engine administration. Exact installation verification, bounded subprocesses, hard deadlines, response identity/digest checks, expected-state transactions, and durable recovery are used where the owning contract requires them. Engine-binding registry v2 supports the eight established roles and bounded future role identities; legacy v1 state is dual-read and requires explicit digest-bound migration before mutation.
 - [Symphony Secure Identity and Access Governance](modules/secure-identity-access-governance/) is an independently installable, cgo-free Go foundation for exact caller-neutral authorization, per-TOPS enrollment, local endpoint trust, protected policy lifecycle, provider-installation and binding lifecycle, safe audit metadata, and native launchd/systemd supervision. Ordinary foundational mutation fails closed pending its required audit route. Operational credential use, canonical knowledge apply, and secret delivery remain disabled.
 - [STAV Append Authority](modules/stav-append-authority/) is an independently installable Go service for per-TOPS append-only audit ledgers, mutually authenticated local IPC, exact producer/reader grants, fsync-before-receipt durability, bounded reads, verification, recovery, enrollment, and native supervision. qxctl never receives raw append authority.
 - [STAV Protocol for Go](libraries/stav-protocol-go/) is an authority-free Go library implementing the canonical STAV v1 codec, strict validation, digests, framing, conformance rules, and closed producer vocabulary.
@@ -127,7 +127,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
 
 - SSFV catalog state: `partial`; registered features: **109**; registered owner scopes: **28**; ratified nested features: **73**.
 - Feature-administration expectations: **291** reviewed surfaces; **281** required, **13** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
-- qxctl stable command identities: **357**.
+- qxctl stable command identities: **360**.
 - Registered owner capabilities:
   - `ssfv:symphony:accordare-stav-producer`
   - `ssfv:symphony:knowledge-session-coordinator`
@@ -161,7 +161,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `github.com/QuanuX/Symphony/libraries/stav-protocol-go` `v0.2.0` (tag `libraries/stav-protocol-go/v0.2.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.1.0` (tag `modules/stav-append-authority/v0.1.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
-- Snapshot digest: `sha256:d72f00379b5a1b3e737691b4f0058062d9cee7843faf83a9d30117ad7855c4d3`
+- Snapshot digest: `sha256:62762e28e55a76b9c4f146c5084e711ea9665439efbf6aad031ddabffae686b0`
 <!-- symphony:root-summary:v1:end -->
 
 ## Releases and Documentation

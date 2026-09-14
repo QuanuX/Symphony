@@ -1,0 +1,393 @@
+{
+  "backend": "duckdb",
+  "blockers": [],
+  "disposition": "ready",
+  "excluded_operation_ids": [],
+  "input": {
+    "capacity": {
+      "intents": 2,
+      "snapshots": 1
+    },
+    "expected_revision": "sha256:8d862752c3d679af64c8173103f1130330e92df400a118770aca974171d9e58c",
+    "namespace": "caller",
+    "operation_ids": [
+      "committed",
+      "prepared"
+    ],
+    "source_connector": {
+      "EngineID": "symphony-shv-graph-duckdb-connector",
+      "ExecutableDigest": "sha256:ad0cfdce1a53de21c627f7ea158280970dad53bd53e56c7bb189dd08977e3a93",
+      "ExecutablePath": "/fixture/libexec/symphony/shv-graph-duckdb-connector/0.3.0-dev/symphony-shv-graph-duckdb-connector",
+      "ModuleID": "shv-graph-duckdb-connector",
+      "Prefix": "/fixture",
+      "ReceiptDigest": "sha256:2300488592c6c825958986d5ae1a207992be1c7f83178915a223d9aff10851ac",
+      "ReceiptPath": "/fixture/share/symphony/receipts/shv-graph-duckdb-connector/0.3.0-dev/install-receipt.json",
+      "ReceiptProtocol": "symphony.knowledge.install-receipt.v2",
+      "Role": "shv-graph-duckdb-connector",
+      "Version": "0.3.0-dev"
+    },
+    "target_connector": {
+      "EngineID": "symphony-shv-graph-duckdb-connector",
+      "ExecutableDigest": "sha256:ad0cfdce1a53de21c627f7ea158280970dad53bd53e56c7bb189dd08977e3a93",
+      "ExecutablePath": "/fixture/libexec/symphony/shv-graph-duckdb-connector/0.3.0-dev/symphony-shv-graph-duckdb-connector",
+      "ModuleID": "shv-graph-duckdb-connector",
+      "Prefix": "/fixture",
+      "ReceiptDigest": "sha256:2300488592c6c825958986d5ae1a207992be1c7f83178915a223d9aff10851ac",
+      "ReceiptPath": "/fixture/share/symphony/receipts/shv-graph-duckdb-connector/0.3.0-dev/install-receipt.json",
+      "ReceiptProtocol": "symphony.knowledge.install-receipt.v2",
+      "Role": "shv-graph-duckdb-connector",
+      "Version": "0.3.0-dev"
+    },
+    "target_root": "/target",
+    "tops_id": "01993d63-b40d-7000-8000-000000000020"
+  },
+  "manifest": {
+    "capacity": {
+      "intents": 128,
+      "snapshots": 128
+    },
+    "entries": [
+      {
+        "operation_id": "committed",
+        "intent_digest": "sha256:c34eaeda2942f2d30e07695db4598728e76cd781c73e2328c4a628713552cadc",
+        "snapshot_digest": "sha256:28063474ad1fd6869ae3f0ea3a62219df6c3561045a5b8ea27ea81aa8cf5f46f",
+        "state": "committed",
+        "graph_digest": "sha256:53b859c34df04294442ff1863028f7ad1251cf7b1578d736d40e3c478735ad07",
+        "connector": {
+          "EngineID": "symphony-shv-graph-duckdb-connector",
+          "ExecutableDigest": "sha256:ad0cfdce1a53de21c627f7ea158280970dad53bd53e56c7bb189dd08977e3a93",
+          "ExecutablePath": "/fixture/libexec/symphony/shv-graph-duckdb-connector/0.3.0-dev/symphony-shv-graph-duckdb-connector",
+          "ModuleID": "shv-graph-duckdb-connector",
+          "Prefix": "/fixture",
+          "ReceiptDigest": "sha256:2300488592c6c825958986d5ae1a207992be1c7f83178915a223d9aff10851ac",
+          "ReceiptPath": "/fixture/share/symphony/receipts/shv-graph-duckdb-connector/0.3.0-dev/install-receipt.json",
+          "ReceiptProtocol": "symphony.knowledge.install-receipt.v2",
+          "Role": "shv-graph-duckdb-connector",
+          "Version": "0.3.0-dev"
+        },
+        "counts": {
+          "edges": 3,
+          "nodes": 3
+        },
+        "projection_digest": "sha256:e60fabd8b10f2c93d95c83ce2e167598493d8f296d5658d7640fdcf81e584603"
+      },
+      {
+        "operation_id": "prepared",
+        "intent_digest": "sha256:928319b895c74eb515afedb2002248b11f21e3a54e8cefb968e29a71d05c1307",
+        "snapshot_digest": "sha256:28063474ad1fd6869ae3f0ea3a62219df6c3561045a5b8ea27ea81aa8cf5f46f",
+        "state": "prepared",
+        "graph_digest": "sha256:53b859c34df04294442ff1863028f7ad1251cf7b1578d736d40e3c478735ad07",
+        "connector": {
+          "EngineID": "symphony-shv-graph-duckdb-connector",
+          "ExecutableDigest": "sha256:ad0cfdce1a53de21c627f7ea158280970dad53bd53e56c7bb189dd08977e3a93",
+          "ExecutablePath": "/fixture/libexec/symphony/shv-graph-duckdb-connector/0.3.0-dev/symphony-shv-graph-duckdb-connector",
+          "ModuleID": "shv-graph-duckdb-connector",
+          "Prefix": "/fixture",
+          "ReceiptDigest": "sha256:2300488592c6c825958986d5ae1a207992be1c7f83178915a223d9aff10851ac",
+          "ReceiptPath": "/fixture/share/symphony/receipts/shv-graph-duckdb-connector/0.3.0-dev/install-receipt.json",
+          "ReceiptProtocol": "symphony.knowledge.install-receipt.v2",
+          "Role": "shv-graph-duckdb-connector",
+          "Version": "0.3.0-dev"
+        },
+        "counts": {
+          "edges": 3,
+          "nodes": 3
+        },
+        "projection_digest": "sha256:e60fabd8b10f2c93d95c83ce2e167598493d8f296d5658d7640fdcf81e584603"
+      }
+    ],
+    "global_counts": {
+      "intents": 2,
+      "snapshots": 1
+    },
+    "global_revision": "sha256:6b2c6a82201866b22cac284b64b07a4043ec1224e07c2585543f8cd07e95ec6a",
+    "namespace": "caller",
+    "protocol": "symphony.shv.graph-store-inventory-manifest.v1",
+    "snapshots": [
+      {
+        "snapshot_digest": "sha256:28063474ad1fd6869ae3f0ea3a62219df6c3561045a5b8ea27ea81aa8cf5f46f",
+        "operation_ids": [
+          "committed",
+          "prepared"
+        ],
+        "committed_operations": 1
+      }
+    ],
+    "tops_id": "01993d63-b40d-7000-8000-000000000020",
+    "digest": "sha256:8d862752c3d679af64c8173103f1130330e92df400a118770aca974171d9e58c"
+  },
+  "protocol": "symphony.shv.graph-store-transfer-plan.v1",
+  "requirements": {
+    "intents": 2,
+    "snapshots": 1
+  },
+  "selected": [
+    {
+      "source": {
+        "backend": "duckdb",
+        "counts": {
+          "edges": 3,
+          "nodes": 3
+        },
+        "index_verified": true,
+        "intent": {
+          "operation_id": "committed",
+          "protocol": "symphony.shv.graph-store-intent.v1",
+          "snapshot": {
+            "backend": "duckdb",
+            "connector": {
+              "EngineID": "symphony-shv-graph-duckdb-connector",
+              "ExecutableDigest": "sha256:ad0cfdce1a53de21c627f7ea158280970dad53bd53e56c7bb189dd08977e3a93",
+              "ExecutablePath": "/fixture/libexec/symphony/shv-graph-duckdb-connector/0.3.0-dev/symphony-shv-graph-duckdb-connector",
+              "ModuleID": "shv-graph-duckdb-connector",
+              "Prefix": "/fixture",
+              "ReceiptDigest": "sha256:2300488592c6c825958986d5ae1a207992be1c7f83178915a223d9aff10851ac",
+              "ReceiptPath": "/fixture/share/symphony/receipts/shv-graph-duckdb-connector/0.3.0-dev/install-receipt.json",
+              "ReceiptProtocol": "symphony.knowledge.install-receipt.v2",
+              "Role": "shv-graph-duckdb-connector",
+              "Version": "0.3.0-dev"
+            },
+            "graph": {
+              "digest": "sha256:53b859c34df04294442ff1863028f7ad1251cf7b1578d736d40e3c478735ad07",
+              "edges": [
+                {
+                  "from": "0",
+                  "id": "0",
+                  "label": "caller-link",
+                  "properties": {
+                    "future": [
+                      0
+                    ]
+                  },
+                  "to": "1"
+                },
+                {
+                  "from": "0",
+                  "id": "1",
+                  "label": "caller-link",
+                  "properties": {
+                    "future": [
+                      1
+                    ]
+                  },
+                  "to": "1"
+                },
+                {
+                  "from": "0",
+                  "id": "2",
+                  "label": "caller-link",
+                  "properties": {
+                    "future": [
+                      2
+                    ]
+                  },
+                  "to": "1"
+                }
+              ],
+              "nodes": [
+                {
+                  "id": "0",
+                  "labels": [
+                    "component"
+                  ],
+                  "properties": {
+                    "unknown_metric": {
+                      "unit": "caller",
+                      "value": 0
+                    }
+                  }
+                },
+                {
+                  "id": "1",
+                  "labels": [
+                    "component"
+                  ],
+                  "properties": {
+                    "unknown_metric": {
+                      "unit": "caller",
+                      "value": 1
+                    }
+                  }
+                },
+                {
+                  "id": "2",
+                  "labels": [
+                    "component"
+                  ],
+                  "properties": {
+                    "unknown_metric": {
+                      "unit": "caller",
+                      "value": 2
+                    }
+                  }
+                }
+              ],
+              "owner": {
+                "artifact_digest": "sha256:63644ac114d42310a107effb25e6fe9d565f77069c627ed926ec1fe8cbdb2165",
+                "artifact_protocol": "caller.example.v1",
+                "engine_id": "caller-owner",
+                "engine_version": "1"
+              },
+              "owner_artifact": {
+                "digest": "sha256:63644ac114d42310a107effb25e6fe9d565f77069c627ed926ec1fe8cbdb2165",
+                "future_field": {
+                  "class": "networking-card",
+                  "retired": null
+                },
+                "protocol": "caller.example.v1"
+              },
+              "protocol": "symphony.graph.exchange.v1"
+            },
+            "mapping_version": "1",
+            "namespace": "caller",
+            "protocol": "symphony.shv.graph-store-snapshot.v1",
+            "tops_id": "01993d63-b40d-7000-8000-000000000020",
+            "digest": "sha256:28063474ad1fd6869ae3f0ea3a62219df6c3561045a5b8ea27ea81aa8cf5f46f"
+          },
+          "digest": "sha256:c34eaeda2942f2d30e07695db4598728e76cd781c73e2328c4a628713552cadc"
+        },
+        "projection_digest": "sha256:e60fabd8b10f2c93d95c83ce2e167598493d8f296d5658d7640fdcf81e584603",
+        "protocol": "symphony.shv.graph-store-status.v1",
+        "snapshot_digest": "sha256:28063474ad1fd6869ae3f0ea3a62219df6c3561045a5b8ea27ea81aa8cf5f46f",
+        "state": "committed",
+        "digest": "sha256:ada3b18310031eb4c0029b5e0f0cdd866d61e091e56fd55aa48e137964b32592"
+      },
+      "target_intent_digest": "sha256:c34eaeda2942f2d30e07695db4598728e76cd781c73e2328c4a628713552cadc",
+      "target_snapshot_digest": "sha256:28063474ad1fd6869ae3f0ea3a62219df6c3561045a5b8ea27ea81aa8cf5f46f"
+    },
+    {
+      "source": {
+        "backend": "duckdb",
+        "counts": {
+          "edges": 3,
+          "nodes": 3
+        },
+        "index_verified": false,
+        "intent": {
+          "operation_id": "prepared",
+          "protocol": "symphony.shv.graph-store-intent.v1",
+          "snapshot": {
+            "backend": "duckdb",
+            "connector": {
+              "EngineID": "symphony-shv-graph-duckdb-connector",
+              "ExecutableDigest": "sha256:ad0cfdce1a53de21c627f7ea158280970dad53bd53e56c7bb189dd08977e3a93",
+              "ExecutablePath": "/fixture/libexec/symphony/shv-graph-duckdb-connector/0.3.0-dev/symphony-shv-graph-duckdb-connector",
+              "ModuleID": "shv-graph-duckdb-connector",
+              "Prefix": "/fixture",
+              "ReceiptDigest": "sha256:2300488592c6c825958986d5ae1a207992be1c7f83178915a223d9aff10851ac",
+              "ReceiptPath": "/fixture/share/symphony/receipts/shv-graph-duckdb-connector/0.3.0-dev/install-receipt.json",
+              "ReceiptProtocol": "symphony.knowledge.install-receipt.v2",
+              "Role": "shv-graph-duckdb-connector",
+              "Version": "0.3.0-dev"
+            },
+            "graph": {
+              "digest": "sha256:53b859c34df04294442ff1863028f7ad1251cf7b1578d736d40e3c478735ad07",
+              "edges": [
+                {
+                  "from": "0",
+                  "id": "0",
+                  "label": "caller-link",
+                  "properties": {
+                    "future": [
+                      0
+                    ]
+                  },
+                  "to": "1"
+                },
+                {
+                  "from": "0",
+                  "id": "1",
+                  "label": "caller-link",
+                  "properties": {
+                    "future": [
+                      1
+                    ]
+                  },
+                  "to": "1"
+                },
+                {
+                  "from": "0",
+                  "id": "2",
+                  "label": "caller-link",
+                  "properties": {
+                    "future": [
+                      2
+                    ]
+                  },
+                  "to": "1"
+                }
+              ],
+              "nodes": [
+                {
+                  "id": "0",
+                  "labels": [
+                    "component"
+                  ],
+                  "properties": {
+                    "unknown_metric": {
+                      "unit": "caller",
+                      "value": 0
+                    }
+                  }
+                },
+                {
+                  "id": "1",
+                  "labels": [
+                    "component"
+                  ],
+                  "properties": {
+                    "unknown_metric": {
+                      "unit": "caller",
+                      "value": 1
+                    }
+                  }
+                },
+                {
+                  "id": "2",
+                  "labels": [
+                    "component"
+                  ],
+                  "properties": {
+                    "unknown_metric": {
+                      "unit": "caller",
+                      "value": 2
+                    }
+                  }
+                }
+              ],
+              "owner": {
+                "artifact_digest": "sha256:63644ac114d42310a107effb25e6fe9d565f77069c627ed926ec1fe8cbdb2165",
+                "artifact_protocol": "caller.example.v1",
+                "engine_id": "caller-owner",
+                "engine_version": "1"
+              },
+              "owner_artifact": {
+                "digest": "sha256:63644ac114d42310a107effb25e6fe9d565f77069c627ed926ec1fe8cbdb2165",
+                "future_field": {
+                  "class": "networking-card",
+                  "retired": null
+                },
+                "protocol": "caller.example.v1"
+              },
+              "protocol": "symphony.graph.exchange.v1"
+            },
+            "mapping_version": "1",
+            "namespace": "caller",
+            "protocol": "symphony.shv.graph-store-snapshot.v1",
+            "tops_id": "01993d63-b40d-7000-8000-000000000020",
+            "digest": "sha256:28063474ad1fd6869ae3f0ea3a62219df6c3561045a5b8ea27ea81aa8cf5f46f"
+          },
+          "digest": "sha256:928319b895c74eb515afedb2002248b11f21e3a54e8cefb968e29a71d05c1307"
+        },
+        "projection_digest": "sha256:e60fabd8b10f2c93d95c83ce2e167598493d8f296d5658d7640fdcf81e584603",
+        "protocol": "symphony.shv.graph-store-status.v1",
+        "snapshot_digest": "sha256:28063474ad1fd6869ae3f0ea3a62219df6c3561045a5b8ea27ea81aa8cf5f46f",
+        "state": "prepared",
+        "digest": "sha256:8bf66b41ffdeaa9c74f0f45d5b1eded6ad601c852d3559772a6cb55a9670eeec"
+      },
+      "target_intent_digest": "sha256:928319b895c74eb515afedb2002248b11f21e3a54e8cefb968e29a71d05c1307",
+      "target_snapshot_digest": "sha256:28063474ad1fd6869ae3f0ea3a62219df6c3561045a5b8ea27ea81aa8cf5f46f"
+    }
+  ],
+  "digest": "sha256:82ec296dead179d1d76062cc5dc77875c1600cc2155d1c88113e8bfa69e9a2bf"
+}
