@@ -12033,3 +12033,104 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/knowledgeengine/shv_store_inventory_test.go`
   - `tools/qxctl/internal/knowledgeengine/shv_store_validation.go`
   - `tools/qxctl/internal/knowledgeengine/testdata/shv-store/inventory.json`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-TRANSFER-PUBLICATION`
+- record_version: `3`
+- title: `Transfer caller-selected SHV evidence with durable recovery and explicit publication`
+- status: `canonical`
+- change_started_at: `2026-09-14T23:03:13Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for caller-selected SHV transfer and publication continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-transfer-publication-continuation.md`
+- skvi_references:
+  - `knowledge/shv/GRAPH-STORE.md`
+  - `knowledge/shv/PUBLICATION.md`
+  - `modules/shv-graph-duckdb-connector/SPEC.md`
+- change_summary: |
+    Adds C++ exact-revision transfer planning, qxctl durable copy recovery, and explicit publication admission for newer graph-store writers.
+- relationship_changes: |
+    Reuses bounded SCV journal and transfer mechanics under SHV structural ownership, keeping source/kernel replay and protected catalogue publication separate.
+- doctrine_changes: |
+    Caller-selected source, target, operations and capacity remain explicit. Copying neither deletes its source nor publishes a catalogue. Recovery reuses the same command.
+- compatibility_consequences: |
+    Store connector 0.3 adds planning and reads historical writers 0.1/0.2/0.3; publisher 0.2 explicitly admits those writers. Legacy publisher 0.1 and reader 0.2 retain their narrower independent admission. Registry has 360 commands and 109 features.
+- publication_consequences: |
+    Private actual SSIAG/STAV checks verify separately authorized publication after original AMD source/kernel replay. Production and remote publication remain untouched.
+- projection_consequences: |
+    Complete graph content and prepared/committed states survive copy. Destination intent/snapshot digests bind the exact target writer. Sealed plans, private journal steps and complete inventory checks reject drift and conflicting recovery.
+- evidence:
+  - `../shv-20/VERIFICATION.md records focused native, Go, installed transfer, SIGKILL recovery and actual private publication acceptance.`
+  - `../shv-20/evidence/SOURCE_BUILD_PARITY.json binds the clean source build and installed native package bytes.`
+  - `../shv-20/MANIFEST.json seals designated evidence.`
+- non_authorizations:
+  - `No source deletion, pruning, retention policy or production catalogue changes.`
+  - `No default graph database, imposed provider/hardware policy, remote publication or production deployment.`
+- notes: |
+    Transfer proves structural correspondence. Publication separately replays original semantic owners. No cross-store or cross-authority atomicity is claimed. Mapping diagnostics, hardware-class conformance, portable universes and reference-aware retention remain subsequent work.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T23:25:43Z`
+- recorded_at: `2026-09-14T23:28:59Z`
+- revision_value: `83827d15426d2b9fdb19ecd22efe89b55746a8ce`
+- tree_digest: `sha256:257c5fa534f86fa638b593d842bc0e59f856764efd238cb1e23e8e9ab3b2aa2f`
+- ratification_evidence_digest: `sha256:287c0b08617f8bd955d58a3059b3ae0c5a20f9ff47ca77be5b9376f945fe2f3b`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/shv/PUBLICATION.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/shv-graph-duckdb-connector/CMakeLists.txt`
+  - `modules/shv-graph-duckdb-connector/FEATURES.md`
+  - `modules/shv-graph-duckdb-connector/INSTALL.md`
+  - `modules/shv-graph-duckdb-connector/SKILL.md`
+  - `modules/shv-graph-duckdb-connector/SPEC.md`
+  - `modules/shv-graph-duckdb-connector/schemas/v1/graph-store.schema.json`
+  - `modules/shv-graph-duckdb-connector/schemas/v1/graph-store.templates.json`
+  - `modules/shv-graph-duckdb-connector/src/connector.cpp`
+  - `modules/shv-graph-duckdb-connector/src/connector.hpp`
+  - `modules/shv-graph-duckdb-connector/tests/connector_test.py`
+  - `modules/shv-publication-engine/CMakeLists.txt`
+  - `modules/shv-publication-engine/FEATURES.md`
+  - `modules/shv-publication-engine/MANIFEST.md`
+  - `modules/shv-publication-engine/cmake/uninstall.cmake.in`
+  - `modules/shv-publication-engine/schemas/v1/publication.schema.json`
+  - `modules/shv-publication-engine/src/publication.cpp`
+  - `modules/shv-publication-engine/src/publication.hpp`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv_store.go`
+  - `tools/qxctl/cmd/qxctl/shv_store_transfer.go`
+  - `tools/qxctl/cmd/qxctl/shv_store_transfer_commands.go`
+  - `tools/qxctl/cmd/qxctl/shv_transfer_barrier.go`
+  - `tools/qxctl/cmd/qxctl/shv_transfer_barrier_fault.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_publication.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_publication_validation.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store_descriptor.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store_inventory.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store_transfer_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store_validation.go`
+  - `tools/qxctl/internal/knowledgeengine/testdata/shv-store/publication-definition.json`
+  - `tools/qxctl/internal/knowledgeengine/testdata/shv-store/transfer-plan.json`
+  - `tools/qxctl/internal/shvpublicationstate/validation.go`
+  - `tools/qxctl/internal/shvtransfer/journal.go`
+  - `tools/qxctl/internal/shvtransfer/journal_test.go`
+  - `tools/qxctl/internal/shvtransfer/rename_darwin.go`
+  - `tools/qxctl/internal/shvtransfer/rename_linux.go`
+  - `tools/qxctl/internal/shvtransfer/schema.go`
+  - `tools/qxctl/internal/shvtransfer/storage_unix.go`
+  - `tools/qxctl/internal/shvtransfer/transfer.schema.json`
