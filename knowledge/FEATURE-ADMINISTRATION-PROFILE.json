@@ -1790,6 +1790,8 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.materialization.schema",
+            "qxcmd:symphony:shv.materialization.template",
             "qxcmd:symphony:shv.partition.schema",
             "qxcmd:symphony:shv.partition.template",
             "qxcmd:symphony:shv.refresh.schema",
@@ -1817,6 +1819,7 @@
           "command_ids": [
             "qxcmd:symphony:shv.graph.adapter.inspect",
             "qxcmd:symphony:shv.inspect",
+            "qxcmd:symphony:shv.materialization.status",
             "qxcmd:symphony:shv.partition.inspect",
             "qxcmd:symphony:shv.source.activation.status",
             "qxcmd:symphony:shv.source.inspect",
@@ -1843,6 +1846,9 @@
             "qxcmd:symphony:shv.graph.adapter.roundtrip",
             "qxcmd:symphony:shv.graph.project",
             "qxcmd:symphony:shv.graph.validate",
+            "qxcmd:symphony:shv.materialization.export",
+            "qxcmd:symphony:shv.materialization.prepare",
+            "qxcmd:symphony:shv.materialization.run",
             "qxcmd:symphony:shv.partition.build",
             "qxcmd:symphony:shv.partition.from-refresh",
             "qxcmd:symphony:shv.partition.manifest",
@@ -1904,9 +1910,10 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.materialization.resume",
             "qxcmd:symphony:shv.source.activation.recover"
           ],
-          "delivery": "direct",
+          "delivery": "composed",
           "engine_operation_ids": [],
           "evidence": [
             "knowledge/shv/KERNEL.md",
@@ -5813,6 +5820,9 @@
             "qxcmd:symphony:shv.evaluate",
             "qxcmd:symphony:shv.graph.project",
             "qxcmd:symphony:shv.graph.validate",
+            "qxcmd:symphony:shv.materialization.export",
+            "qxcmd:symphony:shv.materialization.resume",
+            "qxcmd:symphony:shv.materialization.run",
             "qxcmd:symphony:shv.partition.from-refresh",
             "qxcmd:symphony:shv.refresh.build",
             "qxcmd:symphony:shv.refresh.compare",
@@ -5820,6 +5830,7 @@
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:shv-partition.manifest.build",
             "engop:symphony:shv-partition.partition.build",
             "engop:symphony:shv-source.capture.import",
             "engop:symphony:shv-source.graph.project",
@@ -5959,6 +5970,10 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.materialization.export",
+            "qxcmd:symphony:shv.materialization.prepare",
+            "qxcmd:symphony:shv.materialization.resume",
+            "qxcmd:symphony:shv.materialization.run",
             "qxcmd:symphony:shv.partition.build",
             "qxcmd:symphony:shv.partition.from-refresh",
             "qxcmd:symphony:shv.partition.manifest"
@@ -6048,6 +6063,9 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:shv.materialization.export",
+            "qxcmd:symphony:shv.materialization.resume",
+            "qxcmd:symphony:shv.materialization.run",
             "qxcmd:symphony:shv.partition.from-refresh",
             "qxcmd:symphony:shv.refresh.build",
             "qxcmd:symphony:shv.refresh.compare",
@@ -6061,6 +6079,7 @@
           ],
           "delivery": "composed",
           "engine_operation_ids": [
+            "engop:symphony:shv-partition.manifest.build",
             "engop:symphony:shv-partition.partition.build",
             "engop:symphony:shv-source.capture.compare",
             "engop:symphony:shv-source.capture.import",
@@ -7355,9 +7374,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:b7111f44723ba475dbc86b0b007a6f9d3ef8b993120de076ce77105ff9644cae",
+  "profile_digest": "sha256:bc3b7abef27ba2ce54c5ac9a2c52e55c15fbb3288414420341203ee22c2f3bfc",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 106,
-  "ssfv_registry_digest": "sha256:2b112a0cc231afa276dbeee4ad1d03c14d9ce5bbd92cf4a94050dff9baf7f6c1"
+  "ssfv_registry_digest": "sha256:26eddf63c5c0d1e11846cd20d2590f7439ee2bf9377a37a34cfdec72a11dcde8"
 }

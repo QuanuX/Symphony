@@ -10877,6 +10877,292 @@
       "aliases": [],
       "authority_mode": "none",
       "backend_operation_ids": [
+        "engop:symphony:shv-partition.manifest.build",
+        "engop:symphony:shv-partition.partition.build",
+        "engop:symphony:shv-source.capture.import",
+        "engop:symphony:shv-source.graph.project",
+        "engop:symphony:shv.catalogue.build",
+        "engop:symphony:shv.coverage.plan",
+        "engop:symphony:shv.evaluate",
+        "engop:symphony:shv.graph.project"
+      ],
+      "command_id": "qxcmd:symphony:shv.materialization.export",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-partition-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-source-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl shv materialization export [--job-id VALUE] [--job-root VALUE] [--json]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-materialization-result.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-materialization-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-partition.manifest.build"
+      ],
+      "command_id": "qxcmd:symphony:shv.materialization.prepare",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-partition-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl shv materialization prepare [--input VALUE] [--job-id VALUE] [--job-root VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.qxctl.shv-materialization-plan.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "evidence_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-materialization-result.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-materialization-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-partition.partition.build",
+        "engop:symphony:shv-source.capture.import",
+        "engop:symphony:shv-source.graph.project",
+        "engop:symphony:shv.catalogue.build",
+        "engop:symphony:shv.coverage.plan",
+        "engop:symphony:shv.evaluate",
+        "engop:symphony:shv.graph.project"
+      ],
+      "command_id": "qxcmd:symphony:shv.materialization.resume",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "recover"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-partition-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-source-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl shv materialization resume [--job-id VALUE] [--job-root VALUE] [--json] [--max-tasks VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "evidence_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-materialization-result.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-materialization-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-partition.partition.build",
+        "engop:symphony:shv-source.capture.import",
+        "engop:symphony:shv-source.graph.project",
+        "engop:symphony:shv.catalogue.build",
+        "engop:symphony:shv.coverage.plan",
+        "engop:symphony:shv.evaluate",
+        "engop:symphony:shv.graph.project"
+      ],
+      "command_id": "qxcmd:symphony:shv.materialization.run",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-partition-engine",
+          "interaction": "invoke"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-source-engine",
+          "interaction": "invoke"
+        }
+      ],
+      "grammar": "qxctl shv materialization run [--job-id VALUE] [--job-root VALUE] [--json] [--max-tasks VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "evidence_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-materialization-result.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-materialization-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:shv.materialization.schema",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl shv materialization schema [--json]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-materialization-schema.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-materialization-schema.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:shv.materialization.status",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "inspect"
+        }
+      ],
+      "grammar": "qxctl shv materialization status [--job-id VALUE] [--job-root VALUE] [--json]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-materialization-result.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-materialization-result.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:shv.materialization.template",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl shv materialization template [--json]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.qxctl.shv-materialization-template.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.qxctl.shv-materialization-template.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
         "engop:symphony:shv-partition.partition.build"
       ],
       "command_id": "qxcmd:symphony:shv.partition.build",
@@ -14813,6 +15099,6 @@
   "format_version": 1,
   "protocol": "symphony.qxctl.command-registry.v1",
   "receipt_digest": null,
-  "registry_digest": "sha256:4d316b963ec9a98337dc622c73527c15d5deb2e3facf4ec52c76587df4c0911a",
+  "registry_digest": "sha256:478f3b3665af000ee2d456fbba01fd67289d4315b3d3af161d59a670852c9a0c",
   "registry_kind": "expected"
 }

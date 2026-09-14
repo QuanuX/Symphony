@@ -240,3 +240,17 @@ func ValidateSHVPartitionResult(op string, input, result []byte) error {
 	}
 	return nil
 }
+
+// ExpectedSHVPartition is independent reference-contract rederivation for
+// bounded checkpoint admission. It does not execute or authenticate an engine.
+func ExpectedSHVPartition(op string, input []byte) (json.RawMessage, error) {
+	p, e := shvObject(input)
+	if e != nil {
+		return nil, e
+	}
+	want, e := shvPartitionExpected(op, p)
+	if e != nil {
+		return nil, e
+	}
+	return json.Marshal(want)
+}

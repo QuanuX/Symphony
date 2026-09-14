@@ -11372,3 +11372,19 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - relationships:
   - `knowledge/shv/REFRESH.md`
 - notes: `No implicit hardware identity, publisher authentication or complete atlas claim.`
+
+- path: `knowledge/shv/MATERIALIZATION.md`
+- title: `SHV private resumable materialization`
+- surface_type: `reference document`
+- truth_role: `owner-declared orchestration contract`
+- owner: `qxctl maintainers`
+- status: `canonical`
+- scope: `bounded local checkpoints and replayed manifest export`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `durable catalogue publication`
+- relationships:
+  - `knowledge/shv/PARTITIONS.md`
+  - `knowledge/shv/REFRESH.md`
+- notes: `Offline status does not claim fresh source replay or publisher authentication.`

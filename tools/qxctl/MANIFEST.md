@@ -324,3 +324,7 @@ The SCV gate adds exact graph-index schema discovery, keeping connector receipt-
 ### Immutable SHV partitions
 
 `shv partition inspect|build|manifest|query|schema|template|from-refresh` administers the exact independent C++ partition engine0.1.0-dev under `knowledge/shv/PARTITIONS.md`. Direct references remain declarations. from-refresh replays original evidence before deriving a partition; policies and local roots stay outside partition identity. Missing inventory and cursor-bound query scope remain explicit.
+
+### Private resumable SHV materialization
+
+`shv materialization prepare|run|resume|status|export|schema|template` administers `knowledge/shv/MATERIALIZATION.md`. Private checkpoints snapshot caller-selected refresh bundles and exact installations. Native replay precedes each atomic task completion and every exported manifest. Offline status explicitly reports retained evidence. This adds no native engine operation or catalogue publication authority.

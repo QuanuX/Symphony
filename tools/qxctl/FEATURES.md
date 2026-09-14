@@ -922,7 +922,15 @@
         "tools/qxctl/internal/knowledgeengine/shv_partition.go",
         "tools/qxctl/internal/knowledgeengine/shv_partition_descriptor.go",
         "tools/qxctl/internal/knowledgeengine/shv_partition_validation.go",
-        "tools/qxctl/internal/knowledgeengine/shv_partition_test.go"
+        "tools/qxctl/internal/knowledgeengine/shv_partition_test.go",
+        "tools/qxctl/cmd/qxctl/shv_materialization.go",
+        "tools/qxctl/cmd/qxctl/shv_materialization_discovery.go",
+        "tools/qxctl/cmd/qxctl/shv_materialization.schema.json",
+        "tools/qxctl/cmd/qxctl/shv_materialization_test.go",
+        "tools/qxctl/internal/shvjob/store.go",
+        "tools/qxctl/internal/shvjob/storage_unix.go",
+        "tools/qxctl/internal/shvjob/storage_unsupported.go",
+        "tools/qxctl/internal/shvjob/store_test.go"
       ],
       "kind": "feature",
       "non_claims": [
