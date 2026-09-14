@@ -10873,3 +10873,94 @@ This PR authorizes none of the following:
   - `tools/qxctl/cmd/qxctl/shv_refresh_compare.go`
   - `tools/qxctl/cmd/qxctl/shv_refresh_compare_test.go`
   - `tools/qxctl/scripts/build_shv_refresh_schema.py`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-IMMUTABLE-PARTITIONS`
+- record_version: `3`
+- title: `Introduce native immutable SHV partition manifests and scoped queries`
+- status: `canonical`
+- change_started_at: `2026-09-14T06:00:27Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for native SHV partitions`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-partition-continuation.md`
+- skvi_references:
+  - `knowledge/shv/PARTITIONS.md`
+  - `modules/shv-partition-engine/SPEC.md`
+- change_summary: |
+    Adds independent C++ partition engine0.1.0-dev with immutable dependency identities, explicit incomplete manifests and cursor-bound reference queries; seven qxctl leaves include replay-first derivation.
+- relationship_changes: |
+    C++ owns partition/manifest/query semantics; Go independently rederives correspondence and protects exact installation selection. Existing source/kernel/adapter packages remain unchanged.
+- doctrine_changes: |
+    Policies and local roots stay outside partition identity. Direct references are declarations; from-refresh replays actual evidence. Complete declared inventory is not a complete hardware atlas. Same subject names in separate partitions are not unified.
+- compatibility_consequences: |
+    New independent receipt-v2 package and additive qxctl commands. Bounds64 partitions,128 references,32 rows per query; stale cursor or falsely resealed manifest rejects. No mutable alias or publication state.
+- publication_consequences: |
+    Local source and append-only closure. Guarded uninstall tests use only a disposable copy. No deployment, external publication, vendor acquisition or hardware mutation.
+- projection_consequences: |
+    313 commands,106 features,278 reviewed expectations,27 invariants and16 adapters. SKVI and feature registration identify the new native owner and independent consumer boundary.
+- evidence:
+  - `../shv-07/evidence/FOCUSED_TESTS.json records 12 Go groups/40 passing events and 45 native calls with 29 rejections.`
+  - `../shv-07/evidence/final/ACCEPTANCE.json records 20 installed CLI calls and replay-first identity/pagination checks; the 18-call refresh baseline is retained.`
+  - `../shv-07/evidence/PACKAGE_VERIFICATION.json checks all owned files and guarded uninstall without touching the selected original package.`
+  - `../shv-07/evidence/SOURCE_BUILD_PARITY.json binds clean source, byte-identical CLI builds and independently rebuilt native executables.`
+  - `../shv-07/MANIFEST.json seals bounded evidence; NEXT.md preserves subsequent materialization/publication scope.`
+- non_authorizations:
+  - `Durable catalogue heads, materialization checkpoints, conflict aggregation or automatic vendor acquisition.`
+  - `Publisher authentication, physical hardware compatibility or unification of subject names across partitions.`
+  - `Remote publication, deployment, firmware changes or original archive edits.`
+- notes: |
+    Closes the first native bounded partition-manifest owner. Full suites remain milestone work. Start time is partition.cpp creation timestamp. Source, kernel and generic adapter installations are unchanged. Local completion uses established post_merge disposition without claiming a remote merge.
+- date: `2026-09-14`
+- change_completed_at: `2026-09-14T06:09:17Z`
+- recorded_at: `2026-09-14T06:12:55Z`
+- revision_value: `53b046b040e30d8bfa44f97926ffc1ffa256a028`
+- tree_digest: `sha256:bc8bdd976b57a478c45eab92555bad97cfdd6a6476bb385fe8ef9578179fbd1e`
+- ratification_evidence_digest: `sha256:9f8a60adeba9b61893c9b0b7825067eef126d61820fcbb2b0b683aaf5c82b326`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/shv/KERNEL.md`
+  - `knowledge/shv/PARTITIONS.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/shv-partition-engine/CMakeLists.txt`
+  - `modules/shv-partition-engine/FEATURES.md`
+  - `modules/shv-partition-engine/INSTALL.md`
+  - `modules/shv-partition-engine/INTENT.md`
+  - `modules/shv-partition-engine/MANIFEST.md`
+  - `modules/shv-partition-engine/SKILL.md`
+  - `modules/shv-partition-engine/SPEC.md`
+  - `modules/shv-partition-engine/cmake/uninstall.cmake.in`
+  - `modules/shv-partition-engine/schemas/v1/partition.schema.json`
+  - `modules/shv-partition-engine/schemas/v1/partition.templates.json`
+  - `modules/shv-partition-engine/src/descriptor.cpp`
+  - `modules/shv-partition-engine/src/main.cpp`
+  - `modules/shv-partition-engine/src/partition.cpp`
+  - `modules/shv-partition-engine/src/partition.hpp`
+  - `modules/shv-partition-engine/tests/partition_test.py`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/cli_errors.go`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv.go`
+  - `tools/qxctl/cmd/qxctl/shv_partition.go`
+  - `tools/qxctl/cmd/qxctl/shv_partition_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_partition.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_partition_descriptor.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_partition_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_partition_validation.go`
