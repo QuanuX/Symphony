@@ -235,7 +235,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:17ab959cdacbe9de37bf57af1da8410c6cf67a45982a91a964bf80472f56614d`
+- record_digest: `sha256:8c3a507137de4a9bf1e9af1d289c0eea8a110a7127581b7b09f980b1809913b7`
 - notes: Architect-ratified F1 nested record for Governed repository validation evidence; coverage remains partial and no broader runtime or canonical authority is implied.
 
 - feature_id: `ssfv:symphony:qxctl.invariant-assurance`

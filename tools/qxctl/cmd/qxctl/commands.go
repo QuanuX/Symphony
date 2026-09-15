@@ -1039,7 +1039,7 @@ func newSACVCommand() *cobra.Command {
 }
 
 func newSCLVCommand() *cobra.Command {
-	command := structural("sclv", fmt.Errorf("SCLV subcommand is required: inspect, check, propose, recover, project, or evidence"))
+	command := structural("sclv", fmt.Errorf("SCLV subcommand is required: inspect, check, propose, recover, project, evidence, or warning"))
 	for _, operation := range []string{"inspect", "check", "propose", "recover", "project"} {
 		options := sclvOptions{version: "0.1.0-dev"}
 		child := &cobra.Command{
@@ -1091,7 +1091,7 @@ func newSCLVCommand() *cobra.Command {
 		evidence.AddCommand(child)
 	}
 	evidence.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
-	command.AddCommand(evidence)
+	command.AddCommand(evidence, newSCLVWarningCommand())
 	command.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 	return command
 }

@@ -322,6 +322,11 @@ func printValidationProjection(projection validation.Projection) {
 }
 
 func runValidationWarning(operation string, options validationOptions) error {
+	return runValidationWarningFiltered(operation, options, nil)
+}
+
+// subjectFilter restricts administrative selection, never detector execution.
+func runValidationWarningFiltered(operation string, options validationOptions, subjectFilter func(validation.WarningSubject) bool) error {
 	if options.topsID == "" {
 		return fmt.Errorf("--tops-id is required")
 	}
@@ -380,6 +385,9 @@ func runValidationWarning(operation string, options validationOptions) error {
 	if operation == "list" {
 		subjects := make([]validation.WarningSubject, 0, len(snapshot.State.Subjects))
 		for _, subject := range snapshot.State.Subjects {
+			if subjectFilter != nil && !subjectFilter(subject) {
+				continue
+			}
 			if options.classification == "muted" && !subject.Muted {
 				continue
 			}
@@ -403,8 +411,20 @@ func runValidationWarning(operation string, options validationOptions) error {
 		for _, subject := range subjects {
 			fmt.Printf("Validation warning subject: classification=%s muted=%t rule=%s subject=%s occurrences=%d last_observed_at=%s\n",
 				subject.Classification, subject.Muted, subject.RuleID, subject.SubjectID, len(subject.Occurrences), subject.LastObservedAt)
+			if subjectFilter != nil {
+				for _, occurrence := range subject.Occurrences {
+					fmt.Printf("SCLV historical reference: record=%q path=%q active=%t\n",
+						occurrence.Finding.Attributes["record_id"], occurrence.Finding.Attributes["path"], occurrence.Active)
+				}
+			}
 		}
 		return nil
+	}
+	if subjectFilter != nil && options.subjectID != "" {
+		index := sort.Search(len(snapshot.State.Subjects), func(i int) bool { return snapshot.State.Subjects[i].SubjectID >= options.subjectID })
+		if index == len(snapshot.State.Subjects) || snapshot.State.Subjects[index].SubjectID != options.subjectID || !subjectFilter(snapshot.State.Subjects[index]) {
+			return fmt.Errorf("subject %q is not a supported SCLV historical-reference warning", options.subjectID)
+		}
 	}
 	if operation == "show" {
 		if options.subjectID == "" {

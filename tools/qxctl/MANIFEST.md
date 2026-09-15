@@ -350,3 +350,7 @@ The SCV gate adds exact graph-index schema discovery, keeping connector receipt-
 ### SHV component dossiers
 
 `shv dossier run|graph|schema|template` implements `knowledge/shv/DOSSIERS.md` using existing native replay/coverage/evaluation and an explicitly selected generic adapter. Caller associations never become inferred identity claims.
+
+## SCLV historical-warning administration
+
+`qxctl sclv warning list|show|acknowledge|reopen` selects exact historical-reference warning subjects through the common protected validation lifecycle in `knowledge/VALIDATION.md`. Acknowledgement requires the current state digest, exact subject and rationale, with optional expiry; reopening is explicit. These are Go control-plane commands owned by governed validation, with no native engine invocation, canonical mutation or detector suppression. State and logs remain local and external to repository, build and install trees. Delivery gates use clean per-vector builds and fresh validation state.

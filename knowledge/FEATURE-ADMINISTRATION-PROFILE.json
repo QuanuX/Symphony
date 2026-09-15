@@ -1043,6 +1043,8 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:sclv.warning.acknowledge",
+            "qxcmd:symphony:sclv.warning.reopen",
             "qxcmd:symphony:validate.baseline.create",
             "qxcmd:symphony:validate.baseline.remove",
             "qxcmd:symphony:validate.profile.remove",
@@ -1068,6 +1070,7 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:sclv.warning.list",
             "qxcmd:symphony:validate.profile.list",
             "qxcmd:symphony:validate.warning.list"
           ],
@@ -1085,6 +1088,7 @@
         },
         {
           "command_ids": [
+            "qxcmd:symphony:sclv.warning.show",
             "qxcmd:symphony:validate.baseline.show",
             "qxcmd:symphony:validate.profile.show",
             "qxcmd:symphony:validate.warning.show"
@@ -7869,9 +7873,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:eb2aa3f97e6893ceff5d484244efa6fef7570d91f995c54672804b003445f8e6",
+  "profile_digest": "sha256:d0faeae1c7744dd3f4e48be4cfa92aaacfb067a4e2c07bf427f125d838d93a0f",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 110,
-  "ssfv_registry_digest": "sha256:9ab0617c3e6f15aceab3dd9b889b24a2062ce7bfa57dc1f4685596d4f25cbb6f"
+  "ssfv_registry_digest": "sha256:f9ba04d83e0443cfa66bcf139740fca01d0626832450540e00de54af224213cb"
 }

@@ -18,7 +18,7 @@ The 110 registered feature IDs appear exactly once. Their 295 reviewed expectati
 
 ## Exact Machine Evidence
 
-The profile digest is `sha256:dab205972febc43cb2c3e55883f7cf13f68498385abfbddf14897a8c532fb71e`. Its bound SSFV registry digest is `sha256:e552d03d74e79eccf4d6af57726807192249c62b087acff25af23ea295116ee2`. The expected qxctl registry has 369 leaves with digest `sha256:838ba8f54384376bb57f8b2eabbe55a81907eff09301647b94c413ab18e6d87a`. These are source-level mappings; actual installed acceptance also requires the selected engine descriptors, exact receipts and exercised authority/storage boundaries. Catalog completeness remains false.
+The profile digest is `sha256:d0faeae1c7744dd3f4e48be4cfa92aaacfb067a4e2c07bf427f125d838d93a0f`. Its bound SSFV registry digest is `sha256:f9ba04d83e0443cfa66bcf139740fca01d0626832450540e00de54af224213cb`. The expected qxctl registry has 373 leaves with digest `sha256:67f3601102b36e9835b9ec2cde9f4d13430bd508aefff34da3638b5b8f81be83`. These are source-level mappings; actual installed acceptance also requires the selected engine descriptors, exact receipts and exercised authority/storage boundaries. Catalog completeness remains false.
 
 ## Advancement
 
@@ -41,3 +41,5 @@ Normalized profile JSON is governed by `knowledge/schemas/v1/feature-administrat
 ## Non-Authorization
 
 This bootstrap profile does not declare all Symphony features known, grant an exemption by omission, authorize a command or operation, change module installation state, or permit canonical apply.
+
+The four SCLV historical-warning commands extend the existing governed-validation configure, discover and inspect expectations. They select exact historical-reference subjects and reuse local acknowledgement and reopening. They add no independent feature or expectation and do not supply delivery acceptance state.

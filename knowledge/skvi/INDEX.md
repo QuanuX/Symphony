@@ -13568,3 +13568,29 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: none authorized by this entry
 - notes: Preserves each original fixture payload and historical ledger.
 - status: canonical
+
+### qxctl SCLV Historical Warning Commands
+- path: `tools/qxctl/cmd/qxctl/sclv_warning.go`
+- title: qxctl SCLV Historical Warning Commands
+- surface_type: implementation source
+- truth_role: local historical-warning administration evidence
+- owner: qxctl maintainers
+- scope: Exposes exact historical-reference selection and the existing local acceptance and reopen lifecycle.
+- relationships: conforms_to -> `knowledge/VALIDATION.md`; uses -> `tools/qxctl/internal/validation/warnings.go`
+- consumers: qxctl, administrators, reviewers
+- deferred_projections: none
+- notes: Reuses governed validation without canonical mutation or delivery-state inheritance.
+- status: canonical
+
+### qxctl SCLV Historical Warning Tests
+- path: `tools/qxctl/cmd/qxctl/sclv_warning_test.go`
+- title: qxctl SCLV Historical Warning Tests
+- surface_type: implementation test
+- truth_role: local historical-warning administration evidence
+- owner: qxctl maintainers
+- scope: Verifies exact selection, immutable evidence, stale-state refusal, reopening, new-record visibility and clean-state delivery isolation.
+- relationships: conforms_to -> `knowledge/VALIDATION.md`; uses -> `tools/qxctl/internal/validation/warnings.go`
+- consumers: qxctl, administrators, reviewers
+- deferred_projections: none
+- notes: Reuses governed validation without canonical mutation or delivery-state inheritance.
+- status: canonical

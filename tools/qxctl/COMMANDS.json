@@ -3010,6 +3010,126 @@
     },
     {
       "aliases": [],
+      "authority_mode": "target_host_permission",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:sclv.warning.acknowledge",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.governed-validation",
+          "interaction": "configure"
+        }
+      ],
+      "grammar": "qxctl sclv warning acknowledge [--expected-state-digest VALUE] [--json] [--rationale VALUE] [--state-root VALUE] [--subject-id VALUE] [--tops-id VALUE] [--valid-until VALUE] [--warning-state-id VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "permission_backed_mutation",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sclv.warning.reopen",
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:sclv.warning.list",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.governed-validation",
+          "interaction": "discover"
+        }
+      ],
+      "grammar": "qxctl sclv warning list [--classification VALUE] [--json] [--state-root VALUE] [--tops-id VALUE] [--warning-state-id VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "target_host_permission",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:sclv.warning.reopen",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.governed-validation",
+          "interaction": "configure"
+        }
+      ],
+      "grammar": "qxctl sclv warning reopen [--expected-state-digest VALUE] [--json] [--rationale VALUE] [--state-root VALUE] [--subject-id VALUE] [--tops-id VALUE] [--warning-state-id VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "permission_backed_mutation",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "recovery_command_id": "qxcmd:symphony:sclv.warning.reopen",
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [],
+      "command_id": "qxcmd:symphony:sclv.warning.show",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.governed-validation",
+          "interaction": "inspect"
+        }
+      ],
+      "grammar": "qxctl sclv warning show [--json] [--state-root VALUE] [--subject-id VALUE] [--tops-id VALUE] [--warning-state-id VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.validation.warning-state.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
       "authority_mode": "none",
       "backend_operation_ids": [
         "engop:symphony:scev-cf.capture.import",
@@ -17044,6 +17164,6 @@
   "format_version": 1,
   "protocol": "symphony.qxctl.command-registry.v1",
   "receipt_digest": null,
-  "registry_digest": "sha256:838ba8f54384376bb57f8b2eabbe55a81907eff09301647b94c413ab18e6d87a",
+  "registry_digest": "sha256:67f3601102b36e9835b9ec2cde9f4d13430bd508aefff34da3638b5b8f81be83",
   "registry_kind": "expected"
 }
