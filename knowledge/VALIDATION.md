@@ -145,3 +145,15 @@ The validator and qxctl validation group are finite local processes. They do not
 ## Non-Authorization
 
 This contract does not authorize canonical apply, automatic remediation, persistent observers, CI mutation, PR merging, semantic ratification, warning deletion, detector-derived resolution override, generated SKVI/SCLV/SSFV records, graph persistence, remote validation APIs, Windows-native execution, or policy based on whether a caller is human, AI, agentic, automated, a service, a workload, or an organization.
+
+## SCLV Historical-Warning Acknowledgement
+
+`qxctl sclv warning list|show|acknowledge|reopen` is a scoped entry point to the existing local validation lifecycle. It selects one exact stable subject from `sclv_reference.historical_path_absent`, `sclv_reference.historical_path_not_file`, or `sclv_skvi_reference.historical`. List displays the record and path; show retains the full digest-bound warning state for audit. Separate warnings for the same path remain independently selectable.
+
+Populate the state with `validate warning sync`, then use the state digest and subject ID from list. Acknowledge requires `--rationale` and `--expected-state-digest`; optional `--valid-until` follows the existing acceptance contract. Reopen requires the same exact selection, rationale and current state digest. These commands administer the existing `qxctl.governed-validation` feature; they create no new SCLV engine operation or canonical acknowledgement ledger.
+
+Acknowledgement changes operator attention: ordinary `validate scan` omits accepted subjects from actionable details. Raw findings and counts, the original SCLV records, and the local transition history remain intact. Complete scans still detect violations and new warning identities. Expiry, detector-derived resolution and recurrence retain the common lifecycle behavior.
+
+### Local state and delivery
+
+Keep the protected validation state root outside the source repository, build directories and installation prefixes. Workstation acknowledgements, logs and build evidence are local operational data, not canonical source or vector-package contents. Before delivery, build each vector from clean source into a fresh external build directory and verify it with fresh validation state, without reusing local profiles, baselines or acknowledgements. A clean build does not erase historical repository evidence; it establishes current delivery behavior independently of this workstation's accepted warnings.

@@ -351,3 +351,19 @@ Exact `0.9.0-dev` exposes 30 native operations. `knowledge/scv/BUNDLES.md` owns 
 ## Explicit Bundle Workflows
 
 Exact `0.10.0-dev` retains thirty native operations and adds qxctl bundle workflow run/status/recover and immutable bundled obligation retain/show. `knowledge/scv/BUNDLE-WORKFLOWS.md` owns the versioned coordination and logical-reference contracts. Separate v2 journals pin explicit transport, caller input and exact installation before work; original records preserve both native and transport identities. Status reports sealed checkpoint validation, while run/recovery and relationship inspection replay original owners. Twenty-nine schemas expose112 catalog protocols with twelve owner companions. Prior routes, defaults, records and packages remain preserved.
+
+### Acknowledge intentional historical SCLV references
+
+Use an external local state root and the target host's TOPS UUID. First synchronize complete evidence, then list the exact warnings:
+
+```sh
+qxctl validate warning sync --prefix /chosen/validator-prefix --repo /source/Symphony --tops-id UUID --state-root /local/validation-state --expected-state-digest absent
+qxctl sclv warning list --tops-id UUID --state-root /local/validation-state
+qxctl sclv warning acknowledge --tops-id UUID --state-root /local/validation-state --subject-id sha256:SUBJECT --expected-state-digest sha256:STATE --rationale "Intentional manual retirement"
+qxctl sclv warning show --tops-id UUID --state-root /local/validation-state --subject-id sha256:SUBJECT --json
+qxctl sclv warning reopen --tops-id UUID --state-root /local/validation-state --subject-id sha256:SUBJECT --expected-state-digest sha256:CURRENT_STATE --rationale "Review this reference again"
+```
+
+Use the current state digest for subsequent syncs and mutations. Acknowledge also accepts an optional future UTC `--valid-until`. Ordinary `validate scan` using the same TOPS/state omits accepted warnings from actionable details; raw evidence remains complete. The exact subjects are independent, including two different warnings about one path. New records and other warnings remain visible.
+
+Keep this state, logs and test/build evidence outside the repository and delivered packages. Before delivery, use a clean build for each vector and fresh validation state; local acknowledgement is not release acceptance evidence. See [the validation contract](../../knowledge/VALIDATION.md#sclv-historical-warning-acknowledgement).

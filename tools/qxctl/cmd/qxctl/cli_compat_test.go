@@ -86,7 +86,7 @@ func TestCLICompatibility(t *testing.T) {
 		{name: "validate warning TOPS required", args: []string{"validate", "warning", "status"}, status: 1, output: "validate warning status failed: --tops-id is required\n"},
 		{name: "missing SKVI subcommand", args: []string{"skvi"}, status: 1, output: "skvi failed: SKVI subcommand is required: inspect, check, propose, or project\n"},
 		{name: "SKVI prefix required", args: []string{"skvi", "inspect"}, status: 1, output: "skvi inspect failed: --prefix is required\n"},
-		{name: "missing SCLV subcommand", args: []string{"sclv"}, status: 1, output: "sclv failed: SCLV subcommand is required: inspect, check, propose, recover, project, or evidence\n"},
+		{name: "missing SCLV subcommand", args: []string{"sclv"}, status: 1, output: "sclv failed: SCLV subcommand is required: inspect, check, propose, recover, project, evidence, or warning\n"},
 		{name: "SCLV prefix required", args: []string{"sclv", "inspect"}, status: 1, output: "sclv inspect failed: --prefix is required\n"},
 		{name: "missing SCLV evidence adapter", args: []string{"sclv", "evidence"}, status: 1, output: "sclv failed: SCLV evidence adapter is required: local-git or airgap\n"},
 		{name: "SCLV evidence prefix required", args: []string{"sclv", "evidence", "local-git"}, status: 1, output: "sclv evidence local-git failed: --prefix is required\n"},

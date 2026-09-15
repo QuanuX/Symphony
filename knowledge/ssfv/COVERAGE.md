@@ -149,3 +149,7 @@ The eight separately installed SCV/family/provider packages each receive one exp
 ## SHV Initial Kernel Review
 
 The independently installed C++ SHV kernel and generic graph adapter receive separate experimental owner features, and qxctl receives one administration subfeature. Coverage filtering, field parsing, replay, evaluation and projection remain facets of the kernel; the adapter interface/reference implementation form one structural transport feature. No feature claim is made for a broad atlas, vendor driver, durable graph, runtime hardware probe or Composer integration. Nested catalog completeness remains partial.
+
+## SCLV Warning Administration Review
+
+The SCLV historical-warning entry points are scoped administration of the existing `ssfv:symphony:qxctl.governed-validation` feature. Command routing and the exact historical-reference selector are implementation facets, not a new vector, semantic engine, schema or acknowledgement ledger. The existing host-local warning lifecycle owns persistence and transitions. Local acceptance state and workstation build evidence are not delivery inputs. Catalog completeness remains partial.
