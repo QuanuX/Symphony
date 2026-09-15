@@ -1,0 +1,93 @@
+{
+  "protocol": "symphony.shv.owner-interface.v2",
+  "module_id": "shv-graph-adapter",
+  "engine_id": "symphony-shv-graph-adapter",
+  "namespace": "symphony::graph",
+  "current_version": "0.2.0-dev",
+  "releases": {
+    "0.1.0-dev": [
+      "inspect",
+      "roundtrip",
+      "query"
+    ],
+    "0.2.0-dev": [
+      "inspect",
+      "roundtrip",
+      "query"
+    ]
+  },
+  "contract_versions": [
+    "shv-graph-adapter/SPEC.md@v1"
+  ],
+  "operations": [
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:shv-graph-adapter.inspect",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:shv-graph-adapter"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.graph.adapter-inspect-input.v1",
+      "mutability": "read_only",
+      "operation_name": "inspect",
+      "output_protocol": "symphony.knowledge.engine-descriptor.v2",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:shv-graph-adapter.roundtrip",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:shv-graph-adapter"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.graph.adapter-roundtrip-input.v1",
+      "mutability": "read_only",
+      "operation_name": "roundtrip",
+      "output_protocol": "symphony.graph.adapter-result.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "query"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:shv-graph-adapter.query",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:shv-graph-adapter"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.graph.adapter-query-input.v1",
+      "mutability": "read_only",
+      "operation_name": "query",
+      "output_protocol": "symphony.graph.adapter-result.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    }
+  ],
+  "schemas": [
+    "modules/shv-graph-adapter/schemas/v1/graph-adapter.schema.json",
+    "modules/shv-graph-adapter/schemas/v1/graph-adapter.templates.json"
+  ],
+  "companions": [],
+  "embedded_dependencies": []
+}

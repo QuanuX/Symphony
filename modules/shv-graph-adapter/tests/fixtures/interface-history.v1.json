@@ -1,0 +1,108 @@
+{
+  "descriptors": {
+    "0.1.0-dev": {
+      "canonical_apply_enabled": false,
+      "contract_versions": [
+        "shv-graph-adapter/SPEC.md@v1"
+      ],
+      "descriptor_digest": "sha256:a15ed6ba546f7595cdaaf834891b4a6f23a9073372923f7e5dba6daff5c005dd",
+      "engine_id": "symphony-shv-graph-adapter",
+      "engine_version": "0.1.0-dev",
+      "format_version": 2,
+      "language": "C++26",
+      "limits": {
+        "deadline_ahead_ms": 300000,
+        "json_depth": 64,
+        "json_values": 32768,
+        "path_bytes": 4096,
+        "request_bytes": 1048576,
+        "response_bytes": 4194304,
+        "snapshot_file_bytes": 4194304,
+        "snapshot_files": 1024
+      },
+      "module_id": "shv-graph-adapter",
+      "network_listener": false,
+      "operations": [
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "inspect"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-graph-adapter.inspect",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-adapter"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.graph.adapter-inspect-input.v1",
+          "mutability": "read_only",
+          "operation_name": "inspect",
+          "output_protocol": "symphony.knowledge.engine-descriptor.v2",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-graph-adapter.roundtrip",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-adapter"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.graph.adapter-roundtrip-input.v1",
+          "mutability": "read_only",
+          "operation_name": "roundtrip",
+          "output_protocol": "symphony.graph.adapter-result.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-graph-adapter.query",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-adapter"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.graph.adapter-query-input.v1",
+          "mutability": "read_only",
+          "operation_name": "query",
+          "output_protocol": "symphony.graph.adapter-result.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        }
+      ],
+      "process_protocols": [
+        "symphony.knowledge.engine-process.v1"
+      ],
+      "protocol": "symphony.knowledge.engine-descriptor.v2",
+      "session_mutation_enabled": false,
+      "supported_scopes": [
+        "user"
+      ],
+      "thermal_path": "freezing",
+      "vector_id": "shv"
+    }
+  },
+  "provenance": {
+    "0.1.0-dev": {
+      "path": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-01-adapter-final/libexec/symphony/shv-graph-adapter/0.1.0-dev/symphony-shv-graph-adapter",
+      "digest": "sha256:671d78dc21a33f1f8d9fe3a18624031dcbbca9474d1a69cd75fa1a0b899f5f10"
+    }
+  }
+}

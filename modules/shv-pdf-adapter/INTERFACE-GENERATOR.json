@@ -1,0 +1,13 @@
+{
+  "protocol": "symphony.shv.interface-registration.v1",
+  "declaration": "modules/shv-pdf-adapter/OWNER-INTERFACE.json",
+  "history": "modules/shv-pdf-adapter/tests/fixtures/interface-history.v1.json",
+  "history_digest": "sha256:db4dff51eadaa6bb91c845221d18145151a9066e7e04c92eacf0577622559393",
+  "go_title": "PDF",
+  "go_stem": "pdf",
+  "cpp_output": "modules/shv-pdf-adapter/src/interface.generated.hpp",
+  "go_output": "tools/qxctl/internal/knowledgeengine/shv_pdf_interface_generated.go",
+  "cmake_output": "cmake/ShvPDFInterface.generated.cmake",
+  "embedded_compatibility_version": "0.2.0-dev",
+  "embedded_macro": "SYMPHONY_SHV_PDF_EMBEDDED_PREVIOUS"
+}

@@ -78,3 +78,9 @@ symphony_install_receipt_v2(COMPONENT_ID shv-profile-engine COMPONENT_KIND vecto
  ENTRY_POINTS "symphony-shv-profile|executable|${SHV_RUNTIME}/symphony-shv-profile|symphony.knowledge.engine-process.v1")
 configure_file(cmake/uninstall.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake" @ONLY)
 add_custom_target(uninstall-shv-profile-engine COMMAND ${CMAKE_COMMAND} -DINSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -P "${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake")
+
+# Preserve the reviewed embedded owner while its standalone package evolves.
+target_compile_definitions(shv-profile-document PUBLIC SYMPHONY_SHV_PDF_EMBEDDED_PREVIOUS=1)
+
+# Preserve the reviewed embedded owner while its standalone package evolves.
+target_compile_definitions(shv-profile-core PUBLIC SYMPHONY_SHV_KERNEL_EMBEDDED_PREVIOUS=1)

@@ -28,7 +28,7 @@ func newSHVStoreCommand() *cobra.Command {
 				out := map[string]any{"protocol": "symphony.qxctl.shv-graph-store-" + op + ".v1", "installation": inst}
 				if op == "schema" {
 					out["schema"] = raw
-					if version == knowledgeengine.SHVStoreTransferVersion {
+					if version == knowledgeengine.SHVStoreTransferVersion || version == knowledgeengine.SHVStoreInterfaceVersion {
 						out["transfer_schema"] = json.RawMessage(shvtransfer.Schema())
 					}
 				} else {

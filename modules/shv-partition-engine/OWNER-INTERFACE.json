@@ -1,0 +1,127 @@
+{
+  "protocol": "symphony.shv.owner-interface.v2",
+  "module_id": "shv-partition-engine",
+  "engine_id": "symphony-shv-partition",
+  "namespace": "symphony::knowledge::shv_partition",
+  "current_version": "0.3.0-dev",
+  "releases": {
+    "0.1.0-dev": [
+      "inspect",
+      "partition_build",
+      "manifest_build",
+      "manifest_query"
+    ],
+    "0.2.0-dev": [
+      "inspect",
+      "partition_build",
+      "manifest_build",
+      "manifest_query"
+    ],
+    "0.3.0-dev": [
+      "inspect",
+      "partition_build",
+      "manifest_build",
+      "manifest_query"
+    ]
+  },
+  "contract_versions": [
+    "knowledge/shv/PARTITIONS.md@v1",
+    "symphony.shv.partition.v1",
+    "symphony.shv.partition-manifest.v1",
+    "symphony.shv.partition-query.v1"
+  ],
+  "operations": [
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:shv-partition.inspect",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:shv-partition-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.shv.partition-inspect-input.v1",
+      "mutability": "read_only",
+      "operation_name": "inspect",
+      "output_protocol": "symphony.knowledge.engine-descriptor.v2",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:shv-partition.partition.build",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:shv-partition-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.shv.partition-build-input.v1",
+      "mutability": "read_only",
+      "operation_name": "partition_build",
+      "output_protocol": "symphony.shv.partition.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "invoke"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:shv-partition.manifest.build",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:shv-partition-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.shv.partition-manifest-build-input.v1",
+      "mutability": "read_only",
+      "operation_name": "manifest_build",
+      "output_protocol": "symphony.shv.partition-manifest.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "query"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:shv-partition.manifest.query",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:shv-partition-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.shv.partition-manifest-query-input.v1",
+      "mutability": "read_only",
+      "operation_name": "manifest_query",
+      "output_protocol": "symphony.shv.partition-query.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    }
+  ],
+  "schemas": [
+    "modules/shv-partition-engine/schemas/v1/partition.schema.json",
+    "modules/shv-partition-engine/schemas/v1/partition.templates.json"
+  ],
+  "companions": [
+    "knowledge/shv/PARTITIONS.md"
+  ],
+  "embedded_dependencies": []
+}

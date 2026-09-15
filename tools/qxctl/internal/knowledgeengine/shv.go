@@ -13,22 +13,17 @@ const SHVTableVersion = "0.2.0-dev"
 const SHVDocumentVersion = "0.3.0-dev"
 
 func shvKernelVersion(version string) bool {
-	return version == SHVVersion || version == SHVTableVersion || version == SHVDocumentVersion
+	return shvKernelInterfaceAdmission[version] != nil
 }
 
 var shvEngineSpec = engineSpec{label: "SHV", moduleID: "shv-engine", engineID: "symphony-shv", componentKind: "vector_engine", vectorID: "shv", processProtocol: processProtocol}
 var shvAdapterSpec = engineSpec{label: "shv-graph-adapter", moduleID: "shv-graph-adapter", engineID: "symphony-shv-graph-adapter", componentKind: "adapter", vectorID: "shv", processProtocol: processProtocol}
-var shvOutputs = map[string]string{"inspect": "symphony.knowledge.engine-descriptor.v2", "coverage_default": "symphony.shv.coverage-profile.v1", "coverage_plan": "symphony.shv.coverage-result.v1", "catalogue_build": "symphony.shv.catalogue.v1", "catalogue_query": "symphony.shv.query-result.v1", "evaluate": "symphony.shv.evaluation.v1", "graph_project": "symphony.graph.exchange.v1", "graph_validate": "symphony.shv.graph-validation.v1"}
+var shvOutputs = shvKernelInterfaceOutputs
 
 func SHVResultProtocol(op string, adapter bool) (string, bool) {
 	if adapter {
-		if op == "inspect" {
-			return shvOutputs[op], true
-		}
-		if op == "roundtrip" || op == "query" {
-			return "symphony.graph.adapter-result.v1", true
-		}
-		return "", false
+		p, ok := shvGraphAdapterInterfaceOutputs[op]
+		return p, ok
 	}
 	p, ok := shvOutputs[op]
 	return p, ok
@@ -41,8 +36,8 @@ func SHVInputProtocol(op string, adapter bool) string {
 	return prefix + strings.ReplaceAll(op, "_", "-") + "-input.v1"
 }
 func inspectSHV(prefix, version string, adapter bool) (Installation, error) {
-	if prefix == "" || (adapter && version != SHVVersion) || (!adapter && !shvKernelVersion(version)) {
-		return Installation{}, fmt.Errorf("SHV requires an explicit prefix and supported exact version (kernel %s, %s or %s; adapter %s)", SHVVersion, SHVTableVersion, SHVDocumentVersion, SHVVersion)
+	if prefix == "" || (adapter && shvGraphAdapterInterfaceAdmission[version] == nil) || (!adapter && !shvKernelVersion(version)) {
+		return Installation{}, fmt.Errorf("SHV requires an explicit prefix and a supported exact owner version")
 	}
 	s := shvEngineSpec
 	if adapter {
@@ -52,7 +47,18 @@ func inspectSHV(prefix, version string, adapter bool) (Installation, error) {
 	if err != nil {
 		return Installation{}, err
 	}
-	return Installation{Role: s.moduleID, ModuleID: s.moduleID, EngineID: s.engineID, Version: version, Prefix: e.Prefix, ReceiptPath: e.ReceiptPath, ReceiptDigest: e.ReceiptDigest, ReceiptProtocol: receiptProtocolV2, ExecutablePath: e.ExecutablePath, ExecutableDigest: e.ExecutableDigest}, nil
+	inst := Installation{Role: s.moduleID, ModuleID: s.moduleID, EngineID: s.engineID, Version: version, Prefix: e.Prefix, ReceiptPath: e.ReceiptPath, ReceiptDigest: e.ReceiptDigest, ReceiptProtocol: receiptProtocolV2, ExecutablePath: e.ExecutablePath, ExecutableDigest: e.ExecutableDigest}
+	if !adapter && version == SHVKernelInterfaceVersion {
+		if err := verifySHVOwnerInterface(inst, shvKernelInterfaceDigest); err != nil {
+			return Installation{}, err
+		}
+	}
+	if adapter && version == SHVGraphAdapterInterfaceVersion {
+		if err := verifySHVOwnerInterface(inst, shvGraphAdapterInterfaceDigest); err != nil {
+			return Installation{}, err
+		}
+	}
+	return inst, nil
 }
 func InspectSHV(prefix, version string) (Installation, error) {
 	return inspectSHV(prefix, version, false)

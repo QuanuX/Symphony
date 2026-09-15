@@ -1,7 +1,7 @@
 """Independent process checks for SHV's bounded source and semantic contracts."""
 import argparse, copy, hashlib, json, os, stat, subprocess, tempfile, time
 from pathlib import Path
-p=argparse.ArgumentParser(); selected=p.add_mutually_exclusive_group(required=True); selected.add_argument('--engine'); selected.add_argument('--prefix'); args=p.parse_args()
+p=argparse.ArgumentParser(); selected=p.add_mutually_exclusive_group(required=True); selected.add_argument('--engine'); selected.add_argument('--prefix'); p.add_argument('--version',default='0.3.0-dev'); args=p.parse_args()
 def canonical(x):return json.dumps(x,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()
 def seal(x,key='digest'):
  x=copy.deepcopy(x);x.pop(key,None);x[key]='sha256:'+hashlib.sha256(canonical(x)).hexdigest();return x

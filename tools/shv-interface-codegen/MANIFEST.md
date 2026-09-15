@@ -11,3 +11,7 @@ Canonical owner: tools/shv-interface-codegen/SPEC.md. Owned surfaces: INTENT.md,
 - `tools/shv-interface-codegen/generate.py`
 - `tools/shv-interface-codegen/history-lock.json`
 - `tools/shv-interface-codegen/tests/interface_test.py`
+
+- `tools/shv-interface-codegen/EXTENDING.md`
+- `tools/shv-interface-codegen/owner_codegen.py`
+- `tools/shv-interface-codegen/tests/owner_test.py`

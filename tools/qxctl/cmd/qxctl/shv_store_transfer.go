@@ -31,8 +31,10 @@ func newSHVTransferRunner(source *shvStoreRunner, input map[string]any) (*shvTra
 	if !ok {
 		return nil, fmt.Errorf("native transfer plan required")
 	}
+	selectedOwner, _ := pin["source_connector"].(map[string]any)
+	version, _ := selectedOwner["Version"].(string)
 	in, _ := knowledgeengine.SCVCanonical(pin)
-	if err = knowledgeengine.ValidateSHVStoreResultVersion("transfer_plan", in, raw, knowledgeengine.SHVStoreTransferVersion); err != nil {
+	if err = knowledgeengine.ValidateSHVStoreResultVersion("transfer_plan", in, raw, version); err != nil {
 		return nil, err
 	}
 	if plan["digest"] != input["expected_plan_digest"] || plan["disposition"] != "ready" {

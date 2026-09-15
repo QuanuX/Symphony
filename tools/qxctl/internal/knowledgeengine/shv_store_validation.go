@@ -28,13 +28,16 @@ func shvStoreInput(op string, p map[string]any) error {
 }
 func shvStoreInputVersion(op string, p map[string]any, version string) error {
 	if op == "inventory" {
-		if version != SHVStoreInventoryVersion && version != SHVStoreTransferVersion {
+		if version != SHVStoreInventoryVersion && (version != SHVStoreTransferVersion && version != SHVStoreInterfaceVersion) {
 			return shvFail()
 		}
 		return shvStoreInventoryInput(p)
 	}
 	if op == "transfer_plan" {
-		if version != SHVStoreTransferVersion {
+		if version != SHVStoreTransferVersion && version != SHVStoreInterfaceVersion {
+			return shvFail()
+		}
+		if shvText(shvMap(p["source_connector"])["Version"]) != version || (version == SHVStoreTransferVersion && shvText(shvMap(p["target_connector"])["Version"]) == SHVStoreInterfaceVersion) {
 			return shvFail()
 		}
 		return shvStoreTransferInput(p)
@@ -123,7 +126,7 @@ func ValidateSHVStoreResult(op string, input, result []byte) error {
 	return ValidateSHVStoreResultVersion(op, input, result, SHVStoreVersion)
 }
 func ValidateSHVStoreResultVersion(op string, input, result []byte, version string) error {
-	if version != SHVStoreVersion && version != SHVStoreInventoryVersion && version != SHVStoreTransferVersion {
+	if version != SHVStoreVersion && version != SHVStoreInventoryVersion && (version != SHVStoreTransferVersion && version != SHVStoreInterfaceVersion) {
 		return shvFail()
 	}
 	p, e := shvObject(input)
@@ -140,9 +143,10 @@ func ValidateSHVStoreResultVersion(op string, input, result []byte, version stri
 	if op == "inspect" {
 		return shvStoreDescriptor(p, r, version)
 	}
-	if op == "inventory" && version == SHVStoreInventoryVersion {
+	if op == "inventory" && version != SHVStoreInterfaceVersion {
 		for _, v := range shvList(shvMap(r["manifest"])["entries"]) {
-			if shvMap(shvMap(v)["connector"])["Version"] == SHVStoreTransferVersion {
+			writer := shvText(shvMap(shvMap(v)["connector"])["Version"])
+			if writer == SHVStoreInterfaceVersion || (version == SHVStoreInventoryVersion && writer == SHVStoreTransferVersion) {
 				return shvFail()
 			}
 		}

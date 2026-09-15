@@ -82,8 +82,10 @@ func ReadIntent(raw []byte) (Intent, error) {
 	if !ok {
 		return i, fmt.Errorf("plan input required")
 	}
+	source, _ := input["source_connector"].(map[string]any)
+	version, _ := source["Version"].(string)
 	in, _ := knowledgeengine.SCVCanonical(input)
-	if err = knowledgeengine.ValidateSHVStoreResultVersion("transfer_plan", in, i.Plan, knowledgeengine.SHVStoreTransferVersion); err != nil {
+	if err = knowledgeengine.ValidateSHVStoreResultVersion("transfer_plan", in, i.Plan, version); err != nil {
 		return i, err
 	}
 	if p["disposition"] != "ready" || input["target_root"] != i.TargetRoot {

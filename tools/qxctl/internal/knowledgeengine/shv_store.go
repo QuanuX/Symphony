@@ -12,20 +12,26 @@ const SHVStoreInventoryVersion = "0.2.0-dev"
 const SHVStoreTransferVersion = "0.3.0-dev"
 
 var shvStoreSpec = engineSpec{label: "shv-graph-duckdb-connector", moduleID: "shv-graph-duckdb-connector", engineID: "symphony-shv-graph-duckdb-connector", componentKind: "adapter", vectorID: "shv", processProtocol: processProtocol}
-var shvStoreOutputs = map[string]string{"inspect": "symphony.knowledge.engine-descriptor.v2", "prepare": "symphony.shv.graph-store-status.v1", "commit": "symphony.shv.graph-store-status.v1", "status": "symphony.shv.graph-store-status.v1", "query": "symphony.shv.graph-store-query.v1", "export": "symphony.shv.graph-store-export.v1", "inventory": "symphony.shv.graph-store-inventory.v1", "transfer_plan": "symphony.shv.graph-store-transfer-plan.v1"}
+var shvStoreOutputs = shvStoreInterfaceOutputs
 
 func SHVStoreResultProtocol(op string) (string, bool) { v, ok := shvStoreOutputs[op]; return v, ok }
 func SHVStoreInputProtocol(op string) string          { return "symphony.shv.graph-store-" + op + "-input.v1" }
 func InspectSHVStore(prefix, version string) (Installation, error) {
-	if prefix == "" || (version != SHVStoreVersion && version != SHVStoreInventoryVersion && version != SHVStoreTransferVersion) {
-		return Installation{}, fmt.Errorf("graph store requires an explicit prefix and exact version %s, %s or %s", SHVStoreVersion, SHVStoreInventoryVersion, SHVStoreTransferVersion)
+	if prefix == "" || shvStoreInterfaceAdmission[version] == nil {
+		return Installation{}, fmt.Errorf("SHV requires an explicit prefix and a supported exact owner version")
 	}
 	s := shvStoreSpec
 	e, err := InspectReceiptV2EntryPoint(prefix, version, ReceiptV2EntryPointSpec{Label: s.label, ComponentID: s.moduleID, ComponentKind: s.componentKind, ModuleID: s.moduleID, PackageID: s.moduleID, VectorID: &s.vectorID, EngineID: &s.engineID, EntryPointID: s.engineID, EntryPointKind: "executable", EntryPointRelativePath: filepath.ToSlash(filepath.Join("libexec", "symphony", s.moduleID, version, s.engineID)), RequiredProtocols: []string{processProtocol}})
 	if err != nil {
 		return Installation{}, err
 	}
-	return Installation{Role: s.moduleID, ModuleID: s.moduleID, EngineID: s.engineID, Version: version, Prefix: e.Prefix, ReceiptPath: e.ReceiptPath, ReceiptDigest: e.ReceiptDigest, ReceiptProtocol: receiptProtocolV2, ExecutablePath: e.ExecutablePath, ExecutableDigest: e.ExecutableDigest}, nil
+	inst := Installation{Role: s.moduleID, ModuleID: s.moduleID, EngineID: s.engineID, Version: version, Prefix: e.Prefix, ReceiptPath: e.ReceiptPath, ReceiptDigest: e.ReceiptDigest, ReceiptProtocol: receiptProtocolV2, ExecutablePath: e.ExecutablePath, ExecutableDigest: e.ExecutableDigest}
+	if version == SHVStoreInterfaceVersion {
+		if err := verifySHVOwnerInterface(inst, shvStoreInterfaceDigest); err != nil {
+			return Installation{}, err
+		}
+	}
+	return inst, nil
 }
 func SHVStoreResource(prefix, version string, templates bool) (Installation, json.RawMessage, error) {
 	inst, err := InspectSHVStore(prefix, version)

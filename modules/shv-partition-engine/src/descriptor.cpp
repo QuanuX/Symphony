@@ -11,38 +11,8 @@ Json seal(Json j, const std::string &key) {
 }
 } // namespace
 Json descriptor() {
-  std::vector<engine::OperationSpec> specs;
-  const std::vector<std::pair<std::string, std::string>> operations = {
-      {"inspect", engine::descriptor_protocol_v2},
-      {"partition_build", "symphony.shv.partition.v1"},
-      {"manifest_build", "symphony.shv.partition-manifest.v1"},
-      {"manifest_query", "symphony.shv.partition-query.v1"}};
-  for (const auto &[name, output] : operations) {
-    auto id = name, input = name;
-    std::replace(id.begin(), id.end(), '_', '.');
-    std::replace(input.begin(), input.end(), '_', '-');
-    if (name == "partition_build")
-      input = "build";
-    specs.push_back(engine::OperationSpec{
-        "engop:symphony:shv-partition." + id,
-        name,
-        "implemented",
-        false,
-        true,
-        {"ssfv:symphony:shv-partition-engine"},
-        {name == "inspect" ? "inspect"
-                           : (name == "manifest_query" ? "query" : "invoke")},
-        "qxctl_required",
-        std::string("symphony.shv.partition-") + input + "-input.v1",
-        output,
-        "read_only",
-        "idempotent",
-        false,
-        "none",
-        "",
-        "supported",
-        "freezing"});
-  }
+  const auto &specs = interface_operations();
+  engine::validate_operation_specs(specs);
   return seal(
       Json{{"protocol", engine::descriptor_protocol_v2},
            {"format_version", 2},

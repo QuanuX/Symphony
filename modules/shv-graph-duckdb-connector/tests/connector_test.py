@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 import argparse,copy,ctypes,hashlib,json,os,pathlib,subprocess,tempfile,time,unittest,uuid
-ENGINE=None;LIBRARY=None
+ENGINE=None;LIBRARY=None;VERSION='0.3.0-dev'
 canonical=lambda v:json.dumps(v,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()
 def seal(v):return dict(v,digest='sha256:'+hashlib.sha256(canonical(v)).hexdigest())
 def graph():
  a=seal({'protocol':'caller.example.v1','future_field':{'class':'networking-card','retired':None}})
  return seal({'protocol':'symphony.graph.exchange.v1','owner':{'engine_id':'caller-owner','engine_version':'1','artifact_protocol':a['protocol'],'artifact_digest':a['digest']},'owner_artifact':a,'nodes':[{'id':str(i),'labels':['component'],'properties':{'unknown_metric':{'unit':'caller','value':i}}} for i in range(3)],'edges':[{'id':str(i),'from':'0','to':'1','label':'caller-link','properties':{'future':[i]}} for i in range(3)]})
 def installation():
- m='shv-graph-duckdb-connector';v='0.3.0-dev';p='/fixture';return {'Role':m,'ModuleID':m,'EngineID':'symphony-'+m,'Version':v,'Prefix':p,'ReceiptPath':p+'/share/symphony/receipts/'+m+'/'+v+'/install-receipt.json','ReceiptProtocol':'symphony.knowledge.install-receipt.v2','ReceiptDigest':'sha256:'+'1'*64,'ExecutablePath':p+'/libexec/symphony/'+m+'/'+v+'/symphony-'+m,'ExecutableDigest':'sha256:'+'2'*64}
+ m='shv-graph-duckdb-connector';v=VERSION;p='/fixture';return {'Role':m,'ModuleID':m,'EngineID':'symphony-'+m,'Version':v,'Prefix':p,'ReceiptPath':p+'/share/symphony/receipts/'+m+'/'+v+'/install-receipt.json','ReceiptProtocol':'symphony.knowledge.install-receipt.v2','ReceiptDigest':'sha256:'+'1'*64,'ExecutablePath':p+'/libexec/symphony/'+m+'/'+v+'/symphony-'+m,'ExecutableDigest':'sha256:'+'2'*64}
 def request(op,p):return {'protocol':'symphony.knowledge.engine-process.v1','request_id':str(uuid.uuid4()),'correlation_id':str(uuid.uuid4()),'target_engine':'symphony-shv-graph-duckdb-connector','operation':op,'deadline_unix_ms':int(time.time()*1000)+20000,'payload':p}
 def raw(root,op,p):
  x=subprocess.run([ENGINE],cwd=root,input=canonical(request(op,p)),capture_output=True,timeout=25);r=json.loads(x.stdout);return x,r
@@ -82,4 +82,4 @@ class StoreTests(unittest.TestCase):
   for value in [0,17,True,1.5]:self.call('inventory',{**q,'limit':value},False)
 
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--engine',required=True);p.add_argument('--library',required=True);p.add_argument('--version');args,rest=p.parse_known_args();ENGINE=str(pathlib.Path(args.engine).resolve());LIBRARY=args.library;unittest.main(argv=[__file__,*rest])
+ p=argparse.ArgumentParser();p.add_argument('--engine',required=True);p.add_argument('--library',required=True);p.add_argument('--version');args,rest=p.parse_known_args();ENGINE=str(pathlib.Path(args.engine).resolve());LIBRARY=args.library;VERSION=args.version or VERSION;unittest.main(argv=[__file__,*rest])

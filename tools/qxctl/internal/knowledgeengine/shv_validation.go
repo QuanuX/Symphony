@@ -309,7 +309,7 @@ func shvCatalogueVersion(v any, version string) error {
 			x := shvMap(v)
 			pred := shvText(x["predicate"])
 			f := fieldMap[pred]
-			if !shvValue(x["value"]) && !((version == SHVTableVersion || version == SHVDocumentVersion) && (f["value_type"] == "quarter_20yy" || f["value_type"] == "table_rows")) {
+			if !shvValue(x["value"]) && !((version == SHVTableVersion || (version == SHVDocumentVersion || version == SHVKernelInterfaceVersion)) && (f["value_type"] == "quarter_20yy" || f["value_type"] == "table_rows")) {
 				return shvFail()
 			}
 			if !shvFields(x, "predicate", "value", "qualifier", "source_id") || pred <= prev || f == nil || x["source_id"] != m["source_id"] || !scvEqual(x["qualifier"], f["qualifier"]) {
@@ -334,7 +334,7 @@ func shvCatalogueVersion(v any, version string) error {
 					return shvFail()
 				}
 			case "quarter_20yy", "table_rows":
-				if (version != SHVTableVersion && version != SHVDocumentVersion) || m["interpretation_profile"] != "scoped_tables.v1" || !shvStructuredValue(x["value"], shvText(f["value_type"]), f) {
+				if (version != SHVTableVersion && (version != SHVDocumentVersion && version != SHVKernelInterfaceVersion)) || m["interpretation_profile"] != "scoped_tables.v1" || !shvStructuredValue(x["value"], shvText(f["value_type"]), f) {
 					return shvFail()
 				}
 			default:
@@ -613,7 +613,7 @@ func ValidateSHVResult(op string, input, raw []byte, adapter bool) error {
 	return ValidateSHVResultVersion(op, input, raw, adapter, SHVVersion)
 }
 func ValidateSHVResultVersion(op string, input, raw []byte, adapter bool, version string) error {
-	if (adapter && version != SHVVersion) || (!adapter && !shvKernelVersion(version)) {
+	if (adapter && shvGraphAdapterInterfaceAdmission[version] == nil) || (!adapter && !shvKernelVersion(version)) {
 		return shvFail()
 	}
 	p, e := shvObject(input)

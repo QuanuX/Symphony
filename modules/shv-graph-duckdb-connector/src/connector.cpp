@@ -122,7 +122,7 @@ void installation(const Json &value) {
               value.at("ModuleID") == "shv-graph-duckdb-connector" &&
               value.at("EngineID") == engine_id &&
               (selected_version == "0.1.0-dev" ||
-               selected_version == "0.2.0-dev" ||
+               selected_version == "0.2.0-dev" || selected_version == "0.3.0-dev" ||
                selected_version == version) &&
               value.at("ReceiptProtocol") ==
                   "symphony.knowledge.install-receipt.v2",
@@ -1084,55 +1084,8 @@ Json queried(const engine::Request &request) {
 }
 } // namespace
 Json descriptor() {
-  std::vector<engine::OperationSpec> operations;
-  for (const auto *name : {"inspect", "prepare", "commit", "status", "query",
-                           "export", "inventory", "transfer_plan"}) {
-    std::string output =
-        name == std::string("transfer_plan")
-            ? "symphony.shv.graph-store-transfer-plan.v1"
-        : name == std::string("inventory")
-            ? "symphony.shv.graph-store-inventory.v1"
-        : name == std::string("inspect") ? engine::descriptor_protocol_v2
-        : name == std::string("query")   ? "symphony.shv.graph-store-query.v1"
-        : name == std::string("export")  ? "symphony.shv.graph-store-export.v1"
-                                         : "symphony.shv.graph-store-status.v1";
-    operations.push_back(
-        {std::string("engop:symphony:shv.graph-store.") +
-             (name == std::string("transfer_plan") ? "transfer.plan" : name),
-         name,
-         "implemented",
-         false,
-         true,
-         {"ssfv:symphony:shv-graph-duckdb-connector"},
-         {name == std::string("inspect")   ? "inspect"
-          : name == std::string("prepare") ? "invoke"
-          : name == std::string("commit")  ? "invoke"
-                                           : "query"},
-         "qxctl_required",
-         std::string("symphony.shv.graph-store-") + name + "-input.v1",
-         output,
-         (name == std::string("inspect") || name == std::string("inventory") ||
-          name == std::string("transfer_plan"))
-             ? "read_only"
-             : "evidence_only",
-         "idempotent",
-         false,
-         "none",
-         "",
-         "supported",
-         "freezing"});
-  }
-  for (auto &op : operations) {
-    if (op.operation_name == "commit" || op.operation_name == "transfer_plan") {
-      if (op.operation_name == "commit")
-        op.administrative_interactions = {"invoke", "recover"};
-      op.expected_state_required = true;
-    }
-    if (op.operation_name == "status")
-      op.administrative_interactions = {"inspect", "recover"};
-  }
-  engine::validate_operation_specs(operations);
-  return seal(
+  const auto &operations = interface_operations();
+  engine::validate_operation_specs(operations);return seal(
       Json{
           {"protocol", engine::descriptor_protocol_v2},
           {"format_version", 2},

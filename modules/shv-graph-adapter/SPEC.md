@@ -7,3 +7,9 @@ Finite bounds: 1 MiB request, 4 MiB response, 64 JSON depth, 32,768 aggregate ev
 The public C++ port is include/symphony/graph/adapter.hpp. Implementations return sealed adapter-result.v1 records. PortableReference is in-memory and makes no persistence claim. Other drivers need their own versioned implementation and conformance evidence. The header depends on the separately installed exact foundation; the installed executable is self-contained.
 
 Schema describes structural shapes; runtime checks cross-field correspondence, canonical subset and seals. Templates use null for unanswered graph/kind, deliberately invalid until caller supplies evidence. Roundtrip is lossless structural transport, not hardware validation. query rows refer to one full graph digest; no pagination or sharded atlas support is claimed.
+
+## Mechanical interface release 0.2.0-dev
+
+OWNER-INTERFACE.json declares exact metadata. INTERFACE-GENERATOR.json selects generation paths and frozen history; the shared registration-driven generator produces src/interface.generated.hpp, Go admission and CMake inventory. qxctl verifies the installed declaration through receipt-v2 and compiled admission. Existing command identities and defaults remain unchanged. Old packages remain independently selectable; artifacts and retained writers keep their exact original identity. Metadata generation is separate from native semantic handlers and independent Go result replay.
+
+This inventory is not exhaustive. New owners can use `tools/shv-interface-codegen/EXTENDING.md` without extending a fixed generator whitelist. They must supply their own semantic contracts and qxctl integration.

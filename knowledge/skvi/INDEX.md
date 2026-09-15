@@ -12442,3 +12442,445 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: no additional runtime discovery authorized
 - notes: Does not generate semantic handlers or grant mutation authority.
 - status: canonical
+
+##### SHV open interface modules/shv-engine/OWNER-INTERFACE.json
+- path: `modules/shv-engine/OWNER-INTERFACE.json`
+- title: SHV open interface OWNER-INTERFACE.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-engine/INTERFACE-GENERATOR.json
+- path: `modules/shv-engine/INTERFACE-GENERATOR.json`
+- title: SHV open interface INTERFACE-GENERATOR.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-engine/src/interface.generated.hpp
+- path: `modules/shv-engine/src/interface.generated.hpp`
+- title: SHV open interface interface.generated.hpp
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-engine/tests/fixtures/interface-history.v1.json
+- path: `modules/shv-engine/tests/fixtures/interface-history.v1.json`
+- title: SHV open interface interface-history.v1.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface cmake/ShvKernelInterface.generated.cmake
+- path: `cmake/ShvKernelInterface.generated.cmake`
+- title: SHV open interface ShvKernelInterface.generated.cmake
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface tools/qxctl/internal/knowledgeengine/shv_kernel_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/shv_kernel_interface_generated.go`
+- title: SHV open interface shv_kernel_interface_generated.go
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-pdf-adapter/OWNER-INTERFACE.json
+- path: `modules/shv-pdf-adapter/OWNER-INTERFACE.json`
+- title: SHV open interface OWNER-INTERFACE.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-pdf-adapter/INTERFACE-GENERATOR.json
+- path: `modules/shv-pdf-adapter/INTERFACE-GENERATOR.json`
+- title: SHV open interface INTERFACE-GENERATOR.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-pdf-adapter/src/interface.generated.hpp
+- path: `modules/shv-pdf-adapter/src/interface.generated.hpp`
+- title: SHV open interface interface.generated.hpp
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-pdf-adapter/tests/fixtures/interface-history.v1.json
+- path: `modules/shv-pdf-adapter/tests/fixtures/interface-history.v1.json`
+- title: SHV open interface interface-history.v1.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface cmake/ShvPDFInterface.generated.cmake
+- path: `cmake/ShvPDFInterface.generated.cmake`
+- title: SHV open interface ShvPDFInterface.generated.cmake
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface tools/qxctl/internal/knowledgeengine/shv_pdf_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/shv_pdf_interface_generated.go`
+- title: SHV open interface shv_pdf_interface_generated.go
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-partition-engine/OWNER-INTERFACE.json
+- path: `modules/shv-partition-engine/OWNER-INTERFACE.json`
+- title: SHV open interface OWNER-INTERFACE.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-partition-engine/INTERFACE-GENERATOR.json
+- path: `modules/shv-partition-engine/INTERFACE-GENERATOR.json`
+- title: SHV open interface INTERFACE-GENERATOR.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-partition-engine/src/interface.generated.hpp
+- path: `modules/shv-partition-engine/src/interface.generated.hpp`
+- title: SHV open interface interface.generated.hpp
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-partition-engine/tests/fixtures/interface-history.v1.json
+- path: `modules/shv-partition-engine/tests/fixtures/interface-history.v1.json`
+- title: SHV open interface interface-history.v1.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface cmake/ShvPartitionInterface.generated.cmake
+- path: `cmake/ShvPartitionInterface.generated.cmake`
+- title: SHV open interface ShvPartitionInterface.generated.cmake
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface tools/qxctl/internal/knowledgeengine/shv_partition_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/shv_partition_interface_generated.go`
+- title: SHV open interface shv_partition_interface_generated.go
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-graph-adapter/OWNER-INTERFACE.json
+- path: `modules/shv-graph-adapter/OWNER-INTERFACE.json`
+- title: SHV open interface OWNER-INTERFACE.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-graph-adapter/INTERFACE-GENERATOR.json
+- path: `modules/shv-graph-adapter/INTERFACE-GENERATOR.json`
+- title: SHV open interface INTERFACE-GENERATOR.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-graph-adapter/src/interface.generated.hpp
+- path: `modules/shv-graph-adapter/src/interface.generated.hpp`
+- title: SHV open interface interface.generated.hpp
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-graph-adapter/tests/fixtures/interface-history.v1.json
+- path: `modules/shv-graph-adapter/tests/fixtures/interface-history.v1.json`
+- title: SHV open interface interface-history.v1.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface cmake/ShvGraphAdapterInterface.generated.cmake
+- path: `cmake/ShvGraphAdapterInterface.generated.cmake`
+- title: SHV open interface ShvGraphAdapterInterface.generated.cmake
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface tools/qxctl/internal/knowledgeengine/shv_graph_adapter_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/shv_graph_adapter_interface_generated.go`
+- title: SHV open interface shv_graph_adapter_interface_generated.go
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-graph-duckdb-connector/OWNER-INTERFACE.json
+- path: `modules/shv-graph-duckdb-connector/OWNER-INTERFACE.json`
+- title: SHV open interface OWNER-INTERFACE.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-graph-duckdb-connector/INTERFACE-GENERATOR.json
+- path: `modules/shv-graph-duckdb-connector/INTERFACE-GENERATOR.json`
+- title: SHV open interface INTERFACE-GENERATOR.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-graph-duckdb-connector/src/interface.generated.hpp
+- path: `modules/shv-graph-duckdb-connector/src/interface.generated.hpp`
+- title: SHV open interface interface.generated.hpp
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface modules/shv-graph-duckdb-connector/tests/fixtures/interface-history.v1.json
+- path: `modules/shv-graph-duckdb-connector/tests/fixtures/interface-history.v1.json`
+- title: SHV open interface interface-history.v1.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface cmake/ShvStoreInterface.generated.cmake
+- path: `cmake/ShvStoreInterface.generated.cmake`
+- title: SHV open interface ShvStoreInterface.generated.cmake
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface tools/qxctl/internal/knowledgeengine/shv_store_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/shv_store_interface_generated.go`
+- title: SHV open interface shv_store_interface_generated.go
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface tools/shv-interface-codegen/EXTENDING.md
+- path: `tools/shv-interface-codegen/EXTENDING.md`
+- title: SHV open interface EXTENDING.md
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface tools/shv-interface-codegen/owner_codegen.py
+- path: `tools/shv-interface-codegen/owner_codegen.py`
+- title: SHV open interface owner_codegen.py
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface tools/shv-interface-codegen/tests/owner_test.py
+- path: `tools/shv-interface-codegen/tests/owner_test.py`
+- title: SHV open interface owner_test.py
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical
+
+##### SHV open interface tools/qxctl/internal/knowledgeengine/shv_interface_versions_test.go
+- path: `tools/qxctl/internal/knowledgeengine/shv_interface_versions_test.go`
+- title: SHV open interface shv_interface_versions_test.go
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV module maintainers
+- scope: Exact owner metadata, extensible authoring, frozen history and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module authors, qxctl, native engines, agentic tools
+- deferred_projections: no automatic runtime semantic admission
+- notes: The owner inventory is not exhaustive; registration does not grant authority.
+- status: canonical

@@ -46,7 +46,7 @@ func validateStoreInventoryManifest(value any, input map[string]any) (map[string
 			return nil, nil, fail
 		}
 		writer := shvText(shvMap(e["connector"])["Version"])
-		if (writer != SHVStoreVersion && writer != SHVStoreInventoryVersion && writer != SHVStoreTransferVersion) || storeInstallationVersion(e["connector"], writer) != nil {
+		if (writer != SHVStoreVersion && writer != SHVStoreInventoryVersion && (writer != SHVStoreTransferVersion && writer != SHVStoreInterfaceVersion)) || storeInstallationVersion(e["connector"], writer) != nil {
 			return nil, nil, fail
 		}
 		counts, ok := e["counts"].(map[string]any)
@@ -298,11 +298,12 @@ func shvStoreTransferInput(p map[string]any) error {
 	if !storeScope(p) || !shvFields(p, "tops_id", "namespace", "expected_revision", "operation_ids", "source_connector", "target_connector", "target_root", "capacity") || !storeDigest(p["expected_revision"]) {
 		return shvFail()
 	}
-	if storeInstallationVersion(p["source_connector"], SHVStoreTransferVersion) != nil {
+	sourceVersion := shvText(shvMap(p["source_connector"])["Version"])
+	if (sourceVersion != SHVStoreTransferVersion && sourceVersion != SHVStoreInterfaceVersion) || storeInstallationVersion(p["source_connector"], sourceVersion) != nil {
 		return shvFail()
 	}
 	v := shvText(shvMap(p["target_connector"])["Version"])
-	if (v != SHVStoreVersion && v != SHVStoreInventoryVersion && v != SHVStoreTransferVersion) || storeInstallationVersion(p["target_connector"], v) != nil {
+	if (v != SHVStoreVersion && v != SHVStoreInventoryVersion && v != SHVStoreTransferVersion && v != SHVStoreInterfaceVersion) || storeInstallationVersion(p["target_connector"], v) != nil {
 		return shvFail()
 	}
 	root := shvText(p["target_root"])

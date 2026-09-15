@@ -11,35 +11,8 @@ Json seal(Json j, const std::string &key) {
 }
 } // namespace
 Json descriptor() {
-  std::vector<engine::OperationSpec> specs;
-  const std::vector<std::pair<std::string, std::string>> operations = {
-      {"inspect", engine::descriptor_protocol_v2},
-      {"extract", "symphony.shv.pdf-extraction.v1"},
-      {"graph_project", "symphony.graph.exchange.v1"},
-      {"graph_validate", "symphony.shv.pdf-graph-validation.v1"}};
-  for (const auto &[name, output] : operations) {
-    auto id = name, input = name;
-    std::replace(id.begin(), id.end(), '_', '.');
-    std::replace(input.begin(), input.end(), '_', '-');
-    specs.push_back(engine::OperationSpec{
-        "engop:symphony:shv-pdf." + id,
-        name,
-        "implemented",
-        false,
-        true,
-        {"ssfv:symphony:shv-pdf-adapter"},
-        {name == "inspect" ? "inspect" : "invoke"},
-        "qxctl_required",
-        std::string("symphony.shv.pdf-") + input + "-input.v1",
-        output,
-        "read_only",
-        "idempotent",
-        false,
-        "none",
-        "",
-        "supported",
-        "freezing"});
-  }
+  const auto &specs = interface_operations();
+  engine::validate_operation_specs(specs);
   return seal(
       Json{{"protocol", engine::descriptor_protocol_v2},
            {"format_version", 2},

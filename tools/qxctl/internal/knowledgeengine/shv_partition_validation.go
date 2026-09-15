@@ -223,7 +223,7 @@ func ValidateSHVPartitionResult(op string, input, result []byte) error {
 	return ValidateSHVPartitionResultVersion(op, input, result, SHVPartitionVersion)
 }
 func ValidateSHVPartitionResultVersion(op string, input, result []byte, version string) error {
-	if version != SHVPartitionVersion && version != SHVDocumentPartitionVersion {
+	if version != SHVPartitionVersion && (version != SHVDocumentPartitionVersion && version != SHVPartitionInterfaceVersion) {
 		return shvFail()
 	}
 	p, e := shvObject(input)

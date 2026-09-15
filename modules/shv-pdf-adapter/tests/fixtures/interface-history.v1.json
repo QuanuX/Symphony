@@ -1,0 +1,212 @@
+{
+  "descriptors": {
+    "0.1.0-dev": {
+      "canonical_apply_enabled": false,
+      "contract_versions": [
+        "knowledge/shv/PDF-ADAPTER.md@v1",
+        "symphony.shv.pdf-extraction.v1"
+      ],
+      "descriptor_digest": "sha256:80bedea3c13dcb69955946a55f29cf770eb51c38954cd63e7fa94880bb0e09d3",
+      "engine_id": "symphony-shv-pdf",
+      "engine_version": "0.1.0-dev",
+      "format_version": 2,
+      "language": "C++26",
+      "limits": {
+        "deadline_ahead_ms": 300000,
+        "json_depth": 64,
+        "json_values": 32768,
+        "path_bytes": 4096,
+        "request_bytes": 1048576,
+        "response_bytes": 4194304,
+        "snapshot_file_bytes": 4194304,
+        "snapshot_files": 1024
+      },
+      "module_id": "shv-pdf-adapter",
+      "network_listener": false,
+      "operations": [
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "inspect"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-pdf.inspect",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-pdf-adapter"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.pdf-inspect-input.v1",
+          "mutability": "read_only",
+          "operation_name": "inspect",
+          "output_protocol": "symphony.knowledge.engine-descriptor.v2",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-pdf.extract",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-pdf-adapter"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.pdf-extract-input.v1",
+          "mutability": "read_only",
+          "operation_name": "extract",
+          "output_protocol": "symphony.shv.pdf-extraction.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        }
+      ],
+      "process_protocols": [
+        "symphony.knowledge.engine-process.v1"
+      ],
+      "protocol": "symphony.knowledge.engine-descriptor.v2",
+      "session_mutation_enabled": false,
+      "supported_scopes": [
+        "user"
+      ],
+      "thermal_path": "freezing",
+      "vector_id": "shv"
+    },
+    "0.2.0-dev": {
+      "canonical_apply_enabled": false,
+      "contract_versions": [
+        "knowledge/shv/PDF-ADAPTER.md@v1",
+        "symphony.shv.pdf-extraction.v1"
+      ],
+      "descriptor_digest": "sha256:d63520d5bcdd573c265cbba2e50868af0c2f60558a8f7cd5d23a0fae004e296f",
+      "engine_id": "symphony-shv-pdf",
+      "engine_version": "0.2.0-dev",
+      "format_version": 2,
+      "language": "C++26",
+      "limits": {
+        "deadline_ahead_ms": 300000,
+        "json_depth": 64,
+        "json_values": 32768,
+        "path_bytes": 4096,
+        "request_bytes": 1048576,
+        "response_bytes": 4194304,
+        "snapshot_file_bytes": 4194304,
+        "snapshot_files": 1024
+      },
+      "module_id": "shv-pdf-adapter",
+      "network_listener": false,
+      "operations": [
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "inspect"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-pdf.inspect",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-pdf-adapter"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.pdf-inspect-input.v1",
+          "mutability": "read_only",
+          "operation_name": "inspect",
+          "output_protocol": "symphony.knowledge.engine-descriptor.v2",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-pdf.extract",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-pdf-adapter"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.pdf-extract-input.v1",
+          "mutability": "read_only",
+          "operation_name": "extract",
+          "output_protocol": "symphony.shv.pdf-extraction.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-pdf.graph.project",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-pdf-adapter"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.pdf-graph-project-input.v1",
+          "mutability": "read_only",
+          "operation_name": "graph_project",
+          "output_protocol": "symphony.graph.exchange.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-pdf.graph.validate",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-pdf-adapter"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.pdf-graph-validate-input.v1",
+          "mutability": "read_only",
+          "operation_name": "graph_validate",
+          "output_protocol": "symphony.shv.pdf-graph-validation.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        }
+      ],
+      "process_protocols": [
+        "symphony.knowledge.engine-process.v1"
+      ],
+      "protocol": "symphony.knowledge.engine-descriptor.v2",
+      "session_mutation_enabled": false,
+      "supported_scopes": [
+        "user"
+      ],
+      "thermal_path": "freezing",
+      "vector_id": "shv"
+    }
+  },
+  "provenance": {
+    "0.1.0-dev": {
+      "path": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-15-pdf/libexec/symphony/shv-pdf-adapter/0.1.0-dev/symphony-shv-pdf",
+      "digest": "sha256:858ff737ab01a80a8b7b147a823b99270a6fd32034d43545798813232a1dc97b"
+    },
+    "0.2.0-dev": {
+      "path": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-16-pdf/libexec/symphony/shv-pdf-adapter/0.2.0-dev/symphony-shv-pdf",
+      "digest": "sha256:baba9928b1857cef31c5df6e5a18fa0066e9bc4ce97ae7c9fb2c6a9f1c054b2e"
+    }
+  }
+}

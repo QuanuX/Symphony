@@ -1,0 +1,13 @@
+{
+  "protocol": "symphony.shv.interface-registration.v1",
+  "declaration": "modules/shv-graph-adapter/OWNER-INTERFACE.json",
+  "history": "modules/shv-graph-adapter/tests/fixtures/interface-history.v1.json",
+  "history_digest": "sha256:5af7d5e604d2daa10a735fa2fbf54960bd7ffd103cb18c7ad375075f7f3ae161",
+  "go_title": "GraphAdapter",
+  "go_stem": "graph_adapter",
+  "cpp_output": "modules/shv-graph-adapter/src/interface.generated.hpp",
+  "go_output": "tools/qxctl/internal/knowledgeengine/shv_graph_adapter_interface_generated.go",
+  "cmake_output": "cmake/ShvGraphAdapterInterface.generated.cmake",
+  "embedded_compatibility_version": "0.1.0-dev",
+  "embedded_macro": "SYMPHONY_SHV_GRAPH_ADAPTER_EMBEDDED_PREVIOUS"
+}

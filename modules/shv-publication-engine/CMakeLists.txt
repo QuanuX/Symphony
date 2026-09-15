@@ -72,3 +72,6 @@ symphony_install_receipt_v2(COMPONENT_ID shv-publication-engine COMPONENT_KIND v
  ENTRY_POINTS "symphony-shv-publication|executable|${SHV_RUNTIME}/symphony-shv-publication|symphony.knowledge.engine-process.v1")
 configure_file(cmake/uninstall.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake" @ONLY)
 add_custom_target(uninstall-shv-publication-engine COMMAND ${CMAKE_COMMAND} -DINSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -P "${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake")
+
+# Preserve the reviewed embedded owner while its standalone package evolves.
+target_compile_definitions(shv-publication-core PUBLIC SYMPHONY_SHV_PARTITION_EMBEDDED_PREVIOUS=1)

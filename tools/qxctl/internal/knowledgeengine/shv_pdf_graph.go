@@ -7,7 +7,8 @@ import (
 
 // pdfGraph reconstructs the precise owner projection; generic transport never
 // decides identifier semantics or adds documentary lineages.
-func pdfGraph(x map[string]any) map[string]any {
+func pdfGraph(x map[string]any) map[string]any { return pdfGraphVersion(x, SHVPDFGraphVersion) }
+func pdfGraphVersion(x map[string]any, version string) map[string]any {
 	source := shvMap(x["source"])
 	sid := "source:" + shvText(source["digest"])
 	did := "derivation:" + shvText(x["digest"])
@@ -23,10 +24,10 @@ func pdfGraph(x map[string]any) map[string]any {
 	}
 	sort.Slice(nodes, func(i, j int) bool { return nodes[i]["id"].(string) < nodes[j]["id"].(string) })
 	sort.Slice(edges, func(i, j int) bool { return edges[i]["id"].(string) < edges[j]["id"].(string) })
-	return pdfSealed(map[string]any{"protocol": "symphony.graph.exchange.v1", "owner": map[string]any{"engine_id": "symphony-shv-pdf", "engine_version": SHVPDFGraphVersion, "artifact_protocol": x["protocol"], "artifact_digest": x["digest"]}, "owner_artifact": x, "nodes": nodes, "edges": edges})
+	return pdfSealed(map[string]any{"protocol": "symphony.graph.exchange.v1", "owner": map[string]any{"engine_id": "symphony-shv-pdf", "engine_version": version, "artifact_protocol": x["protocol"], "artifact_digest": x["digest"]}, "owner_artifact": x, "nodes": nodes, "edges": edges})
 }
 func validatePDFGraphResult(op string, p, r map[string]any, version string) error {
-	if version != SHVPDFGraphVersion {
+	if version != SHVPDFGraphVersion && version != SHVPDFInterfaceVersion {
 		return shvFail()
 	}
 	request := p
@@ -44,7 +45,7 @@ func validatePDFGraphResult(op string, p, r map[string]any, version string) erro
 	if ValidateSHVPDFResult("extract", input, artifact) != nil {
 		return shvFail()
 	}
-	if !scvEqual(pdfGraph(x), graph) {
+	if !scvEqual(pdfGraphVersion(x, version), graph) {
 		return shvFail()
 	}
 	if op == "graph_validate" {

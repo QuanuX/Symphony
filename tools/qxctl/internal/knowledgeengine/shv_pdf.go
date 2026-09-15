@@ -12,7 +12,7 @@ const SHVPDFVersion = "0.1.0-dev"
 const SHVPDFGraphVersion = "0.2.0-dev"
 
 var shvPDFSpec = engineSpec{label: "shv-pdf-adapter", moduleID: "shv-pdf-adapter", engineID: "symphony-shv-pdf", componentKind: "adapter", vectorID: "shv", processProtocol: processProtocol}
-var shvPDFOutputs = map[string]string{"inspect": "symphony.knowledge.engine-descriptor.v2", "extract": "symphony.shv.pdf-extraction.v1", "graph_project": "symphony.graph.exchange.v1", "graph_validate": "symphony.shv.pdf-graph-validation.v1"}
+var shvPDFOutputs = shvPDFInterfaceOutputs
 
 func SHVPDFResultProtocol(op string) (string, bool) {
 	p, ok := shvPDFOutputs[op]
@@ -33,7 +33,7 @@ func InvokeSHVPDF(ctx context.Context, prefix, version, cwd, op string, payload 
 	if e = validateJSONObject(payload, maxRequestBytes); e != nil {
 		return Response{}, e
 	}
-	if (op == "graph_project" || op == "graph_validate") && version != SHVPDFGraphVersion {
+	if (op == "graph_project" || op == "graph_validate") && (version != SHVPDFGraphVersion && version != SHVPDFInterfaceVersion) {
 		return Response{}, shvFail()
 	}
 	if op == "graph_validate" {
@@ -68,15 +68,21 @@ func InvokeSHVPDF(ctx context.Context, prefix, version, cwd, op string, payload 
 	return r, nil
 }
 func InspectSHVPDF(prefix, version string) (Installation, error) {
-	if prefix == "" || (version != SHVPDFVersion && version != SHVPDFGraphVersion) {
-		return Installation{}, fmt.Errorf("SHV requires explicit prefix and exact supported version %s", SHVPDFVersion)
+	if prefix == "" || shvPDFInterfaceAdmission[version] == nil {
+		return Installation{}, fmt.Errorf("SHV requires an explicit prefix and a supported exact owner version")
 	}
 	s := shvPDFSpec
 	e, err := InspectReceiptV2EntryPoint(prefix, version, ReceiptV2EntryPointSpec{Label: s.label, ComponentID: s.moduleID, ComponentKind: s.componentKind, ModuleID: s.moduleID, PackageID: s.moduleID, VectorID: &s.vectorID, EngineID: &s.engineID, EntryPointID: s.engineID, EntryPointKind: "executable", EntryPointRelativePath: filepath.ToSlash(filepath.Join("libexec", "symphony", s.moduleID, version, s.engineID)), RequiredProtocols: []string{processProtocol}})
 	if err != nil {
 		return Installation{}, err
 	}
-	return Installation{Role: s.moduleID, ModuleID: s.moduleID, EngineID: s.engineID, Version: version, Prefix: e.Prefix, ReceiptPath: e.ReceiptPath, ReceiptDigest: e.ReceiptDigest, ReceiptProtocol: receiptProtocolV2, ExecutablePath: e.ExecutablePath, ExecutableDigest: e.ExecutableDigest}, nil
+	inst := Installation{Role: s.moduleID, ModuleID: s.moduleID, EngineID: s.engineID, Version: version, Prefix: e.Prefix, ReceiptPath: e.ReceiptPath, ReceiptDigest: e.ReceiptDigest, ReceiptProtocol: receiptProtocolV2, ExecutablePath: e.ExecutablePath, ExecutableDigest: e.ExecutableDigest}
+	if version == SHVPDFInterfaceVersion {
+		if err := verifySHVOwnerInterface(inst, shvPDFInterfaceDigest); err != nil {
+			return Installation{}, err
+		}
+	}
+	return inst, nil
 }
 func SHVPDFResource(prefix, version string, templates bool) (Installation, json.RawMessage, error) {
 	inst, err := InspectSHVPDF(prefix, version)

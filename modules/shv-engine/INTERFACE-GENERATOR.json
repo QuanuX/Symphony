@@ -1,0 +1,13 @@
+{
+  "protocol": "symphony.shv.interface-registration.v1",
+  "declaration": "modules/shv-engine/OWNER-INTERFACE.json",
+  "history": "modules/shv-engine/tests/fixtures/interface-history.v1.json",
+  "history_digest": "sha256:bc2677906c30e657c21d553164367e8ebb7dd8ac9b4eeb14e3e71081c3f291c0",
+  "go_title": "Kernel",
+  "go_stem": "kernel",
+  "cpp_output": "modules/shv-engine/src/interface.generated.hpp",
+  "go_output": "tools/qxctl/internal/knowledgeengine/shv_kernel_interface_generated.go",
+  "cmake_output": "cmake/ShvKernelInterface.generated.cmake",
+  "embedded_compatibility_version": "0.3.0-dev",
+  "embedded_macro": "SYMPHONY_SHV_KERNEL_EMBEDDED_PREVIOUS"
+}

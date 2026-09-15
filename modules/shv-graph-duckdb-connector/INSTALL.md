@@ -41,3 +41,11 @@ The current release adds exact-revision transfer planning and qxctl execution/re
 It admits historical 0.1/0.2/0.3 writers for inventory while preserving original writer
 identity. See SPEC.md for transfer-plan, transfer and transfer-status, private target
 requirements and explicit publication under publication engine 0.2.0-dev.
+
+## Mechanical interface release 0.4.0-dev
+
+OWNER-INTERFACE.json declares exact metadata. INTERFACE-GENERATOR.json selects generation paths and frozen history; the shared registration-driven generator produces src/interface.generated.hpp, Go admission and CMake inventory. qxctl verifies the installed declaration through receipt-v2 and compiled admission. Existing command identities and defaults remain unchanged. Old packages remain independently selectable; artifacts and retained writers keep their exact original identity. Metadata generation is separate from native semantic handlers and independent Go result replay.
+
+This inventory is not exhaustive. New owners can use `tools/shv-interface-codegen/EXTENDING.md` without extending a fixed generator whitelist. They must supply their own semantic contracts and qxctl integration.
+
+Store 0.4 can inventory retained writers 0.1/0.2/0.3/0.4; other data operations remain bound to the exact writer. Transfer planning binds its selected 0.3 or 0.4 reader. Old readers do not admit new 0.4 writers, and old publication admission remains unchanged. Embedded structural adapter stays exactly 0.1. No database migration or graph database default is introduced.

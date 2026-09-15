@@ -44,7 +44,7 @@ func ValidateSHVPDFResult(op string, payload, result []byte) error {
 	return ValidateSHVPDFResultVersion(op, payload, result, SHVPDFVersion)
 }
 func ValidateSHVPDFResultVersion(op string, payload, result []byte, version string) error {
-	if version != SHVPDFVersion && version != SHVPDFGraphVersion {
+	if version != SHVPDFVersion && (version != SHVPDFGraphVersion && version != SHVPDFInterfaceVersion) {
 		return shvFail()
 	}
 	p, e := shvObject(payload)

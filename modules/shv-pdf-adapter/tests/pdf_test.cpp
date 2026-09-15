@@ -63,7 +63,7 @@ int main() {
   if (graph.at("edges").at(0).at("properties").at("qualifier") !=
       "issuer=AMD;namespace=opn;profile=1")
     return 11;
-  if (graph.at("owner").at("engine_version") != "0.2.0-dev")
+  if (graph.at("owner").at("engine_version") != "0.3.0-dev")
     return 12;
   std::cout << "bounded table parser: success and 7 rejection cases, source "
                "order preserved\n";

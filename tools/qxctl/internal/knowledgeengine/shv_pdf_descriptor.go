@@ -23,7 +23,7 @@ func shvPDFDescriptor(p, r map[string]any, version string) error {
 	}
 	ops, ok := r["operations"].([]any)
 	count := 2
-	if version == SHVPDFGraphVersion {
+	if version == SHVPDFGraphVersion || version == SHVPDFInterfaceVersion {
 		count = 4
 	}
 	if !ok || len(ops) != count {

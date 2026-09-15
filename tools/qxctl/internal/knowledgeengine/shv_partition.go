@@ -12,7 +12,7 @@ const SHVPartitionVersion = "0.1.0-dev"
 const SHVDocumentPartitionVersion = "0.2.0-dev"
 
 var shvPartitionSpec = engineSpec{label: "shv-partition-engine", moduleID: "shv-partition-engine", engineID: "symphony-shv-partition", componentKind: "vector_engine", vectorID: "shv", processProtocol: processProtocol}
-var shvPartitionOutputs = map[string]string{"inspect": "symphony.knowledge.engine-descriptor.v2", "partition_build": "symphony.shv.partition.v1", "manifest_build": "symphony.shv.partition-manifest.v1", "manifest_query": "symphony.shv.partition-query.v1"}
+var shvPartitionOutputs = shvPartitionInterfaceOutputs
 
 func SHVPartitionResultProtocol(op string) (string, bool) {
 	p, ok := shvPartitionOutputs[op]
@@ -62,15 +62,21 @@ func InvokeSHVPartition(ctx context.Context, prefix, version, cwd, op string, pa
 	return r, nil
 }
 func InspectSHVPartition(prefix, version string) (Installation, error) {
-	if prefix == "" || (version != SHVPartitionVersion && version != SHVDocumentPartitionVersion) {
-		return Installation{}, fmt.Errorf("SHV requires explicit prefix and exact supported version %s or %s", SHVPartitionVersion, SHVDocumentPartitionVersion)
+	if prefix == "" || shvPartitionInterfaceAdmission[version] == nil {
+		return Installation{}, fmt.Errorf("SHV requires an explicit prefix and a supported exact owner version")
 	}
 	s := shvPartitionSpec
 	e, err := InspectReceiptV2EntryPoint(prefix, version, ReceiptV2EntryPointSpec{Label: s.label, ComponentID: s.moduleID, ComponentKind: s.componentKind, ModuleID: s.moduleID, PackageID: s.moduleID, VectorID: &s.vectorID, EngineID: &s.engineID, EntryPointID: s.engineID, EntryPointKind: "executable", EntryPointRelativePath: filepath.ToSlash(filepath.Join("libexec", "symphony", s.moduleID, version, s.engineID)), RequiredProtocols: []string{processProtocol}})
 	if err != nil {
 		return Installation{}, err
 	}
-	return Installation{Role: s.moduleID, ModuleID: s.moduleID, EngineID: s.engineID, Version: version, Prefix: e.Prefix, ReceiptPath: e.ReceiptPath, ReceiptDigest: e.ReceiptDigest, ReceiptProtocol: receiptProtocolV2, ExecutablePath: e.ExecutablePath, ExecutableDigest: e.ExecutableDigest}, nil
+	inst := Installation{Role: s.moduleID, ModuleID: s.moduleID, EngineID: s.engineID, Version: version, Prefix: e.Prefix, ReceiptPath: e.ReceiptPath, ReceiptDigest: e.ReceiptDigest, ReceiptProtocol: receiptProtocolV2, ExecutablePath: e.ExecutablePath, ExecutableDigest: e.ExecutableDigest}
+	if version == SHVPartitionInterfaceVersion {
+		if err := verifySHVOwnerInterface(inst, shvPartitionInterfaceDigest); err != nil {
+			return Installation{}, err
+		}
+	}
+	return inst, nil
 }
 func SHVPartitionResource(prefix, version string, templates bool) (Installation, json.RawMessage, error) {
 	inst, err := InspectSHVPartition(prefix, version)

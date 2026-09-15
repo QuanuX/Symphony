@@ -1,0 +1,258 @@
+{
+  "descriptors": {
+    "0.1.0-dev": {
+      "canonical_apply_enabled": false,
+      "contract_versions": [
+        "knowledge/shv/PARTITIONS.md@v1",
+        "symphony.shv.partition.v1",
+        "symphony.shv.partition-manifest.v1",
+        "symphony.shv.partition-query.v1"
+      ],
+      "descriptor_digest": "sha256:d820f663739246dea1b0e456bf28fd6c0b40969bb18ad2dfa41126a772060b2f",
+      "engine_id": "symphony-shv-partition",
+      "engine_version": "0.1.0-dev",
+      "format_version": 2,
+      "language": "C++26",
+      "limits": {
+        "deadline_ahead_ms": 300000,
+        "json_depth": 64,
+        "json_values": 32768,
+        "path_bytes": 4096,
+        "request_bytes": 1048576,
+        "response_bytes": 4194304,
+        "snapshot_file_bytes": 4194304,
+        "snapshot_files": 1024
+      },
+      "module_id": "shv-partition-engine",
+      "network_listener": false,
+      "operations": [
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "inspect"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-partition.inspect",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-partition-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.partition-inspect-input.v1",
+          "mutability": "read_only",
+          "operation_name": "inspect",
+          "output_protocol": "symphony.knowledge.engine-descriptor.v2",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-partition.partition.build",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-partition-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.partition-build-input.v1",
+          "mutability": "read_only",
+          "operation_name": "partition_build",
+          "output_protocol": "symphony.shv.partition.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-partition.manifest.build",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-partition-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.partition-manifest-build-input.v1",
+          "mutability": "read_only",
+          "operation_name": "manifest_build",
+          "output_protocol": "symphony.shv.partition-manifest.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-partition.manifest.query",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-partition-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.partition-manifest-query-input.v1",
+          "mutability": "read_only",
+          "operation_name": "manifest_query",
+          "output_protocol": "symphony.shv.partition-query.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        }
+      ],
+      "process_protocols": [
+        "symphony.knowledge.engine-process.v1"
+      ],
+      "protocol": "symphony.knowledge.engine-descriptor.v2",
+      "session_mutation_enabled": false,
+      "supported_scopes": [
+        "user"
+      ],
+      "thermal_path": "freezing",
+      "vector_id": "shv"
+    },
+    "0.2.0-dev": {
+      "canonical_apply_enabled": false,
+      "contract_versions": [
+        "knowledge/shv/PARTITIONS.md@v1",
+        "symphony.shv.partition.v1",
+        "symphony.shv.partition-manifest.v1",
+        "symphony.shv.partition-query.v1"
+      ],
+      "descriptor_digest": "sha256:82fe9c792fbc432022b43235cbae94b61cc98008b4880ad0c4572aed601f44cf",
+      "engine_id": "symphony-shv-partition",
+      "engine_version": "0.2.0-dev",
+      "format_version": 2,
+      "language": "C++26",
+      "limits": {
+        "deadline_ahead_ms": 300000,
+        "json_depth": 64,
+        "json_values": 32768,
+        "path_bytes": 4096,
+        "request_bytes": 1048576,
+        "response_bytes": 4194304,
+        "snapshot_file_bytes": 4194304,
+        "snapshot_files": 1024
+      },
+      "module_id": "shv-partition-engine",
+      "network_listener": false,
+      "operations": [
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "inspect"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-partition.inspect",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-partition-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.partition-inspect-input.v1",
+          "mutability": "read_only",
+          "operation_name": "inspect",
+          "output_protocol": "symphony.knowledge.engine-descriptor.v2",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-partition.partition.build",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-partition-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.partition-build-input.v1",
+          "mutability": "read_only",
+          "operation_name": "partition_build",
+          "output_protocol": "symphony.shv.partition.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-partition.manifest.build",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-partition-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.partition-manifest-build-input.v1",
+          "mutability": "read_only",
+          "operation_name": "manifest_build",
+          "output_protocol": "symphony.shv.partition-manifest.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-partition.manifest.query",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-partition-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.partition-manifest-query-input.v1",
+          "mutability": "read_only",
+          "operation_name": "manifest_query",
+          "output_protocol": "symphony.shv.partition-query.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        }
+      ],
+      "process_protocols": [
+        "symphony.knowledge.engine-process.v1"
+      ],
+      "protocol": "symphony.knowledge.engine-descriptor.v2",
+      "session_mutation_enabled": false,
+      "supported_scopes": [
+        "user"
+      ],
+      "thermal_path": "freezing",
+      "vector_id": "shv"
+    }
+  },
+  "provenance": {
+    "0.1.0-dev": {
+      "path": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-07-partition-final/libexec/symphony/shv-partition-engine/0.1.0-dev/symphony-shv-partition",
+      "digest": "sha256:8b65cea6ec4a2fc98769d9514db911b8803ffc0ba53f1715e8b0bdecb6cf1499"
+    },
+    "0.2.0-dev": {
+      "path": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-consolidated-partition/libexec/symphony/shv-partition-engine/0.2.0-dev/symphony-shv-partition",
+      "digest": "sha256:b505d74acade9204fa49d9f5af8252a56f5f86876e93e2f8d24bd61b35adb765"
+    }
+  }
+}

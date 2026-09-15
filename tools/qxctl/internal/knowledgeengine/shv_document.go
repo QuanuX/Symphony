@@ -3,7 +3,7 @@ package knowledgeengine
 import "encoding/json"
 
 func validateSHVDocumentSubject(p, m, s map[string]any, version string) error {
-	if version != SHVDocumentVersion {
+	if version != SHVDocumentVersion && version != SHVKernelInterfaceVersion {
 		return shvFail()
 	}
 	d := shvMap(m["document"])

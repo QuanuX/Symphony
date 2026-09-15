@@ -1,0 +1,13 @@
+{
+  "protocol": "symphony.shv.interface-registration.v1",
+  "declaration": "modules/shv-graph-duckdb-connector/OWNER-INTERFACE.json",
+  "history": "modules/shv-graph-duckdb-connector/tests/fixtures/interface-history.v1.json",
+  "history_digest": "sha256:0517bcd16487261ca26e8ee420fb759f4f315e10b8c7c954c5b6b28ca68a9166",
+  "go_title": "Store",
+  "go_stem": "store",
+  "cpp_output": "modules/shv-graph-duckdb-connector/src/interface.generated.hpp",
+  "go_output": "tools/qxctl/internal/knowledgeengine/shv_store_interface_generated.go",
+  "cmake_output": "cmake/ShvStoreInterface.generated.cmake",
+  "embedded_compatibility_version": null,
+  "embedded_macro": "SYMPHONY_SHV_STORE_EMBEDDED_PREVIOUS"
+}

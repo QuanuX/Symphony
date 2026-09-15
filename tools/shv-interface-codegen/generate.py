@@ -1,7 +1,7 @@
 """Bounded SHV source/publication authoring generator. Never generates semantics."""
 
 from pathlib import Path
-import argparse, hashlib, json, re, subprocess
+import argparse, hashlib, json, re, subprocess, sys
 
 ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
@@ -200,6 +200,10 @@ def emit(d, root=ROOT, check=False):
 
 
 def main():
+    if "--registration" in sys.argv[1:]:
+        import owner_codegen
+
+        return owner_codegen.main()
     p = argparse.ArgumentParser()
     p.add_argument(
         "--owner", required=True, choices=list(read(HERE / "history-lock.json"))

@@ -1,0 +1,576 @@
+{
+  "descriptors": {
+    "0.1.0-dev": {
+      "canonical_apply_enabled": false,
+      "contract_versions": [
+        "knowledge/SPEC.md@v1",
+        "shv-graph-duckdb-connector/SPEC.md@v1",
+        "shv-graph-duckdb-connector/DUCKDB-PROVENANCE.json@1.5.5"
+      ],
+      "descriptor_digest": "sha256:09c8a0d3cafa97f7ca7ae5d422c06af318f61011e3c686b808e6866065c11bfc",
+      "engine_id": "symphony-shv-graph-duckdb-connector",
+      "engine_version": "0.1.0-dev",
+      "format_version": 2,
+      "language": "C++26",
+      "limits": {
+        "deadline_ahead_ms": 300000,
+        "json_depth": 64,
+        "json_values": 32768,
+        "path_bytes": 4096,
+        "request_bytes": 1048576,
+        "response_bytes": 4194304,
+        "snapshot_file_bytes": 4194304,
+        "snapshot_files": 1024
+      },
+      "module_id": "shv-graph-duckdb-connector",
+      "network_listener": false,
+      "operations": [
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "inspect"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.inspect",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-inspect-input.v1",
+          "mutability": "read_only",
+          "operation_name": "inspect",
+          "output_protocol": "symphony.knowledge.engine-descriptor.v2",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.prepare",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-prepare-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "prepare",
+          "output_protocol": "symphony.shv.graph-store-status.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke",
+            "recover"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.commit",
+          "expected_state_required": true,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-commit-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "commit",
+          "output_protocol": "symphony.shv.graph-store-status.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "inspect",
+            "recover"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.status",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-status-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "status",
+          "output_protocol": "symphony.shv.graph-store-status.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.query",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-query-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "query",
+          "output_protocol": "symphony.shv.graph-store-query.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.export",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-export-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "export",
+          "output_protocol": "symphony.shv.graph-store-export.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        }
+      ],
+      "process_protocols": [
+        "symphony.knowledge.engine-process.v1"
+      ],
+      "protocol": "symphony.knowledge.engine-descriptor.v2",
+      "session_mutation_enabled": false,
+      "supported_scopes": [
+        "tops"
+      ],
+      "thermal_path": "freezing",
+      "vector_id": "shv"
+    },
+    "0.2.0-dev": {
+      "canonical_apply_enabled": false,
+      "contract_versions": [
+        "knowledge/SPEC.md@v1",
+        "shv-graph-duckdb-connector/SPEC.md@v1",
+        "shv-graph-duckdb-connector/DUCKDB-PROVENANCE.json@1.5.5"
+      ],
+      "descriptor_digest": "sha256:e0f38900345c6090413506f4c8d0a60246dd840000455b7325f7fa35e5807d43",
+      "engine_id": "symphony-shv-graph-duckdb-connector",
+      "engine_version": "0.2.0-dev",
+      "format_version": 2,
+      "language": "C++26",
+      "limits": {
+        "deadline_ahead_ms": 300000,
+        "json_depth": 64,
+        "json_values": 32768,
+        "path_bytes": 4096,
+        "request_bytes": 1048576,
+        "response_bytes": 4194304,
+        "snapshot_file_bytes": 4194304,
+        "snapshot_files": 1024
+      },
+      "module_id": "shv-graph-duckdb-connector",
+      "network_listener": false,
+      "operations": [
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "inspect"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.inspect",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-inspect-input.v1",
+          "mutability": "read_only",
+          "operation_name": "inspect",
+          "output_protocol": "symphony.knowledge.engine-descriptor.v2",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.prepare",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-prepare-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "prepare",
+          "output_protocol": "symphony.shv.graph-store-status.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke",
+            "recover"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.commit",
+          "expected_state_required": true,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-commit-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "commit",
+          "output_protocol": "symphony.shv.graph-store-status.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "inspect",
+            "recover"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.status",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-status-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "status",
+          "output_protocol": "symphony.shv.graph-store-status.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.query",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-query-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "query",
+          "output_protocol": "symphony.shv.graph-store-query.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.export",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-export-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "export",
+          "output_protocol": "symphony.shv.graph-store-export.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.inventory",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-inventory-input.v1",
+          "mutability": "read_only",
+          "operation_name": "inventory",
+          "output_protocol": "symphony.shv.graph-store-inventory.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        }
+      ],
+      "process_protocols": [
+        "symphony.knowledge.engine-process.v1"
+      ],
+      "protocol": "symphony.knowledge.engine-descriptor.v2",
+      "session_mutation_enabled": false,
+      "supported_scopes": [
+        "tops"
+      ],
+      "thermal_path": "freezing",
+      "vector_id": "shv"
+    },
+    "0.3.0-dev": {
+      "canonical_apply_enabled": false,
+      "contract_versions": [
+        "knowledge/SPEC.md@v1",
+        "shv-graph-duckdb-connector/SPEC.md@v1",
+        "shv-graph-duckdb-connector/DUCKDB-PROVENANCE.json@1.5.5"
+      ],
+      "descriptor_digest": "sha256:9ee88fe7a814d82c467a84a256b14e7042abfdd5294c9c3ad0204714b802d1c6",
+      "engine_id": "symphony-shv-graph-duckdb-connector",
+      "engine_version": "0.3.0-dev",
+      "format_version": 2,
+      "language": "C++26",
+      "limits": {
+        "deadline_ahead_ms": 300000,
+        "json_depth": 64,
+        "json_values": 32768,
+        "path_bytes": 4096,
+        "request_bytes": 1048576,
+        "response_bytes": 4194304,
+        "snapshot_file_bytes": 4194304,
+        "snapshot_files": 1024
+      },
+      "module_id": "shv-graph-duckdb-connector",
+      "network_listener": false,
+      "operations": [
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "inspect"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.inspect",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-inspect-input.v1",
+          "mutability": "read_only",
+          "operation_name": "inspect",
+          "output_protocol": "symphony.knowledge.engine-descriptor.v2",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.prepare",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-prepare-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "prepare",
+          "output_protocol": "symphony.shv.graph-store-status.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke",
+            "recover"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.commit",
+          "expected_state_required": true,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-commit-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "commit",
+          "output_protocol": "symphony.shv.graph-store-status.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "inspect",
+            "recover"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.status",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-status-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "status",
+          "output_protocol": "symphony.shv.graph-store-status.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.query",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-query-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "query",
+          "output_protocol": "symphony.shv.graph-store-query.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.export",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-export-input.v1",
+          "mutability": "evidence_only",
+          "operation_name": "export",
+          "output_protocol": "symphony.shv.graph-store-export.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.inventory",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-inventory-input.v1",
+          "mutability": "read_only",
+          "operation_name": "inventory",
+          "output_protocol": "symphony.shv.graph-store-inventory.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv.graph-store.transfer.plan",
+          "expected_state_required": true,
+          "feature_ids": [
+            "ssfv:symphony:shv-graph-duckdb-connector"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.graph-store-transfer_plan-input.v1",
+          "mutability": "read_only",
+          "operation_name": "transfer_plan",
+          "output_protocol": "symphony.shv.graph-store-transfer-plan.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        }
+      ],
+      "process_protocols": [
+        "symphony.knowledge.engine-process.v1"
+      ],
+      "protocol": "symphony.knowledge.engine-descriptor.v2",
+      "session_mutation_enabled": false,
+      "supported_scopes": [
+        "tops"
+      ],
+      "thermal_path": "freezing",
+      "vector_id": "shv"
+    }
+  },
+  "provenance": {
+    "0.1.0-dev": {
+      "path": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-17-final/libexec/symphony/shv-graph-duckdb-connector/0.1.0-dev/symphony-shv-graph-duckdb-connector",
+      "digest": "sha256:e1972a7a41045b704d7cb743e845043bd8d64f8c36c802ef73667a6b9503d3be"
+    },
+    "0.2.0-dev": {
+      "path": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-19-final/libexec/symphony/shv-graph-duckdb-connector/0.2.0-dev/symphony-shv-graph-duckdb-connector",
+      "digest": "sha256:89401062d4b3c8df053c3d6a8169b98e6ec8e8fed26d0f3b02cb916401723e2e"
+    },
+    "0.3.0-dev": {
+      "path": "/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/installed/shv-20-release/libexec/symphony/shv-graph-duckdb-connector/0.3.0-dev/symphony-shv-graph-duckdb-connector",
+      "digest": "sha256:917285b81887152a375272e1b091609a1eb253263f28c34e6310a80007845335"
+    }
+  }
+}

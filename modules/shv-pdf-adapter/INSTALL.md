@@ -14,3 +14,9 @@ cmake --install build/shv-pdf
 Callers supply a trusted PDFium shared library with the C API listed in `src/pdf.cpp`, explicit decoder root, relative path and SHA256. This pass verifies macOS loading with PDFium 153.0.7999.0; other platforms are unverified. The adapter uses POSIX dynamic loading and makes no Windows portability claim. Decoder replacement requires an explicit new identity. The binary is executable code, not a sandbox; its transitive platform dependencies are outside the binary hash. Uninstall never removes that external library.
 
 Version 0.2.0 adds native `graph_project` and `graph_validate`, administered by `qxctl shv pdf graph project|validate|roundtrip`. Project takes an extraction request; validate and roundtrip take `{request,graph}`. Roundtrip additionally selects `--adapter-prefix` and `--adapter-version`. See PDF-ADAPTER.md for exact provenance semantics. Retained 0.1.0 installations remain explicitly selectable for their original operations.
+
+## Mechanical interface release 0.3.0-dev
+
+OWNER-INTERFACE.json declares exact metadata. INTERFACE-GENERATOR.json selects generation paths and frozen history; the shared registration-driven generator produces src/interface.generated.hpp, Go admission and CMake inventory. qxctl verifies the installed declaration through receipt-v2 and compiled admission. Existing command identities and defaults remain unchanged. Old packages remain independently selectable; artifacts and retained writers keep their exact original identity. Metadata generation is separate from native semantic handlers and independent Go result replay.
+
+This inventory is not exhaustive. New owners can use `tools/shv-interface-codegen/EXTENDING.md` without extending a fixed generator whitelist. They must supply their own semantic contracts and qxctl integration.

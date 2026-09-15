@@ -4,40 +4,8 @@
 #include <algorithm>
 namespace symphony::knowledge::shv {
 Json descriptor() {
-  std::vector<engine::OperationSpec> specs;
-  const std::vector<std::pair<std::string, std::string>> operations = {
-      {"inspect", engine::descriptor_protocol_v2},
-      {"coverage_default", "symphony.shv.coverage-profile.v1"},
-      {"coverage_plan", "symphony.shv.coverage-result.v1"},
-      {"catalogue_build", "symphony.shv.catalogue.v1"},
-      {"catalogue_query", "symphony.shv.query-result.v1"},
-      {"evaluate", "symphony.shv.evaluation.v1"},
-      {"graph_project", "symphony.graph.exchange.v1"},
-      {"graph_validate", "symphony.shv.graph-validation.v1"}};
-  for (const auto &[name, output] : operations) {
-    auto id = name, input = name;
-    std::replace(id.begin(), id.end(), '_', '.');
-    std::replace(input.begin(), input.end(), '_', '-');
-    specs.push_back(engine::OperationSpec{
-        "engop:symphony:shv." + id,
-        name,
-        "implemented",
-        false,
-        true,
-        {"ssfv:symphony:shv-engine"},
-        {name == "inspect" ? "inspect"
-                           : (name == "catalogue_query" ? "query" : "invoke")},
-        "qxctl_required",
-        "symphony.shv." + input + "-input.v1",
-        output,
-        "read_only",
-        "idempotent",
-        false,
-        "none",
-        "",
-        "supported",
-        "freezing"});
-  }
+  const auto &specs = interface_operations();
+  engine::validate_operation_specs(specs);
   return seal(
       Json{{"protocol", engine::descriptor_protocol_v2},
            {"format_version", 2},
