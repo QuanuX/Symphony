@@ -9,7 +9,7 @@
 #include <string_view>
 static_assert(
     std::string_view(symphony::knowledge::shv_partition::version) ==
-        "0.2.0-dev",
+        "0.4.0-dev",
     "Review exact partition contract before upgrading publication dependency");
 namespace symphony::knowledge::shv_publication {
 namespace {
@@ -111,8 +111,16 @@ void definition(const engine::Request &r, const Json &d) {
   id(d, "catalogue_id");
   tops(d, "tops_id");
   installation(d.at("partition_installation"), "shv-partition-engine",
-               "symphony-shv-partition", {"0.2.0-dev"});
+               "symphony-shv-partition", {"0.2.0-dev", "0.3.0-dev", "0.4.0-dev"});
   const auto &m = d.at("manifest");
+  if (d.at("partition_installation").at("Version") != "0.4.0-dev")
+    for (const auto &entry : m.at("entries"))
+      if (!entry.at("partition").is_null()) {
+        const auto &dep = entry.at("partition").at("dependencies");
+        if (dep.at("source_engine").at("version") == "0.2.0-dev" ||
+            dep.at("kernel_engine").at("version") == "0.4.0-dev")
+          invalid("selected historical partition does not admit dependencies");
+      }
   auto req = r;
   req.operation = "manifest_build";
   req.payload = {{"entries", m.at("entries")},
@@ -146,12 +154,12 @@ void definition(const engine::Request &r, const Json &d) {
     if (!loaded.contains(pd) || !seen.insert(pd).second)
       invalid("member does not uniquely cover loaded partition");
     installation(member.at("source_installation"), "shv-source-engine",
-                 "symphony-shv-source", {"0.1.0-dev"});
+                 "symphony-shv-source", {"0.1.0-dev", "0.2.0-dev"});
     installation(member.at("kernel_installation"), "shv-engine", "symphony-shv",
-                 {"0.1.0-dev", "0.2.0-dev", "0.3.0-dev"});
+                 {"0.1.0-dev", "0.2.0-dev", "0.3.0-dev", "0.4.0-dev"});
     installation(member.at("store_installation"), "shv-graph-duckdb-connector",
                  "symphony-shv-graph-duckdb-connector",
-                 {"0.1.0-dev", "0.2.0-dev", "0.3.0-dev"});
+                 {"0.1.0-dev", "0.2.0-dev", "0.3.0-dev", "0.4.0-dev"});
     const auto &ep = member.at("endpoint");
     fields(ep, {"bundle_path", "source_root", "state_root", "tops_id",
                 "source_id", "source_prefix", "source_version", "kernel_prefix",

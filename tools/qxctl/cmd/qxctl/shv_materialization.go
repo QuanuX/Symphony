@@ -140,7 +140,11 @@ func jobValidate(raw json.RawMessage, id string) (map[string]json.RawMessage, []
 	if _, e = jobDecode(j["installation"], "Role", "ModuleID", "EngineID", "Version", "Prefix", "ReceiptPath", "ReceiptDigest", "ReceiptProtocol", "ExecutablePath", "ExecutableDigest"); e != nil {
 		return nil, nil, e
 	}
-	if _, e = knowledgeengine.ExpectedSHVPartition("manifest_build", jobMarshal(map[string]any{"entries": []any{}, "required_references": j["required_references"]})); e != nil {
+	var selected knowledgeengine.Installation
+	if e = json.Unmarshal(j["installation"], &selected); e != nil {
+		return nil, nil, e
+	}
+	if _, e = knowledgeengine.ExpectedSHVPartitionVersion("manifest_build", jobMarshal(map[string]any{"entries": []any{}, "required_references": j["required_references"]}), selected.Version); e != nil {
 		return nil, nil, e
 	}
 	seen := map[string]bool{}
@@ -170,7 +174,7 @@ func jobValidate(raw json.RawMessage, id string) (map[string]json.RawMessage, []
 			if e != nil {
 				return nil, nil, e
 			}
-			if e = knowledgeengine.ValidateSHVPartitionResult("partition_build", p, c["partition"]); e != nil {
+			if e = knowledgeengine.ValidateSHVPartitionResultVersion("partition_build", p, c["partition"], selected.Version); e != nil {
 				return nil, nil, e
 			}
 			proof, e := jobDecode(c["replay"], "protocol", "bundle_digest", "selected_source_digest", "current_source_digest", "source_is_current", "valid", "digest")
@@ -303,7 +307,7 @@ func runSHVJob(op string, o jobOptions) error {
 			if e != nil {
 				return e
 			}
-			part, e := knowledgeengine.ExpectedSHVPartition("partition_build", pi)
+			part, e := knowledgeengine.ExpectedSHVPartitionVersion("partition_build", pi, inst.Version)
 			if e != nil {
 				return e
 			}

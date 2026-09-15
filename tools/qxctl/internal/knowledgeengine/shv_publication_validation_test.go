@@ -2,6 +2,7 @@ package knowledgeengine
 
 import (
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -67,5 +68,37 @@ func TestSHVPublicationIndependentCorrespondence(t *testing.T) {
 	bad["tops_id"] = "00000000-0000-0000-0000-000000000000"
 	if pubDefinition(bad) == nil {
 		t.Fatal("invalid TOPS accepted")
+	}
+}
+
+// Admission belongs to the selected consuming owner, not to a latest alias.
+func TestSHVPublicationCompositionAdmission(t *testing.T) {
+	for _, pv := range []string{"0.2.0-dev", "0.3.0-dev", "0.4.0-dev", "0.5.0-dev", "latest"} {
+		input, _ := publicationFixture(t)
+		inst := shvMap(shvMap(input["desired"])["partition_installation"])
+		old := shvText(inst["Version"])
+		for _, k := range []string{"ReceiptPath", "ExecutablePath"} {
+			inst[k] = strings.ReplaceAll(shvText(inst[k]), old, pv)
+		}
+		inst["Version"] = pv
+		for _, reader := range []string{"0.1.0-dev", "0.2.0-dev", "0.3.0-dev", "0.4.0-dev"} {
+			_, err := pubPlanVersion(input, reader)
+			want := pv == "0.2.0-dev" || (reader == "0.4.0-dev" && (pv == "0.3.0-dev" || pv == "0.4.0-dev"))
+			if (err == nil) != want {
+				t.Fatalf("reader %s partition %s: %v", reader, pv, err)
+			}
+		}
+	}
+	for _, writer := range []string{"0.1.0-dev", "0.2.0-dev", "0.3.0-dev", "0.4.0-dev", "0.5.0-dev"} {
+		module := "shv-graph-duckdb-connector"
+		engine := "symphony-shv-graph-duckdb-connector"
+		h := "sha256:" + strings.Repeat("1", 64)
+		inst := map[string]any{"Role": module, "ModuleID": module, "EngineID": engine, "Version": writer, "Prefix": "/store", "ReceiptPath": "/store/share/symphony/receipts/" + module + "/" + writer + "/install-receipt.json", "ReceiptDigest": h, "ReceiptProtocol": receiptProtocolV2, "ExecutablePath": "/store/libexec/symphony/" + module + "/" + writer + "/" + engine, "ExecutableDigest": h}
+		for _, reader := range []string{"0.1.0-dev", "0.2.0-dev", "0.3.0-dev", "0.4.0-dev"} {
+			want := writer == "0.1.0-dev" || (reader != "0.1.0-dev" && (writer == "0.2.0-dev" || writer == "0.3.0-dev")) || (reader == "0.4.0-dev" && writer == "0.4.0-dev")
+			if (pubStoreInstallation(inst, reader) == nil) != want {
+				t.Fatalf("reader %s writer %s", reader, writer)
+			}
+		}
 	}
 }

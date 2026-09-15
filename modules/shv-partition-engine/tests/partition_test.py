@@ -13,6 +13,11 @@ def call(op,p,fail=False):
 def fixture():return {'dependencies':{'source_revision_digest':H(1),'source_engine':{'engine_id':'symphony-shv-source','version':'0.1.0-dev','executable_digest':H(2)},'kernel_engine':{'engine_id':'symphony-shv','version':'0.2.0-dev','executable_digest':H(3)},'captures':[{'capture_id':'page','capture_digest':H(4),'content_digest':H(5),'bytes':7}],'mapping_digest':H(6),'catalogue_digest':H(7)},'subject_ids':['cpu-b','cpu-a']}
 def test_native_partition_contract():
  desc=call('inspect',{});assert len(desc['operations'])==4
+ for sv in ['0.1.0-dev','0.2.0-dev','0.3.0-dev','latest']:
+  for kv in ['0.1.0-dev','0.2.0-dev','0.3.0-dev','0.4.0-dev','0.5.0-dev']:
+   sample=fixture();sample['dependencies']['source_engine']['version']=sv;sample['dependencies']['kernel_engine']['version']=kv
+   accepted=(sv=='0.1.0-dev' or (desc['engine_version']=='0.4.0-dev' and sv=='0.2.0-dev')) and kv!='0.5.0-dev' and (kv!='0.4.0-dev' or desc['engine_version']=='0.4.0-dev')
+   call('partition_build',sample,not accepted)
  f=fixture();part=call('partition_build',f);assert part['subject_ids']==['cpu-a','cpu-b'];f['subject_ids'].reverse();assert call('partition_build',f)==part
  refs=[{'partition_digest':part['digest'],'subject_id':'cpu-a'},{'partition_digest':H(8),'subject_id':'cpu-c'},{'partition_digest':part['digest'],'subject_id':'cpu-x'},{'partition_digest':H(9),'subject_id':'cpu-d'}]
  mi={'entries':[{'partition_digest':part['digest'],'partition':part},{'partition_digest':H(8),'partition':None}],'required_references':refs};m=call('manifest_build',mi);assert m['missing_count']==1 and not m['complete_inventory'];assert [s['status'] for s in m['reference_statuses']]==['found','missing_partition','missing_subject','unlisted_partition']

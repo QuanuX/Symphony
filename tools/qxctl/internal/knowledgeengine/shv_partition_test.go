@@ -67,3 +67,34 @@ func TestSHVPartitionCursorBindings(t *testing.T) {
 		t.Fatal("foreign cursor accepted")
 	}
 }
+
+func TestSHVPartitionExactDependencyAdmission(t *testing.T) {
+	h := "sha256:" + strings.Repeat("1", 64)
+	for _, source := range []string{"0.1.0-dev", "0.2.0-dev", "0.3.0-dev", "latest"} {
+		for _, kernel := range []string{"0.1.0-dev", "0.2.0-dev", "0.3.0-dev", "0.4.0-dev", "0.5.0-dev"} {
+			input := []byte(`{"dependencies":{"source_revision_digest":"` + h + `","source_engine":{"engine_id":"symphony-shv-source","version":"` + source + `","executable_digest":"` + h + `"},"kernel_engine":{"engine_id":"symphony-shv","version":"` + kernel + `","executable_digest":"` + h + `"},"captures":[{"capture_id":"body","capture_digest":"` + h + `","content_digest":"` + h + `","bytes":3}],"mapping_digest":"` + h + `","catalogue_digest":"` + h + `"},"subject_ids":["a"]}`)
+			for _, reader := range []string{"0.1.0-dev", "0.2.0-dev", "0.3.0-dev", "0.4.0-dev"} {
+				part, err := ExpectedSHVPartitionVersion("partition_build", input, reader)
+				want := (source == "0.1.0-dev" || (reader == "0.4.0-dev" && source == "0.2.0-dev")) && (kernel != "0.5.0-dev" && (kernel != "0.4.0-dev" || reader == "0.4.0-dev"))
+				if (err == nil) != want {
+					t.Fatalf("reader %s source %s kernel %s: %v", reader, source, kernel, err)
+				}
+				if !want {
+					continue
+				}
+				if err = ValidateSHVPartitionResultVersion("partition_build", input, part, reader); err != nil {
+					t.Fatal(err)
+				}
+				p, _ := shvObject(part)
+				mi := shvRaw(t, map[string]any{"entries": []any{map[string]any{"partition_digest": p["digest"], "partition": p}}, "required_references": []any{}})
+				m, err := ExpectedSHVPartitionVersion("manifest_build", mi, reader)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if err = ValidateSHVPartitionResultVersion("manifest_build", mi, m, reader); err != nil {
+					t.Fatal(err)
+				}
+			}
+		}
+	}
+}

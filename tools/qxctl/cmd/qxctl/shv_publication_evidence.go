@@ -16,8 +16,8 @@ func publicationEvidence(raw json.RawMessage, tops, catalogue string) (json.RawM
 		return nil, e
 	}
 	prefix, version := refreshString(in["partition_prefix"]), refreshString(in["partition_version"])
-	if version != "0.2.0-dev" {
-		return nil, fmt.Errorf("publication requires exact partition contract 0.2.0-dev")
+	if version != "0.2.0-dev" && version != "0.3.0-dev" && version != "0.4.0-dev" {
+		return nil, fmt.Errorf("publication requires an admitted exact partition contract")
 	}
 	pi, e := knowledgeengine.InspectSHVPartition(prefix, version)
 	if e != nil {

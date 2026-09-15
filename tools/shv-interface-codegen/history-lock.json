@@ -6,14 +6,13 @@
     "embedded_dependencies": []
   },
   "shv-publication-engine": {
-    "history_digest": "049e75bb1a4633676ea60b275eac0fe273cf609212271eed1479fb6113ac0790",
+    "history_digest": "0f304bfac506a3a2d25ea8fb3bdb6c2f83e7468f1f70dd06dda6a120c35c66be",
     "namespace": "symphony::knowledge::shv_publication",
     "engine_id": "symphony-shv-publication",
     "embedded_dependencies": [
       {
         "engine_id": "symphony-shv-partition",
-        "version": "0.2.0-dev",
-        "mode": "compiled_exact_contract"
+        "version": "0.4.0-dev"
       }
     ]
   }

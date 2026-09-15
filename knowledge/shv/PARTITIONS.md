@@ -13,3 +13,9 @@ Query input exactly `{manifest,selection,limit,cursor}`. Full manifest is rederi
 qxctl `shv partition inspect|build|manifest|query|schema|template|from-refresh` administers every operation. Exact --prefix/--version required. Native leaves use --input except inspect. Template requires --operation partition_build|manifest_build|manifest_query. from-refresh --input is the SHV-06 endpoint object with explicit bundle_path/source_root/state_root/TOPS/source and source/kernel selections; it does not infer executable selection from artifacts.
 
 All digests tagged SHA256 of canonical JSON without the digest field. Tokens [A-Za-z0-9._-]{1,128}; strict fields/integers, no extra/missing fields, duplicate references or resealed inconsistent manifests. Existing foundation request1MiB/response4MiB/value/depth/deadline bounds apply. No graph storage vendor, catalogue head, permissions, acquisition, materialization checkpoint or conflict aggregation is added. Sequential pages bind an immutable manifest, not a mutable latest alias.
+
+## Explicit 0.4 composition admission
+
+Partition 0.4.0-dev explicitly admits source 0.1/0.2 and kernel 0.1/0.2/0.3/0.4. Historical partition 0.1/0.2/0.3 retain their prior source/kernel admission. qxctl passes the selected partition owner through build, manifest, query, materialization checkpoint and resolution replay. The embedded previous-version macro retains the partition 0.2 semantics.
+
+These exact component admissions are not a closed list of user modules. New providers, owners and tools remain extensible through their own contracts. No selected version is rewritten to latest.

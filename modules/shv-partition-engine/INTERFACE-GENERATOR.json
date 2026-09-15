@@ -2,7 +2,7 @@
   "protocol": "symphony.shv.interface-registration.v1",
   "declaration": "modules/shv-partition-engine/OWNER-INTERFACE.json",
   "history": "modules/shv-partition-engine/tests/fixtures/interface-history.v1.json",
-  "history_digest": "sha256:ebcfbc272eaeed28bec7fc3d5d2987d73d5b7a46215bdd87707aaa8738e9fee3",
+  "history_digest": "sha256:c7e888f40a9c6d91ad074d80231123e423a9179bfbc4f99adc96da36700a9b7d",
   "go_title": "Partition",
   "go_stem": "partition",
   "cpp_output": "modules/shv-partition-engine/src/interface.generated.hpp",

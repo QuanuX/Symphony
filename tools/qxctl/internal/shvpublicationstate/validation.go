@@ -91,7 +91,7 @@ func validateIntentShape(i Intent) error {
 	x := i.Installation
 	expectedReceipt := filepath.Join(x.Prefix, "share/symphony/receipts/shv-publication-engine/"+x.Version+"/install-receipt.json")
 	expectedExecutable := filepath.Join(x.Prefix, "libexec/symphony/shv-publication-engine/"+x.Version+"/symphony-shv-publication")
-	if x.Role != "shv-publication-engine" || x.ModuleID != "shv-publication-engine" || x.EngineID != "symphony-shv-publication" || (x.Version != knowledgeengine.SHVPublicationVersion && x.Version != knowledgeengine.SHVPublicationTransferVersion && x.Version != knowledgeengine.SHVPublicationInterfaceVersion) || !cleanRoot(x.Prefix) || x.ReceiptPath != expectedReceipt || x.ExecutablePath != expectedExecutable || x.ReceiptProtocol != "symphony.knowledge.install-receipt.v2" || !hashPattern.MatchString(x.ReceiptDigest) || !hashPattern.MatchString(x.ExecutableDigest) {
+	if x.Role != "shv-publication-engine" || x.ModuleID != "shv-publication-engine" || x.EngineID != "symphony-shv-publication" || (x.Version != knowledgeengine.SHVPublicationVersion && x.Version != knowledgeengine.SHVPublicationTransferVersion && x.Version != "0.3.0-dev" && x.Version != knowledgeengine.SHVPublicationInterfaceVersion) || !cleanRoot(x.Prefix) || x.ReceiptPath != expectedReceipt || x.ExecutablePath != expectedExecutable || x.ReceiptProtocol != "symphony.knowledge.install-receipt.v2" || !hashPattern.MatchString(x.ReceiptDigest) || !hashPattern.MatchString(x.ExecutableDigest) {
 		return fmt.Errorf("SHV intent lacks exact historical owner installation")
 	}
 	var p retainedPlan
@@ -300,5 +300,7 @@ func validateHistoryRaw(history []json.RawMessage) error {
 	if e != nil {
 		return e
 	}
-	return knowledgeengine.ValidateSHVPublicationResultVersion("publication_status", input, output, knowledgeengine.SHVPublicationTransferVersion)
+	// This checks aggregate ordering with the explicitly admitted reader. Each
+	// retained transition above is separately replayed against its original owner.
+	return knowledgeengine.ValidateSHVPublicationResultVersion("publication_status", input, output, knowledgeengine.SHVPublicationInterfaceVersion)
 }

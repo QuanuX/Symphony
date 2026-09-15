@@ -21,7 +21,7 @@ inst=dict(Role='shv-partition-engine',ModuleID='shv-partition-engine',EngineID='
 manifest=seal(dict(protocol='symphony.shv.partition-manifest.v1',entries=[],required_references=[],loaded_count=0,missing_count=0,complete_inventory=True,reference_statuses=[]))
 d=dict(catalogue_id='research',tops_id='00000000-0000-4000-8000-000000000001',manifest=manifest,policy=dict(missing_partitions='reject',missing_references='reject'),partition_installation=inst,members=[])
 base=dict(operation_id='first',current=None,desired=d,reason='caller selection')
-assert len(call('inspect',{})['operations'])==4
+descriptor=call('inspect',{});assert len(descriptor['operations'])==4
 plan=call('publication_plan',base);tr=call('publication_reduce',dict(current=None,plan=plan));head=tr['head'];assert head['generation']==1
 assert call('publication_status',dict(history=[head]))['head']==head
 call('publication_plan',{**base,'current':head},True)
@@ -51,4 +51,9 @@ for n in range(2,33):
 assert len(call('publication_status',dict(history=history))['history_digests'])==32
 call('publication_plan',{**base,'current':history[-1]},True)
 call('publication_status',dict(history=history+[history[-1]]),True)
+for version in ['0.2.0-dev','0.3.0-dev','0.4.0-dev','0.5.0-dev','latest']:
+ selected=copy.deepcopy(inst)
+ for key in ['ReceiptPath','ExecutablePath']:selected[key]=selected[key].replace('0.2.0-dev',version)
+ selected['Version']=version
+ call('publication_plan',{**base,'desired':{**d,'partition_installation':selected}},not (version=='0.2.0-dev' or (descriptor['engine_version']=='0.4.0-dev' and version in ['0.3.0-dev','0.4.0-dev'])))
 print(json.dumps(dict(status='passed',calls=calls,rejections=rejects)))

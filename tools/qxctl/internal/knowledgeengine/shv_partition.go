@@ -38,7 +38,7 @@ func InvokeSHVPartition(ctx context.Context, prefix, version, cwd, op string, pa
 	}
 	// Validate and rederive before launch as well as after, including actual retained bytes.
 	if op != "inspect" {
-		if _, e = shvPartitionExpected(op, p); e != nil {
+		if _, e = shvPartitionExpectedVersion(op, p, version); e != nil {
 			return Response{}, e
 		}
 	} else if len(p) != 0 {
@@ -71,6 +71,11 @@ func InspectSHVPartition(prefix, version string) (Installation, error) {
 		return Installation{}, err
 	}
 	inst := Installation{Role: s.moduleID, ModuleID: s.moduleID, EngineID: s.engineID, Version: version, Prefix: e.Prefix, ReceiptPath: e.ReceiptPath, ReceiptDigest: e.ReceiptDigest, ReceiptProtocol: receiptProtocolV2, ExecutablePath: e.ExecutablePath, ExecutableDigest: e.ExecutableDigest}
+	if version == "0.3.0-dev" {
+		if err := verifySHVOwnerInterface(inst, "sha256:d041adaa0b508b668f8b199f93072b49f440358b368f2b6a672bb27fc6df83b4"); err != nil {
+			return Installation{}, err
+		}
+	}
 	if version == SHVPartitionInterfaceVersion {
 		if err := verifySHVOwnerInterface(inst, shvPartitionInterfaceDigest); err != nil {
 			return Installation{}, err

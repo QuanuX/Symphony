@@ -6,7 +6,7 @@ namespace engine = symphony::knowledge::engine;
 #ifdef SYMPHONY_SHV_PARTITION_EMBEDDED_PREVIOUS
 inline constexpr auto version = "0.2.0-dev";
 #else
-inline constexpr auto version = "0.3.0-dev";
+inline constexpr auto version = "0.4.0-dev";
 #endif
 inline std::vector<engine::OperationSpec> interface_operations() { return {
   {"engop:symphony:shv-partition.inspect", "inspect", "implemented", false, true, {"ssfv:symphony:shv-partition-engine"}, {"inspect"}, "qxctl_required", "symphony.shv.partition-inspect-input.v1", "symphony.knowledge.engine-descriptor.v2", "read_only", "idempotent", false, "none", "", "supported", "freezing"},

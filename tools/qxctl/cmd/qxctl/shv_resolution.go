@@ -37,7 +37,7 @@ func newSHVResolutionCommand() *cobra.Command {
 			if e != nil {
 				return e
 			}
-			plan, e := prepareSHVResolution(raw)
+			plan, e := prepareSHVResolutionVersion(raw, version)
 			if e != nil {
 				return e
 			}
@@ -110,6 +110,9 @@ type shvResolutionPlan struct {
 }
 
 func prepareSHVResolution(raw json.RawMessage) (shvResolutionPlan, error) {
+	return prepareSHVResolutionVersion(raw, knowledgeengine.SHVPartitionVersion)
+}
+func prepareSHVResolutionVersion(raw json.RawMessage, version string) (shvResolutionPlan, error) {
 	p := shvResolutionPlan{resolved: []string{}, unused: []string{}}
 	in, e := refreshObject(raw, "manifest", "candidates")
 	if e != nil {
@@ -120,7 +123,7 @@ func prepareSHVResolution(raw json.RawMessage) (shvResolutionPlan, error) {
 		return p, e
 	}
 	p.baseInput = jobMarshal(map[string]any{"entries": m["entries"], "required_references": m["required_references"]})
-	if e = knowledgeengine.ValidateSHVPartitionResult("manifest_build", p.baseInput, in["manifest"]); e != nil {
+	if e = knowledgeengine.ValidateSHVPartitionResultVersion("manifest_build", p.baseInput, in["manifest"], version); e != nil {
 		return p, e
 	}
 	var candidates []json.RawMessage
@@ -144,7 +147,7 @@ func prepareSHVResolution(raw json.RawMessage) (shvResolutionPlan, error) {
 		entries = append(entries, map[string]any{"partition_digest": id, "partition": candidate})
 	}
 	p.candidateInput = jobMarshal(map[string]any{"entries": entries, "required_references": []any{}})
-	if _, e = knowledgeengine.ExpectedSHVPartition("manifest_build", p.candidateInput); e != nil {
+	if _, e = knowledgeengine.ExpectedSHVPartitionVersion("manifest_build", p.candidateInput, version); e != nil {
 		return p, e
 	}
 	var base []map[string]json.RawMessage
@@ -164,7 +167,7 @@ func prepareSHVResolution(raw json.RawMessage) (shvResolutionPlan, error) {
 		}
 	}
 	p.resultInput = jobMarshal(map[string]any{"entries": base, "required_references": m["required_references"]})
-	if _, e = knowledgeengine.ExpectedSHVPartition("manifest_build", p.resultInput); e != nil {
+	if _, e = knowledgeengine.ExpectedSHVPartitionVersion("manifest_build", p.resultInput, version); e != nil {
 		return p, e
 	}
 	p.baseDigest = refreshString(m["digest"])

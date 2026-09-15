@@ -21,7 +21,10 @@
           "const": "symphony-shv-source"
         },
         "version": {
-          "const": "0.1.0-dev"
+          "enum": [
+            "0.1.0-dev",
+            "0.2.0-dev"
+          ]
         },
         "executable_digest": {
           "$ref": "#/$defs/Hash"
@@ -44,7 +47,8 @@
           "enum": [
             "0.1.0-dev",
             "0.2.0-dev",
-            "0.3.0-dev"
+            "0.3.0-dev",
+            "0.4.0-dev"
           ]
         },
         "executable_digest": {
@@ -924,7 +928,8 @@
           "enum": [
             "0.1.0-dev",
             "0.2.0-dev",
-            "0.3.0-dev"
+            "0.3.0-dev",
+            "0.4.0-dev"
           ]
         }
       },
@@ -1265,7 +1270,11 @@
           "$ref": "#/$defs/Path"
         },
         "partition_version": {
-          "const": "0.2.0-dev"
+          "enum": [
+            "0.2.0-dev",
+            "0.3.0-dev",
+            "0.4.0-dev"
+          ]
         },
         "members": {
           "type": "array",

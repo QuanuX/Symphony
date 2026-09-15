@@ -18,22 +18,25 @@ func partNumber(v any, lo, hi int64) (int64, bool) {
 	return i, e == nil && i >= lo && i <= hi
 }
 func partArray(v any, max int) ([]any, bool) { a, ok := v.([]any); return a, ok && len(a) <= max }
-func partEngine(v any, source bool) bool {
+func partEngine(v any, source bool, version string) bool {
 	m := shvMap(v)
 	if !shvFields(m, "engine_id", "version", "executable_digest") || !partHash(m["executable_digest"]) {
 		return false
 	}
 	if source {
-		return m["engine_id"] == "symphony-shv-source" && m["version"] == "0.1.0-dev"
+		return m["engine_id"] == "symphony-shv-source" && (m["version"] == "0.1.0-dev" || (version == "0.4.0-dev" && m["version"] == "0.2.0-dev"))
 	}
-	return m["engine_id"] == "symphony-shv" && (m["version"] == "0.1.0-dev" || m["version"] == "0.2.0-dev" || m["version"] == "0.3.0-dev")
+	return m["engine_id"] == "symphony-shv" && (m["version"] == "0.1.0-dev" || m["version"] == "0.2.0-dev" || m["version"] == "0.3.0-dev" || (version == "0.4.0-dev" && m["version"] == "0.4.0-dev"))
 }
 func partBuild(p map[string]any) (map[string]any, error) {
+	return partBuildVersion(p, SHVPartitionVersion)
+}
+func partBuildVersion(p map[string]any, version string) (map[string]any, error) {
 	if !shvFields(p, "dependencies", "subject_ids") {
 		return nil, shvFail()
 	}
 	d := shvMap(p["dependencies"])
-	if !shvFields(d, "source_revision_digest", "source_engine", "kernel_engine", "captures", "mapping_digest", "catalogue_digest") || !partEngine(d["source_engine"], true) || !partEngine(d["kernel_engine"], false) {
+	if !shvFields(d, "source_revision_digest", "source_engine", "kernel_engine", "captures", "mapping_digest", "catalogue_digest") || !partEngine(d["source_engine"], true, version) || !partEngine(d["kernel_engine"], false, version) {
 		return nil, shvFail()
 	}
 	for _, k := range []string{"source_revision_digest", "mapping_digest", "catalogue_digest"} {
@@ -82,12 +85,12 @@ func partBuild(p map[string]any) (map[string]any, error) {
 	deps["captures"] = captures
 	return shvSealNew(map[string]any{"protocol": "symphony.shv.partition.v1", "dependencies": deps, "subject_ids": subjects}), nil
 }
-func partValidate(v any) bool {
+func partValidate(v any, version string) bool {
 	p := shvMap(v)
 	if !shvFields(p, "protocol", "dependencies", "subject_ids", "digest") {
 		return false
 	}
-	want, e := partBuild(map[string]any{"dependencies": p["dependencies"], "subject_ids": p["subject_ids"]})
+	want, e := partBuildVersion(map[string]any{"dependencies": p["dependencies"], "subject_ids": p["subject_ids"]}, version)
 	return e == nil && scvEqual(want, p)
 }
 func partRefs(v any) ([]any, bool) {
@@ -129,6 +132,9 @@ func partStatus(entries []any, v any) string {
 	return "unlisted_partition"
 }
 func partManifest(p map[string]any) (map[string]any, error) {
+	return partManifestVersion(p, SHVPartitionVersion)
+}
+func partManifestVersion(p map[string]any, version string) (map[string]any, error) {
 	if !shvFields(p, "entries", "required_references") {
 		return nil, shvFail()
 	}
@@ -146,7 +152,7 @@ func partManifest(p map[string]any) (map[string]any, error) {
 		}
 		seen[d] = true
 		if e["partition"] != nil {
-			if !partValidate(e["partition"]) || shvMap(e["partition"])["digest"] != d {
+			if !partValidate(e["partition"], version) || shvMap(e["partition"])["digest"] != d {
 				return nil, shvFail()
 			}
 			loaded++
@@ -163,6 +169,9 @@ func partManifest(p map[string]any) (map[string]any, error) {
 	return shvSealNew(map[string]any{"protocol": "symphony.shv.partition-manifest.v1", "entries": entries, "required_references": refs, "reference_statuses": statuses, "loaded_count": loaded, "missing_count": len(entries) - loaded, "complete_inventory": loaded == len(entries)}), nil
 }
 func partQuery(p map[string]any) (map[string]any, error) {
+	return partQueryVersion(p, SHVPartitionVersion)
+}
+func partQueryVersion(p map[string]any, version string) (map[string]any, error) {
 	if !shvFields(p, "manifest", "selection", "limit", "cursor") {
 		return nil, shvFail()
 	}
@@ -170,7 +179,7 @@ func partQuery(p map[string]any) (map[string]any, error) {
 	if !shvFields(m, "protocol", "entries", "required_references", "reference_statuses", "loaded_count", "missing_count", "complete_inventory", "digest") {
 		return nil, shvFail()
 	}
-	want, e := partManifest(map[string]any{"entries": m["entries"], "required_references": m["required_references"]})
+	want, e := partManifestVersion(map[string]any{"entries": m["entries"], "required_references": m["required_references"]}, version)
 	if e != nil || !scvEqual(want, m) {
 		return nil, shvFail()
 	}
@@ -209,13 +218,19 @@ func partQuery(p map[string]any) (map[string]any, error) {
 	return shvSealNew(map[string]any{"protocol": "symphony.shv.partition-query.v1", "manifest_digest": m["digest"], "selection_digest": sd, "offset": offset, "rows": rows, "total_selected": len(selection), "next_cursor": next}), nil
 }
 func shvPartitionExpected(op string, p map[string]any) (map[string]any, error) {
+	return shvPartitionExpectedVersion(op, p, SHVPartitionVersion)
+}
+func shvPartitionExpectedVersion(op string, p map[string]any, version string) (map[string]any, error) {
+	if shvPartitionInterfaceAdmission[version] == nil {
+		return nil, shvFail()
+	}
 	switch op {
 	case "partition_build":
-		return partBuild(p)
+		return partBuildVersion(p, version)
 	case "manifest_build":
-		return partManifest(p)
+		return partManifestVersion(p, version)
 	case "manifest_query":
-		return partQuery(p)
+		return partQueryVersion(p, version)
 	}
 	return nil, shvFail()
 }
@@ -223,7 +238,7 @@ func ValidateSHVPartitionResult(op string, input, result []byte) error {
 	return ValidateSHVPartitionResultVersion(op, input, result, SHVPartitionVersion)
 }
 func ValidateSHVPartitionResultVersion(op string, input, result []byte, version string) error {
-	if version != SHVPartitionVersion && (version != SHVDocumentPartitionVersion && version != SHVPartitionInterfaceVersion) {
+	if shvPartitionInterfaceAdmission[version] == nil {
 		return shvFail()
 	}
 	p, e := shvObject(input)
@@ -237,7 +252,7 @@ func ValidateSHVPartitionResultVersion(op string, input, result []byte, version 
 	if op == "inspect" {
 		return shvPartitionDescriptor(p, r, version)
 	}
-	want, e := shvPartitionExpected(op, p)
+	want, e := shvPartitionExpectedVersion(op, p, version)
 	if e != nil {
 		return e
 	}
@@ -250,11 +265,14 @@ func ValidateSHVPartitionResultVersion(op string, input, result []byte, version 
 // ExpectedSHVPartition is independent reference-contract rederivation for
 // bounded checkpoint admission. It does not execute or authenticate an engine.
 func ExpectedSHVPartition(op string, input []byte) (json.RawMessage, error) {
+	return ExpectedSHVPartitionVersion(op, input, SHVPartitionVersion)
+}
+func ExpectedSHVPartitionVersion(op string, input []byte, version string) (json.RawMessage, error) {
 	p, e := shvObject(input)
 	if e != nil {
 		return nil, e
 	}
-	want, e := shvPartitionExpected(op, p)
+	want, e := shvPartitionExpectedVersion(op, p, version)
 	if e != nil {
 		return nil, e
 	}

@@ -25,11 +25,19 @@ func pubInstall(v any, module, engine string, versions ...string) bool {
 }
 func pubDefinition(d map[string]any) error { return pubDefinitionVersion(d, SHVPublicationVersion) }
 func pubDefinitionVersion(d map[string]any, version string) error {
-	if !shvFields(d, "catalogue_id", "tops_id", "manifest", "policy", "partition_installation", "members") || !shvID(d["catalogue_id"]) || stavprotocol.ValidateTOPSID(shvText(d["tops_id"])) != nil || !pubInstall(d["partition_installation"], "shv-partition-engine", "symphony-shv-partition", "0.2.0-dev") {
+	partVersions := []string{"0.2.0-dev"}
+	sourceVersions := []string{"0.1.0-dev"}
+	kernelVersions := []string{"0.1.0-dev", "0.2.0-dev", "0.3.0-dev"}
+	if version == "0.4.0-dev" {
+		partVersions = append(partVersions, "0.3.0-dev", "0.4.0-dev")
+		sourceVersions = append(sourceVersions, "0.2.0-dev")
+		kernelVersions = append(kernelVersions, "0.4.0-dev")
+	}
+	if !shvFields(d, "catalogue_id", "tops_id", "manifest", "policy", "partition_installation", "members") || !shvID(d["catalogue_id"]) || stavprotocol.ValidateTOPSID(shvText(d["tops_id"])) != nil || !pubInstall(d["partition_installation"], "shv-partition-engine", "symphony-shv-partition", partVersions...) {
 		return shvFail()
 	}
 	m := shvMap(d["manifest"])
-	expected, e := partManifest(map[string]any{"entries": m["entries"], "required_references": m["required_references"]})
+	expected, e := partManifestVersion(map[string]any{"entries": m["entries"], "required_references": m["required_references"]}, shvText(shvMap(d["partition_installation"])["Version"]))
 	if e != nil || !scvEqual(expected, m) {
 		return shvFail()
 	}
@@ -75,7 +83,7 @@ func pubDefinitionVersion(d map[string]any, version string) error {
 			return shvFail()
 		}
 		seen[pd] = true
-		if !pubInstall(x["source_installation"], "shv-source-engine", "symphony-shv-source", "0.1.0-dev") || !pubInstall(x["kernel_installation"], "shv-engine", "symphony-shv", "0.1.0-dev", "0.2.0-dev", "0.3.0-dev") || pubStoreInstallation(x["store_installation"], version) != nil {
+		if !pubInstall(x["source_installation"], "shv-source-engine", "symphony-shv-source", sourceVersions...) || !pubInstall(x["kernel_installation"], "shv-engine", "symphony-shv", kernelVersions...) || pubStoreInstallation(x["store_installation"], version) != nil {
 			return shvFail()
 		}
 		ep := shvMap(x["endpoint"])
@@ -208,7 +216,8 @@ func ValidateSHVPublicationResultVersion(op string, input, result []byte, versio
 
 func pubStoreInstallation(v any, version string) error {
 	writer := shvText(shvMap(v)["Version"])
-	if writer != SHVStoreVersion && ((version != SHVPublicationTransferVersion && version != SHVPublicationInterfaceVersion) || (writer != SHVStoreInventoryVersion && writer != SHVStoreTransferVersion)) {
+	admitted := writer == SHVStoreVersion || ((version == SHVPublicationTransferVersion || version == "0.3.0-dev" || version == "0.4.0-dev") && (writer == SHVStoreInventoryVersion || writer == SHVStoreTransferVersion)) || (version == "0.4.0-dev" && writer == "0.4.0-dev")
+	if !admitted {
 		return shvFail()
 	}
 	return storeInstallationVersion(v, writer)

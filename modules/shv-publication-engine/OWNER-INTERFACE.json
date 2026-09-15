@@ -3,7 +3,7 @@
   "module_id": "shv-publication-engine",
   "engine_id": "symphony-shv-publication",
   "namespace": "symphony::knowledge::shv_publication",
-  "current_version": "0.3.0-dev",
+  "current_version": "0.4.0-dev",
   "releases": {
     "0.1.0-dev": [
       "inspect",
@@ -18,6 +18,12 @@
       "publication_status"
     ],
     "0.3.0-dev": [
+      "inspect",
+      "publication_plan",
+      "publication_reduce",
+      "publication_status"
+    ],
+    "0.4.0-dev": [
       "inspect",
       "publication_plan",
       "publication_reduce",
@@ -124,8 +130,7 @@
   "embedded_dependencies": [
     {
       "engine_id": "symphony-shv-partition",
-      "version": "0.2.0-dev",
-      "mode": "compiled_exact_contract"
+      "version": "0.4.0-dev"
     }
   ]
 }

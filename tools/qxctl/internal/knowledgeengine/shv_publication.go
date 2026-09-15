@@ -30,6 +30,11 @@ func InspectSHVPublication(prefix, version string) (Installation, error) {
 		return Installation{}, err
 	}
 	inst := Installation{Role: s.moduleID, ModuleID: s.moduleID, EngineID: s.engineID, Version: version, Prefix: e.Prefix, ReceiptPath: e.ReceiptPath, ReceiptDigest: e.ReceiptDigest, ReceiptProtocol: receiptProtocolV2, ExecutablePath: e.ExecutablePath, ExecutableDigest: e.ExecutableDigest}
+	if version == "0.3.0-dev" {
+		if err := verifySHVOwnerInterface(inst, "sha256:56e16537f5497eef20301543fde0010720d63b581d07917ec0d3f7aa70346593"); err != nil {
+			return Installation{}, err
+		}
+	}
 	if version == SHVPublicationInterfaceVersion {
 		if err := verifySHVOwnerInterface(inst, shvPublicationInterfaceDigest); err != nil {
 			return Installation{}, err

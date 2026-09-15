@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 namespace symphony::knowledge::shv_publication {
-inline constexpr auto version = "0.3.0-dev";
+inline constexpr auto version = "0.4.0-dev";
 struct InterfaceOperation { const char *id; const char *name; const char *input; const char *output; std::vector<std::string> interactions; bool expected_state; };
 inline const std::array<InterfaceOperation, 4> interface_operations = {{
   {"engop:symphony:shv-publication.inspect", "inspect", "symphony.shv.inspect-input.v1", "symphony.knowledge.engine-descriptor.v2", {"inspect"}, false},

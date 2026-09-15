@@ -11,3 +11,7 @@ The shipped SHV owner list is not exhaustive. The registration-driven authoring 
 7. Verify the new owner's native semantics, frozen descriptor parity, generated-file drift, installed declaration tampering, dependency versions and guarded uninstall. If there is an embedded legacy reader, pin its exact version and prove its behavior independently. If a consumer is to accept a new writer, review that admission at the consumer; generation does not grant it.
 
 The regression suite generates an additional `user-sensor-engine` in an isolated root, starting with empty history, without changing generator code. It also proves that generation refuses a caller-owned output. Users remain free to build different adapters or authoring systems; this tool is one supplied mechanism.
+
+## Following a metadata release with a semantic release
+
+Freeze the previous installed descriptor and retain verification of its receipt-owned declaration against its original canonical digest. Changing only the current interface constant must not disable verification of a previously shipped metadata release. Review native dependency admission, independent Go replay, installed schemas and qxctl orchestration together. A semantic release requires an exact new version and explicit consumer review; adding its name to mechanical metadata alone does not establish compatibility. SHV partition/publication 0.4 demonstrate this boundary while retaining 0.3 declaration checks.
