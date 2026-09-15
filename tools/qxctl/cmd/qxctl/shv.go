@@ -39,10 +39,12 @@ func newSHVCommand() *cobra.Command {
 		profile.AddCommand(newSHVProfileLeaf("profile", op))
 	}
 	mapping := structural("mapping", fmt.Errorf("mapping operation required"))
-	mapping.AddCommand(newSHVProfileLeaf("mapping", "diagnose"))
+	mapping.AddCommand(newSHVProfileLeaf("mapping", "diagnose"), newSHVProfileLeaf("mapping", "diagnose-source"))
 	universe := structural("universe", fmt.Errorf("universe operation required"))
 	universe.AddCommand(newSHVProfileLeaf("universe", "build"), newSHVProfileLeaf("universe", "bind"))
-	root.AddCommand(profile, mapping, universe)
+	references := structural("references", fmt.Errorf("reference operation required"))
+	references.AddCommand(newSHVProfileLeaf("references", "analyze"))
+	root.AddCommand(profile, mapping, universe, references)
 	return root
 }
 func newSHVLeaf(leaf, key, op string, adapter bool) *cobra.Command {

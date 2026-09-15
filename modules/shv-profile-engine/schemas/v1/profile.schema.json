@@ -2374,6 +2374,446 @@
         "digest"
       ],
       "additionalProperties": false
+    },
+    "NativeDiagnosticError": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "additionalProperties": false
+    },
+    "ExtractionDiagnoseInput": {
+      "type": "object",
+      "properties": {
+        "source_root": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "maxItems": 8
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Declaration"
+          },
+          "maxItems": 32
+        }
+      },
+      "required": [
+        "source_root",
+        "sources",
+        "subjects"
+      ],
+      "additionalProperties": false
+    },
+    "ExtractionDiagnostics": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.shv.extraction-diagnostics.v1"
+        },
+        "input": {
+          "$ref": "#/$defs/ExtractionDiagnoseInput"
+        },
+        "reader": {
+          "type": "object",
+          "properties": {
+            "engine_id": {
+              "const": "symphony-shv"
+            },
+            "version": {
+              "const": "0.3.0-dev"
+            },
+            "mode": {
+              "const": "compiled_exact_contract"
+            }
+          },
+          "required": [
+            "engine_id",
+            "version",
+            "mode"
+          ],
+          "additionalProperties": false
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9._-]{1,128}$"
+              },
+              "status": {
+                "enum": [
+                  "verified",
+                  "unverified"
+                ]
+              },
+              "error": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/$defs/NativeDiagnosticError"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "source_id",
+              "status",
+              "error"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 8
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "subject_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9._-]{1,128}$"
+              },
+              "source_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9._-]{1,128}$"
+              },
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "predicate": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9._-]{1,128}$"
+                    },
+                    "status": {
+                      "enum": [
+                        "extracted",
+                        "failed",
+                        "unavailable"
+                      ]
+                    },
+                    "assertion": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "$ref": "#/$defs/Assertion"
+                        }
+                      ]
+                    },
+                    "error": {
+                      "anyOf": [
+                        {
+                          "type": "null"
+                        },
+                        {
+                          "$ref": "#/$defs/NativeDiagnosticError"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "predicate",
+                    "status",
+                    "assertion",
+                    "error"
+                  ],
+                  "additionalProperties": false
+                },
+                "maxItems": 16
+              }
+            },
+            "required": [
+              "subject_id",
+              "source_id",
+              "fields"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 32
+        },
+        "counts": {
+          "type": "object",
+          "properties": {
+            "extracted": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 256
+            },
+            "failed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 256
+            },
+            "unavailable": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 256
+            }
+          },
+          "required": [
+            "extracted",
+            "failed",
+            "unavailable"
+          ],
+          "additionalProperties": false
+        },
+        "evidence_scope": {
+          "const": "individual_field_source_replay"
+        },
+        "canonical_apply_enabled": {
+          "const": false
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "input",
+        "reader",
+        "sources",
+        "subjects",
+        "counts",
+        "evidence_scope",
+        "canonical_apply_enabled",
+        "digest"
+      ],
+      "additionalProperties": false
+    },
+    "ReferenceObject": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "kind": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "document": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "digest",
+        "document"
+      ],
+      "additionalProperties": false
+    },
+    "ReferenceEdge": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "to": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._-]{1,128}$"
+        },
+        "pointer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "from",
+        "to",
+        "pointer"
+      ],
+      "additionalProperties": false
+    },
+    "ReferencesAnalyzeInput": {
+      "type": "object",
+      "properties": {
+        "objects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ReferenceObject"
+          },
+          "maxItems": 128
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ReferenceEdge"
+          },
+          "maxItems": 512
+        },
+        "root_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._-]{1,128}$"
+          },
+          "maxItems": 128,
+          "uniqueItems": true
+        },
+        "candidate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._-]{1,128}$"
+          },
+          "maxItems": 128,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "objects",
+        "edges",
+        "root_ids",
+        "candidate_ids"
+      ],
+      "additionalProperties": false
+    },
+    "ReferenceAnalysis": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "const": "symphony.shv.reference-analysis.v1"
+        },
+        "input": {
+          "$ref": "#/$defs/ReferencesAnalyzeInput"
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ReferenceEdge"
+          },
+          "maxItems": 512
+        },
+        "reachable_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._-]{1,128}$"
+          },
+          "maxItems": 128
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9._-]{1,128}$"
+              },
+              "status": {
+                "enum": [
+                  "reachable",
+                  "not_reachable_in_supplied_graph"
+                ]
+              },
+              "path": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9._-]{1,128}$"
+                    },
+                    "maxItems": 128
+                  }
+                ]
+              },
+              "incoming_edges": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/ReferenceEdge"
+                },
+                "maxItems": 512
+              }
+            },
+            "required": [
+              "id",
+              "status",
+              "path",
+              "incoming_edges"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 128
+        },
+        "uninspected_object_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._-]{1,128}$"
+          },
+          "maxItems": 128
+        },
+        "evidence_scope": {
+          "const": "caller_selected_reference_edges"
+        },
+        "deletion_authorized": {
+          "const": false
+        },
+        "canonical_apply_enabled": {
+          "const": false
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "protocol",
+        "input",
+        "edges",
+        "reachable_ids",
+        "candidates",
+        "uninspected_object_ids",
+        "evidence_scope",
+        "deletion_authorized",
+        "canonical_apply_enabled",
+        "digest"
+      ],
+      "additionalProperties": false
     }
   }
 }

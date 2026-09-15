@@ -9,9 +9,10 @@ import (
 )
 
 const SHVProfileVersion = "0.1.0-dev"
+const SHVProfileDiagnosticsVersion = "0.2.0-dev"
 
 var shvProfileSpec = engineSpec{label: "shv-profile-engine", moduleID: "shv-profile-engine", engineID: "symphony-shv-profile", componentKind: "vector_engine", vectorID: "shv", processProtocol: processProtocol}
-var shvProfileOutputs = map[string]string{"inspect": "symphony.knowledge.engine-descriptor.v2", "profile_compile": "symphony.shv.class-profile.v1", "mapping_diagnose": "symphony.shv.mapping-diagnostics.v1", "universe_build": "symphony.shv.universe.v1", "universe_bind": "symphony.shv.universe-binding.v1"}
+var shvProfileOutputs = map[string]string{"inspect": "symphony.knowledge.engine-descriptor.v2", "profile_compile": "symphony.shv.class-profile.v1", "mapping_diagnose": "symphony.shv.mapping-diagnostics.v1", "universe_build": "symphony.shv.universe.v1", "universe_bind": "symphony.shv.universe-binding.v1", "extraction_diagnose": "symphony.shv.extraction-diagnostics.v1", "references_analyze": "symphony.shv.reference-analysis.v1"}
 
 func SHVProfileResultProtocol(op string) (string, bool) {
 	v, ok := shvProfileOutputs[op]
@@ -21,8 +22,8 @@ func SHVProfileInputProtocol(op string) string {
 	return "symphony.shv." + strings.ReplaceAll(op, "_", "-") + "-input.v1"
 }
 func InspectSHVProfile(prefix, version string) (Installation, error) {
-	if prefix == "" || version != SHVProfileVersion {
-		return Installation{}, fmt.Errorf("profile engine requires an explicit prefix and exact version %s", SHVProfileVersion)
+	if prefix == "" || (version != SHVProfileVersion && version != SHVProfileDiagnosticsVersion) {
+		return Installation{}, fmt.Errorf("profile engine requires an explicit prefix and exact version %s or %s", SHVProfileVersion, SHVProfileDiagnosticsVersion)
 	}
 	s := shvProfileSpec
 	e, err := InspectReceiptV2EntryPoint(prefix, version, ReceiptV2EntryPointSpec{Label: s.label, ComponentID: s.moduleID, ComponentKind: s.componentKind, ModuleID: s.moduleID, PackageID: s.moduleID, VectorID: &s.vectorID, EngineID: &s.engineID, EntryPointID: s.engineID, EntryPointKind: "executable", EntryPointRelativePath: filepath.ToSlash(filepath.Join("libexec", "symphony", s.moduleID, version, s.engineID)), RequiredProtocols: []string{processProtocol}})
@@ -74,7 +75,7 @@ func SHVProfileResource(prefix, version string, templates bool) (Installation, j
 }
 
 func InvokeSHVProfile(ctx context.Context, prefix, version, cwd, op string, payload []byte) (Response, error) {
-	if _, ok := SHVProfileResultProtocol(op); !ok {
+	if _, ok := SHVProfileResultProtocol(op); !ok || (version == SHVProfileVersion && (op == "extraction_diagnose" || op == "references_analyze")) {
 		return Response{}, shvFail()
 	}
 	if _, e := shvObject(payload); e != nil {
@@ -88,7 +89,7 @@ func InvokeSHVProfile(ctx context.Context, prefix, version, cwd, op string, payl
 	if e != nil {
 		return r, e
 	}
-	if e = ValidateSHVProfileResult(op, payload, r.Result); e != nil {
+	if e = ValidateSHVProfileResultVersion(op, payload, r.Result, version); e != nil {
 		return Response{}, e
 	}
 	after, e := InspectSHVProfile(prefix, version)

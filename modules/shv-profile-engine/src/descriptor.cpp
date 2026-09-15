@@ -17,7 +17,9 @@ Json descriptor() {
       {"profile_compile", "symphony.shv.class-profile.v1"},
       {"mapping_diagnose", "symphony.shv.mapping-diagnostics.v1"},
       {"universe_build", "symphony.shv.universe.v1"},
-      {"universe_bind", "symphony.shv.universe-binding.v1"}};
+      {"universe_bind", "symphony.shv.universe-binding.v1"},
+      {"extraction_diagnose", "symphony.shv.extraction-diagnostics.v1"},
+      {"references_analyze", "symphony.shv.reference-analysis.v1"}};
   for (const auto &[name, output] : operations) {
     auto id = name, input = name;
     std::replace(id.begin(), id.end(), '_', '.');
@@ -29,9 +31,11 @@ Json descriptor() {
         false,
         true,
         {"ssfv:symphony:shv-profile-engine"},
-        {name == "inspect"            ? "inspect"
-         : name == "mapping_diagnose" ? "query"
-                                      : "invoke"},
+        {name == "inspect" ? "inspect"
+         : (name == "mapping_diagnose" || name == "extraction_diagnose" ||
+            name == "references_analyze")
+             ? "query"
+             : "invoke"},
         "qxctl_required",
         std::string("symphony.shv.") + input + "-input.v1",
         output,

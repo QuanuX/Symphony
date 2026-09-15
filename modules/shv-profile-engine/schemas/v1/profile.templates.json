@@ -27,5 +27,16 @@
       "source_root": null,
       "decoders": {}
     }
+  },
+  "extraction_diagnose": {
+    "source_root": null,
+    "sources": [],
+    "subjects": []
+  },
+  "references_analyze": {
+    "objects": [],
+    "edges": [],
+    "root_ids": [],
+    "candidate_ids": []
   }
 }

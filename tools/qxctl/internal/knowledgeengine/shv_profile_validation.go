@@ -318,6 +318,15 @@ func shvUniverseBind(p, r map[string]any) (map[string]any, error) {
 	return shvSealNew(map[string]any{"protocol": "symphony.shv.universe-binding.v1", "input": p, "reader": map[string]any{"engine_id": "symphony-shv", "version": SHVDocumentVersion, "mode": "compiled_exact_contract"}, "catalogue_input": input, "catalogue": c, "coverage": coverage, "conformance": conformance, "unprofiled_classes": unprofiled, "canonical_apply_enabled": false}), nil
 }
 func ValidateSHVProfileResult(op string, input, result []byte) error {
+	return ValidateSHVProfileResultVersion(op, input, result, SHVProfileVersion)
+}
+func ValidateSHVProfileResultVersion(op string, input, result []byte, version string) error {
+	if version != SHVProfileVersion && version != SHVProfileDiagnosticsVersion {
+		return shvFail()
+	}
+	if version == SHVProfileVersion && (op == "extraction_diagnose" || op == "references_analyze") {
+		return shvFail()
+	}
 	p, e := shvObject(input)
 	if e != nil {
 		return e
@@ -327,10 +336,14 @@ func ValidateSHVProfileResult(op string, input, result []byte) error {
 		return e
 	}
 	if op == "inspect" {
-		return shvProfileDescriptor(p, r, SHVProfileVersion)
+		return shvProfileDescriptor(p, r, version)
 	}
 	var want map[string]any
 	switch op {
+	case "extraction_diagnose":
+		want, e = shvExtractionDiagnose(p, r)
+	case "references_analyze":
+		want, e = shvReferencesAnalyze(p)
 	case "profile_compile":
 		want, e = shvProfileCompile(p)
 	case "mapping_diagnose":

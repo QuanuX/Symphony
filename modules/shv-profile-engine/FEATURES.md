@@ -29,7 +29,7 @@
       ],
       "distinctions": [],
       "evidence": [
-        "Focused native, Go, installed conformance and schema checks are recorded in the SHV-21 evidence packet."
+        "Focused native, Go, installed, schema and historical-version checks are recorded in SHV-22. The full gate is explicitly paused."
       ],
       "feature_id": "ssfv:symphony:shv-profile-engine",
       "how": "C++ validates profile and recipe semantics; the exact compiled kernel 0.3 reader replays selected bytes on binding. qxctl independently checks correspondence.",
@@ -47,7 +47,8 @@
         "modules/shv-profile-engine/CMakeLists.txt",
         "modules/shv-profile-engine/src/profile.cpp",
         "modules/shv-profile-engine/src/descriptor.cpp",
-        "modules/shv-profile-engine/src/main.cpp"
+        "modules/shv-profile-engine/src/main.cpp",
+        "modules/shv-profile-engine/src/diagnostics.cpp"
       ],
       "kind": "feature",
       "non_claims": [
@@ -56,7 +57,7 @@
       ],
       "owner_contract": "modules/shv-profile-engine/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",
-      "record_version": 1,
+      "record_version": 2,
       "relationships": [
         {
           "rationale": "Authority-free process, path and digest mechanics.",
@@ -67,7 +68,7 @@
       "source_scope": "modules/shv-profile-engine",
       "status": "experimental",
       "title": "SHV caller hardware profiles and portable universes",
-      "what": "Caller-defined class profiles, mapping conformance diagnostics and portable hardware-universe recipes.",
+      "what": "Caller-defined class profiles, mapping conformance diagnostics and portable hardware-universe recipes. Individual source-field diagnostics and artifact-backed reference reachability.",
       "when": "Explicit qxctl profile, mapping and universe operations.",
       "where": "Independent receipt-owned engine and caller-selected local evidence roots.",
       "who": "Agents and humans invoking the exact installed SHV through qxctl.",

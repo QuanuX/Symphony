@@ -146,7 +146,11 @@ func TestSHVProfileNativeCorrespondence(t *testing.T) {
 		t.Run(filepath.Base(path), func(t *testing.T) {
 			op := shvText(c["operation"])
 			input, result := shvRaw(t, c["input"]), shvRaw(t, c["result"])
-			if e := ValidateSHVProfileResult(op, input, result); e != nil {
+			version := SHVProfileVersion
+			if op == "inspect" {
+				version = shvText(shvMap(c["result"])["engine_version"])
+			}
+			if e := ValidateSHVProfileResultVersion(op, input, result, version); e != nil {
 				t.Fatal(e)
 			}
 			if op == "inspect" {

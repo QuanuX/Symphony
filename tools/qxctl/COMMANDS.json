@@ -11993,6 +11993,45 @@
       "aliases": [],
       "authority_mode": "none",
       "backend_operation_ids": [
+        "engop:symphony:shv-profile.extraction.diagnose"
+      ],
+      "command_id": "qxcmd:symphony:shv.mapping.diagnose-source",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-profile-engine",
+          "interaction": "query"
+        }
+      ],
+      "grammar": "qxctl shv mapping diagnose-source [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.shv.extraction-diagnose-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.shv.extraction-diagnostics.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.shv.extraction-diagnostics.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
         "engop:symphony:shv-partition.manifest.build",
         "engop:symphony:shv-partition.partition.build",
         "engop:symphony:shv-source.capture.import",
@@ -13222,6 +13261,45 @@
       "replacement_ids": [],
       "result_validation_protocols": [
         "symphony.qxctl.shv-profile-template.v1"
+      ],
+      "status": "experimental",
+      "target_scope": "local",
+      "visibility": "public"
+    },
+    {
+      "aliases": [],
+      "authority_mode": "none",
+      "backend_operation_ids": [
+        "engop:symphony:shv-profile.references.analyze"
+      ],
+      "command_id": "qxcmd:symphony:shv.references.analyze",
+      "deprecated_in": null,
+      "feature_bindings": [
+        {
+          "feature_id": "ssfv:symphony:qxctl.shv-administration",
+          "interaction": "query"
+        },
+        {
+          "feature_id": "ssfv:symphony:shv-profile-engine",
+          "interaction": "query"
+        }
+      ],
+      "grammar": "qxctl shv references analyze [--input VALUE] [--json] [--prefix VALUE] [--version VALUE]",
+      "infrastructure_purpose": null,
+      "input_protocols": [
+        "symphony.shv.references-analyze-input.v1"
+      ],
+      "introduced_in": "0.1.0-dev",
+      "json_output": true,
+      "mutability": "read_only",
+      "noninteractive": true,
+      "output_protocols": [
+        "symphony.shv.reference-analysis.v1"
+      ],
+      "recovery_command_id": null,
+      "replacement_ids": [],
+      "result_validation_protocols": [
+        "symphony.shv.reference-analysis.v1"
       ],
       "status": "experimental",
       "target_scope": "local",
@@ -16966,6 +17044,6 @@
   "format_version": 1,
   "protocol": "symphony.qxctl.command-registry.v1",
   "receipt_digest": null,
-  "registry_digest": "sha256:0eace0e6caebcadf0c5fbccae45cc79cc2c504a91a9c45ed291949e06125dd73",
+  "registry_digest": "sha256:838ba8f54384376bb57f8b2eabbe55a81907eff09301647b94c413ab18e6d87a",
   "registry_kind": "expected"
 }

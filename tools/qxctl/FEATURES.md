@@ -969,7 +969,8 @@
         "tools/qxctl/cmd/qxctl/shv_profile.go",
         "tools/qxctl/internal/knowledgeengine/shv_profile.go",
         "tools/qxctl/internal/knowledgeengine/shv_profile_validation.go",
-        "tools/qxctl/internal/knowledgeengine/shv_profile_descriptor.go"
+        "tools/qxctl/internal/knowledgeengine/shv_profile_descriptor.go",
+        "tools/qxctl/internal/knowledgeengine/shv_profile_diagnostics.go"
       ],
       "kind": "feature",
       "non_claims": [
@@ -978,7 +979,7 @@
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",
-      "record_version": 4,
+      "record_version": 5,
       "relationships": [
         {
           "rationale": "C++ owns SHV semantic rebuild and findings.",

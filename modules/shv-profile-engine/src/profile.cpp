@@ -221,6 +221,29 @@ Json diagnose(const Json &p) {
                       {"counts", counts},
                       {"evidence_scope", "mapping_declarations_only"}});
 }
+std::set<std::string> source_ids(const Json &sources) {
+  k::array(sources, 8);
+  std::set<std::string> ids, paths;
+  std::uint64_t total = 0;
+  for (const auto &s : sources) {
+    k::fields(s, {"id", "path", "bytes", "digest", "format"});
+    if (!ids.insert(k::ident(s, "id")).second)
+      k::invalid("duplicate source");
+    auto path = text(s, "path", 4096);
+    if (!engine::is_safe_relative_path(path) || !paths.insert(path).second)
+      k::invalid("unsafe or duplicate source path");
+    hash(s.at("digest"));
+    if (!s.at("bytes").is_number_integer() || s.at("bytes") < 0 ||
+        s.at("bytes") > 1048576)
+      k::invalid("source byte bound");
+    total += s.at("bytes").get<std::uint64_t>();
+    if (s.at("format") != "html" && s.at("format") != "opaque")
+      k::invalid("unsupported source format");
+  }
+  if (total > 4194304)
+    k::invalid("aggregate source byte bound");
+  return ids;
+}
 Json universe(const Json &p) {
   k::fields(p, {"id", "revision", "kernel_version", "coverage", "profiles",
                 "sources", "mapping", "locators", "extensions"});
@@ -239,26 +262,7 @@ Json universe(const Json &p) {
     if (!profiles.insert(k::ident(v.at("definition"), "id")).second)
       k::invalid("duplicate profile ID");
   }
-  k::array(p.at("sources"), 8);
-  std::set<std::string> ids, paths;
-  std::uint64_t total = 0;
-  for (const auto &s : p.at("sources")) {
-    k::fields(s, {"id", "path", "bytes", "digest", "format"});
-    if (!ids.insert(k::ident(s, "id")).second)
-      k::invalid("duplicate source");
-    auto path = text(s, "path", 4096);
-    if (!engine::is_safe_relative_path(path) || !paths.insert(path).second)
-      k::invalid("unsafe or duplicate source path");
-    hash(s.at("digest"));
-    if (!s.at("bytes").is_number_integer() || s.at("bytes") < 0 ||
-        s.at("bytes") > 1048576)
-      k::invalid("source byte bound");
-    total += s.at("bytes").get<std::uint64_t>();
-    if (s.at("format") != "html" && s.at("format") != "opaque")
-      k::invalid("unsupported source format");
-  }
-  if (total > 4194304)
-    k::invalid("aggregate source byte bound");
+  auto ids = source_ids(p.at("sources"));
   for (const auto &m : p.at("mapping"))
     if (!ids.contains(k::ident(m, "source_id")))
       k::invalid("mapping source absent");
@@ -338,9 +342,19 @@ Json bind(const engine::Request &r, const Json &p) {
                       {"canonical_apply_enabled", false}});
 }
 } // namespace
+void validate_mappings(const Json &rows, bool portable) {
+  mappings(rows, portable);
+}
+void validate_sources(const Json &sources) {
+  static_cast<void>(source_ids(sources));
+}
 Json handle_request(const engine::Request &r) {
   k::deadline(r);
   const auto &p = r.payload;
+  if (r.operation == "extraction_diagnose")
+    return extraction_diagnose(r);
+  if (r.operation == "references_analyze")
+    return references_analyze(p);
   if (r.operation == "inspect") {
     k::fields(p, {});
     return descriptor();

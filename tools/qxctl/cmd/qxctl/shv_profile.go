@@ -15,6 +15,9 @@ func newSHVProfileLeaf(family, leaf string) *cobra.Command {
 	var prefix, version, input, selection string
 	resource := leaf == "schema" || leaf == "template"
 	op := family + "_" + leaf
+	if leaf == "diagnose-source" {
+		op = "extraction_diagnose"
+	}
 	if leaf == "inspect" {
 		op = "inspect"
 	}
@@ -73,7 +76,7 @@ func newSHVProfileLeaf(family, leaf string) *cobra.Command {
 		c.MarkFlagRequired("input")
 	}
 	if leaf == "template" {
-		c.Flags().StringVar(&selection, "operation", "", "profile_compile, mapping_diagnose, universe_build or universe_bind")
+		c.Flags().StringVar(&selection, "operation", "", "exact installed operation name")
 		c.MarkFlagRequired("operation")
 	}
 	c.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
@@ -84,7 +87,7 @@ func newSHVProfileLeaf(family, leaf string) *cobra.Command {
 	if op == "inspect" {
 		interaction = "inspect"
 	}
-	if op == "mapping_diagnose" {
+	if op == "mapping_diagnose" || op == "extraction_diagnose" || op == "references_analyze" {
 		interaction = "query"
 	}
 	s := commandSpec("shv."+family+"."+leaf, featureSHVAdministration, interaction)

@@ -9,3 +9,7 @@ Treat conformance as declared vocabulary correspondence, not source extraction o
 hardware qualification. Use the bind catalogue through the existing kernel controls
 for source replay, requirements or graph projection. Actual activation and publication
 retain their separate qxctl owners and permissions. Preserve old sealed artifacts.
+
+For exact 0.2.0-dev, use `qxctl shv mapping diagnose-source` for individual field
+replay failures, and `qxctl shv references analyze` for caller-selected artifact
+reference paths. An unreachable candidate is not permission to delete evidence.

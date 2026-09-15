@@ -1,6 +1,6 @@
 # SHV caller profiles and portable universes — v1
 
-The independently installable C++ `shv-profile-engine` 0.1.0-dev owns caller class
+The independently installable C++ `shv-profile-engine` 0.2.0-dev owns caller class
 profiles, mapping declaration diagnostics and portable hardware-universe recipes.
 It uses the compiled exact SHV kernel 0.3.0-dev source reader; qxctl independently
 validates every result and replays original source bytes for a binding. This is not
@@ -42,7 +42,7 @@ The explicit evidence scope is `mapping_declarations_only`. This operation check
 mapping shape and declared comparison vocabulary. It does not parse source HTML,
 validate selector applicability, validate a PDF extraction object, establish
 source authenticity, or report per-field extraction failures. A conformant mapping
-can still fail source replay. Full parser diagnostics remain separate work.
+can still fail source replay. Source replay diagnostics use the separate exact 0.2.0-dev operation below.
 
 ## Portable recipes and local binding
 
@@ -119,3 +119,57 @@ paths, stale seals, missing selected evidence and altered bytes fail closed.
 Profile text fields exclude ASCII control characters. Extension objects remain open
 within the bounded JSON envelope; floating-point numbers are prohibited by the
 existing interoperable process protocol.
+
+## Additions in profile engine 0.2.0-dev
+
+Exact 0.1.0-dev installations retain their five original operations and seven
+qxctl surfaces. Explicit 0.2.0-dev selection adds two read-only operations without
+changing the older artifact protocols or existing kernel 0.3 reader semantics.
+
+`qxctl shv mapping diagnose-source` invokes `extraction_diagnose` with the existing
+`source_root`, `sources`, `subjects` catalogue input. It validates bounded mapping
+and manifest declarations, then verifies each source independently. A failed source
+is `unverified`; its fields are `unavailable`. For verified sources, each field is
+replayed with the exact kernel reader and reported as `extracted` with its assertion
+or `failed` with the native error. Successful adjacent fields remain visible even
+when a selector, label, boundary, decoder, or typed conversion fails elsewhere.
+Counts cover fields, not subjects. Empty field lists make no interpretation claim.
+
+Native errors retain `code` and informational `message`. qxctl independently checks
+source identity, the affected field, failure versus success, and every successful
+assertion using its existing source/HTML/table/PDF validation. It does not derive
+semantics from the native error prose or independently certify that prose. A native
+request deadline remains a failed operation, not a hardware/source finding. Bound
+PDF decoder roots are required; recipe decoder placeholders must first be resolved.
+Invalid control envelopes still fail the operation. Verified sources are rechecked
+before native completion. Concurrent changes can cause the independent qxctl check
+to reject the result; this operation does not create an atomic filesystem snapshot.
+The diagnostic report cannot be substituted for a full catalogue or publication.
+
+`qxctl shv references analyze` invokes `references_analyze` with caller-selected
+`objects`, `edges`, `root_ids` and `candidate_ids`. Objects have an ID, open caller
+kind name, digest and an optional JSON document. A supplied document containing a
+root `digest` must have an exact canonical seal matching the object digest. Other
+JSON objects use the SHA-256 digest of their complete canonical JSON. A null document
+is an uninspected digest reference, useful for raw source bytes or an artifact whose
+body is not supplied. An outgoing edge requires a supplied document and a JSON
+Pointer resolving to exactly the target object's digest. Escaped keys and array
+indices use JSON Pointer semantics; repeated edges and unknown objects fail.
+
+This supports caller-selected references from catalogue histories, source/capture
+records, universe bindings, graph snapshots and retained operations without treating
+those distinct objects as interchangeable. The generic `kind` field does not enforce
+an ontology or confer semantic ownership. Pointer equality verifies a digest mention;
+the caller remains responsible for selecting which mentions represent dependencies.
+This tool does not independently apply every embedded artifact's semantic owner or
+read opaque source bytes. It never claims that the supplied graph is complete.
+
+Results contain sorted checked edges, reachable IDs, the shortest deterministic
+root-to-candidate paths, each candidate's direct incoming edges and uninspected IDs.
+Multiple roots, shared references and cycles are supported. Candidate order follows
+the caller; root and neighbor IDs are sorted for deterministic path ties. Reachability
+is scoped to `caller_selected_reference_edges`. An unreachable result is explicitly
+`not_reachable_in_supplied_graph`; neither it nor a missing body means deletable.
+`deletion_authorized:false` and `canonical_apply_enabled:false` are invariant.
+No retention policy or deletion command is implemented. There are at most 128 objects,
+128 roots/candidates and 512 edges within the existing bounded process envelope.

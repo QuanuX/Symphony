@@ -8,12 +8,12 @@ def canonical(x):return json.dumps(x,sort_keys=True,separators=(',',':'),ensure_
 def seal(x,key='digest'):
  x=copy.deepcopy(x);x.pop(key,None);x[key]='sha256:'+hashlib.sha256(canonical(x)).hexdigest();return x
 
-def run(engine,root,qxctl=None,prefix=None,cases=None):
+def run(engine,root,qxctl=None,prefix=None,cases=None,version="0.2.0-dev"):
  calls=[]
  def call(op,p,good=True):
   req={'protocol':'symphony.knowledge.engine-process.v1','request_id':'profile-check','correlation_id':'profile-check','operation':op,'target_engine':'symphony-shv-profile','deadline_unix_ms':int(time.time()*1000)+30000,'payload':p}
   if qxctl:
-   family,leaf=('profile','inspect')if op=='inspect'else op.split('_');input_path=root/'request.json';input_path.write_bytes(canonical(p));cmd=[qxctl,'shv',family,leaf,'--prefix',prefix,'--version','0.1.0-dev','--json'];cmd+=[]if op=='inspect'else ['--input',str(input_path)]
+   family,leaf=('profile','inspect')if op=='inspect'else op.split('_');input_path=root/'request.json';input_path.write_bytes(canonical(p));cmd=[qxctl,'shv',family,leaf,'--prefix',prefix,'--version',version,'--json'];cmd+=[]if op=='inspect'else ['--input',str(input_path)]
    x=subprocess.run(cmd,capture_output=True)
   else:x=subprocess.run([engine],input=canonical(req),capture_output=True)
   assert (x.returncode==0)==good,(op,good,x.stdout,x.stderr)
@@ -24,7 +24,7 @@ def run(engine,root,qxctl=None,prefix=None,cases=None):
   case={'operation':op,'input':p,'good':good,'result':result,'exit_code':x.returncode};calls.append(case)
   if cases:(cases/f'{len(calls):03d}.json').write_bytes(canonical(case))
   return result
- descriptor=call('inspect',{});assert len(descriptor['operations'])==5
+ descriptor=call('inspect',{});assert len(descriptor['operations'])==(5 if descriptor['engine_version']=='0.1.0-dev' else 7)
  sources=[];mapping=[];profiles=[]
  metrics=[('gpu','device_memory_bytes','bytes',16),('memory','module_capacity_bytes','bytes',32),('storage','namespace_capacity_bytes','bytes',64),('networking-card','port_line_rate_bps','bits_per_second',128),('custom-accelerator','caller_metric','caller_unit',256)]
  source_root=root/'sources';source_root.mkdir()
@@ -77,8 +77,8 @@ def run(engine,root,qxctl=None,prefix=None,cases=None):
  return calls
 
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--engine');p.add_argument('--qxctl');p.add_argument('--prefix');p.add_argument('--cases');a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--engine');p.add_argument('--qxctl');p.add_argument('--prefix');p.add_argument('--cases');p.add_argument('--version',default='0.2.0-dev');a=p.parse_args()
  if a.cases:
-  root=Path(a.cases).resolve();root.mkdir(parents=True,exist_ok=True);run(a.engine,root,a.qxctl,a.prefix,root)
+  root=Path(a.cases).resolve();root.mkdir(parents=True,exist_ok=True);run(a.engine,root,a.qxctl,a.prefix,root,a.version)
  else:
-  with tempfile.TemporaryDirectory(prefix='shv-profile-')as tmp:run(a.engine,Path(tmp).resolve(),a.qxctl,a.prefix)
+  with tempfile.TemporaryDirectory(prefix='shv-profile-')as tmp:run(a.engine,Path(tmp).resolve(),a.qxctl,a.prefix,version=a.version)

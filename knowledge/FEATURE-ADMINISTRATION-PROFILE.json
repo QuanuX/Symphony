@@ -1941,7 +1941,9 @@
             "qxcmd:symphony:shv.graph.store.query",
             "qxcmd:symphony:shv.graph.store.transfer-plan",
             "qxcmd:symphony:shv.mapping.diagnose",
-            "qxcmd:symphony:shv.partition.query"
+            "qxcmd:symphony:shv.mapping.diagnose-source",
+            "qxcmd:symphony:shv.partition.query",
+            "qxcmd:symphony:shv.references.analyze"
           ],
           "delivery": "composed",
           "engine_operation_ids": [],
@@ -6356,11 +6358,15 @@
         },
         {
           "command_ids": [
-            "qxcmd:symphony:shv.mapping.diagnose"
+            "qxcmd:symphony:shv.mapping.diagnose",
+            "qxcmd:symphony:shv.mapping.diagnose-source",
+            "qxcmd:symphony:shv.references.analyze"
           ],
-          "delivery": "direct",
+          "delivery": "composed",
           "engine_operation_ids": [
-            "engop:symphony:shv-profile.mapping.diagnose"
+            "engop:symphony:shv-profile.extraction.diagnose",
+            "engop:symphony:shv-profile.mapping.diagnose",
+            "engop:symphony:shv-profile.references.analyze"
           ],
           "evidence": [
             "knowledge/shv/KERNEL.md",
@@ -7863,9 +7869,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:c490a64d5aed593a39d8429985679eb51149ec71b0b959bcf369a05c94bd5ac1",
+  "profile_digest": "sha256:18cb2b095fb32541857d50540b10d9fa7079f5a5a6a6c9ff98c987d1b72dcaa8",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 110,
-  "ssfv_registry_digest": "sha256:bf70ebb0fb7252f09d317f0330b23d2c9a0911a691efb2cf54726fbae6b8763e"
+  "ssfv_registry_digest": "sha256:ed511101cadbe757a78ebd55b3214fd656aeb374ca0c1e959d991c7de1fc915d"
 }
