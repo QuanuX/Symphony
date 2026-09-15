@@ -12754,3 +12754,107 @@ This PR authorizes none of the following:
   - `tools/shv-interface-codegen/generate.py`
   - `tools/shv-interface-codegen/owner_codegen.py`
   - `tools/shv-interface-codegen/tests/owner_test.py`
+
+---
+
+- record_id: `SCLV-CHG-20260915-SHV-COMPOSITION-ADMISSION`
+- record_version: `3`
+- title: `Admit exact SHV dependency composition in partition and publication`
+- status: `canonical`
+- change_started_at: `2026-09-15T06:32:32Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for explicit SHV consuming-owner admission`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-15-shv-composition-admission.md`
+- skvi_references:
+  - `knowledge/shv/PARTITIONS.md`
+  - `knowledge/shv/PUBLICATION.md`
+  - `tools/shv-interface-codegen/EXTENDING.md`
+- change_summary: |
+    Partition and publication 0.4 explicitly admit the reviewed source/kernel/partition/store releases through existing qxctl control surfaces.
+- relationship_changes: |
+    Exact version admission reaches materialization, resolution and protected publication. Historical transitions retain their original publisher; historical partition identities cannot claim newer source/kernel dependencies.
+- doctrine_changes: |
+    No change to user sovereignty or non-exhaustive owner registration.
+- compatibility_consequences: |
+    Partition/publication 0.3 declaration verification remains frozen. Historical owner admission remains exact. PDF/profile/structural reader embeddings remain retained. No command or default changes.
+- publication_consequences: |
+    Local development packages and private authorized catalogue tests only. No production catalogue selection or external publication.
+- projection_consequences: |
+    No inferred hardware equivalence or SCV/SHV relationship. Graph owners and original storage writers remain unchanged.
+- evidence:
+  - `../shv-26/VERIFICATION.md records focused verification.`
+  - `../shv-26/evidence/SOURCE_BUILD_PARITY.json binds the source files, CLI and selected installation.`
+  - `../shv-26/evidence/FOCUSED_TESTS.json records 64 Go events and four native groups.`
+  - `../shv-26/evidence/final-authority/ACCEPTANCE.json records six real private authority checks.`
+  - `../shv-26/evidence/interruption/ACCEPTANCE.json records five SIGKILL recoveries and four protection checks.`
+  - `../shv-26/evidence/composition/ACCEPTANCE.json records exact qxctl materialization and resolution.`
+  - `../shv-26/evidence/packages/ACCEPTANCE.json records twelve package boundaries.`
+- non_authorizations:
+  - `No automatic latest selection or future semantic admission.`
+  - `No production deployment, graph default or hardware dataset distribution.`
+  - `No inferred cross-vector evidence relationship.`
+- notes: |
+    Consuming-owner admission backlog is closed within the reviewed versions. Full suite not repeated; separate SCV/SHV relationship design remains next.
+- date: `2026-09-15`
+- change_completed_at: `2026-09-15T06:32:32Z`
+- recorded_at: `2026-09-15T06:33:27Z`
+- revision_value: `2d050e236c0ce1950902869146565e3cf907c76f`
+- tree_digest: `sha256:28263be340f157cded626afd10d7d9fcc195d984643693100e54663c099341f5`
+- ratification_evidence_digest: `sha256:215e59485ffdbf8927bbacf55f3b6feb93448727391fd794494a1d48a8e66ae5`
+- affected_surfaces:
+  - `cmake/ShvPartitionInterface.generated.cmake`
+  - `cmake/ShvPublicationInterface.generated.cmake`
+  - `knowledge/shv/PARTITIONS.md`
+  - `knowledge/shv/PUBLICATION.md`
+  - `modules/shv-partition-engine/FEATURES.md`
+  - `modules/shv-partition-engine/INSTALL.md`
+  - `modules/shv-partition-engine/INTENT.md`
+  - `modules/shv-partition-engine/INTERFACE-GENERATOR.json`
+  - `modules/shv-partition-engine/MANIFEST.md`
+  - `modules/shv-partition-engine/OWNER-INTERFACE.json`
+  - `modules/shv-partition-engine/SKILL.md`
+  - `modules/shv-partition-engine/SPEC.md`
+  - `modules/shv-partition-engine/schemas/v1/partition.schema.json`
+  - `modules/shv-partition-engine/src/interface.generated.hpp`
+  - `modules/shv-partition-engine/src/partition.cpp`
+  - `modules/shv-partition-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/shv-partition-engine/tests/partition_test.py`
+  - `modules/shv-publication-engine/CMakeLists.txt`
+  - `modules/shv-publication-engine/FEATURES.md`
+  - `modules/shv-publication-engine/INSTALL.md`
+  - `modules/shv-publication-engine/INTENT.md`
+  - `modules/shv-publication-engine/MANIFEST.md`
+  - `modules/shv-publication-engine/OWNER-INTERFACE.json`
+  - `modules/shv-publication-engine/SKILL.md`
+  - `modules/shv-publication-engine/SPEC.md`
+  - `modules/shv-publication-engine/schemas/v1/publication.schema.json`
+  - `modules/shv-publication-engine/src/interface.generated.hpp`
+  - `modules/shv-publication-engine/src/publication.cpp`
+  - `modules/shv-publication-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/shv-publication-engine/tests/publication_test.py`
+  - `tools/qxctl/cmd/qxctl/shv_materialization.go`
+  - `tools/qxctl/cmd/qxctl/shv_materialization.schema.json`
+  - `tools/qxctl/cmd/qxctl/shv_publication_evidence.go`
+  - `tools/qxctl/cmd/qxctl/shv_resolution.go`
+  - `tools/qxctl/cmd/qxctl/shv_resolution.schema.json`
+  - `tools/qxctl/internal/knowledgeengine/shv_partition.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_partition_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_partition_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_partition_validation.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_publication.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_publication_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_publication_validation.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_publication_validation_test.go`
+  - `tools/qxctl/internal/shvpublicationstate/validation.go`
+  - `tools/shv-interface-codegen/EXTENDING.md`
+  - `tools/shv-interface-codegen/history-lock.json`
