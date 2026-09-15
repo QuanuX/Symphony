@@ -12219,3 +12219,85 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/knowledgeengine/shv_profile_descriptor.go`
   - `tools/qxctl/internal/knowledgeengine/shv_profile_test.go`
   - `tools/qxctl/internal/knowledgeengine/shv_profile_validation.go`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-DIAGNOSTICS-REFERENCES`
+- record_version: `3`
+- title: `Source field diagnostics and selected artifact reference accounting`
+- status: `canonical`
+- change_started_at: `2026-09-15T01:21:59Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for diagnostic/reference slice and local commit before the paused gate`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-diagnostic-pause.md`
+- skvi_references:
+  - `knowledge/shv/PROFILES.md`
+  - `modules/shv-profile-engine/SPEC.md`
+- change_summary: |
+    Profile engine 0.2 and two qxctl leaves add source/field failure isolation and exact selected artifact reference reachability.
+- relationship_changes: |
+    Reuses exact kernel 0.3 source replay and independent qxctl parsers; artifact digest mentions remain caller-selected relationships without inferred semantic authority.
+- doctrine_changes: |
+    Source failure is not negative hardware evidence; supplied-graph unreachability is not deletion permission. No universal retention policy is chosen.
+- compatibility_consequences: |
+    Exact 0.1 profile owner and artifacts remain admitted for old operations. New 0.2 owner has seven native operations; qxctl registry contains 369 commands and 110 features.
+- publication_consequences: |
+    All new operations are read-only. No source activation, live catalogue publication or deletion occurs.
+- projection_consequences: |
+    Reports preserve successful fields, scoped failure details, shared incoming references and deterministic rooted paths. Reference completeness is not claimed.
+- evidence:
+  - `../shv-22/VERIFICATION.md records focused checks and the explicit pre-gate pause.`
+  - `../shv-22/evidence/SOURCE_BUILD_PARITY.json binds the clean local source and installed package.`
+  - `../shv-22/MANIFEST.json seals designated evidence.`
+- non_authorizations:
+  - `No source acquisition, active-source mutation, catalogue publication, pruning or deletion.`
+  - `No default graph database, imposed hardware policy, production deployment or physical compatibility claims.`
+- notes: |
+    Full SHV gate awaits the next explicit user signal. Global reference discovery, destructive retention and subsequent cross-vector/contract-quad review remain separate work.
+- date: `2026-09-15`
+- change_completed_at: `2026-09-15T01:38:14Z`
+- recorded_at: `2026-09-15T01:40:21Z`
+- revision_value: `1671eb85b91b524e907012265cb34ae964df55eb`
+- tree_digest: `sha256:cc18ec440257c02397f7e86a3eafc0ac640ffa700a61d5fd8adf93073c2721f0`
+- ratification_evidence_digest: `sha256:56a9ea13324cbf13793eca8bec59a22bb92056d1f782235da45fb341f81e044a`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/shv/PROFILES.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/shv-profile-engine/CMakeLists.txt`
+  - `modules/shv-profile-engine/FEATURES.md`
+  - `modules/shv-profile-engine/SKILL.md`
+  - `modules/shv-profile-engine/SPEC.md`
+  - `modules/shv-profile-engine/schemas/v1/profile.schema.json`
+  - `modules/shv-profile-engine/schemas/v1/profile.templates.json`
+  - `modules/shv-profile-engine/scripts/build_schema.py`
+  - `modules/shv-profile-engine/src/descriptor.cpp`
+  - `modules/shv-profile-engine/src/diagnostics.cpp`
+  - `modules/shv-profile-engine/src/profile.cpp`
+  - `modules/shv-profile-engine/src/profile.hpp`
+  - `modules/shv-profile-engine/tests/diagnostics_test.py`
+  - `modules/shv-profile-engine/tests/profile_test.py`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv.go`
+  - `tools/qxctl/cmd/qxctl/shv_profile.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile_descriptor.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile_diagnostics.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile_diagnostics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile_validation.go`
