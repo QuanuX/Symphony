@@ -12589,3 +12589,168 @@ This PR authorizes none of the following:
   - `tools/shv-interface-codegen/generate.py`
   - `tools/shv-interface-codegen/history-lock.json`
   - `tools/shv-interface-codegen/tests/interface_test.py`
+
+---
+
+- record_id: `SCLV-CHG-20260915-SHV-OPEN-OWNER-INTERFACES`
+- record_version: `3`
+- title: `Migrate five SHV owners and provide non-exhaustive owner registration`
+- status: `canonical`
+- change_started_at: `2026-09-15T05:38:59Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for five SHV interface owners and open owner registration`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-15-shv-open-owner-registration.md`
+- skvi_references:
+  - `tools/shv-interface-codegen/EXTENDING.md`
+  - `tools/shv-interface-codegen/owner_codegen.py`
+  - `modules/shv-engine/OWNER-INTERFACE.json`
+  - `modules/shv-pdf-adapter/OWNER-INTERFACE.json`
+  - `modules/shv-partition-engine/OWNER-INTERFACE.json`
+  - `modules/shv-graph-adapter/OWNER-INTERFACE.json`
+  - `modules/shv-graph-duckdb-connector/OWNER-INTERFACE.json`
+- change_summary: |
+    Kernel 0.4, PDF 0.3, partition 0.3, generic graph adapter 0.2 and store 0.4 use generated mechanical metadata. Explicit registrations admit additional authoring owners without changing a closed generator list.
+- relationship_changes: |
+    Receipt-owned declarations match compiled qxctl admission. Exact embedded consumers remain pinned. Transfer journal replay uses its recorded reader version; older readers do not silently acquire new writer admission.
+- doctrine_changes: |
+    Records explicit user direction that shipped owner inventory is non-exhaustive. Authoring registration does not supply semantic handlers or runtime authority.
+- compatibility_consequences: |
+    All eleven historical releases across the five owners remain inspected. Existing 369 commands/defaults are unchanged. Embedded kernel/PDF/partition/structural-adapter versions and publication writer admission remain explicit. SDK release export uses the configured exact version.
+- publication_consequences: |
+    Local development packages and private storage recovery only. No production catalogue selection, vendor acquisition, external module publication or deletion.
+- projection_consequences: |
+    Declarations generate descriptor metadata, Go admission and package inventories. Unknown future owner registration is supported without projecting hardware facts or implied semantic integration.
+- evidence:
+  - `../shv-25/VERIFICATION.md records focused verification and exact remaining admission boundaries.`
+  - `../shv-25/evidence/SOURCE_BUILD_PARITY.json binds 104 source files to the selected packages and CLI.`
+  - `../shv-25/evidence/FOCUSED_TESTS.json records 311 passing Go events without failures/skips.`
+  - `../shv-25/evidence/NATIVE_TESTS.json records sixteen native CTest groups.`
+  - `../shv-25/evidence/PACKAGE.json and SDK.json record receipt/uninstall/rebuild and independent installed SDK checks.`
+  - `../shv-25/evidence/recovery/ACCEPTANCE.json and final-crash/ACCEPTANCE.json record eleven actual SIGKILL recoveries.`
+- non_authorizations:
+  - `No exhaustive owner list, user hardware restrictions or automatic semantic/plugin admission.`
+  - `No implicit upgrade of embedded dependencies, original writers or publication inputs.`
+  - `No new graph default, production deployment or external publication.`
+- notes: |
+    Five remaining shipped metadata owners completed; all eight current SHV owners have metadata. An additional caller owner with empty history and collision rejection is tested. Final installed boundaries pass 46 checks, kernel ingestion 10 calls, PDF 22 calls and transfer 11 checks. Full suite remains deferred to the next agreed milestone.
+- date: `2026-09-15`
+- change_completed_at: `2026-09-15T06:03:20Z`
+- recorded_at: `2026-09-15T06:06:38Z`
+- revision_value: `cd070748df0cc710912feb89a278ce62fe5d3a72`
+- tree_digest: `sha256:f01d45b809f0e0a8b6d90d87ffa13b3ee49193f21e253cafd10fa97c816e4a56`
+- ratification_evidence_digest: `sha256:0c21776ece840d14b09ad904c6ea64f5872063b74de34ebc2eaa8a268817d6e0`
+- affected_surfaces:
+  - `cmake/ShvGraphAdapterInterface.generated.cmake`
+  - `cmake/ShvKernelInterface.generated.cmake`
+  - `cmake/ShvPDFInterface.generated.cmake`
+  - `cmake/ShvPartitionInterface.generated.cmake`
+  - `cmake/ShvStoreInterface.generated.cmake`
+  - `knowledge/skvi/INDEX.md`
+  - `modules/shv-engine/CMakeLists.txt`
+  - `modules/shv-engine/INSTALL.md`
+  - `modules/shv-engine/INTERFACE-GENERATOR.json`
+  - `modules/shv-engine/MANIFEST.md`
+  - `modules/shv-engine/OWNER-INTERFACE.json`
+  - `modules/shv-engine/SKILL.md`
+  - `modules/shv-engine/SPEC.md`
+  - `modules/shv-engine/cmake/uninstall.cmake.in`
+  - `modules/shv-engine/src/descriptor.cpp`
+  - `modules/shv-engine/src/interface.generated.hpp`
+  - `modules/shv-engine/src/shv.hpp`
+  - `modules/shv-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/shv-engine/tests/kernel_test.py`
+  - `modules/shv-engine/tests/table_test.py`
+  - `modules/shv-graph-adapter/CMakeLists.txt`
+  - `modules/shv-graph-adapter/INSTALL.md`
+  - `modules/shv-graph-adapter/INTERFACE-GENERATOR.json`
+  - `modules/shv-graph-adapter/MANIFEST.md`
+  - `modules/shv-graph-adapter/OWNER-INTERFACE.json`
+  - `modules/shv-graph-adapter/SKILL.md`
+  - `modules/shv-graph-adapter/SPEC.md`
+  - `modules/shv-graph-adapter/cmake/SymphonyShvGraphAdapterConfig.cmake.in`
+  - `modules/shv-graph-adapter/src/adapter.cpp`
+  - `modules/shv-graph-adapter/src/adapter.hpp`
+  - `modules/shv-graph-adapter/src/interface.generated.hpp`
+  - `modules/shv-graph-adapter/tests/fixtures/interface-history.v1.json`
+  - `modules/shv-graph-duckdb-connector/CMakeLists.txt`
+  - `modules/shv-graph-duckdb-connector/INSTALL.md`
+  - `modules/shv-graph-duckdb-connector/INTERFACE-GENERATOR.json`
+  - `modules/shv-graph-duckdb-connector/MANIFEST.md`
+  - `modules/shv-graph-duckdb-connector/OWNER-INTERFACE.json`
+  - `modules/shv-graph-duckdb-connector/SKILL.md`
+  - `modules/shv-graph-duckdb-connector/SPEC.md`
+  - `modules/shv-graph-duckdb-connector/schemas/v1/graph-store.schema.json`
+  - `modules/shv-graph-duckdb-connector/src/connector.cpp`
+  - `modules/shv-graph-duckdb-connector/src/connector.hpp`
+  - `modules/shv-graph-duckdb-connector/src/interface.generated.hpp`
+  - `modules/shv-graph-duckdb-connector/tests/connector_test.py`
+  - `modules/shv-graph-duckdb-connector/tests/fixtures/interface-history.v1.json`
+  - `modules/shv-partition-engine/CMakeLists.txt`
+  - `modules/shv-partition-engine/INSTALL.md`
+  - `modules/shv-partition-engine/INTERFACE-GENERATOR.json`
+  - `modules/shv-partition-engine/MANIFEST.md`
+  - `modules/shv-partition-engine/OWNER-INTERFACE.json`
+  - `modules/shv-partition-engine/SKILL.md`
+  - `modules/shv-partition-engine/SPEC.md`
+  - `modules/shv-partition-engine/cmake/uninstall.cmake.in`
+  - `modules/shv-partition-engine/src/descriptor.cpp`
+  - `modules/shv-partition-engine/src/interface.generated.hpp`
+  - `modules/shv-partition-engine/src/partition.hpp`
+  - `modules/shv-partition-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/shv-pdf-adapter/CMakeLists.txt`
+  - `modules/shv-pdf-adapter/INSTALL.md`
+  - `modules/shv-pdf-adapter/INTERFACE-GENERATOR.json`
+  - `modules/shv-pdf-adapter/MANIFEST.md`
+  - `modules/shv-pdf-adapter/OWNER-INTERFACE.json`
+  - `modules/shv-pdf-adapter/SKILL.md`
+  - `modules/shv-pdf-adapter/SPEC.md`
+  - `modules/shv-pdf-adapter/cmake/uninstall.cmake.in`
+  - `modules/shv-pdf-adapter/src/descriptor.cpp`
+  - `modules/shv-pdf-adapter/src/interface.generated.hpp`
+  - `modules/shv-pdf-adapter/src/pdf.hpp`
+  - `modules/shv-pdf-adapter/tests/fixtures/interface-history.v1.json`
+  - `modules/shv-pdf-adapter/tests/pdf_test.cpp`
+  - `modules/shv-profile-engine/CMakeLists.txt`
+  - `modules/shv-publication-engine/CMakeLists.txt`
+  - `tools/qxctl/cmd/qxctl/shv_store.go`
+  - `tools/qxctl/cmd/qxctl/shv_store_transfer.go`
+  - `tools/qxctl/internal/knowledgeengine/shv.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_document.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_graph_adapter_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_interface_versions_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_kernel_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_partition.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_partition_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_partition_validation.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_pdf.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_pdf_descriptor.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_pdf_graph.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_pdf_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_pdf_validation.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store_descriptor.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store_inventory.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store_validation.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_tables.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_validation.go`
+  - `tools/qxctl/internal/shvtransfer/journal.go`
+  - `tools/qxctl/internal/shvtransfer/transfer.schema.json`
+  - `tools/shv-interface-codegen/EXTENDING.md`
+  - `tools/shv-interface-codegen/INTENT.md`
+  - `tools/shv-interface-codegen/MANIFEST.md`
+  - `tools/shv-interface-codegen/SKILL.md`
+  - `tools/shv-interface-codegen/SPEC.md`
+  - `tools/shv-interface-codegen/generate.py`
+  - `tools/shv-interface-codegen/owner_codegen.py`
+  - `tools/shv-interface-codegen/tests/owner_test.py`
