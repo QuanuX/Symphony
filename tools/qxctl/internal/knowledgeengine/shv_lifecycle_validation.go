@@ -218,6 +218,9 @@ func shvLifecycleReplay(root any, v any) error {
 	return nil
 }
 func shvLifecycleGraph(root any, captures any) (map[string]any, error) {
+	return shvLifecycleGraphVersion(root, captures, SHVSourceVersion)
+}
+func shvLifecycleGraphVersion(root any, captures any, version string) (map[string]any, error) {
 	a, ok := captures.([]any)
 	if !ok || len(a) > 8 {
 		return nil, shvFail()
@@ -264,9 +267,12 @@ func shvLifecycleGraph(root any, captures any) (map[string]any, error) {
 	sort.Slice(nodes, func(i, j int) bool { return shvText(shvMap(nodes[i])["id"]) < shvText(shvMap(nodes[j])["id"]) })
 	sort.Slice(edges, func(i, j int) bool { return shvText(shvMap(edges[i])["id"]) < shvText(shvMap(edges[j])["id"]) })
 	bundle := shvSealNew(map[string]any{"protocol": "symphony.shv.source-bundle.v1", "captures": a})
-	return shvSealNew(map[string]any{"protocol": "symphony.graph.exchange.v1", "owner": map[string]any{"engine_id": "symphony-shv-source", "engine_version": SHVSourceVersion, "artifact_protocol": bundle["protocol"], "artifact_digest": bundle["digest"]}, "owner_artifact": bundle, "nodes": nodes, "edges": edges}), nil
+	return shvSealNew(map[string]any{"protocol": "symphony.graph.exchange.v1", "owner": map[string]any{"engine_id": "symphony-shv-source", "engine_version": version, "artifact_protocol": bundle["protocol"], "artifact_digest": bundle["digest"]}, "owner_artifact": bundle, "nodes": nodes, "edges": edges}), nil
 }
 func shvLifecycleExpected(op string, p map[string]any) (map[string]any, error) {
+	return shvLifecycleExpectedVersion(op, p, SHVSourceVersion)
+}
+func shvLifecycleExpectedVersion(op string, p map[string]any, version string) (map[string]any, error) {
 	switch op {
 	case "source_plan":
 		return shvLifecyclePlan(p)
@@ -336,14 +342,14 @@ func shvLifecycleExpected(op string, p map[string]any) (map[string]any, error) {
 		if !shvFields(p, "source_root", "captures") {
 			return nil, shvFail()
 		}
-		return shvLifecycleGraph(p["source_root"], p["captures"])
+		return shvLifecycleGraphVersion(p["source_root"], p["captures"], version)
 	case "graph_validate":
 		if !shvFields(p, "source_root", "graph") {
 			return nil, shvFail()
 		}
 		g := shvMap(p["graph"])
 		bundle := shvMap(g["owner_artifact"])
-		expected, e := shvLifecycleGraph(p["source_root"], bundle["captures"])
+		expected, e := shvLifecycleGraphVersion(p["source_root"], bundle["captures"], version)
 		if e != nil {
 			return nil, e
 		}
@@ -358,6 +364,12 @@ func shvLifecycleExpected(op string, p map[string]any) (map[string]any, error) {
 // ValidateSHVSourceResult verifies supplied lineage and actual capture bytes;
 // it does not authenticate the caller's authority or activate a source registry.
 func ValidateSHVSourceResult(op string, input, raw []byte) error {
+	return ValidateSHVSourceResultVersion(op, input, raw, SHVSourceVersion)
+}
+func ValidateSHVSourceResultVersion(op string, input, raw []byte, version string) error {
+	if !shvSourceAdmission[version][op] {
+		return shvFail()
+	}
 	p, e := shvObject(input)
 	if e != nil {
 		return e
@@ -371,9 +383,9 @@ func ValidateSHVSourceResult(op string, input, raw []byte) error {
 		return shvFail()
 	}
 	if op == "inspect" {
-		return shvLifecycleDescriptor(p, r)
+		return shvLifecycleDescriptorVersion(p, r, version)
 	}
-	expected, e := shvLifecycleExpected(op, p)
+	expected, e := shvLifecycleExpectedVersion(op, p, version)
 	if e != nil {
 		return e
 	}

@@ -1,0 +1,20 @@
+{
+  "shv-source-engine": {
+    "history_digest": "eb12f0efc70e431ed388bfb07bb56f6d9d02bf2ecd7b673d63d9763a4a7873cd",
+    "namespace": "symphony::knowledge::shv_source",
+    "engine_id": "symphony-shv-source",
+    "embedded_dependencies": []
+  },
+  "shv-publication-engine": {
+    "history_digest": "049e75bb1a4633676ea60b275eac0fe273cf609212271eed1479fb6113ac0790",
+    "namespace": "symphony::knowledge::shv_publication",
+    "engine_id": "symphony-shv-publication",
+    "embedded_dependencies": [
+      {
+        "engine_id": "symphony-shv-partition",
+        "version": "0.2.0-dev",
+        "mode": "compiled_exact_contract"
+      }
+    ]
+  }
+}

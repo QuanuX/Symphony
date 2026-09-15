@@ -50,6 +50,8 @@ Each vector Contract Quad owns its domain semantics, canonical paths, operations
 
 ## Subordinate Manifests
 
+- `tools/shv-interface-codegen/MANIFEST.md`
+
 - `knowledge/sacv/MANIFEST.md`
 - `knowledge/sacv/schemas/v1/MANIFEST.md`
 - `knowledge/sav/MANIFEST.md`

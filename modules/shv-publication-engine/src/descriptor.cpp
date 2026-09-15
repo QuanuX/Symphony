@@ -12,40 +12,26 @@ Json seal(Json j, const std::string &key) {
 } // namespace
 Json descriptor() {
   std::vector<engine::OperationSpec> specs;
-  const std::vector<std::pair<std::string, std::string>> operations = {
-      {"inspect", engine::descriptor_protocol_v2},
-      {"publication_plan", "symphony.shv.publication-plan.v1"},
-      {"publication_reduce", "symphony.shv.publication-transition.v1"},
-      {"publication_status", "symphony.shv.publication-status.v1"}};
-  for (const auto &[name, output] : operations) {
-    auto id = name, input = name;
-    std::replace(id.begin(), id.end(), '_', '.');
-    std::replace(input.begin(), input.end(), '_', '-');
-    specs.push_back(engine::OperationSpec{
-        "engop:symphony:shv-publication." + id,
-        name,
-        "implemented",
-        false,
-        true,
-        {"ssfv:symphony:shv-publication-engine"},
-        {name == "inspect" ? "inspect"
-                           : (name == "publication_status" ? "inspect"
-                              : name == "publication_plan" ? "propose"
-                                                           : "apply")},
-        "qxctl_required",
-        std::string("symphony.shv.") + input + "-input.v1",
-        output,
-        "read_only",
-        "idempotent",
-        false,
-        "none",
-        "",
-        "supported",
-        "freezing"});
+  for (const auto &op : interface_operations) {
+    specs.push_back(
+        engine::OperationSpec{op.id,
+                              op.name,
+                              "implemented",
+                              false,
+                              true,
+                              {"ssfv:symphony:shv-publication-engine"},
+                              op.interactions,
+                              "qxctl_required",
+                              op.input,
+                              op.output,
+                              "read_only",
+                              "idempotent",
+                              op.expected_state,
+                              "none",
+                              "",
+                              "supported",
+                              "freezing"});
   }
-  for (auto &op : specs)
-    if (op.operation_name == "publication_reduce")
-      op.administrative_interactions = {"apply", "recover"};
   engine::validate_operation_specs(specs);
   return seal(
       Json{{"protocol", engine::descriptor_protocol_v2},

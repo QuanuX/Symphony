@@ -1,0 +1,131 @@
+{
+  "protocol": "symphony.shv.owner-interface.v1",
+  "module_id": "shv-publication-engine",
+  "engine_id": "symphony-shv-publication",
+  "namespace": "symphony::knowledge::shv_publication",
+  "current_version": "0.3.0-dev",
+  "releases": {
+    "0.1.0-dev": [
+      "inspect",
+      "publication_plan",
+      "publication_reduce",
+      "publication_status"
+    ],
+    "0.2.0-dev": [
+      "inspect",
+      "publication_plan",
+      "publication_reduce",
+      "publication_status"
+    ],
+    "0.3.0-dev": [
+      "inspect",
+      "publication_plan",
+      "publication_reduce",
+      "publication_status"
+    ]
+  },
+  "contract_versions": [
+    "knowledge/shv/PUBLICATION.md@v1"
+  ],
+  "operations": [
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:shv-publication.inspect",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:shv-publication-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.shv.inspect-input.v1",
+      "mutability": "read_only",
+      "operation_name": "inspect",
+      "output_protocol": "symphony.knowledge.engine-descriptor.v2",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "propose"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:shv-publication.publication.plan",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:shv-publication-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.shv.publication-plan-input.v1",
+      "mutability": "read_only",
+      "operation_name": "publication_plan",
+      "output_protocol": "symphony.shv.publication-plan.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "apply",
+        "recover"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:shv-publication.publication.reduce",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:shv-publication-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.shv.publication-reduce-input.v1",
+      "mutability": "read_only",
+      "operation_name": "publication_reduce",
+      "output_protocol": "symphony.shv.publication-transition.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    },
+    {
+      "administration_disposition": "qxctl_required",
+      "administrative_interactions": [
+        "inspect"
+      ],
+      "authorization_requirement": "none",
+      "availability": "implemented",
+      "direct_invocation": "supported",
+      "engine_operation_id": "engop:symphony:shv-publication.publication.status",
+      "expected_state_required": false,
+      "feature_ids": [
+        "ssfv:symphony:shv-publication-engine"
+      ],
+      "idempotency": "idempotent",
+      "input_protocol": "symphony.shv.publication-status-input.v1",
+      "mutability": "read_only",
+      "operation_name": "publication_status",
+      "output_protocol": "symphony.shv.publication-status.v1",
+      "recovery_operation_id": null,
+      "thermal_path": "freezing"
+    }
+  ],
+  "schemas": [
+    "modules/shv-publication-engine/schemas/v1/publication.schema.json",
+    "modules/shv-publication-engine/schemas/v1/publication.templates.json"
+  ],
+  "companions": [
+    "knowledge/shv/PUBLICATION.md"
+  ],
+  "embedded_dependencies": [
+    {
+      "engine_id": "symphony-shv-partition",
+      "version": "0.2.0-dev",
+      "mode": "compiled_exact_contract"
+    }
+  ]
+}

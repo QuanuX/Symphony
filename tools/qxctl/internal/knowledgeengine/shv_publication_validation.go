@@ -144,7 +144,7 @@ func ValidateSHVPublicationResult(op string, input, result []byte) error {
 	return ValidateSHVPublicationResultVersion(op, input, result, SHVPublicationVersion)
 }
 func ValidateSHVPublicationResultVersion(op string, input, result []byte, version string) error {
-	if version != SHVPublicationVersion && version != SHVPublicationTransferVersion {
+	if shvPublicationAdmission[version] == nil {
 		return shvFail()
 	}
 	p, e := shvObject(input)
@@ -208,7 +208,7 @@ func ValidateSHVPublicationResultVersion(op string, input, result []byte, versio
 
 func pubStoreInstallation(v any, version string) error {
 	writer := shvText(shvMap(v)["Version"])
-	if writer != SHVStoreVersion && (version != SHVPublicationTransferVersion || (writer != SHVStoreInventoryVersion && writer != SHVStoreTransferVersion)) {
+	if writer != SHVStoreVersion && ((version != SHVPublicationTransferVersion && version != SHVPublicationInterfaceVersion) || (writer != SHVStoreInventoryVersion && writer != SHVStoreTransferVersion)) {
 		return shvFail()
 	}
 	return storeInstallationVersion(v, writer)

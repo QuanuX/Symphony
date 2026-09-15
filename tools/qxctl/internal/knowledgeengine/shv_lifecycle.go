@@ -11,7 +11,6 @@ import (
 const SHVSourceVersion = "0.1.0-dev"
 
 var shvSourceSpec = engineSpec{label: "shv-source-engine", moduleID: "shv-source-engine", engineID: "symphony-shv-source", componentKind: "vector_engine", vectorID: "shv", processProtocol: processProtocol}
-var shvSourceOutputs = map[string]string{"inspect": "symphony.knowledge.engine-descriptor.v2", "source_plan": "symphony.shv.source-plan.v1", "source_reduce": "symphony.shv.source-transition.v1", "source_status": "symphony.shv.source-status.v1", "capture_import": "symphony.shv.source-capture.v1", "capture_compare": "symphony.shv.capture-comparison.v1", "graph_project": "symphony.graph.exchange.v1", "graph_validate": "symphony.shv.source-graph-validation.v1"}
 
 func SHVSourceResultProtocol(op string) (string, bool) { p, ok := shvSourceOutputs[op]; return p, ok }
 func SHVSourceInputProtocol(op string) string {
@@ -33,7 +32,7 @@ func InvokeSHVSource(ctx context.Context, prefix, version, cwd, op string, paylo
 	}
 	// Validate and rederive before launch as well as after, including actual retained bytes.
 	if op != "inspect" {
-		if _, e = shvLifecycleExpected(op, p); e != nil {
+		if _, e = shvLifecycleExpectedVersion(op, p, version); e != nil {
 			return Response{}, e
 		}
 	} else if len(p) != 0 {
@@ -47,7 +46,7 @@ func InvokeSHVSource(ctx context.Context, prefix, version, cwd, op string, paylo
 	if e != nil {
 		return r, e
 	}
-	if e = ValidateSHVSourceResult(op, payload, r.Result); e != nil {
+	if e = ValidateSHVSourceResultVersion(op, payload, r.Result, version); e != nil {
 		return Response{}, e
 	}
 	after, e := InspectSHVSource(prefix, version)
@@ -57,15 +56,21 @@ func InvokeSHVSource(ctx context.Context, prefix, version, cwd, op string, paylo
 	return r, nil
 }
 func InspectSHVSource(prefix, version string) (Installation, error) {
-	if prefix == "" || version != SHVSourceVersion {
-		return Installation{}, fmt.Errorf("SHV requires explicit prefix and exact supported version %s", SHVSourceVersion)
+	if prefix == "" || shvSourceAdmission[version] == nil {
+		return Installation{}, fmt.Errorf("SHV requires an explicit prefix and a supported exact source version")
 	}
 	s := shvSourceSpec
 	e, err := InspectReceiptV2EntryPoint(prefix, version, ReceiptV2EntryPointSpec{Label: s.label, ComponentID: s.moduleID, ComponentKind: s.componentKind, ModuleID: s.moduleID, PackageID: s.moduleID, VectorID: &s.vectorID, EngineID: &s.engineID, EntryPointID: s.engineID, EntryPointKind: "executable", EntryPointRelativePath: filepath.ToSlash(filepath.Join("libexec", "symphony", s.moduleID, version, s.engineID)), RequiredProtocols: []string{processProtocol}})
 	if err != nil {
 		return Installation{}, err
 	}
-	return Installation{Role: s.moduleID, ModuleID: s.moduleID, EngineID: s.engineID, Version: version, Prefix: e.Prefix, ReceiptPath: e.ReceiptPath, ReceiptDigest: e.ReceiptDigest, ReceiptProtocol: receiptProtocolV2, ExecutablePath: e.ExecutablePath, ExecutableDigest: e.ExecutableDigest}, nil
+	inst := Installation{Role: s.moduleID, ModuleID: s.moduleID, EngineID: s.engineID, Version: version, Prefix: e.Prefix, ReceiptPath: e.ReceiptPath, ReceiptDigest: e.ReceiptDigest, ReceiptProtocol: receiptProtocolV2, ExecutablePath: e.ExecutablePath, ExecutableDigest: e.ExecutableDigest}
+	if version == SHVSourceInterfaceVersion {
+		if err := verifySHVOwnerInterface(inst, shvSourceInterfaceDigest); err != nil {
+			return Installation{}, err
+		}
+	}
+	return inst, nil
 }
 func SHVSourceResource(prefix, version string, templates bool) (Installation, json.RawMessage, error) {
 	inst, err := InspectSHVSource(prefix, version)

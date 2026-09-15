@@ -12208,3 +12208,237 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: no additional runtime discovery authorized
 - notes: Does not generate semantic handlers or grant mutation authority.
 - status: canonical
+
+##### SHV shared interface cmake/ShvPublicationInterface.generated.cmake
+- path: `cmake/ShvPublicationInterface.generated.cmake`
+- title: SHV shared interface ShvPublicationInterface.generated.cmake
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface cmake/ShvSourceInterface.generated.cmake
+- path: `cmake/ShvSourceInterface.generated.cmake`
+- title: SHV shared interface ShvSourceInterface.generated.cmake
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface modules/shv-publication-engine/OWNER-INTERFACE.json
+- path: `modules/shv-publication-engine/OWNER-INTERFACE.json`
+- title: SHV shared interface OWNER-INTERFACE.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface modules/shv-publication-engine/src/interface.generated.hpp
+- path: `modules/shv-publication-engine/src/interface.generated.hpp`
+- title: SHV shared interface interface.generated.hpp
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface modules/shv-publication-engine/tests/fixtures/interface-history.v1.json
+- path: `modules/shv-publication-engine/tests/fixtures/interface-history.v1.json`
+- title: SHV shared interface interface-history.v1.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface modules/shv-source-engine/OWNER-INTERFACE.json
+- path: `modules/shv-source-engine/OWNER-INTERFACE.json`
+- title: SHV shared interface OWNER-INTERFACE.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface modules/shv-source-engine/src/interface.generated.hpp
+- path: `modules/shv-source-engine/src/interface.generated.hpp`
+- title: SHV shared interface interface.generated.hpp
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface modules/shv-source-engine/tests/fixtures/interface-history.v1.json
+- path: `modules/shv-source-engine/tests/fixtures/interface-history.v1.json`
+- title: SHV shared interface interface-history.v1.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface tools/qxctl/internal/knowledgeengine/shv_owner_interface_test.go
+- path: `tools/qxctl/internal/knowledgeengine/shv_owner_interface_test.go`
+- title: SHV shared interface shv_owner_interface_test.go
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface tools/qxctl/internal/knowledgeengine/shv_publication_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/shv_publication_interface_generated.go`
+- title: SHV shared interface shv_publication_interface_generated.go
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface tools/qxctl/internal/knowledgeengine/shv_source_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/shv_source_interface_generated.go`
+- title: SHV shared interface shv_source_interface_generated.go
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface tools/shv-interface-codegen/INTENT.md
+- path: `tools/shv-interface-codegen/INTENT.md`
+- title: SHV shared interface INTENT.md
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface tools/shv-interface-codegen/MANIFEST.md
+- path: `tools/shv-interface-codegen/MANIFEST.md`
+- title: SHV shared interface MANIFEST.md
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface tools/shv-interface-codegen/SKILL.md
+- path: `tools/shv-interface-codegen/SKILL.md`
+- title: SHV shared interface SKILL.md
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface tools/shv-interface-codegen/SPEC.md
+- path: `tools/shv-interface-codegen/SPEC.md`
+- title: SHV shared interface SPEC.md
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface tools/shv-interface-codegen/generate.py
+- path: `tools/shv-interface-codegen/generate.py`
+- title: SHV shared interface generate.py
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface tools/shv-interface-codegen/history-lock.json
+- path: `tools/shv-interface-codegen/history-lock.json`
+- title: SHV shared interface history-lock.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV shared interface tools/shv-interface-codegen/tests/interface_test.py
+- path: `tools/shv-interface-codegen/tests/interface_test.py`
+- title: SHV shared interface interface_test.py
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV source and publication maintainers
+- scope: Exact mechanical projection, historical parity and installed admission.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: module maintainers, qxctl, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical

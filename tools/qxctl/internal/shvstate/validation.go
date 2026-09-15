@@ -88,9 +88,9 @@ func validateIntentShape(i Intent) error {
 		return fmt.Errorf("SHV intent seal mismatch")
 	}
 	x := i.Installation
-	expectedReceipt := filepath.Join(x.Prefix, "share/symphony/receipts/shv-source-engine/0.1.0-dev/install-receipt.json")
-	expectedExecutable := filepath.Join(x.Prefix, "libexec/symphony/shv-source-engine/0.1.0-dev/symphony-shv-source")
-	if x.Role != "shv-source-engine" || x.ModuleID != "shv-source-engine" || x.EngineID != "symphony-shv-source" || x.Version != knowledgeengine.SHVSourceVersion || !cleanRoot(x.Prefix) || x.ReceiptPath != expectedReceipt || x.ExecutablePath != expectedExecutable || x.ReceiptProtocol != "symphony.knowledge.install-receipt.v2" || !hashPattern.MatchString(x.ReceiptDigest) || !hashPattern.MatchString(x.ExecutableDigest) {
+	expectedReceipt := filepath.Join(x.Prefix, "share/symphony/receipts/shv-source-engine", x.Version, "install-receipt.json")
+	expectedExecutable := filepath.Join(x.Prefix, "libexec/symphony/shv-source-engine", x.Version, "symphony-shv-source")
+	if x.Role != "shv-source-engine" || x.ModuleID != "shv-source-engine" || x.EngineID != "symphony-shv-source" || (x.Version != knowledgeengine.SHVSourceVersion && x.Version != knowledgeengine.SHVSourceInterfaceVersion) || !cleanRoot(x.Prefix) || x.ReceiptPath != expectedReceipt || x.ExecutablePath != expectedExecutable || x.ReceiptProtocol != "symphony.knowledge.install-receipt.v2" || !hashPattern.MatchString(x.ReceiptDigest) || !hashPattern.MatchString(x.ExecutableDigest) {
 		return fmt.Errorf("SHV intent lacks exact historical owner installation")
 	}
 	var p retainedPlan
@@ -192,7 +192,7 @@ func validateDocument(d Document, s Store) error {
 		if e != nil {
 			return e
 		}
-		if e = knowledgeengine.ValidateSHVSourceResult("source_reduce", input, a.Intent.Transition); e != nil {
+		if e = knowledgeengine.ValidateSHVSourceResultVersion("source_reduce", input, a.Intent.Transition, a.Intent.Installation.Version); e != nil {
 			return fmt.Errorf("retained SHV transition replay: %w", e)
 		}
 	}

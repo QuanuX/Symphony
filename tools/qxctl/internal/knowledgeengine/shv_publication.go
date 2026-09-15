@@ -12,7 +12,6 @@ const SHVPublicationVersion = "0.1.0-dev"
 const SHVPublicationTransferVersion = "0.2.0-dev"
 
 var shvPublicationSpec = engineSpec{label: "shv-publication-engine", moduleID: "shv-publication-engine", engineID: "symphony-shv-publication", componentKind: "vector_engine", vectorID: "shv", processProtocol: processProtocol}
-var shvPublicationOutputs = map[string]string{"inspect": "symphony.knowledge.engine-descriptor.v2", "publication_plan": "symphony.shv.publication-plan.v1", "publication_reduce": "symphony.shv.publication-transition.v1", "publication_status": "symphony.shv.publication-status.v1"}
 
 func SHVPublicationResultProtocol(op string) (string, bool) {
 	v, ok := shvPublicationOutputs[op]
@@ -22,15 +21,21 @@ func SHVPublicationInputProtocol(op string) string {
 	return "symphony.shv." + strings.ReplaceAll(op, "_", "-") + "-input.v1"
 }
 func InspectSHVPublication(prefix, version string) (Installation, error) {
-	if prefix == "" || (version != SHVPublicationVersion && version != SHVPublicationTransferVersion) {
-		return Installation{}, fmt.Errorf("publication engine requires an explicit prefix and exact version %s or %s", SHVPublicationVersion, SHVPublicationTransferVersion)
+	if prefix == "" || shvPublicationAdmission[version] == nil {
+		return Installation{}, fmt.Errorf("publication engine requires an explicit prefix and a supported exact version")
 	}
 	s := shvPublicationSpec
 	e, err := InspectReceiptV2EntryPoint(prefix, version, ReceiptV2EntryPointSpec{Label: s.label, ComponentID: s.moduleID, ComponentKind: s.componentKind, ModuleID: s.moduleID, PackageID: s.moduleID, VectorID: &s.vectorID, EngineID: &s.engineID, EntryPointID: s.engineID, EntryPointKind: "executable", EntryPointRelativePath: filepath.ToSlash(filepath.Join("libexec", "symphony", s.moduleID, version, s.engineID)), RequiredProtocols: []string{processProtocol}})
 	if err != nil {
 		return Installation{}, err
 	}
-	return Installation{Role: s.moduleID, ModuleID: s.moduleID, EngineID: s.engineID, Version: version, Prefix: e.Prefix, ReceiptPath: e.ReceiptPath, ReceiptDigest: e.ReceiptDigest, ReceiptProtocol: receiptProtocolV2, ExecutablePath: e.ExecutablePath, ExecutableDigest: e.ExecutableDigest}, nil
+	inst := Installation{Role: s.moduleID, ModuleID: s.moduleID, EngineID: s.engineID, Version: version, Prefix: e.Prefix, ReceiptPath: e.ReceiptPath, ReceiptDigest: e.ReceiptDigest, ReceiptProtocol: receiptProtocolV2, ExecutablePath: e.ExecutablePath, ExecutableDigest: e.ExecutableDigest}
+	if version == SHVPublicationInterfaceVersion {
+		if err := verifySHVOwnerInterface(inst, shvPublicationInterfaceDigest); err != nil {
+			return Installation{}, err
+		}
+	}
+	return inst, nil
 }
 func SHVPublicationResource(prefix, version string, templates bool) (Installation, json.RawMessage, error) {
 	inst, err := InspectSHVPublication(prefix, version)

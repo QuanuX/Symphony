@@ -12,43 +12,26 @@ Json seal(Json j, const std::string &key) {
 } // namespace
 Json descriptor() {
   std::vector<engine::OperationSpec> specs;
-  const std::vector<std::pair<std::string, std::string>> operations = {
-      {"inspect", engine::descriptor_protocol_v2},
-      {"source_plan", "symphony.shv.source-plan.v1"},
-      {"source_reduce", "symphony.shv.source-transition.v1"},
-      {"source_status", "symphony.shv.source-status.v1"},
-      {"capture_import", "symphony.shv.source-capture.v1"},
-      {"capture_compare", "symphony.shv.capture-comparison.v1"},
-      {"graph_project", "symphony.graph.exchange.v1"},
-      {"graph_validate", "symphony.shv.source-graph-validation.v1"}};
-  for (const auto &[name, output] : operations) {
-    auto id = name, input = name;
-    std::replace(id.begin(), id.end(), '_', '.');
-    std::replace(input.begin(), input.end(), '_', '-');
-    specs.push_back(engine::OperationSpec{
-        "engop:symphony:shv-source." + id,
-        name,
-        "implemented",
-        false,
-        true,
-        {"ssfv:symphony:shv-source-engine"},
-        {(name == "inspect" || name == "source_status") ? "inspect" : "invoke"},
-        "qxctl_required",
-        std::string("symphony.shv.") +
-            ((name == "inspect" || name == "graph_project" ||
-              name == "graph_validate")
-                 ? "source-"
-                 : "") +
-            input + "-input.v1",
-        output,
-        "read_only",
-        "idempotent",
-        name == "source_plan" || name == "source_reduce",
-        "none",
-        "",
-        "supported",
-        "freezing"});
+  for (const auto &op : interface_operations) {
+    specs.push_back(engine::OperationSpec{op.id,
+                                          op.name,
+                                          "implemented",
+                                          false,
+                                          true,
+                                          {"ssfv:symphony:shv-source-engine"},
+                                          op.interactions,
+                                          "qxctl_required",
+                                          op.input,
+                                          op.output,
+                                          "read_only",
+                                          "idempotent",
+                                          op.expected_state,
+                                          "none",
+                                          "",
+                                          "supported",
+                                          "freezing"});
   }
+  engine::validate_operation_specs(specs);
   return seal(
       Json{{"protocol", engine::descriptor_protocol_v2},
            {"format_version", 2},
