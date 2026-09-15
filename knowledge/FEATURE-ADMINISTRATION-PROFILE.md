@@ -10,15 +10,15 @@ Canonical reviewed policy for `symphony.knowledge.feature-administration-profile
 - SSFV source: `knowledge/ssfv/REGISTRY.md`
 - catalog scope: `registered_partial_catalog`
 - catalog complete: `false`
-- registered feature count: `109`
-- reviewed interaction expectations: `291`
+- registered feature count: `110`
+- reviewed interaction expectations: `295`
 - forward gate: `enforce_new_records`
 
-The 109 registered feature IDs appear exactly once. Their 291 reviewed expectations comprise 281 required, 9 prohibited and 1 not-applicable interactions. Runtime-only and system-orchestrated exceptions retain their owner evidence. The SCV increment adds explicit domain-engine operation mappings and a separately owned qxctl adapter for immutable corpus retention, profile/connection evidence and protected source/graph administration. A source or graph result is not permission, durable selection or a provider action.
+The 110 registered feature IDs appear exactly once. Their 295 reviewed expectations comprise 285 required, 9 prohibited and 1 not-applicable interactions. Runtime-only and system-orchestrated exceptions retain their owner evidence. The SCV increment adds explicit domain-engine operation mappings and a separately owned qxctl adapter for immutable corpus retention, profile/connection evidence and protected source/graph administration. A source or graph result is not permission, durable selection or a provider action.
 
 ## Exact Machine Evidence
 
-The profile digest is `sha256:4ef2d90ec78eec99d6dea305b7bac87cdf76ff39562cdab283c68336607dfa65`. Its bound SSFV registry digest is `sha256:19d0d1bc465ddb0a7483d824a87ea9f08ebb133f2645351ab9ea5d9bb4618ef4`. The expected qxctl registry has 360 leaves with digest `sha256:2a506837c1f7ca45ee74eb4b6a0ba04158a32aad6f3fdb73c8ea8d01c308baf1`. These are source-level mappings; actual installed acceptance also requires the selected engine descriptors, exact receipts and exercised authority/storage boundaries. Catalog completeness remains false.
+The profile digest is `sha256:c490a64d5aed593a39d8429985679eb51149ec71b0b959bcf369a05c94bd5ac1`. Its bound SSFV registry digest is `sha256:bf70ebb0fb7252f09d317f0330b23d2c9a0911a691efb2cf54726fbae6b8763e`. The expected qxctl registry has 367 leaves with digest `sha256:0eace0e6caebcadf0c5fbccae45cc79cc2c504a91a9c45ed291949e06125dd73`. These are source-level mappings; actual installed acceptance also requires the selected engine descriptors, exact receipts and exercised authority/storage boundaries. Catalog completeness remains false.
 
 ## Advancement
 

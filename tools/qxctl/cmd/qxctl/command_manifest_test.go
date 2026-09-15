@@ -23,8 +23,8 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(manifest.Commands) != 360 {
-		t.Fatalf("registered command count = %d, want 360", len(manifest.Commands))
+	if len(manifest.Commands) != 367 {
+		t.Fatalf("registered command count = %d, want 367", len(manifest.Commands))
 	}
 	seen := make(map[string]*string, len(manifest.Commands))
 	for _, command := range manifest.Commands {
@@ -41,6 +41,13 @@ func TestCommandRegistryCobraParityAndStableIdentity(t *testing.T) {
 	}
 	for _, required := range []string{
 		"qxcmd:symphony:commands.manifest",
+		"qxcmd:symphony:shv.profile.inspect",
+		"qxcmd:symphony:shv.profile.compile",
+		"qxcmd:symphony:shv.profile.schema",
+		"qxcmd:symphony:shv.profile.template",
+		"qxcmd:symphony:shv.mapping.diagnose",
+		"qxcmd:symphony:shv.universe.build",
+		"qxcmd:symphony:shv.universe.bind",
 		"qxcmd:symphony:inventory",
 		"qxcmd:symphony:modules",
 		"qxcmd:symphony:ssfv.check",

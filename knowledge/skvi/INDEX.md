@@ -11830,3 +11830,108 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - relationships:
   - `knowledge/shv/GRAPH-STORE.md`
 - notes: `Distinct publication authority and original evidence replay; no default hardware universe.`
+
+- path: `knowledge/shv/PROFILES.md`
+- title: `SHV caller profiles and portable universes PROFILES`
+- surface_type: `reference document`
+- truth_role: `owner-declared profile and recipe contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-defined hardware comparison and evidence selection`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `Symphony-wide CanonicalApply`
+- relationships:
+  - `knowledge/shv/KERNEL.md`
+- notes: `Declaration conformance and exact local binding; no universal hardware census or publication authority.`
+
+- path: `modules/shv-profile-engine/INTENT.md`
+- title: `SHV caller profiles and portable universes INTENT`
+- surface_type: `reference document`
+- truth_role: `owner-declared profile and recipe contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-defined hardware comparison and evidence selection`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `Symphony-wide CanonicalApply`
+- relationships:
+  - `knowledge/shv/KERNEL.md`
+- notes: `Declaration conformance and exact local binding; no universal hardware census or publication authority.`
+
+- path: `modules/shv-profile-engine/MANIFEST.md`
+- title: `SHV caller profiles and portable universes MANIFEST`
+- surface_type: `reference document`
+- truth_role: `owner-declared profile and recipe contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-defined hardware comparison and evidence selection`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `Symphony-wide CanonicalApply`
+- relationships:
+  - `knowledge/shv/KERNEL.md`
+- notes: `Declaration conformance and exact local binding; no universal hardware census or publication authority.`
+
+- path: `modules/shv-profile-engine/SPEC.md`
+- title: `SHV caller profiles and portable universes SPEC`
+- surface_type: `reference document`
+- truth_role: `owner-declared profile and recipe contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-defined hardware comparison and evidence selection`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `Symphony-wide CanonicalApply`
+- relationships:
+  - `knowledge/shv/KERNEL.md`
+- notes: `Declaration conformance and exact local binding; no universal hardware census or publication authority.`
+
+- path: `modules/shv-profile-engine/SKILL.md`
+- title: `SHV caller profiles and portable universes SKILL`
+- surface_type: `reference document`
+- truth_role: `owner-declared profile and recipe contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-defined hardware comparison and evidence selection`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `Symphony-wide CanonicalApply`
+- relationships:
+  - `knowledge/shv/KERNEL.md`
+- notes: `Declaration conformance and exact local binding; no universal hardware census or publication authority.`
+
+- path: `modules/shv-profile-engine/INSTALL.md`
+- title: `SHV caller profiles and portable universes INSTALL`
+- surface_type: `reference document`
+- truth_role: `owner-declared profile and recipe contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-defined hardware comparison and evidence selection`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `Symphony-wide CanonicalApply`
+- relationships:
+  - `knowledge/shv/KERNEL.md`
+- notes: `Declaration conformance and exact local binding; no universal hardware census or publication authority.`
+
+- path: `modules/shv-profile-engine/FEATURES.md`
+- title: `SHV caller profiles and portable universes FEATURES`
+- surface_type: `reference document`
+- truth_role: `owner-declared profile and recipe contract`
+- owner: `SHV maintainers`
+- status: `canonical`
+- scope: `caller-defined hardware comparison and evidence selection`
+- consumers:
+  - `tools/qxctl`
+- deferred_projections:
+  - `Symphony-wide CanonicalApply`
+- relationships:
+  - `knowledge/shv/KERNEL.md`
+- notes: `Declaration conformance and exact local binding; no universal hardware census or publication authority.`

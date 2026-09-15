@@ -1809,6 +1809,8 @@
             "qxcmd:symphony:shv.partition.template",
             "qxcmd:symphony:shv.pdf.schema",
             "qxcmd:symphony:shv.pdf.template",
+            "qxcmd:symphony:shv.profile.schema",
+            "qxcmd:symphony:shv.profile.template",
             "qxcmd:symphony:shv.refresh.schema",
             "qxcmd:symphony:shv.refresh.template",
             "qxcmd:symphony:shv.schema",
@@ -1842,6 +1844,7 @@
             "qxcmd:symphony:shv.materialization.status",
             "qxcmd:symphony:shv.partition.inspect",
             "qxcmd:symphony:shv.pdf.inspect",
+            "qxcmd:symphony:shv.profile.inspect",
             "qxcmd:symphony:shv.source.activation.status",
             "qxcmd:symphony:shv.source.inspect",
             "qxcmd:symphony:shv.source.status"
@@ -1887,6 +1890,7 @@
             "qxcmd:symphony:shv.pdf.graph.roundtrip",
             "qxcmd:symphony:shv.pdf.graph.validate",
             "qxcmd:symphony:shv.pdf.verify",
+            "qxcmd:symphony:shv.profile.compile",
             "qxcmd:symphony:shv.refresh.build",
             "qxcmd:symphony:shv.refresh.compare",
             "qxcmd:symphony:shv.refresh.verify",
@@ -1895,7 +1899,9 @@
             "qxcmd:symphony:shv.source.graph.project",
             "qxcmd:symphony:shv.source.graph.validate",
             "qxcmd:symphony:shv.source.plan",
-            "qxcmd:symphony:shv.source.reduce"
+            "qxcmd:symphony:shv.source.reduce",
+            "qxcmd:symphony:shv.universe.bind",
+            "qxcmd:symphony:shv.universe.build"
           ],
           "delivery": "composed",
           "engine_operation_ids": [],
@@ -1934,6 +1940,7 @@
             "qxcmd:symphony:shv.graph.store.inventory",
             "qxcmd:symphony:shv.graph.store.query",
             "qxcmd:symphony:shv.graph.store.transfer-plan",
+            "qxcmd:symphony:shv.mapping.diagnose",
             "qxcmd:symphony:shv.partition.query"
           ],
           "delivery": "composed",
@@ -6292,6 +6299,86 @@
       "expectations": [
         {
           "command_ids": [
+            "qxcmd:symphony:shv.profile.schema",
+            "qxcmd:symphony:shv.profile.template"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-profile-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "discover",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.profile.inspect"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:shv-profile.inspect"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-profile-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "inspect",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.profile.compile",
+            "qxcmd:symphony:shv.universe.bind",
+            "qxcmd:symphony:shv.universe.build"
+          ],
+          "delivery": "composed",
+          "engine_operation_ids": [
+            "engop:symphony:shv-profile.profile.compile",
+            "engop:symphony:shv-profile.universe.bind",
+            "engop:symphony:shv-profile.universe.build"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-profile-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        },
+        {
+          "command_ids": [
+            "qxcmd:symphony:shv.mapping.diagnose"
+          ],
+          "delivery": "direct",
+          "engine_operation_ids": [
+            "engop:symphony:shv-profile.mapping.diagnose"
+          ],
+          "evidence": [
+            "knowledge/shv/KERNEL.md",
+            "modules/shv-profile-engine/FEATURES.md",
+            "tools/qxctl/COMMANDS.json"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "query",
+          "rationale": "Explicit installed qxctl operations preserve caller-selected coverage, source mappings and requirements. SHV owns source semantics; generic adapters own structural exchange.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:shv-profile-engine"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [
             "qxcmd:symphony:shv.catalogue.publication.apply"
           ],
           "delivery": "direct",
@@ -7776,9 +7863,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:4ef2d90ec78eec99d6dea305b7bac87cdf76ff39562cdab283c68336607dfa65",
+  "profile_digest": "sha256:c490a64d5aed593a39d8429985679eb51149ec71b0b959bcf369a05c94bd5ac1",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 109,
-  "ssfv_registry_digest": "sha256:19d0d1bc465ddb0a7483d824a87ea9f08ebb133f2645351ab9ea5d9bb4618ef4"
+  "registered_feature_count": 110,
+  "ssfv_registry_digest": "sha256:bf70ebb0fb7252f09d317f0330b23d2c9a0911a691efb2cf54726fbae6b8763e"
 }

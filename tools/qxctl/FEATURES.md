@@ -965,7 +965,11 @@
         "tools/qxctl/cmd/qxctl/shv_store_transfer.go",
         "tools/qxctl/cmd/qxctl/shv_store_transfer_commands.go",
         "tools/qxctl/internal/shvtransfer/journal.go",
-        "tools/qxctl/internal/shvtransfer/storage_unix.go"
+        "tools/qxctl/internal/shvtransfer/storage_unix.go",
+        "tools/qxctl/cmd/qxctl/shv_profile.go",
+        "tools/qxctl/internal/knowledgeengine/shv_profile.go",
+        "tools/qxctl/internal/knowledgeengine/shv_profile_validation.go",
+        "tools/qxctl/internal/knowledgeengine/shv_profile_descriptor.go"
       ],
       "kind": "feature",
       "non_claims": [
@@ -974,7 +978,7 @@
       ],
       "owner_contract": "tools/qxctl/MANIFEST.md",
       "parent_feature_id": "ssfv:symphony:qxctl",
-      "record_version": 3,
+      "record_version": 4,
       "relationships": [
         {
           "rationale": "C++ owns SHV semantic rebuild and findings.",
@@ -995,7 +999,7 @@
       "source_scope": "tools/qxctl",
       "status": "experimental",
       "title": "SHV source-backed hardware and generic graph administration",
-      "what": "Administers exact SHV kernel, source lifecycle and generic graph operations, including separately authorized local source activation and recovery.",
+      "what": "Administers exact SHV kernel, source lifecycle and generic graph operations, including separately authorized local source activation and recovery. Caller class profiles, mapping declaration diagnosis and portable universe build/bind preserve explicit selection.",
       "when": "Only upon an explicit read-only qxctl shv invocation.",
       "where": "Local administrative process against explicit exact receipt-owned C++ installations and retained source roots.",
       "who": "Users, agents and automation selecting exact independently installed components.",

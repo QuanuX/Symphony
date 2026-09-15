@@ -15,6 +15,7 @@ SHV is the owner of the Hardware Capability Atlas and hardware matrix concept. T
 - `knowledge/shv/SPEC.md`
 - `knowledge/shv/SKILL.md`
 - `knowledge/shv/KERNEL.md`
+- `knowledge/shv/PROFILES.md`
 - `modules/shv-engine/SPEC.md`
 - `modules/shv-graph-adapter/SPEC.md`
 
@@ -61,3 +62,9 @@ PDF adapter 0.2.0 now projects qualified documentary assertion edges and revalid
 `GRAPH-STORE.md` defines the independent durable DuckDB adapter and qxctl control family. It stores generic graph evidence; canonical catalogue head publication remains the explicitly separate plan in `CATALOGUE-PUBLICATION-PLAN.md`.
 
 `PUBLICATION.md` defines protected caller catalogue heads, distinct SSIAG publication authority, original-source and durable-snapshot replay, and recovery through the single qxctl publication family.
+
+## Caller profiles and portable universes
+
+`PROFILES.md` defines the independent `shv-profile-engine`, declaration conformance,
+portable recipes and exact local source binding. The existing coverage and catalogue
+owners retain their controls; profiles do not impose a universal hardware census.

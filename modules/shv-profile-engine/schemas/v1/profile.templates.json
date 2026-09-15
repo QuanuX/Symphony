@@ -1,0 +1,31 @@
+{
+  "profile_compile": {
+    "id": null,
+    "revision": null,
+    "hardware_class": null,
+    "metrics": [],
+    "extensions": {}
+  },
+  "mapping_diagnose": {
+    "profile": null,
+    "mapping": []
+  },
+  "universe_build": {
+    "id": null,
+    "revision": null,
+    "kernel_version": "0.3.0-dev",
+    "coverage": null,
+    "profiles": [],
+    "sources": [],
+    "mapping": [],
+    "locators": [],
+    "extensions": {}
+  },
+  "universe_bind": {
+    "universe": null,
+    "bindings": {
+      "source_root": null,
+      "decoders": {}
+    }
+  }
+}

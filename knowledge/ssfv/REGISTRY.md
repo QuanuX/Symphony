@@ -532,7 +532,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `tools/qxctl`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:qxctl`
-- record_digest: `sha256:c327c731ddd28b0fcbfa7acc428cfa83215b4ad6c7cfa97c86b444414033a3ef`
+- record_digest: `sha256:1e57aad210289bbb66be187facb266f6d04588c5f0c905854be07f73ad4a3b01`
 - notes: Bounded SHV source replay and generic graph exchange; caller choices and exact owners preserved.
 
 - feature_id: `ssfv:symphony:shv-engine`
@@ -596,6 +596,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
 - record_digest: `sha256:31de822996cdfcf497afe2d4bdbd082fcd67616c1518ea685f289a3b4f1f5df1`
+- notes: Bounded SHV source replay and generic graph exchange; caller choices and exact owners preserved.
+
+- feature_id: `ssfv:symphony:shv-profile-engine`
+- feature_file: `modules/shv-profile-engine/FEATURES.md`
+- owner_contract: `modules/shv-profile-engine/SPEC.md`
+- source_scope: `modules/shv-profile-engine`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:a31cdc127d7e5c4e09df7c60f862f1f89f589a08b7fef1129caaf2866dc978be`
 - notes: Bounded SHV source replay and generic graph exchange; caller choices and exact owners preserved.
 
 - feature_id: `ssfv:symphony:sev-engine`

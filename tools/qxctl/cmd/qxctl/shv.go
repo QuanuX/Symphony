@@ -34,6 +34,15 @@ func newSHVCommand() *cobra.Command {
 	root.AddCommand(newSHVInventoryCommand())
 	root.AddCommand(newSHVDossierCommand())
 	root.AddCommand(newSHVPDFCommand())
+	profile := structural("profile", fmt.Errorf("profile operation required"))
+	for _, op := range []string{"inspect", "compile", "schema", "template"} {
+		profile.AddCommand(newSHVProfileLeaf("profile", op))
+	}
+	mapping := structural("mapping", fmt.Errorf("mapping operation required"))
+	mapping.AddCommand(newSHVProfileLeaf("mapping", "diagnose"))
+	universe := structural("universe", fmt.Errorf("universe operation required"))
+	universe.AddCommand(newSHVProfileLeaf("universe", "build"), newSHVProfileLeaf("universe", "bind"))
+	root.AddCommand(profile, mapping, universe)
 	return root
 }
 func newSHVLeaf(leaf, key, op string, adapter bool) *cobra.Command {
