@@ -13006,3 +13006,520 @@ This PR authorizes none of the following:
   - `No claim of an atomic cross-service revocation barrier or exhaustive historical acceptance coverage.`
 - notes: |
     Start and completion identify the local source-commit finalization instant; the preceding working-tree review and test campaigns are recorded in the repair packet. Full historical campaigns remain deferred under the focused-testing direction. Original commits and all earlier ledger bytes are preserved.
+
+---
+
+- record_id: `SCLV-CHG-20260915-CPP-TOOLING-AND-PLATFORM-LAYOUT`
+- record_version: `3`
+- title: `Replace Python tooling with C++ and restore platform knowledge ownership`
+- status: `canonical`
+- date: `2026-09-15`
+- change_started_at: `2026-09-15T17:20:35Z`
+- change_completed_at: `2026-09-15T17:20:35Z`
+- recorded_at: `2026-09-15T17:23:28Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Explicitly authorized local correction committed and fast-forwarded into main; no forge change request exists.`
+- revision_scheme: `git-sha1`
+- revision_value: `ee898bcbcefdc1e084eddf640493d1fe11493625`
+- tree_digest: `sha256:910b7a9834011de2853b76f782fc12c085c96479879bf3f1d0cc37bd934cab2c`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for the requested C++ rewrite, source filing, cleanup and publication`
+- ratification_method: `explicit-user-instruction in Codex task 01a0a3f1-c0c3-76c0-8d3e-c6f27bc8e13b`
+- ratification_evidence_reference: `../../context/decisions/2026-09-15-cpp-only-tooling-and-layout-correction.md`
+- ratification_evidence_digest: `sha256:d9cb374fc3073eedcb439ea922dfa1c8204f6f26f09d2ca5992ba34bec08bc73`
+- affected_surfaces:
+  - `FEATURES.md`
+  - `INTENT.md`
+  - `README.md`
+  - `cmake/ScvInterface.generated.cmake`
+  - `cmake/ShvGraphAdapterInterface.generated.cmake`
+  - `cmake/ShvKernelInterface.generated.cmake`
+  - `cmake/ShvPDFInterface.generated.cmake`
+  - `cmake/ShvPartitionInterface.generated.cmake`
+  - `cmake/ShvProfileInterface.generated.cmake`
+  - `cmake/ShvPublicationInterface.generated.cmake`
+  - `cmake/ShvSourceInterface.generated.cmake`
+  - `cmake/ShvStoreInterface.generated.cmake`
+  - `cmake/SymphonyNativeTests.cmake`
+  - `cmake/SymphonyScvEngine.cmake`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/INVARIANTS.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SLANG.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/platform/FEATURES.md`
+  - `knowledge/platform/INTENT.md`
+  - `knowledge/scv/OWNER-INTERFACE.md`
+  - `knowledge/scv/schemas/v1/MANIFEST.md`
+  - `knowledge/shv/PUBLICATION.md`
+  - `knowledge/shv/SOURCES.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/skvi/SPEC.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `knowledge/stav/MANIFEST.md`
+  - `libraries/knowledge-vector-engine-cpp/CMakeLists.txt`
+  - `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
+  - `libraries/knowledge-vector-engine-cpp/SPEC.md`
+  - `libraries/knowledge-vector-engine-cpp/src/manifest_discovery.cpp`
+  - `libraries/knowledge-vector-engine-cpp/tests/foundation_test.cpp`
+  - `libraries/knowledge-vector-engine-cpp/tests/native_process_test.cpp`
+  - `libraries/knowledge-vector-engine-cpp/tests/support/native_test.hpp`
+  - `modules/knowledge-session-coordinator/tests/process_smoke.sh`
+  - `modules/scev-cf-engine/INSTALL.md`
+  - `modules/scev-cf-engine/MANIFEST.md`
+  - `modules/scev-cf-engine/SPEC.md`
+  - `modules/scev-engine/INSTALL.md`
+  - `modules/scev-engine/MANIFEST.md`
+  - `modules/scev-engine/SPEC.md`
+  - `modules/schv-aws-engine/INSTALL.md`
+  - `modules/schv-aws-engine/MANIFEST.md`
+  - `modules/schv-aws-engine/SPEC.md`
+  - `modules/schv-azure-engine/INSTALL.md`
+  - `modules/schv-azure-engine/MANIFEST.md`
+  - `modules/schv-azure-engine/SPEC.md`
+  - `modules/schv-do-engine/INSTALL.md`
+  - `modules/schv-do-engine/MANIFEST.md`
+  - `modules/schv-do-engine/SPEC.md`
+  - `modules/schv-engine/INSTALL.md`
+  - `modules/schv-engine/MANIFEST.md`
+  - `modules/schv-engine/SPEC.md`
+  - `modules/schv-gcp-engine/INSTALL.md`
+  - `modules/schv-gcp-engine/MANIFEST.md`
+  - `modules/schv-gcp-engine/SPEC.md`
+  - `modules/scv-engine/INSTALL.md`
+  - `modules/scv-engine/MANIFEST.md`
+  - `modules/scv-engine/SPEC.md`
+  - `modules/scv-engine/src/interface.generated.inc`
+  - `modules/scv-engine/tests/installed_integration.cpp`
+  - `modules/scv-engine/tests/installed_integration.py`
+  - `modules/scv-engine/tests/interface_generation_test.cpp`
+  - `modules/scv-engine/tests/interface_generation_test.py`
+  - `modules/scv-engine/tools/generate_interface.cpp`
+  - `modules/scv-engine/tools/generate_interface.py`
+  - `modules/scv-graph-duckdb-connector/CMakeLists.txt`
+  - `modules/scv-graph-duckdb-connector/INSTALL.md`
+  - `modules/scv-graph-duckdb-connector/MANIFEST.md`
+  - `modules/scv-graph-duckdb-connector/SPEC.md`
+  - `modules/scv-graph-duckdb-connector/tests/README.md`
+  - `modules/scv-graph-duckdb-connector/tests/connector_test.cpp`
+  - `modules/scv-graph-duckdb-connector/tests/connector_test.py`
+  - `modules/scv-graph-duckdb-connector/tests/connector_test_support.hpp`
+  - `modules/scv-graph-duckdb-connector/tests/installed_campaign.hpp`
+  - `modules/scv-graph-duckdb-connector/tests/installed_integration.cpp`
+  - `modules/scv-graph-duckdb-connector/tests/installed_integration.py`
+  - `modules/scv-graph-duckdb-connector/tests/interrupted_commit.cpp`
+  - `modules/scv-graph-duckdb-connector/tests/interrupted_commit.py`
+  - `modules/scv-graph-duckdb-connector/tests/inventory_installed.cpp`
+  - `modules/scv-graph-duckdb-connector/tests/inventory_installed.py`
+  - `modules/scv-graph-duckdb-connector/tests/inventory_test.cpp`
+  - `modules/scv-graph-duckdb-connector/tests/inventory_test.py`
+  - `modules/shv-engine/CMakeLists.txt`
+  - `modules/shv-engine/scripts/build_schema.cpp`
+  - `modules/shv-engine/scripts/build_schema.py`
+  - `modules/shv-engine/src/interface.generated.hpp`
+  - `modules/shv-engine/tests/kernel_test.cpp`
+  - `modules/shv-engine/tests/kernel_test.py`
+  - `modules/shv-engine/tests/table_test.cpp`
+  - `modules/shv-engine/tests/table_test.py`
+  - `modules/shv-graph-adapter/CMakeLists.txt`
+  - `modules/shv-graph-adapter/FEATURES.md`
+  - `modules/shv-graph-adapter/src/interface.generated.hpp`
+  - `modules/shv-graph-adapter/tests/conformance.cpp`
+  - `modules/shv-graph-adapter/tests/conformance.py`
+  - `modules/shv-graph-duckdb-connector/CMakeLists.txt`
+  - `modules/shv-graph-duckdb-connector/FEATURES.md`
+  - `modules/shv-graph-duckdb-connector/MANIFEST.md`
+  - `modules/shv-graph-duckdb-connector/src/interface.generated.hpp`
+  - `modules/shv-graph-duckdb-connector/tests/connector_test.cpp`
+  - `modules/shv-graph-duckdb-connector/tests/connector_test.py`
+  - `modules/shv-graph-duckdb-connector/tests/installed_integration.cpp`
+  - `modules/shv-graph-duckdb-connector/tests/installed_integration.py`
+  - `modules/shv-partition-engine/CMakeLists.txt`
+  - `modules/shv-partition-engine/src/interface.generated.hpp`
+  - `modules/shv-partition-engine/tests/partition_test.cpp`
+  - `modules/shv-partition-engine/tests/partition_test.py`
+  - `modules/shv-pdf-adapter/CMakeLists.txt`
+  - `modules/shv-pdf-adapter/MANIFEST.md`
+  - `modules/shv-pdf-adapter/src/interface.generated.hpp`
+  - `modules/shv-pdf-adapter/tests/installed_integration.cpp`
+  - `modules/shv-pdf-adapter/tests/installed_integration.py`
+  - `modules/shv-profile-engine/CMakeLists.txt`
+  - `modules/shv-profile-engine/FEATURES.md`
+  - `modules/shv-profile-engine/INSTALL.md`
+  - `modules/shv-profile-engine/MANIFEST.md`
+  - `modules/shv-profile-engine/SKILL.md`
+  - `modules/shv-profile-engine/SPEC.md`
+  - `modules/shv-profile-engine/scripts/build_schema.cpp`
+  - `modules/shv-profile-engine/scripts/build_schema.py`
+  - `modules/shv-profile-engine/src/interface.generated.hpp`
+  - `modules/shv-profile-engine/tests/diagnostics_test.cpp`
+  - `modules/shv-profile-engine/tests/diagnostics_test.py`
+  - `modules/shv-profile-engine/tests/installed_integration.cpp`
+  - `modules/shv-profile-engine/tests/installed_integration.py`
+  - `modules/shv-profile-engine/tests/interface_test.cpp`
+  - `modules/shv-profile-engine/tests/interface_test.py`
+  - `modules/shv-profile-engine/tests/profile_support.hpp`
+  - `modules/shv-profile-engine/tests/profile_test.cpp`
+  - `modules/shv-profile-engine/tests/profile_test.py`
+  - `modules/shv-profile-engine/tools/generate_interface.cpp`
+  - `modules/shv-profile-engine/tools/generate_interface.py`
+  - `modules/shv-publication-engine/CMakeLists.txt`
+  - `modules/shv-publication-engine/INSTALL.md`
+  - `modules/shv-publication-engine/MANIFEST.md`
+  - `modules/shv-publication-engine/SKILL.md`
+  - `modules/shv-publication-engine/SPEC.md`
+  - `modules/shv-publication-engine/src/interface.generated.hpp`
+  - `modules/shv-publication-engine/tests/installed_integration.cpp`
+  - `modules/shv-publication-engine/tests/installed_integration.py`
+  - `modules/shv-publication-engine/tests/publication_test.cpp`
+  - `modules/shv-publication-engine/tests/publication_test.py`
+  - `modules/shv-source-engine/CMakeLists.txt`
+  - `modules/shv-source-engine/INSTALL.md`
+  - `modules/shv-source-engine/MANIFEST.md`
+  - `modules/shv-source-engine/SKILL.md`
+  - `modules/shv-source-engine/SPEC.md`
+  - `modules/shv-source-engine/scripts/build_schema.cpp`
+  - `modules/shv-source-engine/scripts/build_schema.py`
+  - `modules/shv-source-engine/src/interface.generated.hpp`
+  - `modules/shv-source-engine/tests/source_test.cpp`
+  - `modules/shv-source-engine/tests/source_test.py`
+  - `research/ssiag-phase10b-e/PHASE_10B_SIGNED_BUNDLE_AND_SESSION_READINESS.md`
+  - `research/ssiag-phase10b-e/PHASE_10C_KEYCHAIN_ITEM_LIFECYCLE_SLATE.md`
+  - `research/ssiag-phase10b-e/PHASE_10D_NON_EXPORTABLE_USE_SLATE.md`
+  - `research/ssiag-phase10b-e/PHASE_10E_EXPORT_AND_DATA_CHANNEL_SLATE.md`
+  - `research/ssiag-phase10b-e/README.md`
+  - `tools/authoring-cpp/CMakeLists.txt`
+  - `tools/authoring-cpp/authoring.hpp`
+  - `tools/authoring-cpp/schema_test.cpp`
+  - `tools/authoring-cpp/schemas.hpp`
+  - `tools/authoring-cpp/scv_interface.hpp`
+  - `tools/authoring-cpp/shv_interface.hpp`
+  - `tools/authoring-cpp/test_support.hpp`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/cmd/qxctl/scv_graph_index_test.go`
+  - `tools/qxctl/internal/knowledgeengine/scv_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_graph_adapter_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_kernel_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_partition_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_pdf_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_publication_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_source_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_store_interface_generated.go`
+  - `tools/qxctl/internal/repository/repository.go`
+  - `tools/qxctl/internal/repository/repository_test.go`
+  - `tools/qxctl/scripts/build_shv_activation_schema.cpp`
+  - `tools/qxctl/scripts/build_shv_activation_schema.py`
+  - `tools/qxctl/scripts/build_shv_refresh_schema.cpp`
+  - `tools/qxctl/scripts/build_shv_refresh_schema.py`
+  - `tools/qxctl/tests/scv-index-transfer/installed.cpp`
+  - `tools/qxctl/tests/scv-index-transfer/installed.py`
+  - `tools/qxctl/tests/scv-source-maintenance/CMakeLists.txt`
+  - `tools/qxctl/tests/scv-source-maintenance/PACK-FIXTURES.md`
+  - `tools/qxctl/tests/scv-source-maintenance/README.md`
+  - `tools/qxctl/tests/scv-source-maintenance/maintenance_support.hpp`
+  - `tools/qxctl/tests/scv-source-maintenance/verify_authority.cpp`
+  - `tools/qxctl/tests/scv-source-maintenance/verify_authority.py`
+  - `tools/qxctl/tests/scv-source-maintenance/verify_pack.cpp`
+  - `tools/qxctl/tests/scv-source-maintenance/verify_pack.py`
+  - `tools/qxctl/tests/scv-source-maintenance/verify_retention.cpp`
+  - `tools/qxctl/tests/scv-source-maintenance/verify_retention.py`
+  - `tools/qxctl/tests/scv-source-maintenance/verify_semantics.cpp`
+  - `tools/qxctl/tests/scv-source-maintenance/verify_semantics.py`
+  - `tools/qxctl/tests/shv-invariants/installed_support.hpp`
+  - `tools/qxctl/tests/shv-invariants/installed_support.py`
+  - `tools/shv-interface-codegen/EXTENDING.md`
+  - `tools/shv-interface-codegen/MANIFEST.md`
+  - `tools/shv-interface-codegen/SPEC.md`
+  - `tools/shv-interface-codegen/generate.cpp`
+  - `tools/shv-interface-codegen/generate.py`
+  - `tools/shv-interface-codegen/owner_codegen.cpp`
+  - `tools/shv-interface-codegen/owner_codegen.py`
+  - `tools/shv-interface-codegen/tests/interface_test.cpp`
+  - `tools/shv-interface-codegen/tests/interface_test.py`
+  - `tools/shv-interface-codegen/tests/owner_test.cpp`
+  - `tools/shv-interface-codegen/tests/owner_test.py`
+  - `tools/symphony-validator/CMakeLists.txt`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/SPEC.md`
+  - `tools/symphony-validator/src/caller_authority.cpp`
+  - `tools/symphony-validator/src/doctrine_vocab.cpp`
+  - `tools/symphony-validator/src/invariant_ownership.cpp`
+  - `tools/symphony-validator/src/root_contracts.cpp`
+  - `tools/symphony-validator/src/root_contracts.hpp`
+  - `tools/symphony-validator/tests/canonical_surfaces_test.cpp`
+  - `tools/symphony-validator/tests/invariant_ownership_test.cpp`
+- skvi_references:
+  - `knowledge/INVARIANTS.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/platform/INTENT.md`
+  - `knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    Replace all 38 Python authoring, schema, conformance and installed-process files with native C++ implementations. Remove interpreter dependencies, preserve generated contracts and exact oracles, correct native subprocess boundaries, relocate platform governance and repair canonical manifest declarations.
+- relationship_changes: |
+    Retain existing module owners and stable platform feature identity; route shared authoring and test support through existing owners. Platform INTENT and FEATURES now live under knowledge/platform. Remove the five SSIAG research artifacts from source while retaining original external archive bytes.
+- doctrine_changes: |
+    First-party development tooling and tests must use C++; the prior Python development-tool allowance is superseded by explicit Architect direction. User-authored compositions remain open.
+- compatibility_consequences: |
+    C++ and Go production engine semantics, exact selected installations and CLI grammar are preserved. Generated banners name C++ tools; schemas and retained pack/evaluation oracles remain byte-identical. The repository validator enforces the new first-party source and layout policy.
+- publication_consequences: |
+    Original history remains intact. Authorized publication advances GitHub main one commit per push in chronological order; this record asserts local main integration, not a tag, package release or deployment.
+- projection_consequences: |
+    Native SKVI validates 1011 entries with 6876 passes after the fixture companion increment; SSFV retains 110 feature nodes and 411 edges. Four warnings retain two retired historical SCLV references without altering their original records.
+- evidence:
+  - `../cpp-remediation/README.md records review, execution and explicit limits.`
+  - `../cpp-remediation/evidence/SOURCE-CHANGES.json binds both exact source commits and file hashes.`
+  - `../cpp-remediation/evidence/validator-working-tree.json records 12430 passes, zero violations and four historical-reference warnings before closure.`
+  - `../cpp-remediation/evidence/final-focused-ctest.txt records both final affected tests passing.`
+- non_authorizations:
+  - `No history rewrite, squash, force push, package release or production deployment.`
+  - `No removal of immutable historical evidence or restrictions on user-authored programs.`
+- notes: |
+    Start and completion identify exact local source-commit finalization. The source commits were integrated into local main before closure. Full historical campaigns and the legacy failed-v1 authority recovery were not replayed. Untracked numbered files found during verification were preserved externally without deletion or inclusion in these commits.
+
+---
+
+- record_id: `SCLV-CHG-20260915-VALIDATOR-SMOKE-FIXTURE-REPAIR`
+- record_version: `3`
+- title: `Repair validator smoke fixtures and exact rejection evidence`
+- status: `canonical`
+- date: `2026-09-15`
+- change_started_at: `2026-09-15T17:21:28Z`
+- change_completed_at: `2026-09-15T17:21:28Z`
+- recorded_at: `2026-09-15T17:23:28Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Explicitly authorized local correction committed and fast-forwarded into main; no forge change request exists.`
+- revision_scheme: `git-sha1`
+- revision_value: `5072986f8c4c3bd1e61d44f269a00c158d483739`
+- tree_digest: `sha256:23e41471701fe81137d93b7bc4b9b9f9e45496e2147b19b725339e7680bb9b8b`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for the requested C++ rewrite, source filing, cleanup and publication`
+- ratification_method: `explicit-user-instruction in Codex task 01a0a3f1-c0c3-76c0-8d3e-c6f27bc8e13b`
+- ratification_evidence_reference: `../../context/decisions/2026-09-15-cpp-only-tooling-and-layout-correction.md`
+- ratification_evidence_digest: `sha256:d9cb374fc3073eedcb439ea922dfa1c8204f6f26f09d2ca5992ba34bec08bc73`
+- affected_surfaces:
+  - `knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/CMakeLists.txt`
+  - `tools/symphony-validator/INSTALL.md`
+  - `tools/symphony-validator/MANIFEST.md`
+  - `tools/symphony-validator/tests/fixture_prepare.cpp`
+  - `tools/symphony-validator/tests/fixtures_affected_surface_absent/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_affected_surface_absent/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_affected_surface_absent/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_affected_surface_unindexed/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_affected_surface_unindexed/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_affected_surface_unindexed/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_invalid_sclv_change_type/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_invalid_sclv_change_type/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_invalid_sclv_change_type/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_invalid_sclv_merge_commit/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_invalid_sclv_merge_commit/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_invalid_sclv_merge_commit/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_invalid_sclv_related_pr/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_invalid_sclv_related_pr/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_invalid_sclv_related_pr/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_invalid_sclv_status/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_invalid_sclv_status/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_invalid_sclv_status/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_invalid_skvi_status/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_invalid_skvi_status/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_knowledge_anchor/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_knowledge_anchor/fixtures_valid/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_knowledge_anchor/fixtures_valid/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_knowledge_anchor/fixtures_valid/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_missing_knowledge_anchor/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_knowledge_surface/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_knowledge_surface/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_root_anchor/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_root_anchor/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_root_anchor/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_missing_root_surface/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_root_surface/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_root_surface/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_missing_runtime_anchor/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_runtime_anchor/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_runtime_anchor/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_missing_runtime_module_surface/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_runtime_module_surface/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_runtime_module_surface/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_missing_validator_anchor/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_validator_anchor/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_validator_anchor/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_missing_validator_surface/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_validator_surface/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_missing_validator_surface/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_notes/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_notes/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_notes/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_relationships/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_relationships/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_duplicate_merge_commit/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_duplicate_merge_commit/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_duplicate_merge_commit/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_duplicate_record_id/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_duplicate_record_id/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_duplicate_record_id/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_duplicate_related_pr/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_duplicate_related_pr/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_duplicate_related_pr/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_ledger_gap_warning/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_ledger_gap_warning/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_ledger_gap_warning/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_malformed/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_malformed/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_malformed/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_record_pr_mismatch/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_record_pr_mismatch/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_record_pr_mismatch/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_reference_absolute/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_reference_absolute/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_reference_absolute/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_reference_directory/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_reference_directory/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_reference_directory/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_reference_missing_affected/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_reference_missing_affected/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_reference_missing_affected/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_reference_missing_skvi/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_reference_missing_skvi/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_reference_missing_skvi/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_reference_traversal/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_reference_traversal/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_reference_traversal/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_skvi_reference_unindexed/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_skvi_reference_unindexed/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_sclv_skvi_reference_unindexed/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_coverage_duplicate/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_coverage_duplicate/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_coverage_duplicate/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_coverage_missing/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_coverage_missing/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_coverage_missing/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_paths_absolute/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_paths_absolute/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_paths_absolute/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_paths_directory/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_paths_directory/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_paths_directory/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_paths_missing/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_paths_missing/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_paths_missing/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_paths_traversal/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_paths_traversal/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_paths_traversal/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_ref_unindexed/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_ref_unindexed/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_skvi_ref_unindexed/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_unauthorized_docs/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_unauthorized_docs/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_unauthorized_docs/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_unauthorized_mint_json/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_unauthorized_mint_json/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_unauthorized_mint_json/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_unauthorized_projection/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_unauthorized_projection/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_unauthorized_projection/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_unauthorized_qxctl/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_unauthorized_qxctl/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_unauthorized_qxctl/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_unauthorized_schema/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_unauthorized_schema/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_unauthorized_schema/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_valid/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_valid/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_valid/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_duplicate_source/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_duplicate_source/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_duplicate_source/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_invalid_extension/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_invalid_extension/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_invalid_extension/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_missing_source/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_missing_source/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_missing_source/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_outside_src/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_outside_src/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_outside_src/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_traversal/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_traversal/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_traversal/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_unlisted_source/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_unlisted_source/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_validator_build_unlisted_source/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_bus_agent/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_bus_agent/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_bus_agent/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_c_o_r_e/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_c_o_r_e/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_c_o_r_e/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_core/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_core/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_core/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_execution_node/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_execution_node/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_execution_node/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_markdown_wins/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_markdown_wins/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_markdown_wins/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_native_execution/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_native_execution/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_native_execution/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_score/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_score/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_score/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_seeds_1/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_seeds_1/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_seeds_1/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_seeds_2/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_seeds_2/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_seeds_2/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_seeds_3/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_seeds_3/knowledge/platform/INTENT.md`
+  - `tools/symphony-validator/tests/fixtures_vocab_seeds_3/knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/tests/smoke.sh`
+- skvi_references:
+  - `knowledge/INVARIANTS.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/platform/INTENT.md`
+  - `knowledge/skvi/INDEX.md`
+  - `tools/symphony-validator/SPEC.md`
+- change_summary: |
+    Restore the documented validator smoke command with native C++ temporary fixture preparation. Require exact expected exits and rule evidence for 68 checks; compare JSON authorizations against the exact canonical manifest inventory.
+- relationship_changes: |
+    Declare the native fixture helper under the existing validator owner and SKVI routing. Relocate retained fixture platform INTENT companions consistently with the corrected root layout.
+- doctrine_changes: |
+    No additional doctrine change. Obsolete fixture scaffolding is corrected without granting production exceptions.
+- compatibility_consequences: |
+    Preserve all 59 checked-in fixture ledger files byte for byte and retain each adversarial payload. Temporary scaffolding isolates the intended rule under current bootstrap contracts; historical SCLV missing-reference cases retain the existing warning semantics.
+- publication_consequences: |
+    Original history remains intact. Authorized publication advances GitHub main one commit per push in chronological order; this record asserts local main integration, not a tag, package release or deployment.
+- projection_consequences: |
+    The smoke inventory agrees on 256 authorized canonical JSON paths. Missing, duplicate and extra evidence probes reject. No source JSON artifact is removed or newly authorized by the smoke repair.
+- evidence:
+  - `../cpp-remediation/README.md records review, execution and explicit limits.`
+  - `../cpp-remediation/evidence/SOURCE-CHANGES.json binds both exact source commits and file hashes.`
+  - `../cpp-remediation/evidence/validator-working-tree.json records 12430 passes, zero violations and four historical-reference warnings before closure.`
+  - `../cpp-remediation/evidence/final-focused-ctest.txt records both final affected tests passing.`
+- non_authorizations:
+  - `No history rewrite, squash, force push, package release or production deployment.`
+  - `No removal of immutable historical evidence or restrictions on user-authored programs.`
+- notes: |
+    Start and completion identify exact local source-commit finalization. The source commits were integrated into local main before closure. Full historical campaigns and the legacy failed-v1 authority recovery were not replayed. Untracked numbered files found during verification were preserved externally without deletion or inclusion in these commits.
