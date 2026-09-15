@@ -15,6 +15,8 @@ SCV is the semantic owner of provider/offsite resource possibility, constraint, 
 - `knowledge/scv/SPEC.md`
 - `knowledge/scv/SOURCE-KNOWLEDGE.md`
 - `knowledge/scv/GRAPH-INDEX.md`
+- `knowledge/scv/INDEX-MAINTENANCE.md`
+- `knowledge/scv/INDEX-TRANSFER.md`
 - `knowledge/scv/CORPUS.md`
 - `knowledge/scv/INTERPRETATION.md`
 - `knowledge/scv/AGENT-WORKFLOWS.md`

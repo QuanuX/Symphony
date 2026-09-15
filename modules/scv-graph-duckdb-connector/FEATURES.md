@@ -10,21 +10,15 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
-          "reason": "SCV owns source/evidence meaning; the separately packaged connector owns this bounded persistence mapping.",
-          "reference": "knowledge/scv/GRAPH-INDEX.md",
-          "vector": "scv"
+          "reason": "Completed material source changes require reviewed append-only closure.",
+          "reference": "knowledge/sclv/SPEC.md",
+          "vector": "sclv"
         },
         {
           "applicability": "applicable",
           "reason": "SKVI routes current owner contracts and distributed feature files.",
           "reference": "knowledge/skvi/INDEX.md",
           "vector": "skvi"
-        },
-        {
-          "applicability": "applicable",
-          "reason": "Completed material source changes require reviewed append-only closure.",
-          "reference": "knowledge/sclv/SPEC.md",
-          "vector": "sclv"
         },
         {
           "applicability": "applicable",
@@ -35,7 +29,8 @@
       ],
       "distinctions": [],
       "evidence": [
-        "The new connector and independent qxctl consumer have focused producer, persistence, projection original-owner boundary checks, mutable inventory consistency and transfer-plan lineage checks. Test names identify coverage; actual execution and dependency provenance belong to the increment closure."
+        "The new connector and independent qxctl consumer have focused producer, persistence, projection original-owner boundary checks, mutable inventory consistency and transfer-plan lineage checks. Test names identify coverage; actual execution and dependency provenance belong to the increment closure.",
+        "knowledge/scv/GRAPH-INDEX.md: SCV owns source/evidence meaning; the separately packaged connector owns this bounded persistence mapping."
       ],
       "feature_id": "ssfv:symphony:scv-graph-duckdb-connector",
       "how": "Uses bounded C++ process requests, pinned DuckDB transactions and independent qxctl projection verification. Semantic queries replay the exact selected SCV owner against the complete retained graph.",
@@ -50,6 +45,7 @@
         }
       ],
       "implementation_paths": [
+        "knowledge/scv/GRAPH-INDEX.md",
         "modules/scv-graph-duckdb-connector/CMakeLists.txt",
         "modules/scv-graph-duckdb-connector/src/connector.cpp",
         "modules/scv-graph-duckdb-connector/src/main.cpp"
@@ -62,17 +58,17 @@
       ],
       "owner_contract": "modules/scv-graph-duckdb-connector/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",
-      "record_version": 1,
+      "record_version": 2,
       "relationships": [
-        {
-          "rationale": "Uses authority-free bounded process, canonical JSON and digest mechanics.",
-          "target_feature_id": "ssfv:symphony:knowledge-vector-engine-foundation",
-          "type": "depends_on"
-        },
         {
           "rationale": "Preserves exact SCV graph identity and requires explicit SCV owner validation at the qxctl semantic boundary.",
           "target_feature_id": "ssfv:symphony:scv-engine",
           "type": "composes_with"
+        },
+        {
+          "rationale": "Uses authority-free bounded process, canonical JSON and digest mechanics.",
+          "target_feature_id": "ssfv:symphony:knowledge-vector-engine-foundation",
+          "type": "depends_on"
         }
       ],
       "source_scope": "modules/scv-graph-duckdb-connector",
@@ -84,7 +80,8 @@
       "who": "Humans and agents using qxctl with explicit installations, namespace and TOPS identity; connector publication does not authorize a selected graph head.",
       "why": "Makes caller-selected graphs persistently retrievable while preserving native SCV semantic ownership and explicit backend and namespace selection."
     }
-  ]
+  ],
+  "source_scope": "modules/scv-graph-duckdb-connector"
 }
 ```
 <!-- symphony:ssfv:feature-file:v1:end -->

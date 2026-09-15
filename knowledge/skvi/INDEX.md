@@ -12884,3 +12884,479 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: no automatic runtime semantic admission
 - notes: The owner inventory is not exhaustive; registration does not grant authority.
 - status: canonical
+
+### Implementation Relationship Endpoints
+
+These entries locate existing implementation and regression surfaces referenced by this index. Their source files remain implementation truth; indexing them does not expand the manifest-declared canonical contract closure.
+
+#### SSIAG Provider Binding Storage
+- path: `modules/secure-identity-access-governance/internal/provider/binding_storage_unix.go`
+- title: SSIAG Provider Binding Storage
+- surface_type: Go protected persistence implementation
+- truth_role: implementation truth for provider-binding state and attempt storage
+- owner: SSIAG foundation maintainers
+- scope: Opens protected Linux/macOS binding state with no-follow directory and regular-file checks, serializes access with locks, and synchronizes atomic writes and removals.
+- relationships: implements -> `knowledge/ssiag/PROVIDER-LIFECYCLE.md`; conforms_to -> `knowledge/ssiag/schemas/v1/provider-binding-state.schema.json`; conforms_to -> `knowledge/ssiag/schemas/v1/provider-binding-attempt.schema.json`
+- consumers: SSIAG provider binding manager, regression tests, reviewers
+- deferred_projections: none
+- notes: Storage mechanics do not select an installation or authorize a binding transition.
+- status: canonical
+
+#### SSIAG Provider Binding Regression
+- path: `modules/secure-identity-access-governance/internal/provider/binding_test.go`
+- title: SSIAG Provider Binding Regression
+- surface_type: Go focused regression tests
+- truth_role: test implementation truth for provider-binding lifecycle boundaries
+- owner: SSIAG foundation maintainers
+- scope: Exercises explicit installation order, forward and reverse convergence, exact candidate identity, stale or changed evidence, competing attempts, expiry, and recovery across durable stages.
+- relationships: verifies -> `modules/secure-identity-access-governance/internal/provider/binding.go`; depends_on -> `knowledge/ssiag/PROVIDER-LIFECYCLE.md`
+- consumers: SSIAG maintainers, test harnesses, reviewers
+- deferred_projections: none
+- notes: The indexed tests use fixture evidence; their existence is not a claim of a fresh installed-provider acceptance run.
+- status: canonical
+
+#### qxctl SSIAG Provider Binding Client
+- path: `tools/qxctl/internal/ssiagclient/provider_binding.go`
+- title: qxctl SSIAG Provider Binding Client
+- surface_type: Go authenticated administration client
+- truth_role: implementation truth for SSIAG-owned provider-binding request and response consumption
+- owner: qxctl maintainers
+- scope: Sends inventory, status, plan, apply, apply-status, and recovery requests to SSIAG and rejects malformed, mismatched, or digest-invalid safe results.
+- relationships: implements -> `knowledge/ssiag/PROVIDER-LIFECYCLE.md`; consumes -> `modules/secure-identity-access-governance/internal/provider/binding.go`
+- consumers: qxctl provider-binding commands, client regressions, reviewers
+- deferred_projections: none
+- notes: Opaque installation identities remain selectors; this client does not inspect package paths, execute providers, or own binding semantics.
+- status: canonical
+
+#### SSIAG macOS Provider Process
+- path: `modules/ssiag-provider-macos-keychain/Sources/SymphonySSIAGMacOSKeychain/main.swift`
+- title: SSIAG macOS Provider Process
+- surface_type: Swift executable entry point
+- truth_role: implementation truth for bounded provider dispatch
+- owner: SSIAG macOS provider maintainers
+- scope: Dispatches metadata serve, signed-bundle readiness, exact-version installation and guarded uninstall; serve reads one bounded request and emits one encoded response.
+- relationships: implements -> `modules/ssiag-provider-macos-keychain/SPEC.md`; invokes -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/Protocol.swift`; invokes -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/Lifecycle.swift`
+- consumers: SSIAG provider launcher, installation tooling, process regressions, reviewers
+- deferred_projections: none
+- notes: The entry point does not enable Keychain operations or secret delivery.
+- status: canonical
+
+#### SSIAG macOS Provider Protocol
+- path: `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/Protocol.swift`
+- title: SSIAG macOS Provider Metadata Protocol
+- surface_type: Swift strict protocol implementation
+- truth_role: implementation truth for metadata requests, handshakes, and safe responses
+- owner: SSIAG macOS provider maintainers
+- scope: Validates exact request shape, identity, digests, timestamps and deadlines; verifies foundation evidence and emits bounded metadata responses with operational access disabled.
+- relationships: conforms_to -> `knowledge/ssiag/schemas/v1/provider-control-request.schema.json`; conforms_to -> `knowledge/ssiag/schemas/v1/provider-handshake.schema.json`; conforms_to -> `knowledge/ssiag/schemas/v1/provider-control-response.schema.json`
+- consumers: SSIAG macOS provider process, protocol regressions, reviewers
+- deferred_projections: none
+- notes: Metadata compatibility does not authorize credential operations.
+- status: canonical
+
+#### SSIAG macOS Provider Package Lifecycle
+- path: `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/Lifecycle.swift`
+- title: SSIAG macOS Provider Package Lifecycle
+- surface_type: Swift receipt-bound package lifecycle implementation
+- truth_role: implementation truth for immutable provider installation and guarded removal
+- owner: SSIAG macOS provider maintainers
+- scope: Installs exact executable or complete bundle bytes into versioned paths, writes receipt evidence, and rejects changed, unsafe, or unreceipted package content during lifecycle operations.
+- relationships: implements -> `modules/ssiag-provider-macos-keychain/SPEC.md`; uses -> `modules/ssiag-provider-macos-keychain/Sources/SSIAGMacOSKeychainSupport/ReceiptV2.swift`
+- consumers: provider installation tooling, lifecycle regressions, release engineers, reviewers
+- deferred_projections: none
+- notes: Package installation is separate from SSIAG binding selection, provider trust and operational authorization.
+- status: canonical
+
+#### SAV Native Semantics
+- path: `modules/sav-engine/src/sav.cpp`
+- title: SAV Native Semantics
+- surface_type: C++ vector-engine implementation
+- truth_role: implementation truth for SAV composition validation and derived evidence
+- owner: SAV maintainers
+- scope: Checks Accord References, resolves qualified CURRENT evidence, evaluates and explains composition, validates and compares Named Versions, checks extension capsules, and plans installation blueprints through the existing bounded operation set.
+- relationships: implements -> `knowledge/sav/SPEC.md`; implements -> `knowledge/sav/NAMED-VERSIONS.md`; conforms_to -> `modules/sav-engine/SPEC.md`
+- consumers: exact SAV process invocation, qxctl, native regressions, reviewers
+- deferred_projections: none
+- notes: SAV evaluates supplied evidence; it does not persist a seal or confer mutation or publication authority.
+- status: canonical
+
+#### SEV Native Semantics
+- path: `modules/sev-engine/src/sev.cpp`
+- title: SEV Native Semantics
+- surface_type: C++ vector-engine implementation
+- truth_role: implementation truth for evolution-case evaluation and derived plans
+- owner: SEV maintainers
+- scope: Implements the bounded case, impact, disposition, verification, recalculation, command-surface, novelty, watch-policy, trigger-coalescing, session-binding and graph operations declared by SEV.
+- relationships: implements -> `knowledge/sev/SPEC.md`; conforms_to -> `modules/sev-engine/SPEC.md`
+- consumers: exact SEV process invocation, qxctl, native regressions, reviewers
+- deferred_projections: none
+- notes: SEV produces report and proposal evidence; durable coordination and separately authorized external actions remain with their existing owners.
+- status: canonical
+
+#### STAV Protocol Validation
+- path: `libraries/stav-protocol-go/validate.go`
+- title: STAV Protocol Validation
+- surface_type: Go shared protocol implementation
+- truth_role: implementation truth for structural STAV validation
+- owner: STAV maintainers
+- scope: Validates bounded candidates, events, receipts, queries, verification evidence, append-authority configuration, local envelopes, and closed producer vocabularies.
+- relationships: implements -> `libraries/stav-protocol-go/REQUIREMENTS.md`; conforms_to -> `knowledge/stav/schemas/v1/producer-vocabulary.schema.json`
+- consumers: STAV append authority, Accordare producer, protocol clients, regressions, reviewers
+- deferred_projections: none
+- notes: Structurally valid event or receipt bytes do not establish that the append authority assigned or durably committed them.
+- status: canonical
+
+#### Accordare Producer Configuration Parser
+- path: `modules/accordare-stav-producer/internal/config/config.go`
+- title: Accordare Producer Configuration Parser
+- surface_type: Go bounded configuration implementation
+- truth_role: implementation truth for exact producer configuration admission
+- owner: Accordare STAV producer maintainers
+- scope: Loads strict bounded non-symlink configuration and validates producer, service, submitter, TOPS, socket, append-authority and vocabulary identities.
+- relationships: conforms_to -> `knowledge/stav/schemas/v1/accordare-producer-config.schema.json`; implements -> `modules/accordare-stav-producer/SPEC.md`
+- consumers: Accordare producer startup, configuration regressions, reviewers
+- deferred_projections: none
+- notes: Configuration admission does not create an installation producer grant.
+- status: canonical
+
+#### Accordare Producer Local Codec
+- path: `modules/accordare-stav-producer/internal/protocol/codec.go`
+- title: Accordare Producer Local Codec
+- surface_type: Go strict local protocol implementation
+- truth_role: implementation truth for bounded producer IPC envelopes
+- owner: Accordare STAV producer maintainers
+- scope: Encodes and strictly decodes exact local request and response fields, validates operation-specific presence, and rejects unsupported legacy submission envelopes.
+- relationships: conforms_to -> `knowledge/stav/schemas/v1/accordare-producer-local-request.schema.json`; conforms_to -> `knowledge/stav/schemas/v1/accordare-producer-local-response.schema.json`
+- consumers: Accordare producer server, qxctl producer client, codec regressions, reviewers
+- deferred_projections: none
+- notes: JSON envelope validity does not replace kernel peer authentication or submission authorization.
+- status: canonical
+
+#### Accordare Producer Submission Verification
+- path: `modules/accordare-stav-producer/internal/protocol/validate.go`
+- title: Accordare Producer Submission Verification
+- surface_type: Go producer evidence implementation
+- truth_role: implementation truth for authenticated intent, exact completion and safe candidate derivation
+- owner: Accordare STAV producer maintainers
+- scope: Verifies command authorization and capabilities, binds completion to the original durable intent and exact coordinator evidence, and derives only the closed Named Version event tuples and safe metadata.
+- relationships: conforms_to -> `knowledge/stav/schemas/v1/accordare-producer-submission.schema.json`; implements -> `modules/accordare-stav-producer/SPEC.md`; governed_by -> `knowledge/sav/STAV.md`
+- consumers: Accordare producer prepare and complete operations, regressions, reviewers
+- deferred_projections: none
+- notes: Candidate derivation does not issue a committed STAV receipt; the append authority retains that responsibility.
+- status: canonical
+
+#### Accordare Producer Local Server
+- path: `modules/accordare-stav-producer/internal/server/server.go`
+- title: Accordare Producer Local Server
+- surface_type: Go authenticated Unix IPC implementation
+- truth_role: implementation truth for bounded producer transport and dispatch
+- owner: Accordare STAV producer maintainers
+- scope: Checks peer credentials and configured submitter identity, applies connection and frame bounds, and dispatches prepare, complete, status and reconciliation through the producer runtime.
+- relationships: implements -> `modules/accordare-stav-producer/SPEC.md`; uses -> `modules/accordare-stav-producer/internal/protocol/codec.go`
+- consumers: qxctl producer client, server regressions, local supervisors, reviewers
+- deferred_projections: none
+- notes: The socket server transports and authenticates requests; it does not replace STAV append authority.
+- status: canonical
+
+#### STAV Append Authority Client
+- path: `modules/stav-append-authority/client/client.go`
+- title: STAV Append Authority Client
+- surface_type: Go authenticated Unix IPC client
+- truth_role: implementation truth for bounded append-authority request and response transport
+- owner: STAV append authority maintainers
+- scope: Validates configuration and requests, verifies the authority peer, applies bounded framed transport and deadlines, and checks exact request, operation and TOPS response bindings.
+- relationships: implements -> `modules/stav-append-authority/SPEC.md`; uses -> `libraries/stav-protocol-go/validate.go`
+- consumers: Accordare producer, authorized STAV clients, transport regressions, reviewers
+- deferred_projections: none
+- notes: Receiving a structurally valid response does not confer producer authority or transfer append ownership to the client.
+- status: canonical
+
+### SHV Owner Installation and Protocol Companions
+
+#### SHV Kernel Installation
+- path: `modules/shv-engine/INSTALL.md`
+- title: SHV Kernel Installation
+- surface_type: module installation contract
+- truth_role: declared exact-package installation and removal truth
+- owner: SHV kernel maintainers
+- scope: Defines independent C++26 installation, receipt-owned resources, guarded removal, exact interface release metadata, and the intentionally retained embedded PDF reader.
+- relationships: depends_on -> `modules/shv-engine/MANIFEST.md`; depends_on -> `modules/shv-engine/SPEC.md`
+- consumers: module authors, installers, qxctl integrators, reviewers
+- deferred_projections: none
+- notes: Historical release instructions remain version-scoped; installation does not select or activate an engine.
+- status: canonical
+
+#### SHV Generic Graph Adapter Installation
+- path: `modules/shv-graph-adapter/INSTALL.md`
+- title: SHV Generic Graph Adapter Installation
+- surface_type: module and SDK installation contract
+- truth_role: declared independent package and C++ SDK installation truth
+- owner: SHV generic graph adapter maintainers
+- scope: Defines receipt-owned executable and static SDK installation, exact CMake dependency consumption, focused installed-SDK validation and guarded uninstall.
+- relationships: depends_on -> `modules/shv-graph-adapter/MANIFEST.md`; depends_on -> `modules/shv-graph-adapter/SPEC.md`
+- consumers: adapter authors, C++ SDK consumers, installers, reviewers
+- deferred_projections: none
+- notes: Static ABI compatibility and exact package selection remain explicit; graph structure validation does not replay hardware semantics.
+- status: canonical
+
+#### SHV Generic Graph Adapter Templates
+- path: `modules/shv-graph-adapter/schemas/v1/graph-adapter.templates.json`
+- title: SHV Generic Graph Adapter Input Templates
+- surface_type: module-owned JSON input templates
+- truth_role: declared operation input scaffolding
+- owner: SHV generic graph adapter maintainers
+- scope: Supplies inspect, graph roundtrip and graph query input shapes for caller completion.
+- relationships: depends_on -> `modules/shv-graph-adapter/schemas/v1/graph-adapter.schema.json`; depends_on -> `modules/shv-graph-adapter/SPEC.md`
+- consumers: qxctl template discovery, adapter clients, reviewers
+- deferred_projections: none
+- notes: Placeholder graph and selector fields require caller-supplied evidence; a template is not a validated request.
+- status: canonical
+
+#### SHV DuckDB Graph Store Schemas
+- path: `modules/shv-graph-duckdb-connector/schemas/v1/graph-store.schema.json`
+- title: SHV DuckDB Graph Store Protocol Schemas
+- surface_type: module-owned JSON Schema contract
+- truth_role: declared graph-store protocol shape truth
+- owner: SHV DuckDB graph connector maintainers
+- scope: Defines graph exchange, exact installation, snapshot and intent identities, prepare/commit/status/export/query, revision-bound inventory, and transfer planning and execution input shapes.
+- relationships: depends_on -> `modules/shv-graph-duckdb-connector/SPEC.md`; depends_on -> `knowledge/shv/GRAPH-STORE.md`
+- consumers: qxctl schema discovery, connector clients, schema regressions, reviewers
+- deferred_projections: none
+- notes: Schema conformance does not prove durable commit, source semantics, catalogue selection or a default graph database choice.
+- status: canonical
+
+#### SHV DuckDB Graph Store Templates
+- path: `modules/shv-graph-duckdb-connector/schemas/v1/graph-store.templates.json`
+- title: SHV DuckDB Graph Store Input Templates
+- surface_type: module-owned JSON input templates
+- truth_role: declared operation input scaffolding
+- owner: SHV DuckDB graph connector maintainers
+- scope: Supplies inspect, transaction, query/export, inventory and caller-selected transfer request scaffolds.
+- relationships: depends_on -> `modules/shv-graph-duckdb-connector/schemas/v1/graph-store.schema.json`; depends_on -> `modules/shv-graph-duckdb-connector/SPEC.md`
+- consumers: qxctl template discovery, connector clients, reviewers
+- deferred_projections: none
+- notes: Placeholders and illustrative limits do not select a TOPS, namespace, revision, writer or target directory.
+- status: canonical
+
+#### SHV DuckDB Dependency Provenance
+- path: `modules/shv-graph-duckdb-connector/DUCKDB-PROVENANCE.json`
+- title: SHV DuckDB Dependency Provenance
+- surface_type: module-owned dependency provenance record
+- truth_role: declared exact dependency source and package-byte evidence
+- owner: SHV DuckDB graph connector maintainers
+- scope: Records the selected DuckDB 1.5.5 upstream release and commit, original macOS universal archive digest and size, x86_64 extraction procedure, and exact installed dependency file digests.
+- relationships: depends_on -> `modules/shv-graph-duckdb-connector/SPEC.md`; depends_on -> `modules/shv-graph-duckdb-connector/INSTALL.md`
+- consumers: connector build and installation tooling, dependency reviewers
+- deferred_projections: none
+- notes: The retained shared dependency-record protocol does not transfer SHV graph semantics to SCV or admit a newer DuckDB release.
+- status: canonical
+
+#### SHV Partition Installation
+- path: `modules/shv-partition-engine/INSTALL.md`
+- title: SHV Partition Engine Installation
+- surface_type: module installation contract
+- truth_role: declared exact-package installation and dependency admission truth
+- owner: SHV partition engine maintainers
+- scope: Defines independent installation, receipt-owned resources, guarded removal and version-specific source/kernel composition admission through partition 0.4.
+- relationships: depends_on -> `modules/shv-partition-engine/MANIFEST.md`; depends_on -> `knowledge/shv/PARTITIONS.md`
+- consumers: installers, qxctl integrators, partition authors, reviewers
+- deferred_projections: none
+- notes: Exact historical dependency admission remains preserved; installing metadata does not authorize future dependency versions.
+- status: canonical
+
+#### SHV Partition Schemas
+- path: `modules/shv-partition-engine/schemas/v1/partition.schema.json`
+- title: SHV Partition Protocol Schemas
+- surface_type: module-owned JSON Schema contract
+- truth_role: declared immutable partition and manifest protocol shape truth
+- owner: SHV partition engine maintainers
+- scope: Defines exact source/kernel dependency references, immutable partitions, manifest entries, missing-reference status, bounded query cursors and owner descriptors.
+- relationships: depends_on -> `modules/shv-partition-engine/SPEC.md`; depends_on -> `knowledge/shv/PARTITIONS.md`
+- consumers: qxctl schema discovery, partition clients, schema regressions, reviewers
+- deferred_projections: none
+- notes: Schema validity does not authenticate hardware evidence or silently resolve missing dependencies.
+- status: canonical
+
+#### SHV Partition Templates
+- path: `modules/shv-partition-engine/schemas/v1/partition.templates.json`
+- title: SHV Partition Input Templates
+- surface_type: module-owned JSON input templates
+- truth_role: declared operation input scaffolding
+- owner: SHV partition engine maintainers
+- scope: Supplies partition-build, manifest-build and manifest-query input scaffolds for explicit dependency and selection data.
+- relationships: depends_on -> `modules/shv-partition-engine/schemas/v1/partition.schema.json`; depends_on -> `modules/shv-partition-engine/SPEC.md`
+- consumers: qxctl template discovery, partition clients, reviewers
+- deferred_projections: none
+- notes: Null placeholders are unanswered caller inputs, not inferred evidence or completeness policy.
+- status: canonical
+
+#### SHV PDF Adapter Schemas
+- path: `modules/shv-pdf-adapter/schemas/v1/pdf.schema.json`
+- title: SHV PDF Adapter Protocol Schemas
+- surface_type: module-owned JSON Schema contract
+- truth_role: declared source-bound PDF extraction and graph protocol shape truth
+- owner: SHV PDF adapter maintainers
+- scope: Defines exact original-source and decoder evidence, extraction, verification, documentary graph projection and original-source graph validation shapes.
+- relationships: depends_on -> `modules/shv-pdf-adapter/SPEC.md`; depends_on -> `knowledge/shv/DOCUMENT-INGESTION.md`
+- consumers: qxctl schema discovery, PDF adapter clients, schema regressions, reviewers
+- deferred_projections: none
+- notes: Documentary assertions preserve source qualification and do not imply physical identity or namespace equivalence.
+- status: canonical
+
+#### SHV PDF Adapter Templates
+- path: `modules/shv-pdf-adapter/schemas/v1/pdf.templates.json`
+- title: SHV PDF Adapter Input Templates
+- surface_type: module-owned JSON input templates
+- truth_role: declared operation input scaffolding
+- owner: SHV PDF adapter maintainers
+- scope: Supplies extraction, graph projection and replay inputs with explicit original-source and decoder bindings and the named AMD table profile.
+- relationships: depends_on -> `modules/shv-pdf-adapter/schemas/v1/pdf.schema.json`; depends_on -> `modules/shv-pdf-adapter/SPEC.md`
+- consumers: qxctl template discovery, PDF adapter clients, reviewers
+- deferred_projections: none
+- notes: The named profile is a selected bounded example; null byte, path and digest fields require actual caller evidence.
+- status: canonical
+
+#### SHV Profile Schemas
+- path: `modules/shv-profile-engine/schemas/v1/profile.schema.json`
+- title: SHV Profile and Universe Protocol Schemas
+- surface_type: module-owned JSON Schema contract
+- truth_role: declared caller-profile, universe and diagnostic protocol shape truth
+- owner: SHV profile engine maintainers
+- scope: Defines custom metric profiles, mapping diagnostics, portable universe construction and binding, extraction diagnostics, and read-only artifact reference analysis.
+- relationships: depends_on -> `modules/shv-profile-engine/SPEC.md`; depends_on -> `knowledge/shv/PROFILES.md`
+- consumers: qxctl schema discovery, profile clients, schema regressions, reviewers
+- deferred_projections: none
+- notes: Mapping conformance is distinct from physical compatibility; reference analysis does not grant deletion authority.
+- status: canonical
+
+#### SHV Profile Templates
+- path: `modules/shv-profile-engine/schemas/v1/profile.templates.json`
+- title: SHV Profile and Universe Input Templates
+- surface_type: module-owned JSON input templates
+- truth_role: declared operation input scaffolding
+- owner: SHV profile engine maintainers
+- scope: Supplies caller-profile compilation, mapping diagnostics, universe build/bind, extraction diagnostics and artifact reference inputs with explicit caller collections.
+- relationships: depends_on -> `modules/shv-profile-engine/schemas/v1/profile.schema.json`; depends_on -> `modules/shv-profile-engine/SPEC.md`
+- consumers: qxctl template discovery, profile authors, reviewers
+- deferred_projections: none
+- notes: The explicit kernel version remains exact; empty collections and placeholders do not certify evidence completeness.
+- status: canonical
+
+#### SHV Publication Schemas
+- path: `modules/shv-publication-engine/schemas/v1/publication.schema.json`
+- title: SHV Catalogue Publication Protocol Schemas
+- surface_type: module-owned JSON Schema contract
+- truth_role: declared local catalogue publication protocol shape truth
+- owner: SHV publication engine maintainers
+- scope: Defines explicit source/kernel/partition/store evidence, caller completeness policy, catalogue heads, publication plans, transitions and status.
+- relationships: depends_on -> `modules/shv-publication-engine/SPEC.md`; depends_on -> `knowledge/shv/PUBLICATION.md`
+- consumers: qxctl schema discovery, publication clients, schema regressions, reviewers
+- deferred_projections: none
+- notes: Valid plan bytes do not grant SSIAG authority, select a head or create SODV publication.
+- status: canonical
+
+#### SHV Publication Templates
+- path: `modules/shv-publication-engine/schemas/v1/publication.templates.json`
+- title: SHV Catalogue Publication Input Templates
+- surface_type: module-owned JSON input templates
+- truth_role: declared operation input scaffolding
+- owner: SHV publication engine maintainers
+- scope: Supplies explicit plan and apply input scaffolds for operation identity, caller completeness policy, member evidence and expected catalogue state.
+- relationships: depends_on -> `modules/shv-publication-engine/schemas/v1/publication.schema.json`; depends_on -> `modules/shv-publication-engine/SPEC.md`
+- consumers: qxctl template discovery, publication clients, reviewers
+- deferred_projections: none
+- notes: The exact partition version and publish change-kind remain visible example selections; templates carry no mutation authority.
+- status: canonical
+
+#### SHV Source Engine Installation
+- path: `modules/shv-source-engine/INSTALL.md`
+- title: SHV Source Engine Installation
+- surface_type: module installation contract
+- truth_role: declared exact-package installation and removal truth
+- owner: SHV source engine maintainers
+- scope: Defines independent C++26 installation, exact source protocol resources, receipt-last packaging, guarded removal and version-scoped source interface metadata.
+- relationships: depends_on -> `modules/shv-source-engine/MANIFEST.md`; depends_on -> `modules/shv-source-engine/SPEC.md`
+- consumers: installers, qxctl integrators, source authors, reviewers
+- deferred_projections: none
+- notes: Installation preserves caller source data and does not select an active source head or widen consuming-owner admission.
+- status: canonical
+
+#### SHV Catalogue Publication Planning Provenance
+- path: `knowledge/shv/CATALOGUE-PUBLICATION-PLAN.md`
+- title: SHV Catalogue Publication Planning Provenance
+- surface_type: retained vector planning companion
+- truth_role: historical design provenance with current-owner routing
+- owner: SHV maintainers
+- scope: Preserves the publication transaction design and acceptance considerations that preceded the implemented protected local catalogue-head contract.
+- relationships: points_to -> `knowledge/shv/PUBLICATION.md`
+- consumers: SHV maintainers, reviewers, architectural research
+- deferred_projections: none
+- notes: This is retained planning evidence. Current semantics come from PUBLICATION.md; the old proposed command and recovery descriptions are not new runtime authorization.
+- status: canonical
+
+### SHV Installed Invariant Regressions
+
+#### SHV PDF Installed Source Replay Regression
+- path: `modules/shv-pdf-adapter/tests/installed_integration.py`
+- title: SHV PDF Installed Source Replay Regression
+- surface_type: Python receipt-backed process regression
+- truth_role: test implementation truth for exact documentary source and decoder binding
+- owner: SHV PDF adapter maintainers
+- scope: Checks the selected retained AMD PDF fixture through exact installed extraction, graph projection and replay, then rejects changed qualifiers, decoder digests and original bytes.
+- relationships: verifies -> `modules/shv-pdf-adapter/SPEC.md`; uses -> `tools/qxctl/tests/shv-invariants/installed_support.py`
+- consumers: invariant regression harnesses, SHV maintainers, reviewers
+- deferred_projections: none
+- notes: The bounded selected fixture does not establish general PDF coverage, namespace equivalence or live publisher authentication.
+- status: canonical
+
+#### SHV Profile Installed Binding Regression
+- path: `modules/shv-profile-engine/tests/installed_integration.py`
+- title: SHV Profile Installed Binding Regression
+- surface_type: Python receipt-backed process regression
+- truth_role: test implementation truth for exact profile-to-original-source binding
+- owner: SHV profile engine maintainers
+- scope: Compiles a caller profile, builds and binds a portable universe against synthetic source bytes, and rejects changed originals, symlinks and an unsupported kernel selector.
+- relationships: verifies -> `modules/shv-profile-engine/SPEC.md`; uses -> `tools/qxctl/tests/shv-invariants/installed_support.py`
+- consumers: invariant regression harnesses, SHV maintainers, reviewers
+- deferred_projections: none
+- notes: Synthetic GPU values test the source-binding contract; they are not hardware facts or compatibility evidence.
+- status: canonical
+
+#### SHV Store Installed Provenance Regression
+- path: `modules/shv-graph-duckdb-connector/tests/installed_integration.py`
+- title: SHV Store Installed Provenance Regression
+- surface_type: Python receipt-backed process regression
+- truth_role: test implementation truth for scoped durable structural graph evidence
+- owner: SHV DuckDB graph connector maintainers
+- scope: Prepares and commits a caller-defined graph in temporary private storage, checks lossless export and exact writer identity, and rejects mismatched intent, wrong namespace and dangling graph endpoints.
+- relationships: verifies -> `modules/shv-graph-duckdb-connector/SPEC.md`; uses -> `tools/qxctl/tests/shv-invariants/installed_support.py`
+- consumers: invariant regression harnesses, SHV maintainers, reviewers
+- deferred_projections: none
+- notes: This bounded process regression does not claim source-semantic replay, catalogue publication or interruption recovery coverage.
+- status: canonical
+
+#### SHV Publication Installed Provenance Regression
+- path: `modules/shv-publication-engine/tests/installed_integration.py`
+- title: SHV Publication Installed Provenance Regression
+- surface_type: Python receipt-backed process regression
+- truth_role: test implementation truth for exact publication planning and reducer evidence
+- owner: SHV publication engine maintainers
+- scope: Runs the installed pure publication owner against an empty caller catalogue and exact partition installation, checking plan/reduce/status correspondence and rejecting forged generations, duplicate history and unsupported owner selection.
+- relationships: verifies -> `modules/shv-publication-engine/SPEC.md`; uses -> `tools/qxctl/tests/shv-invariants/installed_support.py`
+- consumers: invariant regression harnesses, SHV maintainers, reviewers
+- deferred_projections: none
+- notes: The regression exercises pure owner semantics; it does not authorize or perform a protected catalogue-head write.
+- status: canonical
+
+#### SHV Installed Regression Evidence Mechanics
+- path: `tools/qxctl/tests/shv-invariants/installed_support.py`
+- title: SHV Installed Regression Evidence Mechanics
+- surface_type: Python shared test helper
+- truth_role: test implementation truth for exact installed-process evidence capture
+- owner: qxctl test maintainers
+- scope: Uses qxctl inspection to verify the selected receipt-owned package, records exact installation evidence, builds bounded native requests, validates response identities and digests, and retains process outcomes.
+- relationships: depends_on -> `knowledge/INVARIANTS.md`; depends_on -> `tools/qxctl/MANIFEST.md`
+- consumers: SHV PDF, profile, store and publication installed regression wrappers
+- deferred_projections: none
+- notes: Shared evidence mechanics neither install packages nor decide domain semantics; the individual owner tests supply their own semantic assertions.
+- status: canonical

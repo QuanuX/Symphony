@@ -10,15 +10,15 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
-          "reason": "Current owner surface routing.",
-          "reference": "knowledge/skvi/INDEX.md",
-          "vector": "skvi"
-        },
-        {
-          "applicability": "applicable",
           "reason": "Source evolution closure.",
           "reference": "knowledge/sclv/SPEC.md",
           "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Current owner surface routing.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
         },
         {
           "applicability": "applicable",

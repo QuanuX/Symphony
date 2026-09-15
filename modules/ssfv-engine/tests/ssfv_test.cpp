@@ -12,9 +12,12 @@
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <map>
+#include <set>
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <tuple>
 #include <unistd.h>
 #include <utility>
 #include <vector>
@@ -484,12 +487,77 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
     require(check.at("summary").at("state") == "valid", "canonical partial registry invalid");
     require(check.at("coverage_state") == "partial",
             "canonical bootstrap must not imply repository-wide completeness");
-    require(check.at("feature_count") == 91U && check.at("feature_file_count") == 18U,
-            "canonical partial-catalog record counts mismatch");
+    // This is a live repository acceptance check, not the frozen 91-record
+    // bootstrap fixture. Read the independently declared routing inventory so
+    // adding a reviewed owner does not invalidate an unrelated engine test.
+    std::ifstream registry(repository_root / "knowledge/ssfv/REGISTRY.md");
+    require(registry.good(), "canonical feature registry is unreadable");
+    std::set<std::string> registered_ids;
+    std::set<std::string> registered_files;
+    std::string line;
+    while (std::getline(registry, line)) {
+        const auto collect = [&](const std::string& prefix, std::set<std::string>& values) {
+            if (line.starts_with(prefix) && line.ends_with('`')) {
+                values.insert(line.substr(prefix.size(), line.size() - prefix.size() - 1U));
+            }
+        };
+        collect("- feature_id: `", registered_ids);
+        collect("- feature_file: `", registered_files);
+    }
+    require(!registered_ids.empty() && !registered_files.empty() &&
+                check.at("feature_count") == registered_ids.size() &&
+                check.at("feature_file_count") == registered_files.size(),
+            "canonical partial-catalog routing inventory mismatch");
     const auto graph = ssfv::handle_request(
         request("graph", engine::Json{{"format", "json"}}));
-    require(graph.at("node_count") == 91U && graph.at("edge_count") == 359U,
-            "canonical partial-catalog graph count mismatch");
+    std::set<std::string> projected_ids;
+    for (const auto& node : graph.at("nodes")) {
+        require(projected_ids.insert(node.at("feature_id").get<std::string>()).second,
+                "canonical graph contains a duplicate feature");
+    }
+    require(projected_ids == registered_ids && graph.at("node_count") == projected_ids.size() &&
+                graph.at("edge_count") == graph.at("edges").size(),
+            "canonical partial-catalog graph inventory mismatch");
+    using Edge = std::tuple<std::string, std::string, std::string>;
+    std::set<Edge> expected_edges;
+    for (const auto& path : registered_files) {
+        std::ifstream input(repository_root / path, std::ios::binary);
+        require(input.good(), "canonical feature owner is unreadable");
+        const auto text = engine::read_bounded(input, engine::Limits::max_response_bytes);
+        const auto begin = text.find("```json\n");
+        const auto end = text.find("\n```", begin == std::string::npos ? 0U : begin + 8U);
+        require(begin != std::string::npos && end != std::string::npos,
+                "canonical feature owner has no JSON region");
+        const auto owner = engine::parse_bounded_json(text.substr(begin + 8U, end - begin - 8U),
+                                                     engine::Limits::max_response_bytes);
+        for (const auto& record : owner.at("records")) {
+            const auto source = record.at("feature_id").get<std::string>();
+            if (!record.at("parent_feature_id").is_null()) {
+                expected_edges.emplace(source, record.at("parent_feature_id").get<std::string>(),
+                                       "primary_parent");
+            }
+            for (const auto& relationship : record.at("relationships")) {
+                expected_edges.emplace(source, relationship.at("target_feature_id").get<std::string>(),
+                                       relationship.at("type").get<std::string>());
+            }
+            for (const auto& distinction : record.at("distinctions")) {
+                expected_edges.emplace(source, distinction.at("target_feature_id").get<std::string>(),
+                                       "distinguished_from");
+            }
+        }
+    }
+    std::set<Edge> projected_edges;
+    for (const auto& edge : graph.at("edges")) {
+        require(registered_ids.contains(edge.at("source_feature_id").get<std::string>()) &&
+                    registered_ids.contains(edge.at("target_feature_id").get<std::string>()),
+                "canonical graph contains an unregistered endpoint");
+        require(projected_edges.emplace(edge.at("source_feature_id").get<std::string>(),
+                    edge.at("target_feature_id").get<std::string>(),
+                    edge.at("type").get<std::string>()).second,
+                "canonical graph contains a duplicate relationship");
+    }
+    require(projected_edges == expected_edges,
+            "canonical graph omitted or invented a declared relationship");
     require(graph.at("noncanonical") == true && graph.at("rebuildable") == true,
             "graph authority escalated");
 
@@ -517,23 +585,55 @@ void test_descriptor_and_actual_repository(const fs::path& repository_root) {
             "ratified SSFV administration mapping is not integration ready: " +
                 canonical_administration.dump());
 
+    const auto administration_profile = read_json("knowledge/FEATURE-ADMINISTRATION-PROFILE.json");
+    std::set<std::pair<std::string, std::string>> expected_surfaces;
+    std::map<std::pair<std::string, std::string>, std::string> expected_design_states;
+    for (const auto& feature : administration_profile.at("features")) {
+        for (const auto& expectation : feature.at("expectations")) {
+            require(expected_surfaces.emplace(feature.at("feature_id").get<std::string>(),
+                        expectation.at("interaction").get<std::string>()).second,
+                    "canonical administration profile contains a duplicate surface");
+            const auto requirement = expectation.at("requirement").get<std::string>();
+            const auto delivery = expectation.at("delivery").get<std::string>();
+            const std::set<std::string> exceptions{
+                "runtime_only", "system_orchestrated", "lifecycle_only", "observation_only"};
+            // The live profile currently uses required, prohibited and
+            // not-applicable obligations. New policy kinds need an explicit
+            // acceptance expectation instead of silently defaulting to success.
+            require(requirement == "required" || requirement == "prohibited" ||
+                        requirement == "not_applicable", "review new live administration requirement");
+            const std::string state = requirement == "prohibited" ? "prohibited" :
+                (requirement == "not_applicable" || exceptions.contains(delivery)) ? "exempt" :
+                "satisfied";
+            expected_design_states.emplace(std::make_pair(feature.at("feature_id").get<std::string>(),
+                        expectation.at("interaction").get<std::string>()), state);
+        }
+    }
     const auto full_administration = ssfv::handle_request(request(
         "administration-check", administration_payload(
             check.at("semantic_snapshot"),
-            read_json("knowledge/FEATURE-ADMINISTRATION-PROFILE.json"),
+            administration_profile,
             read_json("tools/qxctl/COMMANDS.json"), "not_evaluated", nullptr,
             engine::Json::array({descriptor_v2}), nullptr)));
-    require(full_administration.at("summary").at("features_checked") == 91U &&
-                full_administration.at("summary").at("surfaces_checked") == 179U &&
-                full_administration.at("summary").at("satisfied") == 157U &&
+    require(full_administration.at("summary").at("features_checked") == registered_ids.size() &&
+                full_administration.at("summary").at("surfaces_checked") == expected_surfaces.size() &&
                 full_administration.at("summary").at("uncovered") == 0U &&
-                full_administration.at("summary").at("exempt") == 13U &&
-                full_administration.at("summary").at("prohibited") == 9U &&
                 full_administration.at("summary").at("stale") == 0U &&
                 full_administration.at("summary").at("unresolved") == 0U,
             "canonical administration baseline counts mismatch: " +
                 full_administration.at("summary").dump() + " remediation=" +
                 full_administration.at("remediation_constraints").dump());
+    std::set<std::pair<std::string, std::string>> actual_surfaces;
+    for (const auto& surface : full_administration.at("surfaces")) {
+        require(actual_surfaces.emplace(surface.at("feature_id").get<std::string>(),
+                    surface.at("interaction").get<std::string>()).second,
+                "canonical administration result contains a duplicate surface");
+        require(expected_design_states.at(std::make_pair(surface.at("feature_id").get<std::string>(),
+                    surface.at("interaction").get<std::string>())) == surface.at("design_state").get<std::string>(),
+                "canonical administration disposition differs from reviewed profile policy");
+    }
+    require(actual_surfaces == expected_surfaces,
+            "canonical administration result omitted or invented a registered surface");
     require(std::none_of(full_administration.at("surfaces").begin(),
                          full_administration.at("surfaces").end(),
                          [](const engine::Json& surface) {

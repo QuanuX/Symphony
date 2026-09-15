@@ -10,15 +10,15 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
-          "reason": "Current owner surface routing.",
-          "reference": "knowledge/skvi/INDEX.md",
-          "vector": "skvi"
-        },
-        {
-          "applicability": "applicable",
           "reason": "Source evolution closure.",
           "reference": "knowledge/sclv/SPEC.md",
           "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "Current owner surface routing.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
         },
         {
           "applicability": "applicable",
@@ -33,11 +33,11 @@
         "SHV-19 focused inventory, legacy-reader and independent consumer conformance."
       ],
       "feature_id": "ssfv:symphony:shv-graph-duckdb-connector",
-      "how": "C++26 and pinned DuckDB provide storage; qxctl independently checks structural correspondence. Caller-selected exact-revision transfer planning; qxctl durable copy recovery with original evidence preserved.",
+      "how": "C++26 and pinned DuckDB own structural persistence, scoped inventory and caller-selected exact-revision transfer planning. qxctl independently checks structural correspondence and owns durable copy execution and recovery.",
       "implementation_languages": [
         {
           "language": "C++26",
-          "role": "Owns structural graph exchange and portable-reference implementation."
+          "role": "Owns durable structural graph storage, verified inventory and revision-bound transfer planning."
         },
         {
           "language": "CMake",
@@ -55,7 +55,7 @@
       ],
       "owner_contract": "modules/shv-graph-duckdb-connector/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",
-      "record_version": 4,
+      "record_version": 2,
       "relationships": [
         {
           "rationale": "Uses bounded strict process and canonical digest mechanics.",

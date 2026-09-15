@@ -400,6 +400,26 @@
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     },
     {
+      "adapter_id": "adapter:symphony:symphony-shv-graph-duckdb-connector.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "shv-graph-duckdb-connector",
+      "entry_point_id": "symphony-shv-graph-duckdb-connector",
+      "format_version": 3,
+      "implementation_path": "modules/shv-graph-duckdb-connector",
+      "operation_ids": [
+        "engop:symphony:shv.graph-store.commit",
+        "engop:symphony:shv.graph-store.export",
+        "engop:symphony:shv.graph-store.inspect",
+        "engop:symphony:shv.graph-store.inventory",
+        "engop:symphony:shv.graph-store.prepare",
+        "engop:symphony:shv.graph-store.query",
+        "engop:symphony:shv.graph-store.status",
+        "engop:symphony:shv.graph-store.transfer.plan"
+      ],
+      "owner_contract": "modules/shv-graph-duckdb-connector/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
       "adapter_id": "adapter:symphony:symphony-shv-partition.v1",
       "command_protocol": "symphony.knowledge.engine-process.v1",
       "component": "shv-partition-engine",
@@ -413,6 +433,57 @@
         "engop:symphony:shv-partition.partition.build"
       ],
       "owner_contract": "modules/shv-partition-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-shv-pdf.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "shv-pdf-adapter",
+      "entry_point_id": "symphony-shv-pdf",
+      "format_version": 3,
+      "implementation_path": "modules/shv-pdf-adapter",
+      "operation_ids": [
+        "engop:symphony:shv-pdf.extract",
+        "engop:symphony:shv-pdf.graph.project",
+        "engop:symphony:shv-pdf.graph.validate",
+        "engop:symphony:shv-pdf.inspect"
+      ],
+      "owner_contract": "modules/shv-pdf-adapter/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-shv-profile.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "shv-profile-engine",
+      "entry_point_id": "symphony-shv-profile",
+      "format_version": 3,
+      "implementation_path": "modules/shv-profile-engine",
+      "operation_ids": [
+        "engop:symphony:shv-profile.extraction.diagnose",
+        "engop:symphony:shv-profile.inspect",
+        "engop:symphony:shv-profile.mapping.diagnose",
+        "engop:symphony:shv-profile.profile.compile",
+        "engop:symphony:shv-profile.references.analyze",
+        "engop:symphony:shv-profile.universe.bind",
+        "engop:symphony:shv-profile.universe.build"
+      ],
+      "owner_contract": "modules/shv-profile-engine/SPEC.md",
+      "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
+    },
+    {
+      "adapter_id": "adapter:symphony:symphony-shv-publication.v1",
+      "command_protocol": "symphony.knowledge.engine-process.v1",
+      "component": "shv-publication-engine",
+      "entry_point_id": "symphony-shv-publication",
+      "format_version": 3,
+      "implementation_path": "modules/shv-publication-engine",
+      "operation_ids": [
+        "engop:symphony:shv-publication.inspect",
+        "engop:symphony:shv-publication.publication.plan",
+        "engop:symphony:shv-publication.publication.reduce",
+        "engop:symphony:shv-publication.publication.status"
+      ],
+      "owner_contract": "modules/shv-publication-engine/SPEC.md",
       "version_policy": "exact_receipt_v2_entry_point_and_capability_compatible"
     },
     {
@@ -1642,6 +1713,48 @@
       "title": "Protected source mutation binds exact owner transition before durable commit"
     },
     {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSHVPublicationStateAuthorizationBinding"
+          ],
+          "path": "tools/qxctl/internal/shvpublicationstate/store_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:shv.catalogue-publication-commit",
+      "ipc_boundary": false,
+      "owner_component": "qxctl-shv-publication-store",
+      "owner_contract": "knowledge/shv/PUBLICATION.md",
+      "producer_implementations": [
+        "tools/qxctl/cmd/qxctl/shv_publication.go",
+        "tools/qxctl/cmd/qxctl/shv_publication_evidence.go",
+        "tools/qxctl/internal/shvpublicationstate/authorization.go",
+        "tools/qxctl/internal/shvpublicationstate/barrier.go",
+        "tools/qxctl/internal/shvpublicationstate/storage_unix.go",
+        "tools/qxctl/internal/shvpublicationstate/store.go",
+        "tools/qxctl/internal/shvpublicationstate/validation.go"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "TestSHVPublicationStateCASReplayAndHistory",
+            "TestSHVPublicationStateConcurrentExpectedHead",
+            "TestSHVPublicationStateForgedNonHeadAndPendingLineage",
+            "TestSHVPublicationStateInterruptedPublicationAndExpiry",
+            "TestSHVPublicationStatePathAndHistoryBounds",
+            "TestSHVPublicationStateRootAndEmptySnapshot",
+            "TestSHVPublicationStateStrictDecodeAndLimits"
+          ],
+          "path": "tools/qxctl/internal/shvpublicationstate/store_test.go"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "The protected qxctl catalogue adapter retains the exact owner plan, dependency installations and durable intent before requesting authenticated SSIAG publication permission. Its local journal serializes expected-head compare-and-swap, rejects unbound or expired consumed decisions, preserves contiguous committed lineage and supports original-operation recovery without rewinding the current head. The command replays exact original dependencies and rechecks authenticated permission immediately before the journal atomically replaces the head. This final recheck and filesystem rename are not one atomic operation across SSIAG and storage; post-check changes remain the owner-contract race limit. Structural decision fixtures do not prove live SSIAG authentication, create a head-write STAV receipt or authorize Symphony-wide CanonicalApply.",
+      "status": "active",
+      "title": "Protected catalogue selection retains exact intent, authority binding and recoverable lineage"
+    },
+    {
       "allowed_adapter_ids": [
         "adapter:symphony:symphony-shv-graph-adapter.v1"
       ],
@@ -1691,6 +1804,75 @@
     },
     {
       "allowed_adapter_ids": [
+        "adapter:symphony:symphony-shv-graph-duckdb-connector.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSHVStoreInventoryCorrespondence",
+            "TestSHVStoreInventoryInputBounds"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/shv_store_inventory_test.go"
+        },
+        {
+          "cases": [
+            "TestSHVStoreIndependentNativeCorrespondence",
+            "TestSHVStoreRejectsInputAmbiguity"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/shv_store_test.go"
+        },
+        {
+          "cases": [
+            "TestSHVInventoryLegacyReaderAdmission",
+            "TestSHVTransferIndependentPlan"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/shv_store_transfer_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:shv.graph-store-provenance",
+      "ipc_boundary": true,
+      "owner_component": "shv-graph-duckdb-connector",
+      "owner_contract": "modules/shv-graph-duckdb-connector/SPEC.md",
+      "producer_implementations": [
+        "modules/shv-graph-duckdb-connector/src/connector.cpp",
+        "modules/shv-graph-duckdb-connector/src/main.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "test_complete_inventory_corruption",
+            "test_descriptor_and_transfer_plan",
+            "test_empty_graph",
+            "test_extra_row_and_schema",
+            "test_graph_tamper_and_dangling_endpoint",
+            "test_inventory_missing_database_and_bad_cursor",
+            "test_inventory_orphan_rows_in_other_scope",
+            "test_inventory_other_scope_invalidates_without_leaking",
+            "test_inventory_references_and_revision",
+            "test_operation_conflict_and_expected_digest",
+            "test_read_does_not_create_and_private_mode",
+            "test_reopen_retry_export_and_pagination",
+            "test_scope_isolation",
+            "test_symlink_rejection",
+            "test_unknown_schema"
+          ],
+          "path": "modules/shv-graph-duckdb-connector/tests/connector_test.py"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_store_provenance"
+          ],
+          "path": "modules/shv-graph-duckdb-connector/tests/installed_integration.py"
+        }
+      ],
+      "statement": "The DuckDB connector separates durable prepared intent from atomic snapshot and complete-row commit under a private no-follow locked root. Reopen, status, query and export verify full snapshot/projection correspondence before returning bounded results; inventory binds the complete bounded database revision without leaking other scopes. Unknown canonical graph properties and original exact writer installations are preserved independently of the selected reader. Independent qxctl reconstruction rejects resealed false storage, inventory and transfer-plan results. Transfer planning does not execute transfer, delete data, select a canonical head or establish hardware semantic validity; original source replay remains with its owner.",
+      "status": "active",
+      "title": "Persistent graph snapshots retain complete structural rows and exact writer provenance"
+    },
+    {
+      "allowed_adapter_ids": [
         "adapter:symphony:symphony-shv-partition.v1"
       ],
       "consumer_boundary_rejections": [
@@ -1729,6 +1911,154 @@
       "statement": "Native partition manifests preserve declared immutable dependencies, missing inventory and separately scoped references. Independent Go rederivation rejects falsely resealed completeness, inventory or cursor results; no global hardware absence or publisher authentication is inferred.",
       "status": "active",
       "title": "Partition inventory and query cursors preserve exact dependency scope"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-shv-pdf.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSHVPDFResultBoundary"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/shv_pdf_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:shv.pdf-source-replay",
+      "ipc_boundary": true,
+      "owner_component": "shv-pdf-adapter",
+      "owner_contract": "modules/shv-pdf-adapter/SPEC.md",
+      "producer_implementations": [
+        "modules/shv-pdf-adapter/src/descriptor.cpp",
+        "modules/shv-pdf-adapter/src/graph.cpp",
+        "modules/shv-pdf-adapter/src/main.cpp",
+        "modules/shv-pdf-adapter/src/pdf.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "main"
+          ],
+          "path": "modules/shv-pdf-adapter/tests/pdf_test.cpp"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_pdf_source_replay"
+          ],
+          "path": "modules/shv-pdf-adapter/tests/installed_integration.py"
+        }
+      ],
+      "statement": "The finite PDF adapter binds selected table extraction and document-graph projection to exact retained original bytes, source identity, decoder executable digest and explicit parser/profile identity. Graph validation decodes the original again and reconstructs exact nodes, edges, documentary lineage and namespace qualifiers; independent qxctl checks reject altered result and source/decoder correspondence. One documentary lineage and caller-selected coverage do not establish publisher authentication, namespace equivalence, a general PDF interpreter or hardware compatibility.",
+      "status": "active",
+      "title": "Documentary graph evidence preserves original PDF and decoder identity"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-shv-profile.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSHVProfileDiagnosticsInstalledCorrespondence",
+            "TestSHVProfileReferencePaths"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/shv_profile_diagnostics_test.go"
+        },
+        {
+          "cases": [
+            "TestSHVProfileDeclarationEvidenceBoundary",
+            "TestSHVProfileInputStrictness",
+            "TestSHVProfileNativeCorrespondence",
+            "TestSHVProfileUniverseSourceCorrespondence"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/shv_profile_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:shv.profile-source-binding",
+      "ipc_boundary": true,
+      "owner_component": "shv-profile-engine",
+      "owner_contract": "modules/shv-profile-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/shv-profile-engine/src/descriptor.cpp",
+        "modules/shv-profile-engine/src/diagnostics.cpp",
+        "modules/shv-profile-engine/src/main.cpp",
+        "modules/shv-profile-engine/src/profile.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "run"
+          ],
+          "path": "modules/shv-profile-engine/tests/diagnostics_test.py"
+        },
+        {
+          "cases": [
+            "run"
+          ],
+          "path": "modules/shv-profile-engine/tests/profile_test.py"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_profile_source_binding"
+          ],
+          "path": "modules/shv-profile-engine/tests/installed_integration.py"
+        }
+      ],
+      "statement": "The profile owner validates caller-defined declarations, compiles finite source mappings and binds selected universes to exact retained source bytes before diagnosis. Embedded kernel and PDF implementations retain their separately selected exact contract versions. Extraction diagnostics and graph-reference analysis preserve supplied source, field and path evidence; independent qxctl reconstruction rejects resealed false declarations, mappings, universe bindings and diagnostic correspondence. A structurally accepted caller profile does not define a universal hardware ontology, infer retirement or confer documentary truth.",
+      "status": "active",
+      "title": "Caller profiles preserve exact source bindings and scoped diagnostics"
+    },
+    {
+      "allowed_adapter_ids": [
+        "adapter:symphony:symphony-shv-publication.v1"
+      ],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "TestSHVPublicationCompositionAdmission",
+            "TestSHVPublicationIndependentCorrespondence"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/shv_publication_validation_test.go"
+        },
+        {
+          "cases": [
+            "TestSHVPublicationExplicitWriterAdmission"
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/shv_store_transfer_test.go"
+        }
+      ],
+      "invariant_id": "invariant:symphony:shv.publication-provenance",
+      "ipc_boundary": true,
+      "owner_component": "shv-publication-engine",
+      "owner_contract": "modules/shv-publication-engine/SPEC.md",
+      "producer_implementations": [
+        "modules/shv-publication-engine/src/descriptor.cpp",
+        "modules/shv-publication-engine/src/main.cpp",
+        "modules/shv-publication-engine/src/publication.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "test_native_publication_contract"
+          ],
+          "path": "modules/shv-publication-engine/tests/publication_test.py"
+        }
+      ],
+      "real_process_regressions": [
+        {
+          "cases": [
+            "test_installed_publication_provenance"
+          ],
+          "path": "modules/shv-publication-engine/tests/installed_integration.py"
+        }
+      ],
+      "statement": "The pure publication owner validates catalogue definitions and supplied partition/storage evidence under explicitly admitted exact contracts, binds plans to expected predecessor and operation identity, and deterministically reduces plans and reconstructs contiguous history. The embedded partition reader retains its declared exact implementation version. Independent qxctl reconstruction rejects resealed false readiness, head transitions, history and reader/writer admission. These pure results do not authenticate SSIAG decisions, replay original source bytes, mutate a selected catalogue head or grant publication authority; those boundaries remain separately owned.",
+      "status": "active",
+      "title": "Catalogue publication plans preserve exact dependency and predecessor evidence"
     },
     {
       "allowed_adapter_ids": [
@@ -2176,5 +2506,5 @@
     "owner_producer_regression_required": true,
     "real_process_required_for_ipc": true
   },
-  "registry_digest": "sha256:0ed9c3cb56e46f141b6a623d6baeffe41f0cb214a985404070367822aa404fcc"
+  "registry_digest": "sha256:53be07bef208d18e373d8243671bb28b03509fac99cc2a3055b2e977dc728be8"
 }

@@ -10,15 +10,15 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
-          "reason": "SKVI routes current owner contracts and distributed feature files.",
-          "reference": "knowledge/skvi/INDEX.md",
-          "vector": "skvi"
-        },
-        {
-          "applicability": "applicable",
           "reason": "Completed material source changes require reviewed append-only closure.",
           "reference": "knowledge/sclv/SPEC.md",
           "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes current owner contracts and distributed feature files.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
         },
         {
           "applicability": "applicable",
@@ -41,17 +41,17 @@
         },
         {
           "language": "CMake",
-          "role": "Builds and receipts the exact independently selected connector and dependency."
+          "role": "Builds and receipts the exact independently selected engine and its declared dependencies."
         }
       ],
       "implementation_paths": [
         "modules/shv-engine/CMakeLists.txt",
+        "modules/shv-engine/src/catalogue.cpp",
         "modules/shv-engine/src/common.cpp",
         "modules/shv-engine/src/coverage.cpp",
-        "modules/shv-engine/src/html.cpp",
-        "modules/shv-engine/src/catalogue.cpp",
-        "modules/shv-engine/src/evaluation.cpp",
         "modules/shv-engine/src/descriptor.cpp",
+        "modules/shv-engine/src/evaluation.cpp",
+        "modules/shv-engine/src/html.cpp",
         "modules/shv-engine/src/main.cpp",
         "modules/shv-engine/src/table.cpp"
       ],

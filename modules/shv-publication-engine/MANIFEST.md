@@ -1,6 +1,18 @@
 # MANIFEST
 
-Module shv-publication-engine, engine symphony-shv-publication, vector SHV, version 0.2.0-dev. Receipt v2 owns executable, documents, schema and templates.
+## Canonical Surfaces
+
+- `modules/shv-publication-engine/FEATURES.md`
+- `modules/shv-publication-engine/INSTALL.md`
+- `modules/shv-publication-engine/INTENT.md`
+- `modules/shv-publication-engine/MANIFEST.md`
+- `modules/shv-publication-engine/OWNER-INTERFACE.json`
+- `modules/shv-publication-engine/SKILL.md`
+- `modules/shv-publication-engine/SPEC.md`
+- `modules/shv-publication-engine/schemas/v1/publication.schema.json`
+- `modules/shv-publication-engine/schemas/v1/publication.templates.json`
+
+Module shv-publication-engine, engine symphony-shv-publication, vector SHV, version 0.4.0-dev. Receipt v2 owns executable, documents, schema and templates.
 
 See PUBLICATION.md for the publication contract and limits.
 

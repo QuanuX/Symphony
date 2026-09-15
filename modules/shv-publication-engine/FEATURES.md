@@ -10,15 +10,15 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
-          "reason": "SKVI routes current owner contracts and distributed feature files.",
-          "reference": "knowledge/skvi/INDEX.md",
-          "vector": "skvi"
-        },
-        {
-          "applicability": "applicable",
           "reason": "Completed material source changes require reviewed append-only closure.",
           "reference": "knowledge/sclv/SPEC.md",
           "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes current owner contracts and distributed feature files.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
         },
         {
           "applicability": "applicable",
@@ -32,7 +32,7 @@
         "SHV-18 focused native, consumer, journal, installed authority and interrupted-process evidence is recorded in the increment packet."
       ],
       "feature_id": "ssfv:symphony:shv-publication-engine",
-      "how": "Pure C++ publication owner, independent Go verifier and protected qxctl journal. Explicit publisher 0.2 admission for store writers 0.1, 0.2 and 0.3; original publisher 0.1 remains strict.",
+      "how": "The pure C++ owner validates immutable catalogue revisions, expected-state transitions and history with its explicitly admitted partition reader. qxctl independently replays original source and storage evidence and owns the SSIAG-authorized protected journal transaction. Exact release admission remains in SPEC.md.",
       "implementation_languages": [
         {
           "language": "C++26",
@@ -40,14 +40,14 @@
         },
         {
           "language": "CMake",
-          "role": "Builds and receipts the exact independently selected connector and dependency."
+          "role": "Builds and receipts the exact independently selected engine and its declared dependencies."
         }
       ],
       "implementation_paths": [
         "modules/shv-publication-engine/CMakeLists.txt",
-        "modules/shv-publication-engine/src/publication.cpp",
         "modules/shv-publication-engine/src/descriptor.cpp",
-        "modules/shv-publication-engine/src/main.cpp"
+        "modules/shv-publication-engine/src/main.cpp",
+        "modules/shv-publication-engine/src/publication.cpp"
       ],
       "kind": "feature",
       "non_claims": [
@@ -61,6 +61,11 @@
         {
           "rationale": "Authority-free process, path and digest mechanics.",
           "target_feature_id": "ssfv:symphony:knowledge-vector-engine-foundation",
+          "type": "depends_on"
+        },
+        {
+          "rationale": "Embeds the exact partition reader to revalidate manifest semantics; SPEC.md records each publisher release admission without relabeling historical owners.",
+          "target_feature_id": "ssfv:symphony:shv-partition-engine",
           "type": "depends_on"
         }
       ],
@@ -79,8 +84,4 @@
 ```
 <!-- symphony:ssfv:feature-file:v1:end -->
 
-## Explicit composition release 0.4.0-dev
-
-Publication 0.4.0-dev explicitly embeds partition 0.4, admits selected partition 0.2/0.3/0.4, source 0.1/0.2, kernel 0.1/0.2/0.3/0.4 and storage writers 0.1/0.2/0.3/0.4. A partition selected as 0.2 or 0.3 cannot carry source 0.2 or kernel 0.4 dependencies. Historical publishers retain their prior admissions. Retained state transitions replay against each original publisher; aggregate history validation admits the supported union without changing those owners.
-
-Use a fresh install prefix and explicit qxctl version selection. Version 0.3 declarations remain checked against their original compiled digest. No command or default changes; metadata is not semantic authorization and future versions are not automatically admitted.
+Exact release admission and historical-owner compatibility are defined in [SPEC.md](SPEC.md).

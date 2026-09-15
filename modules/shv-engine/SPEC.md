@@ -1,4 +1,4 @@
-# SHV kernel specification 0.3.0-dev
+# SHV kernel specification 0.4.0-dev
 
 ## Exact operations
 

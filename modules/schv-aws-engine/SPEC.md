@@ -2,7 +2,7 @@
 
 ## Status and Ownership
 
-Architect-ratified source-knowledge development increment, version `0.6.0-dev`; not a published release or complete provider implementation. Domain meaning belongs to `knowledge/scv/schv/aws/SPEC.md` and `knowledge/scv/SOURCE-KNOWLEDGE.md`. Common process semantics belong to `knowledge/SPEC.md`. All eight packages use the same explicit operation implementation with an exact installed domain identity.
+Architect-ratified source-knowledge development increment, current source package `0.10.0-dev`; not a published release or complete provider implementation. Domain meaning belongs to `knowledge/scv/schv/aws/SPEC.md` and `knowledge/scv/SOURCE-KNOWLEDGE.md`. Common process semantics belong to `knowledge/SPEC.md`. All eight packages use the same explicit operation implementation with an exact installed domain identity.
 
 ## Process and Operation Registry
 
@@ -25,7 +25,6 @@ Each operation's stable ID is `engop:symphony:schv-aws.` followed by its wire na
 | `graph_diff` | `diff` | `symphony.scv.diff-result.v1` | validate |
 | `graph_explain` | `explain` | `symphony.scv.explain-result.v1` | query |
 | `graph_evaluate` | `evaluate` | `symphony.scv.evaluate-result.v1` | validate |
-
 | `capture_index` | `corpus acquire / import / recover / inspect / export / diff` | `symphony.scv.capture-index.v1` | invoke |
 | `corpus_build` | `corpus acquire / import / recover / inspect / export / diff` | `symphony.scv.corpus.v1` | invoke |
 | `corpus_query` | `corpus export` | `symphony.scv.corpus-query.v1` | query |
@@ -39,6 +38,10 @@ Each operation's stable ID is `engop:symphony:schv-aws.` followed by its wire na
 | `provider_pack_evaluate` | `provider pack evaluate` | `symphony.scv.provider-pack-evaluation.v1` | query |
 | `composition_explore` | `composition explore` | `symphony.scv.composition-exploration.v1` | query |
 | `composition_reassess` | `composition reassess` | `symphony.scv.composition-reassessment.v1` | validate |
+| `composition_obligations` | `composition obligations inspect` | `symphony.scv.composition-obligations.v1` | query |
+| `composition_followup` | `composition obligations followup` | `symphony.scv.composition-followup.v1` | validate |
+| `bundle_inspect` | `composition bundle inspect` | `symphony.scv.bundle-inspection.v1` | inspect |
+| `composition_bundle_evaluate` | `composition bundle evaluate` | `symphony.scv.composition-bundle-evaluation.v1` | validate |
 
 `knowledge/scv/CORPUS.md@v1` owns the four additive operations and their closed schemas. The table records composed qxctl routes; the C++ operations remain independently callable and never persist a corpus head. The `0.3.0-dev` descriptor has exactly twenty operations, including the three operations owned by `knowledge/scv/INTERPRETATION.md@v1`. Existing `0.1.0-dev` and `0.2.0-dev` installations retain their exact thirteen- and seventeen-operation descriptors, immutable receipts/documents and original payloads. The qxctl consumer checks the selected version's finite operation set; it cannot substitute a newer package. Original command defaults remain `0.1.0-dev`; corpus commands default to `0.2.0-dev` and explicitly permit `0.3.0-dev`; provider interpretation and connection commands default exactly to `0.3.0-dev`.
 

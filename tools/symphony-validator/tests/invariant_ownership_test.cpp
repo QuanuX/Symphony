@@ -275,6 +275,57 @@ void test_canonical(const fs::path& repository) {
         "canonical completion evidence missing");
 }
 
+void test_registered_shv_owner_inventory(const fs::path& repository) {
+    const auto registry = read_json(repository / "knowledge/INVARIANT-OWNERSHIP.json");
+    // These admitted owners must remain present even though the wider registry is
+    // incremental. Derive operations independently from their owning declarations.
+    const std::pair<const char*, const char*> owners[] = {
+        {"shv-engine", "source-replay-provenance"},
+        {"shv-pdf-adapter", "pdf-source-replay"},
+        {"shv-profile-engine", "profile-source-binding"},
+        {"shv-graph-duckdb-connector", "graph-store-provenance"},
+        {"shv-publication-engine", "publication-provenance"}
+    };
+    for (const auto& [module, invariant_name] : owners) {
+        const std::string module_root = std::string("modules/") + module;
+        const auto owner = read_json(repository / module_root / "OWNER-INTERFACE.json");
+        const auto adapter_id = "adapter:symphony:" + owner.at("engine_id").get<std::string>() + ".v1";
+        const auto adapter = std::find_if(registry.at("adapters").begin(), registry.at("adapters").end(),
+            [&adapter_id](const engine::Json& value) { return value.at("adapter_id") == adapter_id; });
+        require(adapter != registry.at("adapters").end(), "missing admitted SHV adapter: " + adapter_id);
+        require(adapter->at("component") == module && adapter->at("format_version") == 3U &&
+                adapter->at("entry_point_id") == owner.at("engine_id") &&
+                adapter->at("implementation_path") == module_root &&
+                adapter->at("owner_contract") == module_root + "/SPEC.md",
+            "SHV adapter changed owning module or entrypoint: " + adapter_id);
+        std::set<std::string> declared_operations;
+        for (const auto& operation : owner.at("operations")) {
+            require(declared_operations.insert(operation.at("engine_operation_id").get<std::string>()).second,
+                "duplicate operation in SHV owner declaration: " + module_root);
+        }
+        const auto registered_operations = adapter->at("operation_ids").get<std::set<std::string>>();
+        require(registered_operations == declared_operations,
+            "SHV registry omitted or invented an owner operation: " + adapter_id);
+        const auto invariant_id = std::string("invariant:symphony:shv.") + invariant_name;
+        const auto invariant = std::find_if(registry.at("invariants").begin(), registry.at("invariants").end(),
+            [&invariant_id](const engine::Json& value) { return value.at("invariant_id") == invariant_id; });
+        require(invariant != registry.at("invariants").end(), "missing admitted SHV invariant: " + invariant_id);
+        require(invariant->at("owner_component") == module &&
+                invariant->at("owner_contract") == module_root + "/SPEC.md" &&
+                invariant->at("ipc_boundary") == true &&
+                invariant->at("allowed_adapter_ids") == engine::Json::array({adapter_id}),
+            "SHV process invariant lost its exact owner: " + invariant_id);
+    }
+    const auto transaction_id = "invariant:symphony:shv.catalogue-publication-commit";
+    const auto transaction = std::find_if(registry.at("invariants").begin(), registry.at("invariants").end(),
+        [&transaction_id](const engine::Json& value) { return value.at("invariant_id") == transaction_id; });
+    require(transaction != registry.at("invariants").end(), "missing protected catalogue publication invariant");
+    require(transaction->at("owner_component") == "qxctl-shv-publication-store" &&
+            transaction->at("owner_contract") == "knowledge/shv/PUBLICATION.md" &&
+            transaction->at("ipc_boundary") == false && transaction->at("allowed_adapter_ids").empty(),
+        "catalogue persistence was reassigned to a native semantic adapter");
+}
+
 void test_v1_registry_compatibility(const fs::path& repository) {
     TemporaryDirectory temporary;
     copy_fixture(repository, temporary.path());
@@ -543,6 +594,7 @@ int main(int argc, char** argv) {
         test_v2_generic_adapter();
         test_v3_explicit_adapter_ownership();
         test_canonical(repository);
+        test_registered_shv_owner_inventory(repository);
         test_v1_registry_compatibility(repository);
         test_shape_digest_and_order(repository);
         test_adapter_closure(repository);

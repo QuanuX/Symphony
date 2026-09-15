@@ -10,21 +10,15 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
-          "reason": "SCV owns source knowledge, caller-authored provider packs, finite evidence composition and exact interface metadata.",
-          "reference": "knowledge/scv/OWNER-INTERFACE.md",
-          "vector": "scv"
+          "reason": "Completed material source changes require reviewed append-only closure.",
+          "reference": "knowledge/sclv/SPEC.md",
+          "vector": "sclv"
         },
         {
           "applicability": "applicable",
           "reason": "SKVI routes current owner contracts and distributed feature files.",
           "reference": "knowledge/skvi/INDEX.md",
           "vector": "skvi"
-        },
-        {
-          "applicability": "applicable",
-          "reason": "Completed material source changes require reviewed append-only closure.",
-          "reference": "knowledge/sclv/SPEC.md",
-          "vector": "sclv"
         },
         {
           "applicability": "applicable",
@@ -44,7 +38,8 @@
         "Exact .7 retained composition workflow producer, consumer, interruption and installed-process checks preserve original pack owners and fixed caller selections. Strict typed journal roundtrip rejects omitted/null fields that could otherwise normalize under an earlier seal. Execution evidence belongs to the increment closure.",
         "Owner and independent Go consumer regressions cover exact targets, preserved caller criteria, partial/contradictory evidence and resealed-result rejection. Retained links replay original owners and verify immutable input correspondence; execution evidence belongs to the increment closure.",
         "Native and independent Go regressions cover complete closure, exact full-value identities, malformed graphs and pre-allocation expansion budgets; installed qxctl evidence belongs to the increment closure.",
-        "Versioned coordination regressions cover exact checkpoint reconstruction, original-owner replay, observational status, malformed retained evidence and interrupted publication. Installed complete-fixture evidence is recorded in the increment closure."
+        "Versioned coordination regressions cover exact checkpoint reconstruction, original-owner replay, observational status, malformed retained evidence and interrupted publication. Installed complete-fixture evidence is recorded in the increment closure.",
+        "knowledge/scv/OWNER-INTERFACE.md: SCV owns source knowledge, caller-authored provider packs, finite evidence composition and exact interface metadata."
       ],
       "feature_id": "ssfv:symphony:scev-cf-engine",
       "how": "Uses shared C++ bounded JSON mechanics, exact source/capture digests, explicit interpretation policy and qualified support paths through a separately packaged process.",
@@ -61,6 +56,7 @@
       "implementation_paths": [
         "knowledge/scv/BUNDLE-WORKFLOWS.md",
         "knowledge/scv/OWNER-INTERFACE.json",
+        "knowledge/scv/OWNER-INTERFACE.md",
         "modules/scev-cf-engine/CMakeLists.txt",
         "modules/scv-engine/src/bundle.cpp",
         "modules/scv-engine/src/bundle.hpp",
@@ -82,7 +78,7 @@
       ],
       "owner_contract": "modules/scev-cf-engine/SPEC.md",
       "parent_feature_id": "ssfv:symphony:platform",
-      "record_version": 9,
+      "record_version": 2,
       "relationships": [
         {
           "rationale": "Statically links the authority-free common process, digest and temporal mechanics.",
@@ -99,7 +95,8 @@
       "who": "Any caller using owner-authorized local execution; protected state changes additionally require the storage adapter authorization circuit.",
       "why": "Makes provider-native evidence useful through independently installed engines while preserving source meaning, user choice and reproducible provenance."
     }
-  ]
+  ],
+  "source_scope": "modules/scev-cf-engine"
 }
 ```
 <!-- symphony:ssfv:feature-file:v1:end -->

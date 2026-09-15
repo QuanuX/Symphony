@@ -24,6 +24,14 @@ Guide agents and implementers in SCV research without introducing provider prefe
 5. Keep SCV semantic output separate from SOV operational permission.
 6. Keep all private installation facts outside official source and public documentation.
 
+## SKV Maintenance
+
+SCV, SCHV, SCEV, their provider subvectors and the optional graph connector follow the common SKV contracts in `knowledge/SPEC.md` and `knowledge/SKILL.md`. Keep each existing owner Quad and companion reachable through the exact manifest declarations and individually routed by `knowledge/skvi/INDEX.md`. Module installation and an indexed path alone do not declare a canonical owner.
+
+For feature changes, follow `knowledge/ssfv/FEATURE-FILE-FORMAT.md`, the exact v2 feature-record schema and `knowledge/ssfv/REGISTRY.md`. The envelope carries `source_scope`; `record_version` is the schema version `2`, not an increment counter. Preserve canonical ordering and the normalized record digest. The v2 `cross_vector_references` field accepts its declared governance vectors; retain other domain contract references in implementation paths and evidence without changing or mislabeling their owner.
+
+Validate changed owner records and routes with the native SSFV check/graph and SKVI check/project operations. Run focused implementation and consumer checks for affected behavior, and record executed results separately from named tests or prior milestones. Native owner acceptance and the broader repository validator cover different boundaries. Keep reviewed source changes and their subsequent SCLV closure distinct from immutable historical installations.
+
 ## Stop Conditions
 
 Use the admitted source-knowledge, corpus and profile/connection operations within their exact contracts. Preserve unknown formats, unresolved extraction and unverified semantic mappings. Retain interpretation wrappers when claiming profile replay and keep caller requirements explicit. New graph technology, semantic schema, operational account adapter, authority boundary, scoring policy or network API beyond these contracts requires a separate reviewed decision; ordinary authorized use does not reopen an already ratified boundary.

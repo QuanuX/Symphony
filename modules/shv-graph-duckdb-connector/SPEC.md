@@ -30,7 +30,7 @@ Prepare persists before commit. A killed transaction cannot expose partial rows;
 
 ## Publication boundary
 
-Storage commit records immutable evidence. It does not select a canonical catalogue, mutate SSIAG policy or update a protected head. See `CATALOGUE-PUBLICATION-PLAN.md` for the subsequent authority transaction. Preserve separate identities for manifest, materialized partitions, graph snapshot and selected catalogue head. Never use a newest SQL row as a canonical head.
+Storage commit records immutable evidence. It does not select a canonical catalogue, mutate SSIAG policy or update a protected head. The protected authority transaction is implemented separately under `knowledge/shv/PUBLICATION.md`; `knowledge/shv/CATALOGUE-PUBLICATION-PLAN.md` retains the earlier plan. Preserve separate identities for manifest, materialized partitions, graph snapshot and selected catalogue head. Never use a newest SQL row as a canonical head.
 
 ## Inventory release 0.2.0-dev (SHV-19)
 

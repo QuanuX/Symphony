@@ -10,15 +10,15 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
-          "reason": "SKVI routes current owner contracts and distributed feature files.",
-          "reference": "knowledge/skvi/INDEX.md",
-          "vector": "skvi"
-        },
-        {
-          "applicability": "applicable",
           "reason": "Completed material source changes require reviewed append-only closure.",
           "reference": "knowledge/sclv/SPEC.md",
           "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes current owner contracts and distributed feature files.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
         },
         {
           "applicability": "applicable",
@@ -29,7 +29,7 @@
       ],
       "distinctions": [],
       "evidence": [
-        "Focused native, Go, installed, schema and historical-version checks are recorded in SHV-22. The full gate is explicitly paused."
+        "modules/shv-profile-engine/tests/profile_test.py and tests/diagnostics_test.py cover caller profiles, binding, source-field diagnostics and reference analysis; tests/interface_test.py covers exact metadata and historical descriptor compatibility. Retained execution evidence belongs to the SHV-22, SHV milestone gate and SHV-23 packets."
       ],
       "feature_id": "ssfv:symphony:shv-profile-engine",
       "how": "C++ validates profile and recipe semantics; the exact compiled kernel 0.3 reader replays selected bytes on binding. qxctl independently checks correspondence.",
@@ -45,10 +45,10 @@
       ],
       "implementation_paths": [
         "modules/shv-profile-engine/CMakeLists.txt",
-        "modules/shv-profile-engine/src/profile.cpp",
         "modules/shv-profile-engine/src/descriptor.cpp",
+        "modules/shv-profile-engine/src/diagnostics.cpp",
         "modules/shv-profile-engine/src/main.cpp",
-        "modules/shv-profile-engine/src/diagnostics.cpp"
+        "modules/shv-profile-engine/src/profile.cpp"
       ],
       "kind": "feature",
       "non_claims": [
@@ -62,6 +62,11 @@
         {
           "rationale": "Authority-free process, path and digest mechanics.",
           "target_feature_id": "ssfv:symphony:knowledge-vector-engine-foundation",
+          "type": "depends_on"
+        },
+        {
+          "rationale": "Embeds the exact kernel 0.3 source reader for universe binding and source diagnostics, as declared in CMakeLists.txt and SPEC.md; this does not select a separately installed newer kernel.",
+          "target_feature_id": "ssfv:symphony:shv-engine",
           "type": "depends_on"
         }
       ],

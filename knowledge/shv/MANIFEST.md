@@ -6,22 +6,49 @@
 
 ## Declared Contract Truth Role
 
-SHV is the owner of the Hardware Capability Atlas and hardware matrix concept. Those are one semantic vector, though future implementation may contain multiple cooperating components.
+SHV owns the hardware encyclopedia, including the Hardware Capability Atlas and hardware matrix concept. The currently shipped modules below cooperate within that semantic vector. This declared inventory is extensible; it does not define every module or composition users may introduce.
 
 ## Canonical Surfaces
 
+- `knowledge/shv/ACTIVATION.md`
+- `knowledge/shv/AMD-PRODUCT-IDENTIFIERS.v1.md`
+- `knowledge/shv/CATALOGUE-PUBLICATION-PLAN.md`
+- `knowledge/shv/DOCUMENT-INGESTION.md`
+- `knowledge/shv/DOSSIERS.md`
+- `knowledge/shv/GRAPH-STORE.md`
+- `knowledge/shv/IDENTIFIERS.md`
 - `knowledge/shv/INTENT.md`
-- `knowledge/shv/MANIFEST.md`
-- `knowledge/shv/SPEC.md`
-- `knowledge/shv/SKILL.md`
+- `knowledge/shv/INVENTORY.md`
 - `knowledge/shv/KERNEL.md`
+- `knowledge/shv/MANIFEST.md`
+- `knowledge/shv/MATERIALIZATION.md`
+- `knowledge/shv/PARTITIONS.md`
+- `knowledge/shv/PDF-ADAPTER.md`
+- `knowledge/shv/PDF-EVIDENCE.md`
 - `knowledge/shv/PROFILES.md`
-- `modules/shv-engine/SPEC.md`
-- `modules/shv-graph-adapter/SPEC.md`
+- `knowledge/shv/PUBLICATION.md`
+- `knowledge/shv/REFRESH-COMPARISON.md`
+- `knowledge/shv/REFRESH.md`
+- `knowledge/shv/RELOCATION.md`
+- `knowledge/shv/RESOLUTION.md`
+- `knowledge/shv/SKILL.md`
+- `knowledge/shv/SOURCES.md`
+- `knowledge/shv/SPEC.md`
 
-## Implemented Initial Kernel
+## Subordinate Manifests
 
-`modules/shv-engine/` supplies the independently installable C++ kernel (current 0.3.0-dev, with earlier exact releases retained): explicit coverage profiles, retained-source catalogue build/replay, exact requirement evaluation, deterministic graph projection and source-backed graph validation. `modules/shv-graph-adapter/` supplies a separately installable generic C++ graph port and working in-memory portable reference adapter for lossless exchange and structural queries. `qxctl shv` administers every delivered native operation and discovers exact installed schemas and unanswered templates.
+- `modules/shv-engine/MANIFEST.md`
+- `modules/shv-graph-adapter/MANIFEST.md`
+- `modules/shv-graph-duckdb-connector/MANIFEST.md`
+- `modules/shv-partition-engine/MANIFEST.md`
+- `modules/shv-pdf-adapter/MANIFEST.md`
+- `modules/shv-profile-engine/MANIFEST.md`
+- `modules/shv-publication-engine/MANIFEST.md`
+- `modules/shv-source-engine/MANIFEST.md`
+
+## Implemented Kernel and Owner Modules
+
+`modules/shv-engine/` supplies the independently installable C++ kernel (current source release 0.4.0-dev, with earlier exact releases retained): explicit coverage profiles, retained-source catalogue build/replay, exact requirement evaluation, deterministic graph projection and source-backed graph validation. `modules/shv-graph-adapter/` supplies a separately installable generic C++ graph port and working in-memory portable reference adapter for lossless exchange and structural queries. `qxctl shv` administers every delivered native operation and discovers exact installed schemas and unanswered templates.
 
 These bounded v1 contracts are implemented; a broad hardware atlas, automated source acquisition, multi-source conflict aggregation, additional vendor-specific database drivers, custom plugin loading and Composer integration remain later work. Durable structural storage is implemented under `GRAPH-STORE.md`. No dedicated graph database is selected. The existing C++ DuckDB SQL default is unchanged. Read `KERNEL.md` and both module SPEC files for exact ownership and limits.
 
@@ -51,11 +78,11 @@ The independent `modules/shv-source-engine/` implements `SOURCES.md`: stable sou
 
 ## PDF evidence boundary
 
-`PDF-EVIDENCE.md` distinguishes implemented opaque capture/replay from prospective document decoding and native PDF hardware interpretation.
+`PDF-EVIDENCE.md` preserves the earlier opaque-evidence boundary and points to the subsequently implemented bounded PDF path. It does not select a general decoder or ratify namespace equivalence.
 
 `PDF-ADAPTER.md` now defines the independently installable C++ adapter and qxctl extraction/replay of one explicit AMD PDF table. General PDF coverage and namespace equivalence remain separate. Versioned documentary graph projection and kernel ingestion are implemented as described below.
 
-PDF adapter 0.2.0 now projects qualified documentary assertion edges and revalidates them from original bytes after generic graph exchange. These remain PDF-owned artifacts; kernel 0.3.0-dev admits them through the explicit `DOCUMENT-INGESTION.md` contract.
+Starting with PDF adapter 0.2.0-dev, the adapter projects qualified documentary assertion edges and revalidates them from original bytes after generic graph exchange. These remain PDF-owned artifacts; kernel 0.3.0-dev admits them through the explicit `DOCUMENT-INGESTION.md` contract.
 
 `DOCUMENT-INGESTION.md` now defines implemented kernel ingestion, caller-owned class field evolution and command-owner discipline. Durable storage and protected local catalogue publication are implemented under their separate contracts below.
 

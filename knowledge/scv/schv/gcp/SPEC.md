@@ -2,7 +2,7 @@
 
 ## Status and Ownership
 
-Architect-ratified bounded source-knowledge development contract, version `0.4.0-dev`. Google Cloud-native source, offering, service, version and constraint knowledge.
+Architect-ratified bounded source-knowledge development contract, implemented by the current source package `0.10.0-dev`. Google Cloud-native source, offering, service, version and constraint knowledge.
 
 The shared operation, evidence, lineage, uncertainty and process contracts are assigned by `knowledge/scv/SPEC.md`, `knowledge/scv/SOURCE-KNOWLEDGE.md`, `knowledge/scv/CORPUS.md`, `knowledge/scv/INTERPRETATION.md` and `knowledge/scv/schemas/v1/MANIFEST.md`. This owner specializes the declared domain identity and scope; it does not fork those mechanics or claim a complete vendor corpus.
 
@@ -25,3 +25,7 @@ The additive `.4` agent operating increment is defined by `knowledge/scv/AGENT-W
 Provider coverage in `knowledge/scv/COVERAGE.md` separately accounts for declared sources, selected acquisition and replayed interpretations within this domain. It does not substitute evidence gaps for a provider limitation.
 
 The additive `0.6.0-dev` package preserves this domain boundary while exposing the portable package and composition contracts in `knowledge/scv/PROVIDER-PACKS.md` and `knowledge/scv/COMPOSITION.md`, with mechanical interface ownership in `knowledge/scv/OWNER-INTERFACE.md`. Parent-family engines accept caller-declared provider packages within their family; separately installed named leaf domains keep their exact released scope. Cross-family composition remains a caller decision.
+
+## Exact Release Routing
+
+The current source package retains thirty native operations under `knowledge/scv/OWNER-INTERFACE.json`. The later shared contracts are `knowledge/scv/COMPOSITION-WORKFLOWS.md` (`0.7.0-dev`), `knowledge/scv/OBLIGATIONS.md` (`0.8.0-dev`), `knowledge/scv/BUNDLES.md` (`0.9.0-dev`) and `knowledge/scv/BUNDLE-WORKFLOWS.md` (`0.10.0-dev`). Each applies within this owner's existing domain. Earlier exact installations retain their receipt-owned contracts and operation sets; current source documentation neither relabels them nor changes command defaults.

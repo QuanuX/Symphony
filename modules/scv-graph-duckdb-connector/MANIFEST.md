@@ -20,10 +20,10 @@
 - `modules/scv-graph-duckdb-connector/FEATURES.md`
 - `modules/scv-graph-duckdb-connector/schemas/v1/graph-index.schema.json`
 - `modules/scv-graph-duckdb-connector/schemas/v2/graph-index.schema.json`
-- `knowledge/scv/GRAPH-INDEX.md`
-- `knowledge/scv/INDEX-MAINTENANCE.md`
 
 ## Package and State Boundary
+
+The module implements `knowledge/scv/GRAPH-INDEX.md` and `knowledge/scv/INDEX-MAINTENANCE.md`. Those semantic companions are declared by `knowledge/scv/MANIFEST.md`; installing receipt-owned copies does not transfer their canonical ownership to this module.
 
 The immutable receipt identifies the exact connector executable, owned contracts, schema and supporting files. The caller's database, DuckDB journal files and import state are outside those package files. Removing the installed connector must not delete a caller's database or change another installed version. There is no active alias, resident service, network listener or mandatory backend dependency for the existing SCV engines.
 

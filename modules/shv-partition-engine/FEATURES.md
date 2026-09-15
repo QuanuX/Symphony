@@ -10,15 +10,15 @@
       "cross_vector_references": [
         {
           "applicability": "applicable",
-          "reason": "SKVI routes current owner contracts and distributed feature files.",
-          "reference": "knowledge/skvi/INDEX.md",
-          "vector": "skvi"
-        },
-        {
-          "applicability": "applicable",
           "reason": "Completed material source changes require reviewed append-only closure.",
           "reference": "knowledge/sclv/SPEC.md",
           "vector": "sclv"
+        },
+        {
+          "applicability": "applicable",
+          "reason": "SKVI routes current owner contracts and distributed feature files.",
+          "reference": "knowledge/skvi/INDEX.md",
+          "vector": "skvi"
         },
         {
           "applicability": "applicable",
@@ -40,14 +40,14 @@
         },
         {
           "language": "CMake",
-          "role": "Builds and receipts the exact independently selected connector and dependency."
+          "role": "Builds and receipts the exact independently selected engine and its declared dependencies."
         }
       ],
       "implementation_paths": [
         "modules/shv-partition-engine/CMakeLists.txt",
-        "modules/shv-partition-engine/src/partition.cpp",
         "modules/shv-partition-engine/src/descriptor.cpp",
-        "modules/shv-partition-engine/src/main.cpp"
+        "modules/shv-partition-engine/src/main.cpp",
+        "modules/shv-partition-engine/src/partition.cpp"
       ],
       "kind": "feature",
       "non_claims": [
@@ -79,8 +79,4 @@
 ```
 <!-- symphony:ssfv:feature-file:v1:end -->
 
-## Explicit composition release 0.4.0-dev
-
-Partition 0.4.0-dev explicitly admits source 0.1/0.2 and kernel 0.1/0.2/0.3/0.4. Historical partition 0.1/0.2/0.3 retain their prior source/kernel admission. qxctl passes the selected partition owner through build, manifest, query, materialization checkpoint and resolution replay. The embedded previous-version macro retains the partition 0.2 semantics.
-
-Use a fresh install prefix and explicit qxctl version selection. Version 0.3 declarations remain checked against their original compiled digest. No command or default changes; metadata is not semantic authorization and future versions are not automatically admitted.
+Exact release admission and historical-owner compatibility are defined in [SPEC.md](SPEC.md).

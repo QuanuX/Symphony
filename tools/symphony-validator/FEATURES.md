@@ -138,7 +138,7 @@
       ],
       "owner_contract": "tools/symphony-validator/SPEC.md",
       "parent_feature_id": "ssfv:symphony:symphony-validator",
-      "record_version": 3,
+      "record_version": 2,
       "relationships": [
         {
           "rationale": "qxctl supplies the stable headless query and exact installed-validator command surface.",

@@ -41,6 +41,12 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 | `modules/sev-engine` | registered | `ssfv:symphony:sev-engine` | `modules/sev-engine/FEATURES.md` |
 | `modules/shv-engine` | registered | `ssfv:symphony:shv-engine` | `modules/shv-engine/FEATURES.md` |
 | `modules/shv-graph-adapter` | registered | `ssfv:symphony:shv-graph-adapter` | `modules/shv-graph-adapter/FEATURES.md` |
+| `modules/shv-graph-duckdb-connector` | registered | `ssfv:symphony:shv-graph-duckdb-connector` | `modules/shv-graph-duckdb-connector/FEATURES.md` |
+| `modules/shv-partition-engine` | registered | `ssfv:symphony:shv-partition-engine` | `modules/shv-partition-engine/FEATURES.md` |
+| `modules/shv-pdf-adapter` | registered | `ssfv:symphony:shv-pdf-adapter` | `modules/shv-pdf-adapter/FEATURES.md` |
+| `modules/shv-profile-engine` | registered | `ssfv:symphony:shv-profile-engine` | `modules/shv-profile-engine/FEATURES.md` |
+| `modules/shv-publication-engine` | registered | `ssfv:symphony:shv-publication-engine` | `modules/shv-publication-engine/FEATURES.md` |
+| `modules/shv-source-engine` | registered | `ssfv:symphony:shv-source-engine` | `modules/shv-source-engine/FEATURES.md` |
 | `modules/skvi-engine` | registered | `ssfv:symphony:skvi-engine` | `modules/skvi-engine/FEATURES.md` |
 | `modules/sodv-engine` | registered | `ssfv:symphony:sodv-engine` | `modules/sodv-engine/FEATURES.md` |
 | `modules/ssfv-engine` | registered | `ssfv:symphony:ssfv-engine` | `modules/ssfv-engine/FEATURES.md` |
@@ -51,7 +57,7 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 
 ## Ratified Nested Review Progress
 
-The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, provider-trust assurance slice, provider-binding lifecycle slice, and Accordare durability/supervision review record seventy-three ratified nested feature-worthy boundaries inside seventeen registered non-root owner scopes:
+The F1 through F3 review, feature-administration assurance slice, root-summary assurance slice, invariant-assurance slice, provider-trust assurance slice, provider-binding lifecycle slice, and Accordare durability/supervision review record seventy-six ratified nested feature-worthy boundaries inside seventeen registered non-root owner scopes:
 
 | Owner scope | Ratified nested records | Review disposition |
 |---|---:|---|
@@ -59,7 +65,8 @@ The F1 through F3 review, feature-administration assurance slice, root-summary a
 | `modules/knowledge-session-coordinator` | 6 | Reconciliation, authority epochs, semantic maintenance, lifecycle planning, lifecycle apply coordination, and protected Named Version durability are registered. |
 | `modules/maestro` | 1 | Complete derived receptor inventory is registered separately from durable receptor presence. |
 | `libraries/stav-protocol-go` | 2 | Canonical bytes, digests, and bounded local frames are separated from exact content and identifier validation; durable checksummed ledger framing is explicitly owned by the append authority. |
-| `modules/secure-identity-access-governance` | 9 | TOPS enrollment, kernel peer trust, authorization capabilities, policy administration, provider metadata, provider trust assurance, exact provider-installation and protected binding lifecycle, safe audit production, and native supervision are registered. |
+| `modules/secure-identity-access-governance` | 10 | TOPS enrollment, kernel peer trust, authorization capabilities, policy administration, provider metadata, provider trust assurance, exact provider-installation and protected binding lifecycle, safe audit production, and native supervision are registered. |
+| `modules/ssiag-provider-macos-keychain` | 2 | Metadata handshake and signed-bundle readiness are separate sibling subfeatures under SSIAG foundation; neither owns a nested child. |
 | `modules/stav-append-authority` | 5 | TOPS enrollment, serialized append, ledger durability, authorized query, and native supervision are registered. |
 | `modules/accordare-stav-producer` | 3 | Exact installation-specific producer-grant administration, pre-mutation intent durability, and native supervision are registered beneath the separately authenticated durable audit producer. |
 | `libraries/knowledge-vector-engine-cpp` | 3 | Bounded process protocol, content-addressed evidence snapshots, and temporal representation conformance are registered without turning the static foundation into a runtime engine. |
@@ -72,7 +79,7 @@ The F1 through F3 review, feature-administration assurance slice, root-summary a
 | `modules/sev-engine` | 4 | Dynamic evolution, SCSEV command-surface assessment, private novelty/watch policy, and shared lifecycle-session binding are registered. |
 | `tools/symphony-validator` | 2 | Deterministic root-summary projection plus invariant-ownership and implemented-module-admission assurance are registered separately from the complete repository checker. |
 
-The macOS Keychain metadata adapter remains one narrow registered subfeature with no child record. Its corrected record states that the Go SSIAG foundation invokes only the mutually verified metadata handshake, qxctl never invokes the Swift executable directly, and operational Keychain access, credential operations, and secret delivery remain disabled.
+The macOS provider owns two narrow sibling subfeatures, metadata handshake and signed-bundle readiness, with no child records. The Go SSIAG foundation invokes the mutually verified metadata handshake; qxctl does not invoke the Swift executable directly. Operational Keychain access, credential operations and secret delivery remain disabled.
 
 These reviews advance completion condition 2 for those exact boundaries only. They do not imply that every other nested application boundary has been adjudicated, that an unlisted boundary has an explicit non-feature disposition, that all legacy invariants are registered, or that every package installed on a host has been inventoried.
 
