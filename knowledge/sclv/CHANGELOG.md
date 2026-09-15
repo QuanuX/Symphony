@@ -12353,3 +12353,61 @@ This PR authorizes none of the following:
 - ratification_evidence_digest: `sha256:6594856d38cfab316caa3c766d73cc42fb10b86092d9b51891b56642221c306c`
 - affected_surfaces:
   - `knowledge/sclv/CHANGELOG.md`
+
+---
+
+- record_id: `SCLV-CHG-20260915-SHV-SCV-INTEGRATION-REVIEW`
+- record_version: `3`
+- title: `Route existing SHV contracts and preserve impersonal engine integration findings`
+- status: `canonical`
+- change_started_at: `2026-09-15T04:28:04Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `canonical_update`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV/SCV integration review and reusable SKV findings`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-15-shv-scv-integration-review.md`
+- skvi_references:
+  - `knowledge/ENGINE-INTEGRATION-FINDINGS.md`
+  - `knowledge/ARCHITECTURE.md`
+  - `knowledge/shv/MANIFEST.md`
+- change_summary: |
+    Adds twelve missing individual SKVI routes for existing SHV Quad files, corrects stale SHV implementation summaries and declares an impersonal SKV findings companion.
+- relationship_changes: |
+    Routes existing owners and distinguishes observed shared mechanics from proposed interface generation and cross-vector evidence relationships.
+- doctrine_changes: |
+    No doctrine change; existing Quad, caller-sovereignty and lowest-authoritative-owner rules remain in force.
+- compatibility_consequences: |
+    No runtime, schema, command, engine version or installed package changes. Existing exact installations retain their recorded bytes.
+- publication_consequences: |
+    Local canonical knowledge update only; no official release or external publication.
+- projection_consequences: |
+    No graph projection or runtime integration is introduced. SKVI discovery gains current paths.
+- evidence:
+  - `../shv-scv-integration-review/README.md records findings, limits and sequenced next work.`
+  - `../shv-scv-integration-review/evidence/OWNER_AUDIT_BASELINE.json preserves missing routes; OWNER_AUDIT.json records corrected routing.`
+  - `../shv-scv-integration-review/evidence/TESTS.json records three affected command checks; validator.json records source validation.`
+- non_authorizations:
+  - `No provider action, new runtime bridge, public release or default graph database selection.`
+  - `No automatic source acquisition, physical compatibility inference or destructive retention.`
+- notes: |
+    SCV generated interface check and three existing command registry tests pass. Ten selected module Quads inspected; 97 SHV and 74 SCV leaves have machine administration metadata. Broad runtime integration remains proposed, not implemented.
+- date: `2026-09-15`
+- change_completed_at: `2026-09-15T04:28:04Z`
+- recorded_at: `2026-09-15T04:28:50Z`
+- revision_value: `905d6ef63eda3429309248da1e988da5ca389e9b`
+- tree_digest: `sha256:5ba8ac16f639bfcf755553bac2f8050167cfe13a4293b42b2df4cec50ceaf934`
+- ratification_evidence_digest: `sha256:c7485119cb637bc054ae1e25f7d44b24386187da40c92e7edde2712841977970`
+- affected_surfaces:
+  - `knowledge/ARCHITECTURE.md`
+  - `knowledge/ENGINE-INTEGRATION-FINDINGS.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/shv/MANIFEST.md`
+  - `knowledge/skvi/INDEX.md`
