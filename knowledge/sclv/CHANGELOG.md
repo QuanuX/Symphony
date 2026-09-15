@@ -12411,3 +12411,79 @@ This PR authorizes none of the following:
   - `knowledge/MANIFEST.md`
   - `knowledge/shv/MANIFEST.md`
   - `knowledge/skvi/INDEX.md`
+
+---
+
+- record_id: `SCLV-CHG-20260915-SHV-PROFILE-INTERFACE`
+- record_version: `3`
+- title: `Generate exact SHV profile interface metadata and verify installed admission`
+- status: `canonical`
+- change_started_at: `2026-09-15T04:33:38Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV profile mechanical interface implementation and local closure`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-15-shv-profile-interface.md`
+- skvi_references:
+  - `modules/shv-profile-engine/OWNER-INTERFACE.json`
+  - `modules/shv-profile-engine/SPEC.md`
+  - `knowledge/shv/PROFILES.md`
+- change_summary: |
+    Profile owner 0.3 installs a mechanical declaration and generates native descriptor, Go admission and CMake inventory metadata from it.
+- relationship_changes: |
+    qxctl checks receipt-owned installed declaration against compiled canonical admission. Native semantic handlers and independent Go result checks remain separate.
+- doctrine_changes: |
+    No doctrine change; declaration authoring does not restrict caller metrics, field retirement, source selection or composition.
+- compatibility_consequences: |
+    Frozen installed 0.1/0.2 descriptors preserve old operation metadata and admission. Seven operations and all 369 qxctl command identities/defaults remain unchanged. Embedded kernel remains 0.3.0-dev.
+- publication_consequences: |
+    Local independently installed development package only; no official module release or external publication.
+- projection_consequences: |
+    Generated source metadata is subordinate to the owner declaration; it creates no hardware fact or semantic integration.
+- evidence:
+  - `../shv-23/VERIFICATION.md records focused native, Go, installed and package verification.`
+  - `../shv-23/evidence/SOURCE_BUILD_PARITY.json binds source files and selected installation.`
+  - `../shv-23/evidence/PACKAGE.json records reproducible executables, command parity and guarded uninstall.`
+- non_authorizations:
+  - `No dynamic plugin loader, source acquisition, protected catalogue mutation or default graph database selection.`
+  - `No changed historical installed package, caller hardware policy or semantic cross-vector bridge.`
+- notes: |
+    79 focused Go test events with zero failures/skips; three final CTest groups; 96 installed process cases; nine final interface boundaries; thirteen integration calls and forty-one schema specimens. Full suite deferred per user protocol; seven other SHV owners remain next scope.
+- date: `2026-09-15`
+- change_completed_at: `2026-09-15T04:41:34Z`
+- recorded_at: `2026-09-15T04:45:24Z`
+- revision_value: `d0ddbea57da27681f8be300858ab1acc6a3d2f56`
+- tree_digest: `sha256:e65c1d8a07f66ec515484f07929a7290a2603f004e343b887bc2037f2ef3fc41`
+- ratification_evidence_digest: `sha256:e6d3366188eee29de46c63a78b9ce6939431824697f83c78bb91d0804e9cc791`
+- affected_surfaces:
+  - `cmake/ShvProfileInterface.generated.cmake`
+  - `knowledge/shv/PROFILES.md`
+  - `knowledge/skvi/INDEX.md`
+  - `modules/shv-profile-engine/CMakeLists.txt`
+  - `modules/shv-profile-engine/INSTALL.md`
+  - `modules/shv-profile-engine/MANIFEST.md`
+  - `modules/shv-profile-engine/OWNER-INTERFACE.json`
+  - `modules/shv-profile-engine/SKILL.md`
+  - `modules/shv-profile-engine/SPEC.md`
+  - `modules/shv-profile-engine/src/descriptor.cpp`
+  - `modules/shv-profile-engine/src/interface.generated.hpp`
+  - `modules/shv-profile-engine/src/profile.cpp`
+  - `modules/shv-profile-engine/src/profile.hpp`
+  - `modules/shv-profile-engine/tests/diagnostics_test.py`
+  - `modules/shv-profile-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/shv-profile-engine/tests/interface_test.py`
+  - `modules/shv-profile-engine/tools/generate_interface.py`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile_descriptor.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile_diagnostics_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile_interface.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile_validation.go`
