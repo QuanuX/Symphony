@@ -31,6 +31,7 @@ Each vector Contract Quad owns its domain semantics, canonical paths, operations
 
 - `knowledge/ACCORD-AUDIT.md`
 - `knowledge/ARCHITECTURE.md`
+- `knowledge/ENGINE-INTEGRATION-FINDINGS.md`
 - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
 - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
 - `knowledge/FEATURE-ADMINISTRATION.md`

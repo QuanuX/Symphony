@@ -65,7 +65,7 @@ Heavy workloads need not share an exhaust, control, research, or other bus where
 - SCV owns private semantic knowledge about offsite provider resources, offerings, regions, constraints, and hybrid possibilities. SOV acts upon SCV evidence; it does not take SCV semantic ownership.
 - SNV owns Node identity, resource, cluster-relationship, and SNV-bounded naming records through SNIV, SNRV, SCIV, and SCNV.
 - SQV owns Symphony's quantitative framework domain without acquiring user strategy logic. SOOV is its high-performance C++-only FIX architecture.
-- SHV owns hardware-capability knowledge and its future reproducible C++ graph engine.
+- SHV owns hardware-capability knowledge through bounded C++ source, catalogue, profile, partition, graph and publication contracts; broad hardware coverage remains extensible.
 - SAV remains the Symphony Accordare Vector.
 - SIV is the Symphony Intelligence Vector. SMCV is its optional Markdown conversion component, and SAIV is reserved for a later integration sub-vector.
 

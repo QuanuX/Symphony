@@ -11935,3 +11935,172 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - relationships:
   - `knowledge/shv/KERNEL.md`
 - notes: `Declaration conformance and exact local binding; no universal hardware census or publication authority.`
+
+##### Engine integration findings
+- path: `knowledge/ENGINE-INTEGRATION-FINDINGS.md`
+- title: Engine integration findings
+- surface_type: canonical Markdown companion
+- truth_role: owner-maintained source truth
+- owner: SKV maintainers
+- scope: Impersonal observed SCV/SHV mechanisms, exact owner references and explicitly proposed reuse seams.
+- relationships: depends_on -> `knowledge/ARCHITECTURE.md`
+- consumers: maintainers, agentic tools, qxctl knowledge discovery, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Routing does not grant execution, mutation or publication authority.
+- status: canonical
+
+##### shv-engine intent
+- path: `modules/shv-engine/INTENT.md`
+- title: shv-engine intent
+- surface_type: canonical Markdown companion
+- truth_role: owner-maintained source truth
+- owner: SHV maintainers
+- scope: Existing shv-engine Contract Quad member; individual discovery route without semantic changes.
+- relationships: depends_on -> `modules/shv-engine/SPEC.md`
+- consumers: maintainers, agentic tools, qxctl knowledge discovery, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Routing does not grant execution, mutation or publication authority.
+- status: canonical
+
+##### shv-engine manifest
+- path: `modules/shv-engine/MANIFEST.md`
+- title: shv-engine manifest
+- surface_type: canonical Markdown companion
+- truth_role: owner-maintained source truth
+- owner: SHV maintainers
+- scope: Existing shv-engine Contract Quad member; individual discovery route without semantic changes.
+- relationships: depends_on -> `modules/shv-engine/SPEC.md`
+- consumers: maintainers, agentic tools, qxctl knowledge discovery, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Routing does not grant execution, mutation or publication authority.
+- status: canonical
+
+##### shv-engine skill
+- path: `modules/shv-engine/SKILL.md`
+- title: shv-engine skill
+- surface_type: canonical Markdown companion
+- truth_role: owner-maintained source truth
+- owner: SHV maintainers
+- scope: Existing shv-engine Contract Quad member; individual discovery route without semantic changes.
+- relationships: depends_on -> `modules/shv-engine/SPEC.md`
+- consumers: maintainers, agentic tools, qxctl knowledge discovery, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Routing does not grant execution, mutation or publication authority.
+- status: canonical
+
+##### shv-source-engine intent
+- path: `modules/shv-source-engine/INTENT.md`
+- title: shv-source-engine intent
+- surface_type: canonical Markdown companion
+- truth_role: owner-maintained source truth
+- owner: SHV maintainers
+- scope: Existing shv-source-engine Contract Quad member; individual discovery route without semantic changes.
+- relationships: depends_on -> `modules/shv-source-engine/SPEC.md`
+- consumers: maintainers, agentic tools, qxctl knowledge discovery, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Routing does not grant execution, mutation or publication authority.
+- status: canonical
+
+##### shv-source-engine manifest
+- path: `modules/shv-source-engine/MANIFEST.md`
+- title: shv-source-engine manifest
+- surface_type: canonical Markdown companion
+- truth_role: owner-maintained source truth
+- owner: SHV maintainers
+- scope: Existing shv-source-engine Contract Quad member; individual discovery route without semantic changes.
+- relationships: depends_on -> `modules/shv-source-engine/SPEC.md`
+- consumers: maintainers, agentic tools, qxctl knowledge discovery, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Routing does not grant execution, mutation or publication authority.
+- status: canonical
+
+##### shv-source-engine skill
+- path: `modules/shv-source-engine/SKILL.md`
+- title: shv-source-engine skill
+- surface_type: canonical Markdown companion
+- truth_role: owner-maintained source truth
+- owner: SHV maintainers
+- scope: Existing shv-source-engine Contract Quad member; individual discovery route without semantic changes.
+- relationships: depends_on -> `modules/shv-source-engine/SPEC.md`
+- consumers: maintainers, agentic tools, qxctl knowledge discovery, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Routing does not grant execution, mutation or publication authority.
+- status: canonical
+
+##### shv-partition-engine intent
+- path: `modules/shv-partition-engine/INTENT.md`
+- title: shv-partition-engine intent
+- surface_type: canonical Markdown companion
+- truth_role: owner-maintained source truth
+- owner: SHV maintainers
+- scope: Existing shv-partition-engine Contract Quad member; individual discovery route without semantic changes.
+- relationships: depends_on -> `modules/shv-partition-engine/SPEC.md`
+- consumers: maintainers, agentic tools, qxctl knowledge discovery, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Routing does not grant execution, mutation or publication authority.
+- status: canonical
+
+##### shv-partition-engine manifest
+- path: `modules/shv-partition-engine/MANIFEST.md`
+- title: shv-partition-engine manifest
+- surface_type: canonical Markdown companion
+- truth_role: owner-maintained source truth
+- owner: SHV maintainers
+- scope: Existing shv-partition-engine Contract Quad member; individual discovery route without semantic changes.
+- relationships: depends_on -> `modules/shv-partition-engine/SPEC.md`
+- consumers: maintainers, agentic tools, qxctl knowledge discovery, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Routing does not grant execution, mutation or publication authority.
+- status: canonical
+
+##### shv-partition-engine skill
+- path: `modules/shv-partition-engine/SKILL.md`
+- title: shv-partition-engine skill
+- surface_type: canonical Markdown companion
+- truth_role: owner-maintained source truth
+- owner: SHV maintainers
+- scope: Existing shv-partition-engine Contract Quad member; individual discovery route without semantic changes.
+- relationships: depends_on -> `modules/shv-partition-engine/SPEC.md`
+- consumers: maintainers, agentic tools, qxctl knowledge discovery, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Routing does not grant execution, mutation or publication authority.
+- status: canonical
+
+##### shv-graph-adapter intent
+- path: `modules/shv-graph-adapter/INTENT.md`
+- title: shv-graph-adapter intent
+- surface_type: canonical Markdown companion
+- truth_role: owner-maintained source truth
+- owner: SHV maintainers
+- scope: Existing shv-graph-adapter Contract Quad member; individual discovery route without semantic changes.
+- relationships: depends_on -> `modules/shv-graph-adapter/SPEC.md`
+- consumers: maintainers, agentic tools, qxctl knowledge discovery, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Routing does not grant execution, mutation or publication authority.
+- status: canonical
+
+##### shv-graph-adapter manifest
+- path: `modules/shv-graph-adapter/MANIFEST.md`
+- title: shv-graph-adapter manifest
+- surface_type: canonical Markdown companion
+- truth_role: owner-maintained source truth
+- owner: SHV maintainers
+- scope: Existing shv-graph-adapter Contract Quad member; individual discovery route without semantic changes.
+- relationships: depends_on -> `modules/shv-graph-adapter/SPEC.md`
+- consumers: maintainers, agentic tools, qxctl knowledge discovery, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Routing does not grant execution, mutation or publication authority.
+- status: canonical
+
+##### shv-graph-adapter skill
+- path: `modules/shv-graph-adapter/SKILL.md`
+- title: shv-graph-adapter skill
+- surface_type: canonical Markdown companion
+- truth_role: owner-maintained source truth
+- owner: SHV maintainers
+- scope: Existing shv-graph-adapter Contract Quad member; individual discovery route without semantic changes.
+- relationships: depends_on -> `modules/shv-graph-adapter/SPEC.md`
+- consumers: maintainers, agentic tools, qxctl knowledge discovery, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Routing does not grant execution, mutation or publication authority.
+- status: canonical
