@@ -12487,3 +12487,105 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/knowledgeengine/shv_profile_interface.go`
   - `tools/qxctl/internal/knowledgeengine/shv_profile_interface_generated.go`
   - `tools/qxctl/internal/knowledgeengine/shv_profile_validation.go`
+
+---
+
+- record_id: `SCLV-CHG-20260915-SHV-SOURCE-PUBLICATION-INTERFACE`
+- record_version: `3`
+- title: `Generate exact SHV source and publication metadata with retained owner replay`
+- status: `canonical`
+- change_started_at: `2026-09-15T05:08:25Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for SHV source/publication metadata and local closure`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-15-shv-source-publication-interface.md`
+- skvi_references:
+  - `modules/shv-source-engine/OWNER-INTERFACE.json`
+  - `modules/shv-publication-engine/OWNER-INTERFACE.json`
+  - `tools/shv-interface-codegen/SPEC.md`
+  - `knowledge/shv/SOURCES.md`
+  - `knowledge/shv/PUBLICATION.md`
+- change_summary: |
+    Source 0.2 and publication 0.3 generate mechanical native descriptor, Go admission and CMake inventories from owner declarations; source uninstall binds the selected version.
+- relationship_changes: |
+    Receipt-owned declarations are compared with compiled admission. Exact retained intents replay their original owners. The existing profile checker delegates only shared declaration verification.
+- doctrine_changes: |
+    No doctrine change or user composition restriction; authoring metadata does not generate semantic handlers or policy.
+- compatibility_consequences: |
+    Source 0.1 and publication 0.1/0.2 remain supported. All 369 commands and defaults are unchanged. Publication partition reader stays 0.2 and source-member admission stays 0.1; store writers 0.1/0.2/0.3 retain admission.
+- publication_consequences: |
+    Local development packages and private diagnostic catalogue tests only; no external module publication or production head change.
+- projection_consequences: |
+    Generated metadata stays subordinate to each owner declaration. It does not create hardware facts or cross-vector semantic relations.
+- evidence:
+  - `../shv-24/VERIFICATION.md records focused tests and preliminary failures separately.`
+  - `../shv-24/evidence/SOURCE_BUILD_PARITY.json binds both implementation commits to checked files and installed artifacts.`
+  - `../shv-24/evidence/PACKAGE.json records identical native/CLI rebuilds, exact receipts and guarded uninstall.`
+  - `../shv-24/evidence/source-activation-verified/SUPERVISOR.json records 79 private source authority checks.`
+  - `../shv-24/evidence/interruption/ACCEPTANCE.json records nine publication interruption boundaries.`
+- non_authorizations:
+  - `No new hardware dataset, source acquisition, graph default, dynamic plugin loader or caller policy.`
+  - `No historical installation rewrite, source 0.2 publication admission or production publication.`
+- notes: |
+    174 focused Go events; four final CTest groups; 189 installed native cases; eighteen installed interface checks; 79 private source checks; six publication authority checks and nine interruption checks. Five SHV metadata owners remain. Full suite remains deferred to milestone protocol.
+- date: `2026-09-15`
+- change_completed_at: `2026-09-15T05:28:08Z`
+- recorded_at: `2026-09-15T05:29:37Z`
+- revision_value: `1c44cec575ffdd2f42f8a104bc7cd50db69fbc13`
+- tree_digest: `sha256:31908cd61720d7a65de7e0e3ebd998c1aed78e9d3c66fdb03399205d12d0625e`
+- ratification_evidence_digest: `sha256:db7e5d307b8e0c951571b14b8818d9f73c586f8ffefb1b983f6b83cac4ccdcd0`
+- affected_surfaces:
+  - `cmake/ShvPublicationInterface.generated.cmake`
+  - `cmake/ShvSourceInterface.generated.cmake`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/shv/PUBLICATION.md`
+  - `knowledge/shv/SOURCES.md`
+  - `knowledge/skvi/INDEX.md`
+  - `modules/shv-publication-engine/CMakeLists.txt`
+  - `modules/shv-publication-engine/INSTALL.md`
+  - `modules/shv-publication-engine/MANIFEST.md`
+  - `modules/shv-publication-engine/OWNER-INTERFACE.json`
+  - `modules/shv-publication-engine/SKILL.md`
+  - `modules/shv-publication-engine/SPEC.md`
+  - `modules/shv-publication-engine/src/descriptor.cpp`
+  - `modules/shv-publication-engine/src/interface.generated.hpp`
+  - `modules/shv-publication-engine/src/publication.hpp`
+  - `modules/shv-publication-engine/tests/fixtures/interface-history.v1.json`
+  - `modules/shv-source-engine/CMakeLists.txt`
+  - `modules/shv-source-engine/INSTALL.md`
+  - `modules/shv-source-engine/MANIFEST.md`
+  - `modules/shv-source-engine/OWNER-INTERFACE.json`
+  - `modules/shv-source-engine/SKILL.md`
+  - `modules/shv-source-engine/SPEC.md`
+  - `modules/shv-source-engine/cmake/uninstall.cmake.in`
+  - `modules/shv-source-engine/src/descriptor.cpp`
+  - `modules/shv-source-engine/src/interface.generated.hpp`
+  - `modules/shv-source-engine/src/source.hpp`
+  - `modules/shv-source-engine/tests/fixtures/interface-history.v1.json`
+  - `tools/qxctl/internal/knowledgeengine/shv_lifecycle.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_lifecycle_descriptor.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_lifecycle_validation.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_owner_interface_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile_interface.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_publication.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_publication_interface_generated.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_publication_validation.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_source_interface_generated.go`
+  - `tools/qxctl/internal/shvpublicationstate/validation.go`
+  - `tools/qxctl/internal/shvstate/validation.go`
+  - `tools/shv-interface-codegen/INTENT.md`
+  - `tools/shv-interface-codegen/MANIFEST.md`
+  - `tools/shv-interface-codegen/SKILL.md`
+  - `tools/shv-interface-codegen/SPEC.md`
+  - `tools/shv-interface-codegen/generate.py`
+  - `tools/shv-interface-codegen/history-lock.json`
+  - `tools/shv-interface-codegen/tests/interface_test.py`
