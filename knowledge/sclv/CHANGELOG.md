@@ -13523,3 +13523,76 @@ This PR authorizes none of the following:
   - `No removal of immutable historical evidence or restrictions on user-authored programs.`
 - notes: |
     Start and completion identify exact local source-commit finalization. The source commits were integrated into local main before closure. Full historical campaigns and the legacy failed-v1 authority recovery were not replayed. Untracked numbered files found during verification were preserved externally without deletion or inclusion in these commits.
+
+- record_id: `SCLV-CHG-20260915-LOCAL-HISTORICAL-WARNING-ACKNOWLEDGEMENT`
+- record_version: `3`
+- title: `Acknowledge historical SCLV warnings in local validation state`
+- status: `canonical`
+- date: `2026-09-15`
+- change_started_at: `2026-09-15T19:06:40Z`
+- change_completed_at: `2026-09-15T19:06:40Z`
+- recorded_at: `2026-09-15T19:08:14Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Explicitly requested local tooling change committed and fast-forwarded into local main; no forge change request exists.`
+- revision_scheme: `git-sha1`
+- revision_value: `c59e9ca2421567f42b02da2a5b7a80170d58b832`
+- tree_digest: `sha256:50a5dfd9c63e5ec84a99776e2904904d33df20c7a90e233f96a9412f2b3b3d68`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for the requested SCLV warning command and local delivery-state boundary`
+- ratification_method: `explicit-user-instruction in Codex task 01a0a3f1-c0c3-76c0-8d3e-c6f27bc8e13b`
+- ratification_evidence_reference: `/Users/Duncan/Documents/ChatGPT/Symphony p2-p8/context/decisions/2026-09-15-local-sclv-warning-acknowledgement.md`
+- ratification_evidence_digest: `sha256:8f83f4382fd8ae691220b0bacfe7b6565f994a3480e5c44308f21d0376dc3358`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/VALIDATION.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/INTENT.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/README.md`
+  - `tools/qxctl/cmd/qxctl/cli_compat_test.go`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/commands.go`
+  - `tools/qxctl/cmd/qxctl/sclv_warning.go`
+  - `tools/qxctl/cmd/qxctl/sclv_warning_test.go`
+  - `tools/qxctl/cmd/qxctl/validation.go`
+- skvi_references:
+  - `knowledge/VALIDATION.md`
+  - `knowledge/skvi/INDEX.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/MANIFEST.md`
+  - `tools/qxctl/cmd/qxctl/sclv_warning.go`
+  - `tools/qxctl/cmd/qxctl/sclv_warning_test.go`
+- change_summary: |
+    Add qxctl sclv warning list, show, acknowledge and reopen for exact historical-reference subjects. Reuse the existing protected local validation lifecycle with rationale, expected state digest, optional expiry and retained transition history.
+- relationship_changes: |
+    Bind all four commands to the existing qxctl governed-validation feature and reviewed administration expectations. Update SKVI routing and the derived command/root summaries. No new vector or semantic owner is introduced.
+- doctrine_changes: |
+    Workstation acknowledgements, logs and build evidence remain local operational data outside source and delivered packages. Delivery verification uses clean per-vector builds and fresh validation state.
+- compatibility_consequences: |
+    Preserve the complete raw validator result, native SCLV behavior and immutable historical records. Ordinary evaluated scans omit accepted subjects from actionable details. Existing commands, state protocol, recurrence, expiry and reopening behavior remain supported.
+- publication_consequences: |
+    Two local commits preserve separate source and closure rollback points. This record describes local main integration; it does not assert a remote push, tag, package delivery or deployment.
+- projection_consequences: |
+    The qxctl registry now contains 373 command leaves. The existing 110-feature partial catalog and 295 administration expectations remain. Historical warning evidence stays queryable independently of its local accepted classification.
+- evidence:
+  - `Focused SCLV, validation lifecycle, CLI compatibility and command-registry tests passed; installed SKVI and SSFV checks passed.`
+  - `Fresh external validator build and receipt-owned installation passed; exact installed qxctl proof retained four raw historical findings while acknowledgement produced zero actionable warnings and fresh state exposed all four.`
+  - `External verification report: /Users/Duncan/Documents/ChatGPT/Symphony p2-p8/implementation/sclv-reference-acknowledgement/README.md`
+- non_authorizations:
+  - `No canonical acknowledgement exceptions, historical record edits, detector bypass or delivery-state inheritance.`
+  - `No new native engine operation, Python dependency, network service, package release or remote publication.`
+- notes: |
+    Start and completion identify exact local source-commit finalization. The source change was integrated into local main before closure. Installed verification used an isolated synthetic test identity, not production host enrollment or a change to existing operational state. Full SCV/SHV campaigns and all-vector delivery builds were not performed for this CLI increment.
