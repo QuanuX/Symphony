@@ -12134,3 +12134,88 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/shvtransfer/schema.go`
   - `tools/qxctl/internal/shvtransfer/storage_unix.go`
   - `tools/qxctl/internal/shvtransfer/transfer.schema.json`
+
+---
+
+- record_id: `SCLV-CHG-20260914-SHV-PROFILES-UNIVERSES`
+- record_version: `3`
+- title: `Caller-defined hardware profiles and portable evidence universes`
+- status: `canonical`
+- change_started_at: `2026-09-15T00:48:50Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for caller-defined SHV profiles and portable universe continuation`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-profile-universe-continuation.md`
+- skvi_references:
+  - `knowledge/shv/PROFILES.md`
+  - `modules/shv-profile-engine/SPEC.md`
+- change_summary: |
+    Adds an independent C++ profile engine and seven qxctl controls for caller class metrics, declaration conformance and portable universe build/bind.
+- relationship_changes: |
+    Reuses the compiled exact kernel 0.3 reader and independent qxctl source correspondence; existing source, catalogue, coverage, publication and graph owners retain their boundaries.
+- doctrine_changes: |
+    Field vocabulary, requiredness, included history and source references remain caller choices. Additional and retired fields preserve sealed history; no universal hardware census is imposed.
+- compatibility_consequences: |
+    New profile engine 0.1.0-dev with explicit prefix/version. Existing kernel 0.3 and generic graph adapter 0.1 retain exact admission. Registry contains 367 commands and 110 registered features.
+- publication_consequences: |
+    All operations are read-only. Recipes and successful binding neither activate a source nor publish a catalogue.
+- projection_consequences: |
+    A retained AMD PDF recipe replays exact bytes and produces the original kernel catalogue and graph; generic adapter exchange survives original-source replay. Synthetic profiles cover GPU, memory, storage, networking-card and a custom class.
+- evidence:
+  - `../shv-21/VERIFICATION.md records focused native, Go, installed and exact owner integration checks.`
+  - `../shv-21/evidence/SOURCE_BUILD_PARITY.json binds the clean source and reproducible installed packages.`
+  - `../shv-21/MANIFEST.json seals designated evidence.`
+- non_authorizations:
+  - `No source acquisition, active-source mutation, catalogue publication, pruning or deletion.`
+  - `No default graph database, imposed hardware policy, production deployment or physical compatibility claims.`
+- notes: |
+    Mapping diagnosis checks declarations only. Source-parser failure diagnostics and reference-aware retention remain later work; planned cross-vector and contract-quad review follows the next gate.
+- date: `2026-09-15`
+- change_completed_at: `2026-09-15T01:00:50Z`
+- recorded_at: `2026-09-15T01:03:32Z`
+- revision_value: `3496e8c902d6d976c14c37b86ea8c4e51ffa7753`
+- tree_digest: `sha256:23a1c2eb4f4750e13309dbebcffe1c3c7cf4a9fc109436a902f7328364e6b1d3`
+- ratification_evidence_digest: `sha256:559649d7b963125edbfd725dd322d48fc5aed29a33eadef598ef62f9f2bbc037`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/shv/MANIFEST.md`
+  - `knowledge/shv/PROFILES.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `modules/shv-profile-engine/CMakeLists.txt`
+  - `modules/shv-profile-engine/FEATURES.md`
+  - `modules/shv-profile-engine/INSTALL.md`
+  - `modules/shv-profile-engine/INTENT.md`
+  - `modules/shv-profile-engine/MANIFEST.md`
+  - `modules/shv-profile-engine/SKILL.md`
+  - `modules/shv-profile-engine/SPEC.md`
+  - `modules/shv-profile-engine/cmake/uninstall.cmake.in`
+  - `modules/shv-profile-engine/schemas/v1/profile.schema.json`
+  - `modules/shv-profile-engine/schemas/v1/profile.templates.json`
+  - `modules/shv-profile-engine/scripts/build_schema.py`
+  - `modules/shv-profile-engine/src/descriptor.cpp`
+  - `modules/shv-profile-engine/src/main.cpp`
+  - `modules/shv-profile-engine/src/profile.cpp`
+  - `modules/shv-profile-engine/src/profile.hpp`
+  - `modules/shv-profile-engine/tests/profile_test.py`
+  - `tools/qxctl/COMMANDS.json`
+  - `tools/qxctl/COMMANDS.md`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/cmd/qxctl/command_manifest_test.go`
+  - `tools/qxctl/cmd/qxctl/shv.go`
+  - `tools/qxctl/cmd/qxctl/shv_profile.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile_descriptor.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile_test.go`
+  - `tools/qxctl/internal/knowledgeengine/shv_profile_validation.go`
