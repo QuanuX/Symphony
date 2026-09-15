@@ -12858,3 +12858,151 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/shvpublicationstate/validation.go`
   - `tools/shv-interface-codegen/EXTENDING.md`
   - `tools/shv-interface-codegen/history-lock.json`
+
+---
+
+- record_id: `SCLV-CHG-20260915-SCV-SHV-SKV-REPAIR`
+- record_version: `3`
+- title: `Repair SCV and SHV knowledge standards and invariant evidence`
+- status: `canonical`
+- date: `2026-09-15`
+- change_started_at: `2026-09-15T08:20:57Z`
+- change_completed_at: `2026-09-15T08:20:57Z`
+- recorded_at: `2026-09-15T08:22:07Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `implementation_change`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit completing the reviewed repair; no forge change request or main merge exists.`
+- revision_scheme: `git-sha1`
+- revision_value: `265041b2923659236a4c7975b501e7f087ade340`
+- tree_digest: `sha256:3bda230794db4a735430368b1cb0ecdb2dbfe36842210fa8dffcec1cecf1f758`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for the requested SCV/SHV standards repair and publication`
+- ratification_method: `explicit-user-instruction and acceptance in Codex task 01a0a3f1-c0c3-76c0-8d3e-c6f27bc8e13b`
+- ratification_evidence_reference: `../../context/decisions/2026-09-15-commit-by-commit-publication.md`
+- ratification_evidence_digest: `sha256:2c13e389ba9942dca7529c3f42d2bbe7db937b65008c3c0d6c8039e35e4864ee`
+- affected_surfaces:
+  - `README.md`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.json`
+  - `knowledge/FEATURE-ADMINISTRATION-PROFILE.md`
+  - `knowledge/INTENT.md`
+  - `knowledge/INVARIANT-OWNERSHIP.json`
+  - `knowledge/INVARIANTS.md`
+  - `knowledge/MANIFEST.md`
+  - `knowledge/SPEC.md`
+  - `knowledge/scv/MANIFEST.md`
+  - `knowledge/scv/SKILL.md`
+  - `knowledge/scv/scev/MANIFEST.md`
+  - `knowledge/scv/scev/SPEC.md`
+  - `knowledge/scv/scev/cf/MANIFEST.md`
+  - `knowledge/scv/scev/cf/SPEC.md`
+  - `knowledge/scv/schv/MANIFEST.md`
+  - `knowledge/scv/schv/SPEC.md`
+  - `knowledge/scv/schv/aws/MANIFEST.md`
+  - `knowledge/scv/schv/aws/SPEC.md`
+  - `knowledge/scv/schv/azure/MANIFEST.md`
+  - `knowledge/scv/schv/azure/SPEC.md`
+  - `knowledge/scv/schv/do/MANIFEST.md`
+  - `knowledge/scv/schv/do/SPEC.md`
+  - `knowledge/scv/schv/gcp/MANIFEST.md`
+  - `knowledge/scv/schv/gcp/SPEC.md`
+  - `knowledge/shv/GRAPH-STORE.md`
+  - `knowledge/shv/MANIFEST.md`
+  - `knowledge/shv/PDF-EVIDENCE.md`
+  - `knowledge/shv/SKILL.md`
+  - `knowledge/shv/SOURCES.md`
+  - `knowledge/shv/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/COVERAGE.md`
+  - `knowledge/ssfv/INTENT.md`
+  - `knowledge/ssfv/MANIFEST.md`
+  - `knowledge/ssfv/REGISTRY.md`
+  - `knowledge/ssfv/SKILL.md`
+  - `knowledge/ssfv/SPEC.md`
+  - `modules/scev-cf-engine/FEATURES.md`
+  - `modules/scev-cf-engine/SPEC.md`
+  - `modules/scev-engine/FEATURES.md`
+  - `modules/scev-engine/SPEC.md`
+  - `modules/schv-aws-engine/FEATURES.md`
+  - `modules/schv-aws-engine/SPEC.md`
+  - `modules/schv-azure-engine/FEATURES.md`
+  - `modules/schv-azure-engine/SPEC.md`
+  - `modules/schv-do-engine/FEATURES.md`
+  - `modules/schv-do-engine/SPEC.md`
+  - `modules/schv-engine/FEATURES.md`
+  - `modules/schv-engine/SPEC.md`
+  - `modules/schv-gcp-engine/FEATURES.md`
+  - `modules/schv-gcp-engine/SPEC.md`
+  - `modules/scv-engine/FEATURES.md`
+  - `modules/scv-engine/SPEC.md`
+  - `modules/scv-graph-duckdb-connector/FEATURES.md`
+  - `modules/scv-graph-duckdb-connector/MANIFEST.md`
+  - `modules/shv-engine/FEATURES.md`
+  - `modules/shv-engine/MANIFEST.md`
+  - `modules/shv-engine/SPEC.md`
+  - `modules/shv-graph-adapter/FEATURES.md`
+  - `modules/shv-graph-adapter/MANIFEST.md`
+  - `modules/shv-graph-duckdb-connector/FEATURES.md`
+  - `modules/shv-graph-duckdb-connector/MANIFEST.md`
+  - `modules/shv-graph-duckdb-connector/SPEC.md`
+  - `modules/shv-graph-duckdb-connector/tests/installed_integration.py`
+  - `modules/shv-partition-engine/FEATURES.md`
+  - `modules/shv-partition-engine/INTENT.md`
+  - `modules/shv-partition-engine/MANIFEST.md`
+  - `modules/shv-partition-engine/SKILL.md`
+  - `modules/shv-partition-engine/SPEC.md`
+  - `modules/shv-pdf-adapter/FEATURES.md`
+  - `modules/shv-pdf-adapter/MANIFEST.md`
+  - `modules/shv-pdf-adapter/tests/installed_integration.py`
+  - `modules/shv-profile-engine/FEATURES.md`
+  - `modules/shv-profile-engine/MANIFEST.md`
+  - `modules/shv-profile-engine/tests/installed_integration.py`
+  - `modules/shv-publication-engine/FEATURES.md`
+  - `modules/shv-publication-engine/MANIFEST.md`
+  - `modules/shv-publication-engine/tests/installed_integration.py`
+  - `modules/shv-publication-engine/tests/publication_test.py`
+  - `modules/shv-source-engine/FEATURES.md`
+  - `modules/shv-source-engine/INSTALL.md`
+  - `modules/shv-source-engine/MANIFEST.md`
+  - `modules/shv-source-engine/SKILL.md`
+  - `modules/shv-source-engine/SPEC.md`
+  - `modules/ssfv-engine/tests/ssfv_test.cpp`
+  - `tools/qxctl/FEATURES.md`
+  - `tools/qxctl/tests/shv-invariants/installed_support.py`
+  - `tools/symphony-validator/FEATURES.md`
+  - `tools/symphony-validator/tests/invariant_ownership_test.cpp`
+- skvi_references:
+  - `knowledge/INVARIANTS.md`
+  - `knowledge/scv/SKILL.md`
+  - `knowledge/shv/SPEC.md`
+  - `knowledge/skvi/INDEX.md`
+  - `knowledge/ssfv/REGISTRY.md`
+- change_summary: |
+    Repair twenty existing SSFV records, manifest discovery, SKVI routing, invariant registration and stale acceptance expectations across 89 source files. All repaired file identities match the verified working-tree evidence.
+- relationship_changes: |
+    Declare existing ownership and source-backed dependencies without inventing new features or integrations. Add five existing SHV invariants and four native adapters; preserve all previous registrations.
+- doctrine_changes: |
+    No architectural doctrine change. SKV applies across vectors while caller composition and alternate owners remain open. The rejected SCV hardware-evidence relationship module remains rejected.
+- compatibility_consequences: |
+    Production C++ and Go runtime algorithms, CLI grammar, selected releases and retained installations are unchanged. Existing schema semantics and historical fixtures remain intact; metadata and acceptance evidence are corrected.
+- publication_consequences: |
+    Duncan authorized chronological development-branch publication, one commit per push. This repair is additive after the 94 original commits, followed by a separate closure. No main merge, tag, package release or deployment is asserted.
+- projection_consequences: |
+    Native SSFV accepts 110 records with 110 nodes and 411 edges; repeated projections match. Native SKVI reports 6757 passes and 995 entries with deterministic projection. Both owners report zero warnings or violations.
+- evidence:
+  - `../skv-repair/README.md records the completed review, focused tests and limitations.`
+  - `../skv-repair/evidence/SOURCE-CHANGES.json binds all 89 repaired source files.`
+  - `../skv-repair/evidence/final-native/SUMMARY.json records native owner checks and 12269 repository-validator passes with zero warnings or violations.`
+  - `../skv-repair/evidence/baseline/SUMMARY.json records the reproduced pre-repair failures.`
+  - `../skv-repair/SCV-REVIEW.md records SCV and invariant findings.`
+  - `../skv-repair/SHV-REVIEW.md records SHV findings and focused execution.`
+- non_authorizations:
+  - `No new hardware-evidence relationship module or inferred hardware equivalence.`
+  - `No production deployment, default graph database, package replacement or source-data retirement.`
+  - `No claim of an atomic cross-service revocation barrier or exhaustive historical acceptance coverage.`
+- notes: |
+    Start and completion identify the local source-commit finalization instant; the preceding working-tree review and test campaigns are recorded in the repair packet. Full historical campaigns remain deferred under the focused-testing direction. Original commits and all earlier ledger bytes are preserved.
