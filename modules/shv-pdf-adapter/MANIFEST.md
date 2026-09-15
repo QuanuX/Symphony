@@ -2,6 +2,8 @@
 
 ## Canonical Surfaces
 
+- `modules/shv-pdf-adapter/tests/installed_integration.cpp`
+
 - `modules/shv-pdf-adapter/FEATURES.md`
 - `modules/shv-pdf-adapter/INSTALL.md`
 - `modules/shv-pdf-adapter/INTENT.md`

@@ -18,4 +18,4 @@ Caller evidence, recipes and universes are never installed or removed by that ta
 The kernel reader and PDF interpretation code are compiled dependencies; runtime PDF
 binding additionally requires the explicitly selected exact decoder installation.
 
-Generator regression tests require Python and gofmt as authoring tools; production builds with BUILD_TESTING=OFF and installed engine use require neither. Checked-in metadata is verified with `python3 modules/shv-profile-engine/tools/generate_interface.py --check` before release.
+Generator regression tests use compiled C++ tools and gofmt; installed engine use requires neither. Build `shv-profile-interface-generator` from the `tools/authoring-cpp` CMake project. Checked-in metadata is verified with `<authoring-build>/shv-profile-interface-generator --check` before release.

@@ -968,7 +968,7 @@
         "tools/qxctl/internal/shvstate/validation.go",
         "tools/qxctl/internal/shvtransfer/journal.go",
         "tools/qxctl/internal/shvtransfer/storage_unix.go",
-        "tools/qxctl/scripts/build_shv_refresh_schema.py"
+        "tools/qxctl/scripts/build_shv_refresh_schema.cpp"
       ],
       "kind": "subfeature",
       "non_claims": [

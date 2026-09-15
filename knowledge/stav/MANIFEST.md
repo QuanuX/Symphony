@@ -2,6 +2,8 @@
 
 ## Canonical Surfaces
 
+- `knowledge/stav/registries/v1/accordare.json`
+
 - `knowledge/stav/INTENT.md`
 - `knowledge/stav/MANIFEST.md`
 - `knowledge/stav/SKILL.md`

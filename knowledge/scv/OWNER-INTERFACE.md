@@ -8,15 +8,15 @@ The supplied engine domains are a release inventory. Caller-owned provider ident
 
 ## Generated Projections
 
-`modules/scv-engine/tools/generate_interface.py` generates three checked-in projections:
+`modules/scv-engine/tools/generate_interface.cpp` generates three checked-in projections:
 
 - `modules/scv-engine/src/interface.generated.inc`: native dispatch metadata and companion contract identities. The implementations and handler signatures remain ordinary C++ source.
 - `tools/qxctl/internal/knowledgeengine/scv_interface_generated.go`: exact operation/protocol, domain/release, adapter surface, artifact kind/admission, interaction, and companion inventories. These tables do not implement semantic consumer checks.
 - `cmake/ScvInterface.generated.cmake`: the current exact release, supplied domains, schema inventory, companion file inventory, and declaration source path. Schema files are derived from the catalog and its local reference closure. Unreferenced files, escaping references, absent native protocol entries, and a mismatched catalog release fail generation.
 
-Normal engine and qxctl builds consume these checked-in files. There is no generator process, Python runtime, network lookup, or mutable interface discovery in a running engine. Python and gofmt are authoring/check tools. CMake integration consumes the generated inventory rather than retyping companion and schema lists.
+Normal engine and qxctl builds consume these checked-in files. There is no generator process, Python runtime, network lookup, or mutable interface discovery in a running engine. The C++ authoring executable and gofmt perform generation and drift checks. CMake integration consumes the generated inventory rather than retyping companion and schema lists.
 
-Run `python3 modules/scv-engine/tools/generate_interface.py` after an authorized interface change. Run the same command with `--check` to reject drift without writing. `--metadata-only` is an explicitly incomplete authoring bootstrap while new schemas are still being assembled; it does not produce the installation inventory and cannot stand in for the complete regeneration check.
+Build the `scv-interface-generator` target from `cmake -S tools/authoring-cpp -B <authoring-build>`; run `<authoring-build>/scv-interface-generator` after an authorized interface change. Run the same command with `--check` to reject drift without writing. `--metadata-only` is an explicitly incomplete authoring bootstrap while new schemas are still being assembled; it does not produce the installation inventory and cannot stand in for the complete regeneration check.
 
 The frozen `modules/scv-engine/tests/fixtures/interface-history.v1.json` records the `.1` through `.5` mechanical projections at source base `4078f3a`. The generator never rewrites this fixture. A change to an older operation, protocol, admission, domain inventory, or companion contract fails comparison. Release admission uses declared ordinal membership, never a `latest` alias or a lexical/semantic version comparison. Existing CLI defaults remain separately explicit and unchanged.
 

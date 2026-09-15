@@ -58,7 +58,13 @@ set_target_properties(${SCV_EXECUTABLE} PROPERTIES CXX_STANDARD 26 CXX_STANDARD_
 target_compile_options(${SCV_EXECUTABLE} PRIVATE $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>)
 
 if(BUILD_TESTING)
-    find_package(Python3 COMPONENTS Interpreter REQUIRED)
+    if(NOT TARGET scv-installed-process-tests)
+        add_executable(scv-installed-process-tests "${SCV_SOURCE_DIR}/tests/installed_integration.cpp")
+        target_include_directories(scv-installed-process-tests PRIVATE
+            "${SYMPHONY_REPOSITORY_ROOT}/libraries/knowledge-vector-engine-cpp/tests/support")
+        target_link_libraries(scv-installed-process-tests PRIVATE Symphony::KnowledgeVectorEngine)
+        set_target_properties(scv-installed-process-tests PROPERTIES CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+    endif()
     if(SYMPHONY_SCV_DOMAIN STREQUAL "scv")
         add_executable(scv-source-tests "${SCV_SOURCE_DIR}/tests/source_test.cpp")
         target_link_libraries(scv-source-tests PRIVATE scv-domain-core)
@@ -86,11 +92,15 @@ if(BUILD_TESTING)
             set_target_properties(scv-${area}-tests PROPERTIES CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
             add_test(NAME scv-${area}-tests COMMAND scv-${area}-tests)
         endforeach()
-        add_test(NAME scv-interface-generation-tests COMMAND ${Python3_EXECUTABLE}
-            "${SCV_SOURCE_DIR}/tests/interface_generation_test.py")
+        if(NOT TARGET symphony-authoring-support)
+            add_subdirectory("${SYMPHONY_REPOSITORY_ROOT}/tools/authoring-cpp"
+                "${CMAKE_CURRENT_BINARY_DIR}/authoring-cpp" EXCLUDE_FROM_ALL)
+        endif()
+        add_custom_target(scv-interface-test-build ALL DEPENDS scv-interface-generation-tests)
+        add_test(NAME scv-interface-generation-tests COMMAND $<TARGET_FILE:scv-interface-generation-tests>)
     endif()
-    add_test(NAME scv-installed-process-integration COMMAND ${Python3_EXECUTABLE}
-        "${SCV_SOURCE_DIR}/tests/installed_integration.py" --build "${CMAKE_CURRENT_BINARY_DIR}" --domain "${SYMPHONY_SCV_DOMAIN}" --version "${SCV_VERSION}")
+    add_test(NAME scv-installed-process-integration COMMAND $<TARGET_FILE:scv-installed-process-tests>
+        --build "${CMAKE_CURRENT_BINARY_DIR}" --domain "${SYMPHONY_SCV_DOMAIN}" --version "${SCV_VERSION}")
 endif()
 
 symphony_install_receipt_v2_preflight(RECEIPT_PATH "share/symphony/receipts/${SCV_MODULE}/${SCV_VERSION}/install-receipt.json")

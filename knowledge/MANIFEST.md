@@ -27,7 +27,11 @@ Each vector Contract Quad owns its domain semantics, canonical paths, operations
 
 `knowledge/SLANG.md` and `knowledge/NAMESPACES.md` are canonical companions governed by this Contract Quad, not additional Quad members. SLANG routes terms to semantic owners without duplicating their rules. NAMESPACES registers and delegates identity families without replacing family-owned grammar, allocation, lifecycle, or compatibility.
 
+The platform governance companions under `knowledge/platform/` retain Symphony-wide purpose and its existing semantic capability. They are filed within SKV and remain distinct from this umbrella's own intent; the directory introduces no new vector or runtime owner.
+
 ## Canonical Surfaces
+
+- `knowledge/schemas/v3/invariant-ownership-registry.schema.json`
 
 - `knowledge/ACCORD-AUDIT.md`
 - `knowledge/ARCHITECTURE.md`
@@ -47,6 +51,8 @@ Each vector Contract Quad owns its domain semantics, canonical paths, operations
 - `knowledge/SPEC.md`
 - `knowledge/TIME.md`
 - `knowledge/VALIDATION.md`
+- `knowledge/platform/FEATURES.md`
+- `knowledge/platform/INTENT.md`
 
 ## Subordinate Manifests
 

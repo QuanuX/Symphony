@@ -1,15 +1,15 @@
 # Focused connector process tests
 
-`connector_test.py` covers native storage and projection boundaries. `installed_integration.py` covers the normal receipt-backed qxctl workflow. `interrupted_commit.py` adds eight deterministic interruption cases in the connector's own prepare/commit translation unit, followed by recovery through the exact installed production connector and SCV owner.
+`connector_test.cpp` covers native storage and projection boundaries. `installed_integration.cpp` covers the normal receipt-backed qxctl workflow. `interrupted_commit.cpp` adds eight deterministic interruption cases in the connector's own prepare/commit translation unit, followed by recovery through the exact installed production connector and SCV owner. CMake builds the acceptance executables alongside the connector; their source helpers are `connector_test_support.hpp` and `installed_campaign.hpp`.
 
 Build the separate fault executable explicitly:
 
 ```sh
-cmake --build /absolute/build --target scv-graph-duckdb-commit-fault-test
-python3 modules/scv-graph-duckdb-connector/tests/interrupted_commit.py --qxctl /absolute/qxctl --connector-prefix /absolute/connector-prefix --owner-prefix /absolute/scv-owner-prefix --graph /absolute/retained-graph.json --fault-engine /absolute/build/scv-graph-duckdb-commit-fault-test --out /absolute/new-evidence-directory
+cmake --build /absolute/connector-0.1-build --target scv-graph-duckdb-commit-fault-test
+/absolute/current-build/scv-graph-duckdb-interrupted_commit --qxctl /absolute/qxctl --connector-prefix /absolute/connector-prefix --owner-prefix /absolute/scv-owner-prefix --graph /absolute/retained-graph.json --fault-engine /absolute/connector-0.1-build/scv-graph-duckdb-commit-fault-test --out /absolute/new-evidence-directory
 ```
 
-The selected packages are connector `0.1.0-dev` and SCV owner `0.10.0-dev`; the graph must be valid under that owner at the harness's explicit simulated time, `2026-09-13T05:00:00Z`. The harness makes no network request or source/graph-head selection. The output directory must be new. It contains private test databases and evidence; it is not a production index.
+The interruption specimen selects connector `0.1.0-dev` and SCV owner `0.10.0-dev`; its separate fault executable must be built from that exact connector revision. The C++ acceptance executable comes from the current build. The graph must be valid under that owner at the harness's explicit simulated time, `2026-09-13T05:00:00Z`. The harness makes no network request or source/graph-head selection. The output directory must be new. It contains private test databases and evidence; it is not a production index.
 
 `SYMPHONY_SCV_GRAPH_INDEX_TEST_BARRIERS` is defined only for `scv-graph-duckdb-commit-fault-test`. The normal executable never links `commit_barrier.cpp`, has no runtime fault-control interface, and is the only connector target installed by CMake. The test executable uses a separate inherited pipe to announce the selected stage, then stops. The parent observes SIGSTOP, sends SIGKILL and reaps the child with a bounded timeout. No destructor rollback or graceful close runs in the killed writer.
 
@@ -30,4 +30,6 @@ These are process-interruption checks at explicit boundaries surrounding DuckDB 
 
 ## Inventory and transfer-planning release
 
-For 0.2.0-dev, `inventory_test.py` runs the focused native inventory/plan cases (also registered as the `scv-graph-duckdb-inventory` CTest). `inventory_installed.py` accepts explicit qxctl, connector, SCV owner, legacy connector and graph paths and records real namespace, stale revision, target, owner and version-boundary evidence. Neither executes transfer nor retires source history. `connector_test.py --version 0.2.0-dev` selects the current descriptor/fixture profile; its default 0.1.0-dev remains available for explicit legacy checks. The installed workflow helper accepts an explicit connector version without changing its legacy default.
+For 0.2.0-dev, `inventory_test.cpp` runs the focused native inventory/plan cases (also registered as the `scv-graph-duckdb-inventory` CTest). The `scv-graph-duckdb-inventory_installed` executable accepts explicit qxctl, connector, SCV owner, legacy connector and graph paths and records real namespace, stale revision, target, owner and version-boundary evidence. Neither executes transfer nor retires source history. `scv-graph-duckdb-connector_test --version 0.2.0-dev` selects the current descriptor/fixture profile; its default 0.1.0-dev remains available for explicit legacy checks. The installed workflow helper accepts an explicit connector version without changing its legacy default.
+
+The connector CMake build also supplies `scv-graph-duckdb-installed_integration` and `scv-index-transfer-installed`. Run the two native process tests with `ctest --test-dir /absolute/current-build --output-on-failure`; run installed campaigns only with their explicitly selected receipt-owned prefixes and new evidence paths.

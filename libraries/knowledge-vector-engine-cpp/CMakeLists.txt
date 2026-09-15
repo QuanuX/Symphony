@@ -76,6 +76,17 @@ if(SYMPHONY_KVE_BUILD_TESTING)
         NAME knowledge-vector-engine-foundation-tests
         COMMAND knowledge-vector-engine-foundation-tests ${SYMPHONY_KVE_REPOSITORY_ROOT}
     )
+    add_executable(knowledge-vector-native-process-tests tests/native_process_test.cpp)
+    target_link_libraries(knowledge-vector-native-process-tests PRIVATE Symphony::KnowledgeVectorEngine)
+    set_target_properties(knowledge-vector-native-process-tests PROPERTIES
+        CXX_STANDARD 26
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+    )
+    target_compile_options(knowledge-vector-native-process-tests PRIVATE
+        $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>
+    )
+    add_test(NAME knowledge-vector-native-process-tests COMMAND knowledge-vector-native-process-tests)
 endif()
 
 symphony_install_receipt_v2_preflight(

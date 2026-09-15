@@ -29,7 +29,7 @@
       ],
       "distinctions": [],
       "evidence": [
-        "modules/shv-profile-engine/tests/profile_test.py and tests/diagnostics_test.py cover caller profiles, binding, source-field diagnostics and reference analysis; tests/interface_test.py covers exact metadata and historical descriptor compatibility. Retained execution evidence belongs to the SHV-22, SHV milestone gate and SHV-23 packets."
+        "modules/shv-profile-engine/tests/profile_test.cpp and tests/diagnostics_test.cpp cover caller profiles, binding, source-field diagnostics and reference analysis; tests/interface_test.cpp covers exact metadata and historical descriptor compatibility. Retained execution evidence belongs to the SHV-22, SHV milestone gate and SHV-23 packets."
       ],
       "feature_id": "ssfv:symphony:shv-profile-engine",
       "how": "C++ validates profile and recipe semantics; the exact compiled kernel 0.3 reader replays selected bytes on binding. qxctl independently checks correspondence.",

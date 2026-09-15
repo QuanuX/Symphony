@@ -30,7 +30,7 @@ Both companions are cold knowledge surfaces. They create no parser, database, na
 
 ## Manifest-Declared Canonical Surface Discovery
 
-`knowledge/MANIFEST.md` owns the exact active owner-manifest traversal list. Every listed owner manifest declares its bounded surface set under the exact `## Canonical Surfaces` heading with one backtick-path bullet per surface and includes its own path. The only fixed bootstrap is `README.md`, `INTENT.md`, `go.work`, and `knowledge/MANIFEST.md`.
+`knowledge/MANIFEST.md` owns the exact active owner-manifest traversal list. Every listed owner manifest declares its bounded surface set under the exact `## Canonical Surfaces` heading with one backtick-path bullet per surface and includes its own path. The only fixed bootstrap is `README.md`, `go.work`, and `knowledge/MANIFEST.md`.
 
 SKVI and the validator consume the same authority-free C++ parser. They reject unsafe or unreadable declarations, missing sections or files, duplicate owners, duplicate/cyclic manifest traversal, and any declared surface that is not indexed exactly once. An indexed implementation file may remain outside this required contract closure. Neither directory enumeration nor implementation presence may silently create an owner, a canonical surface, or a traversal edge.
 

@@ -2,6 +2,12 @@
 
 ## Canonical Surfaces
 
+- `tools/qxctl/tests/shv-invariants/installed_support.hpp`
+
+- `tools/qxctl/tests/scv-source-maintenance/CMakeLists.txt`
+
+- `tools/qxctl/tests/scv-source-maintenance/maintenance_support.hpp`
+
 - `tools/qxctl/COMMANDS.json`
 - `tools/qxctl/COMMANDS.md`
 - `tools/qxctl/ERRORS.md`

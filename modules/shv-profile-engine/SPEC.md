@@ -23,10 +23,9 @@ a complete dependency universe or grants deletion authority. See PROFILES.md.
 
 `OWNER-INTERFACE.json` declares the exact 0.1/0.2/0.3 release operation sets,
 input/output protocols, descriptor interactions, embedded reader identity and
-schema/companion inventory. `tools/generate_interface.py` produces checked-in
+schema/companion inventory. `tools/generate_interface.cpp` produces checked-in
 native descriptor metadata, Go admission/output metadata and CMake inventory.
-Its `--check` mode rejects drift. Generation is an authoring step, never a runtime
-Python dependency. Frozen installed 0.1/0.2 descriptors are retained under
+Its `--check` mode rejects drift. Generation is a native C++ authoring step. Frozen installed 0.1/0.2 descriptors are retained under
 `tests/fixtures/interface-history.v1.json`; changing their metadata fails generation.
 Semantic handlers and independent Go result checks remain hand-authored.
 

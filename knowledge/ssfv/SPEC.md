@@ -119,7 +119,7 @@ A `FEATURES.md` file is permitted only at a source scope owning one or more rati
 - link parent and child records through stable identities;
 - remain sparse when no feature-worthy behavior exists.
 
-The current partial catalog is ratified and contains exactly one root owner file and 34 non-root owner files. Any additional `FEATURES.md` or feature record remains separately gated by the complete feature-worthiness and reviewed-change procedure.
+The current partial catalog is ratified and contains exactly 35 owner files, including the platform governance record under `knowledge/platform/`. Any additional `FEATURES.md` or feature record remains separately gated by the complete feature-worthiness and reviewed-change procedure.
 
 Every registered feature file uses the exact managed-region and embedded JSON-envelope grammar in `FEATURE-FILE-FORMAT.md`. The exact literal `.` represents repository-root source scope and owns root `FEATURES.md`; any other normalized directory scope owns `<source_scope>/FEATURES.md`.
 

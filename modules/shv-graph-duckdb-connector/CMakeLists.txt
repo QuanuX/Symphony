@@ -74,9 +74,7 @@ if(BUILD_TESTING)
     target_link_libraries(shv-graph-duckdb-commit-fault-test PRIVATE Symphony::KnowledgeVectorEngine shv-pinned-duckdb Threads::Threads)
     set_target_properties(shv-graph-duckdb-commit-fault-test PROPERTIES CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
     target_compile_options(shv-graph-duckdb-commit-fault-test PRIVATE $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>)
-    find_package(Python3 COMPONENTS Interpreter REQUIRED)
-    add_test(NAME shv-graph-duckdb-connector-process COMMAND ${Python3_EXECUTABLE}
-        "${CMAKE_CURRENT_SOURCE_DIR}/tests/connector_test.py" --engine $<TARGET_FILE:${CONNECTOR_EXECUTABLE}> --library "${DUCKDB_LIBRARY}" --version "${CONNECTOR_VERSION}")
+    add_test(NAME shv-graph-duckdb-connector-process COMMAND shv-graph-duckdb-connector-connector-test --engine $<TARGET_FILE:${CONNECTOR_EXECUTABLE}> --library "${DUCKDB_LIBRARY}" --version "${CONNECTOR_VERSION}")
 endif()
 # The installation declarations below are kept explicit and receipt owned.
 set(CONNECTOR_SCHEMA_FILES ${SHV_OWNER_SCHEMA_FILES})
@@ -127,8 +125,7 @@ add_custom_target(uninstall-${CONNECTOR_MODULE} COMMAND ${CMAKE_COMMAND} -DINSTA
     -P "${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake")
 
 if(BUILD_TESTING)
- find_package(Python3 COMPONENTS Interpreter REQUIRED)
- add_test(NAME shv-graph-duckdb-connector-interface COMMAND ${Python3_EXECUTABLE} "${SYMPHONY_REPOSITORY_ROOT}/tools/shv-interface-codegen/tests/owner_test.py" --registration "${CMAKE_CURRENT_SOURCE_DIR}/INTERFACE-GENERATOR.json" --engine $<TARGET_FILE:symphony-shv-graph-duckdb-connector>)
+ add_test(NAME shv-graph-duckdb-connector-interface COMMAND shv-owner-interface-tests --root "${SYMPHONY_REPOSITORY_ROOT}" --registration "${CMAKE_CURRENT_SOURCE_DIR}/INTERFACE-GENERATOR.json" --engine $<TARGET_FILE:symphony-shv-graph-duckdb-connector>)
 endif()
 
 # Preserve the reviewed embedded owner while its standalone package evolves.
@@ -136,4 +133,17 @@ target_compile_definitions(shv-graph-duckdb-core PUBLIC SYMPHONY_SHV_GRAPH_ADAPT
 
 if(BUILD_TESTING)
  target_compile_definitions(shv-graph-duckdb-commit-fault-test PRIVATE SYMPHONY_SHV_GRAPH_ADAPTER_EMBEDDED_PREVIOUS=1)
+endif()
+
+if(BUILD_TESTING)
+  include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SymphonyNativeTests.cmake")
+  if(NOT TARGET symphony-authoring-support)
+    add_subdirectory("${SYMPHONY_REPOSITORY_ROOT}/tools/authoring-cpp" "${CMAKE_CURRENT_BINARY_DIR}/authoring-cpp" EXCLUDE_FROM_ALL)
+  endif()
+  symphony_native_test(shv-graph-duckdb-connector-connector-test "${CMAKE_CURRENT_SOURCE_DIR}/tests/connector_test.cpp")
+  symphony_native_test(shv-graph-duckdb-connector-installed-integration "${CMAKE_CURRENT_SOURCE_DIR}/tests/installed_integration.cpp")
+endif()
+
+if(BUILD_TESTING)
+  add_custom_target(shv-graph-duckdb-connector-interface-check-build ALL DEPENDS shv-owner-interface-tests)
 endif()

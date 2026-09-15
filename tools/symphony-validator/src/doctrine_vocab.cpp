@@ -10,7 +10,7 @@
 namespace {
     const std::vector<std::string> CANONICAL_FILES = {
         "README.md",
-        "INTENT.md",
+        "knowledge/platform/INTENT.md",
         "modules/hotpath-runtime/INTENT.md",
         "modules/hotpath-runtime/MANIFEST.md",
         "modules/hotpath-runtime/INSTALL.md",

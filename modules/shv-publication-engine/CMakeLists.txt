@@ -27,9 +27,8 @@ foreach(target shv-publication-core symphony-shv-publication)
  target_compile_options(${target} PRIVATE $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>)
 endforeach()
 if(BUILD_TESTING)
- find_package(Python3 COMPONENTS Interpreter REQUIRED)
- add_test(NAME shv-publication-interface COMMAND ${Python3_EXECUTABLE} "${SYMPHONY_REPOSITORY_ROOT}/tools/shv-interface-codegen/tests/interface_test.py" --owner shv-publication-engine --engine $<TARGET_FILE:symphony-shv-publication>)
- add_test(NAME shv-publication-process COMMAND ${Python3_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/tests/publication_test.py" --engine $<TARGET_FILE:symphony-shv-publication>)
+ add_test(NAME shv-publication-interface COMMAND shv-interface-tests --root "${SYMPHONY_REPOSITORY_ROOT}" --owner shv-publication-engine --engine $<TARGET_FILE:symphony-shv-publication>)
+ add_test(NAME shv-publication-process COMMAND shv-publication-engine-publication-test --engine $<TARGET_FILE:symphony-shv-publication>)
 endif()
 set(SHV_RUNTIME "libexec/symphony/shv-publication-engine/${PROJECT_VERSION}-dev")
 set(SHV_DOCS "share/doc/symphony/shv-publication-engine/${PROJECT_VERSION}-dev")
@@ -74,3 +73,16 @@ configure_file(cmake/uninstall.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/uninstall.c
 add_custom_target(uninstall-shv-publication-engine COMMAND ${CMAKE_COMMAND} -DINSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -P "${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake")
 
 # Publication 0.4 explicitly embeds the reviewed partition 0.4 contract.
+
+if(BUILD_TESTING)
+  include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SymphonyNativeTests.cmake")
+  if(NOT TARGET symphony-authoring-support)
+    add_subdirectory("${SYMPHONY_REPOSITORY_ROOT}/tools/authoring-cpp" "${CMAKE_CURRENT_BINARY_DIR}/authoring-cpp" EXCLUDE_FROM_ALL)
+  endif()
+  symphony_native_test(shv-publication-engine-publication-test "${CMAKE_CURRENT_SOURCE_DIR}/tests/publication_test.cpp")
+  symphony_native_test(shv-publication-engine-installed-integration "${CMAKE_CURRENT_SOURCE_DIR}/tests/installed_integration.cpp")
+endif()
+
+if(BUILD_TESTING)
+  add_custom_target(shv-publication-engine-interface-check-build ALL DEPENDS shv-interface-tests)
+endif()

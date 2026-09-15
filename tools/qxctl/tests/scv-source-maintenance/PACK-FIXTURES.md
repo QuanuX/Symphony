@@ -1,6 +1,6 @@
 # Portable package conformance specimen
 
-`verify_pack.py` exercises the already implemented `provider_pack_prepare` and `provider_pack_evaluate` operations against exact installed `schv-do` owner `0.10.0-dev`. It makes five focused qxctl calls and performs no network acquisition. It changes no installation, selected source head, grant, runtime implementation or provider API version.
+`verify_pack.cpp` exercises the already implemented `provider_pack_prepare` and `provider_pack_evaluate` operations against exact installed `schv-do` owner `0.10.0-dev`. It makes five focused qxctl calls and performs no network acquisition. It changes no installation, selected source head, grant, runtime implementation or provider API version.
 
 ## Inputs and provenance
 
@@ -32,10 +32,12 @@ Second, prepare a separately labeled diagnostic pack (`2026-09-13.1-negative-old
 
 ## Running the focused check
 
-From the repository root, provide the chosen executable and installation:
+Build the native runner from the repository root, then provide the chosen executable and installation:
 
 ```sh
-python3 tools/qxctl/tests/scv-source-maintenance/verify_pack.py \
+cmake -S tools/qxctl/tests/scv-source-maintenance -B /absolute/maintenance-build -DCMAKE_BUILD_TYPE=Release
+cmake --build /absolute/maintenance-build --target scv-verify-pack
+/absolute/maintenance-build/scv-verify-pack \
   --qxctl /absolute/path/to/qxctl \
   --prefix /absolute/path/to/exact-installed-prefix \
   --old-package tools/qxctl/tests/scv-source-maintenance/fixtures/old-package \

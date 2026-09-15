@@ -639,7 +639,6 @@ CallerAuthorityCheckResult check_caller_authority_impl(
     };
 
     add_file_if_markdown(root_path / "README.md", true);
-    add_file_if_markdown(root_path / "INTENT.md", true);
 
     const std::vector<std::string> directories = {
         "knowledge", "modules", "libraries", "tools/qxctl", "tools/symphony-validator"

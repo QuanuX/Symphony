@@ -15,6 +15,8 @@
 #include <initializer_list>
 #include <map>
 #include <optional>
+#include <regex>
+#include <sstream>
 #include <set>
 #include <string>
 #include <string_view>
@@ -220,6 +222,16 @@ bool visible_text(const Json& value, const std::size_t maximum) {
 }
 
 bool has_definition(const std::string& contents, const std::string& path, const std::string& name) {
+    if (path.ends_with(".cpp") || path.ends_with(".cc") || path.ends_with(".cxx")) {
+        std::string escaped;
+        for (const char c : name) {
+            if (std::string_view(R"(\.^$|()[]{}*+?)").find(c) != std::string_view::npos)
+                escaped += '\\';
+            escaped += c;
+        }
+        const std::regex declaration("(^|\n)[ \t]*(?:(?:inline|static|virtual|constexpr)[ \t]+)*(?:void|bool|int)[ \t\r\n]+" + escaped + "[ \t\r\n]*\\(");
+        if (std::regex_search(contents, declaration)) return true;
+    }
     std::size_t begin = 0U;
     while (begin <= contents.size()) {
         const auto end = contents.find('\n', begin);
@@ -272,11 +284,6 @@ bool has_definition(const std::string& contents, const std::string& path, const 
                         return true;
                     }
                 }
-            } else if (path.ends_with(".py")) {
-                const auto marker = "def " + name + "(";
-                if (line.starts_with(marker)) {
-                    return true;
-                }
             } else if (path.ends_with(".sh")) {
                 if (line.starts_with(name)) {
                     auto after = name.size();
@@ -323,6 +330,75 @@ bool check_regular_path(
         ++result.evidence_references_checked;
     }
     return found->second.has_value();
+}
+
+// Follow only quoted test headers in the owning directory or declared shared
+// support directories. This is bounded source traceability, never execution.
+std::string cpp_test_sources(const fs::path &root, const std::string &entry,
+                             InvariantOwnershipCheckResult &result, EvidenceCache &cache,
+                             std::string &owner_source) {
+    constexpr std::size_t maximum_headers = 16U;
+    std::vector<std::string> pending{entry};
+    std::set<std::string> visited;
+    std::string combined;
+    for (std::size_t i = 0; i < pending.size(); ++i) {
+        const auto path = pending[i];
+        if (!visited.insert(path).second)
+            continue;
+        if (visited.size() > maximum_headers || !check_regular_path(root, path, result, cache, false)) {
+            if (visited.size() > maximum_headers)
+                finding(result, EvidenceCategory::Violation, "invariant_ownership.cpp_support_bound",
+                        "path=" + entry);
+            return combined;
+        }
+        const auto &source = *cache.files.at(path);
+        if (source.size() + 1U > maximum_evidence_bytes - combined.size()) {
+            finding(result, EvidenceCategory::Violation, "invariant_ownership.cpp_support_bound",
+                    "path=" + entry);
+            return combined;
+        }
+        combined += source + "\n";
+        if (path != "libraries/knowledge-vector-engine-cpp/tests/support/native_test.hpp" &&
+            path != "tools/qxctl/tests/shv-invariants/installed_support.hpp" &&
+            !path.starts_with("tools/authoring-cpp/"))
+            owner_source += source + "\n";
+        std::istringstream lines(source);
+        std::string line;
+        while (std::getline(lines, line)) {
+            const auto begin = line.find_first_not_of(" \t");
+            if (begin == std::string::npos || line.compare(begin, 8, "#include") != 0)
+                continue;
+            const auto quote = line.find_first_not_of(" \t", begin + 8);
+            if (quote == std::string::npos || line[quote] != '"')
+                continue;
+            const auto end = line.find('"', quote + 1);
+            if (end == std::string::npos)
+                continue;
+            const auto include = line.substr(quote + 1, end - quote - 1);
+            if (!include.ends_with(".hpp") && !include.ends_with(".h"))
+                continue;
+            if (!engine::is_safe_relative_path(include)) {
+                finding(result, EvidenceCategory::Violation, "invariant_ownership.cpp_support_path",
+                        "path=" + path);
+                continue;
+            }
+            const std::array<fs::path, 4> search_roots{
+                fs::path(path).parent_path(), "libraries/knowledge-vector-engine-cpp/tests/support",
+                "tools/qxctl/tests/shv-invariants", "tools/authoring-cpp"};
+            for (const auto &directory : search_roots) {
+                const auto candidate = (directory / include).generic_string();
+                std::error_code error;
+                const auto status = fs::symlink_status(root / candidate, error);
+                if (error || status.type() == fs::file_type::not_found)
+                    continue;
+                if (!visited.contains(candidate) &&
+                    std::find(pending.begin(), pending.end(), candidate) == pending.end())
+                    pending.push_back(candidate);
+                break;
+            }
+        }
+    }
+    return combined;
 }
 
 bool check_directory_path(
@@ -411,7 +487,9 @@ std::vector<TestReference> check_test_references(
             value.cases.push_back(item.get<std::string>());
         }
         if (check_regular_path(root, path, result, cache, true)) {
-            const auto& contents = *cache.files.at(path);
+            std::string owner_source;
+            const auto contents = path.ends_with(".cpp")
+                ? cpp_test_sources(root, path, result, cache, owner_source) : *cache.files.at(path);
             for (const auto& case_name : value.cases) {
                 if (!has_definition(contents, path, case_name)) {
                     finding(result, EvidenceCategory::Violation,
@@ -444,17 +522,24 @@ std::vector<TestReference> check_test_references(
                     contents.find("ssiag provider verify") != std::string::npos &&
                     contents.find("SERVER_PID=$!") != std::string::npos &&
                     contents.find("wait \"$SERVER_PID\"") != std::string::npos;
-                const bool python_process_evidence = path.ends_with(".py") &&
-                    contents.find("subprocess.run(") != std::string::npos &&
-                    contents.find("input=") != std::string::npos &&
-                    (contents.find("capture_output=True") != std::string::npos ||
-                     contents.find("stdout=subprocess.PIPE") != std::string::npos) &&
-                    (contents.find("returncode") != std::string::npos ||
-                     contents.find("check=True") != std::string::npos) &&
+                // Imported mechanics cannot supply the owner test's actual invocation.
+                const bool owner_invocation = std::regex_search(owner_source,
+                    std::regex(R"((::run|::fork|\.call)\s*\()"));
+                const bool owner_installation = owner_source.find("install-receipt.json") != std::string::npos ||
+                    std::regex_search(owner_source, std::regex(R"((installed_engine|\.installation)\s*\()"));
+                const bool cpp_process_evidence = path.ends_with(".cpp") &&
+                    owner_invocation && owner_installation &&
+                    contents.find("::fork(") != std::string::npos &&
+                    contents.find("::execvp(") != std::string::npos &&
+                    contents.find("::dup2(") != std::string::npos &&
+                    contents.find("::waitpid(") != std::string::npos &&
+                    contents.find("stdout") != std::string::npos &&
+                    contents.find("stdin") != std::string::npos &&
+                    contents.find("WEXITSTATUS(") != std::string::npos &&
                     contents.find("install-receipt.json") != std::string::npos;
                 const bool process_evidence = go_process_evidence || swift_process_evidence ||
                     swift_fixed_no_input_process_evidence || shell_process_evidence ||
-                    python_process_evidence;
+                    cpp_process_evidence;
                 if (!process_evidence) {
                     finding(result, EvidenceCategory::Violation,
                         "invariant_ownership.real_process_mechanics",

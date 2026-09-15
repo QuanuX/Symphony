@@ -2,6 +2,10 @@
 
 ## Canonical Surfaces
 
+- `modules/shv-profile-engine/tests/installed_integration.cpp`
+
+- `modules/shv-profile-engine/tests/profile_support.hpp`
+
 - `modules/shv-profile-engine/FEATURES.md`
 - `modules/shv-profile-engine/INSTALL.md`
 - `modules/shv-profile-engine/INTENT.md`
@@ -14,9 +18,9 @@
 
 ## Interface authoring and verification surfaces
 
-- `modules/shv-profile-engine/tools/generate_interface.py`
+- `modules/shv-profile-engine/tools/generate_interface.cpp`
 - `modules/shv-profile-engine/src/interface.generated.hpp`
-- `modules/shv-profile-engine/tests/interface_test.py`
+- `modules/shv-profile-engine/tests/interface_test.cpp`
 - `modules/shv-profile-engine/tests/fixtures/interface-history.v1.json`
 - `cmake/ShvProfileInterface.generated.cmake`
 - `tools/qxctl/internal/knowledgeengine/shv_profile_interface_generated.go`

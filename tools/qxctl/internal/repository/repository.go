@@ -6,15 +6,15 @@ import (
 	"path/filepath"
 )
 
-// FindRoot locates the Symphony repository root by looking for README.md and INTENT.md.
+// FindRoot locates the Symphony repository root by looking for README.md, the SKV manifest, and modules/.
 func FindRoot(start string) (string, error) {
 	current := start
 	for {
 		hasReadme := IsFile(filepath.Join(current, "README.md"))
-		hasIntent := IsFile(filepath.Join(current, "INTENT.md"))
+		hasKnowledge := IsFile(filepath.Join(current, "knowledge", "MANIFEST.md"))
 		hasModules := IsDir(filepath.Join(current, "modules"))
 
-		if hasReadme && hasIntent && hasModules {
+		if hasReadme && hasKnowledge && hasModules {
 			return current, nil
 		}
 

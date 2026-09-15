@@ -125,7 +125,7 @@ The emerging SOV remote-operation and deployment contracts do not make provider 
 
 This bounded summary is derived from canonical SSFV coverage and routing, the feature-administration profile, the qxctl command registry, and completed SODV publication records. Edit its source contracts, then regenerate; do not hand-edit the values below.
 
-- SSFV catalog state: `partial`; registered features: **110**; registered owner scopes: **34**; ratified nested features: **76**.
+- SSFV catalog state: `partial`; registered features: **110**; registered owner scopes: **35**; ratified nested features: **76**.
 - Feature-administration expectations: **295** reviewed surfaces; **285** required, **13** evidence-backed exemptions, **9** prohibitions, **0** unreviewed.
 - qxctl stable command identities: **369**.
 - Registered owner capabilities:
@@ -133,6 +133,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `ssfv:symphony:knowledge-session-coordinator`
   - `ssfv:symphony:knowledge-vector-engine-foundation`
   - `ssfv:symphony:maestro-presence-authority`
+  - `ssfv:symphony:platform`
   - `ssfv:symphony:qxctl`
   - `ssfv:symphony:sacv-engine`
   - `ssfv:symphony:sav-engine`
@@ -167,7 +168,7 @@ This bounded summary is derived from canonical SSFV coverage and routing, the fe
   - `github.com/QuanuX/Symphony/libraries/stav-protocol-go` `v0.2.0` (tag `libraries/stav-protocol-go/v0.2.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.1.0` (tag `modules/stav-append-authority/v0.1.0`, source `55f8faf26f4f85213ac23cc1de7ba897b2129a4c`)
   - `github.com/QuanuX/Symphony/modules/stav-append-authority` `v0.2.0` (tag `modules/stav-append-authority/v0.2.0`, source `ed7484d70607aa96e64916dd4e59d3972a61980b`)
-- Snapshot digest: `sha256:83a0e904a305099f1c5898072585de64aec1aa492e89944dbb2bcdee7c479fcf`
+- Snapshot digest: `sha256:4a2b293e9531ec1b6d06e39bb672d81d5c5883c5ef0583a07ad8b414f002cd4a`
 <!-- symphony:root-summary:v1:end -->
 
 ## Releases and Documentation
@@ -178,7 +179,7 @@ The machine-checked snapshot lists every completed SODV source publication. Thos
 
 ## Root-Level Governance Role
 
-The repository root establishes platform invariants, shared interpretation rules, and modular sovereignty. It does not absorb a vector's meaning or a module's runtime authority.
+The [platform governance contract](knowledge/platform/INTENT.md) establishes platform invariants, shared interpretation rules, and modular sovereignty within SKV. It does not absorb a vector's meaning or a module's runtime authority.
 
 The SKV evolution framework allows Symphony to add, change, supersede, deprecate, retire, and remove surfaces while preserving the distinction between present truth and historical evidence. Companion files exist only while they improve bounded agent understanding; they must not remain as stale restatements once their purpose disappears.
 
@@ -194,7 +195,7 @@ The SKV evolution framework allows Symphony to add, change, supersede, deprecate
 
 ## Python Doctrine
 
-Python is not required for remote native hot-path execution or the administrative spine. Optional isolated Python Habitats may exist only when explicitly selected and declared by the applicable user or component.
+First-party Symphony source, generators, schema authoring, tests, and acceptance helpers require no Python implementation or dependency. The former Python development tooling is replaced by C++. This repository policy does not restrict user-authored programs or explicitly selected isolated Habitats.
 
 ## License
 

@@ -13,7 +13,10 @@ func TestFindRoot(t *testing.T) {
 	}
 
 	readme := filepath.Join(tempDir, "README.md")
-	intent := filepath.Join(tempDir, "INTENT.md")
+	intent := filepath.Join(tempDir, "knowledge", "MANIFEST.md")
+	if err := os.MkdirAll(filepath.Dir(intent), 0755); err != nil {
+		t.Fatal(err)
+	}
 	modules := filepath.Join(tempDir, "modules")
 
 	if err := os.WriteFile(readme, []byte("readme"), 0644); err != nil {
@@ -99,7 +102,7 @@ func TestFindRootNotFound(t *testing.T) {
 		}
 	})
 
-	t.Run("FindRoot fails when README.md and INTENT.md exist but modules/ is absent", func(t *testing.T) {
+	t.Run("FindRoot fails when README.md and the SKV manifest exist but modules/ is absent", func(t *testing.T) {
 		tempDir, err := filepath.EvalSymlinks(t.TempDir())
 		if err != nil {
 			t.Fatalf("failed to eval symlinks: %v", err)
@@ -107,7 +110,10 @@ func TestFindRootNotFound(t *testing.T) {
 		if err := os.WriteFile(filepath.Join(tempDir, "README.md"), []byte("readme"), 0644); err != nil {
 			t.Fatalf("failed to write README.md: %v", err)
 		}
-		if err := os.WriteFile(filepath.Join(tempDir, "INTENT.md"), []byte("intent"), 0644); err != nil {
+		if err := os.MkdirAll(filepath.Join(tempDir, "knowledge"), 0755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(tempDir, "knowledge", "MANIFEST.md"), []byte("intent"), 0644); err != nil {
 			t.Fatalf("failed to write INTENT.md: %v", err)
 		}
 		_, err = FindRoot(tempDir)

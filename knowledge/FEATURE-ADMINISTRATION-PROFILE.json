@@ -745,8 +745,8 @@
           "delivery": "composed",
           "engine_operation_ids": [],
           "evidence": [
-            "FEATURES.md",
             "knowledge/FEATURE-ADMINISTRATION.md",
+            "knowledge/platform/FEATURES.md",
             "tools/qxctl/COMMANDS.json"
           ],
           "inherited_from_feature_id": null,
@@ -7869,9 +7869,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:dab205972febc43cb2c3e55883f7cf13f68498385abfbddf14897a8c532fb71e",
+  "profile_digest": "sha256:eb2aa3f97e6893ceff5d484244efa6fef7570d91f995c54672804b003445f8e6",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 110,
-  "ssfv_registry_digest": "sha256:e552d03d74e79eccf4d6af57726807192249c62b087acff25af23ea295116ee2"
+  "ssfv_registry_digest": "sha256:9ab0617c3e6f15aceab3dd9b889b24a2062ce7bfa57dc1f4685596d4f25cbb6f"
 }

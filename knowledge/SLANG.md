@@ -348,7 +348,7 @@ A term is admitted only after its semantic owner exists. A name used in discussi
 
 - term: `Troll`
 - meaning: Optional nomenclature for a user-programmed resident placed at a selected connection point; the word alone assigns no required behavior or authority.
-- owner_contract: `INTENT.md`
+- owner_contract: `knowledge/platform/INTENT.md`
 - example: `A user may create a Troll that communicates only the information they program it to communicate.`
 - counterexample: `Every Node or cluster requires a Troll, or Symphony defines how every Troll behaves.`
 - notes: The exact first-party module identities `node-troll` and `bus-troll` are retired non-reusable tombstones; the general concept may become unnecessary.

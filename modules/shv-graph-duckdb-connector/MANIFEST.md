@@ -2,6 +2,8 @@
 
 ## Canonical Surfaces
 
+- `modules/shv-graph-duckdb-connector/tests/installed_integration.cpp`
+
 - `modules/shv-graph-duckdb-connector/DUCKDB-PROVENANCE.json`
 - `modules/shv-graph-duckdb-connector/FEATURES.md`
 - `modules/shv-graph-duckdb-connector/INSTALL.md`

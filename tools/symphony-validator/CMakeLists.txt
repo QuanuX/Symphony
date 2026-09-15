@@ -130,6 +130,7 @@ add_executable(invariant-ownership-tests
 
 add_executable(canonical-surface-tests
     tests/canonical_surfaces_test.cpp
+    src/root_contracts.cpp
     src/canonical_surfaces.cpp
     src/skvi_coverage.cpp
     src/evidence.cpp

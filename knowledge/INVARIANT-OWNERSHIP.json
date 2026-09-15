@@ -1113,7 +1113,7 @@
             "test_corpus_refresh_retains_exact_historical_capture",
             "test_corpus_selection_removal_is_explicit"
           ],
-          "path": "modules/scv-engine/tests/installed_integration.py"
+          "path": "modules/scv-engine/tests/installed_integration.cpp"
         }
       ],
       "statement": "The corpus owner validates sealed indexes, exact domain scope, member identity against the supplied immediate predecessor and consistent latest/retained-complete evidence. Query preserves source revision and observation age; removed selection is not retirement. Capture-index metadata alone cannot prove backing bytes, and no pure result selects a durable head or grants authority.",
@@ -1170,7 +1170,7 @@
           "cases": [
             "test_inventory_and_transfer_planning"
           ],
-          "path": "modules/scv-graph-duckdb-connector/tests/inventory_installed.py"
+          "path": "modules/scv-graph-duckdb-connector/tests/inventory_installed.cpp"
         },
         {
           "cases": [
@@ -1227,7 +1227,7 @@
             "test_reject_deleted_projection_row",
             "test_reject_index_column_and_inventory_corruption"
           ],
-          "path": "modules/scv-graph-duckdb-connector/tests/connector_test.py"
+          "path": "modules/scv-graph-duckdb-connector/tests/connector_test.cpp"
         },
         {
           "cases": [
@@ -1235,7 +1235,7 @@
             "test_inventory_revision_alias_and_pages",
             "test_transfer_plan_preserves_selection_and_lineage"
           ],
-          "path": "modules/scv-graph-duckdb-connector/tests/inventory_test.py"
+          "path": "modules/scv-graph-duckdb-connector/tests/inventory_test.cpp"
         }
       ],
       "real_process_regressions": [
@@ -1243,7 +1243,7 @@
           "cases": [
             "test_installed_graph_index_recovery_and_retrieval"
           ],
-          "path": "modules/scv-graph-duckdb-connector/tests/installed_integration.py"
+          "path": "modules/scv-graph-duckdb-connector/tests/installed_integration.cpp"
         }
       ],
       "statement": "The C++ connector atomically publishes an immutable snapshot and complete structural rows from durable exact intent. It validates retained graph and projection identities without changing source evidence or selected heads. Independent qxctl checks preserve namespace, ordering and page correspondence and replay the exact retained SCV validating owner at explicit query time before semantic use or recovery. Index integrity status remains distinct from native semantic evaluation. Inventory revisions bind changing intent state and global capacity observations. Transfer plans preserve exact caller selection and target identity mapping; no planning operation executes transfer or deletes retained history.",
@@ -1523,7 +1523,7 @@
             "test_provider_interpretation_connection_reassessment",
             "test_provider_pack_process_conformance_and_interface_receipt"
           ],
-          "path": "modules/scv-engine/tests/installed_integration.py"
+          "path": "modules/scv-engine/tests/installed_integration.cpp"
         }
       ],
       "statement": "The C++ interpretation owner validates exact sealed profiles and capture bindings, retains qualified extraction findings and replays wrapped interpretations before evaluating caller-defined subject/scope/type/unit checks. Reassessment replays both retained results and distinguishes changed inputs and affected findings. Missing, stale, disputed or conditional support cannot become unqualified runtime compatibility, provider-wide contradiction or authority. Recomputed outer digests do not bypass nested replay. Native profile preparation validates and seals exactly the authored draft without asserting source extraction or substituting fields. Portable provider packs preserve caller-authored declarations, exact profile and fixture expectations, detached-input identity, structured token provenance and explicit failed/unrun conformance. Finite recipe exploration and reassessment reconstruct selected evidence, requirements, allowed choices, enumeration bounds, interface declarations and obligations without ranking providers, silently relaxing requirements, or treating authored implementation metadata as observed compatibility. Native obligation inventory binds each precise check or other work subject to the full replayed composition. Follow-up replays both sides, preserves all non-time caller criteria and policy, reports query-time differences, and never credits an opaque reference with proof or causation. Non-check obligations remain separately unverified. Complete content-addressed transport bounds every expanded occurrence before allocation and reuses the exact composition owner; independent consumers reconstruct and replay semantics. Content hashes remain separate from native seals, historical installation identity and authority. Explicit v2 coordination pins original record identities, exact owner and caller request before work. Direct and bundled results retain distinct logical and transport identities; checkpoint recovery reconstructs the requested input and immutable relationships verify their selected logical documents.",
@@ -1573,7 +1573,7 @@
           "cases": [
             "test_provider_coverage_process_binding_and_declared_gaps"
           ],
-          "path": "modules/scv-engine/tests/installed_integration.py"
+          "path": "modules/scv-engine/tests/installed_integration.cpp"
         }
       ],
       "statement": "The C++ coverage owner replays the declared provider candidate, exact corpus query and independent interpretation wrappers before accounting for inventory, selection and authored rule attempts. Missing or unlisted sources, unselected or stale captures, partial acquisition, declaration drift and unresolved extraction remain explicit. Metadata alone cannot prove body availability, matched rules cannot become runtime support, and recomputed outer seals cannot conceal changed joins or counts. The qxctl consumer independently rejects substituted inventories, source/capture bindings and summaries.",
@@ -1624,7 +1624,7 @@
         "modules/scv-engine/src/interface.generated.inc",
         "modules/scv-engine/src/knowledge.cpp",
         "modules/scv-engine/src/source.cpp",
-        "modules/scv-engine/tools/generate_interface.py"
+        "modules/scv-engine/tools/generate_interface.cpp"
       ],
       "producer_regressions": [
         {
@@ -1644,7 +1644,7 @@
             "test_seventh_release_declaration_remains_exact",
             "test_sixth_release_declaration_remains_exact"
           ],
-          "path": "modules/scv-engine/tests/interface_generation_test.py"
+          "path": "modules/scv-engine/tests/interface_generation_test.cpp"
         },
         {
           "cases": [
@@ -1667,7 +1667,7 @@
             "test_receipt_owned_standalone_process",
             "test_source_transition_expected_state_and_digest"
           ],
-          "path": "modules/scv-engine/tests/installed_integration.py"
+          "path": "modules/scv-engine/tests/installed_integration.cpp"
         }
       ],
       "statement": "Source reducers reject stale or altered expected-state transitions; capture and graph consumers revalidate retained bytes, domain qualification and semantic digests. A computed transition or projection is evidence and cannot assert authorization or a durable storage commit. Mechanical interface generation preserves exact earlier release admissions; receipt-owned declaration inspection binds retained bytes and canonical metadata to the compiled owner interface. Generated metadata does not replace independent semantic validation or admit arbitrary executable behavior.",
@@ -1787,7 +1787,7 @@
           "cases": [
             "test_adapter_conformance"
           ],
-          "path": "modules/shv-graph-adapter/tests/conformance.py"
+          "path": "modules/shv-graph-adapter/tests/conformance.cpp"
         }
       ],
       "real_process_regressions": [
@@ -1795,7 +1795,7 @@
           "cases": [
             "test_installed_process"
           ],
-          "path": "modules/shv-graph-adapter/tests/conformance.py"
+          "path": "modules/shv-graph-adapter/tests/conformance.cpp"
         }
       ],
       "statement": "The generic portable-reference adapter checks canonical graph and owner-artifact self-seals, exact fields, unique sorted node/edge identities, labels and endpoint closure. Roundtrip preserves full arbitrary canonical property values; bounded query preserves exact graph and caller ID correspondence with explicit missing IDs. Independent qxctl rejection checks retain the exact receipt-backed adapter and reconstruct structural results. This pure in-memory exchange neither replays hardware sources nor establishes semantic truth, vendor-driver support, durable database state or a universal graph backend.",
@@ -1856,7 +1856,7 @@
             "test_symlink_rejection",
             "test_unknown_schema"
           ],
-          "path": "modules/shv-graph-duckdb-connector/tests/connector_test.py"
+          "path": "modules/shv-graph-duckdb-connector/tests/connector_test.cpp"
         }
       ],
       "real_process_regressions": [
@@ -1864,7 +1864,7 @@
           "cases": [
             "test_installed_store_provenance"
           ],
-          "path": "modules/shv-graph-duckdb-connector/tests/installed_integration.py"
+          "path": "modules/shv-graph-duckdb-connector/tests/installed_integration.cpp"
         }
       ],
       "statement": "The DuckDB connector separates durable prepared intent from atomic snapshot and complete-row commit under a private no-follow locked root. Reopen, status, query and export verify full snapshot/projection correspondence before returning bounded results; inventory binds the complete bounded database revision without leaking other scopes. Unknown canonical graph properties and original exact writer installations are preserved independently of the selected reader. Independent qxctl reconstruction rejects resealed false storage, inventory and transfer-plan results. Transfer planning does not execute transfer, delete data, select a canonical head or establish hardware semantic validity; original source replay remains with its owner.",
@@ -1877,11 +1877,11 @@
       ],
       "consumer_boundary_rejections": [
         {
-          "path": "tools/qxctl/internal/knowledgeengine/shv_partition_test.go",
           "cases": [
             "TestSHVPartitionCorrespondence",
             "TestSHVPartitionCursorBindings"
-          ]
+          ],
+          "path": "tools/qxctl/internal/knowledgeengine/shv_partition_test.go"
         }
       ],
       "invariant_id": "invariant:symphony:shv.partition-inventory-correspondence",
@@ -1894,18 +1894,18 @@
       ],
       "producer_regressions": [
         {
-          "path": "modules/shv-partition-engine/tests/partition_test.py",
           "cases": [
             "test_native_partition_contract"
-          ]
+          ],
+          "path": "modules/shv-partition-engine/tests/partition_test.cpp"
         }
       ],
       "real_process_regressions": [
         {
-          "path": "modules/shv-partition-engine/tests/partition_test.py",
           "cases": [
             "test_installed_process"
-          ]
+          ],
+          "path": "modules/shv-partition-engine/tests/partition_test.cpp"
         }
       ],
       "statement": "Native partition manifests preserve declared immutable dependencies, missing inventory and separately scoped references. Independent Go rederivation rejects falsely resealed completeness, inventory or cursor results; no global hardware absence or publisher authentication is inferred.",
@@ -1947,7 +1947,7 @@
           "cases": [
             "test_installed_pdf_source_replay"
           ],
-          "path": "modules/shv-pdf-adapter/tests/installed_integration.py"
+          "path": "modules/shv-pdf-adapter/tests/installed_integration.cpp"
         }
       ],
       "statement": "The finite PDF adapter binds selected table extraction and document-graph projection to exact retained original bytes, source identity, decoder executable digest and explicit parser/profile identity. Graph validation decodes the original again and reconstructs exact nodes, edges, documentary lineage and namespace qualifiers; independent qxctl checks reject altered result and source/decoder correspondence. One documentary lineage and caller-selected coverage do not establish publisher authentication, namespace equivalence, a general PDF interpreter or hardware compatibility.",
@@ -1991,13 +1991,13 @@
           "cases": [
             "run"
           ],
-          "path": "modules/shv-profile-engine/tests/diagnostics_test.py"
+          "path": "modules/shv-profile-engine/tests/diagnostics_test.cpp"
         },
         {
           "cases": [
             "run"
           ],
-          "path": "modules/shv-profile-engine/tests/profile_test.py"
+          "path": "modules/shv-profile-engine/tests/profile_test.cpp"
         }
       ],
       "real_process_regressions": [
@@ -2005,7 +2005,7 @@
           "cases": [
             "test_installed_profile_source_binding"
           ],
-          "path": "modules/shv-profile-engine/tests/installed_integration.py"
+          "path": "modules/shv-profile-engine/tests/installed_integration.cpp"
         }
       ],
       "statement": "The profile owner validates caller-defined declarations, compiles finite source mappings and binds selected universes to exact retained source bytes before diagnosis. Embedded kernel and PDF implementations retain their separately selected exact contract versions. Extraction diagnostics and graph-reference analysis preserve supplied source, field and path evidence; independent qxctl reconstruction rejects resealed false declarations, mappings, universe bindings and diagnostic correspondence. A structurally accepted caller profile does not define a universal hardware ontology, infer retirement or confer documentary truth.",
@@ -2045,7 +2045,7 @@
           "cases": [
             "test_native_publication_contract"
           ],
-          "path": "modules/shv-publication-engine/tests/publication_test.py"
+          "path": "modules/shv-publication-engine/tests/publication_test.cpp"
         }
       ],
       "real_process_regressions": [
@@ -2053,7 +2053,7 @@
           "cases": [
             "test_installed_publication_provenance"
           ],
-          "path": "modules/shv-publication-engine/tests/installed_integration.py"
+          "path": "modules/shv-publication-engine/tests/installed_integration.cpp"
         }
       ],
       "statement": "The pure publication owner validates catalogue definitions and supplied partition/storage evidence under explicitly admitted exact contracts, binds plans to expected predecessor and operation identity, and deterministically reduces plans and reconstructs contiguous history. The embedded partition reader retains its declared exact implementation version. Independent qxctl reconstruction rejects resealed false readiness, head transitions, history and reader/writer admission. These pure results do not authenticate SSIAG decisions, replay original source bytes, mutate a selected catalogue head or grant publication authority; those boundaries remain separately owned.",
@@ -2088,7 +2088,7 @@
           "cases": [
             "test_source_conformance"
           ],
-          "path": "modules/shv-source-engine/tests/source_test.py"
+          "path": "modules/shv-source-engine/tests/source_test.cpp"
         }
       ],
       "real_process_regressions": [
@@ -2096,7 +2096,7 @@
           "cases": [
             "test_installed_process"
           ],
-          "path": "modules/shv-source-engine/tests/source_test.py"
+          "path": "modules/shv-source-engine/tests/source_test.cpp"
         }
       ],
       "statement": "Pure source transitions preserve exact expected predecessor and source identity; capture import/comparison and source graph replay verify actual retained bytes and complete scoped provenance. Independent qxctl rederivation rejects resealed false lineage or graph results. No source approval, publisher authentication, protected activation or hardware capability is inferred from a source digest.",
@@ -2157,13 +2157,13 @@
           "cases": [
             "test_kernel_conformance"
           ],
-          "path": "modules/shv-engine/tests/kernel_test.py"
+          "path": "modules/shv-engine/tests/kernel_test.cpp"
         },
         {
           "cases": [
             "test_table_interpretation"
           ],
-          "path": "modules/shv-engine/tests/table_test.py"
+          "path": "modules/shv-engine/tests/table_test.cpp"
         }
       ],
       "real_process_regressions": [
@@ -2171,13 +2171,13 @@
           "cases": [
             "test_installed_process"
           ],
-          "path": "modules/shv-engine/tests/kernel_test.py"
+          "path": "modules/shv-engine/tests/kernel_test.cpp"
         },
         {
           "cases": [
             "test_installed_table_process"
           ],
-          "path": "modules/shv-engine/tests/table_test.py"
+          "path": "modules/shv-engine/tests/table_test.cpp"
         }
       ],
       "statement": "The C++ SHV owner reads exact retained source bytes through bounded no-follow paths, checks manifest sizes and digests, and replays selected finite source mappings before catalogue query, requirement evaluation or owner graph projection/validation. Product heading and definition fields bind caller-selected exact tag#id sections. Coverage preserves caller selectors and unresolved dates. Findings preserve subject, requirement, qualifier and evidence identity without promoting declared component facts to whole-system or active-Node proof. Independent qxctl checks reject resealed false results and preserve exact receipt-backed owner selection; a valid graph seal alone is not source replay. Explicit table profiles retain quarter precision and complete operating-mode rows, rejecting structural ambiguity and resealed mixed-mode values.",
@@ -2500,11 +2500,11 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
+  "registry_digest": "sha256:9f0611343dedc58a2b38884e12f9cd8b784dd656a303fb5d9a23c1898ae469a4",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,
     "owner_producer_regression_required": true,
     "real_process_required_for_ipc": true
-  },
-  "registry_digest": "sha256:53be07bef208d18e373d8243671bb28b03509fac99cc2a3055b2e977dc728be8"
+  }
 }

@@ -18,7 +18,7 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 
 | Source scope | Disposition | Canonical feature identity | Evidence |
 |---|---|---|---|
-| `.` | registered | `ssfv:symphony:platform` | `FEATURES.md` |
+| `knowledge/platform` | registered | `ssfv:symphony:platform` | `knowledge/platform/FEATURES.md` |
 | `libraries/knowledge-vector-engine-cpp` | registered | `ssfv:symphony:knowledge-vector-engine-foundation` | `libraries/knowledge-vector-engine-cpp/FEATURES.md` |
 | `libraries/stav-protocol-go` | registered | `ssfv:symphony:stav-protocol-kernel` | `libraries/stav-protocol-go/FEATURES.md` |
 | `modules/accordare-stav-producer` | registered | `ssfv:symphony:accordare-stav-producer` | `modules/accordare-stav-producer/FEATURES.md` |

@@ -118,7 +118,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - owner: Symphony root governance
 - scope: Presents platform purpose, Node/Habitat/Nest boundaries, the ratified vector landscape and roadmap, implemented foundations, explicit nonclaims, and the machine-checked repository snapshot.
 - relationships:
-  - declares -> `INTENT.md`
+  - declares -> `knowledge/platform/INTENT.md`
   - depends_on -> `knowledge/ARCHITECTURE.md`
   - depends_on -> `knowledge/SLANG.md`
   - depends_on -> `knowledge/NAMESPACES.md`
@@ -138,8 +138,8 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: This is repository-source orientation; any separate official documentation projection remains SODV-governed.
 
 #### INTENT.md
-- path: `INTENT.md`
-- title: Root Intent
+- path: `knowledge/platform/INTENT.md`
+- title: Platform Intent
 - surface_type: root governance declaration
 - truth_role: defines Symphony platform purpose and boundaries
 - owner: Symphony root governance
@@ -158,13 +158,13 @@ Future validator increments may add separately ratified deterministic checks wit
 - status: canonical
 - notes: None.
 
-#### Root FEATURES.md
-- path: `FEATURES.md`
+#### Platform FEATURES.md
+- path: `knowledge/platform/FEATURES.md`
 - title: Root Symphony Semantic Features
 - surface_type: distributed SSFV feature record
-- truth_role: canonical semantic capability truth for the repository-root platform boundary
+- truth_role: canonical semantic capability truth for the platform boundary
 - owner: Symphony root governance
-- scope: Owns the experimental `ssfv:symphony:platform` capability record at exact source scope `.`.
+- scope: Owns the experimental `ssfv:symphony:platform` capability record at exact source scope `knowledge/platform`.
 - relationships: depends_on -> `knowledge/ssfv/SPEC.md`; declares -> `ssfv:symphony:platform`
 - consumers: symphony-ssfv, qxctl, reviewers, agentic tools, future SODV-governed documentation projections
 - deferred_projections: portable SSFV graph, module catalog, encyclopedic reference, reviewed public documentation
@@ -250,7 +250,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - scope: Defines purpose, monorepo relationship, security scope, non-scope, and owner-ratification boundaries.
 - relationships:
   - declares -> `modules/secure-identity-access-governance/MANIFEST.md`
-  - depends_on -> `INTENT.md`
+  - depends_on -> `knowledge/platform/INTENT.md`
 - consumers: humans, reviewers, agentic tools, symphony-validator and future validator extensions, qxctl maintainers
 - deferred_projections: JSON / JSONL portable evidence, graph relationship projection
 - notes: Monorepo visibility does not grant runtime authority.
@@ -553,7 +553,7 @@ Future validator increments may add separately ratified deterministic checks wit
 - truth_role: implementation placement and runtime-authority boundary
 - owner: Symphony root governance
 - scope: Defines build-time shared code and versioned native development packages as distinct from independently installed resident runtime modules.
-- relationships: depends_on -> `INTENT.md`; governs -> `libraries/stav-protocol-go/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
+- relationships: depends_on -> `knowledge/platform/INTENT.md`; governs -> `libraries/stav-protocol-go/MANIFEST.md`; governs -> `libraries/knowledge-vector-engine-cpp/MANIFEST.md`
 - consumers: implementers, reviewers, agentic tools, symphony-validator and future validator extensions
 - deferred_projections: dependency graph and release evidence
 - notes: Libraries own no canonical protocol truth or resident operational identity; a native development package may still be independently installed and removed through a receipt.
@@ -12118,9 +12118,9 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - notes: Does not generate semantic handlers or grant mutation authority.
 - status: canonical
 
-##### SHV profile interface generate_interface.py
-- path: `modules/shv-profile-engine/tools/generate_interface.py`
-- title: SHV profile interface generate_interface.py
+##### SHV profile interface generate_interface.cpp
+- path: `modules/shv-profile-engine/tools/generate_interface.cpp`
+- title: SHV profile interface generate_interface.cpp
 - surface_type: owner interface support surface
 - truth_role: declared metadata or subordinate implementation evidence
 - owner: SHV profile engine maintainers
@@ -12144,9 +12144,9 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - notes: Does not generate semantic handlers or grant mutation authority.
 - status: canonical
 
-##### SHV profile interface interface_test.py
-- path: `modules/shv-profile-engine/tests/interface_test.py`
-- title: SHV profile interface interface_test.py
+##### SHV profile interface interface_test.cpp
+- path: `modules/shv-profile-engine/tests/interface_test.cpp`
+- title: SHV profile interface interface_test.cpp
 - surface_type: owner interface support surface
 - truth_role: declared metadata or subordinate implementation evidence
 - owner: SHV profile engine maintainers
@@ -12404,9 +12404,9 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - notes: Does not generate semantic handlers or grant mutation authority.
 - status: canonical
 
-##### SHV shared interface tools/shv-interface-codegen/generate.py
-- path: `tools/shv-interface-codegen/generate.py`
-- title: SHV shared interface generate.py
+##### SHV shared interface tools/shv-interface-codegen/generate.cpp
+- path: `tools/shv-interface-codegen/generate.cpp`
+- title: SHV shared interface generate.cpp
 - surface_type: owner interface support surface
 - truth_role: declared metadata or subordinate implementation evidence
 - owner: SHV source and publication maintainers
@@ -12430,9 +12430,9 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - notes: Does not generate semantic handlers or grant mutation authority.
 - status: canonical
 
-##### SHV shared interface tools/shv-interface-codegen/tests/interface_test.py
-- path: `tools/shv-interface-codegen/tests/interface_test.py`
-- title: SHV shared interface interface_test.py
+##### SHV shared interface tools/shv-interface-codegen/tests/interface_test.cpp
+- path: `tools/shv-interface-codegen/tests/interface_test.cpp`
+- title: SHV shared interface interface_test.cpp
 - surface_type: owner interface support surface
 - truth_role: declared metadata or subordinate implementation evidence
 - owner: SHV source and publication maintainers
@@ -12846,9 +12846,9 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - notes: The owner inventory is not exhaustive; registration does not grant authority.
 - status: canonical
 
-##### SHV open interface tools/shv-interface-codegen/owner_codegen.py
-- path: `tools/shv-interface-codegen/owner_codegen.py`
-- title: SHV open interface owner_codegen.py
+##### SHV open interface tools/shv-interface-codegen/owner_codegen.cpp
+- path: `tools/shv-interface-codegen/owner_codegen.cpp`
+- title: SHV open interface owner_codegen.cpp
 - surface_type: owner interface support surface
 - truth_role: declared metadata or subordinate implementation evidence
 - owner: SHV module maintainers
@@ -12859,9 +12859,9 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - notes: The owner inventory is not exhaustive; registration does not grant authority.
 - status: canonical
 
-##### SHV open interface tools/shv-interface-codegen/tests/owner_test.py
-- path: `tools/shv-interface-codegen/tests/owner_test.py`
-- title: SHV open interface owner_test.py
+##### SHV open interface tools/shv-interface-codegen/tests/owner_test.cpp
+- path: `tools/shv-interface-codegen/tests/owner_test.cpp`
+- title: SHV open interface owner_test.cpp
 - surface_type: owner interface support surface
 - truth_role: declared metadata or subordinate implementation evidence
 - owner: SHV module maintainers
@@ -13297,61 +13297,61 @@ These entries locate existing implementation and regression surfaces referenced 
 ### SHV Installed Invariant Regressions
 
 #### SHV PDF Installed Source Replay Regression
-- path: `modules/shv-pdf-adapter/tests/installed_integration.py`
+- path: `modules/shv-pdf-adapter/tests/installed_integration.cpp`
 - title: SHV PDF Installed Source Replay Regression
-- surface_type: Python receipt-backed process regression
+- surface_type: C++ receipt-backed process regression
 - truth_role: test implementation truth for exact documentary source and decoder binding
 - owner: SHV PDF adapter maintainers
 - scope: Checks the selected retained AMD PDF fixture through exact installed extraction, graph projection and replay, then rejects changed qualifiers, decoder digests and original bytes.
-- relationships: verifies -> `modules/shv-pdf-adapter/SPEC.md`; uses -> `tools/qxctl/tests/shv-invariants/installed_support.py`
+- relationships: verifies -> `modules/shv-pdf-adapter/SPEC.md`; uses -> `tools/qxctl/tests/shv-invariants/installed_support.hpp`
 - consumers: invariant regression harnesses, SHV maintainers, reviewers
 - deferred_projections: none
 - notes: The bounded selected fixture does not establish general PDF coverage, namespace equivalence or live publisher authentication.
 - status: canonical
 
 #### SHV Profile Installed Binding Regression
-- path: `modules/shv-profile-engine/tests/installed_integration.py`
+- path: `modules/shv-profile-engine/tests/installed_integration.cpp`
 - title: SHV Profile Installed Binding Regression
-- surface_type: Python receipt-backed process regression
+- surface_type: C++ receipt-backed process regression
 - truth_role: test implementation truth for exact profile-to-original-source binding
 - owner: SHV profile engine maintainers
 - scope: Compiles a caller profile, builds and binds a portable universe against synthetic source bytes, and rejects changed originals, symlinks and an unsupported kernel selector.
-- relationships: verifies -> `modules/shv-profile-engine/SPEC.md`; uses -> `tools/qxctl/tests/shv-invariants/installed_support.py`
+- relationships: verifies -> `modules/shv-profile-engine/SPEC.md`; uses -> `tools/qxctl/tests/shv-invariants/installed_support.hpp`
 - consumers: invariant regression harnesses, SHV maintainers, reviewers
 - deferred_projections: none
 - notes: Synthetic GPU values test the source-binding contract; they are not hardware facts or compatibility evidence.
 - status: canonical
 
 #### SHV Store Installed Provenance Regression
-- path: `modules/shv-graph-duckdb-connector/tests/installed_integration.py`
+- path: `modules/shv-graph-duckdb-connector/tests/installed_integration.cpp`
 - title: SHV Store Installed Provenance Regression
-- surface_type: Python receipt-backed process regression
+- surface_type: C++ receipt-backed process regression
 - truth_role: test implementation truth for scoped durable structural graph evidence
 - owner: SHV DuckDB graph connector maintainers
 - scope: Prepares and commits a caller-defined graph in temporary private storage, checks lossless export and exact writer identity, and rejects mismatched intent, wrong namespace and dangling graph endpoints.
-- relationships: verifies -> `modules/shv-graph-duckdb-connector/SPEC.md`; uses -> `tools/qxctl/tests/shv-invariants/installed_support.py`
+- relationships: verifies -> `modules/shv-graph-duckdb-connector/SPEC.md`; uses -> `tools/qxctl/tests/shv-invariants/installed_support.hpp`
 - consumers: invariant regression harnesses, SHV maintainers, reviewers
 - deferred_projections: none
 - notes: This bounded process regression does not claim source-semantic replay, catalogue publication or interruption recovery coverage.
 - status: canonical
 
 #### SHV Publication Installed Provenance Regression
-- path: `modules/shv-publication-engine/tests/installed_integration.py`
+- path: `modules/shv-publication-engine/tests/installed_integration.cpp`
 - title: SHV Publication Installed Provenance Regression
-- surface_type: Python receipt-backed process regression
+- surface_type: C++ receipt-backed process regression
 - truth_role: test implementation truth for exact publication planning and reducer evidence
 - owner: SHV publication engine maintainers
 - scope: Runs the installed pure publication owner against an empty caller catalogue and exact partition installation, checking plan/reduce/status correspondence and rejecting forged generations, duplicate history and unsupported owner selection.
-- relationships: verifies -> `modules/shv-publication-engine/SPEC.md`; uses -> `tools/qxctl/tests/shv-invariants/installed_support.py`
+- relationships: verifies -> `modules/shv-publication-engine/SPEC.md`; uses -> `tools/qxctl/tests/shv-invariants/installed_support.hpp`
 - consumers: invariant regression harnesses, SHV maintainers, reviewers
 - deferred_projections: none
 - notes: The regression exercises pure owner semantics; it does not authorize or perform a protected catalogue-head write.
 - status: canonical
 
 #### SHV Installed Regression Evidence Mechanics
-- path: `tools/qxctl/tests/shv-invariants/installed_support.py`
+- path: `tools/qxctl/tests/shv-invariants/installed_support.hpp`
 - title: SHV Installed Regression Evidence Mechanics
-- surface_type: Python shared test helper
+- surface_type: C++ shared test helper
 - truth_role: test implementation truth for exact installed-process evidence capture
 - owner: qxctl test maintainers
 - scope: Uses qxctl inspection to verify the selected receipt-owned package, records exact installation evidence, builds bounded native requests, validates response identities and digests, and retains process outcomes.
@@ -13359,4 +13359,199 @@ These entries locate existing implementation and regression surfaces referenced 
 - consumers: SHV PDF, profile, store and publication installed regression wrappers
 - deferred_projections: none
 - notes: Shared evidence mechanics neither install packages nor decide domain semantics; the individual owner tests supply their own semantic assertions.
+- status: canonical
+
+#### Native acceptance process support
+- path: `libraries/knowledge-vector-engine-cpp/tests/support/native_test.hpp`
+- title: Native acceptance process support
+- surface_type: C++ test support
+- truth_role: source evidence for native acceptance mechanics
+- owner: Symphony native test maintainers
+- scope: Shared C++ process execution, bounded no-follow receipt reads, digest checks and release-build assertions for independently selected acceptance campaigns.
+- relationships: depends_on -> `libraries/knowledge-vector-engine-cpp/SPEC.md`
+- consumers: SCV and SHV C++ acceptance tests
+- deferred_projections: none
+- notes: Test support is not installed and owns no domain semantics or runtime authority.
+- status: canonical
+
+##### Native authoring CMakeLists.txt
+- path: `tools/authoring-cpp/CMakeLists.txt`
+- title: Native authoring CMakeLists.txt
+- surface_type: C++ authoring support
+- truth_role: subordinate implementation evidence
+- owner: Symphony interface authoring maintainers
+- scope: Shared mechanical interface and schema generation and focused native regression support.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: owner maintainers, native build tools, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Provides no installed runtime discovery or semantic authority.
+- status: canonical
+
+##### Native authoring authoring.hpp
+- path: `tools/authoring-cpp/authoring.hpp`
+- title: Native authoring authoring.hpp
+- surface_type: C++ authoring support
+- truth_role: subordinate implementation evidence
+- owner: Symphony interface authoring maintainers
+- scope: Shared mechanical interface and schema generation and focused native regression support.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`; uses -> `libraries/knowledge-vector-engine-cpp/tests/support/native_test.hpp`
+- consumers: owner maintainers, native build tools, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Provides no installed runtime discovery or semantic authority.
+- status: canonical
+
+##### Native authoring scv_interface.hpp
+- path: `tools/authoring-cpp/scv_interface.hpp`
+- title: Native authoring scv_interface.hpp
+- surface_type: C++ authoring support
+- truth_role: subordinate implementation evidence
+- owner: Symphony interface authoring maintainers
+- scope: Shared mechanical interface and schema generation and focused native regression support.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: owner maintainers, native build tools, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Provides no installed runtime discovery or semantic authority.
+- status: canonical
+
+##### Native authoring shv_interface.hpp
+- path: `tools/authoring-cpp/shv_interface.hpp`
+- title: Native authoring shv_interface.hpp
+- surface_type: C++ authoring support
+- truth_role: subordinate implementation evidence
+- owner: Symphony interface authoring maintainers
+- scope: Shared mechanical interface and schema generation and focused native regression support.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: owner maintainers, native build tools, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Provides no installed runtime discovery or semantic authority.
+- status: canonical
+
+##### Native authoring schemas.hpp
+- path: `tools/authoring-cpp/schemas.hpp`
+- title: Native authoring schemas.hpp
+- surface_type: C++ authoring support
+- truth_role: subordinate implementation evidence
+- owner: Symphony interface authoring maintainers
+- scope: Shared mechanical interface and schema generation and focused native regression support.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: owner maintainers, native build tools, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Provides no installed runtime discovery or semantic authority.
+- status: canonical
+
+##### Native authoring test_support.hpp
+- path: `tools/authoring-cpp/test_support.hpp`
+- title: Native authoring test_support.hpp
+- surface_type: native build and test support
+- truth_role: subordinate implementation evidence
+- owner: Symphony source maintainers
+- scope: Mechanical C++ authoring and focused native regression support.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: owner maintainers, native build tools, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Provides no installed runtime discovery or semantic authority.
+- status: canonical
+
+##### Native authoring schema_test.cpp
+- path: `tools/authoring-cpp/schema_test.cpp`
+- title: Native authoring schema_test.cpp
+- surface_type: native build and test support
+- truth_role: subordinate implementation evidence
+- owner: Symphony source maintainers
+- scope: Mechanical C++ authoring and focused native regression support.
+- relationships: depends_on -> `tools/shv-interface-codegen/SPEC.md`
+- consumers: owner maintainers, native build tools, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Provides no installed runtime discovery or semantic authority.
+- status: canonical
+
+##### Native authoring SymphonyNativeTests.cmake
+- path: `cmake/SymphonyNativeTests.cmake`
+- title: Native authoring SymphonyNativeTests.cmake
+- surface_type: native build and test support
+- truth_role: subordinate implementation evidence
+- owner: Symphony source maintainers
+- scope: Mechanical C++ authoring and focused native regression support.
+- relationships: depends_on -> `libraries/knowledge-vector-engine-cpp/SPEC.md`
+- consumers: owner maintainers, native build tools, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Provides no installed runtime discovery or semantic authority.
+- status: canonical
+
+##### Native test support connector_test_support.hpp
+- path: `modules/scv-graph-duckdb-connector/tests/connector_test_support.hpp`
+- title: Native test support connector_test_support.hpp
+- surface_type: C++ acceptance support
+- truth_role: subordinate implementation evidence
+- owner: modules/scv-graph-duckdb-connector maintainers
+- scope: Compiled process and acceptance test support for the owning component.
+- relationships: depends_on -> `modules/scv-graph-duckdb-connector/SPEC.md`
+- consumers: maintainers, focused acceptance programs, reviewers
+- deferred_projections: none authorized by this entry
+- notes: A test implementation does not constitute recorded execution evidence.
+- status: canonical
+
+##### Native test support installed_campaign.hpp
+- path: `modules/scv-graph-duckdb-connector/tests/installed_campaign.hpp`
+- title: Native test support installed_campaign.hpp
+- surface_type: C++ acceptance support
+- truth_role: subordinate implementation evidence
+- owner: modules/scv-graph-duckdb-connector maintainers
+- scope: Compiled process and acceptance test support for the owning component.
+- relationships: depends_on -> `modules/scv-graph-duckdb-connector/SPEC.md`
+- consumers: maintainers, focused acceptance programs, reviewers
+- deferred_projections: none authorized by this entry
+- notes: A test implementation does not constitute recorded execution evidence.
+- status: canonical
+
+##### Native test support profile_support.hpp
+- path: `modules/shv-profile-engine/tests/profile_support.hpp`
+- title: Native test support profile_support.hpp
+- surface_type: C++ acceptance support
+- truth_role: subordinate implementation evidence
+- owner: modules/shv-profile-engine maintainers
+- scope: Compiled process and acceptance test support for the owning component.
+- relationships: depends_on -> `modules/shv-profile-engine/SPEC.md`
+- consumers: maintainers, focused acceptance programs, reviewers
+- deferred_projections: none authorized by this entry
+- notes: A test implementation does not constitute recorded execution evidence.
+- status: canonical
+
+##### Native test support maintenance_support.hpp
+- path: `tools/qxctl/tests/scv-source-maintenance/maintenance_support.hpp`
+- title: Native test support maintenance_support.hpp
+- surface_type: C++ acceptance support
+- truth_role: subordinate implementation evidence
+- owner: tools/qxctl maintainers
+- scope: Compiled process and acceptance test support for the owning component.
+- relationships: depends_on -> `tools/qxctl/MANIFEST.md`
+- consumers: maintainers, focused acceptance programs, reviewers
+- deferred_projections: none authorized by this entry
+- notes: A test implementation does not constitute recorded execution evidence.
+- status: canonical
+
+##### Native process helper regression
+- path: `libraries/knowledge-vector-engine-cpp/tests/native_process_test.cpp`
+- title: Native process helper regression
+- surface_type: C++ regression implementation
+- truth_role: subordinate implementation evidence
+- owner: Knowledge vector foundation maintainers
+- scope: Descriptor isolation, captured exit results, timeout and descendant cleanup in native test processes.
+- relationships: depends_on -> `libraries/knowledge-vector-engine-cpp/SPEC.md`
+- consumers: test maintainers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Execution evidence is recorded separately from source traceability.
+- status: canonical
+
+##### SCV source maintenance native test build
+- path: `tools/qxctl/tests/scv-source-maintenance/CMakeLists.txt`
+- title: SCV source maintenance native test build
+- surface_type: CMake acceptance build
+- truth_role: subordinate implementation evidence
+- owner: qxctl maintainers
+- scope: Independently compiled native source maintenance acceptance programs.
+- relationships: depends_on -> `tools/qxctl/MANIFEST.md`
+- consumers: acceptance maintainers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Builds test programs; grants no installed operation authority.
 - status: canonical

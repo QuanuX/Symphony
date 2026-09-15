@@ -102,10 +102,20 @@ void copy_regular(const fs::path& repository, const fs::path& destination, const
     fs::copy_file(repository / relative, target, fs::copy_options::overwrite_existing);
 }
 
-void copy_fixture(const fs::path& repository, const fs::path& destination) {
+void copy_fixture(const fs::path &repository, const fs::path &destination) {
     const auto registry = read_json(repository / "knowledge/INVARIANT-OWNERSHIP.json");
+    // Source evidence includes the C++ test headers used by its executable.
+    for (const auto &scope : {"modules", "tools", "libraries"}) {
+        for (const auto &file : fs::recursive_directory_iterator(repository / scope)) {
+            const auto relative = fs::relative(file.path(), repository).generic_string();
+            if (file.is_regular_file() && file.path().extension() == ".hpp" &&
+                (relative.find("/tests/") != std::string::npos ||
+                 relative.starts_with("tools/authoring-cpp/")))
+                copy_regular(repository, destination, relative);
+        }
+    }
     copy_regular(repository, destination, "knowledge/INVARIANT-OWNERSHIP.json");
-    for (const auto& adapter : registry.at("adapters")) {
+    for (const auto &adapter : registry.at("adapters")) {
         copy_regular(repository, destination, adapter.at("owner_contract").get<std::string>());
         const auto implementation_path = adapter.at("implementation_path").get<std::string>();
         fs::create_directories(destination / implementation_path);
@@ -114,14 +124,14 @@ void copy_fixture(const fs::path& repository, const fs::path& destination) {
             copy_regular(repository, destination, implementation_path + "/SignedBundleReadiness.swift");
         }
     }
-    for (const auto& invariant : registry.at("invariants")) {
+    for (const auto &invariant : registry.at("invariants")) {
         copy_regular(repository, destination, invariant.at("owner_contract").get<std::string>());
-        for (const auto& path : invariant.at("producer_implementations")) {
+        for (const auto &path : invariant.at("producer_implementations")) {
             copy_regular(repository, destination, path.get<std::string>());
         }
-        for (const auto* family : {"producer_regressions", "consumer_boundary_rejections",
-                "real_process_regressions"}) {
-            for (const auto& reference : invariant.at(family)) {
+        for (const auto *family :
+             {"producer_regressions", "consumer_boundary_rejections", "real_process_regressions"}) {
+            for (const auto &reference : invariant.at(family)) {
                 copy_regular(repository, destination, reference.at("path").get<std::string>());
             }
         }
@@ -135,48 +145,61 @@ void test_absent() {
         "legacy absence did not remain explicitly compatible");
 }
 
-engine::Json generic_registry_fixture(const fs::path& destination) {
+engine::Json generic_registry_fixture(const fs::path &destination) {
     write_file(destination / "modules/example-engine/SPEC.md", "# Exact example owner\n");
     write_file(destination / "modules/example-engine/src/main.cpp", "int main() { return 0; }\n");
     write_file(destination / "modules/example-engine/tests/owner.cpp", "void owner_rejects_bad_state() {}\n");
-    write_file(destination / "modules/example-engine/tests/consumer.cpp", "void consumer_rejects_bad_result() {}\n");
-    write_file(destination / "modules/example-engine/tests/process.py",
-        "def installed_process():\n"
-        "    receipt = 'install-receipt.json'\n"
-        "    result = subprocess.run([receipt], input=b'{}', capture_output=True)\n"
-        "    assert result.returncode == 0\n");
+    write_file(destination / "modules/example-engine/tests/consumer.cpp",
+               "void consumer_rejects_bad_result() {}\n");
+    write_file(destination / "modules/example-engine/tests/process.cpp",
+               "void installed_process() {\n"
+               "    const char* receipt = \"install-receipt.json\";\n"
+               "    auto child = ::fork();\n"
+               "    if (child == 0) { ::dup2(stdin_fd, 0); ::dup2(stdout_fd, 1); "
+               "::execvp(argv[0], argv); }\n"
+               "    ::waitpid(child, &status, 0); require(WEXITSTATUS(status) == 0);\n"
+               "}\n");
     return engine::Json{
         {"protocol", "symphony.knowledge.invariant-ownership-registry.v2"},
-        {"format_version", 2U}, {"scope", "common_lowest_authoritative_layer"},
-        {"catalog_scope", "registered_incremental"}, {"catalog_complete", false},
+        {"format_version", 2U},
+        {"scope", "common_lowest_authoritative_layer"},
+        {"catalog_scope", "registered_incremental"},
+        {"catalog_complete", false},
         {"forward_gate", "enforce_new_or_modified"},
-        {"test_policy", {{"consumer_boundary_rejection_required", true},
-            {"owner_producer_regression_required", true}, {"real_process_required_for_ipc", true}}},
-        {"adapters", engine::Json::array({{
-            {"adapter_id", "adapter:symphony:symphony-example.v1"},
-            {"command_protocol", "symphony.knowledge.engine-process.v1"},
-            {"component", "example-engine"}, {"entry_point_id", "symphony-example"},
-            {"format_version", 2U}, {"implementation_path", "modules/example-engine"},
-            {"operation_ids", engine::Json::array({"engop:symphony:example.query"})},
-            {"owner_contract", "modules/example-engine/SPEC.md"},
-            {"version_policy", "exact_receipt_v2_entry_point_and_capability_compatible"}
-        }})},
-        {"invariants", engine::Json::array({{
-            {"invariant_id", "invariant:symphony:example.result-lineage"},
-            {"title", "Example result lineage"}, {"owner_contract", "modules/example-engine/SPEC.md"},
-            {"owner_component", "example-engine"}, {"statement", "Retain exact supplied lineage."},
-            {"producer_implementations", engine::Json::array({"modules/example-engine/src/main.cpp"})},
-            {"producer_regressions", engine::Json::array({{{"path", "modules/example-engine/tests/owner.cpp"},
-                {"cases", engine::Json::array({"owner_rejects_bad_state"})}}})},
-            {"consumer_boundary_rejections", engine::Json::array({{{"path", "modules/example-engine/tests/consumer.cpp"},
-                {"cases", engine::Json::array({"consumer_rejects_bad_result"})}}})},
-            {"allowed_adapter_ids", engine::Json::array({"adapter:symphony:symphony-example.v1"})},
-            {"ipc_boundary", true},
-            {"real_process_regressions", engine::Json::array({{{"path", "modules/example-engine/tests/process.py"},
-                {"cases", engine::Json::array({"installed_process"})}}})},
-            {"status", "active"}
-        }})}
-    };
+        {"test_policy",
+         {{"consumer_boundary_rejection_required", true},
+          {"owner_producer_regression_required", true},
+          {"real_process_required_for_ipc", true}}},
+        {"adapters", engine::Json::array(
+                         {{{"adapter_id", "adapter:symphony:symphony-example.v1"},
+                           {"command_protocol", "symphony.knowledge.engine-process.v1"},
+                           {"component", "example-engine"},
+                           {"entry_point_id", "symphony-example"},
+                           {"format_version", 2U},
+                           {"implementation_path", "modules/example-engine"},
+                           {"operation_ids", engine::Json::array({"engop:symphony:example.query"})},
+                           {"owner_contract", "modules/example-engine/SPEC.md"},
+                           {"version_policy", "exact_receipt_v2_entry_point_and_capability_compatible"}}})},
+        {"invariants",
+         engine::Json::array(
+             {{{"invariant_id", "invariant:symphony:example.result-lineage"},
+               {"title", "Example result lineage"},
+               {"owner_contract", "modules/example-engine/SPEC.md"},
+               {"owner_component", "example-engine"},
+               {"statement", "Retain exact supplied lineage."},
+               {"producer_implementations", engine::Json::array({"modules/example-engine/src/main.cpp"})},
+               {"producer_regressions",
+                engine::Json::array({{{"path", "modules/example-engine/tests/owner.cpp"},
+                                      {"cases", engine::Json::array({"owner_rejects_bad_state"})}}})},
+               {"consumer_boundary_rejections",
+                engine::Json::array({{{"path", "modules/example-engine/tests/consumer.cpp"},
+                                      {"cases", engine::Json::array({"consumer_rejects_bad_result"})}}})},
+               {"allowed_adapter_ids", engine::Json::array({"adapter:symphony:symphony-example.v1"})},
+               {"ipc_boundary", true},
+               {"real_process_regressions",
+                engine::Json::array({{{"path", "modules/example-engine/tests/process.cpp"},
+                                      {"cases", engine::Json::array({"installed_process"})}}})},
+               {"status", "active"}}})}};
 }
 
 void test_v3_explicit_adapter_ownership() {
@@ -231,25 +254,25 @@ void test_v2_generic_adapter() {
     write_registry(temporary.path(), wrong);
     result = check_invariant_ownership(temporary.path().string());
     require(!result.success && contains(result, "invariant_ownership.adapter_shape"),
-        "generic engine adapter widened the unchanged v1 protocol");
+            "generic engine adapter widened the unchanged v1 protocol");
     wrong = fixture;
     wrong["adapters"][0]["entry_point_id"] = "symphony-other";
     write_registry(temporary.path(), wrong);
     result = check_invariant_ownership(temporary.path().string());
     require(!result.success && contains(result, "invariant_ownership.adapter_identity"),
-        "generic adapter accepted unrelated receipt entrypoint");
+            "generic adapter accepted unrelated receipt entrypoint");
     wrong = fixture;
     wrong["adapters"][0]["operation_ids"] = engine::Json::array({"engop:symphony:other.query"});
     write_registry(temporary.path(), wrong);
     result = check_invariant_ownership(temporary.path().string());
     require(!result.success && contains(result, "reason=generic_domain_mismatch"),
-        "generic adapter claimed a different domain operation");
+            "generic adapter claimed a different domain operation");
     write_registry(temporary.path(), fixture);
-    write_file(temporary.path() / "modules/example-engine/tests/process.py",
-        "def installed_process():\n    pass\n");
+    write_file(temporary.path() / "modules/example-engine/tests/process.cpp",
+               "void installed_process() {}\n");
     result = check_invariant_ownership(temporary.path().string());
     require(!result.success && contains(result, "invariant_ownership.real_process_mechanics"),
-        "Python placeholder passed installed process traceability");
+            "C++ placeholder passed installed process traceability");
 }
 
 void test_canonical(const fs::path& repository) {
@@ -324,6 +347,41 @@ void test_registered_shv_owner_inventory(const fs::path& repository) {
             transaction->at("owner_contract") == "knowledge/shv/PUBLICATION.md" &&
             transaction->at("ipc_boundary") == false && transaction->at("allowed_adapter_ids").empty(),
         "catalogue persistence was reassigned to a native semantic adapter");
+}
+
+void test_cpp_header_traceability(const fs::path& repository) {
+    TemporaryDirectory temporary;
+    auto registry = generic_registry_fixture(temporary.path());
+    const auto source = temporary.path() / "modules/example-engine/tests/process.cpp";
+    const auto header = temporary.path() / "modules/example-engine/tests/process_support.hpp";
+    const auto body = read_file(source);
+    write_file(header, body);
+    write_file(source, "#include \"process_support.hpp\"\nint main() { "
+                       "installed_process(); }\n");
+    write_registry(temporary.path(), registry);
+    auto result = check_invariant_ownership(temporary.path().string());
+    require(result.success, "real C++ header definition was not traced:" + messages(result));
+    write_file(header, "void installed_process() {}\n");
+    result = check_invariant_ownership(temporary.path().string());
+    require(!result.success && contains(result, "invariant_ownership.real_process_mechanics"),
+            "empty included C++ process stub passed");
+    write_file(temporary.path() / "libraries/knowledge-vector-engine-cpp/tests/support/native_test.hpp",
+               read_file(repository / "libraries/knowledge-vector-engine-cpp/tests/support/native_test.hpp"));
+    write_file(header, "#include \"native_test.hpp\"\nvoid installed_process() {}\n");
+    result = check_invariant_ownership(temporary.path().string());
+    require(!result.success && contains(result, "invariant_ownership.real_process_mechanics"),
+            "unused native helper admitted an empty registered process case");
+    write_file(header, body);
+    fs::rename(header, temporary.path() / "outside.hpp");
+    fs::create_symlink(temporary.path() / "outside.hpp", header);
+    result = check_invariant_ownership(temporary.path().string());
+    require(!result.success && contains(result, "invariant_ownership.reference_unreadable"),
+            "symlinked C++ evidence header passed");
+    fs::remove(header);
+    write_file(source, "#include \"../outside.hpp\"\n");
+    result = check_invariant_ownership(temporary.path().string());
+    require(!result.success && contains(result, "invariant_ownership.cpp_support_path"),
+            "C++ header traversal was not rejected");
 }
 
 void test_v1_registry_compatibility(const fs::path& repository) {
@@ -595,6 +653,7 @@ int main(int argc, char** argv) {
         test_v3_explicit_adapter_ownership();
         test_canonical(repository);
         test_registered_shv_owner_inventory(repository);
+        test_cpp_header_traceability(repository);
         test_v1_registry_compatibility(repository);
         test_shape_digest_and_order(repository);
         test_adapter_closure(repository);

@@ -4,7 +4,7 @@ This repository authoring tool projects mechanical owner declarations into C++ d
 
 ## Registration-driven authoring
 
-`generate.py --registration PATH --root ROOT [--check]` delegates to owner_codegen.py. The supplied registration selects declaration/history files, exact history byte digest, namespace-related output symbols, three separate output paths and an optional frozen embedded compatibility version. Owner identities and paths are data; there is no closed owner list. A new owner may start with empty descriptor history. See EXTENDING.md for the complete workflow.
+`<authoring-build>/shv-interface-generator --registration PATH --root ROOT [--check]` invokes the native registration implementation. The supplied registration selects declaration/history files, exact history byte digest, namespace-related output symbols, three separate output paths and an optional frozen embedded compatibility version. Owner identities and paths are data; there is no closed owner list. A new owner may start with empty descriptor history. See EXTENDING.md for the complete workflow.
 
 The v2 declaration contains exact owner/version identity, ordered operations, release admission, contract references, schema/companion inventories and declared embedded dependencies. Existing descriptor history remains keyed by exact release; the new mechanical release retains the latest operations and contracts. Changing semantic capabilities requires an explicit owner-contract change. Metadata-only constraints of this authoring tool are not restrictions on user-defined engines or alternative generators.
 
@@ -14,7 +14,7 @@ C++ operation descriptors retain every administrative interaction, including rec
 
 ## Existing v1 route
 
-Source and publication keep their SHV-24 v1 declarations, generation outputs and frozen history locks through `generate.py --owner MODULE [--check]`. This compatibility route remains intentionally bounded to its recorded modules. Additional owners use the registration-driven route; they need no new branch in generator code or entry in that old history lock. Profile retains its independently owned SHV-23 generator.
+Source and publication keep their SHV-24 v1 declarations, generation outputs and frozen history locks through `<authoring-build>/shv-interface-generator --owner MODULE --root ROOT [--check]`. This compatibility route remains intentionally bounded to its recorded modules. Additional owners use the registration-driven route; they need no new branch in generator code or entry in that old history lock. Profile retains its independently owned SHV-23 generator.
 
 ## Installed boundary and administration
 
@@ -22,4 +22,6 @@ Each migrated package owns its declaration through receipt-v2. Existing qxctl co
 
 Administration disposition: repository authoring/build support, with no additional runtime command leaf. New runtime capabilities must be integrated through their highest-authority qxctl owner family and the existing command/feature registry. Authoring a registration alone creates no runtime loader, executable, installation or permission. Existing command identities and defaults remain unchanged.
 
-Python 3.9+ and gofmt are required for generation. Checked-in outputs build without Python when testing is disabled. CTest covers descriptor parity, deterministic generation, invalid registrations, a previously unlisted owner with empty history and refusal to overwrite caller-owned output. Owner native tests and qxctl tests remain separate.
+C++26 and gofmt support native generation. Configure `tools/authoring-cpp/` with CMake and build the named generator/test targets. Python is not used for generation, tests or installed operation. Checked-in outputs remain usable without running the authoring tools. CTest covers descriptor parity, deterministic generation, invalid registrations, a previously unlisted owner with empty history and refusal to overwrite caller-owned output. Owner native tests and qxctl tests remain separate.
+
+Native authoring subprocesses and acceptance programs share the foundation-owned process helper: descriptor isolation, explicit environment handling, captured exit/output, deadlines and descendant cleanup use one implementation. The authoring frontends retain their own schema and output assertions.

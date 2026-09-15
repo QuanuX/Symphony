@@ -2,6 +2,21 @@
 
 ## Canonical Surfaces
 
+- `knowledge/scv/schemas/v1/administration.schema.json`
+- `knowledge/scv/schemas/v1/composition.schema.json`
+- `knowledge/scv/schemas/v1/engine-descriptor-v2.schema.json`
+- `knowledge/scv/schemas/v1/obligation.schema.json`
+- `knowledge/scv/schemas/v1/owner-interface.schema.json`
+- `knowledge/scv/schemas/v1/profile-preparation.schema.json`
+- `knowledge/scv/schemas/v1/provider-pack.schema.json`
+- `knowledge/scv/schemas/v1/qxctl-error.schema.json`
+- `knowledge/scv/schemas/v1/schema-catalog.json`
+- `knowledge/scv/schemas/v1/schema-discovery.schema.json`
+- `knowledge/scv/schemas/v1/scv-artifact.schema.json`
+- `knowledge/scv/schemas/v1/scv-composition-workflow.schema.json`
+- `knowledge/scv/schemas/v1/scv-obligation-link.schema.json`
+- `knowledge/scv/schemas/v1/scv-workflow.schema.json`
+
 - `knowledge/scv/schemas/v1/MANIFEST.md`
 - `knowledge/scv/schemas/v1/scv-bundle-workflow.schema.json`
 - `knowledge/scv/schemas/v1/scv-bundle-obligation-link.schema.json`

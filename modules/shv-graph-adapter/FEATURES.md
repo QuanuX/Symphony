@@ -29,7 +29,7 @@
       ],
       "distinctions": [],
       "evidence": [
-        "Independent arbitrary-owner roundtrip/query and negative structural/process examples in tests/conformance.py; actual execution evidence belongs to SHV-01 closure."
+        "Independent arbitrary-owner roundtrip/query and negative structural/process examples in tests/conformance.cpp; actual execution evidence belongs to SHV-01 closure."
       ],
       "feature_id": "ssfv:symphony:shv-graph-adapter",
       "how": "C++26 validates canonical structural graph invariants and self-seals; qxctl independently verifies the result.",

@@ -12,6 +12,9 @@
 
 ## Canonical Surfaces
 
+- `modules/scv-graph-duckdb-connector/tests/connector_test_support.hpp`
+- `modules/scv-graph-duckdb-connector/tests/installed_campaign.hpp`
+
 - `modules/scv-graph-duckdb-connector/INTENT.md`
 - `modules/scv-graph-duckdb-connector/MANIFEST.md`
 - `modules/scv-graph-duckdb-connector/SKILL.md`

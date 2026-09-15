@@ -28,10 +28,10 @@ printf '%s\n' "$RESPONSE" | grep '"ssfv_maintenance":{' >/dev/null
 printf '%s\n' "$RESPONSE" | grep '"response_digest":"sha256:' >/dev/null
 
 DEADLINE=$(( $(date +%s) * 1000 + 60000 ))
-CHECK=$(printf '{"protocol":"symphony.knowledge.engine-process.v1","request_id":"smoke-2","correlation_id":"smoke-2","operation":"check","target_engine":"symphony-knowledge-session","deadline_unix_ms":%s,"payload":{"expected_snapshot_digest":null,"paths":["INTENT.md","knowledge/INTENT.md"]}}' "$DEADLINE")
+CHECK=$(printf '{"protocol":"symphony.knowledge.engine-process.v1","request_id":"smoke-2","correlation_id":"smoke-2","operation":"check","target_engine":"symphony-knowledge-session","deadline_unix_ms":%s,"payload":{"expected_snapshot_digest":null,"paths":["knowledge/platform/INTENT.md","knowledge/INTENT.md"]}}' "$DEADLINE")
 CHECK_RESPONSE=$(cd "$REPO" && printf '%s' "$CHECK" | "$BINARY")
 printf '%s\n' "$CHECK_RESPONSE" | grep '"read_only":true' >/dev/null
-printf '%s\n' "$CHECK_RESPONSE" | grep '"path":"INTENT.md"' >/dev/null
+printf '%s\n' "$CHECK_RESPONSE" | grep '"path":"knowledge/platform/INTENT.md"' >/dev/null
 
 set +e
 INVALID_RESPONSE=$(printf '%s' '{"protocol":"symphony.knowledge.engine-process.v1","request_id":"bad","request_id":"duplicate"}' | "$BINARY")

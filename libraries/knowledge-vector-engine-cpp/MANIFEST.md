@@ -2,6 +2,12 @@
 
 ## Canonical Surfaces
 
+- `libraries/knowledge-vector-engine-cpp/tests/native_process_test.cpp`
+
+- `cmake/SymphonyNativeTests.cmake`
+
+- `libraries/knowledge-vector-engine-cpp/tests/support/native_test.hpp`
+
 - `libraries/knowledge-vector-engine-cpp/FEATURES.md`
 - `libraries/knowledge-vector-engine-cpp/INSTALL.md`
 - `libraries/knowledge-vector-engine-cpp/INTENT.md`
@@ -41,3 +47,7 @@ The library installs into versioned library and header roots. Multiple versions 
 ## Boundaries
 
 This package owns common mechanics only. `knowledge/TIME.md` owns temporal meaning; the library only implements its normalized validation profiles. It cannot create canonical Markdown, open a network listener, load arbitrary plugins, infer caller class, grant permission, perform session mutation, apply proposals, dock with Maestro, or emit STAV events.
+
+## Native Source and Acceptance Support
+
+The declared test support header supplies process mechanics for native acceptance programs and source-authoring tools: descriptor isolation, explicit environments, captured exit/output, deadlines, descendant cleanup and receipt checks. Its C++ regression probes are source tests. These support files do not become installed runtime entry points or semantic engines.

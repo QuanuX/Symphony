@@ -18,9 +18,8 @@ constexpr std::string_view root_manifest_path = "knowledge/MANIFEST.md";
 constexpr std::string_view canonical_heading = "## Canonical Surfaces";
 constexpr std::string_view subordinate_heading = "## Subordinate Manifests";
 
-constexpr std::array<std::string_view, 4> bootstrap_paths = {
+constexpr std::array<std::string_view, 3> bootstrap_paths = {
     "README.md",
-    "INTENT.md",
     "go.work",
     root_manifest_path,
 };

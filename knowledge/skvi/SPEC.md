@@ -23,7 +23,6 @@ The scope of the structural map spans four layers.
 The fixed bootstrap contains exactly:
 
 - `README.md`
-- `INTENT.md`
 - `go.work`
 - `knowledge/MANIFEST.md`
 

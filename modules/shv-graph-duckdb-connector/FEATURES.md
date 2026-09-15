@@ -29,7 +29,7 @@
       ],
       "distinctions": [],
       "evidence": [
-        "tests/connector_test.py exercises durable replay, corruption and scope boundaries; process interruption evidence is recorded separately.",
+        "tests/connector_test.cpp exercises durable replay, corruption and scope boundaries; process interruption evidence is recorded separately.",
         "SHV-19 focused inventory, legacy-reader and independent consumer conformance."
       ],
       "feature_id": "ssfv:symphony:shv-graph-duckdb-connector",

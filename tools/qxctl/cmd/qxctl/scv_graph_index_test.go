@@ -68,7 +68,7 @@ type graphIndexCLIModel struct {
 }
 
 // This model tests coordinator ordering and binding, not DuckDB transactions or
-// native graph semantics. Installed-process coverage lives in verify_installed.py.
+// native graph semantics. Installed-process coverage lives in the compiled SCV connector acceptance programs.
 func graphIndexCLIModelRunner(t *testing.T) (*graphIndexRunner, *graphIndexCLIModel, map[string]any) {
 	owner, connector := graphIndexCLIInstallation(false), graphIndexCLIInstallation(true)
 	m := &graphIndexCLIModel{}

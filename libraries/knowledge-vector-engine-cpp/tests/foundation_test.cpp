@@ -354,7 +354,6 @@ bool has_manifest_issue(const CanonicalSurfaceCatalog& catalog, const std::strin
 
 void write_discovery_bootstrap(const fs::path& root, const std::string& root_manifest) {
     write_fixture_file(root, "README.md", "fixture\n");
-    write_fixture_file(root, "INTENT.md", "fixture\n");
     write_fixture_file(root, "go.work", "go 1.26.5\n");
     write_fixture_file(root, "knowledge/MANIFEST.md", root_manifest);
 }
@@ -386,8 +385,8 @@ void test_manifest_discovery() {
         const auto second = discover_canonical_surfaces(temporary.path());
         require(first.valid(), "valid canonical-surface manifests were rejected");
         require(first.manifests.size() == 2U, "owner-manifest count mismatch");
-        require(first.surfaces.size() == 7U, "canonical-surface union count mismatch");
-        require(first.surfaces.front().path == "INTENT.md", "surface order is not lexical");
+        require(first.surfaces.size() == 6U, "canonical-surface union count mismatch");
+        require(first.surfaces.front().path == "README.md", "surface order is not lexical");
         require(first.surfaces.back().path == "knowledge/alpha/SPEC.md", "surface order drift");
         require(first.manifests.at(0).path == "knowledge/MANIFEST.md", "manifest order drift");
         require(first.manifests.at(1).path == "knowledge/alpha/MANIFEST.md", "manifest order drift");

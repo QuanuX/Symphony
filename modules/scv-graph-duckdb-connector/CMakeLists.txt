@@ -71,11 +71,23 @@ if(BUILD_TESTING)
     target_link_libraries(scv-graph-duckdb-commit-fault-test PRIVATE Symphony::KnowledgeVectorEngine scv-pinned-duckdb Threads::Threads)
     set_target_properties(scv-graph-duckdb-commit-fault-test PROPERTIES CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
     target_compile_options(scv-graph-duckdb-commit-fault-test PRIVATE $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>)
-    find_package(Python3 COMPONENTS Interpreter REQUIRED)
-    add_test(NAME scv-graph-duckdb-connector-process COMMAND ${Python3_EXECUTABLE}
-        "${CMAKE_CURRENT_SOURCE_DIR}/tests/connector_test.py" --engine $<TARGET_FILE:${CONNECTOR_EXECUTABLE}> --library "${DUCKDB_LIBRARY}" --version "${CONNECTOR_VERSION}")
-    add_test(NAME scv-graph-duckdb-inventory COMMAND ${Python3_EXECUTABLE}
-        "${CMAKE_CURRENT_SOURCE_DIR}/tests/inventory_test.py" --engine $<TARGET_FILE:${CONNECTOR_EXECUTABLE}> --library "${DUCKDB_LIBRARY}")
+    foreach(test_source connector_test inventory_test installed_integration inventory_installed interrupted_commit)
+        add_executable(scv-graph-duckdb-${test_source} "tests/${test_source}.cpp")
+        target_include_directories(scv-graph-duckdb-${test_source} PRIVATE
+            "${SYMPHONY_REPOSITORY_ROOT}/libraries/knowledge-vector-engine-cpp/tests/support")
+        target_link_libraries(scv-graph-duckdb-${test_source} PRIVATE Symphony::KnowledgeVectorEngine ${CMAKE_DL_LIBS})
+        set_target_properties(scv-graph-duckdb-${test_source} PROPERTIES
+            CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+    endforeach()
+    add_executable(scv-index-transfer-installed "${SYMPHONY_REPOSITORY_ROOT}/tools/qxctl/tests/scv-index-transfer/installed.cpp")
+    target_include_directories(scv-index-transfer-installed PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/tests"
+        "${SYMPHONY_REPOSITORY_ROOT}/libraries/knowledge-vector-engine-cpp/tests/support")
+    target_link_libraries(scv-index-transfer-installed PRIVATE Symphony::KnowledgeVectorEngine ${CMAKE_DL_LIBS})
+    set_target_properties(scv-index-transfer-installed PROPERTIES CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+    add_test(NAME scv-graph-duckdb-connector-process COMMAND scv-graph-duckdb-connector_test
+        --engine $<TARGET_FILE:${CONNECTOR_EXECUTABLE}> --library "${DUCKDB_LIBRARY}" --version "${CONNECTOR_VERSION}")
+    add_test(NAME scv-graph-duckdb-inventory COMMAND scv-graph-duckdb-inventory_test
+        --engine $<TARGET_FILE:${CONNECTOR_EXECUTABLE}> --library "${DUCKDB_LIBRARY}")
 endif()
 # The installation declarations below are kept explicit and receipt owned.
 set(CONNECTOR_SCHEMA_FILES "${CMAKE_CURRENT_SOURCE_DIR}/schemas/v2/graph-index.schema.json")

@@ -17,7 +17,7 @@ cmake --install /absolute/connector-build
 
 The current CMake recipe rejects other platforms and architectures. A separately verified dependency recipe would be needed before claiming another platform works. CMake performs no dependency download or global installation. The recorded reference dependency is the official 1.5.5 macOS universal archive, SHA256 `7b5b8915cc382d0708636fe6385c0cdad5a61c9ff8ba2638b3e2141640783155`, with the x86_64 library extracted by Apple `lipo`; that platform evidence must not be relabeled as a verified Linux build. The exact selected library is installed beside the executable and loaded using `@loader_path` on macOS. [Official release](https://github.com/duckdb/duckdb/releases/tag/v1.5.5).
 
-The default source build links the shared foundation from this checkout. An already installed compatible foundation can be selected with `-DSYMPHONY_KVE_USE_INSTALLED=ON` and an explicit `CMAKE_PREFIX_PATH`. Python is needed for the process acceptance test when `BUILD_TESTING` is enabled; it is not a runtime dependency of the connector.
+The default source build links the shared foundation from this checkout. An already installed compatible foundation can be selected with `-DSYMPHONY_KVE_USE_INSTALLED=ON` and an explicit `CMAKE_PREFIX_PATH`. Process acceptance tests are compiled C++ executables when `BUILD_TESTING` is enabled. The connector and its tests require no Python interpreter.
 
 ## Exact Installed Files
 
