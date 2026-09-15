@@ -53,6 +53,8 @@ cd tools/symphony-validator
 ./tests/smoke.sh
 ```
 
+The build includes `validator-fixture-prepare`, the C++ helper that prepares temporary bootstrap context while preserving each retained fixture payload. After running CTest against the same build, `./tests/smoke.sh --cli-only` runs the command-line and exact fixture checks without repeating those CTest programs. For an external build directory, set `SYMPHONY_VALIDATOR_BIN` and `SYMPHONY_VALIDATOR_FIXTURE_BIN` to its exact executables.
+
 ## Exact Versioned Installation
 
 Configure and install into any administrator-selected prefix. Versions coexist without an unversioned alias:

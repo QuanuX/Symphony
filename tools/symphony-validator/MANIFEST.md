@@ -2,6 +2,7 @@
 
 ## Canonical Surfaces
 
+- `tools/symphony-validator/tests/fixture_prepare.cpp`
 
 - `tools/symphony-validator/CMakeLists.txt`
 - `tools/symphony-validator/FEATURES.md`

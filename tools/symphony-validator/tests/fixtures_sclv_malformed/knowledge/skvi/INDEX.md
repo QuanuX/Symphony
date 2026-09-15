@@ -8,7 +8,7 @@
 - truth_role: project orientation and governance summary
 - owner: Symphony root governance
 - scope: Introduces repository purpose
-- relationships: declares -> `INTENT.md`
+- relationships: declares -> `knowledge/platform/INTENT.md`
 - consumers: humans
 - deferred_projections: JSON portable evidence
 - status: canonical

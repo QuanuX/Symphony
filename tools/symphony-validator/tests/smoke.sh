@@ -4,781 +4,273 @@ set -eu
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 VALIDATOR_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 REPO_ROOT=$(CDPATH= cd -- "$VALIDATOR_ROOT/../.." && pwd)
-
 VALIDATOR_BIN=${SYMPHONY_VALIDATOR_BIN:-"$VALIDATOR_ROOT/build/symphony-validator"}
-SCLV_TEST_BIN=${SCLV_TEMPORAL_TEST_BIN:-"$VALIDATOR_ROOT/build/sclv-temporal-tests"}
-SCLV_CROSS_REFERENCE_TEST_BIN=${SCLV_CROSS_REFERENCE_TEST_BIN:-"$VALIDATOR_ROOT/build/sclv-cross-reference-tests"}
-CALLER_AUTHORITY_TEST_BIN=${CALLER_AUTHORITY_TEST_BIN:-"$VALIDATOR_ROOT/build/caller-authority-tests"}
-SODV_RELEASE_TEST_BIN=${SODV_RELEASE_TEST_BIN:-"$VALIDATOR_ROOT/build/sodv-release-tests"}
-FEATURE_ADMIN_TEST_BIN=${FEATURE_ADMINISTRATION_TEST_BIN:-"$VALIDATOR_ROOT/build/feature-administration-tests"}
-ROOT_SUMMARY_TEST_BIN=${ROOT_SUMMARY_TEST_BIN:-"$VALIDATOR_ROOT/build/root-summary-tests"}
-INVARIANT_OWNERSHIP_TEST_BIN=${INVARIANT_OWNERSHIP_TEST_BIN:-"$VALIDATOR_ROOT/build/invariant-ownership-tests"}
+FIXTURE_BIN=${SYMPHONY_VALIDATOR_FIXTURE_BIN:-"$VALIDATOR_ROOT/build/validator-fixture-prepare"}
 
-cd "$VALIDATOR_ROOT"
+# The default remains the complete documented smoke command. Use --cli-only
+# after CTest has already run the native unit tests against this same build.
+CLI_ONLY=false
+case "${1:-}" in
+    '') ;;
+    --cli-only) CLI_ONLY=true; shift ;;
+    *) echo "usage: $0 [--cli-only]" >&2; exit 1 ;;
+esac
+[ "$#" -eq 0 ] || { echo "usage: $0 [--cli-only]" >&2; exit 1; }
 
-echo "Running smoke tests..."
+SMOKE_ROOT=$(mktemp -d)
+SMOKE_ROOT=$(CDPATH= cd -- "$SMOKE_ROOT" && pwd -P)
+trap 'rm -rf "$SMOKE_ROOT"' EXIT
+trap 'exit 1' HUP INT TERM
+EVIDENCE_DIR=${SYMPHONY_SMOKE_EVIDENCE_DIR:-"$SMOKE_ROOT/evidence"}
+mkdir -p "$EVIDENCE_DIR" "$SMOKE_ROOT/fixtures"
 
-"$SCLV_TEST_BIN"
-echo "SCLV temporal tests passed"
-
-"$SCLV_CROSS_REFERENCE_TEST_BIN"
-echo "SCLV cross-reference tests passed"
-
-# Verify caller authority
-"$CALLER_AUTHORITY_TEST_BIN"
-echo "Caller authority tests passed"
-
-"$SODV_RELEASE_TEST_BIN" "$REPO_ROOT"
-echo "SODV release validator tests passed"
-
-"$FEATURE_ADMIN_TEST_BIN" "$REPO_ROOT"
-echo "Feature administration validator tests passed"
-
-"$ROOT_SUMMARY_TEST_BIN" "$REPO_ROOT"
-echo "Root summary validator tests passed"
-
-"$INVARIANT_OWNERSHIP_TEST_BIN" "$REPO_ROOT"
-echo "Invariant ownership validator tests passed"
-
-ROOT_SUMMARY_JSON=$("$VALIDATOR_BIN" root-summary --repo "$REPO_ROOT" --json)
-if ! printf '%s\n' "$ROOT_SUMMARY_JSON" | grep '"protocol": "symphony.repository.root-summary.v1"' >/dev/null ||
-   ! printf '%s\n' "$ROOT_SUMMARY_JSON" | grep '"summary_digest": "sha256:' >/dev/null; then
-    echo "error: root-summary JSON projection is missing protocol or digest"
+fail() {
+    echo "error: $*" >&2
     exit 1
+}
+contains() {
+    grep -F -- "$2" "$1" >/dev/null || fail "$1 is missing: $2"
+}
+absent() {
+    if grep -F -- "$2" "$1" >/dev/null; then
+        fail "$1 unexpectedly contains: $2"
+    fi
+}
+prepare() {
+    FIXTURE="$SMOKE_ROOT/fixtures/$1"
+    "$FIXTURE_BIN" prepare "$SCRIPT_DIR/$2" "$FIXTURE" \
+        > "$EVIDENCE_DIR/$1.prepare.log"
+}
+check() {
+    CASE_LOG="$EVIDENCE_DIR/$1.log"
+    set +e
+    "$VALIDATOR_BIN" check --repo "$2" > "$CASE_LOG" 2>&1
+    CASE_EXIT=$?
+    set -e
+    if [ "$CASE_EXIT" -ne "$3" ]; then
+        cat "$CASE_LOG" >&2
+        fail "$1 expected exit $3, got $CASE_EXIT"
+    fi
+    [ "$(grep -c '^summary ' "$CASE_LOG")" -eq 1 ] ||
+        fail "$1 must have exactly one summary footer"
+    contains "$CASE_LOG" "$4"
+    printf 'PASS %s exit=%s expected=%s\n' "$1" "$CASE_EXIT" "$4"
+}
+
+if [ "$CLI_ONLY" = false ]; then
+    "${SCLV_TEMPORAL_TEST_BIN:-$VALIDATOR_ROOT/build/sclv-temporal-tests}"
+    "${SCLV_CROSS_REFERENCE_TEST_BIN:-$VALIDATOR_ROOT/build/sclv-cross-reference-tests}"
+    "${CALLER_AUTHORITY_TEST_BIN:-$VALIDATOR_ROOT/build/caller-authority-tests}"
+    "${SODV_RELEASE_TEST_BIN:-$VALIDATOR_ROOT/build/sodv-release-tests}" "$REPO_ROOT"
+    "${FEATURE_ADMINISTRATION_TEST_BIN:-$VALIDATOR_ROOT/build/feature-administration-tests}" "$REPO_ROOT"
+    "${ROOT_SUMMARY_TEST_BIN:-$VALIDATOR_ROOT/build/root-summary-tests}" "$REPO_ROOT"
+    "${INVARIANT_OWNERSHIP_TEST_BIN:-$VALIDATOR_ROOT/build/invariant-ownership-tests}" "$REPO_ROOT"
 fi
-ROOT_SUMMARY_MARKDOWN=$("$VALIDATOR_BIN" root-summary --repo "$REPO_ROOT")
-if [ "$(printf '%s\n' "$ROOT_SUMMARY_MARKDOWN" | grep -c '^<!-- symphony:root-summary:v1:begin -->$')" -ne 1 ] ||
-   [ "$(printf '%s\n' "$ROOT_SUMMARY_MARKDOWN" | grep -c '^<!-- symphony:root-summary:v1:end -->$')" -ne 1 ]; then
-    echo "error: root-summary Markdown projection has invalid markers"
-    exit 1
-fi
-echo "Root summary standalone projections passed"
 
-
-# Verify --help
-"$VALIDATOR_BIN" --help > /dev/null
-echo "--help passed"
-
-# Verify --version
-"$VALIDATOR_BIN" --version > /dev/null
-echo "--version passed"
-
-# The validator has no mutation surface. Keep the direct prohibition stable so
-# clients cannot mistake an unknown future grammar for canonical apply.
+"$VALIDATOR_BIN" --help > "$EVIDENCE_DIR/help.log"
+"$VALIDATOR_BIN" --version > "$EVIDENCE_DIR/version.log"
 set +e
 OUT_APPLY=$("$VALIDATOR_BIN" apply --repo "$REPO_ROOT" 2>&1)
-EXIT_CODE=$?
+APPLY_EXIT=$?
 set -e
-if [ $EXIT_CODE -ne 1 ] ||
-   [ "$OUT_APPLY" != "error: apply is unavailable; symphony-validator is read-only" ]; then
-    echo "error: validator apply prohibition drifted"
-    exit 1
-fi
-echo "validator apply prohibition passed"
+[ "$APPLY_EXIT" -eq 1 ] &&
+    [ "$OUT_APPLY" = 'error: apply is unavailable; symphony-validator is read-only' ] ||
+    fail 'validator apply prohibition drifted'
+printf '%s\n' "$OUT_APPLY" > "$EVIDENCE_DIR/apply.log"
 
-# Verify perfectly valid fixture
-if [ -e ./tests/fixtures_valid/modules/ssfv-engine ] ||
-   find ./tests/fixtures_valid -name FEATURES.md -print | grep . >/dev/null; then
-    echo "error: pre-SSFV valid fixture must contain neither an engine nor inferred FEATURES.md"
-    exit 1
+# Keep absence of SSFV and FEATURES explicit in the historical positive case.
+prepare valid fixtures_valid
+[ ! -e "$FIXTURE/modules/ssfv-engine" ] || fail 'pre-SSFV fixture contains an engine'
+if find "$FIXTURE" -name FEATURES.md -print | grep . >/dev/null; then
+    fail 'pre-SSFV fixture contains inferred FEATURES.md'
 fi
-OUT=$("$VALIDATOR_BIN" check --repo ./tests/fixtures_valid)
-if ! printf '%s\n' "$OUT" | grep "violation=0 exit=0" >/dev/null; then
-    echo "error: valid fixture missing violation=0 exit=0 in summary"
-    exit 1
-fi
-if [ "$(printf '%s\n' "$OUT" | grep -c "^summary ")" -ne 1 ]; then
-    echo "error: valid fixture should have exactly one summary footer"
-    exit 1
-fi
-echo "valid pre-SSFV absence fixture passed"
+check valid "$FIXTURE" 0 'violation=0 exit=0'
 
-# Verify a present but incomplete SSFV module fails closed.
-TEMP_FIXTURE=$(mktemp -d)
-trap 'rm -rf "$TEMP_FIXTURE"' EXIT
-cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
-mkdir -p "$TEMP_FIXTURE/modules/ssfv-engine"
-set +e
-OUT_SSFV_MODULE=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" 2>&1)
-EXIT_CODE=$?
-set -e
-if [ $EXIT_CODE -eq 0 ] ||
-   ! printf '%s\n' "$OUT_SSFV_MODULE" |
-       grep "runtime_contract.unreadable path=modules/ssfv-engine/INTENT.md" >/dev/null; then
-    echo "error: incomplete SSFV engine module did not fail through its runtime contract"
-    exit 1
-fi
-rm -rf "$TEMP_FIXTURE"
-trap - EXIT
-echo "incomplete SSFV engine fixture failed as expected"
+prepare incomplete-ssfv fixtures_valid
+mkdir -p "$FIXTURE/modules/ssfv-engine"
+check incomplete-ssfv "$FIXTURE" 11 \
+    'runtime_contract.unreadable path=modules/ssfv-engine/INTENT.md'
 
-# Verify an unratified SSFV JSON schema is never admitted by directory prefix.
-TEMP_FIXTURE=$(mktemp -d)
-trap 'rm -rf "$TEMP_FIXTURE"' EXIT
-cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
-cp -a "$REPO_ROOT/knowledge/ssfv" "$TEMP_FIXTURE/knowledge/"
-cp "$REPO_ROOT/knowledge/FEATURE-ADMINISTRATION-PROFILE.json" "$TEMP_FIXTURE/knowledge/"
-mkdir -p "$TEMP_FIXTURE/tools/qxctl"
-cp "$REPO_ROOT/tools/qxctl/COMMANDS.json" "$TEMP_FIXTURE/tools/qxctl/"
-printf '{}\n' > "$TEMP_FIXTURE/knowledge/ssfv/schemas/v2/unratified.schema.json"
-set +e
-OUT_SSFV_SCHEMA=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" 2>&1)
-EXIT_CODE=$?
-set -e
-if [ $EXIT_CODE -eq 0 ] ||
-   ! printf '%s\n' "$OUT_SSFV_SCHEMA" |
-       grep "artifact.unauthorized path=knowledge/ssfv/schemas/v2/unratified.schema.json" >/dev/null; then
-    echo "error: unratified SSFV schema was admitted by directory prefix"
-    exit 1
-fi
-rm -rf "$TEMP_FIXTURE"
-trap - EXIT
-echo "unratified SSFV schema fixture failed as expected"
+prepare unratified-ssfv-schema fixtures_valid
+cp -R "$REPO_ROOT/knowledge/ssfv" "$FIXTURE/knowledge/"
+cp "$REPO_ROOT/knowledge/FEATURE-ADMINISTRATION-PROFILE.json" "$FIXTURE/knowledge/"
+mkdir -p "$FIXTURE/tools/qxctl"
+cp "$REPO_ROOT/tools/qxctl/COMMANDS.json" "$FIXTURE/tools/qxctl/"
+printf '{}\n' > "$FIXTURE/knowledge/ssfv/schemas/v2/unratified.schema.json"
+check unratified-ssfv-schema "$FIXTURE" 8 \
+    'artifact.unauthorized path=knowledge/ssfv/schemas/v2/unratified.schema.json'
 
-# Verify caller-authority regression (exit 21)
-TEMP_FIXTURE=$(mktemp -d)
-trap 'rm -rf "$TEMP_FIXTURE"' EXIT
-cp -a ./tests/fixtures_valid/* "$TEMP_FIXTURE/"
-echo "AI agents may never apply." >> "$TEMP_FIXTURE/README.md"
-set +e
-OUT_AUTH=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" 2>&1)
-EXIT_CODE=$?
-set -e
-if [ $EXIT_CODE -ne 21 ]; then
-    echo "error: caller authority violation should exit 21, got $EXIT_CODE"
-    exit 1
-fi
-if ! printf '%s\n' "$OUT_AUTH" | grep "evidence violation caller_authority.class_subject_modal path=README.md line=" >/dev/null; then
-    echo "error: missing expected class_subject_modal evidence"
-    exit 1
-fi
-if [ "$(printf '%s\n' "$OUT_AUTH" | grep -c "^summary ")" -ne 1 ]; then
-    echo "error: invalid auth fixture should have exactly one summary footer"
-    exit 1
-fi
-rm -rf "$TEMP_FIXTURE"
-trap - EXIT
-echo "caller authority validation passed"
+prepare caller-authority fixtures_valid
+printf '\nAI agents may never apply.\n' >> "$FIXTURE/README.md"
+check caller-authority "$FIXTURE" 21 \
+    'evidence violation caller_authority.class_subject_modal path=README.md line='
 
-# Verify SACV registry regression (exit 22)
-TEMP_FIXTURE=$(mktemp -d)
-trap 'rm -rf "$TEMP_FIXTURE"' EXIT
-cp -a ./tests/fixtures_valid/* "$TEMP_FIXTURE/"
-cp -a "$REPO_ROOT/knowledge/sacv" "$TEMP_FIXTURE/knowledge/"
-sed 's/None\./- api_id: invalid-only/' "$REPO_ROOT/knowledge/sacv/REGISTRY.md" > "$TEMP_FIXTURE/knowledge/sacv/REGISTRY.md"
-set +e
-OUT_SACV=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" 2>&1)
-EXIT_CODE=$?
-set -e
-if [ $EXIT_CODE -ne 22 ]; then
-    echo "error: SACV registry violation should exit 22, got $EXIT_CODE"
-    exit 1
-fi
-if ! printf '%s\n' "$OUT_SACV" | grep "evidence violation sacv.registry.field_invalid" >/dev/null; then
-    echo "error: missing expected SACV registry field evidence"
-    exit 1
-fi
-rm -rf "$TEMP_FIXTURE"
-trap - EXIT
-echo "SACV registry validation passed"
+prepare sacv-registry fixtures_valid
+cp -R "$REPO_ROOT/knowledge/sacv/." "$FIXTURE/knowledge/sacv/"
+sed 's/^None\.$/- api_id: invalid-only/' "$REPO_ROOT/knowledge/sacv/REGISTRY.md" \
+    > "$FIXTURE/knowledge/sacv/REGISTRY.md"
+check sacv-registry "$FIXTURE" 22 'evidence violation sacv.registry.field_invalid'
 
-# Verify SODV release-ledger regression (exit 23)
-TEMP_FIXTURE=$(mktemp -d)
-trap 'rm -rf "$TEMP_FIXTURE"' EXIT
-cp -a ./tests/fixtures_valid/* "$TEMP_FIXTURE/"
-cp -a "$REPO_ROOT/knowledge/sodv" "$TEMP_FIXTURE/knowledge/"
-sed -n '/^- release_record_id:/,$p' "$REPO_ROOT/knowledge/sodv/RELEASES.md" >> "$TEMP_FIXTURE/knowledge/sodv/RELEASES.md"
-set +e
-OUT_SODV=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" 2>&1)
-EXIT_CODE=$?
-set -e
-if [ $EXIT_CODE -ne 23 ]; then
-    echo "error: SODV release-ledger violation should exit 23, got $EXIT_CODE"
-    exit 1
-fi
-if ! printf '%s\n' "$OUT_SODV" | grep "evidence violation sodv.releases.record_id" >/dev/null; then
-    echo "error: missing expected SODV duplicate-record evidence"
-    exit 1
-fi
-if [ "$(printf '%s\n' "$OUT_SODV" | grep -c "^summary ")" -ne 1 ]; then
-    echo "error: invalid SODV fixture should have exactly one summary footer"
-    exit 1
-fi
-rm -rf "$TEMP_FIXTURE"
-trap - EXIT
-echo "SODV release-ledger validation passed"
+prepare sodv-releases fixtures_valid
+cp -R "$REPO_ROOT/knowledge/sodv/." "$FIXTURE/knowledge/sodv/"
+sed -n '/^- release_record_id:/,$p' "$REPO_ROOT/knowledge/sodv/RELEASES.md" \
+    >> "$FIXTURE/knowledge/sodv/RELEASES.md"
+check sodv-releases "$FIXTURE" 23 'evidence violation sodv.releases.record_id'
 
-# Verify feature-administration contract regression (exit 24). The checked-in
-# expected registry is read as data; the validator never executes qxctl.
-TEMP_FIXTURE=$(mktemp -d)
-trap 'rm -rf "$TEMP_FIXTURE"' EXIT
-cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
-cp -a "$REPO_ROOT/knowledge/ssfv" "$TEMP_FIXTURE/knowledge/"
-cp "$REPO_ROOT/knowledge/FEATURE-ADMINISTRATION-PROFILE.json" "$TEMP_FIXTURE/knowledge/"
-mkdir -p "$TEMP_FIXTURE/tools/qxctl"
+prepare feature-administration fixtures_valid
+cp -R "$REPO_ROOT/knowledge/ssfv" "$FIXTURE/knowledge/"
+cp "$REPO_ROOT/knowledge/FEATURE-ADMINISTRATION-PROFILE.json" "$FIXTURE/knowledge/"
+mkdir -p "$FIXTURE/tools/qxctl"
 sed 's/"registry_digest": "sha256:/"registry_digest": "sha257:/' \
-    "$REPO_ROOT/tools/qxctl/COMMANDS.json" > "$TEMP_FIXTURE/tools/qxctl/COMMANDS.json"
-set +e
-OUT_FEATURE_ADMIN=$(
-    "$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" 2>&1
-)
-EXIT_CODE=$?
-set -e
-if [ $EXIT_CODE -ne 24 ]; then
-    echo "error: feature-administration violation should exit 24, got $EXIT_CODE"
-    exit 1
-fi
-if ! printf '%s\n' "$OUT_FEATURE_ADMIN" |
-    grep "evidence violation feature_administration.commands_digest" >/dev/null; then
-    echo "error: missing expected feature-administration digest evidence"
-    exit 1
-fi
-if [ "$(printf '%s\n' "$OUT_FEATURE_ADMIN" | grep -c "^summary ")" -ne 1 ]; then
-    echo "error: invalid feature-administration fixture should have exactly one summary footer"
-    exit 1
-fi
-rm -rf "$TEMP_FIXTURE"
-trap - EXIT
-echo "feature-administration validation passed"
+    "$REPO_ROOT/tools/qxctl/COMMANDS.json" > "$FIXTURE/tools/qxctl/COMMANDS.json"
+check feature-administration "$FIXTURE" 24 \
+    'evidence violation feature_administration.commands_digest'
 
-# Verify common invariant-ownership registry regression (exit 26).
-TEMP_FIXTURE=$(mktemp -d)
-trap 'rm -rf "$TEMP_FIXTURE"' EXIT
-cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
+prepare invariant-ownership fixtures_valid
 sed 's/"registry_digest": "sha256:/"registry_digest": "sha257:/' \
-    "$REPO_ROOT/knowledge/INVARIANT-OWNERSHIP.json" > \
-    "$TEMP_FIXTURE/knowledge/INVARIANT-OWNERSHIP.json"
-set +e
-OUT_INVARIANTS=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" 2>&1)
-EXIT_CODE=$?
-set -e
-if [ $EXIT_CODE -ne 26 ]; then
-    echo "error: invariant-ownership violation should exit 26, got $EXIT_CODE"
-    exit 1
-fi
-if ! printf '%s\n' "$OUT_INVARIANTS" |
-    grep "evidence violation invariant_ownership.registry_digest" >/dev/null; then
-    echo "error: missing expected invariant-ownership digest evidence"
-    exit 1
-fi
-if [ "$(printf '%s\n' "$OUT_INVARIANTS" | grep -c "^summary ")" -ne 1 ]; then
-    echo "error: invalid invariant-ownership fixture should have exactly one summary footer"
-    exit 1
-fi
-rm -rf "$TEMP_FIXTURE"
-trap - EXIT
-echo "invariant-ownership validation passed"
+    "$REPO_ROOT/knowledge/INVARIANT-OWNERSHIP.json" > "$FIXTURE/knowledge/INVARIANT-OWNERSHIP.json"
+check invariant-ownership "$FIXTURE" 26 'evidence violation invariant_ownership.registry_digest'
 
-# Verify current repo
-OUT_REPO=$("$VALIDATOR_BIN" check --repo "$REPO_ROOT")
-if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "^summary ")" -ne 1 ]; then
-    echo "error: current repo should have exactly one summary footer"
-    exit 1
-fi
-if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "caller_authority.scan_complete ")" -ne 1 ]; then
-    echo "error: current repo should have exactly one scan_complete summary"
-    exit 1
-fi
-if ! printf '%s\n' "$OUT_REPO" | grep "caller_authority.scan_complete " | grep "findings=0" >/dev/null; then
-    echo "error: current repo missing expected caller_authority.scan_complete status or findings=0"
-    exit 1
-fi
-if [ "$(printf '%s\n' "$OUT_REPO" | grep -c "artifact.canonical_json_authorized")" -ne 245 ]; then
-    echo "error: current repo should authorize exactly 245 canonical JSON artifacts"
-    exit 1
-fi
-if ! printf '%s\n' "$OUT_REPO" | grep "sodv.releases.scan_complete records=3 transactions=1 violations=0" >/dev/null; then
-    echo "error: current repo missing expected SODV release-ledger completion evidence"
-    exit 1
-fi
-if ! printf '%s\n' "$OUT_REPO" |
-    grep "feature_administration.scan_complete features=" |
-    grep "violations=0" >/dev/null; then
-    echo "error: current repo missing expected feature-administration completion evidence"
-    exit 1
-fi
-echo "current repo passed strict validation"
+check missing-repository /definitely/missing/symphony-validator-path 2 \
+    'evidence absent repository.path path absent'
+prepare missing-index fixtures_valid
+rm "$FIXTURE/knowledge/skvi/INDEX.md"
+check missing-index "$FIXTURE" 9 \
+    'canonical_surface.manifest.surface_unreadable path=knowledge/skvi/INDEX.md'
+# The previous script accidentally reused fixtures_notes for this case, which
+# actually contains CHANGELOG.md. Remove the ledger from an otherwise valid copy.
+prepare missing-changelog fixtures_valid
+rm "$FIXTURE/knowledge/sclv/CHANGELOG.md"
+check missing-changelog "$FIXTURE" 9 \
+    'canonical_surface.manifest.surface_unreadable path=knowledge/sclv/CHANGELOG.md'
 
-OUT_JSON=$("$VALIDATOR_BIN" check --repo "$REPO_ROOT" --json)
-if [ "$(printf '%s\n' "$OUT_JSON" | grep -c '"protocol":"symphony.validation.result.v1"')" -ne 1 ] ||
-   [ "$(printf '%s\n' "$OUT_JSON" | grep -c '"evaluation":null')" -ne 1 ] ||
-   [ "$(printf '%s\n' "$OUT_JSON" | grep -c '"evidence_digest":"sha256:')" -ne 1 ] ||
-   [ "$(printf '%s\n' "$OUT_JSON" | grep -c '"result_digest":"sha256:')" -ne 1 ]; then
-    echo "error: structured validator projection is missing its exact protocol or digests"
-    exit 1
-fi
-echo "structured validator projection passed"
+# Every negative fixture must reach its intended rule. A bootstrap failure or
+# an unrelated malformed field can no longer satisfy a mere nonzero-exit check.
+while IFS='|' read -r NAME EXPECTED_EXIT EXPECTED_EVIDENCE; do
+    prepare "$NAME" "$NAME"
+    check "$NAME" "$FIXTURE" "$EXPECTED_EXIT" "$EXPECTED_EVIDENCE"
+done <<'CASES'
+fixtures_missing_root_surface|9|canonical_surface.manifest.bootstrap_unreadable path=README.md
+fixtures_missing_root_anchor|13|root_contract.anchor_missing path=README.md anchor=Doctrine
+fixtures_missing_runtime_module_surface|9|canonical_surface.manifest.surface_unreadable path=modules/node-troll/INTENT.md
+fixtures_missing_knowledge_surface|9|canonical_surface.manifest.surface_unreadable path=knowledge/INTENT.md
+fixtures_missing_validator_surface|9|canonical_surface.manifest.surface_unreadable path=tools/symphony-validator/INTENT.md
+fixtures_missing_validator_anchor|10|validator_contract.anchor_missing path=tools/symphony-validator/INTENT.md anchor=Purpose
+fixtures_missing_runtime_anchor|11|runtime_contract.anchor_missing path=modules/hotpath-runtime/INTENT.md anchor=Identity
+fixtures|3|skvi.entry.missing_field path=README.md field=owner
+fixtures_notes|3|skvi.entry.missing_field path=README.md field=notes
+fixtures_relationships|3|skvi.entry.missing_field path=README.md field=relationships
+fixtures_sclv_malformed|4|sclv.record.missing_field record_id=SCLV-PR-011 field=notes
+fixtures_sclv_record_pr_mismatch|14|sclv_ledger.record_pr_mismatch record_id=SCLV-PR-012
+fixtures_sclv_duplicate_record_id|14|sclv_ledger.record_id_duplicate record_id=SCLV-PR-011
+fixtures_sclv_duplicate_related_pr|14|sclv_ledger.related_pr_duplicate related_pr=https://github.com/QuanuX/Symphony/pull/11
+fixtures_sclv_duplicate_merge_commit|14|sclv_ledger.merge_commit_duplicate merge_commit=f2d65890f679107fdd114e51c5c8a22ab6eb2af2
+fixtures_invalid_skvi_status|6|skvi.status.invalid path=README.md status=some_invalid_status
+fixtures_invalid_sclv_status|6|sclv.status.invalid record_id=SCLV-PR-010 status=not_canonical
+fixtures_invalid_sclv_change_type|6|sclv.change_type.invalid record_id=SCLV-PR-010 change_type=invalid_change_type
+fixtures_invalid_sclv_related_pr|7|sclv.related_pr.shape_invalid record_id=SCLV-PR-010
+fixtures_invalid_sclv_merge_commit|7|sclv.merge_commit.shape_invalid record_id=SCLV-PR-010
+fixtures_unauthorized_docs|8|artifact.unauthorized path=docs reason=publication_not_authorized
+fixtures_unauthorized_mint_json|8|artifact.unauthorized path=mint.json reason=publication_not_authorized
+fixtures_unauthorized_projection|8|artifact.unauthorized path=knowledge/generated_report.json reason=projection_file_not_authorized
+fixtures_unauthorized_qxctl|20|validator_build.source_file_unlisted path=src/qxctl_integration.cpp
+fixtures_unauthorized_schema|8|artifact.unauthorized path=schema reason=schema_template_not_authorized
+fixtures_vocab_execution_node|15|doctrine_vocab.stale_namespace path=README.md term=execution-node
+fixtures_vocab_native_execution|15|doctrine_vocab.stale_namespace path=README.md term=native-execution
+fixtures_vocab_bus_agent|15|doctrine_vocab.stale_namespace path=README.md term=bus-agent
+fixtures_vocab_core|15|doctrine_vocab.forbidden_active_term path=README.md term=core
+fixtures_vocab_markdown_wins|15|doctrine_vocab.rejected_truth_hierarchy path=README.md phrase=Markdown_always_wins
+fixtures_vocab_seeds_1|15|doctrine_vocab.prohibited_runtime_enforcement_wording path=README.md phrase=contract_seeds_enforce_runtime_behavior
+fixtures_vocab_seeds_2|15|doctrine_vocab.prohibited_runtime_enforcement_wording path=README.md phrase=contract_seed_enforces_runtime_behavior
+fixtures_vocab_seeds_3|15|doctrine_vocab.prohibited_runtime_enforcement_wording path=README.md phrase=seeds_enforce_runtime_behavior
+fixtures_skvi_coverage_missing|16|skvi_coverage.declared_surface_unindexed path=tools/symphony-validator/CMakeLists.txt count=0
+fixtures_skvi_coverage_duplicate|16|skvi_coverage.declared_surface_indexed_multiple path=README.md count=2
+fixtures_skvi_paths_missing|17|skvi_path.indexed_path_missing path=does/not/exist.md
+fixtures_skvi_paths_absolute|17|skvi_path.invalid_relative_path path=/tmp/absolute_path.md
+fixtures_skvi_paths_traversal|17|skvi_path.invalid_relative_path path=../traversal_path.md
+fixtures_skvi_paths_directory|17|skvi_path.indexed_path_not_file path=knowledge
+fixtures_sclv_reference_absolute|18|sclv_reference.invalid_relative_path record_id=SCLV-PR-010 field=affected_surfaces path=/absolute/path.md
+fixtures_sclv_reference_traversal|18|sclv_reference.invalid_relative_path record_id=SCLV-PR-010 field=affected_surfaces path=../traversal.md
+fixtures_validator_build_duplicate_source|20|validator_build.source_list_duplicate path=src/main.cpp
+fixtures_validator_build_missing_source|20|validator_build.source_missing path=src/missing.cpp
+fixtures_validator_build_unlisted_source|20|validator_build.source_file_unlisted path=src/unlisted.cpp
+fixtures_validator_build_outside_src|20|validator_build.source_outside_src path=tests/smoke.cpp
+fixtures_validator_build_invalid_extension|20|validator_build.invalid_source_extension path=src/main.c
+fixtures_validator_build_traversal|20|validator_build.invalid_source_path path=src/../src/main.cpp
+CASES
 
-# Verify invalid repo
-set +e
-OUT_INV=$("$VALIDATOR_BIN" check --repo /definitely/missing/symphony-validator-path 2>&1)
-EXIT_CODE=$?
-set -e
-if [ $EXIT_CODE -eq 0 ]; then
-    echo "error: invalid repo should fail"
-    exit 1
-fi
-if ! printf '%s\n' "$OUT_INV" | grep "summary pass=" >/dev/null; then
-    echo "error: invalid repo missing summary footer"
-    exit 1
-fi
-if [ "$(printf '%s\n' "$OUT_INV" | grep -c "^summary ")" -ne 1 ]; then
-    echo "error: invalid repo should have exactly one summary footer"
-    exit 1
-fi
-echo "invalid repo passed"
+prepare sparse-pr-namespace fixtures_valid
+cp "$SCRIPT_DIR/fixtures_sclv_ledger_gap_warning/knowledge/sclv/CHANGELOG.md" \
+    "$FIXTURE/knowledge/sclv/CHANGELOG.md"
+check sparse-pr-namespace "$FIXTURE" 0 'sclv_ledger.sparse_pr_namespace'
+absent "$CASE_LOG" 'sclv_ledger.record_gap'
 
-# Verify repo with missing INDEX.md (e.g. the tools directory itself doesn't have knowledge/skvi/INDEX.md)
-if "$VALIDATOR_BIN" check --repo . > /dev/null 2>&1; then
-    echo "error: repo missing INDEX.md should fail"
-    exit 1
-fi
-echo "repo missing INDEX.md failed as expected"
+# Historical references retain their original ledger bytes. Current SCLV
+# semantics permit later absence/non-membership and report provenance warnings.
+# Current SKVI coverage rejection is independently asserted in the table above.
+prepare historical-skvi-reference fixtures_valid
+cp "$SCRIPT_DIR/fixtures_skvi_ref_unindexed/knowledge/sclv/CHANGELOG.md" \
+    "$FIXTURE/knowledge/sclv/CHANGELOG.md"
+check historical-skvi-reference "$FIXTURE" 0 \
+    'evidence warning sclv_reference.historical_path_absent'
+contains "$CASE_LOG" 'evidence warning sclv_skvi_reference.historical'
 
-# Verify fixture missing root surface
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_missing_root_surface > /dev/null 2>&1; then
-    echo "error: fixture missing root surface should fail"
-    exit 1
-fi
-echo "fixture missing root surface failed as expected"
+prepare historical-unindexed fixtures_sclv_skvi_reference_unindexed
+check historical-unindexed "$FIXTURE" 0 'evidence warning sclv_skvi_reference.historical'
+prepare historical-missing fixtures_sclv_reference_missing_skvi
+check historical-missing "$FIXTURE" 0 'evidence warning sclv_reference.historical_path_absent'
+# Preserve the original final repeated check of this historical boundary.
+prepare historical-unindexed-repeat fixtures_sclv_skvi_reference_unindexed
+check historical-unindexed-repeat "$FIXTURE" 0 'evidence warning sclv_skvi_reference.historical'
 
-# Verify fixture missing root anchor
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_missing_root_anchor > /dev/null 2>&1; then
-    echo "error: fixture missing root anchor should fail"
-    exit 1
-fi
-echo "fixture missing root anchor failed as expected"
+prepare affected-surface-absent fixtures_valid
+cp "$SCRIPT_DIR/fixtures_affected_surface_absent/knowledge/sclv/CHANGELOG.md" \
+    "$FIXTURE/knowledge/sclv/CHANGELOG.md"
+check affected-surface-absent "$FIXTURE" 0 \
+    'sclv.affected_surface.provenance_summary records=1 occurrences=1 unique_paths=1 present_paths=0 absent_paths=1 unknown_paths=0 indexed_paths=0 unindexed_paths=1'
+absent "$CASE_LOG" 'sclv.affected_surface.absent'
+absent "$CASE_LOG" 'sclv.affected_surface.unindexed'
 
-# Verify fixture missing runtime module surface
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_missing_runtime_module_surface > /dev/null 2>&1; then
-    echo "error: fixture missing runtime module surface should fail"
-    exit 1
-fi
-echo "fixture missing runtime module surface failed as expected"
+prepare affected-surface-unindexed fixtures_valid
+cp "$SCRIPT_DIR/fixtures_affected_surface_unindexed/knowledge/sclv/CHANGELOG.md" \
+    "$FIXTURE/knowledge/sclv/CHANGELOG.md"
+cp "$SCRIPT_DIR/fixtures_affected_surface_unindexed/existing_unindexed.md" "$FIXTURE/"
+for DIRECTORY in src tests cmake; do
+    cp -R "$SCRIPT_DIR/fixtures_affected_surface_unindexed/$DIRECTORY" "$FIXTURE/"
+done
+check affected-surface-unindexed "$FIXTURE" 0 \
+    'sclv.affected_surface.provenance_summary records=2 occurrences=5 unique_paths=4 present_paths=4 absent_paths=0 unknown_paths=0 indexed_paths=0 unindexed_paths=4'
+absent "$CASE_LOG" 'sclv.affected_surface.absent'
+absent "$CASE_LOG" 'sclv.affected_surface.unindexed'
 
-# Verify fixture missing knowledge surface
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_missing_knowledge_surface > /dev/null 2>&1; then
-    echo "error: fixture missing knowledge surface should fail"
-    exit 1
-fi
-echo "fixture missing knowledge surface failed as expected"
+for NAME in fixtures_vocab_score fixtures_vocab_c_o_r_e; do
+    prepare "$NAME" "$NAME"
+    check "$NAME" "$FIXTURE" 0 'violation=0 exit=0'
+done
 
-# Verify fixture missing validator surface
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_missing_validator_surface > /dev/null 2>&1; then
-    echo "error: fixture missing validator surface should fail"
-    exit 1
-fi
-echo "fixture missing validator surface failed as expected"
+# Check the live repository once in each supported evidence projection.
+check current-repository "$REPO_ROOT" 0 'violation=0 exit=0'
+[ "$(grep -c 'caller_authority.scan_complete ' "$CASE_LOG")" -eq 1 ] ||
+    fail 'current repository must have exactly one caller-authority summary'
+grep 'caller_authority.scan_complete ' "$CASE_LOG" | grep 'findings=0' >/dev/null ||
+    fail 'current repository has caller-authority findings'
+contains "$CASE_LOG" 'sodv.releases.scan_complete records=3 transactions=1 violations=0'
+grep 'feature_administration.scan_complete features=' "$CASE_LOG" | grep 'violations=0' >/dev/null ||
+    fail 'current repository has feature-administration violations'
+"$FIXTURE_BIN" json-inventory "$REPO_ROOT" "$CASE_LOG"
 
-# Verify fixture missing validator anchor
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_missing_validator_anchor > /dev/null 2>&1; then
-    echo "error: fixture missing validator anchor should fail"
-    exit 1
-fi
-echo "fixture missing validator anchor failed as expected"
+"$VALIDATOR_BIN" check --repo "$REPO_ROOT" --json > "$EVIDENCE_DIR/current-repository.json"
+for FIELD in '"protocol":"symphony.validation.result.v1"' '"evaluation":null' \
+    '"evidence_digest":"sha256:' '"result_digest":"sha256:'; do
+    [ "$(grep -c "$FIELD" "$EVIDENCE_DIR/current-repository.json")" -eq 1 ] ||
+        fail "structured validator projection missing exact field: $FIELD"
+done
+"$VALIDATOR_BIN" root-summary --repo "$REPO_ROOT" --json > "$EVIDENCE_DIR/root-summary.json"
+contains "$EVIDENCE_DIR/root-summary.json" '"protocol": "symphony.repository.root-summary.v1"'
+contains "$EVIDENCE_DIR/root-summary.json" '"summary_digest": "sha256:'
+"$VALIDATOR_BIN" root-summary --repo "$REPO_ROOT" > "$EVIDENCE_DIR/root-summary.md"
+[ "$(grep -c '^<!-- symphony:root-summary:v1:begin -->$' "$EVIDENCE_DIR/root-summary.md")" -eq 1 ] &&
+    [ "$(grep -c '^<!-- symphony:root-summary:v1:end -->$' "$EVIDENCE_DIR/root-summary.md")" -eq 1 ] ||
+    fail 'root-summary Markdown projection has invalid markers'
 
-# Verify fixture missing runtime anchor
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_missing_runtime_anchor > /dev/null 2>&1; then
-    echo "error: fixture missing runtime anchor should fail"
-    exit 1
-fi
-echo "fixture missing runtime anchor failed as expected"
-
-# Verify malformed SKVI fixture (missing title, owner, etc.)
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures > /dev/null 2>&1; then
-    echo "error: malformed fixture should fail"
-    exit 1
-fi
-echo "malformed fixture failed as expected"
-
-# Verify malformed SKVI fixture missing notes
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_notes > /dev/null 2>&1; then
-    echo "error: malformed fixture missing notes should fail"
-    exit 1
-fi
-echo "malformed fixture missing notes failed as expected"
-
-# Verify malformed SKVI fixture missing relationships
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_relationships > /dev/null 2>&1; then
-    echo "error: malformed fixture missing relationships should fail"
-    exit 1
-fi
-echo "malformed fixture missing relationships failed as expected"
-
-# Verify repo path missing knowledge/sclv/CHANGELOG.md
-# We can use fixtures_valid but remove CHANGELOG.md temporarily, or create a new fixture.
-# Actually, fixtures_notes has SKVI but no SCLV CHANGELOG!
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_notes > /dev/null 2>&1; then
-    echo "error: repo missing CHANGELOG.md should fail"
-    exit 1
-fi
-echo "repo missing CHANGELOG.md failed as expected"
-
-# Verify malformed SCLV fixture
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_malformed > /dev/null 2>&1; then
-    echo "error: malformed SCLV fixture should fail"
-    exit 1
-fi
-echo "malformed SCLV fixture failed as expected"
-
-# Verify SCLV record_id/related_pr mismatch
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_record_pr_mismatch > /dev/null 2>&1; then
-    echo "error: fixtures_sclv_record_pr_mismatch should fail"
-    exit 1
-fi
-echo "fixtures_sclv_record_pr_mismatch failed as expected"
-
-# Verify SCLV duplicate record_id
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_duplicate_record_id > /dev/null 2>&1; then
-    echo "error: fixtures_sclv_duplicate_record_id should fail"
-    exit 1
-fi
-echo "fixtures_sclv_duplicate_record_id failed as expected"
-
-# Verify SCLV duplicate related_pr
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_duplicate_related_pr > /dev/null 2>&1; then
-    echo "error: fixtures_sclv_duplicate_related_pr should fail"
-    exit 1
-fi
-echo "fixtures_sclv_duplicate_related_pr failed as expected"
-
-# Verify SCLV duplicate merge_commit
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_duplicate_merge_commit > /dev/null 2>&1; then
-    echo "error: fixtures_sclv_duplicate_merge_commit should fail"
-    exit 1
-fi
-echo "fixtures_sclv_duplicate_merge_commit failed as expected"
-
-# Verify sparse SCLV PR-number namespace
-TEMP_FIXTURE=$(mktemp -d)
-trap 'rm -rf "$TEMP_FIXTURE"' EXIT
-cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
-cp ./tests/fixtures_sclv_ledger_gap_warning/knowledge/sclv/CHANGELOG.md \
-    "$TEMP_FIXTURE/knowledge/sclv/CHANGELOG.md"
-OUT_SPARSE=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE")
-if ! printf '%s\n' "$OUT_SPARSE" | grep "sclv_ledger.sparse_pr_namespace" >/dev/null; then
-    echo "error: sparse SCLV fixture missing sparse namespace evidence"
-    exit 1
-fi
-if printf '%s\n' "$OUT_SPARSE" | grep "sclv_ledger.record_gap" >/dev/null; then
-    echo "error: sparse SCLV fixture emitted a false record-gap warning"
-    exit 1
-fi
-rm -rf "$TEMP_FIXTURE"
-trap - EXIT
-echo "sparse SCLV PR-number namespace passed"
-
-# Verify skvi_references path not indexed
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_skvi_ref_unindexed > /dev/null 2>&1; then
-    echo "error: skvi_ref_unindexed fixture should fail"
-    exit 1
-fi
-echo "skvi_ref_unindexed fixture failed as expected"
-
-# Verify a later-unindexed historical SCLV reference is reported without invalidation.
-OUT_HISTORICAL_UNINDEXED=$("$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_skvi_reference_unindexed)
-if ! printf '%s\n' "$OUT_HISTORICAL_UNINDEXED" | grep "evidence warning sclv_skvi_reference.historical" >/dev/null; then
-    echo "error: fixtures_sclv_skvi_reference_unindexed missing historical warning"
-    exit 1
-fi
-echo "fixtures_sclv_skvi_reference_unindexed preserved immutable history"
-
-# Verify a historical affected_surfaces path may later be absent without becoming a current obligation.
-TEMP_FIXTURE=$(mktemp -d)
-trap 'rm -rf "$TEMP_FIXTURE"' EXIT
-cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
-cp ./tests/fixtures_affected_surface_absent/knowledge/sclv/CHANGELOG.md \
-    "$TEMP_FIXTURE/knowledge/sclv/CHANGELOG.md"
-OUT_ABSENT=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE")
-if ! printf '%s\n' "$OUT_ABSENT" | grep "sclv.affected_surface.provenance_summary records=1 occurrences=1 unique_paths=1 present_paths=0 absent_paths=1 unknown_paths=0 indexed_paths=0 unindexed_paths=1" >/dev/null; then
-    echo "error: affected_surface_absent missing exact historical provenance summary"
-    exit 1
-fi
-if printf '%s\n' "$OUT_ABSENT" | grep -E "sclv\.affected_surface\.(absent|unindexed)" >/dev/null; then
-    echo "error: affected_surface_absent emitted obsolete warning or violation evidence"
-    exit 1
-fi
-rm -rf "$TEMP_FIXTURE"
-trap - EXIT
-echo "affected_surface_absent passed as historical provenance"
-
-# Verify unindexed implementation, test, and build affected_surfaces are summarized without warning noise.
-TEMP_FIXTURE=$(mktemp -d)
-trap 'rm -rf "$TEMP_FIXTURE"' EXIT
-cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
-cp ./tests/fixtures_affected_surface_unindexed/knowledge/sclv/CHANGELOG.md \
-    "$TEMP_FIXTURE/knowledge/sclv/CHANGELOG.md"
-cp ./tests/fixtures_affected_surface_unindexed/existing_unindexed.md "$TEMP_FIXTURE/"
-cp -a ./tests/fixtures_affected_surface_unindexed/src "$TEMP_FIXTURE/"
-cp -a ./tests/fixtures_affected_surface_unindexed/tests "$TEMP_FIXTURE/"
-cp -a ./tests/fixtures_affected_surface_unindexed/cmake "$TEMP_FIXTURE/"
-OUT_WARN=$("$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE")
-if ! printf '%s\n' "$OUT_WARN" | grep "sclv.affected_surface.provenance_summary records=2 occurrences=5 unique_paths=4 present_paths=4 absent_paths=0 unknown_paths=0 indexed_paths=0 unindexed_paths=4" >/dev/null; then
-    echo "error: affected_surface_unindexed missing exact historical provenance summary"
-    exit 1
-fi
-if printf '%s\n' "$OUT_WARN" | grep -E "sclv\.affected_surface\.(absent|unindexed)" >/dev/null; then
-    echo "error: affected_surface_unindexed emitted obsolete warning or violation evidence"
-    exit 1
-fi
-rm -rf "$TEMP_FIXTURE"
-trap - EXIT
-echo "affected_surface_unindexed passed without warning noise"
-
-# Verify invalid SKVI status
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_invalid_skvi_status > /dev/null 2>&1; then
-    echo "error: invalid_skvi_status fixture should fail"
-    exit 1
-fi
-echo "invalid_skvi_status fixture failed as expected"
-
-# Verify invalid SCLV status
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_invalid_sclv_status > /dev/null 2>&1; then
-    echo "error: invalid_sclv_status fixture should fail"
-    exit 1
-fi
-echo "invalid_sclv_status fixture failed as expected"
-
-# Verify invalid SCLV change_type
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_invalid_sclv_change_type > /dev/null 2>&1; then
-    echo "error: invalid_sclv_change_type fixture should fail"
-    exit 1
-fi
-# Verify invalid SCLV related_pr shape
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_invalid_sclv_related_pr > /dev/null 2>&1; then
-    echo "error: invalid_sclv_related_pr fixture should fail"
-    exit 1
-fi
-echo "invalid_sclv_related_pr fixture failed as expected"
-
-# Verify invalid SCLV merge_commit shape
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_invalid_sclv_merge_commit > /dev/null 2>&1; then
-    echo "error: invalid_sclv_merge_commit fixture should fail"
-    exit 1
-fi
-echo "invalid_sclv_merge_commit fixture failed as expected"
-
-# Verify unauthorized docs/ fixture
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_unauthorized_docs > /dev/null 2>&1; then
-    echo "error: unauthorized_docs fixture should fail"
-    exit 1
-fi
-echo "unauthorized_docs fixture failed as expected"
-
-# Verify unauthorized mint.json fixture
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_unauthorized_mint_json > /dev/null 2>&1; then
-    echo "error: unauthorized_mint_json fixture should fail"
-    exit 1
-fi
-echo "unauthorized_mint_json fixture failed as expected"
-
-# Verify unauthorized projection file
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_unauthorized_projection > /dev/null 2>&1; then
-    echo "error: unauthorized_projection fixture should fail"
-    exit 1
-fi
-echo "unauthorized_projection fixture failed as expected"
-
-# Verify unauthorized qxctl integration
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_unauthorized_qxctl > /dev/null 2>&1; then
-    echo "error: unauthorized_qxctl fixture should fail"
-    exit 1
-fi
-echo "unauthorized_qxctl fixture failed as expected"
-
-# Verify unauthorized schema/template fixture
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_unauthorized_schema > /dev/null 2>&1; then
-    echo "error: unauthorized_schema fixture should fail"
-    exit 1
-fi
-echo "unauthorized_schema fixture failed as expected"
-
-# Verify doctrine vocabulary drift checks
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_vocab_execution_node > /dev/null 2>&1; then
-    echo "error: fixtures_vocab_execution_node should fail"
-    exit 1
-fi
-echo "fixtures_vocab_execution_node failed as expected"
-
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_vocab_native_execution > /dev/null 2>&1; then
-    echo "error: fixtures_vocab_native_execution should fail"
-    exit 1
-fi
-echo "fixtures_vocab_native_execution failed as expected"
-
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_vocab_bus_agent > /dev/null 2>&1; then
-    echo "error: fixtures_vocab_bus_agent should fail"
-    exit 1
-fi
-echo "fixtures_vocab_bus_agent failed as expected"
-
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_vocab_core > /dev/null 2>&1; then
-    echo "error: fixtures_vocab_core should fail"
-    exit 1
-fi
-echo "fixtures_vocab_core failed as expected"
-
-TEMP_FIXTURE=$(mktemp -d)
-trap 'rm -rf "$TEMP_FIXTURE"' EXIT
-cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
-cp ./tests/fixtures_vocab_score/README.md "$TEMP_FIXTURE/README.md"
-if ! "$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" > /dev/null 2>&1; then
-    echo "error: fixtures_vocab_score should pass"
-    exit 1
-fi
-rm -rf "$TEMP_FIXTURE"
-trap - EXIT
-echo "fixtures_vocab_score passed as expected"
-
-TEMP_FIXTURE=$(mktemp -d)
-trap 'rm -rf "$TEMP_FIXTURE"' EXIT
-cp -a ./tests/fixtures_valid/. "$TEMP_FIXTURE/"
-cp ./tests/fixtures_vocab_c_o_r_e/README.md "$TEMP_FIXTURE/README.md"
-if ! "$VALIDATOR_BIN" check --repo "$TEMP_FIXTURE" > /dev/null 2>&1; then
-    echo "error: fixtures_vocab_c_o_r_e should pass"
-    exit 1
-fi
-rm -rf "$TEMP_FIXTURE"
-trap - EXIT
-echo "fixtures_vocab_c_o_r_e passed as expected"
-
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_vocab_markdown_wins > /dev/null 2>&1; then
-    echo "error: fixtures_vocab_markdown_wins should fail"
-    exit 1
-fi
-echo "fixtures_vocab_markdown_wins failed as expected"
-
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_vocab_seeds_1 > /dev/null 2>&1; then
-    echo "error: fixtures_vocab_seeds_1 should fail"
-    exit 1
-fi
-echo "fixtures_vocab_seeds_1 failed as expected"
-
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_vocab_seeds_2 > /dev/null 2>&1; then
-    echo "error: fixtures_vocab_seeds_2 should fail"
-    exit 1
-fi
-echo "fixtures_vocab_seeds_2 failed as expected"
-
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_vocab_seeds_3 > /dev/null 2>&1; then
-    echo "error: fixtures_vocab_seeds_3 should fail"
-    exit 1
-fi
-echo "fixtures_vocab_seeds_3 failed as expected"
-
-
-# Verify SKVI coverage missing entry
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_skvi_coverage_missing > /dev/null 2>&1; then
-    echo "error: fixtures_skvi_coverage_missing should fail"
-    exit 1
-fi
-echo "fixtures_skvi_coverage_missing failed as expected"
-
-# Verify SKVI coverage duplicate entry
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_skvi_coverage_duplicate > /dev/null 2>&1; then
-    echo "error: fixtures_skvi_coverage_duplicate should fail"
-    exit 1
-fi
-echo "fixtures_skvi_coverage_duplicate failed as expected"
-
-# Verify SKVI paths missing entry
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_skvi_paths_missing > /dev/null 2>&1; then
-    echo "error: fixtures_skvi_paths_missing should fail"
-    exit 1
-fi
-echo "fixtures_skvi_paths_missing failed as expected"
-
-# Verify SKVI paths absolute entry
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_skvi_paths_absolute > /dev/null 2>&1; then
-    echo "error: fixtures_skvi_paths_absolute should fail"
-    exit 1
-fi
-echo "fixtures_skvi_paths_absolute failed as expected"
-
-# Verify SKVI paths traversal entry
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_skvi_paths_traversal > /dev/null 2>&1; then
-    echo "error: fixtures_skvi_paths_traversal should fail"
-    exit 1
-fi
-echo "fixtures_skvi_paths_traversal failed as expected"
-
-# Verify SKVI paths directory entry
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_skvi_paths_directory > /dev/null 2>&1; then
-    echo "error: fixtures_skvi_paths_directory should fail"
-    exit 1
-fi
-echo "fixtures_skvi_paths_directory failed as expected"
-
-# Verify a later-missing historical SCLV reference is reported without invalidation.
-OUT_HISTORICAL_MISSING=$("$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_reference_missing_skvi)
-if ! printf '%s\n' "$OUT_HISTORICAL_MISSING" | grep "evidence warning sclv_reference.historical_path_absent" >/dev/null; then
-    echo "error: fixtures_sclv_reference_missing_skvi missing historical warning"
-    exit 1
-fi
-echo "fixtures_sclv_reference_missing_skvi preserved immutable history"
-
-# Verify SCLV reference absolute path
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_reference_absolute > /dev/null 2>&1; then
-    echo "error: fixtures_sclv_reference_absolute should fail"
-    exit 1
-fi
-echo "fixtures_sclv_reference_absolute failed as expected"
-
-# Verify SCLV reference traversal path
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_reference_traversal > /dev/null 2>&1; then
-    echo "error: fixtures_sclv_reference_traversal should fail"
-    exit 1
-fi
-echo "fixtures_sclv_reference_traversal failed as expected"
-
-# Verify SCLV-SKVI historical non-membership remains non-failing.
-OUT_HISTORICAL_UNINDEXED=$("$VALIDATOR_BIN" check --repo ./tests/fixtures_sclv_skvi_reference_unindexed)
-if ! printf '%s\n' "$OUT_HISTORICAL_UNINDEXED" | grep "evidence warning sclv_skvi_reference.historical" >/dev/null; then
-    echo "error: fixtures_sclv_skvi_reference_unindexed missing historical warning"
-    exit 1
-fi
-echo "fixtures_sclv_skvi_reference_unindexed remained non-failing"
-
-# Verify validator_build duplicate source
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_validator_build_duplicate_source > /dev/null 2>&1; then
-    echo "error: fixtures_validator_build_duplicate_source should fail"
-    exit 1
-fi
-echo "fixtures_validator_build_duplicate_source failed as expected"
-
-# Verify validator_build missing source
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_validator_build_missing_source > /dev/null 2>&1; then
-    echo "error: fixtures_validator_build_missing_source should fail"
-    exit 1
-fi
-echo "fixtures_validator_build_missing_source failed as expected"
-
-# Verify validator_build unlisted source
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_validator_build_unlisted_source > /dev/null 2>&1; then
-    echo "error: fixtures_validator_build_unlisted_source should fail"
-    exit 1
-fi
-echo "fixtures_validator_build_unlisted_source failed as expected"
-
-# Verify validator_build outside src
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_validator_build_outside_src > /dev/null 2>&1; then
-    echo "error: fixtures_validator_build_outside_src should fail"
-    exit 1
-fi
-echo "fixtures_validator_build_outside_src failed as expected"
-
-# Verify validator_build invalid extension
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_validator_build_invalid_extension > /dev/null 2>&1; then
-    echo "error: fixtures_validator_build_invalid_extension should fail"
-    exit 1
-fi
-echo "fixtures_validator_build_invalid_extension failed as expected"
-
-# Verify validator_build traversal
-if "$VALIDATOR_BIN" check --repo ./tests/fixtures_validator_build_traversal > /dev/null 2>&1; then
-    echo "error: fixtures_validator_build_traversal should fail"
-    exit 1
-fi
-echo "fixtures_validator_build_traversal failed as expected"
-
-echo "All smoke tests passed."
+echo 'All smoke tests passed'

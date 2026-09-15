@@ -117,7 +117,7 @@ Future validator checks may verify SKVI structure.
 - owner: Symphony root governance
 - scope: Introduces repository purpose, boundaries, and top-level navigation expectations.
 - relationships:
-  - declares -> `INTENT.md`
+  - declares -> `knowledge/platform/INTENT.md`
   - may_consume -> future SODV public documentation projection
 - consumers:
   - humans
@@ -133,7 +133,7 @@ Future validator checks may verify SKVI structure.
 - notes: Public-facing only after SODV-authorized publication.
 
 #### INTENT.md
-- path: `INTENT.md`
+- path: `knowledge/platform/INTENT.md`
 - title: Root Intent
 - surface_type: root governance declaration
 - truth_role: defines Symphony platform purpose and boundaries

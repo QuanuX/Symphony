@@ -13555,3 +13555,16 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: none authorized by this entry
 - notes: Builds test programs; grants no installed operation authority.
 - status: canonical
+
+##### Native validator smoke fixture preparation
+- path: `tools/symphony-validator/tests/fixture_prepare.cpp`
+- title: Native validator smoke fixture preparation
+- surface_type: C++ test fixture support
+- truth_role: subordinate implementation evidence
+- owner: Symphony validator maintainers
+- scope: Temporary modern bootstrap for retained positive and adversarial CLI fixtures.
+- relationships: depends_on -> `tools/symphony-validator/SPEC.md`
+- consumers: validator smoke tests, maintainers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Preserves each original fixture payload and historical ledger.
+- status: canonical

@@ -193,6 +193,11 @@ set_target_properties(caller-authority-tests PROPERTIES
 )
 
 if(BUILD_TESTING)
+  add_executable(validator-fixture-prepare tests/fixture_prepare.cpp)
+  target_link_libraries(validator-fixture-prepare PRIVATE Symphony::KnowledgeVectorEngine)
+  set_target_properties(validator-fixture-prepare PROPERTIES CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+  target_compile_options(validator-fixture-prepare PRIVATE
+    $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>)
   add_test(NAME sclv-temporal-tests COMMAND sclv-temporal-tests)
   add_test(NAME sclv-cross-reference-tests COMMAND sclv-cross-reference-tests)
   add_test(NAME caller-authority-tests COMMAND caller-authority-tests)
