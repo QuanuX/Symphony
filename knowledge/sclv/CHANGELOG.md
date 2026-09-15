@@ -12301,3 +12301,55 @@ This PR authorizes none of the following:
   - `tools/qxctl/internal/knowledgeengine/shv_profile_diagnostics_test.go`
   - `tools/qxctl/internal/knowledgeengine/shv_profile_test.go`
   - `tools/qxctl/internal/knowledgeengine/shv_profile_validation.go`
+
+---
+
+- record_id: `SCLV-CHG-20260915-SHV-MILESTONE-GATE`
+- record_version: `3`
+- title: `Verify bounded SHV milestone across installed engines and recovery`
+- status: `canonical`
+- change_started_at: `2026-09-15T01:48:00Z`
+- recording_disposition: `post_merge`
+- recovery_reason: `not_applicable`
+- change_type: `audit_record`
+- change_request_state: `not_applicable`
+- change_request_provider: `not_applicable`
+- change_request_id: `not_applicable`
+- change_request_reference: `not_applicable`
+- change_request_absence_reason: `Authorized local source commit in the isolated checkout; no forge request or remote merge exists.`
+- revision_scheme: `git-sha1`
+- ratification_subject: `Duncan, Architect`
+- ratification_permission: `repository-transition-owner for full bounded SHV gate and local evidence closure`
+- ratification_method: `explicit-user-instruction in Codex task 01a08888-cc7d-73b1-a5e0-a449f402eba4`
+- ratification_evidence_reference: `../../context/decisions/2026-09-14-shv-milestone-gate.md`
+- skvi_references:
+  - `knowledge/shv/PROFILES.md`
+  - `modules/shv-profile-engine/SPEC.md`
+- change_summary: |
+    Full bounded SHV gate passed on the recorded clean source baseline; no runtime source change required.
+- relationship_changes: |
+    Verifies installed SHV source, profile, partition, structural graph, durable store and protected publication interactions.
+- doctrine_changes: |
+    No doctrine changes. Caller policy and exact owner admission remain explicit.
+- compatibility_consequences: |
+    Historical engine admission remains verified; all eight current native owners pass. Registry remains 369 commands and 110 features.
+- publication_consequences: |
+    Private test catalogues exercised actual authorization and recovery. No production catalogue or remote publication changed.
+- projection_consequences: |
+    Source-backed graph replay and supplied-reference paths remain scoped; physical compatibility and global reference completeness are not inferred.
+- evidence:
+  - `../shv-milestone-gate/VERIFICATION.md records scope, exclusions and diagnostics.`
+  - `../shv-milestone-gate/MANIFEST.json seals designated gate evidence.`
+- non_authorizations:
+  - `No production deployment, remote push, source acquisition or default graph database selection.`
+  - `No destructive retention, global reference completeness or physical compatibility claim.`
+- notes: |
+    1322 passing Go events including 315 SHV; 40 non-SHV skips. Eight native owners, ten CTest groups. Subsequent SHV/SCV and contract-quad integration review remains next work.
+- date: `2026-09-15`
+- change_completed_at: `2026-09-15T02:02:17Z`
+- recorded_at: `2026-09-15T02:02:17Z`
+- revision_value: `3ec8a650961256ae7cab2a54b2aa550e02960e30`
+- tree_digest: `sha256:09462d9da6c04238c264d1269daf4e758bd71a957902dc98b1382c3f52fb0a64`
+- ratification_evidence_digest: `sha256:6594856d38cfab316caa3c766d73cc42fb10b86092d9b51891b56642221c306c`
+- affected_surfaces:
+  - `knowledge/sclv/CHANGELOG.md`
