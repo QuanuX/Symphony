@@ -12,40 +12,27 @@ Json seal(Json j, const std::string &key) {
 } // namespace
 Json descriptor() {
   std::vector<engine::OperationSpec> specs;
-  const std::vector<std::pair<std::string, std::string>> operations = {
-      {"inspect", engine::descriptor_protocol_v2},
-      {"profile_compile", "symphony.shv.class-profile.v1"},
-      {"mapping_diagnose", "symphony.shv.mapping-diagnostics.v1"},
-      {"universe_build", "symphony.shv.universe.v1"},
-      {"universe_bind", "symphony.shv.universe-binding.v1"},
-      {"extraction_diagnose", "symphony.shv.extraction-diagnostics.v1"},
-      {"references_analyze", "symphony.shv.reference-analysis.v1"}};
-  for (const auto &[name, output] : operations) {
-    auto id = name, input = name;
+  for (const auto &operation : interface_operations) {
+    const std::string name = operation.name, output = operation.output;
+    auto id = name;
     std::replace(id.begin(), id.end(), '_', '.');
-    std::replace(input.begin(), input.end(), '_', '-');
-    specs.push_back(engine::OperationSpec{
-        "engop:symphony:shv-profile." + id,
-        name,
-        "implemented",
-        false,
-        true,
-        {"ssfv:symphony:shv-profile-engine"},
-        {name == "inspect" ? "inspect"
-         : (name == "mapping_diagnose" || name == "extraction_diagnose" ||
-            name == "references_analyze")
-             ? "query"
-             : "invoke"},
-        "qxctl_required",
-        std::string("symphony.shv.") + input + "-input.v1",
-        output,
-        "read_only",
-        "idempotent",
-        false,
-        "none",
-        "",
-        "supported",
-        "freezing"});
+    specs.push_back(engine::OperationSpec{"engop:symphony:shv-profile." + id,
+                                          name,
+                                          "implemented",
+                                          false,
+                                          true,
+                                          {"ssfv:symphony:shv-profile-engine"},
+                                          {operation.interaction},
+                                          "qxctl_required",
+                                          operation.input,
+                                          output,
+                                          "read_only",
+                                          "idempotent",
+                                          false,
+                                          "none",
+                                          "",
+                                          "supported",
+                                          "freezing"});
   }
   engine::validate_operation_specs(specs);
   return seal(

@@ -9,7 +9,7 @@
 #include <set>
 #include <string_view>
 static_assert(std::string_view(symphony::knowledge::shv::version) ==
-                  "0.3.0-dev",
+                  symphony::knowledge::shv_profile::embedded_kernel_version,
               "Review the exact kernel reader before changing admission");
 namespace symphony::knowledge::shv_profile {
 namespace k = symphony::knowledge::shv;

@@ -321,10 +321,10 @@ func ValidateSHVProfileResult(op string, input, result []byte) error {
 	return ValidateSHVProfileResultVersion(op, input, result, SHVProfileVersion)
 }
 func ValidateSHVProfileResultVersion(op string, input, result []byte, version string) error {
-	if version != SHVProfileVersion && version != SHVProfileDiagnosticsVersion {
+	if shvProfileAdmission[version] == nil {
 		return shvFail()
 	}
-	if version == SHVProfileVersion && (op == "extraction_diagnose" || op == "references_analyze") {
+	if !shvProfileAdmission[version][op] {
 		return shvFail()
 	}
 	p, e := shvObject(input)

@@ -13,3 +13,5 @@ retain their separate qxctl owners and permissions. Preserve old sealed artifact
 For exact 0.2.0-dev, use `qxctl shv mapping diagnose-source` for individual field
 replay failures, and `qxctl shv references analyze` for caller-selected artifact
 reference paths. An unreachable candidate is not permission to delete evidence.
+
+For an interface-authoring change, update OWNER-INTERFACE.json, run `python3 modules/shv-profile-engine/tools/generate_interface.py`, and check frozen history, generated drift and independent semantic regressions. Normal engine operation requires no generator. Select 0.3.0-dev explicitly to use receipt-bound interface admission; existing defaults remain unchanged.

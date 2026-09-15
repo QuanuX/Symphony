@@ -51,6 +51,10 @@ func TestSHVProfileDiagnosticsInstalledCorrespondence(t *testing.T) {
 	if e != nil || len(paths) == 0 {
 		t.Fatal(paths, e)
 	}
+	version := SHVProfileDiagnosticsVersion
+	if selected := os.Getenv("SHV_DIAGNOSTIC_VERSION"); selected != "" {
+		version = selected
+	}
 	checked := 0
 	for _, path := range paths {
 		raw, e := os.ReadFile(path)
@@ -68,7 +72,7 @@ func TestSHVProfileDiagnosticsInstalledCorrespondence(t *testing.T) {
 		t.Run(filepath.Base(path), func(t *testing.T) {
 			op := shvText(c["operation"])
 			p, r := shvRaw(t, c["input"]), shvRaw(t, c["result"])
-			if e := ValidateSHVProfileResultVersion(op, p, r, SHVProfileDiagnosticsVersion); e != nil {
+			if e := ValidateSHVProfileResultVersion(op, p, r, version); e != nil {
 				t.Fatal(e)
 			}
 			if op == "inspect" {
@@ -78,7 +82,7 @@ func TestSHVProfileDiagnosticsInstalledCorrespondence(t *testing.T) {
 				bad := shvClone(t, shvMap(c["result"]))
 				bad[key] = true
 				bad = shvReseal(t, bad)
-				if ValidateSHVProfileResultVersion(op, p, shvRaw(t, bad), SHVProfileDiagnosticsVersion) == nil {
+				if ValidateSHVProfileResultVersion(op, p, shvRaw(t, bad), version) == nil {
 					t.Fatal("resealed false result accepted", key)
 				}
 			}
@@ -90,7 +94,7 @@ func TestSHVProfileDiagnosticsInstalledCorrespondence(t *testing.T) {
 						if field["status"] == "extracted" {
 							shvMap(field["assertion"])["value"] = "invented value"
 							forged = shvReseal(t, forged)
-							if ValidateSHVProfileResultVersion(op, p, shvRaw(t, forged), SHVProfileDiagnosticsVersion) == nil {
+							if ValidateSHVProfileResultVersion(op, p, shvRaw(t, forged), version) == nil {
 								t.Fatal("resealed false extraction accepted")
 							}
 							break
@@ -101,7 +105,7 @@ func TestSHVProfileDiagnosticsInstalledCorrespondence(t *testing.T) {
 				bad := shvClone(t, shvMap(c["result"]))
 				bad["counts"] = map[string]any{"extracted": 0, "failed": 0, "unavailable": 0}
 				bad = shvReseal(t, bad)
-				if !scvEqual(bad, c["result"]) && ValidateSHVProfileResultVersion(op, p, shvRaw(t, bad), SHVProfileDiagnosticsVersion) == nil {
+				if !scvEqual(bad, c["result"]) && ValidateSHVProfileResultVersion(op, p, shvRaw(t, bad), version) == nil {
 					t.Fatal("invented counts accepted")
 				}
 			}

@@ -22,10 +22,7 @@ func shvProfileDescriptor(p, r map[string]any, version string) error {
 		return shvFail()
 	}
 	ops, ok := r["operations"].([]any)
-	count := len(shvProfileOutputs)
-	if version == SHVProfileVersion {
-		count -= 2
-	}
+	count := len(shvProfileAdmission[version])
 	if !ok || len(ops) != count {
 		return shvFail()
 	}
@@ -47,7 +44,7 @@ func shvProfileDescriptor(p, r map[string]any, version string) error {
 		if !shvFields(o, "engine_operation_id", "operation_name", "availability", "feature_ids", "administrative_interactions", "administration_disposition", "input_protocol", "output_protocol", "mutability", "idempotency", "expected_state_required", "authorization_requirement", "recovery_operation_id", "direct_invocation", "thermal_path") || !scvEqual(o["administrative_interactions"], interactions) || o["administration_disposition"] != "qxctl_required" || o["mutability"] != "read_only" || o["idempotency"] != "idempotent" || o["recovery_operation_id"] != nil || o["direct_invocation"] != "supported" {
 			return shvFail()
 		}
-		if !ok || (version == SHVProfileVersion && (name == "extraction_diagnose" || name == "references_analyze")) || seen[name] || o["engine_operation_id"] != "engop:symphony:"+domain+"."+strings.ReplaceAll(name, "_", ".") || o["availability"] != "implemented" || !scvEqual(o["feature_ids"], []any{feature}) || o["input_protocol"] != SHVProfileInputProtocol(name) || o["output_protocol"] != out || o["authorization_requirement"] != "none" || o["expected_state_required"] != false || o["thermal_path"] != "freezing" {
+		if !ok || !shvProfileAdmission[version][name] || seen[name] || o["engine_operation_id"] != "engop:symphony:"+domain+"."+strings.ReplaceAll(name, "_", ".") || o["availability"] != "implemented" || !scvEqual(o["feature_ids"], []any{feature}) || o["input_protocol"] != SHVProfileInputProtocol(name) || o["output_protocol"] != out || o["authorization_requirement"] != "none" || o["expected_state_required"] != false || o["thermal_path"] != "freezing" {
 			return shvFail()
 		}
 		seen[name] = true

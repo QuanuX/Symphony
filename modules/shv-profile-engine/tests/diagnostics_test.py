@@ -5,7 +5,7 @@ from pathlib import Path
 def canonical(v):return json.dumps(v,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()
 def seal(v):v=copy.deepcopy(v);v.pop('digest',None);v['digest']='sha256:'+hashlib.sha256(canonical(v)).hexdigest();return v
 
-def run(engine,root,qxctl=None,prefix=None):
+def run(engine,root,qxctl=None,prefix=None,version="0.2.0-dev"):
  calls=[]
  def call(op,p,good=True):
   p=copy.deepcopy(p)
@@ -13,7 +13,7 @@ def run(engine,root,qxctl=None,prefix=None):
    target=root/f'case-{len(calls):03d}-sources';shutil.copytree(root/'sources',target,symlinks=True);p['source_root']=str(target)
   request={'protocol':'symphony.knowledge.engine-process.v1','request_id':'diagnose','correlation_id':'diagnose','operation':op,'target_engine':'symphony-shv-profile','deadline_unix_ms':int(time.time()*1000)+30000,'payload':p}
   if qxctl:
-   route={'extraction_diagnose':['mapping','diagnose-source'],'references_analyze':['references','analyze'],'inspect':['profile','inspect']}[op];path=root/'input.json';path.write_bytes(canonical(p));args=[qxctl,'shv',*route,'--prefix',prefix,'--version','0.2.0-dev','--json'];args+=[]if op=='inspect'else['--input',str(path)];x=subprocess.run(args,capture_output=True)
+   route={'extraction_diagnose':['mapping','diagnose-source'],'references_analyze':['references','analyze'],'inspect':['profile','inspect']}[op];path=root/'input.json';path.write_bytes(canonical(p));args=[qxctl,'shv',*route,'--prefix',prefix,'--version',version,'--json'];args+=[]if op=='inspect'else['--input',str(path)];x=subprocess.run(args,capture_output=True)
   else:x=subprocess.run([engine],input=canonical(request),capture_output=True)
   assert (x.returncode==0)==good,(op,good,x.stdout,x.stderr);v=json.loads(x.stdout);r=v.get('result');calls.append({'operation':op,'input':p,'good':good,'result':r});(root/f'{len(calls):03d}.json').write_bytes(canonical(calls[-1]));return r
  assert len(call('inspect',{})['operations'])==7
@@ -55,8 +55,8 @@ def run(engine,root,qxctl=None,prefix=None):
  (root/'SUMMARY.json').write_text(json.dumps({'status':'passed','calls':len(calls),'rejections':sum(not c['good']for c in calls)},indent=2)+'\n');print('PASS diagnostics/references',len(calls),'calls')
 
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--engine');p.add_argument('--qxctl');p.add_argument('--prefix');p.add_argument('--cases');a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--engine');p.add_argument('--qxctl');p.add_argument('--prefix');p.add_argument('--cases');p.add_argument('--version',default='0.2.0-dev');a=p.parse_args()
  if a.cases:
-  root=Path(a.cases).resolve();root.mkdir(parents=True,exist_ok=True);run(a.engine,root,a.qxctl,a.prefix)
+  root=Path(a.cases).resolve();root.mkdir(parents=True,exist_ok=True);run(a.engine,root,a.qxctl,a.prefix,a.version)
  else:
   with tempfile.TemporaryDirectory(prefix='shv-diagnostics-')as temp:run(a.engine,Path(temp).resolve())

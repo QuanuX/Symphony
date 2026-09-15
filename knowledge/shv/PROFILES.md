@@ -1,6 +1,6 @@
 # SHV caller profiles and portable universes — v1
 
-The independently installable C++ `shv-profile-engine` 0.2.0-dev owns caller class
+The independently installable C++ `shv-profile-engine` 0.3.0-dev owns caller class
 profiles, mapping declaration diagnostics and portable hardware-universe recipes.
 It uses the compiled exact SHV kernel 0.3.0-dev source reader; qxctl independently
 validates every result and replays original source bytes for a binding. This is not
@@ -173,3 +173,7 @@ is scoped to `caller_selected_reference_edges`. An unreachable result is explici
 `deletion_authorized:false` and `canonical_apply_enabled:false` are invariant.
 No retention policy or deletion command is implemented. There are at most 128 objects,
 128 roots/candidates and 512 edges within the existing bounded process envelope.
+
+## Exact interface metadata
+
+Profile 0.3 preserves the seven 0.2 operations and introduces a receipt-owned mechanical declaration, described in `modules/shv-profile-engine/SPEC.md`. qxctl verifies it against compiled admission through existing commands. Earlier 0.1/0.2 packages and default selections remain supported; declaration generation does not supply semantic validation or alter caller profile schemas.

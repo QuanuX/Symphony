@@ -12104,3 +12104,107 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - deferred_projections: none authorized by this entry
 - notes: Routing does not grant execution, mutation or publication authority.
 - status: canonical
+
+##### SHV profile interface OWNER-INTERFACE.json
+- path: `modules/shv-profile-engine/OWNER-INTERFACE.json`
+- title: SHV profile interface OWNER-INTERFACE.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV profile engine maintainers
+- scope: Exact mechanical interface generation, installed admission and frozen historical parity.
+- relationships: depends_on -> `modules/shv-profile-engine/SPEC.md`
+- consumers: qxctl, native profile engine, package maintainers, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV profile interface generate_interface.py
+- path: `modules/shv-profile-engine/tools/generate_interface.py`
+- title: SHV profile interface generate_interface.py
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV profile engine maintainers
+- scope: Exact mechanical interface generation, installed admission and frozen historical parity.
+- relationships: depends_on -> `modules/shv-profile-engine/SPEC.md`
+- consumers: qxctl, native profile engine, package maintainers, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV profile interface interface.generated.hpp
+- path: `modules/shv-profile-engine/src/interface.generated.hpp`
+- title: SHV profile interface interface.generated.hpp
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV profile engine maintainers
+- scope: Exact mechanical interface generation, installed admission and frozen historical parity.
+- relationships: depends_on -> `modules/shv-profile-engine/SPEC.md`
+- consumers: qxctl, native profile engine, package maintainers, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV profile interface interface_test.py
+- path: `modules/shv-profile-engine/tests/interface_test.py`
+- title: SHV profile interface interface_test.py
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV profile engine maintainers
+- scope: Exact mechanical interface generation, installed admission and frozen historical parity.
+- relationships: depends_on -> `modules/shv-profile-engine/SPEC.md`
+- consumers: qxctl, native profile engine, package maintainers, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV profile interface interface-history.v1.json
+- path: `modules/shv-profile-engine/tests/fixtures/interface-history.v1.json`
+- title: SHV profile interface interface-history.v1.json
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV profile engine maintainers
+- scope: Exact mechanical interface generation, installed admission and frozen historical parity.
+- relationships: depends_on -> `modules/shv-profile-engine/SPEC.md`
+- consumers: qxctl, native profile engine, package maintainers, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV profile interface ShvProfileInterface.generated.cmake
+- path: `cmake/ShvProfileInterface.generated.cmake`
+- title: SHV profile interface ShvProfileInterface.generated.cmake
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV profile engine maintainers
+- scope: Exact mechanical interface generation, installed admission and frozen historical parity.
+- relationships: depends_on -> `modules/shv-profile-engine/SPEC.md`
+- consumers: qxctl, native profile engine, package maintainers, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV profile interface shv_profile_interface.go
+- path: `tools/qxctl/internal/knowledgeengine/shv_profile_interface.go`
+- title: SHV profile interface shv_profile_interface.go
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV profile engine maintainers
+- scope: Exact mechanical interface generation, installed admission and frozen historical parity.
+- relationships: depends_on -> `modules/shv-profile-engine/SPEC.md`
+- consumers: qxctl, native profile engine, package maintainers, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical
+
+##### SHV profile interface shv_profile_interface_generated.go
+- path: `tools/qxctl/internal/knowledgeengine/shv_profile_interface_generated.go`
+- title: SHV profile interface shv_profile_interface_generated.go
+- surface_type: owner interface support surface
+- truth_role: declared metadata or subordinate implementation evidence
+- owner: SHV profile engine maintainers
+- scope: Exact mechanical interface generation, installed admission and frozen historical parity.
+- relationships: depends_on -> `modules/shv-profile-engine/SPEC.md`
+- consumers: qxctl, native profile engine, package maintainers, agentic tools
+- deferred_projections: no additional runtime discovery authorized
+- notes: Does not generate semantic handlers or grant mutation authority.
+- status: canonical

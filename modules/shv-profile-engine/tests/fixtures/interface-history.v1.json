@@ -1,0 +1,327 @@
+{
+  "source_commit": "7b28a7392c75cb08eeed383ae5da8153d6c73357",
+  "descriptors": {
+    "0.1.0-dev": {
+      "canonical_apply_enabled": false,
+      "contract_versions": [
+        "knowledge/shv/PROFILES.md@v1"
+      ],
+      "descriptor_digest": "sha256:69bb6821cd2085d11037ba50f7fba47573f3400c2cac9079f6097706766326b3",
+      "engine_id": "symphony-shv-profile",
+      "engine_version": "0.1.0-dev",
+      "format_version": 2,
+      "language": "C++26",
+      "limits": {
+        "deadline_ahead_ms": 300000,
+        "json_depth": 64,
+        "json_values": 32768,
+        "path_bytes": 4096,
+        "request_bytes": 1048576,
+        "response_bytes": 4194304,
+        "snapshot_file_bytes": 4194304,
+        "snapshot_files": 1024
+      },
+      "module_id": "shv-profile-engine",
+      "network_listener": false,
+      "operations": [
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "inspect"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-profile.inspect",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-profile-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.inspect-input.v1",
+          "mutability": "read_only",
+          "operation_name": "inspect",
+          "output_protocol": "symphony.knowledge.engine-descriptor.v2",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-profile.profile.compile",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-profile-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.profile-compile-input.v1",
+          "mutability": "read_only",
+          "operation_name": "profile_compile",
+          "output_protocol": "symphony.shv.class-profile.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-profile.mapping.diagnose",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-profile-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.mapping-diagnose-input.v1",
+          "mutability": "read_only",
+          "operation_name": "mapping_diagnose",
+          "output_protocol": "symphony.shv.mapping-diagnostics.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-profile.universe.build",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-profile-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.universe-build-input.v1",
+          "mutability": "read_only",
+          "operation_name": "universe_build",
+          "output_protocol": "symphony.shv.universe.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-profile.universe.bind",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-profile-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.universe-bind-input.v1",
+          "mutability": "read_only",
+          "operation_name": "universe_bind",
+          "output_protocol": "symphony.shv.universe-binding.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        }
+      ],
+      "process_protocols": [
+        "symphony.knowledge.engine-process.v1"
+      ],
+      "protocol": "symphony.knowledge.engine-descriptor.v2",
+      "session_mutation_enabled": false,
+      "supported_scopes": [
+        "user"
+      ],
+      "thermal_path": "freezing",
+      "vector_id": "shv"
+    },
+    "0.2.0-dev": {
+      "canonical_apply_enabled": false,
+      "contract_versions": [
+        "knowledge/shv/PROFILES.md@v1"
+      ],
+      "descriptor_digest": "sha256:626fd69cc20149df2798a36d7f9993554cadc02842905d2964d1c17cf9a952f2",
+      "engine_id": "symphony-shv-profile",
+      "engine_version": "0.2.0-dev",
+      "format_version": 2,
+      "language": "C++26",
+      "limits": {
+        "deadline_ahead_ms": 300000,
+        "json_depth": 64,
+        "json_values": 32768,
+        "path_bytes": 4096,
+        "request_bytes": 1048576,
+        "response_bytes": 4194304,
+        "snapshot_file_bytes": 4194304,
+        "snapshot_files": 1024
+      },
+      "module_id": "shv-profile-engine",
+      "network_listener": false,
+      "operations": [
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "inspect"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-profile.inspect",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-profile-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.inspect-input.v1",
+          "mutability": "read_only",
+          "operation_name": "inspect",
+          "output_protocol": "symphony.knowledge.engine-descriptor.v2",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-profile.profile.compile",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-profile-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.profile-compile-input.v1",
+          "mutability": "read_only",
+          "operation_name": "profile_compile",
+          "output_protocol": "symphony.shv.class-profile.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-profile.mapping.diagnose",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-profile-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.mapping-diagnose-input.v1",
+          "mutability": "read_only",
+          "operation_name": "mapping_diagnose",
+          "output_protocol": "symphony.shv.mapping-diagnostics.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-profile.universe.build",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-profile-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.universe-build-input.v1",
+          "mutability": "read_only",
+          "operation_name": "universe_build",
+          "output_protocol": "symphony.shv.universe.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "invoke"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-profile.universe.bind",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-profile-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.universe-bind-input.v1",
+          "mutability": "read_only",
+          "operation_name": "universe_bind",
+          "output_protocol": "symphony.shv.universe-binding.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-profile.extraction.diagnose",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-profile-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.extraction-diagnose-input.v1",
+          "mutability": "read_only",
+          "operation_name": "extraction_diagnose",
+          "output_protocol": "symphony.shv.extraction-diagnostics.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        },
+        {
+          "administration_disposition": "qxctl_required",
+          "administrative_interactions": [
+            "query"
+          ],
+          "authorization_requirement": "none",
+          "availability": "implemented",
+          "direct_invocation": "supported",
+          "engine_operation_id": "engop:symphony:shv-profile.references.analyze",
+          "expected_state_required": false,
+          "feature_ids": [
+            "ssfv:symphony:shv-profile-engine"
+          ],
+          "idempotency": "idempotent",
+          "input_protocol": "symphony.shv.references-analyze-input.v1",
+          "mutability": "read_only",
+          "operation_name": "references_analyze",
+          "output_protocol": "symphony.shv.reference-analysis.v1",
+          "recovery_operation_id": null,
+          "thermal_path": "freezing"
+        }
+      ],
+      "process_protocols": [
+        "symphony.knowledge.engine-process.v1"
+      ],
+      "protocol": "symphony.knowledge.engine-descriptor.v2",
+      "session_mutation_enabled": false,
+      "supported_scopes": [
+        "user"
+      ],
+      "thermal_path": "freezing",
+      "vector_id": "shv"
+    }
+  }
+}
