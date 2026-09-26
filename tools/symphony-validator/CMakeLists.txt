@@ -10,7 +10,7 @@ include("${SYMPHONY_REPOSITORY_ROOT}/cmake/SymphonyInstallReceiptV2.cmake")
 if(NOT CMAKE_INSTALL_LIBEXECDIR STREQUAL "libexec" OR
    NOT CMAKE_INSTALL_DATADIR STREQUAL "share")
   message(FATAL_ERROR
-    "symphony-validator 0.1.0-dev requires the exact libexec/share receipt layout used by qxctl")
+    "symphony-validator 0.2.0-dev requires the exact libexec/share receipt layout used by qxctl")
 endif()
 
 get_filename_component(SYMPHONY_REPOSITORY_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
@@ -209,14 +209,14 @@ if(BUILD_TESTING)
   add_test(NAME canonical-surface-tests COMMAND canonical-surface-tests)
 endif()
 
-set(SYMPHONY_VALIDATOR_LIBEXEC_DIR "${CMAKE_INSTALL_LIBEXECDIR}/symphony/symphony-validator/0.1.0-dev")
-set(SYMPHONY_VALIDATOR_DATA_DIR "${CMAKE_INSTALL_DATADIR}/doc/symphony/symphony-validator/0.1.0-dev")
-set(SYMPHONY_VALIDATOR_LICENSE_DIR "${CMAKE_INSTALL_DATADIR}/licenses/symphony-validator/0.1.0-dev")
+set(SYMPHONY_VALIDATOR_LIBEXEC_DIR "${CMAKE_INSTALL_LIBEXECDIR}/symphony/symphony-validator/0.2.0-dev")
+set(SYMPHONY_VALIDATOR_DATA_DIR "${CMAKE_INSTALL_DATADIR}/doc/symphony/symphony-validator/0.2.0-dev")
+set(SYMPHONY_VALIDATOR_LICENSE_DIR "${CMAKE_INSTALL_DATADIR}/licenses/symphony-validator/0.2.0-dev")
 
 configure_file(cmake/uninstall.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake @ONLY)
 
 symphony_install_receipt_v2_preflight(
-  RECEIPT_PATH share/symphony/receipts/symphony-validator/0.1.0-dev/install-receipt.json)
+  RECEIPT_PATH share/symphony/receipts/symphony-validator/0.2.0-dev/install-receipt.json)
 
 install(TARGETS symphony-validator RUNTIME DESTINATION ${SYMPHONY_VALIDATOR_LIBEXEC_DIR})
 install(FILES INTENT.md MANIFEST.md INSTALL.md SKILL.md SPEC.md DESTINATION ${SYMPHONY_VALIDATOR_DATA_DIR})
@@ -226,18 +226,18 @@ install(FILES ../../libraries/knowledge-vector-engine-cpp/third_party/nlohmann/L
 
 symphony_install_receipt_v2(
   COMPONENT_ID symphony-validator COMPONENT_KIND module MODULE_ID symphony-validator
-  ENGINE_ID symphony-validator PACKAGE_ID symphony-validator VERSION 0.1.0-dev
-  RECEIPT_PATH share/symphony/receipts/symphony-validator/0.1.0-dev/install-receipt.json
+  ENGINE_ID symphony-validator PACKAGE_ID symphony-validator VERSION 0.2.0-dev
+  RECEIPT_PATH share/symphony/receipts/symphony-validator/0.2.0-dev/install-receipt.json
   OWNED_FILES
-    "libexec/symphony/symphony-validator/0.1.0-dev/symphony-validator|executable"
-    "share/doc/symphony/symphony-validator/0.1.0-dev/INSTALL.md|regular"
-    "share/doc/symphony/symphony-validator/0.1.0-dev/INTENT.md|regular"
-    "share/doc/symphony/symphony-validator/0.1.0-dev/MANIFEST.md|regular"
-    "share/doc/symphony/symphony-validator/0.1.0-dev/SKILL.md|regular"
-    "share/doc/symphony/symphony-validator/0.1.0-dev/SPEC.md|regular"
-    "share/licenses/symphony-validator/0.1.0-dev/LICENSE-AGPL-3.0|regular"
-    "share/licenses/symphony-validator/0.1.0-dev/nlohmann-json-LICENSE.MIT|regular"
-  ENTRY_POINTS "symphony-validator|executable|libexec/symphony/symphony-validator/0.1.0-dev/symphony-validator|symphony.validation.result.v1")
+    "libexec/symphony/symphony-validator/0.2.0-dev/symphony-validator|executable"
+    "share/doc/symphony/symphony-validator/0.2.0-dev/INSTALL.md|regular"
+    "share/doc/symphony/symphony-validator/0.2.0-dev/INTENT.md|regular"
+    "share/doc/symphony/symphony-validator/0.2.0-dev/MANIFEST.md|regular"
+    "share/doc/symphony/symphony-validator/0.2.0-dev/SKILL.md|regular"
+    "share/doc/symphony/symphony-validator/0.2.0-dev/SPEC.md|regular"
+    "share/licenses/symphony-validator/0.2.0-dev/LICENSE-AGPL-3.0|regular"
+    "share/licenses/symphony-validator/0.2.0-dev/nlohmann-json-LICENSE.MIT|regular"
+  ENTRY_POINTS "symphony-validator|executable|libexec/symphony/symphony-validator/0.2.0-dev/symphony-validator|symphony.validation.result.v1")
 
 add_custom_target(uninstall-symphony-validator
   COMMAND ${CMAKE_COMMAND} -DINSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}

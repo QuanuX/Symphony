@@ -56,6 +56,49 @@ func TestValidateJSONObjectHonorsSharedValueBoundary(t *testing.T) {
 	}
 }
 
+func TestSKVIResponseUsesItsOwnJSONValueBoundary(t *testing.T) {
+	responseFor := func(spec engineSpec, version string, values int) []byte {
+		t.Helper()
+		items := make([]int, values)
+		object := map[string]any{
+			"protocol": processProtocol, "request_id": "request-1",
+			"correlation_id": "request-1", "operation": "project",
+			"engine_id": spec.engineID, "engine_version": version,
+			"outcome": "ok", "result": map[string]any{"values": items}, "error": nil,
+		}
+		canonical, err := marshalCanonical(object)
+		if err != nil {
+			t.Fatal(err)
+		}
+		digest := sha256.Sum256(canonical)
+		object["response_digest"] = "sha256:" + hex.EncodeToString(digest[:])
+		response, err := marshalCanonical(object)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return response
+	}
+
+	// The response envelope and {"values": [...]} result add 23 events.
+	const exactSKVIValues = maxSKVIJSONValues - 23
+	if _, err := validateResponseFor(
+		skviSpec, responseFor(skviSpec, "0.2.0-dev", exactSKVIValues), "request-1", "project", "0.2.0-dev"); err != nil {
+		t.Fatalf("SKVI response at its value ceiling rejected: %v", err)
+	}
+	if _, err := validateResponseFor(
+		skviSpec, responseFor(skviSpec, "0.2.0-dev", exactSKVIValues+1), "request-1", "project", "0.2.0-dev"); err == nil || !strings.Contains(err.Error(), "value count") {
+		t.Fatalf("SKVI response above its value ceiling was not rejected by value count: %v", err)
+	}
+	if _, err := validateResponseFor(
+		skviSpec, responseFor(skviSpec, "0.1.0-dev", maxJSONValues), "request-1", "project", "0.1.0-dev"); err == nil || !strings.Contains(err.Error(), "value count") {
+		t.Fatalf("older SKVI version accepted expanded response: %v", err)
+	}
+	if _, err := validateResponseFor(
+		sclvSpec, responseFor(sclvSpec, "0.2.0-dev", maxJSONValues), "request-1", "project", "0.2.0-dev"); err == nil || !strings.Contains(err.Error(), "value count") {
+		t.Fatalf("other engine accepted SKVI-sized response: %v", err)
+	}
+}
+
 func TestResolveInstalledRequiresExactReceiptAndNoFollowFiles(t *testing.T) {
 	prefix := t.TempDir()
 	version := "0.1.0-dev"

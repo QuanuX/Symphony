@@ -56,11 +56,13 @@ int main(int argc, char** argv) {
 
     try {
         const auto input = engine::read_bounded(std::cin, engine::Limits::max_request_bytes);
-        const auto request = engine::parse_request(input, skvi::engine_id, engine::unix_time_ms());
+        const auto request = engine::parse_request(
+            input, skvi::engine_id, engine::unix_time_ms(), skvi::max_json_values);
         try {
             auto result = skvi::handle_request(request);
             std::cout << engine::serialize_response(engine::success_response(
-                request, skvi::engine_id, skvi::engine_version, std::move(result)));
+                request, skvi::engine_id, skvi::engine_version, std::move(result)),
+                skvi::max_json_values);
             return 0;
         } catch (const engine::Error& error) {
             std::cout << engine::serialize_response(engine::error_response(

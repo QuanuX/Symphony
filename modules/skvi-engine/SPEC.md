@@ -2,7 +2,7 @@
 
 ## Status
 
-Implemented read-only/proposal development slice, version `0.1.0-dev`. It is not a published module release.
+Implemented read-only/proposal development slice, version `0.2.0-dev`. It is not a published module release.
 
 ## Process and Exit Contract
 
@@ -14,9 +14,9 @@ Payload: exact empty object. The result reports the descriptor, canonical index 
 
 ## `check`
 
-Payload: exact `expected_index_digest`, which is `null` or a tagged SHA-256 digest. The operation parses `knowledge/skvi/INDEX.md`, checks required field presence, canonical status, unique safe paths, no-follow regular-file existence, manifest-declared exact-once coverage, and indexed relationship targets. The shared parser starts from the four fixed bootstrap paths and traverses only owner manifests explicitly listed by `knowledge/MANIFEST.md`; it rejects missing declarations/files, duplicate owners, and duplicate/cyclic traversal. Findings are evidence; an invalid index produces a completed check result with `state: invalid` rather than a canonical mutation or repair.
+Payload: exact `expected_index_digest`, which is `null` or a tagged SHA-256 digest. The operation parses `knowledge/skvi/INDEX.md`, checks required field presence, canonical status, unique safe paths, no-follow regular-file existence, manifest-declared exact-once coverage, and indexed relationship targets. The shared parser starts from the three fixed bootstrap paths and traverses only owner manifests explicitly listed by `knowledge/MANIFEST.md`; it rejects missing declarations/files, duplicate owners, and duplicate/cyclic traversal. Findings are evidence; an invalid index produces a completed check result with `state: invalid` rather than a canonical mutation or repair.
 
-The exact result is governed by `knowledge/skvi/schemas/v1/check-result.schema.json`.
+The exact result is governed by `knowledge/skvi/schemas/v2/check-result.schema.json`. The v1 result schema remains unchanged for older exact engine versions.
 
 ## `propose`
 
@@ -28,11 +28,11 @@ The result conforms to `knowledge/schemas/v1/proposal.schema.json`, binds the in
 
 ## `project`
 
-Payload: exact `format: "json"`. A clean check is required. The result conforms to `knowledge/skvi/schemas/v1/projection.schema.json` and contains normalized entries plus input, contract-snapshot, engine, and projection digests. It is returned in-process, never written by the engine, and is noncanonical and rebuildable.
+Payload: exact `format: "json"`. A clean check is required. The result conforms to `knowledge/skvi/schemas/v2/projection.schema.json`, reuses the v1 normalized entry schema, and contains normalized entries plus input, contract-snapshot, engine, and projection digests. It is returned in-process, never written by the engine, and is noncanonical and rebuildable.
 
 ## Bounds
 
-The common request, response, JSON, path, file, count, and deadline limits apply. SKVI additionally permits at most 1,024 entries, matching the common snapshot-path ceiling, 64 KiB per normalized field, 1,024 exception-evidence items, and one proposal operation. A normalized projected entry contributes twenty-five JSON parser values. At the ceiling, the entries therefore contribute 25,600 values; reserving 1,024 values for the process and projection envelopes leaves 6,144 values unused beneath the common 32,768-value bound. Successful subchecks are retained as deterministic aggregate counts rather than repeated evidence objects. The common 4 MiB response bound remains independent and rejects a projection whose aggregate field content is too large. Projection format `json` is the only implemented format in this version.
+The common request and response byte, depth, path, file, and deadline limits apply. This exact SKVI version advertises and enforces 65,536 JSON parser events for requests and responses; the foundation's default and other engines remain at 32,768. SKVI permits at most 2,048 entries, 64 KiB per normalized field, 1,024 exception-evidence items, and one proposal operation. Manifest discovery permits at most 512 owner manifests; SKVI snapshots those manifests, not every indexed entry. The independent common snapshot-file limit remains 1,024. A normalized projected entry contributes twenty-five parser events. At the ceilings, 2,048 entries contribute 51,200 events and 512 snapshot records contribute 3,584 events. Reserving 1,024 events for the process and projection envelopes yields 55,808, within the 65,536-event budget. Successful subchecks remain deterministic aggregate counts rather than repeated evidence objects. The common 4 MiB response bound remains independent and rejects a projection whose aggregate field content is too large. Projection format `json` is the only implemented format in this version.
 
 ## Non-Authorization
 
@@ -40,4 +40,4 @@ The engine has no authentication, permission, ratification, session, apply, file
 
 ## Development Packaging Constraint
 
-Version `0.1.0-dev` requires the exact `libexec` executable and `share` receipt/document/license layout consumed by the qxctl exact-version resolver. CMake rejects customized install-directory names rather than producing an installation that appears valid but cannot complete the documented invocation circuit.
+Version `0.2.0-dev` requires the exact `libexec` executable and `share` receipt/document/license layout consumed by the qxctl exact-version resolver. CMake rejects customized install-directory names rather than producing an installation that appears valid but cannot complete the documented invocation circuit.

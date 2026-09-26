@@ -10,9 +10,9 @@ Strategy logic belongs to the user. SQV may supply reusable framework surfaces a
 
 ## Scope
 
-SQV is the home for ratified quantitative framework components. Symphony Orchestra Omega Vector (SOOV) remains its C++-only FIX child. Symphony Quantitative Metadata Vector (SQMV) and Symphony Quantitative Flow Vector (SQFV) are admitted research-data architecture owners. They describe data and govern its bounded movement, respectively; neither is a general data service or an installed runtime.
+SQV is the home for ratified quantitative framework components. Its six admitted research-data architecture owners are Symphony Quantitative Acquisition Vector (SQAV), Metadata Vector (SQMV), Flow Vector (SQFV), Transformation Vector (SQTV), Persistence Vector (SQPV), and Delivery Vector (SQDV). Their purpose boundaries and cross-owner requirements are aligned in `knowledge/sqv/RESEARCH-DATA.md`. Architecture ownership establishes no installed data service, provider operation, package, or namespace.
 
-Research-data acquisition, transformation, persistence, and delivery are distinct intended purposes under the favored labels SQAV, SQTV, SQPV, and SQDV. Their labels and requirements are recorded in `knowledge/sqv/RESEARCH-DATA.md`; their child Quads and machine routes await a compatible SKVI capacity change. Naming a planned purpose does not admit an owner, operation, package, or namespace.
+Symphony Orchestra Omega Vector (SOOV) remains SQV's separate C++-only FIX child. Its scope is not absorbed by the six research-data owners.
 
 ## Non-Scope
 

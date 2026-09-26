@@ -28,6 +28,8 @@ cmake --install build/knowledge-vector-engine-cpp --prefix /chosen/prefix
 
 Headers, the static archive, CMake package metadata, licenses, contracts, and immutable content-addressed `symphony.knowledge.install-receipt.v2` receipt are installed under versioned paths. The receipt is generated last from the installed regular-file content and excludes itself from ownership hashing.
 
+The `0.2.0-dev` CMake package accepts an exact `0.2.0` project-version request. Keep the separately installed `0.1.0-dev` package available when building older components that request foundation `0.1`; CMake will not substitute `0.2.0-dev` for that request.
+
 ## Use from Another Build
 
 ```bash

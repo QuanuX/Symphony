@@ -31,7 +31,7 @@ SKVI canonical truth is the repository-maintained Markdown index; executable out
 `MANIFEST.md` establishes the definitive boundaries of the SKVI surface. Implementations may check or project SKVI only within separately ratified contracts and remain subordinate to this declared knowledge truth.
 
 ## Installability Considerations
-The implemented SKVI engine is an independently installable C++26 module at `modules/skvi-engine/` with executable `symphony-skvi`. Its `0.1.0-dev` contract is inspect, check, propose, and project only through the bounded `knowledge/SPEC.md` process protocol. It installs without Maestro as inactive `installed_undocked`; qxctl requires an explicit prefix and exact version. The checked-in validator remains an independent read-only checker.
+The implemented SKVI engine is an independently installable C++26 module at `modules/skvi-engine/` with executable `symphony-skvi`. Its `0.2.0-dev` contract is inspect, check, propose, and project only through the bounded `knowledge/SPEC.md` process protocol, with v2 check and projection results. It installs without Maestro as inactive `installed_undocked`; qxctl requires an explicit prefix and exact version. The checked-in validator remains an independent read-only checker.
 
 ## Scope
 SKVI encompasses the mapping of canonical knowledge files and contract descriptors across the Symphony repository.

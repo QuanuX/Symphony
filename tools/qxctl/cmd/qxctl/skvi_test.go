@@ -5,6 +5,63 @@ import (
 	"testing"
 )
 
+func TestValidateSKVIResultHonorsVersionedEntryCapacity(t *testing.T) {
+	for _, item := range []struct {
+		version   string
+		operation string
+		protocol  string
+		limit     int
+	}{
+		{version: "0.1.0-dev", operation: "check", protocol: "symphony.skvi.check-result.v1", limit: 1024},
+		{version: "0.2.0-dev", operation: "check", protocol: "symphony.skvi.check-result.v2", limit: 2048},
+		{version: "0.1.0-dev", operation: "project", protocol: "symphony.skvi.projection.v1", limit: 1024},
+		{version: "0.2.0-dev", operation: "project", protocol: "symphony.skvi.projection.v2", limit: 2048},
+	} {
+		t.Run(item.protocol, func(t *testing.T) {
+			makeResult := func(count int) json.RawMessage {
+				var result map[string]any
+				if item.operation == "check" {
+					result = map[string]any{
+						"protocol": item.protocol, "entries_checked": count,
+						"read_only": true, "canonical_apply_enabled": false,
+						"summary": map[string]any{"state": "valid", "violation": 0},
+					}
+				} else {
+					entries := make([]map[string]any, count)
+					for i := range entries {
+						entries[i] = map[string]any{}
+					}
+					result = map[string]any{
+						"protocol": item.protocol, "module_id": "skvi-engine",
+						"engine_id": "symphony-skvi", "vector_id": "skvi",
+						"entry_count": count, "entries": entries,
+						"projection_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+						"noncanonical":      true, "rebuildable": true,
+					}
+				}
+				encoded, err := json.Marshal(result)
+				if err != nil {
+					t.Fatal(err)
+				}
+				return encoded
+			}
+			if _, err := validateSKVIResult(item.version, item.operation, makeResult(item.limit)); err != nil {
+				t.Fatalf("accepted ceiling %d rejected: %v", item.limit, err)
+			}
+			if _, err := validateSKVIResult(item.version, item.operation, makeResult(item.limit+1)); err == nil {
+				t.Fatalf("over-ceiling count %d accepted", item.limit+1)
+			}
+			otherVersion := "0.1.0-dev"
+			if item.version == otherVersion {
+				otherVersion = "0.2.0-dev"
+			}
+			if _, err := validateSKVIResult(otherVersion, item.operation, makeResult(item.limit)); err == nil {
+				t.Fatalf("result protocol %s accepted for installed SKVI %s", item.protocol, otherVersion)
+			}
+		})
+	}
+}
+
 func TestSKVICheckValidityIsPresentationIndependent(t *testing.T) {
 	valid, err := skviCheckValid(json.RawMessage(`{"summary":{"state":"valid","violation":0}}`))
 	if err != nil || !valid {
@@ -38,7 +95,7 @@ func TestValidateSKVIResultRejectsSafetyEscalation(t *testing.T) {
 		"engine_decides_membership":false,
 		"descriptor":{"engine_id":"symphony-skvi","canonical_apply_enabled":false,"network_listener":false}
 	}`)
-	if _, err := validateSKVIResult("inspect", missingSafetyAssertion); err == nil {
+	if _, err := validateSKVIResult("0.1.0-dev", "inspect", missingSafetyAssertion); err == nil {
 		t.Fatal("inspect result with an omitted safety assertion was accepted")
 	}
 
@@ -48,7 +105,7 @@ func TestValidateSKVIResultRejectsSafetyEscalation(t *testing.T) {
 		"engine_decides_membership":false,
 		"descriptor":{"engine_id":"symphony-skvi","canonical_apply_enabled":false,"session_mutation_enabled":false,"network_listener":false}
 	}`)
-	if _, err := validateSKVIResult("inspect", inspect); err == nil {
+	if _, err := validateSKVIResult("0.1.0-dev", "inspect", inspect); err == nil {
 		t.Fatal("inspect result that enabled apply was accepted")
 	}
 
@@ -63,7 +120,7 @@ func TestValidateSKVIResultRejectsSafetyEscalation(t *testing.T) {
 		"authority":{"caller_declared_operation":true,"engine_decided_domain_truth":false,"ratified":true},
 		"operations":[{}]
 	}`)
-	if _, err := validateSKVIResult("propose", proposal); err == nil {
+	if _, err := validateSKVIResult("0.1.0-dev", "propose", proposal); err == nil {
 		t.Fatal("self-ratified proposal was accepted")
 	}
 
@@ -78,7 +135,7 @@ func TestValidateSKVIResultRejectsSafetyEscalation(t *testing.T) {
 		"noncanonical":false,
 		"rebuildable":true
 	}`)
-	if _, err := validateSKVIResult("project", projection); err == nil {
+	if _, err := validateSKVIResult("0.1.0-dev", "project", projection); err == nil {
 		t.Fatal("projection claiming canonical status was accepted")
 	}
 }

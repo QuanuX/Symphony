@@ -297,7 +297,16 @@ A term is admitted only after its semantic owner exists. A name used in discussi
 - owner_contract: `knowledge/sqv/INTENT.md`
 - example: `SQV may provide a reusable ratified framework component that a user's Nest elects to use.`
 - counterexample: `SQV owns user strategy logic or imposes one feed, broker, data, order, or execution design.`
-- notes: The preferred abbreviation is `SQV`. SOOV was its first named subvector; SQMV and SQFV now own research-data metadata and flow architecture contracts. Other research-data child labels remain planned until admitted.
+- notes: The preferred abbreviation is `SQV`. SQAV, SQMV, SQFV, SQTV, SQPV, and SQDV are architecture-only research-data children. SOOV separately owns FIX architecture.
+
+### SQAV
+
+- term: `SQAV`
+- meaning: SQV's owner of research-data acquisition from exact selected source interfaces, including source position, reconnect, and gap evidence.
+- owner_contract: `knowledge/sqv/sqav/INTENT.md`
+- example: `SQAV preserves the source operation and revision evidence for a selected research collection.`
+- counterexample: `SQAV invents a provider contract, claims complete history from one response, or gains order-entry authority from a read-only collector.`
+- notes: Preferred expansion: `Symphony Quantitative Acquisition Vector`. This is an architecture contract, not an implemented connector or provider session.
 
 ### SQMV
 
@@ -316,6 +325,33 @@ A term is admitted only after its semantic owner exists. A name used in discussi
 - example: `SQFV lets one slow research consumer exhaust its own credits without holding an independent consumer's release obligation.`
 - counterexample: `SQFV chooses a provider, interprets prices, grants destination access, or requires every stream to traverse one bus.`
 - notes: Preferred expansion: `Symphony Quantitative Flow Vector`. This is an architecture contract, not a deployed flow engine or mandatory transport.
+
+### SQTV
+
+- term: `SQTV`
+- meaning: SQV's owner of selected research-data conversions and derived transformations, including exact numerical rules, information loss, and lineage.
+- owner_contract: `knowledge/sqv/sqtv/INTENT.md`
+- example: `SQTV distinguishes a lossless re-encoding from a price-narrowing conversion or derived bar series.`
+- counterexample: `SQTV silently coerces a field, imposes one canonical format, or performs SBV-owned backtest calculations.`
+- notes: Preferred expansion: `Symphony Quantitative Transformation Vector`. This is an architecture contract, not an implemented converter.
+
+### SQPV
+
+- term: `SQPV`
+- meaning: SQV's owner of selected research-data retention, retrieval, storage commit evidence, retained positions, and recovery.
+- owner_contract: `knowledge/sqv/sqpv/INTENT.md`
+- example: `SQPV identifies the exact retained range and durability guarantee proven by a selected storage commit.`
+- counterexample: `SQPV treats a buffered write as durable, infers gap-free history from a high position, or requires one database for all flows.`
+- notes: Preferred expansion: `Symphony Quantitative Persistence Vector`. This is an architecture contract, not an installed storage bridge.
+
+### SQDV
+
+- term: `SQDV`
+- meaning: SQV's owner of selected research-data consumer views, recipient handoff, and view-bound resume and delivery-state meaning.
+- owner_contract: `knowledge/sqv/sqdv/INTENT.md`
+- example: `SQDV reports a preview view and a committed research view under their separate evidence and recipient scopes.`
+- counterexample: `SQDV treats transport receipt as backtest processing or claims a future external destination has committed.`
+- notes: Preferred expansion: `Symphony Quantitative Delivery Vector`. This is an architecture contract, not an installed recipient or export adapter.
 
 ### SOOV
 

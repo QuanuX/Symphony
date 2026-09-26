@@ -45,7 +45,7 @@ func (failure *validationOutcomeError) Error() string {
 func newValidateCommand() *cobra.Command {
 	command := structural("validate", fmt.Errorf("validate subcommand is required: scan, debug, root-summary, profile, baseline, or warning"))
 	for _, operation := range []string{"scan", "debug"} {
-		options := validationOptions{version: "0.1.0-dev"}
+		options := validationOptions{version: "0.2.0-dev"}
 		child := &cobra.Command{
 			Use:  operation,
 			Args: usageOnlyArgs,
@@ -64,7 +64,7 @@ func newValidateCommand() *cobra.Command {
 		child.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
 		command.AddCommand(child)
 	}
-	rootSummaryOptions := validationOptions{version: "0.1.0-dev"}
+	rootSummaryOptions := validationOptions{version: "0.2.0-dev"}
 	rootSummary := &cobra.Command{
 		Use:  "root-summary",
 		Args: usageOnlyArgs,
@@ -72,7 +72,7 @@ func newValidateCommand() *cobra.Command {
 	}
 	registeredRootSummary(rootSummary)
 	rootSummary.Flags().StringVar(&rootSummaryOptions.prefix, "prefix", "", "exact Symphony Validator installation prefix")
-	rootSummary.Flags().StringVar(&rootSummaryOptions.version, "version", "0.1.0-dev", "exact installed validator version")
+	rootSummary.Flags().StringVar(&rootSummaryOptions.version, "version", "0.2.0-dev", "exact installed validator version")
 	rootSummary.Flags().StringVar(&rootSummaryOptions.repository, "repo", "", "Symphony repository path; defaults to the current repository")
 	rootSummary.Flags().BoolVar(&rootSummaryOptions.jsonOutput, "json", false, "emit exact validated root-summary JSON")
 	rootSummary.SetFlagErrorFunc(func(*cobra.Command, error) error { return errUsageOnly })
@@ -115,7 +115,7 @@ func newValidateCommand() *cobra.Command {
 
 	baseline := structural("baseline", fmt.Errorf("validate baseline subcommand is required: create, show, or remove"))
 	for _, operation := range []string{"create", "show", "remove"} {
-		options := validationOptions{baselineID: "default", version: "0.1.0-dev"}
+		options := validationOptions{baselineID: "default", version: "0.2.0-dev"}
 		child := &cobra.Command{
 			Use:  operation,
 			Args: usageOnlyArgs,
@@ -130,7 +130,7 @@ func newValidateCommand() *cobra.Command {
 		child.Flags().StringVar(&options.baselineID, "baseline-id", "default", "exact validation baseline identity")
 		if operation == "create" {
 			child.Flags().StringVar(&options.prefix, "prefix", "", "exact Symphony Validator installation prefix")
-			child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed validator version")
+			child.Flags().StringVar(&options.version, "version", "0.2.0-dev", "exact installed validator version")
 			child.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
 		}
 		if operation == "create" || operation == "remove" {
@@ -144,7 +144,7 @@ func newValidateCommand() *cobra.Command {
 
 	warning := structural("warning", fmt.Errorf("validate warning subcommand is required: status, list, show, sync, accept, reopen, supersede, mute, or unmute"))
 	for _, operation := range []string{"status", "list", "show", "sync", "accept", "reopen", "supersede", "mute", "unmute"} {
-		options := validationOptions{warningStateID: "default", version: "0.1.0-dev"}
+		options := validationOptions{warningStateID: "default", version: "0.2.0-dev"}
 		child := &cobra.Command{
 			Use:  operation,
 			Args: usageOnlyArgs,
@@ -174,7 +174,7 @@ func newValidateCommand() *cobra.Command {
 		}
 		if operation == "sync" {
 			child.Flags().StringVar(&options.prefix, "prefix", "", "exact Symphony Validator installation prefix")
-			child.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed validator version")
+			child.Flags().StringVar(&options.version, "version", "0.2.0-dev", "exact installed validator version")
 			child.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
 		}
 		if operation == "accept" || operation == "reopen" || operation == "supersede" || operation == "mute" || operation == "unmute" {
@@ -222,7 +222,7 @@ func addValidationStateFlags(command *cobra.Command, options *validationOptions)
 func addValidationExecutionFlags(command *cobra.Command, options *validationOptions) {
 	addValidationStateFlags(command, options)
 	command.Flags().StringVar(&options.prefix, "prefix", "", "exact Symphony Validator installation prefix")
-	command.Flags().StringVar(&options.version, "version", "0.1.0-dev", "exact installed validator version")
+	command.Flags().StringVar(&options.version, "version", "0.2.0-dev", "exact installed validator version")
 	command.Flags().StringVar(&options.repository, "repo", "", "Symphony repository path; defaults to the current repository")
 	command.Flags().StringVar(&options.profileID, "profile-id", "", "optional protected validation profile identity")
 	command.Flags().StringVar(&options.baselineID, "baseline-id", "", "optional protected validation baseline identity")

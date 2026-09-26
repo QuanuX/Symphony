@@ -18,13 +18,11 @@ SQV owns Symphony-authored quantitative framework semantics while preserving com
 
 ## Research-Data Child Posture
 
-SQMV and SQFV have architecture-only Contract Quads under `knowledge/sqv/sqmv/` and `knowledge/sqv/sqfv/`. Their machine discovery routes belong in the root knowledge manifest and SKVI index. SOOV's separate FIX Quad remains under `knowledge/sqv/soov/`.
-
-SQAV, SQTV, SQPV, and SQDV are favored purpose labels with aligned requirements, not admitted child Quads. Their machine routes wait for a compatible SKVI capacity change and individual admission. The parent does not register a child merely by naming it.
+The six research-data children have architecture-only Contract Quads under `knowledge/sqv/sqav/`, `knowledge/sqv/sqmv/`, `knowledge/sqv/sqfv/`, `knowledge/sqv/sqtv/`, `knowledge/sqv/sqpv/`, and `knowledge/sqv/sqdv/`. Root knowledge-manifest and SKVI routes make these separate owners discoverable. SOOV's separate FIX Quad remains under `knowledge/sqv/soov/`.
 
 ## Implementation Status
 
-Canonical architecture contracts only. No SQV, SQMV, SQFV, or SOOV engine, FIX session, feed adapter, strategy runtime, broker integration, backtester, indicator library, retention adapter, or data-stream component is claimed installed or supported. A separately located offline C++ research-data prototype provides limited implementation evidence; it is not an admitted package, ABI, schema, or operational capability.
+Canonical architecture contracts only. No SQV research-data child or SOOV engine, FIX session, feed adapter, strategy runtime, broker integration, backtester, indicator library, retention adapter, or data-stream component is claimed installed or supported. A separately located offline C++ research-data prototype provides limited implementation evidence; it is not an admitted package, ABI, schema, or operational capability. None of these Quads allocates a colon identity family or qxctl command.
 
 ## Non-Authorization Statement
 

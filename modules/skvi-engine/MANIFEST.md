@@ -17,7 +17,7 @@
 - engine ID: `symphony-skvi`
 - vector ID: `skvi`
 - language: C++26
-- development version: `0.1.0-dev`
+- development version: `0.2.0-dev`
 - thermal placement: administrative freezing path
 
 ## Protocols
@@ -25,8 +25,8 @@
 - process: `symphony.knowledge.engine-process.v1`
 - descriptor: `symphony.knowledge.engine-descriptor.v1`
 - proposal: `symphony.knowledge.proposal.v1`
-- check result: `symphony.skvi.check-result.v1`
-- projection: `symphony.skvi.projection.v1`
+- check result: `symphony.skvi.check-result.v2`
+- projection: `symphony.skvi.projection.v2`
 - install receipt: `symphony.knowledge.install-receipt.v2`
 
 ## Implemented Operations

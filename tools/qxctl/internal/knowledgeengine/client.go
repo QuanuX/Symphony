@@ -51,25 +51,31 @@ const (
 	maxResponseBytes         = 4 * 1024 * 1024
 	maxJSONDepth             = 64
 	maxJSONValues            = 32768
+	maxSKVIJSONValues        = 65536
 	maxStringBytes           = 65536
 	operationTimeout         = 5 * time.Second
+	skviCapacityTimeout      = 15 * time.Second
 )
 
 type engineSpec struct {
-	label             string
-	moduleID          string
-	engineID          string
-	componentKind     string
-	vectorID          string
-	processProtocol   string
-	requiredReceptors []string
-	expectedFiles     func(string) map[string]struct{}
+	label                       string
+	moduleID                    string
+	engineID                    string
+	componentKind               string
+	vectorID                    string
+	processProtocol             string
+	responseJSONValuesByVersion map[string]int
+	operationTimeoutByVersion   map[string]time.Duration
+	requiredReceptors           []string
+	expectedFiles               func(string) map[string]struct{}
 }
 
 var skviSpec = engineSpec{
 	label: "SKVI", moduleID: moduleID, engineID: engineID, componentKind: "vector_engine",
 	vectorID: "skvi", processProtocol: processProtocol,
-	requiredReceptors: []string{"symphony.maestro.knowledge-engine.v1"}, expectedFiles: expectedFiles,
+	responseJSONValuesByVersion: map[string]int{"0.2.0-dev": maxSKVIJSONValues},
+	operationTimeoutByVersion:   map[string]time.Duration{"0.2.0-dev": skviCapacityTimeout},
+	requiredReceptors:           []string{"symphony.maestro.knowledge-engine.v1"}, expectedFiles: expectedFiles,
 }
 
 var sclvSpec = engineSpec{
@@ -404,13 +410,17 @@ func invokeResolved(
 	if err != nil {
 		return Response{}, fmt.Errorf("generate %s request identity: %w", spec.label, err)
 	}
+	deadlineWindow := spec.operationTimeoutByVersion[version]
+	if deadlineWindow == 0 {
+		deadlineWindow = operationTimeout
+	}
 	request := processRequest{
 		Protocol:       processProtocol,
 		RequestID:      requestID,
 		CorrelationID:  requestID,
 		Operation:      operation,
 		TargetEngine:   spec.engineID,
-		DeadlineUnixMS: time.Now().Add(operationTimeout).UnixMilli(),
+		DeadlineUnixMS: time.Now().Add(deadlineWindow).UnixMilli(),
 		Payload:        json.RawMessage(payload),
 	}
 	encoded, err := json.Marshal(request)
@@ -421,7 +431,7 @@ func invokeResolved(
 		return Response{}, fmt.Errorf("encoded %s request exceeds %d bytes", spec.label, maxRequestBytes)
 	}
 
-	childContext, cancel := context.WithTimeout(ctx, operationTimeout+time.Second)
+	childContext, cancel := context.WithTimeout(ctx, deadlineWindow+time.Second)
 	defer cancel()
 	command := exec.CommandContext(childContext, binary)
 	command.Dir = repositoryRoot
@@ -1112,7 +1122,11 @@ func validateResponse(data []byte, requestID, operation, version string) (Respon
 }
 
 func validateResponseFor(spec engineSpec, data []byte, requestID, operation, version string) (Response, error) {
-	if err := validateJSONObject(data, maxResponseBytes); err != nil {
+	valueLimit := spec.responseJSONValuesByVersion[version]
+	if valueLimit == 0 {
+		valueLimit = maxJSONValues
+	}
+	if err := validateJSONObjectWithValueLimit(data, maxResponseBytes, valueLimit); err != nil {
 		return Response{}, fmt.Errorf("invalid %s engine response: %w", spec.label, err)
 	}
 	if err := requireExactFields(data, []string{
@@ -1153,7 +1167,7 @@ func validateResponseFor(spec engineSpec, data []byte, requestID, operation, ver
 		if response.Error != nil || bytes.Equal(response.Result, []byte("null")) || len(response.Result) == 0 {
 			return Response{}, fmt.Errorf("%s success response has invalid result/error state", spec.label)
 		}
-		if err := validateJSONObject(response.Result, maxResponseBytes); err != nil {
+		if err := validateJSONObjectWithValueLimit(response.Result, maxResponseBytes, valueLimit); err != nil {
 			return Response{}, fmt.Errorf("%s success result is invalid: %w", spec.label, err)
 		}
 	case "error":

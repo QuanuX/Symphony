@@ -16,7 +16,7 @@ struct Limits final {
     static constexpr std::size_t max_path_bytes = 4096;
     static constexpr std::size_t max_snapshot_files = 1024;
     static constexpr std::size_t max_snapshot_file_bytes = 4U << 20;
-    static constexpr std::size_t max_manifest_files = 256;
+    static constexpr std::size_t max_manifest_files = 512;
     static constexpr std::size_t max_manifest_entries = 1024;
     static constexpr std::size_t max_manifest_issues = 1024;
     static constexpr std::size_t max_manifest_line_bytes = 8192;

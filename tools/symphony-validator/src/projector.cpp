@@ -18,7 +18,7 @@ namespace engine = symphony::knowledge::engine;
 
 constexpr std::string_view evidence_prefix = "evidence ";
 constexpr std::string_view validator_id = "symphony-validator";
-constexpr std::string_view validator_version = "0.1.0-dev";
+constexpr std::string_view validator_version = "0.2.0-dev";
 
 bool attribute_key(const std::string& value) {
     if (value.empty() || !std::isalpha(static_cast<unsigned char>(value.front())) || value.size() > 64U) {

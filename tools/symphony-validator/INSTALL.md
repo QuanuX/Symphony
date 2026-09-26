@@ -66,7 +66,7 @@ cmake --build tools/symphony-validator/build
 cmake --install tools/symphony-validator/build
 ```
 
-The exact executable is `/chosen/prefix/libexec/symphony/symphony-validator/0.1.0-dev/symphony-validator`. Its immutable nine-file receipt is beneath `/chosen/prefix/share/symphony/receipts/`. Installation creates no service, listener, login hook, Maestro presence, or active binding.
+The exact executable is `/chosen/prefix/libexec/symphony/symphony-validator/0.2.0-dev/symphony-validator`. Its immutable nine-file receipt is beneath `/chosen/prefix/share/symphony/receipts/`. Installation creates no service, listener, login hook, Maestro presence, or active binding.
 
 The configured build tree retains the exact prefix. Uninstall only receipt-owned files:
 
