@@ -8404,11 +8404,11 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - surface_type: vector companion
 - truth_role: research-data owner routing, cross-owner requirements, and admission status
 - owner: Symphony Quantitative Vector maintainers
-- scope: Aligns six admitted research-data architecture owners, cross-owner meanings, and pending runtime requirements.
+- scope: Aligns six admitted research-data owners, the first narrow SQFV library, cross-owner meanings, and pending requirements.
 - relationships: depends_on -> `knowledge/sqv/MANIFEST.md`; refines -> `knowledge/sqv/SPEC.md`; routes_to -> `knowledge/sqv/sqav/INTENT.md`; routes_to -> `knowledge/sqv/sqmv/INTENT.md`; routes_to -> `knowledge/sqv/sqfv/INTENT.md`; routes_to -> `knowledge/sqv/sqtv/INTENT.md`; routes_to -> `knowledge/sqv/sqpv/INTENT.md`; routes_to -> `knowledge/sqv/sqdv/INTENT.md`
 - consumers: SQV architects, implementers, SKVI, agents, reviewers
 - deferred_projections: implementation identity and selected composition contracts
-- notes: A requirements map and architecture companion, not a module, feature, command, provider, or runtime admission.
+- notes: A requirements map and architecture companion; the exact first library contract belongs to `modules/sqfv-batch-cpp/SPEC.md`.
 - status: canonical
 
 ### Symphony Quantitative Acquisition Vector
@@ -8538,13 +8538,13 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - path: `knowledge/sqv/sqfv/MANIFEST.md`
 - title: Symphony Quantitative Flow Vector Manifest
 - surface_type: subvector manifest
-- truth_role: SQFV ownership and architecture-only implementation boundary
+- truth_role: SQFV ownership and first trusted same-process library boundary
 - owner: Symphony Quantitative Flow Vector maintainers
-- scope: Declares the four SQFV Contract Quad surfaces without claiming a production frame, transport, runtime, command, or package.
-- relationships: depends_on -> `knowledge/sqv/sqfv/INTENT.md`; declares -> `knowledge/sqv/sqfv/SPEC.md`; declares -> `knowledge/sqv/sqfv/SKILL.md`
+- scope: Declares the four SQFV Contract Quad surfaces and the narrow `sqfv-batch-cpp` source module without claiming a service or cross-process transport.
+- relationships: depends_on -> `knowledge/sqv/sqfv/INTENT.md`; declares -> `knowledge/sqv/sqfv/SPEC.md`; declares -> `knowledge/sqv/sqfv/SKILL.md`; implemented_by -> `modules/sqfv-batch-cpp/MANIFEST.md`
 - consumers: SKVI, agents, reviewers, future SQFV implementers
 - deferred_projections: manifest-derived canonical-surface closure
-- notes: The offline in-process prototype is development evidence only; no `sqfv:` family is allocated.
+- notes: The offline in-process prototype remains development evidence; no `sqfv:` family is allocated.
 - status: canonical
 
 #### SQFV Specification
@@ -8554,10 +8554,10 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - truth_role: bounded transfer, immutable lease, credit, cursor, and release semantics
 - owner: Symphony Quantitative Flow Vector maintainers
 - scope: Defines finite edge budgets and independent consumer progress while distinguishing transfer from processing and durability.
-- relationships: depends_on -> `knowledge/sqv/sqfv/MANIFEST.md`; refines -> `knowledge/sqv/SPEC.md`; composes_with -> `knowledge/sqv/sqmv/SPEC.md`
+- relationships: depends_on -> `knowledge/sqv/sqfv/MANIFEST.md`; refines -> `knowledge/sqv/SPEC.md`; composes_with -> `knowledge/sqv/sqmv/SPEC.md`; implemented_by -> `modules/sqfv-batch-cpp/SPEC.md`
 - consumers: C++ data-plane designers, transport implementers, reviewers
-- deferred_projections: admitted production frame, ABI, transport, and release contract
-- notes: Prototype payload bounds and in-process leases are not released protocol or cross-process guarantees.
+- deferred_projections: cross-process transport, production SQMV grammar, restart/replay, and supported-platform contracts
+- notes: The first module has an exact v1 C ABI and local frame; its scope does not include IPC, provider data, or durability.
 - status: canonical
 
 #### SQFV Skill
@@ -8570,7 +8570,7 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - relationships: depends_on -> `knowledge/sqv/sqfv/SPEC.md`
 - consumers: agents, C++ implementers, transport designers, reviewers
 - deferred_projections: task-scoped SQFV context
-- notes: Stops before claiming durable recovery, provider semantics, recipient rights, or an installed runtime.
+- notes: Stops before claiming durable recovery, provider semantics, recipient rights, or an installed runtime from the offline prototype.
 - status: canonical
 
 ### Symphony Quantitative Transformation Vector
@@ -13969,4 +13969,227 @@ These entries locate existing implementation and regression surfaces referenced 
 - consumers: qxctl, administrators, reviewers
 - deferred_projections: none
 - notes: Reuses governed validation without canonical mutation or delivery-state inheritance.
+- status: canonical
+
+### SQFV Batch Native Library
+
+##### SQFV Batch Feature Evidence
+- path: `modules/sqfv-batch-cpp/FEATURES.md`
+- title: SQFV Batch Feature Evidence
+- surface_type: module feature record
+- truth_role: bounded first-slice capability and evidence declaration
+- owner: SQFV batch module maintainers
+- scope: Declares only the tested trusted same-process batch and fan-out extent, with later local evidence required before support claims.
+- relationships: depends_on -> `modules/sqfv-batch-cpp/SPEC.md`
+- consumers: feature reviewers, SQFV maintainers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Installation
+- path: `modules/sqfv-batch-cpp/INSTALL.md`
+- title: SQFV Batch Installation
+- surface_type: module installation contract
+- truth_role: exact package lifecycle and consumer instructions
+- owner: SQFV batch module maintainers
+- scope: Describes versioned archive, public C header, exact CMake target, receipt-v2 ownership, checkout-free consumption, and guarded uninstall.
+- relationships: depends_on -> `modules/sqfv-batch-cpp/MANIFEST.md`
+- consumers: packagers, independent consumers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Intent
+- path: `modules/sqfv-batch-cpp/INTENT.md`
+- title: SQFV Batch Intent
+- surface_type: module intent
+- truth_role: narrow trusted-process purpose
+- owner: SQFV batch module maintainers
+- scope: Defines an optional native in-process immutable batch and per-port fan-out library within SQFV ownership.
+- relationships: depends_on -> `knowledge/sqv/sqfv/INTENT.md`
+- consumers: SQFV maintainers, consumers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Manifest
+- path: `modules/sqfv-batch-cpp/MANIFEST.md`
+- title: SQFV Batch Manifest
+- surface_type: module manifest
+- truth_role: canonical module surface declaration
+- owner: SQFV batch module maintainers
+- scope: Declares the exact first-slice contract, ABI, source, test, and package surfaces without provider or qxctl authority.
+- relationships: depends_on -> `modules/sqfv-batch-cpp/INTENT.md`; implements -> `knowledge/sqv/sqfv/MANIFEST.md`
+- consumers: SKVI, validator, packagers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Skill
+- path: `modules/sqfv-batch-cpp/SKILL.md`
+- title: SQFV Batch Skill
+- surface_type: module procedure
+- truth_role: implementation and review guidance
+- owner: SQFV batch module maintainers
+- scope: Routes implementers through exact ABI, lifetime, credit, frame, receipt, and negative acceptance boundaries.
+- relationships: depends_on -> `modules/sqfv-batch-cpp/SPEC.md`
+- consumers: implementers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Specification
+- path: `modules/sqfv-batch-cpp/SPEC.md`
+- title: SQFV Batch Specification
+- surface_type: module specification
+- truth_role: exact first-slice runtime contract
+- owner: SQFV batch module maintainers
+- scope: Specifies bounded C ABI, descriptor/cursor, immutable lease, independent port credit, frame integrity, trust scope, and exclusions.
+- relationships: implements -> `knowledge/sqv/sqfv/SPEC.md`; carries -> `knowledge/sqv/sqmv/SPEC.md`
+- consumers: C and C++ consumers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Build
+- path: `modules/sqfv-batch-cpp/CMakeLists.txt`
+- title: SQFV Batch Build
+- surface_type: native build contract
+- truth_role: exact package build and receipt implementation
+- owner: SQFV batch module maintainers
+- scope: Builds the independently installed static C++ library, focused fixtures, exact CMake export, and receipt-owned files.
+- relationships: implements -> `modules/sqfv-batch-cpp/INSTALL.md`
+- consumers: packagers, build reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Public C ABI
+- path: `modules/sqfv-batch-cpp/include/symphony/sqfv/batch.h`
+- title: SQFV Batch Public C ABI
+- surface_type: C ABI header
+- truth_role: versioned caller-facing binary interface
+- owner: SQFV batch module maintainers
+- scope: Declares fixed-width descriptors, finite limits, opaque handles, explicit spans and release calls for trusted same-process use.
+- relationships: implements -> `modules/sqfv-batch-cpp/SPEC.md`
+- consumers: native producers and consumers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Lifetime Implementation
+- path: `modules/sqfv-batch-cpp/src/batch.cpp`
+- title: SQFV Batch Lifetime Implementation
+- surface_type: C++ implementation source
+- truth_role: batch, lease, cursor, and credit mechanics
+- owner: SQFV batch module maintainers
+- scope: Implements budgeted immutable copies, retained leases, independent ports and exact order outcomes behind the C ABI.
+- relationships: implements -> `modules/sqfv-batch-cpp/include/symphony/sqfv/batch.h`
+- consumers: native build, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Internal Contract
+- path: `modules/sqfv-batch-cpp/src/batch_internal.hpp`
+- title: SQFV Batch Internal Contract
+- surface_type: C++ private header
+- truth_role: shared batch and frame implementation definition
+- owner: SQFV batch module maintainers
+- scope: Defines the exact canonical descriptor-byte sequence and the private content-identity and limit-access helpers used by this version.
+- relationships: implements -> `modules/sqfv-batch-cpp/SPEC.md`; used_by -> `modules/sqfv-batch-cpp/src/frame.cpp`
+- consumers: SQFV native build, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry is not a second public ABI and grants no provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Frame Codec
+- path: `modules/sqfv-batch-cpp/src/frame.cpp`
+- title: SQFV Batch Frame Codec
+- surface_type: C++ implementation source
+- truth_role: bounded frame integrity mechanics
+- owner: SQFV batch module maintainers
+- scope: Implements versioned byte-defined encode/decode with explicit lengths, digest validation and fail-closed malformed input handling.
+- relationships: implements -> `modules/sqfv-batch-cpp/include/symphony/sqfv/batch.h`
+- consumers: native build, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch CMake Package Config
+- path: `modules/sqfv-batch-cpp/cmake/SymphonySqfvBatchConfig.cmake.in`
+- title: SQFV Batch CMake Package Config
+- surface_type: CMake package configuration
+- truth_role: exact installed consumer selection
+- owner: SQFV batch module maintainers
+- scope: Resolves only the installed versioned target and its public header/archive without a source-checkout dependency.
+- relationships: implements -> `modules/sqfv-batch-cpp/INSTALL.md`
+- consumers: independent CMake consumers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Guarded Uninstall
+- path: `modules/sqfv-batch-cpp/cmake/uninstall.cmake.in`
+- title: SQFV Batch Guarded Uninstall
+- surface_type: CMake uninstall implementation
+- truth_role: receipt-scoped removal boundary
+- owner: SQFV batch module maintainers
+- scope: Removes only unchanged receipt-owned files from the selected exact package version.
+- relationships: implements -> `modules/sqfv-batch-cpp/INSTALL.md`
+- consumers: packagers, lifecycle reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Lifetime Tests
+- path: `modules/sqfv-batch-cpp/tests/batch_test.cpp`
+- title: SQFV Batch Lifetime Tests
+- surface_type: C++ focused test
+- truth_role: lifetime, resource and ordering evidence source
+- owner: SQFV batch module maintainers
+- scope: Exercises immutable reader lifetime, independent credit and cursor outcomes, budget exhaustion, and bounded flow.
+- relationships: tests -> `modules/sqfv-batch-cpp/src/batch.cpp`
+- consumers: test maintainers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Frame Tests
+- path: `modules/sqfv-batch-cpp/tests/frame_test.cpp`
+- title: SQFV Batch Frame Tests
+- surface_type: C++ focused test
+- truth_role: frame and integrity evidence source
+- owner: SQFV batch module maintainers
+- scope: Exercises exact frame round trips, malformed lengths, version/flag rejection, digest failures, and resource bounds.
+- relationships: tests -> `modules/sqfv-batch-cpp/src/frame.cpp`
+- consumers: test maintainers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Independent Consumer Build
+- path: `modules/sqfv-batch-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQFV Batch Independent Consumer Build
+- surface_type: CMake acceptance build
+- truth_role: checkout-free consumer test source
+- owner: SQFV batch module maintainers
+- scope: Builds a C-only consumer against the exact installed package target and public header.
+- relationships: tests -> `modules/sqfv-batch-cpp/INSTALL.md`
+- consumers: SDK consumers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Independent C Consumer
+- path: `modules/sqfv-batch-cpp/tests/sdk-consumer/main.c`
+- title: SQFV Batch Independent C Consumer
+- surface_type: C acceptance source
+- truth_role: public ABI link and lifecycle evidence source
+- owner: SQFV batch module maintainers
+- scope: Exercises the installed C header and archive without including implementation-private types.
+- relationships: tests -> `modules/sqfv-batch-cpp/include/symphony/sqfv/batch.h`
+- consumers: SDK consumers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
 - status: canonical

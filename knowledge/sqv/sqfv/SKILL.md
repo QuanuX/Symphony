@@ -8,7 +8,8 @@ Keep research-data movement bounded, independently composable, and honest about 
 
 1. `knowledge/ARCHITECTURE.md` and the SQV Contract Quad
 2. this SQFV Quad and the exact SQMV descriptor meaning it carries
-3. selected acquisition, transformation, persistence, delivery, access, Habitat, and transport contracts
+3. `modules/sqfv-batch-cpp/SPEC.md` and `include/symphony/sqfv/batch.h` when using the first trusted same-process library
+4. selected acquisition, transformation, persistence, delivery, access, Habitat, and transport contracts
 
 ## Procedure
 
@@ -22,4 +23,4 @@ Keep research-data movement bounded, independently composable, and honest about 
 
 ## Stop Conditions
 
-Stop before claiming a cross-process handle, network transport, durable recovery, access grant, provider semantics, performance threshold, or installed runtime from an in-process prototype. Do not require a central bus, cache, or qxctl relay for user-selected paths.
+Stop before claiming a cross-process handle, network transport, durable recovery, access grant, provider semantics, or performance threshold from the first library or offline prototype. Claim an installed package only against its exact receipt and tested extent. Do not require a central bus, cache, or qxctl relay for user-selected paths.

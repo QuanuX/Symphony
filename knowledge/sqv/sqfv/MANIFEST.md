@@ -17,11 +17,11 @@ SQFV owns the transfer, lifetime, ordering-context, and resource-bound contracts
 
 ## Implementation Status
 
-Canonical architecture contract only. The offline in-process SQV prototype is development evidence, not an SQFV module or admitted frame. No SQFV runtime, transport, service, qxctl operation, feature record, installed package, performance guarantee, or publication is claimed. No `sqfv:` identity family is allocated by this Quad.
+The architecture owner now admits the narrow `sqfv-batch-cpp` `0.1.0-dev` source module for trusted same-process immutable batches, ordered per-port admission, explicit leases, and a bounded local frame. Its exact library contract and test extent belong to `modules/sqfv-batch-cpp/`. The earlier offline prototype remains development evidence rather than an installed component. This admission creates no provider, process service, IPC or network transport, qxctl operation, throughput guarantee, or publication. No `sqfv:` identity family is allocated by this Quad.
 
 ## Language Boundary
 
-First-party research-data batch, queue, and transport implementation on the data plane is native C++. Exact toolchain, C++ ABI, frame, and cross-process boundaries remain to be selected and tested.
+First-party research-data batch, queue, and transport implementation on the data plane is native C++. The first module uses C++20 internally and an exact v1 C ABI and byte-defined local frame. Its tested toolchain is recorded with its implementation evidence. A C++ ABI, cross-process boundary, and broader platform matrix remain unadmitted.
 
 ## Non-Authorization Statement
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 110 experimental records across the platform governance scope and 34 implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 111 experimental records across the platform governance scope and 35 implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -741,6 +741,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - parent_feature_id: `ssfv:symphony:sodv-engine`
 - record_digest: `sha256:4b4f58ad687266e33feb00ca7c0a97a9488dd4ac8c0ee5e88dc597e1c2552ea7`
 - notes: Architect-ratified F3 nested record for a rebuildable release-transaction projection; coverage remains partial and no broader runtime or canonical authority is implied.
+
+- feature_id: `ssfv:symphony:sqfv-batch-cpp`
+- feature_file: `modules/sqfv-batch-cpp/FEATURES.md`
+- owner_contract: `modules/sqfv-batch-cpp/SPEC.md`
+- source_scope: `modules/sqfv-batch-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:422b71a2e40f3a1d982eeb0ff5885e9e0775537f18a8d2c9a23e2d4eaf4d45a1`
+- notes: Trusted same-process SQFV batch, lease, bounded port, and local frame library; no SQV qxctl or process entry point, durable delivery, private access enforcement, provider, or network transport.
 
 - feature_id: `ssfv:symphony:ssfv-engine`
 - feature_file: `modules/ssfv-engine/FEATURES.md`

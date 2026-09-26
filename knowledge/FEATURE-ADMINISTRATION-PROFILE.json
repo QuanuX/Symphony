@@ -6881,6 +6881,24 @@
     {
       "expectations": [
         {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqfv-batch-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The trusted same-process static library runs only inside its explicit native caller; it has no independently executable administration or data-plane command surface.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqfv-batch-cpp"
+    },
+    {
+      "expectations": [
+        {
           "command_ids": [
             "qxcmd:symphony:ssfv.inspect"
           ],
@@ -7873,9 +7891,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:d0faeae1c7744dd3f4e48be4cfa92aaacfb067a4e2c07bf427f125d838d93a0f",
+  "profile_digest": "sha256:cc388b22c83c978c334b6269aaddebbcb849f9825a9f8d4e80ebafc23de1fd79",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 110,
-  "ssfv_registry_digest": "sha256:f9ba04d83e0443cfa66bcf139740fca01d0626832450540e00de54af224213cb"
+  "registered_feature_count": 111,
+  "ssfv_registry_digest": "sha256:a01c78a3cb7d627cdf79a11fb8a69f6fa490c3ec25f9ad51c9b36034fa2b268c"
 }

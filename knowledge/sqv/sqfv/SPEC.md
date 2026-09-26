@@ -18,9 +18,15 @@ An in-process lease is valid only under its reviewed trust and toolchain contrac
 
 SQFV transports a resolved SQMV descriptor or reference without defining its dataset meaning. It does not select recipients or grant rights; recipient selection awaits the planned SQDV delivery contract and the applicable access owner. Finite SKV/qxctl administration may configure a selected flow but does not relay bulk records or become an implicit dependency of hot or warm strategy execution.
 
+## First Native Slice
+
+`modules/sqfv-batch-cpp/SPEC.md` defines the admitted `0.1.0-dev` library contract for one trusted address space. It freezes an exact v1 C ABI; a caller-resolved, immutable five-field metadata binding; a separate opaque source-native position; a partition/generation/sequence transfer cursor; one copied immutable payload with explicit batch and lease lifetimes; independent per-port byte credits and pending-entry limits; and an integrity-checked local `SQF1` frame. Its technical ceilings and numerical fixture belong to that module, not every SQFV implementation. The scope comparison is a same-process compatibility guard, not an access grant. Queue acceptance, read-lease release, destination processing, and durable commit remain separate facts.
+
+The offline prototype's development frame and one-megabyte payload bound are not the module's protocol. The module's C ABI and local frame do not admit IPC, networking, shared-memory reclamation, or a cross-Node transport.
+
 ## Deferred Technical Contract
 
-The exact production descriptor and frame, batch identity grammar, credit units, lifetime/fencing mechanism, target workload, supported localities, and transport adapters remain to be ratified. The offline prototype demonstrates only bounded in-process mechanics under its stated test environment; this Quad does not promote its development frame or one-megabyte payload bound to a released protocol.
+Producer restart and generation evidence, retained replay, live-to-retained cutover, device fencing, access enforcement, cross-process handles, transport adapters, and a supported platform or throughput matrix remain separate gates. A production SQMV reference grammar and dataset interpretation also remain with SQMV.
 
 ## Non-Authorization Statement
 

@@ -129,6 +129,7 @@ The platform governance companions under `knowledge/platform/` retain Symphony-w
 - `modules/secure-identity-access-governance/MANIFEST.md`
 - `modules/sev-engine/MANIFEST.md`
 - `modules/skvi-engine/MANIFEST.md`
+- `modules/sqfv-batch-cpp/MANIFEST.md`
 - `modules/sodv-engine/MANIFEST.md`
 - `modules/ssfv-engine/MANIFEST.md`
 - `modules/ssiag-provider-macos-keychain/MANIFEST.md`
@@ -145,6 +146,7 @@ These exact declarations are the machine-discoverable canonical-surface closure.
 | authority-free shared C++ mechanics | `libraries/knowledge-vector-engine-cpp/` | none |
 | authenticated-session and worktree-reconciliation coordinator | `modules/knowledge-session-coordinator/` | `symphony-knowledge-session` |
 | SKVI engine | `modules/skvi-engine/` | `symphony-skvi` |
+| SQFV trusted in-process batch library | `modules/sqfv-batch-cpp/` | none |
 | SCLV engine | `modules/sclv-engine/` | `symphony-sclv` |
 | SACV engine | `modules/sacv-engine/` | `symphony-sacv` |
 | SODV engine | `modules/sodv-engine/` | `symphony-sodv` |
