@@ -1,0 +1,93 @@
+# SQV Research-Data Responsibility and Requirement Alignment
+
+## Status and Authority
+
+This companion records the research-data purpose and owner boundaries under the thin SQV parent. It aligns Duncan's 26 September 2026 direction with the supplied *Symphony SQV Research Data Whitepaper v0.1* and its decision and acceptance register. The paper's `R`, `D`, `G`, and `T` identifiers are document-local trace labels, not Symphony protocol or command identities. Its mechanism proposals require admission under the appropriate owner before they become runtime contracts.
+
+Duncan favored the six purpose labels. SQMV and SQFV have architecture-only Contract Quads and SKVI routes in this increment. SQAV, SQTV, SQPV, and SQDV remain favored planned labels with requirements below; their Quads and routes await a compatible SKVI capacity migration and individual admission. SOOV remains the separate SQV FIX child. No bulk service, provider connection, installed package, public ABI, schema, colon namespace, feature, or qxctl operation is established by this document.
+
+The first-party research-data data plane is to be native C++. Native connectors, movement, conversion, storage bridges, and delivery may be independently selected as their contracts become implemented. A composition may use direct compatible paths; it need not traverse six services, a central broker, or one normalized representation. qxctl administration follows Duncan's later instructions and is not a routine payload path. Research flows, even when live and high throughput, impose no compulsory data path on a live trading Nest.
+
+## Purpose Owners
+
+| Purpose label | Admission here | Owned meaning and handoff |
+| --- | --- | --- |
+| **SQAV — Symphony Quantitative Acquisition Vector** | Favored planned label | Selected source collection, source operation and version, authorized read scope, source position, reconnect and gap evidence. Broker research collection would consume a SCABV-owned exact non-FIX adapter if one is admitted; FRED/ALFRED, news, and dedicated market data need independent source contracts. |
+| **SQMV — Symphony Quantitative Metadata Vector** | Architecture owner | Dataset identity, schema and representation description, units, time roles, attributable provenance, revision, coverage, lineage, and source-supplied rights classification. It describes producer evidence; it neither invents source facts nor holds bulk payloads by default. |
+| **SQFV — Symphony Quantitative Flow Vector** | Architecture owner | Bounded data ports, immutable-buffer handoff, partition transfer order, consumer-specific credits and cursors, lifetime and safe release, and selected locality adapters. It neither selects sources nor asserts durability or destination processing. |
+| **SQTV — Symphony Quantitative Transformation Vector** | Favored planned label | Exact selected conversion or research transformation, input/output interpretation, precision and information-loss declaration, state and workspace, and derived lineage. Re-encoding, narrowing, and deriving bars are different operations. |
+| **SQPV — Symphony Quantitative Persistence Vector** | Favored planned label | Selected retention/retrieval, segment and commit identity, integrity, durability guarantee, recovery and retained position. It does not own source collection or destination acceptance. |
+| **SQDV — Symphony Quantitative Delivery Vector** | Favored planned label | Selected consumer view, access scope, format and completeness, destination-specific handoff, consumer resume and acknowledgement interpretation. SBV, SIV, web, and later external destinations retain their own acceptance and result authority. |
+
+These are purpose boundaries, not a prescribed process topology. A provider adapter, queue, HTTP transport, file format, or database does not become a new vector merely because it is a separate implementation module. User-authored modules and alternate compositions remain possible under their actual compatibility and authority contracts.
+
+## Cross-Owner Meaning
+
+### Dataset and position
+
+The source owner must preserve the source's actual dataset, provider version or observed API behavior, original event and revision information, acquisition binding, and supported source ordering. SQMV describes those attributable facts and distinguishes event time, publication time, revision or effective period, provider receipt time if supplied, Symphony acquisition time, and retention commit time. An absent time role stays absent; local receipt does not masquerade as source publication. Schema and physical layout versions, package versions, transport versions, and dataset revisions are independent dimensions.
+
+| Position | Meaning | Future or admitted owner |
+| --- | --- | --- |
+| **Source position** | Provider-defined sequence, cursor, page, vintage, or other exact resumption evidence within its actual scope. It may restart or expire. | SQAV planned; source fact described by SQMV. |
+| **Internal transfer cursor** | Exact dataset/view revision, partition, producer generation, and movement position. It is not automatically event time or a provider sequence. | SQFV architecture owner. |
+| **Retained position** | Range or highest contiguous position proven under a named storage guarantee; gaps remain visible. | SQPV planned. |
+| **Consumer resume position** | Recipient/view-bound position and destination-specific acknowledgement or replay obligation. | SQDV planned, with SQFV transfer state. |
+
+No total order across unrelated providers is inferred. Live-memory and retained catch-up may share an exact sequence only after the selected storage and delivery owners establish cutover, gap, duplicate, revision, and generation behavior. A timestamp or raw file offset alone does not establish that guarantee. Historical corrections must remain attributable rather than silently replacing earlier research snapshots.
+
+### Progress, obligation, and release
+
+| Term | Meaning to declare at the exact interface |
+| --- | --- |
+| **Received** | The named actor accepted bytes or a frame into its stated boundary. A transport receipt does not prove parsing or consumer processing. |
+| **Processed** | The named consumer completed its admitted interpretation or application step. It does not imply retention or remote commit. |
+| **Durable** | Under a future SQPV contract, evidence would prove a specific artifact/range under a specified local or replicated durability guarantee. A buffered write or staged file is not this state. |
+| **Destination committed** | Under the selected destination contract, evidence would prove the stated remote commit or apply boundary, where supported. Local upload acceptance is a separate event. |
+| **Released** | No remaining admitted reader, transport, device, or retention obligation uses the physical allocation, so the owner may reclaim it. Release is a memory-lifetime fact, not a delivery or durability claim. |
+| **Queryable** | The destination confirms availability under its own read/query contract. This may follow acceptance or commit and cannot be inferred from either alone. |
+
+Local queue admission, transport receipt, consumer processing, durable retention, destination acceptance, destination commit, queryability, and physical release need distinct evidence where applicable. No universal exactly-once guarantee follows from any one acknowledgement. An obsolete producer or writer generation cannot reclaim current buffers or publish a newer retained head.
+
+### Finite resources and locality
+
+Preparation buffers hold mutable input, decoding workspace, and output under construction. In-flight allocations back immutable readers, transport work, or required retention obligations. Reusable cache entries are reconstructible or retrievable and can be evicted only when not borrowed. These three roles require separate accounting; an undelivered sole copy is not cache. Budgets also cover indexes, queue entries, decompression, transport buffers, and retained readers. Shared physical pages should not be charged as duplicate allocations, while each consumer's outstanding allowance remains finite and independent.
+
+SQFV's architecture requires bounded frames, exact encoded and decoded limits, per-edge credits/cursors, cancellation and release progress when data capacity is full, and observable exhaustion. A slow optional branch cannot silently consume another branch's allowance. A required durable branch may intentionally gate committed delivery under the selected policy. Locality choices may include compatible in-process immutable views, reviewed same-Node shared memory, native cross-Node transfer, or retained retrieval. None is implicitly installed. Safe same-Node reuse needs exact region, generation, bounds, access scope, and release/fencing evidence; a timeout alone does not permit overwrite.
+
+The whitepaper describes **ephemeral**, **immediate with asynchronous retention**, and **durable before committed delivery** profiles. These are proposal descriptions, not registered enum or command values and not a universal default. The first persistence backend, guarantee, retention limit, default reference policy, and failure behavior remain gate decisions. A preview may run ahead of durability only when its view says so; a durable consumer may still read from the original immutable RAM allocation after commit.
+
+## Initial Source and Neighbor Boundaries
+
+The intended source families are FRED/ALFRED economic series and vintages, a news provider still to be selected, Databento historical/live data within selected operations, and IBKR C++ market/account read surfaces through a future SCABV-owned broker adapter. This is target scope, not current provider support or permission to collect data. The relevant SCABV and SBV papers remain draft evidence; neither current module is inferred from them. Research collection has no order-entry authority. Rights to collect, retain, transform, model, share, and redistribute are separate source-specific questions.
+
+SOOV retains FIX architecture. SBV owns backtest computation and result acceptance; SIV and presentation consumers cannot rewrite source or quantitative truth. SSIAG operational credential access is not currently available for these integrations. STAV safe audit records are not bulk payload storage. SODV official publication does not publish private research data by implication. SOV, SNV, SCV, and SHV continue to own their own lifecycle, Node, cloud, and hardware facts. These neighbor contracts are consumed only where implemented and selected.
+
+## Requirement Trace
+
+This table aligns the supplied register without wholesale ratification of its proposed mechanisms. `Admitted` means an architectural owner boundary is recorded here or in an admitted Quad; it does not mean an operational capability exists. `Pending` means the exact runtime contract, child admission, or both still needs its own gate.
+
+| Paper ID | Requirement alignment | Status |
+| --- | --- | --- |
+| R01 | Thin SQV parent; six distinct research-data purposes; SOOV separate. | SQMV/SQFV owners admitted; four labels pending. |
+| R02–R04 | Native first-party data plane; independent native adapters; selected FRED/ALFRED, news, IBKR, Databento extents. | Direction recorded; source and package admission pending. |
+| R05 | Open-ended logical compositions with finite declared budgets. | Parent direction; quantitative limits pending workload. |
+| R06 | Exact source meaning, versions, time, revision, coverage, and uncertainty. | SQMV owner admitted; source interfaces pending. |
+| R07–R09 | Selectable branches; administrative qxctl; live trading path independence. | Parent boundary recorded; runtime/qxctl pending. |
+| R10 | Preserve neighboring owner truth and authority. | Boundary recorded; particular integrations pending. |
+| R11–R13 | Separate memory roles, immutable batches, explicit lifetime, independent consumer credits/cursors. | SQFV owner admitted; offline prototype proves a narrow subset only. |
+| R14–R16 | Distinct progress and release meanings; optional durability profiles; traceable live/retained resume. | Terms aligned; SQPV/SQDV and exact policies pending. |
+| R17 | Separate lossless conversion, information loss, and derived research transformation. | SQTV label and requirement pending child admission. |
+| R18 | Bulk/private payload isolation, access scope, rights classification. | SQMV descriptive role admitted; enforcement pending. |
+| R19 | Exact package, ABI, schema, operation, compatibility, lifecycle, and namespace before support claims. | Admission rule; no such research-data runtime identity yet. |
+| R20 | Memory, failure, semantics, and measured capacity evidence. | Offline focused evidence only; workload and release proof pending. |
+| R21 | Advanced transports, GPU, Arrow, and storage choices independently selectable/removable. | Extensibility boundary; no mechanism selected. |
+| R22 | Publish only evidenced capability and extent. | Status rule; no supported research-data feature claim. |
+
+## Technical Identity and Next Gates
+
+The isolated `prototypes/sqv-research-data/` C++ fixture has exercised bounded framing, one frozen in-process batch shared by independent readers, and per-consumer credits under focused tests. It is evidence for a limited part of the paper's G02/G03 path, not a supported component. Its 1 MiB frame ceiling is a prototype-specific bound, not a product-wide batch, transport, or throughput limit. The fixture's macOS x86_64 AppleClang build is a development target, not a supported-platform matrix.
+
+Before a production SQFV data-plane package is claimed, admit a narrow module identity, exact descriptor and public ABI/ownership rule, versioned frame and cursor semantics, security scope, release callback or equivalent, feature extent, and lifecycle evidence. The broad candidate name `sqv-research-data-core` is not admitted as an omnibus runtime. A narrow `sqfv-batch-cpp` package is only a candidate until its boundary and name are reviewed. Do not make the finite knowledge-engine JSON envelope a bulk stream protocol.
+
+SKVI's current 1,024-entry snapshot limit and 1,013 pre-increment entries permit the SQMV and SQFV Quads plus this companion, but cannot index all six Quads. The resulting 1,022 entries also leave too little room for a new four-file module Quad. A compatible SKVI capacity/protocol migration with focused validation therefore precedes admission of any remaining child or first installable SQFV package. Descriptor and ABI review may proceed independently. Domain labels do not allocate colon namespace families. An exact workload profile, numerical acceptance thresholds, first production target and dependency set, first persistence backend/guarantee, and source-specific operations remain open gate decisions. qxctl surface instructions are expected from Duncan after SQV implementation.

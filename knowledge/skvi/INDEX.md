@@ -8317,7 +8317,7 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - relationships: declares -> `knowledge/sqv/MANIFEST.md`; depends_on -> `knowledge/ARCHITECTURE.md`
 - consumers: quantitative developers, researchers, traders, agents, future SQV implementers
 - deferred_projections: quantitative component map
-- notes: SOOV is the first named SQV subvector.
+- notes: SOOV was the first named SQV subvector; SQMV and SQFV now have architecture-only research-data ownership.
 - status: canonical
 
 #### SQV Manifest
@@ -8326,24 +8326,24 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - surface_type: vector manifest
 - truth_role: declared SQV truth and implementation posture
 - owner: Symphony Quantitative Vector maintainers
-- scope: Declares the SQV and SOOV Contract Quads without claiming runtime implementation.
-- relationships: depends_on -> `knowledge/sqv/INTENT.md`; declares -> `knowledge/sqv/SPEC.md`; declares -> `knowledge/sqv/SKILL.md`; declares -> `knowledge/sqv/soov/MANIFEST.md`
+- scope: Declares the SQV, SQMV, SQFV, and SOOV Contract Quads and the research-data owner map without claiming runtime implementation.
+- relationships: depends_on -> `knowledge/sqv/INTENT.md`; declares -> `knowledge/sqv/SPEC.md`; declares -> `knowledge/sqv/SKILL.md`; declares -> `knowledge/sqv/RESEARCH-DATA.md`; declares -> `knowledge/sqv/sqmv/MANIFEST.md`; declares -> `knowledge/sqv/sqfv/MANIFEST.md`; declares -> `knowledge/sqv/soov/MANIFEST.md`
 - consumers: SKVI, agents, reviewers, future SQV implementations
 - deferred_projections: manifest-derived canonical-surface closure
-- notes: Claims no strategy, FIX, broker, data, backtesting, indicator, or stream engine.
+- notes: SQAV, SQTV, SQPV, and SQDV remain planned labels pending a compatible SKVI capacity change; no research-data runtime is installed.
 - status: canonical
 
 #### SQV Specification
 - path: `knowledge/sqv/SPEC.md`
 - title: Symphony Quantitative Vector Specification
 - surface_type: vector specification
-- truth_role: framework, thermal, API-version, FIX separation, and reusable-engine boundaries
+- truth_role: framework, research-data ownership, thermal, API-version, FIX separation, and reusable-engine boundaries
 - owner: Symphony Quantitative Vector maintainers
-- scope: Preserves user strategy sovereignty and exact compatibility across optional quantitative framework components.
-- relationships: depends_on -> `knowledge/sqv/MANIFEST.md`; governs -> `knowledge/sqv/soov/SPEC.md`; composes_with -> `knowledge/sov/SPEC.md`
+- scope: Preserves user strategy sovereignty and exact compatibility across optional quantitative framework components, including admitted metadata and flow ownership.
+- relationships: depends_on -> `knowledge/sqv/MANIFEST.md`; governs -> `knowledge/sqv/sqmv/SPEC.md`; governs -> `knowledge/sqv/sqfv/SPEC.md`; governs -> `knowledge/sqv/soov/SPEC.md`; composes_with -> `knowledge/sov/SPEC.md`
 - consumers: architects, quantitative developers, agents, implementers
 - deferred_projections: future SQV component contracts
-- notes: Defines no universal feed, strategy, broker, persistence, or exhaust behavior.
+- notes: Defines no universal feed, strategy, broker, persistence, or exhaust behavior; admission does not imply implementation.
 - status: canonical
 
 #### SQV Skill
@@ -8352,11 +8352,132 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - surface_type: vector skill guidance
 - truth_role: user-sovereign quantitative design procedure
 - owner: Symphony Quantitative Vector maintainers
-- scope: Separates reusable Symphony framework concerns from third-party strategy decisions.
+- scope: Separates reusable Symphony framework concerns from third-party strategy decisions and routes research-data metadata and flow to their admitted owners.
 - relationships: depends_on -> `knowledge/sqv/SPEC.md`; depends_on -> `knowledge/SLANG.md`
 - consumers: agents, quantitative developers, implementers, reviewers
 - deferred_projections: task-scoped SQV context
-- notes: Stops before strategy, FIX, broker, feed, backtest, or engine-name invention.
+- notes: Stops before strategy, provider, backtest, implementation-identity, or unadmitted-owner invention; SOOV retains FIX.
+- status: canonical
+
+#### SQV Research-Data Owner Map
+- path: `knowledge/sqv/RESEARCH-DATA.md`
+- title: Symphony Quantitative Vector Research-Data Owner Map
+- surface_type: vector companion
+- truth_role: research-data owner routing, cross-owner requirements, and admission status
+- owner: Symphony Quantitative Vector maintainers
+- scope: Distinguishes admitted metadata and flow owners from planned acquisition, transformation, persistence, and delivery owners.
+- relationships: depends_on -> `knowledge/sqv/MANIFEST.md`; refines -> `knowledge/sqv/SPEC.md`; routes_to -> `knowledge/sqv/sqmv/INTENT.md`; routes_to -> `knowledge/sqv/sqfv/INTENT.md`
+- consumers: SQV architects, implementers, SKVI, agents, reviewers
+- deferred_projections: implementation identity and selected composition contracts
+- notes: A requirements map and architecture companion, not a module, feature, command, provider, or runtime admission.
+- status: canonical
+
+### Symphony Quantitative Metadata Vector
+
+#### SQMV Intent
+- path: `knowledge/sqv/sqmv/INTENT.md`
+- title: Symphony Quantitative Metadata Vector Intent
+- surface_type: subvector intent
+- truth_role: attributable research-data description purpose and boundary
+- owner: Symphony Quantitative Metadata Vector maintainers
+- scope: Owns dataset, schema, representation, time, provenance, coverage, lineage, and rights-description meaning without creating source facts or access grants.
+- relationships: declares -> `knowledge/sqv/sqmv/MANIFEST.md`; depends_on -> `knowledge/sqv/INTENT.md`
+- consumers: research-data producers and consumers, SQV architects, agents
+- deferred_projections: dataset descriptor and discovery projections
+- notes: Metadata lookup is not a required inline data-path dependency.
+- status: canonical
+
+#### SQMV Manifest
+- path: `knowledge/sqv/sqmv/MANIFEST.md`
+- title: Symphony Quantitative Metadata Vector Manifest
+- surface_type: subvector manifest
+- truth_role: SQMV ownership and architecture-only implementation boundary
+- owner: Symphony Quantitative Metadata Vector maintainers
+- scope: Declares the four SQMV Contract Quad surfaces without claiming a module, dataset registry, schema, qxctl operation, or installed service.
+- relationships: depends_on -> `knowledge/sqv/sqmv/INTENT.md`; declares -> `knowledge/sqv/sqmv/SPEC.md`; declares -> `knowledge/sqv/sqmv/SKILL.md`
+- consumers: SKVI, agents, reviewers, future SQMV implementers
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: Native C++ data-plane direction does not yet establish a public ABI or `sqmv:` family.
+- status: canonical
+
+#### SQMV Specification
+- path: `knowledge/sqv/sqmv/SPEC.md`
+- title: Symphony Quantitative Metadata Vector Specification
+- surface_type: subvector specification
+- truth_role: descriptor attribution, time-role, revision, coverage, and compatibility semantics
+- owner: Symphony Quantitative Metadata Vector maintainers
+- scope: Keeps source assertions attributable and representation changes explicit without selecting a provider schema or storage format.
+- relationships: depends_on -> `knowledge/sqv/sqmv/MANIFEST.md`; refines -> `knowledge/sqv/SPEC.md`; composes_with -> `knowledge/sqv/sqfv/SPEC.md`
+- consumers: metadata designers, research-data producers and consumers, agents
+- deferred_projections: versioned dataset descriptor schema and index
+- notes: Indexing a description does not grant redistribution rights or prove dataset completeness.
+- status: canonical
+
+#### SQMV Skill
+- path: `knowledge/sqv/sqmv/SKILL.md`
+- title: Symphony Quantitative Metadata Vector Skill
+- surface_type: subvector skill guidance
+- truth_role: evidence-safe research-data metadata procedure
+- owner: Symphony Quantitative Metadata Vector maintainers
+- scope: Routes source-attributed descriptions, explicit unknowns, version compatibility, and immutable batch interpretation.
+- relationships: depends_on -> `knowledge/sqv/sqmv/SPEC.md`
+- consumers: agents, metadata designers, implementers, reviewers
+- deferred_projections: task-scoped SQMV context
+- notes: Stops before inventing provider observations, access grants, namespace grammar, or runtime capabilities.
+- status: canonical
+
+### Symphony Quantitative Flow Vector
+
+#### SQFV Intent
+- path: `knowledge/sqv/sqfv/INTENT.md`
+- title: Symphony Quantitative Flow Vector Intent
+- surface_type: subvector intent
+- truth_role: bounded research-data movement purpose and composition boundary
+- owner: Symphony Quantitative Flow Vector maintainers
+- scope: Owns explicit resource budgets, ordering context, consumer credits, and safe release across selected data edges.
+- relationships: declares -> `knowledge/sqv/sqfv/MANIFEST.md`; depends_on -> `knowledge/sqv/INTENT.md`
+- consumers: research-data transport designers, SQV architects, agents
+- deferred_projections: flow and transport contract map
+- notes: A direct edge may satisfy SQFV without a central broker or compulsory resident dispatcher.
+- status: canonical
+
+#### SQFV Manifest
+- path: `knowledge/sqv/sqfv/MANIFEST.md`
+- title: Symphony Quantitative Flow Vector Manifest
+- surface_type: subvector manifest
+- truth_role: SQFV ownership and architecture-only implementation boundary
+- owner: Symphony Quantitative Flow Vector maintainers
+- scope: Declares the four SQFV Contract Quad surfaces without claiming a production frame, transport, runtime, command, or package.
+- relationships: depends_on -> `knowledge/sqv/sqfv/INTENT.md`; declares -> `knowledge/sqv/sqfv/SPEC.md`; declares -> `knowledge/sqv/sqfv/SKILL.md`
+- consumers: SKVI, agents, reviewers, future SQFV implementers
+- deferred_projections: manifest-derived canonical-surface closure
+- notes: The offline in-process prototype is development evidence only; no `sqfv:` family is allocated.
+- status: canonical
+
+#### SQFV Specification
+- path: `knowledge/sqv/sqfv/SPEC.md`
+- title: Symphony Quantitative Flow Vector Specification
+- surface_type: subvector specification
+- truth_role: bounded transfer, immutable lease, credit, cursor, and release semantics
+- owner: Symphony Quantitative Flow Vector maintainers
+- scope: Defines finite edge budgets and independent consumer progress while distinguishing transfer from processing and durability.
+- relationships: depends_on -> `knowledge/sqv/sqfv/MANIFEST.md`; refines -> `knowledge/sqv/SPEC.md`; composes_with -> `knowledge/sqv/sqmv/SPEC.md`
+- consumers: C++ data-plane designers, transport implementers, reviewers
+- deferred_projections: admitted production frame, ABI, transport, and release contract
+- notes: Prototype payload bounds and in-process leases are not released protocol or cross-process guarantees.
+- status: canonical
+
+#### SQFV Skill
+- path: `knowledge/sqv/sqfv/SKILL.md`
+- title: Symphony Quantitative Flow Vector Skill
+- surface_type: subvector skill guidance
+- truth_role: bounded movement and release-verification procedure
+- owner: Symphony Quantitative Flow Vector maintainers
+- scope: Checks resource budgets, edge independence, generations, lease lifetime, cancellation, and failure outcomes.
+- relationships: depends_on -> `knowledge/sqv/sqfv/SPEC.md`
+- consumers: agents, C++ implementers, transport designers, reviewers
+- deferred_projections: task-scoped SQFV context
+- notes: Stops before claiming durable recovery, provider semantics, recipient rights, or an installed runtime.
 - status: canonical
 
 ### Symphony Orchestra Omega Vector

@@ -92,6 +92,8 @@ The platform governance companions under `knowledge/platform/` retain Symphony-w
 - `knowledge/sodv/schemas/v1/MANIFEST.md`
 - `knowledge/sov/MANIFEST.md`
 - `knowledge/sqv/MANIFEST.md`
+- `knowledge/sqv/sqfv/MANIFEST.md`
+- `knowledge/sqv/sqmv/MANIFEST.md`
 - `knowledge/sqv/soov/MANIFEST.md`
 - `knowledge/ssfv/MANIFEST.md`
 - `knowledge/ssfv/schemas/v1/MANIFEST.md`

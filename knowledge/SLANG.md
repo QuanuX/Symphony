@@ -297,7 +297,25 @@ A term is admitted only after its semantic owner exists. A name used in discussi
 - owner_contract: `knowledge/sqv/INTENT.md`
 - example: `SQV may provide a reusable ratified framework component that a user's Nest elects to use.`
 - counterexample: `SQV owns user strategy logic or imposes one feed, broker, data, order, or execution design.`
-- notes: The preferred abbreviation is `SQV`. Its first named subvector is SOOV.
+- notes: The preferred abbreviation is `SQV`. SOOV was its first named subvector; SQMV and SQFV now own research-data metadata and flow architecture contracts. Other research-data child labels remain planned until admitted.
+
+### SQMV
+
+- term: `SQMV`
+- meaning: SQV's owner of research-dataset description, including schema, time semantics, source provenance, coverage, lineage, and attributable rights classifications.
+- owner_contract: `knowledge/sqv/sqmv/INTENT.md`
+- example: `SQMV describes the exact schema and source revision needed to interpret a selected dataset.`
+- counterexample: `SQMV invents missing source facts, owns bulk observations, or must answer a synchronous query for each moving record.`
+- notes: Preferred expansion: `Symphony Quantitative Metadata Vector`. This is an architecture contract, not an implemented catalogue or dataset service.
+
+### SQFV
+
+- term: `SQFV`
+- meaning: SQV's owner of bounded research-data movement contracts, including buffer lifetime, partition ordering, consumer credits, and selected transport adapters.
+- owner_contract: `knowledge/sqv/sqfv/INTENT.md`
+- example: `SQFV lets one slow research consumer exhaust its own credits without holding an independent consumer's release obligation.`
+- counterexample: `SQFV chooses a provider, interprets prices, grants destination access, or requires every stream to traverse one bus.`
+- notes: Preferred expansion: `Symphony Quantitative Flow Vector`. This is an architecture contract, not a deployed flow engine or mandatory transport.
 
 ### SOOV
 

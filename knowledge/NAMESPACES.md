@@ -78,7 +78,7 @@ The following established domains therefore remain delegated without being norma
 
 A shared field label such as `module_id` does not create a shared identity space. Consumers qualify it by its protocol and owner contract.
 
-The existence of the SCV, SOV, SNV, SHV, SQV, SIV, SOOV, SMCV, SAIV, SNIV, SNRV, SCIV, or SCNV domain name does not allocate a matching colon-prefixed family. Any future machine identity for those domains requires its own reviewed owner grammar and an entry in this register.
+The existence of the SCV, SOV, SNV, SHV, SQV, SQMV, SQFV, SIV, SOOV, SMCV, SAIV, SNIV, SNRV, SCIV, or SCNV domain name does not allocate a matching colon-prefixed family. The planned SQAV, SQTV, SQPV, and SQDV labels allocate none either. Any future machine identity for those domains requires its own reviewed owner grammar and an entry in this register.
 
 ## Reserved Non-Reusable Module Tombstones
 
