@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.25)
-project(SymphonySqfvBatch VERSION 0.1.0 LANGUAGES C CXX)
+cmake_minimum_required(VERSION 3.30)
+project(SymphonySqfvBatch VERSION 0.2.0 LANGUAGES CXX)
 
 include(CTest)
 include(GNUInstallDirs)
@@ -37,9 +37,9 @@ add_library(sqfv-batch STATIC src/batch.cpp src/frame.cpp)
 add_library(Symphony::SqfvBatch ALIAS sqfv-batch)
 set_target_properties(sqfv-batch PROPERTIES
     EXPORT_NAME SqfvBatch
-    CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF
+    CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF
 )
-target_compile_features(sqfv-batch PUBLIC cxx_std_20)
+target_compile_features(sqfv-batch PUBLIC cxx_std_26)
 target_include_directories(sqfv-batch PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${SQFV_INCLUDE_ROOT}>)
@@ -63,8 +63,8 @@ if(APPLE)
     install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E env ZERO_AR_DATE=1 \"${CMAKE_RANLIB}\" \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${SQFV_ARCHIVE_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}sqfv-batch${CMAKE_STATIC_LIBRARY_SUFFIX}\" COMMAND_ERROR_IS_FATAL ANY)")
 endif()
 
-install(FILES include/symphony/sqfv/batch.h DESTINATION "${SQFV_HEADER_DIR}")
-sqfv_own("${SQFV_HEADER_DIR}/batch.h")
+install(FILES include/symphony/sqfv/batch.hpp DESTINATION "${SQFV_HEADER_DIR}")
+sqfv_own("${SQFV_HEADER_DIR}/batch.hpp")
 
 configure_package_config_file(cmake/SymphonySqfvBatchConfig.cmake.in
     "${CMAKE_CURRENT_BINARY_DIR}/SymphonySqfvBatchConfig.cmake"
@@ -116,7 +116,7 @@ if(BUILD_TESTING)
                 target_link_libraries(sqfv-${test_name}-test PRIVATE Threads::Threads)
             endif()
             set_target_properties(sqfv-${test_name}-test PROPERTIES
-                CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+                CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
             target_compile_options(sqfv-${test_name}-test PRIVATE
                 $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>)
             add_test(NAME sqfv-${test_name} COMMAND sqfv-${test_name}-test)

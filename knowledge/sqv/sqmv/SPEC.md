@@ -14,7 +14,7 @@ Provider version, source schema version, representation layout, dataset revision
 
 ## Runtime Relationship
 
-SQMV owns the meaning of metadata carried or referenced by a prepared batch; SQFV owns the batch's transfer, buffer lifetime, and cursor mechanics. A compact reference is usable only after its exact version and interpretation have been resolved for the receiving scope. Metadata needed per batch should be immutable for that batch's lifetime. No resident catalogue or synchronous lookup is required on a data path by this specification. The `sqfv-batch-cpp` v1 binding compares caller-supplied reference, dataset revision, schema version, layout version, and access scope as opaque exact bytes. It does not define their SQMV grammar, resolve a reference, or authorize a reader.
+SQMV owns the meaning of metadata carried or referenced by a prepared batch; SQFV owns the batch's transfer, buffer lifetime, and cursor mechanics. A compact reference is usable only after its exact version and interpretation have been resolved for the receiving scope. Metadata needed per batch should be immutable for that batch's lifetime. No resident catalogue or synchronous lookup is required on a data path by this specification. The current `sqfv-batch-cpp` binding compares caller-supplied reference, dataset revision, schema version, layout version, and access scope as opaque exact bytes. It does not define their SQMV grammar, resolve a reference, or authorize a reader.
 
 ## Deferred Technical Contract
 

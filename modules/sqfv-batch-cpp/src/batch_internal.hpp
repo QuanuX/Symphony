@@ -1,28 +1,57 @@
 #ifndef SYMPHONY_SQFV_BATCH_INTERNAL_HPP
 #define SYMPHONY_SQFV_BATCH_INTERNAL_HPP
 
-#include "symphony/sqfv/batch.h"
+#include "symphony/sqfv/batch.hpp"
 
-namespace sqfv_internal {
+namespace symphony::sqfv::detail {
 
-// The canonical descriptor byte sequence has eight u16-big-endian lengths and
-// raw values in this order: metadata_ref, dataset_revision, schema_version,
-// layout_version, access_scope, partition, source_binding, source_position.
-// It then has generation[16], sequence u64 BE, and record_count u64 BE.
-// This sequence is used unchanged by the v1 frame and content identity.
-bool compute_content_id(const sqfv_descriptor &descriptor, sqfv_span payload,
-                        uint8_t out[SQFV_BATCH_CONTENT_ID_BYTES]) noexcept;
+struct BindingView {
+  std::string_view metadata_ref;
+  std::string_view dataset_revision;
+  std::string_view schema_version;
+  std::string_view layout_version;
+  std::string_view access_scope;
+};
 
-// A read-only copy of configured finite limits. A live context handle is
-// required; using a destroyed handle is a caller error.
-sqfv_limits context_limits(const sqfv_context *context) noexcept;
+struct DescriptorView {
+  BindingView binding;
+  std::string_view partition;
+  std::string_view source_binding;
+  std::string_view source_position;
+  Generation producer_generation{};
+  std::uint64_t batch_sequence = 0;
+  std::uint64_t record_count = 0;
+};
 
-// These are internal, borrowed views for the synchronous frame codec. The
-// caller must keep both handles alive for the duration of the call.
-sqfv_span batch_payload_view(const sqfv_batch *batch) noexcept;
-bool batch_belongs_to_context(const sqfv_batch *batch,
-                              const sqfv_context *context) noexcept;
+[[nodiscard]] inline DescriptorView view_of(const Descriptor& descriptor) noexcept {
+  return {{descriptor.binding.metadata_ref,
+           descriptor.binding.dataset_revision,
+           descriptor.binding.schema_version,
+           descriptor.binding.layout_version,
+           descriptor.binding.access_scope},
+          descriptor.partition,
+          descriptor.source_binding,
+          descriptor.source_position,
+          descriptor.producer_generation,
+          descriptor.batch_sequence,
+          descriptor.record_count};
+}
 
-} // namespace sqfv_internal
+// Canonical v1 descriptor: eight u16-BE lengths and raw byte strings,
+// generation[16], sequence u64-BE, and record count u64-BE.
+[[nodiscard]] bool compute_content_id(const DescriptorView&, ByteView payload,
+                                      ContentId& out) noexcept;
+
+// The codec decodes borrowed views and calls prepare_copy_views; the core
+// validates/reserves before making any owning descriptor or payload copy.
+struct FrameAccess {
+  [[nodiscard]] static const Limits* limits(const Context&) noexcept;
+  [[nodiscard]] static ByteView payload(const Batch&) noexcept;
+  [[nodiscard]] static bool same_context(const Context&, const Batch&) noexcept;
+  [[nodiscard]] static Status prepare_copy_views(Context&, const DescriptorView&,
+                                                 ByteView, Batch&) noexcept;
+};
+
+} // namespace symphony::sqfv::detail
 
 #endif

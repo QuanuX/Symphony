@@ -6890,7 +6890,7 @@
           ],
           "inherited_from_feature_id": null,
           "interaction": "invoke",
-          "rationale": "The trusted same-process static library runs only inside its explicit native caller; it has no independently executable administration or data-plane command surface.",
+          "rationale": "The trusted same-process C++26 static library runs only inside its explicit native caller; it has no independently executable administration or data-plane command surface.",
           "requirement": "required"
         }
       ],
@@ -7891,9 +7891,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:cc388b22c83c978c334b6269aaddebbcb849f9825a9f8d4e80ebafc23de1fd79",
+  "profile_digest": "sha256:9eb2c0b539c937d8a3e73c1b09e8300b50c95f707a382283496dd5bd607fef44",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
   "registered_feature_count": 111,
-  "ssfv_registry_digest": "sha256:a01c78a3cb7d627cdf79a11fb8a69f6fa490c3ec25f9ad51c9b36034fa2b268c"
+  "ssfv_registry_digest": "sha256:6581c5f404009ea3666a865161bd5480fd838024f1f591aea7a5a867c8a3327a"
 }

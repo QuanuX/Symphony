@@ -8,7 +8,7 @@ Keep research-data movement bounded, independently composable, and honest about 
 
 1. `knowledge/ARCHITECTURE.md` and the SQV Contract Quad
 2. this SQFV Quad and the exact SQMV descriptor meaning it carries
-3. `modules/sqfv-batch-cpp/SPEC.md` and `include/symphony/sqfv/batch.h` when using the first trusted same-process library
+3. `modules/sqfv-batch-cpp/SPEC.md` and `include/symphony/sqfv/batch.hpp` when using the first trusted same-process library
 4. selected acquisition, transformation, persistence, delivery, access, Habitat, and transport contracts
 
 ## Procedure

@@ -748,7 +748,7 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - source_scope: `modules/sqfv-batch-cpp`
 - status: `experimental`
 - parent_feature_id: `ssfv:symphony:platform`
-- record_digest: `sha256:422b71a2e40f3a1d982eeb0ff5885e9e0775537f18a8d2c9a23e2d4eaf4d45a1`
+- record_digest: `sha256:ce9311aa77ce4bc538eaac4d524d365fccc95d2c5bd62c5fc7c46f3414563a74`
 - notes: Trusted same-process SQFV batch, lease, bounded port, and local frame library; no SQV qxctl or process entry point, durable delivery, private access enforcement, provider, or network transport.
 
 - feature_id: `ssfv:symphony:ssfv-engine`

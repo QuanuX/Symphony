@@ -20,9 +20,9 @@ SQFV transports a resolved SQMV descriptor or reference without defining its dat
 
 ## First Native Slice
 
-`modules/sqfv-batch-cpp/SPEC.md` defines the admitted `0.1.0-dev` library contract for one trusted address space. It freezes an exact v1 C ABI; a caller-resolved, immutable five-field metadata binding; a separate opaque source-native position; a partition/generation/sequence transfer cursor; one copied immutable payload with explicit batch and lease lifetimes; independent per-port byte credits and pending-entry limits; and an integrity-checked local `SQF1` frame. Its technical ceilings and numerical fixture belong to that module, not every SQFV implementation. The scope comparison is a same-process compatibility guard, not an access grant. Queue acceptance, read-lease release, destination processing, and durable commit remain separate facts.
+`modules/sqfv-batch-cpp/SPEC.md` defines the admitted `0.2.0-dev` library contract for one trusted address space. It exposes a native C++26 API with owning and borrowed standard-library types and move-only lifetime handles; a caller-resolved, immutable five-field metadata binding; a separate opaque source-native position; a partition/generation/sequence transfer cursor; one copied immutable payload with explicit batch and lease lifetimes; independent per-port byte credits and pending-entry limits; and an integrity-checked local `SQF1` frame. Its technical ceilings and numerical fixture belong to that module, not every SQFV implementation. The scope comparison is a same-process compatibility guard, not an access grant. Queue acceptance, read-lease release, destination processing, and durable commit remain separate facts.
 
-The offline prototype's development frame and one-megabyte payload bound are not the module's protocol. The module's C ABI and local frame do not admit IPC, networking, shared-memory reclamation, or a cross-Node transport.
+The offline prototype's development frame and one-megabyte payload bound are not the module's protocol. The module's C++ interface and local frame do not admit IPC, networking, shared-memory reclamation, or a cross-Node transport.
 
 ## Deferred Technical Contract
 

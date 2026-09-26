@@ -6,8 +6,10 @@
 #include <cstdint>
 #include <cstring>
 #include <limits>
+#include <string_view>
+#include <utility>
 
-namespace sqfv_internal {
+namespace symphony::sqfv {
 namespace {
 
 // A streaming implementation keeps frame and content digests on the stack.
@@ -152,13 +154,14 @@ constexpr std::array<std::uint8_t, 4> kMagic{'S', 'Q', 'F', '1'};
 constexpr std::uint16_t kMajor = 1;
 constexpr std::uint16_t kMinor = 0;
 constexpr std::uint32_t kFlags = 0;
-constexpr std::uint64_t kPrefixBytes = 24;
-constexpr std::uint64_t kDigestBytes = 32;
-constexpr std::uint64_t kFixedDescriptorBytes = 8U * 2U + 16U + 8U + 8U;
+constexpr std::size_t kPrefixBytes = 24;
+constexpr std::size_t kDigestBytes = 32;
+constexpr std::size_t kFixedDescriptorBytes = 8U * 2U + 16U + 8U + 8U;
 constexpr char kFrameDomain[] = "symphony.sqfv.batch-frame.v1";
 constexpr char kContentDomain[] = "symphony.sqfv.batch-content.v1";
 
-std::array<sqfv_span, 8> fields(const sqfv_descriptor &descriptor) noexcept {
+std::array<std::string_view, 8> fields(
+    const detail::DescriptorView &descriptor) noexcept {
   return {descriptor.binding.metadata_ref,
           descriptor.binding.dataset_revision,
           descriptor.binding.schema_version,
@@ -169,15 +172,12 @@ std::array<sqfv_span, 8> fields(const sqfv_descriptor &descriptor) noexcept {
           descriptor.source_position};
 }
 
-bool descriptor_size(const sqfv_descriptor &descriptor,
-                     std::uint64_t &size) noexcept {
+bool descriptor_size(const detail::DescriptorView &descriptor,
+                     std::size_t &size) noexcept {
   size = kFixedDescriptorBytes;
-  for (const sqfv_span field : fields(descriptor)) {
-    if (field.size > std::numeric_limits<std::uint16_t>::max() ||
-        (field.size != 0 && field.data == nullptr)) {
-      return false;
-    }
-    size += field.size;
+  for (const std::string_view field : fields(descriptor)) {
+    if (field.size() > std::numeric_limits<std::uint16_t>::max()) return false;
+    size += field.size();
   }
   return true;
 }
@@ -200,21 +200,19 @@ Integer read_be(const std::uint8_t *input) noexcept {
 }
 
 bool hash_descriptor(Sha256 &hash,
-                     const sqfv_descriptor &descriptor) noexcept {
+                     const detail::DescriptorView &descriptor) noexcept {
   std::uint8_t integer[8]{};
-  for (const sqfv_span field : fields(descriptor)) {
-    if (field.size > std::numeric_limits<std::uint16_t>::max() ||
-        (field.size != 0 && field.data == nullptr)) {
-      return false;
-    }
+  for (const std::string_view field : fields(descriptor)) {
+    if (field.size() > std::numeric_limits<std::uint16_t>::max()) return false;
     write_be<std::uint16_t>(integer,
-                            static_cast<std::uint16_t>(field.size));
-    if (!hash.update(integer, 2U) ||
-        !hash.update(field.data, static_cast<std::size_t>(field.size))) {
+                            static_cast<std::uint16_t>(field.size()));
+    const auto *bytes =
+        reinterpret_cast<const std::uint8_t *>(field.data());
+    if (!hash.update(integer, 2U) || !hash.update(bytes, field.size())) {
       return false;
     }
   }
-  if (!hash.update(descriptor.producer_generation, 16U)) return false;
+  if (!hash.update(descriptor.producer_generation.data(), 16U)) return false;
   write_be<std::uint64_t>(integer, descriptor.batch_sequence);
   if (!hash.update(integer, 8U)) return false;
   write_be<std::uint64_t>(integer, descriptor.record_count);
@@ -222,19 +220,18 @@ bool hash_descriptor(Sha256 &hash,
 }
 
 void write_descriptor(std::uint8_t *out,
-                      const sqfv_descriptor &descriptor) noexcept {
+                      const detail::DescriptorView &descriptor) noexcept {
   std::size_t offset = 0;
-  for (const sqfv_span field : fields(descriptor)) {
+  for (const std::string_view field : fields(descriptor)) {
     write_be<std::uint16_t>(out + offset,
-                            static_cast<std::uint16_t>(field.size));
+                            static_cast<std::uint16_t>(field.size()));
     offset += 2U;
-    if (field.size != 0) {
-      std::memcpy(out + offset, field.data,
-                  static_cast<std::size_t>(field.size));
-      offset += static_cast<std::size_t>(field.size);
+    if (!field.empty()) {
+      std::memcpy(out + offset, field.data(), field.size());
+      offset += field.size();
     }
   }
-  std::memcpy(out + offset, descriptor.producer_generation, 16U);
+  std::memcpy(out + offset, descriptor.producer_generation.data(), 16U);
   offset += 16U;
   write_be<std::uint64_t>(out + offset, descriptor.batch_sequence);
   offset += 8U;
@@ -246,9 +243,9 @@ class Reader final {
   Reader(const std::uint8_t *data, std::size_t size) noexcept
       : data_(data), size_(size) {}
 
-  bool span(std::size_t length, sqfv_span &out) noexcept {
+  bool string(std::size_t length, std::string_view &out) noexcept {
     if (length > size_ - offset_) return false;
-    out = {data_ + offset_, static_cast<std::uint64_t>(length)};
+    out = {reinterpret_cast<const char *>(data_ + offset_), length};
     offset_ += length;
     return true;
   }
@@ -277,9 +274,9 @@ class Reader final {
 };
 
 bool read_descriptor(const std::uint8_t *data, std::size_t size,
-                     sqfv_descriptor &descriptor) noexcept {
+                     detail::DescriptorView &descriptor) noexcept {
   Reader reader(data, size);
-  sqfv_span *const output[] = {
+  std::string_view *const output[] = {
       &descriptor.binding.metadata_ref,
       &descriptor.binding.dataset_revision,
       &descriptor.binding.schema_version,
@@ -288,11 +285,11 @@ bool read_descriptor(const std::uint8_t *data, std::size_t size,
       &descriptor.partition,
       &descriptor.source_binding,
       &descriptor.source_position};
-  for (sqfv_span *field : output) {
+  for (std::string_view *field : output) {
     std::uint16_t length = 0;
-    if (!reader.integer(length) || !reader.span(length, *field)) return false;
+    if (!reader.integer(length) || !reader.string(length, *field)) return false;
   }
-  if (!reader.raw(descriptor.producer_generation, 16U) ||
+  if (!reader.raw(descriptor.producer_generation.data(), 16U) ||
       !reader.integer(descriptor.batch_sequence) ||
       !reader.integer(descriptor.record_count)) {
     return false;
@@ -300,15 +297,14 @@ bool read_descriptor(const std::uint8_t *data, std::size_t size,
   return reader.finished();
 }
 
-bool measured_size(const sqfv_limits &limits,
-                   const sqfv_descriptor &descriptor,
-                   sqfv_span payload,
-                   std::uint64_t &descriptor_bytes,
-                   std::uint64_t &header_bytes,
-                   std::uint64_t &frame_bytes) noexcept {
-  if (payload.size == 0 || payload.data == nullptr ||
-      payload.size > limits.max_payload_bytes ||
-      payload.size > std::numeric_limits<std::uint32_t>::max() ||
+bool measured_size(const Limits &limits,
+                   const detail::DescriptorView &descriptor,
+                   ByteView payload,
+                   std::size_t &descriptor_bytes,
+                   std::size_t &header_bytes,
+                   std::size_t &frame_bytes) noexcept {
+  if (payload.empty() || payload.size() > limits.max_payload_bytes ||
+      payload.size() > std::numeric_limits<std::uint32_t>::max() ||
       !descriptor_size(descriptor, descriptor_bytes) ||
       descriptor_bytes > limits.max_descriptor_bytes ||
       descriptor_bytes > std::numeric_limits<std::uint32_t>::max()) {
@@ -316,21 +312,53 @@ bool measured_size(const sqfv_limits &limits,
   }
   header_bytes = kPrefixBytes + descriptor_bytes + kDigestBytes;
   if (header_bytes > std::numeric_limits<std::uint32_t>::max()) return false;
-  frame_bytes = header_bytes + payload.size;
+  frame_bytes = header_bytes + payload.size();
   return frame_bytes <= limits.max_frame_bytes;
 }
 
-bool frame_digest(const std::uint8_t *prefix_and_descriptor,
-                  std::size_t prefix_and_descriptor_size,
-                  sqfv_span payload, std::uint8_t out[32]) noexcept {
+std::array<std::uint8_t, kPrefixBytes> prefix_bytes(
+    std::size_t descriptor_bytes, std::size_t header_bytes,
+    std::size_t payload_bytes) noexcept {
+  std::array<std::uint8_t, kPrefixBytes> prefix{};
+  std::memcpy(prefix.data(), kMagic.data(), kMagic.size());
+  write_be<std::uint16_t>(prefix.data() + 4U, kMajor);
+  write_be<std::uint16_t>(prefix.data() + 6U, kMinor);
+  write_be<std::uint32_t>(prefix.data() + 8U, kFlags);
+  write_be<std::uint32_t>(prefix.data() + 12U,
+                          static_cast<std::uint32_t>(header_bytes));
+  write_be<std::uint32_t>(prefix.data() + 16U,
+                          static_cast<std::uint32_t>(payload_bytes));
+  write_be<std::uint32_t>(prefix.data() + 20U,
+                          static_cast<std::uint32_t>(descriptor_bytes));
+  return prefix;
+}
+
+bool frame_digest(ByteView prefix_and_descriptor, ByteView payload,
+                  ContentId &out) noexcept {
   Sha256 hash;
   if (!hash.update(reinterpret_cast<const std::uint8_t *>(kFrameDomain),
                    sizeof(kFrameDomain)) ||
-      !hash.update(prefix_and_descriptor, prefix_and_descriptor_size) ||
-      !hash.update(payload.data, static_cast<std::size_t>(payload.size))) {
+      !hash.update(prefix_and_descriptor.data(),
+                   prefix_and_descriptor.size()) ||
+      !hash.update(payload.data(), payload.size())) {
     return false;
   }
-  hash.finish(out);
+  hash.finish(out.data());
+  return true;
+}
+
+bool frame_digest(const std::array<std::uint8_t, kPrefixBytes> &prefix,
+                  const detail::DescriptorView &descriptor,
+                  ByteView payload, ContentId &out) noexcept {
+  Sha256 hash;
+  if (!hash.update(reinterpret_cast<const std::uint8_t *>(kFrameDomain),
+                   sizeof(kFrameDomain)) ||
+      !hash.update(prefix.data(), prefix.size()) ||
+      !hash_descriptor(hash, descriptor) ||
+      !hash.update(payload.data(), payload.size())) {
+    return false;
+  }
+  hash.finish(out.data());
   return true;
 }
 
@@ -345,197 +373,124 @@ bool digest_equal(const std::uint8_t *left,
 
 }  // namespace
 
-bool compute_content_id(const sqfv_descriptor &descriptor, sqfv_span payload,
-                        std::uint8_t out[32]) noexcept {
-  if (out == nullptr || (payload.size != 0 && payload.data == nullptr) ||
-      payload.size > std::numeric_limits<std::size_t>::max()) {
-    return false;
-  }
-  std::uint8_t payload_digest[32]{};
+namespace detail {
+
+bool compute_content_id(const DescriptorView &descriptor, ByteView payload,
+                        ContentId &out) noexcept {
+  ContentId payload_digest{};
   Sha256 payload_hash;
-  if (!payload_hash.update(payload.data,
-                           static_cast<std::size_t>(payload.size))) {
-    return false;
-  }
-  payload_hash.finish(payload_digest);
+  if (!payload_hash.update(payload.data(), payload.size())) return false;
+  payload_hash.finish(payload_digest.data());
 
   Sha256 content_hash;
   if (!content_hash.update(
           reinterpret_cast<const std::uint8_t *>(kContentDomain),
           sizeof(kContentDomain)) ||
       !hash_descriptor(content_hash, descriptor) ||
-      !content_hash.update(payload_digest, sizeof(payload_digest))) {
+      !content_hash.update(payload_digest.data(), payload_digest.size())) {
     return false;
   }
-  content_hash.finish(out);
+  content_hash.finish(out.data());
   return true;
 }
 
-}  // namespace sqfv_internal
+}  // namespace detail
 
-extern "C" sqfv_status sqfv_frame_measure(const sqfv_context *context,
-                                            const sqfv_batch *batch,
-                                            std::uint64_t *out_size) {
-  if (context == nullptr || batch == nullptr || out_size == nullptr ||
-      !sqfv_internal::batch_belongs_to_context(batch, context)) {
-    return SQFV_INVALID_ARGUMENT;
+Status frame_measure(const Context &context, const Batch &batch,
+                     std::size_t &out_size) noexcept {
+  if (!context || !batch || !detail::FrameAccess::same_context(context, batch))
+    return Status::invalid_argument;
+  const Limits *limits = detail::FrameAccess::limits(context);
+  if (limits == nullptr) return Status::invalid_argument;
+  const auto descriptor = detail::view_of(batch.descriptor());
+  const ByteView payload = detail::FrameAccess::payload(batch);
+  std::size_t descriptor_bytes = 0;
+  std::size_t header_bytes = 0;
+  std::size_t frame_bytes = 0;
+  if (!measured_size(*limits, descriptor, payload, descriptor_bytes,
+                     header_bytes, frame_bytes)) {
+    return Status::limit;
   }
-  *out_size = 0;
-  sqfv_descriptor descriptor{};
-  descriptor.struct_size = sizeof(descriptor);
-  descriptor.abi_version = SQFV_BATCH_ABI_VERSION;
-  descriptor.binding.struct_size = sizeof(descriptor.binding);
-  descriptor.binding.abi_version = SQFV_BATCH_ABI_VERSION;
-  const sqfv_status status =
-      sqfv_batch_descriptor_view(batch, &descriptor);
-  if (status != SQFV_OK) return status;
-  const sqfv_span payload = sqfv_internal::batch_payload_view(batch);
-  std::uint64_t descriptor_bytes = 0;
-  std::uint64_t header_bytes = 0;
-  std::uint64_t frame_bytes = 0;
-  if (!sqfv_internal::measured_size(sqfv_internal::context_limits(context),
-                                    descriptor, payload, descriptor_bytes,
-                                    header_bytes, frame_bytes)) {
-    return SQFV_LIMIT;
-  }
-  *out_size = frame_bytes;
-  return SQFV_OK;
+  out_size = frame_bytes;
+  return Status::ok;
 }
 
-extern "C" sqfv_status sqfv_frame_encode(const sqfv_context *context,
-                                           const sqfv_batch *batch,
-                                           std::uint8_t *out,
-                                           std::uint64_t capacity,
-                                           std::uint64_t *out_size) {
-  if (context == nullptr || batch == nullptr || out_size == nullptr ||
-      !sqfv_internal::batch_belongs_to_context(batch, context)) {
-    return SQFV_INVALID_ARGUMENT;
+Status frame_encode(const Context &context, const Batch &batch,
+                    MutableBytes out, std::size_t &out_size) noexcept {
+  if (!context || !batch || !detail::FrameAccess::same_context(context, batch))
+    return Status::invalid_argument;
+  const Limits *limits = detail::FrameAccess::limits(context);
+  if (limits == nullptr) return Status::invalid_argument;
+  const auto descriptor = detail::view_of(batch.descriptor());
+  const ByteView payload = detail::FrameAccess::payload(batch);
+  std::size_t descriptor_bytes = 0;
+  std::size_t header_bytes = 0;
+  std::size_t frame_bytes = 0;
+  if (!measured_size(*limits, descriptor, payload, descriptor_bytes,
+                     header_bytes, frame_bytes)) {
+    return Status::limit;
   }
-  *out_size = 0;
-  sqfv_descriptor descriptor{};
-  descriptor.struct_size = sizeof(descriptor);
-  descriptor.abi_version = SQFV_BATCH_ABI_VERSION;
-  descriptor.binding.struct_size = sizeof(descriptor.binding);
-  descriptor.binding.abi_version = SQFV_BATCH_ABI_VERSION;
-  const sqfv_status view_status =
-      sqfv_batch_descriptor_view(batch, &descriptor);
-  if (view_status != SQFV_OK) return view_status;
-  const sqfv_span payload = sqfv_internal::batch_payload_view(batch);
-  std::uint64_t descriptor_bytes = 0;
-  std::uint64_t header_bytes = 0;
-  std::uint64_t frame_bytes = 0;
-  if (!sqfv_internal::measured_size(sqfv_internal::context_limits(context),
-                                    descriptor, payload, descriptor_bytes,
-                                    header_bytes, frame_bytes)) {
-    return SQFV_LIMIT;
+  if (out.size() < frame_bytes) return Status::limit;
+  const auto prefix = prefix_bytes(descriptor_bytes, header_bytes, payload.size());
+  ContentId digest{};
+  if (!frame_digest(prefix, descriptor, payload, digest)) {
+    return Status::internal_error;
   }
-  *out_size = frame_bytes;
-  if (capacity < frame_bytes) return SQFV_LIMIT;
-  if (out == nullptr) return SQFV_INVALID_ARGUMENT;
-
-  // The 24-byte prefix and canonical descriptor precede the stored digest.
-  // The digest covers the prefix and descriptor, then the raw payload.
-  std::memcpy(out, sqfv_internal::kMagic.data(), sqfv_internal::kMagic.size());
-  sqfv_internal::write_be<std::uint16_t>(out + 4U, sqfv_internal::kMajor);
-  sqfv_internal::write_be<std::uint16_t>(out + 6U, sqfv_internal::kMinor);
-  sqfv_internal::write_be<std::uint32_t>(out + 8U, sqfv_internal::kFlags);
-  sqfv_internal::write_be<std::uint32_t>(
-      out + 12U, static_cast<std::uint32_t>(header_bytes));
-  sqfv_internal::write_be<std::uint32_t>(
-      out + 16U, static_cast<std::uint32_t>(payload.size));
-  sqfv_internal::write_be<std::uint32_t>(
-      out + 20U, static_cast<std::uint32_t>(descriptor_bytes));
-  sqfv_internal::write_descriptor(out + sqfv_internal::kPrefixBytes,
-                                   descriptor);
-  const std::size_t digest_offset = static_cast<std::size_t>(
-      sqfv_internal::kPrefixBytes + descriptor_bytes);
-  std::uint8_t digest[32]{};
-  if (!sqfv_internal::frame_digest(out, digest_offset, payload, digest)) {
-    return SQFV_INTERNAL_ERROR;
-  }
-  std::memcpy(out + digest_offset, digest, sizeof(digest));
-  std::memcpy(out + static_cast<std::size_t>(header_bytes), payload.data,
-              static_cast<std::size_t>(payload.size));
-  return SQFV_OK;
+  std::memcpy(out.data(), prefix.data(), prefix.size());
+  write_descriptor(out.data() + kPrefixBytes, descriptor);
+  const std::size_t digest_offset = kPrefixBytes + descriptor_bytes;
+  std::memcpy(out.data() + digest_offset, digest.data(), digest.size());
+  std::memcpy(out.data() + header_bytes, payload.data(), payload.size());
+  out_size = frame_bytes;
+  return Status::ok;
 }
 
-extern "C" sqfv_status sqfv_frame_decode(sqfv_context *context,
-                                           sqfv_span frame,
-                                           sqfv_batch **out_batch) {
-  if (context == nullptr || out_batch == nullptr ||
-      (frame.size != 0 && frame.data == nullptr)) {
-    return SQFV_INVALID_ARGUMENT;
-  }
-  *out_batch = nullptr;
-  const sqfv_limits limits = sqfv_internal::context_limits(context);
-  if (frame.size > limits.max_frame_bytes ||
-      frame.size > std::numeric_limits<std::size_t>::max()) {
-    return SQFV_LIMIT;
-  }
-  if (frame.size < sqfv_internal::kPrefixBytes +
-                       sqfv_internal::kFixedDescriptorBytes +
-                       sqfv_internal::kDigestBytes) {
-    return SQFV_CORRUPT_FRAME;
-  }
-  const std::uint8_t *const bytes = frame.data;
-  if (std::memcmp(bytes, sqfv_internal::kMagic.data(),
-                  sqfv_internal::kMagic.size()) != 0) {
-    return SQFV_CORRUPT_FRAME;
-  }
-  const auto major = sqfv_internal::read_be<std::uint16_t>(bytes + 4U);
-  const auto minor = sqfv_internal::read_be<std::uint16_t>(bytes + 6U);
-  const auto flags = sqfv_internal::read_be<std::uint32_t>(bytes + 8U);
-  if (major != sqfv_internal::kMajor || minor != sqfv_internal::kMinor ||
-      flags != sqfv_internal::kFlags) {
-    return SQFV_UNSUPPORTED_FRAME;
-  }
-  const auto header_bytes = sqfv_internal::read_be<std::uint32_t>(bytes + 12U);
-  const auto payload_bytes = sqfv_internal::read_be<std::uint32_t>(bytes + 16U);
-  const auto descriptor_bytes =
-      sqfv_internal::read_be<std::uint32_t>(bytes + 20U);
-  if (descriptor_bytes < sqfv_internal::kFixedDescriptorBytes ||
-      payload_bytes == 0) {
-    return SQFV_CORRUPT_FRAME;
-  }
-  if (descriptor_bytes > limits.max_descriptor_bytes ||
-      payload_bytes > limits.max_payload_bytes) {
-    return SQFV_LIMIT;
-  }
+Status frame_decode(Context &context, ByteView frame, Batch &out) noexcept {
+  if (!context) return Status::invalid_argument;
+  const Limits *limits = detail::FrameAccess::limits(context);
+  if (limits == nullptr) return Status::invalid_argument;
+  if (frame.size() > limits->max_frame_bytes) return Status::limit;
+  if (frame.size() < kPrefixBytes + kFixedDescriptorBytes + kDigestBytes)
+    return Status::corrupt_frame;
+  const std::uint8_t *bytes = frame.data();
+  if (std::memcmp(bytes, kMagic.data(), kMagic.size()) != 0)
+    return Status::corrupt_frame;
+  const auto major = read_be<std::uint16_t>(bytes + 4U);
+  const auto minor = read_be<std::uint16_t>(bytes + 6U);
+  const auto flags = read_be<std::uint32_t>(bytes + 8U);
+  if (major != kMajor || minor != kMinor || flags != kFlags)
+    return Status::unsupported_frame;
+  const auto header_bytes = read_be<std::uint32_t>(bytes + 12U);
+  const auto payload_bytes = read_be<std::uint32_t>(bytes + 16U);
+  const auto descriptor_bytes = read_be<std::uint32_t>(bytes + 20U);
+  if (descriptor_bytes < kFixedDescriptorBytes || payload_bytes == 0)
+    return Status::corrupt_frame;
+  if (descriptor_bytes > limits->max_descriptor_bytes ||
+      payload_bytes > limits->max_payload_bytes)
+    return Status::limit;
   const std::uint64_t required_header =
-      sqfv_internal::kPrefixBytes + descriptor_bytes +
-      sqfv_internal::kDigestBytes;
+      kPrefixBytes + std::uint64_t(descriptor_bytes) + kDigestBytes;
   if (header_bytes != required_header ||
-      static_cast<std::uint64_t>(header_bytes) + payload_bytes != frame.size) {
-    return SQFV_CORRUPT_FRAME;
-  }
-  sqfv_descriptor descriptor{};
-  descriptor.struct_size = sizeof(descriptor);
-  descriptor.abi_version = SQFV_BATCH_ABI_VERSION;
-  descriptor.binding.struct_size = sizeof(descriptor.binding);
-  descriptor.binding.abi_version = SQFV_BATCH_ABI_VERSION;
-  if (!sqfv_internal::read_descriptor(
-          bytes + sqfv_internal::kPrefixBytes,
-          static_cast<std::size_t>(descriptor_bytes), descriptor)) {
-    return SQFV_CORRUPT_FRAME;
-  }
+      std::uint64_t(header_bytes) + payload_bytes != frame.size())
+    return Status::corrupt_frame;
 
-  const std::size_t digest_offset = static_cast<std::size_t>(
-      sqfv_internal::kPrefixBytes + descriptor_bytes);
-  const sqfv_span payload{
-      bytes + header_bytes, static_cast<std::uint64_t>(payload_bytes)};
-  std::uint8_t actual_digest[32]{};
-  if (!sqfv_internal::frame_digest(bytes, digest_offset, payload,
-                                   actual_digest)) {
-    return SQFV_CORRUPT_FRAME;
-  }
-  if (!sqfv_internal::digest_equal(bytes + digest_offset, actual_digest)) {
-    return SQFV_CORRUPT_FRAME;
-  }
-  const sqfv_status prepare_status =
-      sqfv_batch_prepare_copy(context, &descriptor, payload, out_batch);
-  if (prepare_status == SQFV_INVALID_ARGUMENT ||
-      prepare_status == SQFV_UNSUPPORTED_ABI) {
-    return SQFV_CORRUPT_FRAME;
-  }
-  return prepare_status;
+  detail::DescriptorView descriptor{};
+  if (!read_descriptor(bytes + kPrefixBytes, descriptor_bytes, descriptor))
+    return Status::corrupt_frame;
+  const std::size_t digest_offset = kPrefixBytes + descriptor_bytes;
+  const ByteView payload(bytes + header_bytes, payload_bytes);
+  ContentId actual_digest{};
+  if (!frame_digest(ByteView(bytes, digest_offset), payload, actual_digest) ||
+      !digest_equal(bytes + digest_offset, actual_digest.data()))
+    return Status::corrupt_frame;
+
+  Batch decoded;
+  const Status status =
+      detail::FrameAccess::prepare_copy_views(context, descriptor, payload, decoded);
+  if (status == Status::invalid_argument) return Status::corrupt_frame;
+  if (status != Status::ok) return status;
+  out = std::move(decoded);
+  return Status::ok;
 }
+
+}  // namespace symphony::sqfv

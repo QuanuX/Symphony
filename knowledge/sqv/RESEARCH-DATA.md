@@ -4,9 +4,9 @@
 
 This companion records the research-data purpose and owner boundaries under the thin SQV parent. It aligns Duncan's 26 September 2026 direction with the supplied *Symphony SQV Research Data Whitepaper v0.1* and its decision and acceptance register. The paper's `R`, `D`, `G`, and `T` identifiers are document-local trace labels, not Symphony protocol or command identities. Its mechanism proposals require admission under the appropriate owner before they become runtime contracts.
 
-Duncan favored the six purpose labels. SQAV, SQMV, SQFV, SQTV, SQPV, and SQDV have Contract Quads and SKVI routes. SQFV now owns the narrow `sqfv-batch-cpp` `0.1.0-dev` native library for trusted same-process movement; the other five research-data Quads remain architecture owners only. SOOV remains the separate SQV FIX child. This document establishes no bulk service, provider connection, production SQMV schema, colon namespace, or qxctl operation.
+Duncan favored the six purpose labels. SQAV, SQMV, SQFV, SQTV, SQPV, and SQDV have Contract Quads and SKVI routes. SQFV now owns the narrow `sqfv-batch-cpp` `0.2.0-dev` C++26 library for trusted same-process movement; the other five research-data Quads remain architecture owners only. SOOV remains the separate SQV FIX child. This document establishes no bulk service, provider connection, production SQMV schema, colon namespace, or qxctl operation.
 
-The first-party research-data data plane is to be native C++. Native connectors, movement, conversion, storage bridges, and delivery may be independently selected as their contracts become implemented. A composition may use direct compatible paths; it need not traverse six services, a central broker, or one normalized representation. qxctl administration follows Duncan's later instructions and is not a routine payload path. Research flows, even when live and high throughput, impose no compulsory data path on a live trading Nest.
+The first-party research-data data plane is to be native C++. Duncan's subsequent explicit direction selects C++26 for proprietary SQV modules authored in this effort; each package must declare and verify its actual toolchain contract. This does not constrain user-authored modules or compatible integrations. Native connectors, movement, conversion, storage bridges, and delivery may be independently selected as their contracts become implemented. A composition may use direct compatible paths; it need not traverse six services, a central broker, or one normalized representation. qxctl administration follows Duncan's later instructions and is not a routine payload path. Research flows, even when live and high throughput, impose no compulsory data path on a live trading Nest.
 
 ## Purpose Owners
 
@@ -79,14 +79,14 @@ This table aligns the supplied register without wholesale ratification of its pr
 | R14–R16 | Distinct progress and release meanings; optional durability profiles; traceable live/retained resume. | SQPV/SQDV boundaries admitted; exact policies and implementations pending. |
 | R17 | Separate lossless conversion, information loss, and derived research transformation. | SQTV owner admitted; converter operations pending. |
 | R18 | Bulk/private payload isolation, access scope, rights classification. | SQMV descriptive role admitted; enforcement pending. |
-| R19 | Exact package, ABI, schema, operation, compatibility, lifecycle, and namespace before support claims. | `sqfv-batch-cpp` has an exact development identity, v1 C ABI and local frame; production SQMV grammar and later operations remain pending. |
+| R19 | Exact package, ABI, schema, operation, compatibility, lifecycle, and namespace before support claims. | `sqfv-batch-cpp` has an exact C++26 development package, native API and v1 local frame; production SQMV grammar and later operations remain pending. |
 | R20 | Memory, failure, semantics, and measured capacity evidence. | First SQFV numerical fixture and focused tests belong to the module; workload-based release thresholds remain pending. |
 | R21 | Advanced transports, GPU, Arrow, and storage choices independently selectable/removable. | Extensibility boundary; no mechanism selected. |
 | R22 | Publish only evidenced capability and extent. | Status rule; the first library's claimed extent is limited to its tested trusted-process contract. |
 
 ## Technical Identity and Next Gates
 
-The isolated `prototypes/sqv-research-data/` C++ fixture remains historical development evidence. Its 1 MiB frame ceiling is prototype-specific. The first source module is `modules/sqfv-batch-cpp/`, with a separate exact descriptor, v1 C ABI, local frame, package ceilings, and numerical test fixture. Its tested host and installed-consumer evidence belong to the implementation increment, not a supported-platform matrix.
+The isolated `prototypes/sqv-research-data/` C++ fixture remains historical development evidence. Its 1 MiB frame ceiling is prototype-specific. The first source module is `modules/sqfv-batch-cpp/`, now with a native C++26 API, separate exact descriptor, local frame, package ceilings, and numerical test fixture. Its tested host and installed-consumer evidence belong to the implementation increment, not a supported-platform matrix. The former local `0.1.0-dev` C-facing development interface is superseded by `0.2.0-dev`.
 
 `sqfv-batch-cpp` admits those contracts for a trusted same-process development slice only. Its binding consists of opaque caller-resolved bytes; SQMV has not admitted a production reference grammar. The broad candidate name `sqv-research-data-core` remains unadmitted as an omnibus runtime. Do not make the finite knowledge-engine JSON envelope a bulk stream protocol.
 

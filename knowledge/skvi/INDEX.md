@@ -8557,7 +8557,7 @@ Note on terminology: The term `c-o-r-e` is forbidden as an active project term.
 - relationships: depends_on -> `knowledge/sqv/sqfv/MANIFEST.md`; refines -> `knowledge/sqv/SPEC.md`; composes_with -> `knowledge/sqv/sqmv/SPEC.md`; implemented_by -> `modules/sqfv-batch-cpp/SPEC.md`
 - consumers: C++ data-plane designers, transport implementers, reviewers
 - deferred_projections: cross-process transport, production SQMV grammar, restart/replay, and supported-platform contracts
-- notes: The first module has an exact v1 C ABI and local frame; its scope does not include IPC, provider data, or durability.
+- notes: The current module has an exact C++26 API and local frame; its scope does not include IPC, provider data, or durability.
 - status: canonical
 
 #### SQFV Skill
@@ -13992,7 +13992,7 @@ These entries locate existing implementation and regression surfaces referenced 
 - surface_type: module installation contract
 - truth_role: exact package lifecycle and consumer instructions
 - owner: SQFV batch module maintainers
-- scope: Describes versioned archive, public C header, exact CMake target, receipt-v2 ownership, checkout-free consumption, and guarded uninstall.
+- scope: Describes versioned archive, public C++26 header, exact CMake target, receipt-v2 ownership, checkout-free consumption, and guarded uninstall.
 - relationships: depends_on -> `modules/sqfv-batch-cpp/MANIFEST.md`
 - consumers: packagers, independent consumers
 - deferred_projections: none authorized by this entry
@@ -14018,7 +14018,7 @@ These entries locate existing implementation and regression surfaces referenced 
 - surface_type: module manifest
 - truth_role: canonical module surface declaration
 - owner: SQFV batch module maintainers
-- scope: Declares the exact first-slice contract, ABI, source, test, and package surfaces without provider or qxctl authority.
+- scope: Declares the exact C++26 library contract, source, test, and package surfaces without provider or qxctl authority.
 - relationships: depends_on -> `modules/sqfv-batch-cpp/INTENT.md`; implements -> `knowledge/sqv/sqfv/MANIFEST.md`
 - consumers: SKVI, validator, packagers
 - deferred_projections: none authorized by this entry
@@ -14031,7 +14031,7 @@ These entries locate existing implementation and regression surfaces referenced 
 - surface_type: module procedure
 - truth_role: implementation and review guidance
 - owner: SQFV batch module maintainers
-- scope: Routes implementers through exact ABI, lifetime, credit, frame, receipt, and negative acceptance boundaries.
+- scope: Routes implementers through exact C++26 compatibility, lifetime, credit, frame, receipt, and negative acceptance boundaries.
 - relationships: depends_on -> `modules/sqfv-batch-cpp/SPEC.md`
 - consumers: implementers, reviewers
 - deferred_projections: none authorized by this entry
@@ -14044,9 +14044,9 @@ These entries locate existing implementation and regression surfaces referenced 
 - surface_type: module specification
 - truth_role: exact first-slice runtime contract
 - owner: SQFV batch module maintainers
-- scope: Specifies bounded C ABI, descriptor/cursor, immutable lease, independent port credit, frame integrity, trust scope, and exclusions.
+- scope: Specifies the native C++26 API, descriptor/cursor, immutable lease, independent port credit, frame integrity, trust scope, and exclusions.
 - relationships: implements -> `knowledge/sqv/sqfv/SPEC.md`; carries -> `knowledge/sqv/sqmv/SPEC.md`
-- consumers: C and C++ consumers, reviewers
+- consumers: C++26 consumers, reviewers
 - deferred_projections: none authorized by this entry
 - notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
 - status: canonical
@@ -14064,13 +14064,13 @@ These entries locate existing implementation and regression surfaces referenced 
 - notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
 - status: canonical
 
-##### SQFV Batch Public C ABI
-- path: `modules/sqfv-batch-cpp/include/symphony/sqfv/batch.h`
-- title: SQFV Batch Public C ABI
-- surface_type: C ABI header
-- truth_role: versioned caller-facing binary interface
+##### SQFV Batch Public C++26 Interface
+- path: `modules/sqfv-batch-cpp/include/symphony/sqfv/batch.hpp`
+- title: SQFV Batch Public C++26 Interface
+- surface_type: C++26 API header
+- truth_role: versioned caller-facing C++ interface
 - owner: SQFV batch module maintainers
-- scope: Declares fixed-width descriptors, finite limits, opaque handles, explicit spans and release calls for trusted same-process use.
+- scope: Declares owning descriptors, finite limits, byte spans, status outcomes, and move-only lifetime handles for trusted same-process use.
 - relationships: implements -> `modules/sqfv-batch-cpp/SPEC.md`
 - consumers: native producers and consumers
 - deferred_projections: none authorized by this entry
@@ -14083,8 +14083,8 @@ These entries locate existing implementation and regression surfaces referenced 
 - surface_type: C++ implementation source
 - truth_role: batch, lease, cursor, and credit mechanics
 - owner: SQFV batch module maintainers
-- scope: Implements budgeted immutable copies, retained leases, independent ports and exact order outcomes behind the C ABI.
-- relationships: implements -> `modules/sqfv-batch-cpp/include/symphony/sqfv/batch.h`
+- scope: Implements budgeted immutable copies, retained leases, independent ports and exact order outcomes behind the C++26 API.
+- relationships: implements -> `modules/sqfv-batch-cpp/include/symphony/sqfv/batch.hpp`
 - consumers: native build, reviewers
 - deferred_projections: none authorized by this entry
 - notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
@@ -14100,7 +14100,7 @@ These entries locate existing implementation and regression surfaces referenced 
 - relationships: implements -> `modules/sqfv-batch-cpp/SPEC.md`; used_by -> `modules/sqfv-batch-cpp/src/frame.cpp`
 - consumers: SQFV native build, reviewers
 - deferred_projections: none authorized by this entry
-- notes: This source entry is not a second public ABI and grants no provider, private-access, durability, network, or qxctl SQV authority.
+- notes: This private header is not a second public interface and grants no provider, private-access, durability, network, or qxctl SQV authority.
 - status: canonical
 
 ##### SQFV Batch Frame Codec
@@ -14110,7 +14110,7 @@ These entries locate existing implementation and regression surfaces referenced 
 - truth_role: bounded frame integrity mechanics
 - owner: SQFV batch module maintainers
 - scope: Implements versioned byte-defined encode/decode with explicit lengths, digest validation and fail-closed malformed input handling.
-- relationships: implements -> `modules/sqfv-batch-cpp/include/symphony/sqfv/batch.h`
+- relationships: implements -> `modules/sqfv-batch-cpp/include/symphony/sqfv/batch.hpp`
 - consumers: native build, reviewers
 - deferred_projections: none authorized by this entry
 - notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
@@ -14174,21 +14174,21 @@ These entries locate existing implementation and regression surfaces referenced 
 - surface_type: CMake acceptance build
 - truth_role: checkout-free consumer test source
 - owner: SQFV batch module maintainers
-- scope: Builds a C-only consumer against the exact installed package target and public header.
+- scope: Builds a C++26 consumer against the exact installed package target and public header.
 - relationships: tests -> `modules/sqfv-batch-cpp/INSTALL.md`
 - consumers: SDK consumers, reviewers
 - deferred_projections: none authorized by this entry
 - notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
 - status: canonical
 
-##### SQFV Batch Independent C Consumer
-- path: `modules/sqfv-batch-cpp/tests/sdk-consumer/main.c`
-- title: SQFV Batch Independent C Consumer
-- surface_type: C acceptance source
-- truth_role: public ABI link and lifecycle evidence source
+##### SQFV Batch Independent C++26 Consumer
+- path: `modules/sqfv-batch-cpp/tests/sdk-consumer/main.cpp`
+- title: SQFV Batch Independent C++26 Consumer
+- surface_type: C++26 acceptance source
+- truth_role: public API link and lifetime evidence source
 - owner: SQFV batch module maintainers
-- scope: Exercises the installed C header and archive without including implementation-private types.
-- relationships: tests -> `modules/sqfv-batch-cpp/include/symphony/sqfv/batch.h`
+- scope: Exercises the installed C++26 header and archive without including implementation-private types.
+- relationships: tests -> `modules/sqfv-batch-cpp/include/symphony/sqfv/batch.hpp`
 - consumers: SDK consumers, reviewers
 - deferred_projections: none authorized by this entry
 - notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
