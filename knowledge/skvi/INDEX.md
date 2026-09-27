@@ -3404,6 +3404,19 @@ Future validator increments may add separately ratified deterministic checks wit
 - notes: An absent receipt is accepted only when every configured owned path is also absent; content drift, links, directories, incomplete configured/receipt ownership sets, and direct bypass of shared-root claims fail closed before removal.
 - status: canonical
 
+##### Shared Install Receipt v2 Validation Support
+- path: `cmake/SymphonyReceiptV2Support.cmake`
+- title: Symphony Shared Install Receipt v2 Validation Support
+- surface_type: common CMake packaging implementation
+- truth_role: bounded receipt parsing, canonical digest and path containment implementation truth
+- owner: Symphony Knowledge Vector maintainers
+- scope: Validates relative owned paths and their intermediate components and supports receipt-v2 digest verification in build-local install and uninstall scripts.
+- relationships: implements -> `knowledge/schemas/v2/install-receipt.schema.json`; used_by -> `cmake/SymphonyInstallReceiptV2.cmake`, `cmake/SymphonyUninstallReceiptV2.cmake`; governed_by -> `knowledge/LIFECYCLE.md`
+- consumers: independently installable C++ packages and build-local lifecycle scripts
+- deferred_projections: package-manager-native transactional filesystem operations
+- notes: Direct build-local lifecycle administration requires a quiescent administrator-controlled prefix.
+- status: canonical
+
 ##### Foundation Receipt-v1 Template Retirement Tombstone
 - path: `libraries/knowledge-vector-engine-cpp/cmake/install-receipt.json.in`
 - title: Foundation Receipt-v1 Template Retirement Tombstone
@@ -14166,6 +14179,32 @@ These entries locate existing implementation and regression surfaces referenced 
 - consumers: test maintainers, reviewers
 - deferred_projections: none authorized by this entry
 - notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
+- status: canonical
+
+##### SQFV Batch Allocation Failure Tests
+- path: `modules/sqfv-batch-cpp/tests/allocation_failure_test.cpp`
+- title: SQFV Batch Allocation Failure Tests
+- surface_type: C++26 focused test
+- truth_role: exception rollback and allocation-free release evidence source
+- owner: SQFV batch module maintainers
+- scope: Injects allocation failures across preparation, retention, queue admission and decode and checks unchanged outputs, reservations, cursor state and credits.
+- relationships: tests -> `modules/sqfv-batch-cpp/src/batch.cpp`, `modules/sqfv-batch-cpp/src/frame.cpp`
+- consumers: test maintainers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Allocation injection is confined to the test executable.
+- status: canonical
+
+##### SQFV Batch Package Lifecycle Tests
+- path: `modules/sqfv-batch-cpp/tests/package_lifecycle_test.cmake`
+- title: SQFV Batch Package Lifecycle Tests
+- surface_type: CMake focused test
+- truth_role: immutable installation and guarded removal evidence source
+- owner: SQFV batch module maintainers
+- scope: Exercises isolated installation, overwrite refusal, receipt integrity, identity and path containment guards, detached build-local removal and idempotent retry.
+- relationships: tests -> `modules/sqfv-batch-cpp/INSTALL.md`, `cmake/SymphonyInstallReceiptV2.cmake`, `cmake/SymphonyUninstallReceiptV2.cmake`
+- consumers: test maintainers, packagers, reviewers
+- deferred_projections: none authorized by this entry
+- notes: Disposable prefixes keep installed user packages outside the test mutation boundary.
 - status: canonical
 
 ##### SQFV Batch Independent Consumer Build

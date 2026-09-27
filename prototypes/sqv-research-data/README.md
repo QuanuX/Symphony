@@ -1,14 +1,15 @@
 # SQV research-data native prototype
 
-Status: development prototype, 26 September 2026. This is the first bounded
-offline implementation slice. It is not an installed Symphony module, a
-registered SQV child, an admitted wire schema, a qxctl command, or a release.
+Status: historical development precursor, 26 September 2026. The admitted
+SQFV implementation is [sqfv-batch-cpp](../../modules/sqfv-batch-cpp/MANIFEST.md).
+This prototype remains an offline fixture, without an installed package,
+admitted wire schema, qxctl command, or release.
 The source whitepaper and its decision register are design input; this code's
 tests are the evidence for the narrower implemented behavior below.
 
 ## Implemented slice
 
-- Native C++20 preparation copies caller bytes into an immutable allocation.
+- Native C++26 preparation copies caller bytes into an immutable allocation.
 - Exact in-process access-scope equality grants a read lease. Multiple trusted
   readers share the same allocation; the allocation remains live until the
   producer and every reader release their handles.
@@ -36,8 +37,9 @@ cmake --build /private/tmp/sqv-g02-build --parallel 2
 ctest --test-dir /private/tmp/sqv-g02-build --output-on-failure
 ```
 
-Two native tests pass on macOS x86_64 with AppleClang 21, both in Debug and
-under AddressSanitizer/UndefinedBehaviorSanitizer. They check original
+The original C++20 prototype's two native tests passed on macOS x86_64 with
+AppleClang 21, both in Debug and under AddressSanitizer/UndefinedBehaviorSanitizer.
+The retained source now requires C++26. The tests check original
 input mutation after publication, two-reader shared allocation and lifetime,
 concurrent read consistency, scope rejection, exact encode/decode, all
 truncated-frame lengths, malformed
@@ -63,6 +65,7 @@ yet provide a global allocation budget or reserved control capacity. A blocked
 offer remains the caller's explicit responsibility; this prototype provides
 no catch-up, durable position, or silent-loss policy.
 
-The implementation remains outside canonical registries while SQV child
-identities, module ownership, and the exact production descriptor are reviewed.
-No command or feature status should be inferred from this directory.
+The prototype remains outside canonical registries. Current SQV child ownership
+and the admitted module contract are recorded separately; this earlier frame
+and its limits do not supersede them. No command or feature status is inferred
+from this directory.

@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- CMake 3.25 or newer
+- CMake 3.30 or newer
 - a C++26-capable compiler
 - a single-configuration CMake generator, such as Unix Makefiles or Ninja
 - POSIX file-descriptor APIs on the supported Linux-first path or macOS development path

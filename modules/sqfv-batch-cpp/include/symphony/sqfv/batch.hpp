@@ -18,7 +18,7 @@ using Generation = std::array<std::uint8_t, generation_bytes>;
 using ByteView = std::span<const std::uint8_t>;
 using MutableBytes = std::span<std::uint8_t>;
 
-// All operations that can fail return a status. Outputs change only on success.
+// Fallible operations return a status. Outputs change only on success.
 // A borrowed span or reference remains valid only while its retaining handle
 // remains live. Do not destroy or move one handle concurrently with its use.
 enum class Status : std::uint8_t {
@@ -142,7 +142,9 @@ class Batch final {
   [[nodiscard]] Status retain(Batch& out) const noexcept;
   [[nodiscard]] Status acquire(std::string_view access_scope,
                                Lease& out) const noexcept;
+  // Requires a nonempty handle (explicit operator bool() is true).
   [[nodiscard]] const Descriptor& descriptor() const noexcept;
+  // Requires a nonempty handle (explicit operator bool() is true).
   [[nodiscard]] const ContentId& content_id() const noexcept;
 
  private:
@@ -164,8 +166,11 @@ class Lease final {
   Lease& operator=(const Lease&) = delete;
 
   [[nodiscard]] explicit operator bool() const noexcept;
+  // An empty handle returns an empty span.
   [[nodiscard]] ByteView payload() const noexcept;
+  // Requires a nonempty handle (explicit operator bool() is true).
   [[nodiscard]] const Descriptor& descriptor() const noexcept;
+  // Requires a nonempty handle (explicit operator bool() is true).
   [[nodiscard]] const ContentId& content_id() const noexcept;
   void reset() noexcept;
 

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.30)
 project(SymphonyKnowledgeVectorEngine VERSION 0.2.0 LANGUAGES CXX)
 
 include(CTest)
@@ -39,6 +39,7 @@ add_library(symphony-knowledge-vector-engine STATIC
     src/temporal.cpp
 )
 add_library(Symphony::KnowledgeVectorEngine ALIAS symphony-knowledge-vector-engine)
+target_compile_features(symphony-knowledge-vector-engine PUBLIC cxx_std_26)
 
 target_include_directories(symphony-knowledge-vector-engine
     PUBLIC

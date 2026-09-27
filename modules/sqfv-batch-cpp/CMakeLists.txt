@@ -108,18 +108,24 @@ add_custom_target(uninstall-${SQFV_MODULE}
 
 if(BUILD_TESTING)
     find_package(Threads REQUIRED)
-    foreach(test_name batch frame)
+    foreach(test_name batch frame allocation_failure)
         if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/${test_name}_test.cpp")
-            add_executable(sqfv-${test_name}-test "tests/${test_name}_test.cpp")
-            target_link_libraries(sqfv-${test_name}-test PRIVATE Symphony::SqfvBatch)
+            string(REPLACE "_" "-" test_target "${test_name}")
+            add_executable(sqfv-${test_target}-test "tests/${test_name}_test.cpp")
+            target_link_libraries(sqfv-${test_target}-test PRIVATE Symphony::SqfvBatch)
             if(test_name STREQUAL "batch")
                 target_link_libraries(sqfv-${test_name}-test PRIVATE Threads::Threads)
             endif()
-            set_target_properties(sqfv-${test_name}-test PROPERTIES
+            set_target_properties(sqfv-${test_target}-test PROPERTIES
                 CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
-            target_compile_options(sqfv-${test_name}-test PRIVATE
+            target_compile_options(sqfv-${test_target}-test PRIVATE
                 $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>)
-            add_test(NAME sqfv-${test_name} COMMAND sqfv-${test_name}-test)
+            add_test(NAME sqfv-${test_target} COMMAND sqfv-${test_target}-test)
         endif()
     endforeach()
+    add_test(NAME sqfv-package-lifecycle
+        COMMAND "${CMAKE_COMMAND}"
+            "-DSQFV_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}"
+            "-DSQFV_BINARY_DIR=${CMAKE_CURRENT_BINARY_DIR}"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/tests/package_lifecycle_test.cmake")
 endif()

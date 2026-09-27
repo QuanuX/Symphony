@@ -6,7 +6,7 @@
 
 The Symphony Validator requires:
 * C++26 compatible toolchain
-* CMake 3.25+
+* CMake 3.30+
 * On macOS: Xcode Command Line Tools or full Xcode with a C++26-capable compiler
 
 ## macOS Build Instructions

@@ -42,6 +42,10 @@ Repository validation closes the source-level independent-developer omission cas
 
 Installed-host completeness is a separate future gate. A caller-supplied engine descriptor is not proof that every installed package was supplied or that it matches an immutable receipt. A future versioned inventory contract must bind a declared-complete package/receipt inventory to every executable descriptor and non-engine administration declaration before installed admission can claim completeness. Until then, installed-host assessment remains explicit and partial rather than silently complete.
 
+## SQFV trusted-process library invariants
+
+`modules/sqfv-batch-cpp/SPEC.md` owns immutable batch lifetime and charged reservations, exact port binding/cursor/credit behavior, and bounded canonical frame integrity. Their three `invariant:symphony:sqfv.*` records bind native producer regressions to independent installed C++26 consumer rejection tests. They describe the admitted same-process library; no IPC adapter or SQV qxctl surface is introduced.
+
 ## Foundational Lifecycle Invariants
 
 The foundational SSIAG/STAV lane applies the registry to the following rule families:

@@ -25,6 +25,8 @@
 - `modules/sqfv-batch-cpp/cmake/uninstall.cmake.in`
 - `modules/sqfv-batch-cpp/tests/batch_test.cpp`
 - `modules/sqfv-batch-cpp/tests/frame_test.cpp`
+- `modules/sqfv-batch-cpp/tests/allocation_failure_test.cpp`
+- `modules/sqfv-batch-cpp/tests/package_lifecycle_test.cmake`
 - `modules/sqfv-batch-cpp/tests/sdk-consumer/CMakeLists.txt`
 - `modules/sqfv-batch-cpp/tests/sdk-consumer/main.cpp`
 

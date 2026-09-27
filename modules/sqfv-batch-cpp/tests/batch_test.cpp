@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <string>
 #include <thread>
+#include <utility>
 #include <vector>
 
 namespace {
@@ -206,6 +207,244 @@ void global_budget() {
           "last handle release did not return reservation");
 }
 
+void retained_context_budget() {
+  FixtureDescriptor fixture;
+  std::vector<std::uint8_t> payload(16, 0x55);
+  Context probe = make_context();
+  Batch measured = make_batch(probe, fixture, 1, payload);
+  ContextStats exact;
+  expect(probe.stats(exact), Status::ok, "measure exact batch budget");
+  measured = Batch{};
+  probe = Context{};
+
+  Context context = make_context(limits(exact.allocation_bytes));
+  Batch batch = make_batch(context, fixture, 1, payload);
+  Lease rejected;
+  expect(batch.acquire(fixture.binding.access_scope, rejected), Status::limit,
+         "exact budget rejects another lease");
+  context = Context{};
+  // Returning only the Context handle's reservation cannot fund a read lease
+  // in this package. Returning the retained shared state as well could fund
+  // two, even though that state is still required by this batch.
+  expect(batch.acquire(fixture.binding.access_scope, rejected), Status::limit,
+         "retained shared context must remain charged");
+  require(!rejected && batch.descriptor().batch_sequence == 1,
+          "retained context budget failure changed an output");
+}
+
+void empty_move_and_replace() {
+  FixtureDescriptor fixture;
+  std::vector<std::uint8_t> payload(16, 0x45);
+  Context context = make_context();
+  Batch batch = make_batch(context, fixture, 1, payload);
+  Lease lease;
+  expect(batch.acquire(fixture.binding.access_scope, lease), Status::ok,
+         "replacement lease setup");
+  const auto id = batch.content_id();
+  const auto* original_payload = lease.payload().data();
+
+  Context empty_context;
+  Batch empty_batch;
+  Port empty_port;
+  Lease empty_lease;
+  ContextStats context_sentinel{11, 12, 13, 14};
+  PortStats port_sentinel{11, 12, 13, 14, 15, true};
+  expect(empty_context.stats(context_sentinel), Status::invalid_argument,
+         "empty context stats");
+  expect(empty_context.prepare_copy(fixture.descriptor(2), payload, batch),
+         Status::invalid_argument, "empty context prepare");
+  Port live = make_port(context, fixture, 1, 32, 2);
+  expect(empty_context.add_port(fixture.port_config(1, 32, 2), live),
+         Status::invalid_argument, "empty context port");
+  expect(empty_batch.retain(batch), Status::invalid_argument,
+         "empty batch retain");
+  expect(empty_batch.acquire(fixture.binding.access_scope, lease),
+         Status::invalid_argument, "empty batch acquire");
+  expect(live.offer(empty_batch), Status::invalid_argument,
+         "offer empty batch");
+  expect(empty_port.offer(batch), Status::invalid_argument,
+         "empty port offer");
+  expect(empty_port.take(lease), Status::invalid_argument, "empty port take");
+  expect(empty_port.cancel(1), Status::invalid_argument, "empty port cancel");
+  expect(empty_port.stats(port_sentinel), Status::invalid_argument,
+         "empty port stats");
+  require(context_sentinel.allocation_bytes == 11 &&
+              context_sentinel.live_ports == 14 &&
+              port_sentinel.next_sequence == 11 &&
+              port_sentinel.sequence_exhausted && batch.content_id() == id &&
+              lease.payload().data() == original_payload && live &&
+              empty_lease.payload().empty(),
+          "empty input failure changed output or empty payload");
+
+  Batch moved = std::move(batch);
+  require(!batch && moved.content_id() == id,
+          "batch move lost ownership");
+  expect(batch.retain(empty_batch), Status::invalid_argument,
+         "moved-from batch retain");
+  expect(moved.retain(moved), Status::ok, "self retain");
+  expect(context.prepare_copy(moved.descriptor(), lease.payload(), moved),
+         Status::ok, "replace with borrowed descriptor and payload");
+  require(moved.content_id() == id, "alias replacement changed content");
+
+  expect(live.offer(moved), Status::ok, "replace lease first offer");
+  expect(live.take(lease), Status::ok, "replace existing direct lease");
+  Batch second = make_batch(context, fixture, 2, payload);
+  expect(live.offer(second), Status::ok, "replace lease second offer");
+  expect(live.take(lease), Status::ok, "replace existing port lease");
+  PortStats stats;
+  expect(live.stats(stats), Status::ok, "replacement port stats");
+  require(stats.outstanding_bytes == payload.size() &&
+              stats.pending_entries == 0 &&
+              lease.descriptor().batch_sequence == 2,
+          "lease replacement did not release previous credit");
+  Lease moved_lease = std::move(lease);
+  require(!lease && lease.payload().empty() &&
+              moved_lease.descriptor().batch_sequence == 2,
+          "lease move lost ownership");
+  moved_lease.reset();
+  Port moved_port = std::move(live);
+  expect(live.take(lease), Status::invalid_argument, "moved-from port take");
+  Context moved_context = std::move(context);
+  expect(context.stats(context_sentinel), Status::invalid_argument,
+         "moved-from context stats");
+  expect(moved_context.stats(context_sentinel), Status::ok,
+         "moved context stats");
+  moved_port.reset();
+  moved_port.reset();
+}
+
+void binding_validation() {
+  FixtureDescriptor fixture;
+  std::vector<std::uint8_t> payload(16, 0x32);
+  Context context = make_context(limits(8U * 1024U * 1024U, 1));
+  Batch retained = make_batch(context, fixture, 1, payload);
+  const auto original_id = retained.content_id();
+  auto descriptor = fixture.descriptor(1);
+  descriptor.producer_generation = {};
+  expect(context.prepare_copy(descriptor, payload, retained),
+         Status::invalid_argument, "zero generation");
+  descriptor = fixture.descriptor(1);
+  descriptor.record_count = 0;
+  expect(context.prepare_copy(descriptor, payload, retained),
+         Status::invalid_argument, "zero records");
+  descriptor = fixture.descriptor(1);
+  descriptor.source_binding.clear();
+  expect(context.prepare_copy(descriptor, payload, retained),
+         Status::invalid_argument, "source position without binding");
+  descriptor = fixture.descriptor(1);
+  descriptor.partition.assign(4096, 'p');
+  expect(context.prepare_copy(descriptor, payload, retained), Status::limit,
+         "combined descriptor ceiling");
+  require(retained.content_id() == original_id,
+          "descriptor rejection replaced a batch");
+
+  Port port = make_port(context, fixture, 1, 32, 2);
+  Port rejected;
+  expect(context.add_port(fixture.port_config(1, 32, 2), rejected),
+         Status::limit, "context port count");
+  auto changed = fixture;
+  changed.binding.access_scope += "different";
+  Batch wrong_scope = make_batch(context, changed, 1, payload);
+  expect(port.offer(wrong_scope), Status::scope_mismatch, "port scope binding");
+  changed = fixture;
+  changed.binding.dataset_revision += "different";
+  Batch wrong_binding = make_batch(context, changed, 1, payload);
+  expect(port.offer(wrong_binding), Status::binding_mismatch,
+         "port metadata binding");
+  changed = fixture;
+  changed.generation[0] = 2;
+  Batch wrong_generation = make_batch(context, changed, 1, payload);
+  expect(port.offer(wrong_generation), Status::binding_mismatch,
+         "port generation binding");
+  Context another = make_context();
+  Batch foreign = make_batch(another, fixture, 1, payload);
+  expect(port.offer(foreign), Status::invalid_argument, "foreign context");
+  PortStats stats;
+  expect(port.stats(stats), Status::ok, "rejected binding stats");
+  require(!rejected && stats.next_sequence == 1 && stats.pending_entries == 0 &&
+              stats.outstanding_bytes == 0,
+          "binding rejection consumed cursor or credit");
+}
+
+void concurrent_flow() {
+  FixtureDescriptor fixture;
+  Context context = make_context();
+  Port port = make_port(context, fixture, 1, 4096, 4);
+  constexpr unsigned count = 4096;
+  std::atomic<bool> failed{false};
+  std::atomic<bool> readers_done{false};
+  std::atomic<unsigned> received{0};
+  const auto deadline = std::chrono::steady_clock::now() +
+                        std::chrono::seconds(30);
+  std::thread consumer([&] {
+    Lease lease;
+    for (unsigned sequence = 1; sequence <= count && !failed.load();) {
+      const auto result = port.take(lease);
+      if (result == Status::empty) {
+        if (std::chrono::steady_clock::now() > deadline) {
+          failed = true;
+          break;
+        }
+        std::this_thread::yield();
+        continue;
+      }
+      if (result != Status::ok || lease.descriptor().batch_sequence != sequence ||
+          lease.payload().size() != 1024 ||
+          lease.payload().front() != static_cast<std::uint8_t>(sequence)) {
+        failed = true;
+        break;
+      }
+      // Replacing this live lease on the next take must return its old credit.
+      received = sequence++;
+    }
+  });
+  std::thread observer([&] {
+    while (!readers_done.load() && !failed.load()) {
+      ContextStats global;
+      PortStats local;
+      if (context.stats(global) != Status::ok ||
+          port.stats(local) != Status::ok ||
+          global.allocation_bytes > global.allocation_limit_bytes ||
+          local.outstanding_bytes > local.outstanding_byte_credit ||
+          local.pending_entries > local.max_pending_entries) {
+        failed = true;
+        break;
+      }
+      std::this_thread::yield();
+    }
+  });
+  std::vector<std::uint8_t> payload(1024);
+  for (unsigned sequence = 1; sequence <= count && !failed.load(); ++sequence) {
+    payload.front() = static_cast<std::uint8_t>(sequence);
+    Batch batch;
+    if (context.prepare_copy(fixture.descriptor(sequence), payload, batch) !=
+        Status::ok) {
+      failed = true;
+      break;
+    }
+    while (!failed.load()) {
+      const auto result = port.offer(batch);
+      if (result == Status::ok) break;
+      if (result != Status::blocked ||
+          std::chrono::steady_clock::now() > deadline) {
+        failed = true;
+        break;
+      }
+      std::this_thread::yield();
+    }
+  }
+  consumer.join();
+  readers_done = true;
+  observer.join();
+  require(!failed.load() && received.load() == count,
+          "concurrent flow lost a delivery, raced accounting, or failed");
+  PortStats final;
+  expect(port.stats(final), Status::ok, "concurrent final stats");
+  require(final.pending_entries == 0 && final.outstanding_bytes == 0 &&
+              final.next_sequence == count + 1,
+          "concurrent flow did not return all credits");
+}
+
 void cursor_and_credit_isolation() {
   FixtureDescriptor fixture;
   Context context = make_context();
@@ -393,6 +632,10 @@ int main(int argc, char **argv) {
     } else if (argc == 1) {
       immutability_and_lifetime();
       global_budget();
+      retained_context_budget();
+      empty_move_and_replace();
+      binding_validation();
+      concurrent_flow();
       cursor_and_credit_isolation();
       sequence_exhaustion();
     } else {

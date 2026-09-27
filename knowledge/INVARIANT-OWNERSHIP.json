@@ -2232,6 +2232,107 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "consumer_rejects_corrupt_frame"
+          ],
+          "path": "modules/sqfv-batch-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqfv.frame-integrity",
+      "ipc_boundary": false,
+      "owner_component": "sqfv-batch-cpp",
+      "owner_contract": "modules/sqfv-batch-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqfv-batch-cpp/src/batch.cpp",
+        "modules/sqfv-batch-cpp/src/frame.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "decode_reservation_failure_preserves_output",
+            "digest_valid_semantic_rejections",
+            "golden_round_trip_and_exact_limits",
+            "sha256_padding_boundaries"
+          ],
+          "path": "modules/sqfv-batch-cpp/tests/frame_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "The SQFV owner alone defines canonical SQF1 bytes and content identity. Decode validates configured lengths, version, flags, canonical descriptor semantics and the complete frame digest before publication; rejection preserves the existing output and releases provisional reservation. The installed consumer uses this exact library contract and cannot turn an integrity check into source authentication.",
+      "status": "active",
+      "title": "SQFV local frames preserve exact bounded content"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "consumer_rejects_incompatible_binding"
+          ],
+          "path": "modules/sqfv-batch-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqfv.port-binding-and-cursor",
+      "ipc_boundary": false,
+      "owner_component": "sqfv-batch-cpp",
+      "owner_contract": "modules/sqfv-batch-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqfv-batch-cpp/src/batch.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "binding_validation",
+            "concurrent_flow",
+            "cursor_and_credit_isolation",
+            "sequence_exhaustion"
+          ],
+          "path": "modules/sqfv-batch-cpp/tests/batch_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Each SQFV port compares the exact resolved binding, partition and generation before accepting its next sequence. Mismatch, duplicate, conflict, gap, stale and blocked outcomes do not advance the accepted cursor or consume new credit. A taken lease retains that port credit until release; cancelling or releasing one branch does not consume another branch allowance.",
+      "status": "active",
+      "title": "SQFV ports preserve independent binding and acceptance state"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "consumer_rejects_exhausted_budget"
+          ],
+          "path": "modules/sqfv-batch-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqfv.retained-reservation-lifetime",
+      "ipc_boundary": false,
+      "owner_component": "sqfv-batch-cpp",
+      "owner_contract": "modules/sqfv-batch-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqfv-batch-cpp/src/batch.cpp",
+        "modules/sqfv-batch-cpp/src/batch_internal.hpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "empty_move_and_replace",
+            "global_budget",
+            "immutability_and_lifetime",
+            "retained_context_budget"
+          ],
+          "path": "modules/sqfv-batch-cpp/tests/batch_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Preparation copies caller bytes into immutable owned storage only after bounded admission. Every live shared state and retaining handle keeps its declared reservation until its exact lifetime ends, including after Context destruction. Allocation failure preserves published outputs and returns provisional charges. A retained batch or lease remains valid until its own ownership ends; reference accessors require a nonempty handle.",
+      "status": "active",
+      "title": "SQFV retained objects preserve lifetime and reservation"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
             "TestProviderBindingAuditProjectionExcludesAdministrativeReason",
             "TestProviderBindingRoutesAreHeadlessStrictAndIdempotent"
           ],
@@ -2500,7 +2601,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:9f0611343dedc58a2b38884e12f9cd8b784dd656a303fb5d9a23c1898ae469a4",
+  "registry_digest": "sha256:d20d9b6621cc1a8d3118567c0b61b49c14fd9da5cd788fdad6e11c07dc0a0101",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

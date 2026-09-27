@@ -130,6 +130,9 @@ std::uint64_t descriptor_string_bytes(const detail::DescriptorView& in) noexcept
 namespace detail {
 
 struct ContextState {
+  // The initial total includes this shared state's permanent reservation and
+  // the first ContextHandle. Only the handle's portion is released when that
+  // handle dies: batches, ports, and leases can still retain this state.
   explicit ContextState(Limits configured, std::uint64_t initial)
       : limits(configured), used(initial), peak(initial) {}
 
@@ -413,15 +416,17 @@ Status Context::create(const Limits& limits, Context& out) noexcept {
       limits.global_allocation_bytes == 0 ||
       limits.max_ports == 0 || limits.max_ports > kMaxPorts)
     return Status::invalid_argument;
-  const auto initial =
-      sizeof(detail::ContextState) + sizeof(detail::ContextHandle) +
-      2 * kAllocationAllowance;
+  const auto state_amount =
+      sizeof(detail::ContextState) + kAllocationAllowance;
+  const auto handle_amount =
+      handle_reservation_bytes<detail::ContextHandle>();
+  const auto initial = state_amount + handle_amount;
   if (limits.global_allocation_bytes < initial) return Status::limit;
   try {
     auto state = std::make_shared<detail::ContextState>(limits, initial);
     auto handle = std::make_unique<detail::ContextHandle>();
     handle->state = state;
-    handle->reservation = detail::Reservation(state, initial);
+    handle->reservation = detail::Reservation(state, handle_amount);
     out.impl_ = std::move(handle);
     return Status::ok;
   } catch (const std::bad_alloc&) {

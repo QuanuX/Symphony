@@ -86,6 +86,25 @@ constexpr const char *kGoldenFrame =
 constexpr const char *kGoldenContentId =
     "7589379f3046a7768b9181634adb3305bf921e7b5fcce6e92f5281981eb4a189";
 
+void reject_preserving_output(Context &context, ByteView frame,
+                              Status wanted, Batch &output,
+                              const char *operation) {
+  require(static_cast<bool>(output), "rejection sentinel is empty");
+  const Descriptor *original_descriptor = &output.descriptor();
+  const ContentId original_id = output.content_id();
+  ContextStats before;
+  expect(context.stats(before), Status::ok, "stats before rejected decode");
+  expect(frame_decode(context, frame, output), wanted, operation);
+  ContextStats after;
+  expect(context.stats(after), Status::ok, "stats after rejected decode");
+  require(output && &output.descriptor() == original_descriptor &&
+              output.content_id() == original_id,
+          "rejected decode replaced the existing output batch");
+  require(after.allocation_bytes == before.allocation_bytes &&
+              after.live_ports == before.live_ports,
+          "rejected decode leaked context reservations");
+}
+
 void golden_round_trip_and_exact_limits() {
   Fixture fixture;
   auto context = make_context(limits());
@@ -132,25 +151,22 @@ void golden_round_trip_and_exact_limits() {
 void rejection_matrix() {
   auto context = make_context(limits(10, 256, 128));
   const auto frame = hex_bytes(kGoldenFrame);
+  auto decoded = make_batch(context, Fixture{});
   for (std::size_t count = 0; count < frame.size(); ++count) {
-    Batch decoded;
-    expect(frame_decode(context, ByteView(frame.data(), count), decoded),
-           Status::corrupt_frame, "every truncation boundary");
-    require(!decoded, "truncated frame published a batch");
+    reject_preserving_output(context, ByteView(frame.data(), count),
+                             Status::corrupt_frame, decoded,
+                             "every truncation boundary");
   }
   auto bad = frame;
   bad.push_back(0);
-  Batch decoded;
-  expect(frame_decode(context, ByteView(bad), decoded), Status::corrupt_frame,
-         "trailing byte");
+  reject_preserving_output(context, ByteView(bad), Status::corrupt_frame,
+                           decoded, "trailing byte");
 
   auto reject = [&](std::size_t offset, std::uint8_t mask, Status wanted,
                     const char *name) {
     auto mutated = frame;
     mutated[offset] ^= mask;
-    Batch result;
-    expect(frame_decode(context, ByteView(mutated), result), wanted, name);
-    require(!result, "invalid frame published a batch");
+    reject_preserving_output(context, ByteView(mutated), wanted, decoded, name);
   };
   reject(0, 1, Status::corrupt_frame, "bad magic");
   reject(5, 1, Status::unsupported_frame, "unsupported major");
@@ -166,13 +182,131 @@ void rejection_matrix() {
 
   bad = frame;
   std::fill(bad.begin() + 12, bad.begin() + 24, 0xff);
-  expect(frame_decode(context, ByteView(bad), decoded), Status::limit,
-         "forged oversized declared lengths");
+  reject_preserving_output(context, ByteView(bad), Status::limit, decoded,
+                           "forged oversized declared lengths");
   bad = frame;
   bad[24] = 0xff;
   bad[25] = 0xff;
-  expect(frame_decode(context, ByteView(bad), decoded), Status::corrupt_frame,
-         "truncated descriptor field");
+  reject_preserving_output(context, ByteView(bad), Status::corrupt_frame,
+                           decoded, "truncated descriptor field");
+}
+
+void digest_valid_semantic_rejections() {
+  // Each digest was independently computed with Python hashlib over the
+  // changed prefix/descriptor and unchanged payload. Keeping a valid digest
+  // ensures these cases reach descriptor validation after integrity checking.
+  struct EmptyField {
+    std::size_t value_offset;
+    const char *digest;
+    const char *name;
+  };
+  constexpr EmptyField empty_fields[] = {
+      {26, "a702aee1c2b8c2ca90b4ae8005c50aa4b76161c130903c42e7aefa046f50d3f7", "empty metadata reference"},
+      {29, "608ef4452078b94835e208d2edee75c0898dc22743229cb8112956306801f088", "empty dataset revision"},
+      {32, "084fa412b8ea3a903f73c58eacdaa49f2b49d294889aca3273ade69fffd1aebf", "empty schema version"},
+      {35, "7e551b2dba425bd8d378a0db77e0492a3e6c1eb48b9a4e2c85d0ba393a77f928", "empty layout version"},
+      {38, "2486ead60f2b4caf3bba81103e6d3b65a4e67cac7ac5ae119bbdf0c3b1857507", "empty access scope"},
+      {41, "763c256656e317c011abcd2968b69ca270e3e9d1f56aa9d5ef200a1a7426ecc0", "empty partition"},
+      {44, "f24e2e3867a8d314e7b9da7099d04a72dc01d5f6250f72260ec5fcfb8a16af9e", "source position without binding"},
+  };
+  auto context = make_context(limits());
+  auto output = make_batch(context, Fixture{});
+  for (const auto &test : empty_fields) {
+    auto frame = hex_bytes(kGoldenFrame);
+    frame[test.value_offset - 1] = 0; // u16 field length: one byte to zero.
+    frame.erase(frame.begin() + test.value_offset);
+    --frame[15]; // Header and descriptor lengths both shrink by one.
+    --frame[23];
+    const auto digest = hex_bytes(test.digest);
+    std::copy(digest.begin(), digest.end(), frame.begin() + 81);
+    reject_preserving_output(context, ByteView(frame), Status::corrupt_frame,
+                             output, test.name);
+  }
+
+  struct ZeroField {
+    std::size_t offset;
+    std::size_t width;
+    const char *digest;
+    const char *name;
+  };
+  constexpr ZeroField zero_fields[] = {
+      {50, 16, "46012b1ee475beec39cb45dd8d501509e69a89e0a2c068518e6ffef637d3b166", "zero producer generation"},
+      {74, 8, "0f78f0e81973bf6ff36425718996d07067fecb66bc22fda1301298d103c8facf", "zero record count"},
+  };
+  for (const auto &test : zero_fields) {
+    auto frame = hex_bytes(kGoldenFrame);
+    std::fill_n(frame.begin() + test.offset, test.width, 0);
+    const auto digest = hex_bytes(test.digest);
+    std::copy(digest.begin(), digest.end(), frame.begin() + 82);
+    reject_preserving_output(context, ByteView(frame), Status::corrupt_frame,
+                             output, test.name);
+  }
+}
+
+void decode_reservation_failure_preserves_output() {
+  auto calibration = make_context(limits());
+  ContextStats base;
+  expect(calibration.stats(base), Status::ok, "measure context reservation");
+  auto batch = make_batch(calibration, Fixture{});
+  ContextStats prepared;
+  expect(calibration.stats(prepared), Status::ok, "measure batch reservation");
+  const auto batch_charge = prepared.allocation_bytes - base.allocation_bytes;
+  require(batch_charge > 0, "batch has no reservation charge");
+
+  auto selected = limits();
+  selected.global_allocation_bytes = prepared.allocation_bytes + batch_charge - 1;
+  auto context = make_context(selected);
+  auto output = make_batch(context, Fixture{});
+  const auto frame = hex_bytes(kGoldenFrame);
+  reject_preserving_output(context, ByteView(frame), Status::limit, output,
+                           "decode one reservation unit short");
+}
+
+void sha256_padding_boundaries() {
+  struct Golden {
+    std::size_t payload_size;
+    const char *frame_digest;
+    const char *content_id;
+  };
+  // Independent hashlib vectors: payload bytes are 0, 1, ..., n-1.
+  // Frame hashing adds 111 bytes before the payload, so n=8/9 crosses its
+  // 55/56-byte padding boundary. n=55/56 crosses the payload hash boundary.
+  constexpr Golden goldens[] = {
+      {8, "234fc70cf4483db219193e1507de35dab3c74d40da10dac8fa801df02c581d43",
+       "8f92dba4f3c53fee58a9c86f9be6e88959b42f9be411861af7f3217b22e1e53c"},
+      {9, "5cb1f3773b31f437ef975599e2673f6f0e26223b01e9468e1dc6f9f69389e6f0",
+       "cd7332068d1f3b158f63261ca6b932eca20930fa6357481f49dfa1e6e3675253"},
+      {55, "412d6bf8c4ee367b077212a6bf247fd37c9200a59f7ea3342738c1de8006980a",
+       "d21e1c52e74c03e450a41ba98441367190d0baf29326e4c637527bf546a7fa69"},
+      {56, "d6ab8b48a9a56fa962cc058ee405f11477716f0e0f526312603ead1e94aebd1b",
+       "741250d9efd36d1fcc7a395aa6472abaeb08cfd926988297ce1d6a75fb3b291e"},
+  };
+  auto context = make_context(limits(56, 170, 58));
+  for (const auto &golden : goldens) {
+    Fixture fixture;
+    fixture.payload.resize(golden.payload_size);
+    for (std::size_t index = 0; index < fixture.payload.size(); ++index)
+      fixture.payload[index] = static_cast<std::uint8_t>(index);
+    auto batch = make_batch(context, fixture);
+    std::vector<std::uint8_t> frame(114 + golden.payload_size);
+    std::size_t written = 0;
+    expect(frame_encode(context, batch, MutableBytes(frame), written),
+           Status::ok, "encode SHA padding boundary");
+    require(written == frame.size(), "padding-boundary frame size changed");
+    const auto expected_digest = hex_bytes(golden.frame_digest);
+    const auto expected_id = hex_bytes(golden.content_id);
+    require(std::equal(expected_digest.begin(), expected_digest.end(),
+                       frame.begin() + 82),
+            "frame digest differs at SHA padding boundary");
+    require(std::equal(expected_id.begin(), expected_id.end(),
+                       batch.content_id().begin()),
+            "content ID differs at SHA padding boundary");
+    Batch decoded;
+    expect(frame_decode(context, ByteView(frame), decoded), Status::ok,
+           "decode SHA padding boundary");
+    require(decoded.content_id() == batch.content_id(),
+            "decode changed content ID at SHA padding boundary");
+  }
 }
 
 void configured_max_plus_one() {
@@ -244,6 +378,9 @@ int main() {
   try {
     golden_round_trip_and_exact_limits();
     rejection_matrix();
+    digest_valid_semantic_rejections();
+    decode_reservation_failure_preserves_output();
+    sha256_padding_boundaries();
     configured_max_plus_one();
     fixture_profile_boundary_and_streaming_digest();
     return 0;

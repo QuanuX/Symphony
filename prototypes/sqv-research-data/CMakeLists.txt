@@ -1,11 +1,12 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.30)
 project(SymphonySqvResearchPrototype LANGUAGES CXX)
 include(CTest)
 find_package(Threads REQUIRED)
 
 add_library(sqv-prepared-batch STATIC src/prepared_batch.cpp src/flow.cpp)
 target_include_directories(sqv-prepared-batch PUBLIC include)
-target_compile_features(sqv-prepared-batch PUBLIC cxx_std_20)
+target_compile_features(sqv-prepared-batch PUBLIC cxx_std_26)
+set_target_properties(sqv-prepared-batch PROPERTIES CXX_EXTENSIONS OFF)
 target_compile_options(sqv-prepared-batch PRIVATE -Wall -Wextra -Wpedantic -Werror)
 
 if(BUILD_TESTING)

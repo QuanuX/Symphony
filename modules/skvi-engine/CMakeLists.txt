@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.30)
 project(SymphonySkviEngine VERSION 0.2.0 LANGUAGES CXX)
 
 include(CTest)
