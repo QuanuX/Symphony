@@ -1,0 +1,8 @@
+@PACKAGE_INIT@
+include(CMakeFindDependencyMacro)
+find_dependency(SymphonyKnowledgeVectorEngine 0.2.0 EXACT CONFIG)
+find_dependency(SymphonySqfvBatch 0.2.0 EXACT CONFIG)
+find_dependency(SymphonySqmvMetadata 0.1.0 EXACT CONFIG)
+set(SymphonySqavCapture_RELEASE_VERSION "@SQAV_VERSION@")
+include("${CMAKE_CURRENT_LIST_DIR}/SymphonySqavCaptureTargets.cmake")
+check_required_components(SymphonySqavCapture)

@@ -16,9 +16,11 @@ Provider payloads retain their actual rights and access scope; collection does n
 
 First-party collection, parsing, and provider-facing movement are native C++. Suitable native dependencies are explicit and versioned. IBKR research collection must consume a separately admitted SCABV-owned read-only provider binding; SQAV does not fabricate that adapter or a duplicate broker authority. FIX remains SOOV-owned. No listed source is operational until its exact connector and conformance evidence exist.
 
-## Deferred Technical Contract
+## First Native Capture Contract
 
-The first source operation, credential and access path, payload schema, parser ABI, restart semantics, target platform, throughput bound, and package lifecycle require separate admission. This Quad creates no installed capability or namespace family.
+`modules/sqav-capture-cpp/SPEC.md` owns the first `0.1.0-dev` C++26 optional offline capture contract. Bounded original bytes and attributable exact source/interface/adapter fields, attempt identity, native position, distinct time roles/precision, coverage assertions and optional source count have an immutable encoding. The source identity and capture identity remain distinct from SQFV transfer sequence. An exact SQMV bridge admits the capture envelope through existing movement, retention and delivery owners.
+
+This library resolves no credentials, reads no source file, opens no provider connection and interprets no provider schema. Exact source operations, provider parsers, access enforcement, reconnect/backfill and workload thresholds need separate admission. A caller's coverage assertion or digest does not establish source authority. Other native representations remain valid choices; no new colon namespace or SQV qxctl surface is allocated.
 
 ## Non-Authorization Statement
 

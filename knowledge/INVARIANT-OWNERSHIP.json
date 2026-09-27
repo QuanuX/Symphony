@@ -2232,6 +2232,71 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "installed_capture_rejection",
+            "installed_capture_roundtrip"
+          ],
+          "path": "modules/sqav-capture-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.bounded-capture-decoding",
+      "ipc_boundary": false,
+      "owner_component": "sqav-capture-cpp",
+      "owner_contract": "modules/sqav-capture-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-capture-cpp/src/capture.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "allocation_rollback",
+            "malformed_and_limits"
+          ],
+          "path": "modules/sqav-capture-cpp/tests/capture_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Finite capture/metadata/field/count bounds and canonical grammar are checked before parsed-state allocation. Digest, expected reference, exact metadata and source binding must match; failure preserves outputs and temporary SQFV reservations are released.",
+      "status": "active",
+      "title": "SQAV rejects malformed and incompatible captures atomically"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_capture_rejection",
+            "installed_capture_roundtrip"
+          ],
+          "path": "modules/sqav-capture-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqav.original-byte-provenance",
+      "ipc_boundary": false,
+      "owner_component": "sqav-capture-cpp",
+      "owner_contract": "modules/sqav-capture-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqav-capture-cpp/src/capture.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "binding_and_original_identity",
+            "exact_capture_roundtrip",
+            "retained_delivery_composition"
+          ],
+          "path": "modules/sqav-capture-cpp/tests/capture_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Capture identity binds original bytes, exact source/interface/adapter, attempt, native position, time roles/precision and coverage assertions. Source position and optional provider count remain distinct from transfer sequence and envelope count. Digests and asserted coverage grant no source authority.",
+      "status": "active",
+      "title": "SQAV preserves original bytes and attributable source meaning"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
             "installed_delivery_ack_credit_and_terminal"
           ],
           "path": "modules/sqdv-delivery-cpp/tests/sdk-consumer/main.cpp"
@@ -2891,7 +2956,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:84418351f17fac45e3ea409d7d9abe771a90583cfba7259cc08cdc0c3639e0c8",
+  "registry_digest": "sha256:0fd9a5b18eaf1ad0d6c7a95d74f5e81331aec1bab9a05242d4be53a997d97eaa",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

@@ -129,6 +129,7 @@ The platform governance companions under `knowledge/platform/` retain Symphony-w
 - `modules/secure-identity-access-governance/MANIFEST.md`
 - `modules/sev-engine/MANIFEST.md`
 - `modules/skvi-engine/MANIFEST.md`
+- `modules/sqav-capture-cpp/MANIFEST.md`
 - `modules/sqdv-delivery-cpp/MANIFEST.md`
 - `modules/sqfv-batch-cpp/MANIFEST.md`
 - `modules/sqmv-metadata-cpp/MANIFEST.md`

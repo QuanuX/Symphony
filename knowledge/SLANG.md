@@ -297,7 +297,7 @@ A term is admitted only after its semantic owner exists. A name used in discussi
 - owner_contract: `knowledge/sqv/INTENT.md`
 - example: `SQV may provide a reusable ratified framework component that a user's Nest elects to use.`
 - counterexample: `SQV owns user strategy logic or imposes one feed, broker, data, order, or execution design.`
-- notes: The preferred abbreviation is `SQV`. SQAV, SQMV, SQFV, SQTV, SQPV, and SQDV are research-data purpose owners. SQMV, SQFV, SQPV and SQDV have bounded C++26 metadata, flow, local retention and delivery libraries; SQAV and SQTV remain architecture-only. SOOV separately owns FIX architecture.
+- notes: The preferred abbreviation is `SQV`. SQAV, SQMV, SQFV, SQTV, SQPV, and SQDV are research-data purpose owners. SQAV, SQMV, SQFV, SQPV and SQDV have bounded C++26 capture, metadata, flow, local retention and delivery libraries; SQTV remains architecture-only. SOOV separately owns FIX architecture.
 
 ### SQAV
 

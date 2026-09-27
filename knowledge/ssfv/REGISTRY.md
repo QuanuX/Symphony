@@ -742,6 +742,15 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:4b4f58ad687266e33feb00ca7c0a97a9488dd4ac8c0ee5e88dc597e1c2552ea7`
 - notes: Architect-ratified F3 nested record for a rebuildable release-transaction projection; coverage remains partial and no broader runtime or canonical authority is implied.
 
+- feature_id: `ssfv:symphony:sqav-capture-cpp`
+- feature_file: `modules/sqav-capture-cpp/FEATURES.md`
+- owner_contract: `modules/sqav-capture-cpp/SPEC.md`
+- source_scope: `modules/sqav-capture-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:7d4fadc5a58b4e9e0b07f105b374963c426f39ad85a070eb9590bad85d8110f5`
+- notes: Optional bounded C++26 original-byte capture and attributed source evidence; no provider connection or source authority is implied.
+
 - feature_id: `ssfv:symphony:sqdv-delivery-cpp`
 - feature_file: `modules/sqdv-delivery-cpp/FEATURES.md`
 - owner_contract: `modules/sqdv-delivery-cpp/SPEC.md`

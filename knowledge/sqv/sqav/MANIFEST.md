@@ -17,7 +17,7 @@ SQAV owns research-data source collection semantics beneath SQV. It preserves so
 
 ## Implementation Status
 
-Canonical architecture contract only. No SQAV module, provider connector, schema, operation, qxctl command, feature record, installed package, or publication is claimed. No `sqav:` identity family is allocated by this Quad.
+`modules/sqav-capture-cpp/` owns the first `0.1.0-dev` C++26 optional offline original-byte capture library, its exact binary format, metadata/flow bridge and package. Provider connectors, provider-specific parsing, live operations and SQV qxctl remain later work. No `sqav:` identity family is allocated by this Quad.
 
 ## Language Boundary
 
