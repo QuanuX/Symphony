@@ -50,6 +50,8 @@ The inventory is intentionally explicit. Directory discovery, file count, langua
 | `modules/skvi-engine` | registered | `ssfv:symphony:skvi-engine` | `modules/skvi-engine/FEATURES.md` |
 | `modules/sodv-engine` | registered | `ssfv:symphony:sodv-engine` | `modules/sodv-engine/FEATURES.md` |
 | `modules/sqfv-batch-cpp` | registered | `ssfv:symphony:sqfv-batch-cpp` | `modules/sqfv-batch-cpp/FEATURES.md` |
+| `modules/sqmv-metadata-cpp` | registered | `ssfv:symphony:sqmv-metadata-cpp` | `modules/sqmv-metadata-cpp/FEATURES.md` |
+| `modules/sqpv-local-store-cpp` | registered | `ssfv:symphony:sqpv-local-store-cpp` | `modules/sqpv-local-store-cpp/FEATURES.md` |
 | `modules/ssfv-engine` | registered | `ssfv:symphony:ssfv-engine` | `modules/ssfv-engine/FEATURES.md` |
 | `modules/ssiag-provider-macos-keychain` | registered | `ssfv:symphony:ssiag.macos-keychain-metadata` | `modules/ssiag-provider-macos-keychain/FEATURES.md` |
 | `modules/stav-append-authority` | registered | `ssfv:symphony:stav-append-authority` | `modules/stav-append-authority/FEATURES.md` |

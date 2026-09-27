@@ -17,11 +17,11 @@ SQMV owns the meaning of research dataset descriptions beneath SQV. Source obser
 
 ## Implementation Status
 
-Canonical architecture contract only. No SQMV module, schema, dataset registry, index, runtime service, provider connection, qxctl operation, feature record, installed package, or publication is claimed. No `sqmv:` identity family is allocated by this Quad.
+The narrow `modules/sqmv-metadata-cpp/` `0.1.0-dev` C++26 library implements immutable metadata reference resolution and exact SQFV binding verification under its own versioned module contract. It records attributable evidence references without a resident catalogue, provider connection, access authority or SQV qxctl operation. No `sqmv:` identity family is allocated by this Quad; the module's content-reference grammar belongs to its exact SPEC.
 
 ## Language Boundary
 
-First-party research-data implementation on the data plane is native C++. This direction does not make metadata lookup a mandatory inline dependency or prescribe a public C++ ABI before its compatibility contract is reviewed.
+First-party research-data implementation on the data plane uses C++26. The first library pins its package dependencies and compatible toolchain; callers may retain a resolved manifest and binding without repeated lookup on the data path.
 
 ## Non-Authorization Statement
 

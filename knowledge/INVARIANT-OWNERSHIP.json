@@ -2333,6 +2333,168 @@
       "consumer_boundary_rejections": [
         {
           "cases": [
+            "installed_manifest_round_trip_and_binding"
+          ],
+          "path": "modules/sqmv-metadata-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqmv.flow-binding",
+      "ipc_boundary": false,
+      "owner_component": "sqmv-metadata-cpp",
+      "owner_contract": "modules/sqmv-metadata-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqmv-metadata-cpp/src/metadata.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "exact_reference_and_binding"
+          ],
+          "path": "modules/sqmv-metadata-cpp/tests/metadata_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "The resolved immutable manifest alone supplies its content reference and exact dataset revision, schema, layout and access assertion for SQFV binding comparison. Unknown compatibility, latest selection and access authorization are not inferred.",
+      "status": "active",
+      "title": "SQMV resolution owns the exact flow metadata binding"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_manifest_failures_preserve_output"
+          ],
+          "path": "modules/sqmv-metadata-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqmv.manifest-integrity",
+      "ipc_boundary": false,
+      "owner_component": "sqmv-metadata-cpp",
+      "owner_contract": "modules/sqmv-metadata-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqmv-metadata-cpp/src/metadata.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "allocation_rollback",
+            "canonical_round_trip",
+            "finite_limits",
+            "immutable_retention",
+            "noncanonical_rejection"
+          ],
+          "path": "modules/sqmv-metadata-cpp/tests/metadata_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Canonical SQM1 encoding preserves exact producer assertions under finite byte, field and evidence limits. Resolution rejects malformed, noncanonical or corrupt bytes and requires the expected content reference before publishing a retained immutable manifest. Failed calls preserve outputs.",
+      "status": "active",
+      "title": "SQMV immutable manifests preserve exact attributable content"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_store_reopen_and_replay"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqpv.exact-stream-admission",
+      "ipc_boundary": false,
+      "owner_component": "sqpv-local-store-cpp",
+      "owner_contract": "modules/sqpv-local-store-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqpv-local-store-cpp/src/local_store.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "capacity_and_output_preservation",
+            "commit_retry_and_exact_stream"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/local_store_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Append checks the resolved SQMV binding, partition and producer generation before accepting the next sequence. Conflicting retries, gaps and capacity exhaustion cannot replace committed bytes. Duplicate retry returns the verified original receipt. Reads preserve exact batch identity under the caller context limits.",
+      "status": "active",
+      "title": "SQPV bounded admission preserves exact retained stream identity"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_store_rejects_busy_and_wrong_options"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqpv.exclusive-store-ownership",
+      "ipc_boundary": false,
+      "owner_component": "sqpv-local-store-cpp",
+      "owner_contract": "modules/sqpv-local-store-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqpv-local-store-cpp/src/local_store.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "exclusive_ownership_and_paths",
+            "fork_during_locked_operation"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/local_store_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "An exact private store is owned by one live writer lock; non-regular or redirected files, incompatible store options and inherited post-fork handles reject. The immutable store generation is distinct from producer sequence and supplies no lock takeover or access authority.",
+      "status": "active",
+      "title": "SQPV store mutation requires exact exclusive local ownership"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
+            "installed_store_rejects_corrupt_retention"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/sdk-consumer/main.cpp"
+        }
+      ],
+      "invariant_id": "invariant:symphony:sqpv.retained-commit-chain",
+      "ipc_boundary": false,
+      "owner_component": "sqpv-local-store-cpp",
+      "owner_contract": "modules/sqpv-local-store-cpp/SPEC.md",
+      "producer_implementations": [
+        "modules/sqpv-local-store-cpp/src/local_store.cpp"
+      ],
+      "producer_regressions": [
+        {
+          "cases": [
+            "allocation_failure_boundaries",
+            "corruption_and_missing",
+            "create_allocation_failure_boundaries",
+            "initialization_crash_boundaries",
+            "partial_staging_retries",
+            "recovery_crash_boundaries",
+            "uncertain_failures_poison_handle"
+          ],
+          "path": "modules/sqpv-local-store-cpp/tests/local_store_test.cpp"
+        }
+      ],
+      "real_process_regressions": [],
+      "statement": "Retained frames, hash-linked commit records and the checked head bind one exact stream. Recovery verifies all acknowledged history and fails on missing or corrupt committed evidence; only complete verified pending commits may advance the head under the stated synchronization guarantee. A lost acknowledgement permits only exact retry.",
+      "status": "active",
+      "title": "SQPV retained commit evidence survives explicit recovery"
+    },
+    {
+      "allowed_adapter_ids": [],
+      "consumer_boundary_rejections": [
+        {
+          "cases": [
             "TestProviderBindingAuditProjectionExcludesAdministrativeReason",
             "TestProviderBindingRoutesAreHeadlessStrictAndIdempotent"
           ],
@@ -2601,7 +2763,7 @@
     }
   ],
   "protocol": "symphony.knowledge.invariant-ownership-registry.v3",
-  "registry_digest": "sha256:d20d9b6621cc1a8d3118567c0b61b49c14fd9da5cd788fdad6e11c07dc0a0101",
+  "registry_digest": "sha256:912467b0a0ec85762ea0c41d355e63bb034886ba6c0717a0231f8f98aa400144",
   "scope": "common_lowest_authoritative_layer",
   "test_policy": {
     "consumer_boundary_rejection_required": true,

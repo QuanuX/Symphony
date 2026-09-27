@@ -14232,3 +14232,419 @@ These entries locate existing implementation and regression surfaces referenced 
 - deferred_projections: none authorized by this entry
 - notes: This source entry does not grant provider, private-access, durability, network, or qxctl SQV authority.
 - status: canonical
+
+##### Foundation Digest Allocation Failure Tests
+- path: `libraries/knowledge-vector-engine-cpp/tests/digest_failure_test.cpp`
+- title: Foundation Digest Allocation Failure Tests
+- surface_type: C++26 focused test
+- truth_role: complete digest or exception evidence source
+- owner: Knowledge Vector Engine foundation maintainers
+- scope: Injects allocation failures into SHA-256 generation and rejects truncated or incorrect successful digest results.
+- relationships: tests -> `libraries/knowledge-vector-engine-cpp/SPEC.md`
+- consumers: native library maintainers, reviewers
+- deferred_projections: none
+- notes: Allocation injection is confined to the test executable.
+- status: canonical
+
+##### SQMV Metadata Intent
+- path: `modules/sqmv-metadata-cpp/INTENT.md`
+- title: SQMV Metadata Intent
+- surface_type: owner intent
+- truth_role: bounded native library purpose
+- owner: SQMV Metadata module maintainers
+- scope: Describes the selected library purpose and open composition boundary.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Manifest
+- path: `modules/sqmv-metadata-cpp/MANIFEST.md`
+- title: SQMV Metadata Manifest
+- surface_type: owner manifest
+- truth_role: exact module source membership
+- owner: SQMV Metadata module maintainers
+- scope: Lists the exact versioned package and its canonical implementation/test surfaces.
+- relationships: declares -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Specification
+- path: `modules/sqmv-metadata-cpp/SPEC.md`
+- title: SQMV Metadata Specification
+- surface_type: owner contract
+- truth_role: exact native behavior and compatibility
+- owner: SQMV Metadata module maintainers
+- scope: Defines the bounded native API, identities, failure outcomes and supported extent.
+- relationships: owned_by -> `knowledge/sqv/sqmv/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Workflow
+- path: `modules/sqmv-metadata-cpp/SKILL.md`
+- title: SQMV Metadata Workflow
+- surface_type: owner workflow contract
+- truth_role: module review and execution boundary
+- owner: SQMV Metadata module maintainers
+- scope: Routes module-specific work to exact contracts and focused acceptance evidence.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Installation
+- path: `modules/sqmv-metadata-cpp/INSTALL.md`
+- title: SQMV Metadata Installation
+- surface_type: package contract
+- truth_role: exact receipt-owned package lifecycle
+- owner: SQMV Metadata module maintainers
+- scope: Documents C++26 dependencies, versioned installation, independent consumers and guarded removal.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Semantic Feature
+- path: `modules/sqmv-metadata-cpp/FEATURES.md`
+- title: SQMV Metadata Semantic Feature
+- surface_type: feature declaration
+- truth_role: bounded implemented capability
+- owner: SQMV Metadata module maintainers
+- scope: Records the experimental native library extent and explicit non-claims.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Build
+- path: `modules/sqmv-metadata-cpp/CMakeLists.txt`
+- title: SQMV Metadata Build
+- surface_type: CMake implementation
+- truth_role: native build and exact package export
+- owner: SQMV Metadata module maintainers
+- scope: Builds and exports the exact C++26 static library and focused tests.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Public API
+- path: `modules/sqmv-metadata-cpp/include/symphony/sqmv/metadata.hpp`
+- title: SQMV Metadata Public API
+- surface_type: C++26 public interface
+- truth_role: trusted caller interface
+- owner: SQMV Metadata module maintainers
+- scope: Declares the move-only native API with explicit bounded inputs and typed failures.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Implementation
+- path: `modules/sqmv-metadata-cpp/src/metadata.cpp`
+- title: SQMV Metadata Implementation
+- surface_type: C++26 implementation
+- truth_role: owner implementation
+- owner: SQMV Metadata module maintainers
+- scope: Implements the exact module contract through explicitly selected native dependencies.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Native Tests
+- path: `modules/sqmv-metadata-cpp/tests/metadata_test.cpp`
+- title: SQMV Metadata Native Tests
+- surface_type: C++26 focused test
+- truth_role: owner regression evidence
+- owner: SQMV Metadata module maintainers
+- scope: Exercises exact identity, bounded failures and module-specific lifetime or recovery behavior.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Package Tests
+- path: `modules/sqmv-metadata-cpp/tests/package_lifecycle_test.cmake`
+- title: SQMV Metadata Package Tests
+- surface_type: CMake focused test
+- truth_role: package lifecycle evidence
+- owner: SQMV Metadata module maintainers
+- scope: Exercises isolated installation, overwrite refusal, integrity guards and source-independent removal.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Independent Consumer Build
+- path: `modules/sqmv-metadata-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQMV Metadata Independent Consumer Build
+- surface_type: CMake acceptance build
+- truth_role: checkout-free consumer evidence
+- owner: SQMV Metadata module maintainers
+- scope: Requires exact installed dependency packages and inherits exported C++26 requirements.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Independent Consumer
+- path: `modules/sqmv-metadata-cpp/tests/sdk-consumer/main.cpp`
+- title: SQMV Metadata Independent Consumer
+- surface_type: C++26 acceptance source
+- truth_role: public consumer rejection evidence
+- owner: SQMV Metadata module maintainers
+- scope: Exercises the installed public interface and rejects incompatible or corrupt inputs.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Package Configuration
+- path: `modules/sqmv-metadata-cpp/cmake/SymphonySqmvMetadataConfig.cmake.in`
+- title: SQMV Metadata Package Configuration
+- surface_type: CMake package template
+- truth_role: exact dependency resolution
+- owner: SQMV Metadata module maintainers
+- scope: Resolves exact installed dependency packages and imports the module target.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQMV Metadata Uninstall
+- path: `modules/sqmv-metadata-cpp/cmake/uninstall.cmake.in`
+- title: SQMV Metadata Uninstall
+- surface_type: CMake uninstall template
+- truth_role: receipt-scoped removal
+- owner: SQMV Metadata module maintainers
+- scope: Invokes the build-local hardened receipt guard with the exact configured ownership set.
+- relationships: implements -> `modules/sqmv-metadata-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Intent
+- path: `modules/sqpv-local-store-cpp/INTENT.md`
+- title: SQPV Local Store Intent
+- surface_type: owner intent
+- truth_role: bounded native library purpose
+- owner: SQPV Local Store module maintainers
+- scope: Describes the selected library purpose and open composition boundary.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Manifest
+- path: `modules/sqpv-local-store-cpp/MANIFEST.md`
+- title: SQPV Local Store Manifest
+- surface_type: owner manifest
+- truth_role: exact module source membership
+- owner: SQPV Local Store module maintainers
+- scope: Lists the exact versioned package and its canonical implementation/test surfaces.
+- relationships: declares -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Specification
+- path: `modules/sqpv-local-store-cpp/SPEC.md`
+- title: SQPV Local Store Specification
+- surface_type: owner contract
+- truth_role: exact native behavior and compatibility
+- owner: SQPV Local Store module maintainers
+- scope: Defines the bounded native API, identities, failure outcomes and supported extent.
+- relationships: owned_by -> `knowledge/sqv/sqpv/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Workflow
+- path: `modules/sqpv-local-store-cpp/SKILL.md`
+- title: SQPV Local Store Workflow
+- surface_type: owner workflow contract
+- truth_role: module review and execution boundary
+- owner: SQPV Local Store module maintainers
+- scope: Routes module-specific work to exact contracts and focused acceptance evidence.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Installation
+- path: `modules/sqpv-local-store-cpp/INSTALL.md`
+- title: SQPV Local Store Installation
+- surface_type: package contract
+- truth_role: exact receipt-owned package lifecycle
+- owner: SQPV Local Store module maintainers
+- scope: Documents C++26 dependencies, versioned installation, independent consumers and guarded removal.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Semantic Feature
+- path: `modules/sqpv-local-store-cpp/FEATURES.md`
+- title: SQPV Local Store Semantic Feature
+- surface_type: feature declaration
+- truth_role: bounded implemented capability
+- owner: SQPV Local Store module maintainers
+- scope: Records the experimental native library extent and explicit non-claims.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Build
+- path: `modules/sqpv-local-store-cpp/CMakeLists.txt`
+- title: SQPV Local Store Build
+- surface_type: CMake implementation
+- truth_role: native build and exact package export
+- owner: SQPV Local Store module maintainers
+- scope: Builds and exports the exact C++26 static library and focused tests.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Public API
+- path: `modules/sqpv-local-store-cpp/include/symphony/sqpv/local_store.hpp`
+- title: SQPV Local Store Public API
+- surface_type: C++26 public interface
+- truth_role: trusted caller interface
+- owner: SQPV Local Store module maintainers
+- scope: Declares the move-only native API with explicit bounded inputs and typed failures.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Implementation
+- path: `modules/sqpv-local-store-cpp/src/local_store.cpp`
+- title: SQPV Local Store Implementation
+- surface_type: C++26 implementation
+- truth_role: owner implementation
+- owner: SQPV Local Store module maintainers
+- scope: Implements the exact module contract through explicitly selected native dependencies.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Native Tests
+- path: `modules/sqpv-local-store-cpp/tests/local_store_test.cpp`
+- title: SQPV Local Store Native Tests
+- surface_type: C++26 focused test
+- truth_role: owner regression evidence
+- owner: SQPV Local Store module maintainers
+- scope: Exercises exact identity, bounded failures and module-specific lifetime or recovery behavior.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Package Tests
+- path: `modules/sqpv-local-store-cpp/tests/package_lifecycle_test.cmake`
+- title: SQPV Local Store Package Tests
+- surface_type: CMake focused test
+- truth_role: package lifecycle evidence
+- owner: SQPV Local Store module maintainers
+- scope: Exercises isolated installation, overwrite refusal, integrity guards and source-independent removal.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Independent Consumer Build
+- path: `modules/sqpv-local-store-cpp/tests/sdk-consumer/CMakeLists.txt`
+- title: SQPV Local Store Independent Consumer Build
+- surface_type: CMake acceptance build
+- truth_role: checkout-free consumer evidence
+- owner: SQPV Local Store module maintainers
+- scope: Requires exact installed dependency packages and inherits exported C++26 requirements.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Independent Consumer
+- path: `modules/sqpv-local-store-cpp/tests/sdk-consumer/main.cpp`
+- title: SQPV Local Store Independent Consumer
+- surface_type: C++26 acceptance source
+- truth_role: public consumer rejection evidence
+- owner: SQPV Local Store module maintainers
+- scope: Exercises the installed public interface and rejects incompatible or corrupt inputs.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Package Configuration
+- path: `modules/sqpv-local-store-cpp/cmake/SymphonySqpvLocalStoreConfig.cmake.in`
+- title: SQPV Local Store Package Configuration
+- surface_type: CMake package template
+- truth_role: exact dependency resolution
+- owner: SQPV Local Store module maintainers
+- scope: Resolves exact installed dependency packages and imports the module target.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Uninstall
+- path: `modules/sqpv-local-store-cpp/cmake/uninstall.cmake.in`
+- title: SQPV Local Store Uninstall
+- surface_type: CMake uninstall template
+- truth_role: receipt-scoped removal
+- owner: SQPV Local Store module maintainers
+- scope: Invokes the build-local hardened receipt guard with the exact configured ownership set.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical
+
+##### SQPV Local Store Interruption Test Hooks
+- path: `modules/sqpv-local-store-cpp/tests/hook.hpp`
+- title: SQPV Local Store Interruption Test Hooks
+- surface_type: C++26 test-only header
+- truth_role: deterministic interruption evidence
+- owner: SQPV Local Store module maintainers
+- scope: Declares private test hooks compiled only into the non-installed test library.
+- relationships: implements -> `modules/sqpv-local-store-cpp/SPEC.md`
+- consumers: native library consumers, maintainers, reviewers
+- deferred_projections: later owner-admitted adapters and platform profiles
+- notes: Exact library evidence grants no provider, access, destination or SQV qxctl authority.
+- status: canonical

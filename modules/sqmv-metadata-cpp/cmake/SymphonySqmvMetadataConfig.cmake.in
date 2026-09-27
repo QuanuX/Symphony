@@ -1,0 +1,7 @@
+@PACKAGE_INIT@
+include(CMakeFindDependencyMacro)
+find_dependency(SymphonyKnowledgeVectorEngine 0.2.0 EXACT CONFIG)
+find_dependency(SymphonySqfvBatch 0.2.0 EXACT CONFIG)
+set(SymphonySqmvMetadata_RELEASE_VERSION "@SQMV_VERSION@")
+include("${CMAKE_CURRENT_LIST_DIR}/SymphonySqmvMetadataTargets.cmake")
+check_required_components(SymphonySqmvMetadata)

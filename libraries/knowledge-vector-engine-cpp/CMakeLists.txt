@@ -88,6 +88,13 @@ if(SYMPHONY_KVE_BUILD_TESTING)
         $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>
     )
     add_test(NAME knowledge-vector-native-process-tests COMMAND knowledge-vector-native-process-tests)
+    add_executable(knowledge-vector-digest-failure-tests tests/digest_failure_test.cpp)
+    target_link_libraries(knowledge-vector-digest-failure-tests PRIVATE Symphony::KnowledgeVectorEngine)
+    set_target_properties(knowledge-vector-digest-failure-tests PROPERTIES
+        CXX_STANDARD 26 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF)
+    target_compile_options(knowledge-vector-digest-failure-tests PRIVATE
+        $<$<CXX_COMPILER_ID:AppleClang,Clang,GNU>:-Wall;-Wextra;-Wpedantic;-Werror>)
+    add_test(NAME knowledge-vector-digest-failure-tests COMMAND knowledge-vector-digest-failure-tests)
 endif()
 
 symphony_install_receipt_v2_preflight(

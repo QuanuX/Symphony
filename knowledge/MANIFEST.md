@@ -130,6 +130,8 @@ The platform governance companions under `knowledge/platform/` retain Symphony-w
 - `modules/sev-engine/MANIFEST.md`
 - `modules/skvi-engine/MANIFEST.md`
 - `modules/sqfv-batch-cpp/MANIFEST.md`
+- `modules/sqmv-metadata-cpp/MANIFEST.md`
+- `modules/sqpv-local-store-cpp/MANIFEST.md`
 - `modules/sodv-engine/MANIFEST.md`
 - `modules/ssfv-engine/MANIFEST.md`
 - `modules/ssiag-provider-macos-keychain/MANIFEST.md`

@@ -18,11 +18,11 @@ SQV owns Symphony-authored quantitative framework semantics while preserving com
 
 ## Research-Data Child Posture
 
-The six research-data children have Contract Quads under `knowledge/sqv/sqav/`, `knowledge/sqv/sqmv/`, `knowledge/sqv/sqfv/`, `knowledge/sqv/sqtv/`, `knowledge/sqv/sqpv/`, and `knowledge/sqv/sqdv/`. SQFV owns the first admitted library described below; the other five currently define architecture ownership. Root knowledge-manifest and SKVI routes make these separate owners discoverable. SOOV's separate FIX Quad remains under `knowledge/sqv/soov/`.
+The six research-data children have Contract Quads under `knowledge/sqv/sqav/`, `knowledge/sqv/sqmv/`, `knowledge/sqv/sqfv/`, `knowledge/sqv/sqtv/`, `knowledge/sqv/sqpv/`, and `knowledge/sqv/sqdv/`. SQMV, SQFV and SQPV own the bounded native libraries described below; SQAV, SQTV and SQDV currently define architecture ownership. Root knowledge-manifest and SKVI routes make these separate owners discoverable. SOOV's separate FIX Quad remains under `knowledge/sqv/soov/`.
 
 ## Implementation Status
 
-SQFV's `modules/sqfv-batch-cpp/` owns the independently installable `0.2.0-dev` C++26 trusted-process batch library, with immutable payloads, explicit leases, independent port credits/cursors, and a local frame codec. Its exact module contract and focused evidence define that limited capability. The other research-data children and SOOV remain architecture owners without their own implemented engines. Provider acquisition, retention/recovery, transport adapters, and consumer integrations remain later increments. The older `prototypes/sqv-research-data/` fixture is historical development evidence. None of these Quads allocates a colon identity family or SQV qxctl command.
+SQFV's `modules/sqfv-batch-cpp/` owns the independently installable `0.2.0-dev` C++26 trusted-process batch library, with immutable payloads, explicit leases, independent port credits/cursors, and a local frame codec. SQMV's `modules/sqmv-metadata-cpp/` `0.1.0-dev` resolves bounded immutable manifests into exact metadata bindings. SQPV's `modules/sqpv-local-store-cpp/` `0.1.0-dev` retains one exact bound stream in a finite local filesystem store with explicit commit/recovery behavior. Each module's own contract and focused evidence define its limited capability. SQAV, SQTV, SQDV and SOOV remain architecture owners without implemented modules. Provider acquisition, domain interpretation, transport adapters, richer retention policies and consumer integrations remain later increments. The older `prototypes/sqv-research-data/` fixture is historical development evidence. None of these Quads allocates a colon identity family or SQV qxctl command.
 
 ## Non-Authorization Statement
 

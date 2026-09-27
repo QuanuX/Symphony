@@ -2,6 +2,7 @@
 
 ## Canonical Surfaces
 
+- `libraries/knowledge-vector-engine-cpp/tests/digest_failure_test.cpp`
 - `libraries/knowledge-vector-engine-cpp/tests/native_process_test.cpp`
 
 - `cmake/SymphonyNativeTests.cmake`

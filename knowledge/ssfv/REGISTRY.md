@@ -2,7 +2,7 @@
 
 ## Status
 
-Canonical SSFV feature-routing registry. The partial catalog routes 111 experimental records across the platform governance scope and 35 implemented owner scopes enumerated by `COVERAGE.md`.
+Canonical SSFV feature-routing registry. The partial catalog routes 113 experimental records across the platform governance scope and 37 implemented owner scopes enumerated by `COVERAGE.md`.
 
 ## Purpose
 
@@ -751,6 +751,24 @@ The literal `None.` beneath `## Canonical Entries` is the only valid empty-regis
 - record_digest: `sha256:ce9311aa77ce4bc538eaac4d524d365fccc95d2c5bd62c5fc7c46f3414563a74`
 - notes: Trusted same-process SQFV batch, lease, bounded port, and local frame library; no SQV qxctl or process entry point, durable delivery, private access enforcement, provider, or network transport.
 
+- feature_id: `ssfv:symphony:sqmv-metadata-cpp`
+- feature_file: `modules/sqmv-metadata-cpp/FEATURES.md`
+- owner_contract: `modules/sqmv-metadata-cpp/SPEC.md`
+- source_scope: `modules/sqmv-metadata-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:cec33ede9fb58ac607ab4987d8df18a107777532697c72259764ab754603b102`
+- notes: Bounded native C++26 library; exact module contract and focused evidence define its implemented extent.
+
+- feature_id: `ssfv:symphony:sqpv-local-store-cpp`
+- feature_file: `modules/sqpv-local-store-cpp/FEATURES.md`
+- owner_contract: `modules/sqpv-local-store-cpp/SPEC.md`
+- source_scope: `modules/sqpv-local-store-cpp`
+- status: `experimental`
+- parent_feature_id: `ssfv:symphony:platform`
+- record_digest: `sha256:02b897c7c6180727d2047de7c541b1354bd768e76bde977d6b173647cbfd3e34`
+- notes: Bounded native C++26 library; exact module contract and focused evidence define its implemented extent.
+
 - feature_id: `ssfv:symphony:ssfv-engine`
 - feature_file: `modules/ssfv-engine/FEATURES.md`
 - owner_contract: `modules/ssfv-engine/SPEC.md`
@@ -1044,4 +1062,4 @@ Do not register:
 
 ## Non-Authorization Statement
 
-This 99-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.
+This 113-record registry is an explicitly partial catalog governed by `COVERAGE.md`. It does not authorize an unratified feature record, an unregistered distributed file, repository-wide or installed-host completeness, complete legacy-invariant coverage, engine-decided feature-worthiness, or canonical mutation.

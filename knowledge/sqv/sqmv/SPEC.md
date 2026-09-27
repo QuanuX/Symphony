@@ -16,9 +16,11 @@ Provider version, source schema version, representation layout, dataset revision
 
 SQMV owns the meaning of metadata carried or referenced by a prepared batch; SQFV owns the batch's transfer, buffer lifetime, and cursor mechanics. A compact reference is usable only after its exact version and interpretation have been resolved for the receiving scope. Metadata needed per batch should be immutable for that batch's lifetime. No resident catalogue or synchronous lookup is required on a data path by this specification. The current `sqfv-batch-cpp` binding compares caller-supplied reference, dataset revision, schema version, layout version, and access scope as opaque exact bytes. It does not define their SQMV grammar, resolve a reference, or authorize a reader.
 
-## Deferred Technical Contract
+## First Native Binding Contract
 
-The exact descriptor schema, dataset identifier grammar, version-negotiation rules, metadata persistence, privacy enforcement mechanism, and public ABI remain to be admitted through a later reviewed contract. The offline SQV prototype does not settle them. This Quad creates no installed capability or namespace family.
+`modules/sqmv-metadata-cpp/SPEC.md` owns the exact `0.1.0-dev` C++26 library contract: immutable bounded `SQM1` manifests, content-addressed references, producer-attributed evidence references and resolution into the five existing SQFV binding fields. A receiving caller resolves the exact manifest reference before accepting that binding. Exact schema/layout/revision/scope comparison admits no implicit compatibility or latest-version substitution.
+
+The manifest records assertions and evidence references; it neither dereferences them nor proves their authenticity, domain correctness or access authority. Required schema, layout and access descriptions remain attributable producer assertions. Source/time/coverage/lineage/units references preserve supplied evidence without inventing missing fields. Provider-specific descriptive schemas, richer compatibility policies, a metadata catalogue, privacy enforcement and new integrations remain later contracts. No colon namespace family or service is created by this library.
 
 ## Non-Authorization Statement
 

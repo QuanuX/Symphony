@@ -17,11 +17,11 @@ SQPV owns selected research-data storage, retained positions, commit and read gu
 
 ## Implementation Status
 
-Canonical architecture contract only. No SQPV writer, reader, storage bridge, schema, backend, durability profile, qxctl operation, feature record, installed package, performance guarantee, or publication is claimed. No `sqpv:` identity family is allocated by this Quad.
+The narrow `modules/sqpv-local-store-cpp/` `0.1.0-dev` C++26 library supplies one explicit local filesystem retention path with bounded capacity, exact SQMV/SQFV binding, serialized append, verified commit records and process-crash recovery. Its module SPEC owns exact file layout, synchronization, retry and read behavior. Other backends, pruning, replication and delivery profiles remain independent future work. No `sqpv:` identity family, service or SQV qxctl operation is allocated by this Quad.
 
 ## Language Boundary
 
-First-party research-data storage bridges on the data plane are native C++. Exact ABI, backend dependency, supported platform, and durability behavior require separate admission and tests.
+First-party research-data storage bridges on the data plane use C++26. The first library pins exact native dependencies and states its tested platform and guarantee; later adapters require their own evidence.
 
 ## Non-Authorization Statement
 

@@ -6899,6 +6899,42 @@
     {
       "expectations": [
         {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqmv-metadata-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqmv-metadata-cpp"
+    },
+    {
+      "expectations": [
+        {
+          "command_ids": [],
+          "delivery": "runtime_only",
+          "engine_operation_ids": [],
+          "evidence": [
+            "knowledge/FEATURE-ADMINISTRATION.md",
+            "modules/sqpv-local-store-cpp/FEATURES.md"
+          ],
+          "inherited_from_feature_id": null,
+          "interaction": "invoke",
+          "rationale": "The exact C++26 library executes only when invoked by its explicit native caller; installation adds no independent process or SQV qxctl surface.",
+          "requirement": "required"
+        }
+      ],
+      "feature_id": "ssfv:symphony:sqpv-local-store-cpp"
+    },
+    {
+      "expectations": [
+        {
           "command_ids": [
             "qxcmd:symphony:ssfv.inspect"
           ],
@@ -7891,9 +7927,9 @@
   ],
   "format_version": 1,
   "forward_gate": "enforce_new_records",
-  "profile_digest": "sha256:9eb2c0b539c937d8a3e73c1b09e8300b50c95f707a382283496dd5bd607fef44",
+  "profile_digest": "sha256:882e888b91e457327db8c41c7a0d147c896d07362ea279518360e17aff3f5f65",
   "profile_id": "symphony.registered-features.administration.v1",
   "protocol": "symphony.knowledge.feature-administration-profile.v1",
-  "registered_feature_count": 111,
-  "ssfv_registry_digest": "sha256:6581c5f404009ea3666a865161bd5480fd838024f1f591aea7a5a867c8a3327a"
+  "registered_feature_count": 113,
+  "ssfv_registry_digest": "sha256:ec16660e2c437e18e5a444ff626111bf4d1f01ad8ebbb5918499027461330aa4"
 }

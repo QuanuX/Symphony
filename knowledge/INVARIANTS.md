@@ -46,6 +46,10 @@ Installed-host completeness is a separate future gate. A caller-supplied engine 
 
 `modules/sqfv-batch-cpp/SPEC.md` owns immutable batch lifetime and charged reservations, exact port binding/cursor/credit behavior, and bounded canonical frame integrity. Their three `invariant:symphony:sqfv.*` records bind native producer regressions to independent installed C++26 consumer rejection tests. They describe the admitted same-process library; no IPC adapter or SQV qxctl surface is introduced.
 
+## SQMV and SQPV native library invariants
+
+`modules/sqmv-metadata-cpp/SPEC.md` owns canonical immutable metadata integrity and exact flow-binding resolution. `modules/sqpv-local-store-cpp/SPEC.md` owns verified retained commit chains, bounded exact-stream admission and exclusive local store ownership. Their five `invariant:symphony:sqmv.*` and `invariant:symphony:sqpv.*` records bind owner regressions to independently built installed-consumer rejection. SQPV's deterministic process-interruption tests exercise its stated local guarantee; they are not an IPC adapter, power-loss certification or destination acknowledgement.
+
 ## Foundational Lifecycle Invariants
 
 The foundational SSIAG/STAV lane applies the registry to the following rule families:

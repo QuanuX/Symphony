@@ -6,7 +6,7 @@ The Symphony Quantitative Persistence Vector (SQPV) owns selected research-data 
 
 ## Composition Boundary
 
-Users select whether and where to retain a research dataset. A live flow may omit SQPV when its selected contract permits disposable delivery. An admitted writer or reader may use a suitable local or remote storage bridge without imposing that backend on every composition. First-party research-data storage bridges on the data plane are native C++.
+Users select whether and where to retain a research dataset. A live flow may omit SQPV when its selected contract permits disposable delivery. An admitted writer or reader may use a suitable local or remote storage bridge without imposing that backend on every composition. First-party research-data storage bridges on the data plane use C++26.
 
 ## Neighbor Boundaries
 
